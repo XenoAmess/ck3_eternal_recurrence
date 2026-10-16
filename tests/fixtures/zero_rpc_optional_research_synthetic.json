@@ -1,0 +1,10 @@
+{
+  "provenance": "Synthetic portable projection of the observed pre-dispatch config rejection; not a live gameplay acceptance.",
+  "original": {"request":{"sequence":17,"tool":"ck3_set_army_private_auto_scalar_ab_v1","arguments":{"mode":"compare","expected_revision":3}},"row":null,"response":null},
+  "error":{"error_type":"ValueError","message":"Army AB research needs actual paused cold SEM/CAP"},
+  "state":{"completed_cycles":52,"counts":{"observations":4},"before":{"snapshot_id":"native:12","revision":3,"native_revision":12,"date_raw":12000,"actor_character_id":9,"episode_run_id":"fixture-episode"},"pending_cycle":null,"pending_checkpoint":null,"terminal":null},
+  "mode":{"driver_class":"NativeHeadlessGameplayDriver","episode_projection":"one_life","before_submit_observation":true,"policy_replaced":false,"transport_cap_replaced":false,"source_file":"source/native_driver.py"},
+  "game":{"pid":42,"creation_filetime":1001},
+  "lifecycle":{"lifecycle":"ordinary_campaign_succession","fixture":true},
+  "semantic_row":{"request":{"sequence":18,"tool":"ck3_take_semantic_snapshot_private_v1","arguments":{}},"result":{"is_error":false,"structured_content":{"snapshot_id":"native:12","revision":3,"native_revision":12,"date_raw":12000,"paused":true,"map_ready":true,"played_character":{"character_id":9,"alive":true},"episode_run_id":"fixture-episode","succession_lifecycle":{"lifecycle":"ordinary_campaign_succession","fixture":true},"diagnostics":{"bridge_pid":42,"hello":{"pid":42}}}}}
+}

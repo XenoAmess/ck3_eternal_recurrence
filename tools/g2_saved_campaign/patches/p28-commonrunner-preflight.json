@@ -1,0 +1,9 @@
+{
+  "status": "PORTABLE_SOURCE_CANDIDATE_NOT_PUBLIC_RUNNER_DEPLOYMENT",
+  "integration": "The patch is an external commonrunner research recipe; public module availability does not prove every runner uses it. require_published_full must precede any attach_verified call. already_attached verified proof returns prior without reapplying an old baseline. Interruption identity includes content hashes, frame, cycles and reason.",
+  "zero_rpc_scope": "Exact optional compare-config preflight only; no dispatcher succession, no MCP, no original request retry. Actual external control8 succeeded; portable fixture is explicitly synthetic.",
+  "patch_sha256": "74f30534d614e1f58b1f7e99fda6d71204e2144a047a3b5ea42793e8ede21512",
+  "portable_test_command": "python -m pytest -q tests/test_zero_rpc_optional_research.py tests/test_runner_preflight.py",
+  "runtime_integration_test_count": 3,
+  "runtime_integration_source_changes": false
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "xar.sdk28.source-delta-budget.v1",
+  "at_utc": "2026-10-16T18:55:49.926464+00:00",
+  "own_peak_bytes": 8388608,
+  "retained_packet_estimated_bytes": 2270403,
+  "common_root_extra_peak_bytes": 16777216,
+  "reservation_group": "n42-native-ui-camera-profile-64gib",
+  "additional_global_reservation_bytes": 0,
+  "parent_admission": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+  "parent_sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+  "review_at_utc": "2026-10-17T11:49:00.265518+00:00",
+  "actual_D_free_bytes": 1064698929152,
+  "disk_reserve_bytes": 965242405868,
+  "source_only": true,
+  "scope": "Root authorized small performance/fix packet group; no rawDriver/SAVE/video/SDK copies; future verifier in-memory only.",
+  "closing_at_utc": "2026-10-16T19:04:11.069021+00:00",
+  "closing_net_bytes_before_delivery": 2381521,
+  "closing_actual_D_free_bytes": 1064389632000
+}

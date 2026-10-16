@@ -1,0 +1,44 @@
+--- a/root_p28_canonical_result_classifier.py
++++ b/root_p28_route_scope_result_classifier.py
+@@ -3338,7 +3338,8 @@
+     def war_scope(progress, date):
+         require(isinstance(progress, dict) and progress.get("date_raw") == date
+                 and isinstance(progress.get("wars"), list)
+-                and 0 < len(progress["wars"]) <= 64, "war watch/date")
++                and len(progress["wars"]) <= 64
++                and (date != start or len(progress["wars"]) > 0), "war watch/date")
+         seen = set()
+         player = set()
+         enemy = set()
+@@ -3355,18 +3356,25 @@
+                     require(isinstance(row, dict) and type(row.get("army_id")) is int
+                             and 0 <= row["army_id"] <= 2**31 - 1,
+                             "war side army ID")
+-                    into.add(row["army_id"])
+-        require(subject in player and set(hostile_ids) <= enemy,
+-                "subject and full hostile watch")
++                    # The route-contact reader's full hostile scope excludes
++                    # armies already retreating at the *starting* frame.  A
++                    # missing retreat bit stays in scope; do not guess it away.
++                    if key != "enemy_armies" or row.get("retreating") is not True:
++                        into.add(row["army_id"])
++        if date == start:
++            require(subject in player and set(hostile_ids) <= enemy,
++                    "subject and full hostile watch")
+         return seen, enemy
+     old_wars, old_enemies = war_scope(before, start)
+     new_wars, _ = war_scope(after, end)
+     require(isinstance(plan.get("active_wars"), list), "selected active wars absent")
+-    require(old_wars == new_wars
+-            and set(hostile_ids) == old_enemies
++    require(set(hostile_ids) == old_enemies
+             and {war.get("war_id") for war in plan.get("active_wars", [])
+                  if isinstance(war, dict)} == old_wars,
+-            "selected and observed complete war scope")
++            "selected and observed complete starting war scope")
++    # A war can terminate or another can begin during the native-stopped day.
++    # Fresh post-stop war rows are still shape-checked above, but date credit
++    # never grants a war outcome or reuses the old hostile roster afterward.
+     actions = inner.get("actions")
+     clock = inner.get("exact_day_native_clock")
+     armed = clock.get("armed") if isinstance(clock, dict) else None

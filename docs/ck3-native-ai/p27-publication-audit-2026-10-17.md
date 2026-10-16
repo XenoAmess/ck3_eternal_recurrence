@@ -79,3 +79,62 @@ W是本轮公开提交checkout；Z未同步和外置成果确有漏交是两个�
 “远端没有源码”。同步前已核Z clean、目标约51MB、受影响旧叶无共享hardlink、
 无merge hook；当前SDK取D盘独立冻结源码，Game模组也挂D盘profile副本。
 公开push后只作Z常规fast-forward；实际结果单独记录，不改变任何冻结运行树。
+
+## 第二批归档与实际 SDK28 修复截点
+
+第一批 `79055bb2` 已实际推送；Z 的 `master` 已常规 fast-forward 至同一提交，
+工作树 clean。同步前逐一核过受影响旧叶没有共享 hardlink，当前 Game 模组与
+SDK 仍取 D 盘独立冻结树。外置同步回执 SHA-256 为
+`c136309a8e05306505f4f2bacef106b271d0b6659a052b4573323b99fc03d9ec`；
+这次 Git 同步没有改运行配置、游戏存档或录像。
+
+第二批补入的[接敌范围纯校验](../../tools/g2_saved_campaign/route_contact_exact_day_war_scope_v1.py)
+仅排除原生明确 `retreating is True` 的敌军，缺字段或未知仍计入；public CUnit ID0仍合法。
+实际 AUTO79 已按原生哨兵准确推进一日，但旧外置分类器错误要求把11支撤退敌军
+也纳入接敌 scope。原始 clock／frame／paused 资格保持，完整窄 patch 和实际小投影
+一并保存；不会复制236KB场次分类器到正式 SDK。
+
+[可选研究预检恢复](../../tools/g2_saved_campaign/zero_rpc_optional_research.py)只资格化
+已审查的 compare 配置 ValueError，要求原件、source-mode 原字节 SHA、冻结源码、
+same-Game出生、独立暂停 SEM 和无提交标记均绑定。它只通过宿主回调提交本地 metadata，
+计数不变、HALT最后清除，失败不重试、不伪造成功；没有 MCP、原动作重放或继承操作。
+[runner 前置](../../tools/g2_saved_campaign/runner_preflight.py)要求首个真实 FULL 已发布才可
+attach，并让故障身份包含内容 SHA／帧／计数。两个公共 API 及原最小研究配方已保存，
+不因此宣称所有公共 runner 已接入。以上新增范围通过22项测试、22项子测试。
+
+实际 SDK28Rev2 attempt02 沿既有 route3 配置热接同一 Game6068；FULL9先推进6日。
+Root 随后在同 SDK 安装81／重消费82，FULL83只结算原 AUTO79 的一日，累计10610周期、
+raw53432448；SEM85／METRICS86独立绑定同暂停帧。恢复 proof SHA-256 为
+`c819433c8220c9b3341dd3d7d594da65ed0b7acf9aade92d1038bc4aee65fe12`。
+没有为这个分类错误重启 SDK、重放 AUTO79 或追加业务信用。
+
+窗口24因首 FULL 未先发布而失败0日，原事实保留。窗口25从 raw53432448重新起算，
+FULL87曾成功推进13日；随后 Root 在2026-10-16T18:57:27Z报告 FULL516／AUTO541
+以 `native_war_active_route_contact_horizon_unavailable` 再次阻塞，窗口25失败76日。
+当前只记录这个失败截点，不把历史 running、旧767日或修复期间日期算进新窗口。
+Game、Native21与D盘原录像由 Root 保持，下一修复另行验收。
+
+当前优先级为连续30年稳定推进，其次先达到平均1秒／游戏日，再追求0.5秒／日。
+三个目标均未验收；最近具名五批仍为260.352秒／49日，即5.31331秒／日。
+WAL SDK29候选仍未部署、默认关闭；源码和离线资格不能替代实机收益。
+
+## 冻结运行源码与公开源码逐叶核对
+
+不能只核本轮点名的几项补丁。[完整差异目录](research/sdk28-public-source-delta-20261017/README.txt)
+将实际 SDK28Rev2 freeze／source-mode绑定的1317叶与公开`79055bb2`比较，
+所有实际原字节SHA及大小均吻合。联合1358路径中，1261原字节相同、5只换行不同、
+45代码不同、6仅在实际运行源码、41仅在较新的公共源码；sparse checkout未检出的
+16个Workshop模块使用Git blob比对，没有误报为缺失。
+
+相对原运行基线`00a70009`，97个原字节差异分为67项公共已前进、13项运行overlay、
+12项双方分叉或各自新增、5项换行。六个actual-only叶的完整create-file增量、
+所有代码差异的完整窄patch以及97个hashguarded无损recipe均已入库，另有
+[逐项分类](research/sdk28-public-source-delta-20261017/EXPERIMENT-CLASSIFICATION.json)。
+其中正式来源、运行适配和研究入口分列；source inclusion／静态可达不等于实机运行。
+仍需逐项评审的overlay已保全完整源码，未盲目覆盖公共M6等后续成果。
+
+公共目录共105文件／2,400,223字节；没有复制57MB SDK树、Driver、SAVE、录像或trace。
+只使用公开Git对象与recipe，在内存中准确重建1317叶／全部97差异通过，
+不读取实际SDK或写回源码；wrong-base／wrong-target在优化Python中同样拒绝。
+这是可重建研究档案，整patch反向应用会删除较新的公共能力，不能当生产升级方案。
+原件metadata与recipe保留精确字节，来源索引记录其delivery pin。

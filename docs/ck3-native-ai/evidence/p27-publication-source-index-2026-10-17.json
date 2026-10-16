@@ -74,6 +74,36 @@
       "relative_path": "p27-enemy-active-combat-watch01/portable/W-STRATEGY.patch",
       "sha256": "439eed877531588df8b2203cbc7b7c6c6b0d0cbf83ff1beada00b5fc20b1b82b",
       "bytes": 3534
+    },
+    {
+      "name": "p28-route-scope-portable",
+      "relative_path": "p28-route-contact-scope-classifier01/portable/PORTABLE-DELIVERY.json",
+      "sha256": "366823cf292ff1977d8f26f31c16258cf9cc7927ec48c1ae1f16cca5042d1b2a",
+      "bytes": 1871
+    },
+    {
+      "name": "p28-zero-rpc-portable",
+      "relative_path": "p28-zero-rpc-public01/DELIVERY.json",
+      "sha256": "9056d7124d9da1bc320361487a61164189e535ef2efb964ef15b59a27dbbbb68",
+      "bytes": 2014
+    },
+    {
+      "name": "p28-scope-runtime-continuity",
+      "relative_path": "native21-cold-generation03/ROOT-P28-CONTINUITY-RESUME04-ADMITTED.json",
+      "sha256": "c819433c8220c9b3341dd3d7d594da65ed0b7acf9aade92d1038bc4aee65fe12",
+      "bytes": 3489
+    },
+    {
+      "name": "z-actual-fast-forward",
+      "relative_path": "p28-publication-audit01/Z-CHECKOUT-FAST-FORWARD.json",
+      "sha256": "c136309a8e05306505f4f2bacef106b271d0b6659a052b4573323b99fc03d9ec",
+      "bytes": 992
+    },
+    {
+      "name": "actual-sdk28-vs-public-complete-delta",
+      "relative_path": "p28-public-source-delta01/DELIVERY.json",
+      "sha256": "afc48b0c0f64c50d394743cc72b6b854e081ee3e69aed9a375160914a6fc04d5",
+      "bytes": 18531
     }
   ],
   "large_inputs_in_git": false,
@@ -95,10 +125,43 @@
     "native_diagnostic_compiled": false,
     "wal_live_ab": false,
     "wal_portable_tests": 6,
-    "wal_portable_subtests": 6
+    "wal_portable_subtests": 6,
+    "second_portable_tests": 22,
+    "second_portable_subtests": 22,
+    "source_delta_rebuilt_leaves": 1317,
+    "source_delta_rebuilt_differences": 97
   },
   "goal_status": {
     "seconds_per_day_half_second_met": false,
-    "uninterrupted_thirty_years_met": false
+    "uninterrupted_thirty_years_met": false,
+    "priority_order": [
+      "stable_uninterrupted_thirty_years",
+      "average_one_second_per_game_day",
+      "average_half_second_per_game_day"
+    ],
+    "seconds_per_day_one_second_met": false
+  },
+  "first_publication_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+  "local_machine_status": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "z_checkout_first_actual_sync": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+    "runtime_source_replaced": false,
+    "sdk28_rev2_attempt02_same_game": true,
+    "window24_failed_days": 0,
+    "window25_failed_days": 76,
+    "latest_status_source": "Root report 2026-10-16T18:57:27Z FULL516/AUTO541 blocked native_war_active_route_contact_horizon_unavailable",
+    "continuous_thirty_years_met": false,
+    "wal_sdk29_deployed": false
+  },
+  "source_delta": {
+    "public_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+    "actual_freeze_sha256": "6da46c57f3844522fa7cec516098f75b7987c8f7ac4bc2845311e3078c405587",
+    "raw_equal": 1261,
+    "newline_only": 5,
+    "code_changed": 45,
+    "actual_only": 6,
+    "public_only": 41,
+    "research_reconstruction_not_production_rollback": true,
+    "actual_source_reads_during_git_only_verify": 0
   }
 }

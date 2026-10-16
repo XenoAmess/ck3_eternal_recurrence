@@ -1,0 +1,157 @@
+{
+  "schema": "xar.actual-p28-auto79-route-contact-war-scope-projection/v1",
+  "source_filename": "0079-1-result.json",
+  "source_sha256": "063cc5b8e6e0dd801f11d12a6df8652c5410561c114e984bbb470f511f2634e6",
+  "source_projection": "Only literal fields copied from actual immutable AUTO79; no D path, PID or guessed roster entry.",
+  "starting_date_raw": 53432424,
+  "ending_date_raw": 53432448,
+  "subject_army_id": 402653503,
+  "selected_step": "advance-route-contact-horizon-v1-402653503-to-5969-h-1-587202636",
+  "selected_hostile_ids": [
+    587202636
+  ],
+  "planned_wars": [
+    {
+      "war_id": 201326630
+    }
+  ],
+  "war_progress_before": {
+    "date_raw": 53432424,
+    "wars": [
+      {
+        "war_id": 201326630,
+        "player_armies": [
+          {
+            "army_id": 402653503
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 16777794,
+            "retreating": true
+          },
+          {
+            "army_id": 218104322,
+            "retreating": true
+          },
+          {
+            "army_id": 318767378,
+            "retreating": true
+          },
+          {
+            "army_id": 318767449,
+            "retreating": true
+          },
+          {
+            "army_id": 385876199,
+            "retreating": true
+          },
+          {
+            "army_id": 452985064,
+            "retreating": true
+          },
+          {
+            "army_id": 520093840,
+            "retreating": true
+          },
+          {
+            "army_id": 536871076,
+            "retreating": true
+          },
+          {
+            "army_id": 536871097,
+            "retreating": true
+          },
+          {
+            "army_id": 587202636,
+            "retreating": false
+          },
+          {
+            "army_id": 603980042,
+            "retreating": true
+          },
+          {
+            "army_id": 704643297,
+            "retreating": true
+          }
+        ]
+      }
+    ]
+  },
+  "war_progress_after": {
+    "date_raw": 53432448,
+    "wars": [
+      {
+        "war_id": 201326630,
+        "player_armies": [
+          {
+            "army_id": 402653503
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 16777794,
+            "retreating": true
+          },
+          {
+            "army_id": 218104322,
+            "retreating": true
+          },
+          {
+            "army_id": 318767378,
+            "retreating": true
+          },
+          {
+            "army_id": 318767449,
+            "retreating": true
+          },
+          {
+            "army_id": 385876199,
+            "retreating": true
+          },
+          {
+            "army_id": 452985064,
+            "retreating": true
+          },
+          {
+            "army_id": 520093840,
+            "retreating": true
+          },
+          {
+            "army_id": 536871076,
+            "retreating": true
+          },
+          {
+            "army_id": 536871097,
+            "retreating": true
+          },
+          {
+            "army_id": 587202636,
+            "retreating": false
+          },
+          {
+            "army_id": 603980042,
+            "retreating": true
+          },
+          {
+            "army_id": 704643297,
+            "retreating": true
+          }
+        ]
+      }
+    ]
+  },
+  "native_clock": {
+    "completed_daily_ticks": 1,
+    "overshoot_days": 0,
+    "trigger_reasons": [
+      "date_deadline"
+    ],
+    "pause_observed": true
+  },
+  "result_status": "postcondition",
+  "paused": true,
+  "final_screen": "map_hud",
+  "business_action_credit": false,
+  "replay_allowed": false
+}

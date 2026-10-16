@@ -1,0 +1,559 @@
+{
+  "schema": "xar.sdk28.source-delta-delivery.v1",
+  "status": "FINAL_RECONSTRUCTION_VERIFIED_RESEARCH_ONLY",
+  "at_utc": "2026-10-16T19:04:11.130156+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_copy_root": "docs/ck3-native-ai/research/sdk28-public-source-delta-20261017",
+  "copy": "All files below this packet preserving relative paths; no external SDK, raw log, state, SAVE or video.",
+  "files": [
+    {
+      "relative": "BUDGET.json",
+      "bytes": 1020,
+      "sha256": "0907bdbbceeaa30c54df1b80096f4bfdf4ad863b8a3a55744366f6e8a3d8bc54"
+    },
+    {
+      "relative": "EXPERIMENT-CLASSIFICATION.json",
+      "bytes": 57954,
+      "sha256": "d35eafbd6c68b73200bb471147100d5d626702f81e8c390c5fc4c1ecb05d55bc"
+    },
+    {
+      "relative": "METADATA.json",
+      "bytes": 1376228,
+      "sha256": "2e46f019c21e8c9831ce8c1b8692025e4d8a8f662ea087086915ea6a175db72d"
+    },
+    {
+      "relative": "README.txt",
+      "bytes": 2819,
+      "sha256": "1975827efd6bd3dc1315866faf26b9b24a256dd5566af43e116ace0496929410"
+    },
+    {
+      "relative": "recipes/0001.json",
+      "bytes": 676,
+      "sha256": "2c98b68c158bfed8880dd8100892f8f20343db48ae87765450d39ef69a21de0d"
+    },
+    {
+      "relative": "recipes/0002.json",
+      "bytes": 786,
+      "sha256": "031b47353e141c93f8e8c9610965b19efefabc6f190707827929ebd4525419ec"
+    },
+    {
+      "relative": "recipes/0003.json",
+      "bytes": 725,
+      "sha256": "7889c6c3724bf3bd75c9ebfc3542531a2f011f6903e5ff30f64391658bf6e952"
+    },
+    {
+      "relative": "recipes/0004.json",
+      "bytes": 378,
+      "sha256": "db503929ac858484774fd19d6b43414764ab07ad31a706337475a6c05b9f7d23"
+    },
+    {
+      "relative": "recipes/0005.json",
+      "bytes": 731,
+      "sha256": "818c349c024e1ed2353b068af7f3b1a53d89f35854f7515e8554070402cdcd54"
+    },
+    {
+      "relative": "recipes/0006.json",
+      "bytes": 450,
+      "sha256": "a908316666a93b53efa1f7a6956ed2aff7f4fb58fae25ae22cd232c7d032b1bf"
+    },
+    {
+      "relative": "recipes/0007.json",
+      "bytes": 462,
+      "sha256": "bfab9f9ad866d60846c42d0dcfd3f386e6a12e9b35def3ed52b48c5b7934a60a"
+    },
+    {
+      "relative": "recipes/0008.json",
+      "bytes": 464,
+      "sha256": "7cfa36f189366cd6fe6d84aeaa0e6b2ff35b4fb19a7b63830caeb29afbb15527"
+    },
+    {
+      "relative": "recipes/0009.json",
+      "bytes": 739,
+      "sha256": "ad222b9aff0ae0a8d9ffb7244f2cf5e541909f5335083adb91061c43dd5300c7"
+    },
+    {
+      "relative": "recipes/0010.json",
+      "bytes": 456,
+      "sha256": "6ea9b9f179980b9bec837b67ac7f445f91ee935d9454af599745cdfa59f9f0ad"
+    },
+    {
+      "relative": "recipes/0011.json",
+      "bytes": 455,
+      "sha256": "fcb96b9b3eccc23a7a9d579173852a085b6182d686b1a62b2cd4dfc28ce2f3f7"
+    },
+    {
+      "relative": "recipes/0012.json",
+      "bytes": 768,
+      "sha256": "40daa811743311e03d4e7fda119f8063af718c707a204f51267eb0a2f21182e4"
+    },
+    {
+      "relative": "recipes/0013.json",
+      "bytes": 602,
+      "sha256": "4747443f8d669a91f0f312416df5ed1334c7da370de721d29d85f20c098570b1"
+    },
+    {
+      "relative": "recipes/0014.json",
+      "bytes": 449,
+      "sha256": "6dbf21c43913c9385bcc6592ac955fb77a6469e686799601bdcbdc251d98751d"
+    },
+    {
+      "relative": "recipes/0015.json",
+      "bytes": 750,
+      "sha256": "e8b1e5bf69bdc0395cbe104ff47f7da6b62fb08ee80889ac45906dad65e2ce92"
+    },
+    {
+      "relative": "recipes/0016.json",
+      "bytes": 453,
+      "sha256": "ea047da0a8fac4be0195e1f7a6dced573f20625af96c12db49a67b873d7123b0"
+    },
+    {
+      "relative": "recipes/0017.json",
+      "bytes": 467,
+      "sha256": "d386d0f1556ace51b32ba9054023bc1153e04e4a036a44213fd6202a9ff2821a"
+    },
+    {
+      "relative": "recipes/0018.json",
+      "bytes": 457,
+      "sha256": "87d4f045bba765359c6b279ee5079e1fbb5c6aa2b331440840cf2cff3078fe29"
+    },
+    {
+      "relative": "recipes/0019.json",
+      "bytes": 450,
+      "sha256": "5299b7f1ba70156d5f68b2ab771e94957e725d8c0438783ab7456e95c1e720e0"
+    },
+    {
+      "relative": "recipes/0020.json",
+      "bytes": 748,
+      "sha256": "abfdfe42265f46ee641be451351f82b9d66bad26a1bfbb25f7b31ab09986f76c"
+    },
+    {
+      "relative": "recipes/0021.json",
+      "bytes": 710,
+      "sha256": "975e68c5f431d59ff8efd83b62d8eb478b16f68775164807acf5c3659544b4ae"
+    },
+    {
+      "relative": "recipes/0022.json",
+      "bytes": 748,
+      "sha256": "8db6a02b172c857e188c50140381f1c4e97e4e3686c8a930abb4de5f5def353c"
+    },
+    {
+      "relative": "recipes/0023.json",
+      "bytes": 2050,
+      "sha256": "045058dc5e7833fa0982cc80210fdb99e5a4339fc9d47190c72ad93263097794"
+    },
+    {
+      "relative": "recipes/0024.json",
+      "bytes": 457,
+      "sha256": "71dedbb1817ec1ec0498ef1e90a0402bc4cfd940033843591476e0ac8d321252"
+    },
+    {
+      "relative": "recipes/0025.json",
+      "bytes": 569,
+      "sha256": "f593de4e8c8e2e372c9b6b5278dcc81c68df6e06080e2a0fb5619dcfcbc3787d"
+    },
+    {
+      "relative": "recipes/0026.json",
+      "bytes": 757,
+      "sha256": "ca1793d6a5fc7259dc689c736589090421c1996d79cd6ee8d203f9b138b83900"
+    },
+    {
+      "relative": "recipes/0027.json",
+      "bytes": 783,
+      "sha256": "f94f45a048447384305f4dc5bc0a1285bb3e1fc910f4fbf746a291d79eb5a5ad"
+    },
+    {
+      "relative": "recipes/0028.json",
+      "bytes": 720,
+      "sha256": "6aaace8221625a00fb94c5ced9e348b5f66abb9884521149895b9069b0e21029"
+    },
+    {
+      "relative": "recipes/0029.json",
+      "bytes": 457,
+      "sha256": "27b42fa2ca625964e40d7091170dbcc58e79a8b80cd69e7f5f92441175242a2d"
+    },
+    {
+      "relative": "recipes/0030.json",
+      "bytes": 457,
+      "sha256": "836b19a595455a0c871c1ac534c54567f20e2b59814f85f34bdcc1bf21a3f8a3"
+    },
+    {
+      "relative": "recipes/0031.json",
+      "bytes": 446,
+      "sha256": "35c26c9cdbcdc68fb3dbcde39340aba74cef2f32f9e41fbc3f01635d4c7f0238"
+    },
+    {
+      "relative": "recipes/0032.json",
+      "bytes": 459,
+      "sha256": "862e50268495aeb70cdc95febd0ad407726035983c31a7f00db9dc1ebc415e69"
+    },
+    {
+      "relative": "recipes/0033.json",
+      "bytes": 445,
+      "sha256": "0487bf7102e82fbff438298c314afdf59f7544958c6c8b4c684613b808c4873a"
+    },
+    {
+      "relative": "recipes/0034.json",
+      "bytes": 734,
+      "sha256": "722cce56194849bc9f606b61d84cda1fe3f26648ce81e25d30d4d0492d92cc57"
+    },
+    {
+      "relative": "recipes/0035.json",
+      "bytes": 434,
+      "sha256": "ae016b7b7e88fb4c49baa8f96109969ff7c90130d4669ea53ae8f7b2f4816bb2"
+    },
+    {
+      "relative": "recipes/0036.json",
+      "bytes": 711,
+      "sha256": "d87e27e8d3f111a1925c29369f42ad764bc80fa524029c1ce640cbb47dcf35fd"
+    },
+    {
+      "relative": "recipes/0037.json",
+      "bytes": 1177,
+      "sha256": "50edef97d5da9f559a5b221bce8becd30d84aef66634a9b11a18e3523e3f4dca"
+    },
+    {
+      "relative": "recipes/0038.json",
+      "bytes": 465,
+      "sha256": "405209e04faf387489241dfaa7fc663c112f7e569ac66cbd72c8883aeb693b25"
+    },
+    {
+      "relative": "recipes/0039.json",
+      "bytes": 448,
+      "sha256": "19bdec4b2ef86625e76f3bf64cc68123d869508e9f4403b327a1cc682cbc0454"
+    },
+    {
+      "relative": "recipes/0040.json",
+      "bytes": 447,
+      "sha256": "167ce8b8c1f671b7757546b1b54ef4108dd98d718124508fd7163643ae873cd8"
+    },
+    {
+      "relative": "recipes/0041.json",
+      "bytes": 889,
+      "sha256": "e9bf75eab03b29a2853539ae7b8422a66ed87fe417c48a0eb3baa949a469b1f7"
+    },
+    {
+      "relative": "recipes/0042.json",
+      "bytes": 963,
+      "sha256": "c7a960051431f4008ee52f067084919c9d761b69569a67abdc7474d1c21c2d17"
+    },
+    {
+      "relative": "recipes/0043.json",
+      "bytes": 452,
+      "sha256": "d9ad8fec052107bbf811de5b5fa0409c704184c6adecd13c356c3fdfd4b0980c"
+    },
+    {
+      "relative": "recipes/0044.json",
+      "bytes": 447,
+      "sha256": "a14e73e87131e3807afecc199c359e55dae28f7359e0e97d0eefe0892fea0625"
+    },
+    {
+      "relative": "recipes/0045.json",
+      "bytes": 451,
+      "sha256": "f9605f879c1dcc17900f619d123042f82d879862e41f7e26760d20be7027ffb4"
+    },
+    {
+      "relative": "recipes/0046.json",
+      "bytes": 451,
+      "sha256": "a5eafd0c5a9eb7137bcaa8176cd6d169701f19dcbbfa33a7e96ef6bb520e7ddf"
+    },
+    {
+      "relative": "recipes/0047.json",
+      "bytes": 459,
+      "sha256": "ba18d142231e61d6b59370e013794405ac4dcd0a121f7f16174440f4255b4c36"
+    },
+    {
+      "relative": "recipes/0048.json",
+      "bytes": 433,
+      "sha256": "9ac4ab3208f86391384e7b6f5c400bf55b4fb135c6544791e8f659d222c8c15b"
+    },
+    {
+      "relative": "recipes/0049.json",
+      "bytes": 4063,
+      "sha256": "d8acd62650ef881fb1f842a7cd06a64b74f1cf6ca906faf6f4dae943b838f12c"
+    },
+    {
+      "relative": "recipes/0050.json",
+      "bytes": 577,
+      "sha256": "0996440170e590f3bdf811421c6f3e04a74a319e5d49c2e46c31078daa8035b3"
+    },
+    {
+      "relative": "recipes/0051.json",
+      "bytes": 4916,
+      "sha256": "b1d690269e0e77105ff00153c80912e61af3c4f306fca6bf10caa1c3b6f56241"
+    },
+    {
+      "relative": "recipes/0052.json",
+      "bytes": 4509,
+      "sha256": "ed41d485a7b317a05d7b9150c15fdfaf37ca561a1c7df6a0aa50b693e745d022"
+    },
+    {
+      "relative": "recipes/0053.json",
+      "bytes": 668,
+      "sha256": "6e0c6a57d773de8881d252fc65a95f0bf2d814a7fb2baa00bf4fb24bbde390a1"
+    },
+    {
+      "relative": "recipes/0054.json",
+      "bytes": 453,
+      "sha256": "307b2c3774b16385d22b0688d850dd843f8d8196a945b6710cf24685e0be55ce"
+    },
+    {
+      "relative": "recipes/0055.json",
+      "bytes": 427,
+      "sha256": "a953dbd36c7f57107641cf0ef6fe63de8b7a01ad1d2500f9170bcd440a5b71b2"
+    },
+    {
+      "relative": "recipes/0056.json",
+      "bytes": 441,
+      "sha256": "21906f1ec1d6c2715592edb743ca18b1026ec1091a0f3c7fa86524573ef930f5"
+    },
+    {
+      "relative": "recipes/0057.json",
+      "bytes": 449,
+      "sha256": "66aa0d5e9830e90819fc846e79b96abce7ceb27b182d2cb860ee63ee87e73948"
+    },
+    {
+      "relative": "recipes/0058.json",
+      "bytes": 469,
+      "sha256": "fed0576c85b6e9cfbf79b6574b83e35d5a38e56b3bad419d0d1eb038d1f69dcc"
+    },
+    {
+      "relative": "recipes/0059.json",
+      "bytes": 596,
+      "sha256": "d5ebc2067203e32079dd812d6a7e84d5ee22b8be08086485a2a9f2b6311f8521"
+    },
+    {
+      "relative": "recipes/0060.json",
+      "bytes": 431,
+      "sha256": "4c74be63fe215faa8f1fcfc2e862c5647604639dfa2029233b55254d8accf74d"
+    },
+    {
+      "relative": "recipes/0061.json",
+      "bytes": 7903,
+      "sha256": "e4bdc9850f87ccdb0b85c18cf9bc20f113af3880b487b910a0cb947afdef2bc4"
+    },
+    {
+      "relative": "recipes/0062.json",
+      "bytes": 6098,
+      "sha256": "c235203a5b960048f3cb446f2d67355cb31847d942886fe88992aa3701082720"
+    },
+    {
+      "relative": "recipes/0063.json",
+      "bytes": 4488,
+      "sha256": "85815b435379cf9d5ff00167bfc74d009151b6582fd6eb40b4d635e9eec4c1d9"
+    },
+    {
+      "relative": "recipes/0064.json",
+      "bytes": 30141,
+      "sha256": "308eca0f3f73ed109187ceedcf59bb9095e6305697bd95364954ee0487d6d367"
+    },
+    {
+      "relative": "recipes/0065.json",
+      "bytes": 1238,
+      "sha256": "ad5abec3c7fd879121bef7ee79348dd9d96f42a023edc1a6a0eb4513495a343d"
+    },
+    {
+      "relative": "recipes/0066.json",
+      "bytes": 431,
+      "sha256": "074d6277a3dab860f2c46eb5619e07574f79fbef069e567235961513a9833c62"
+    },
+    {
+      "relative": "recipes/0067.json",
+      "bytes": 604,
+      "sha256": "a0028aef3ee411e9660815ed4f5f0f93c22807d01f24be32282217d9fe99093b"
+    },
+    {
+      "relative": "recipes/0068.json",
+      "bytes": 1327,
+      "sha256": "de6add4698a25af53f8b309eb24581bf0ad7c7415dff69cd307a55afa27b5fd3"
+    },
+    {
+      "relative": "recipes/0069.json",
+      "bytes": 11274,
+      "sha256": "83977d562110547e228d0642b614ac2c5ab294979753bcd653e47de0cdc9ca3e"
+    },
+    {
+      "relative": "recipes/0070.json",
+      "bytes": 427,
+      "sha256": "bb875dfdfbceaaa41692e48dbce93775e1c764ceec04e01dc4e1894630372280"
+    },
+    {
+      "relative": "recipes/0071.json",
+      "bytes": 796,
+      "sha256": "331b8f7967685fae6188974fd4a2833485e59c8849f4130a1865c2e8ff7dc4ac"
+    },
+    {
+      "relative": "recipes/0072.json",
+      "bytes": 737,
+      "sha256": "a3f97ff46ad08b372bdd1181d7e9e227b0bfffdb3535d9e7543f3c9655a1f6ae"
+    },
+    {
+      "relative": "recipes/0073.json",
+      "bytes": 20189,
+      "sha256": "1e9a093b8f67fa7df1c2eb295b5345d9de4e1d75bd2f095cc47c82d5ee70886f"
+    },
+    {
+      "relative": "recipes/0074.json",
+      "bytes": 440,
+      "sha256": "8f7ee3b2c7bcced3287037ce927b058afe5239b1e6cf414503e3da419eda5707"
+    },
+    {
+      "relative": "recipes/0075.json",
+      "bytes": 1166,
+      "sha256": "9e9a8d097cdb6acf3d6399378b218af46282e44a35c487981a54beb6559006c5"
+    },
+    {
+      "relative": "recipes/0076.json",
+      "bytes": 1059,
+      "sha256": "6fe02c7980839e72b01ecfcfb7460a5e3e65b43e7faf0ee5d5af997b886499a4"
+    },
+    {
+      "relative": "recipes/0077.json",
+      "bytes": 433,
+      "sha256": "ebee98322017202c8fc6ebc3301e31a838ce7cf67d8557a576ea3575becc52c9"
+    },
+    {
+      "relative": "recipes/0078.json",
+      "bytes": 535,
+      "sha256": "ddfacae5d1ada0d17cba837a6dcebb21e913755c9ea35a0707d99ff4ef50028f"
+    },
+    {
+      "relative": "recipes/0079.json",
+      "bytes": 537,
+      "sha256": "a5043b7cbcfbd7c5d21cd91b2c769814b35e2ad3467fa62b2cb214bc036d2d06"
+    },
+    {
+      "relative": "recipes/0080.json",
+      "bytes": 1061,
+      "sha256": "b9d282955544de3eb1c615f4dff0cc4a269d599e71eca9b1b041b95484cf8556"
+    },
+    {
+      "relative": "recipes/0081.json",
+      "bytes": 718,
+      "sha256": "2b5c6b4cb6eaa3bc4ac09d523bb0ca9a2abfdb692badd936911396a366b82d7a"
+    },
+    {
+      "relative": "recipes/0082.json",
+      "bytes": 5290,
+      "sha256": "9371bda72dbab9cec6cc916eb47004103ee8c81a479e14a2c0e43b2ea8c286ab"
+    },
+    {
+      "relative": "recipes/0083.json",
+      "bytes": 418,
+      "sha256": "11bf3f0b221596cafce819119bee6cbb4726cf8cf7cdb90ae8d5d1b8b6537c2e"
+    },
+    {
+      "relative": "recipes/0084.json",
+      "bytes": 617,
+      "sha256": "bd026d3db38eced019858e4dc640ea83dabaccd3479cdec7873ebecb82535095"
+    },
+    {
+      "relative": "recipes/0085.json",
+      "bytes": 599,
+      "sha256": "d602b440c8064ff5b90a509226af7d56524c6118356edc610097ac1391ebda60"
+    },
+    {
+      "relative": "recipes/0086.json",
+      "bytes": 14102,
+      "sha256": "5c28a8a2df1332a79bc0605debeb04fc715c1a29c86e00a485c2804afd6702f9"
+    },
+    {
+      "relative": "recipes/0087.json",
+      "bytes": 635,
+      "sha256": "2cc3c0bd2a164b362c57f98ba5b9538aa84bf6bfba41b77474068bcec5655c28"
+    },
+    {
+      "relative": "recipes/0088.json",
+      "bytes": 415,
+      "sha256": "377e320c76fbf7305673ddb3d4921a1cfc7a9c6b17930379c92aee29eb1b9372"
+    },
+    {
+      "relative": "recipes/0089.json",
+      "bytes": 527,
+      "sha256": "0782fc5496dfa3a1077d92cb3ee1d9ec41b64fc1baa179062e558e34d2f1366a"
+    },
+    {
+      "relative": "recipes/0090.json",
+      "bytes": 1921,
+      "sha256": "4f073bac81291968793cfaa13c5f0c6bb20f687d7d57024d7786dfd45a642d3c"
+    },
+    {
+      "relative": "recipes/0091.json",
+      "bytes": 1009,
+      "sha256": "4c499414b21c2b84ee51d927099066c90a8ac61558c7d85e68a07588580854d8"
+    },
+    {
+      "relative": "recipes/0092.json",
+      "bytes": 15401,
+      "sha256": "e819fbca2e934713244f97fbd7238be9772050747b7392a48d8c404dec3b0cb2"
+    },
+    {
+      "relative": "recipes/0093.json",
+      "bytes": 46799,
+      "sha256": "2b566fedf255150381bb11c2f37d66de76bbc43cdf20d85fd5db3f65b5b58b62"
+    },
+    {
+      "relative": "recipes/0094.json",
+      "bytes": 459,
+      "sha256": "ba48bc677fc56f251b9ff113c131f632ccab327ce6cb7cb50e9eb3626a9505aa"
+    },
+    {
+      "relative": "recipes/0095.json",
+      "bytes": 456,
+      "sha256": "b5397c694e021562b6ab6cd6ae5a99aeb21b8df2c2c161921d5c0fb271b5c53d"
+    },
+    {
+      "relative": "recipes/0096.json",
+      "bytes": 548,
+      "sha256": "f1a447548d39fd84e0ffc98934a61e6af08099fa5e6e758bce2351a519f3b4f9"
+    },
+    {
+      "relative": "recipes/0097.json",
+      "bytes": 594,
+      "sha256": "eaf1e4f32aa4bcaacf15519a7d313ff96c82114b50944a3ee565b73b71c48bc2"
+    },
+    {
+      "relative": "source_delta_recipe.py",
+      "bytes": 19813,
+      "sha256": "4e20e52f36c7c5461985fdd7445d74d38b00b4f1a3acd2968cb2ebb89bb1e58e"
+    },
+    {
+      "relative": "VERIFICATION.json",
+      "bytes": 1488,
+      "sha256": "352fef1e51231426255fb25279d2566494e6333c5f4bcabe3ded610da921fcf6"
+    },
+    {
+      "relative": "W-TO-ACTUAL-SDK28-NORMALIZED.patch",
+      "bytes": 693494,
+      "sha256": "3841c66307880698db60490cb6db432ef6f61ec80b11573c1497ef1579fb6d46"
+    }
+  ],
+  "actual_freeze_sha256": "6da46c57f3844522fa7cec516098f75b7987c8f7ac4bc2845311e3078c405587",
+  "actual_mode_sha256": "5a4fee5b4069f09a061b196a260f31988c1abe9ae7ba0632b3a054efa2a4a4ac",
+  "public_base_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+  "verify_command": "python -B -X utf8 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/source_delta_recipe.py verify --repo . --git-only --public-commit 79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+  "verification": {
+    "retained_actual_raw_leaves": 1317,
+    "Git_only_reconstructed_raw_leaves": 1317,
+    "differing_raw_recipes": 97,
+    "unified_text_patch_parse_files": 92,
+    "explicit_require_guards": true,
+    "optimized_python_two_hostile_cases_rejected": true
+  },
+  "counts": {
+    "raw_equal": 1261,
+    "code_changed": 45,
+    "public_only": 41,
+    "newline_only": 5,
+    "actual_only": 6
+  },
+  "three_way_origin_counts": {
+    "public_advanced_from_runtime_baseline": 67,
+    "actual_runtime_overlay_from_baseline": 13,
+    "newline_only": 5,
+    "diverged_or_distinct_additions": 12
+  },
+  "scope": "Full W-to-actual is a reproduction recipe, not a production revert; preserve later public work. No SDK29/Native upgrade/live feature acceptance claim.",
+  "net_packet_bytes_before_delivery": 2381692,
+  "own_peak_bytes": 8388608,
+  "additional_global_reservation_bytes": 0
+}

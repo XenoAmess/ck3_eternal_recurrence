@@ -1,0 +1,28 @@
+{
+  "schema": "xar.sdk28.source-reconstruction-verification.v1",
+  "at_utc": "2026-10-16T18:59:20.255082+00:00",
+  "actual_freeze_sha256": "6da46c57f3844522fa7cec516098f75b7987c8f7ac4bc2845311e3078c405587",
+  "actual_mode_sha256": "5a4fee5b4069f09a061b196a260f31988c1abe9ae7ba0632b3a054efa2a4a4ac",
+  "public_source_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
+  "retained_actual_raw_pin_verified_leaves": 1317,
+  "Git_blob_only_reconstructed_actual_raw_leaves": 1317,
+  "differing_raw_recipes_verified": 97,
+  "actual_frozen_source_reads_during_independent_verify": 0,
+  "normalized_unified_patch_git_parse": {
+    "status": "PASS",
+    "text_files": 92,
+    "added_lines": 2843,
+    "removed_lines": 6905,
+    "operation": "git apply --numstat parses only, no working/index write"
+  },
+  "wrong_base_sha_rejected_in_memory": true,
+  "rawDriver_SAVE_video_Game_Native_calls": 0,
+  "source_or_index_writes": 0,
+  "normalization": "BOM/content/EOF untouched; all actual text EOL RLE retained for raw byte recreation from public Git LF blobs.",
+  "guard_implementation": "24 explicit require checks raise SourceVerificationError(ValueError); no assert or __debug__ input gate.",
+  "optimized_Python_negative_cases": {
+    "wrong_base": "REJECTED_EXPLICIT_VALUEERROR",
+    "wrong_target_pin": "REJECTED_EXPLICIT_VALUEERROR"
+  },
+  "verify_repo_parameter": "--public-root/--repo required; Git-only defaults to recorded public commit, no runtime inputs."
+}

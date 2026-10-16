@@ -1,0 +1,1210 @@
+{
+  "schema": "xar.sdk28.source-difference-classification.v1",
+  "at_utc": "2026-10-16T19:01:34.650097+00:00",
+  "rows": [
+    {
+      "relative": "ck3_workshop_mcp/server.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "ck3_workshop_mcp/__main__.py",
+        "ck3_workshop_mcp/call_tool.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "ck3_workshop_mcp/steam_download.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "ck3_workshop_mcp/server.py",
+        "ck3_workshop_mcp/steam_native.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "ck3_workshop_mcp/steam_native.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "ck3_workshop_mcp/server.py",
+        "ck3_workshop_mcp/steam_download.py",
+        "ck3_workshop_mcp/steam_subscribe.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "ck3_workshop_mcp/timeouts.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_loss_writer_observations_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_residual_parent_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_residual_siege_budget_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_siege_budget_at_writer_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_supply_callback_observations_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_supply_parent_join_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_actual_supply_parent_join_summary.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_captured_target_land_supply_inputs_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_commander_candidates.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/commander_quality_formal_consumer_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_commander_conditional_capacity.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_county_entry_inputs_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_county_entry_loss_evidence_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_county_entry_preview_condition_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_county_entry_route_risk_projection.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_county_predicate_trace_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_current_post_admission_refresh_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_current_unit_arrival_prestore_disembark_write_projection.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_daily_assault_roster_admission_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_current_combat_roles_phase_inputs_contract.py",
+        "xar_autoplayer/bridge/army_current_condition30_inputs_contract.py",
+        "xar_autoplayer/bridge/army_current_flag20_inputs_contract.py",
+        "xar_autoplayer/bridge/army_current_flag21_inputs_contract.py",
+        "xar_autoplayer/bridge/army_current_flag31_inputs_contract.py",
+        "xar_autoplayer/bridge/army_current_post_admission_refresh_contract.py",
+        "xar_autoplayer/bridge/army_current_rule24_source_pins_contract.py",
+        "xar_autoplayer/bridge/army_current_selected_title_holder_owner_relation_contract.py",
+        "xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+        "xar_autoplayer/bridge/army_pre_date_character_prefix_contract.py",
+        "xar_autoplayer/bridge/army_pre_date_dated_append_contract.py",
+        "xar_autoplayer/bridge/army_pre_date_pending_update_contract.py",
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_full_land_supply_rate_projection.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_daily_assault_loss_projection.py",
+        "xar_autoplayer/bridge/army_next_admitted_day_fleet_rate_projection.py",
+        "xar_autoplayer/bridge/army_next_land_stock_supply_budget_projection.py",
+        "xar_autoplayer/bridge/army_post_refill_besieging_current_projection.py",
+        "xar_autoplayer/bridge/army_post_refill_land_supply_rate_projection.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_observed_assault_consumer_outcome_12004.py",
+      "category": "newline_only",
+      "three_way_origin": "newline_only",
+      "source_role": "newline_only",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_observed_phase_consumption_12004.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_observed_phase_contract_12004.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_observed_phase_consumption_12004.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_observed_assault_consumer_outcome_12004.py",
+        "xar_autoplayer/bridge/army_observed_phase_consumption_12004.py",
+        "xar_autoplayer/bridge/army_strengths_profile_contract.py",
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_periodic_loss_cause_evidence_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_periodic_loss_component_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_persistent_refill_eligibility_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_physical_loss_evidence_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_pre_date_pending_update_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_query_history_reference.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_query_history_store.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_query_timing.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/clock_observation_timing_v1.py",
+        "xar_autoplayer/bridge/mcp_server.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/environment.py",
+        "xar_autoplayer/prisoner_ransom_formal_consumer.py",
+        "xar_autoplayer/prisoner_release_formal_consumer.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_refill_application_qualification_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_refill_permission_switch_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_regiment_character_role_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_replenishment_records_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_current_province_supply_contributors_contract.py",
+        "xar_autoplayer/bridge/army_daily_assault_loss_inputs_contract.py",
+        "xar_autoplayer/bridge/army_province_besieging_contributors_contract.py",
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_scoped_ordered_refill_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+        "xar_autoplayer/bridge/army_ordered_besieging_refill_contract.py",
+        "xar_autoplayer/bridge/army_ordered_monthly_core_12004.py",
+        "xar_autoplayer/bridge/war_contract.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_siege_parent_loss_evidence_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_split_merge_observation_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_split_transfer_assertions_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_subject_physical_coverage_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_target_land_supply_projection_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/army_zero_stock_clock_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/construction_progress_history_barrier_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "performance_durability_candidate",
+      "note": "Defers only repeated already-applied construction progress history; first/material/error barriers retained.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/current_first_heir_relationship_private_transport.py",
+      "category": "newline_only",
+      "three_way_origin": "newline_only",
+      "source_role": "newline_only",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/current_first_heir_betrothal_private_action_v1.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/bridge/war_hotspot_camera.py",
+        "xar_autoplayer/current_first_heir_betrothal_formal_consumer.py",
+        "xar_autoplayer/private_council_formal_consumer_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/declarable_read_unavailable_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "bounded_readonly_rejection_dependency",
+      "note": "No statically discovered SDK importer; outer-handler/dynamic usage remains outside this source audit.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/declaration_opportunity_cooldown_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/domain_construction_private_transport_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/mcp_server.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/construction_formal_consumer.py",
+        "xar_autoplayer/construction_source_query_run.py",
+        "xar_autoplayer/current_first_heir_betrothal_formal_consumer.py",
+        "xar_autoplayer/family_marriage_formal_consumer.py",
+        "xar_autoplayer/m5_formal_proposal_collector.py",
+        "xar_autoplayer/m5_observed_opportunity_selector.py",
+        "xar_autoplayer/m5_peacetime_proposal_sources_v1.py",
+        "xar_autoplayer/player_child_default_formal_consumer.py",
+        "xar_autoplayer/player_child_matrilineal_formal_consumer.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/episode04_r09_selected93_actual_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/episode04_ready_t0_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/gui_callback_binding_12004_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/gui_window_tree_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/ingame_military_open_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/life_advance_pause_fault_evidence_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "bounded_diagnostic_source",
+      "note": "No dispatch/recovery decision authority.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mandatory_choice_only_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "explicit_recovery_tool_source",
+      "note": "Bounded Native modal query/token dispatch; ACK never grants gameplay credit.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/mcp_server.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/__init__.py",
+        "xar_autoplayer/bridge/mandatory_choice_only_v1.py",
+        "xar_autoplayer/bridge/mandatory_choice_transport_v1.py",
+        "xar_autoplayer/bridge/mcp_server.py",
+        "xar_autoplayer/bridge/ordinary_peace_advance_horizon_v1.py",
+        "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+        "xar_autoplayer/bridge/readonly_war_entry_rejection.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/bridge/white_control_action_driver.py",
+        "xar_autoplayer/bridge/white_numeric_control_action_driver.py",
+        "xar_autoplayer/checkpoint_environment_rebinder.py",
+        "xar_autoplayer/construction_source_query_run.py",
+        "xar_autoplayer/family_alliance_result_query_run.py",
+        "xar_autoplayer/h2743_exit_readonly_live.py",
+        "xar_autoplayer/h3937_combined_paused_war_scope_run.py",
+        "xar_autoplayer/h3937_combined_readonly_queries.py",
+        "xar_autoplayer/h3937_paused_war_scope_run.py",
+        "xar_autoplayer/h3937_stationary_route_contact_query_run.py",
+        "xar_autoplayer/h3937_target_readonly_queries.py",
+        "xar_autoplayer/native_auto_run.py",
+        "xar_autoplayer/next_episode_run.py",
+        "xar_autoplayer/one_generation_preflight.py",
+        "xar_autoplayer/one_generation_run.py",
+        "xar_autoplayer/ordinary_seed_rebinder.py",
+        "xar_autoplayer/outbound_white_peace_status_query_run.py",
+        "xar_autoplayer/r0368_actor_army_role_live.py",
+        "xar_autoplayer/rogue_checkpoint_rebinder.py",
+        "xar_autoplayer/stationary_route_contact_query_run.py",
+        "xar_autoplayer/strategy.py",
+        "xar_autoplayer/timeline_blocker_action_run.py",
+        "xar_autoplayer/timeline_blocker_query_run.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/normal_exit_contract_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/normal_exit_map_driver_v1.py",
+        "xar_autoplayer/bridge/normal_exit_pending_observer_v1.py",
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/normal_exit_gui_sources_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/normal_exit_map_driver_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/player_control_driver_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/normal_exit_source_inventory_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/normal_exit_map_driver_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/ordinary_peace_advance_horizon_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "guarded_deadline_selection_candidate",
+      "note": "Only existing<=30day peace slice between known deadlines; uncertainty retains short bound.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/ordinary_sway_service_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/player_lifestyle_private_transport_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/native_auto_run.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/readonly_planning_retry_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/service.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/mcp_server.py",
+        "xar_autoplayer/family_alliance_result_query_run.py",
+        "xar_autoplayer/h3937_combined_paused_war_scope_run.py",
+        "xar_autoplayer/h3937_paused_war_scope_run.py",
+        "xar_autoplayer/h3937_stationary_route_contact_query_run.py",
+        "xar_autoplayer/holy_order_siege_reinforcement_v1.py",
+        "xar_autoplayer/native_auto_run.py",
+        "xar_autoplayer/outbound_white_peace_status_query_run.py",
+        "xar_autoplayer/stationary_route_contact_query_run.py",
+        "xar_autoplayer/timeline_blocker_action_run.py",
+        "xar_autoplayer/timeline_blocker_query_run.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_cash_current_raw_context_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/construction_monthly_budget_v1.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/construction_economic_outcome_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_contract.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/army_current_unit_arrival_prestore_disembark_write_projection.py",
+        "xar_autoplayer/bridge/army_current_unit_next_arrival_transition_projection.py",
+        "xar_autoplayer/bridge/army_current_unit_next_first_edge_selection_projection.py",
+        "xar_autoplayer/bridge/army_current_unit_next_movement_prefix_projection.py",
+        "xar_autoplayer/bridge/assault_holding_observation_v1.py",
+        "xar_autoplayer/bridge/auto_army_core_validation_v1.py",
+        "xar_autoplayer/bridge/combat_contract.py",
+        "xar_autoplayer/bridge/h2743_surrender_preaction_inputs_v1.py",
+        "xar_autoplayer/bridge/h3937_date_hold.py",
+        "xar_autoplayer/bridge/hire_holy_order.py",
+        "xar_autoplayer/bridge/hire_mercenary.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/bridge/war_occupation_targets_contract.py",
+        "xar_autoplayer/construction_formal_consumer.py",
+        "xar_autoplayer/formal_defender_exit_observation.py",
+        "xar_autoplayer/h3937_combined_readonly_queries.py",
+        "xar_autoplayer/h3937_stationary_route_contact_query_run.py",
+        "xar_autoplayer/h3937_target_readonly_queries.py",
+        "xar_autoplayer/holy_order_siege_reinforcement_v1.py",
+        "xar_autoplayer/native_auto_run.py",
+        "xar_autoplayer/outbound_white_peace_status_query_run.py",
+        "xar_autoplayer/prisoner_ransom_formal_consumer.py",
+        "xar_autoplayer/prisoner_release_formal_consumer.py",
+        "xar_autoplayer/raiktor_formal_exit.py",
+        "xar_autoplayer/simulation/raiktor_three_way_exit_action_gate.py",
+        "xar_autoplayer/simulation/raiktor_three_way_exit_recommendation.py",
+        "xar_autoplayer/simulation/raiktor_white_peace_narrow_projection_provider.py",
+        "xar_autoplayer/stationary_route_contact_query_run.py",
+        "xar_autoplayer/strategy.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_results_window_contract.py",
+      "category": "newline_only",
+      "three_way_origin": "newline_only",
+      "source_role": "newline_only",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/war_results_window_transport.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/bridge/war_results_window_transport.py",
+      "category": "newline_only",
+      "three_way_origin": "newline_only",
+      "source_role": "newline_only",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/native_driver.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/cli.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/commander_quality_formal_consumer_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/construction_formal_consumer.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/activity_feast_stage5_budget_v1.py",
+        "xar_autoplayer/bridge/domain_construction_private_transport_v1.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/construction_source_query_run.py",
+        "xar_autoplayer/m5_formal_proposal_collector.py",
+        "xar_autoplayer/m5_peacetime_proposal_sources_v1.py",
+        "xar_autoplayer/native_auto_run.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/construction_scene_scope_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/h3937_combined_paused_war_scope_run.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/h3937_cold_observer_once_enable.py",
+        "xar_autoplayer/h3937_combined_once_enable.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/h3937_paused_war_scope_run.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/h3937_combined_paused_war_scope_run.py",
+        "xar_autoplayer/h3937_combined_readonly_queries.py",
+        "xar_autoplayer/h3937_target_readonly_queries.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/ordinary_prewar_force_admission_v2.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/strategy.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/native_auto_run.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/ordinary_sway_schedule_v1.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/ordinary_war_results_window_v1.py",
+      "category": "newline_only",
+      "three_way_origin": "newline_only",
+      "source_role": "newline_only",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/strategy.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/prisoner_ransom_formal_consumer.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/native_auto_run.py",
+        "xar_autoplayer/prisoner_release_formal_consumer.py",
+        "xar_autoplayer/prisoner_release_receipt_consumer_12004.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/prisoner_release_formal_consumer.py",
+      "category": "code_changed",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "runtime_source_overlay",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/native_auto_run.py",
+        "xar_autoplayer/prisoner_release_receipt_consumer_12004.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/quiet_movement_candidate_v1.py",
+      "category": "actual_only",
+      "three_way_origin": "actual_runtime_overlay_from_baseline",
+      "source_role": "preview_selection_candidate",
+      "note": "Requires exact current Army cache; never grants movement/combat authority.",
+      "possible_static_importers": [
+        "xar_autoplayer/strategy.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/strategy.py",
+      "category": "code_changed",
+      "three_way_origin": "diverged_or_distinct_additions",
+      "source_role": "mixed_runtime_and_public_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/bridge/battle_reader_exact_clock_speed_v1.py",
+        "xar_autoplayer/bridge/native_driver.py",
+        "xar_autoplayer/bridge/service.py",
+        "xar_autoplayer/cli.py",
+        "xar_autoplayer/exact_war_move_stop.py",
+        "xar_autoplayer/h3937_target_readonly_queries.py",
+        "xar_autoplayer/mandatory_choice_planning_v1.py",
+        "xar_autoplayer/next_episode_run.py",
+        "xar_autoplayer/opening_smoke.py",
+        "xar_autoplayer/ordinary_campaign_government_context_v1.py",
+        "xar_autoplayer/private_council_formal_consumer_v1.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/records_faith_creation1021_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/records_head_of_faith0100_12004.py",
+      "category": "public_only",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_future_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/registry.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/codex_mcp_setup.py",
+        "xar_autoplayer/vanilla_events/__init__.py",
+        "xar_autoplayer/vanilla_events/discovery.py",
+        "xar_autoplayer/vanilla_events/migration_1_20_0_2.py",
+        "xar_autoplayer/vanilla_events/policy.py",
+        "xar_autoplayer/vanilla_events/portable_evidence.py",
+        "xar_autoplayer/vanilla_events/records_analysis_embedded_a.py",
+        "xar_autoplayer/vanilla_events/records_analysis_embedded_b.py",
+        "xar_autoplayer/vanilla_events/records_analysis_embedded_c.py",
+        "xar_autoplayer/vanilla_events/records_analysis_manager_a.py",
+        "xar_autoplayer/vanilla_events/records_analysis_manager_b.py",
+        "xar_autoplayer/vanilla_events/records_analysis_vanilla_shards.py",
+        "xar_autoplayer/vanilla_events/records_artifact.py",
+        "xar_autoplayer/vanilla_events/records_bp1_house_feud.py",
+        "xar_autoplayer/vanilla_events/records_bp1_yearly.py",
+        "xar_autoplayer/vanilla_events/records_chancellor_foreign_affairs.py",
+        "xar_autoplayer/vanilla_events/records_char_interaction.py",
+        "xar_autoplayer/vanilla_events/records_coming_age1002_12003.py",
+        "xar_autoplayer/vanilla_events/records_death_management.py",
+        "xar_autoplayer/vanilla_events/records_diplomacy_majesty.py",
+        "xar_autoplayer/vanilla_events/records_dynastic_cycle_intro_12003.py",
+        "xar_autoplayer/vanilla_events/records_embedded_a.py",
+        "xar_autoplayer/vanilla_events/records_embedded_b.py",
+        "xar_autoplayer/vanilla_events/records_embedded_c.py",
+        "xar_autoplayer/vanilla_events/records_ep3_landless_admin.py",
+        "xar_autoplayer/vanilla_events/records_epidemic.py",
+        "xar_autoplayer/vanilla_events/records_faction_demand.py",
+        "xar_autoplayer/vanilla_events/records_faction_demand1001_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_0801_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_arrival_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_brawl6003_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_completion7101_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_drinks_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_fowl9002_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_fowl_12003.py",
+        "xar_autoplayer/vanilla_events/records_feast_start_12003.py",
+        "xar_autoplayer/vanilla_events/records_fervor.py",
+        "xar_autoplayer/vanilla_events/records_health.py",
+        "xar_autoplayer/vanilla_events/records_laamp_conquest_notice_12003.py",
+        "xar_autoplayer/vanilla_events/records_manager_a.py",
+        "xar_autoplayer/vanilla_events/records_manager_b.py",
+        "xar_autoplayer/vanilla_events/records_marriage_notice_12003.py",
+        "xar_autoplayer/vanilla_events/records_pay_homage.py",
+        "xar_autoplayer/vanilla_events/records_physician_epidemic.py",
+        "xar_autoplayer/vanilla_events/records_prison_notification.py",
+        "xar_autoplayer/vanilla_events/records_religion_rite_growth_12003.py",
+        "xar_autoplayer/vanilla_events/records_tgp_dynastic_cycle.py",
+        "xar_autoplayer/vanilla_events/records_tgp_japan_yearly.py",
+        "xar_autoplayer/vanilla_events/records_tgp_movement.py",
+        "xar_autoplayer/vanilla_events/records_tgp_travel.py",
+        "xar_autoplayer/vanilla_events/records_tgp_treasury.py",
+        "xar_autoplayer/vanilla_events/records_trait_specific.py",
+        "xar_autoplayer/vanilla_events/records_travel_completion1000_12003.py",
+        "xar_autoplayer/vanilla_events/records_vanilla_shards.py",
+        "xar_autoplayer/vanilla_events/records_vassal_interaction.py",
+        "xar_autoplayer/vanilla_events/records_yearly.py",
+        "xar_autoplayer/vanilla_events/source_index.py"
+      ],
+      "live_acceptance_claim": false
+    },
+    {
+      "relative": "xar_autoplayer/vanilla_events/source_index.py",
+      "category": "code_changed",
+      "three_way_origin": "public_advanced_from_runtime_baseline",
+      "source_role": "public_advanced_source",
+      "note": "See complete recipe/ancestry; no independent feature qualification inferred.",
+      "possible_static_importers": [
+        "xar_autoplayer/vanilla_events/__init__.py",
+        "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+        "xar_autoplayer/vanilla_events/policy.py"
+      ],
+      "live_acceptance_claim": false
+    }
+  ],
+  "scope": "Python source only; frozen inclusion and possible import are distinct from actual execution/qualification.",
+  "not_inferred": [
+    "G2M6/M7 completion",
+    "battle speed5 live acceptance",
+    "private Army AB certificate",
+    "0.5seconds perday",
+    "30years stable"
+  ],
+  "new_driver_WAL": "Not present in actual SDK28 manifest; ck3_workshop_mcp/wal.py is a separate existing Workshop ledger, not new Driver day WAL.",
+  "rejected_route_window": "No new before-strength3day patch is claimed; rejected optimization is not an integration recommendation.",
+  "public_only": "Retain public future work in master; deletion recipes solely reproduce old actual frozen source."
+}
