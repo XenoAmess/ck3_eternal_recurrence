@@ -44,3 +44,12 @@ Native20 的三份管理原件曾取自研究镜像；它们与当前 Steam 文�
 同一目录生成 Native header 与 Python 资源，`--check --python-output` 已逐字节通过；SDK wheel 的 package-data 显式包含必需 JSON。公共聚焦共 **103 tests、19 subtests 通过**：其中生活方式 92/14，海军同场热连接与原跨日资格 11/5。真实 C++ serializer 输出经过公共 transport→policy→typed submit 选择链，保持 `legal_perk_candidates_ready` 守卫；测试数据库与点数仍为合成，不能当游戏中的实际花点。
 
 公共新夹具完整函数与公共 headers 已真实 MSVC 编译／链接并运行 **25 组通过**，回执位于外置包：`PUBLIC-TRANSPLANT-VALIDATION.json` SHA-256 `d053cb7163cd972062bf1e5c0884ec2f05653a8a8f54fdfbade8e2a7e7656633`；`PUBLIC-FIXTURE-FINAL.json` SHA-256 `ad0a55490115f0a1fb4ffc0845521df9954c9cc054da1992654ef9e782d63fef`。测试只增加 DLL 导出包装，没有新 EXE；公共既有 main/CMake 全目标尚未运行。Native21 原 DLL 未改，当前 Game 的 Native20 两点管理实证仍是前一版本的具名结果，不能外推为六类实机全验。
+
+## 后续实际部署（2026-10-16 UTC）
+
+上述未加载描述是源码交付时的状态。Root 后续已将同 SHA Native21 与 SDK27
+加载到 Game6068／FILETIME134366412679616931，进入原 campaign 并完成
+两批普通规划，实际推进5日和17日。[当前交接](../handover/2026-10-17-p27-native21-continuation.md)
+绑定真实启动、地图／决策窗、独立 SEM／METRICS 和恢复回执。
+这增加实际加载与普通流程证据，没有增加六类逐项花点验收；Native20 的两个管理
+具名材料结果继续保留，不能扩称162项或其他五类均已实际验证。

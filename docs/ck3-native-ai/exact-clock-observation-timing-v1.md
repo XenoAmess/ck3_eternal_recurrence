@@ -40,3 +40,27 @@ External source/evidence root:
 `ACTUAL-WINDOW-ATTRIBUTION.json` binds exact completed-response files and the
 timing log prefix. New Native21/SDK27 measurements remain runtime work owned
 by Root. This single day does not prove 0.5 seconds/day or uninterrupted 30 years.
+
+## Actual Native21/SDK27 profile
+
+Later R3 evidence binds Game6068/creation FILETIME134366412679616931 and SDK
+application230732. Completed FULL3 RPC4–63 took 37.086448 seconds for five
+game days (7.4173 seconds/day); FULL64 RPC65–124 took 79.307115 seconds for
+17 days (4.6651 seconds/day). Combined processing is 116.393563 seconds/22
+days, or 5.2906 seconds/day. The 47.783-second gap for Root idle/control setup
+is separate; including it gives 7.4626 seconds/day. None is a whole-session rate.
+
+Fifty phase rows cover ten exact-day clocks: 28.8056837 seconds of clock wall
+time and 5.390625 seconds of whole-Game CPU. The other twelve gathering days
+have no exact-clock CPU profile. The low CPU/wall ratio is observed evidence,
+not proof of a particular wait or main-thread bottleneck. Twenty-one of the
+22 days used speed1. Current actual stock `game/common/defines/00_defines.txt`
+lines3–8 configure `GAME_SPEED_TICKS={2,1,0.5,0.2,0}`; speed1's two seconds/day
+alone prevents the requested half-second/day rate on those paths.
+
+`native21-cold-generation03/p27-clock-profile-audit01/ACTUAL-P27-CLOCK-ATTRIBUTION.json`
+SHA-256 `a3d9035c025c29fe892e3da80f64509a0b61618c6fed0eb1176d9e1c19aa9051`
+pins the 1,464,465-byte timing prefix and completed responses. Its analyzer
+uses completed evidence, without reading the live Driver. A faster battle
+observation candidate remains offline; this measurement is not that fix's
+performance validation or a thirty-year success claim.
