@@ -1,0 +1,291 @@
+--- a/ck3_autonomous_player/native_bridge/include/xar_bridge/battle_control_owned_entry_preceding_12004.hpp
++++ b/ck3_autonomous_player/native_bridge/include/xar_bridge/battle_control_owned_entry_preceding_12004.hpp
+@@ -26,7 +26,8 @@
+     const BattleBindings &, const game::Snapshot &paused_scope,
+     const game::BattleControlRequest &, bool exact_12004_admitted,
+     std::uint64_t snapshot_revision,
+-    BattleControlOwnedEntryPreceding12004 &) noexcept;
++    BattleControlOwnedEntryPreceding12004 &,
++    const char **failure_stage = nullptr) noexcept;
+ 
+ // The raw retained sidecar remains independent of the old battle known bools.
+ // Optional failure/size limits keep the base serializer result unchanged.
+@@ -41,5 +42,6 @@
+ game::BattleControlSnapshotStatus ReadBattleControlSnapshotWithOwnedCombat12004(
+     const BattleBindings &, const game::Snapshot &paused_scope,
+     const game::BattleControlRequest &, game::BattleControlSnapshot &,
+-    const ck3_12004::BattleAcceptedCombatCollector12004 &) noexcept;
++    const ck3_12004::BattleAcceptedCombatCollector12004 &,
++    const char **failure_stage = nullptr) noexcept;
+ } // namespace xar::ck3_12002
+--- a/ck3_autonomous_player/native_bridge/src/ck3_12004_battle.cpp
++++ b/ck3_autonomous_player/native_bridge/src/ck3_12004_battle.cpp
+@@ -186,7 +186,8 @@
+     const BattleBindings &bindings, const game::Snapshot &paused_scope,
+     const game::BattleControlRequest &request, bool exact_12004_admitted,
+     std::uint64_t snapshot_revision,
+-    BattleControlOwnedEntryPreceding12004 &owned) noexcept {
++    BattleControlOwnedEntryPreceding12004 &owned,
++    const char **failure_stage) noexcept {
+   owned = {};
+   BattleAcceptedCombatCollector12004 collector{};
+   if (exact_12004_admitted && snapshot_revision != 0) {
+@@ -194,7 +195,8 @@
+     collector.collect = &CollectOwnedEntryPreceding;
+   }
+   const auto status = ck3_12002::ReadBattleControlSnapshotWithOwnedCombat12004(
+-      bindings, paused_scope, request, owned.snapshot, collector);
++      bindings, paused_scope, request, owned.snapshot, collector,
++      failure_stage);
+   if (status != game::BattleControlSnapshotStatus::available) {
+     owned.entry_preceding_capture.reset();
+   } else {
+--- a/ck3_autonomous_player/native_bridge/src/ck3_12002_battle.cpp
++++ b/ck3_autonomous_player/native_bridge/src/ck3_12002_battle.cpp
+@@ -690,18 +690,23 @@
+ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
+                    const game::BattleControlRequest &req,
+                    game::BattleControlSnapshot &out,
+-                   const void **observed_combat = nullptr) {
++                   const void **observed_combat = nullptr,
++                   const char **failure_stage = nullptr) {
++  if (failure_stage) *failure_stage = "resolve_public_cunit";
+   auto *unit = Resolve(b.army_storage_slot, req.subject_public_cunit_id, 0x10);
+   if (!unit)
+     return false;
++  if (failure_stage) *failure_stage = "resolve_native_carmy_backlink";
+   auto aid = At<std::int32_t>(unit, 0x178);
+   auto *army = Resolve(b.army_internal_storage_slot, aid, 0x10);
+   if (!army || At<std::int32_t>(army, 0x124) != req.subject_public_cunit_id)
+     return false;
++  if (failure_stage) *failure_stage = "resolve_native_combat";
+   auto cid = At<std::int32_t>(army, 0x128);
+   auto *combat = Resolve(b.combat_storage_slot, cid, 8);
+   if (!combat)
+     return false;
++  if (failure_stage) *failure_stage = "read_battle_transition";
+   game::BattleTransitionSnapshot t{};
+   if (!TransitionSample(b, {cid}, t) ||
+       t.status != game::BattleTransitionSnapshotStatus::available)
+@@ -733,19 +738,23 @@
+   out.base_advantage_raw = At<std::int64_t>(combat, 0x6C8);
+   out.resolved_advantage_raw = At<std::int64_t>(combat, 0x710);
+   const bool roll_applicable = out.phase_raw == 1 && !out.finalized;
++  if (failure_stage) *failure_stage = "read_combat_province";
+   auto *province = Province(b, At<void *>(combat, 0x6B8));
+   if (province == nullptr || At<std::int32_t>(province, 0x10) != out.province_id)
+     return false;
+   const auto get_terrain = b.commander_roll_context.get_province_terrain;
+   void *terrain = roll_applicable && get_terrain != nullptr
+       ? get_terrain(province) : nullptr;
++  if (failure_stage) *failure_stage = "read_attacker_side";
+   if (!Side(b, combat, 0x20, cid, 0, out.province_id, terrain,
+-            roll_applicable, out.attacker) ||
+-      !Side(b, combat, 0x368, cid, 1, out.province_id, terrain,
+-            roll_applicable, out.defender) ||
+-      !Retreat(b, scope, combat, army, out) ||
+-      At<std::uint8_t>(combat, kBattleDailyGuardOffset))
+-    return false;
++            roll_applicable, out.attacker)) return false;
++  if (failure_stage) *failure_stage = "read_defender_side";
++  if (!Side(b, combat, 0x368, cid, 1, out.province_id, terrain,
++            roll_applicable, out.defender)) return false;
++  if (failure_stage) *failure_stage = "read_retreat_legality";
++  if (!Retreat(b, scope, combat, army, out)) return false;
++  if (failure_stage) *failure_stage = "daily_guard_changed";
++  if (At<std::uint8_t>(combat, kBattleDailyGuardOffset)) return false;
+   out.active_counter_inputs_v1 =
+       ReadActiveBattleCounterInputsV1(b.commander_roll_context, combat, out);
+   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
+@@ -757,6 +766,7 @@
+   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
+   out.current_phase_transition_inputs_v1 =
+       CurrentPhaseTransitionInputs(b, combat, out);
++  if (failure_stage) *failure_stage = "final_province_changed";
+   if (Province(b, At<void *>(combat, 0x6B8)) != province)
+     return false;
+   if (roll_applicable && get_terrain != nullptr &&
+@@ -771,6 +781,7 @@
+   // This pointer is local to the existing accepted sample. The optional
+   // collector receives matching bookends only after the old frame is accepted.
+   if (observed_combat != nullptr) *observed_combat = combat;
++  if (failure_stage) *failure_stage = "control_sample_complete";
+   return true;
+ }
+ bool Route(const BattleBindings &b, const void *unit,
+@@ -2288,31 +2299,38 @@
+ ReadBattleControlSnapshotImpl(const BattleBindings &b, const game::Snapshot &s,
+                               const game::BattleControlRequest &r,
+                               game::BattleControlSnapshot &o,
+-                              const ck3_12004::BattleAcceptedCombatCollector12004 *collector) noexcept {
++                              const ck3_12004::BattleAcceptedCombatCollector12004 *collector,
++                              const char **failure_stage) noexcept {
+   o = {};
+   o.subject_public_cunit_id = r.subject_public_cunit_id;
++  if (failure_stage) *failure_stage = "requires_paused";
+   if (!s.paused) {
+     o.status = game::BattleControlSnapshotStatus::requires_paused;
+     return o.status;
+   }
++  if (failure_stage) *failure_stage = "scope_or_required_bindings";
+   if (!Scope(b, s) || !b.get_combat_side_strength ||
+       !b.get_combat_regiment_strength || r.subject_public_cunit_id < 0)
+     return o.status;
+   auto army = std::find_if(
+       s.player_armies.begin(), s.player_armies.end(),
+       [&](auto &a) { return a.army_id == r.subject_public_cunit_id; });
++  if (failure_stage) *failure_stage = "subject_cunit_not_found";
+   if (army == s.player_armies.end()) {
+     o.status = game::BattleControlSnapshotStatus::subject_cunit_not_found;
+     return o.status;
+   }
++  if (failure_stage) *failure_stage = "subject_not_controllable";
+   if (!army->controllable) {
+     o.status = game::BattleControlSnapshotStatus::subject_not_controllable;
+     return o.status;
+   }
++  if (failure_stage) *failure_stage = "subject_retreating";
+   if (army->retreating) {
+     o.status = game::BattleControlSnapshotStatus::subject_retreating;
+     return o.status;
+   }
++  if (failure_stage) *failure_stage = "subject_not_in_combat";
+   if (!army->in_combat) {
+     o.status = game::BattleControlSnapshotStatus::subject_not_in_combat;
+     return o.status;
+@@ -2320,8 +2338,11 @@
+   game::BattleControlSnapshot a{}, c{};
+   const void *combat_before = nullptr;
+   const void *combat_after = nullptr;
+-  const bool sampled = ControlSample(b, s, r, a, &combat_before) &&
+-      ControlSample(b, s, r, c, &combat_after);
++  const bool first_sampled = ControlSample(
++      b, s, r, a, &combat_before, failure_stage);
++  const bool second_sampled = first_sampled && ControlSample(
++      b, s, r, c, &combat_after, failure_stage);
++  const bool sampled = first_sampled && second_sampled;
+   if (sampled && a.full_backing_inputs_v1 != c.full_backing_inputs_v1) {
+     // A changing optional census cannot invalidate the existing control frame.
+     a.full_backing_inputs_v1.reset();
+@@ -2345,9 +2366,12 @@
+     c.current_phase_transition_inputs_v1.reset();
+   }
+   if (!sampled || a != c || !Scope(b, s)) {
++    if (sampled && failure_stage)
++      *failure_stage = a != c ? "double_sample_changed" : "final_scope_changed";
+     o.status = game::BattleControlSnapshotStatus::state_changed;
+     return o.status;
+   }
++  if (failure_stage) *failure_stage = "available";
+   o = std::move(c);
+   o.status = game::BattleControlSnapshotStatus::available;
+   o.observed_date_raw = s.date_raw;
+@@ -2368,15 +2392,16 @@
+ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
+                           const game::BattleControlRequest &r,
+                           game::BattleControlSnapshot &o) noexcept {
+-  return ReadBattleControlSnapshotImpl(b, s, r, o, nullptr);
++  return ReadBattleControlSnapshotImpl(b, s, r, o, nullptr, nullptr);
+ }
+ 
+ game::BattleControlSnapshotStatus
+ ReadBattleControlSnapshotWithOwnedCombat12004(
+     const BattleBindings &b, const game::Snapshot &s,
+     const game::BattleControlRequest &r, game::BattleControlSnapshot &o,
+-    const ck3_12004::BattleAcceptedCombatCollector12004 &collector) noexcept {
+-  return ReadBattleControlSnapshotImpl(b, s, r, o, &collector);
++    const ck3_12004::BattleAcceptedCombatCollector12004 &collector,
++    const char **failure_stage) noexcept {
++  return ReadBattleControlSnapshotImpl(b, s, r, o, &collector, failure_stage);
+ }
+ 
+ game::BattleReinforcementAssignmentStatus ReadBattleReinforcementAssignmentV1(
+--- a/ck3_autonomous_player/native_bridge/src/bridge.cpp
++++ b/ck3_autonomous_player/native_bridge/src/bridge.cpp
+@@ -11307,6 +11307,9 @@
+   xar::game::ReadCombatSimulationInputsV3Result combat_result =
+       xar::game::ReadCombatSimulationInputsV3Result::unavailable;
+   xar::game::BattleControlSnapshot battle{};
++  xar::game::BattleControlSnapshotStatus battle_read_status =
++      xar::game::BattleControlSnapshotStatus::unavailable;
++  const char *battle_read_stage = "not_attempted";
+   std::optional<xar::ck3_12004::BattleControlOwnedEntryPreceding12004> owned_battle;
+   xar::game::BattleTransitionSnapshot transition{};
+   xar::game::BattleReinforcementAssignmentSnapshot reinforcement{};
+@@ -11548,20 +11551,23 @@
+         if (actual4)
+           bindings.current_warscore_caps =
+               xar::ck3_12004::BindBattleCurrentWarscoreCaps12004(query.image_base, sha);
+-        auto status = xar::game::BattleControlSnapshotStatus::unavailable;
+         if (actual4) {
+           query.owned_battle.emplace();
+-          status = xar::ck3_12004::ReadBattleControlOwnedEntryPreceding12004(
+-              bindings, snapshot, query.battle_request, true,
+-              envelope->expected_snapshot_revision, *query.owned_battle);
++          query.battle_read_status =
++              xar::ck3_12004::ReadBattleControlOwnedEntryPreceding12004(
++                  bindings, snapshot, query.battle_request, true,
++                  envelope->expected_snapshot_revision, *query.owned_battle,
++                  &query.battle_read_stage);
+           query.battle = query.owned_battle->snapshot;
+-          if (status != xar::game::BattleControlSnapshotStatus::available)
++          if (query.battle_read_status !=
++              xar::game::BattleControlSnapshotStatus::available)
+             query.owned_battle.reset();
+         } else {
+-          status = xar::ck3_12002::ReadBattleControlSnapshot(
++          query.battle_read_status = xar::ck3_12002::ReadBattleControlSnapshot(
+               bindings, snapshot, query.battle_request, query.battle);
+         }
+-        query.typed_result = status == xar::game::BattleControlSnapshotStatus::available;
++        query.typed_result = query.battle_read_status ==
++            xar::game::BattleControlSnapshotStatus::available;
+         query.battle.snapshot_revision = envelope->expected_snapshot_revision;
+       } else if constexpr (Kind == QueryKind12002::battle_transition) {
+         if (actual4)
+@@ -13454,7 +13460,9 @@
+     std::optional<bool> final_read, std::optional<bool> final_equal,
+     std::optional<bool> executor_enter, std::optional<bool> executor_typed_result,
+     std::optional<bool> executor_finish,
+-    const xar::game::RouteContactHorizonSnapshot *route_result = nullptr) {
++    const xar::game::RouteContactHorizonSnapshot *route_result = nullptr,
++    std::optional<xar::game::BattleControlSnapshotStatus> battle_status = std::nullopt,
++    const char *battle_stage = nullptr) {
+   constexpr std::array<std::string_view, 13> query_names = {
+       "war_entry", "route", "actual_contact", "combat_v3", "battle_control",
+       "battle_transition", "battle_reinforcement", "battle_terminal", "campaign",
+@@ -13509,6 +13517,21 @@
+   response += xar::ck3_11906::SerializeMainThreadExecutorExceptionDiagnosticV1(
+       xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+           g_main_thread_query_mailbox_v1));
++  if (kind == QueryKind12002::battle_control && wait_completed &&
++      frame_stable == true && typed_result == false &&
++      battle_status.has_value() && battle_stage != nullptr &&
++      std::string_view(battle_stage) != "not_attempted") {
++    constexpr std::array<std::string_view, 8> statuses = {
++        "available", "requires_paused", "subject_cunit_not_found",
++        "subject_not_controllable", "subject_not_in_combat",
++        "subject_retreating", "state_changed", "unavailable"};
++    const auto index = static_cast<std::size_t>(*battle_status);
++    response += ",\"battle_reader_status\":\"";
++    response += index < statuses.size() ? statuses[index] : "unavailable";
++    response += "\",\"battle_reader_stage\":\"";
++    response += battle_stage;
++    response += "\"";
++  }
+   response += "}}";
+   return response;
+ }
+@@ -13759,7 +13782,11 @@
+           request_id, step, query.kind, wait, wait_completed,
+           frame_stable, typed_result, final_read, final_equal,
+           query.executor_enter, query.executor_typed_result, query.executor_finish,
+-          query.kind == QueryKind12002::route ? &query.route : nullptr);
++          query.kind == QueryKind12002::route ? &query.route : nullptr,
++          query.kind == QueryKind12002::battle_control
++              ? std::optional(query.battle_read_status) : std::nullopt,
++          query.kind == QueryKind12002::battle_control
++              ? query.battle_read_stage : nullptr);
+     }
+     if (query.kind != QueryKind12002::title_map ||
+         xar::ck3_12002::IsTitleMapNavigationTerminalV1(query.title_command.status)) break;

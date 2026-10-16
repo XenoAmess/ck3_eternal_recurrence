@@ -1,0 +1,58 @@
+--- a/src/xar_autoplayer/bridge/battle_reader_watch_v1.py
++++ b/src/xar_autoplayer/bridge/battle_reader_watch_v1.py
+@@ -65,16 +65,49 @@
+         "active_war_ids": sorted(war_ids), "observed_combat_army_ids": sorted(participants)}
+ 
+ 
++_READER_STAGE_FOR_STATUS = {
++    "requires_paused": {"requires_paused"},
++    "subject_cunit_not_found": {"subject_cunit_not_found"},
++    "subject_not_controllable": {"subject_not_controllable"},
++    "subject_not_in_combat": {"subject_not_in_combat"},
++    "subject_retreating": {"subject_retreating"},
++    "unavailable": {"scope_or_required_bindings"},
++    "state_changed": {
++        "resolve_public_cunit", "resolve_native_carmy_backlink",
++        "resolve_native_combat", "read_battle_transition", "read_combat_province",
++        "read_attacker_side", "read_defender_side", "read_retreat_legality",
++        "daily_guard_changed", "final_province_changed",
++        "double_sample_changed", "final_scope_changed",
++    },
++}
++
++
+ def terminal_failure(error, step, native_revision):
+     from .battle_control_contract import parse_query_battle_control_snapshot_v1_step
+     request, result = getattr(error, "native_request_frame", None), getattr(error, "native_command_result_frame", None)
+     rid = getattr(error, "native_request_id", None)
+-    return bool(parse_query_battle_control_snapshot_v1_step(step) is not None
+-        and isinstance(rid, str) and rid and isinstance(request, dict) and isinstance(result, dict)
+-        and exact(request, {"type": "execute_step", "protocol_version": 1, "request_id": rid,
+-                           "step": step, "expected_revision": native_revision})
+-        and exact(result, {"type": "command_result", "protocol_version": 1, "request_id": rid,
+-            "ok": False, "error": NATIVE_ERROR, "typed_query_failure_v1": FAILURE}))
++    if not (parse_query_battle_control_snapshot_v1_step(step) is not None
++            and isinstance(rid, str) and rid and isinstance(request, dict)
++            and isinstance(result, dict)
++            and exact(request, {"type": "execute_step", "protocol_version": 1,
++                                "request_id": rid, "step": step,
++                                "expected_revision": native_revision})):
++        return False
++    failure = result.get("typed_query_failure_v1")
++    if not isinstance(failure, dict):
++        return False
++    if set(failure) == set(FAILURE):
++        valid_failure = exact(failure, FAILURE)
++    elif set(failure) == set(FAILURE) | {"battle_reader_status", "battle_reader_stage"}:
++        base = {key: failure[key] for key in FAILURE}
++        valid_failure = (exact(base, FAILURE)
++            and failure["battle_reader_stage"] in _READER_STAGE_FOR_STATUS.get(
++                failure["battle_reader_status"], set()))
++    else:
++        return False
++    return valid_failure and exact(result, {
++        "type": "command_result", "protocol_version": 1, "request_id": rid,
++        "ok": False, "error": NATIVE_ERROR, "typed_query_failure_v1": failure})
+ 
+ 
+ def observe_unavailable(error, step, starting, current):

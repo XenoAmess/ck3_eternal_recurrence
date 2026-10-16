@@ -1,0 +1,246 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
+@@ -2092,6 +2092,14 @@
+         self._last_checkpoint: dict[str, object] | None = None
+         self._command_history: list[dict[str, object]] = []
+         self._driver_state_history_json = DriverStateHistoryJsonCache()
++        # Prospective opt-in.  Never enable for a frozen run by editing its source.
++        self.allow_driver_state_wal_v1 = os.environ.get("XAR_CK3_ENABLE_DRIVER_STATE_WAL_V1") == "1"
++        self._driver_state_wal_document = None
++        self._driver_state_wal_committed_rows = 0
++        self._driver_state_wal_replay_status = None
++        self._driver_state_wal_base_stat = None
++        self._driver_state_wal_base_sha256 = None
++        self._driver_state_wal_base_version = None
+         self._rollback_war_failures: list[dict[str, object]] = []
+         self._rollback_war_failures_migration_required = False
+         self._managed_restore_transaction: dict[str, object] | None = None
+@@ -10753,6 +10761,11 @@
+                 capture_failure_diagnostic=(
+                     ok and step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP),
+                 save_request=save_request,
++                journal_append=(ok and (
++                    step in {"life-advance", "life-advance-one-day"}
++                    or parse_committed_route_sentinel_advance_step(step) is not None
++                    or self._route_horizon_wal_eligible_v1(step, result)
++                )),
+             )
+ 
+     def _observe_arrange_marriage_outcome(
+@@ -11161,6 +11174,14 @@
+         restored: dict[str, object] | None = None
+         if first_connection:
+             restored = self._read_driver_state()
++            if (isinstance(restored, dict)
++                    and self._driver_state_wal_replay_status == "replayed"
++                    and restored.get("bridge_pid") != bridge_pid):
++                raise _NativeBridgeAdoptionRefusedError(
++                    "journaled Driver state needs a verified full-state barrier before cross-PID adoption",
++                    reason="active_driver_journal_requires_consolidation",
++                    attempted_bridge_pid=bridge_pid,
++                )
+             if isinstance(restored, dict):
+                 lifecycle_migration_required = bool(
+                     restored.get(
+@@ -11596,17 +11617,140 @@
+         if not path.is_file():
+             return None
+         try:
+-            return load_native_driver_state_for_resume(path, self.pipe_name)
++            from .driver_state_wal_v1 import (
++                FILENAME, JournalInvalid, base_stat_identity, load_pair,
++            )
++            payload, replay_status = load_pair(path)
++            self._driver_state_wal_replay_status = replay_status
++            if replay_status != "base_only":
++                self._driver_state_wal_base_stat = base_stat_identity(path)
++                self._driver_state_wal_base_version = (
++                    3 if replay_status == "replayed" else 2
++                )
++            if replay_status != "base_only":
++                # A same-process restart will immediately consolidate before
++                # a new command. Never expose a stale base to cold consumers.
++                journal_path = path.with_name(FILENAME)
++                self._driver_state_wal_document = json.loads(journal_path.read_bytes())
++                self._driver_state_wal_committed_rows = len(payload["command_history"])
++                self._driver_state_wal_base_sha256 = (
++                    self._driver_state_wal_document["base_sha256"]
++                    if replay_status == "replayed"
++                    else self._driver_state_wal_document["consolidated_sha256"]
++                )
++            result = load_native_driver_state_for_resume_payload(payload, self.pipe_name)
++            if replay_status != "base_only" and result is None:
++                raise JournalInvalid("journaled state did not pass the cold consumer")
++            return result
+         except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
++            from .driver_state_wal_v1 import JournalInvalid
++            if isinstance(error, JournalInvalid):
++                # A malformed or foreign journal must not become a new empty life.
++                raise
+             with self._driver_state_lock:
+                 self._driver_state_error = (
+                     f"{type(error).__name__}: {error}"
+                 )
+             return None
+ 
++    def _route_horizon_wal_eligible_v1(self, step: str, result: object) -> bool:
++        parsed = parse_advance_route_contact_horizon_step(step) is not None
++        if not parsed:
++            return False
++        from .driver_state_wal_v1 import eligible_route_horizon_delta
++        return eligible_route_horizon_delta(step, result, parsed_step_valid=True)
++
++    def _driver_state_wal_scalar_fields_locked_v1(self) -> dict[str, object]:
++        """Capture every non-history field of the unchanged full-state schema."""
++        rollback = copy.deepcopy(self._rollback_war_failures)
++        fields = {
++            "format_version": _NATIVE_DRIVER_STATE_VERSION,
++            "pipe_name": self.pipe_name,
++            "bridge_pid": self._session_bridge_pid,
++            "episode_character_id": self._episode_character_id,
++            "episode_run_id": self._episode_run_id,
++            "last_checkpoint": copy.deepcopy(self._last_checkpoint),
++            "rollback_war_failure": copy.deepcopy(rollback[0]) if rollback else None,
++            "managed_restore_transaction": copy.deepcopy(self._managed_restore_transaction),
++            "succession_expectation": copy.deepcopy(self._succession_expectation),
++            "succession_lifecycle": copy.deepcopy(self._succession_lifecycle),
++            "campaign_goal": copy.deepcopy(self._campaign_goal),
++        }
++        if not self._rollback_war_failures_migration_required:
++            fields["rollback_war_failures"] = rollback
++        return fields
++
++    def _try_persist_driver_state_wal_append_v1(self) -> bool:
++        """Return True only after handling one eligible append, including RED."""
++        from .driver_state_wal_v1 import (
++            FILENAME, JournalCapacity, JournalInvalid, append_delta,
++            base_stat_identity,
++            new_journal_header, publish_journal, sealed_base_bytes,
++        )
++        with self._driver_state_write_lock:
++            with self._driver_state_lock:
++                document = self._driver_state_wal_document
++                start = self._driver_state_wal_committed_rows
++                if (not isinstance(document, dict)
++                        or document.get("consolidated_sha256") is not None
++                        or start < 0 or start >= len(self._command_history)):
++                    return False
++                rows = copy.deepcopy(self._command_history[start:])
++                fields = self._driver_state_wal_scalar_fields_locked_v1()
++                # Preserve the existing write race contract: a later append
++                # sets dirty again while these immutable bytes are published.
++                self._driver_state_dirty = False
++            base_path = self._native_driver_state_path()
++            journal_path = base_path.with_name(FILENAME)
++            try:
++                if (self._driver_state_wal_base_sha256 != document["base_sha256"]
++                        or self._driver_state_wal_base_stat is None
++                        or base_stat_identity(base_path) != self._driver_state_wal_base_stat):
++                    raise JournalInvalid("Driver base identity changed since its last full barrier")
++                activation_bytes = None
++                if self._driver_state_wal_base_version == _NATIVE_DRIVER_STATE_VERSION:
++                    base_bytes = base_path.read_bytes()
++                    if (hashlib.sha256(base_bytes).hexdigest() != document["base_sha256"]
++                            or base_stat_identity(base_path) != self._driver_state_wal_base_stat):
++                        raise JournalInvalid("Driver base changed during journal activation")
++                    activation_bytes = sealed_base_bytes(base_bytes)
++                    document = new_journal_header(activation_bytes, start)
++                elif self._driver_state_wal_base_version != 3:
++                    raise JournalInvalid("Driver base version is not a sealed journal base")
++                next_document = append_delta(document, rows, fields)
++                if activation_bytes is not None:
++                    # Commit an empty header before replacing the base marker.
++                    # Old readers see the still-current v2 only before any row
++                    # has been committed. After the marker, they reject v3.
++                    publish_journal(journal_path, document, write_bytes_atomic)
++                    write_bytes_atomic(base_path, activation_bytes)
++                    self._driver_state_wal_base_stat = base_stat_identity(base_path)
++                    self._driver_state_wal_base_sha256 = document["base_sha256"]
++                    self._driver_state_wal_base_version = 3
++                    # Header+sealed base already exist if the next publish
++                    # fails. A full barrier must mark this sealed header,
++                    # never the old in-memory v2 header.
++                    self._driver_state_wal_document = document
++                publish_journal(journal_path, next_document, write_bytes_atomic)
++            except JournalCapacity:
++                with self._driver_state_lock:
++                    self._driver_state_dirty = True
++                return False
++            except (OSError, TypeError, ValueError) as error:
++                with self._driver_state_lock:
++                    self._driver_state_dirty = True
++                    self._driver_state_error = f"{type(error).__name__}: {error}"
++                return True
++            with self._driver_state_lock:
++                self._driver_state_wal_document = next_document
++                self._driver_state_wal_committed_rows = start + len(rows)
++                self._driver_state_error = None
++            return True
++
+     def _persist_driver_state(
+         self, *, capture_failure_diagnostic: bool = False,
+         save_request: tuple[dict[str, object], int, object, dict[str, object]] | None = None,
++        journal_append: bool = False,
+     ) -> dict[str, object] | None:
+         save_receipt: dict[str, object] | None = (
+             {
+@@ -11620,6 +11764,9 @@
+             if save_request is not None else None
+         )
+         if self.state_dir is None:
++            return save_receipt
++        if (journal_append and self.allow_driver_state_wal_v1
++                and self._try_persist_driver_state_wal_append_v1()):
+             return save_receipt
+         attempt_binding: dict[str, object] | None = None
+         persistence_timing = start_army_timing("driver.full_state_persistence")
+@@ -11715,7 +11862,19 @@
+                             encoded = self._encode_driver_state_locked(
+                                 persistence_step=persistence_step
+                             )
++                        encoded_history_rows = len(self._command_history)
+                         self._driver_state_dirty = False
++                    from .driver_state_wal_v1 import (
++                        FILENAME, mark_consolidation, publish_journal,
++                    )
++                    journal_path = self._native_driver_state_path().with_name(FILENAME)
++                    prior_journal = self._driver_state_wal_document
++                    if prior_journal is not None and journal_path.is_file():
++                        # Marker first, then full base replace, then cleanup.
++                        # Both crash orders can be recognized by the loader.
++                        marked = mark_consolidation(prior_journal, encoded)
++                        publish_journal(journal_path, marked, write_bytes_atomic)
++                        self._driver_state_wal_document = marked
+                     write_timing = (
+                         start_army_timing("driver.full_state_atomic_write")
+                         if persistence_step is not None
+@@ -11736,6 +11895,18 @@
+                     finally:
+                         if persistence_step is not None:
+                             finish_army_timing(write_timing, step=persistence_step)
++                    from .driver_state_wal_v1 import base_stat_identity, new_journal_header
++                    self._driver_state_wal_document = new_journal_header(encoded, encoded_history_rows)
++                    self._driver_state_wal_committed_rows = encoded_history_rows
++                    self._driver_state_wal_base_stat = base_stat_identity(self._native_driver_state_path())
++                    self._driver_state_wal_base_sha256 = self._driver_state_wal_document["base_sha256"]
++                    self._driver_state_wal_base_version = _NATIVE_DRIVER_STATE_VERSION
++                    try:
++                        journal_path.unlink(missing_ok=True)
++                    except OSError:
++                        # The published consolidation marker still recognizes
++                        # this full base after an SDK/process restart.
++                        pass
+                 except (OSError, TypeError, ValueError) as error:
+                     # A gameplay command has already happened by this point.  Keep
+                     # the live agent usable and surface persistence failure in
+@@ -25077,7 +25248,9 @@
+                 flush_driver_state = bool(
+                     self.state_dir is not None
+                     and self._session_bridge_pid is not None
+-                    and self._driver_state_dirty
++                    and (self._driver_state_dirty or bool(
++                        isinstance(self._driver_state_wal_document, dict)
++                        and self._driver_state_wal_document.get("entries")))
+                 )
+             if not flush_driver_state:
+                 break

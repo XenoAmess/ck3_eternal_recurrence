@@ -42,6 +42,16 @@ No live M7 credit is granted by this source preparation. Actual successor
 SAVE, following ordinary play and future independently paired coldrestore
 remain runtime acceptance work.
 
+The [P27 publication audit](../../docs/ck3-native-ai/p27-publication-audit-2026-10-17.md)
+indexes subsequent portable recovery work. `shared_harness_reads.installed()`
+explicitly scopes shared-delete Windows reads to an isolated harness process;
+its preliminary recovery gate does not qualify a business error. Importing the
+module changes no global reader. `readonly_precondition_portable_v1` takes the
+runtime's reviewed paths/pins and only returns zero-action qualification.
+The retained `patches/p27-readonly-successor-handoff.patch` is an offline
+generation template using the established handoff and successor SAVE, not an
+automatically installed controller or a new live death result.
+
 Nonexecuted first or following responses, including pending unknown submissions,
 stop before another ordinary action. A confirmed successor SAVE ends its chunk
 immediately; the bounded owner adopts that exact snapshot/SAVE pair before

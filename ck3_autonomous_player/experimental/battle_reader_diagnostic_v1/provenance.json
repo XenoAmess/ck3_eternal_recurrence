@@ -1,0 +1,32 @@
+{
+  "schema": "xar.experimental-native-patch.v1",
+  "status": "NOT_COMPILED_NOT_LOADED",
+  "candidate_source_root": "continuation42-cold-prep/p27-battle-reader-diagnostic-native01",
+  "original_report_sha256": "a8df0775c0e114b882510035b4963c63353d9850f4f4f6915f0e567b28313ef2",
+  "production_behavior_changed": false,
+  "native_release_inputs_changed": false,
+  "files": {
+    "battle-reader-sdk-compat.patch": "ced725da9369dfa0a283162cb1fa133a7a371d4c84caae52054b07b33959c3d8",
+    "battle-reader-status-stage.patch": "182cf32ac383a869addfa6f98d11e3fc7239b02d02d7f32e9be7f6701d11f2f8"
+  },
+  "source_pins": {
+    "include/xar_bridge/battle_control_owned_entry_preceding_12004.hpp": {
+      "base_sha256": "9ee55f2982641e83c158b5dfa3664194b9e481d30e8661b90ec5b975ac597f07",
+      "candidate_sha256": "21e8ee228294658f3a9aaa6d580ae13925462cb67d0be407bd151025bd0791a8"
+    },
+    "src/ck3_12004_battle.cpp": {
+      "base_sha256": "4f7e21d1900d4b9af6843401361ea398a479f8287a70cef1ded6b9430a8365ae",
+      "candidate_sha256": "527be1ebad03a74a3ed1e4acbcf7c396bae2cf857315118b45a52b45b9390cda"
+    },
+    "src/ck3_12002_battle.cpp": {
+      "base_sha256": "3a966adfc68655a64a14c9f58089095ec193699a7423fb417daf87be5d8f5406",
+      "candidate_sha256": "011454c2ea980f51cc260f3e4f286a1de17c02616858bc132012204d7848c709"
+    },
+    "src/bridge.cpp": {
+      "base_sha256": "db365c37ee3cd67f302932ba806624a28466d300365a8c80f5a4b4d309e163d5",
+      "candidate_sha256": "9504a9e9a658e784efc07c35196facd59f31c9a342840257bce0839d3a0bbd1f"
+    }
+  },
+  "actual_observation": "Completed stable battle-control reads returned typed_result false; current production packet has no reader substatus or substage. Failure cause remains unknown.",
+  "validation": "Original candidate only git apply-check and Python packet compatibility; no Native compilation or in-game acceptance."
+}

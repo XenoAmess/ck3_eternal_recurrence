@@ -1,0 +1,63 @@
+{
+  "status": "prospective_default_off_portable_not_live_accepted",
+  "source": "public checkout patch applies at pinned HEAD in SOURCE-PINS.json",
+  "files": {
+    "actual_route_horizon_fixture.json": {
+      "bytes": 2430,
+      "sha256": "35a9d0b73980aeecc2f0820642c731f04a488ad517a85398f876282e8bbbed5f"
+    },
+    "bridge-native_driver.py.patch": {
+      "bytes": 14221,
+      "sha256": "4141eff7aa42c1e5f8c57f3a45ab6c411bc596cf9e73f138d57eddab5a1f02e6"
+    },
+    "driver_state_wal_v1.py": {
+      "bytes": 19849,
+      "sha256": "e60f70c36a16b92589979bb842b8064788de1c7839785bc474058875a0d1ab32"
+    },
+    "native_session.py.patch": {
+      "bytes": 1265,
+      "sha256": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29"
+    },
+    "README.md": {
+      "bytes": 2781,
+      "sha256": "dcc8be5617756fe5f854884a0777a59617c85127b17e080144df54b912d6203a"
+    },
+    "SOURCE-PINS.json": {
+      "bytes": 1070,
+      "sha256": "6dca6fa78f56eb768db852671726da61615a0dea7b543ddf0369fb5c3d0a604b"
+    },
+    "test_portable.py": {
+      "bytes": 12272,
+      "sha256": "9375a91d9cddeecefbdf42ebf977d78ff954d8aa7f24730c935e752d265b84c1"
+    }
+  },
+  "validation": {
+    "portable_tests": 6,
+    "portable_result": "GREEN",
+    "patch_apply_check": "both GREEN against pinned public checkout",
+    "development_fault_tests": "9 pure + 10 Driver integration GREEN",
+    "game_calls": 0,
+    "live_driver_reads": 0
+  },
+  "actual_completed_route_window": {
+    "advance_receipts": 13,
+    "route_horizon_receipts": 11,
+    "old_parser_eligible": 0,
+    "new_strict_route_eligible": 11,
+    "external_receipt_sha256": "3323fea7768b913a42cb5b7bc5c504452d393f250816257608b4dcb300365483"
+  },
+  "old_sealed_baseline_benchmark": {
+    "fixture_bytes": 33495561,
+    "fixture_sha256": "e76f6e3ee15a22a25c4ac2c19fdedc70b685e1d4f5eb2bd5570fa82280d201fc",
+    "rounds": 5,
+    "old_full_read_hash_parse_wall_median_s": 0.336141100153327,
+    "cached_stat_wall_median_s": 5.370005965232849e-05,
+    "external_receipt_sha256": "e374d7d6b873033cabea383ad043de826ffef5de49a6e8f0a685ad56c138ec65",
+    "note": "old 33.5 MB fixture, not current live 65 MB and not a full-run A/B"
+  },
+  "limitations": [
+    "No live SDK opt-in or crash/power-loss acceptance.",
+    "Future warm/cold owner must preserve both base and journal or explicitly materialize a closed pair.",
+    "Default remains off; this directory is research source, not an installed production hook."
+  ]
+}

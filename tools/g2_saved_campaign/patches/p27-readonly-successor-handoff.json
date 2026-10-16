@@ -1,0 +1,14 @@
+{
+  "schema": "xar.reviewed-handoff-recipe.v1",
+  "status": "CANDIDATE_NOT_LIVE_DEATH_VERIFIED",
+  "patch_sha256": "a58ee550e1cd13404e1c91f851ba8e8acec293ab8297bfb8ccbd11df9b2a4030",
+  "source_packet": "continuation42-cold-prep/p27-readonly-succession-handoff01",
+  "source_packet_delivery_sha256": "3f99fbe6d61e787bf20292cb38e2f194367b769640a647334fef05331fb4c582",
+  "portable_qualification": "../readonly_precondition_portable_v1.py",
+  "generation_names_are_template_only": true,
+  "installed_by_this_commit": false,
+  "requires_existing_reviewed_automatic_handoff": true,
+  "original_failed_auto_replayed": false,
+  "credit_for_original_failed_auto": 0,
+  "material_successor_save_still_required": true
+}

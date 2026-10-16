@@ -122,6 +122,50 @@ def _same_frame_campaign_root_result(
         return None
     return result
 
+def _same_frame_campaign_root_from_driver_cache(driver, snapshot):
+    """Reuse this process/generation's validated root, never a prior-frame read."""
+    lock = getattr(driver, "_driver_state_lock", None)
+    diagnostics, played = snapshot.get("diagnostics"), snapshot.get("played_character")
+    if lock is None or not isinstance(diagnostics, dict) or not isinstance(played, dict):
+        return None
+    expected = {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "actor_character_id": played.get("character_id"),
+        "bridge_pid": diagnostics.get("bridge_pid"),
+        "connection_generation": diagnostics.get("connection_generation"),
+    }
+    if (not isinstance(expected["snapshot_id"], str) or not expected["snapshot_id"]
+            or any(type(expected[key]) is not int or expected[key] <= 0 for key in
+                   ("revision", "native_revision", "date_raw", "actor_character_id", "bridge_pid"))
+            or type(expected["connection_generation"]) is not int
+            or expected["connection_generation"] <= 0):
+        return None
+    with lock:
+        cached = getattr(driver, "_campaign_root_context_query", None)
+        if not isinstance(cached, dict):
+            return None
+        binding, context = cached.get("cache_binding"), cached.get("campaign_root_context")
+        sequence = cached.get("query_sequence")
+        if (not isinstance(binding, dict) or not isinstance(context, dict)
+                or any(binding.get(key) != value for key, value in expected.items())
+                or type(sequence) is not int or sequence <= 0):
+            return None
+        # All values come from the successfully normalized root and its existing
+        # private scope. This small projection does not fabricate a new read.
+        result = {
+            "status": context.get("status"), "query_sequence": sequence,
+            "campaign_root_context": context,
+            "held_title_partition": context.get("held_title_partition"),
+            "queried_snapshot_id": binding["snapshot_id"],
+            "queried_revision": binding["revision"],
+            "queried_native_revision": binding["native_revision"],
+        }
+        return _same_frame_campaign_root_result(result, snapshot)
+
+
 _PAIR_IDS = ("actor_character_id", "heir_character_id", "partner_character_id",
              "recipient_character_id", "intermediary_character_id")
 _ADULT_FIELDS = ("heir_is_adult", "partner_is_adult", "heir_adult_measure_raw",
@@ -321,6 +365,8 @@ def query_current_first_heir_relationship_private_v1(
     if type(timeout_seconds) not in {int, float} or timeout_seconds <= 0:
         raise ValueError("timeout_seconds must be positive")
     root = _same_frame_campaign_root_result(campaign_root_result, before)
+    if root is None:
+        root = _same_frame_campaign_root_from_driver_cache(driver, before)
     if root is None:
         root = driver._execute_campaign_root_context_v1_query(
             expected_revision=before["revision"]

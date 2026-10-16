@@ -1,0 +1,173 @@
+{
+  "schema": "xar.p27-enemy-already-combat-actual-projection/v1",
+  "source_sha256": {
+    "auto3771": "edacdd38f0f3200e6efb86f3669a591c2ff5802740a4cd5b1be3fcec409924ff",
+    "sem3772": "b036ebb888c84d192f3a63533075be2391ee753bdd454c10bb9526f3cc688c40"
+  },
+  "projection_note": "Every value below is copied from actual AUTO3771 or same-frame SEM3772; unused original fields omitted, no synthetic field or PID.",
+  "planning_source_frame": {
+    "snapshot_id": "native:2660",
+    "revision": 2661,
+    "native_revision": 2660,
+    "date_raw": 53432280,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-c7a6edcc32b8"
+  },
+  "blocked_phase": "native_war_active_combat_resume_unavailable",
+  "blocked_subject_army_id": null,
+  "blocked_defender_army_ids": [
+    637534455
+  ],
+  "baseline": {
+    "phase": "native_war_pursuit",
+    "selected_step": "move-army-402653503-to-5969"
+  },
+  "snapshot": {
+    "snapshot_id": "native:2660",
+    "revision": 2661,
+    "native_revision": 2660,
+    "date_raw": 53432280,
+    "paused": true,
+    "map_ready": true,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "top_exclusive_modal_choice_hint": {
+      "status": "unknown",
+      "source": "owner_pump_cache_unavailable_or_expired",
+      "owner_verified": false,
+      "opaque_root_id": null,
+      "max_observation_age_ms": 2000
+    },
+    "played_character": {
+      "character_id": 40526,
+      "alive": true
+    },
+    "player_armies": [
+      {
+        "army_id": 402653503,
+        "owner_character_id": 40526,
+        "current_province_id": 2619,
+        "move_target_province_id": null,
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "controllable": true,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1
+      }
+    ],
+    "active_wars": [
+      {
+        "war_id": 201326630,
+        "enemy_armies": [
+          {
+            "army_id": 587202636,
+            "current_province_id": 5983,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7
+          },
+          {
+            "army_id": 520093840,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 536871076,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 536871097,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 704643297,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 385876199,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 452985064,
+            "current_province_id": 6036,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 637534455,
+            "current_province_id": 5969,
+            "in_combat": true,
+            "retreating": false,
+            "army_state": "combat",
+            "army_state_code": 2
+          },
+          {
+            "army_id": 603980042,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 318767378,
+            "current_province_id": 5975,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 318767449,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 218104322,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          },
+          {
+            "army_id": 16777794,
+            "current_province_id": 5970,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6
+          }
+        ]
+      }
+    ]
+  },
+  "native_clock_capabilities_present": true
+}

@@ -16946,6 +16946,7 @@ class NativeHeadlessGameplayDriver:
             )
         with self._driver_state_lock:
             self._campaign_root_context_query = {
+                "query_sequence": query_sequence,
                 "campaign_root_context": copy.deepcopy(normalized),
                 "cache_binding": {
                     "snapshot_id": starting.get("snapshot_id"),
@@ -24234,6 +24235,20 @@ class NativeHeadlessGameplayDriver:
             # native daily hook, +24 deadline, modal and pause postconditions
             # remain exactly the same as at speed one.
             timeline_speed, timeline_policy = 5, "exact_one_day_noncombat_native_speed_5"
+        elif exact_one_day and result_step == "life-advance-one-day":
+            from .battle_reader_exact_clock_speed_v1 import reader_watch_exact_speed_five_ready_v1
+            with self._history_lock:
+                fast_reader_watch = reader_watch_exact_speed_five_ready_v1(
+                    starting, self._command_history,
+                    exact_one_day=exact_one_day, result_step=result_step,
+                    proof_kind=exact_one_day_proof_kind,
+                    bridge_capabilities=bridge_capabilities,
+                    available_action_steps=primitive_steps,
+                    assault_in_progress=bool(open_assaults or unresolved_assaults
+                                             or _player_assault_in_progress(starting)),
+                )
+            if fast_reader_watch:
+                timeline_speed, timeline_policy = 5, "exact_one_day_reader_unavailable_native_speed_5"
         if timeline_policy == "player_siege":
             # Reuse the exact-day end condition for the observed stationary
             # siege; other one-day policies keep their existing contracts.

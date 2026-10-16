@@ -1,0 +1,277 @@
+{
+  "synthetic_contract_fixture": true,
+  "Game_fact_claimed": false,
+  "input_fixture_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\tests\\unit\\test_campaign_root_context_v1_bridge.py",
+    "sha256": "602e8b19cfdca2af35bb8723bdb445114005695a3280390516b5a4fc30e8ce82"
+  },
+  "native_result": {
+    "step": "query-campaign-root-context-v1",
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 29,
+    "snapshot_revision": 72,
+    "campaign_root_context": {
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 72,
+      "date_raw": 53421696,
+      "local_player_id": 0,
+      "player_character_id": 40526,
+      "player_character_alive": true,
+      "player_monthly_gold_income": {
+        "raw": 570772,
+        "scale": 100000
+      },
+      "player_health": {
+        "raw": 275000,
+        "scale": 100000
+      },
+      "player_domain_size": 6,
+      "player_domain_limit": 7,
+      "player_targeting_faction_count": 2,
+      "council": {
+        "status": "available",
+        "coverage_key": "standard_landed_non_nomadic_core_v1",
+        "owner_character_id": 40526,
+        "positions": [
+          {
+            "position_key": "councillor_chancellor",
+            "incumbent_character_id": 23456,
+            "task_key": "task_foreign_affairs",
+            "task_type": "general",
+            "target": null,
+            "frozen": false,
+            "progress": {
+              "kind": "infinite",
+              "current": null,
+              "maximum": null
+            }
+          },
+          {
+            "position_key": "councillor_court_chaplain",
+            "incumbent_character_id": null,
+            "task_key": null,
+            "task_type": null,
+            "target": null,
+            "frozen": null,
+            "progress": null
+          },
+          {
+            "position_key": "councillor_marshal",
+            "incumbent_character_id": null,
+            "task_key": null,
+            "task_type": null,
+            "target": null,
+            "frozen": null,
+            "progress": null
+          },
+          {
+            "position_key": "councillor_spymaster",
+            "incumbent_character_id": 34567,
+            "task_key": "task_find_secrets",
+            "task_type": "court",
+            "target": {
+              "kind": "character",
+              "character_id": 45678
+            },
+            "frozen": false,
+            "progress": {
+              "kind": "percentage",
+              "current": {
+                "raw": 5000000,
+                "scale": 100000
+              },
+              "maximum": {
+                "raw": 10000000,
+                "scale": 100000
+              }
+            }
+          },
+          {
+            "position_key": "councillor_steward",
+            "incumbent_character_id": 23456,
+            "task_key": "task_develop_county",
+            "task_type": "county",
+            "target": {
+              "kind": "province",
+              "province_id": 42
+            },
+            "frozen": true,
+            "progress": {
+              "kind": "value",
+              "current": {
+                "raw": 4200000,
+                "scale": 100000
+              },
+              "maximum": {
+                "raw": 10000000,
+                "scale": 100000
+              }
+            }
+          }
+        ],
+        "auxiliary_vacancies_complete": false,
+        "unavailable_reason": null
+      },
+      "primary_title": {
+        "title_id": 67890,
+        "tier_raw": 6,
+        "tier_key": "hegemony"
+      },
+      "primary_title_succession_character_ids": [
+        98765,
+        87654
+      ],
+      "held_title_partition": [
+        {
+          "title": {
+            "title_id": 67890,
+            "tier_raw": 6,
+            "tier_key": "hegemony"
+          },
+          "first_heir_character_id": 98765,
+          "capital_province_id": null,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 67891,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 87654,
+          "capital_province_id": 43,
+          "primary": false
+        }
+      ],
+      "capital_province_id": 42,
+      "immediate_liege_character_id": null,
+      "top_liege_character_id": 40526,
+      "independent": true,
+      "direct_landed_vassal_character_ids": [
+        23456,
+        34567
+      ],
+      "adjacent_external_province_holder_character_ids": [
+        45678,
+        56789
+      ],
+      "related_character_contexts": [
+        {
+          "character_id": 23456,
+          "relationship_role": "direct_landed_vassal",
+          "primary_title": {
+            "title_id": 123456,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "capital_province_id": 3456,
+          "immediate_liege_character_id": 40526,
+          "top_liege_character_id": 40526,
+          "independent": false
+        },
+        {
+          "character_id": 34567,
+          "relationship_role": "direct_landed_vassal",
+          "primary_title": {
+            "title_id": 134567,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "capital_province_id": 14567,
+          "immediate_liege_character_id": 40526,
+          "top_liege_character_id": 40526,
+          "independent": false
+        },
+        {
+          "character_id": 45678,
+          "relationship_role": "adjacent_external_province_holder",
+          "primary_title": {
+            "title_id": 145678,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "capital_province_id": 5678,
+          "immediate_liege_character_id": null,
+          "top_liege_character_id": 45678,
+          "independent": true
+        },
+        {
+          "character_id": 56789,
+          "relationship_role": "adjacent_external_province_holder",
+          "primary_title": {
+            "title_id": 156789,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "capital_province_id": 16789,
+          "immediate_liege_character_id": null,
+          "top_liege_character_id": 56789,
+          "independent": true
+        }
+      ],
+      "government": {
+        "key": "feudal_government",
+        "flags": [
+          "government_is_feudal",
+          "government_is_settled",
+          "government_is_settled"
+        ],
+        "native_flag_count": 3
+      },
+      "selected_game_rule_tokens": [
+        "1453_end_date",
+        "normal_difficulty",
+        "normal_difficulty"
+      ],
+      "native_selected_game_rule_token_count": 3,
+      "readiness": {
+        "player_identity_ready": true,
+        "player_monthly_gold_income_ready": true,
+        "player_health_ready": true,
+        "player_domain_ready": true,
+        "player_targeting_factions_ready": true,
+        "primary_title_ready": true,
+        "primary_title_succession_ready": true,
+        "held_title_partition_ready": true,
+        "council_ready": true,
+        "capital_ready": true,
+        "lieges_ready": true,
+        "direct_landed_vassals_ready": true,
+        "adjacent_external_province_holders_ready": true,
+        "related_character_contexts_ready": true,
+        "government_ready": true,
+        "selected_game_rule_tokens_ready": true,
+        "same_frame_ready": true,
+        "ready": true
+      },
+      "unavailable_reason": null,
+      "provenance": {
+        "game_version": "1.19.0.6",
+        "executable_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86",
+        "backend_id": "ck3-1.19.0.6-native-campaign-root-context-v1",
+        "monthly_gold_income_rva": "0x28DBE90",
+        "character_health_rva": "0x2619AD0",
+        "domain_size_rva": "0x260BA50",
+        "domain_limit_rva": "0x260BA20",
+        "has_targeting_faction_trigger_rva": "0x283FAE0",
+        "council_position_lookup_rva": "0x23F7800",
+        "council_active_task_ids_enumerator_rva": "0x2666CD0",
+        "council_active_task_storage_slot_rva": "0x570C778",
+        "council_value_progress_current_rva": "0x2D650A0",
+        "council_value_progress_maximum_rva": "0x2D65390",
+        "primary_title_rva": "0x25F3350",
+        "held_title_ids_offset": "0x1E0",
+        "title_province_rva": "0x20B6B20",
+        "capital_province_rva": "0x2606760",
+        "immediate_liege_rva": "0x2613480",
+        "top_liege_rva": "0x2613600",
+        "government_rva": "0x26165B0",
+        "province_holder_character_id_rva": "0x220C3F0",
+        "selected_game_rule_service_slot_rva": "0x5754B48"
+      }
+    },
+    "backend_id": "native-headless"
+  }
+}

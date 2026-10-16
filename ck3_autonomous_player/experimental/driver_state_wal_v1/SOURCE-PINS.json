@@ -1,0 +1,17 @@
+{
+  "public_apply_check_head": "3aef858499ffec54bef25aee21f6c6bdc1824d8e",
+  "bridge-native_driver.py.patch": {
+    "base_sha256": "71b0439dd83007d05c56366b9fbc803541d921914ab97235c8822c9b27606355",
+    "candidate_sha256": "04d2fb8773fa6ae75466f407de988dc43bd50f0f3af9567c5f704ba4a15c8d24",
+    "patch_sha256": "4141eff7aa42c1e5f8c57f3a45ab6c411bc596cf9e73f138d57eddab5a1f02e6",
+    "public_source_sha256": "2aa27fae1f2e4d24ea03a8578feed94d86c5636676be2a895cd1e785a8bda73e"
+  },
+  "native_session.py.patch": {
+    "base_sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+    "candidate_sha256": "0d0f1f8ff5f00505930b0427efe183c3d3a624bf2f72665c8c49123f51d38ce3",
+    "patch_sha256": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29",
+    "public_source_sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8"
+  },
+  "helper_sha256": "e60f70c36a16b92589979bb842b8064788de1c7839785bc474058875a0d1ab32",
+  "fixture_sha256": "35a9d0b73980aeecc2f0820642c731f04a488ad517a85398f876282e8bbbed5f"
+}

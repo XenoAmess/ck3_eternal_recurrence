@@ -1,0 +1,66 @@
+{
+  "source_file": "1987-1-result.json",
+  "source_sha256": "2261d64f7b115a2d38b561da21c0963ad5e83866c516f817c90750beeb8cb2f7",
+  "selected_step": "advance-route-contact-horizon-v1-587202737-to-5969-h-15-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871076-536871097-570425447-587202636-603980042-637534455-671088782-704643297",
+  "result": {
+    "step": "advance-route-contact-horizon-v1-587202737-to-5969-h-15-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871076-536871097-570425447-587202636-603980042-637534455-671088782-704643297",
+    "starting_date_raw": 53421720,
+    "ending_date_raw": 53421744,
+    "elapsed_days": 1,
+    "requested_horizon_days": 1,
+    "paused": true,
+    "progress_status": "postcondition",
+    "final_screen": "map_hud",
+    "active_event": null,
+    "pending_character_interaction": null,
+    "ordinary_events": [],
+    "exact_day_native_clock": {
+      "armed": {
+        "state": "armed",
+        "generation": 204,
+        "starting_date_raw": 53421720,
+        "target_date_raw": 53421744,
+        "last_observed_date_raw": 53421720,
+        "trigger_date_raw": 0,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "stopped": {
+        "state": "triggered",
+        "generation": 204,
+        "starting_date_raw": 53421720,
+        "target_date_raw": 53421744,
+        "last_observed_date_raw": 53421744,
+        "trigger_date_raw": 53421744,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    }
+  }
+}

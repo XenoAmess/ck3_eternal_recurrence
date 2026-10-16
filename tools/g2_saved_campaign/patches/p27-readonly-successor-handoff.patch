@@ -1,0 +1,195 @@
+--- base/root_p27_succession_recovery.py
++++ candidate/root_p27_succession_recovery.py
+@@ -19,6 +19,61 @@
+ def require(condition, message):
+     if not condition:
+         raise ValueError("readonly planning precondition recovery denied: " + message)
++
++
++def qualify_zero_action_successor_handoff(body, queue, state, before):
++    """Validate a fresh successor; leave the actual handoff to the existing path."""
++    if not (isinstance(body, dict) and body.get("one_life_terminal") is True
++            and body.get("one_life_terminal_reason") == "played_character_changed"):
++        return None
++    from xar_autoplayer.bridge.succession_transition_contract import normalize_succession_lifecycle_binding_v1
++    from root_p27_automatic_natural_succession_handoff import qualified_frame, expected_transition
++    if not (isinstance(state, dict) and isinstance(before, dict)
++            and state.get("pending_natural_succession") is None
++            and state.get("pending_unsafe_route_halt") is None
++            and state.get("pending_checkpoint") is None
++            and state.get("terminal") is None):
++        return None
++    try:
++        fresh = qualified_frame(body, queue, normalize_succession_lifecycle_binding_v1,
++                                terminal=True)
++        goal = state.get("campaign_goal_anchor")
++        require(isinstance(goal, dict)
++                and type(goal.get("current_character_id")) is int
++                and goal["current_character_id"] == before.get("actor_character_id")
++                and body.get("campaign_goal") == goal
++                and fresh["actor_character_id"] != before["actor_character_id"]
++                and fresh["episode_run_id"] == before["episode_run_id"]
++                and fresh["date_raw"] >= before["date_raw"]
++                and fresh["revision"] >= before["revision"]
++                and fresh["native_revision"] >= before["native_revision"],
++                "successor is not the same-episode retained predecessor transition")
++        projected = copy.deepcopy(state)
++        compact = {key: fresh[key] for key in (
++            "snapshot_id", "revision", "native_revision", "date_raw",
++            "actor_character_id", "episode_run_id")}
++        projected["before"] = compact
++        retained = expected_transition(body, projected)
++        reconciliation = body.get("succession_reconciliation")
++        binding = reconciliation.get("successor_binding") if isinstance(reconciliation, dict) else None
++        require(retained["predecessor_character_id"] == before["actor_character_id"]
++                and retained["expected_successor_character_id"] == fresh["actor_character_id"]
++                and isinstance(reconciliation, dict)
++                and reconciliation.get("status") == "available"
++                and reconciliation.get("verdict") == "matched"
++                and reconciliation.get("successor_match") is True
++                and reconciliation.get("title_distribution_match") is True
++                and reconciliation.get("predecessor_character_id") == before["actor_character_id"]
++                and reconciliation.get("expected_successor_character_id") == fresh["actor_character_id"]
++                and reconciliation.get("actual_successor_character_id") == fresh["actor_character_id"]
++                and reconciliation.get("predecessor_binding") == retained["binding"]
++                and isinstance(binding, dict)
++                and all(binding.get(key) == fresh[key] for key in (
++                    "snapshot_id", "revision", "native_revision", "date_raw")),
++                "fresh successor/title reconciliation is not matched to the retained estate")
++    except (ValueError, KeyError, TypeError):
++        return None
++    return projected, compact
+ 
+ 
+ async def recover_readonly_legacy_succession(queue, session, request, path, env, *, birth_reader=process_birth_filetime):
+@@ -115,6 +170,7 @@
+         and type(body.get("native_revision")) is int and body["native_revision"] >= before["native_revision"]
+         and body.get("snapshot_id") == f"native:{body['native_revision']}"
+     )
++    successor = None if eligible else qualify_zero_action_successor_handoff(body, queue, state, before)
+     event, interaction = body.get("active_event"), body.get("pending_character_interaction")
+     audit_path = env["Q"] / f"READONLY-PRECONDITION-RECOVERY-{control_sequence:04d}.json"
+     audit = {"schema": SCHEMA, "qualification": qualification, "original_response": str(original_path),
+@@ -129,7 +185,9 @@
+                           "paused": body.get("paused"), "one_life_terminal": body.get("one_life_terminal"),
+                           "event_instance_id": event.get("instance_id") if isinstance(event, dict) else None,
+                           "pending_interaction_present": isinstance(interaction, dict)},
+-             "same_actor_paused_recovery_verified": eligible, "completed_cycles_before_after": state["completed_cycles"],
++             "same_actor_paused_recovery_verified": eligible,
++             "successor_preflight_verified": successor is not None,
++             "completed_cycles_before_after": state["completed_cycles"],
+              "failed_pending_business_credit": 0, "original_auto_replayed": False,
+              "succession_performed": False, "gameplay_actions_submitted": 0, "fresh_readonly_calls": 1,
+              "classifier_preserved": getattr(queue, "result_classifier_pin", None)}
+@@ -153,6 +211,68 @@
+         queue.reinforcement_semantic = body
+         queue.reinforcement_frame = compact
+         queue.reinforcement_frame_response = str(response_path)
++    if successor is not None:
++        from root_p27_automatic_natural_succession_handoff import automatic_handoff
++        projected, compact = successor
++        projected.update(before_metrics_response=str(response_path), pending_cycle=None,
++                         checkpoint_dirty_since_save=True)
++        projected["pending_natural_succession"] = {
++            "global_turn": state["completed_cycles"],
++            "original_before": copy.deepcopy(before),
++            "auto_response": str(original_path),
++            "typed_natural_boundary": False,
++            "source": "failed_readonly_auto_zero_business_fresh_successor"}
++        # Commit the zero-credit, no-replay boundary before any successor call.
++        old_halted, old_attempt = queue.halted, queue.current_attempt
++        queue.full_loop_state, queue.halted, queue.current_attempt = projected, None, None
++        try:
++            queue.persist_loop_state()
++        except Exception:
++            queue.full_loop_state, queue.halted, queue.current_attempt = state, old_halted, old_attempt
++            raise
++        audit["status"] = "verified_successor_handoff_started"
++        audit["failed_pending_cycle_discarded_zero_credit"] = True
++        env["atomic"](audit_path, audit, replace=True, limit=65536)
++        final_state = await automatic_handoff(queue, session, projected,
++            original_before=before, event={"auto_response": str(original_path)},
++            env=env, birth_reader=birth_reader)
++        handoff_path = env["Q"] / f"AUTOMATIC-SUCCESSION-HANDOFF-{state['completed_cycles']:06d}.json"
++        handoff = env["read"](handoff_path, 65536)
++        require(isinstance(handoff, dict) and handoff.get("status") == "verified"
++                and final_state is queue.full_loop_state
++                and final_state.get("completed_cycles") == state["completed_cycles"]
++                and final_state.get("pending_cycle") is None
++                and final_state.get("pending_natural_succession") is None
++                and final_state.get("terminal") is None
++                and isinstance(final_state.get("actual_saved_checkpoint"), dict)
++                and final_state["before"]["actor_character_id"] == compact["actor_character_id"]
++                and final_state["before"]["episode_run_id"] != before["episode_run_id"],
++                "established successor handoff did not finish durable zero-credit recovery")
++        audit.update(status="verified_successor_handoff_complete",
++                     established_handoff_audit=str(handoff_path),
++                     established_handoff_audit_sha256=env["sha256"](handoff_path),
++                     final_frame=copy.deepcopy(final_state["before"]))
++        env["atomic"](audit_path, audit, replace=True, limit=65536)
++        result = {"schema": SCHEMA,
++                  "status": "readonly_precondition_ordinary_successor_handed_off",
++                  "audit": str(audit_path),
++                  "established_handoff_audit": str(handoff_path),
++                  "established_handoff_audit_sha256": env["sha256"](handoff_path),
++                  "established_handoff_verified": True,
++                  "fresh_semantic_response": str(response_path),
++                  "actual_paused": True,
++                  "observed_date_raw": final_state["before"]["date_raw"],
++                  "observed_actor_character_id": final_state["before"]["actor_character_id"],
++                  "completed_cycles": state["completed_cycles"],
++                  "failed_pending_business_credit": 0,
++                  "original_auto_replayed": False,
++                  "new_auto_admitted": True,
++                  "succession_performed": True,
++                  "fresh_readonly_calls": 1}
++        env["atomic"](env["OUTBOX"] / path.name,
++            {"request": request, "result": {"is_error": False, "structured_content": result}}, limit=16384)
++        queue.held_control = None
++        return result
+     result = {"schema": SCHEMA,
+               "status": "readonly_planning_precondition_recovered" if eligible else "readonly_planning_precondition_observed_halt_retained",
+               "audit": str(audit_path), "fresh_semantic_response": str(response_path),
+--- base/root_p27_readonly_precondition_feeder.py
++++ candidate/root_p27_readonly_precondition_feeder.py
+@@ -1,4 +1,6 @@
+ """Pure exact gate for automatic read-only precondition recovery."""
++import hashlib
++from pathlib import Path
+ from root_p27_readonly_recovery_registry import qualify_failed_readonly_auto
+ 
+ ARGUMENTS = {"recovery_kind": "ordinary_campaign_succession",
+@@ -21,11 +23,30 @@
+ def completed_recovery(response, request, previous_completed_cycles):
+     wrapper = response.get("result") if isinstance(response, dict) else None
+     body = wrapper.get("structured_content") if isinstance(wrapper, dict) else None
++    audit = body.get("established_handoff_audit") if isinstance(body, dict) else None
++    audit_sha = body.get("established_handoff_audit_sha256") if isinstance(body, dict) else None
++    audited = False
++    if (isinstance(audit, str) and audit
++            and isinstance(audit_sha, str) and len(audit_sha) == 64):
++        path = Path(audit)
++        try:
++            audited = (path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == audit_sha)
++        except OSError:
++            audited = False
++    successor = bool(isinstance(body, dict)
++                     and body.get("status") == "readonly_precondition_ordinary_successor_handed_off"
++                     and body.get("established_handoff_verified") is True
++                     and audited
++                     and body.get("succession_performed") is True)
++    ordinary = bool(isinstance(body, dict)
++                    and body.get("status") == "readonly_planning_precondition_recovered"
++                    and body.get("succession_performed") is False)
+     return bool(isinstance(body, dict) and response.get("request") == request
+                 and request.get("arguments") == ARGUMENTS and wrapper.get("is_error") is False
+-                and body.get("status") == "readonly_planning_precondition_recovered"
++                and (ordinary or successor)
+                 and body.get("actual_paused") is True and body.get("new_auto_admitted") is True
+-                and body.get("original_auto_replayed") is False and body.get("succession_performed") is False
+-                and body.get("gameplay_actions_submitted") == 0 and body.get("fresh_readonly_calls") == 1
++                and body.get("original_auto_replayed") is False
++                and (successor or body.get("gameplay_actions_submitted") == 0)
++                and body.get("fresh_readonly_calls") == 1
+                 and body.get("failed_pending_business_credit") == 0
+                 and body.get("completed_cycles") == previous_completed_cycles)

@@ -1,0 +1,104 @@
+{
+  "schema": "xar.publication-source-index.v1",
+  "base_public_commit": "3aef858499ffec54bef25aee21f6c6bdc1824d8e",
+  "external_root_alias": "continuation42-cold-prep",
+  "sources": [
+    {
+      "name": "family-root-reuse",
+      "relative_path": "p27-family-hotpath-audit01/family-root-reuse.patch",
+      "sha256": "ca1901c791b95d41b7c806032ce19c09c73145966aea3dc3e1fe7ae3e0a44833",
+      "bytes": 3877
+    },
+    {
+      "name": "battle-exact-day-driver",
+      "relative_path": "native21-cold-generation03/p27-clock-profile-audit01/battle-reader-exact-speed-five.diff",
+      "sha256": "5f1520b3edd875f8771ddc6950ecd1f7116f6ac61b48a192718046c0af663eec",
+      "bytes": 1467
+    },
+    {
+      "name": "battle-exact-day-helper",
+      "relative_path": "native21-cold-generation03/p27-clock-profile-audit01/battle_reader_exact_clock_speed_v1.py",
+      "sha256": "2d162fd3eb77ea512c48ed7d6a8eeb92b6f4770d797623b88ac815561441ebe0",
+      "bytes": 3464
+    },
+    {
+      "name": "shared-runtime-reader",
+      "relative_path": "p27-shared-harness-read01/shared_harness_reads.py",
+      "sha256": "ef5166e37ebf99c745af76595d42f82ecab73e462a4128ea76d9e8bfe4d9565c",
+      "bytes": 3633
+    },
+    {
+      "name": "shared-public-extraction",
+      "relative_path": "shared-harness-public01/DELIVERY.json",
+      "sha256": "311bb26c833918ca55c0d65e7d96977d15f26c45cabd30172df6c32cc9e41a77",
+      "bytes": 2792
+    },
+    {
+      "name": "readonly-revision-v2",
+      "relative_path": "p27-native-revision-readonly02/DELIVERY.json",
+      "sha256": "e61f77eab794bbb475c45321e7cf2138ade5932654351d3ce63d3ef913503666",
+      "bytes": 1405
+    },
+    {
+      "name": "readonly-successor-recipe",
+      "relative_path": "p27-readonly-succession-handoff01/PATCH.diff",
+      "sha256": "a58ee550e1cd13404e1c91f851ba8e8acec293ab8297bfb8ccbd11df9b2a4030",
+      "bytes": 12724
+    },
+    {
+      "name": "readonly-public-extraction",
+      "relative_path": "p27-portable-readonly-succession01/DELIVERY.json",
+      "sha256": "907b0e651f022cd4b5f2fa00c09853072973f6ee13811edcdc8a49c5397f2d50",
+      "bytes": 2022
+    },
+    {
+      "name": "uncompiled-native-diagnostic",
+      "relative_path": "p27-battle-reader-diagnostic-native01/REPORT.json",
+      "sha256": "a8df0775c0e114b882510035b4963c63353d9850f4f4f6915f0e567b28313ef2",
+      "bytes": 2797
+    },
+    {
+      "name": "wal-original-off-candidate",
+      "relative_path": "p28-driver-wal-candidate01/DELIVERY.json",
+      "sha256": "27cad28eac1a8e464db2810e938257664112a3f694842c4d136593a2b7420929",
+      "bytes": 3951
+    },
+    {
+      "name": "wal-public-experimental-final",
+      "relative_path": "p28-driver-wal-public-portable01/experimental/driver_state_wal_v1/DELIVERY.json",
+      "sha256": "b8dbf88719e763826808110039b469559c5bf91c3d9498567aaee647084ba63e",
+      "bytes": 2468
+    },
+    {
+      "name": "enemy-already-combat-watch",
+      "relative_path": "p27-enemy-active-combat-watch01/portable/W-STRATEGY.patch",
+      "sha256": "439eed877531588df8b2203cbc7b7c6c6b0d0cbf83ff1beada00b5fc20b1b82b",
+      "bytes": 3534
+    }
+  ],
+  "large_inputs_in_git": false,
+  "runtime_source_replaced": false,
+  "raw_source_identity_is_original_external_bytes": true,
+  "public_text_normalization_may_differ": true,
+  "formal_capabilities_already_public": {
+    "cb_candidates": "d645eef201b932f57ace01b2554bf46344738b98",
+    "battle_reader_unavailable": "896f9c4c2942322c6f9669ff1136400fb5b39c77",
+    "six_lifestyles": "ec88bd3f9f12e2188256ab02829c281b5f44810f",
+    "serializer_raw_bytes": "7cae45615978089d46f7963b3868d9c254f55eda",
+    "route_and_clock_profile": "b4cdaf52691714d2c18fe23777a535e51919bf2e"
+  },
+  "validation": {
+    "formal_and_harness_focused_tests": 81,
+    "subtests": 40,
+    "battle_speed5_live": false,
+    "new_death_handoff_live": false,
+    "native_diagnostic_compiled": false,
+    "wal_live_ab": false,
+    "wal_portable_tests": 6,
+    "wal_portable_subtests": 6
+  },
+  "goal_status": {
+    "seconds_per_day_half_second_met": false,
+    "uninterrupted_thirty_years_met": false
+  }
+}

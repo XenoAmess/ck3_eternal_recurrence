@@ -17258,6 +17258,57 @@ def _general_battle_forecast_ingress(
         and _army_tactical_state(enemy) == "combat"
         and (enemy_id := _public_cunit_int(enemy.get("army_id"))) is not None
     }))
+    if active_defenders and not active_subject:
+        # A defender already fighting elsewhere cannot be fed to the new-
+        # encounter forecast.  A stationary noncombat player army can instead
+        # let CK3 resolve one native-stopped day without sending a move or a
+        # battle order.  This grants no claim that contact is safe.
+        from .bridge.battle_reader_watch_v1 import CLOCK_CAPABILITIES
+
+        played = snapshot.get("played_character")
+        hint = snapshot.get("top_exclusive_modal_choice_hint")
+        observer_ready = bool(
+            baseline.get("phase") == "native_war_pursuit"
+            and snapshot.get("map_ready") is True
+            and snapshot.get("active_event") is None
+            and snapshot.get("pending_character_interaction") is None
+            and not (isinstance(hint, dict) and hint.get("status") == "present")
+            and isinstance(played, dict) and played.get("alive") is True
+            and type(played.get("character_id")) is int
+            and army.get("owner_character_id") == played.get("character_id")
+            and army.get("controllable") is True
+            and origin is not None and origin > 0 and origin != target
+            and _army_tactical_state(army) == "regular"
+            and army.get("in_combat") is False
+            and army.get("retreating") is False
+            and "move_target_province_id" in army
+            and army.get("move_target_province_id") is None
+            and army.get("route_read_status") == "complete_empty"
+            and army.get("route_province_ids") == []
+            and {"life-advance-one-day", "set-speed-1", "resume-map", "pause-map"} <= action_steps
+            and CLOCK_CAPABILITIES <= bridge_capabilities
+        )
+        if observer_ready:
+            return {
+                "policy": "general-battle-forecast-v1",
+                "phase": "native_war_enemy_ongoing_combat_one_day_observation",
+                "selected_step": "life-advance-one-day",
+                "reason": "the proposed pursuit target is already in a different combat; leave the stationary player army in place and observe one exact native-stopped day before replanning",
+                "baseline_phase": baseline.get("phase"),
+                "baseline_selected_step": baseline.get("selected_step"),
+                "active_combat_subject_army_id": None,
+                "active_combat_defender_army_ids": list(active_defenders),
+                "subject_army_id": army_id,
+                "subject_current_province_id": origin,
+                "target_province_id": target,
+                "source_snapshot_id": snapshot.get("snapshot_id"),
+                "source_native_revision": snapshot.get("native_revision"),
+                "source_date_raw": snapshot.get("date_raw"),
+                "contact_free_proven": False,
+                "offensive_combat_permission": False,
+                "battle_outcome_inferred": False,
+                "war_or_material_credit": False,
+            }
     if active_subject or active_defenders:
         # An already active CombatID needs its own same-frame resume operands.
         # The v3 fixed-contact model starts a new encounter; even a cached

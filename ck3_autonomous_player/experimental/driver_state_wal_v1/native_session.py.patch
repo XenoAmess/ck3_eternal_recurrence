@@ -1,0 +1,23 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/native_session.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/native_session.py
+@@ -1758,8 +1758,19 @@
+         spec.state_dir / NATIVE_SESSION_QUEUE_DIRNAME / NATIVE_DRIVER_STATE_FILENAME
+     )
+     try:
++        # The full file remains the canonical cold checkpoint. A committed
++        # daily journal cannot silently turn an older full file into a cold
++        # start, even when its replayed state is internally valid.
++        from .bridge.driver_state_wal_v1 import FILENAME, JournalInvalid, load_pair
++        if state_path.with_name(FILENAME).is_file():
++            _, journal_status = load_pair(state_path)
++            if journal_status == "replayed":
++                raise AgentError(
++                    "cold checkpoint requires a consolidated Driver state; "
++                    "a committed daily journal is still active"
++                )
+         payload = json.loads(state_path.read_text(encoding="utf-8-sig"))
+-    except (OSError, UnicodeError, json.JSONDecodeError) as error:
++    except (OSError, UnicodeError, json.JSONDecodeError, JournalInvalid) as error:
+         raise AgentError(
+             f"cold checkpoint state is unavailable: {state_path}: {error}"
+         ) from error
