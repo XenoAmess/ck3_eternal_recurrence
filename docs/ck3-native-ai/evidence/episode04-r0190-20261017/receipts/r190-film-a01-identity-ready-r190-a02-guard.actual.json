@@ -1,0 +1,39 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:19:11.811050+00:00",
+  "result": "PASS",
+  "binding": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-10-16T20:19:11.811012+00:00",
+    "target_build": {
+      "version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "bridge_pid": 26976,
+    "connection_generation": 1,
+    "expected_character_id": 31254,
+    "episode_run_id": "native-31254-3b59435db1a5",
+    "snapshot_id": "native:3",
+    "native_revision": 3,
+    "identity_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7904,
+      "sha256": "1029a01eb891a41d6bbddf87eac41bbbd1e18e1b9f7ae7297f30044c2af4460c"
+    },
+    "identity_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+    "identity_recorded_at_utc": "2026-10-16T20:19:11.289897+00:00",
+    "superseded_prelaunch_expected_character_id": 31254,
+    "identity_scope": "Root-reviewed normal-Robert source chain; exact one runtime; not universal numeric mapping"
+  },
+  "normal_checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 73664512,
+    "sha256": "79c85b30b6109c44b019abc891a8ce138125940deaf73714c6b1f21efa3cb07a"
+  },
+  "observation": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\r190-film-a01-identity-ready-r190-a02-observe.actual.json",
+    "bytes": 3753,
+    "sha256": "e637e9645332613042a76e7e5110596761501ce301c16f03096608f976bcffd5"
+  }
+}

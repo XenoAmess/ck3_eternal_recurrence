@@ -474,3 +474,36 @@ docs/ck3-native-ai/evidence/episode04-r0189-20261017/media/portable-media-facts.
 docs/ck3-native-ai/evidence/episode04-r0189-20261017/media/limited-contact-sheet-review.actual-a01.json -text
 docs/ck3-native-ai/evidence/episode04-r0189-20261017/selected/d09-player-armies.exact-fragment.json -text
 docs/ck3-native-ai/evidence/episode04-r0189-20261017/facts.derived-a01.json -text
+
+# R190 hash-bound portable originals.
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d01-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d02-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d03-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d04-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d05-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d06-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d07-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d08-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d09-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d10-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d11-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/days/r190-film-a01-d12-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/runtime-actor-identity.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-film-a01-identity-ready-r190-a02-guard.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-film-a01-identity-ready-r190-a02-header-first2048.actual.bin -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/steam-offline-reviewed.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/focus-ck3.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-film-a01-frame-review.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-film-a01-single-start.claim.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-film-a01-film-result.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/film-source-path-normalization.actual-a02.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-loss-before-a01-endpoint.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/receipts/r190-loss-after-a01-endpoint.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/raw-result.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/close/NORMAL-SAVE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/close/BOOTSTRAP-OBSERVED.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/close/SCREEN-RELEASE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/media/portable-media-facts.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/media/limited-contact-sheet-review.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/small-originals.portable.zip -text
+docs/ck3-native-ai/evidence/episode04-r0190-20261017/facts.derived-a01.json -text

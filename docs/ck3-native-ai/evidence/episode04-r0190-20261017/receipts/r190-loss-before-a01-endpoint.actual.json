@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:19:44.584743+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "stage": "before",
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7904,
+    "sha256": "1029a01eb891a41d6bbddf87eac41bbbd1e18e1b9f7ae7297f30044c2af4460c"
+  },
+  "date_raw": 53148144,
+  "revision": 4,
+  "native_revision": 3,
+  "original_responses": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-loss-before-a01-01-frame.json",
+      "bytes": 125381,
+      "sha256": "0f29b412223c63878f6dfa34332273ca42b637454cc1834abf63982c74aaf4fa"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-loss-before-a01-02-full.json",
+      "bytes": 5372,
+      "sha256": "3da94978dbd0553a308417e49d03bec98c18ce7dfa1f014ca5d56f6132822815"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-loss-before-a01-03-frame.json",
+      "bytes": 126209,
+      "sha256": "0bf2d7d41da724c167be9700c575f2ec5caf75aeb1975981dbef653a31f49e84"
+    }
+  ],
+  "army_history_evidence": {},
+  "business_or_physical_debit_pass_inferred": false
+}

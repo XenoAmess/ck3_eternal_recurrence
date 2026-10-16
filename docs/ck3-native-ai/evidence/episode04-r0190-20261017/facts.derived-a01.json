@@ -1,0 +1,140 @@
+{
+  "schema": "xar.e04.r190-portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T20:42:39.377051+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "identity": {
+    "pid": 26976,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-3b59435db1a5",
+    "process_creation_filetime_100ns": 134366550237740252,
+    "actual_runtime_character_full_id": 31254,
+    "initial_date_raw": 53148144
+  },
+  "source_lineage": "R184 normal checkpoint Feb21; not chronological continuation of R189 Apr10",
+  "preflight": {
+    "a01_failed_before_recording_or_SDK": true,
+    "a02_only_canonicalized_checkpoint_source_save_path": true,
+    "source_bytes_not_changed": true,
+    "old_config_and_wrappers_preserved_in_archive": true
+  },
+  "film": {
+    "completed_days": 12,
+    "start_date_raw": 53148144,
+    "end_date_raw": 53148432,
+    "Root_calendar_labels": "1067 Feb21 to Mar5",
+    "first_resume_handoff_seconds": 3.4636043,
+    "wall_through_finish": 110.907522,
+    "wall_before_finish": 110.00066,
+    "encoded_end_seconds": 107.333,
+    "encoded_frames": 3220,
+    "last_PTS_seconds": 107.3,
+    "wall100_met": true,
+    "wall110_met": true,
+    "encoded100_met": true,
+    "encoded110_met": false,
+    "paused_tail_wall_seconds": 75.542529,
+    "paused_tail_readonly_snapshots": 76,
+    "paused_tail_date_raw": 53148432,
+    "additional_Resume_during_tail": 0,
+    "pre_tail_wall_including_handoff_and_daily_pauses": 34.458131,
+    "continuous_dynamic100_obtained": false,
+    "capture_kind": "gdigrab-desktop-client-region",
+    "direct_HWND_capture": false
+  },
+  "endpoint": {
+    "physical_DATA_before": [
+      1174,
+      1185
+    ],
+    "physical_DATA_after": [
+      1163,
+      1185
+    ],
+    "physical_net_debit_from_owner_one_time_summary": 11,
+    "physical_slot_count": 21,
+    "before_21slot_array_held": true,
+    "after_21slot_array_NOT_HELD": true,
+    "after_21slot_portable_arithmetic_independently_recomputed": false,
+    "cached_Army_before": 1184,
+    "cached_Army_after": 1173,
+    "cached_Army_maximum": 1195,
+    "cached_after_regiment_sum": 1173,
+    "top_level_envelope_rawref_is_authority": true,
+    "old_endpoint_empty_army_history_evidence_was_wrong_extraction": true,
+    "full_refs": [
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\native-session\\army-query-history-results\\army-query-935966192f034f1cb53c39d2f614b83d.json",
+        "bytes": 11203467,
+        "sha256": "f527652b1906f89296be9cbd88c439feb4d14dcd9533093fd22476bb33ca673a",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\native-session\\army-query-history-results\\army-query-eeecc145a3634bb7a1a69d923b8e6f2c.json",
+        "bytes": 11534130,
+        "sha256": "a35bfeb203aecd8f42ef48d9e4248cee91b787fe73496493f3e990a87785edd5",
+        "kind": "complete-driver-army-query-result-json-v1",
+        "wire_bytes_preserved": false
+      }
+    ],
+    "no_full_reopen_or_SDK_replay_for_packaging": true
+  },
+  "writer": {
+    "Army18_events": 0,
+    "global_before_latest": 0,
+    "global_after_latest": 3047,
+    "global_oldest": 2536,
+    "global_overwritten": 2535,
+    "global_dates_not_visible_in_filtered_packet": true,
+    "not_all_3047_same_day": true,
+    "strict_parent_join_gap": "writer_fence_gap_or_reset",
+    "single_event_positive": false,
+    "positive_physical_debit_sum": 0
+  },
+  "callback": {
+    "retained_Army18_events": 1,
+    "sequence": 8,
+    "passed_raw64": 300334994204326432,
+    "low32_date_raw": 53148192,
+    "Root_calendar_label": "Feb23; not Mar1",
+    "supply_before_raw": 30000000,
+    "supply_after_raw": 30000000,
+    "supply_scale": 100000,
+    "soldier_before_after_in_callback": false,
+    "military_loss_causal_positive": false
+  },
+  "close": {
+    "normal_save_sha256": "052335c16b9b750d45c71e122f7ad78a04ccc3c9c1d7f3e4da12c650fca95ef2",
+    "checkpoint_pin_only": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73872082,
+      "sha256": "717e3b068f2538a4100badc688434f7c9d30fa075959d72289a159307b2851d9"
+    },
+    "normal_game_exit_code": 0,
+    "screen_release_exit": 0,
+    "screen_task_state": "done",
+    "screen_resources": [],
+    "release_sequence": 5893,
+    "capacity_reservation_returned": false
+  },
+  "review": {
+    "worker_four_scaled_samples_only": true,
+    "Root_limited_review_received_in_media_report": false,
+    "original_resolution_PNG_review": false,
+    "whole_clip_clean": false,
+    "full1x_human_review": false,
+    "signoff": false
+  },
+  "qualification": {
+    "new_R03_single_event_positive": 0,
+    "new_business_positive": 0,
+    "new_clean": 0,
+    "human_signoff": false,
+    "research": "6/14",
+    "business": "4/11",
+    "dynamic_video": "0/11"
+  }
+}

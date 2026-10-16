@@ -1,0 +1,243 @@
+{
+  "schema": "xar.e04.r190.bounded-portable-media-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "observed_at_utc": "2026-10-16T20:35:23.928983+00:00",
+  "audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 56563,
+    "sha256": "1712de365207b21f0c53e5ae0e91342a180ac591fe847375f418071cc98b8cbf"
+  },
+  "limited_sample_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\limited-contact-sheet-review.actual-a01.json",
+    "bytes": 2963,
+    "sha256": "1475b6398f300ce9de44e21271ac3991764acd380e08e51d7311322eecdc01d8"
+  },
+  "contact_sheet": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\first-middle-last.contact-sheet.jpg",
+    "bytes": 35271,
+    "sha256": "f7ec73ede8dad6b358e43a02e663dc648ab8aeee6b9a1132a1888179653c668d"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 64931377,
+    "sha256": "9b295c45067253da81d476c9ee8fece89722a3a16022f01f73e3dc5e76e74cd0"
+  },
+  "raw_after": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 64931377,
+    "sha256": "9b295c45067253da81d476c9ee8fece89722a3a16022f01f73e3dc5e76e74cd0"
+  },
+  "canonical_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3541,
+    "sha256": "cc6e2add58787c59a0856be59afedd7ab845cf057841cdd58e441fcc74843d82"
+  },
+  "finish_preprobe_validation": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-99-recorder-finish-once.json",
+      "bytes": 4343,
+      "sha256": "c4079a6af08f8d494e12faf86466282b4492b00ee7e4e057a428f194b1f02467"
+    },
+    "observed_at_utc": "2026-10-16T20:29:29.721984+00:00",
+    "normal_tree_empty": true,
+    "exit_code": 0,
+    "active_processes": 0,
+    "performed_before_any_media_tool": true
+  },
+  "finish_response": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-99-recorder-finish-once.json",
+      "bytes": 4343,
+      "sha256": "c4079a6af08f8d494e12faf86466282b4492b00ee7e4e057a428f194b1f02467"
+    },
+    "observed_at_utc": "2026-10-16T20:29:29.721984+00:00"
+  },
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1",
+    "timeline": {
+      "media_type": "video",
+      "frames": 3220,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 107.3,
+      "last_frame_end_seconds": 107.333,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "audio_stream_count": 0,
+  "full_AV_decode_exit": 0,
+  "full_AV_decode_diagnostics": "",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 26976,
+    "owned_ck3_create_time": 1792181423.7740252,
+    "hwnd": 44108314,
+    "foreground_hwnd": 44108314,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T20:27:38.226847+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "native_completed_days": 12,
+  "initial_date_raw": 53148144,
+  "last_completed_date_raw": 53148432,
+  "native_daily_and_tail_receipts_audit_source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 56563,
+    "sha256": "1712de365207b21f0c53e5ae0e91342a180ac591fe847375f418071cc98b8cbf"
+  },
+  "film_exit_code_reported_by_Root": 0,
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\r190-film-a01-film-result.actual.json",
+    "bytes": 795,
+    "sha256": "b5687da76f8dc92d558818413741c12513a0d2327c25e22b0b24e186df220126"
+  },
+  "recorder_wall_seconds_through_finish": 110.907522,
+  "recorder_wall_seconds_before_finish": 110.00066,
+  "encoded_frame_end_seconds": 107.333,
+  "wall_100_seconds_met": true,
+  "wall_110_seconds_met": true,
+  "encoded_100_seconds_met": true,
+  "encoded_110_seconds_met": false,
+  "configured_min_wall_seconds": 110,
+  "configured_min_wall_met": true,
+  "first_resume_handoff_seconds": 3.4636043,
+  "handoff_within6_seconds": true,
+  "paused_tail": {
+    "wall_seconds": 75.542529,
+    "readonly_snapshots_verified": 76,
+    "all_snapshots_paused": true,
+    "all_date_raw": 53148432,
+    "additional_resume_count_reported": 0,
+    "first_snapshot": {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-hold-poll-000.json",
+        "bytes": 139165,
+        "sha256": "add495dcfd779cc4cad30fab9ed4227a41618acadcf76bd32a959c089660852a"
+      },
+      "observed_at_utc": "2026-10-16T20:28:13.979740+00:00"
+    },
+    "last_snapshot": {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-hold-poll-075.json",
+        "bytes": 139173,
+        "sha256": "8a089dafd1004473bf474f6c642c03508aea7e8715010129ec64042a312a23a5"
+      },
+      "observed_at_utc": "2026-10-16T20:29:29.032980+00:00"
+    },
+    "all76_pins_retained_in": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\audit.actual-a01.json",
+      "bytes": 56563,
+      "sha256": "1712de365207b21f0c53e5ae0e91342a180ac591fe847375f418071cc98b8cbf"
+    },
+    "business_or_research_qualification_credit": false
+  },
+  "pre_tail_phase_wall_seconds_including_initial_handoff_and_daily_pauses": 34.458130999999995,
+  "pre_tail_phase_note": "Difference of recorder-before-finish wall and measured pause-tail wall; not a continuous unpaused encoded span or dynamic research qualification.",
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  },
+  "bounded_output_budget_bytes": 262144,
+  "capacity_before": {
+    "observed_at_utc": "2026-10-16T20:33:22.548701+00:00",
+    "original_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r190-a01\\R190-CAPACITY.actual-root-a01.json",
+      "bytes": 12522,
+      "sha256": "dba51da3f39a9522635cf24e2695685594096252af07b0d73817159ae6a528c3"
+    },
+    "quota_review_at_utc": "2026-10-16T21:08:11.017602+00:00",
+    "measured": {
+      "usage": {
+        "profile": 621927406,
+        "driver": 79557640,
+        "raw": 66945314,
+        "other": 16690374
+      },
+      "remaining_scene_bytes": 1496580642,
+      "volumes": {
+        "C:/": {
+          "free": 28635295744,
+          "required": 27774872985
+        },
+        "D:/": {
+          "free": 48995803136,
+          "required": 23105634850
+        }
+      }
+    },
+    "unchanged_default_guards": true,
+    "deadline_renewed": false,
+    "D_credit_applied_to_C": false
+  },
+  "capacity_close": {
+    "observed_at_utc": "2026-10-16T20:35:23.081885+00:00",
+    "phase": "after-offline-bounded-media-audit",
+    "original_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r190-a01\\R190-CAPACITY.actual-root-a01.json",
+      "bytes": 12522,
+      "sha256": "dba51da3f39a9522635cf24e2695685594096252af07b0d73817159ae6a528c3"
+    },
+    "storage_charge": "Existing Root-authorized shared reservation, max256KiB",
+    "adoption_performed": false,
+    "deadline_renewed": false,
+    "reserves_released": false,
+    "D_credit_applied_to_C": false,
+    "current_original_guards_passed": true,
+    "measured": {
+      "usage": {
+        "profile": 573329902,
+        "driver": 80569535,
+        "raw": 66945314,
+        "other": 18339125
+      },
+      "remaining_scene_bytes": 1542517500,
+      "volumes": {
+        "C:/": {
+          "free": 33546244096,
+          "required": 27774872985
+        },
+        "D:/": {
+          "free": 49041600512,
+          "required": 23151571708
+        }
+      }
+    },
+    "quota_review_at_utc": "2026-10-16T21:08:11.017602+00:00"
+  },
+  "source_metadata_unchanged": true,
+  "limitations": [
+    "Four scaled JPEG samples are a limited visualization, not original-resolution frame review or full1x viewing.",
+    "Client-region capture is not independent HWND capture and four samples cannot certify every frame/occlusion.",
+    "Twelve natural-day completions are separate from75.542529sec paused recording tail; paused hold grants no dynamic research qualification.",
+    "This audit grants no business, all-clip clean, full human viewing or signoff credit.",
+    "Recording wall110 seconds and encoded110 seconds are distinct checks. Encoded107.333 seconds passes100 but not110.",
+    "The75.542529-second tail remains paused at the same native date through76 readonly snapshots, with zero extra Resume reported; it must not be counted as natural gameplay advancement or research evidence.",
+    "Twelve daily completions before the tail do not become100seconds of dynamic gameplay because the paused recording continued.",
+    "This worker has not received a Root/human full1x review or signoff."
+  ]
+}

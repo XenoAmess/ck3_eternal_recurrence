@@ -9918,3 +9918,6 @@ if(BUILD_TESTING)
     target_compile_options(xar_test_gui_refill_local_prefix_12004 PRIVATE /EHsc /W4 /WX)
   endif()
 endif()
+
+# Explicit-only cold coverage for newly typed military preview failure reasons.
+include(cmake/military_preview_unavailable_reasons_fixture.cmake)

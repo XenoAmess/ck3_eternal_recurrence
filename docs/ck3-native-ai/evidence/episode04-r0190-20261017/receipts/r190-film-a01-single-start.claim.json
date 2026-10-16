@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:27:37.438891+00:00",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\film-input.actual-a02.json",
+    "bytes": 6916,
+    "sha256": "827ba051559b85ac71c0ca142514522e5a134487555169abcd6a4be9e14e3b2a"
+  },
+  "frame": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r190-window-capture-a01/r190-film-a01-frame-review.actual.json",
+    "bytes": 1688,
+    "sha256": "bc2efd501be5a24caefb2b7b7c417b84019a41d55577deb27782c041ee76f4d8"
+  },
+  "source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 26976,
+    "owned_ck3_create_time": 1792181423.7740252,
+    "hwnd": 44108314,
+    "foreground_hwnd": 44108314,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T20:27:37.164187+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "start_or_clock_replay_forbidden": true
+}

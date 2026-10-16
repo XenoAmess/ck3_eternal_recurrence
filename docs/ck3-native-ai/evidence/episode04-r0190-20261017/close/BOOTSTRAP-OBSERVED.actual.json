@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:33:48.581919+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\film-input.actual-a02.json",
+    "bytes": 6916,
+    "sha256": "827ba051559b85ac71c0ca142514522e5a134487555169abcd6a4be9e14e3b2a"
+  },
+  "bootstrap_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\bootstrap-result.json",
+    "bytes": 15362,
+    "sha256": "0c046d8297590cd755fcd33b12e922bd46a4bd82d98212a7f55271aecb7ba72b"
+  },
+  "normal_exit_zero": true,
+  "session_exit_reason": "process_exit",
+  "screen_task_id": "e04-live-20261017-r0190",
+  "final_screen_sequence": 5892,
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "new_exit_requests": 0,
+  "screen_released": false
+}

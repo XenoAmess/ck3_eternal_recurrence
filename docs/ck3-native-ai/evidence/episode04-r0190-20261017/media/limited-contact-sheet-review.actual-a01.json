@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.r190.limited-contact-sheet-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "observed_at_utc": "2026-10-16T20:35:23.023731+00:00",
+  "reviewer": "Codex offline media worker /root/r183_raw_audit_now",
+  "source_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 56563,
+    "sha256": "1712de365207b21f0c53e5ae0e91342a180ac591fe847375f418071cc98b8cbf"
+  },
+  "contact_sheet": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-media-audit-bounded-a01\\first-middle-last.contact-sheet.jpg",
+    "bytes": 35271,
+    "sha256": "f7ec73ede8dad6b358e43a02e663dc648ab8aeee6b9a1132a1888179653c668d"
+  },
+  "dimensions": [
+    1280,
+    720
+  ],
+  "actual_review_method": "Direct functions.view_image of exact1280x720 JPEG, detail=original, after full raw decode.",
+  "sample_mapping": [
+    {
+      "index": 0,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "0.000000",
+        "duration_time": "0.033000",
+        "side_data_list": [
+          {
+            "side_data_type": "H.26[45] User Data Unregistered SEI message"
+          }
+        ]
+      }
+    },
+    {
+      "index": 450,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "15.000000",
+        "duration_time": "0.033000"
+      }
+    },
+    {
+      "index": 870,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "29.000000",
+        "duration_time": "0.033000"
+      }
+    },
+    {
+      "index": 3219,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "107.300000",
+        "duration_time": "0.033000"
+      }
+    }
+  ],
+  "observations": [
+    "All four samples show CK3 client-area map and selected-army panel, without black frames or visible foreign application/desktop pixels.",
+    "Pause label is visible in the first and last samples; the two interior samples show changes in map army icons during the pre-tail phase.",
+    "Precise calendar labels and army numeric values are not transcribed from the reduced JPEG."
+  ],
+  "limitations": [
+    "Each full source frame was scaled1280x720 to640x360 and JPEG-compressed, then tiled2x2.",
+    "Four reduced samples are not original-resolution frame review, every-frame review, full1x viewing or clean-span certification."
+  ],
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "limited_contact_sheet_direct_review": true,
+    "clean_span_certified": false,
+    "business_positive": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  }
+}

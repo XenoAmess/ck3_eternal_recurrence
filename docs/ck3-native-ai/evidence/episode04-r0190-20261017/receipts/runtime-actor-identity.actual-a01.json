@@ -1,0 +1,160 @@
+{
+  "schema": "xar.e04.robert-identity-source-chain.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T20:19:11.289897+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "pid": 26976,
+  "connection_generation": 1,
+  "episode_run_id": "native-31254-3b59435db1a5",
+  "process_creation_filetime_100ns": 134366550237740252,
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_normal_close": {
+    "normal_save": {
+      "path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-close-a01/NORMAL-SAVE.actual.json",
+      "bytes": 3806,
+      "sha256": "6699c6b3ea5e8c380aac8288a21db6fba80259242b64ac6c5a60ef1226e35612"
+    },
+    "bootstrap_result": {
+      "path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/bootstrap-result.json",
+      "bytes": 15026,
+      "sha256": "89258a5c43d8d7ab47306de137d7e4648b1bb8e3ee7a7da461702f4282341205"
+    },
+    "screen_release": {
+      "path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-close-a01/SCREEN-RELEASE.actual.json",
+      "bytes": 4052,
+      "sha256": "52f499d5c2361be591ccf65ea2362af0918189ad39d0703703ba4c8d9b46056b"
+    }
+  },
+  "native_production_provenance": {
+    "runtime_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+    "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+    "production_qualification": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r190-root-prep-a01\\R190-PRODUCTION-QUALIFIED.actual-a01.json",
+      "bytes": 3300,
+      "sha256": "30b1ad96c9147a58eb64ece6325e9caaa9d1932ebd9f3df7728d1713ec1bf6c5"
+    },
+    "allocated_context": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\allocated-context.actual-a01.json",
+      "bytes": 5089,
+      "sha256": "ce9cc4efba6f00743aa415483a97959bf03d2f08346236dbe5f5fa0f9099950a"
+    }
+  },
+  "stable_character_intent": {
+    "bookmark_character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "historical_id": 1128,
+    "historical_title_key": "d_apulia",
+    "historical_name": "Robert Guiscard"
+  },
+  "actual_runtime_character_full_id": 31254,
+  "initial_date_raw": 53148144,
+  "proof_chain": [
+    {
+      "layer": "source-controlled-flow",
+      "facts": "Exact admitted ordinary checkpoint from desktop-3fevhd2-1c74096080--vanilla--R0184 loaded in independently allocated new runtime.",
+      "files": [
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\prepared-a01\\prepared.json",
+          "bytes": 11732,
+          "sha256": "482c8a9ed966859172af64b1938de4fbd0338d1de3bc723685421d41ceaba68d"
+        },
+        {
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-close-a01-02-save-once.json",
+          "bytes": 20290,
+          "sha256": "11a034632ff18d716090c6404316c210d0b4ac840552148e94998f944e1ceecf"
+        },
+        {
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/prepared-a02/prepared.json",
+          "bytes": 11588,
+          "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+        }
+      ]
+    },
+    {
+      "layer": "independent-live-reads-produced-by-root",
+      "files": [
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-01-diag.json",
+          "bytes": 57098,
+          "sha256": "64c4f54876d92005aba1477bef23eb54f22178765041c87c5decb6168c87a122"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-02-snapshot.json",
+          "bytes": 124873,
+          "sha256": "48147bc6d910621bda765ef342da15b820338c5f39fe5586cfb45fbcf48d60a3"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-03-campaign-root-once.json",
+          "bytes": 147376,
+          "sha256": "da9f3f00f035a86169fecc746715a29df0b743324425ad719acab362ac28543d"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-04-save-diag.json",
+          "bytes": 57124,
+          "sha256": "f42284bcdec2bf1f2b77308021a13da60b89b552355a9f1591ca8c9e56e47eff"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-05-save-before.json",
+          "bytes": 124895,
+          "sha256": "830a6e907f20f442dfec386b4c36d0ae715bfe42e02acfec34c99e998c167e49"
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-07-save-after.json",
+          "bytes": 125425,
+          "sha256": "3beeebddbf7875e9755765cae310690ac6cf44038a5be8fbdd82d4fd7c6a4e0d"
+        }
+      ]
+    },
+    {
+      "layer": "normal-save-materialization-and-bounded-header-read",
+      "receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0190\\responses\\r190-film-a01-identity-ready-r190-a02-06-save-once.json",
+        "bytes": 20463,
+        "sha256": "1dfb20d271f3ab92e092adad44897ca0f0803d32d4e2c71021be6af01fa76300"
+      },
+      "checkpoint": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73664512,
+        "sha256": "79c85b30b6109c44b019abc891a8ce138125940deaf73714c6b1f21efa3cb07a"
+      },
+      "episode_seed": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\state-a01\\profile\\save games\\xar_episode_seed.ck3",
+        "bytes": 73664512,
+        "sha256": "79c85b30b6109c44b019abc891a8ce138125940deaf73714c6b1f21efa3cb07a"
+      },
+      "header": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\r190-film-a01-identity-ready-r190-a02-header-first2048.actual.bin",
+        "bytes": 2048,
+        "sha256": "28bc88cf63f666b1b492e2b34db7ee006053aeb4c5dbba414256fa0b07db789a"
+      },
+      "header_bytes_read": 2048,
+      "utf8_literals": [
+        {
+          "utf8_literal": "1.20.0.4",
+          "offset": 48
+        },
+        {
+          "utf8_literal": "公爵罗贝尔",
+          "offset": 84
+        },
+        {
+          "utf8_literal": "阿普利亚公国",
+          "offset": 107
+        }
+      ],
+      "typed_u32_occurrence_offset": 754
+    }
+  ],
+  "superseded_prelaunch_numeric_expectation": {
+    "prepared": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r190-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11732,
+      "sha256": "482c8a9ed966859172af64b1938de4fbd0338d1de3bc723685421d41ceaba68d"
+    },
+    "old_expected_character_id": 31254,
+    "reason": "Source checkpoint actor was reverified in this exact owned new runtime."
+  },
+  "direct_history_to_runtime_id_field_observed": false,
+  "limits": "Exact machine/PID/create-time/generation/episode; no combat outcome or clean-span qualification."
+}

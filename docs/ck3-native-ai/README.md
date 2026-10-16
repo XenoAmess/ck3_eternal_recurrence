@@ -1511,3 +1511,5 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 background source: [Common native Sway end observation](sway-native-end-source-tree-12004.md#connected-common-native-end-observation-source), fixed actual call -> independent entry/return ring -> existing query/strict/Service. Includes the scope/callback source tree delta; specific end cause remains unknown. `research / SOURCE_ADOPTED_NOT_RUN`.
 
 - 2026-10-11 background source: [Education nonzero option command copying](education-native-option-rows-12004.md#normal-return-command-copy-source-and-a05-consumer). Existing native constructor copies N BYTE bank values/order on normal return; final same-context special payload and matching native/strict formulas connected. `research / SOURCE_ADOPTED_NOT_RUN`; no runtime dispatch credit.
+
+R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。

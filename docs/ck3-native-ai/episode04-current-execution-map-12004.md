@@ -59,3 +59,5 @@ C 的具名 `operation_root_relay.py` 已接入正常 constructor，绑定新 op
 
 
 2026-10-17后续独立知识（machine_id `desktop-3fevhd2-1c74096080`）：[R05低库存搜索、R07七日预算、R08 29591E0枚举与R06变量来源](episode04-r189-followup-source-index-12004.md)。它们形成于source6bf冻结期间，本次闭场后仅入库，未在R190部署或授新业务正例；主批旧pins/历史原件保持，所有分子不变。
+
+R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。

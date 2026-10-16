@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0190",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "completed_days": 12,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.4636043,
+  "within_six_seconds": true,
+  "stopped_reason": "planned_days_complete",
+  "last_date_raw": 53148432,
+  "min_wall_recording_seconds": 110,
+  "actual_recording_wall_seconds_before_finish": 110.00066,
+  "paused_tail_wall_seconds": 75.542529,
+  "paused_tail_readonly_snapshots": 76,
+  "paused_tail_dynamic_business_claim": false,
+  "min_wall_reached": true,
+  "additional_resumes_during_tail": 0,
+  "observed_at_utc": "2026-10-16T20:29:29.386848+00:00"
+}

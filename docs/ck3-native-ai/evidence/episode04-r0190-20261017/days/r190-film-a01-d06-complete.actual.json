@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "date_raw": 53148288,
+  "army": {
+    "army_id": 18,
+    "owner_character_id": 31254,
+    "soldiers": null,
+    "current_province_id": 2635,
+    "move_target_province_id": null,
+    "move_target_observable": false,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "route_source_count": 0,
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "sentinel": {
+    "state": "triggered",
+    "generation": 6,
+    "starting_date_raw": 53148264,
+    "target_date_raw": 53148288,
+    "last_observed_date_raw": 53148288,
+    "trigger_date_raw": 53148288,
+    "speed": 3,
+    "mode": "terminal_or_sentinel",
+    "army_count": 0,
+    "combat_count": 0,
+    "completed_daily_ticks": 1,
+    "intermediate_pause_count": 0,
+    "trigger_flags": 1,
+    "trigger_reasons": [
+      "date_deadline"
+    ],
+    "signed_date_delta_from_target_raw": 0,
+    "overshoot_days": 0,
+    "pause_wrapper_called": true,
+    "pause_observed": true,
+    "terminal_observed": false,
+    "abnormal": false
+  },
+  "business_positive_claim": false
+}

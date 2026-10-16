@@ -36,3 +36,5 @@ R186–R188运行时与a29 native构建的精确源码均为 **`d05b0c780b615faa
 下一轮优先在新准入场次取得R06合格父链或R08 +28/+30真实qualified write与源、同次settlement/payer读回；同时按[R01共同T0](../ck3-native-ai/episode04-ready-t0-decision-12004.md)准备正式ABC，R04县进入、R05自然饥饿、R07同源新冷载两臂分别按[当前缺口表](../ck3-native-ai/episode04-current-execution-map-12004.md)停止线执行。R188片后月界可以作研究解释，不能当100秒片内月界镜头；下一片仍需片内正例和100秒/clean/人工资格。
 
 [本机精确清理](../maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)实际回收C单硬链接allocation **1,642,663,936 B**、D **0**，1000/1000已审叶删除；保留索引和原保护期限。它是过去的本机回执，后续重型写入仍须按通用策略重新核容量，不能重复记账或跨机外推。
+
+R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../ck3-native-ai/episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。

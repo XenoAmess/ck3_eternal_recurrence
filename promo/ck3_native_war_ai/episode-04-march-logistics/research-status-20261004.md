@@ -320,3 +320,5 @@ R04仍condition=false/完整窗缺失，无正例；本次不增加研究、素�
 当前研究核心保持 **R00/R02/R03/R11/R12/R13，6/14＝42.9%**；业务 **4/11＝36.4%**，
 合格动态 **0/11**。R01 ready T0、R04/R05/R06、R07合格配对及正式ABC仍按各自真实缺项继续；
 69段配音不等于新版complete film。精确save/CLOSED、两个enum修正post SHA及清理后的源可用性见新交接。
+
+R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../../docs/ck3-native-ai/episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。
