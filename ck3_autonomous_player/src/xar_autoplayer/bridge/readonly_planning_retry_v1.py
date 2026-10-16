@@ -1,8 +1,11 @@
 """One fresh planning retry for proven read-only frame precondition races."""
 from contextvars import ContextVar
 import json
+import re
 
-from .driver import BridgeUnavailableError, UnsupportedStepError
+from .driver import (
+    BridgeUnavailableError, PreSubmissionRevisionMismatchError, UnsupportedStepError,
+)
 
 _RETRY_BUDGET = ContextVar("readonly_planning_retry_budget_v1", default=None)
 _HEIR_PRECONDITION = "current heir relationship needs a paused living-player map frame"
@@ -54,6 +57,20 @@ def _campaign_root_executor_not_entered(error):
 def classify_readonly_planning_error_v1(error):
     if str(error) == _HEIR_PRECONDITION:
         return {"class": "heir_readonly_frame_precondition", "business_submission": False}
+    if isinstance(error, PreSubmissionRevisionMismatchError):
+        match = re.fullmatch(
+            r"campaign-root revision mismatch: expected ([0-9]{1,19}), current ([0-9]{1,19})",
+            str(error),
+        )
+        if match is not None:
+            expected, current = map(int, match.groups())
+            if (str(expected) == match[1] and str(current) == match[2]
+                    and 0 <= expected < current < 2**63):
+                return {"class": "campaign_root_local_revision_changed_before_send",
+                        "business_submission": False,
+                        "expected_public_revision": expected,
+                        "current_public_revision": current,
+                        "failed_root_query_native_request_sent": False}
     from .native_driver import _NativeCommandRejectedError
     if isinstance(error, _NativeCommandRejectedError):
         not_entered = _campaign_root_executor_not_entered(error)
@@ -75,6 +92,32 @@ def classify_readonly_planning_error_v1(error):
         return None
     failure = result.get("campaign_root_preflight_failure_v1")
     predicates = failure.get("predicates") if isinstance(failure, dict) else None
+    if isinstance(failure, dict) and failure.get("stage") == "preflight_revision_changed":
+        required = {"query_type", "stage", "request_native_revision", "worker_native_revision",
+                    "predicates", "read_attempted", "cached_scalars", "observed_scalars",
+                    "differing_fields", "truncated"}
+        expected_predicates = {"revision_matches": False, "worker_ready": True,
+                               "previous_present": True, "observed_read": False,
+                               "observed_equal": False}
+        if (set(failure) != required or failure.get("query_type") != "campaign"
+                or failure.get("read_attempted") is not False
+                or failure.get("truncated") is not False
+                or type(failure.get("request_native_revision")) is not int
+                or type(failure.get("worker_native_revision")) is not int
+                or not 0 < failure["request_native_revision"] < failure["worker_native_revision"]
+                or failure["request_native_revision"] != request.get("expected_revision")
+                or not isinstance(failure.get("cached_scalars"), str)
+                or not failure["cached_scalars"]
+                or failure.get("observed_scalars") is not None
+                or failure.get("differing_fields") is not None
+                or not isinstance(predicates, dict) or set(predicates) != set(expected_predicates)
+                or any(predicates[k] is not value for k, value in expected_predicates.items())):
+            return None
+        return {"class": "campaign_root_preflight_revision_changed_before_read",
+                "business_submission": False, "native_request_id": request_id,
+                "source_native_revision": failure["request_native_revision"],
+                "worker_native_revision": failure["worker_native_revision"],
+                "read_attempted": False}
     if (not isinstance(failure, dict) or failure.get("query_type") != "campaign"
             or failure.get("stage") != "preflight_native_snapshot_changed"
             or failure.get("read_attempted") is not True or failure.get("truncated") is not False

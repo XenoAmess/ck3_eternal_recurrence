@@ -11,3 +11,30 @@
 原始 R101 响应 `820-r0101-native85-ordinary-after-read-stop-chunk01-000005-normal.json` 仅有 `native gameplay step failed: state_changed`，没有原生 request 身份；不能追认为 campaign-root full-changed 已实证，也不能据此判定婚姻业务失败。其后 860 是新鲜 core frame，870 是 SDK 缓存 snapshot；两者都不能补证旧请求的五项 preflight 值。原 RED 保留，累计已保存普通日仍为 6082，M7 自然跨代次数仍为 0。
 
 来源候选位于当前获准源工作包的 `sdk86-candidates/native-root-context-diagnostic01/` 与 `native-rejection-candidate01/`；原准入和复核期限不续。部署时须将共享 child DTO 的三项实际 production TU 一起重编，保留对象各自的真实 source pins；混合对象的全局 native source head 继续为 null。没有执行测试、fixture、FIRST 或功能复验。
+
+## 2026-10-16：两种已发生的只读版本竞态
+
+`machine_id=xenoamess-full-tower-eb9d2c1186`；下面是新证据，不追认上文历史运行。
+罗贝尔长局 P14 AUTO20 在原生根查询读取前被拒绝：`preflight_revision_changed`，
+request native370、worker371、`read_attempted=false`，五项谓词分别为 false/true/true/false/false。
+P17 AUTO109 则发生于 Service 的 `query_campaign_root_context_v1`，公共 revision64/65
+不符；源码确认该检查在 `execute_step` 之前，因此不存在这条失败查询的 native request ID。
+两次原会话均通过外置精确只读恢复继续，没有重放原 AUTO。
+
+公共 `readonly_planning_retry_v1` 现在把这两个具体类别接入已有一次 fresh planning 预算。
+原生类别必须保留完整实际 request/result 身份与读取前诊断；Service 本地检查改用既有
+`PreSubmissionRevisionMismatchError` 子类，只有精确 campaign-root 文本且 current > expected
+才纳入此分支。任意裸 `BridgeUnavailableError` 同文案不会被接受。重新调用整个只读规划
+流程取得新 snapshot，不重用旧 planning view，不重放 `auto_turn` 或动作执行；嵌套调用仍
+共用一次预算。timeout、业务 step 和无法证明读取前拒绝的错误继续保留原失败。
+
+9 项定向测试及 25 个子测试通过，包含实际 Service 本地检查未调用 execute，以及现有
+规划 wrapper 的一次重规划。P14 原件诊断与 P17 原件文本分别适配通过；P14 测试使用由
+实际诊断重建的 envelope，明确不是原始 native packet。公共修复尚未部署到活跃 P18 SDK。
+这不授任何游戏日、动作、战争胜利或完整 30 年信用。
+
+本机原件索引为 `continuation42-cold-prep/p14-responses/0020-1-result.json`、
+`p17-responses/0109-1-result.json` 和
+`ROOT-P14-P17-PUBLIC-READONLY-RETRY-VERIFICATION.json`；源摘要保存在最后一份小回执。
+按通用存储策略于 2026-10-23 复核最小证据。本轮未改 Native DLL、运行 SDK 或 Game；
+Python 预检/重规划逻辑不适用 `open_kaishek` 的游戏脚本语义预验。

@@ -7611,7 +7611,7 @@ class GameplayBridgeService:
                 "expected_revision must be a non-negative integer"
             )
         if expected_revision != revision:
-            raise BridgeUnavailableError(
+            raise PreSubmissionRevisionMismatchError(
                 "campaign-root revision mismatch: expected "
                 f"{expected_revision}, current {revision}"
             )
