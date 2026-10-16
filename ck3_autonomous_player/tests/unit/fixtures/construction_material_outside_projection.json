@@ -1,0 +1,536 @@
+{
+  "fixture_boundary": "Selected actual paused frame, original applied subject (cash/budget/start nested copies omitted), and complete world projection. Native envelope/current worker reset is synthetic in test; no Game calls.",
+  "original_response_sha256": {
+    "0532-1-result.json": "a04bb2d286991743b24a53d48eef459c76fb313910ee9cd3e988ec737ba0b818",
+    "0533-1-result.json": "c31dd4aefee4be6013570a7caeb576dff960aef9644c886ba1f1e896f2db0976",
+    "0534-1-result.json": "0a06ebe5dc226c64fcdacf9e1937be88b76f448178ae2d897b0decd1b5cdabe5"
+  },
+  "subject": {
+    "status": "applied",
+    "postcondition_verified": true,
+    "completion_status": "in_progress",
+    "construction_progress_observation": {
+      "status": "observed",
+      "snapshot_id": "native:437",
+      "native_revision": 437,
+      "date_raw": 53347776,
+      "native_remaining_work_raw": 25722647,
+      "native_progress_divisor_raw": 60000
+    },
+    "construction_province_income_observation": {
+      "status": "observed",
+      "barony_title_id": 2192,
+      "province_id": 2635,
+      "snapshot_id": "native:437",
+      "native_revision": 437,
+      "date_raw": 53347776,
+      "native_province_monthly_income_raw": 65303
+    },
+    "pre_province_income_observation": {
+      "status": "observed",
+      "barony_title_id": 2192,
+      "province_id": 2635,
+      "snapshot_id": "native:1146",
+      "native_revision": 1146,
+      "date_raw": 53320344,
+      "native_province_monthly_income_raw": 61377
+    },
+    "observed_province_monthly_income_delta_raw": null,
+    "completion_last_check_date_raw": 53347776,
+    "completion_observed_date_raw": null,
+    "pre_player_monthly_gold_income_raw": 1466048,
+    "observed_player_monthly_gold_income_raw": 1214131,
+    "income_observed_date_raw": 53347776,
+    "observed_player_monthly_income_delta_raw": null,
+    "action_request_id": "construction-submit-f2c0d5a4664e4ded86992fabbc7a17b6",
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "actor_character_id": 40526,
+    "pre_native_revision": 1146,
+    "pre_date_raw": 53320344,
+    "pre_proof_epoch": 1017537,
+    "source_bridge_pid": 255216,
+    "source_bridge_creation_date": "20261015190427.377448+480",
+    "post_snapshot_id": "native:437",
+    "post_public_revision": 435,
+    "post_native_revision": 437,
+    "post_date_raw": 53347776,
+    "post_proof_epoch": 317047,
+    "post_player_gold_raw": 43308182,
+    "post_bridge_pid": 249712,
+    "post_bridge_creation_date": "20261015230508.297017+480",
+    "candidate": {
+      "barony_title_id": 2192,
+      "province_id": 2635,
+      "building_type_id": 596,
+      "slot_index": 2,
+      "stock_gold_cost_raw": 14250000,
+      "gold_before_raw": 34258452,
+      "building_key": "farm_estates_01",
+      "authored_monthly_income_hundredths": 70,
+      "authored_monthly_income_delta_hundredths": 45,
+      "old_authored_monthly_income_hundredths": 25,
+      "old_building_key": "curtain_walls_01",
+      "slot_was_empty": false
+    },
+    "native_ack": {
+      "schema_version": 1,
+      "advertised": false,
+      "status": "pending_receipt",
+      "candidate_failure": "none",
+      "native_failure": "none",
+      "stock_candidate_ready": true,
+      "production_native_path": true,
+      "applied": false,
+      "proof_epoch": 1017537,
+      "actor_character_id": 40526,
+      "barony_title_id": 2192,
+      "province_id": 2635,
+      "building_type_id": 596,
+      "slot_index": 2,
+      "gold_before_raw": 34258452,
+      "stock_gold_cost_raw": 14250000,
+      "gold_after_reserve_raw": 20008452,
+      "receiver_command_sequence": 1,
+      "validator_calls": 1,
+      "materialize_calls": 1,
+      "receiver_calls": 1
+    },
+    "readonly_material_recheck": {
+      "schema": "xar.construction-readonly-material-recheck.v1",
+      "native_query_request_id": "construction-read-cb42e08940d7491c8f08090b68da5809",
+      "source_frame": {
+        "snapshot_id": "native:437",
+        "revision": 435,
+        "native_revision": 437,
+        "date_raw": 53347776,
+        "episode_run_id": "native-40526-c7a6edcc32b8",
+        "actor_character_id": 40526
+      },
+      "post_bridge_pid": 249712,
+      "post_bridge_creation_date": "20261015230508.297017+480",
+      "post_proof_epoch": 317047,
+      "original_action_counters_preserved": true,
+      "native_submit_calls": 0
+    }
+  },
+  "material": {
+    "exact_ck3_build": "1.20.0.4",
+    "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "native_mode3_inputs_status": "conditional_projection_available",
+    "native_mode3_inputs_reason": null,
+    "status": "material_source",
+    "world": {
+      "schema_version": 1,
+      "advertised": false,
+      "read_only": true,
+      "status": "source_available",
+      "failure": "none",
+      "definition_identity_diagnostic": {
+        "registry_count": null,
+        "failed_index": null,
+        "stage": "none",
+        "observed_vtable_rva": null,
+        "observed_building_type_id": null
+      },
+      "snapshot_revision": 513,
+      "date_raw": 53348928,
+      "player_character_id": 40526,
+      "definition_source_count": 989,
+      "final_legality_checks": 1368,
+      "native_final_legality_evaluated": true,
+      "native_cost_evaluated": false,
+      "native_cost_checks": 0,
+      "player_gold_raw": 45471355,
+      "player_gold_scale": 100000,
+      "checks_truncated": true,
+      "positive_income_coverage_complete": true,
+      "cost_ready": false,
+      "construction_action_ready": false,
+      "directly_held_barony_provinces": [
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617
+        }
+      ],
+      "active_constructions": [
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "active": true,
+          "building_type_id": 532,
+          "slot_index": 3,
+          "initiator_character_id": 40526,
+          "native_remaining_work_raw": 37555727,
+          "native_progress_divisor_raw": 110000,
+          "native_province_monthly_income_observed": true,
+          "native_province_monthly_income_raw": 117705
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617,
+          "active": true,
+          "building_type_id": 604,
+          "slot_index": 1,
+          "initiator_character_id": 40526,
+          "native_remaining_work_raw": 8055657,
+          "native_progress_divisor_raw": 90000,
+          "native_province_monthly_income_observed": true,
+          "native_province_monthly_income_raw": 146970
+        }
+      ],
+      "completed_buildings_observed": true,
+      "completed_buildings": [
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "building_type_id": 8,
+          "slot_index": 0,
+          "building_key": "castle_01"
+        },
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "building_type_id": 565,
+          "slot_index": 1,
+          "building_key": "common_tradeport_02"
+        },
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "building_type_id": 604,
+          "slot_index": 2,
+          "building_key": "cereal_fields_01"
+        },
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "building_type_id": 668,
+          "slot_index": 3,
+          "building_key": "curtain_walls_01"
+        },
+        {
+          "barony_title_id": 2232,
+          "province_id": 2619,
+          "building_type_id": 580,
+          "slot_index": 4,
+          "building_key": "hunting_grounds_01"
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617,
+          "building_type_id": 796,
+          "slot_index": 0,
+          "building_key": "temple_01"
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617,
+          "building_type_id": 572,
+          "slot_index": 1,
+          "building_key": "pastures_01"
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617,
+          "building_type_id": 581,
+          "slot_index": 2,
+          "building_key": "hunting_grounds_02"
+        },
+        {
+          "barony_title_id": 2235,
+          "province_id": 2617,
+          "building_type_id": 605,
+          "slot_index": 3,
+          "building_key": "cereal_fields_02"
+        }
+      ],
+      "legal_samples": [],
+      "native_mode3_inputs": {
+        "schema": "xar.ck3.construction-owner-mode3-inputs-12004-v1",
+        "source_executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "current_frame_observed": true,
+        "failure": "none",
+        "snapshot_revision": 513,
+        "date_raw": 53348928,
+        "player_character_id": 40526,
+        "holdings": [
+          {
+            "barony_title_id": 2232,
+            "province_id": 2619,
+            "inputs": {
+              "snapshot_revision": 513,
+              "province_id": 2619,
+              "unavailable_input": "",
+              "context_predicate_2c25010": true,
+              "inputs_observed": true,
+              "per_building_attribution": false,
+              "observed_native_producer_call": false,
+              "realized_holder_net": false,
+              "all_reached_inputs_observed": true,
+              "factor_before_context": 66500,
+              "conditional_aggregate_raw": 117705,
+              "loaded_publisher_718_raw": 117705,
+              "context_factor_raw": 60000,
+              "owner_factor_raw": 100000,
+              "loaded_key_3f_raw": 295000,
+              "selected_a3_or_a4_key": 163,
+              "selected_a6_or_a7_key": 166,
+              "context_dynamic_key": 1400,
+              "child_28be0b0_signed_eax": 1,
+              "child_28b9300_signed_eax": 0,
+              "components": [
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 162,
+                  "reached": true,
+                  "raw_q64": 8000,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46670656,
+                  "key_u16": 165,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 163,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46670656,
+                  "key_u16": 166,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46281536,
+                  "key_u16": 489,
+                  "reached": true,
+                  "raw_q64": -49000,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46281536,
+                  "key_u16": 1400,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 38178771,
+                  "key_u16": 0,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46373760,
+                  "key_u16": 0,
+                  "reached": true,
+                  "raw_q64": 107500,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 70,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 490,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                }
+              ]
+            }
+          },
+          {
+            "barony_title_id": 2235,
+            "province_id": 2617,
+            "inputs": {
+              "snapshot_revision": 513,
+              "province_id": 2617,
+              "unavailable_input": "",
+              "context_predicate_2c25010": true,
+              "inputs_observed": true,
+              "per_building_attribution": false,
+              "observed_native_producer_call": false,
+              "realized_holder_net": false,
+              "all_reached_inputs_observed": true,
+              "factor_before_context": 106500,
+              "conditional_aggregate_raw": 146970,
+              "loaded_publisher_718_raw": 146970,
+              "context_factor_raw": 60000,
+              "owner_factor_raw": 100000,
+              "loaded_key_3f_raw": 230000,
+              "selected_a3_or_a4_key": 163,
+              "selected_a6_or_a7_key": 166,
+              "context_dynamic_key": 1400,
+              "child_28be0b0_signed_eax": 1,
+              "child_28b9300_signed_eax": null,
+              "components": [
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 162,
+                  "reached": true,
+                  "raw_q64": -2000,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46670656,
+                  "key_u16": 165,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 163,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46670656,
+                  "key_u16": 166,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46281536,
+                  "key_u16": 489,
+                  "reached": true,
+                  "raw_q64": 1000,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46281536,
+                  "key_u16": 1400,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 38178771,
+                  "key_u16": 0,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46373760,
+                  "key_u16": 0,
+                  "reached": true,
+                  "raw_q64": 107500,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 70,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                },
+                {
+                  "call_rva": 46454064,
+                  "key_u16": 490,
+                  "reached": true,
+                  "raw_q64": 0,
+                  "unavailable_input": ""
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "native_query_request_id": "construction-read-88617b6cc48f420ea44e1080ad821d67",
+    "proof_epoch": 508415,
+    "source_frame": {
+      "snapshot_id": "native:513",
+      "revision": 511,
+      "native_revision": 513,
+      "date_raw": 53348928,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "actor_character_id": 40526
+    }
+  },
+  "frame": {
+    "date_raw": 53348928,
+    "speed": 4,
+    "paused": true,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 40526,
+      "alive": true,
+      "source": "native",
+      "stress_points": 187,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 513,
+        "date_raw": 53348928,
+        "played_character_id": 40526,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 30887,
+      "spouse_ids": [
+        30887
+      ]
+    },
+    "played_character_gold": {
+      "raw": 45471355,
+      "scale": 100000
+    },
+    "active_event": null,
+    "pending_character_interaction": null,
+    "active_wars": [],
+    "player_armies": [
+      {
+        "army_id": 285213008,
+        "owner_character_id": 40526,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "snapshot_id": "native:513",
+    "revision": 511,
+    "native_revision": 513,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "backend_id": "native-headless"
+  }
+}

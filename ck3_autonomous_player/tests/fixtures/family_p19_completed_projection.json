@@ -1,0 +1,932 @@
+{
+  "peace": {
+    "570": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53349000,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 3,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "active"
+        },
+        "plan": {
+          "family_child_education_focus": {
+            "observations": [],
+            "pending": null,
+            "receipt": null
+          },
+          "family_education_needs": {
+            "known_empty": true,
+            "rows": []
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 515,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 149,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53348928,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 22,
+            "native_revision": 515,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "life-advance"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53348928,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 515,
+          "revision": 513,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:515",
+          "status": "complete"
+        },
+        "result": {
+          "active_event": null,
+          "ending_date_raw": 53349144,
+          "paused": true,
+          "pending_character_interaction": null,
+          "progress_status": "postcondition",
+          "starting_date_raw": 53348928,
+          "step": "life-advance"
+        },
+        "selected_step": "life-advance",
+        "status": "executed"
+      },
+      "source_response": "0570-1-result.json",
+      "source_sha256": "dd3a861cb0ab80b4b6ca48c3dbd90bdab785dd0c36d7489d19c21da1f88082ce"
+    },
+    "576": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53349000,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 0,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "inactive"
+        },
+        "plan": {
+          "family_child_education_focus": {
+            "observations": [],
+            "pending": null,
+            "receipt": null
+          },
+          "family_education_needs": {
+            "known_empty": true,
+            "rows": []
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 526,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 152,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53349144,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 23,
+            "native_revision": 526,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "life-advance"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53349144,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 526,
+          "revision": 524,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:526",
+          "status": "complete"
+        },
+        "result": {
+          "active_event": null,
+          "ending_date_raw": 53349360,
+          "paused": true,
+          "pending_character_interaction": null,
+          "progress_status": "postcondition",
+          "starting_date_raw": 53349144,
+          "step": "life-advance"
+        },
+        "selected_step": "life-advance",
+        "status": "executed"
+      },
+      "source_response": "0576-1-result.json",
+      "source_sha256": "67ea58da297ae031d1bae45c28395e0ff5ba32804b0a9564ab9ae86ede19c4e2"
+    },
+    "580": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53349000,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 0,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "inactive"
+        },
+        "plan": {
+          "family_child_education_focus": {
+            "observations": [],
+            "pending": null,
+            "receipt": null
+          },
+          "family_education_needs": {
+            "known_empty": true,
+            "rows": []
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 536,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 155,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53349360,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 24,
+            "native_revision": 536,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "life-advance"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53349360,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 536,
+          "revision": 534,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:536",
+          "status": "complete"
+        },
+        "result": {
+          "active_event": null,
+          "ending_date_raw": 53349600,
+          "paused": true,
+          "pending_character_interaction": null,
+          "progress_status": "postcondition",
+          "starting_date_raw": 53349360,
+          "step": "life-advance"
+        },
+        "selected_step": "life-advance",
+        "status": "executed"
+      },
+      "source_response": "0580-1-result.json",
+      "source_sha256": "a74963b199099efcc75cef2cf16e0b9662edcdba2044db3c61f51457b0890ce5"
+    },
+    "584": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53349000,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 0,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "inactive"
+        },
+        "plan": {
+          "family_child_education_focus": {
+            "observations": [],
+            "pending": null,
+            "receipt": null
+          },
+          "family_education_needs": {
+            "known_empty": true,
+            "rows": []
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 546,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 158,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53349600,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 25,
+            "native_revision": 546,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "life-advance"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53349600,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 546,
+          "revision": 544,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:546",
+          "status": "complete"
+        },
+        "result": {
+          "active_event": null,
+          "ending_date_raw": 53349816,
+          "paused": true,
+          "pending_character_interaction": null,
+          "progress_status": "postcondition",
+          "starting_date_raw": 53349600,
+          "step": "life-advance"
+        },
+        "selected_step": "life-advance",
+        "status": "executed"
+      },
+      "source_response": "0584-1-result.json",
+      "source_sha256": "b839c45c8e1f3d0269d4f090bb963f648a130565a0ae26a2324cc474777206f5"
+    }
+  },
+  "provenance": "Only listed fields copied from immutable completed P19 responses; no business claims added.",
+  "rolling": {
+    "32": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 1,
+          "cooldown_until_date_raw": 53339376,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 0,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "inactive"
+        },
+        "plan": {
+          "_family_wartime_review_v1": {
+            "actor_character_id": 40526,
+            "date_raw": 53340048,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "expected_successor_character_id": 39979,
+            "heir_character_id": 39979,
+            "native_revision": 22,
+            "player_spouse_signature": [
+              null,
+              30887,
+              [
+                30887
+              ]
+            ],
+            "status": "reviewed"
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 22,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 18,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53340048,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 3,
+            "native_revision": 22,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "query-war-termination-options-134217770"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53340048,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 22,
+          "revision": 20,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:22",
+          "status": "complete"
+        },
+        "result": {
+          "accepted": true,
+          "status": "available",
+          "step": "query-war-termination-options-134217770"
+        },
+        "selected_step": "query-war-termination-options-134217770",
+        "status": "executed"
+      },
+      "source_response": "0032-1-result.json",
+      "source_sha256": "9f8d8ef9103278e2a0a8c1f9c8c660d60adc52e87e646d5443097800825591dc"
+    },
+    "40": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53340936,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 30,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "active"
+        },
+        "plan": {
+          "_family_wartime_review_v1": {
+            "actor_character_id": 40526,
+            "date_raw": 53340216,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "expected_successor_character_id": 39979,
+            "heir_character_id": 39979,
+            "native_revision": 31,
+            "player_spouse_signature": [
+              null,
+              30887,
+              [
+                30887
+              ]
+            ],
+            "status": "reviewed"
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 31,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 21,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53340216,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 4,
+            "native_revision": 31,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "query-war-termination-options-134217770"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53340216,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 31,
+          "revision": 29,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:31",
+          "status": "complete"
+        },
+        "result": {
+          "accepted": true,
+          "status": "available",
+          "step": "query-war-termination-options-134217770"
+        },
+        "selected_step": "query-war-termination-options-134217770",
+        "status": "executed"
+      },
+      "source_response": "0040-1-result.json",
+      "source_sha256": "962dbccfefe03b6786c02cfe3c0b7f04f7312fdd913f15c49fdc88bd54b7a565"
+    },
+    "87": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 1,
+          "cooldown_until_date_raw": 53340936,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 0,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "inactive"
+        },
+        "plan": {
+          "_family_wartime_review_v1": {
+            "actor_character_id": 40526,
+            "date_raw": 53341056,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "expected_successor_character_id": 39979,
+            "heir_character_id": 39979,
+            "native_revision": 78,
+            "player_spouse_signature": [
+              null,
+              30887,
+              [
+                30887
+              ]
+            ],
+            "status": "reviewed"
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 78,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 32,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53341056,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 5,
+            "native_revision": 78,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "query-war-termination-options-134217770"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53341056,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 78,
+          "revision": 76,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:78",
+          "status": "complete"
+        },
+        "result": {
+          "accepted": true,
+          "status": "available",
+          "step": "query-war-termination-options-134217770"
+        },
+        "selected_step": "query-war-termination-options-134217770",
+        "status": "executed"
+      },
+      "source_response": "0087-1-result.json",
+      "source_sha256": "c4f4d3c678f2ed46fd67dc31535531b461fabbbdea296c0e00949269763b7b5c"
+    },
+    "95": {
+      "projected": {
+        "family_wartime_opportunity_cooldown_v1": {
+          "consecutive_noop_dates": 0,
+          "cooldown_until_date_raw": 53341944,
+          "expected_successor_character_id": 39979,
+          "heir_character_id": 39979,
+          "player_spouse_signature": [
+            null,
+            30887,
+            [
+              30887
+            ]
+          ],
+          "remaining_days": 30,
+          "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+          "status": "active"
+        },
+        "plan": {
+          "_family_wartime_review_v1": {
+            "actor_character_id": 40526,
+            "date_raw": 53341224,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "expected_successor_character_id": 39979,
+            "heir_character_id": 39979,
+            "native_revision": 87,
+            "player_spouse_signature": [
+              null,
+              30887,
+              [
+                30887
+              ]
+            ],
+            "status": "reviewed"
+          },
+          "family_marriage_current_relationship": {
+            "advertised": false,
+            "betrothed_character_id": null,
+            "bilateral_verified": true,
+            "heir_character_id": 39979,
+            "native_revision": 87,
+            "primary_spouse_character_id": null,
+            "read_only": true,
+            "root_query_sequence": 35,
+            "schema": "xar.ck3.current-first-heir-relationship.v1",
+            "spouse_character_ids": [],
+            "status": "available"
+          },
+          "family_marriage_private_diagnostic": {
+            "advertised": false,
+            "date_raw": 53341224,
+            "episode_run_id": "native-40526-c7a6edcc32b8",
+            "legality_query_sequence": 6,
+            "native_revision": 87,
+            "observed_first_heir_character_id": 39979,
+            "read_only": true,
+            "rows": [
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              },
+              {
+                "rejection_reasons": [
+                  "lineality_not_heir_aligned"
+                ],
+                "status": "available"
+              }
+            ],
+            "schema": "xar.ck3.first-heir-marriage-private-diagnostic.v1",
+            "selected_candidate_character_id": null
+          },
+          "family_marriage_status": "no_positive_observed_marriage_opportunity",
+          "selected_step": "query-war-termination-options-134217770"
+        },
+        "planning_source_frame": {
+          "actor_character_id": 40526,
+          "bridge_pid": 249712,
+          "connection_generation": 2,
+          "date_raw": 53341224,
+          "episode_run_id": "native-40526-c7a6edcc32b8",
+          "native_revision": 87,
+          "revision": 85,
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "snapshot_id": "native:87",
+          "status": "complete"
+        },
+        "result": {
+          "accepted": true,
+          "status": "available",
+          "step": "query-war-termination-options-134217770"
+        },
+        "selected_step": "query-war-termination-options-134217770",
+        "status": "executed"
+      },
+      "source_response": "0095-1-result.json",
+      "source_sha256": "d799dca2be2205824198a9dd94603026250af9c139cbaaa0c1b07e22b6e39565"
+    }
+  },
+  "schema": "family-p19-completed-receipt-projection/v1"
+}

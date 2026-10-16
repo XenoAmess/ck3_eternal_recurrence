@@ -2802,18 +2802,49 @@ class GameplayBridgeService:
             wartime_arbitration=wartime_arbitration)
         def mark_ordinary_review(current: dict[str, object]) -> dict[str, object]:
             current_plan = current.get("plan")
-            if (ordinary_review and isinstance(current_plan, dict)
-                    and current_plan.get("selected_step") == "life-advance"
-                    and isinstance(current_plan.get("current_betrothal_relationship"), dict)):
-                return {**current, "plan": {**current_plan,
-                    "_family_cooldown_ordinary_review_v1": True}}
-            return current
+            if (not ordinary_review or not isinstance(current_plan, dict)
+                    or current_plan.get("selected_step") != "life-advance"):
+                return current
+            additions: dict[str, object] = {}
+            if isinstance(current_plan.get("current_betrothal_relationship"), dict):
+                additions["_family_cooldown_ordinary_review_v1"] = True
+            if (current.get("snapshot_id") == snapshot.get("snapshot_id")
+                    and current.get("revision") == snapshot.get("revision")
+                    and isinstance(current_plan.get("family_marriage_current_relationship"), dict)
+                    and isinstance(current_plan.get("family_marriage_private_diagnostic"), dict)
+                    and isinstance(current_plan.get("family_education_needs"), dict)
+                    and current_plan["family_education_needs"].get("known_empty") is True
+                    and current_plan["family_education_needs"].get("rows") == []
+                    and isinstance(current_plan.get("family_child_education_focus"), dict)
+                    and current_plan["family_child_education_focus"].get("observations") == []
+                    and current_plan["family_child_education_focus"].get("pending") is None
+                    and current_plan["family_child_education_focus"].get("receipt") is None
+                    and not any(key in current_plan for key in (
+                        "family_marriage_pending", "current_betrothal_pending"))):
+                frame = self._observed_planning_source_frame(snapshot)
+                if frame.get("status") == "complete":
+                    additions["_family_wartime_review_v1"] = {
+                        "status": "reviewed", "date_raw": frame["date_raw"],
+                        "native_revision": frame["native_revision"],
+                        "actor_character_id": frame["actor_character_id"],
+                        "episode_run_id": frame["episode_run_id"],
+                        "heir_character_id": current_plan["family_marriage_current_relationship"].get(
+                            "heir_character_id"),
+                        "player_spouse_signature": wartime_family_cadence.player_spouse_signature(snapshot),
+                        "expected_successor_character_id": wartime_family_cadence.expected_successor(snapshot),
+                    }
+            return {**current, "plan": {**current_plan, **additions}} if additions else current
         skipped = self._skip_private_family_opportunity_during_cooldown_v1(
             planned, snapshot, prewar_arbitration=prewar_arbitration,
             wartime_arbitration=wartime_arbitration,
         )
         if skipped is not None:
             return skipped
+        if ordinary_review:
+            repeated_noop = self._skip_private_family_wartime_during_cooldown_v1(
+                planned, snapshot)
+            if repeated_noop is not None:
+                return repeated_noop
         education_relationship = None
         if getattr(
             self.driver, "allow_private_current_first_heir_betrothal_fulfillment", False
@@ -3312,7 +3343,6 @@ class GameplayBridgeService:
                 or snapshot.get("paused") is not True
                 or snapshot.get("map_ready") is not True
                 or not isinstance(snapshot.get("active_wars"), list)
-                or not snapshot["active_wars"]
                 or snapshot.get("active_event") is not None
                 or snapshot.get("pending_character_interaction") is not None
                 or snapshot.get("one_life_terminal_reason") is not None
@@ -17429,3 +17459,209 @@ def _route_plan_to_available_step(
         "required_step": selected,
         "reason": f"selected backend does not implement gameplay step {selected}",
     }
+
+from functools import wraps as _optional_check_wraps
+
+# Six independent optional checks: three complete no-action frames, then 30 game days.
+from ..optional_check_cadence_v1 import (
+    frame as _optional_check_cadence_frame,
+    deferred as _optional_check_cadence_deferred,
+    record as _optional_check_cadence_record,
+    action_recorded as _optional_check_action_recorded,
+)
+
+_optional_check_council_original = GameplayBridgeService._plan_private_council_normal_v1
+_optional_check_crown_original = GameplayBridgeService._plan_private_crown_normal_v1
+_optional_check_feast_original = GameplayBridgeService._plan_private_feast_normal_v1
+_optional_check_lifestyle_original = GameplayBridgeService._plan_private_lifestyle_trial_v1
+_optional_check_construction_original = plan_construction_private
+_optional_check_ransom_original = plan_ransom_private
+
+
+def _optional_check_frame(planned):
+    for key in ("_private_council_snapshot_v1", "_private_construction_snapshot_v1",
+                "_private_family_marriage_snapshot_v1", "_private_m5_snapshot_v1"):
+        snapshot = planned.get(key)
+        if isinstance(snapshot, dict):
+            found = _optional_check_cadence_frame(snapshot)
+            if found is not None:
+                return found
+    return None
+
+
+def _optional_check_cadence_state(driver):
+    state_dir = getattr(driver, "state_dir", None)
+    return state_dir if isinstance(state_dir, Path) else None
+
+
+def _optional_check_due(driver, domain, current):
+    state_dir = _optional_check_cadence_state(driver)
+    if state_dir is None or current is None:
+        return None
+    return _optional_check_cadence_deferred(state_dir, domain, current)
+
+
+def _optional_check_record(driver, domain, current, *, action=False):
+    state_dir = _optional_check_cadence_state(driver)
+    if state_dir is not None and current is not None:
+        return _optional_check_cadence_record(state_dir, domain, current,
+                                   actual_action=action)
+    return None
+
+
+def _optional_check_result(driver, domain, current, before_step, result):
+    after_plan = result.get("plan")
+    if current is None or not isinstance(after_plan, dict):
+        return result
+    state_dir = _optional_check_cadence_state(driver)
+    if state_dir is not None and _optional_check_action_recorded(state_dir, domain, current):
+        return result
+    step = after_plan.get("selected_step")
+    if step == before_step or step in ("life-advance", None) or (
+            isinstance(step, str) and step.startswith("query-")):
+        _optional_check_record(driver, domain, current)
+    return result
+
+
+def _optional_check_skip(planned, field, state):
+    result = dict(planned)
+    result["plan"] = {**planned["plan"], field: state}
+    return result
+
+
+@_optional_check_wraps(_optional_check_council_original)
+def _optional_check_council(self, planned, available_steps):
+    current = _optional_check_frame(planned)
+    self._optional_check_current_frame = current
+    plan = planned.get("plan")
+    if current is not None and isinstance(plan, dict):
+        from ..private_council_formal_consumer_v1 import read_council_ledger
+        state_dir = _optional_check_cadence_state(self.driver)
+        ledger = read_council_ledger(state_dir) if state_dir is not None else {}
+        if isinstance(ledger.get("pending"), dict):
+            _optional_check_record(self.driver, "council", current, action=True)
+        else:
+            skipped = _optional_check_due(self.driver, "council", current)
+            if skipped is not None:
+                result = _optional_check_skip(planned, "council_periodic_review", skipped)
+                result.pop("_private_council_snapshot_v1", None)
+                result.pop("_private_council_history_v1", None)
+                return result
+    return _optional_check_result(self.driver, "council", current,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_council_original(self, planned, available_steps))
+
+
+@_optional_check_wraps(_optional_check_crown_original)
+def _optional_check_crown(self, planned):
+    current = getattr(self, "_optional_check_current_frame", None)
+    plan = planned.get("plan")
+    if (getattr(self.driver, "allow_private_realm_law_action", False) is True
+            and getattr(self.driver, "allow_private_realm_law_paused_query", False) is True
+            and current is not None and isinstance(plan, dict)):
+        from ..crown_authority_formal_consumer_v1 import read_crown_authority_state_v1
+        state_dir = _optional_check_cadence_state(self.driver)
+        ledger = read_crown_authority_state_v1(state_dir) if state_dir is not None else {}
+        if isinstance(ledger.get("pending"), dict):
+            _optional_check_record(self.driver, "crown", current, action=True)
+        else:
+            skipped = _optional_check_due(self.driver, "crown", current)
+            if skipped is not None:
+                return _optional_check_skip(planned, "crown_periodic_review", skipped)
+    return _optional_check_result(self.driver, "crown", current,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_crown_original(self, planned))
+
+
+@_optional_check_wraps(_optional_check_feast_original)
+def _optional_check_feast(self, planned):
+    current = getattr(self, "_optional_check_current_frame", None)
+    plan = planned.get("plan")
+    if (getattr(self.driver, "allow_private_activity_feast_stage5_start_action", False) is True
+            and current is not None and isinstance(plan, dict)):
+        from ..activity_feast_stage5_start_formal_consumer import read_feast_start_ledger
+        state_dir = _optional_check_cadence_state(self.driver)
+        ledger = read_feast_start_ledger(state_dir) if state_dir is not None else {}
+        if isinstance(ledger.get("pending"), dict):
+            _optional_check_record(self.driver, "feast", current, action=True)
+        else:
+            skipped = _optional_check_due(self.driver, "feast", current)
+            if skipped is not None:
+                return _optional_check_skip(planned, "activity_feast_periodic_review", skipped)
+    return _optional_check_result(self.driver, "feast", current,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_feast_original(self, planned))
+
+
+@_optional_check_wraps(_optional_check_lifestyle_original)
+def _optional_check_lifestyle(self, planned, available_steps):
+    current = _optional_check_frame(planned)
+    plan = planned.get("plan")
+    pending = planned.get("_private_lifestyle_pending_v1")
+    if current is not None and isinstance(pending, dict):
+        _optional_check_record(self.driver, "lifestyle", current, action=True)
+    elif current is not None and isinstance(plan, dict):
+        skipped = _optional_check_due(self.driver, "lifestyle", current)
+        if skipped is not None:
+            result = _optional_check_skip(planned, "lifestyle_periodic_review", skipped)
+            for key in ("_private_lifestyle_scope_v1", "_private_lifestyle_pending_v1",
+                        "_private_lifestyle_war_frame_v1"):
+                result.pop(key, None)
+            return result
+    return _optional_check_result(self.driver, "lifestyle", current,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_lifestyle_original(self, planned, available_steps))
+
+
+@_optional_check_wraps(_optional_check_construction_original)
+def _optional_check_construction(driver, planned, snapshot, history, available_steps,
+                      *, prewar_arbitration=False):
+    current = _optional_check_cadence_frame(snapshot)
+    plan = planned.get("plan")
+    if current is not None and isinstance(plan, dict):
+        from ..construction_formal_consumer import read_construction_ledger
+        state_dir = _optional_check_cadence_state(driver)
+        ledger = read_construction_ledger(state_dir) if state_dir is not None else {}
+        if isinstance(ledger.get("pending"), dict):
+            _optional_check_record(driver, "construction", current, action=True)
+        else:
+            skipped = _optional_check_due(driver, "construction", current)
+            if skipped is not None:
+                return _optional_check_skip(planned, "construction_periodic_review", skipped)
+    return _optional_check_result(driver, "construction", current,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_construction_original(
+                           driver, planned, snapshot, history, available_steps,
+                           prewar_arbitration=prewar_arbitration))
+
+
+@_optional_check_wraps(_optional_check_ransom_original)
+def _optional_check_ransom(driver, planned, snapshot):
+    current = _optional_check_cadence_frame(snapshot)
+    plan = planned.get("plan")
+    qualified = (getattr(driver, "allow_private_prisoner_ransom_action", False) is True
+            and current is not None and isinstance(snapshot.get("active_wars"), list)
+            and isinstance(plan, dict)
+            and snapshot.get("active_event") is None
+            and snapshot.get("pending_character_interaction") is None)
+    if qualified:
+        from ..prisoner_ransom_formal_consumer import read_ransom_ledger
+        state_dir = _optional_check_cadence_state(driver)
+        ledger = read_ransom_ledger(state_dir) if state_dir is not None else {}
+        if isinstance(ledger.get("pending"), dict):
+            _optional_check_record(driver, "ransom", current, action=True)
+        else:
+            skipped = _optional_check_due(driver, "ransom", current)
+            if skipped is not None:
+                return _optional_check_skip(planned, "prisoner_ransom_periodic_review", skipped)
+    return _optional_check_result(driver, "ransom", current if qualified else None,
+                       plan.get("selected_step") if isinstance(plan, dict) else None,
+                       _optional_check_ransom_original(driver, planned, snapshot))
+
+
+GameplayBridgeService._plan_private_council_normal_v1 = _optional_check_council
+GameplayBridgeService._plan_private_crown_normal_v1 = _optional_check_crown
+GameplayBridgeService._plan_private_feast_normal_v1 = _optional_check_feast
+GameplayBridgeService._plan_private_lifestyle_trial_v1 = _optional_check_lifestyle
+plan_construction_private = _optional_check_construction
+plan_ransom_private = _optional_check_ransom

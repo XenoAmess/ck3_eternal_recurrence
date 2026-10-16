@@ -1711,12 +1711,15 @@ class ConstructionFormalConsumerTests(unittest.TestCase):
                 driver.snapshot = frame(1)
                 driver.completed_construction = True
                 driver.completed_source_unavailable = True
-                with self.assertRaisesRegex(BridgeUnavailableError,
-                                             "material not yet observed"):
-                    transport.query_construction_receipt(
-                        driver, pending=receipt, expected_revision=1)
-            self.assertEqual(read_construction_ledger(driver.state_dir)["applied"],
-                             receipt)
+                unavailable = transport.query_construction_receipt(
+                    driver, pending=receipt, expected_revision=1)
+                self.assertEqual(unavailable["status"], "unavailable")
+                self.assertFalse(unavailable["postcondition_verified"])
+                self.assertFalse(unavailable["replay_allowed"])
+                self.assertEqual(unavailable["native_submit_calls"], 0)
+            retained = read_construction_ledger(driver.state_dir)["applied"]
+            self.assertEqual({key: retained[key] for key in receipt}, receipt)
+            self.assertIn("material_observation_unavailable_v1", retained)
 
 
 if __name__ == "__main__":

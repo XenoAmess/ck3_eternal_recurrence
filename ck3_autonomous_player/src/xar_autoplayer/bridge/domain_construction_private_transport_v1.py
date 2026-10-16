@@ -16,6 +16,7 @@ import uuid
 from ..construction_formal_consumer import (
     COMPLETION_WATCH_INTERVAL_RAW, read_construction_ledger, write_construction_ledger,
     same_frame_construction_income, same_construction_process_identity,
+    construction_receipt_readback_scope_v1,
 )
 from ..environment import sha256_file, write_json_atomic
 from ..runtime import _process_identity
@@ -631,15 +632,16 @@ def submit_construction_private(driver: object, *, query: Mapping[str, object],
         # The previous action is durable evidence, not a lifetime limit on
         # economic construction.  Only a later game day in the verified
         # process may spend again; a cold process is rechecked by the planner.
+        applied_scope = construction_receipt_readback_scope_v1(applied)
         if not (applied.get("status") == "applied"
                 and applied.get("postcondition_verified") is True
                 and applied.get("actor_character_id") == source["actor_character_id"]
                 and same_construction_process_identity((pid, creation), (
-                    applied.get("post_bridge_pid"), applied.get("post_bridge_creation_date")))
-                and type(applied.get("post_native_revision")) is int
-                and type(applied.get("post_date_raw")) is int
-                and source["native_revision"] > applied["post_native_revision"]
-                and source["date_raw"] > applied["post_date_raw"]):
+                    applied_scope["bridge_pid"], applied_scope["bridge_creation_date"]))
+                and type(applied_scope["native_revision"]) is int
+                and type(applied_scope["date_raw"]) is int
+                and source["native_revision"] > applied_scope["native_revision"]
+                and source["date_raw"] > applied_scope["date_raw"]):
             raise BridgeUnavailableError("construction receipt not yet consumed on a later game day")
     request_id = f"construction-submit-{uuid.uuid4().hex}"
     history = starting.get("native_command_history")
@@ -740,9 +742,11 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     pid, creation = _identity(driver)
     same_process = same_construction_process_identity((pid, creation), (
         pending.get("source_bridge_pid"), pending.get("source_bridge_creation_date")))
+    observed_scope = construction_receipt_readback_scope_v1(pending)
     completion_watch = (cold_recheck and same_construction_process_identity((pid, creation), (
-        pending.get("post_bridge_pid"), pending.get("post_bridge_creation_date")))
-        and starting.get("date_raw", -1) > pending.get("post_date_raw", -1))
+        observed_scope["bridge_pid"], observed_scope["bridge_creation_date"]))
+        and starting["native_revision"] >= observed_scope["native_revision"]
+        and starting.get("date_raw", -1) > observed_scope.get("date_raw", -1))
     if completion_watch and pending.get("completion_status") != "completed" and not (
             type(starting.get("date_raw")) is int
             and starting["date_raw"] > pending.get("post_date_raw", 0)
@@ -903,7 +907,49 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         driver._record_command(RECEIPT_STEP, ok=True, result=resolution)
         return resolution
     if not matches and not completed:
-        raise BridgeUnavailableError("construction material not yet observed; keep pending")
+        if (not cold_recheck or pending.get("status") != "applied"
+                or pending.get("postcondition_verified") is not True):
+            # An unresolved submit retains its existing action-state guard.
+            raise BridgeUnavailableError("construction material not yet observed; keep pending")
+        held = world.get("directly_held_barony_provinces")
+        covered = (any(isinstance(row, Mapping) and all(
+            row.get(k) == candidate.get(k) for k in ("barony_title_id", "province_id"))
+            for row in held) if isinstance(held, list) else None)
+        reason = ("subject_outside_current_direct_holding_projection" if covered is False
+                  else "tracked_tuple_not_observed_in_current_material_projection")
+        frame = {**dict(query["source_frame"]), "bridge_pid": pid,
+                 "bridge_creation_date": creation}
+        compact = {
+            "schema": "xar.construction-material-observation-unavailable.v1",
+            "status": "unavailable", "read_only": True, "business_submission": False,
+            "native_submit_calls": 0, "action_request_id": pending["action_request_id"],
+            "source_frame": frame, "native_query_request_id": query["native_query_request_id"],
+            "native_proof_epoch": epoch, "reason": reason,
+            "retry_not_before_date_raw": starting["date_raw"] + COMPLETION_WATCH_INTERVAL_RAW,
+            "prior_material_receipt_retained": True,
+        }
+        retained = {**dict(pending), "completion_last_check_date_raw": starting["date_raw"],
+                    "material_observation_unavailable_v1": compact}
+        replacement_ledger = {**ledger}
+        if (isinstance(ledger["applied"], dict) and ledger["applied"].get("action_request_id")
+                == pending["action_request_id"]):
+            replacement_ledger["applied"] = retained
+        else:
+            replacement_ledger["applied_prior"] = [retained if row.get("action_request_id")
+                == pending["action_request_id"] else row for row in prior]
+        write_construction_ledger(state_dir, replacement_ledger)
+        observation = {**compact, "step": RECEIPT_STEP, "accepted": False,
+            "replay_allowed": False, "postcondition_verified": False,
+            "requested_postcondition_verified": False, "material_postcondition_verified": False,
+            "completion_status": "unobserved", "actor_character_id": pending["actor_character_id"],
+            "episode_run_id": pending["episode_run_id"], "candidate": dict(candidate),
+            "original_action_binding": {key: pending.get(key) for key in (
+                "action_request_id", "episode_run_id", "actor_character_id", "pre_native_revision",
+                "pre_date_raw", "pre_proof_epoch", "source_bridge_pid", "source_bridge_creation_date",
+                "candidate", "native_ack")}, "material_query": dict(query),
+            "original_ledger_pending_preserved": ledger["pending"] is None}
+        driver._record_command(RECEIPT_STEP, ok=False, result=observation)
+        return observation
     # The native row carries work and divisor on this same paused material
     # frame. Keep the raw values with the receipt so a later paired run can
     # compare progress without inferring a finish date from authored time.

@@ -235,15 +235,23 @@ def _read_operation(
         if remaining <= 0:
             raise BridgeUnavailableError("private council operation result timed out")
         request_id = request_id or "council-read-" + uuid.uuid4().hex
-        driver.endpoint.send({
+        native_request = {
             "type": "execute_step", "protocol_version": 1,
             "request_id": request_id, "step": current_step, **current_fields,
-        })
+        }
+        capture_row = None
+        if read_capture is not None:
+            capture_row = {"step": current_step, "request_id": request_id,
+                           "native_request": copy.deepcopy(native_request),
+                           "send_returned": False, "command_result": None}
+            read_capture.setdefault("steps", []).append(capture_row)
+            read_capture["last_command_result"] = None
+        driver.endpoint.send(native_request)
+        if capture_row is not None:
+            capture_row["send_returned"] = True
         frame = driver.state.wait_for_command_result(request_id, remaining)
         if read_capture is not None:
-            read_capture.setdefault("steps", []).append({
-                "step": current_step, "request_id": request_id,
-            })
+            capture_row["command_result"] = copy.deepcopy(frame)
             read_capture["last_command_result"] = copy.deepcopy(frame)
         if (
             current_step in {PRIVATE_QUERY_STEP, PRIVATE_GATES_STEP}
@@ -388,6 +396,24 @@ def query_council_private_v1(
             attempt_timeout = deadline - time.monotonic()
             if attempt_timeout <= 0:
                 raise error
+        except BridgeUnavailableError as error:
+            if str(error) != "private council operation command_result is unavailable":
+                raise
+            after = _take_snapshot(driver)
+            error.council_planning_read_unavailable_v1 = {
+                "schema": "xar.council-planning-read-unavailable.v1",
+                "query_step": query_step, "read_only": True,
+                "business_submission": False, "error": str(error),
+                "source_identity": list(_read_identity(before)),
+                "post_identity": list(_read_identity(after)),
+                "same_frame": _read_identity(before) == _read_identity(after),
+                "transport_steps": copy.deepcopy(read_capture.get("steps", [])),
+                "last_command_result": copy.deepcopy(read_capture.get("last_command_result")),
+                "command_result_presence": ("present" if isinstance(
+                    read_capture.get("last_command_result"), Mapping) else "absent_or_invalid"),
+                "native_read_terminal_state": "unconfirmed",
+            }
+            raise
     try:
         projected = normalize_council_private_query_result_v1(
             result, expected_request=request, query_step=query_step,

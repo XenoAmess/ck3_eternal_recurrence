@@ -124,7 +124,11 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     if any(legal_ids.count(value) != 1 for value in candidate_character_ids):
         raise BridgeUnavailableError("requested candidate was not uniquely final-legal")
 
-    before = driver.take_snapshot()
+    # The projection binds the current frame and five legal candidates; it
+    # does not read the command log. Avoid copying that growing history twice.
+    read = (getattr(driver, "take_snapshot_without_native_command_history", None)
+            or driver.take_snapshot)
+    before = read()
     if (private_native_build_identity(before) != CK3_11906
             and not private_native_readback_matches(before, legality)):
         raise BridgeUnavailableError("marriage projection belongs to another native build")
@@ -453,7 +457,7 @@ def query_first_heir_candidate_alliance_projection_private_v1(
     if (result["status"] == "available") is observed_unavailable:
         raise BridgeUnavailableError("marriage projection aggregate status disagrees")
 
-    after = driver.take_snapshot()
+    after = read()
     after_played = after.get("played_character")
     if (
         after.get("native_revision") != before["native_revision"]

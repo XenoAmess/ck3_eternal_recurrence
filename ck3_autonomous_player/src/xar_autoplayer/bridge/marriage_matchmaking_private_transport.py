@@ -84,7 +84,11 @@ def _query_observed_heir_marriage_transport_v1(
     driver: object, *, expected_native_revision: int,
     timeout_seconds: float, step: str,
 ) -> dict[str, object]:
-    before = driver.take_snapshot()
+    # This private read never consumes command history. Keep all other frame
+    # and provenance fields while avoiding three full-history copies.
+    read = (getattr(driver, "take_snapshot_without_native_command_history", None)
+            or driver.take_snapshot)
+    before = read()
     played = before.get("played_character")
     played_id = played.get("character_id") if isinstance(played, dict) else None
     if (
@@ -122,7 +126,7 @@ def _query_observed_heir_marriage_transport_v1(
     heir_id = primary[0].get("first_heir_character_id")
     if heir_id is not None and (type(heir_id) is not int or heir_id <= 0):
         raise BridgeUnavailableError("public campaign-root first-heir ID malformed")
-    _require_same_paused_frame(driver.take_snapshot(), before,
+    _require_same_paused_frame(read(), before,
                                expected_native_revision, played_id)
     request_id = "m5-heir-" + uuid.uuid4().hex
     driver.endpoint.send({
@@ -162,7 +166,7 @@ def _query_observed_heir_marriage_transport_v1(
         raise BridgeUnavailableError(
             "observed-heir marriage private result disagrees with public heir"
         )
-    _require_same_paused_frame(driver.take_snapshot(), before,
+    _require_same_paused_frame(read(), before,
                                expected_native_revision, played_id)
     if result.get("status") == "unavailable":
         reason = result.get("unavailable_reason")

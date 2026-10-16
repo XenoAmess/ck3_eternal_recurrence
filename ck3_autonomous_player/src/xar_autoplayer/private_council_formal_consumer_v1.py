@@ -246,7 +246,7 @@ def select_council_candidate_v1(
             }[position_key]}
 
 
-def plan_council_private(
+def _plan_council_private_observed(
     driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
     history: list[dict[str, object]], available_steps: set[str],
     *, state_dir: Path | None = None,
@@ -449,3 +449,71 @@ def read_council_receipt_private(
                "source_decision": copy.deepcopy(pending["source_decision"]), "next_turn_consumed": False}
     _write(state_dir, {**ledger, "pending": None, "applied": applied})
     return applied
+
+
+def plan_council_private(
+    driver: object, planned: dict[str, object], snapshot: Mapping[str, object],
+    history: list[dict[str, object]], available_steps: set[str],
+    *, state_dir: Path | None = None,
+    campaign_root_result: dict[str, object] | None = None,
+    position_key: str = STEWARD_POSITION_KEY,
+) -> dict[str, object]:
+    """Keep a captured optional planning read unavailable without replaying an action."""
+    from .bridge.driver import BridgeUnavailableError
+    from .bridge.council_private_transport_v1 import (
+        PRIVATE_GATES_STEP, PRIVATE_QUERY_STEP, PRIVATE_STATUS_STEP, _read_identity,
+    )
+    try:
+        return _plan_council_private_observed(
+            driver, planned, snapshot, history, available_steps, state_dir=state_dir,
+            campaign_root_result=campaign_root_result, position_key=position_key)
+    except BridgeUnavailableError as error:
+        diagnostic = getattr(error, "council_planning_read_unavailable_v1", None)
+        plan = planned.get("plan")
+        if (str(error) != "private council operation command_result is unavailable"
+                or not isinstance(diagnostic, dict)
+                or diagnostic.get("schema") != "xar.council-planning-read-unavailable.v1"
+                or diagnostic.get("query_step") not in {PRIVATE_QUERY_STEP, PRIVATE_GATES_STEP}
+                or diagnostic.get("error") != str(error)
+                or diagnostic.get("read_only") is not True
+                or diagnostic.get("business_submission") is not False
+                or diagnostic.get("same_frame") is not True
+                or not isinstance(plan, dict) or plan.get("selected_step") != "life-advance"):
+            raise
+        steps = diagnostic.get("transport_steps")
+        query_step = diagnostic["query_step"]
+        if (not isinstance(steps, list) or not steps
+                or steps[0].get("step") != query_step
+                or any(not isinstance(item, dict)
+                       or item.get("step") not in {query_step, PRIVATE_STATUS_STEP}
+                       or item.get("send_returned") is not True
+                       or not isinstance(item.get("native_request"), dict)
+                       or item["native_request"].get("step") != item.get("step")
+                       or not isinstance(item.get("request_id"), str)
+                       or not item["request_id"]
+                       or item["native_request"].get("request_id") != item["request_id"]
+                       for item in steps)):
+            raise
+        current = _snapshot(driver)
+        from .optional_check_cadence_v1 import defer_council_technical_read, frame
+        cadence_frame = frame(current)
+        directory = _state(driver, state_dir)
+        if (cadence_frame is None
+                or list(_read_identity(current)) != diagnostic.get("source_identity")
+                or diagnostic.get("post_identity") != diagnostic.get("source_identity")
+                or read_council_ledger(directory)["pending"] is not None):
+            raise
+        evidence_path = directory / "evidence" / "council-planning-read-unavailable-v1" / (
+            "council-read-" + uuid.uuid4().hex + ".json")
+        write_json_atomic(evidence_path, diagnostic)
+        deferred = defer_council_technical_read(directory, cadence_frame,
+                                                evidence_path=str(evidence_path))
+        return {**planned, "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+                "plan": {**plan, "council_observation_consumed": False,
+                         "council_observation_status": "technical_unavailable",
+                         "council_technical_defer": {
+                             "status": "readonly_unavailable_deferred", "read_only": True,
+                             "business_submission": False, "action_credit": False,
+                             "no_action_counter_incremented": False,
+                             "evidence_path": str(evidence_path),
+                             "next_due_date_raw": deferred["next_due_date_raw"]}}}

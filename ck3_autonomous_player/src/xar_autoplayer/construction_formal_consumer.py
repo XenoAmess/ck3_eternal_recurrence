@@ -166,6 +166,35 @@ def applied_construction_receipts(
             and row.get("episode_run_id") == episode_run_id]
 
 
+def construction_receipt_readback_scope_v1(receipt: Mapping[str, object]) -> dict[str, object]:
+    """Separate an actual readonly observation lease from prior material credit."""
+    old = {"bridge_pid": receipt.get("post_bridge_pid"),
+           "bridge_creation_date": receipt.get("post_bridge_creation_date"),
+           "native_revision": receipt.get("post_native_revision"),
+           "date_raw": receipt.get("post_date_raw")}
+    observation = receipt.get("material_observation_unavailable_v1")
+    if not isinstance(observation, Mapping):
+        return old
+    source = observation.get("source_frame")
+    if (observation.get("schema") != "xar.construction-material-observation-unavailable.v1"
+            or observation.get("read_only") is not True
+            or observation.get("business_submission") is not False
+            or type(observation.get("native_submit_calls")) is not int
+            or observation["native_submit_calls"] != 0
+            or observation.get("action_request_id") != receipt.get("action_request_id")
+            or not isinstance(source, Mapping)
+            or source.get("actor_character_id") != receipt.get("actor_character_id")
+            or source.get("episode_run_id") != receipt.get("episode_run_id")
+            or any(type(source.get(k)) is not int or source[k] <= 0
+                   for k in ("native_revision", "revision", "date_raw", "bridge_pid"))
+            or source.get("snapshot_id") != "native:" + str(source["native_revision"])
+            or source.get("date_raw") != receipt.get("completion_last_check_date_raw")
+            or not isinstance(source.get("bridge_creation_date"), str)
+            or not source["bridge_creation_date"]):
+        return old
+    return {k: source[k] for k in old}
+
+
 def priority_construction_receipt(
     driver: object, ledger: Mapping[str, object], snapshot: Mapping[str, object],
     *, process_identity: tuple[int, str] | None = None,
@@ -181,12 +210,13 @@ def priority_construction_receipt(
     revision = snapshot.get("native_revision")
     date = snapshot.get("date_raw")
     for row in receipts:
+        observed = construction_receipt_readback_scope_v1(row)
         if (not same_construction_process_identity(process, (
-                row.get("post_bridge_pid"), row.get("post_bridge_creation_date")))
-                or (type(revision) is int and type(row.get("post_native_revision")) is int
-                    and revision < row["post_native_revision"])
-                or (type(date) is int and type(row.get("post_date_raw")) is int
-                    and date < row["post_date_raw"])):
+                observed["bridge_pid"], observed["bridge_creation_date"]))
+                or (type(revision) is int and type(observed["native_revision"]) is int
+                    and revision < observed["native_revision"])
+                or (type(date) is int and type(observed["date_raw"]) is int
+                    and date < observed["date_raw"])):
             return row
     for row in receipts:
         if (row.get("completion_status") == "completed"
@@ -321,16 +351,17 @@ def plan_construction_private(
         driver, ledger, snapshot, process_identity=process_identity)
     applied = priority_applied or ledger["applied"]
     if isinstance(applied, dict) and applied.get("episode_run_id") == episode:
+        observed = construction_receipt_readback_scope_v1(applied)
         older_frame = (
             (type(snapshot.get("native_revision")) is int
-             and type(applied.get("post_native_revision")) is int
-             and snapshot["native_revision"] < applied["post_native_revision"])
+             and type(observed["native_revision"]) is int
+             and snapshot["native_revision"] < observed["native_revision"])
             or (type(snapshot.get("date_raw")) is int
-                and type(applied.get("post_date_raw")) is int
-                and snapshot["date_raw"] < applied["post_date_raw"])
+                and type(observed["date_raw"]) is int
+                and snapshot["date_raw"] < observed["date_raw"])
         )
         if (not same_construction_process_identity(process_identity, (
-                applied.get("post_bridge_pid"), applied.get("post_bridge_creation_date")))
+                observed["bridge_pid"], observed["bridge_creation_date"]))
                 or older_frame):
             return {**planned, "plan": {**plan,
                 "phase": "construction_cold_applied_requery",
@@ -436,13 +467,15 @@ def plan_construction_private(
         # The receipt is consumed on the following formal turn.  A later
         # game day can present another legal province after that turn.
         newest = ledger["applied"]
+        newest_scope = (construction_receipt_readback_scope_v1(newest)
+                        if isinstance(newest, dict) else {})
         if isinstance(newest, dict) and not (
                 type(snapshot.get("native_revision")) is int
                 and type(snapshot.get("date_raw")) is int
-                and type(newest.get("post_native_revision")) is int
-                and type(newest.get("post_date_raw")) is int
-                and snapshot["native_revision"] > newest["post_native_revision"]
-                and snapshot["date_raw"] > newest["post_date_raw"]):
+                and type(newest_scope.get("native_revision")) is int
+                and type(newest_scope.get("date_raw")) is int
+                and snapshot["native_revision"] > newest_scope["native_revision"]
+                and snapshot["date_raw"] > newest_scope["date_raw"]):
             return {**planned, "plan": plan}
     # Keep selected war work ahead of a new spend. Otherwise the ordinary
     # advance opportunity can use observed current/all-raised cash during war.

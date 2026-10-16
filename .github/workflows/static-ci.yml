@@ -132,6 +132,13 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests -p "test_gameplay_mcp_packet_reader_warm.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test optional read recovery and family cadence without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_material_unavailable.py ck3_autonomous_player/tests/unit/test_council_planning_technical_defer.py ck3_autonomous_player/tests/unit/test_optional_check_service_cadence_v1.py ck3_autonomous_player/tests/unit/test_family_wartime_rolling_portable.py ck3_autonomous_player/tests/unit/test_family_peace_cadence_portable.py ck3_autonomous_player/tests/unit/test_family_history_free_marriage_portable.py ck3_autonomous_player/tests/unit/test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unobserved_completed_slots_cannot_prove_rollback_after_restore
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Preserve decision history growth evidence
         if: always()
         uses: actions/upload-artifact@v4

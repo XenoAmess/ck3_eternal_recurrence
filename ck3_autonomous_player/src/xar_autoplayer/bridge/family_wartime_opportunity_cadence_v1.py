@@ -35,6 +35,7 @@ def _empty(frame: dict) -> dict:
     actor, episode, _, _ = _identity(frame)
     return {"schema": SCHEMA, "actor_character_id": actor,
             "episode_run_id": episode, "consecutive_noop_dates": 0,
+            "qualified_source": False,
             "cooldown_until_date_raw": None, "last_noop_date_raw": None,
             "last_observed_end_date_raw": None, "last_query_identity": None,
             "heir_character_id": None, "player_spouse_signature": None,
@@ -63,6 +64,7 @@ def _read(state_dir: Path, frame: dict) -> dict:
     if (not isinstance(value, dict) or value.get("schema") != SCHEMA
             or type(value.get("consecutive_noop_dates")) is not int
             or value["consecutive_noop_dates"] not in (0, 1)
+            or type(value.get("qualified_source", False)) is not bool
             or any(value.get(key) is not None and type(value[key]) is not int
                    for key in ("cooldown_until_date_raw", "last_noop_date_raw",
                                "last_observed_end_date_raw", "heir_character_id",
@@ -89,6 +91,7 @@ def view(state_dir: Path, frame: dict) -> dict:
     active = type(until) is int and date < until
     return {"schema": SCHEMA, "status": "active" if active else "inactive",
             "consecutive_noop_dates": value["consecutive_noop_dates"],
+            "qualified_source": value.get("qualified_source", False),
             "cooldown_until_date_raw": until,
             "remaining_days": (until - date + 23) // 24 if active else 0,
             "heir_character_id": value["heir_character_id"],
@@ -216,8 +219,9 @@ def observe_after_turn(state_dir: Path, frame: dict, plan: dict, outcome: dict) 
         return view(state_dir, {**frame, "date_raw": end_date})
     noop = complete_noop(frame, plan, source)
     if noop is None:
-        if value["consecutive_noop_dates"]:
+        if value["consecutive_noop_dates"] or value.get("qualified_source", False):
             value["consecutive_noop_dates"] = 0
+            value["qualified_source"] = False
             _write(state_dir, value)
         return view(state_dir, {**frame, "date_raw": end_date})
     heir, query_identity = noop
@@ -229,6 +233,11 @@ def observe_after_turn(state_dir: Path, frame: dict, plan: dict, outcome: dict) 
                    == source["player_spouse_signature"]
                    and value.get("expected_successor_character_id")
                    == source["expected_successor_character_id"])
+    # The first lease still requires two distinct complete empty reviews. Once
+    # qualified, each expiry must perform one fresh complete review; it may
+    # renew only while the same heir/household source remains empty. Unknown or
+    # changed material above clears qualification and requires two reviews.
+    renew_qualified = same_source and value.get("qualified_source", False)
     value["consecutive_noop_dates"] = value["consecutive_noop_dates"] + 1 if same_source else 1
     value["heir_character_id"] = heir
     value["player_spouse_signature"] = source["player_spouse_signature"]
@@ -236,8 +245,11 @@ def observe_after_turn(state_dir: Path, frame: dict, plan: dict, outcome: dict) 
     value["last_noop_date_raw"] = frame["date_raw"]
     value["last_observed_end_date_raw"] = end_date
     value["last_query_identity"] = query_identity
-    if value["consecutive_noop_dates"] >= 2:
+    if renew_qualified or value["consecutive_noop_dates"] >= 2:
         value["consecutive_noop_dates"] = 0
+        value["qualified_source"] = True
         value["cooldown_until_date_raw"] = end_date + PERIOD_RAW
+    else:
+        value["qualified_source"] = False
     _write(state_dir, value)
     return view(state_dir, {**frame, "date_raw": end_date})
