@@ -111,6 +111,27 @@ class EmbarkedRouteArrivalUnavailableTests(unittest.TestCase):
                     observe(reader)
                 self.assertEqual((reader.queries, reader.reads), (1, 1))
 
+    def test_actual14_legacy_completed_read_requires_fresh_query_not_time(self):
+        from xar_autoplayer.strategy import _current_frame_route_contact_query_failure as review
+        source = FIXTURE["provenance"]["p21_blocked_auto14"]
+        self.assertTrue(source["error_exactly_matches_reconstructed_native_error"])
+        text = "_NativeCommandRejectedError: native gameplay step failed: " + RESPONSE["error"]
+        suffix = "; typed_query_failure_v1=" + json.dumps(RESPONSE["typed_query_failure_v1"], sort_keys=True, separators=(",", ":"))
+        row = {"index": source["history_index"], "command": STEP, "ok": False, "error": text + suffix}
+        frame = dict(source["fresh_frame"], diagnostics=source["fresh_diagnostics"])
+        retained = copy.deepcopy(row)
+        self.assertIsNone(review([row], frame, STEP))
+        normal = choose_one_life_turn([row], snapshot=copy.deepcopy(SNAPSHOT),
+            action_steps=[STEP, "life-advance-one-day", "life-advance"])
+        self.assertEqual(normal["selected_step"], STEP)
+        self.assertEqual(row, retained)
+        for error in ("unknown", text + suffix.replace('"executor_finish":true', '"executor_finish":false'),
+                      text + suffix.replace('"frame_stable":true', '"frame_stable":false')):
+            with self.subTest(error=error):
+                self.assertEqual(review([dict(row, error=error)], frame, STEP)["scope_status"], "unknown_frame")
+        business = "move-army-620757086-to-5969"
+        self.assertIsNotNone(review([dict(row, command=business)], frame, business))
+
 
 if __name__ == "__main__":
     unittest.main()

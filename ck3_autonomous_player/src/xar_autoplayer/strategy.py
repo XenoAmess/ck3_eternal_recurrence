@@ -20985,6 +20985,28 @@ def _current_frame_route_contact_query_failure(
                     and row.get("error") == "_NativeCommandRejectedError: native gameplay step failed: state_changed"):
                 return None
             result = _effective_command_result(row)
+            if (row.get("ok") is False and result is None
+                    and parse_query_route_contact_horizon_step(command) is not None):
+                # Older SDKs persisted this completed readonly rejection without
+                # a source lease. Retain its history, but require a new query;
+                # it cannot prove availability in this publication or authorize
+                # movement/time. Current typed failures keep their exact lease.
+                terminal = {
+                    "executor_enter": True,
+                    "executor_exception": {"code": 0, "image": "none", "rva": None},
+                    "executor_finish": True, "executor_typed_result": False,
+                    "final_equal": None, "final_read": None, "frame_stable": True,
+                    "query_type": "route", "stage": "typed_result", "typed_result": False,
+                    "wait_completed": True, "wait_result": "completed",
+                }
+                suffix = "; typed_query_failure_v1=" + json.dumps(
+                    terminal, sort_keys=True, separators=(",", ":"))
+                if row.get("error") in {
+                    "_NativeCommandRejectedError: native gameplay step failed: " + reason + suffix
+                    for reason in ("CK3 could not build a complete contact route",
+                                   "CK3 route arrival timeline is unavailable")
+                }:
+                    return None
             diagnostics = snapshot.get("diagnostics")
             generation = diagnostics.get("connection_generation") if isinstance(diagnostics, dict) else None
             lease = {

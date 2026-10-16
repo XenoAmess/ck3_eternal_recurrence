@@ -68,3 +68,19 @@ Game/MCP/SDK/OBS，不给新实机天数、连续三十年或0.5秒/日信用。
 SHA-256 `3bc289f893d55953112bd829ee2c3a40ae1660f0fd1d681df9c39db033d4fd85`。
 共享测试新增峰值获准64KiB，复用现有总准入；当前关键原失败与候选复核期限为2026-10-17T09:00Z，
 无额外大副本或清理。Python/JSON无新增Paradox语义，open_kaishek不适用。
+
+### P21恢复旧失败缓存的反例
+
+P21 AUTO14尚未提交动作即返回blocked。旧P20历史5268保存了完整completed/stable/无异常的
+arrival只读错误文本，但旧Driver没有保存result与queried lease；同Game恢复原样复制历史，
+新native3498/public2/connection4不能把它认作当前帧。因而既不允许海运单日退路，也不允许新查询，形成阻塞。
+原14与5268均保留，不把unknown_frame伪改为current_frame。
+
+公共策略只对canonical只读route、ok=false、无result，且精确完整错误文本证明已完成／稳定／无异常的
+两个已知终局，停止把该无租约历史当作当前availability缓存。普通规划器随后必须发一条新只读查询；
+不能直接移动或推进日期。已有当前typed DTO仍按原lease消费，未知、部分执行或业务错误仍受守卫。
+Root另行安排现成MCP freshSEM→唯一新只读route查询→freshSEM恢复；实际结果由独立回执记录，不修改冻结SDK或原历史。
+
+便携夹具增加实际AUTO14错误相等性与SEM1身份投影，公共完整普通planner反例证明下一步是新query；
+原记录不变。相关验证现为**21 tests、36 subtests通过**，共享测试／夹具64,996B，仍在64KiB额度内。
+此源码收口不授予实机恢复、游戏日或连续窗口信用。
