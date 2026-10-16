@@ -603,10 +603,11 @@ inline void AppendArmyCurrentDisembarkPenaltyV1(
 }
 
 enum class ArmyStrengthQueryProfileV1 {
-  legacy_full,
-  ordinary_core,
-  observed_history_full,
-  invalid,
+  legacy_full = 0,
+  ordinary_core = 1,
+  observed_history_full = 2,
+  invalid = 3,
+  private_auto_scalar = 4,
 };
 
 namespace army_strength_profile_json_v1 {
@@ -639,6 +640,8 @@ class Reader {
           found = true;
           if (value == "ordinary_core_v1")
             profile = ArmyStrengthQueryProfileV1::ordinary_core;
+          else if (value == "private_auto_scalar_v1")
+            profile = ArmyStrengthQueryProfileV1::private_auto_scalar;
           else if (value == "observed_history_full_v1")
             profile = ArmyStrengthQueryProfileV1::observed_history_full;
           else
@@ -824,6 +827,7 @@ inline std::string_view ArmyStrengthQueryProfileNameV1(ArmyStrengthQueryProfileV
   switch (profile) {
   case ArmyStrengthQueryProfileV1::legacy_full: return "legacy_full";
   case ArmyStrengthQueryProfileV1::ordinary_core: return "ordinary_core_v1";
+  case ArmyStrengthQueryProfileV1::private_auto_scalar: return "private_auto_scalar_v1";
   case ArmyStrengthQueryProfileV1::observed_history_full: return "observed_history_full_v1";
   default: return "invalid";
   }
@@ -852,6 +856,56 @@ enum class ArmyStrengthManagerInputsModeV1 {
   shared_flag21 = 8,
   shared_character_prefix = 16,
 };
+
+// The private auto wire contains precisely the fields the ordinary planner
+// validates. It never invokes rich observation writers or manager expansion.
+template <class Number, class Int32Array, class JsonString>
+inline void AppendArmyStrengthPrivateAutoScalarV1(
+    std::string &result, const ArmyStrengthSnapshot &strength,
+    Number number, Int32Array append_int32_array,
+    JsonString append_json_string) {
+  result += "{\"status\":\"";
+  result += strength.available ? "available" : "unavailable";
+  result += "\",\"army_id\":";
+  result += number(strength.army_id);
+  result += ",\"native_carmy_id\":";
+  result += strength.native_carmy_id_observable
+      ? number(strength.native_carmy_id) : "null";
+  result += ",\"scope_role\":\"";
+  switch (strength.scope_role) {
+  case ArmyStrengthScopeRole::player: result += "player"; break;
+  case ArmyStrengthScopeRole::active_war_ally: result += "active_war_ally"; break;
+  case ArmyStrengthScopeRole::active_war_enemy: result += "active_war_enemy"; break;
+  }
+  result += "\",\"war_ids\":";
+  append_int32_array(result, strength.war_ids);
+  const auto aggregate = [&](std::string_view name, auto value) {
+    result += ",\"";
+    result += name;
+    result += "\":";
+    result += strength.available ? number(value) : "null";
+  };
+  aggregate("regiment_count", strength.regiment_count);
+  aggregate("current_soldiers", strength.current_soldiers);
+  aggregate("maximum_soldiers", strength.maximum_soldiers);
+  aggregate("ai_base_power_raw", strength.ai_base_power_raw);
+  result += ",\"ai_base_power_scale\":";
+  result += number(strength.ai_base_power_scale);
+  if (strength.available && strength.current_supply_raw) {
+    result += ",\"current_supply_raw\":";
+    result += number(*strength.current_supply_raw);
+    result += ",\"current_supply_scale\":100000";
+  }
+  if (strength.available && strength.current_attrition_fraction_raw) {
+    result += ",\"current_attrition_fraction_raw\":";
+    result += number(*strength.current_attrition_fraction_raw);
+    result += ",\"current_attrition_fraction_scale\":100000";
+  }
+  result += ",\"unavailable_reason\":";
+  if (strength.available) result += "null";
+  else append_json_string(result, strength.unavailable_reason);
+  result += '}';
+}
 
 inline bool ArmyStrengthSharesExtraInputV1(
     ArmyStrengthManagerInputsModeV1 mode,

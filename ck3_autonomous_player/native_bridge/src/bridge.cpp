@@ -9599,14 +9599,24 @@ std::string ArmyStrengthsResultFrame(
     result += published_status == xar::game::ReadArmyStrengthsResult::available ? "available" : "partial";
     result += "\"}";
   }
-  xar::game::AppendArmyStrengthsQueryMembersV1(
-      result, std::span<const xar::game::ArmyStrengthSnapshot>(strengths),
-      SignedNumber, AppendInt32Array, AppendJsonString,
-      [include_observed_phase_history](std::string &out,
-          const xar::game::ArmyStrengthSnapshot &strength,
-          xar::game::ArmyStrengthManagerInputsModeV1 mode) {
-        AppendArmyStrength(out, strength, mode, include_observed_phase_history);
-      });
+  if (profile == xar::game::ArmyStrengthQueryProfileV1::private_auto_scalar) {
+    result += ",\"army_strengths\":[";
+    for (std::size_t index = 0; index < strengths.size(); ++index) {
+      if (index != 0) result += ',';
+      xar::game::AppendArmyStrengthPrivateAutoScalarV1(
+          result, strengths[index], SignedNumber, AppendInt32Array, AppendJsonString);
+    }
+    result += ']';
+  } else {
+    xar::game::AppendArmyStrengthsQueryMembersV1(
+        result, std::span<const xar::game::ArmyStrengthSnapshot>(strengths),
+        SignedNumber, AppendInt32Array, AppendJsonString,
+        [include_observed_phase_history](std::string &out,
+            const xar::game::ArmyStrengthSnapshot &strength,
+            xar::game::ArmyStrengthManagerInputsModeV1 mode) {
+          AppendArmyStrength(out, strength, mode, include_observed_phase_history);
+        });
+  }
   if (native_read_total_ns >= 0 && owner_query_ns >= 0 &&
       baseline_read_ns >= 0 && rich_attach_ns >= 0) {
     const auto serialization_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
@@ -26882,11 +26892,20 @@ void RunConnectedSession(
           } else if (!xar::game::ArmyStrengthQueryProfileAvailableV1(profile)) {
             connected = write_frame(pipe, CommandResultFrame(
                 request_id, step, false, "army_strengths_observed_history_unavailable"));
+          } else if (profile == xar::game::ArmyStrengthQueryProfileV1::private_auto_scalar &&
+                     (!xar::game::IsCk3_12004Descriptor(game.descriptor()) ||
+                      dynamic_cast<const xar::ck3_12002::WorkerAdapter *>(&game) == nullptr ||
+                      requested_army_ids.has_value())) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, "army_strengths_private_auto_scope_unavailable"));
           } else {
             xar::ck3_12002::g_army_strength_query_diagnostic_v1.Reset();
             std::vector<xar::game::ArmyStrengthSnapshot> strengths;
             const auto native_read_start = std::chrono::steady_clock::now();
-            auto query_result = xar::game::ReadArmyStrengths(game, strengths);
+            auto query_result = profile == xar::game::ArmyStrengthQueryProfileV1::private_auto_scalar
+                ? dynamic_cast<const xar::ck3_12002::WorkerAdapter &>(game)
+                      .read_army_strengths_private_auto_scalar(strengths)
+                : xar::game::ReadArmyStrengths(game, strengths);
             const auto native_read_total_ns = std::chrono::duration_cast<std::chrono::nanoseconds>(
                 std::chrono::steady_clock::now() - native_read_start).count();
             const auto owner_query_ns = xar::ck3_12002::g_army_strength_query_diagnostic_v1

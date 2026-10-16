@@ -66,6 +66,8 @@ public:
       std::vector<game::ArrangeMarriageFamilyCandidateV1> &,
       game::ArrangeMarriageQueryDiagnostics &) const noexcept override;
   game::ReadArmyStrengthsResult read_army_strengths(std::vector<game::ArmyStrengthSnapshot> &) const noexcept override;
+  game::ReadArmyStrengthsResult read_army_strengths_private_auto_scalar(
+      std::vector<game::ArmyStrengthSnapshot> &) const noexcept;
   game::ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const game::CombatSimulationInputsRequest &, game::CombatSimulationInputsSnapshot &) const noexcept override;
   game::ReadCombatSimulationInputsV3Result read_combat_simulation_inputs_v3(

@@ -449,6 +449,30 @@ public:
         ? "baseline_unavailable" : "returned");
     return result;
   }
+  ReadArmyStrengthsResult ReadArmyStrengthsPrivateAutoScalar(
+      std::vector<ArmyStrengthSnapshot> &output) const noexcept {
+    output.clear();
+    if (!IsCk3_12004Descriptor(*descriptor_))
+      return ReadArmyStrengthsResult::unavailable;
+    auto &diagnostic = ck3_12002::g_army_strength_query_diagnostic_v1;
+    diagnostic.reader.store("private_auto_scalar_native_snapshot");
+    Snapshot scope{};
+    const bool snapshot_ok = read_snapshot(scope);
+    diagnostic.native_snapshot.store(snapshot_ok);
+    if (!snapshot_ok) return ReadArmyStrengthsResult::unavailable;
+    const auto baseline_start = std::chrono::steady_clock::now();
+    const auto result = ck3_12002::ReadArmyStrengthsPrivateAutoScalar(
+        bindings_.armies, scope, output);
+    diagnostic.baseline_read_elapsed_ns.store(
+        std::chrono::duration_cast<std::chrono::nanoseconds>(
+            std::chrono::steady_clock::now() - baseline_start).count());
+    diagnostic.baseline_result.store(static_cast<std::int64_t>(result));
+    diagnostic.scope_rows.store(static_cast<std::int64_t>(output.size()));
+    diagnostic.rich_attach_elapsed_ns.store(0);
+    diagnostic.reader.store(result == ReadArmyStrengthsResult::unavailable
+        ? "private_auto_scalar_unavailable" : "private_auto_scalar_returned");
+    return result;
+  }
   ReadCombatSimulationInputsResult read_combat_simulation_inputs(
       const CombatSimulationInputsRequest &request,
       CombatSimulationInputsSnapshot &output) const noexcept override {
@@ -785,6 +809,17 @@ std::unique_ptr<GameAdapter> CreateCk3_12002Adapter(
     std::string_view executable_sha256) noexcept {
   return CreateCk3_12002AdapterFromBindings(BindCk3_12002AdapterImage(
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), executable_sha256));
+}
+
+ReadArmyStrengthsResult ReadCk3_12004ArmyStrengthsPrivateAutoScalar(
+    const GameAdapter &adapter,
+    std::vector<ArmyStrengthSnapshot> &output) noexcept {
+  const auto *exact = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  if (exact == nullptr || !IsCk3_12004Descriptor(exact->descriptor())) {
+    output.clear();
+    return ReadArmyStrengthsResult::unavailable;
+  }
+  return exact->ReadArmyStrengthsPrivateAutoScalar(output);
 }
 
 } // namespace xar::game

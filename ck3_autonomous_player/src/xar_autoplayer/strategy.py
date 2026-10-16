@@ -13346,6 +13346,13 @@ def _choose_one_life_turn_core(
                     )
                     if defender_proposal is not None:
                         return defender_proposal
+                    retained_edge_watch = _retained_unsafe_edge_one_day_watch_plan(
+                        rows, snapshot, pursuit_army, passive_route_audit,
+                        route_rejections=route_rejections,
+                        available_steps=available_steps, war_summary=war_summary,
+                    )
+                    if retained_edge_watch is not None:
+                        return retained_edge_watch
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_no_safe_exact_route",
@@ -13410,6 +13417,13 @@ def _choose_one_life_turn_core(
             )
             if defender_proposal is not None:
                 return defender_proposal
+            retained_edge_watch = _retained_unsafe_edge_one_day_watch_plan(
+                rows, snapshot, pursuit_army, passive_route_audit,
+                route_rejections=[passive_route_audit],
+                available_steps=available_steps, war_summary=war_summary,
+            )
+            if retained_edge_watch is not None:
+                return retained_edge_watch
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_no_safe_exact_route",
@@ -20863,7 +20877,9 @@ def _pending_unsafe_route_halt(
             and isinstance(action, dict)
             and action.get("status") == "halt_submitted"
             and action.get("army_id") == army_id
-            and action.get("submitted_date_raw") == date_raw
+            and type(action.get("submitted_date_raw")) is int
+            and type(date_raw) is int
+            and action["submitted_date_raw"] <= date_raw
             and action.get("postcondition_verified") is False
         ):
             army = next((army for army in snapshot.get("player_armies", [])
@@ -20900,8 +20916,10 @@ def _pending_unsafe_route_halt(
                 and bool(action["submitted_episode_run_id"])
                 and action["submitted_episode_run_id"] == snapshot.get("episode_run_id")
             )
+            if not suffix_observed and action["submitted_date_raw"] != date_raw:
+                return None
             return {"step": step, "army_id": army_id,
-                    "submitted_date_raw": date_raw,
+                    "submitted_date_raw": action["submitted_date_raw"],
                     "history_index": row.get("index"),
                     "suffix_cancellation_observed": suffix_observed,
                     "current_edge_retained": suffix_observed,
@@ -20909,6 +20927,62 @@ def _pending_unsafe_route_halt(
                     "postcondition_verified": False}
         return None
     return None
+
+
+def _retained_unsafe_edge_one_day_watch_plan(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: object, audit: object, *,
+    route_rejections: list[dict[str, object]], available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe an edge CK3 retained after Halt, after safe replans are exhausted."""
+    if not isinstance(snapshot, dict) or not isinstance(army, dict) or not isinstance(audit, dict):
+        return None
+    army_id = _public_cunit_int(army.get("army_id"))
+    pending = (_pending_unsafe_route_halt(commands, snapshot, army_id=army_id)
+               if army_id is not None else None)
+    horizon = audit.get("contact_horizon")
+    route = army.get("route_province_ids")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    if not (
+        "life-advance-one-day" in available_steps
+        and isinstance(pending, dict) and pending.get("suffix_cancellation_observed") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and army.get("army_state") == "embarked" and army.get("army_state_code") == 4
+        and isinstance(route, list) and len(route) == 1
+        and isinstance(horizon, dict) and horizon.get("status") == "available"
+        and horizon.get("subject_army_id") == army_id
+        and horizon.get("target_province_id") == route[0]
+        and horizon.get("date_raw") == snapshot.get("date_raw")
+        and horizon.get("snapshot_revision") == snapshot.get("native_revision")
+        and horizon.get("subject_route", {}).get("route_province_ids") == route
+        and horizon.get("one_day_contact_free") is False
+        and audit.get("contact_policy") == "blocked_without_qualified_combat_permission"
+        and route_rejections
+        and all(isinstance(item, dict) and item.get("status") in {
+            "blocked", "unsafe", "contact_timeline_unsafe"
+        } for item in route_rejections)
+    ):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_retained_unsafe_edge_one_day_watch",
+        "selected_step": "life-advance-one-day",
+        "reason": "CK3 retained the existing first edge after Halt and every eligible safe replan was rejected; observe one native-stopped day, then read army and battle state again; contact may occur",
+        "retained_edge_watch": {
+            "army_id": army_id, "current_province_id": army.get("current_province_id"),
+            "target_province_id": route[0], "route_province_ids": list(route),
+            "source_date_raw": snapshot.get("date_raw"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "halt_submission": pending, "contact_free_proven": False,
+            "contact_status": "unsafe", "movement_resubmitted": False,
+            "offensive_combat_permission": False, "war_or_material_credit": False,
+        },
+        "route_rejections": route_rejections,
+        "active_wars": war_summary,
+    }
 
 
 def _embarked_route_timeline_unavailable_watch_plan(

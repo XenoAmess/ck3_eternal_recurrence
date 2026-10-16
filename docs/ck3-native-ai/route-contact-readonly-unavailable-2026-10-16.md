@@ -94,3 +94,42 @@ Root另行安排现成MCP freshSEM→唯一新只读route查询→freshSEM恢复
 Driver 的 Halt ACK 增加真实提交前 route/current/target/owner/native revision/connection/episode，仍为 `postcondition_verified=false`。独立同 epoch 更高 native 帧若恰好只剩原 `[front]`，只确认后缀取消、首段保留，不能写成停军完成或 contact-free。普通策略随后重新查询风险，不重发同一 Halt；旧 ACK、旧帧或其他 epoch 仍保持 pending。已有[当前版本锁定 Halt 证据](episode04-r12-locked-halt-r0175-12004.md)证明只留首段后仍可能自然登陆，不可据 ACK 消除这项危险。
 
 便携 gzip 夹具保留实际347／377／378来源 SHA 与全部军队、战争、基础战力名册，原生 Halt ACK 和独立 post-read **明确为 synthetic**。原 HEAD 普通 planner 回放与377一致；候选选择已有 Halt。8 项聚焦测试通过，覆盖提交前 tuple、异步原路线保留、独立 suffix 读回、跨 epoch 反例、非主战／ghost 候选以及普通下一步只读查询。这是源码候选验收，本记录不授予现场 Halt、避免登陆、胜利、推进天数或连续30年信用。
+
+### Retained unsafe first edge: ordinary one-day observation
+
+Machine `xenoamess-full-tower-eb9d2c1186`, 2026-10-16 UTC. The exact .4
+`SubmitDisbandArmy` path resolves public CUnit to CArmy and calls vanilla
+validator `0x296A600` before `submit_copy`. Its `0x28BBF20` getter tests the
+owner war vector; war participation plus valid same-province Army/Fleet
+(`0x24E8440`) reaches `CANNOT_DISBAND_WHILE_ARMY_EMBARKED`. Nonprimary war
+participation is not an exemption. Combat, retreat, war-leader and hostile-area
+checks also exist. Validator rejection is pre-submit, never disband success.
+SEM378's named embarked state does not replace a raw FleetID or live validator
+observation. No disband was submitted here.
+
+File-only evidence: external
+`continuation42-cold-prep/p21-disband-safe-retreat-review01/REVIEW.json`;
+validator windows span `0x296A600..0x296B10F`, with reason strings and both
+getters retained under raw-window/file SHA-256. Source EXE pin:
+`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`.
+No EXE loading or Game/Native/MCP calls occurred.
+
+After existing safe objective/capital replans are exhausted, the ordinary
+planner now has a narrow liveness exit: independent Halt suffix readback must
+leave exactly the original front/target, on the same actor/connection/episode
+with a newer Native publication. A fresh complete horizon still says contact
+is unsafe. With no mandatory modal it may select existing
+`life-advance-one-day`, retain the route, then observe army/battle state again.
+This is passive observation of movement CK3 retained, not a new Move, safe
+contact claim, 1.5 strength waiver or battle success. The suffix remains usable
+across dates only while that edge/source identity persists; later Move
+invalidates it. ACK alone or the unchanged old full route cannot use this exit.
+
+Combined portable focus: **26 tests and 5 subtests passed**. Complete ordinary
+choose tests start with actual347/377/378 and explicitly synthetic Halt ACK,
+suffix frame, new-frame queries and capital candidate; they verify next-day
+continuation without duplicate Halt and reject stale/foreign/combat/modal
+cases. Candidate: external
+`continuation42-cold-prep/p22-retained-edge-watch-candidate01/DELIVERY.json`.
+Live Halt, landing, outcome, uninterrupted years and speed remain separate
+runtime evidence.

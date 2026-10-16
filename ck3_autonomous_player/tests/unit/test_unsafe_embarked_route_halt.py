@@ -60,6 +60,60 @@ class UnsafeEmbarkedRouteHalt(unittest.TestCase):
                 army.update(route_province_ids=[5967], route_source_count=1,
                             move_target_province_id=5967)
 
+    def publish_synthetic_replan_queries(self):
+        """New-frame query contracts derived from original inputs, never live receipts."""
+        originals = copy.deepcopy(FIXTURE["history"])
+        current = copy.deepcopy(originals[1])
+        hostiles = current["result"]["route_contact_horizon"]["hostile_army_ids"]
+        current["command"] = query_route_contact_horizon_step(ARMY, 5967, hostiles)
+        current["result"]["step"] = current["command"]
+        horizon = current["result"]["route_contact_horizon"]
+        horizon["target_province_id"] = 5967
+        horizon["subject_route"]["route_province_ids"] = [5967]
+        horizon["subject_route"]["arrival_date_raws"] = horizon["subject_route"]["arrival_date_raws"][:1]
+        self.steps.add(current["command"])
+        # The old committed target becomes a separate replan candidate after Halt.
+        former_target = copy.deepcopy(originals[2])
+        former_target["command"] = f"preview-move-army-{ARMY}-to-5969"
+        former_target["result"]["step"] = former_target["command"]
+        former_target["result"]["route_preview"].update(
+            target_province_id=5969, route_province_ids=[5967, 5966, 5969])
+        self.steps.add(former_target["command"])
+        self.snapshot["campaign_root_context"] = {
+            "status": "available", "snapshot_revision": self.snapshot["native_revision"],
+            "date_raw": self.snapshot["date_raw"], "player_character_id": 40526,
+            "readiness": {"ready": True}, "capital_province_id": 5965,
+        }  # Synthetic capital shares one actually observed unsafe candidate.
+        delta = self.snapshot["date_raw"] - FIXTURE["snapshot"]["date_raw"]
+        def shift_dates(value):
+            if isinstance(value, dict):
+                for key, item in value.items():
+                    if isinstance(item, int) and (key == "date_raw" or key.endswith("_date_raw")):
+                        value[key] = item + delta
+                    elif isinstance(item, list) and key.endswith("_date_raws"):
+                        value[key] = [day + delta for day in item]
+                    else:
+                        shift_dates(item)
+            elif isinstance(value, list):
+                for item in value:
+                    shift_dates(item)
+        for row in originals + [former_target, current]:
+            result = row["result"]
+            shift_dates(result)
+            result.update(queried_snapshot_id=self.snapshot["snapshot_id"],
+                          queried_revision=self.snapshot["revision"],
+                          queried_native_revision=self.snapshot["native_revision"])
+            if "snapshot_revision" in result:
+                result["snapshot_revision"] = self.snapshot["native_revision"]
+            for payload in (result.get("route_preview"), result.get("route_contact_horizon")):
+                if isinstance(payload, dict):
+                    if "snapshot_revision" in payload:
+                        payload["snapshot_revision"] = self.snapshot["native_revision"]
+                    if "date_raw" in payload:
+                        payload["date_raw"] = self.snapshot["date_raw"]
+            row["index"] = max(r["index"] for r in self.history) + 1
+            self.history.append(row)
+
     def test_actual_available_unsafe_horizon_selects_halt_before_time(self):
         self.assertFalse(self.snapshot["active_wars"][0]["player_is_primary_war_leader"])
         self.assertEqual(self.army()["army_state"], "embarked")
@@ -91,6 +145,69 @@ class UnsafeEmbarkedRouteHalt(unittest.TestCase):
         self.assertEqual(plan["phase"], "native_war_route_contact_horizon")
         self.assertTrue(plan["selected_step"].startswith(f"query-route-contact-horizon-v1-{ARMY}-to-5967-"))
         self.assertNotEqual(plan["selected_step"], HALT)
+
+    def test_all_actual_route_candidates_unsafe_after_synthetic_suffix_observes_one_day(self):
+        self.ack()
+        self.shorten_route()
+        self.publish_synthetic_replan_queries()
+        plan = self.plan()
+        self.assertEqual(plan["phase"], "native_war_retained_unsafe_edge_one_day_watch")
+        self.assertEqual(plan["selected_step"], "life-advance-one-day")
+        watch = plan["retained_edge_watch"]
+        self.assertFalse(watch["contact_free_proven"])
+        self.assertFalse(watch["offensive_combat_permission"])
+        self.assertFalse(watch["movement_resubmitted"])
+        self.assertFalse(watch["war_or_material_credit"])
+        self.assertTrue(plan["route_rejections"])
+
+    def test_retained_edge_observation_survives_next_day_without_resubmitting_halt(self):
+        self.ack()
+        self.shorten_route()
+        self.snapshot["date_raw"] += 24
+        self.snapshot["native_revision"] += 1
+        self.snapshot["revision"] += 1
+        self.snapshot["snapshot_id"] = f'native:{self.snapshot["native_revision"]}'
+        self.publish_synthetic_replan_queries()
+        plan = self.plan()
+        self.assertEqual(plan["selected_step"], "life-advance-one-day")
+        self.assertEqual(plan["retained_edge_watch"]["halt_submission"]["submitted_date_raw"],
+                         FIXTURE["snapshot"]["date_raw"])
+
+    def test_watch_requires_fresh_halt_postread_and_exhausted_safe_replans(self):
+        self.ack()
+        self.shorten_route()
+        self.publish_synthetic_replan_queries()
+        plan = self.plan()
+        audit = strategy._fresh_route_contact_horizon(self.history, self.snapshot,
+            army_id=ARMY, origin_province_id=940, target_province_id=5967,
+            hostile_army_ids=tuple(self.history[-1]["result"]["route_contact_horizon"]["hostile_army_ids"]),
+            route_province_ids=[5967])
+        audited = {"contact_horizon": audit,
+                   "contact_policy": "blocked_without_qualified_combat_permission"}
+        def watch(**kwargs):
+            return strategy._retained_unsafe_edge_one_day_watch_plan(
+                self.history, self.snapshot, self.army(), audited,
+                available_steps=self.steps, war_summary=[],
+                route_rejections=kwargs.get("rejections", plan["route_rejections"]))
+        self.assertIsNotNone(watch())
+        for rejections in ([], [{"status": "safe"}], [{"status": "contact_timeline_unavailable"}]):
+            self.assertIsNone(watch(rejections=rejections))
+        for field, value in (("active_event", {"event_id": "test"}),
+                             ("paused", False), ("native_revision", 3640)):
+            old = self.snapshot[field]
+            self.snapshot[field] = value
+            self.assertIsNone(watch())
+            self.snapshot[field] = old
+        for change in ({"in_combat": True}, {"retreating": True},
+                       {"owner_character_id": 1}, {"route_province_ids": [5967, 5966]}):
+            army = self.army()
+            old = dict(army)
+            army.update(change)
+            self.assertIsNone(watch())
+            army.clear()
+            army.update(old)
+        self.history.append({"index": 999, "command": f"move-army-{ARMY}-to-5968", "ok": True})
+        self.assertIsNone(watch())
 
     def test_stale_or_other_generation_readback_never_confirms_suffix(self):
         self.ack()

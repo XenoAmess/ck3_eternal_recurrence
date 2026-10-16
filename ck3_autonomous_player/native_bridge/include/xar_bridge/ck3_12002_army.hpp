@@ -285,6 +285,12 @@ game::ReadArmyStrengthsResult ReadArmyStrengths(
     const ArmyBindings &bindings, const game::Snapshot &snapshot,
     std::vector<game::ArmyStrengthSnapshot> &output) noexcept;
 
+// Private ordinary-auto scalar read. The full query entry points above retain
+// their existing ABI and rich observations for explicit callers.
+game::ReadArmyStrengthsResult ReadArmyStrengthsPrivateAutoScalar(
+    const ArmyBindings &bindings, const game::Snapshot &snapshot,
+    std::vector<game::ArmyStrengthSnapshot> &output) noexcept;
+
 struct MilitaryWorldAccess;
 
 // Invoked on the same owning thread after the existing paused controllable-army

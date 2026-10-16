@@ -13526,6 +13526,7 @@ class NativeHeadlessGameplayDriver:
         if type(_auto_core_only) is not bool or (_auto_core_only and
                 (profile != ORDINARY_CORE_PROFILE or army_ids is not None)):
             raise ValueError("private auto Army core requires the complete ordinary scope")
+        mode = "off"
         try:
             if expected_revision is not None:
                 _validate_revision(expected_revision, "expected_revision")
@@ -13534,12 +13535,51 @@ class NativeHeadlessGameplayDriver:
                 expected_revision if expected_revision is not None
                 else int(starting["revision"])
             )
-            result = self._execute_army_strength_query(
-                starting=starting, selected_revision=selected_revision,
-                profile=profile, requested_ids=army_ids,
-                auto_core_only=_auto_core_only,
-            )
+            wire_profile = None
+            if _auto_core_only:
+                from .private_auto_scalar_ab_control_v1 import selected_mode
+                mode = selected_mode(self, starting)
+                if mode != "off":
+                    wire_profile = "private_auto_scalar_v1"
+            if wire_profile == "private_auto_scalar_v1" and mode == "compare":
+                # Both queries are read-only and each proves the original
+                # paused actor/episode/revision/scope. No gameplay action runs.
+                reference = self._execute_army_strength_query(
+                    starting=starting, selected_revision=selected_revision,
+                    profile=profile, requested_ids=army_ids,
+                    auto_core_only=True,
+                )
+                result = self._execute_army_strength_query(
+                    starting=starting, selected_revision=selected_revision,
+                    profile=profile, requested_ids=army_ids,
+                    auto_core_only=True, wire_profile=wire_profile,
+                )
+                if (reference["status"] != result["status"] or
+                        reference["army_strengths"] != result["army_strengths"] or
+                        reference["queried_snapshot_id"] != result["queried_snapshot_id"] or
+                        reference["queried_revision"] != result["queried_revision"] or
+                        reference["queried_native_revision"] != result["queried_native_revision"] or
+                        reference["queried_date_raw"] != result["queried_date_raw"] or
+                        reference["queried_connection_generation"] != result["queried_connection_generation"] or
+                        reference["queried_episode_run_id"] != result["queried_episode_run_id"]):
+                    with self._driver_state_lock:
+                        self._army_strength_query = None
+                    raise BridgeUnavailableError(
+                        "private auto Army scalar differs from same-frame rich projection"
+                    )
+                from .private_auto_scalar_ab_control_v1 import mark_compared
+                mark_compared(self, starting)
+                result = reference
+            else:
+                result = self._execute_army_strength_query(
+                    starting=starting, selected_revision=selected_revision,
+                    profile=profile, requested_ids=army_ids,
+                    auto_core_only=_auto_core_only, wire_profile=wire_profile,
+                )
         except Exception as error:
+            if mode != "off":
+                from .private_auto_scalar_ab_control_v1 import disable
+                disable(self)
             timing = start_army_timing("driver.record_command")
             try:
                 self._record_command(
@@ -13555,6 +13595,18 @@ class NativeHeadlessGameplayDriver:
         finally:
             finish_army_timing(timing)
         return result
+
+    def set_army_private_auto_scalar_ab_v1(
+        self, mode: str, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .private_auto_scalar_ab_control_v1 import set_control
+        return set_control(self, mode, expected_revision=expected_revision)
+
+    def query_army_private_auto_scalar_ab_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .private_auto_scalar_ab_control_v1 import query_control
+        return query_control(self, expected_revision=expected_revision)
 
     def set_army_observer_research_sampling_v1(
         self, enabled: bool, *, observer_family: str, expected_revision: int,
@@ -14949,9 +15001,15 @@ class NativeHeadlessGameplayDriver:
         profile: str = ORDINARY_CORE_PROFILE,
         requested_ids: list[int] | None = None,
         auto_core_only: bool = False,
+        wire_profile: str | None = None,
     ) -> dict[str, object]:
         """Read one exact scope; explicit queries retain every selected row field."""
         profile = require_army_strengths_profile(profile)
+        if wire_profile is not None and (
+                wire_profile != "private_auto_scalar_v1" or
+                not auto_core_only or profile != ORDINARY_CORE_PROFILE or
+                requested_ids is not None):
+            raise ValueError("private Army wire requires complete ordinary auto scope")
         # A failed refresh must not leave an older query advertised as its result.
         with self._driver_state_lock:
             self._army_strength_query = None
@@ -14982,7 +15040,7 @@ class NativeHeadlessGameplayDriver:
             # The native semantic reader can wait 30s for its owning thread.
             # Leave time for that terminal result to reach this caller.
             timeout_seconds=max(self.command_timeout_seconds, 35.0),
-            request_fields={ARMY_STRENGTHS_PROFILE_KEY: profile,
+            request_fields={ARMY_STRENGTHS_PROFILE_KEY: wire_profile or profile,
                             **({"army_ids": requested_ids} if requested_ids is not None else {})},
         )
         if (
@@ -15028,8 +15086,13 @@ class NativeHeadlessGameplayDriver:
         try:
             # Expand the lossless wire view before validation. Explicit queries
             # retain complete manager normalization; auto uses a scalar view.
-            result = expand_army_strengths_manager_inputs(result, detached=False)
-            validate_army_strengths_profile_coverage(result, expected_profile=profile)
+            if wire_profile is None:
+                result = expand_army_strengths_manager_inputs(result, detached=False)
+                validate_army_strengths_profile_coverage(result, expected_profile=profile)
+            elif (result.get(ARMY_STRENGTHS_PROFILE_KEY) != wire_profile or
+                    result.get(ARMY_OBSERVED_PHASE_COVERAGE_KEY) != "not_requested" or
+                    ARMY_MANAGER_INPUTS_SHARED_KEY in result):
+                raise ValueError("private Army wire profile/coverage is malformed")
             if auto_core_only:
                 from .auto_army_core_validation_v1 import normalize_auto_army_core_v1
                 rows = normalize_auto_army_core_v1(
@@ -15046,6 +15109,10 @@ class NativeHeadlessGameplayDriver:
         finally:
             finish_army_timing(army_normalize_timing)
         status = army_strength_query_status(rows)
+        if wire_profile is not None:
+            # Publish the existing ordinary-core cache contract, not a new
+            # public profile that explicit consumers could mistake for rich.
+            result[ARMY_STRENGTHS_PROFILE_KEY] = profile
         if result.get("status") != status:
             raise BridgeUnavailableError(
                 "native army-strength query status disagrees with its rows"

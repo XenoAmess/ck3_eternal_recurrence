@@ -874,7 +874,8 @@ game::ArmyCountyEntryInputsV1 CountyEntryInputs(
 }
 
 game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
-                                   const ArmyStrengthScope &scope) {
+                                   const ArmyStrengthScope &scope,
+                                   bool private_auto_scalar = false) {
   game::ArmyStrengthSnapshot result{};
   result.army_id = scope.army_id;
   result.scope_role = scope.role;
@@ -904,7 +905,8 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   }
   std::int64_t current = 0, maximum = 0, power = 0;
   std::vector<game::ArmyRegimentStrengthSnapshot> regiment_strengths;
-  regiment_strengths.reserve(static_cast<std::size_t>(count));
+  if (!private_auto_scalar)
+    regiment_strengths.reserve(static_cast<std::size_t>(count));
   for (std::int32_t i = 0; i < count; ++i) {
     const auto id = Load<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
     void *regiment = Resolve(bindings.regiment_storage_slot, id);
@@ -932,23 +934,25 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       result.unavailable_reason = "aggregate_overflow";
       return result;
     }
-    game::ArmyRegimentStrengthSnapshot regiment_strength{};
-    regiment_strength.army_regiment_id = id;
-    regiment_strength.current_soldiers = current_value;
-    regiment_strength.maximum_soldiers = maximum_value;
-    if (bindings.is_regiment_supply_loss_eligible != nullptr) {
-      g_army_strength_query_diagnostic_v1.reader.store("regiment_supply_loss_eligibility");
-      regiment_strength.native_supply_loss_eligible =
-          bindings.is_regiment_supply_loss_eligible(regiment);
-      regiment_strength.supply_loss_eligibility_unavailable_reason.clear();
+    if (!private_auto_scalar) {
+      game::ArmyRegimentStrengthSnapshot regiment_strength{};
+      regiment_strength.army_regiment_id = id;
+      regiment_strength.current_soldiers = current_value;
+      regiment_strength.maximum_soldiers = maximum_value;
+      if (bindings.is_regiment_supply_loss_eligible != nullptr) {
+        g_army_strength_query_diagnostic_v1.reader.store("regiment_supply_loss_eligibility");
+        regiment_strength.native_supply_loss_eligible =
+            bindings.is_regiment_supply_loss_eligible(regiment);
+        regiment_strength.supply_loss_eligibility_unavailable_reason.clear();
+      }
+      if (bindings.regiment_composition_enabled) {
+        ReadRegimentComposition(regiment, regiment_strength);
+      } else {
+        regiment_strength.composition_unavailable_reason =
+            "regiment_composition_not_bound";
+      }
+      regiment_strengths.push_back(std::move(regiment_strength));
     }
-    if (bindings.regiment_composition_enabled) {
-      ReadRegimentComposition(regiment, regiment_strength);
-    } else {
-      regiment_strength.composition_unavailable_reason =
-          "regiment_composition_not_bound";
-    }
-    regiment_strengths.push_back(std::move(regiment_strength));
   }
   g_army_strength_query_diagnostic_v1.reader.store("current_soldiers_getter");
   const auto native_current = bindings.get_army_current_soldiers(
@@ -966,6 +970,19 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   result.current_soldiers = native_current;
   result.maximum_soldiers = native_maximum;
   result.ai_base_power_raw = power;
+  if (private_auto_scalar) {
+    // These are the only optional scalar pairs consumed by ordinary auto.
+    // Retain the full path's CArmy/CUnit backlink eligibility and native getter.
+    if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
+      result.current_supply_raw = Load<std::int64_t>(army, 0x180);
+      if (bindings.get_army_attrition_fraction != nullptr) {
+        std::int64_t raw = 0;
+        bindings.get_army_attrition_fraction(army, &raw, nullptr);
+        result.current_attrition_fraction_raw = raw;
+      }
+    }
+    return result;
+  }
   result.regiment_strengths = std::move(regiment_strengths);
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
@@ -1327,6 +1344,30 @@ bool ReadArmiesForCharacters(const ArmyBindings &bindings,
   return true;
 }
 
+game::ReadArmyStrengthsResult ReadArmyStrengthsForScopePrivateAutoScalar(
+    const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
+    std::vector<game::ArmyStrengthSnapshot> &output) noexcept {
+  auto &diagnostic = g_army_strength_query_diagnostic_v1;
+  diagnostic.reader.store("private_auto_scalar_scope");
+  diagnostic.scope_rows.store(static_cast<std::int64_t>(scope.size()));
+  output.clear();
+  if (!bindings.enabled || bindings.unit_storage_slot == nullptr ||
+      bindings.internal_army_storage_slot == nullptr ||
+      bindings.regiment_storage_slot == nullptr ||
+      bindings.get_army_current_soldiers == nullptr ||
+      bindings.get_army_maximum_soldiers == nullptr)
+    return game::ReadArmyStrengthsResult::unavailable;
+  bool partial = false;
+  for (const auto &entry : scope) {
+    diagnostic.army_id.store(entry.army_id);
+    auto row = Strength(bindings, entry, true);
+    partial |= !row.available;
+    output.push_back(std::move(row));
+  }
+  return partial ? game::ReadArmyStrengthsResult::partial
+                 : game::ReadArmyStrengthsResult::available;
+}
+
 game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     const ArmyBindings &bindings, std::span<const ArmyStrengthScope> scope,
     std::vector<game::ArmyStrengthSnapshot> &output) noexcept {
@@ -1566,6 +1607,27 @@ game::ReadArmyStrengthsResult ReadArmyStrengths(
       AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::active_war_enemy, war.war_id);
   }
   return ReadArmyStrengthsForScope(bindings, scope, output);
+}
+
+game::ReadArmyStrengthsResult ReadArmyStrengthsPrivateAutoScalar(
+    const ArmyBindings &bindings, const game::Snapshot &snapshot,
+    std::vector<game::ArmyStrengthSnapshot> &output) noexcept {
+  output.clear();
+  g_army_strength_query_diagnostic_v1.reader.store("private_auto_scalar_admission");
+  if (!bindings.enabled) return game::ReadArmyStrengthsResult::unavailable;
+  if (!snapshot.paused) return game::ReadArmyStrengthsResult::requires_paused;
+  if (!snapshot.has_played_character)
+    return game::ReadArmyStrengthsResult::no_played_character;
+  std::vector<ArmyStrengthScope> scope;
+  for (const auto &army : snapshot.player_armies)
+    AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::player, -1);
+  for (const auto &war : snapshot.active_wars) {
+    for (const auto &army : war.allied_armies)
+      AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::active_war_ally, war.war_id);
+    for (const auto &army : war.enemy_armies)
+      AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::active_war_enemy, war.war_id);
+  }
+  return ReadArmyStrengthsForScopePrivateAutoScalar(bindings, scope, output);
 }
 
 

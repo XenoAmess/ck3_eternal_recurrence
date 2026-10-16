@@ -131,4 +131,9 @@ const AdapterDescriptor &Ck3_12002AdapterDescriptor() noexcept;
 std::unique_ptr<GameAdapter>
 CreateCk3_12002Adapter(std::string_view executable_sha256) noexcept;
 
+// Exact .4 private ordinary-auto read. The GameAdapter vtable and the public
+// read_army_strengths method remain unchanged for every explicit query.
+ReadArmyStrengthsResult ReadCk3_12004ArmyStrengthsPrivateAutoScalar(
+    const GameAdapter &, std::vector<ArmyStrengthSnapshot> &) noexcept;
+
 } // namespace xar::game

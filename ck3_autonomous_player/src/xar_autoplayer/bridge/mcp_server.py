@@ -3071,6 +3071,9 @@ def create_server(
     from .army_observer_research_sampling_control import register_tools as register_army_observer_sampling_tools
     register_army_observer_sampling_tools(server, driver, read_only_tool)
 
+    from .private_auto_scalar_ab_control_v1 import register_tools as register_private_auto_scalar_ab_tools
+    register_private_auto_scalar_ab_tools(server, driver, read_only_tool)
+
     @server.tool()
     def ck3_set_army_gathering_research_sampling_v1(
         enabled: Annotated[bool, Field(strict=True)],

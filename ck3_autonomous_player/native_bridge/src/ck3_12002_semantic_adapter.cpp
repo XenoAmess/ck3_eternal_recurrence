@@ -77,6 +77,7 @@ struct WorkerAdapter::SemanticRequest {
   game::CombatSimulationInputsRequest combat_request{};
   std::int32_t result = 0;
   bool bool_result = false;
+  bool private_auto_scalar = false;
   game::PreviewMoveArmyResult preview{};
   std::vector<game::DeclarableWarSnapshot> declarations;
   std::vector<game::ArrangeMarriageChoice> marriage_choices;
@@ -470,7 +471,9 @@ bool ExecuteSemanticAdapter12002(void *opaque,
     case SemanticOperation::strengths: {
       diagnostic->native.store("dispatch");
       const auto owner_query_start = std::chrono::steady_clock::now();
-      request.result = static_cast<std::int32_t>(native.read_army_strengths(request.strengths));
+      request.result = static_cast<std::int32_t>(request.private_auto_scalar
+          ? game::ReadCk3_12004ArmyStrengthsPrivateAutoScalar(native, request.strengths)
+          : native.read_army_strengths(request.strengths));
       diagnostic->owner_query_elapsed_ns.store(
           std::chrono::duration_cast<std::chrono::nanoseconds>(
               std::chrono::steady_clock::now() - owner_query_start).count());
@@ -665,6 +668,16 @@ game::ReadArmyStrengthsResult WorkerAdapter::read_army_strengths(std::vector<gam
   output.clear(); SemanticRequest request{}; request.operation = SemanticOperation::strengths;
   if (!Run(request)) return game::ReadArmyStrengthsResult::unavailable;
   output = std::move(request.strengths); return static_cast<game::ReadArmyStrengthsResult>(request.result);
+}
+game::ReadArmyStrengthsResult WorkerAdapter::read_army_strengths_private_auto_scalar(
+    std::vector<game::ArmyStrengthSnapshot> &output) const noexcept {
+  output.clear();
+  SemanticRequest request{};
+  request.operation = SemanticOperation::strengths;
+  request.private_auto_scalar = true;
+  if (!Run(request)) return game::ReadArmyStrengthsResult::unavailable;
+  output = std::move(request.strengths);
+  return static_cast<game::ReadArmyStrengthsResult>(request.result);
 }
 game::ReadArrangeMarriageFamilyCandidatesResultV1
 WorkerAdapter::read_arrange_marriage_family_candidates_v1(

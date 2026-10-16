@@ -216,6 +216,20 @@ bool Test() {
   if (!Check(ReadArmyStrengths(bindings, snapshot, strength) == game::ReadArmyStrengthsResult::available &&
              strength.size() == 1 && strength[0].scope_role == game::ArmyStrengthScopeRole::player &&
              strength[0].war_ids == std::vector<std::int32_t>{42}, "scope deduplication and war membership")) return false;
+  const auto full_row = strength[0];
+  if (!Check(ReadArmyStrengthsPrivateAutoScalar(bindings, snapshot, strength) ==
+                 game::ReadArmyStrengthsResult::available && strength.size() == 1 &&
+             strength[0].army_id == full_row.army_id &&
+             strength[0].native_carmy_id == full_row.native_carmy_id &&
+             strength[0].scope_role == full_row.scope_role &&
+             strength[0].war_ids == full_row.war_ids &&
+             strength[0].regiment_count == full_row.regiment_count &&
+             strength[0].current_soldiers == full_row.current_soldiers &&
+             strength[0].maximum_soldiers == full_row.maximum_soldiers &&
+             strength[0].ai_base_power_raw == full_row.ai_base_power_raw &&
+             !strength[0].regiment_strengths.has_value() &&
+             !strength[0].current_daily_supply_dispatch_inputs_v1.has_value(),
+             "private auto scalar preserves complete scope and strength without rich work")) return false;
   // A full CUnit handle can be zero when generation and storage slot are zero.
   Put(unit_slots, 0x18, static_cast<void *>(nullptr));
   Put(unit_slots, 0x08, static_cast<void *>(u1.data()));
@@ -423,6 +437,40 @@ void SupplyFixture() {
             "production result keeps exact raw values including zero");
     Require(supply_fixture_capacity_calls == before_capacity + 1 && supply_fixture_attrition_calls == before_attrition + 1,
             "one call per genuine native getter, correct ABI");
+    game::Snapshot private_scope{};
+    private_scope.paused = true;
+    private_scope.has_played_character = true;
+    game::ArmySnapshot public_army{};
+    public_army.army_id = public_id;
+    private_scope.player_armies.push_back(public_army);
+    game::ActiveWarSnapshot private_war{};
+    private_war.war_id = 42;
+    private_war.allied_armies.push_back(public_army);
+    private_scope.active_wars.push_back(private_war);
+    std::vector<game::ArmyStrengthSnapshot> private_rows;
+    Require(ReadArmyStrengthsPrivateAutoScalar(bindings, private_scope, private_rows) ==
+                game::ReadArmyStrengthsResult::available && private_rows.size() == 1,
+            "private scalar uses the real reader with the same complete public scope");
+    const auto &scalar = private_rows.front();
+    Require(scalar.army_id == row.army_id && scalar.native_carmy_id == row.native_carmy_id &&
+                scalar.scope_role == row.scope_role && scalar.war_ids == row.war_ids &&
+                scalar.regiment_count == row.regiment_count &&
+                scalar.current_soldiers == row.current_soldiers &&
+                scalar.maximum_soldiers == row.maximum_soldiers &&
+                scalar.ai_base_power_raw == row.ai_base_power_raw &&
+                scalar.ai_base_power_scale == row.ai_base_power_scale &&
+                scalar.current_supply_raw == row.current_supply_raw &&
+                scalar.current_attrition_fraction_raw == row.current_attrition_fraction_raw &&
+                !scalar.regiment_strengths.has_value() &&
+                !scalar.current_supply_capacity_raw.has_value(),
+            "private scalar equals rich projection including signed or zero supply/attrition");
+    std::string scalar_wire;
+    game::AppendArmyStrengthPrivateAutoScalarV1(
+        scalar_wire, scalar, FixtureNumber, FixtureArray, FixtureString);
+    Require(scalar_wire.find("\"current_supply_raw\":") != std::string::npos &&
+                scalar_wire.find("\"current_attrition_fraction_raw\":") != std::string::npos &&
+                scalar_wire.find("\"regiment_strengths\"") == std::string::npos,
+            "private wire emits only consumed scalar pairs");
     EmitSupplyCase(item.name, row);
   }
   bindings.get_army_supply_capacity = nullptr;
@@ -995,6 +1043,13 @@ void CountyEntryFixture() {
 } // namespace
 
 int main(int argc, char **argv) {
+  Require(xar::game::ParseArmyStrengthQueryProfileV1(
+              R"({"army_strengths_profile":"private_auto_scalar_v1"})") ==
+              xar::game::ArmyStrengthQueryProfileV1::private_auto_scalar &&
+          xar::game::ParseArmyStrengthQueryProfileV1(
+              R"({"army_strengths_profile":"private_auto_scalar_v1","army_strengths_profile":"ordinary_core_v1"})") ==
+              xar::game::ArmyStrengthQueryProfileV1::invalid,
+          "private scalar profile is exact and duplicate keys fail closed");
   if (argc == 2 && std::string_view(argv[1]) == "--county-entry-fixture") {
     CountyEntryFixture();
     return 0;
