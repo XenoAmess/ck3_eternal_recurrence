@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002_commands.hpp"
 
 #include <vector>
+#include <span>
 
 namespace xar::ck3_12002 {
 
@@ -54,6 +55,55 @@ using DeclarationsAppendIntArray = void (*)(void *, std::int32_t,
                                             const std::int32_t *,
                                             const std::int32_t *);
 
+enum class DeclarationsCandidateVariantV1 { full, cb_first, shadow };
+enum class DeclarationsCandidateFactV1 { unknown, no, yes };
+struct DeclarationsCandidateFactsV1 {
+  DeclarationsCandidateFactV1 landed = DeclarationsCandidateFactV1::unknown;
+  DeclarationsCandidateFactV1 independent = DeclarationsCandidateFactV1::unknown;
+};
+using DeclarationsCandidateFactsReaderV1 = bool (*)(
+    std::uintptr_t, void *, DeclarationsCandidateFactsV1 &) noexcept;
+using DeclarationsCandidateRealmReaderV1 = bool (*)(
+    std::uintptr_t, void *, std::vector<void *> &) noexcept;
+inline constexpr std::uint32_t kDeclarationsCandidateLandedV1 = 1;
+inline constexpr std::uint32_t kDeclarationsCandidateIndependentV1 = 2;
+// Entries must come from this loaded definition set's qualified source
+// manifest, including override resolution. A same-named CB or EXE hash alone
+// is not qualification. Missing/unknown rules and facts retain the wide set.
+struct DeclarationsCandidateRuleV1 {
+  std::string_view key;
+  std::string_view definition_source_sha256;
+  std::uint32_t necessary_conditions = 0;
+};
+struct DeclarationsCandidateOptionsV1 {
+  DeclarationsCandidateVariantV1 variant = DeclarationsCandidateVariantV1::full;
+  std::span<const DeclarationsCandidateRuleV1> qualified_rules;
+  std::string_view qualified_source_manifest_sha256;
+  // Optional launch-bound controlled file, read at each existing query entry.
+  // Accepts only full/shadow-v1/cb-first-v1; unavailable/malformed means full.
+  std::string_view runtime_policy_path;
+};
+struct DeclarationsCandidateCbDiagnosticV1 {
+  std::int32_t ordinal = -1;
+  std::string key;
+  std::uint64_t full_targets = 0, candidates = 0, evaluations = 0;
+  std::uint64_t baseline_evaluations = 0, candidate_rows = 0, baseline_rows = 0;
+  std::uint64_t missing_tuples = 0, extra_tuples = 0;
+  std::uint32_t necessary_conditions = 0;
+  std::string definition_source_sha256;
+  std::int32_t native_target_titles_mode = -1;
+  bool native_realm_index_used = false;
+  std::uint64_t projected_candidate_evaluations = 0;
+};
+struct DeclarationsCandidateDiagnosticV1 {
+  bool source_qualified = false, baseline_compared = false;
+  bool same_frame = false, tuple_sets_equal = false;
+  std::string qualified_source_manifest_sha256;
+  bool native_realm_index_complete = false;
+  std::uint64_t native_realm_index_entries = 0;
+  std::vector<DeclarationsCandidateCbDiagnosticV1> casus_belli;
+};
+
 struct DeclarationsBindings {
   bool enabled = false;
   CoreBindings core;
@@ -74,6 +124,11 @@ struct DeclarationsBindings {
   std::uintptr_t war_declaration_vtable = 0;
   std::uintptr_t send_primary_vtable = 0;
   std::uintptr_t send_secondary_vtable = 0;
+  std::uintptr_t candidate_provider_image_base = 0;
+  DeclarationsCandidateFactsReaderV1 read_candidate_facts = nullptr;
+  DeclarationsCandidateRealmReaderV1 read_candidate_realm = nullptr;
+  std::size_t candidate_target_titles_mode_offset = 0;
+  DeclarationsCandidateOptionsV1 candidate_options;
 };
 
 DeclarationsBindings BindDeclarationsImage(std::uintptr_t image_base,
@@ -90,6 +145,13 @@ game::ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
 // timing, counter updates and file output. Failure to write is diagnostic only.
 bool ReadDeclarableWars(const DeclarationsBindings &,
                        std::vector<game::DeclarableWarSnapshot> &) noexcept;
+// Opt-in CB -> conservative target superset -> unchanged stock false,false
+// evaluation/materialization. Shadow returns the original full result even
+// on parity failure. Full remains the default and submit re-evaluates normally.
+bool ReadDeclarableWarsWithCandidatesV1(
+    const DeclarationsBindings &, const DeclarationsCandidateOptionsV1 &,
+    std::vector<game::DeclarableWarSnapshot> &,
+    DeclarationsCandidateDiagnosticV1 * = nullptr) noexcept;
 game::DeclareWarResult SubmitDeclareWar(
     const DeclarationsBindings &, const game::DeclarableWarSnapshot &) noexcept;
 

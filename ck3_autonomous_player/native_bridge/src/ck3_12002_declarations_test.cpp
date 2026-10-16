@@ -1,5 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_declarations.hpp"
 
+#include "xar_bridge/ck3_12004_declaration_candidates.hpp"
 #include <array>
 #include <cassert>
 #include <chrono>
@@ -8,6 +9,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <utility>
 #include <vector>
 
@@ -52,6 +54,10 @@ struct World {
   DeclarationsBindings bindings;
   bool validate = true, reject = false, zero_configurations = false, malformed = false;
   bool extra_target = false, extra_type = false, available = true;
+  bool restrict_first_cb = false, candidate_facts_available = true;
+  bool exclude_all_candidates = false, candidate_realm_available = true;
+  int candidate_fact_reads = 0, candidate_realm_reads = 0;
+  std::vector<void *> candidate_realm;
   std::vector<std::pair<std::int32_t, std::int32_t>> evaluation_order;
   int evaluations = 0, config_destroys = 0, context_destroys = 0, queues = 0;
   std::uint32_t sent_flags = 0;
@@ -81,7 +87,8 @@ bool Evaluate(void *type, void *actor, void *target, void *scratch, bool blocked
   Array(world->configurations.data() + 0x98 + 8, nullptr, 0);
   Array(world->configurations.data() + 0x98 * 2 + 8, world->third_titles.data(), 1);
   if (world->malformed) Put(world->configurations.data() + 8, 12, std::int32_t{3});
-  return world->available;
+  return world->available && !(world->restrict_first_cb &&
+      type == world->type.data() && target == world->dead.data());
 }
 void DestroyConfiguration(void *) { ++world->config_destroys; }
 void *Construct(void *context, void *interaction, std::int32_t actor_id,
@@ -299,7 +306,139 @@ void QueryProfileFixture(const char *requested_path) {
     ++lines;
   }
   assert(lines == 3);
+  stream.close();
   if (!requested_path) std::filesystem::remove(path);
+}
+void Require(bool condition, const char *message) {
+  if (!condition) throw std::runtime_error(message);
+}
+bool CandidateFacts(std::uintptr_t, void *target, DeclarationsCandidateFactsV1 &out) noexcept {
+  ++world->candidate_fact_reads;
+  out.independent = target == world->dead.data() || world->exclude_all_candidates
+      ? DeclarationsCandidateFactV1::no : DeclarationsCandidateFactV1::yes;
+  return world->candidate_facts_available;
+}
+bool CandidateRealm(std::uintptr_t, void *, std::vector<void *> &out) noexcept {
+  ++world->candidate_realm_reads; out = world->candidate_realm;
+  return world->candidate_realm_available;
+}
+bool FixtureBytes(const void *source, void *destination, std::size_t size) noexcept {
+  if (!source || !destination) return false;
+  std::memcpy(destination, source, size); return true;
+}
+bool FailedBytes(const void *, void *, std::size_t) noexcept { return false; }
+
+void RealmCandidateLayoutFixture() {
+  std::array<std::byte, 0x1D8> actor{};
+  std::array<std::byte, 0x900> cache{};
+  std::array<void *, 3> normal{actor.data(), nullptr, cache.data()};
+  std::array<void *, 2> replacement{cache.data(), cache.data()};
+  std::array<void *, 1> extra{actor.data()};
+  Put(actor.data(), 0x1C8, cache.data());
+  const auto pointers_at = [&cache](std::size_t offset, void **data, std::int32_t count) {
+    Put(cache.data(), offset, data); Put(cache.data(), offset + 8, count); Put(cache.data(), offset + 12, count);
+  };
+  pointers_at(0x688, normal.data(), 3); pointers_at(0x7B0, extra.data(), 1);
+  std::vector<void *> pointers;
+  Require(xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FixtureBytes, pointers) &&
+          pointers == std::vector<void *>{actor.data(), nullptr, cache.data(), actor.data()},
+          "normal realm pointer union must preserve exact pointer identities");
+  pointers_at(0x8E0, replacement.data(), 2);
+  Require(xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FixtureBytes, pointers) &&
+          pointers == std::vector<void *>{cache.data(), cache.data(), actor.data()},
+          "nonempty replacement vector must supersede normal vector");
+  Put(cache.data(), 0x8EC, std::int32_t{-1});
+  Require(!xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FixtureBytes, pointers) && pointers.empty(),
+          "malformed replacement must be unavailable, never empty-certified");
+  Put(cache.data(), 0x8EC, std::int32_t{0}); Put(cache.data(), 0x7BC, std::int32_t{2});
+  Require(!xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FixtureBytes, pointers),
+          "malformed secondary vector must invalidate entire union");
+  Put(cache.data(), 0x7BC, std::int32_t{1});
+  Require(!xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FailedBytes, pointers),
+          "read failure must be unavailable");
+  Put(actor.data(), 0x1C8, static_cast<void *>(nullptr));
+  Require(!xar::ck3_12004::ReadDeclarationRealmCandidates12004(actor.data(), &FixtureBytes, pointers),
+          "missing actor realm cache must remain unavailable");
+}
+
+void CandidateQueryFixture() {
+  World w; Initialize(w);
+  w.extra_target = w.extra_type = w.restrict_first_cb = true;
+  Put(w.dead.data(), 0x1D0, static_cast<void *>(nullptr));
+  std::array<void *, 3> types{w.type.data(), nullptr, w.disabled_type.data()};
+  Put(w.cb_database.data(), 0x50, types.data()); Put(w.cb_database.data(), 0x5C, std::int32_t{3});
+  std::memcpy(w.disabled_type.data(), w.type.data(), w.type.size());
+  Put(w.disabled_type.data(), 0x40, w.disabled_rule.data()); w.disabled_rule[0x1F9] = std::byte{};
+  const char unknown_key[] = "unknown_cb";
+  std::memcpy(w.disabled_type.data() + 0x18, unknown_key, sizeof(unknown_key));
+  Put(w.disabled_type.data(), 0x28, sizeof(unknown_key) - 1);
+  w.bindings.read_candidate_facts = &CandidateFacts;
+  constexpr std::string_view source_sha = "087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9";
+  const std::array<DeclarationsCandidateRuleV1, 1> rules{{{"test_cb", source_sha, kDeclarationsCandidateIndependentV1}}};
+  DeclarationsCandidateOptionsV1 options{DeclarationsCandidateVariantV1::cb_first, rules, source_sha};
+  std::vector<xar::game::DeclarableWarSnapshot> baseline, candidate;
+  Require(ReadDeclarableWars(w.bindings, baseline) && baseline.size() == 6, "full baseline");
+  DeclarationsCandidateDiagnosticV1 d;
+  const int before = w.evaluations;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline,
+          "candidate tuples and original output order must equal full baseline");
+  Require(w.evaluations - before == 3 && w.candidate_fact_reads == 2 &&
+          d.casus_belli.size() == 2 && d.casus_belli[0].candidates == 1 && d.casus_belli[1].candidates == 2,
+          "one-pass facts and unknown CB wide fallback");
+  options.variant = DeclarationsCandidateVariantV1::shadow;
+  const int shadow_before = w.evaluations;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          d.baseline_compared && d.same_frame && d.tuple_sets_equal &&
+          w.evaluations - shadow_before == 4 && d.casus_belli[0].evaluations == 0 &&
+          d.casus_belli[0].projected_candidate_evaluations == 1,
+          "shadow uses one real full baseline; projected calls are not actual calls");
+  w.exclude_all_candidates = true;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          !d.tuple_sets_equal && d.casus_belli[0].missing_tuples == 2,
+          "shadow must expose incomplete superset and return complete original result");
+  w.exclude_all_candidates = false; w.candidate_facts_available = false;
+  options.variant = DeclarationsCandidateVariantV1::cb_first;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          d.casus_belli[0].candidates == 2, "unreadable facts must retain every target");
+  w.candidate_facts_available = true; options.qualified_source_manifest_sha256 = "unqualified";
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          !d.source_qualified && d.casus_belli[0].candidates == 2, "invalid source guard must disable script filter");
+  w.bindings.read_candidate_realm = &CandidateRealm;
+  w.bindings.candidate_target_titles_mode_offset = 0x6C8; w.candidate_realm = {w.target.data()};
+  for (std::uint8_t mode = 1; mode <= 4; ++mode) {
+    Put(w.type.data(), 0x6C8, mode);
+    Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+            d.native_realm_index_complete && d.casus_belli[0].native_realm_index_used &&
+            d.casus_belli[0].candidates == 1 && d.casus_belli[1].candidates == 2,
+            "stock target_titles modes1..4 use complete native realm pointer union");
+  }
+  w.candidate_realm_available = false;
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          !d.native_realm_index_complete && d.casus_belli[0].candidates == 2,
+          "missing native realm index must use wide fallback");
+  w.candidate_realm_available = true; Put(w.type.data(), 0x6C8, std::uint8_t{6});
+  Require(ReadDeclarableWarsWithCandidatesV1(w.bindings, options, candidate, &d) && candidate == baseline &&
+          !d.casus_belli[0].native_realm_index_used && d.casus_belli[0].candidates == 2,
+          "claims/other unknown modes must not inherit realm-mode filter");
+  options.qualified_source_manifest_sha256 = source_sha; w.bindings.candidate_options = options;
+  const auto path = std::filesystem::temp_directory_path() /
+      ("xar-candidate-policy-" + std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()) + ".txt");
+  Require(!std::filesystem::exists(path), "policy fixture owns a fresh exact path");
+  const auto path_text = path.string(); w.bindings.candidate_options.runtime_policy_path = path_text;
+  const auto write_policy = [&path](std::string_view value) {
+    std::ofstream stream(path, std::ios::binary | std::ios::trunc);
+    stream << value; Require(bool(stream), "write policy fixture");
+  };
+  for (const auto &[policy, expected_calls] : std::array<std::pair<std::string_view, int>, 4>{{
+           {"shadow-v1\n", 4}, {"cb-first-v1\r\n", 3}, {"full\n", 4}, {"invalid\n", 4}}}) {
+    write_policy(policy); const int start = w.evaluations;
+    Require(ReadDeclarableWars(w.bindings, candidate) && candidate == baseline &&
+            w.evaluations - start == expected_calls, "existing query entry switches mode in same process");
+  }
+  Require(std::filesystem::remove(path), "remove only owned policy fixture file");
+  const int missing_start = w.evaluations;
+  Require(ReadDeclarableWars(w.bindings, candidate) && candidate == baseline &&
+          w.evaluations - missing_start == 4, "missing runtime policy falls back to full");
 }
 } // namespace
 
@@ -349,5 +488,7 @@ int main(int argc, char **argv) {
   assert(!BindDeclarationsImage(0x140000000, "old").enabled && !BindDeclarationsImage(0, kExecutableSha256).enabled);
   QueryLocalReuseFixture();
   QueryProfileFixture(argc > 1 ? argv[1] : nullptr);
+  RealmCandidateLayoutFixture();
+  CandidateQueryFixture();
   std::cout << "PASS 1.20.0.2 declarations enumeration, stale choice, validation and native clone ownership fixtures\n";
 }

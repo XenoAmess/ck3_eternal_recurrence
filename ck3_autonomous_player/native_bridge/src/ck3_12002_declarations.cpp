@@ -6,12 +6,16 @@
 #endif
 
 #include <array>
+#include <algorithm>
 #include <chrono>
 #include <cstdlib>
 #include <cstring>
 #include <filesystem>
 #include <fstream>
 #include <utility>
+#include <tuple>
+#include <unordered_map>
+#include <unordered_set>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -189,6 +193,8 @@ struct QueryProfile {
   ProfileClock::time_point start{};
   std::uint64_t targets = 0, result_rows = 0;
   bool success = false;
+  DeclarationsCandidateVariantV1 variant = DeclarationsCandidateVariantV1::full;
+  const DeclarationsCandidateDiagnosticV1 *candidate_diagnostic = nullptr;
   bool active() const noexcept { return path && *path; }
   QueryProfile(const CoreSnapshotPrefix &current,
                const std::vector<EnabledCb> &definitions) noexcept
@@ -228,17 +234,53 @@ struct QueryProfile {
                << ",\"evaluate_ns\":" << cb.evaluate_ns
                << ",\"materialize_and_clear_ns\":" << cb.materialize_and_clear_ns << '}';
       }
-      stream << "]}\n";
+      stream << ']';
+      if (candidate_diagnostic) {
+        const auto &d = *candidate_diagnostic;
+        stream << ",\"candidate_variant\":\""
+               << (variant == DeclarationsCandidateVariantV1::shadow ? "shadow-v1" : "cb-first-v1")
+               << "\",\"candidate_source_qualified\":" << (d.source_qualified ? "true" : "false")
+               << ",\"baseline_compared\":" << (d.baseline_compared ? "true" : "false")
+               << ",\"same_frame\":" << (d.same_frame ? "true" : "false")
+               << ",\"tuple_sets_equal\":" << (d.tuple_sets_equal ? "true" : "false")
+               << ",\"qualified_source_manifest_sha256\":";
+        JsonString(stream, d.qualified_source_manifest_sha256);
+        stream << ",\"candidate_casus_belli\":[";
+        bool first_candidate = true;
+        for (const auto &cb : d.casus_belli) {
+          if (!first_candidate) stream << ',';
+          first_candidate = false;
+          stream << "{\"ordinal\":" << cb.ordinal << ",\"key\":";
+          JsonString(stream, cb.key);
+          stream << ",\"full_targets\":" << cb.full_targets
+                 << ",\"candidates\":" << cb.candidates
+                 << ",\"evaluations\":" << cb.evaluations
+                 << ",\"baseline_evaluations\":" << cb.baseline_evaluations
+                 << ",\"candidate_rows\":" << cb.candidate_rows
+                 << ",\"baseline_rows\":" << cb.baseline_rows
+                 << ",\"missing_tuples\":" << cb.missing_tuples
+                 << ",\"extra_tuples\":" << cb.extra_tuples
+                 << ",\"necessary_conditions\":" << cb.necessary_conditions
+                 << ",\"native_target_titles_mode\":" << cb.native_target_titles_mode
+                 << ",\"native_realm_index_used\":" << (cb.native_realm_index_used ? "true" : "false")
+                 << ",\"projected_candidate_evaluations\":" << cb.projected_candidate_evaluations
+                 << ",\"definition_source_sha256\":";
+          JsonString(stream, cb.definition_source_sha256);
+          stream << '}';
+        }
+        stream << ']';
+        stream << ",\"native_realm_index_complete\":" << (d.native_realm_index_complete ? "true" : "false")
+               << ",\"native_realm_index_entries\":" << d.native_realm_index_entries;
+      }
+      stream << "}\n";
     } catch (...) { /* Diagnostic output is independent of gameplay. */ }
   }
 };
 
-bool CachedTarget(const DeclarationsBindings &b,
-                  std::vector<EnabledCb> &enabled,
+bool CachedEvaluation(const DeclarationsBindings &b, EnabledCb &cb,
                   void *actor, void *target, std::int32_t target_id,
                   std::vector<game::DeclarableWarSnapshot> &out,
                   bool &scratch_is_clear, bool profile) noexcept {
-  for (auto &cb : enabled) {
     // The preceding evaluation already validated and cleared this scratch.
     // There is no native call between that clear and the next evaluation.
     if (!scratch_is_clear && !Clear(b)) return false;
@@ -261,8 +303,69 @@ bool CachedTarget(const DeclarationsBindings &b,
       cb.rows += out.size() - previous_rows;
     }
     if (!materialized || !scratch_is_clear) return false;
-  }
   return true;
+}
+
+bool CachedTarget(const DeclarationsBindings &b, std::vector<EnabledCb> &enabled,
+                  void *actor, void *target, std::int32_t target_id,
+                  std::vector<game::DeclarableWarSnapshot> &out,
+                  bool &scratch_is_clear, bool profile) noexcept {
+  for (auto &cb : enabled)
+    if (!CachedEvaluation(b, cb, actor, target, target_id, out,
+                          scratch_is_clear, profile)) return false;
+  return true;
+}
+
+bool Sha256Text(std::string_view value) noexcept {
+  return value.size() == 64 && std::all_of(value.begin(), value.end(), [](char c) {
+    return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'f') || (c >= 'A' && c <= 'F');
+  });
+}
+
+std::uint32_t CandidateConditions(const DeclarationsCandidateOptionsV1 &options,
+                                  std::string_view key) noexcept {
+  if (!Sha256Text(options.qualified_source_manifest_sha256)) return 0;
+  const DeclarationsCandidateRuleV1 *found = nullptr;
+  for (const auto &rule : options.qualified_rules) {
+    if (rule.key != key) continue;
+    if (found || !Sha256Text(rule.definition_source_sha256) ||
+        (rule.necessary_conditions & ~std::uint32_t{3})) return 0;
+    found = &rule;
+  }
+  return found ? found->necessary_conditions : 0;
+}
+
+bool TupleLess(const game::DeclarableWarSnapshot &a,
+               const game::DeclarableWarSnapshot &b) noexcept {
+  return std::tie(a.target_character_id, a.casus_belli_index, a.casus_belli_key,
+                  a.configuration_index, a.claimant_character_id, a.target_title_ids) <
+         std::tie(b.target_character_id, b.casus_belli_index, b.casus_belli_key,
+                  b.configuration_index, b.claimant_character_id, b.target_title_ids);
+}
+
+void CompareCandidateTuples(const std::vector<game::DeclarableWarSnapshot> &baseline,
+                            const std::vector<game::DeclarableWarSnapshot> &candidate,
+                            DeclarationsCandidateDiagnosticV1 &diagnostic) {
+  for (auto &cb : diagnostic.casus_belli) {
+    std::vector<game::DeclarableWarSnapshot> full, selected;
+    for (const auto &row : baseline) if (row.casus_belli_index == cb.ordinal) full.push_back(row);
+    for (const auto &row : candidate) if (row.casus_belli_index == cb.ordinal) selected.push_back(row);
+    cb.baseline_rows = full.size(); cb.candidate_rows = selected.size();
+    std::sort(full.begin(), full.end(), TupleLess);
+    std::sort(selected.begin(), selected.end(), TupleLess);
+    std::size_t f = 0, s = 0;
+    while (f < full.size() && s < selected.size()) {
+      if (TupleLess(full[f], selected[s])) { ++cb.missing_tuples; ++f; }
+      else if (TupleLess(selected[s], full[f])) { ++cb.extra_tuples; ++s; }
+      else { ++f; ++s; }
+    }
+    cb.missing_tuples += full.size() - f;
+    cb.extra_tuples += selected.size() - s;
+  }
+  diagnostic.tuple_sets_equal = std::all_of(diagnostic.casus_belli.begin(),
+      diagnostic.casus_belli.end(), [](const auto &cb) {
+        return cb.missing_tuples == 0 && cb.extra_tuples == 0;
+      });
 }
 
 struct alignas(8) ContextStorage { std::array<std::byte, kDeclarationsContextSize> bytes{}; };
@@ -321,8 +424,10 @@ game::ReadDeclarableWarsResult ReadDeclarableWarsForTarget(
   return game::ReadDeclarableWarsResult::available;
 }
 
-bool ReadDeclarableWars(const DeclarationsBindings &b,
-                       std::vector<game::DeclarableWarSnapshot> &out) noexcept {
+static bool ReadDeclarableWarsFull(const DeclarationsBindings &b,
+                       std::vector<game::DeclarableWarSnapshot> &out,
+                       bool record_profile = true,
+                       std::vector<EnabledCb> *counter_output = nullptr) noexcept {
   out.clear();
   CoreSnapshotPrefix current{};
   if (!Ready(b) || !ReadCoreSnapshot(b.core, current) || !current.map_ready ||
@@ -340,6 +445,7 @@ bool ReadDeclarableWars(const DeclarationsBindings &b,
   std::vector<game::DeclarableWarSnapshot> result;
   std::vector<EnabledCb> enabled;
   QueryProfile profile(current, enabled);
+  if (!record_profile) profile.path = nullptr;
   bool definitions_read = false, scratch_is_clear = false;
   for (std::int32_t i = 0; i < cap; ++i) {
     void *target = Load<void *>(slots, i * 0x10ULL + 8);
@@ -356,12 +462,191 @@ bool ReadDeclarableWars(const DeclarationsBindings &b,
     }
     if (profile.active()) ++profile.targets;
     if (!CachedTarget(b, enabled, actor, target, id, result, scratch_is_clear,
-                      profile.active()))
+                      profile.active() || counter_output))
       return false;
   }
   profile.result_rows = result.size();
   profile.success = true;
+  if (counter_output) *counter_output = enabled;
   out = std::move(result);
+  return true;
+}
+
+bool ReadDeclarableWars(const DeclarationsBindings &b,
+                       std::vector<game::DeclarableWarSnapshot> &out) noexcept {
+  auto options = b.candidate_options;
+  if (!options.runtime_policy_path.empty()) {
+    // Query-local control only; bounded read and no automatic promotion after
+    // shadow. Root may atomically switch this file without restarting CK3.
+    options.variant = DeclarationsCandidateVariantV1::full;
+    std::ifstream stream(std::filesystem::path(options.runtime_policy_path), std::ios::binary);
+    std::array<char, 33> bytes{};
+    stream.read(bytes.data(), bytes.size());
+    const auto count = stream.gcount();
+    if (count > 0 && count <= 32 && stream.eof()) {
+      std::string_view value(bytes.data(), static_cast<std::size_t>(count));
+      if (value.ends_with("\r\n")) value.remove_suffix(2);
+      else if (value.ends_with("\n")) value.remove_suffix(1);
+      if (value == "shadow-v1") options.variant = DeclarationsCandidateVariantV1::shadow;
+      else if (value == "cb-first-v1") options.variant = DeclarationsCandidateVariantV1::cb_first;
+    }
+  }
+  return ReadDeclarableWarsWithCandidatesV1(b, options, out);
+}
+
+bool ReadDeclarableWarsWithCandidatesV1(
+    const DeclarationsBindings &b, const DeclarationsCandidateOptionsV1 &options,
+    std::vector<game::DeclarableWarSnapshot> &out,
+    DeclarationsCandidateDiagnosticV1 *requested_diagnostic) noexcept {
+  out.clear();
+  if (requested_diagnostic) *requested_diagnostic = {};
+  if (options.variant != DeclarationsCandidateVariantV1::cb_first &&
+      options.variant != DeclarationsCandidateVariantV1::shadow)
+    return ReadDeclarableWarsFull(b, out);
+  CoreSnapshotPrefix current{};
+  if (!Ready(b) || !ReadCoreSnapshot(b.core, current) || !current.map_ready ||
+      !current.clock.paused || !current.has_played_character ||
+      !current.played_character_alive) return false;
+  void *actor = ResolveCharacter(b.core, current.played_character_id);
+  void *storage = b.core.character_storage_slot ? *b.core.character_storage_slot : nullptr;
+  if (!actor || !storage) return false;
+  void *slots = Load<void *>(storage, 0x20), *types{};
+  const auto capacity = Load<std::int32_t>(storage, 0x2C);
+  std::int32_t count{};
+  if (!slots || capacity <= 0 || capacity > 1'000'000 || !Database(b, types, count)) return false;
+  std::vector<EnabledCb> enabled;
+  DeclarationsCandidateDiagnosticV1 diagnostic;
+  QueryProfile profile(current, enabled);
+  profile.variant = options.variant; profile.candidate_diagnostic = &diagnostic;
+  struct CandidateTarget { void *object; std::int32_t id; };
+  std::vector<CandidateTarget> targets;
+  for (std::int32_t i = 0; i < capacity; ++i) {
+    void *target = Load<void *>(slots, i * 0x10ULL + 8);
+    if (!target || target == actor || Load<void *>(target, kCharacterDeathDataOffset)) continue;
+    const auto id = Load<std::int32_t>(target, 0x18);
+    if ((static_cast<std::uint32_t>(id) & 0xFFFFFFU) == static_cast<std::uint32_t>(i))
+      targets.push_back({target, id});
+  }
+  std::vector<std::uint32_t> conditions;
+  diagnostic.source_qualified = Sha256Text(options.qualified_source_manifest_sha256);
+  diagnostic.qualified_source_manifest_sha256 = options.qualified_source_manifest_sha256;
+  for (std::int32_t ordinal = 0; ordinal < count; ++ordinal) {
+    void *type = Load<void *>(types, ordinal * sizeof(void *));
+    if (!EnabledType(type)) continue;
+    std::string key;
+    const bool key_read = TypeKey(type, key);
+    if (!key_read) key.clear();
+    enabled.push_back({type, ordinal});
+    conditions.push_back(key_read ? CandidateConditions(options, key) : 0);
+    diagnostic.casus_belli.push_back({ordinal, std::move(key), targets.size()});
+    auto &d = diagnostic.casus_belli.back();
+    d.necessary_conditions = conditions.back();
+    if (d.necessary_conditions)
+      for (const auto &rule : options.qualified_rules)
+        if (rule.key == d.key) d.definition_source_sha256 = rule.definition_source_sha256;
+    if (b.read_candidate_realm && b.candidate_target_titles_mode_offset)
+      d.native_target_titles_mode = Load<std::uint8_t>(type, b.candidate_target_titles_mode_offset);
+  }
+  // Build current-frame identity indexes once; never cache across dates/queries.
+  // Unknown facts remain in every affected superset.
+  std::array<std::vector<std::size_t>, 4> indexes;
+  std::array<std::vector<std::size_t>, 4> realm_indexes;
+  std::vector<void *> realm_pointers;
+  const bool need_realm = std::any_of(diagnostic.casus_belli.begin(), diagnostic.casus_belli.end(),
+      [](const auto &cb) { return cb.native_target_titles_mode >= 1 && cb.native_target_titles_mode <= 4; });
+  diagnostic.native_realm_index_complete = need_realm && b.read_candidate_realm &&
+      b.read_candidate_realm(b.candidate_provider_image_base, actor, realm_pointers);
+  diagnostic.native_realm_index_entries = diagnostic.native_realm_index_complete ? realm_pointers.size() : 0;
+  std::unordered_set<void *> realm_members;
+  if (diagnostic.native_realm_index_complete)
+    realm_members.insert(realm_pointers.begin(), realm_pointers.end());
+  const bool need_facts = std::any_of(conditions.begin(), conditions.end(),
+                                     [](auto c) { return c != 0; });
+  for (std::size_t i = 0; i < targets.size(); ++i) {
+    DeclarationsCandidateFactsV1 facts;
+    if (need_facts && b.read_candidate_facts &&
+        !b.read_candidate_facts(b.candidate_provider_image_base, targets[i].object, facts)) facts = {};
+    for (std::uint32_t mask = 0; mask < indexes.size(); ++mask)
+      if (!((mask & kDeclarationsCandidateLandedV1) && facts.landed == DeclarationsCandidateFactV1::no) &&
+          !((mask & kDeclarationsCandidateIndependentV1) && facts.independent == DeclarationsCandidateFactV1::no))
+      {
+        indexes[mask].push_back(i);
+        if (diagnostic.native_realm_index_complete && realm_members.contains(targets[i].object))
+          realm_indexes[mask].push_back(i);
+      }
+  }
+  std::vector<const std::vector<std::size_t> *> candidate_indexes;
+  for (std::size_t i = 0; i < enabled.size(); ++i) {
+    auto &d = diagnostic.casus_belli[i];
+    d.native_realm_index_used = diagnostic.native_realm_index_complete &&
+        d.native_target_titles_mode >= 1 && d.native_target_titles_mode <= 4;
+    const auto &index = d.native_realm_index_used ? realm_indexes[conditions[i]] : indexes[conditions[i]];
+    candidate_indexes.push_back(&index);
+    d.candidates = index.size(); d.projected_candidate_evaluations = index.size();
+  }
+  std::vector<game::DeclarableWarSnapshot> baseline, result;
+  if (options.variant == DeclarationsCandidateVariantV1::shadow) {
+    std::vector<EnabledCb> baseline_counters;
+    if (!ReadDeclarableWarsFull(b, baseline, false, &baseline_counters)) return false;
+    diagnostic.baseline_compared = true;
+    for (std::size_t i = 0; i < enabled.size(); ++i) {
+      diagnostic.casus_belli[i].baseline_evaluations = targets.size();
+      if (i < baseline_counters.size() && baseline_counters[i].type == enabled[i].type &&
+          baseline_counters[i].ordinal == enabled[i].ordinal) enabled[i] = baseline_counters[i];
+    }
+    // One original target-major full baseline, never a second N*C pass.
+    // Test every complete native tuple against its CB's candidate identities.
+    // Projected calls are distinct from actually executed baseline calls.
+    std::unordered_map<std::int32_t, std::size_t> identity_index;
+    for (std::size_t i = 0; i < targets.size(); ++i) identity_index.emplace(targets[i].id, i);
+    for (const auto &row : baseline) {
+      const auto found = identity_index.find(row.target_character_id);
+      for (std::size_t i = 0; i < enabled.size(); ++i) {
+        if (enabled[i].ordinal != row.casus_belli_index) continue;
+        const auto &index = *candidate_indexes[i];
+        if (found != identity_index.end() && std::binary_search(index.begin(), index.end(), found->second))
+          result.push_back(row);
+        break;
+      }
+    }
+  }
+  profile.targets = targets.size();
+  bool scratch_is_clear = false, candidate_success = true;
+  for (std::size_t i = 0; !diagnostic.baseline_compared && i < enabled.size() && candidate_success; ++i) {
+    auto &d = diagnostic.casus_belli[i];
+    const auto &candidates = *candidate_indexes[i];
+    for (const auto index : candidates) {
+      ++d.evaluations;
+      const auto previous = result.size();
+      if (!CachedEvaluation(b, enabled[i], actor, targets[index].object,
+                            targets[index].id, result, scratch_is_clear, profile.active())) {
+        candidate_success = false; break;
+      }
+      d.candidate_rows += result.size() - previous;
+    }
+  }
+  CoreSnapshotPrefix after{};
+  diagnostic.same_frame = ReadCoreSnapshot(b.core, after) && after.map_ready &&
+      after.clock.paused && after.has_played_character && after.played_character_alive &&
+      after.played_character_id == current.played_character_id &&
+      after.clock.date_raw == current.clock.date_raw;
+  if (diagnostic.baseline_compared) {
+    CompareCandidateTuples(baseline, result, diagnostic);
+    diagnostic.tuple_sets_equal &= candidate_success && diagnostic.same_frame;
+  }
+  // Restore original slot-major/CB-ordinal output; stable keeps each native
+  // configuration's materialization order and the title sequence untouched.
+  std::stable_sort(result.begin(), result.end(), [](const auto &a, const auto &c) {
+    const auto ai = static_cast<std::uint32_t>(a.target_character_id) & 0xFFFFFFU;
+    const auto ci = static_cast<std::uint32_t>(c.target_character_id) & 0xFFFFFFU;
+    return ai != ci ? ai < ci : a.casus_belli_index < c.casus_belli_index;
+  });
+  if (requested_diagnostic) *requested_diagnostic = diagnostic;
+  if (!diagnostic.same_frame) return false;
+  if (diagnostic.baseline_compared) out = std::move(baseline);
+  else if (candidate_success) out = std::move(result);
+  else return false;
+  profile.result_rows = out.size(); profile.success = true;
   return true;
 }
 
