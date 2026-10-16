@@ -3,6 +3,7 @@
 
 #if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
 #include "xar_bridge/war_declared_overview_v1.hpp"
+#include "xar_bridge/war_results_ui_scope_transition_v1.hpp"
 #endif
 
 #if defined(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1) && XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1
@@ -2025,10 +2026,41 @@ bool ObserveMainThreadPumpAndDrainV1(
       frontend_context->operation == FrontendGuiRouteOperationV1::query &&
       frontend_context->environment.gui_abi_revision ==
           GuiAbiRevisionV1::crozier12004;
+  bool admitted_war_results_transition = false;
+#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1
+  if (!mailbox.offline_fixture && after_ready && succeeded &&
+      executor == &::xar::ck3_11906::ExecuteWarDeclaredOverviewMailboxV1) {
+    auto *war_window = static_cast<WarDeclaredOverviewMailboxContextV1 *>(context);
+    const bool fixed_close_bound = war_window != nullptr &&
+        war_window->mailbox == &mailbox && war_window->war_results &&
+        war_window->operation == WarDeclaredOverviewOperationV1::close &&
+        war_window->ticket.sequence == sequence &&
+        war_window->result.ticket_sequence == sequence &&
+        war_window->result.request_id == war_window->request_id &&
+        war_window->result.application_owner_thread_verified &&
+        war_window->result.dispatch_attempted &&
+        war_window->result.dispatch_invoked && war_window->result.native_handled;
+    const bool returned = fixed_close_bound &&
+        war_window->result.dismiss_trace.stage == WarResultsDismissStageV1::callback_returned &&
+        war_window->result.dismiss_trace.exception_code == 0;
+    admitted_war_results_transition = WarResultsDismissScopeTransitionAllowedV1(
+        fixed_close_bound, returned, before, after);
+    if (returned && !SameExecutionBoundary(before, after)) {
+      MarkWarResultsDismissScopeTransitionPendingV1(
+          war_window->result, before, after, admitted_war_results_transition);
+    }
+  }
+#endif
   const bool same_boundary = actual4_route_query
       ? before.pump_epoch == after.pump_epoch &&
             SameOwnerVerifiedPumpIdentity(before, after)
-      : SameExecutionBoundary(before, after);
+      : SameExecutionBoundary(before, after) || admitted_war_results_transition;
+  if (admitted_war_results_transition) {
+    // The former paused proof is obsolete after Dismiss. The independently
+    // completed ticket/result remain owned until normal reclaim; no failure
+    // flag is cleared, and later reads must prove their current pause anew.
+    RequestConsecutivePausedPumpProofReset(mailbox);
+  }
   if (!after_ready || !same_boundary) {
     ResetConsecutivePausedPumpProof(mailbox);
     ResetConsecutiveOwnerPumpProof(mailbox);

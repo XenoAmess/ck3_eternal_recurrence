@@ -1,4 +1,6 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/war_declared_overview_v1.hpp"
+#include "xar_bridge/war_results_ui_scope_transition_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
 
 #include <windows.h>
@@ -2700,7 +2702,58 @@ bool TestIdlePresentationYieldsToGameplay() {
   return UninstallMainThreadQueryMailboxV1(mailbox, 10) == MainThreadQueryUninstallResultV1::uninstalled;
 }
 
+unsigned long TestWarResultsUiScopeTransitions() {
+  using namespace xar::ck3_11906;
+  unsigned long failures = 0;
+  auto check = [&failures](bool condition) { if (!condition) ++failures; };
+  MainThreadExecutionStampV1 before{};
+  before.pump_epoch = 50;
+  before.thread_id = 7;
+  before.tls_initialized_flag_address = 100;
+  before.tls_initialized = 1;
+  before.tls_context = 200;
+  before.tls_main_thread_marker = 1;
+  before.jomini_state = 300;
+  before.game_state = 400;
+  before.date_raw = 53338704;
+  before.paused = true;
+  auto released = before;
+  released.paused = false;
+  check(WarResultsDismissScopeTransitionAllowedV1(true, true, before, released));
+  auto forward = released;
+  forward.date_raw += 24;
+  check(WarResultsDismissScopeTransitionAllowedV1(true, true, before, forward));
+  check(!WarResultsDismissScopeTransitionAllowedV1(false, true, before, released));
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, false, before, released));
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, before));
+  auto bad = released;
+  bad.date_raw -= 24;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.thread_id;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.tls_context;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.game_state;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.jomini_state;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.pump_epoch;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  bad = released; ++bad.rng_state;
+  check(!WarResultsDismissScopeTransitionAllowedV1(true, true, before, bad));
+  WarDeclaredOverviewResultV1 result{};
+  result.available = result.accepted = result.closure_verified = result.scope_unchanged = true;
+  MarkWarResultsDismissScopeTransitionPendingV1(result, before, forward, true);
+  check(!result.available && !result.accepted && !result.closure_verified &&
+        !result.scope_unchanged && result.status == "verification_pending");
+  check(result.unavailable_reason.find("begin_date_raw=53338704") != std::string::npos &&
+        result.unavailable_reason.find("end_date_raw=53338728") != std::string::npos &&
+        result.unavailable_reason.find("begin_paused=true;end_paused=false") != std::string::npos);
+  return failures;
+}
+
 int main(int argc, char **argv) {
+  if (TestWarResultsUiScopeTransitions() != 0) return 4;
   if (argc == 2 && std::string_view(argv[1]) == "--idle-presentation-only")
     return TestIdlePresentationYieldsToGameplay() ? 0 : 3;
   if (argc == 3 && std::string_view(argv[1]) == "--confucian-registration-only") {

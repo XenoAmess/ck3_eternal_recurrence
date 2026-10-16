@@ -750,10 +750,15 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
                 "completion_last_check_date_raw", pending.get("post_date_raw", 0))
             + COMPLETION_WATCH_INTERVAL_RAW):
         raise BridgeUnavailableError("construction completion watch needs a later monthly frame")
+    # A verified applied receipt is independently re-read after a cold frame
+    # or Native worker restart. PID/creation identifies the Game process, not
+    # the worker's revision/proof counter namespace. Preserve the original
+    # action counters; only unresolved submits require their later counters.
     if (starting.get("episode_run_id") != pending.get("episode_run_id")
             or starting["played_character"]["character_id"] != pending.get("actor_character_id")
             or starting["date_raw"] < pending.get("pre_date_raw", 0)
-            or (same_process and starting["native_revision"] <= pending["pre_native_revision"])):
+            or (same_process and not cold_recheck
+                and starting["native_revision"] <= pending["pre_native_revision"])):
         raise BridgeUnavailableError("construction receipt requires a later paused actor frame")
     query = query_construction_private(
         driver, expected_revision=expected_revision, material_receipt=True)
@@ -776,7 +781,8 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
     epoch = query.get("proof_epoch")
     candidate = pending.get("candidate")
     if not (isinstance(world, Mapping) and isinstance(candidate, Mapping)
-            and _positive(epoch) and (not same_process or epoch > pending["pre_proof_epoch"])):
+            and _positive(epoch) and (cold_recheck or not same_process
+                                     or epoch > pending["pre_proof_epoch"])):
         raise BridgeUnavailableError("construction material proof unavailable; keep pending")
     material_candidate = pending.get("observed_material_tuple")
     selection_mismatch = (
@@ -1020,6 +1026,15 @@ def query_construction_receipt(driver: object, *, pending: Mapping[str, object],
         # receipt. A completed slot is a distinct later material observation.
         receipt = {**dict(pending), **receipt,
                    "start_receipt": pending.get("start_receipt", dict(pending)),
+                   "readonly_material_recheck": {
+                       "schema": "xar.construction-readonly-material-recheck.v1",
+                       "native_query_request_id": query.get("native_query_request_id"),
+                       "source_frame": dict(query.get("source_frame", {})),
+                       "post_bridge_pid": pid, "post_bridge_creation_date": creation,
+                       "post_proof_epoch": epoch,
+                       "original_action_counters_preserved": True,
+                       "native_submit_calls": 0,
+                   },
                    "completion_observed_date_raw": (
                        pending.get("completion_observed_date_raw") or starting["date_raw"]
                        if completed else pending.get("completion_observed_date_raw"))}

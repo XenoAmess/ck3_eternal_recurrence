@@ -113,18 +113,47 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
     require(current_birth is not None
             and inner.get("post_bridge_pid") == game_pid,
             "current Game process proof unavailable")
+    worker_epoch_rebind = False
     if cold:
         previous_pid = tracker.get("bridge_pid") if isinstance(tracker, dict) else binding["source_bridge_pid"]
         previous_stamp = tracker.get("bridge_creation_date") if isinstance(tracker, dict) else binding["source_bridge_creation_date"]
         previous_birth = classify_dmtf_creation_instant_v1(previous_stamp)
         previous_native = tracker.get("last_native_revision") if isinstance(tracker, dict) else known.get("last_native_revision")
         previous_date = tracker.get("last_date_raw") if isinstance(tracker, dict) else known.get("last_date_raw")
-        require(previous_pid != game_pid and previous_birth is not None
-                and current_birth != previous_birth
-                and pending.get("post_bridge_pid") == previous_pid
-                and classify_dmtf_creation_instant_v1(pending.get("post_bridge_creation_date")) == previous_birth
-                and pending.get("post_native_revision") == previous_native
-                and pending.get("post_date_raw") == previous_date,
+        prior_readback_bound = (
+            previous_birth is not None
+            and pending.get("post_bridge_pid") == previous_pid
+            and classify_dmtf_creation_instant_v1(pending.get("post_bridge_creation_date")) == previous_birth
+            and pending.get("post_native_revision") == previous_native
+            and pending.get("post_date_raw") == previous_date)
+        game_cold_restore = (previous_pid != game_pid and current_birth != previous_birth)
+        # The same Game may keep its process and birth identity while the
+        # application-main Native worker is restarted.  A prior cold tracker
+        # gives the old connection generation; an action born in this Game
+        # has no tracker yet and uses its independently verified old native
+        # revision/proof epoch instead.  Both routes are readonly and never
+        # turn a reset into construction completion credit.
+        if isinstance(tracker, dict):
+            epoch_reset = (
+                type(tracker.get("last_connection_generation")) is int
+                and 0 < source["connection_generation"] < tracker["last_connection_generation"]
+                and pending.get("post_public_revision") == tracker.get("last_public_revision")
+                and pending.get("post_proof_epoch") == tracker.get("last_proof_epoch")
+                and type(tracker.get("last_proof_epoch")) is int
+                and tracker["last_proof_epoch"] > 0)
+        else:
+            epoch_reset = (
+                previous_pid == binding["source_bridge_pid"]
+                and type(previous_native) is int
+                and source["native_revision"] < previous_native
+                and type(pending.get("post_proof_epoch")) is int
+                and type(inner.get("post_proof_epoch")) is int
+                and 0 < inner["post_proof_epoch"] < pending["post_proof_epoch"])
+        worker_epoch_rebind = (
+            previous_pid == game_pid and current_birth == previous_birth
+            and type(previous_date) is int and source["connection_generation"] > 0
+            and epoch_reset and source["date_raw"] >= previous_date)
+        require(prior_readback_bound and (game_cold_restore or worker_epoch_rebind),
                 "cold restore is not tied to the prior verified readback")
     else:
         prior_connection = tracker.get("last_connection_generation") if isinstance(tracker, dict) else None
@@ -231,7 +260,9 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
             and start.get("post_bridge_pid") == binding["source_bridge_pid"]
             and start.get("postcondition_verified") is True,
             "original same-process start proof was not preserved")
-    first_completion = completed and not known["completion_verified"]
+    # A worker epoch reset is only a readonly governance rebind.  It never
+    # promotes a construction completion or action material result on its own.
+    first_completion = completed and not known["completion_verified"] and not worker_epoch_rebind
     import copy
     new_state = copy.deepcopy(state)
     new_known = new_state["construction_actions"][request_id]
@@ -242,14 +273,16 @@ def classify_construction_cold_requery_v1(body, *, state=None, initial_frame=Non
         "last_public_revision": source["revision"],
         "last_date_raw": source["date_raw"],
         "last_proof_epoch": inner["post_proof_epoch"],
-        "completion_verified": completed or known["completion_verified"],
+        "completion_verified": (known["completion_verified"] if worker_epoch_rebind
+                                else completed or known["completion_verified"]),
     }
     if first_completion:
         new_known["completion_verified"] = True
     observation = {"schema": "g2.queue.ordinary-result-credit/v1", "selected_step": step,
         "service_status": "executed", "result_status": inner["status"],
-        "category": ("construction_cold_completion_verified" if first_completion
-                     else "construction_cold_readonly_reconciliation_observed"),
+        "category": ("construction_same_game_worker_epoch_readonly_rebind_observed"
+                     if worker_epoch_rebind else "construction_cold_completion_verified"
+                     if first_completion else "construction_cold_readonly_reconciliation_observed"),
         "action_request_id": request_id, "old_bridge_pid": binding["source_bridge_pid"],
         "fresh_bridge_pid": game_pid, "fresh_snapshot_id": source["snapshot_id"],
         "fresh_date_raw": source["date_raw"], "completion_status": inner["completion_status"],

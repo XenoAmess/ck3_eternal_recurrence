@@ -174,7 +174,17 @@ def execute_war_results_window_v1(
         result = _result(frame, request_id, operation, binding, generation)
         after = driver.take_internal_semantic_snapshot()
         try:
-            if _frame_binding(after) != binding or _generation(after) != generation:
+            callback_pending = (
+                operation == "close" and result.get("available") is False
+                and result.get("status") == "verification_pending"
+                and result.get("dismiss_stage") == "callback_returned"
+                and result.get("dismiss_exception_code") == 0
+                and result.get("dispatch_attempted") is True
+                and result.get("dispatch_invoked") is True
+                and result.get("native_handled") is True
+                and str(result.get("unavailable_reason", "")).startswith("war_results_ui_scope_transition;")
+            )
+            if not callback_pending and (_frame_binding(after) != binding or _generation(after) != generation):
                 raise ValueError("war results crossed its actual paused actor/date/session lease")
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error

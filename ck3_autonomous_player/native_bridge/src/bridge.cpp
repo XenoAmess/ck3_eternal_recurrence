@@ -18353,8 +18353,22 @@ void RunConnectedSession(
                       g_main_thread_query_mailbox_v1, query.ticket);
                 }
               }
-              if (response.empty()) response = CommandResultFrame(
-                  request_id, step, false, "war_declared_owner_submission_or_completion_failed");
+              if (response.empty()) {
+                const auto diagnostics = xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+                    g_main_thread_query_mailbox_v1);
+                std::string reason = "war_declared_owner_submission_or_completion_failed";
+                reason += ";mailbox_failure=" + Number(diagnostics.failure_flags) +
+                    ";mailbox_state=" + Number(static_cast<std::uint32_t>(diagnostics.state)) +
+                    ";request_ticket=" + Number(query.ticket.sequence) +
+                    ";published_ticket=" + Number(diagnostics.published_sequence) +
+                    ";executor_started_ticket=" + Number(diagnostics.executor_started_sequence) +
+                    ";completed_ticket=" + Number(diagnostics.completed_sequence) +
+                    ";executor_exception_code=" + Number(diagnostics.last_executor_exception_code) +
+                    ";dismiss_stage=" + xar::ck3_11906::WarResultsDismissStageNameV1(query.result.dismiss_trace.stage) +
+                    ";dismiss_exception_code=" + Number(query.result.dismiss_trace.exception_code) +
+                    ";result_reason=" + query.result.unavailable_reason;
+                response = CommandResultFrame(request_id, step, false, reason);
+              }
             }
             connected = write_frame(pipe, response);
           } else

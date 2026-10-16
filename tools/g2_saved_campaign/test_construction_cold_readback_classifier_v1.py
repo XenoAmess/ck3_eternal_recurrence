@@ -100,6 +100,48 @@ def test_untracked_same_process_watch_uses_original_classifier():
         body, state=state, initial_frame=initial, game_pid=pid) is None
 
 
+def _same_game_worker_reset():
+    # Synthetic epoch change applied to the retained cold-readback fixture.
+    # It is not represented as a second original native receipt.
+    body, state, initial, pid = _case()
+    _, state = classify_construction_cold_requery_v1(
+        body, state=state, initial_frame=initial, game_pid=pid)
+    action = body["result"]["action_request_id"]
+    tracker = state["construction_actions"][action]["cold_readback_generation_v1"]
+    tracker.update(last_connection_generation=16, last_native_revision=156,
+                   last_public_revision=200, last_proof_epoch=300000)
+    pending = copy.deepcopy(body["result"])
+    pending.update(post_native_revision=156, post_public_revision=200,
+                   post_proof_epoch=300000)
+    body["plan"]["construction_pending_action"] = pending
+    return body, state, initial, pid
+
+
+def test_same_game_worker_reset_rebinds_readonly_without_action_or_completion_credit():
+    body, state, initial, pid = _same_game_worker_reset()
+    original = copy.deepcopy(state)
+    observation, after = classify_construction_cold_requery_v1(
+        body, state=state, initial_frame=initial, game_pid=pid)
+    assert observation["category"] == "construction_same_game_worker_epoch_readonly_rebind_observed"
+    assert observation["typed_nonmaterial_observation"] is True
+    assert observation["construction_material_verified"] is False
+    assert observation["construction_completion_verified"] is False
+    assert observation["replay_allowed"] is False
+    assert state == original
+    action = body["result"]["action_request_id"]
+    assert after["construction_actions"][action]["binding"] == original["construction_actions"][action]["binding"]
+    assert after["construction_actions"][action]["cold_readback_generation_v1"]["last_native_revision"] == 3
+    with pytest.raises(ValueError, match="prior verified readback"):
+        classify_construction_cold_requery_v1(body, state=after, initial_frame=initial, game_pid=pid)
+
+
+def test_same_game_worker_reset_requires_matching_prior_readback_and_reset_generation():
+    body, state, initial, pid = _same_game_worker_reset()
+    body["planning_source_frame"]["connection_generation"] = 16
+    with pytest.raises(ValueError, match="prior verified readback"):
+        classify_construction_cold_requery_v1(body, state=state, initial_frame=initial, game_pid=pid)
+
+
 def test_monthly_requires_due_date_and_new_proof():
     body, state, initial, pid = _case()
     _, state = classify_construction_cold_requery_v1(
