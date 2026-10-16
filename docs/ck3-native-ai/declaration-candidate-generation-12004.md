@@ -52,3 +52,51 @@ flowchart TD
 ```
 
 执行与委派使用 [原版优先实施提示词](vanilla-first-implementation-prompt.md)。本页是评估，不是新接口部署或提速回执。
+
+## 2026-10-16：当前版本原生候选链的离线定位增量
+
+`machine_id=xenoamess-full-tower-eb9d2c1186`，CK3 1.20.0.4，EXE SHA-256
+`98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。
+本次复用已核 EXE 身份，只读文件，无 Game/MCP/SDK/Driver/队列操作或 Native 构建、加载。
+这项增量补到当前版本的真实 producer/consumer，不把下面仍未知的人类适用性追认为已验证。
+
+| 当前源入口 | 已定位的事实 | 尚未证明的范围 |
+| --- | --- | --- |
+| `1A6A210 → 1A6A26D → 1A6A8C0` | 选择器直接调用候选生产器；context 由调用者传入 | 更上游调度、GUI callback 及人类 context 来源 |
+| `1A6AA43/B17C70 → 1A6AA72` | 先构造 actor-root CharacterScope 并注入 actor named scope | 不能据此假设所有脚本都不依赖 defender |
+| `1A6AA90/372DF10` | 在遍历目标前，检查 `rule+1F9`、`type+6CB`，求值 `rule+58/type+48/type+118`，建立 CB 位图 | 字段稳定语义及传递依赖；不是完整玩家合法性筛选已获证明 |
+| `1A6AB39/19EC4D0` | `context+20` 非空时，取得该对象 `+A8` 的 CharacterID 向量 | 向量 writer、刷新/失效、完整性及人类对象；null 分支的全局 fallback 不是已证空目录 |
+| `1A6AB60 → 2C13440/1A23220` | 遍历目标 ID 向量，解析角色、effective target 并做原生战力评估 | 不能把 AI 战略目标集合当全部合法宣战对象 |
+| `1A6B132/31F4520` | AI 路径用 `true,true` 评估 CB；生成 `0x908` 字节候选 | 当前 full 桥接用 `false,false`，两种合同不能直接互换 |
+| `1A6A360/1A6A48D/1A6A5DB` | 消费候选分数、最多保留五项并按输入 seed 加权选择 | 全调用图副作用及人类纯读可调用性 |
+
+`31F4520` 的本次小函数分析进一步说明语义差别：第六参数 true 时跳过一段 actor-rule 求值；
+第五参数 true 才求值另外的 actor/defender 项。完整桥接在已注入 defender 的 scope 下逐目标评估，
+AI 则先预筛再用另一组参数。把 AI 的整个位图或 Top5 直接移植到 full 查询会改变合同；
+每个可以上提或裁剪的条件仍须单独证明。当前 GUI 的 `CalculateCBCandidates` 与 `GetCBTypeItems`
+字符串已定位，但限定代码邻域的注册引用未命中；字符串定位不算 callback 已绑定。
+
+```mermaid
+flowchart TD
+    S["[static-confirmed; .4] 选择器1A6A210"] --> P["[static-confirmed; .4] 生产器1A6A8C0"]
+    P --> C["[static-confirmed; .4] actor scope与CB预筛位图"]
+    C --> T["[static-confirmed; .4] context关联目标ID向量"]
+    W["[unknown] 目标向量writer与刷新"] -.-> T
+    H["[unknown] 人类context及fallback含义"] -.-> T
+    T --> E["[static-confirmed; .4] effective target与战力"]
+    E --> B["[static-confirmed; .4] CB true,true与配置"]
+    B --> R["[static-confirmed; .4] 分数、Top5、加权选择"]
+    F["[unknown] 与玩家full目录等价"] -.-> B
+    classDef unknown stroke-dasharray: 6 4;
+    class W,H,F unknown;
+```
+
+下一步只定位 context 获取、`+A8/+B4` 写入和人类适用性，再决定复用原生目标集合或建立族级必要条件索引。
+不得伪造 context 或把 fallback 空集合解释为全球无候选；目前没有可调用 provider 补丁、同帧对照或新速度验收。
+本次九个代码窗口共 6,091 原始字节，工作包 123,185 字节，未以全量反汇编扩大研究范围。
+
+精确窗口、同源图及证据边界保留于 [研究正文](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/cb-discovery-vanilla-12004-research02/CURRENT-CHAIN.md)
+（SHA-256 `3b621ca8c8167806770cf84c14904cfa9a1bc4955f1474180c7c6f0c2c165ec7`）及
+[MANIFEST](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/cb-discovery-vanilla-12004-research02/MANIFEST.json)
+（SHA-256 `f3425979ba091b6a7b7b3b0224934ab45c5045b8c333dca8f172ffb471d3e5b8`）。
+这是来源机器的限期研究资产，继续保留与可用性按清单及统一存储策略复核；不是其他机器的安装或实机证明。
