@@ -1,0 +1,127 @@
+{
+  "schema": "xar.e04.parameterized-owner-film-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "repo": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+  "authorized_assets_root": "C:/ck3-e04-resume-20261015-a01",
+  "scene_root": "C:/ck3-e04-resume-20261015-a01/live12004-r185-window-capture-a01",
+  "run_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "7ee5a78e26a2c19a7ceebcafbef608c11242ddc870b1ffd6ebbb2324a39e97fb"
+  },
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "native_build_source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "production_qualification": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-root-prep-a01\\A28-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 4789,
+    "sha256": "0d52e77069a44d7f374137f0775e6f745f557b08d5be411be888a0feeb619b32"
+  },
+  "allocated_context": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\allocated-context.actual-a01.json",
+    "bytes": 4277,
+    "sha256": "d03590db9a996aa784b2618191b90df132ce03a7e0f9fb7c00f24b8c181cd7ba"
+  },
+  "game_dir": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+  "state_dir": "C:/ck3-e04-resume-20261015-a01/live12004-r185-window-capture-a01/state-a01",
+  "prepared": "C:/ck3-e04-resume-20261015-a01/live12004-r185-window-capture-a01/prepared-a01/prepared.json",
+  "raw_workdir": "C:/ck3-e04-resume-20261015-a01/live12004-r185-window-capture-a01/raw-window-a01",
+  "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r185_20261016_a01",
+  "request_prefix": "r185-film-a01",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a02\\R185-CAPACITY.actual-root-a01.json",
+    "bytes": 8961,
+    "sha256": "7abe40950df2f25228dd646b0ac9aa9f10a68f6c9288af8a22cc551f643d5593"
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r185-a28\\xar_ck3_bridge.dll",
+      "bytes": 12994560,
+      "sha256": "48855df0fcdefe3152ce1d4518a4d642405ba49c6f98edb07438b7e45f11135a"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r185-a28\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "8df8ea2a277eb3f97d7f588eec964c70d000dd02cbc257a4807f7dd789a3f15a"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r185-a28\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "2c01dc2339aa128bc9cc5c7dde2791bfd618bf3f740053ea25c6b96102eef5be"
+    }
+  },
+  "steam_offline_receipt": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+  "screen": {
+    "cli": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_bus": "D:\\workspace\\.codex-task-bus",
+    "task_id": "e04-live-20261016-r0185",
+    "sequence": 5767
+  },
+  "checkpoint_source": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73664718,
+      "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-close-a01-02-save-once.json",
+      "bytes": 20290,
+      "sha256": "11a034632ff18d716090c6404316c210d0b4ac840552148e94998f944e1ceecf"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+      "bytes": 11588,
+      "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3806,
+        "sha256": "6699c6b3ea5e8c380aac8288a21db6fba80259242b64ac6c5a60ef1226e35612"
+      },
+      "bootstrap_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\bootstrap-result.json",
+        "bytes": 15026,
+        "sha256": "89258a5c43d8d7ab47306de137d7e4648b1bb8e3ee7a7da461702f4282341205"
+      },
+      "screen_release": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4052,
+        "sha256": "52f499d5c2361be591ccf65ea2362af0918189ad39d0703703ba4c8d9b46056b"
+      }
+    }
+  },
+  "identity_receipt_path": "C:/ck3-e04-resume-20261015-a01/live12004-r185-window-capture-a01/runtime-actor-identity.actual-a01.json",
+  "identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7726,
+    "sha256": "512a8beb3ffb4d1c5f85b5e2edd7ca5c7b92d810aa273f3c0b79cc65e4530da4"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ordinary_root": {
+    "primary_title_id": 2230,
+    "capital_province_id": 2619,
+    "government_key": "feudal_government"
+  },
+  "actor_id": 31254,
+  "army_id": 18,
+  "expected_start_date_raw": 53148144,
+  "expected_start_province_id": 2635,
+  "speed": 3,
+  "seconds": 120,
+  "min_wall_recording_seconds": 80,
+  "days": 12,
+  "session_timeout_seconds": 5400,
+  "normal_close_reserve_seconds": 180,
+  "army_history_sidecar_limit_bytes": 134217728
+}

@@ -1,0 +1,125 @@
+{
+  "schema": "xar.r185-seven-duplicates-small-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-16T15:08:54.028930+00:00",
+  "policy_version": "1.0.0",
+  "original_receipt_root": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01",
+  "files": [
+    {
+      "name": "E01-SEVEN.plan.actual-a01.json",
+      "bytes": 8513,
+      "sha256": "c488f1749b26232a863d8263df15ac6116046c15cfffc65f79443deb924911a2"
+    },
+    {
+      "name": "E01-SEVEN.result.actual-a01.json",
+      "bytes": 5912,
+      "sha256": "a5efe843b63d02438f594e2ec616e3865e515f068207d28fbd73aed6a8bd4e4c"
+    },
+    {
+      "name": "E01-SEVEN.independent-readback.actual-a01.json",
+      "bytes": 906,
+      "sha256": "8e952df073231e03f1fd0a02773795a1ba15a0125f243e04cb674993a7081583"
+    },
+    {
+      "name": "E01-CURRENT-CONSUMERS.actual-a01.json",
+      "bytes": 4152,
+      "sha256": "dd14a7a808c9b2f439158f8287f72f3131660842ad9717c4b90a4f43e628b75d"
+    },
+    {
+      "name": "E01-CURRENT-CONSUMERS.actual-a02.json",
+      "bytes": 4153,
+      "sha256": "f216b8c4546bcc7e68bc2a48a36ac1c3b1320699757e1e9a60deca1ef53c8ab8"
+    },
+    {
+      "name": "E01-SEVEN.intent.actual-a01.json",
+      "bytes": 1121,
+      "sha256": "6d32c11cc0143b345970a94dd3e442ee8e05ab51c607a2b46695a64ae463b79f"
+    },
+    {
+      "name": "E01-SEVEN.files.actual-a01.jsonl",
+      "bytes": 4648,
+      "sha256": "16df0891d31cda11b61db00514512c9ed0c99d3417919496f7024495b7557cf3"
+    },
+    {
+      "name": "source/plan_e01_exact_duplicates.py",
+      "bytes": 9163,
+      "sha256": "451f841a776bbbd9db4e7b35f9fb1285ea78e773fe763b461b0b025143264a70"
+    },
+    {
+      "name": "source/execute_e01_seven.py",
+      "bytes": 6941,
+      "sha256": "9624a390ff986fcfa3c0c3a73e4bef98ca0532eb740841ce3a3a25567563980e"
+    },
+    {
+      "name": "source/readback_e01_seven.py",
+      "bytes": 2000,
+      "sha256": "b3b4fa2534b3c885d22118618fc2d0ef6a6543c7bb2119a24c1c52c869b9d6d1"
+    },
+    {
+      "name": "source/reclaim_superman_melts.py",
+      "bytes": 11599,
+      "sha256": "5b68337d06e45e02cde8ac53ed4495f4835b8c79583100ef6ca2936a0177f94f"
+    },
+    {
+      "name": "source/win32_exact_retire_lib.py",
+      "bytes": 3823,
+      "sha256": "06cd73e436d645dd2c6d5fdf652b94049f6b07cf93e68e70d259a0c2187fe320"
+    },
+    {
+      "name": "MACHINE.fresh-a01.json",
+      "bytes": 783,
+      "sha256": "b8d7571b2bb4c5fce87f30c737efb57582b20c1284f14a0091c39ee2c5c6fdac"
+    },
+    {
+      "name": "freeze_evidence.py",
+      "bytes": 12848,
+      "sha256": "2368d241bd6142f6194341f78b5154b766a18091a14cd44b00986e04268194aa"
+    }
+  ],
+  "source_freeze_refs": [
+    {
+      "name": "source/plan_e01_exact_duplicates.py",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\plan_e01_exact_duplicates.py",
+      "bytes": 9163,
+      "sha256": "451f841a776bbbd9db4e7b35f9fb1285ea78e773fe763b461b0b025143264a70",
+      "mtime_ns_at_freeze": 1792161029667491200
+    },
+    {
+      "name": "source/execute_e01_seven.py",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\execute_e01_seven.py",
+      "bytes": 6941,
+      "sha256": "9624a390ff986fcfa3c0c3a73e4bef98ca0532eb740841ce3a3a25567563980e",
+      "mtime_ns_at_freeze": 1792161196666502400
+    },
+    {
+      "name": "source/readback_e01_seven.py",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\readback_e01_seven.py",
+      "bytes": 2000,
+      "sha256": "b3b4fa2534b3c885d22118618fc2d0ef6a6543c7bb2119a24c1c52c869b9d6d1",
+      "mtime_ns_at_freeze": 1792161337999406800
+    },
+    {
+      "name": "source/reclaim_superman_melts.py",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\reclaim_superman_melts.py",
+      "bytes": 11599,
+      "sha256": "5b68337d06e45e02cde8ac53ed4495f4835b8c79583100ef6ca2936a0177f94f",
+      "mtime_ns_at_freeze": 1792142385020133500
+    },
+    {
+      "name": "source/win32_exact_retire_lib.py",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\win32_exact_retire_lib.py",
+      "bytes": 3823,
+      "sha256": "06cd73e436d645dd2c6d5fdf652b94049f6b07cf93e68e70d259a0c2187fe320",
+      "mtime_ns_at_freeze": 1792048788788353600
+    }
+  ],
+  "maintenance_doc": {
+    "name": "storage-retention-2026-10-16-r185-duplicates.md",
+    "bytes": 6172,
+    "sha256": "d529e86ac55b69b0077ad39a6c25b5a4ecdba3f2a9f7b06cfc0d89a5478a1657"
+  },
+  "automatic_gc_implemented": false,
+  "new_asset_deletion_or_capacity_qualification": false,
+  "record_review_policy_days": 180,
+  "keeper_original_deadline_unchanged": "2026-10-23T14:31:40.196824+00:00"
+}

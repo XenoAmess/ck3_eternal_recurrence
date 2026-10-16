@@ -37,6 +37,8 @@ R0174：PID17468/create134365505726865638/gen1，actor31254，window1/epoch1，e
 
 完整父函数在个人 ADD 之前只对 secondary context 的3E8/3F0作直接更新；这两个 offset 不属于四目标项。后面的4A0/资源4及 currentMaintenance2C13F60 分支发生在结算调用之后，不能倒算成先前 personal ADD 的军事分量。Root 另派的唯一后续 callee `28F7BDA→28A6F50` 现以 [完整110B合同](acceptance/2026-10-16-r0174-maintenance-source/CALLEE-28A6F50-FINAL-SOURCE-CONTRACT.actual.json)、[source HEX](acceptance/2026-10-16-r0174-maintenance-source/CALLEE-28A6F50-SOURCE-HEX.actual.json)、[完整asm](acceptance/2026-10-16-r0174-maintenance-source/callee28A6F50.complete.asm) 和 [原始子包索引](acceptance/2026-10-16-r0174-maintenance-source/CALLEE-ORIGINAL-ARCHIVE-INDEX.json) 落地；它使用 Character+1B8 且具有另一 wallet return28A6F94，不能把本 seq12 的值套到那笔事件。
 
+2026-10-16来源现状补注：后段scalar现已接至[SubC合同关联角色的递归贡献](episode04-r08-contract-contributions-12004.md)，再与当前向量slot9做差。[独立语义审查](episode04-r08-semantic-attribution-audit-12004.md)确认这条静态连接仍未给本次先前NET的军事分量、付款账户或周期授值；本页唯一seq12及其历史边界保持不变。
+
 实际18帧中11帧为同EXE。真实关键链是 `28A6D7C→28F7939→3978BF8→3978C4C→290DD46→3F90A72`；后续外层仍有调度器。这里已闭合具体闭包桥，不把同 image/OS unwind 或固定数值当作生产者语义。fixture 的 `28A1234` 从未用于此 live 链。
 
 ## 下一步可施工入口

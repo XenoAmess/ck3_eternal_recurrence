@@ -1,0 +1,25 @@
+{
+  "schema": "xar.r185-e01-seven-delete-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:34:57.518125+00:00",
+  "policy_version": "1.0.0",
+  "plan_sha256": "c488f1749b26232a863d8263df15ac6116046c15cfffc65f79443deb924911a2",
+  "root_review": "Root reviewed this exact plan hash/count/scoped D credit in collaboration before this invocation",
+  "fresh_consumer_query": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\E01-CURRENT-CONSUMERS.actual-a02.json",
+    "bytes": 4153,
+    "sha256": "f216b8c4546bcc7e68bc2a48a36ac1c3b1320699757e1e9a60deca1ef53c8ab8"
+  },
+  "current_consumer_manifest_unchanged": true,
+  "producer_query": {
+    "matches": [],
+    "access_denied_pids": []
+  },
+  "targets_and_keeper_all_sha_identity_reverified": true,
+  "method": "Keeper shareREAD denies write/delete; seven target handles exclusive READ+DELETE, all frozen identities and SHA matched before any disposition. Exact7 only, no directory deletion.",
+  "free_before": {
+    "C:/": 30559539200,
+    "D:/": 48296976384
+  },
+  "remaining_package_output_reserve_bytes": 18157
+}

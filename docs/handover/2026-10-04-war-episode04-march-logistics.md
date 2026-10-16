@@ -1,5 +1,7 @@
 # 休假交接：第4期战争视频——行军、补给与损耗
 
+2026-10-16 R185最新接续（machine_id: `desktop-3fevhd2-1c74096080`；观察截至15:05 UTC）：先读[当前执行图](../ck3-native-ai/episode04-current-execution-map-12004.md)、[R185实机专题及原件](../ck3-native-ai/episode04-r185-window-capture-12004.md)、[便携事实](../ck3-native-ai/evidence/episode04-r0185-20261016/portable-facts.actual-a01.json)及[拍摄结果](../../promo/ck3_native_war_ai/episode-04-march-logistics/r185-capture-result-2026-10-16.md)。本机R0185从R184正常保存接续，12/12自然日完成至03-05；Army18面板1184→1173只证明可见数值变化，未证同次物理扣减。原片46.466秒／1394帧全解码、正常保存／游戏exit0／释放屏幕；80秒hold因C卷新预算检查失败而未达标。研究6/14、业务4/11、合格动态0/11、正式ABC0/3。R06 a29/a30消费者14项合同测试通过，新native/live未做；R08 a02/a03/a04的2/5/6静态叶及a05语义审查可供其他机器智能体阅读，但军事已付额、账户和周期仍unknown。R186迁D卷scene、`legacy_promoroot` profile核对及C卷768MiB新native构建预算尚待准入与执行；本机现场事实不能跨机器外推。
+
 2026-10-16 R184最新接续（machine_id: `desktop-3fevhd2-1c74096080`）：先读[当前执行图](../ck3-native-ai/episode04-current-execution-map-12004.md)、[R184实际专题及原件](../ck3-native-ai/episode04-r184-window-capture-12004.md)和[拍摄结果](../../promo/ck3_native_war_ai/episode-04-march-logistics/r184-capture-result-2026-10-16.md)。本场正常原片22.766秒、683帧；八份精确日完成，第九份误判保留，正常保存/退出0并释放屏幕。R08原字节和校验器已可跨机器读取，C正常constructor已接线但ABC仍0/3。研究6/14、业务4/11、动态0/11；下面早期计划不是本机现状。
 
 2026-10-04。用户已同意下一期选题，并明确要求计划和交接文档入库。**接手后的首要目标是按[第4期导演与研究计划](../../promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md)完成这期20–40分钟的视频，编辑目标30–35分钟。** 暂定标题《大军为什么越走越少？——CK3 行军、补给与损耗》；核心问题是把足够的兵，以能打仗的状态按时送到战场。

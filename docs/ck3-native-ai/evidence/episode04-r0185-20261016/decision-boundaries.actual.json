@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.r185.portable-decision-boundaries.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T14:55:36.788147+00:00",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "separate_results": {
+    "native_plan_12_days": "completed with12 exact receipts,53148144->53148432",
+    "minimum_80_seconds": "failed;canonical wall49.653296s and encoded46.466s",
+    "file_integrity": "normal finish;1394frames;fullAVdecodeexit0 with empty diagnostic;not truncated",
+    "visual_samples": "Root directly reviewed only three original stills;1184->1173 displayed strength;no cause or physical-DATA attribution",
+    "game_close": "normal process_exit0,tree empty",
+    "screen_release": "done/resources[],sequence5784",
+    "capacity_release": "screen receipt says not returned; separate storage close required"
+  },
+  "runtime": {
+    "process_exit_code": 0,
+    "exit_reason": "process_exit",
+    "finished_at": "2026-10-16T14:45:29.232973+00:00",
+    "cleanup_proven": true,
+    "screen_release_at": "2026-10-16T14:45:58.164469+00:00"
+  },
+  "capacity_scope": {
+    "adopted_at": "2026-10-16T13:52:31.295264+00:00",
+    "review_deadline": "2026-10-16T19:16:40.776628Z",
+    "scene_ceiling_bytes": 1811939328,
+    "old_admission_transferred": false,
+    "quota_renewed_by_integration": false
+  },
+  "claims": {
+    "business_positive": false,
+    "new_R03_qualification": false,
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false,
+    "qualified_dynamic_added": 0
+  },
+  "transfer_boundary": "One full close snapshot, the small identity-chain receipt and selected records are bundled. Raw/PNG/save/fullDefender/sdk-ready and full identity/clock response snapshots remain external-only exact pins. This is not complete portable closure replay."
+}

@@ -1,5 +1,7 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+2026-10-16 R185最新接续（machine_id: `desktop-3fevhd2-1c74096080`；观察截至15:05 UTC）：[R185拍摄结果](r185-capture-result-2026-10-16.md)、[实机专题](../../../docs/ck3-native-ai/episode04-r185-window-capture-12004.md)及[精确原件索引](../../../docs/ck3-native-ai/evidence/episode04-r0185-20261016/source-index.json)为本期新现场入口。R184正常保存接续后原生12/12自然日推进至03-05；Army18面板1184→1173仅为跨月可见变化，不授R03物理扣兵归因。客户区原片46.466秒／1394帧完整解码，正常保存／游戏exit0／释放屏幕；80秒最低录制hold时C卷新预算检查失败，故尚无合格clean镜头。研究6/14、业务4/11、合格动态0/11、正式ABC0/3不变。知识与代码复用以[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)进入R06本地前缀与R08 raw贡献／语义边界；a29/a30消费者14项测试通过不代表新native或现场已验收。R186的D卷scene、`legacy_promoroot` profile核对及C卷768MiB新构建预算仍待实际准入与执行。下文各日期状态保留其当时范围。
+
 2026-10-16 R184接续（machine_id: `desktop-3fevhd2-1c74096080`）：[本轮实际拍摄](r184-capture-result-2026-10-16.md)已取得22.766秒正常终结的客户区区域原片及正常保存/退出0；八份精确日回执、第九日误判与三帧日期分别记账，未授clean或业务资格。研究与智能体复用以[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)为入口；R08完整原字节可离线校验，C已接正常constructor。研究6/14、业务4/11、合格动态0/11不变。下文各日期状态保留为历史，不覆盖本段新事实。
 
 2026-10-16 执行更新：共享研究与智能体入口见[当前缺口与执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)；[R183结果](r183-capture-result-2026-10-16.md)为239帧截断原片，不算完整镜头。下一轮按[三条连续镜头优先级](review02/r184-shot-priority-2026-10-16.md)及[客户区采集/期限合同](tools/capture-recorder.md)补拍；原导演目标及未闭资格不由计划覆盖率代替。

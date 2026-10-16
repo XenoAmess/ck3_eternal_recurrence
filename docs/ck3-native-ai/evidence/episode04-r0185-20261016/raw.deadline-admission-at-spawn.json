@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:39:18.877315+00:00",
+  "admission": {
+    "schema": "xar.e04.recording-deadline-admission.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-16T14:39:18.877265+00:00",
+    "admitted": true,
+    "recording_seconds": 120,
+    "normal_close_reserve_seconds": 180.0,
+    "required_remaining_seconds": 300.0,
+    "remaining_seconds": 4375.68073979998,
+    "session_elapsed_before_recording_seconds": 1024.31926020002,
+    "deadlines": [
+      {
+        "source": "before-native-session-invocation",
+        "bound_at_utc": "2026-10-16T14:22:14.558003+00:00",
+        "bound_monotonic": 1383383.2775921,
+        "timeout_seconds": 5400.0,
+        "deadline_monotonic": 1388783.2775921,
+        "deadline_utc": "2026-10-16T15:52:14.558003+00:00",
+        "includes_frontend_warmup_and_relaunches": true,
+        "remaining_seconds": 4375.68073979998
+      },
+      {
+        "source": "exact-recording-capacity-admission",
+        "argument": "recording_capacity_admission",
+        "deadline_utc": "2026-10-16T19:16:40.776628+00:00",
+        "capacity_admission": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a02\\R185-CAPACITY.actual-root-a01.json",
+          "bytes": 8961,
+          "sha256": "7abe40950df2f25228dd646b0ac9aa9f10a68f6c9288af8a22cc551f643d5593",
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+          "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+          "deadline_utc": "2026-10-16T19:16:40.776628+00:00"
+        },
+        "deadline_monotonic": 1401049.4962153,
+        "remaining_seconds": 16641.899362999946
+      }
+    ],
+    "deadline_renewed": false
+  }
+}

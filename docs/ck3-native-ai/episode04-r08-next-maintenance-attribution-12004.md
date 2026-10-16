@@ -23,7 +23,7 @@
 
 一个新的限制推论是：**即使未来把 NET 和四项全部测准，缺口1仍不会自动消失。** 给 c/d 任意交换“军事/非军事”的未证标签，可以得到完全相同的当前 raw、N 和钱包记录；这说明现有观测在业务类别上不能唯一归因。该段是对现有证据可辨识性的推论，不是新的游戏机制事实。
 
-另一个时间顺序限制是：已证父函数 `28F7840` 的 current-maintenance 分支位于 settlement 调用之后，因此该次后续调用不能作为同一 invocation 先前 ADD 的直接生产证据。**这也不能反证 getter 的 transitive side effect 或上一轮结果与下一轮输入完全无关**；目前没有足以建立或排除这种跨轮关系的来源。不要把局部先后顺序升级为全引擎无关联。
+另一个时间顺序限制是：已证父函数 `28F7840` 的原始角色scalar／当前十槽向量slot9差额分支位于 settlement 调用之后，因此该次后续调用不能作为同一 invocation 先前 ADD 的直接生产证据。**这也不能反证 getter 的 transitive side effect 或上一轮结果与下一轮输入完全无关**；目前没有足以建立或排除这种跨轮关系的来源。不要把局部先后顺序升级为全引擎无关联。
 
 ## 最小下一步：先拿一条能打破类别歧义的边
 
@@ -58,8 +58,10 @@
 
 当前 R08 可用的是来源合同、raw/NET 对账和替代费率估计边界；没有新的 qualified paid-maintenance 金额。影片需要“实际已付军费”镜头时，这一格继续未完成。所有小来源清单采用仓库相对路径，供其他机器和智能体阅读；安装、权限、进程与本次容量状态不能随知识文件迁移。
 
-## 2026-10-16 追加：费率差额的 raw resource4 应用链
+## 2026-10-16 追加：角色scalar／当前向量slot9差额的 raw resource4 应用链
 
 [四包便携整合与精确原件](episode04-r08-rate-resource4-application-12004.md)补齐 `28F7840` 后段→`2BD3320`/current第十槽→`28B9950` selector4 与 `2BAFF30` 的静态分支：物理目标为 `context+4A0`，其中 gate 完整54B、scalar完整938B。原件内含精确hex/原始记录和stdlib离线验证器，跨机器不依赖来源C盘。keyAE只持有consumer合同，正式注册/具名writer/刷新仍未知。
 
 这是本页上文“后续getter不能作为同次先前SETTLEMENT直接producer”的进一步来源，不改变历史实际NET/copy事实，也不证明传递副作用或跨轮刷新不存在。raw4/4A0未获金币或军事账户业务名，c/d军费来源→同次付款→payer/cadence仍未闭合，paid保持null；本次零实机/SDK/EXE读取，不增加R08或动态分子。来源与整合机器 `desktop-3fevhd2-1c74096080`，精确图像和各原始时间见链接；来源机器文件身份不可外推为目标机器运行资格。
+
+2026-10-16来源现状补注：[SubC关联角色的单项贡献链](episode04-r08-contract-contributions-12004.md)已补齐递归scalar、0..100000 bounded raw、fixed-point贡献及两种输出写法；[独立审查](episode04-r08-semantic-attribution-audit-12004.md)区分了registry类型、实际CALL、人工数据流语义与业务推断。未知项继续具体列为业务名/单位、record初值/分配、并行等价及军事c/d→同次付款→payer/周期；不再把已持有body作为待重复读取任务。

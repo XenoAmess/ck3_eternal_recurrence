@@ -1,0 +1,15 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "completed_days": 12,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.272059,
+  "within_six_seconds": true,
+  "stopped_reason": "planned_days_complete",
+  "last_date_raw": 53148432,
+  "error": "RuntimeError('fresh volume budget no longer covers preflight reservation')",
+  "observed_at_utc": "2026-10-16T14:40:05.400669+00:00"
+}

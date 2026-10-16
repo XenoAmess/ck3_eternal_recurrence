@@ -264,3 +264,7 @@ docs/ck3-native-ai/evidence/episode04-r0184-20261016/** -text whitespace=cr-at-e
 docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/r184-r06-local-prefix-12004.json -text whitespace=cr-at-eol
 docs/maintenance/evidence/storage-retention-2026-10-16-r184-emergency/** -text whitespace=cr-at-eol
+
+# Preserve R185 live originals and the seven-copy reclamation proof exactly.
+docs/ck3-native-ai/evidence/episode04-r0185-20261016/** -text whitespace=cr-at-eol
+docs/maintenance/evidence/storage-retention-2026-10-16-r185-duplicates/** -text whitespace=cr-at-eol

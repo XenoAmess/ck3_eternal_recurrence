@@ -1,0 +1,407 @@
+{
+  "schema": "xar.e04.raw-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "observed_at_utc": "2026-10-16T14:49:10.380953+00:00",
+  "input_config": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+    "bytes": 1872,
+    "sha256": "7b439963bb4ad06d6a18422bbe5d198bb4cb53b64f779fd52f65437f82f9ba0d"
+  },
+  "canonical_recorder_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3296,
+    "sha256": "7bb978d345c1d5639a47ecc32704895e0f9d821d021f949914efc95bc94d4704"
+  },
+  "canonical_recorder_state": "NORMAL_TREE_EMPTY",
+  "canonical_recorder_job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 7524,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-16T14:40:05.687456+00:00"
+  },
+  "context": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2331,
+    "sha256": "8a33221afef63ad88c654324f6599280200da9ad49c9e62b3d3579285e4db92c"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 27208789,
+    "sha256": "b15dac9e149903f116af4b16a917aba679633088f5d3be6fb477b995f49ff7b9"
+  },
+  "tools": {
+    "ffmpeg": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    },
+    "machine_probe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    }
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 23776,
+    "owned_ck3_create_time": 1792160599.4175596,
+    "hwnd": 34408890,
+    "foreground_hwnd": 34408890,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T14:39:14.856836+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "human_full_review": false,
+    "human_signoff": false
+  },
+  "limitations": [
+    "Machine checks and decoded media facts do not establish gameplay outcomes or human approval.",
+    "Desktop client-region capture remains subject to source-guard sampling; no independent HWND capture is implied.",
+    "Container duration is reported separately from decoded frame timestamps."
+  ],
+  "probe": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "warning",
+      "-count_frames",
+      "-show_format",
+      "-show_streams",
+      "-of",
+      "json",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv"
+    ],
+    "started_at_utc": "2026-10-16T14:49:10.380996+00:00",
+    "completed_at_utc": "2026-10-16T14:49:13.159904+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\probe.stdout",
+      "bytes": 2499,
+      "sha256": "0e3b5b906d9f10bc0b3b574223ea7f80f86cc266a36ee56fd2bcd799ec4d6d63"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\probe.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "media": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "Constrained Baseline",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "avc1.42c01f",
+        "width": 1280,
+        "height": 720,
+        "coded_width": 1280,
+        "coded_height": 720,
+        "has_b_frames": 0,
+        "pix_fmt": "yuv420p",
+        "level": 31,
+        "color_range": "tv",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/1000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "bits_per_raw_sample": "8",
+        "nb_read_frames": "1394",
+        "extradata_size": 38,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "ENCODER": "Lavc63.1.101 libx264",
+          "DURATION": "00:00:46.466000000"
+        }
+      }
+    ],
+    "format": {
+      "filename": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "matroska,webm",
+      "format_long_name": "Matroska / WebM",
+      "start_time": "0.000000",
+      "duration": "46.466000",
+      "size": "27208789",
+      "bit_rate": "4684507",
+      "probe_score": 100,
+      "tags": {
+        "ENCODER": "Lavf63.1.101"
+      }
+    }
+  },
+  "capture_dimensions_match": true,
+  "frame_probe": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "warning",
+      "-show_frames",
+      "-show_entries",
+      "frame=media_type,stream_index,best_effort_timestamp_time,duration_time,pkt_duration_time",
+      "-of",
+      "json",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv"
+    ],
+    "started_at_utc": "2026-10-16T14:49:13.179847+00:00",
+    "completed_at_utc": "2026-10-16T14:49:15.180230+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frames.stdout",
+      "bytes": 261973,
+      "sha256": "08f17f04ba6be04c497daa9c180defb43ad6491e6e70799f6b9a3040b2069c9b"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frames.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "decoded_frame_timelines": {
+    "0": {
+      "media_type": "video",
+      "frames": 1394,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 46.433,
+      "last_frame_end_seconds": 46.466,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "full_audio_video_decode": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "-hide_banner",
+      "-v",
+      "warning",
+      "-xerror",
+      "-i",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "-map",
+      "0:v?",
+      "-map",
+      "0:a?",
+      "-f",
+      "null",
+      "-"
+    ],
+    "started_at_utc": "2026-10-16T14:49:15.207005+00:00",
+    "completed_at_utc": "2026-10-16T14:49:15.734646+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\full-av-decode.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\full-av-decode.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "all_av_decode_exit_success": true,
+  "all_av_decode_diagnostics_empty": true,
+  "extracted_frames": [
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "0.000000",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png"
+      ],
+      "started_at_utc": "2026-10-16T14:49:15.738158+00:00",
+      "completed_at_utc": "2026-10-16T14:49:15.964843+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-00.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-00.stderr",
+        "bytes": 374,
+        "sha256": "9da673d63211d506b3758cb5f8ce50ebc3d6b614b6db56d6264202169e3a58c6"
+      },
+      "diagnostic_text": "[image2 @ 00000276f1e2c780] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000276f1e2c780] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 0.0,
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1008905,
+        "sha256": "d473aa76f1f1e0cc3db4bf547cdc499b3aa4bad7b882fdad2f117c60d3270b46"
+      },
+      "visually_reviewed": false
+    },
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "23.216500",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png"
+      ],
+      "started_at_utc": "2026-10-16T14:49:15.986084+00:00",
+      "completed_at_utc": "2026-10-16T14:49:16.478028+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-01.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-01.stderr",
+        "bytes": 374,
+        "sha256": "5494fa0b02477ef91dc76f9312802b3b7406f06a2da197d8f5e86d1b00571697"
+      },
+      "diagnostic_text": "[image2 @ 00000251b2e8ca80] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000251b2e8ca80] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 23.2165,
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1218835,
+        "sha256": "168f3f9d35345f8c0c174fe19346988da07a35f0c3243c7183412724d4ae1678"
+      },
+      "visually_reviewed": false
+    },
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "46.433000",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png"
+      ],
+      "started_at_utc": "2026-10-16T14:49:16.495685+00:00",
+      "completed_at_utc": "2026-10-16T14:49:17.158401+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-02.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\extract-02.stderr",
+        "bytes": 374,
+        "sha256": "f45c980c34fed09b1b8438fb6ad1ef8e7da71a6380285d284365f24c015198b4"
+      },
+      "diagnostic_text": "[image2 @ 000002cfafe03d40] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 000002cfafe03d40] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 46.433,
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1245488,
+        "sha256": "bf513d9cd2071ccf60ab1c20eddc184b0f6de339672a513c069f54ec6ee58f98"
+      },
+      "visually_reviewed": false
+    }
+  ],
+  "raw_after": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 27208789,
+    "sha256": "b15dac9e149903f116af4b16a917aba679633088f5d3be6fb477b995f49ff7b9"
+  },
+  "premature_end_reported": false,
+  "audit_execution_completed": true
+}

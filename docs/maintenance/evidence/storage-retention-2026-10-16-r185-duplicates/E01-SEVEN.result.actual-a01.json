@@ -1,0 +1,105 @@
+{
+  "schema": "xar.r185-e01-seven-duplicate-retirement.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:34:58.373863+00:00",
+  "policy_version": "1.0.0",
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\E01-SEVEN.plan.actual-a01.json",
+    "sha256": "c488f1749b26232a863d8263df15ac6116046c15cfffc65f79443deb924911a2"
+  },
+  "attempted": 7,
+  "deleted": 7,
+  "failed": 0,
+  "actual_C_credit_bytes": 0,
+  "actual_D_logical_bytes": 5628978551,
+  "actual_D_single_link_allocation_bytes": 5629001728,
+  "unique_deleted_path_count": 7,
+  "unique_deleted_file_id_count": 7,
+  "source_protection_excluded_overlap": 0,
+  "retained_replica": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv",
+    "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+    "info": {
+      "id": [
+        882653518,
+        281474978651758
+      ],
+      "b": 804139793,
+      "ft": 134348653204795097,
+      "links": 1,
+      "allocation": 804143104
+    }
+  },
+  "retained_replica_unchanged_under_handle": true,
+  "retained_replica_owner": "Root",
+  "retained_replica_protected_until_utc": "2026-10-23T14:31:40.196824+00:00",
+  "retained_replica_auto_renew": false,
+  "free_before": {
+    "C:/": 30559539200,
+    "D:/": 48296976384
+  },
+  "free_after": {
+    "C:/": 30559526912,
+    "D:/": 53925978112
+  },
+  "whole_volume_free_delta_not_exclusively_credited": true,
+  "current_consumer_query": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\E01-CURRENT-CONSUMERS.actual-a02.json",
+    "bytes": 4153,
+    "sha256": "f216b8c4546bcc7e68bc2a48a36ac1c3b1320699757e1e9a60deca1ef53c8ab8"
+  },
+  "files_ledger": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r185-a01\\E01-SEVEN.files.actual-a01.jsonl",
+    "sha256": "16df0891d31cda11b61db00514512c9ed0c99d3417919496f7024495b7557cf3"
+  },
+  "old_run_manifests_changed": false,
+  "historical_path_availability_map": [
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-001\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7e-recut-001\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7c-muted-palette-001\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7-same-battle-002\\messina-original-900s.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7-same-battle-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7-same-battle-001\\messina-original-900s.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    },
+    {
+      "old_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-full-edge-attempt-002\\gameplay-precontact-r2.mkv",
+      "availability": "deleted_unavailable",
+      "sha256": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+      "keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-r7f-index-formal-002\\run\\artifacts\\raw\\sha256\\0E\\0E7699911B05EC54ACC852C6FCB31CB77E32D1DE5BCA8BA2A6FD054C3903589F.mkv"
+    }
+  ],
+  "no_same_name_replacement": true,
+  "directory_deletions": 0,
+  "active_R185_a28_R184_normal_raw_game_dependencies_untouched": true,
+  "main_repo_TaskBus_SDK_screen_actions": 0,
+  "automatic_gc_implemented": false
+}

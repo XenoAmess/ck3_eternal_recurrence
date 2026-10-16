@@ -1,6 +1,12 @@
 # Episode 04 当前缺口与执行入口（2026-10-16）
 
+新增可移机来源已接入：[合同贡献链](episode04-r08-contract-contributions-12004.md)、[local88 的组成](episode04-r08-local88-components-12004.md)和[业务归因审查](episode04-r08-semantic-attribution-audit-12004.md)。三个追加包分别封存5个、6个和3个完整逻辑函数，另含64B精确描述符数据；消费者在标准库及 `-O` 下核验原件、控制边和跨函数连接，不把这些静态层次提升为已付军费或周期。
+
 本轮现场与容量事实的来源机器为 `desktop-3fevhd2-1c74096080`。其他机器可复用下列源码合同、消费者与实验设计；安装、权限、桌面、PID、容量及实机资格仍须在当地重新取得。旧日期的来源记录保留原范围，本页用于找到最新勘误与下一步。
+
+**2026-10-16 15:05 UTC 当前接续。** [R185实机专题](episode04-r185-window-capture-12004.md)、[52份原件索引](evidence/episode04-r0185-20261016/source-index.json)、[便携事实](evidence/episode04-r0185-20261016/portable-facts.actual-a01.json)与[拍摄结果](../../promo/ck3_native_war_ai/episode-04-march-logistics/r185-capture-result-2026-10-16.md)绑定本机独立R0185、源码`c743520929d4f9a82c17c908b218075018598e2d`和a28：R184正常保存接续后，原生 **12/12自然日** 从1067-02-21推进至03-05；Army18面板人数跨月从1184显示为1173，只有可见变化，没有同次物理扣减与writer归因，**不增加R03正例**。客户区原片 **46.466秒／1394帧** 完整解码、正常保存／游戏exit0／屏幕释放；80秒hold阶段实际遭遇C卷新预算检查失败，因此最低时长未达，尚无clean span、完整人工观看或签核。研究 **6/14（42.9%）**、业务 **4/11（36.4%）**、合格动态 **0/11**、正式ABC **0/3** 均不变。
+
+共享研发续线：[R06本地前缀候选](episode04-r06-local-prefix-continuation-12004.md)的a29/a30消费者接线有14项合同测试通过，但新native build与实机leaf尚未执行；[R08应用链](episode04-r08-rate-resource4-application-12004.md)、[六叶贡献链](episode04-r08-contract-contributions-12004.md)及[语义审查](episode04-r08-semantic-attribution-audit-12004.md)供影片核稿和智能体消费。新静态包a02/a03/a04分别封2/5/6个直接来源叶；a05可重算的是15条直接CALL，**CALL边不另算来源叶或业务通过**。合同单项raw贡献和局部槽写入已知，resource4业务名、军事已付额、payer与cadence仍unknown；R08不加分。下一R186的D卷scene迁移、`legacy_promoroot` profile核对及C卷新native 768MiB预算均处于准备／准入阶段，不写成已采纳或已拍摄。
 
 研究整卡仍为 **6/14（42.9%）**，核心业务 **4/11（36.4%）**：R00/R02/R03/R11/R12/R13 已验收。合格连续动态证据仍 **0/11**。中文草稿覆盖 **69/69**，最终冻结稿、声音、新版成片与人工签核不因草稿覆盖而完成。
 

@@ -18,6 +18,7 @@ def integer(x,lo,hi):
 
 def normalize_receiver_candidates(raw):
     fields=FIELDS | ({"failure_diagnostic"} if type(raw) is dict and "failure_diagnostic" in raw else set())
+    if type(raw) is dict and "local_definition_entry_only" in raw:fields=fields|{"local_definition_entry_only"}
     if (type(raw) is not dict or raw.keys()!=fields or raw['source']!=SOURCE
             or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
             or raw['current_variable_table_observed'] is not False
@@ -25,6 +26,12 @@ def normalize_receiver_candidates(raw):
             or type(raw['stable_double_read']) is not bool or type(raw['entries']) is not list
             or len(raw['entries'])>8):
         raise ValueError('type635 candidate schema/qualification')
+    local=None
+    if "local_definition_entry_only" in raw:
+        local=normalize_local_definition_entry_only(raw["local_definition_entry_only"])
+        if (raw['status']=='available' and local['status']=='available' and
+                any(raw[k]!=local[k] for k in ('receiver_variable_index','declared_type_id'))):
+            raise ValueError('local prefix declaration differs from full candidate')
     if 'failure_diagnostic' in raw:
         if raw['status']!='unavailable':raise ValueError('failure diagnostic cannot qualify an available candidate')
         normalize_receiver_failure(raw['failure_diagnostic'])
@@ -33,7 +40,7 @@ def normalize_receiver_candidates(raw):
                 or raw['stable_double_read'] or raw['entries']
                 or raw['receiver_variable_index'] is not None or raw['declared_type_id'] is not None):
             raise ValueError('unavailable candidate must preserve unknown values')
-        return dict(raw)
+        return {**raw, **({"local_definition_entry_only":local} if local is not None else {})}
     if (raw['status']!='available' or raw['unavailable_reason'] is not None
             or raw['stable_double_read'] is not True
             or not integer(raw['receiver_variable_index'],0,255)
@@ -65,7 +72,52 @@ def normalize_receiver_candidates(raw):
                 e['direct_owner_identity_verified'] and (owner is None or owner==-1)):
             raise ValueError('direct owner source branch/identity')
         rows.append(dict(e))
-    return {**raw,'entries':rows}
+    if (local is not None and local['status']=='available'
+            and [e for e in rows if e['ancestor_depth']==0]!=local['entries']):
+        raise ValueError('local prefix depth0 entries differ from full candidate')
+    return {**raw,'entries':rows, **({"local_definition_entry_only":local} if local is not None else {})}
+
+
+def normalize_local_definition_entry_only(raw):
+    fields={"source","scope","status","unavailable_reason","receiver_type_id","ancestor_depth",
+            "current_variable_table_observed","native_receiver_selected","receiver_variable_index",
+            "declared_type_id","raw_definition_entry_count","local_definition_active_raw",
+            "definition_present","local_entry_present","stable_double_read","entries"}
+    if type(raw) is dict and "failure_diagnostic" in raw:fields=fields|{"failure_diagnostic"}
+    if (type(raw) is not dict or raw.keys()!=fields
+            or raw['source']!='native_gui_type635_local_definition_entry_only_12004'
+            or raw['scope']!='local_definition_entry_only'
+            or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
+            or type(raw['ancestor_depth']) is not int or raw['ancestor_depth']!=0
+            or raw['current_variable_table_observed'] is not False or raw['native_receiver_selected'] is not False
+            or type(raw['stable_double_read']) is not bool or type(raw['entries']) is not list or len(raw['entries'])>1):
+        raise ValueError('local definition prefix schema/scope')
+    if 'failure_diagnostic' in raw:
+        if raw['status']!='unavailable':raise ValueError('local failure diagnostic cannot qualify available prefix')
+        normalize_receiver_failure(raw['failure_diagnostic'])
+    observed=('receiver_variable_index','declared_type_id','raw_definition_entry_count',
+              'local_definition_active_raw','definition_present','local_entry_present')
+    if raw['status']=='unavailable':
+        if (type(raw['unavailable_reason']) is not str or not raw['unavailable_reason']
+                or raw['stable_double_read'] or raw['entries'] or any(raw[k] is not None for k in observed)):
+            raise ValueError('unavailable local prefix must preserve unknown values')
+        return dict(raw)
+    if (raw['status']!='available' or raw['unavailable_reason'] is not None or not raw['stable_double_read']
+            or not integer(raw['receiver_variable_index'],0,255)
+            or type(raw['declared_type_id']) is not int or raw['declared_type_id']!=635
+            or not integer(raw['raw_definition_entry_count'],0,256)
+            or not integer(raw['local_definition_active_raw'],1,255)
+            or raw['definition_present'] is not True or type(raw['local_entry_present']) is not bool
+            or raw['local_entry_present'] is not bool(raw['entries'])
+            or (raw['entries'] and raw['raw_definition_entry_count']==0)):
+        raise ValueError('local prefix declaration/lookup/double-read is incomplete')
+    # Reuse the production entry width/RVA/direct-owner rules; this synthetic
+    # envelope is internal normalization only, never a native-selection claim.
+    old={k:raw[k] for k in FIELDS}
+    old['source']=SOURCE
+    entries=normalize_receiver_candidates(old)['entries']
+    if any(e['ancestor_depth']!=0 for e in entries):raise ValueError('local prefix entry is not depth0')
+    return {**raw,'entries':entries}
 
 def normalize_receiver_failure(raw):
     fields={'stage','kind','capture_pass','read_ordinal','ancestor_depth','raw_declaration_count',

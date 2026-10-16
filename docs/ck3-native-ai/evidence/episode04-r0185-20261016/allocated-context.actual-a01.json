@@ -1,0 +1,90 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:19:31.576286+00:00",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "runtime_source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "native_build_source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+    "execution_id": "806ea6d4-e4d9-48dd-aeab-f2928555bfb9",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "mod_key": "vanilla",
+    "sequence": 185,
+    "allocated_at_utc": "2026-10-16T14:19:31.197733+00:00",
+    "allocator_pid": 22556,
+    "legacy_alias": null
+  },
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "7ee5a78e26a2c19a7ceebcafbef608c11242ddc870b1ffd6ebbb2324a39e97fb"
+  },
+  "allocation_call": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-root-prep-a01\\ALLOCATION-CALL.actual-a01.json",
+    "bytes": 862,
+    "sha256": "84a3f4622399df7a92d1e7ff32426ff64a53bcdccb98f3329544673b1024d4f4"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a02\\R185-CAPACITY.actual-root-a01.json",
+    "bytes": 8961,
+    "sha256": "7abe40950df2f25228dd646b0ac9aa9f10a68f6c9288af8a22cc551f643d5593"
+  },
+  "capacity_admission": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a02\\R185-CAPACITY.actual-root-a01.json",
+  "production": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-root-prep-a01\\A28-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 4789,
+    "sha256": "0d52e77069a44d7f374137f0775e6f745f557b08d5be411be888a0feeb619b32"
+  },
+  "a28_inputs": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-native-verification-a01\\A28-PRODUCTION-QUALIFICATION-INPUTS.actual-a01.json",
+    "bytes": 82915,
+    "sha256": "6c41e25b194acf54328ec61ec84b4893801544b2a1bed960b1923d5e4581762a"
+  },
+  "a28_producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r185-a28\\native-msvc-result.json",
+    "bytes": 1885,
+    "sha256": "9a148068b179a4bd035d000df3b8b62602918174ad8f7525eaa5a6742f09200d"
+  },
+  "promo_release_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-owner-prep-a01-addendum\\R185-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 4901,
+    "sha256": "75c02a7cd1b886cb4cf1a9edecf50468623160f174d01123d3bf1db7fb48b665"
+  },
+  "source_checkpoint": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73664718,
+      "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-close-a01-02-save-once.json",
+      "bytes": 20290,
+      "sha256": "11a034632ff18d716090c6404316c210d0b4ac840552148e94998f944e1ceecf"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+      "bytes": 11588,
+      "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3806,
+        "sha256": "6699c6b3ea5e8c380aac8288a21db6fba80259242b64ac6c5a60ef1226e35612"
+      },
+      "bootstrap_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\bootstrap-result.json",
+        "bytes": 15026,
+        "sha256": "89258a5c43d8d7ab47306de137d7e4648b1bb8e3ee7a7da461702f4282341205"
+      },
+      "screen_release": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4052,
+        "sha256": "52f499d5c2361be591ccf65ea2362af0918189ad39d0703703ba4c8d9b46056b"
+      }
+    }
+  },
+  "game_started": false
+}

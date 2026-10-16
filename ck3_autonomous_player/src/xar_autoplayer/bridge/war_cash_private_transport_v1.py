@@ -1,4 +1,4 @@
-"""Actual military expenses and termination send fees, without future estimates."""
+"""Current native military monthly rates and unapplied termination send quotes."""
 
 from __future__ import annotations
 

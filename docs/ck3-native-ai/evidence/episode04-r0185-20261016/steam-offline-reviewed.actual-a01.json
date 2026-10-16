@@ -1,0 +1,32 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T14:21:52.425806+00:00",
+  "current_offline_ui_observed": true,
+  "reviewer": "Root directly reviewed both full-size originals showing distinct fresh display nonces61FA2AF5DA88 and DF50A93DE3F1 with Steam offline text in the same originals",
+  "observed_text": [
+    "Steam 当前处于离线模式",
+    "上线",
+    "离线模式"
+  ],
+  "screenshot": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\steam-live-challenge-a01\\full-original-2.png",
+    "bytes": 486435,
+    "sha256": "134056e767b70b9ed1b563b8bb36ddd9ebc46f384f1569536467a24c62325efc"
+  },
+  "challenge": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\steam-live-challenge-a01\\challenge.json",
+    "bytes": 1344,
+    "sha256": "74d8ed0d4d2a90f85e20d9b00e021e81c5103bd55e69b9763187f9181b395ffe"
+  },
+  "challenge_nonce_read_from_second_original": "DF50A93DE3F1",
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "screen_task": "e04-live-20261016-r0185",
+  "screen_sequence": 5767,
+  "desktop_shell_clock_stale": true,
+  "freshness_basis": "Directly reviewed changing new current nonce and Steam offline pixels; full shell clock recovery is not claimed.",
+  "game_started": false,
+  "steam_online_toggled": false
+}

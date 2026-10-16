@@ -1,0 +1,646 @@
+{
+  "schema": "xar.e04.r185.raw-audit-portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "observed_at_utc": "2026-10-16T14:51:16.479719+00:00",
+  "audit": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\audit.actual.json",
+    "bytes": 16107,
+    "sha256": "2ad82e03061b561aa85a19aa76a6297de3c9261190cff7a13c30142738b4e8a7"
+  },
+  "input_config": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+    "bytes": 1872,
+    "sha256": "7b439963bb4ad06d6a18422bbe5d198bb4cb53b64f779fd52f65437f82f9ba0d"
+  },
+  "context": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2331,
+    "sha256": "8a33221afef63ad88c654324f6599280200da9ad49c9e62b3d3579285e4db92c"
+  },
+  "canonical_recorder_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3296,
+    "sha256": "7bb978d345c1d5639a47ecc32704895e0f9d821d021f949914efc95bc94d4704"
+  },
+  "canonical_recorder_state": "NORMAL_TREE_EMPTY",
+  "fresh_capacity_before_audit": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r185-media-audit-prep-a01\\R185-MEDIA-AUDIT-FRESH-CAPACITY.actual-a01.json",
+    "bytes": 3192,
+    "sha256": "e8fec5d5edc96fc6c3e8b73383160cfa6319fb6a72881a9fe4c564f9ae304e0b"
+  },
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 27208789,
+    "sha256": "b15dac9e149903f116af4b16a917aba679633088f5d3be6fb477b995f49ff7b9"
+  },
+  "raw_unchanged_during_audit": true,
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 23776,
+    "owned_ck3_create_time": 1792160599.4175596,
+    "hwnd": 34408890,
+    "foreground_hwnd": 34408890,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T14:39:14.856836+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "video": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1",
+    "container_duration_seconds": 46.466,
+    "decoded_timeline": {
+      "media_type": "video",
+      "frames": 1394,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 46.433,
+      "last_frame_end_seconds": 46.466,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "audio_stream_count": 0,
+  "full_AV_decode_exit": 0,
+  "full_AV_decode_diagnostic": "",
+  "probe_diagnostic": "",
+  "frame_probe_diagnostic": "",
+  "premature_end_reported": false,
+  "extracted_frames": [
+    {
+      "filename": "frame-00.png",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1008905,
+        "sha256": "d473aa76f1f1e0cc3db4bf547cdc499b3aa4bad7b882fdad2f117c60d3270b46"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 0.0,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 00000276f1e2c780] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000276f1e2c780] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    },
+    {
+      "filename": "frame-01.png",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1218835,
+        "sha256": "168f3f9d35345f8c0c174fe19346988da07a35f0c3243c7183412724d4ae1678"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 23.2165,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 00000251b2e8ca80] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000251b2e8ca80] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    },
+    {
+      "filename": "frame-02.png",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1245488,
+        "sha256": "bf513d9cd2071ccf60ab1c20eddc184b0f6de339672a513c069f54ec6ee58f98"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 46.433,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 000002cfafe03d40] The specified filename 'C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 000002cfafe03d40] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    }
+  ],
+  "requested_min_wall_seconds": 80,
+  "canonical_recorder_wall_seconds": 49.653296,
+  "requested_min_wall_80_met": false,
+  "encoded_frame_end_80_seconds_met": false,
+  "film_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-film-result.actual.json",
+    "bytes": 591,
+    "sha256": "071bb4086b1c15a3fd49faf09281f96b12a553de43353b752ea57396e8a09006"
+  },
+  "native_completed_days": 12,
+  "daily_receipts": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d01-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "b0ae13971e98dd438c59d271bc297cade542ae2da0feabd6b368b285cee0adc6"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d01-status.json",
+        "bytes": 4644,
+        "sha256": "ae3140961880cf526e25ee1dbafbc41c3a0001b74be441073c5041f6883080b9"
+      },
+      "observed_at_utc": "2026-10-16T14:39:26.669197+00:00",
+      "start_date_raw": 53148144,
+      "date_raw": 53148168,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d02-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "f60b45d61523a38d367ed1e34f534d64386e34290aed2a784e8177b9f52d9ef6"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d02-status.json",
+        "bytes": 4644,
+        "sha256": "875e88441c0d3deec5963bc32d258ed5afadf4f6f813259b58d299a22f83753e"
+      },
+      "observed_at_utc": "2026-10-16T14:39:28.375974+00:00",
+      "start_date_raw": 53148168,
+      "date_raw": 53148192,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d03-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "9727bc84a3ec654bd1c44289195ff83fc457bbc2cb5df785c9e5debd39d0a1dd"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d03-status.json",
+        "bytes": 4644,
+        "sha256": "2415c1a18c87a839c9f3e2fec8c6522525b0dfc797511732ecc1f2aa996ffaf9"
+      },
+      "observed_at_utc": "2026-10-16T14:39:30.409633+00:00",
+      "start_date_raw": 53148192,
+      "date_raw": 53148216,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d04-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "030734d64833591b61e4509f71f47ba572fb4e8daaa0c33438dfa13533ac486b"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d04-status.json",
+        "bytes": 4644,
+        "sha256": "39898294a251d0eb5dfbfb560e26f666e719e16d795d5b7448814950183ff3e6"
+      },
+      "observed_at_utc": "2026-10-16T14:39:32.078997+00:00",
+      "start_date_raw": 53148216,
+      "date_raw": 53148240,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d05-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "e0826fe0789fbc0beb24705f07c28a2e4c4eacdeb71a5e0102b76cfcd19ed53c"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d05-status.json",
+        "bytes": 4644,
+        "sha256": "c14f73ef387a84a6da33c0d39275ba6a5870bef74f5f79e48a98d52a2a896da4"
+      },
+      "observed_at_utc": "2026-10-16T14:39:33.873347+00:00",
+      "start_date_raw": 53148240,
+      "date_raw": 53148264,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d06-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "ee57e444d59185ed542470cd104c4f655d56cdb28b36a4329ce1fe7d80a02c39"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d06-status.json",
+        "bytes": 4644,
+        "sha256": "918243c637d3e12353f522100410c4a6408c06864642e08784a6924995d9d545"
+      },
+      "observed_at_utc": "2026-10-16T14:39:35.732752+00:00",
+      "start_date_raw": 53148264,
+      "date_raw": 53148288,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d07-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "66cf9170c0d29449ae6400effdc5b0025db3384edd88785ba7e970051a186e95"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d07-status.json",
+        "bytes": 4644,
+        "sha256": "dfaa9c4cfe3dc8c609945f33ab171cdd91914c6c320947ca55bc575906f37f70"
+      },
+      "observed_at_utc": "2026-10-16T14:39:39.529616+00:00",
+      "start_date_raw": 53148288,
+      "date_raw": 53148312,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d08-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "7168cbad2e1556e6c63dcc21ea6cb5117f10e79d2ac987033b6a6d9ac9ef0ce9"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d08-status.json",
+        "bytes": 4644,
+        "sha256": "48cbb168916a984db2e99645d5b6eab2afd92fd5db66998d5fe6552aac40505d"
+      },
+      "observed_at_utc": "2026-10-16T14:39:41.844502+00:00",
+      "start_date_raw": 53148312,
+      "date_raw": 53148336,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d09-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "a6ad4d3250b8d7b7b10d1689c0eea5e037788a3f2467738c874bb6ae95f02325"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d09-status.json",
+        "bytes": 4644,
+        "sha256": "fa6b0bef824994cbae76f30a8a6616fd6379b94da757cfffe2ef34e61901d5fd"
+      },
+      "observed_at_utc": "2026-10-16T14:39:43.310205+00:00",
+      "start_date_raw": 53148336,
+      "date_raw": 53148360,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d10-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "6b7695720da583b6cdc2bf558919140819618ae3286f6af1012c07186eea87ef"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d10-status.json",
+        "bytes": 4648,
+        "sha256": "2a58cb0527e0470e21cb9d841a2b8f23b2cff7eb41d0c9f60593cdcf27df52d0"
+      },
+      "observed_at_utc": "2026-10-16T14:39:44.957525+00:00",
+      "start_date_raw": 53148360,
+      "date_raw": 53148384,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d11-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "b539f886a1fbd5f3a3ba005be7541f685b3e9522da951ea3b7564dfbe49ba44b"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d11-status.json",
+        "bytes": 4648,
+        "sha256": "a1bcf0e077ce099023b5e215c67d8068853c7b2b4f30d50999c49db18043a669"
+      },
+      "observed_at_utc": "2026-10-16T14:39:47.681124+00:00",
+      "start_date_raw": 53148384,
+      "date_raw": 53148408,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-d12-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "00923618610ac89880cb1081f7c8accf3db6c2a686330cd90b3f96f76828c5df"
+      },
+      "native_status_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-d12-status.json",
+        "bytes": 4648,
+        "sha256": "e45f693f59fc16281cf94d272aaa4db047579d88046feb5ea2daa608df076eab"
+      },
+      "observed_at_utc": "2026-10-16T14:39:49.328236+00:00",
+      "start_date_raw": 53148408,
+      "date_raw": 53148432,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    }
+  ],
+  "first_date_raw": 53148144,
+  "last_date_raw": 53148432,
+  "audit_output_bytes": 3759031,
+  "audit_output_budget_bytes": 33554432,
+  "closure_capacity": {
+    "component_usage_bytes": {
+      "profile": 549790120,
+      "driver": 61197025,
+      "raw": 29225400,
+      "other": 20779617
+    },
+    "remaining_component_bytes": {
+      "profile": 255516248,
+      "driver": 274347295,
+      "raw": 507645512,
+      "other": 113438111
+    },
+    "volumes": {
+      "C:/": {
+        "free_bytes": 33170259968,
+        "required_free_bytes": 29841803986,
+        "margin_bytes": 3328455982
+      },
+      "D:/": {
+        "free_bytes": 53925974016,
+        "required_free_bytes": 21609054208,
+        "margin_bytes": 32316919808
+      }
+    },
+    "current_all_fit": true,
+    "old_thresholds_lowered": false,
+    "D_credit_applied_to_C": false,
+    "reserves_released": false,
+    "quota_deadline_renewed": false
+  },
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "human_full_review": false,
+    "human_signoff": false
+  },
+  "limitations": [
+    "Machine checks and decoded media facts do not establish gameplay outcomes or human approval.",
+    "Desktop client-region capture remains subject to source-guard sampling; no independent HWND capture is implied.",
+    "Container duration is reported separately from decoded frame timestamps.",
+    "The requested 80-second minimum was not met; this audit does not change the failed minimum-duration outcome.",
+    "Twelve native daily receipts establish native progression. They do not certify all gameplay outcomes or a clean span.",
+    "No audio stream is present; decode mapped every present video and audio stream.",
+    "Three original PNG frames were structurally verified and remain for Root direct visual review.",
+    "Single-PNG image2 sequence-pattern warnings are retained separately from empty raw-media decode diagnostics."
+  ]
+}

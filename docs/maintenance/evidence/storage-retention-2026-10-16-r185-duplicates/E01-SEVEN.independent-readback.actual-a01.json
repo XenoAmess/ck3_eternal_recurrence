@@ -1,0 +1,23 @@
+{
+  "schema": "xar.r185-e01-seven-independent-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:35:38.328561+00:00",
+  "policy_version": "1.0.0",
+  "actual_result_sha256": "a5efe843b63d02438f594e2ec616e3865e515f068207d28fbd73aed6a8bd4e4c",
+  "seven_paths_absent_now": true,
+  "unique_deleted_file_ids": 7,
+  "keeper_current_file_id": [
+    882653518,
+    281474978651758
+  ],
+  "keeper_current_identity_metadata_unchanged": true,
+  "keeper_sha256_from_same_handle_execution": "0e7699911b05ec54acc852c6fcb31cb77e32d1de5bca8ba2a6fd054c3903589f",
+  "keeper_content_rehashed_by_this_readback": false,
+  "fresh_D_free_bytes": 53925978112,
+  "actual_D_allocation_credit_bytes": 5629001728,
+  "actual_C_credit_bytes": 0,
+  "volume_free_delta_not_assumed_exclusive": true,
+  "new_deletions": 0,
+  "screen_SDK_TaskBus_main_repo_actions": 0,
+  "automatic_gc_implemented": false
+}

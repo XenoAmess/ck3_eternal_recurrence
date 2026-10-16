@@ -1,0 +1,85 @@
+{
+  "schema": "xar.e04.r185.media-audit-fresh-capacity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "observed_at_utc": "2026-10-16T14:48:24.577447+00:00",
+  "admitted": true,
+  "status": "ADMITTED_EXISTING_SCENE_ENVELOPE",
+  "film_input": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 6173,
+    "sha256": "e6ceb3a190cbf28566b6bbb89522d30e3394dbd7443a9a6238da4ed0cf3b05c3"
+  },
+  "original_preflight": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-preflight.actual.json",
+    "bytes": 2062,
+    "sha256": "ae6934d0a1ac9b68c359565afa26dc6a0c6cfa3ce74b40e2e8c72047ad20b2b0"
+  },
+  "adopted_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a02\\R185-CAPACITY.actual-root-a01.json",
+    "bytes": 8961,
+    "sha256": "7abe40950df2f25228dd646b0ac9aa9f10a68f6c9288af8a22cc551f643d5593"
+  },
+  "registry": {
+    "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+    "bytes": 8897,
+    "sha256": "8472877735d3b15b209b991c06cbf4827470a33eba631b48fd475436993b0017"
+  },
+  "quota_review_at_utc": "2026-10-16T19:16:40.776628Z",
+  "component_usage_bytes": {
+    "profile": 549790120,
+    "driver": 61197025,
+    "raw": 29225400,
+    "other": 17005132
+  },
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 335544320,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "remaining_component_bytes": {
+    "profile": 255516248,
+    "driver": 274347295,
+    "raw": 507645512,
+    "other": 117212596
+  },
+  "requested_audit_peak_bytes": 33554432,
+  "requested_metadata_peak_bytes": 65536,
+  "volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "free_bytes": 33176743936,
+      "used_bytes": 477957201920,
+      "original_preflight_required_bytes": 29841803986,
+      "fresh_formula_required_bytes": 29734901004,
+      "required_free_bytes": 29841803986,
+      "margin_bytes": 3334939950,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 4294967296,
+      "other_unspent_reservations_bytes": 2810375577
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "free_bytes": 53925974016,
+      "used_bytes": 446164033536,
+      "original_preflight_required_bytes": 21609054208,
+      "fresh_formula_required_bytes": 21609054208,
+      "required_free_bytes": 21609054208,
+      "margin_bytes": 32316919808,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_unspent_reservations_bytes": 0
+    }
+  },
+  "failures": [],
+  "old_thresholds_lowered": false,
+  "deadline_renewed": false,
+  "reserves_released": false,
+  "D_credit_applied_to_C": false,
+  "raw_video_read": false,
+  "SDK_desktop_media_tools_used": false,
+  "actual_media_audited": false,
+  "scope": "Fresh available bytes plus current exact scene file sizes, inside unchanged adopted component ceilings; max(old preflight gate, fresh formula) per volume."
+}

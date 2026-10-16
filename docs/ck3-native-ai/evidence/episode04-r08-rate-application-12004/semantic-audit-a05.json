@@ -1,0 +1,198 @@
+{
+  "schema": "xar.e04.r08.semantic-attribution-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T15:00:44.617263+00:00",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_audit_at_utc": "2026-10-16T14:40:02.008819+00:00",
+  "source_reviewed_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "image_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_audit": {
+    "delivery_sha256": "967c15f414a1f0d85885601a58b836f968ced0956c6bac0fba10b04a5143e2a3",
+    "source_call_check_bytes": 10798,
+    "source_call_check_sha256": "5c93e54cf5f0c974a1069ec75d9c6bfdb6a659a6596ebc57affa53f058a6f85c",
+    "external_originals_required_for_replay": false
+  },
+  "inputs": [
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/sources.json",
+      "bytes": 33433,
+      "sha256": "b89421fe2d0fb06ff8075226f1a7522aa2d0b4691989198ca497210e9af43182"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/scalar-leaves-a02.json",
+      "bytes": 31088,
+      "sha256": "409b201bc5b05b48e370bd502893f49e8e8378ee451b76f659c5182443276d8d"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/descriptor-chain-a03.json",
+      "bytes": 73869,
+      "sha256": "4a89bedb9b5cf7701858377fa299273f7d17cd1087408cef1996a578e3fc5dee"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/descriptor-contribution-a04.json",
+      "bytes": 113494,
+      "sha256": "082895212fa7a031dc576e13d7ac37a5a2f573179da3bbb9b0320f547964bdbe"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/prewar_potential_supporters12004.cpp",
+      "bytes": 19962,
+      "sha256": "27c65323200501d803ac04765606ad8b9c1b56a02bbb26838d70b2186b1874af"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_faction_alerts.cpp",
+      "bytes": 4548,
+      "sha256": "4488ceeda98a332b262acc62fbbb5f902f7788c153b8dff73bb2c3a2fb06c5c0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_war_cash_claim_terms.cpp",
+      "bytes": 2421,
+      "sha256": "97e338be9d7e657f1cca4a7e2d9f2417d783b1dc15be91200a994ade404ef249"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_war_cash_claim_terms.hpp",
+      "bytes": 2207,
+      "sha256": "647da1cb955c36a152da96e2297d0f470a3259d8dadbd5fd027985aad2ceff9a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_current_raw_context_v1.py",
+      "bytes": 3202,
+      "sha256": "6233cc942ce265a9a774284a7d5aaa72efc56b1be4fce832e2a67ec6234d30e5"
+    }
+  ],
+  "checked_direct_calls": [
+    {
+      "body": "parent",
+      "call_rva": "0x28f7c20",
+      "raw": "e8fbb62d00",
+      "target": "0x2bd3320",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "parent",
+      "call_rva": "0x28f7c30",
+      "raw": "e82bc33100",
+      "target": "0x2c13f60",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "parent",
+      "call_rva": "0x28f7c56",
+      "raw": "e8d5822b00",
+      "target": "0x2baff30",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "parent",
+      "call_rva": "0x28f7c8f",
+      "raw": "e8bc1cfcff",
+      "target": "0x28b9950",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "scalar",
+      "call_rva": "0x2bd35b6",
+      "raw": "e825f8ffff",
+      "target": "0x2bd2de0",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "scalar",
+      "call_rva": "0x2bd35c9",
+      "raw": "e8b2faffff",
+      "target": "0x2bd3080",
+      "bundle": "sources.json"
+    },
+    {
+      "body": "second",
+      "call_rva": "0x2bd2ef3",
+      "raw": "e8c847ffff",
+      "target": "0x2bc76c0",
+      "bundle": "descriptor-chain-a03.json"
+    },
+    {
+      "body": "third",
+      "call_rva": "0x2bd3193",
+      "raw": "e82845ffff",
+      "target": "0x2bc76c0",
+      "bundle": "descriptor-chain-a03.json"
+    },
+    {
+      "body": "shared",
+      "call_rva": "0x2bc778d",
+      "raw": "e84ed00000",
+      "target": "0x2bd47e0",
+      "bundle": "descriptor-chain-a03.json"
+    },
+    {
+      "body": "shared",
+      "call_rva": "0x2bc7c5a",
+      "raw": "e8d1d80000",
+      "target": "0x2bd5530",
+      "bundle": "descriptor-chain-a03.json"
+    },
+    {
+      "body": "worker",
+      "call_rva": "0x2bd5820",
+      "raw": "e8bb000000",
+      "target": "0x2bd58e0",
+      "bundle": "descriptor-chain-a03.json"
+    },
+    {
+      "body": "loop",
+      "call_rva": "0x2bd5945",
+      "raw": "e8d6d9ffff",
+      "target": "0x2bd3320",
+      "bundle": "descriptor-contribution-a04.json"
+    },
+    {
+      "body": "loop",
+      "call_rva": "0x2bd5972",
+      "raw": "e839228fff",
+      "target": "0x24c7bb0",
+      "bundle": "descriptor-contribution-a04.json"
+    },
+    {
+      "body": "loop",
+      "call_rva": "0x2bd598c",
+      "raw": "e85fbf8eff",
+      "target": "0x24c18f0",
+      "bundle": "descriptor-contribution-a04.json"
+    },
+    {
+      "body": "loop",
+      "call_rva": "0x2bd59a3",
+      "raw": "e828ddffff",
+      "target": "0x2bd36d0",
+      "bundle": "descriptor-contribution-a04.json"
+    }
+  ],
+  "result": {
+    "registry_profile": "subject/vassal contracts",
+    "raw_scalar_business_name": null,
+    "raw_scalar_time_basis": null,
+    "resource4_business_name": null,
+    "maintenance_attribution": "unclosed",
+    "paid_military_amount_raw": null,
+    "cadence": null,
+    "new_live_credit": 0
+  },
+  "interpretation": {
+    "call_integrity_recomputed": true,
+    "manual_dataflow_review": true,
+    "semantic_correctness_automatically_proved": false,
+    "same_invocation_late_result_is_earlier_NET_direct_input": false,
+    "transitive_or_cross_cycle_relation": "unclosed"
+  },
+  "actions": {
+    "EXE_reads": 0,
+    "SDK": 0,
+    "desktop": 0,
+    "build": 0,
+    "business_guard_API_changes": 0
+  },
+  "storage": {
+    "category": "record",
+    "derived_summary_limit_bytes": 65536,
+    "review_at_utc": "2027-04-14T15:00:44.617263+00:00"
+  }
+}

@@ -34,3 +34,7 @@ python -B -O docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector28c
 ```
 
 该stdlib verifier只核对文件/archive原字节、caller的relative CALL、唯一402B范围和已声明source edge，不执行游戏/历史executor，也不重新授予其他机器当前观察资格。Agent可以复用source关系和unknown边界，不能把query rate当作已支付军费，不能把缺失的c/d业务语义补零。
+
+## 2026-10-16追加：来源库存现状
+
+本页“尾callee未展开”与“下一唯一source候选”保留本次402B封包时点。后来已封的[24E1E80完整尾处理](war-cash-current-military-vector-tail-12004.md)与[第二向量2C142B0](episode04-maintenance-callee-2c142b0-12004.md)现可直接复用，不重复读取同一body。尾处理只修改独立out槽0/6/7；第二向量的局部累加器也不是settlement context+28/+30。其与军事已付分量、payer及周期的缺口见[当前归因路线](episode04-r08-next-maintenance-attribution-12004.md)，不由来源库存更新抵扣。

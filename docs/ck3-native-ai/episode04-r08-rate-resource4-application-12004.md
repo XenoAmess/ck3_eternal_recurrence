@@ -1,6 +1,6 @@
-# R08：费率差额到 raw resource4 应用的静态链（1.20.0.4）
+# R08：角色 scalar 与当前向量第十槽之差的 raw resource4 应用（1.20.0.4）
 
-四份冻结研究补齐了父函数后段、资源网关、`2BD3320` scalar 与 `2BAFF30` 直接判定体。它们证明一条 **费率差额→context+4A0 加减** 的静态分支；`context+4A0` 的正式资源名、军事已付金额、付款账户与周期仍未闭合。`maintenance_attribution=unclosed`，`paid_military_amount_raw=null`、`cadence=null`；研究整卡、业务与动态验收分子均不增加。
+四份冻结研究补齐了父函数后段、资源网关、`2BD3320` scalar 与 `2BAFF30` 直接判定体。它们证明一条 **原始角色 scalar−当前十槽向量slot9→context+4A0 加减** 的静态分支；两项的业务同量纲及 scalar 正式名尚未建立。`context+4A0` 的正式资源名、军事已付金额、付款账户与周期仍未闭合。`maintenance_attribution=unclosed`，`paid_military_amount_raw=null`、`cadence=null`；研究整卡、业务与动态验收分子均不增加。
 
 来源机器与本次整合机器均为 `machine_id=desktop-3fevhd2-1c74096080`，整合时间 `2026-10-16T12:39:55.113910+00:00`，只读基线 `163530f1bbcabe5a97854625b3fab7568006ee65`。来源图像为 CK3 **1.20.0.4 / Steam build25734779 / EXE SHA256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`**。原件各自保留实际观察时间与机器 ID。图像文件身份不等于实机业务资格；本次零 EXE 读取/哈希、零游戏/SDK/桌面/构建、零新运行观察。其他机器可使用这里的字节、合同与校验代码，不能沿用来源机器的安装、权限或实机状态。
 
@@ -28,11 +28,11 @@
 
 该地址既不是四 raw 的 `context+28/+30`，也不是网关其他 selector 的个人/领地钱包。未有业务来源时，不能把 raw4、component3 或4A0改名为已付军费/金币。父函数较早的 `28F7934→28A6D10` NET settlement 已在这段之前；后段结果不能充当同一 invocation 更早 ADD 的直接 producer。未知 helper 或跨轮刷新仍未据此排除。
 
-下图由 sources.json 的 execution_nodes/edges 同源生成；虚线只代表缺口。
+下图沿用 sources.json 的 execution_nodes/edges；展示标签按2026-10-16语义审查收窄，原封包不改。虚线只代表缺口。
 
 ```mermaid
 flowchart TD
-  parent["28F7840 parent, later rate branch"]
+  parent["28F7840 parent, later scalar/slot9 branch"]
   scalar["2BD3320 scalar B"]
   v1["28C43A0 vector 1"]
   v2["2C142B0 vector 2"]
@@ -65,6 +65,8 @@ flowchart TD
 
 本体经 `28C3AC0` 查 rawkey8B（缺键raw0，保留原固定点大数归一化分支）；仅当 context+318 descriptor 的 DWORD+0C非零才加 rawkey8D（context空时使用静态fallback）。随后按机器顺序加 `2BD2790/2BD2DE0/2BD3080` 各out64首QWORD，再乘 `2BD2510` factor，使用原100000固定点快/慢分支写out64；无已证正数钳制。非空 breakdown 才走 `242C370/242C520` 等呈现路径。三个子scalar和factor未展开，不能用代数简化冒充其完整业务公式；本体无直接四项+28/+30、+4A0或wallet访问，也不能据此排除子调用的传递作用。
 
+2026-10-16现状补注：上句“未展开”保留第一四包时点。首加数与factor、第二/三加数至SubC关联角色递归的已持来源，见本页后续追加及[合同单项贡献专题](episode04-r08-contract-contributions-12004.md)。业务名/单位、record初值/分配、并行等价、军事c/d、payer和周期仍分别保留缺口。
+
 `2BAFF30` **正常返回时 AL1 当且仅当**：入场 Character+1C0非空；单次 `28C2DF0(Character)` 返回对象 DWORD+38等于magic；同一对象QWORD+40 bit41为1。三个已证失败分支都到 `2BAFF5F` 返回AL0。helper返回空没有显式检查，失败guardread不能当原生定义false；整个RAX也不是规范化0/1。直接本体无非栈store，helper副作用仍未知。父前置的相似检查与后续两次gate不能合并：中间存在 helper 调用/重新读取，不能推断后者恒真。
 
 AE 的已证事实是 consumer 使用 key174，不是找到一个具名producer。`28C3AC0` 的 Character+1B0→extension+258→Model 路径（Model+8校验Character，context在Model+10）、keys/count/values 的读取合同可复用；BF已有名称不能移植给AE。尾处理槽0/6/7及第二向量消费AE，不证明它刷新过、更不证明c/d来自AE。
@@ -79,7 +81,7 @@ AE 的已证事实是 consumer 使用 key174，不是找到一个具名producer�
 
 可追加 `--extract-originals <不存在的新目录>` 精确还原六个原始JSON与原始ZIP；不会访问原记录中的绝对路径，也不隐式覆盖旧目录。校验范围是原件SHA/字节、指令覆盖、相对branch/call目标与结构，**不是自动证明业务语义或实机**；图中的语义来自作者逐指令合同。
 
-下一条有信息的证据仍是 source-qualified c/d或其军事分量 writer→同一次应用→具体 payer store，并单独证明刷新/周期。仅新getter结果、4A0差额、钱包NET或同值copy都不补这条链。智能体应保持军事已付额unknown；视频可说“已定位费率差额的一个原生状态应用分支”，不能说“已证明每月军费扣款”。本包没有新现场百分比、已付金额或周期资格。
+下一条有信息的证据仍是 source-qualified c/d或其军事分量 writer→同一次应用→具体 payer store，并单独证明刷新/周期。仅新getter结果、4A0差额、钱包NET或同值copy都不补这条链。智能体应保持军事已付额unknown；视频可说“已定位角色原始标量与当前向量第十槽之差的一条原生状态应用分支，尚缺军事实付归因”。本包没有新现场百分比、已付金额或周期资格。
 
 ## 追加：首加数2BD2790与末因子2BD2510（2026-10-16）
 
@@ -101,6 +103,8 @@ nonnull-breakdown则可能调`246A050(Province+620,out,row)`再汇总，不能�
 用N表示原生normalization、I表示上述非零门，直接关系为 `F=max_signed(0,wrap64(100000+N(8C)+(I?N(8E):0)))`。累加保留64bit wrap，signed正值才经CMOVG写out；无正上界clamp。唯一直接非栈store在`2BD2778`写callerout64；optional两次242C370以及getter传递效果未在本叶展开。F非负不保证父scalar、wrapped乘积或4A0最终变化为正；不能用无限精度算式替代原机器路径。
 
 下图与新bundle的execution_nodes/edges同源；第二/三加数2BD2DE0/2BD3080、key8B/8D/8C/8E正式业务名、Province+720单位/刷新及实际payer/cadence仍是独立缺口。
+
+2026-10-16现状补注：本图保留首加数/factor封包时点；第二/三加数的静态调用已在本页后续追加，单项贡献见[六叶专题](episode04-r08-contract-contributions-12004.md)。这些来源进展没有补齐key正式名、Province+720单位/刷新或军事付款链。
 
 ```mermaid
 flowchart TD
@@ -125,3 +129,81 @@ flowchart TD
 同一个stdlib命令现在联合核验旧四包与这两叶：父scalar真实CALL目标、完整ASM覆盖、两叶全部55个branch、34+3个call编码/可解析相对目标和原件SHA。4个间接call只保留未知目标，不伪造落点。`--extract-originals <新目录>`可无损还原全部12份原件，不读取其历史C盘路径。新组合验证仍仅源字节/结构，不是自动语义证明或现场资格；不重跑作者旧矩阵。
 
 本体都没有直接结算c/d或4A0/wallet访问，但未知callee作用仍未据此排除。`paid_military_amount_raw=null`、`cadence=null`、`maintenance_attribution=unclosed`；军事已付额、R08整卡与动态分子均不增加。智能体可保留这些原始依赖；视频可以解释省级aggregate首加数和非负因子，不能改成“军队人数计费”或“每月实际已扣军费”。
+
+## 追加：第二/第三加数与合同指针范围链（2026-10-16）
+
+本节在 c743冻结主仓期间形成外置候选，只追加静态知识，未改旧封包。来源及整合机器 `machine_id=desktop-3fevhd2-1c74096080`，整合时间 `2026-10-16T14:18:45.730735+00:00`，基线 `c743520929d4f9a82c17c908b218075018598e2d`。来源图像始终为上文精确1.20.0.4/build25734779/EXE SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`；每叶原始时间和源码提交单独保留在[descriptor-chain-a03.json](evidence/episode04-r08-rate-application-12004/descriptor-chain-a03.json)。本次只读冻结包与仓库小源码，零EXE读取/哈希、游戏/SDK/桌面/构建；来源静态叶不改名为旧R184/R185运行已安装或已通过。
+
+新bundle内有五叶完整raw hex，六个原ZIP（含转换首片旧ZIP）、五个SOURCE、两个SEMANTICS及转换原READ/CONTINUATION回执的精确字节。它通过字节SHA连接已有sources.json和scalar-leaves-a02.json，不复制旧大包；历史路径只作出处，离线验证不访问C盘或游戏文件。旧“callee未持”“worker未读”等原件仍按当时范围保留，本节只推进以下直接来源。
+
+| 直接体 | 完整普通指令来源 | 新增窄事实 |
+| --- | --- | --- |
+| `2BD2DE0..2BD3079` | 665B /173ins /17jump /11call | 第二加数：context+218或静态54596D8经R9传shared，结果乘wrap64(100000+rawkeyA8)，无非负clamp |
+| `2BD3080..2BD3319` | 665B /173ins /17jump /11call | 第三加数同构，但context+248与rawkeyA9不同；历史direct_calls字段含10个E8和1个FF，不能统称direct |
+| `2BC76C0..2BC7D46` | 1670B /364ins /25jump /26call | shared使用原R9，入场RDX未消费；普通RET必经out64 store并返回原out指针 |
+| `2BD5530..2BD583D` | 781B /189ins /20jump /18call | 范围/任务包装；没有闭合64B record字段公式；14个E8+4个间接call |
+| `2BD47E0..2BD4984` | **逻辑420B /121ins /11jump /6call，三物理片155+240+25B** | 合同FullID→指针，保留fallback与重复，不做业务过滤 |
+
+这些.pdata普通体含flags2的叶，其异常handler/unwind路径不在本轮；普通返回合同不推广到异常/fault。原始包SHA、每段raw SHA与全部ASM/控制流账本均已内嵌；不以“校验PASS”代替人工源语义或现场事实。
+
+### 155B FULL标签的明确纠正
+
+转换叶首READ回执确实写 `FULL_SOLE_UNCHAINED_FUNCTION_CAPTURED`，但只覆盖 `[2BD47E0,2BD487B)` 的155B物理.pdata行，**当时完整逻辑函数未取得**。该原回执及ZIP原样保留，不能把后来补齐追认成首片一开始完整。
+
+随后只补真实fallthrough到`2BD487B..2BD496B`的240B，以及跳转/收尾`2BD496B..2BD4984`的25B；普通RET在`2BD4983`。最终logical raw SHA `dc27dd6c6fa67e9c8267ce0f9aba7acf965e5e85280384e696cdb66d3e487900`，累计252B metadata/26reads。新验证器逐片核SHA、拼接420B、完整121指令与全部控制边，同时核首155B仍是原ZIP同字节；保留原FULL历史与新逻辑纠正两个事实。
+
+### 普通null-breakdown链，逐层分开输入与输出
+
+父scalar两条真实调用是 `2BD35B6→2BD2DE0`、`2BD35C9→2BD3080`。二者把callerout64传shared，并在返回后读取该out64，再分别经28C3AC0的A8/A9 lookup与原scale100000固定点乘法回写。missing key raw0、signed wrap和大数分支原样保留，无非负clamp。caller不使用shared的RAX；此前由caller本身只能证明“传out、再读out”，如今shared直接来源才补上其写入/返回ABI。nonnull展示前的volatile RDX含义此前未证，shared新源证明入场RDX根本未消费，仍不能命名成Character/payer。
+
+shared保存RCX原out64、R8可空breakdown、R9输入，`2BC778D→2BD47E0(RCX=原R9,RDX=&转换临时descriptor)`。转换输入是qword0指针与signed DWORD+C count的4B FullID occurrences，使用registry5D1EB88/fallback5D1EB40；低24位只索引，仍查容量、nonnull与对象+8完整generation ID。既有同EXE faction/subject binder来源将其识别为属臣合同registry；未借1.19名称给它添加收入或军费业务语义。
+
+每个occurrence无条件选一个实际/fallback指针追加到8B数组，不drop非法ID、不去重、不额外筛active/类型/业务。输出descriptor是pointer0、capacity+8、count+C。合法已有容量足够时，空输入不追加也不清空旧输出；只有已知旧count=0才可推出仍0。负count没有被重新解释为空，reserve/growth保留原32位wrap。转换RAX未赋业务/returnout语义，shared忽略它；这与shared自身的返回原out ABI是不同层。
+
+shared null分支初始化64B结果容器，准备control与pair closure，`2BC7C5A→2BD5530`正常返回后按结果count遍历64B records，只累加每条首QWORD，`2BC7C8C`写原out64。nonnull分支改走`2BC7958→2BD5370`并汇总8B结果，`2BC7B6E`写原out；普通RET经`2BC7CE3`返回原out。两种结果容器不可混同。只有最终result count确为0才有局部显式sum0/store0；原输入空、转换空、处理范围空和最终结果空尚不是同一个命题。
+
+`2BD5530`只读control的DWORD+8/+C端点、+10 limit、+14 step、+18 mode。端点**相等**即普通返回，不初始化输出；mode==3或计算出的signed n**恰等于1**走serial，不能改成end<=begin或n<=1。n来自原32位wrap的 `(step-begin-1+end)/step` 商与limit的signed较小值，本体没有除零保护。serial真实`2BD5820→2BD58E0(原pairclosure,&DWORD{begin,end})`；其他路径经3F91AD0与任务对象/virtual calls，实际parallel工作方法与serial等价未证。
+
+pair的两个descriptor指针在wrapper本体未被解引用。后续8B临时指针容器与LOCK XADD引用清理不是上游64B输出record遍历，不证明业务过滤、记录首QWORD公式或实际线程数量。**本包未读2BD58E0与2BD5370**；即使并行研究后来取得，也须以后续独立来源追加，不替旧记录填公式。
+
+```mermaid
+flowchart TD
+  B["2BD3320 scalar; parent null breakdown"]
+  second["2BD2DE0: context218 and keyA8"]
+  third["2BD3080: context248 and keyA9"]
+  shared["2BC76C0: original out64 write and return"]
+  convert["2BD47E0: logical420B in3spans"]
+  contracts["FullID registry5D1EB88; fallback5D1EB40"]
+  worker["2BD5530 range wrapper"]
+  serial["2BD58E0 serial body PENDING"]
+  present["2BD5370 presentation worker PENDING"]
+  sum["normal null path: sum first QWORD of64B records"]
+  business["record formulas, military paid amount and cadence UNKNOWN"]
+  B -->|"2BD35B6 CALL; frozen parent source"| second
+  B -->|"2BD35C9 CALL; frozen parent source"| third
+  second -->|"2BD2EF3; opaque context218 address inR9"| shared
+  third -->|"2BD3193; opaque context248 address inR9"| shared
+  shared -->|"2BC778D; originalR9 to RCX, tempdesc to RDX"| convert
+  convert -->|"4B full IDs to8B pointers; append all occurrences"| contracts
+  shared -->|"2BC7C5A null-breakdown control/pair closures"| worker
+  shared -->|"2BC7958 nonnull branch; body pending"| present
+  worker -->|"2BD5820: pairclosure and DWORD endpoints"| serial
+  worker -->|"caller sums result count after normal return; no field formula proved"| sum
+  serial -.->|"unread per-record production/filters"| business
+  present -.->|"unread formula; parallel method unclosed"| business
+  sum -.->|"business units, payer and cadence not linked"| business
+```
+
+跨机器新组合命令（与原便携验证器分开，均为stdlib）：
+
+```text
+<project-python> -B -O docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/verify_r08_descriptor_chain.py
+```
+
+该命令核五逻辑体4201B、90个jump、72个call、全部ASM覆盖、15份精确原件、155→420历史纠正和8条实际CALL连接；间接目标保持未知。可用 `--extract-originals <不存在的新目录>` 还原全部原件。它不运行游戏、也不计算一个业务军费金额。`paid_military_amount_raw=null`、`cadence=null`、`maintenance_attribution=unclosed`；record字段、军事c/d writer→同次付款→payer/周期仍未闭合，百分比与动态分子不增加。
+
+## 2026-10-16追加：贡献来源与语义审查现状
+
+[合同单项raw贡献、过滤与64B槽](episode04-r08-contract-contributions-12004.md)已独立保存2BD5370/2BD59C0/2BD58E0、24C7BB0、24C18F0及2BD36D0的六叶来源。因此上节“body PENDING”“未读”和record公式待补保留五叶封包的历史时点，当前阅读应转到六叶专题：显式过滤、关联角色递归、bounded raw与原生fixed-point贡献、overwrite/ADD及选槽合同已持有；record初值/分配、并行等价、业务单位与军事实付仍未闭合。旧SOURCE、raw及archive未重写。
+
+[独立语义审查摘要](episode04-r08-semantic-attribution-audit-12004.md)重新核对15条已封CALL及exact4 typed profile：registry5D1EB88/fallback5D1EB40为SubC合同存储，递归计算使用合同+20关联角色，不是自动沿用父函数的原始角色。该链静态返回外层scalar，再参与本页slot9差额；它未连接同次更早的NET军事分量。`paid_military_amount_raw=null`、`cadence=null`、`maintenance_attribution=unclosed`保持不变，无新现场信用。

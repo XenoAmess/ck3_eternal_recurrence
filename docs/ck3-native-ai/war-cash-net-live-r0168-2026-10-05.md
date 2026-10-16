@@ -2,6 +2,8 @@
 
 本记录闭合 exact CK3 1.20.0.3 当前角色个人金币的**完整月净率 primitive**，更新[当前费用专题](war-cash-current-resources-12003.md)此前“新 DLL 实读待验”的切点。原始无标记 NET 字段的历史误标及其追加勘误继续保留，不能追认旧帧为已验净额。
 
+2026-10-16机器身份补注：历史R0168的 `machine_id: unknown`，所属机器未核实。本文路径、操作者与Git提交不能代替机器ID；在取得可核原始设备身份前，不将安装、部署或实机结果外推到当前或其他机器。本文数值与live结论保持精确1.20.0.3历史范围；补注机器为 `machine_id: desktop-3fevhd2-1c74096080`，补注来源见[语义审查摘要](episode04-r08-semantic-attribution-audit-12004.md)。
+
 Root 在 R0168 原始 Jan11 冷载执行既有 `ck3_query_war_cash_current_resources_private_v1(expected_revision=3)`。前后独立状态均 William33388、alive/map_ready/paused=true、`native:2`、public3/native2、date_raw53147160，新增游戏日0。实际 cash response 的 body 与 Root 导出的 cash-body JSON 完全相等。正文是只读文件对账，未执行 SDK、桌面、游戏、安全设置或测试 EXE。
 
 | 同帧实际量 | signed raw /100000 | 金币口径 |

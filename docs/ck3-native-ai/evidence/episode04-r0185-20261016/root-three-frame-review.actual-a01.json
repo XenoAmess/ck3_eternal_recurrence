@@ -1,0 +1,62 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T14:53:10.316973+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+  "source_head": "c743520929d4f9a82c17c908b218075018598e2d",
+  "reviewer": "Root directly viewed each of the three1280x720 original decoded frames separately at original detail",
+  "facts": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-input-a01\\portable-facts.actual-a01.json",
+    "bytes": 26093,
+    "sha256": "650fec110e4aeb89256e0c2c0fd0a7b0dbd4c011849313caef904e55bb0afaa7"
+  },
+  "frames": [
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1008905,
+        "sha256": "d473aa76f1f1e0cc3db4bf547cdc499b3aa4bad7b882fdad2f117c60d3270b46"
+      },
+      "directly_read_game_date": "1067-02-21",
+      "directly_read_selected_army_displayed_strength": 1184,
+      "directly_read_army_attrition_icon_percent": 1,
+      "directly_read_supply_display": "300/300",
+      "paused_visible": true,
+      "army_panel_visible": true,
+      "foreign_window_or_desktop_inside_video_frame_observed": false
+    },
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1218835,
+        "sha256": "168f3f9d35345f8c0c174fe19346988da07a35f0c3243c7183412724d4ae1678"
+      },
+      "directly_read_game_date": "1067-03-01",
+      "directly_read_selected_army_displayed_strength": 1173,
+      "directly_read_army_attrition_icon_percent": 1,
+      "directly_read_supply_display": "300/300",
+      "paused_visible": true,
+      "army_panel_visible": true,
+      "foreign_window_or_desktop_inside_video_frame_observed": false
+    },
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1245488,
+        "sha256": "bf513d9cd2071ccf60ab1c20eddc184b0f6de339672a513c069f54ec6ee58f98"
+      },
+      "directly_read_game_date": "1067-03-05",
+      "directly_read_selected_army_displayed_strength": 1173,
+      "directly_read_army_attrition_icon_percent": 1,
+      "directly_read_supply_display": "300/300",
+      "paused_visible": true,
+      "army_panel_visible": true,
+      "foreign_window_or_desktop_inside_video_frame_observed": false
+    }
+  ],
+  "observed_strength_delta": -11,
+  "causal_attribution_from_these_frames_alone": false,
+  "notes": "Visible Army18 panel changes1184 to1173 across the month boundary. Three samples do not prove the precise debit call, troop physical DATA mapping, all intervening frames,80seconds, or full1x review. Native exact-day completion and existing R03 mechanism evidence are separate.",
+  "full_1x_review_completed": false,
+  "human_signoff": false,
+  "clean_span_certified": false
+}

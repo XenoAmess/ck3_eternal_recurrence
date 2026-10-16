@@ -51,3 +51,7 @@ python -B -O docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e
 ```
 
 该stdlib入口只复核包/全部archive成员、连续source字节与17branch目标、caller directcall及三个out store原bytes，不执行游戏、历史executor或factor计算，也不闭合新的付款含义。
+
+## 2026-10-16追加：并行来源与审查现状
+
+本页“另一向量独立研究、本轮未读”保留尾处理封包时点；[2C142B0完整来源](episode04-maintenance-callee-2c142b0-12004.md)及[context helper](war-cash-current-military-context-helper-12004.md)现已可直接读取复用。它们的局部向量+28/+30与secondary context同offset属于不同对象。[独立语义审查](episode04-r08-semantic-attribution-audit-12004.md)同时复核后段scalar/slot9应用链；新来源没有命名AE业务、建立军事c/d producer或证明实际付款周期。旧原件与当时scope保持不变。

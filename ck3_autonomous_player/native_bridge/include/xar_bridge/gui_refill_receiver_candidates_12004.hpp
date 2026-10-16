@@ -5,6 +5,8 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 namespace xar::game {
@@ -27,6 +29,17 @@ struct GuiRefillReceiverFailure12004V1 {
   std::optional<std::uint8_t> local_definition_active_raw;
   bool operator==(const GuiRefillReceiverFailure12004V1 &) const=default;
 };
+struct GuiRefillLocalDefinitionEntry12004V1 {
+  std::string status="unavailable",unavailable_reason="local_prefix_not_admitted";
+  std::optional<std::int32_t> receiver_variable_index,raw_definition_entry_count;
+  std::optional<std::uint32_t> declared_type_id;
+  std::optional<bool> definition_present,local_entry_present;
+  std::optional<std::uint8_t> local_definition_active_raw;
+  bool stable_double_read=false;
+  std::vector<GuiRefillReceiverEntry12004V1> entries;
+  std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
+  bool operator==(const GuiRefillLocalDefinitionEntry12004V1 &) const=default;
+};
 struct GuiRefillReceiverCandidates12004V1 {
   std::string status="unavailable",unavailable_reason="candidate_read_not_admitted";
   std::optional<std::int32_t> receiver_variable_index;
@@ -34,6 +47,7 @@ struct GuiRefillReceiverCandidates12004V1 {
   bool stable_double_read=false;
   std::vector<GuiRefillReceiverEntry12004V1> entries;
   std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
+  std::optional<GuiRefillLocalDefinitionEntry12004V1> local_definition_entry_only;
   bool operator==(const GuiRefillReceiverCandidates12004V1 &) const=default;
 };
 struct GuiRefillReceiverFrame12004V1 {
@@ -79,8 +93,14 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     if(p<=module_base||n>image_size||p-module_base>image_size-n)return {};
     return p-module_base;
   };
-  struct Capture {Result result;std::vector<std::uintptr_t> private_identity;};
-  const auto once=[&](Capture &out) {
+  struct Capture {
+    Result result;std::vector<std::uintptr_t> private_identity;
+    game::GuiRefillLocalDefinitionEntry12004V1 local;
+    std::vector<std::uintptr_t> local_identity;
+    bool local_complete=false;
+    std::optional<game::GuiRefillReceiverFailure12004V1> local_failure;
+  };
+  const auto once=[&](Capture &out,bool local_only=false) {
     auto &v=out.result;auto &identity=out.private_identity;
     std::uintptr_t context=0,declarations=0,indices=0;
     std::int32_t count=0,index_count=0,index=0;std::uint32_t key=0;
@@ -120,7 +140,7 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
       if(depth==visited.size()){failure="candidate_parent_depth_exhausted";diagnostic.kind="parent_depth_exhausted";return false;}
       for(std::size_t n=0;n<depth;++n)if(visited[n]==context){failure="candidate_parent_cycle";diagnostic.kind="parent_cycle";return false;}
       visited[depth]=context;
-      std::uintptr_t definition=0,table=0,parent=0,matched=0;std::int32_t entries=0;std::uint8_t active=0;
+      std::uintptr_t definition=0,table=0,parent=0,matched=0;std::int32_t entries=0;std::uint8_t active=0;bool stop_here=false;
       if(!load("context_definition_e0",context,0xE0,definition))return false;
       diagnostic.definition_present=definition!=0;
       if(depth==0){
@@ -180,8 +200,29 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
         // is nonzero. A parent flag4C entry in mode0/1 returns AL1 by source,
         // removing this receiver from pending. Do not read unrelated parents.
         if((depth==0&&e.entry_flag_4c!=0)||
-            (depth>0&&e.entry_flag_4c!=0&&e.entry_mode_40>=0&&e.entry_mode_40<=1))break;
+            (depth>0&&e.entry_flag_4c!=0&&e.entry_mode_40>=0&&e.entry_mode_40<=1))stop_here=true;
       }
+      if(depth==0){
+        // This snapshot ends before any parent-pointer read. Keep the complete
+        // private prefix even if the legacy parent walk later fails.
+        out.local.status="available";out.local.unavailable_reason.clear();
+        out.local.receiver_variable_index=v.receiver_variable_index;
+        out.local.declared_type_id=v.declared_type_id;
+        out.local.raw_definition_entry_count=entries;
+        out.local.definition_present=definition!=0;
+        out.local.local_definition_active_raw=active;
+        out.local.local_entry_present=matched!=0;
+        out.local.entries=v.entries;out.local_identity=identity;
+        out.local_complete=reads<=4096&&bytes<=65536&&
+            std::chrono::steady_clock::now()-started<=std::chrono::milliseconds(20);
+        if(!out.local_complete){
+          auto d=diagnostic;d.stage="local_prefix_budget_check";d.kind="read_budget_exhausted";
+          out.local_failure=d;
+          if(local_only){failure="candidate_read_budget_exhausted";diagnostic=d;return false;}
+        }
+        if(local_only)return true;
+      }
+      if(stop_here)break;
       // Publish bounded entry candidates, without predicting whether a dynamic
       // provider returns success or which pending parent entry native selects.
       if(definition&&!load("definition_parent_108",definition,0x108,parent))return false;
@@ -190,12 +231,51 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     }
     v.status="available";v.unavailable_reason.clear();return true;
   };
+  // The local result has independent stability and never changes the legacy
+  // unavailable/index/entries/failure fields. Both paths use the same load budget.
+  const auto attach_local=[&](Result &destination,const Capture &a,const Capture &b,
+      const std::optional<game::GuiRefillReceiverFailure12004V1> &failure_detail) {
+    game::GuiRefillLocalDefinitionEntry12004V1 leaf;
+    if(reads>4096||bytes>65536||
+        std::chrono::steady_clock::now()-started>std::chrono::milliseconds(20)){
+      leaf.unavailable_reason="local_prefix_shared_budget_exhausted";
+      auto d=diagnostic;d.stage="local_prefix_budget_check";d.kind="read_budget_exhausted";
+      leaf.failure_diagnostic=d;
+    }else if(!a.local_complete||!b.local_complete){
+      leaf.unavailable_reason="local_prefix_double_read_incomplete";
+      leaf.failure_diagnostic=a.local_failure?a.local_failure:
+          b.local_failure?b.local_failure:failure_detail;
+    }else if(a.local_identity!=b.local_identity||a.local!=b.local){
+      leaf.unavailable_reason="local_prefix_identity_or_entry_changed";
+    }else{leaf=a.local;leaf.stable_double_read=true;}
+    destination.local_definition_entry_only=std::move(leaf);
+  };
   Capture a,b;
   diagnostic.capture_pass=1;
-  if(!once(a)){rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;return rejected;}
+  if(!once(a)){
+    // Preserve this first full-capture failure before the local-only second
+    // read changes the diagnostic cursor, stage or failure reason.
+    rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;
+    if(!a.local_complete||std::string_view(failure)=="candidate_read_budget_exhausted"||reads>4096||bytes>65536){
+      attach_local(rejected,a,b,rejected.failure_diagnostic);return rejected;
+    }
+    diagnostic.capture_pass=2;
+    const bool local_ok=once(b,true);
+    std::optional<game::GuiRefillReceiverFailure12004V1> local_failure;
+    if(!local_ok)local_failure=diagnostic;
+    attach_local(rejected,a,b,local_failure);
+    return rejected;
+  }
   diagnostic.capture_pass=2;
-  if(!once(b)){rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;return rejected;}
-  if(a.private_identity!=b.private_identity||a.result!=b.result){rejected.unavailable_reason="candidate_identity_or_type_changed";return rejected;}
-  a.result.stable_double_read=true;return a.result;
+  if(!once(b)){
+    rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;
+    attach_local(rejected,a,b,rejected.failure_diagnostic);return rejected;
+  }
+  if(a.private_identity!=b.private_identity||a.result!=b.result){
+    rejected.unavailable_reason="candidate_identity_or_type_changed";
+    attach_local(rejected,a,b,std::nullopt);return rejected;
+  }
+  a.result.stable_double_read=true;
+  attach_local(a.result,a,b,std::nullopt);return a.result;
 }
 }
