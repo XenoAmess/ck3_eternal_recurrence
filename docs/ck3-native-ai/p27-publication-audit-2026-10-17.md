@@ -138,3 +138,31 @@ WAL SDK29候选仍未部署、默认关闭；源码和离线资格不能替代�
 不读取实际SDK或写回源码；wrong-base／wrong-target在优化Python中同样拒绝。
 这是可重建研究档案，整patch反向应用会删除较新的公共能力，不能当生产升级方案。
 原件metadata与recipe保留精确字节，来源索引记录其delivery pin。
+
+## 第三批：已有陆军路线的不可用时间线出口
+
+实际AUTO537／SEM542留下完整13敌军horizon不可用证据，AUTO541的旧负缓存没有
+续行出口，导致上文窗口25失败76日。第三批仅把SDK30已定向验证的Strategy／Driver
+必要hunk移到公共源码；原公共后续能力、Native、冻结SDK和现场均不覆盖。
+同帧完整敌范围、精确原错误及我方已有陆军路线满足时先尝试原生Halt；只在独立
+suffix后验，或精确原生提交前validator拒绝加unchanged-route后验后，进入既有
+精确单日风险观察。Halt ACK仍pending，拒绝是零提交／零业务和日期信用，
+未知错误不吞、不重放移动，也不改1.5准入。
+
+公共生产imports新增8项／16子测试，连同既有相邻route／Halt守卫31项／23子测试通过；
+外置组合SDK30生产方法32项另有pin。真实完整原件留D盘，小型projection与合成
+validator／partial变体的边界明确。实际SDK30是否推进、存活或改善性能仍需Root实机
+回执，不能由这次提交推定。详见[路线专题](route-contact-readonly-unavailable-2026-10-16.md)。
+
+其后Root实际同Game热接SDK30，FULL3完成8日／30回合，到10862周期和raw53434464。
+AUTO14的Halt ACK仍pending；SEM16独立读回只剩首边[5966]，原停军后验仍false，
+后续完整h13查询恢复available并正常单日续行。原件14／16小投影已加公共第9项测试，
+验证真实suffix与pending边界；不是实际validator拒绝或Halt后仍unavailable的验证。
+独立SEM65／METRICS66及恢复proof`85137494…`打开窗口26，Root报告13日running前缀。
+旧窗口25失败76日保留；源码与前缀均不授30年、速度目标、接敌安全或战果成功。
+Game6068／Native21／OBS278060及原D盘录制未重启，WAL未启用。
+
+第三批同时保存[可移植Halt结果分类](../../tools/g2_saved_campaign/land_route_halt_outcome.py)
+和完整历史窄patch；帧绑定须由已审核调用方注入，拒绝回执零action／business／date信用。
+公共CUnit0正例是兼容校正，未改已部署de0077；公共所有runner的接入不在本次验收内。
+最终生产source、pure classifier和相邻既有守卫合计41项／43子测试通过。

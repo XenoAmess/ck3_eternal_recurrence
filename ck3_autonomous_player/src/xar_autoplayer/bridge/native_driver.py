@@ -14800,9 +14800,104 @@ class NativeHeadlessGameplayDriver:
             army = _army_by_id(starting, halt_id)
             if not isinstance(army, dict) or army.get("controllable") is not True:
                 raise BridgeUnavailableError("native halt requires a controllable player army")
-            result = self._execute_primitive_step(
-                step, expected_revision=selected_revision
-            )
+            try:
+                result = self._execute_primitive_step(
+                    step, expected_revision=selected_revision
+                )
+            except _NativeCommandRejectedError as error:
+                # The stock validator can reject an already committed path.
+                # This is a typed zero-submit outcome only for that exact
+                # native error and only after a fresh same-owner route readback.
+                if error.native_error != "CK3 halt-army command validation failed":
+                    raise
+                request = error.native_request_frame
+                response = error.native_command_result_frame
+                if not (
+                    isinstance(request, dict) and isinstance(response, dict)
+                    and request.get("type") == "execute_step"
+                    and request.get("step") == step
+                    and request.get("expected_revision") == starting.get("native_revision")
+                    and isinstance(error.native_request_id, str)
+                    and bool(error.native_request_id)
+                    and request.get("request_id") == error.native_request_id
+                    and response.get("request_id") == error.native_request_id
+                    and response.get("type") == "command_result"
+                    and response.get("protocol_version") == request.get("protocol_version")
+                    and response.get("ok") is False
+                    and response.get("error") == error.native_error
+                    and not isinstance(response.get("result"), dict)
+                ):
+                    raise
+                current = self.take_snapshot()
+                now_army = _army_by_id(current, halt_id)
+                before_owner = starting.get("diagnostics")
+                after_owner = current.get("diagnostics")
+                before_actor = starting.get("played_character")
+                after_actor = current.get("played_character")
+                original_route = army.get("route_province_ids")
+                if not (
+                    isinstance(now_army, dict)
+                    and isinstance(before_owner, dict) and isinstance(after_owner, dict)
+                    and isinstance(before_actor, dict) and isinstance(after_actor, dict)
+                    and starting.get("paused") is True and current.get("paused") is True
+                    and starting.get("map_ready") is True and current.get("map_ready") is True
+                    and starting.get("date_raw") == current.get("date_raw")
+                    and before_actor.get("alive") is True and after_actor.get("alive") is True
+                    and before_actor.get("character_id") == after_actor.get("character_id")
+                    and army.get("owner_character_id") == now_army.get("owner_character_id")
+                    == before_actor.get("character_id")
+                    and army.get("controllable") is True and now_army.get("controllable") is True
+                    and army.get("in_combat") is False and now_army.get("in_combat") is False
+                    and army.get("retreating") is False and now_army.get("retreating") is False
+                    and starting.get("episode_run_id") == current.get("episode_run_id")
+                    and before_owner.get("bridge_pid") == after_owner.get("bridge_pid")
+                    and before_owner.get("connection_generation") == after_owner.get("connection_generation")
+                    and isinstance(original_route, list) and len(original_route) >= 2
+                    and army.get("route_read_status") == now_army.get("route_read_status") == "complete_nonempty"
+                    and original_route == now_army.get("route_province_ids")
+                    and army.get("current_province_id") == now_army.get("current_province_id")
+                    and army.get("move_target_province_id") == now_army.get("move_target_province_id")
+                    and current.get("active_event") is None
+                    and current.get("pending_character_interaction") is None
+                    and not (isinstance(current.get("top_exclusive_modal_choice_hint"), dict)
+                             and current["top_exclusive_modal_choice_hint"].get("status") == "present")
+                ):
+                    raise BridgeUnavailableError(
+                        "native halt validator rejection lacks unchanged route/owner readback"
+                    ) from error
+                observed_frame = {
+                    "snapshot_id": current.get("snapshot_id"),
+                    "revision": current.get("revision"),
+                    "native_revision": current.get("native_revision"),
+                    "date_raw": current.get("date_raw"),
+                    "actor_character_id": after_actor.get("character_id"),
+                    "episode_run_id": current.get("episode_run_id"),
+                    "bridge_pid": after_owner.get("bridge_pid"),
+                    "connection_generation": after_owner.get("connection_generation"),
+                }
+                return {
+                    "schema": "xar.halt-army-validator-deferred/v1",
+                    "step": step, "accepted": False, "status": "deferred",
+                    "business_submission": False, "replay_allowed": False,
+                    "backend_id": "native-headless",
+                    "war_action": {
+                        "status": "halt_validator_rejected_current_route_retained",
+                        "army_id": halt_id, "reason": "native_halt_validator_rejected",
+                        "current_province_id": now_army.get("current_province_id"),
+                        "move_target_province_id": now_army.get("move_target_province_id"),
+                        "route_province_ids": list(original_route),
+                        "contact_free_proven": False,
+                    },
+                    "halt_rejection_evidence": {
+                        "native_request_id": error.native_request_id,
+                        "native_request": request,
+                        "native_command_result": response,
+                        "observed_frame": observed_frame,
+                    },
+                    "snapshot_id": current.get("snapshot_id"),
+                    "revision": current.get("revision"),
+                    "native_revision": current.get("native_revision"),
+                }
             return {
                 **result,
                 "war_action": {

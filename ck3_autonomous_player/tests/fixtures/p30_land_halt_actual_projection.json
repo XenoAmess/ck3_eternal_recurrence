@@ -1,0 +1,133 @@
+{
+  "schema": "xar.p30.actual-halt-and-independent-suffix-projection.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "projection_is_full_raw_response": false,
+  "projection_rule": "Retain exact classifier-consumed Halt fields and existing pending-Halt readback fields; omit unrelated world/plan history. Native validator rejection is not observed here.",
+  "sources": [
+    {
+      "relative": "native21-cold-generation03/p30-responses/0014-1-result.json",
+      "sha256": "9213f82d0fc5888029dc233562d088c561194e6e96d0b2f6571357c543616c9f"
+    },
+    {
+      "relative": "native21-cold-generation03/p30-responses/0016-1-result.json",
+      "sha256": "b5074b11fd63fd6d902e80a72412e3a21121de151f39b6831187946f20832798"
+    }
+  ],
+  "halt_body": {
+    "status": "executed",
+    "selected_step": "halt-army-402653503",
+    "result": {
+      "step": "halt-army-402653503",
+      "accepted": true,
+      "status": "halt_submitted",
+      "backend_id": "native-headless",
+      "war_action": {
+        "status": "halt_submitted",
+        "army_id": 402653503,
+        "submitted_date_raw": 53434272,
+        "submitted_native_revision": 2953,
+        "submitted_connection_generation": 4,
+        "submitted_episode_run_id": "native-40526-c7a6edcc32b8",
+        "owner_character_id": 40526,
+        "original_current_province_id": 5967,
+        "original_move_target_province_id": 5969,
+        "original_route_province_ids": [
+          5966,
+          5969
+        ],
+        "postcondition_verified": false
+      }
+    },
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:2953",
+      "revision": 2,
+      "native_revision": 2953,
+      "date_raw": 53434272,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "connection_generation": 4,
+      "bridge_pid": 6068
+    },
+    "plan": {
+      "policy": "one-life-turn-v1",
+      "phase": "native_war_land_route_timeline_unavailable_halt_submit",
+      "selected_step": "halt-army-402653503",
+      "reason": "the exact full-hostile timeline failed for a committed land route; submit native Halt to cancel the future tail before any time advance",
+      "halt_intent": {
+        "army_id": 402653503,
+        "current_province_id": 5967,
+        "original_move_target_province_id": 5969,
+        "original_route_province_ids": [
+          5966,
+          5969
+        ],
+        "postcondition_required": "fresh_route_empty_or_verified_retained_first_edge",
+        "contact_free_proven": false
+      },
+      "contact_query_attempt": {
+        "history_index": 9507,
+        "ok": false,
+        "error": null,
+        "scope_status": "current_frame",
+        "status": "unavailable"
+      }
+    }
+  },
+  "independent_snapshot": {
+    "snapshot_id": "native:2954",
+    "revision": 3,
+    "native_revision": 2954,
+    "date_raw": 53434272,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "active_event": null,
+    "pending_character_interaction": null,
+    "top_exclusive_modal_choice_hint": {
+      "status": "unknown",
+      "source": "owner_pump_cache_unavailable_or_expired",
+      "owner_verified": false,
+      "opaque_root_id": null,
+      "max_observation_age_ms": 2000
+    },
+    "one_life_terminal": false,
+    "played_character": {
+      "character_id": 40526,
+      "alive": true
+    },
+    "player_armies": [
+      {
+        "army_id": 402653503,
+        "owner_character_id": 40526,
+        "soldiers": null,
+        "current_province_id": 5967,
+        "move_target_province_id": 5966,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          5966
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "moving",
+        "army_state_code": 7,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "diagnostics": {
+      "bridge_pid": 6068,
+      "connection_generation": 4,
+      "hello": {
+        "pid": 6068
+      }
+    }
+  },
+  "actual_safe_contact_or_battle_result_claimed": false
+}

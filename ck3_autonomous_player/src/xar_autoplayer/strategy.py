@@ -11727,6 +11727,15 @@ def _choose_one_life_turn_core(
                             ) if pending_halt is None else None
                             if unavailable_watch is not None:
                                 return unavailable_watch
+                            land_watch = _land_route_timeline_unavailable_halt_or_watch_plan(
+                                rows, snapshot, pursuit_army,
+                                query_step=horizon_step,
+                                pending_halt=pending_halt,
+                                available_steps=available_steps,
+                                war_summary=war_summary,
+                            )
+                            if land_watch is not None:
+                                return land_watch
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": (
@@ -21293,6 +21302,228 @@ def _embarked_route_timeline_unavailable_watch_plan(
             "source_native_revision": snapshot.get("native_revision"),
             "contact_free_proven": False, "contact_status": "unknown",
             "movement_resubmitted": False, "war_or_material_credit": False,
+        },
+        "contact_query_attempt": attempt,
+        "active_wars": war_summary,
+    }
+
+
+def _current_frame_halt_validator_deferred_v1(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: dict[str, object], halt_step: str,
+) -> dict[str, object] | None:
+    """Read one exact native validator rejection; it is never a Halt ACK."""
+    diagnostics = snapshot.get("diagnostics")
+    actor = snapshot.get("played_character")
+    if not isinstance(diagnostics, dict) or not isinstance(actor, dict):
+        return None
+    expected_frame = {
+        "snapshot_id": snapshot.get("snapshot_id"),
+        "revision": snapshot.get("revision"),
+        "native_revision": snapshot.get("native_revision"),
+        "date_raw": snapshot.get("date_raw"),
+        "actor_character_id": actor.get("character_id"),
+        "episode_run_id": snapshot.get("episode_run_id"),
+        "bridge_pid": diagnostics.get("bridge_pid"),
+        "connection_generation": diagnostics.get("connection_generation"),
+    }
+    if not (
+        isinstance(expected_frame["snapshot_id"], str)
+        and all(type(expected_frame[key]) is int for key in (
+            "revision", "native_revision", "date_raw", "actor_character_id",
+            "bridge_pid", "connection_generation"))
+        and expected_frame["bridge_pid"] > 0
+        and isinstance(expected_frame["episode_run_id"], str)
+        and bool(expected_frame["episode_run_id"])
+    ):
+        return None
+    for row in reversed(_history_after_latest_restore(commands)):
+        if _effective_command(row) != halt_step:
+            continue
+        result = _effective_command_result(row)
+        action = result.get("war_action") if isinstance(result, dict) else None
+        evidence = result.get("halt_rejection_evidence") if isinstance(result, dict) else None
+        request = evidence.get("native_request") if isinstance(evidence, dict) else None
+        response = evidence.get("native_command_result") if isinstance(evidence, dict) else None
+        request_id = evidence.get("native_request_id") if isinstance(evidence, dict) else None
+        if (
+            row.get("ok") is True and isinstance(result, dict)
+            and result.get("schema") == "xar.halt-army-validator-deferred/v1"
+            and result.get("step") == halt_step
+            and result.get("accepted") is False and result.get("status") == "deferred"
+            and result.get("business_submission") is False
+            and result.get("replay_allowed") is False
+            and isinstance(action, dict)
+            and action.get("status") == "halt_validator_rejected_current_route_retained"
+            and action.get("army_id") == army.get("army_id")
+            and action.get("reason") == "native_halt_validator_rejected"
+            and action.get("contact_free_proven") is False
+            and action.get("current_province_id") == army.get("current_province_id")
+            and action.get("move_target_province_id") == army.get("move_target_province_id")
+            and action.get("route_province_ids") == army.get("route_province_ids")
+            and isinstance(evidence, dict)
+            and evidence.get("observed_frame") == expected_frame
+            and isinstance(request_id, str) and bool(request_id)
+            and isinstance(request, dict) and request.get("request_id") == request_id
+            and request.get("step") == halt_step
+            and request.get("type") == "execute_step"
+            and isinstance(response, dict) and response.get("request_id") == request_id
+            and response.get("type") == "command_result"
+            and response.get("protocol_version") == request.get("protocol_version")
+            and response.get("ok") is False
+            and response.get("error") == "CK3 halt-army command validation failed"
+        ):
+            return {"history_index": row.get("index"),
+                    "native_request_id": request_id,
+                    "native_error": response["error"],
+                    "observed_frame": expected_frame}
+        return None
+    return None
+
+
+def _land_route_timeline_unavailable_halt_or_watch_plan(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: dict[str, object], *, query_step: str,
+    pending_halt: dict[str, object] | None,
+    available_steps: set[str], war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Cancel a committed land-route tail before observing its locked edge.
+
+    A failed full-scope timeline is not contact-free evidence.  The only time
+    step here follows an independently observed partial native Halt; it uses
+    the existing exact one-day stop and gives no movement/combat/war credit.
+    """
+    parsed = parse_query_route_contact_horizon_step(query_step)
+    if parsed is None or not isinstance(snapshot, dict) or not isinstance(army, dict):
+        return None
+    army_id, target, hostile_ids = parsed
+    player = snapshot.get("played_character")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    route = army.get("route_province_ids")
+    if not (
+        snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and army.get("army_id") == army_id
+        and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("army_state") == "moving" and army.get("army_state_code") == 7
+        and army.get("route_read_status") == "complete_nonempty"
+        and isinstance(route, list) and bool(route)
+        and all(type(province) is int and province > 0 for province in route)
+        and route[-1] == target and army.get("move_target_province_id") == target
+    ):
+        return None
+    # Reconstruct the complete published hostile set independently.  A newly
+    # spawned/non-CArmy enemy remains in scope unless Native says retreating.
+    wars = snapshot.get("active_wars")
+    if not isinstance(wars, list) or not wars:
+        return None
+    observed_hostiles: set[int] = set()
+    for war in wars:
+        if not isinstance(war, dict) or not isinstance(war.get("enemy_armies"), list):
+            return None
+        for enemy in war["enemy_armies"]:
+            if not isinstance(enemy, dict):
+                return None
+            if enemy.get("retreating") is True:
+                continue
+            enemy_id = _public_cunit_int(enemy.get("army_id"))
+            if enemy_id is None:
+                return None
+            observed_hostiles.add(enemy_id)
+    if tuple(sorted(observed_hostiles)) != hostile_ids:
+        return None
+    attempt = _current_frame_route_contact_query_failure(commands, snapshot, query_step)
+    if not (isinstance(attempt, dict) and attempt.get("scope_status") == "current_frame"
+            and attempt.get("status") == "unavailable" and attempt.get("ok") is False):
+        return None
+    matching = [row for row in reversed(_history_after_latest_restore(commands))
+                if _effective_command(row) == query_step]
+    result = _effective_command_result(matching[0]) if matching else None
+    evidence = result.get("readonly_unavailable_evidence") if isinstance(result, dict) else None
+    raw = evidence.get("native_command_result") if isinstance(evidence, dict) else None
+    if not (isinstance(raw, dict) and raw.get("ok") is False
+            and raw.get("error") == "CK3 route arrival timeline is unavailable"):
+        return None
+    if pending_halt is None:
+        halt_step = halt_army_step(army_id)
+        deferred = _current_frame_halt_validator_deferred_v1(
+            commands, snapshot, army, halt_step)
+        if deferred is not None and "life-advance-one-day" in available_steps:
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_land_halt_validator_rejected_one_day_watch",
+                "selected_step": "life-advance-one-day",
+                "reason": "Native rejected Halt before queue submission and a fresh readback still shows the same committed land route; observe one exact day of contact risk, then replan without crediting a stop or victory",
+                "route_timeline_unavailable_watch": {
+                    "army_id": army_id, "current_province_id": army.get("current_province_id"),
+                    "target_province_id": target, "route_province_ids": list(route),
+                    "query_step": query_step, "native_request_id": evidence.get("native_request_id"),
+                    "native_error": raw["error"], "source_date_raw": snapshot.get("date_raw"),
+                    "source_native_revision": snapshot.get("native_revision"),
+                    "halt_rejection": deferred, "halt_accepted": False,
+                    "contact_free_proven": False, "contact_status": "unknown",
+                    "movement_resubmitted": False, "offensive_combat_permission": False,
+                    "war_or_material_credit": False,
+                },
+                "contact_query_attempt": attempt,
+                "active_wars": war_summary,
+            }
+        # Native validator/queue rejection is not an accepted Halt.  Never
+        # resend it on the same game date; unknown errors remain paused.
+        if any(_effective_command(row) == halt_step and (
+                row.get("ok") is False or (
+                    isinstance(_effective_command_result(row), dict)
+                    and _effective_command_result(row).get("schema")
+                    == "xar.halt-army-validator-deferred/v1"
+                    and (_effective_command_result(row).get("halt_rejection_evidence") or {})
+                       .get("observed_frame", {}).get("date_raw") == snapshot.get("date_raw")))
+               for row in _history_after_latest_restore(commands)):
+            return None
+        if halt_step not in available_steps or len(route) < 2:
+            return None
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_land_route_timeline_unavailable_halt_submit",
+            "selected_step": halt_step,
+            "reason": "the exact full-hostile timeline failed for a committed land route; submit native Halt to cancel the future tail before any time advance",
+            "halt_intent": {
+                "army_id": army_id, "current_province_id": army.get("current_province_id"),
+                "original_move_target_province_id": target,
+                "original_route_province_ids": list(route),
+                "postcondition_required": "fresh_route_empty_or_verified_retained_first_edge",
+                "contact_free_proven": False,
+            },
+            "contact_query_attempt": attempt,
+            "active_wars": war_summary,
+        }
+    if not (
+        "life-advance-one-day" in available_steps
+        and pending_halt.get("army_id") == army_id
+        and pending_halt.get("suffix_cancellation_observed") is True
+        and pending_halt.get("current_edge_retained") is True
+        and pending_halt.get("postcondition_verified") is False
+        and len(route) == 1
+    ):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_land_retained_route_timeline_unavailable_one_day_watch",
+        "selected_step": "life-advance-one-day",
+        "reason": "native Halt independently canceled the future tail but CK3 retained the first land edge; observe one exact native-stopped day, then re-read contact and battle state; contact remains unknown",
+        "route_timeline_unavailable_watch": {
+            "army_id": army_id, "current_province_id": army.get("current_province_id"),
+            "target_province_id": target, "route_province_ids": list(route),
+            "query_step": query_step, "native_request_id": evidence.get("native_request_id"),
+            "native_error": raw["error"], "source_date_raw": snapshot.get("date_raw"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "halt_submission": pending_halt, "contact_free_proven": False,
+            "contact_status": "unknown", "movement_resubmitted": False,
+            "offensive_combat_permission": False, "war_or_material_credit": False,
         },
         "contact_query_attempt": attempt,
         "active_wars": war_summary,

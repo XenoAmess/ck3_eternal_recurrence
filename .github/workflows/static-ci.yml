@@ -162,6 +162,11 @@ jobs:
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/experimental/driver_state_wal_v1/test_portable.py
       - name: Test exact-day hostile scope and local runner recovery without CK3
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/test_route_contact_exact_day_war_scope_v1.py tests/test_zero_rpc_optional_research.py tests/test_runner_preflight.py
+      - name: Test committed land timeline failure and zero-submit Halt outcomes without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_land_route_timeline_unavailable_v1.py tests/unit/test_land_route_halt_outcome.py
       - name: Verify recorded SDK28 source reconstruction without runtime inputs
         run: python -B -X utf8 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/source_delta_recipe.py verify --repo . --git-only --public-commit 79055bb2fc2559f4fe270ec3971591c78b59e0c8
       - name: Preserve decision history growth evidence

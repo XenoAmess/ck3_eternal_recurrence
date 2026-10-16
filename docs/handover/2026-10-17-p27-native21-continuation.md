@@ -75,3 +75,13 @@ FULL83结算到10610周期／raw53432448，SEM85与METRICS86独立同暂停帧�
 窗口25失败76日，原Game与OBS仍存活。接班应读取其后的新恢复事实，不能把本页
 任何旧running截图当当前推进。连续30年稳定优先，速度先1秒／日再0.5秒／日；
 全部仍未达标。第二批公共源码和完整运行版本差异入口见上述入库核对。
+
+下一实际截点为同Game6068热接SDK30（queue279340／app226296）；Native21与
+OBS278060、原D盘录制保持。SEM1为raw53434272，FULL3实际完成30回合／8日到
+raw53434464／10862周期。AUTO14 Halt接受但未给停军成功信用；独立SEM16读回
+只剩首边[5966]，suffix已取消、current edge retained、halt后验false。后续完整h13
+timeline恢复available并继续普通单日推进；validator拒绝／仍unavailable退路只有合成测试。
+SEM65／METRICS66同暂停帧配对，proof`ROOT-P30-CONTINUITY-RESUME01-ADMITTED.json`
+SHA-256 `851374943480816de4c4ed5c6c58df47627d7ec9d7e83c92aacc1197c03a4350`
+开启窗口26，Root当时报告13日running前缀。失败窗口25的76日不可挪用；
+无WAL、无Game／OBS重启，30年稳定及两级速度目标仍未完成。

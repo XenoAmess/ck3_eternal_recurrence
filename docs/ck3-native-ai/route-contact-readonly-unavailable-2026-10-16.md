@@ -222,3 +222,101 @@ SHA-256 `f693d2cd62f9853377d02ccd9528c9d4f18c8748520bf9b61743f646ffea64b7`.
 No actual capital query, capital preview, successful return or defensive hold
 is established by these offline cases; Root separately deploys and observes
 the normal planner. The four original cycles remain actual failed progress.
+
+### Complete hostile timeline unavailable on an existing land route
+
+Machine `xenoamess-full-tower-eb9d2c1186`. Actual P28 AUTO537 and independent
+SEM542 project the same paused player land army402653503, committed route
+`[5966,5969]`, and all 13 published non-retreating hostiles. The route reader
+returned `CK3 route arrival timeline is unavailable`; later AUTO541 stopped
+the outer batch on this cached failure. Window25 failed after76 days. The
+lightweight fixture retains its original response/source pins and labels
+projection separately from later synthetic Halt outcomes.
+
+The existing Native mailbox reports that error only for
+`RouteContactHorizonStatus::timeline_unavailable`. It does not identify
+which army's arrival reader failed. A correlated missing-CArmy observation
+for army637534417 is not proof of that failure's cause. No hostile is dropped
+to manufacture an available or contact-free horizon.
+
+The existing military command path constructs one full CUnitID Halt command,
+validates it, and only then calls `submit_copy`. In
+`native_bridge/src/ck3_12002_military.cpp`, `validator_rejected` returns before
+submission; `bridge.cpp` maps it to the exact validation-failed error.
+The different queue-rejected error is not eligible for the new typed result.
+Existing locked-edge behavior remains as documented in
+[R0175](episode04-r12-locked-halt-r0175-12004.md).
+
+```mermaid
+flowchart TD
+    A[Complete same-frame hostile timeline unavailable] --> B[Owned controllable committed land route; paused; no modal]
+    B --> C[Submit existing native Halt once]
+    C --> D[Accepted: retain pending full starting tuple]
+    D --> E[Independent newer frame cancels suffix; first edge retained]
+    E --> F[Fresh complete-hostile query still unavailable]
+    F --> G[Existing exact-one-day risk observation; re-read next day]
+    C --> H[Exact native validator rejection before submit_copy]
+    H --> I[Fresh same-owner same-day unchanged-route readback]
+    I --> G
+    C -. unknown queue failure or changed readback .-> J[Keep existing failure path]
+    A -. failed arrival subject and original reader cause unknown .-> K[Offline Native diagnosis]
+```
+
+The ordinary planner now uses this narrow exit after the existing embarked
+case. It checks the exact current query lease and independently reconstructs
+all published non-retreating hostiles. A route tail is halted before time
+advance; an ACK is pending, never a stopped-army claim. The only one-day exits
+are a separately verified retained first edge, or the exact zero-submit
+validator rejection with unchanged route and owner. Unknown errors remain
+errors; a same-date rejection is not resent. The day uses the original Native
+deadline, pause and modal contracts, records contact as unknown, and gives
+no movement reissue, offensive admission, war victory or material credit.
+The 1.5 combat admission remains unchanged.
+
+Public Strategy and Driver imports pass 8 focused tests/16 subtests, including
+actual537/542 scope, synthetic independent partial Halt, native error wire
+without a `step` field, foreign/changed routes, modal/retreat/combat, stale
+lease and wrong request. Source candidates are in external
+`continuation42-cold-prep/p28-land-route-timeline-unavailable03/`, delivery
+`0b3bdb6e…`. The composed SDK30 test package separately passed32 production
+method cases; the public changed methods and adjacent existing guards passed
+31 tests/23 subtests. Neither result proves actual SDK30 gameplay, safety, survival
+or performance. The current public integration never changes a frozen SDK,
+Native DLL, Game or recording. Stable30-year play has priority; first target
+is below 1 second/day, then 0.5. None is achieved by this source change.
+
+Root subsequently hot-connected actual SDK30 to the same Game6068 and
+Native21, retaining OBS278060 and the same D recording. Original P28 owner
+exit0/0 is retained. SEM1 observed raw53434272; FULL3 completed30 turns and
+eight days to53434464/cumulative10862. Actual AUTO14 submitted Halt on
+`[5966,5969]`; its accepted ACK remained pending. Independent SEM16 published
+native2954/public3, still paused on the same date, with route/target `[5966]`.
+The existing post-reader observed suffix cancellation and retained first edge,
+while `postcondition_verified` stayed false. The following complete h13
+timeline became available and ordinary exact-day play continued. This is
+actual accepted-Halt/suffix behavior; it does not demonstrate the synthetic
+validator-veto or still-unavailable-after-Halt branches, safe contact or victory.
+
+The public pending-Halt reader also replays that exact small AUTO14/SEM16
+projection, adding a ninth focused test. The original full responses remain
+external; their SHA-256 are respectively
+`9213f82d0fc5888029dc233562d088c561194e6e96d0b2f6571357c543616c9f` and
+`b5074b11fd63fd6d902e80a72412e3a21121de151f39b6831187946f20832798`.
+Independent SEM65/METRICS66 then bound the paused batch endpoint. Root's
+`ROOT-P30-CONTINUITY-RESUME01-ADMITTED.json`, SHA-256
+`851374943480816de4c4ed5c6c58df47627d7ec9d7e83c92aacc1197c03a4350`,
+starts window26 at53434464. Root reported a13-day running prefix; old failed
+window25's76 days are not carried. This is a timestamped prefix, not30-year
+completion. No WAL, Game restart or OBS restart occurred.
+
+The matching [portable Halt outcome classifier](../../tools/g2_saved_campaign/land_route_halt_outcome.py)
+requires the caller's reviewed gameplay-start binding callback; it imports
+no frozen SDK namespace. It distinguishes pending accepted Halt from an exact
+typed native validator veto, whose action/business/date credit remain zero.
+The [complete historical classifier delta](../../tools/g2_saved_campaign/patches/p30-land-halt-classifier-runtime.patch)
+is archived separately. The portable parser also accepts public CUnit ID0;
+that compatibility test does not rewrite live classifier de0077 or claim
+actual Army0 execution. The final public source/classifier/adjacent guard
+scope passed41 tests/43 subtests, including actual ACK/suffix projections and
+explicitly synthetic veto/error variants. Public common-runner installation
+still needs a reviewed adapter; library publication does not deploy one.
