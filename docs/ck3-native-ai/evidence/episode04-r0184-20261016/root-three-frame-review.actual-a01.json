@@ -1,0 +1,65 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "observed_at_utc": "2026-10-16T13:24:17.604059+00:00",
+  "reviewer": "Root directly viewed original image dimensions, rechecked middle and last separately with original detail",
+  "scope": "Three extracted original frames only; no full 1x watching or clean-span certification",
+  "frames": [
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 866939,
+        "sha256": "eca0d474ac2361811afd24c1239eb779db51b2b55ed6018029204b4112f148f6"
+      },
+      "visible_date": "1067-02-12",
+      "image_size": [
+        1280,
+        720
+      ],
+      "only_ck3_client_pixels_observed": true,
+      "window_border_desktop_or_steam_observed": false,
+      "army_and_military_panels_visible": true
+    },
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1137562,
+        "sha256": "41cdd501b82526e64007ef5b2b451b7358333b31a49f86af2f1852da602b0e83"
+      },
+      "visible_date": "1067-02-15",
+      "image_size": [
+        1280,
+        720
+      ],
+      "only_ck3_client_pixels_observed": true,
+      "window_border_desktop_or_steam_observed": false,
+      "army_and_military_panels_visible": true
+    },
+    {
+      "frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1137473,
+        "sha256": "13681b3784158df13959f216e6ffeb2cef32213460bf2b23d897f5d35d75dca3"
+      },
+      "visible_date": "1067-02-21",
+      "image_size": [
+        1280,
+        720
+      ],
+      "only_ck3_client_pixels_observed": true,
+      "window_border_desktop_or_steam_observed": false,
+      "army_and_military_panels_visible": true
+    }
+  ],
+  "correction": "Initial multi-image preview was misread as middle12/last15. Actual original middle15/last21 was rechecked; initial prose is superseded, original audit/frame bytes unchanged.",
+  "completed_exact_days": 8,
+  "ninth_exact_day_qualified": false,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "raw": {
+    "bytes": 11904058,
+    "sha256": "6d1704561753f74adc689fe1c2a3be391b1e15063e3b7c83d06476d3ea605f19"
+  }
+}

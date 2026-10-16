@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "at_utc": "2026-10-16T13:00:07.409797+00:00",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-v",
+    "warning",
+    "-xerror",
+    "-i",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "-map",
+    "0:v?",
+    "-map",
+    "0:a?",
+    "-f",
+    "null",
+    "-"
+  ],
+  "timeout_seconds": 120,
+  "max_output_bytes": 33554432
+}

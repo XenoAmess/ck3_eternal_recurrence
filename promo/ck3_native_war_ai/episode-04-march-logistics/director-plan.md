@@ -1,5 +1,7 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+2026-10-16 R184接续（machine_id: `desktop-3fevhd2-1c74096080`）：[本轮实际拍摄](r184-capture-result-2026-10-16.md)已取得22.766秒正常终结的客户区区域原片及正常保存/退出0；八份精确日回执、第九日误判与三帧日期分别记账，未授clean或业务资格。研究与智能体复用以[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)为入口；R08完整原字节可离线校验，C已接正常constructor。研究6/14、业务4/11、合格动态0/11不变。下文各日期状态保留为历史，不覆盖本段新事实。
+
 2026-10-16 执行更新：共享研究与智能体入口见[当前缺口与执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)；[R183结果](r183-capture-result-2026-10-16.md)为239帧截断原片，不算完整镜头。下一轮按[三条连续镜头优先级](review02/r184-shot-priority-2026-10-16.md)及[客户区采集/期限合同](tools/capture-recorder.md)补拍；原导演目标及未闭资格不由计划覆盖率代替。
 
 > 当前本机入口（machine_id: `desktop-3fevhd2-1c74096080`）：[R0177实际闭场与研究口径](../../../docs/handover/2026-10-15-war-episode04-machine-resume.md)、[Review02草稿/声音/素材状态](review02/README.md)。新增source与后续a08以各自实际提交、构建和新场回执绑定；旧场来源保持原样。

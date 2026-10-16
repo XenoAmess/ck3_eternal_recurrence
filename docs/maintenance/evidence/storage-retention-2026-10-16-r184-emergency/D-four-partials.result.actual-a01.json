@@ -1,0 +1,107 @@
+{
+  "schema": "xar.r184-emergency-four-model-partials-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:36:16.500254+00:00",
+  "policy_version": "1.0.0",
+  "plan_sha256": "20205f8cc291da10934d17a7cfc2683c1b7ba1184c4d8eec729bfe3f9bac8322",
+  "attempted": 4,
+  "deleted": 4,
+  "failed": 0,
+  "deleted_logical_bytes": 1153433600,
+  "deleted_single_link_allocated_bytes": 1153433600,
+  "free_before": {
+    "C:/": 27259039744,
+    "D:/": 47147343872
+  },
+  "free_after": {
+    "C:/": 27253080064,
+    "D:/": 48300777472
+  },
+  "rows": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-1790090964895024200\\IndexTeam--IndexTTS-2.5--codec.pth.partial",
+      "sha256": "a276aa450f694cd3aa4d3e3b94df36fade3e469164fb2f532b2ff0129e8201b5",
+      "logical_bytes": 448790528,
+      "allocated_bytes": 448790528,
+      "file_id": [
+        882653518,
+        281474978437262
+      ],
+      "links": 1,
+      "status": "deleted_unavailable",
+      "exists_after": false,
+      "at_utc": "2026-10-16T12:36:16.392754+00:00"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-1790090964895024200\\IndexTeam--IndexTTS-2.5--gpt.pth.partial",
+      "sha256": "115dce4233ef1e6962a23c091be9e926e58c11331bc41dc41177d19f72c5a445",
+      "logical_bytes": 285212672,
+      "allocated_bytes": 285212672,
+      "file_id": [
+        882653518,
+        281474978438383
+      ],
+      "links": 1,
+      "status": "deleted_unavailable",
+      "exists_after": false,
+      "at_utc": "2026-10-16T12:36:16.447699+00:00"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-1790090964895024200\\IndexTeam--IndexTTS-2.5--s2mel.pth.partial",
+      "sha256": "a690603cb93f3d6b2889729db3bf9aae90b75f14a53c0b9ae561912fa5ad3925",
+      "logical_bytes": 222298112,
+      "allocated_bytes": 222298112,
+      "file_id": [
+        882653518,
+        281474978439961
+      ],
+      "links": 1,
+      "status": "deleted_unavailable",
+      "exists_after": false,
+      "at_utc": "2026-10-16T12:36:16.475522+00:00"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-1790090964895024200\\facebook--w2v-bert-2.0--model.safetensors.partial",
+      "sha256": "4c3c39a094cf5ef2d0a7cd59ade4060da216d566c551bf693e6d4be031eaef50",
+      "logical_bytes": 197132288,
+      "allocated_bytes": 197132288,
+      "file_id": [
+        882653518,
+        562949955154099
+      ],
+      "links": 1,
+      "status": "deleted_unavailable",
+      "exists_after": false,
+      "at_utc": "2026-10-16T12:36:16.498445+00:00"
+    }
+  ],
+  "retained_successors_after": [
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\codec.pth",
+      "identity_metadata_unchanged": true,
+      "exists_after": true,
+      "sha256": "d15cbed16a40f478438c961fb043f68dfa6353bf56c966761315db3433e9722c"
+    },
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\gpt.pth",
+      "identity_metadata_unchanged": true,
+      "exists_after": true,
+      "sha256": "43a8f4c30eccdf201958d3b9713511482c19d56dc20b0b1c4ee1e6b080b19d85"
+    },
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\s2mel.pth",
+      "identity_metadata_unchanged": true,
+      "exists_after": true,
+      "sha256": "9b1b0003fc189c94cc349758d7ebc25f903b7eb2de4602879959cc64ce816456"
+    },
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\model.safetensors",
+      "identity_metadata_unchanged": true,
+      "exists_after": true,
+      "sha256": "eb890c9660ed6e3414b6812e27257b8ce5454365d5490d3ad581ea60b93be043"
+    }
+  ],
+  "seconds": 79.78302560001612,
+  "scope": "D exact four partials only; zero C deletion; no game/SDK/screen/repo/config changes",
+  "whole_volume_free_delta_not_exclusive_reclamation": true
+}

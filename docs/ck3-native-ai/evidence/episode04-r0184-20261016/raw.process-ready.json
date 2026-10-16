@@ -1,0 +1,115 @@
+{
+  "state": "RECORDING",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "pid": 22212,
+  "started_at_utc": "2026-10-16T12:50:41.669433+00:00",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 3504,
+    "owned_ck3_create_time": 1792153323.2060187,
+    "hwnd": 101517432,
+    "foreground_hwnd": 101517432,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T12:50:40.495177+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "deadline_admission_at_spawn": {
+    "schema": "xar.e04.recording-deadline-admission.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-16T12:50:44.382532+00:00",
+    "admitted": true,
+    "recording_seconds": 90,
+    "normal_close_reserve_seconds": 180.0,
+    "required_remaining_seconds": 270.0,
+    "remaining_seconds": 3608.54260289995,
+    "session_elapsed_before_recording_seconds": 1791.45739710005,
+    "deadlines": [
+      {
+        "source": "before-native-session-invocation",
+        "bound_at_utc": "2026-10-16T12:20:52.925132+00:00",
+        "bound_monotonic": 1376101.6447241,
+        "timeout_seconds": 5400.0,
+        "deadline_monotonic": 1381501.6447241,
+        "deadline_utc": "2026-10-16T13:50:52.925132+00:00",
+        "includes_frontend_warmup_and_relaunches": true,
+        "remaining_seconds": 3608.54260289995
+      },
+      {
+        "source": "exact-recording-capacity-admission",
+        "argument": "recording_capacity_admission",
+        "deadline_utc": "2026-10-16T17:39:06.531146+00:00",
+        "capacity_admission": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+          "bytes": 70420,
+          "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d",
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+          "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+          "deadline_utc": "2026-10-16T17:39:06.531146+00:00"
+        },
+        "deadline_monotonic": 1395195.2507331,
+        "remaining_seconds": 17302.148611900164
+      }
+    ],
+    "deadline_renewed": false
+  },
+  "monotonic_ns": 1377890389015900,
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostats",
+    "-n",
+    "-thread_queue_size",
+    "512",
+    "-f",
+    "gdigrab",
+    "-framerate",
+    "30",
+    "-draw_mouse",
+    "1",
+    "-offset_x",
+    "640",
+    "-offset_y",
+    "360",
+    "-video_size",
+    "1280x720",
+    "-i",
+    "desktop",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-crf",
+    "18",
+    "-pix_fmt",
+    "yuv420p",
+    "-fps_mode",
+    "cfr",
+    "-t",
+    "90",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\raw.mkv"
+  ],
+  "managed_job_start": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\job-start.json",
+    "bytes": 1029,
+    "sha256": "98f7b03ee36f7bc499ca9531230b9c6fba5d402703dfd7213cb5866e4bed8c9e"
+  }
+}

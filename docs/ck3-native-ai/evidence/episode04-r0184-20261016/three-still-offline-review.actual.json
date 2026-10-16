@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.r184.offline-three-still-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:24:23.610641+00:00",
+  "raw_sha256": "6d1704561753f74adc689fe1c2a3be391b1e15063e3b7c83d06476d3ea605f19",
+  "frames": [
+    {
+      "source_frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 866939,
+        "sha256": "eca0d474ac2361811afd24c1239eb779db51b2b55ed6018029204b4112f148f6"
+      },
+      "requested_pts_seconds": 0.0,
+      "visible_date_directly_read": "1067-02-12",
+      "observed": "CK3 map, selected army and military panel; no Windows border, surrounding desktop or Steam visible in this still",
+      "reviewer": "Codex offline evidence agent /root/r183_evidence_portable; directly viewed existing unmodified PNG with view_image"
+    },
+    {
+      "source_frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1137562,
+        "sha256": "41cdd501b82526e64007ef5b2b451b7358333b31a49f86af2f1852da602b0e83"
+      },
+      "requested_pts_seconds": 11.3665,
+      "visible_date_directly_read": "1067-02-15",
+      "observed": "CK3 map, selected army and military panel; no Windows border, surrounding desktop or Steam visible in this still",
+      "reviewer": "Codex offline evidence agent /root/r183_evidence_portable; directly viewed existing unmodified PNG with view_image"
+    },
+    {
+      "source_frame": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1137473,
+        "sha256": "13681b3784158df13959f216e6ffeb2cef32213460bf2b23d897f5d35d75dca3"
+      },
+      "requested_pts_seconds": 22.733,
+      "visible_date_directly_read": "1067-02-21",
+      "observed": "CK3 map, selected army and military panel; no Windows border, surrounding desktop or Steam visible in this still",
+      "reviewer": "Codex offline evidence agent /root/r183_evidence_portable; directly viewed existing unmodified PNG with view_image"
+    }
+  ],
+  "OCR_used": false,
+  "live_desktop_action": false,
+  "human_full_video_review": false,
+  "continuous_clean_certified": false,
+  "human_signoff": false,
+  "limit": "Three sampled stills only. Dates visible in samples do not prove every intermediate day is encoded, exact first visible change PTS or a continuous clean span. Original media audit visually_reviewed=false fields are preserved unchanged."
+}

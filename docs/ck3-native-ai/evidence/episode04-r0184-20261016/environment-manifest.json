@@ -1,0 +1,41 @@
+{
+  "schema": "xar.war-episode04.vanilla-environment.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T12:15:55.366887+00:00",
+  "game": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "launcher": {
+    "raw_version": "1.20.0.4",
+    "display_version": "1.20.0.4 (Crozier)",
+    "distribution": "steam",
+    "launcher_settings_sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25"
+  },
+  "enabled_mods": [],
+  "profile_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\pdx_settings.txt",
+      "bytes": 524,
+      "sha256": "7de1177db43167522f9b67a07ac3f2c6b63820c6fd22f7788ecb1e09f035b838"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\player\\game_rules\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    }
+  ],
+  "source": "pure-vanilla-enabled-mods-empty",
+  "live_verified": false
+}

@@ -9,7 +9,7 @@
 | R01 / 新比较 T0 | [ready-T0 同帧入口](episode04-ready-t0-decision-12004.md) | 新鲜完整同帧状态、明确策略目标及正常保存；旧 continuation 不自动成为新 T0。 |
 | R04 县进入 | [下一场原生条件与停止线](episode04-r04-next-scenario-12004.md) | 新鲜 first edge 的原生最终 condition=true，随后一次合法 Move 与实际物理扣兵；最多五个去重预览，没有正条件即停止。 |
 | R05 饥饿 | [下一自然实验](episode04-r05-next-starvation-12004.md) | 自然低库存→库存结算→零库存→同次归因物理 debit；明确 full-history profile 与日志 fences。 |
-| R06 补员 | [R183 depth8 原件、下一入口及修复](episode04-r06-next-receiver-12004.md) | 一次军务原生开窗及独立可见后验、同帧 receiver 读取；候选、选中、开关与实际 ADD 分开验收。首 key 命中和诊断字段修复仍须新构建/现场。 |
+| R06 补员 | [R183 depth8 原件、下一入口及修复](episode04-r06-next-receiver-12004.md) | R184 已实际验证 a27 开窗及独立可见后验，诊断 null 修复有效；receiver 仍 depth8 unavailable。[下一 local-entry-only 入口](episode04-r184-r06-local-prefix-12004.md)保持原预算，候选、选中、开关与实际 ADD 继续分开验收。 |
 | R07 登船费用 | [双 fresh arms 与七日 NO-GO](episode04-r07-next-fresh-arms-12004.md) | 目前已知新登船边需31日，不能把旧续行截成七日。两臂须各自新冷载同一静止保存，付款来源与经济周期仍独立判断。 |
 | R08 维护归因 | [缺口入口](episode04-r08-next-maintenance-attribution-12004.md)、[28C43A0](episode04-maintenance-callee-28c43a0-12004.md)、[2C142B0](episode04-maintenance-callee-2c142b0-12004.md)、[24E1E80](episode04-maintenance-postvector-24e1e80-12004.md) | 具名费率端函数已有完整来源，旧“body未持有”库存已过时。仍缺 c/d 军事类别 writer→同次应用→付款账户及周期；paid 保持 unknown。 |
 | R09 特殊兵 | [下一场及 DATA 双计量](episode04-r09-next-special-army-12004.md) | 同一正常 S0 的独立反方向、完整库存/容量/权重和实际读回；保留原 strict freeze 失败。 |
@@ -20,3 +20,15 @@ R183 的[专题与便携原件](episode04-r183-window-capture-12004.md)证明客
 正式采集修复入口是本期 [canonical recorder](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture-recorder.md)：按实际客户区矩形采集，独立监测窗口/前台/遮挡，并在开始与 spawn 前核对完整录制时长加至少120秒闭场余量。源码和离线测试不抵扣下一场实录；R183 外置脚本不因后来改码而自动获得新守卫。
 
 拍摄优先级与口播段号见[三条最小连续镜头计划](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r184-shot-priority-2026-10-16.md)。它是待执行计划，不是已取得 clean span。存储回收与实际每日巡检部署见[独立回收工作记录](../maintenance/storage-retention-2026-10-16-dedicated-worker.md)；新重型写入须另取当次按卷准入，旧07:45额度没有续期。
+
+## R08 费率应用链的静态补注（2026-10-16）
+
+[raw resource4 便携专题与同源执行图](episode04-r08-rate-resource4-application-12004.md)：`28F7840`后段取得scalar B与完整current向量槽9 M，`wrap_i64(B-M)`经原生gate后进入`context+4A0` ADD或selector4 SUB。新增来源是完整938B scalar与54B gate；已有caller/keyAE原件同时便携保全。不能将raw4/4A0命名为金币或已付军费；较早NET应用、c/d业务producer、payer及cadence仍分开未闭。此静态追加不改变本页6/14、4/11、dynamic0/11的历史口径。机器 `desktop-3fevhd2-1c74096080`，无新实机动作。
+
+## R184 正常闭场与代码接续（2026-10-16）
+
+来源机器 `desktop-3fevhd2-1c74096080`。[R184专题及精简原件](episode04-r184-window-capture-12004.md)绑定 source `163530f1bbcabe5a97854625b3fab7568006ee65`、a27、独立身份与正常保存/退出0/释放。canonical 客户区区域原片实际 **22.766秒、683帧、1280×720/30fps**，全解码无截断；三帧原始尺寸直接审阅日期为1067-02-12/15/21。原生八份精确日回执、第九日过渡暂停误判、后续正常保存日期分别保全；没有新增 business/clean/人工签核，仍0/11。
+
+C 的具名 `operation_root_relay.py` 已接入正常 constructor，绑定新 operation/S0/runtime/source/容量；按实际 prepared state 路径定位并计量完整 Driver/run 侧车。旧 legacy API 继续拒绝，正式 ABC **0/3**。共用三冷载要求见[R10](episode04-r10-next-abc-t0-12004.md)。新运行须重新绑定，不能借本轮代码与离线回归追认旧臂。
+
+两支紧急回收的实际结果和每日只读巡检边界见[维护记录](../maintenance/storage-retention-2026-10-16-r184-emergency.md)。历史容量 deadline 没有延长；后续新场、构建和渲染分别重新准入。

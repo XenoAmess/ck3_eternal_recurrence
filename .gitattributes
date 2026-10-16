@@ -258,3 +258,9 @@ docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.sources.json
 docs/ck3-native-ai/episode04-maintenance-callee-28c43a0-12004.sources.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/episode04-maintenance-callee-2c142b0-12004.sources.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/episode04-maintenance-postvector-24e1e80-12004.sources.json -text whitespace=cr-at-eol
+
+# Preserve R184 originals and this round's portable source/cleanup evidence.
+docs/ck3-native-ai/evidence/episode04-r0184-20261016/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/r184-r06-local-prefix-12004.json -text whitespace=cr-at-eol
+docs/maintenance/evidence/storage-retention-2026-10-16-r184-emergency/** -text whitespace=cr-at-eol

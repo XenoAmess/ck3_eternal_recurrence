@@ -1,0 +1,177 @@
+{
+  "schema": "xar.r184-dedicated-disk-worker-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:58:36.644371+00:00",
+  "source_head_observed": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "protection": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.PROTECTIONS.actual.json",
+    "bytes": 58328,
+    "sha256": "3662429395dc403dda7efff8a46d3e62b5131aaab346dbdf764794130f9d9ef3"
+  },
+  "worker_state": "STOPPED_RECLAIM_TARGET_REACHED_READONLY_AUDIT_COMPLETE",
+  "actual_reclamation_this_emergency_only": {
+    "C:": {
+      "deleted_count": 47892,
+      "logical_bytes": 1987192354,
+      "single_link_allocated_bytes": 2095438880
+    },
+    "D:": {
+      "deleted_count": 4,
+      "logical_bytes": 1153433600,
+      "single_link_allocated_bytes": 1153433600
+    },
+    "distinct_deleted_paths_and_file_ids_verified": 47896,
+    "all_deleted_paths_rechecked_absent": true,
+    "directory_deletions": 0,
+    "prior156file_28_545_642_496B_round_included": false,
+    "native_agent_deletions_included_in_worker_totals": false
+  },
+  "current_volume_free_observation": {
+    "at_utc": "2026-10-16T12:58:36.645284+00:00",
+    "bytes": {
+      "C:": 30442319872,
+      "D:": 48300220416
+    },
+    "C_original_required_bytes": 29640597575,
+    "C_original_requirement_margin_bytes": 801722297,
+    "C_root_requested_target_bytes": 30500000000,
+    "C_root_target_reached_at_utc": "2026-10-16T12:55:33.969894+00:00",
+    "C_at_target_reached_free_bytes": 30515802112,
+    "whole_volume_deltas_not_exclusively_attributed_to_this_worker": true,
+    "capacity_preflight_still_owned_by_root": true
+  },
+  "audit": {
+    "unique_C_file_ids": 47892,
+    "duplicate_path_or_file_id_entries": 0,
+    "batch_files": 49,
+    "max_files_per_batch": 1000,
+    "all_plan_sha256_and_deleted_sha256_bindings_checked": true,
+    "all_targets_single_link": true,
+    "protected_path_overlap": 0,
+    "retained_shader_keeper_unique_files": 3832,
+    "retained_shader_source_identities_unchanged_under_handles_at_final_receipts": true,
+    "retained_shader_keeper_paths_currently_present": true,
+    "current_shader_keeper_full_content_rehash_performed_by_this_audit": false,
+    "note": "Each deletion was already SHA-verified through the same exclusive target handle; keeper handles denied writes/deletes through final identity checks. This union audit checks binding, uniqueness, absence and retained-path presence without repeating content hashing.",
+    "journal_index": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\JOURNALS.audit-index.actual-a01.json.gz",
+      "bytes": 5364,
+      "sha256": "97005ed5c0e1003e23194cff265ea08c8e56f1707bc0ca78b674246f5b1fc18f"
+    },
+    "seconds": 6.606852099997923
+  },
+  "C_lanes": [
+    {
+      "prefix": "C-SHADER-DEDUP",
+      "deleted_count": 15732,
+      "logical_bytes": 900242211,
+      "single_link_allocated_bytes": 935813120,
+      "failed_actual_deletions": 0,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-DEDUP.result.actual-a01.json",
+        "bytes": 822535,
+        "sha256": "02daa60bc6fd163ea53736e7cf511e5e80416ac8096dfd853b4cd73f25bf618e"
+      },
+      "free_before_from_lane_receipt": 28122931200,
+      "free_after_from_lane_receipt": 30023028736,
+      "observed_at_utc": "2026-10-16T12:47:06.399310+00:00"
+    },
+    {
+      "prefix": "C-SHADER-PRIORITY",
+      "deleted_count": 5260,
+      "logical_bytes": 554832184,
+      "single_link_allocated_bytes": 567132160,
+      "failed_actual_deletions": 0,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-PRIORITY.result.actual-a01.json",
+        "bytes": 987610,
+        "sha256": "7d76d611a48ca4c7c783ecf6f96d0a0c3144838a83240de701107dff9d84a16f"
+      },
+      "free_before_from_lane_receipt": 29222457344,
+      "free_after_from_lane_receipt": 30022107136,
+      "observed_at_utc": "2026-10-16T12:47:06.561676+00:00"
+    },
+    {
+      "prefix": "C-SHADER-BIN-PRIORITY",
+      "deleted_count": 20992,
+      "logical_bytes": 229203760,
+      "single_link_allocated_bytes": 276060320,
+      "failed_actual_deletions": 0,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-BIN-PRIORITY.result.actual-a01.json",
+        "bytes": 10601,
+        "sha256": "a0769e4547911f6914374cb2ba1a82baa2c3823c835adf93c8fcb60e7b3dbc65"
+      },
+      "free_before_from_lane_receipt": 29970386944,
+      "free_after_from_lane_receipt": 30370828288,
+      "observed_at_utc": "2026-10-16T12:52:11.708288+00:00"
+    },
+    {
+      "prefix": "C-R166-TTL",
+      "deleted_count": 3908,
+      "logical_bytes": 159571724,
+      "single_link_allocated_bytes": 168403840,
+      "failed_actual_deletions": 0,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-R166-TTL.result.actual-a01.json",
+        "bytes": 1783,
+        "sha256": "483607a16225f5d355f275f3cca409a89adfe23d81f01f4f320b78489649b3f9"
+      },
+      "free_before_from_lane_receipt": 30122340352,
+      "free_after_from_lane_receipt": 30332235776,
+      "observed_at_utc": "2026-10-16T12:50:42.426444+00:00"
+    },
+    {
+      "prefix": "C-SHADER-ROBERT",
+      "deleted_count": 2000,
+      "logical_bytes": 143342475,
+      "single_link_allocated_bytes": 148029440,
+      "failed_actual_deletions": 0,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-ROBERT.result.actual-a01.json",
+        "bytes": 2095,
+        "sha256": "1aa3b28bfdf7ea470551a73589853a9c3086623fdc1b9bc785172bc7852a9a75"
+      },
+      "free_before_from_lane_receipt": 30368501760,
+      "free_after_from_lane_receipt": 30515802112,
+      "observed_at_utc": "2026-10-16T12:55:33.969894+00:00"
+    }
+  ],
+  "D_failed_partial_lane": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\D-FOUR-PARTIALS.result.actual-a01.json",
+    "bytes": 3956,
+    "sha256": "477dd915a5e64b4f0c10e3bf1bc66da2551f117db16c3a35ff051a68769c1cba"
+  },
+  "separate_native_agent_receipt": {
+    "path": null,
+    "expected_sha256_from_agent_message": "a65f00f7fa583c879973dc5c7b80b81df6b956536c8665ea4fc993b1021c06b6",
+    "source": "e04_event_1070_followup IPC final actual summary; absolute path not yet supplied. Root already received its actual receipt.",
+    "independent_worker_counters_not_included_here": true,
+    "read_by_this_audit": false
+  },
+  "readonly_daily_scheduler_previous_actual_readback": {
+    "summary": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r184-a01\\SUMMARY.actual-a01.json",
+      "bytes": 2374,
+      "sha256": "09e65ba81ad75df7edf8a3762821b91c1fb176725ceab0e5089557244659b759"
+    },
+    "enabled": true,
+    "last_task_result": 0,
+    "daily_Asia_Shanghai": "04:00",
+    "run_level": 0,
+    "start_when_available": true,
+    "inspection_only_automatic_deletion": false,
+    "last_actual_readback_window_utc": [
+      "2026-10-16T12:16:45.061132+00:00",
+      "2026-10-16T12:18:22+00:00"
+    ],
+    "current_emergency_did_not_run_or_change_scheduler": true
+  },
+  "scope": "Project-owned expired R166 shadercache, independently allocated exact duplicate shadercache in closed old C profiles, and four failed D model-download partials with pinned verified successful successors. No source/game/dependency/SDK/Steam/screen action; no repo change; active R184 full scene/a27 and R182 normal+7raw excluded. Old deleted bytes remain unavailable at their historical paths; exact cache keeper paths are in frozen per-leaf plans.",
+  "remaining_known_unqualified_or_protected": "No new roots scanned after target reached. Missing canonical shadercache leaves remain untouched; Robert leaves not needed to reach target remain. R183canonical retained. Existing raw/save/source/dependencies protected."
+}

@@ -1,0 +1,211 @@
+{
+  "schema": "episode04-r184-r06-local-prefix-candidate-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "offline_review_at_utc": "2026-10-16T12:52:11.999438+00:00",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "observed_at": "2026-10-16T12:47:11.862819+00:00",
+  "runtime": {
+    "pid": 3504,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-3d3fad411eb2",
+    "process_creation_filetime_100ns": 134366269232060188,
+    "actual_runtime_character_full_id": 31254,
+    "initial_date_raw": 53147928
+  },
+  "a27_build_pins_from_actual_diagnostic": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+      "bytes": 12982784,
+      "sha256": "372ed8dc1c1881b8bea75415cafd4e696aacb90690f30a15f0a555ca91234d4e"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "862668cd668c3677d7316c9afa91a2f1ae8ccd56c8f22e401dbac0ee22920836"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "a0c3bd97e9f1e3a8c41e42501f5fa95193f8ec9defa46d35f48be457256d1f01"
+    }
+  },
+  "identity_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 6050,
+    "sha256": "048bcaee82fc2f0dc98153e5b7c02598ade08d800d8c55017986edcf673043ca"
+  },
+  "source_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-r06-a01-tree-once.json",
+    "bytes": 1017387,
+    "sha256": "c13e9219e0b20fa5d6d41f13d4c1c5aad2a759b0c842252fcbb92cfa59a2c93a"
+  },
+  "diagnostic_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\R06-A27-DIAGNOSTIC.actual-a01.json",
+    "bytes": 22033,
+    "sha256": "48cde3e2a85276f5189ffe383a0a0e4fccc65a6af761061556d36f5562600265"
+  },
+  "actual_open": {
+    "status": "verified_visible",
+    "verified": true,
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-r06-a01-open-once.json",
+      "bytes": 1017467,
+      "sha256": "1aaf1369e2418ba23d7e3ea24bb6f2ec7e85180144594c2673411ede16b5ff8f"
+    }
+  },
+  "actual_tree": {
+    "root_available": true,
+    "truncated": false,
+    "widget_count": 547,
+    "root_effective_visible": true,
+    "frame": {
+      "native_revision": 3,
+      "connection_generation": 1,
+      "pump_epoch": 64189,
+      "ticket_sequence": 7,
+      "game_pid": 3504,
+      "thread_id": 7676,
+      "played_character_full_id": 31254,
+      "date_raw": 53147928,
+      "owner_thread_verified": true,
+      "frame_stable": true,
+      "gui_owner_stable": true
+    },
+    "public_binding": {
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "episode_run_id": "native-31254-3d3fad411eb2"
+    },
+    "candidate_widgets": [
+      {
+        "widget_index": 220,
+        "child_path": "0/0/0/2/3/0/0/0",
+        "effective_visible": true,
+        "enabled": true,
+        "expression": {
+          "chain_count_24_raw": 0,
+          "final_type_id_30": 0,
+          "final_kind_34_raw": 3,
+          "final_target_38_rva": 19938624,
+          "final_user_data_40_present": true,
+          "receiver_type_id_48": 635,
+          "receiver_flag_4c_raw": 0,
+          "chain_calls": [],
+          "receiver_entry_candidates_12004": {
+            "source": "native_gui_type635_definition_candidates_12004",
+            "status": "unavailable",
+            "unavailable_reason": "candidate_parent_depth_exhausted",
+            "receiver_type_id": 635,
+            "current_variable_table_observed": false,
+            "native_receiver_selected": false,
+            "receiver_variable_index": null,
+            "declared_type_id": null,
+            "stable_double_read": false,
+            "entries": [],
+            "failure_diagnostic": {
+              "stage": "parent_walk",
+              "kind": "parent_depth_exhausted",
+              "capture_pass": 1,
+              "read_ordinal": 51,
+              "ancestor_depth": 8,
+              "raw_declaration_count": 1,
+              "raw_index_count": 1,
+              "raw_definition_entry_count": null,
+              "context_present": true,
+              "definition_present": null,
+              "local_definition_active_raw": 1
+            }
+          }
+        }
+      },
+      {
+        "widget_index": 238,
+        "child_path": "0/0/0/3/5/0/0/0",
+        "effective_visible": false,
+        "enabled": true,
+        "expression": {
+          "chain_count_24_raw": 0,
+          "final_type_id_30": 0,
+          "final_kind_34_raw": 3,
+          "final_target_38_rva": 19938624,
+          "final_user_data_40_present": true,
+          "receiver_type_id_48": 635,
+          "receiver_flag_4c_raw": 0,
+          "chain_calls": [],
+          "receiver_entry_candidates_12004": {
+            "source": "native_gui_type635_definition_candidates_12004",
+            "status": "unavailable",
+            "unavailable_reason": "candidate_parent_depth_exhausted",
+            "receiver_type_id": 635,
+            "current_variable_table_observed": false,
+            "native_receiver_selected": false,
+            "receiver_variable_index": null,
+            "declared_type_id": null,
+            "stable_double_read": false,
+            "entries": [],
+            "failure_diagnostic": {
+              "stage": "parent_walk",
+              "kind": "parent_depth_exhausted",
+              "capture_pass": 1,
+              "read_ordinal": 51,
+              "ancestor_depth": 8,
+              "raw_declaration_count": 1,
+              "raw_index_count": 1,
+              "raw_definition_entry_count": null,
+              "context_present": true,
+              "definition_present": null,
+              "local_definition_active_raw": 1
+            }
+          }
+        }
+      }
+    ]
+  },
+  "interpretation": {
+    "a27_depth_diagnostic_null_fix_observed": true,
+    "window_unopened_hypothesis_rejected_in_this_frame": true,
+    "native_receiver_selected": false,
+    "local_entry_observed": false,
+    "toggle_qualified": false,
+    "actual_ADD_observed": false,
+    "business_credit_added": false
+  },
+  "candidate_only": {
+    "new_scope": "local_definition_entry_only",
+    "independent_stable_double_read_required": true,
+    "existing_full_candidate_stays_unavailable": true,
+    "parent_cap_stays": 8,
+    "shared_reads_cap_stays": 4096,
+    "shared_bytes_cap_stays": 65536,
+    "shared_deadline_ms_stays": 20,
+    "provider_execution_allowed": false,
+    "main_tree_modified": false,
+    "runtime_query_performed_by_this_lane": false,
+    "EXE_or_DLL_reread": false,
+    "build_performed": false
+  },
+  "held_source_pins": [
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3AC38C0.bin",
+      "bytes": 927,
+      "sha256": "52fe68663033e21e395845c1f0f4dddb94cb79b4f0a6ee99dde22d9a7c6d9506"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-receiver3ac3ef0-source-a15/3AC3EF0.bin",
+      "bytes": 879,
+      "sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-entry3ac1c00-source-a16/3AC1C00.bin",
+      "bytes": 449,
+      "sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3E4C090.bin",
+      "bytes": 406,
+      "sha256": "f166a756656cb0276c7c89dd74107c716d264c31f891d16cfed3b247d19ca292"
+    }
+  ]
+}

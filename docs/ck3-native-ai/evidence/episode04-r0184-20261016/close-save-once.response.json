@@ -1,0 +1,263 @@
+{
+  "at": "2026-10-16T12:57:46.002838+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r184-film-a01-close-a01-02-save-once",
+    "tool": "ck3_save_checkpoint",
+    "arguments": {
+      "expected_revision": 32
+    }
+  },
+  "request_identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\requests\\r184-film-a01-close-a01-02-save-once.json",
+    "bytes": 142,
+    "sha256": "465d4c633d703c6ea228c66ea84665414058453c587406c293db7416896accf0"
+  },
+  "is_error": false,
+  "body": {
+    "step": "save-checkpoint",
+    "accepted": true,
+    "status": "submitted",
+    "submission": {
+      "sequence": 2,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53148144
+    },
+    "backend_id": "native-headless",
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 73664718,
+      "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8",
+      "date_raw": 53148144,
+      "overwrite_confirmed": true,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+      },
+      "history_index": 34,
+      "episode_character_id": 31254,
+      "episode_run_id": "native-31254-3d3fad411eb2"
+    },
+    "episode_seed": {
+      "format_version": 1,
+      "name": "xar_episode_seed.ck3",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_episode_seed.ck3",
+      "size": 73445818,
+      "sha256": "b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127",
+      "date_raw": 53147928,
+      "character_id": 31254,
+      "source_run_id": "native-31254-3d3fad411eb2",
+      "source_checkpoint_name": "xar_checkpoint.ck3",
+      "immutable": true
+    },
+    "materialization": {
+      "available": true,
+      "save_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games",
+      "mtime_ns": 1792155466669107900
+    },
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "replaced",
+      "write_replace_returned": true,
+      "save_binding_verified": true,
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+        "bridge_pid": 3504,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-3d3fad411eb2",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": "xar_off",
+          "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+          "source": "pure-vanilla-enabled-mods-empty",
+          "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+        },
+        "campaign_goal": {
+          "format_version": 1,
+          "goal_key": "dynasty_continuity",
+          "campaign_id": "native-31254-3d3fad411eb2",
+          "origin_character_id": 31254,
+          "current_character_id": 31254,
+          "progress": {
+            "reconciled_successions": 0,
+            "last_succession": null
+          }
+        }
+      },
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+        "bridge_pid": 3504,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-3d3fad411eb2"
+      },
+      "save_history_index": 34,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 73664718,
+        "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8",
+        "date_raw": 53148144,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": "xar_off",
+          "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+          "source": "pure-vanilla-enabled-mods-empty",
+          "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+        },
+        "history_index": 34,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-3d3fad411eb2"
+      },
+      "encoded_history_rows": 34,
+      "driver_state_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\native-session\\driver-state.json"
+    }
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"save-checkpoint\",\n  \"accepted\": true,\n  \"status\": \"submitted\",\n  \"submission\": {\n    \"sequence\": 2,\n    \"requested_save_name\": \"xar_checkpoint\",\n    \"date_raw\": 53148144\n  },\n  \"backend_id\": \"native-headless\",\n  \"checkpoint\": {\n    \"status\": \"saved\",\n    \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_checkpoint.ck3\",\n    \"name\": \"xar_checkpoint.ck3\",\n    \"size\": 73664718,\n    \"sha256\": \"fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8\",\n    \"date_raw\": 53148144,\n    \"overwrite_confirmed\": true,\n    \"strategy\": \"native-autosave-command-v1\",\n    \"succession_lifecycle\": {\n      \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n      \"lifecycle\": \"ordinary_campaign_succession\",\n      \"xar_enabled\": \"xar_off\",\n      \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n      \"source\": \"pure-vanilla-enabled-mods-empty\",\n      \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n    },\n    \"history_index\": 34,\n    \"episode_character_id\": 31254,\n    \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n  },\n  \"episode_seed\": {\n    \"format_version\": 1,\n    \"name\": \"xar_episode_seed.ck3\",\n    \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_episode_seed.ck3\",\n    \"size\": 73445818,\n    \"sha256\": \"b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127\",\n    \"date_raw\": 53147928,\n    \"character_id\": 31254,\n    \"source_run_id\": \"native-31254-3d3fad411eb2\",\n    \"source_checkpoint_name\": \"xar_checkpoint.ck3\",\n    \"immutable\": true\n  },\n  \"materialization\": {\n    \"available\": true,\n    \"save_dir\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\",\n    \"mtime_ns\": 1792155466669107900\n  },\n  \"driver_state_replace_receipt\": {\n    \"scope\": \"WRITE_REPLACE_RETURNED_NOT_FSYNC\",\n    \"status\": \"replaced\",\n    \"write_replace_returned\": true,\n    \"save_binding_verified\": true,\n    \"attempt_binding\": {\n      \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_e04_12004_r184_20261016_a01\",\n      \"bridge_pid\": 3504,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\",\n      \"succession_lifecycle\": {\n        \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n        \"lifecycle\": \"ordinary_campaign_succession\",\n        \"xar_enabled\": \"xar_off\",\n        \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n        \"source\": \"pure-vanilla-enabled-mods-empty\",\n        \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n      },\n      \"campaign_goal\": {\n        \"format_version\": 1,\n        \"goal_key\": \"dynasty_continuity\",\n        \"campaign_id\": \"native-31254-3d3fad411eb2\",\n        \"origin_character_id\": 31254,\n        \"current_character_id\": 31254,\n        \"progress\": {\n          \"reconciled_successions\": 0,\n          \"last_succession\": null\n        }\n      }\n    },\n    \"recorded_session_binding\": {\n      \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_e04_12004_r184_20261016_a01\",\n      \"bridge_pid\": 3504,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n    },\n    \"save_history_index\": 34,\n    \"checkpoint\": {\n      \"status\": \"saved\",\n      \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_checkpoint.ck3\",\n      \"name\": \"xar_checkpoint.ck3\",\n      \"size\": 73664718,\n      \"sha256\": \"fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8\",\n      \"date_raw\": 53148144,\n      \"overwrite_confirmed\": true,\n      \"strategy\": \"native-autosave-command-v1\",\n      \"succession_lifecycle\": {\n        \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n        \"lifecycle\": \"ordinary_campaign_succession\",\n        \"xar_enabled\": \"xar_off\",\n        \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n        \"source\": \"pure-vanilla-enabled-mods-empty\",\n        \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n      },\n      \"history_index\": 34,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n    },\n    \"encoded_history_rows\": 34,\n    \"driver_state_path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\native-session\\\\driver-state.json\"\n  }\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "save-checkpoint",
+      "accepted": true,
+      "status": "submitted",
+      "submission": {
+        "sequence": 2,
+        "requested_save_name": "xar_checkpoint",
+        "date_raw": 53148144
+      },
+      "backend_id": "native-headless",
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 73664718,
+        "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8",
+        "date_raw": 53148144,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": "xar_off",
+          "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+          "source": "pure-vanilla-enabled-mods-empty",
+          "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+        },
+        "history_index": 34,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-3d3fad411eb2"
+      },
+      "episode_seed": {
+        "format_version": 1,
+        "name": "xar_episode_seed.ck3",
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_episode_seed.ck3",
+        "size": 73445818,
+        "sha256": "b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127",
+        "date_raw": 53147928,
+        "character_id": 31254,
+        "source_run_id": "native-31254-3d3fad411eb2",
+        "source_checkpoint_name": "xar_checkpoint.ck3",
+        "immutable": true
+      },
+      "materialization": {
+        "available": true,
+        "save_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games",
+        "mtime_ns": 1792155466669107900
+      },
+      "driver_state_replace_receipt": {
+        "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+        "status": "replaced",
+        "write_replace_returned": true,
+        "save_binding_verified": true,
+        "attempt_binding": {
+          "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+          "bridge_pid": 3504,
+          "episode_character_id": 31254,
+          "episode_run_id": "native-31254-3d3fad411eb2",
+          "succession_lifecycle": {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession",
+            "xar_enabled": "xar_off",
+            "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+            "source": "pure-vanilla-enabled-mods-empty",
+            "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+          },
+          "campaign_goal": {
+            "format_version": 1,
+            "goal_key": "dynasty_continuity",
+            "campaign_id": "native-31254-3d3fad411eb2",
+            "origin_character_id": 31254,
+            "current_character_id": 31254,
+            "progress": {
+              "reconciled_successions": 0,
+              "last_succession": null
+            }
+          }
+        },
+        "recorded_session_binding": {
+          "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+          "bridge_pid": 3504,
+          "episode_character_id": 31254,
+          "episode_run_id": "native-31254-3d3fad411eb2"
+        },
+        "save_history_index": 34,
+        "checkpoint": {
+          "status": "saved",
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+          "name": "xar_checkpoint.ck3",
+          "size": 73664718,
+          "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8",
+          "date_raw": 53148144,
+          "overwrite_confirmed": true,
+          "strategy": "native-autosave-command-v1",
+          "succession_lifecycle": {
+            "schema": "xar.ck3.succession-lifecycle-binding/v1",
+            "lifecycle": "ordinary_campaign_succession",
+            "xar_enabled": "xar_off",
+            "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+            "source": "pure-vanilla-enabled-mods-empty",
+            "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+          },
+          "history_index": 34,
+          "episode_character_id": 31254,
+          "episode_run_id": "native-31254-3d3fad411eb2"
+        },
+        "encoded_history_rows": 34,
+        "driver_state_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\native-session\\driver-state.json"
+      }
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"save-checkpoint\",\n  \"accepted\": true,\n  \"status\": \"submitted\",\n  \"submission\": {\n    \"sequence\": 2,\n    \"requested_save_name\": \"xar_checkpoint\",\n    \"date_raw\": 53148144\n  },\n  \"backend_id\": \"native-headless\",\n  \"checkpoint\": {\n    \"status\": \"saved\",\n    \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_checkpoint.ck3\",\n    \"name\": \"xar_checkpoint.ck3\",\n    \"size\": 73664718,\n    \"sha256\": \"fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8\",\n    \"date_raw\": 53148144,\n    \"overwrite_confirmed\": true,\n    \"strategy\": \"native-autosave-command-v1\",\n    \"succession_lifecycle\": {\n      \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n      \"lifecycle\": \"ordinary_campaign_succession\",\n      \"xar_enabled\": \"xar_off\",\n      \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n      \"source\": \"pure-vanilla-enabled-mods-empty\",\n      \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n    },\n    \"history_index\": 34,\n    \"episode_character_id\": 31254,\n    \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n  },\n  \"episode_seed\": {\n    \"format_version\": 1,\n    \"name\": \"xar_episode_seed.ck3\",\n    \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_episode_seed.ck3\",\n    \"size\": 73445818,\n    \"sha256\": \"b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127\",\n    \"date_raw\": 53147928,\n    \"character_id\": 31254,\n    \"source_run_id\": \"native-31254-3d3fad411eb2\",\n    \"source_checkpoint_name\": \"xar_checkpoint.ck3\",\n    \"immutable\": true\n  },\n  \"materialization\": {\n    \"available\": true,\n    \"save_dir\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\",\n    \"mtime_ns\": 1792155466669107900\n  },\n  \"driver_state_replace_receipt\": {\n    \"scope\": \"WRITE_REPLACE_RETURNED_NOT_FSYNC\",\n    \"status\": \"replaced\",\n    \"write_replace_returned\": true,\n    \"save_binding_verified\": true,\n    \"attempt_binding\": {\n      \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_e04_12004_r184_20261016_a01\",\n      \"bridge_pid\": 3504,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\",\n      \"succession_lifecycle\": {\n        \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n        \"lifecycle\": \"ordinary_campaign_succession\",\n        \"xar_enabled\": \"xar_off\",\n        \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n        \"source\": \"pure-vanilla-enabled-mods-empty\",\n        \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n      },\n      \"campaign_goal\": {\n        \"format_version\": 1,\n        \"goal_key\": \"dynasty_continuity\",\n        \"campaign_id\": \"native-31254-3d3fad411eb2\",\n        \"origin_character_id\": 31254,\n        \"current_character_id\": 31254,\n        \"progress\": {\n          \"reconciled_successions\": 0,\n          \"last_succession\": null\n        }\n      }\n    },\n    \"recorded_session_binding\": {\n      \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_e04_12004_r184_20261016_a01\",\n      \"bridge_pid\": 3504,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n    },\n    \"save_history_index\": 34,\n    \"checkpoint\": {\n      \"status\": \"saved\",\n      \"path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\profile\\\\save games\\\\xar_checkpoint.ck3\",\n      \"name\": \"xar_checkpoint.ck3\",\n      \"size\": 73664718,\n      \"sha256\": \"fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8\",\n      \"date_raw\": 53148144,\n      \"overwrite_confirmed\": true,\n      \"strategy\": \"native-autosave-command-v1\",\n      \"succession_lifecycle\": {\n        \"schema\": \"xar.ck3.succession-lifecycle-binding/v1\",\n        \"lifecycle\": \"ordinary_campaign_succession\",\n        \"xar_enabled\": \"xar_off\",\n        \"pact_contract\": \"absent_by_fresh_campaign_xar_off_contract\",\n        \"source\": \"pure-vanilla-enabled-mods-empty\",\n        \"environment_sha256\": \"9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef\"\n      },\n      \"history_index\": 34,\n      \"episode_character_id\": 31254,\n      \"episode_run_id\": \"native-31254-3d3fad411eb2\"\n    },\n    \"encoded_history_rows\": 34,\n    \"driver_state_path\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\live12004-r184-window-capture-a01\\\\state-a02\\\\native-session\\\\driver-state.json\"\n  }\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:15:55.848891+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+    "prepare",
+    "--assets-root",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01",
+    "--game-dir",
+    "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "--state-dir",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02",
+    "--output-dir",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02",
+    "--bridge-dll",
+    "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+    "--bridge-injector",
+    "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+    "--bridge-host",
+    "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_host.exe",
+    "--pipe-name",
+    "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+    "--checkpoint-save",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "--checkpoint-receipt",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+    "--checkpoint-build-receipt",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\prepared-a01\\prepared.json",
+    "--display-mode",
+    "windowed",
+    "--expected-game-version",
+    "1.20.0.4"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\ROOT-PREPARE-a02.stdout.bin",
+    "bytes": 11917,
+    "sha256": "00550f8da0d46b27e8da0ebac97c5746069d039c5b1a3f0bdc40cad59e45101e"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\ROOT-PREPARE-a02.stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -57,3 +57,9 @@
 | 无 trap、无 callback、null raw、缓存净差0 | 无可用观测或有限区间未见记录 | 不能说“军费为零/没有收费/没有writer” |
 
 当前 R08 可用的是来源合同、raw/NET 对账和替代费率估计边界；没有新的 qualified paid-maintenance 金额。影片需要“实际已付军费”镜头时，这一格继续未完成。所有小来源清单采用仓库相对路径，供其他机器和智能体阅读；安装、权限、进程与本次容量状态不能随知识文件迁移。
+
+## 2026-10-16 追加：费率差额的 raw resource4 应用链
+
+[四包便携整合与精确原件](episode04-r08-rate-resource4-application-12004.md)补齐 `28F7840` 后段→`2BD3320`/current第十槽→`28B9950` selector4 与 `2BAFF30` 的静态分支：物理目标为 `context+4A0`，其中 gate 完整54B、scalar完整938B。原件内含精确hex/原始记录和stdlib离线验证器，跨机器不依赖来源C盘。keyAE只持有consumer合同，正式注册/具名writer/刷新仍未知。
+
+这是本页上文“后续getter不能作为同次先前SETTLEMENT直接producer”的进一步来源，不改变历史实际NET/copy事实，也不证明传递副作用或跨轮刷新不存在。raw4/4A0未获金币或军事账户业务名，c/d军费来源→同次付款→payer/cadence仍未闭合，paid保持null；本次零实机/SDK/EXE读取，不增加R08或动态分子。来源与整合机器 `desktop-3fevhd2-1c74096080`，精确图像和各原始时间见链接；来源机器文件身份不可外推为目标机器运行资格。

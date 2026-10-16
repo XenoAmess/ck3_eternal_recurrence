@@ -1,0 +1,9 @@
+{
+  "schema": "xar.promo.recorder-job/v1",
+  "state": "NORMAL_TREE_EMPTY",
+  "pid": 22212,
+  "returncode": 0,
+  "job_active_processes": 0,
+  "error": null,
+  "at_utc": "2026-10-16T12:51:07.474944+00:00"
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "xar.r184-emergency-small-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-16T13:34:29.199692+00:00",
+  "policy_version": "1.0.0",
+  "source_receipts": [
+    {
+      "name": "worker-root-delivery.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\ROOT-DELIVERY.actual-a01.json",
+      "bytes": 8205,
+      "sha256": "39c09b138dd5d41688d42e9229ba0e36f5617d24a0335659d49723097494f224"
+    },
+    {
+      "name": "native-root-delivery.actual-a02.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\native-intermediate-retirement-r184-a01\\ROOT-DELIVERY.actual-a02.json",
+      "bytes": 10472,
+      "sha256": "a65f00f7fa583c879973dc5c7b80b81df6b956536c8665ea4fc993b1021c06b6"
+    },
+    {
+      "name": "daily-readonly-task-followup.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r184-a01\\SUMMARY.actual-a01.json",
+      "bytes": 2374,
+      "sha256": "09e65ba81ad75df7edf8a3762821b91c1fb176725ceab0e5089557244659b759"
+    },
+    {
+      "name": "worker-journal-index.actual-a01.json.gz",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\JOURNALS.audit-index.actual-a01.json.gz",
+      "bytes": 5364,
+      "sha256": "97005ed5c0e1003e23194cff265ea08c8e56f1707bc0ca78b674246f5b1fc18f"
+    },
+    {
+      "name": "D-four-partials.result.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\D-FOUR-PARTIALS.result.actual-a01.json",
+      "bytes": 3956,
+      "sha256": "477dd915a5e64b4f0c10e3bf1bc66da2551f117db16c3a35ff051a68769c1cba"
+    },
+    {
+      "name": "C-R166-TTL.result.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-R166-TTL.result.actual-a01.json",
+      "bytes": 1783,
+      "sha256": "483607a16225f5d355f275f3cca409a89adfe23d81f01f4f320b78489649b3f9"
+    },
+    {
+      "name": "C-shader-robert.result.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-ROBERT.result.actual-a01.json",
+      "bytes": 2095,
+      "sha256": "1aa3b28bfdf7ea470551a73589853a9c3086623fdc1b9bc785172bc7852a9a75"
+    }
+  ],
+  "files": [
+    {
+      "name": "worker-root-delivery.actual-a01.json",
+      "bytes": 8205,
+      "sha256": "39c09b138dd5d41688d42e9229ba0e36f5617d24a0335659d49723097494f224"
+    },
+    {
+      "name": "native-root-delivery.actual-a02.json",
+      "bytes": 10472,
+      "sha256": "a65f00f7fa583c879973dc5c7b80b81df6b956536c8665ea4fc993b1021c06b6"
+    },
+    {
+      "name": "daily-readonly-task-followup.actual-a01.json",
+      "bytes": 2374,
+      "sha256": "09e65ba81ad75df7edf8a3762821b91c1fb176725ceab0e5089557244659b759"
+    },
+    {
+      "name": "worker-journal-index.actual-a01.json.gz",
+      "bytes": 5364,
+      "sha256": "97005ed5c0e1003e23194cff265ea08c8e56f1707bc0ca78b674246f5b1fc18f"
+    },
+    {
+      "name": "D-four-partials.result.actual-a01.json",
+      "bytes": 3956,
+      "sha256": "477dd915a5e64b4f0c10e3bf1bc66da2551f117db16c3a35ff051a68769c1cba"
+    },
+    {
+      "name": "C-R166-TTL.result.actual-a01.json",
+      "bytes": 1783,
+      "sha256": "483607a16225f5d355f275f3cca409a89adfe23d81f01f4f320b78489649b3f9"
+    },
+    {
+      "name": "C-shader-robert.result.actual-a01.json",
+      "bytes": 2095,
+      "sha256": "1aa3b28bfdf7ea470551a73589853a9c3086623fdc1b9bc785172bc7852a9a75"
+    },
+    {
+      "name": "combined.actual-a01.json",
+      "bytes": 4755,
+      "sha256": "89a6b0d250824610e0c1cbd03b9b8c70ea8e1ecab26af975d9fb393694006ff4"
+    },
+    {
+      "name": "freeze_evidence.py",
+      "bytes": 15465,
+      "sha256": "edb502c44cc53cc2eb9678124d3b801161f1a6cb583f246d21dfb260901164e6"
+    }
+  ],
+  "maintenance_doc": {
+    "name": "storage-retention-2026-10-16-r184-emergency.md",
+    "bytes": 5640,
+    "sha256": "f26e56bb0599b645f4c95acd7aab6981e60d8ae0f8c344b19d3f00698811a0d7"
+  },
+  "external_large_journals_copied": false,
+  "automatic_gc_implemented": false
+}

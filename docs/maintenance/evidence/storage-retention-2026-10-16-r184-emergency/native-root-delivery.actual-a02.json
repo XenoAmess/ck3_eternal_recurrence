@@ -1,0 +1,225 @@
+{
+  "schema": "xar.r184.old-native-retirement-actual-closure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T12:46:00.689031+00:00",
+  "status": "ACTUAL_COMPLETED_SCOPE_STOPPED",
+  "scope": "Only19 closed C project native build roots proved by retained CMakeCache and source CMakeLists; LIB further restricted to20 exact four project target names in11 roots proved by generated Ninja output/IMPLIB rules. a27 whole root excluded. a26 PDB and LIB excluded.",
+  "authority": "Root delegated qualified actual cleanup, subsequently explicitly added older PDB then exact project LIB with a26/a27/thirdparty exclusions; final instruction stop after LIB honored.",
+  "policy": "Common storage policy1.0.0 superseded_or_rebuildable_may_expire_early. Early purpose retirement due actual current scene capacity block; no natural336h expiry claim.",
+  "actual_distinct_deleted_leaf_count": 3020,
+  "actual_deleted_logical_bytes": 1260877638,
+  "actual_deleted_singlelink_allocation_bytes": 1267093504,
+  "actual_failed_or_retained_selected": 0,
+  "unique_path_check_passed": true,
+  "batches": [
+    {
+      "attempt": "execute-batch01-a01",
+      "receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch01-a01/RESULT.actual.json",
+        "bytes": 1686,
+        "sha256": "34fccc934288ef9061b85b02ca3cbe0f140b21c924f40a3b98af35c21cafe4ae"
+      },
+      "plan": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/EXACT-PLAN.actual.json.gz",
+        "bytes": 35085,
+        "sha256": "a36cd1bb44a5fdfbadccb263fe02de15ca1bb38732d2fbda2785e247d63fcaca"
+      },
+      "journal": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch01-a01/ITEMS.actual.jsonl.gz",
+        "bytes": 45173,
+        "sha256": "cb0678a768ed40ff659cb31a1c6c070849c57940adf5cf262ec598b0ac16baa7"
+      },
+      "consumer_receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch01-a01/FRESH-CONSUMERS.actual.json",
+        "bytes": 394,
+        "sha256": "77d000926fb0478192d44b022f955e0c7e9ee3f793ad743b82f67fac6569f7b7"
+      },
+      "actual_deleted": 1000,
+      "logical_bytes": 712262270,
+      "allocation_bytes": 714309632,
+      "at_utc": "2026-10-16T12:37:39.129912+00:00",
+      "free_before": {
+        "C": 27252404224,
+        "D": 48300777472
+      },
+      "free_after": {
+        "C": 27966132224,
+        "D": 48300777472
+      }
+    },
+    {
+      "attempt": "execute-batch02-a01",
+      "receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch02-a01/RESULT.actual.json",
+        "bytes": 1794,
+        "sha256": "3df573523b97fb0cb3c0ca99feb8d4996d9aa2396632de232575dd2e0ddb1e80"
+      },
+      "plan": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/EXACT-PLAN.batch02.actual.json.gz",
+        "bytes": 33772,
+        "sha256": "6ef0870148520d945fbec173ca9d4bdaa0d54a8209e44ee272f3fef5bc434088"
+      },
+      "journal": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch02-a01/ITEMS.actual.jsonl.gz",
+        "bytes": 44217,
+        "sha256": "4e9e42e1b7c8570339585984f2c37fa34dd1f9897595ee8d454f1462f5c878ee"
+      },
+      "consumer_receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch02-a01/FRESH-CONSUMERS.actual.json",
+        "bytes": 394,
+        "sha256": "3c95dc917429cde4e66c4abaa8d81f82d8cc26c64661e8a61c5ad72f8acd47a9"
+      },
+      "actual_deleted": 1000,
+      "logical_bytes": 118871923,
+      "allocation_bytes": 120975360,
+      "at_utc": "2026-10-16T12:39:57.794732+00:00",
+      "free_before": {
+        "C": 27966083072,
+        "D": 48300224512
+      },
+      "free_after": {
+        "C": 28087037952,
+        "D": 48300224512
+      }
+    },
+    {
+      "attempt": "execute-batch03-a01",
+      "receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch03-a01/RESULT.actual.json",
+        "bytes": 1791,
+        "sha256": "4903399cee958a36d1fac55944896040d46dbcd58073a7c0ba2982dc7bebfaf4"
+      },
+      "plan": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/EXACT-PLAN.batch03.actual.json.gz",
+        "bytes": 33365,
+        "sha256": "1eee2217023bc1f6cf517b44017a7ed42fc5d057a04d7b052e28ea4dd9ef2d3c"
+      },
+      "journal": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch03-a01/ITEMS.actual.jsonl.gz",
+        "bytes": 43976,
+        "sha256": "97f2c444c0cbf65e03d7fbead44b540153cd7f312d0f43d3c84435af49b41b21"
+      },
+      "consumer_receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-batch03-a01/FRESH-CONSUMERS.actual.json",
+        "bytes": 394,
+        "sha256": "9060fb1aff622838a30d53465f56e9e9126daf4a476c66aed39cfe518395a57b"
+      },
+      "actual_deleted": 1000,
+      "logical_bytes": 37801609,
+      "allocation_bytes": 39829504,
+      "at_utc": "2026-10-16T12:41:42.096446+00:00",
+      "free_before": {
+        "C": 28083290112,
+        "D": 48300224512
+      },
+      "free_after": {
+        "C": 28123205632,
+        "D": 48300224512
+      }
+    },
+    {
+      "attempt": "execute-project-LIB-a01",
+      "receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-project-LIB-a01/RESULT.actual.json",
+        "bytes": 1859,
+        "sha256": "44f538336a2f5d48063ef608e25e77ef188cb7399b2813bb8be27262217944c7"
+      },
+      "plan": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/EXACT-PLAN.project-LIB.actual.json.gz",
+        "bytes": 4816,
+        "sha256": "581d3a95e27190d724d4d46f663bfec72c9ec05f87f711bf8d1c381c17df0817"
+      },
+      "journal": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-project-LIB-a01/ITEMS.actual.jsonl.gz",
+        "bytes": 1309,
+        "sha256": "f816e5e2f61f0614de962324ae6e00f801cfbf776f4a3f9beee3472973660f5f"
+      },
+      "consumer_receipt": {
+        "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/execute-project-LIB-a01/FRESH-CONSUMERS.actual.json",
+        "bytes": 392,
+        "sha256": "2949be3294d5aa9163ef0bf751630679ecae73826a45223f7046628051d95185"
+      },
+      "actual_deleted": 20,
+      "logical_bytes": 391941836,
+      "allocation_bytes": 391979008,
+      "at_utc": "2026-10-16T12:44:01.945178+00:00",
+      "free_before": {
+        "C": 28447219712,
+        "D": 48300224512
+      },
+      "free_after": {
+        "C": 28851322880,
+        "D": 48300224512
+      }
+    }
+  ],
+  "a26_four_libraries_current_metadata_unchanged": [
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r183-a26/xar_bridge_injector.lib",
+      "b": 149844,
+      "ino": 562949955917950,
+      "mtime_ns": 1792130599400542800,
+      "links": 1
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r183-a26/xar_bridge_protocol.lib",
+      "b": 119190,
+      "ino": 844424932628568,
+      "mtime_ns": 1792130599383224700,
+      "links": 1
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r183-a26/xar_ck3_12002_runtime.lib",
+      "b": 130633962,
+      "ino": 562949955917963,
+      "mtime_ns": 1792130606625415500,
+      "links": 1
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r183-a26/xar_ck3_bridge.lib",
+      "b": 2876,
+      "ino": 844424932628877,
+      "mtime_ns": 1792130761514693400,
+      "links": 1
+    }
+  ],
+  "a26_LIB_retained_logical_bytes": 130905872,
+  "protected_EXE_DLL_source_recipe_report_metadata_changes": 0,
+  "remaining_small_OBJ_not_deleted_after_Root_stop": "456 nonzero OBJ from original eligible count remain; no further walk or deletion after final LIB batch. Two zero-length metadata OBJ excluded.",
+  "actual_deleted_suffix_counts": {
+    ".obj": 3000,
+    ".lib": 20
+  },
+  "PDB_PCH_IPDB_IOBJ_ILK_deleted": 0,
+  "LIB_deleted": 20,
+  "OBJ_deleted": 3000,
+  "whole_directories_deleted": 0,
+  "artifact_OBJ_LIB_PDB_EXE_DLL_payload_body_hash_bytes": 0,
+  "small_generated_Ninja_CMake_source_recipe_hashes_were_read": true,
+  "scope_source_Ninja_CMake_recipe_pins_in_LIB_plan": true,
+  "available_bytes_observed": {
+    "C": 29563994112,
+    "D": 48300224512
+  },
+  "free_delta_not_exclusively_attributed_to_our_cleanup": true,
+  "recording_or_scene_admission_claim": false,
+  "scope_goal_2_5GiB_not_claimed": true,
+  "scope_capacity_limit": "Qualified native scope yielded1.267GB allocation; disk_reclamation_worker independently handles remaining cache gap, not credited here.",
+  "old_payload_availability": "Deleted exact old leaf bytes are retired_unavailable; retained original manifests/recipes/sources and EXE/DLL not rewritten; no same-name replacements.",
+  "rebuild": "Rebuild using retained original CMakeCache/generated Ninja and recorded source homes/checkouts; intermediate/link outputs may regenerate, no historical object byte-identity promise.",
+  "failed_source_plan_preserved": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/LIB-SOURCE-PLAN-FAILURE.actual-a01.json",
+    "bytes": 696,
+    "sha256": "09cb37241be51018545ae6349876cac3382b028ff1c74342df32c3766c3c4163"
+  },
+  "prior_summary_label_correction": {
+    "prior": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/native-intermediate-retirement-r184-a01/ROOT-DELIVERY.actual.json",
+      "bytes": 9783,
+      "sha256": "5199b511ca38ef79fa3218151ecdc924d882463492503840334f16759d0b48ac"
+    },
+    "reason": "Prior source_recipe_or_output_payload_body_hash_bytes label incorrectly included recipe source; actual0 applies to OBJ/LIB/PDB/EXE/DLL payload bodies. Small Ninja/CMake recipe bodies were SHA-pinned; this a02 is authoritative."
+  },
+  "main_SDK_game_desktop_security_or_build_operations": 0,
+  "task_closed_no_further_deletion": true
+}

@@ -1,0 +1,390 @@
+{
+  "schema": "xar.e04.r184.portable-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:24:23.610641+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "scene_root": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01",
+  "original_files": [
+    {
+      "relative_path": "ALLOCATION.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r184-owner-prep-a01/ALLOCATION.actual-a01.json",
+      "bytes": 370,
+      "sha256": "457fc9cee74445e9089f4a0fe144ce3152870a3c415ed3a5c043c115fb6c7744",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "A27-PRODUCTION-QUALIFIED.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r184-owner-prep-a01/A27-PRODUCTION-QUALIFIED.actual-a01.json",
+      "bytes": 2576,
+      "sha256": "eb632e44aae4f16d68e53269f4470f1b248d0b9e3e261c67af710203f6d93883",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "allocated-context.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/allocated-context.actual-a01.json",
+      "bytes": 1704,
+      "sha256": "0a11f3f0c11af5b4c825f0469ccf3c4fdd0cd1e9c78c7bbfed978adff7d183f9",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "ROOT-PREPARE-a02.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/ROOT-PREPARE-a02.actual.json",
+      "bytes": 2273,
+      "sha256": "18bb2fc771c4aacb4c203e5d3e9072463ac1a6be4cbf0a249a9d39e1b8d1673e",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "prepared.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/prepared-a02/prepared.json",
+      "bytes": 11588,
+      "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "environment-manifest.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/prepared-a02/environment-manifest.json",
+      "bytes": 1674,
+      "sha256": "79891289fdeaeec1f323e8f7f62b63aadf4e6566726859eb183986187baee057",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "steam-offline-reviewed.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/steam-offline-reviewed.actual-a01.json",
+      "bytes": 1278,
+      "sha256": "b05670d3d85212f9f3268ab6160d9e4a21ad69112c633b8c13d65f84553ce469",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "runtime-actor-identity.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/runtime-actor-identity.actual-a01.json",
+      "bytes": 6050,
+      "sha256": "048bcaee82fc2f0dc98153e5b7c02598ade08d800d8c55017986edcf673043ca",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "identity-guard.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-identity-guard.actual.json",
+      "bytes": 1711,
+      "sha256": "a265a19d9a450a9daa863c8d461680d19269ab9984b2da4092dcf54192ccf102",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "identity-observe.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-identity-observe.actual.json",
+      "bytes": 2678,
+      "sha256": "ce97e577fa0217cecf2c90b37de70ae40bb03bb488a5f8fc651ba7047e6d6fb8",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "film-input.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/film-input.actual-a01.json",
+      "bytes": 4616,
+      "sha256": "bda5b5bee770312ee611865101ae91794096651a84d390e433228272446bf9ce",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "preflight.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-preflight.actual.json",
+      "bytes": 2064,
+      "sha256": "4a9654e346e1ad059a19256bfe71fb593b276a03788ab9ed2fef8dcbfbcae864",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.intent.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/intent.json",
+      "bytes": 52631,
+      "sha256": "6d2d885c3674696f0d642b278151f9a361bf2d21b117de26c903835058fb8e89",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.process-ready.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/process-ready.json",
+      "bytes": 3554,
+      "sha256": "a6e0fbad91aba1592416c91821c92c881e7a18e311485d6f125549adbfe9ec84",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.deadline-admission-at-spawn.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/deadline-admission-at-spawn.json",
+      "bytes": 1891,
+      "sha256": "b9b0b5ecd2ac257709602c4be68e8709391218ff0ec488cadaae92f28ab3bb78",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.result.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/result.json",
+      "bytes": 3298,
+      "sha256": "0fead48f8fe13314445a18898f18677cc0164601873297a4507fb9000ba583f3",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.job-start.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/job-start.json",
+      "bytes": 1029,
+      "sha256": "98f7b03ee36f7bc499ca9531230b9c6fba5d402703dfd7213cb5866e4bed8c9e",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.job-terminal.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01/job-terminal.json",
+      "bytes": 205,
+      "sha256": "bb26f96bb24f326ef7b37a47f1fb9c2e7dd993f3efcb101680188674acea6c01",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "media.audit.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-a01/audit.actual.json",
+      "bytes": 16117,
+      "sha256": "a1b51132cab0f17516b050f6598df59c10c5507329c64c008942f606294215da",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "media.probe.stdout",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-a01/probe.stdout",
+      "bytes": 2498,
+      "sha256": "cd4e2c184257bb31a4d5ede246fe3d8e1266dd2632130364e7d7b241ab8717d1",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "media.probe.stderr",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-a01/probe.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "media.full-av-decode.command.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-a01/full-av-decode.command.json",
+      "bytes": 635,
+      "sha256": "1e5b5955cfe5ef656b969412cfa753c59e9326c27d1ffc3d6931a6abb8db340f",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "media.full-av-decode.stderr",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-a01/full-av-decode.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "film-result.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-film-result.actual.json",
+      "bytes": 505,
+      "sha256": "f2decd2c42bf1c05422c75c132b39995a13e857b9f1d9a48568ccae1187030cb",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "NORMAL-SAVE.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-close-a01/NORMAL-SAVE.actual.json",
+      "bytes": 3806,
+      "sha256": "6699c6b3ea5e8c380aac8288a21db6fba80259242b64ac6c5a60ef1226e35612",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "SCREEN-RELEASE.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-close-a01/SCREEN-RELEASE.actual.json",
+      "bytes": 4052,
+      "sha256": "52f499d5c2361be591ccf65ea2362af0918189ad39d0703703ba4c8d9b46056b",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "bootstrap-result.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/bootstrap-result.json",
+      "bytes": 15026,
+      "sha256": "89258a5c43d8d7ab47306de137d7e4648b1bb8e3ee7a7da461702f4282341205",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "recording-session-deadline.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/recording-session-deadline.json",
+      "bytes": 1402,
+      "sha256": "3025a57b24e0c43d68318ca7e2e17bd7d2d370f7070a1095701b064d00200f24",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "close-save-once.response.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-close-a01-02-save-once.json",
+      "bytes": 20290,
+      "sha256": "11a034632ff18d716090c6404316c210d0b4ac840552148e94998f944e1ceecf",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "close-after-snapshot.response.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-close-a01-03-after-snapshot.json",
+      "bytes": 125243,
+      "sha256": "ad99c2c467fca9aa02d7ca061d8b00503968c3fa4c694e6cddc0dd179cf38d21",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "recorder-start-once.response.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-03-recorder-start-once.json",
+      "bytes": 5982,
+      "sha256": "65b4338df885547889b3c0d4d2104be539abf00ef41c577a150ea0c16188cb23",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "recorder-finish-once.response.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-99-recorder-finish-once.json",
+      "bytes": 4082,
+      "sha256": "b1cedd1fce9281e58b5acb85e9393146e19ee7c0caf5dd11af351d543f7d4e86",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d09-resume-once.response.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0184/responses/r184-film-a01-d09-resume-once.json",
+      "bytes": 1607,
+      "sha256": "0c11667c296ab4ba0bc42ca8e191a0faa46a872f648e876e8a0b3baedfe5373f",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "CAPACITY.actual-root-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/capacity-r183-a01/R184-CAPACITY.actual-root-a01.json",
+      "bytes": 70420,
+      "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "early-pause.ACTUAL-EVIDENCE.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r184-early-pause-analysis-a01/ACTUAL-EVIDENCE.json",
+      "bytes": 21143,
+      "sha256": "0333ee698672bc72509ad775971183d2e63b5c007c40976167fd92dcb7beb55a",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "early-pause.FINDING.md",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r184-early-pause-analysis-a01/FINDING.md",
+      "bytes": 953,
+      "sha256": "b9ef0811ea8b68ffc46d9e78a17001407db719006e010696e9325bf72ba13486",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "early-pause.REGRESSION.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r184-early-pause-analysis-a01/REGRESSION.actual.json",
+      "bytes": 1186,
+      "sha256": "9d606563fd63f12084db3d4c5e416ab7ebb03fcc363b2106dabcc210f4571cf2",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d01-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d01-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "4844f8d102cf2642626ee0c688eb6016a495dea46d318fb25f425a2bf05ce637",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d02-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d02-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "bf9adeb5ec1586aa2602f97dfdda03396cba31b2ac58d9ae178aa244af519190",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d03-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d03-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "c6f8094538b1544ba0f34761c59f66d360995dcbea81c906f3a58983016dea8a",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d04-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d04-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "a4f8303633901b57c1df959daeca5f256bfa618d8fdd2d874a18aa3768025b49",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d05-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d05-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "2e1a614714a4f6ecbf3c8f47d1a439d894a3c823cf3fbb47a3b068c815f785af",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d06-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d06-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "d7888c143706f1b717d63cc3db9d91a6c34ac36d9467da8267b8b92f2260cc06",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d07-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d07-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "051c5720b1f6df61353aa4984494548daf964379ec655faa572f013b354225b9",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "d08-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/r184-film-a01-d08-complete.actual.json",
+      "bytes": 1322,
+      "sha256": "1a03b3c0759b7ff72bda57ac27fdaae6a6aaece295fa29abbabd7ab90de5de83",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "root-three-frame-review.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/media-audit-input-a01/root-three-frame-review.actual-a01.json",
+      "bytes": 2535,
+      "sha256": "9569157716c7c241f5774398dd10ff6fbd6ba06fb4de480556baa01163d3f539",
+      "copy_kind": "exact-original-bytes"
+    }
+  ],
+  "generated_files": [
+    {
+      "relative_path": "portable-facts.actual.json",
+      "bytes": 3804,
+      "sha256": "9e12908aa359c1868a1179d9aa8b09b5a95a2cc7952214e15f452ed87fb6cd0a"
+    },
+    {
+      "relative_path": "three-still-offline-review.actual.json",
+      "bytes": 2563,
+      "sha256": "e94d78c512248ff05b18eb30997b21ef2a6a0965efe5f92b8002ca62bc3cc4f8"
+    }
+  ],
+  "runtime_git_source_pins": [
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "commit": "163530f1bbcabe5a97854625b3fab7568006ee65",
+      "bytes": 38107,
+      "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d",
+      "crc32_hex": "ad621924",
+      "bytes_source": "git object at runtime source commit; no claim about later working-tree bytes"
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_recorder.py",
+      "commit": "163530f1bbcabe5a97854625b3fab7568006ee65",
+      "bytes": 22701,
+      "sha256": "a1384fea906d2c810ace78420087aea99b6a4ea29ddc0c8c61a163afd59699d3",
+      "crc32_hex": "490183f2",
+      "bytes_source": "git object at runtime source commit; no claim about later working-tree bytes"
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_deadline.py",
+      "commit": "163530f1bbcabe5a97854625b3fab7568006ee65",
+      "bytes": 10850,
+      "sha256": "c09ee60106ec52215390828b4980ac7909e3f09e8cd768d01e1209bc68cacb71",
+      "crc32_hex": "0a96e3e8",
+      "bytes_source": "git object at runtime source commit; no claim about later working-tree bytes"
+    }
+  ],
+  "external_only_scope": "Raw/PNG/save/DLL/EXE/fullDefender/sdk-ready and all but one full snapshot are NOT bundled. Existing receipts retain exact external pins for identity/full campaign root/clock poll trace and frame timeline. This is a selective portable record, not a full portable closure replay.",
+  "external_pin_sources": [
+    "runtime-actor-identity.actual-a01.json",
+    "media.audit.actual.json",
+    "early-pause.ACTUAL-EVIDENCE.json",
+    "NORMAL-SAVE.actual.json"
+  ],
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "write_ceiling_bytes": 524288,
+    "free_bytes_at_task_start": {
+      "C:/": 34270007296,
+      "D:/": 48300142592
+    },
+    "heavy_write_performed": false,
+    "quota_or_protection_renewed": false,
+    "record_review_at_utc": "2027-04-14T13:24:23.610641+00:00"
+  },
+  "qualification_boundary": "All machine facts are source-machine/time bound. No new business,clean,human approval or dynamic0/11 numerator promotion."
+}

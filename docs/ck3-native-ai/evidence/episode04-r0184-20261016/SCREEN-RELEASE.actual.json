@@ -1,0 +1,57 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:07:47.690137+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "bootstrap_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\bootstrap-result.json",
+    "bytes": 15026,
+    "sha256": "89258a5c43d8d7ab47306de137d7e4648b1bb8e3ee7a7da461702f4282341205"
+  },
+  "config": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 4616,
+    "sha256": "bda5b5bee770312ee611865101ae91794096651a84d390e433228272446bf9ce"
+  },
+  "normal_save": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+    "bytes": 3806,
+    "sha256": "6699c6b3ea5e8c380aac8288a21db6fba80259242b64ac6c5a60ef1226e35612"
+  },
+  "guarded_click": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-close-a01\\normal-exit\\exit-click-a01.png.json",
+    "bytes": 1640,
+    "sha256": "c7fbce553b8f675bf7ca631565951916d7ea15471379b33f987e469d0d32c471"
+  },
+  "journal": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\screen-lease-journal.jsonl",
+    "bytes": 15378,
+    "sha256": "6560c30f35657218bc1efabcc81102b61ddcf55b0e3c6b41d359b9a850c25bfd"
+  },
+  "argv": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "D:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "e04-live-20261016-r0184",
+    "--expected-sequence",
+    "5762",
+    "--summary",
+    "machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0184 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged"
+  ],
+  "operation_replay_forbidden": true,
+  "exit_code": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"163530f1bbcabe5a97854625b3fab7568006ee65\"\n    },\n    \"last_sequence\": 5763,\n    \"next_step\": \"\",\n    \"pid\": 22524,\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0184 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"task_id\": \"e04-live-20261016-r0184\",\n    \"updated_at_utc\": \"2026-10-16T13:07:47.648358+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 5763,\n    \"event_id\": \"5fa7249b310448c29dca3b7b7c587078\",\n    \"timestamp_utc\": \"2026-10-16T13:07:47.649628+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"e04-live-20261016-r0184\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0184 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"163530f1bbcabe5a97854625b3fab7568006ee65\"\n    }\n  }\n}\n",
+  "stderr": "",
+  "task_done_resources_empty": true,
+  "normal_exit_zero": true,
+  "game_exit_code": 0,
+  "capacity_reservation_returned": false,
+  "storage_followup": "Root must perform shared-policy close check and return exact reservation separately"
+}

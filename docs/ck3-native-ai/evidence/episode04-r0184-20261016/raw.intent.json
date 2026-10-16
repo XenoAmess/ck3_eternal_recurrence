@@ -1,0 +1,1445 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:50:41.624890+00:00",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostats",
+    "-n",
+    "-thread_queue_size",
+    "512",
+    "-f",
+    "gdigrab",
+    "-framerate",
+    "30",
+    "-draw_mouse",
+    "1",
+    "-offset_x",
+    "640",
+    "-offset_y",
+    "360",
+    "-video_size",
+    "1280x720",
+    "-i",
+    "desktop",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-crf",
+    "18",
+    "-pix_fmt",
+    "yuv420p",
+    "-fps_mode",
+    "cfr",
+    "-t",
+    "90",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\raw.mkv"
+  ],
+  "source_image": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\ck3-original-005.png",
+    "bytes": 1858090,
+    "sha256": "a612e715369a96eed92370cf63cebe50a4d03e11e6219e04ca26aba2b5304a22"
+  },
+  "preflight_desktop": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\preflight-desktop.png",
+    "bytes": 1857117,
+    "sha256": "d54a026d653f3d7c9407b61c31fe6f12cc8bad191396ac687d5628e1229fa7a9"
+  },
+  "desktop": [
+    2560,
+    1440
+  ],
+  "snapshot": {
+    "date_raw": 53147928,
+    "speed": 3,
+    "paused": true,
+    "local_player_id": 1,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 3,
+        "date_raw": 53147928,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "played_character_gold": {
+      "raw": 25804687,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 221081550,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 10725000,
+      "scale": 100000
+    },
+    "one_life_settlement": null,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "active_wars": [
+      {
+        "war_id": 4,
+        "player_side": "attacker",
+        "primary_opponent_character_id": 34960,
+        "player_is_primary_war_leader": true,
+        "enemy_primary_default_raise_province_id": 2645,
+        "targeted_title_ids": [
+          2191
+        ],
+        "war_objective_province_ids": [
+          2635
+        ],
+        "objective_province_states": [
+          {
+            "province_id": 2635,
+            "occupation_observable": true,
+            "is_occupied": false,
+            "occupying_character_id": null,
+            "fort_level": 6,
+            "garrison_size": 520,
+            "besieging_strength": 1184,
+            "siege_observable": true,
+            "active_siege": {
+              "siege_id": 33554440,
+              "besieging_army_id": 18,
+              "player_army_besieging": true,
+              "progress_fraction": {
+                "raw": 201,
+                "scale": 100000
+              },
+              "current_work": {
+                "raw": 72373,
+                "scale": 100000
+              },
+              "total_work": {
+                "raw": 35999650,
+                "scale": 100000
+              },
+              "remaining_work": {
+                "raw": 35927277,
+                "scale": 100000
+              },
+              "days_left": 497,
+              "ordinary_daily_progress": null,
+              "current_phase_length": null,
+              "prepared_phase_length": null,
+              "phase_counter": null,
+              "can_advance": null,
+              "phase_event_state": null,
+              "prepared_selected_phase_event_enum": null,
+              "assault_observable": true,
+              "breach_level": 0,
+              "walls_breached": false,
+              "assault_in_progress": false,
+              "can_start_assault": false,
+              "can_stop_assault": false,
+              "assault_daily_progress": {
+                "raw": 0,
+                "scale": 100000
+              },
+              "assault_daily_casualties": 0,
+              "province_unit_occurrences": [
+                {
+                  "occurrence_index": 0,
+                  "public_unit_id": 18,
+                  "native_carmy_id": 18,
+                  "eligible": true,
+                  "qualified_regiment_ids": [
+                    50,
+                    51,
+                    52,
+                    53,
+                    54,
+                    55,
+                    56,
+                    57,
+                    58,
+                    60,
+                    61,
+                    62,
+                    63,
+                    64,
+                    65,
+                    66,
+                    67,
+                    80,
+                    81,
+                    82,
+                    93
+                  ]
+                }
+              ]
+            },
+            "current_besieging_army_selection": {
+              "native_carmy_id": 18,
+              "public_unit_id": 18,
+              "controllable": true
+            }
+          }
+        ],
+        "player_relative_war_score": -81,
+        "allied_armies": [
+          {
+            "army_id": 18,
+            "owner_character_id": 31254,
+            "soldiers": null,
+            "current_province_id": 2635,
+            "move_target_province_id": null,
+            "move_target_observable": false,
+            "controllable": true,
+            "source": "native",
+            "route_province_ids": [],
+            "route_read_status": "complete_empty",
+            "route_source_count": 0,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "sieging",
+            "army_state_code": 3,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "enemy_armies": [
+          {
+            "army_id": 16777222,
+            "owner_character_id": 34960,
+            "soldiers": null,
+            "current_province_id": 2624,
+            "move_target_province_id": 1036,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              1036
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 1,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 16777228,
+            "owner_character_id": 36045,
+            "soldiers": null,
+            "current_province_id": 2624,
+            "move_target_province_id": 1036,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              1036
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 1,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 22,
+            "owner_character_id": 34241,
+            "soldiers": null,
+            "current_province_id": 2624,
+            "move_target_province_id": 1036,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              1036
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 1,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          },
+          {
+            "army_id": 32,
+            "owner_character_id": 33732,
+            "soldiers": null,
+            "current_province_id": 2624,
+            "move_target_province_id": 2635,
+            "move_target_observable": true,
+            "controllable": false,
+            "source": "native",
+            "route_province_ids": [
+              1036,
+              8653,
+              8645,
+              1032,
+              2635
+            ],
+            "route_read_status": "complete_nonempty",
+            "route_source_count": 5,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "moving",
+            "army_state_code": 7,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null
+          }
+        ],
+        "source": "native"
+      }
+    ],
+    "player_armies": [
+      {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "last_checkpoint_submission": {
+      "sequence": 1,
+      "requested_save_name": "xar_checkpoint",
+      "date_raw": 53147928,
+      "status": "submitted"
+    },
+    "history": [],
+    "format_version": 1,
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "backend_id": "native-headless",
+    "source": "injected-dll-named-pipe",
+    "diagnostics": {
+      "protocol_version": 1,
+      "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+      "connected": true,
+      "connection_generation": 1,
+      "bridge_pid": 3504,
+      "bridge_version": "0.1.0",
+      "hello": {
+        "type": "hello",
+        "protocol_version": 1,
+        "bridge_version": "0.1.0",
+        "pid": 3504,
+        "session_generation": 0,
+        "connection_generation": 1,
+        "architecture": "x86_64-windows-msvc",
+        "expected_ck3_version": "1.20.0.4",
+        "expected_ck3_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "game_adapter_id": "ck3-1.20.0.4-msvc-x64",
+        "game_adapter_status": "ready",
+        "ck3_build_match": true,
+        "capabilities": [
+          "bridge.identity",
+          "bridge.heartbeat",
+          "bridge.ping",
+          "game.query.core-frame.v1",
+          "game.state.snapshot",
+          "game.state.xar-one-life-settlement",
+          "game.state.map-ready",
+          "game.state.played-character",
+          "game.state.active-event",
+          "game.state.pending-character-interaction",
+          "game.state.active-wars",
+          "game.state.war-primary-opponent",
+          "game.state.war-objectives",
+          "game.state.war-objective-occupation",
+          "game.state.war-objective-fort-level",
+          "game.state.war-objective-garrison",
+          "game.state.war-objective-siege-progress",
+          "game.state.war-objective-assault",
+          "game.state.player-armies",
+          "game.state.army-routes",
+          "game.command.query-army-strengths-v1",
+          "game.command.query-army-strengths-scoped-v1",
+          "game.command.query-title-holder-v1-N",
+          "game.command.query-player-claims-v1-IDS",
+          "game.command.query-title-own-laws-v1-ID",
+          "game.command.query-raiktor-actual-truce-expiry-v1-N",
+          "game.command.query-pending-character-interaction-context-v1",
+          "game.command.query-current-event-window-context-v1",
+          "game.command.activate-ingame-military-v1",
+          "game.command.center-map-on-landed-title-v1",
+          "game.presentation.realm-camera-mailbox.v1",
+          "game.command.query-steward-develop-county-candidates-v1",
+          "game.command.select-event-option-N",
+          "game.command.accept-pending-character-interaction",
+          "game.command.reject-pending-character-interaction",
+          "game.command.acknowledge-pending-character-interaction",
+          "game.command.navigate-ingame-ui-v1",
+          "game.command.query-ingame-ui-window-v1",
+          "game.command.query-current-title-appointment-v1",
+          "game.command.query-frontend-gui-route-v1",
+          "game.command.inspect-frontend-gui-tree-v1",
+          "game.command.inspect-gui-window-tree-v1",
+          "game.command.activate-frontend-new-game-v1",
+          "game.command.probe-frontend-bookmark-model-v1",
+          "game.command.activate-frontend-select-supported-1066-character-v1",
+          "game.command.activate-frontend-start-selected-bookmark-v1",
+          "game.command.query-route-contact-horizon-v1-N",
+          "game.command.query-actual-contact-scope-v1-N",
+          "game.command.query-projected-contact-scope-v1-N",
+          "game.command.query-army-commander-candidates-v1-for-army-N",
+          "game.command.query-army-commander-candidates-v1-for-army-N-at-province-P",
+          "game.command.assign-army-commander-v1-army-N-to-character-N",
+          "game.command.query-player-mercenary-context-v1",
+          "game.command.hire-mercenary-v1",
+          "game.command.hire-holy-order-v1",
+          "game.command.query-loaded-feature-manifest-v1",
+          "game.command.research-arm-tactical-daily-sentinel-v1-N",
+          "game.command.research-query-tactical-daily-sentinel-v1",
+          "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+          "game.command.query-campaign-root-context-v1",
+          "game.command.query-combat-simulation-inputs-v2-N",
+          "game.command.query-player-default-raise-v1",
+          "game.command.raise-troops-default",
+          "game.command.preview-move-army-N-to-N",
+          "game.command.move-army-N-to-N",
+          "game.command.halt-army-N",
+          "game.command.disband-army-N",
+          "game.command.split-army-half-N",
+          "game.command.merge-armies-N-with-N",
+          "game.command.start-assault-N",
+          "game.command.stop-assault-N",
+          "game.command.query-battle-control-snapshot-v1-N",
+          "game.command.query-battle-transition-v1-N",
+          "game.command.query-battle-terminal-transition-v1",
+          "game.command.query-battle-reinforcement-assignment-v1-N",
+          "game.command.query-war-entry-assessments-v1-N",
+          "game.command.query-declarable-wars",
+          "game.command.declare-war-N",
+          "game.command.enforce-demands-N",
+          "game.command.query-arrange-marriage-choices",
+          "game.command.arrange-marriage-N",
+          "game.command.query-war-occupation-targets-v1-N",
+          "game.command.query-war-termination-options-N",
+          "game.command.query-war-termination-terms-v1-N",
+          "game.command.surrender-war-N",
+          "game.command.offer-white-peace-N",
+          "game.adapter.exact-build",
+          "game.adapter.minimized-headless",
+          "game.command.pause-map",
+          "game.command.resume-map",
+          "game.command.set-speed-1",
+          "game.command.set-speed-2",
+          "game.command.set-speed-3",
+          "game.command.set-speed-4",
+          "game.command.set-speed-5",
+          "game.command.save-checkpoint"
+        ]
+      },
+      "last_heartbeat": {
+        "type": "heartbeat",
+        "protocol_version": 1,
+        "sequence": 6852,
+        "pid": 3504,
+        "monotonic_ms": 1377888375,
+        "command_entry_trace_v1": {
+          "timeline": {
+            "request_id": "",
+            "frame_type": "",
+            "parsed_step": "",
+            "adapter_id": "",
+            "typed_query_kind": -1,
+            "stage": "not_received",
+            "parse_kind": "not_parsed",
+            "dispatch_route": "not_reached",
+            "monotonic_ms": 0,
+            "type_parsed": false,
+            "request_id_parsed": false,
+            "step_parsed": false,
+            "handler_entered": false,
+            "submit_result": -1,
+            "call_result": -1,
+            "reply_request_id": "",
+            "reply_type": "",
+            "reply_write_success": false
+          },
+          "war_termination_options": {
+            "request_id": "",
+            "frame_type": "",
+            "parsed_step": "",
+            "adapter_id": "",
+            "typed_query_kind": -1,
+            "stage": "not_received",
+            "parse_kind": "not_parsed",
+            "dispatch_route": "not_reached",
+            "monotonic_ms": 0,
+            "type_parsed": false,
+            "request_id_parsed": false,
+            "step_parsed": false,
+            "handler_entered": false,
+            "submit_result": -1,
+            "call_result": -1,
+            "reply_request_id": "",
+            "reply_type": "",
+            "reply_write_success": false
+          },
+          "war_termination_terms": {
+            "request_id": "",
+            "frame_type": "",
+            "parsed_step": "",
+            "adapter_id": "",
+            "typed_query_kind": -1,
+            "stage": "not_received",
+            "parse_kind": "not_parsed",
+            "dispatch_route": "not_reached",
+            "monotonic_ms": 0,
+            "type_parsed": false,
+            "request_id_parsed": false,
+            "step_parsed": false,
+            "handler_entered": false,
+            "submit_result": -1,
+            "call_result": -1,
+            "reply_request_id": "",
+            "reply_type": "",
+            "reply_write_success": false
+          },
+          "faction_gift_query": {
+            "request_id": "",
+            "frame_type": "",
+            "parsed_step": "",
+            "adapter_id": "",
+            "typed_query_kind": -1,
+            "stage": "not_received",
+            "parse_kind": "not_parsed",
+            "dispatch_route": "not_reached",
+            "monotonic_ms": 0,
+            "type_parsed": false,
+            "request_id_parsed": false,
+            "step_parsed": false,
+            "handler_entered": false,
+            "submit_result": -1,
+            "call_result": -1,
+            "reply_request_id": "",
+            "reply_type": "",
+            "reply_write_success": false
+          }
+        },
+        "army_strength_result_write_v1": null,
+        "startup_failure_containment_enabled": false,
+        "startup_particle2_stage_recorder_enabled": false,
+        "startup_widget_null_flag_call_guard_enabled": false,
+        "startup_rbx_null_call_guard_enabled": false,
+        "cold_map_vfs_observer_enabled": false,
+        "named_path_583_root_observer_enabled": false,
+        "pdx_paths_583_producer_observer_enabled": false,
+        "vfs_mount_lifecycle_observer_enabled": false,
+        "physfs_mounted_data_observer_enabled": false,
+        "g2_truce_preview_entry_observer_enabled": true,
+        "zhongguo_scoreboard_production_candidate_enabled": false,
+        "zhongguo_scoreboard_production_capability_advertised": false,
+        "main_thread_query_mailbox_v1": {
+          "candidate_id": "application_main_thread_war_entry_v1",
+          "query_scope": "frontend_gui_route_and_fixed_action_typed_war_entry_route_actual_contact_combat_v3_battle_control_battle_transition_reinforcement_assignment_campaign_root_context_loaded_feature_manifest_pending_character_interaction_context_current_event_window_title_map_navigation_current_timeline_blocker_context_zhongguo_case_snapshot_zhongguo_b1_cycle_snapshot_zhongguo_result_case_snapshot_zhongguo_b2_pip_snapshot_zhongguo_incident_snapshot_zhongguo_manager_governance_snapshot_zhongguo_scoreboard_state_zhongguo_workforce_collective_snapshot_zhongguo_ai_owned_case_snapshot_zhongguo_workforce_normal_exit_snapshot_zhongguo_scoreboard_action_fail_closed_transport_zhongguo_promotion_source_progress_review_action_fail_closed_transport",
+          "installed": true,
+          "sdl_poll_event_hook_installed": false,
+          "observed_sdl_poll_event_target": 0,
+          "stop": false,
+          "failure": 0,
+          "executor_exception": {
+            "code": 0,
+            "image": "none",
+            "rva": null
+          },
+          "pump_epochs": 71834,
+          "owner_verified_pump_epochs": 71834,
+          "consecutive_verified": 59208,
+          "published_sequence": 7,
+          "completed_sequence": 7,
+          "executor_started_requests": 7,
+          "executor_started_sequence": 7,
+          "executor_started_pump_epoch": 64189,
+          "owner_tid": 7676,
+          "current_tid": 7676,
+          "rng_owner_tid": 0,
+          "tls_global": 1,
+          "tls_context": 2001621118592,
+          "tls_marker": 1,
+          "jomini_state": 2007546250112,
+          "game_state": 2008214666224,
+          "date_raw": 53147928,
+          "paused": true,
+          "stamp_read_success": true,
+          "executed_requests": 7,
+          "executor_submission_enabled": true,
+          "application_main_observed": true,
+          "paused_main_thread_observed": true,
+          "ready": true
+        },
+        "coat_of_arms_designer_probe_v1": {
+          "installed": false,
+          "failure": 1,
+          "observed_calls": 0,
+          "executed_requests": 0
+        },
+        "direct_control_owner_wake_v1": {
+          "attempts": 0,
+          "posted": 0,
+          "guard_rejections": 0,
+          "owner_drift": 0,
+          "owner_before": 0,
+          "owner_after": 0,
+          "last_error": 0
+        },
+        "snapshot_observer_12002": {
+          "started_ms": 1377888265,
+          "completed_ms": 1377888281,
+          "last_read_ms": 16,
+          "read_in_progress": false,
+          "last_read_available": true,
+          "snapshot_cached": true
+        },
+        "startup_particle2_null_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "suppressed_count": 0,
+          "suppressed_index_mask": 0,
+          "last_suppressed_index": 4294967295
+        },
+        "startup_particle2_consumer_null_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "suppressed_count": 0,
+          "missing_slot_mask": 0
+        },
+        "startup_particle2_stage_recorder_v1": {
+          "installed": false,
+          "patch_mask": 0,
+          "failure": 0,
+          "source_lookup_null_count": 0,
+          "variant_lookup_null_count": 0,
+          "backend_creation_null_count": 0
+        },
+        "startup_dx11_render_context_draw_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "suppressed_count": 0
+        },
+        "startup_localize_current_root_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "native_miss_count": 0
+        },
+        "startup_widget_null_flag_call_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "suppressed_count": 0
+        },
+        "startup_rbx_null_call_guard_v1": {
+          "installed": false,
+          "failure": 0,
+          "suppressed_count": 0
+        }
+      },
+      "private_observers": {},
+      "last_pong": {
+        "type": "pong",
+        "protocol_version": 1,
+        "request_id": "python-1-018f1047d798",
+        "pid": 3504
+      },
+      "last_error": null,
+      "top_exclusive_modal_choice_hint_observation": null,
+      "semantic_state_available": true,
+      "rejected_state_snapshot_count": 0,
+      "last_rejected_state_snapshot": null,
+      "snapshot_publish_diagnostic_count": 0,
+      "last_snapshot_publish_diagnostic": null
+    },
+    "episode_character_id": 31254,
+    "episode_run_id": "native-31254-3d3fad411eb2",
+    "episode_identity_pending": false,
+    "one_life_terminal": false,
+    "one_life_terminal_reason": null,
+    "one_life_settlement_status": "not_terminal",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "pure-vanilla-enabled-mods-empty",
+      "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+    },
+    "continue_as_heir_after_death": false,
+    "succession_expectation": null,
+    "succession_reconciliation": null,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-3d3fad411eb2",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    },
+    "army_routes_supported": true,
+    "move_route_preview_supported": true,
+    "route_contact_horizon_supported": true,
+    "actual_contact_scope_query_supported": true,
+    "projected_contact_scope_v1_query_supported": true,
+    "battle_control_snapshot_v1_query_supported": true,
+    "battle_transition_v1_query_supported": true,
+    "battle_terminal_transition_v1_query_supported": true,
+    "battle_reinforcement_assignment_v1_query_supported": true,
+    "campaign_root_context_v1_query_supported": true,
+    "council_composition_candidates_v1_query_supported": false,
+    "steward_develop_county_candidates_v1_query_supported": true,
+    "player_faction_alerts_v1_query_supported": false,
+    "zhongguo_case_snapshot_v1_query_supported": false,
+    "zhongguo_b1_cycle_snapshot_v1_query_supported": false,
+    "zhongguo_ai_owned_case_snapshot_v1_query_supported": false,
+    "zhongguo_result_case_snapshot_v1_query_supported": false,
+    "zhongguo_b2_pip_snapshot_v1_query_supported": false,
+    "zhongguo_promotion_compensation_v1_query_supported": false,
+    "zhongguo_compensation_af5_snapshot_v1_query_supported": false,
+    "zhongguo_workforce_owner_snapshot_v1_query_supported": false,
+    "zhongguo_projects_metrics_v1_query_supported": false,
+    "zhongguo_career_hc_workforce_v1_query_supported": false,
+    "zhongguo_workforce_collective_snapshot_v1_query_supported": false,
+    "zhongguo_workforce_normal_exit_snapshot_v1_query_supported": false,
+    "zhongguo_incident_snapshot_v1_query_supported": false,
+    "zhongguo_manager_governance_snapshot_v1_query_supported": false,
+    "zhongguo_manager_subordinate_selector_v1_query_supported": false,
+    "zhongguo_scoreboard_state_v1_query_supported": false,
+    "zhongguo_scoreboard_action_v1_transport_wired": false,
+    "zhongguo_scoreboard_action_v1_supported": false,
+    "loaded_feature_manifest_v1_query_supported": true,
+    "pending_character_interaction_context_v1_query_supported": true,
+    "current_event_window_context_v1_query_supported": true,
+    "combat_simulation_inputs_query_supported": true,
+    "combat_simulation_inputs_v3_query_supported": false,
+    "combat_phase_event_trace_v1_query_supported": false,
+    "war_entry_assessments_query_supported": true,
+    "war_objective_occupation_supported": true,
+    "war_objective_fort_level_supported": true,
+    "war_objective_garrison_supported": true,
+    "war_objective_siege_progress_supported": true,
+    "war_objective_assault_supported": true,
+    "declarable_wars": [],
+    "declaration_query_sequence": null,
+    "arrange_marriage_choices": [],
+    "arrange_marriage_query_sequence": null,
+    "army_strengths": [],
+    "army_strengths_status": null,
+    "army_strengths_query_sequence": null,
+    "army_strengths_queried_snapshot_id": null,
+    "army_strengths_queried_revision": null,
+    "army_strengths_profile": null,
+    "army_observed_phase_coverage": null,
+    "prewar_force_coalition_coverage_v2_query": null,
+    "war_declared_overview_v1_observation": null,
+    "war_declared_overview_v1_query_attempt": null,
+    "war_declared_overview_v1_close_pending": null,
+    "war_results_window_v1_observation": null,
+    "war_results_window_v1_query_attempt": null,
+    "war_results_window_v1_close_pending": null,
+    "war_results_window_v1_check_due": true,
+    "war_results_window_v1_next_check_date_raw": 53147928,
+    "combat_simulation_inputs": null,
+    "combat_simulation_inputs_status": null,
+    "combat_simulation_inputs_query_sequence": null,
+    "combat_simulation_inputs_target_province_id": null,
+    "combat_simulation_inputs_attacker_entry_province_id": null,
+    "combat_simulation_inputs_attacker_army_ids": null,
+    "combat_simulation_inputs_defender_army_ids": null,
+    "combat_simulation_inputs_queried_snapshot_id": null,
+    "combat_simulation_inputs_queried_revision": null,
+    "combat_simulation_inputs_v3": null,
+    "combat_simulation_inputs_v3_status": null,
+    "combat_simulation_inputs_v3_query_sequence": null,
+    "combat_simulation_inputs_v3_target_province_id": null,
+    "combat_simulation_inputs_v3_attacker_entry_province_id": null,
+    "combat_simulation_inputs_v3_attacker_army_ids": null,
+    "combat_simulation_inputs_v3_defender_army_ids": null,
+    "combat_simulation_inputs_v3_queried_snapshot_id": null,
+    "combat_simulation_inputs_v3_queried_revision": null,
+    "battle_control_snapshot_v1": null,
+    "active_combat_resume_inputs_v1": null,
+    "battle_control_snapshot_v1_status": null,
+    "battle_control_snapshot_v1_query_sequence": null,
+    "battle_control_snapshot_v1_query_attempts": null,
+    "battle_control_snapshot_v1_diagnostic_reason": null,
+    "battle_control_snapshot_v1_native_query_status": null,
+    "battle_control_snapshot_v1_subject_army_id": null,
+    "battle_control_snapshot_v1_queried_snapshot_id": null,
+    "battle_control_snapshot_v1_queried_revision": null,
+    "battle_control_snapshot_v1_queried_native_revision": null,
+    "war_entry_assessments": null,
+    "war_entry_assessments_status": null,
+    "war_entry_assessments_query_sequence": null,
+    "war_entry_assessments_queried_snapshot_id": null,
+    "war_entry_assessments_queried_revision": null,
+    "war_entry_assessments_two_read_trace_v1": [],
+    "war_termination_options": [],
+    "war_termination_terms": [],
+    "war_termination_exit_terms": [],
+    "war_declaration_continuity_v1": null,
+    "native_command_history": [],
+    "native_rollback_war_failure": null,
+    "native_rollback_war_failures": [],
+    "native_command_history_export": {
+      "mode": "omitted",
+      "total_count": 6,
+      "included_count": 0
+    }
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 3504,
+    "owned_ck3_create_time": 1792153323.2060187,
+    "hwnd": 101517432,
+    "foreground_hwnd": 101517432,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T12:50:40.495177+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "owned_ck3_pid": 3504,
+  "owned_ck3_create_time": 1792153323.2060187,
+  "capture_guard_interval_seconds": 0.25,
+  "deadline_admission_at_request": {
+    "schema": "xar.e04.recording-deadline-admission.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-16T12:50:39.868407+00:00",
+    "admitted": true,
+    "recording_seconds": 90,
+    "normal_close_reserve_seconds": 180.0,
+    "required_remaining_seconds": 270.0,
+    "remaining_seconds": 3613.056729399832,
+    "session_elapsed_before_recording_seconds": 1786.943270600168,
+    "deadlines": [
+      {
+        "source": "before-native-session-invocation",
+        "bound_at_utc": "2026-10-16T12:20:52.925132+00:00",
+        "bound_monotonic": 1376101.6447241,
+        "timeout_seconds": 5400.0,
+        "deadline_monotonic": 1381501.6447241,
+        "deadline_utc": "2026-10-16T13:50:52.925132+00:00",
+        "includes_frontend_warmup_and_relaunches": true,
+        "remaining_seconds": 3613.056729399832
+      },
+      {
+        "source": "exact-recording-capacity-admission",
+        "argument": "recording_capacity_admission",
+        "deadline_utc": "2026-10-16T17:39:06.531146+00:00",
+        "capacity_admission": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+          "bytes": 70420,
+          "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d",
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+          "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+          "deadline_utc": "2026-10-16T17:39:06.531146+00:00"
+        },
+        "deadline_monotonic": 1395195.2507331,
+        "remaining_seconds": 17306.662738400046
+      }
+    ],
+    "deadline_renewed": false
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "steam_offline_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+    "bytes": 1278,
+    "sha256": "b05670d3d85212f9f3268ab6160d9e4a21ad69112c633b8c13d65f84553ce469"
+  },
+  "source_prepared": {
+    "schema": "xar.war-episode04.bootstrap.v1",
+    "prepared_at": "2026-10-16T12:15:55.368167+00:00",
+    "launch_attempted": false,
+    "live_verified": false,
+    "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "state_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02",
+    "profile_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile",
+    "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+    "game": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "bytes": 101040248,
+      "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "bridge_dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+      "bytes": 12982784,
+      "sha256": "372ed8dc1c1881b8bea75415cafd4e696aacb90690f30a15f0a555ca91234d4e"
+    },
+    "bridge_injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "862668cd668c3677d7316c9afa91a2f1ae8ccd56c8f22e401dbac0ee22920836"
+    },
+    "bridge_host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "a0c3bd97e9f1e3a8c41e42501f5fa95193f8ec9defa46d35f48be457256d1f01"
+    },
+    "profile_files": [
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\dlc_load.json",
+        "bytes": 48,
+        "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\pdx_settings.txt",
+        "bytes": 524,
+        "sha256": "7de1177db43167522f9b67a07ac3f2c6b63820c6fd22f7788ecb1e09f035b838"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\player\\game_rules\\presets.txt",
+        "bytes": 2785,
+        "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+      },
+      {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\tutorial.txt",
+        "bytes": 61,
+        "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+      }
+    ],
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": "xar_off",
+      "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+      "source": "pure-vanilla-enabled-mods-empty",
+      "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef"
+    },
+    "environment_sha256": "9f6e8879640b046c4cf3c25f945cea5ab8bd3e8044a2e1fe1772d38d3bc2e9ef",
+    "selection": "root selects a normal bookmark character after actual frontend ready; selection evidence belongs to run",
+    "bridge_host_role": "artifact identity only; production supervisor uses DLL and injector",
+    "recording_started": false,
+    "target_build": {
+      "version": "1.20.0.4",
+      "steam_build": 25734779,
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "installed_build_observation": {
+      "observed_at_utc": "2026-10-16T12:15:55.132353+00:00",
+      "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+      "manifest_sha256": "53f2236cca465b3dac67e73d0bfe8507c61b3337ed868f35924acadaf095b4dd",
+      "app_id": "1158310",
+      "branch": "1.20.0",
+      "numbers": {
+        "StateFlags": 4,
+        "buildid": 25734779,
+        "TargetBuildID": 25734779,
+        "BytesToDownload": 49807728,
+        "BytesDownloaded": 49807728,
+        "BytesToStage": 253338929,
+        "BytesStaged": 253338929,
+        "UpdateResult": 0
+      },
+      "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "launcher": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+        "raw_version": "1.20.0.4",
+        "display_version": "1.20.0.4 (Crozier)",
+        "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25"
+      },
+      "executable": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "exists": true,
+        "bytes": 101040248,
+        "mtime_ns": 1792052040982825200
+      },
+      "installed_depots": {
+        "1158311": {
+          "manifest": "5078208590259867811",
+          "size": "19091661807"
+        },
+        "1158312": {
+          "manifest": "8895371403079420353",
+          "size": "162583096"
+        },
+        "1158315": {
+          "manifest": "6776790621498578725",
+          "size": "198403512"
+        },
+        "1296730": {
+          "manifest": "4673314442703562503",
+          "size": "84848",
+          "dlcappid": "1296730"
+        },
+        "1296731": {
+          "manifest": "6186085975311389712",
+          "size": "65328",
+          "dlcappid": "1296731"
+        },
+        "1303183": {
+          "manifest": "319832865587329166",
+          "size": "25074458",
+          "dlcappid": "1303183"
+        },
+        "1303182": {
+          "manifest": "8349193067317801238",
+          "size": "23359792",
+          "dlcappid": "1303182"
+        },
+        "1303184": {
+          "manifest": "5526476400820247778",
+          "size": "9854377",
+          "dlcappid": "1303184"
+        },
+        "2114760": {
+          "manifest": "3994555691751599121",
+          "size": "9199940",
+          "dlcappid": "2114760"
+        },
+        "2311920": {
+          "manifest": "369571786361796926",
+          "size": "30559359",
+          "dlcappid": "2311920"
+        },
+        "2311930": {
+          "manifest": "6473405525877152548",
+          "size": "80415",
+          "dlcappid": "2311930"
+        },
+        "2313541": {
+          "manifest": "3449603529685425916",
+          "size": "6707287",
+          "dlcappid": "2313541"
+        },
+        "2313540": {
+          "manifest": "5292219204640282308",
+          "size": "15690475",
+          "dlcappid": "2313540"
+        },
+        "2671060": {
+          "manifest": "4277321347182715431",
+          "size": "15898541",
+          "dlcappid": "2671060"
+        },
+        "2671030": {
+          "manifest": "2257513862370412160",
+          "size": "100482",
+          "dlcappid": "2671030"
+        },
+        "2671040": {
+          "manifest": "836968934287748787",
+          "size": "64416",
+          "dlcappid": "2671040"
+        },
+        "2671070": {
+          "manifest": "7287565713113083837",
+          "size": "21073072",
+          "dlcappid": "2671070"
+        },
+        "3077630": {
+          "manifest": "1712003839548962838",
+          "size": "69250933",
+          "dlcappid": "3077630"
+        },
+        "2671080": {
+          "manifest": "4340206838279069052",
+          "size": "82855",
+          "dlcappid": "2671080"
+        },
+        "3275760": {
+          "manifest": "4288366890699939411",
+          "size": "99060",
+          "dlcappid": "3275760"
+        },
+        "3315550": {
+          "manifest": "2840621713410264825",
+          "size": "1852566",
+          "dlcappid": "3315550"
+        },
+        "3315540": {
+          "manifest": "1359283799129796893",
+          "size": "19982507",
+          "dlcappid": "3315540"
+        },
+        "3315500": {
+          "manifest": "4503344207642007609",
+          "size": "72114",
+          "dlcappid": "3315500"
+        },
+        "3315510": {
+          "manifest": "3363609404063344386",
+          "size": "18258763",
+          "dlcappid": "3315510"
+        },
+        "3315530": {
+          "manifest": "8595022041963600613",
+          "size": "90723385",
+          "dlcappid": "3315530"
+        },
+        "3315520": {
+          "manifest": "7521553339934362737",
+          "size": "84060",
+          "dlcappid": "3315520"
+        },
+        "3315560": {
+          "manifest": "5111920289037265676",
+          "size": "98743",
+          "dlcappid": "3315560"
+        },
+        "3315570": {
+          "manifest": "409066589632915157",
+          "size": "98734",
+          "dlcappid": "3315570"
+        },
+        "4232870": {
+          "manifest": "6970199339967430673",
+          "size": "96059",
+          "dlcappid": "4232870"
+        },
+        "4232860": {
+          "manifest": "2743333143025069241",
+          "size": "94895",
+          "dlcappid": "4232860"
+        },
+        "3315580": {
+          "manifest": "6705959764445437481",
+          "size": "4625479",
+          "dlcappid": "3315580"
+        },
+        "3315590": {
+          "manifest": "3805573564847634757",
+          "size": "35828368",
+          "dlcappid": "3315590"
+        },
+        "4232890": {
+          "manifest": "994388108942955474",
+          "size": "69984",
+          "dlcappid": "4232890"
+        },
+        "4232900": {
+          "manifest": "2794171100204849831",
+          "size": "14105945",
+          "dlcappid": "4232900"
+        }
+      }
+    },
+    "character_intent": {
+      "bookmark_key": "bm_1066_rags_to_riches",
+      "character_name_key": "bookmark_rags_to_riches_duke_robert",
+      "history_id": 1128,
+      "history_title_key": "d_apulia"
+    },
+    "expected_character_id": 31254,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "assets_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01",
+    "checkpoint": {
+      "source": {
+        "save": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+          "bytes": 73446058,
+          "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+        },
+        "receipt": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+          "bytes": 20376,
+          "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+        },
+        "build_receipt": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\prepared-a01\\prepared.json",
+          "bytes": 11682,
+          "sha256": "5853e766531a904ceb20db4bdb30aeb1e05c7576553fa9cea79920254191c2be"
+        },
+        "actor_id": 31254,
+        "date_raw": 53147928,
+        "source_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": "xar_off",
+          "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+          "source": "pure-vanilla-enabled-mods-empty",
+          "environment_sha256": "ee38ac04223404cdb8f4283c6886d4a59626080b4ceff6ce3ca66b3aea93205e"
+        },
+        "load_save_name": "episode04_frozen_start",
+        "driver_history_copied": false
+      },
+      "profile_copy": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\episode04_frozen_start.ck3",
+        "bytes": 73446058,
+        "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+      },
+      "receipt_copy": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\checkpoint-source-receipt.json",
+        "bytes": 20376,
+        "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+      },
+      "build_receipt_copy": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\checkpoint-source-build.json",
+        "bytes": 11682,
+        "sha256": "5853e766531a904ceb20db4bdb30aeb1e05c7576553fa9cea79920254191c2be"
+      },
+      "old_attempt_modified": false
+    },
+    "open_kaishek": {
+      "status": "not-applicable",
+      "reason": "Pure vanilla process, SDK DTO and C++ supply getter sampling; no CK3 script mutation or script corpus"
+    },
+    "runtime_installation_validation": {
+      "observed_at_utc": "2026-10-16T12:20:48.712152+00:00",
+      "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+      "manifest_sha256": "53f2236cca465b3dac67e73d0bfe8507c61b3337ed868f35924acadaf095b4dd",
+      "app_id": "1158310",
+      "branch": "1.20.0",
+      "numbers": {
+        "StateFlags": 4,
+        "buildid": 25734779,
+        "TargetBuildID": 25734779,
+        "BytesToDownload": 49807728,
+        "BytesDownloaded": 49807728,
+        "BytesToStage": 253338929,
+        "BytesStaged": 253338929,
+        "UpdateResult": 0
+      },
+      "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+      "launcher": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+        "raw_version": "1.20.0.4",
+        "display_version": "1.20.0.4 (Crozier)",
+        "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25"
+      },
+      "executable": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "exists": true,
+        "bytes": 101040248,
+        "mtime_ns": 1792052040982825200
+      },
+      "installed_depots": {
+        "1158311": {
+          "manifest": "5078208590259867811",
+          "size": "19091661807"
+        },
+        "1158312": {
+          "manifest": "8895371403079420353",
+          "size": "162583096"
+        },
+        "1158315": {
+          "manifest": "6776790621498578725",
+          "size": "198403512"
+        },
+        "1296730": {
+          "manifest": "4673314442703562503",
+          "size": "84848",
+          "dlcappid": "1296730"
+        },
+        "1296731": {
+          "manifest": "6186085975311389712",
+          "size": "65328",
+          "dlcappid": "1296731"
+        },
+        "1303183": {
+          "manifest": "319832865587329166",
+          "size": "25074458",
+          "dlcappid": "1303183"
+        },
+        "1303182": {
+          "manifest": "8349193067317801238",
+          "size": "23359792",
+          "dlcappid": "1303182"
+        },
+        "1303184": {
+          "manifest": "5526476400820247778",
+          "size": "9854377",
+          "dlcappid": "1303184"
+        },
+        "2114760": {
+          "manifest": "3994555691751599121",
+          "size": "9199940",
+          "dlcappid": "2114760"
+        },
+        "2311920": {
+          "manifest": "369571786361796926",
+          "size": "30559359",
+          "dlcappid": "2311920"
+        },
+        "2311930": {
+          "manifest": "6473405525877152548",
+          "size": "80415",
+          "dlcappid": "2311930"
+        },
+        "2313541": {
+          "manifest": "3449603529685425916",
+          "size": "6707287",
+          "dlcappid": "2313541"
+        },
+        "2313540": {
+          "manifest": "5292219204640282308",
+          "size": "15690475",
+          "dlcappid": "2313540"
+        },
+        "2671060": {
+          "manifest": "4277321347182715431",
+          "size": "15898541",
+          "dlcappid": "2671060"
+        },
+        "2671030": {
+          "manifest": "2257513862370412160",
+          "size": "100482",
+          "dlcappid": "2671030"
+        },
+        "2671040": {
+          "manifest": "836968934287748787",
+          "size": "64416",
+          "dlcappid": "2671040"
+        },
+        "2671070": {
+          "manifest": "7287565713113083837",
+          "size": "21073072",
+          "dlcappid": "2671070"
+        },
+        "3077630": {
+          "manifest": "1712003839548962838",
+          "size": "69250933",
+          "dlcappid": "3077630"
+        },
+        "2671080": {
+          "manifest": "4340206838279069052",
+          "size": "82855",
+          "dlcappid": "2671080"
+        },
+        "3275760": {
+          "manifest": "4288366890699939411",
+          "size": "99060",
+          "dlcappid": "3275760"
+        },
+        "3315550": {
+          "manifest": "2840621713410264825",
+          "size": "1852566",
+          "dlcappid": "3315550"
+        },
+        "3315540": {
+          "manifest": "1359283799129796893",
+          "size": "19982507",
+          "dlcappid": "3315540"
+        },
+        "3315500": {
+          "manifest": "4503344207642007609",
+          "size": "72114",
+          "dlcappid": "3315500"
+        },
+        "3315510": {
+          "manifest": "3363609404063344386",
+          "size": "18258763",
+          "dlcappid": "3315510"
+        },
+        "3315530": {
+          "manifest": "8595022041963600613",
+          "size": "90723385",
+          "dlcappid": "3315530"
+        },
+        "3315520": {
+          "manifest": "7521553339934362737",
+          "size": "84060",
+          "dlcappid": "3315520"
+        },
+        "3315560": {
+          "manifest": "5111920289037265676",
+          "size": "98743",
+          "dlcappid": "3315560"
+        },
+        "3315570": {
+          "manifest": "409066589632915157",
+          "size": "98734",
+          "dlcappid": "3315570"
+        },
+        "4232870": {
+          "manifest": "6970199339967430673",
+          "size": "96059",
+          "dlcappid": "4232870"
+        },
+        "4232860": {
+          "manifest": "2743333143025069241",
+          "size": "94895",
+          "dlcappid": "4232860"
+        },
+        "3315580": {
+          "manifest": "6705959764445437481",
+          "size": "4625479",
+          "dlcappid": "3315580"
+        },
+        "3315590": {
+          "manifest": "3805573564847634757",
+          "size": "35828368",
+          "dlcappid": "3315590"
+        },
+        "4232890": {
+          "manifest": "994388108942955474",
+          "size": "69984",
+          "dlcappid": "4232890"
+        },
+        "4232900": {
+          "manifest": "2794171100204849831",
+          "size": "14105945",
+          "dlcappid": "4232900"
+        }
+      }
+    }
+  },
+  "one_recorder_per_session": true,
+  "screen_lease_owner": "e04-live-20261016-r0184",
+  "clean_spans_certified": false,
+  "human_approval": false
+}

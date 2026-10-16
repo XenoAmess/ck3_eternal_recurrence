@@ -1,0 +1,639 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:00:03.316695+00:00",
+  "mode": "offline readonly analysis of machine-bound original evidence; not live qualification",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "rows": [
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-arm-once.json",
+        "bytes": 4713,
+        "sha256": "d20bc0874c42ce509024182f0436f37eef9910744e1720cba93795d540906a40"
+      },
+      "at": "2026-10-16T12:51:03.968307+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "research-arm-tactical-daily-sentinel-v1-53148096-to-53148120-speed-3-mode-terminal-a-0",
+        "tactical_daily_sentinel": {
+          "state": "armed",
+          "generation": 8,
+          "starting_date_raw": 53148096,
+          "target_date_raw": 53148120,
+          "last_observed_date_raw": 53148096,
+          "trigger_date_raw": 0,
+          "speed": 3,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 0,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 0,
+          "trigger_reasons": [],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": -1,
+          "pause_wrapper_called": false,
+          "pause_observed": false,
+          "terminal_observed": false,
+          "abnormal": false
+        }
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-000.json",
+        "bytes": 115552,
+        "sha256": "f374b8314a946473d8753d9aae6a9449c0c20d95e257aa6be9bf7bc25e64d5fa"
+      },
+      "at": "2026-10-16T12:51:04.348029+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148096,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:25",
+        "revision": 26,
+        "native_revision": 25,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377912781,
+        "completed_ms": 1377912781,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-001.json",
+        "bytes": 115552,
+        "sha256": "f3d8bea2adfba3688308dc07d82b03ec67b224ca7bd6c8d9133801e1aa3f45e8"
+      },
+      "at": "2026-10-16T12:51:04.500599+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148096,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:25",
+        "revision": 26,
+        "native_revision": 25,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377912781,
+        "completed_ms": 1377912781,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-002.json",
+        "bytes": 115552,
+        "sha256": "0fc5d0316dc7848a433a589267659eb00fd53c56409d3fa50c9abacbef7c50de"
+      },
+      "at": "2026-10-16T12:51:04.658522+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148096,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:25",
+        "revision": 26,
+        "native_revision": 25,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913062,
+        "completed_ms": 1377913062,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-003.json",
+        "bytes": 115552,
+        "sha256": "61a797a8dcdd2c97c258220f72a297cdb52dceebe3a0aa791ff1cce6614b5b59"
+      },
+      "at": "2026-10-16T12:51:04.812337+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148096,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:25",
+        "revision": 26,
+        "native_revision": 25,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913062,
+        "completed_ms": 1377913062,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-004.json",
+        "bytes": 115552,
+        "sha256": "f2ebf82c75f4ee7ff4db891e153ec5a3d1f7e2f840f4f05598cddf0635e27e8e"
+      },
+      "at": "2026-10-16T12:51:04.970225+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148096,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:25",
+        "revision": 26,
+        "native_revision": 25,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913062,
+        "completed_ms": 1377913062,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-005.json",
+        "bytes": 115568,
+        "sha256": "ca7747381fc93bb84f9963c582680c909b625c77aeb3a93388ba73cd37d62f26"
+      },
+      "at": "2026-10-16T12:51:05.102561+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:26",
+        "revision": 27,
+        "native_revision": 26,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913609,
+        "completed_ms": 1377913609,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-006.json",
+        "bytes": 115568,
+        "sha256": "c3fc2fbd086641e52fb40a66686f5aba032a2cd339b1b67608a7460670b7ce59"
+      },
+      "at": "2026-10-16T12:51:05.244858+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:26",
+        "revision": 27,
+        "native_revision": 26,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913609,
+        "completed_ms": 1377913609,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-007.json",
+        "bytes": 115568,
+        "sha256": "be58ae3b7b9cdff725be1c45dc14abbce7db72228841c47a4a09bb6b7011e630"
+      },
+      "at": "2026-10-16T12:51:05.392149+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:26",
+        "revision": 27,
+        "native_revision": 26,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913859,
+        "completed_ms": 1377913859,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-008.json",
+        "bytes": 115568,
+        "sha256": "d3363cabb4a9e0cf7e24f3385efc22c728227da9b222186ce9f38267812e906f"
+      },
+      "at": "2026-10-16T12:51:05.546604+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:26",
+        "revision": 27,
+        "native_revision": 26,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377913859,
+        "completed_ms": 1377913859,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-009.json",
+        "bytes": 115552,
+        "sha256": "0b53ec0b717cb3f2d3fe8d4189326118f03eac45c939867963af3a82fc51efe7"
+      },
+      "at": "2026-10-16T12:51:05.699317+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:26",
+        "revision": 27,
+        "native_revision": 26,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377914125,
+        "completed_ms": 1377913859,
+        "last_read_ms": 0,
+        "read_in_progress": true,
+        "last_read_available": true,
+        "snapshot_cached": false
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-poll-010.json",
+        "bytes": 124948,
+        "sha256": "695476731ed8560a5ec241ecae05738e3962fe59c25188af91411615028cf008"
+      },
+      "at": "2026-10-16T12:51:05.839548+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": true,
+        "speed": 3,
+        "snapshot_id": "native:27",
+        "revision": 28,
+        "native_revision": 27,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-32-962b676a6643",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 24,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377914171,
+        "completed_ms": 1377914203,
+        "last_read_ms": 32,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-resume-once.json",
+        "bytes": 1607,
+        "sha256": "2f3475aeaa0c71b2aba31fb0e9d9a8c1076eba5d56dbfea4c9db968c473b25d5"
+      },
+      "at": "2026-10-16T12:51:04.141345+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "resume-map"
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d08-status.json",
+        "bytes": 4644,
+        "sha256": "9666dd9c5c3cfcb6e69ea6b86223f590f7c77340478eb70c9cadfa8de39ec947"
+      },
+      "at": "2026-10-16T12:51:05.978244+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "research-query-tactical-daily-sentinel-v1",
+        "tactical_daily_sentinel": {
+          "state": "triggered",
+          "generation": 8,
+          "starting_date_raw": 53148096,
+          "target_date_raw": 53148120,
+          "last_observed_date_raw": 53148120,
+          "trigger_date_raw": 53148120,
+          "speed": 3,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 1,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 1,
+          "trigger_reasons": [
+            "date_deadline"
+          ],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": 0,
+          "pause_wrapper_called": true,
+          "pause_observed": true,
+          "terminal_observed": false,
+          "abnormal": false
+        }
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d09-arm-once.json",
+        "bytes": 4713,
+        "sha256": "eeb1dcfc46d84c7050e9b16594cd476f943518cfd8986d74aa83aa27dadd6e03"
+      },
+      "at": "2026-10-16T12:51:06.183377+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "research-arm-tactical-daily-sentinel-v1-53148120-to-53148144-speed-3-mode-terminal-a-0",
+        "tactical_daily_sentinel": {
+          "state": "armed",
+          "generation": 9,
+          "starting_date_raw": 53148120,
+          "target_date_raw": 53148144,
+          "last_observed_date_raw": 53148120,
+          "trigger_date_raw": 0,
+          "speed": 3,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 0,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 0,
+          "trigger_reasons": [],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": -1,
+          "pause_wrapper_called": false,
+          "pause_observed": false,
+          "terminal_observed": false,
+          "abnormal": false
+        }
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d09-poll-000.json",
+        "bytes": 125192,
+        "sha256": "d1f9063c1c8f36cf851fd0ce1185bcbc9f52d72d83e360bf6d1bcff9a517aaa1"
+      },
+      "at": "2026-10-16T12:51:06.542439+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": true,
+        "speed": 3,
+        "snapshot_id": "native:28",
+        "revision": 29,
+        "native_revision": 28,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-35-29bb5a45b700",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 28,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377914734,
+        "completed_ms": 1377914765,
+        "last_read_ms": 31,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-d09-resume-once.json",
+        "bytes": 1607,
+        "sha256": "0c11667c296ab4ba0bc42ca8e191a0faa46a872f648e876e8a0b3baedfe5373f"
+      },
+      "at": "2026-10-16T12:51:06.361471+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "resume-map"
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-98-pause-once.json",
+        "bytes": 1598,
+        "sha256": "2cdebadb9e9acf30f4f3e71f32b2d58dd9625485aca12a7dfe6ecde478c7fbf0"
+      },
+      "at": "2026-10-16T12:51:06.869464+00:00",
+      "is_error": false,
+      "body": {
+        "accepted": true,
+        "step": "pause-map"
+      },
+      "publish": null,
+      "observer": null
+    },
+    {
+      "evidence": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-98-pause-state.json",
+        "bytes": 115797,
+        "sha256": "967520992aa0aa675c07ae5d0238e0cc1b799781ec1bc50880c0c707d55822d6"
+      },
+      "at": "2026-10-16T12:51:06.708965+00:00",
+      "is_error": false,
+      "body": {
+        "date_raw": 53148120,
+        "paused": false,
+        "speed": 3,
+        "snapshot_id": "native:29",
+        "revision": 30,
+        "native_revision": 29,
+        "active_event": null,
+        "pending_character_interaction": null
+      },
+      "publish": {
+        "type": "snapshot_publish_diagnostic",
+        "protocol_version": 1,
+        "request_id": "step-35-29bb5a45b700",
+        "phase": "end",
+        "status": "deduplicated",
+        "revision": 28,
+        "payload_bytes": 0
+      },
+      "observer": {
+        "started_ms": 1377914968,
+        "completed_ms": 1377914968,
+        "last_read_ms": 0,
+        "read_in_progress": false,
+        "last_read_available": true,
+        "snapshot_cached": true
+      }
+    }
+  ],
+  "original_a02": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a02\\owner_film_candidate.py",
+    "bytes": 32017,
+    "sha256": "ceb1693edf3e8a926f575fb1c064988be03a66c81d3ee04ffcc72cb1b831c5a7"
+  }
+}

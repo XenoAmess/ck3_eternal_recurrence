@@ -1,0 +1,46 @@
+{
+  "schema": "xar.storage-r184-followup-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observation_window_utc": ["2026-10-16T12:16:45.061132+00:00", "2026-10-16T12:18:22+00:00"],
+  "scheduler_actual": {
+    "enabled": true,
+    "last_task_result": 0,
+    "run_level": 0,
+    "logon_type": 3,
+    "daily_start_boundary": "2026-10-17T04:00:00+08:00",
+    "start_when_available": true,
+    "script_equals_frozen_sha": true,
+    "last_daily_report_utc": "2026-10-16T09:39:48.126121+00:00",
+    "last_daily_report_deletions": 0,
+    "task_run_requested_by_this_followup": false
+  },
+  "bounded_metadata_work": {
+    "combined_scan_seconds": 55.60527970013209,
+    "combined_metadata_entries": 7739,
+    "complete_project_usage_inventory": false,
+    "boundary": "Initial scan reached time bound in D-side depth2 metadata. C-side direct-child supplement observed active r08 research/capacity preparation roots; no body scan or deletion. Deeper/pending roots remain UNKNOWN."
+  },
+  "new_safe_delete_qualified_candidates": [],
+  "possible_next_precise_review": {
+    "root": "D:/workspace/ck3_native_war_ai_promo_work/indextts-install-20260922-r1/model-download-1790090964895024200/",
+    "files": [
+      {"name": "IndexTeam--IndexTTS-2.5--codec.pth.partial", "logical_bytes": 448790528},
+      {"name": "IndexTeam--IndexTTS-2.5--gpt.pth.partial", "logical_bytes": 285212672},
+      {"name": "IndexTeam--IndexTTS-2.5--s2mel.pth.partial", "logical_bytes": 222298112},
+      {"name": "facebook--w2v-bert-2.0--model.safetensors.partial", "logical_bytes": 197132288}
+    ],
+    "logical_candidate_bytes": 1153433600,
+    "qualification": "Metadata lead only. Need completed-successor exact source SHA, current-reference/protection and OS file-handle proof before any separate deletion task. This read-only task does not authorize deletion."
+  },
+  "fresh_free_bytes_as_observed": {"C:/": 31580409856, "D:/": 47147397120},
+  "R184_protection": {
+    "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+    "protection_receipt_sha256": "3662429395dc403dda7efff8a46d3e62b5131aaab346dbdf764794130f9d9ef3",
+    "active_scene_a27_and_all_frozen_input_paths_excluded": true
+  },
+  "downloads": 0,
+  "asset_deletions": 0,
+  "screen_game_steam_sdk_actions": 0,
+  "repository_mutations": 0,
+  "evidence": ["FOLLOWUP.actual-a01.json", "C-DIRECT-GROWTH.actual-a01.json"]
+}

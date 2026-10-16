@@ -1,0 +1,128 @@
+{
+  "schema": "xar.e04.robert-identity-source-chain.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T12:28:45.582974+00:00",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "native_build_source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "pid": 3504,
+  "connection_generation": 1,
+  "episode_run_id": "native-31254-3d3fad411eb2",
+  "process_creation_filetime_100ns": 134366269232060188,
+  "stable_character_intent": {
+    "bookmark_character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "historical_id": 1128,
+    "historical_title_key": "d_apulia",
+    "historical_name": "Robert Guiscard"
+  },
+  "actual_runtime_character_full_id": 31254,
+  "initial_date_raw": 53147928,
+  "proof_chain": [
+    {
+      "layer": "source-controlled-flow",
+      "facts": "Exact admitted ordinary R182 checkpoint loaded in independently allocated new runtime.",
+      "files": [
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+          "bytes": 11588,
+          "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+          "bytes": 20376,
+          "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\prepared-a01\\prepared.json",
+          "bytes": 11682,
+          "sha256": "5853e766531a904ceb20db4bdb30aeb1e05c7576553fa9cea79920254191c2be"
+        }
+      ]
+    },
+    {
+      "layer": "independent-live-reads-produced-by-root",
+      "files": [
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-01-diag.json",
+          "bytes": 55890,
+          "sha256": "0e25e6c427f4dc03972eea0983254b807bc09fa9c3391b4b40033b7fe5ab1a27"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-02-snapshot.json",
+          "bytes": 123377,
+          "sha256": "0ff0ffe5b0fe865d139b2b1068beda9a4822dda2a0502178e2f8b28ba9891ec4"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-03-campaign-root-once.json",
+          "bytes": 147340,
+          "sha256": "2c32814166cd1d544fbb7c14339634afa40811ae9fc4b86b2f7fbd6487e8f1fb"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-04-save-diag.json",
+          "bytes": 55916,
+          "sha256": "2fb139729d0c6cdc49e31537610b75ba319fdf13c86739df6530eda8e7da69dc"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-05-save-before.json",
+          "bytes": 123399,
+          "sha256": "de1eb664777756bb59d36e2550fb1a2478931fa9c80bd4daad36392620dddf06"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-07-save-after.json",
+          "bytes": 123929,
+          "sha256": "a4cfaea8566915fcd84fcaf969b400d06e1a500278684198c78a3aab22038d03"
+        }
+      ]
+    },
+    {
+      "layer": "normal-save-materialization-and-bounded-header-read",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-06-save-once.json",
+        "bytes": 20279,
+        "sha256": "e3b374d92e85ef7fa303e193c0a0d10e9972927d558c9d9e2592b0a006d3f052"
+      },
+      "checkpoint": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73445818,
+        "sha256": "b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127"
+      },
+      "episode_seed": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_episode_seed.ck3",
+        "bytes": 73445818,
+        "sha256": "b9bdef7aa3492ccef07fa92de74ddc8098ca17eeb74e6d6ff8c1ef33f519b127"
+      },
+      "header": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\r184-film-a01-identity-header-first2048.actual.bin",
+        "bytes": 2048,
+        "sha256": "1997a894314d5a089725fca10b34284bf744ebfdcddd3b36e8442c1fca30afdf"
+      },
+      "header_bytes_read": 2048,
+      "utf8_literals": [
+        {
+          "utf8_literal": "1.20.0.4",
+          "offset": 48
+        },
+        {
+          "utf8_literal": "公爵罗贝尔",
+          "offset": 84
+        },
+        {
+          "utf8_literal": "阿普利亚公国",
+          "offset": 107
+        }
+      ],
+      "typed_u32_occurrence_offset": 754
+    }
+  ],
+  "superseded_prelaunch_numeric_expectation": {
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+      "bytes": 11588,
+      "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+    },
+    "old_expected_character_id": 31254,
+    "reason": "Source checkpoint actor was reverified in this exact owned new runtime."
+  },
+  "direct_history_to_runtime_id_field_observed": false,
+  "limits": "Exact machine/PID/create-time/generation/episode; no combat outcome or clean-span qualification."
+}

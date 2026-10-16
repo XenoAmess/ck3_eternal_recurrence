@@ -212,14 +212,22 @@ class LiveEntryBoundaryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'expired'):
             cls.request(fake,'snapshot','ck3_take_snapshot',{})
 
-    def test_C_new_binding_provider_refuses_before_importing_legacy_provider(self):
+    def test_C_new_binding_rejects_legacy_API_before_calling_constructor(self):
         entry=self.source('strategy_c/phased_relay.py','guarded_C_entry_test')
-        with (patch.object(entry,'prepare',return_value={'status':'SOURCE-COMPOSITION-PREPARED'}),
-              patch.object(entry,'runtime_binding',return_value={}),
-              patch.object(entry,'operation_guard',return_value=(g,self.f.guard())),
-              patch.object(entry,'checked',side_effect=AssertionError('no provider import'))):
-            with self.assertRaisesRegex(ValueError,'NO_GO_LEGACY_LOCKED_CONSTRUCTOR'):
-                entry.provider({},SimpleNamespace())
+        path=self.f.root/'synthetic_legacy_relay.py'
+        for api in (None,'xar.e04.C.unknown-constructor.v0'):
+            # Real exact-pinned source import is allowed. A legacy constructor
+            # must never run merely because the new operation was qualified.
+            text=('' if api is None else 'OPERATION_BINDING_API='+repr(api)+'\n')
+            text+='class Live:\n    def __init__(self,args):\n        raise AssertionError("legacy constructor called")\n'
+            path.write_text(text,encoding='utf-8')
+            bundle={'modules':{'root_relay':entry.pin(path)}}
+            with (self.subTest(api=api),
+                  patch.object(entry,'prepare',return_value={'status':'SOURCE-COMPOSITION-PREPARED'}),
+                  patch.object(entry,'runtime_binding',return_value={}),
+                  patch.object(entry,'operation_guard',return_value=(g,self.f.guard()))):
+                with self.assertRaisesRegex(ValueError,'NO_GO_LEGACY_LOCKED_CONSTRUCTOR'):
+                    entry.provider(bundle,SimpleNamespace())
 
 
 if __name__ == '__main__':

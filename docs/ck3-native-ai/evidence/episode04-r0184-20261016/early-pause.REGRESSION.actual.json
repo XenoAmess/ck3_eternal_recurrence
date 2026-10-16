@@ -1,0 +1,28 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:01:22.959764+00:00",
+  "result": "PASS_OFFLINE_ACTUAL_TRACE_REGRESSION_ONLY",
+  "original": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a02\\owner_film_candidate.py",
+    "bytes": 32017,
+    "sha256": "ceb1693edf3e8a926f575fb1c064988be03a66c81d3ee04ffcc72cb1b831c5a7"
+  },
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-early-pause-analysis-a01\\CANDIDATE.diff",
+    "bytes": 2184,
+    "sha256": "4de761bed7b21a1f2d2a5339958f31730bf49ee462cdc72ba74a466f1cee7a53"
+  },
+  "checks": [
+    "old logic reproduces actual first-poll false early stop",
+    "new logic waits through actual refreshed paused frame then observes actual running frame",
+    "real pause after running remains stop",
+    "target pause can complete without catching short running phase",
+    "both native modal types stop immediately",
+    "80 changing-revision paused-start frames never authorize replay",
+    "patched full helper parses and preserves original finite loop and finalizer"
+  ],
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "original_modified": false,
+  "new_live_validation": false
+}

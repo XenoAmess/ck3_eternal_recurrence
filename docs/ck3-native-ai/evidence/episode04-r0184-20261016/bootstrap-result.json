@@ -1,0 +1,350 @@
+{
+  "at": "2026-10-16T13:03:25.698433+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "session": {
+    "format_version": 1,
+    "kind": "ck3_native_headless_session",
+    "mode": "native-headless",
+    "pipe": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+    "pid": 3504,
+    "started_at": "2026-10-16T12:20:52.947209+00:00",
+    "finished_at": "2026-10-16T13:03:25.548610+00:00",
+    "elapsed_seconds": 2552.601,
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "shutdown": {
+      "nonce": "d5b5e01126414b48bc3d08717c964c23",
+      "ck3_pid": 3504,
+      "ck3_creation_date": "20261016202203.206018+480",
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "watchdog_pid": 6760,
+      "watchdog_creation_date": "20261016202159.040793+480",
+      "watchdog_state_before": "running",
+      "watchdog_state_after": "absent",
+      "control_files_absent": {
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\ck3.json": true,
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\watchdog-d5b5e01126414b48bc3d08717c964c23.ready.json": true,
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\ck3.watchdog_error": true,
+        "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\unsafe-cleanup.json": true
+      },
+      "contract_errors": [],
+      "ok": true
+    },
+    "restart_count": 0,
+    "restart_shutdowns": [],
+    "cold_start_checkpoint": null,
+    "frontend_first_warmup": {
+      "enabled": true,
+      "status": "ready",
+      "pipe": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+      "load_save_name": "episode04_frozen_start",
+      "target": {
+        "name": "episode04_frozen_start",
+        "load_save_name": "episode04_frozen_start",
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\episode04_frozen_start.ck3",
+        "size": 73446058,
+        "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+      },
+      "marker": "Setting idler 'Frontend'",
+      "timeout_seconds": 360.0,
+      "evidence_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\native-session\\frontend-first-warmup.json",
+      "warmup_bridge": {
+        "mode": "disabled",
+        "pipe": null,
+        "dll_path": null,
+        "injector_path": null,
+        "dll_injection": false,
+        "mcp": false,
+        "same_pipe_as_final": false
+      },
+      "final_bridge": {
+        "mode": "native-headless",
+        "pipe": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+        "dll_path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+        "injector_path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+        "dll_injection": true,
+        "load_save_name": "episode04_frozen_start"
+      },
+      "initial_launch": {
+        "continue_last_save": false,
+        "load_save_name": null,
+        "native_bridge_mode": "disabled",
+        "pipe": null,
+        "dll_injection": false
+      },
+      "warmup_pid": 8152,
+      "warmup_started_at": "2026-10-16T12:21:05.175203+00:00",
+      "frontend_marker": {
+        "marker": "Setting idler 'Frontend'",
+        "mode": "log-and-authenticated-window",
+        "fallback": true,
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\logs\\debug.log",
+        "seen": true,
+        "polls": 861,
+        "log_bytes": 61440,
+        "elapsed_seconds": 43.933,
+        "observed_at": "2026-10-16T12:21:49.109624+00:00",
+        "signals": {
+          "idler_marker": false,
+          "history_end": false,
+          "frontend_gui_complete": true,
+          "fallback_ready": true
+        },
+        "window": {
+          "ready": true,
+          "pid": 8152,
+          "expected_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "expected_creation_date": "20261016122102.115879+000",
+          "identity": {
+            "pid": 8152,
+            "parent_pid": 9052,
+            "name": "ck3.exe",
+            "executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+            "creation_date": "20261016122102.115879+000",
+            "command_line": ""
+          },
+          "identity_authenticated": true,
+          "handle_executable": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+          "reason": "authenticated_responsive_frontend",
+          "window": {
+            "hwnd": 101451896,
+            "pid": 8152,
+            "title": "Crusader Kings III",
+            "wm_null_responded": true,
+            "wm_null_last_error": 0,
+            "is_hung_app_window": false,
+            "responsive": true
+          }
+        }
+      },
+      "frontend_seen_at": "2026-10-16T12:21:49.109660+00:00",
+      "warmup_shutdown": {
+        "nonce": "1df38f4a676b4798b5136697d4e28932",
+        "ck3_pid": 8152,
+        "ck3_creation_date": "20261016122102.115879+000",
+        "ck3_exit_code": 1,
+        "job_active_processes_before_termination": 1,
+        "job_active_processes_final": 0,
+        "tree_gone": true,
+        "cleanup_proven": true,
+        "final_ck3_inventory": {
+          "tasklist_returncode": 0,
+          "tasklist_pids": [],
+          "wmi_pids": [],
+          "native_pids": [],
+          "inventory_backend": "tasklist+toolhelp32",
+          "processes": []
+        },
+        "watchdog_pid": 9184,
+        "watchdog_creation_date": "20261016122056.779940+000",
+        "watchdog_state_before": "running",
+        "watchdog_state_after": "absent",
+        "control_files_absent": {
+          "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\ck3.json": true,
+          "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\watchdog-1df38f4a676b4798b5136697d4e28932.ready.json": true,
+          "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\ck3.watchdog_error": true,
+          "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\control\\unsafe-cleanup.json": true
+        },
+        "contract_errors": [],
+        "ok": true
+      },
+      "warmup_bridge_lifecycle_cleared": true,
+      "warmup_bridge_pipe_reuse_authorized": false,
+      "target_before_final_launch": {
+        "name": "episode04_frozen_start",
+        "load_save_name": "episode04_frozen_start",
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\episode04_frozen_start.ck3",
+        "size": 73446058,
+        "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+      },
+      "final_pid": 3504,
+      "final_launch_started_at": "2026-10-16T12:22:09.773992+00:00",
+      "final_launch": {
+        "continue_last_save": false,
+        "load_save_name": "episode04_frozen_start",
+        "pipe": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+        "native_bridge_mode": "native-headless",
+        "dll_injection": true
+      }
+    },
+    "startup_slot0_probe": null,
+    "terminal": null,
+    "error": null,
+    "ok": true,
+    "injector_attestation": {
+      "schema": "xar.ck3.native-injector-attempt.v1",
+      "status": "INJECTOR_EXIT_ZERO_TREE_PROVEN",
+      "argv": [
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+        "3504",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll"
+      ],
+      "parent_pid": 9052,
+      "target_ck3_pid": 3504,
+      "pid": 13828,
+      "creation_utc": "2026-10-16T12:22:06.291000+00:00",
+      "creation_source": "CreateProcess pinned handle/GetProcessTimes",
+      "returncode": 0,
+      "stdout_sha256": "12064B50655B11ECC10B9218C6CE2F4815CD75FEE82C8F48CE732DA3B10763B9",
+      "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_bytes": 82,
+      "stderr_bytes": 0,
+      "injector_root_reaped": true,
+      "complete_process_tree_proven": true,
+      "contained_job_report_validated": true,
+      "role_query_authorized": false,
+      "evidence_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23",
+      "argv_asset": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\argv.json",
+        "bytes": 204,
+        "sha256": "491A2B1816C52712460F31B25E365D5824A877AE96B62AB95C02CDFF6620EAE2"
+      },
+      "evidence": {
+        "schema": "xar.ck3.injector-evidence.v1",
+        "assets": {
+          "stdout": {
+            "present": true,
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\stdout.bin",
+            "bytes": 82,
+            "sha256": "12064B50655B11ECC10B9218C6CE2F4815CD75FEE82C8F48CE732DA3B10763B9"
+          },
+          "stderr": {
+            "present": true,
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\stderr.bin",
+            "bytes": 0,
+            "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+          },
+          "job_report": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\job-report.json",
+            "bytes": 1491,
+            "sha256": "73D7BAB1E207DD37B891D1311293F8C21F3BBAF6E98C67B90CE77294DF984B3B"
+          },
+          "helper_error": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\helper-error.json",
+            "bytes": 20,
+            "sha256": "7CAEEFE05C039F6C30BD0593D321171609C89CB15AC218F9E059154B1C8A035A"
+          }
+        },
+        "index": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\injector-attempts\\d5b5e01126414b48bc3d08717c964c23\\evidence-index.json",
+          "bytes": 1274,
+          "sha256": "EECA8EF8FFE1B63D334418A061A3B896BAA4F23373BAD9B625FF011765D3A0D8"
+        }
+      },
+      "pinned_executable": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+      "executable_sha256": "862668CD668C3677D7316C9AFA91A2F1AE8CCD56C8F22E401DBAC0EE22920836",
+      "job_limit_flags": 8200,
+      "pre_resume_job_pids": [
+        13828
+      ],
+      "job_active_final": 0,
+      "job_pids_final": [],
+      "resume_previous_count": 1,
+      "stdout_retained_sha256": "12064B50655B11ECC10B9218C6CE2F4815CD75FEE82C8F48CE732DA3B10763B9",
+      "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "stdout_retained_bytes": 82,
+      "stderr_retained_bytes": 0,
+      "contained_job_report": {
+        "schema": "xar.ck3.contained-injector-job.v1",
+        "status": "EXIT",
+        "argv": [
+          "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+          "3504",
+          "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll"
+        ],
+        "pid": 13828,
+        "creation_utc": "2026-10-16T12:22:06.291000+00:00",
+        "pinned_executable": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+        "executable_sha256": "862668CD668C3677D7316C9AFA91A2F1AE8CCD56C8F22E401DBAC0EE22920836",
+        "job_limit_flags": 8200,
+        "pre_resume_job_pids": [
+          13828
+        ],
+        "job_active_final": 0,
+        "job_pids_final": [],
+        "resume_previous_count": 1,
+        "returncode": 0,
+        "injector_root_reaped": true,
+        "complete_process_tree_proven": true,
+        "stdout_sha256": "12064B50655B11ECC10B9218C6CE2F4815CD75FEE82C8F48CE732DA3B10763B9",
+        "stderr_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stdout_bytes": 82,
+        "stderr_bytes": 0,
+        "stdout_retained_sha256": "12064B50655B11ECC10B9218C6CE2F4815CD75FEE82C8F48CE732DA3B10763B9",
+        "stderr_retained_sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+        "stdout_retained_bytes": 82,
+        "stderr_retained_bytes": 0,
+        "stdout_complete": true,
+        "stderr_complete": true,
+        "output_limit_bytes": 8388608,
+        "stdout_overflow": false,
+        "stdout_reader_error": null,
+        "stderr_overflow": false,
+        "stderr_reader_error": null
+      }
+    },
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T13:03:25.697189+00:00"
+  },
+  "sdk_error": null,
+  "sdk_thread_exited": true,
+  "supervisor_error": null,
+  "screen_lease": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "e04-live-20261016-r0184",
+    "last_sequence": 5762,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\screen-lease-journal.jsonl"
+  },
+  "recorder": {
+    "state": "NORMAL_TREE_EMPTY",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "capture_source": {
+      "kind": "gdigrab-desktop-client-region",
+      "owned_ck3_pid": 3504,
+      "owned_ck3_create_time": 1792153323.2060187,
+      "hwnd": 101517432,
+      "foreground_hwnd": 101517432,
+      "desktop": [
+        2560,
+        1440
+      ],
+      "client_screen_rect": [
+        640,
+        360,
+        1920,
+        1080
+      ],
+      "occluding_windows": [],
+      "coordinates": "physical-primary-screen-pixels",
+      "direct_hwnd_capture": false,
+      "window_border_included": false,
+      "observed_at_utc": "2026-10-16T12:50:40.495177+00:00",
+      "output_size": [
+        1280,
+        720
+      ]
+    },
+    "capture_guard_error": null,
+    "capture_guard_thread_alive": false,
+    "directory": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01",
+    "cleanup_error": null,
+    "clean_spans_certified": false,
+    "human_approval": false
+  },
+  "recording_started_automatically": false,
+  "human_video_approval": false
+}

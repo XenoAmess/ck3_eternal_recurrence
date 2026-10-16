@@ -1,0 +1,97 @@
+{
+  "schema": "xar.e04.parameterized-owner-film-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "repo": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+  "authorized_assets_root": "C:/ck3-e04-resume-20261015-a01",
+  "scene_root": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01",
+  "run_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 370,
+    "sha256": "457fc9cee74445e9089f4a0fe144ce3152870a3c415ed3a5c043c115fb6c7744"
+  },
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "game_dir": "C:/SteamLibrary/steamapps/common/Crusader Kings III",
+  "state_dir": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02",
+  "prepared": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+  "raw_workdir": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/raw-window-a01",
+  "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r184_20261016_a01",
+  "request_prefix": "r184-film-a01",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+    "bytes": 70420,
+    "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d"
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+      "bytes": 12982784,
+      "sha256": "372ed8dc1c1881b8bea75415cafd4e696aacb90690f30a15f0a555ca91234d4e"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "862668cd668c3677d7316c9afa91a2f1ae8ccd56c8f22e401dbac0ee22920836"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "a0c3bd97e9f1e3a8c41e42501f5fa95193f8ec9defa46d35f48be457256d1f01"
+    }
+  },
+  "steam_offline_receipt": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+  "screen": {
+    "cli": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_bus": "D:\\workspace\\.codex-task-bus",
+    "task_id": "e04-live-20261016-r0184",
+    "sequence": 5740
+  },
+  "checkpoint_source": {
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73446058,
+      "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+      "bytes": 20376,
+      "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\prepared-a01\\prepared.json",
+      "bytes": 11682,
+      "sha256": "5853e766531a904ceb20db4bdb30aeb1e05c7576553fa9cea79920254191c2be"
+    }
+  },
+  "identity_receipt_path": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01/runtime-actor-identity.actual-a01.json",
+  "identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 6050,
+    "sha256": "048bcaee82fc2f0dc98153e5b7c02598ade08d800d8c55017986edcf673043ca"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ordinary_root": {
+    "primary_title_id": 2230,
+    "capital_province_id": 2619,
+    "government_key": "feudal_government"
+  },
+  "actor_id": 31254,
+  "army_id": 18,
+  "expected_start_date_raw": 53147928,
+  "expected_start_province_id": 2635,
+  "speed": 3,
+  "seconds": 90,
+  "days": 9,
+  "session_timeout_seconds": 5400,
+  "normal_close_reserve_seconds": 180,
+  "army_history_sidecar_limit_bytes": 134217728
+}

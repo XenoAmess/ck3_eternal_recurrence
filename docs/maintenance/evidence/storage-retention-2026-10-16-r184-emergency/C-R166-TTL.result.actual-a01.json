@@ -1,0 +1,49 @@
+{
+  "schema": "xar.r184-expired-r166-shader-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:50:42.426444+00:00",
+  "policy_version": "1.0.0",
+  "deleted_count": 3908,
+  "deleted_logical_bytes": 159571724,
+  "deleted_single_link_allocated_bytes": 168403840,
+  "batches": [
+    {
+      "batch": 1,
+      "count": 1000,
+      "plan_sha256": "998065f341624afc3fb4b411e4f6d41c1c8323271afe25124c34d8c24253628e",
+      "result_sha256": "85d57cacd8b6e9a99a504d8f3022c6c81e0cff393e2e93b8ccda3b78e6568228",
+      "logical_bytes": 118430813,
+      "allocated_bytes": 120635392
+    },
+    {
+      "batch": 2,
+      "count": 1000,
+      "plan_sha256": "014e8e98441c961a34ee40a001cf5058afc4bca2256dcd80e006e4aa53dd9858",
+      "result_sha256": "1a4954abb0b2198fcbc5f6c2f4e6d451958837d7f2b4715c42b524899ca9506f",
+      "logical_bytes": 30004288,
+      "allocated_bytes": 32587776
+    },
+    {
+      "batch": 3,
+      "count": 1000,
+      "plan_sha256": "b169bff241a808a8a62aa50a07955b197d5b22125f9b97f137bfdf101bda1649",
+      "result_sha256": "e5d652d9cc540aaf48425c0fc49dab7a6d301090a8f8f6aaee31dab13180b0f4",
+      "logical_bytes": 9880619,
+      "allocated_bytes": 11612160
+    },
+    {
+      "batch": 4,
+      "count": 908,
+      "plan_sha256": "2758a652d65fb6c1dd0853883bf1c124ed03c6d9eb9de848cf6794b32ccef685",
+      "result_sha256": "7a3151fd565ecab1cba9d3823cc18eac7372cfdb702a92aea3bf923365922d08",
+      "logical_bytes": 1256004,
+      "allocated_bytes": 3568512
+    }
+  ],
+  "free_before": 30122340352,
+  "free_after": 30332235776,
+  "concurrent_volume_delta_not_exclusive": true,
+  "directory_deletions": 0,
+  "R184_scene_a27_R182normal_and_7raw_untouched": true,
+  "seconds": 41.25344320014119
+}

@@ -1,0 +1,39 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "runtime_source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "native_build_source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+    "execution_id": "31198ecd-8899-4d17-aee6-3181c901236b",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "mod_key": "vanilla",
+    "sequence": 184,
+    "allocated_at_utc": "2026-10-16T12:07:26.768443+00:00",
+    "allocator_pid": 7320,
+    "legacy_alias": null
+  },
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 370,
+    "sha256": "457fc9cee74445e9089f4a0fe144ce3152870a3c415ed3a5c043c115fb6c7744"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+    "bytes": 70420,
+    "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d"
+  },
+  "capacity_admission": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+  "production": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a01\\A27-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 2576,
+    "sha256": "eb632e44aae4f16d68e53269f4470f1b248d0b9e3e261c67af710203f6d93883"
+  },
+  "promo_release_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-owner-prep-a01\\R184-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 4177,
+    "sha256": "b359325bcba0166e0226e7cee954a1f09c5901cbc51d90fc411a794cd57f1818"
+  },
+  "game_started": false
+}

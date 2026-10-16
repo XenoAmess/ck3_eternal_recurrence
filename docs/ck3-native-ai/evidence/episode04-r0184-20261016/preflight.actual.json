@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T12:49:12.618817+00:00",
+  "config": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 4616,
+    "sha256": "bda5b5bee770312ee611865101ae91794096651a84d390e433228272446bf9ce"
+  },
+  "identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 6050,
+    "sha256": "048bcaee82fc2f0dc98153e5b7c02598ade08d800d8c55017986edcf673043ca"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+    "bytes": 70420,
+    "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d"
+  },
+  "session_deadline": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\recording-session-deadline.json",
+    "bytes": 1402,
+    "sha256": "3025a57b24e0c43d68318ca7e2e17bd7d2d370f7070a1095701b064d00200f24"
+  },
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_checkpoint": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 73446058,
+    "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+  },
+  "capacity_measured": {
+    "usage": {
+      "profile": 523775645,
+      "driver": 25825143,
+      "raw": 0,
+      "other": 11937137
+    },
+    "remaining_scene_bytes": 1049074811,
+    "volumes": {
+      "C:/": {
+        "free": 29970321408,
+        "required": 29629254164
+      },
+      "D:/": {
+        "free": 48300224512,
+        "required": 21609054208
+      }
+    }
+  },
+  "session_remaining_seconds": 3700.306337,
+  "ffmpeg_stat": {
+    "size": 222229504,
+    "mtime_ns": 1786511668000000000
+  },
+  "full_scan_before_frame_review": true,
+  "SDK_calls": 0,
+  "desktop_calls": 0
+}

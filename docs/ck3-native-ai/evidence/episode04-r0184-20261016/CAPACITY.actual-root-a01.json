@@ -1,0 +1,1321 @@
+{
+  "schema": "xar.e04.r184-root-adopted-capacity.v1",
+  "status": "ROOT_ADOPTED_R184_FRESH_EXCLUSIVE",
+  "admitted": true,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "policy_version": "1.0.0",
+  "at_utc": "2026-10-16T11:39:06.531146+00:00",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "source_binding": {
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+    "clean": true,
+    "source_qualification": "actual committed clean HEAD at Root execution; native build still requires its own qualification"
+  },
+  "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "run_id_at_capacity_adoption": "expected_only_not_yet_allocated",
+  "post_adoption_allocator_exact_match_required": true,
+  "allocator_mismatch_or_failure_must_not_start": true,
+  "quota_review_at_utc": "2026-10-16T17:39:06.531146+00:00",
+  "fresh_independent_quota_review": true,
+  "old_deadline_extended": false,
+  "old_admission_transferred": false,
+  "new_scene_aggregate_bytes": 1610612736,
+  "aggregate_scene_ceiling_bytes": 1610612736,
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 134217728,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "component_usage_bytes": {
+    "profile": 0,
+    "driver": 0,
+    "raw": 0,
+    "other": 0
+  },
+  "remaining_scene_growth_bytes": {
+    "profile": 805306368,
+    "driver": 134217728,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "new_native_build_root": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27",
+  "new_native_build_ceiling_bytes": 805306368,
+  "shared_all_offline_agents_bytes": 134217728,
+  "render_reserved_bytes": 0,
+  "render_execution_authorized": false,
+  "current_project_usage_bytes": null,
+  "current_project_usage_upper_bound_bytes": 163047897772,
+  "project_usage_basis": "logical_base_plus_metadata_increment_plus_two_bounded_small_write_envelopes",
+  "current_C_baseline_upper_bytes": 162913680044,
+  "postcandidate_small_write_upper_bytes": 134217728,
+  "cleanup_deleted_bytes_deducted_again": 0,
+  "future_C_reservations": {
+    "old_other_unspent_bytes": 1870851481,
+    "new_scene_bytes": 1610612736,
+    "new_native_bytes": 805306368,
+    "shared_offline_bytes": 134217728,
+    "render_bytes": 0,
+    "total_bytes": 4420988313
+  },
+  "projected_project_peak_bytes": 167468886085,
+  "effective_project_quota_bytes": 171798691840,
+  "C_logical_headroom_bytes": 4329805755,
+  "D_current_project_physical_upper_bytes": 452941303808,
+  "D_project_logical_bytes": null,
+  "D_complete_logical_inventory_claimed": false,
+  "D_project_physical_peak_upper_bytes": 453075521536,
+  "D_effective_unique_physical_quota_bytes": 483183820800,
+  "quota_exceptions": [
+    {
+      "owner": "Root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "volume": "C:/",
+      "metric": "project_logical_bytes",
+      "max_project_bytes": 171798691840,
+      "reason": "Fresh finite R184 independent window-capture retry, corrected deadline guard and new a27 native build; retain old other reservation, no render.",
+      "actual_review_at_utc": "2026-10-16T11:39:06.531146+00:00",
+      "review_at_utc": "2026-10-16T17:39:06.531146+00:00",
+      "duration_hours": 6
+    },
+    {
+      "owner": "Root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "volume": "D:/",
+      "metric": "unique_physical_resident_bytes_upper_bounded_by_entire_volume_used",
+      "max_project_bytes": 483183820800,
+      "reason": "Fresh finite R184 review; logical D inventory remains unknown; actual entire-volume used conservatively bounds physical project allocation.",
+      "actual_review_at_utc": "2026-10-16T11:39:06.531146+00:00",
+      "review_at_utc": "2026-10-16T17:39:06.531146+00:00",
+      "duration_hours": 6
+    }
+  ],
+  "volume_reservations": {
+    "C:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 4294967296,
+      "other_unspent_reservations_bytes": 2810375577
+    },
+    "D:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_unspent_reservations_bytes": 0
+    }
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "free_bytes": 32204378112,
+      "used_bytes": 478929567744,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 4294967296,
+      "other_and_new_future_reservations_bytes": 4420988313,
+      "required_free_bytes": 30190792089,
+      "margin_bytes": 2013586023
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "free_bytes": 47148703744,
+      "used_bytes": 452941303808,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_and_new_future_reservations_bytes": 0,
+      "required_free_bytes": 21609054208,
+      "margin_bytes": 25539649536
+    }
+  },
+  "capacity_conditions": {
+    "C_free": true,
+    "D_free": true,
+    "C_logical_quota": true,
+    "D_physical_quota": true
+  },
+  "capacity_numbers_fit": true,
+  "process_inventory": {
+    "observed_at_utc": "2026-10-16T11:39:07.459041+00:00",
+    "heavyweight_processes": [],
+    "scope": "actual process-name inventory; Root separately accounts all ordinary agents inside ONE128MiB envelope"
+  },
+  "old_R183_closure": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "exit_reason": "timeout",
+    "normal_UI_exit_claimed": false,
+    "game_tree_empty": true,
+    "SDK_and_keeper_threads_exited": true,
+    "external_recorder_tree_empty": true,
+    "screen_task_sequence": 5733,
+    "screen_resources": [],
+    "retained_scene": {
+      "logical_bytes": 602231435,
+      "metadata_entries": 4659,
+      "seconds": 0.4892861000262201
+    },
+    "evidence": {
+      "bootstrap": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\bootstrap-result.json",
+        "bytes": 14215,
+        "sha256": "6e258f04037d6e0124f9b79ac8ae12c1bbae698b910f7e7403ab58cbf5c54007"
+      },
+      "session": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\session-result.json",
+        "bytes": 12844,
+        "sha256": "056ff7a3b6b644be54584ac16cfb9efa06c276d70cfe30321c85d99fb26cc921"
+      },
+      "screen_task": {
+        "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-live-20261016-r0183-a03.json",
+        "bytes": 535,
+        "sha256": "2f769aeaf4f6510b5569e53263d551d247cad9ae42c7dbb211a6dd50664bf5a1"
+      },
+      "external_recorder_failure": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\failure.json",
+        "bytes": 548,
+        "sha256": "7a51511a5eb3e50ded0ab29002e1967937b84a6b144ef8da9cf651c2dc66be13"
+      }
+    }
+  },
+  "minimum_necessary_protections": {
+    "schema": "xar.e04.r184-minimum-necessary-protections.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "owner": "Root",
+    "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+    "assets": [
+      {
+        "asset_id": "e04-R182-normal-checkpoint-current-R184-input",
+        "category": "checkpoint",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_file": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+          "logical_bytes": 73446058,
+          "mtime_ns": 1792129037033965600,
+          "birth_ns": 1792126066996271300,
+          "file_id_metadata_or_null": 562949955903313,
+          "volume_metadata_or_null": 13886423844274364792,
+          "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+        },
+        "purpose": "Only current normal save input for R184 independent load and identity qualification",
+        "next_use": "R184 prepare/frontend load after fresh build/runtime/offline qualification",
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "source_receipt": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\NORMAL-SAVE.actual.json",
+          "bytes": 4526,
+          "sha256": "3ac65e6cea43f687545689d47b689bf540dd2e65cde0198c7031f7660f1a73b3"
+        },
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0173-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\raw-boarding-halt-a01\\raw.mkv",
+          "logical_bytes": 461374695,
+          "mtime_ns": 1792069408998990100,
+          "birth_ns": 1792069048909157700,
+          "file_id_metadata_or_null": 844424932023688,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "de5599ae3d5fc3bad714317b7723fc17fcbc49793d47f96d7307bbbbcfbd922b",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\media-audit-a01\\cut-candidates-a01\\cut-candidates.json",
+            "bytes": 14910,
+            "sha256": "a001f16c6c9e34970d6343bbe16ffc645d69a869a442408d75f459b84dcee68a"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\CLOSED.actual-a01.json",
+            "bytes": 3742,
+            "sha256": "c258bb85495b3b0933eab5171931312c96b2d379549e971536405bd055ba5b52"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a02\\claim-shot-agent-map.json",
+              "bytes": 71886,
+              "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1",
+              "source_id": "STORY-A02",
+              "Root_reviewed_semantic_selector": "shots.S173-PRE/S173-SEA/S173-POST; paragraphs C01-02,C04-10,C05-13,C06-08"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "Root_reviewed_semantic_selector": "paragraph C04-09: actual_shot_ids R0173-BOARDING-CANDIDATES and explicit shot_direction timecodes"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "Root_reviewed_semantic_selector": "cues C01-02,C04-09,C04-10,C05-13,C06-08 legacy_actual_shot_ids_to_review_only"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Actual boarding transition candidates for the current 69-cue Episode04 edit; story-a05 explicitly retains the three existing encoded ranges.",
+        "next_use": "Review exact candidate endpoints and continuous content; if acceptable bind source SHA plus frame interval to current cues. This source is needed until that review or explicit rejection, not as generic history.",
+        "candidate_spans_seconds": [
+          [
+            147.5,
+            153.5
+          ],
+          [
+            153.5,
+            161.6
+          ],
+          [
+            168.9,
+            174.9
+          ]
+        ],
+        "limitations": [
+          "Candidate only; Halt is outside this raw; pixels do not independently establish payment attribution; no current clean approval."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0174-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\raw-t0-halt-a01\\raw.mkv",
+          "logical_bytes": 56479663,
+          "mtime_ns": 1792078260762602000,
+          "birth_ns": 1792078215692446600,
+          "file_id_metadata_or_null": 844424932065981,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\CLOSED.actual-a01.json",
+            "bytes": 2915,
+            "sha256": "a32cd992cac20dd98b0730934b9cdc15aff73de8d5c1ecf7f1733d5ba4a72a5e"
+          },
+          "historical_identity_json_path": "raw",
+          "machine_binding_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\CLOSED.actual-a01.json",
+            "bytes": 2915,
+            "sha256": "a32cd992cac20dd98b0730934b9cdc15aff73de8d5c1ecf7f1733d5ba4a72a5e"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "existing raw table: R0174 unlocked Halt; instruction to review reusable old raw first"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "Root_reviewed_semantic_selector": "cue C06-10 references S174; older story-a02 S174 pending cutpoint is superseded only by later actual media receipt, not rewritten"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Unlocked Halt movement-to-standby candidate for current route-control explanation and contrast with R0175 locked Halt.",
+        "next_use": "Review 0-4s transition and 4-20s standby with left-top tooltip occlusion; bind accepted interval or reject before shooting replacement.",
+        "candidate_spans_seconds": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            20
+          ]
+        ],
+        "limitations": [
+          "45s raw does not contain all 21 natural control days; no seven-day R07 or continuous clean credit."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0175-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\raw-locked-halt-a01\\raw.mkv",
+          "logical_bytes": 59537290,
+          "mtime_ns": 1792086841620205500,
+          "birth_ns": 1792086796528484200,
+          "file_id_metadata_or_null": 562949955370857,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\ROOT-CUT-DELIVERY-a02.json",
+            "bytes": 4013,
+            "sha256": "7d7aee86839f0b3da5647155bd02dde5f544c3421471a0617dc8010553c66e8b"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r12-locked-halt-r0175-12004.md",
+            "bytes": 3578,
+            "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a04\\claim-shot-agent-map.json",
+              "bytes": 58341,
+              "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d",
+              "source_id": "STORY-A04",
+              "Root_reviewed_semantic_selector": "shot_candidates R12-PRE/R12-TAIL/R12-FIRST; C04-05,C04-06,C04-07"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "Root_reviewed_semantic_selector": "C01-04 shot_direction explicitly R0175 4-24s; C01-03 uses R0175/R0176 run/date labels"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "Root_reviewed_semantic_selector": "C04-05,C04-06,C04-07 legacy R12 shot IDs"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "R0175 existing-raw table; P2 says review R0175/R0176 first and keep C04-07 dependent on R0175 candidate or independent reshoot"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Locked Halt suffix truncation while front continues; current story still uses this distinct actual transition.",
+        "next_use": "Review continuous 0-4s,4-24s,24-43.5s against notification/tooltip bounds; select exact source intervals or reject before duplicate filming.",
+        "candidate_spans_seconds": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            24
+          ],
+          [
+            24,
+            43.5
+          ]
+        ],
+        "limitations": [
+          "Next-day static state is outside raw; native 96.7% progress is not a directly readable video number; no clean signoff."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0176-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\raw-locked-reroute-a01\\raw.mkv",
+          "logical_bytes": 60656946,
+          "mtime_ns": 1792089485622771700,
+          "birth_ns": 1792089440563463200,
+          "file_id_metadata_or_null": 562949955377337,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\media-locked-reroute-a01\\ROOT-CUT-DELIVERY.actual-a01.json",
+            "bytes": 4301,
+            "sha256": "e403ae2fa2fe1a26d9568b8dea5a220ac8a36531075d46991c97e0b20322eb89"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+            "bytes": 2289,
+            "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a04\\claim-shot-agent-map.json",
+              "bytes": 58341,
+              "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d",
+              "source_id": "STORY-A04",
+              "Root_reviewed_semantic_selector": "R13-PRE/R13-TAIL/R13-FIRST; C04-01,C04-04,C04-06,C04-08"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "Root_reviewed_semantic_selector": "C01-06 and C06-03 shot_direction explicitly consume R0176 0-4/4-10/10-20s candidates"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "Root_reviewed_semantic_selector": "C04-01,C04-04,C04-06,C04-08 legacy R13 IDs"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "R0176 existing-raw table and P2 first-review/reuse requirement"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Locked reroute original route, suffix change, preserved front progression for current story; these are distinct from R0175 Halt.",
+        "next_use": "Review existing candidate ranges before reshoot; preserve precise interval binding, then shoot only missing readable ETA/actual alternate endpoint if still necessary.",
+        "candidate_spans_seconds": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            10,
+            20
+          ]
+        ],
+        "limitations": [
+          "Alternate arrival occurs after the 45s raw; cannot manufacture continuous endpoint or import later R09 experiment into this raw."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0177-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-source-a01\\raw-coastal-arrival-a01\\raw.mkv",
+          "logical_bytes": 59607616,
+          "mtime_ns": 1792095853233315900,
+          "birth_ns": 1792095808138849300,
+          "file_id_metadata_or_null": 562949955427489,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "88f37c5911ffa25491122c2f11dd04b3c17aeecdc0ff6f72605df77e3530231d",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0177-coastal-normalprep\\SUMMARY.actual-a01.json",
+            "bytes": 9940,
+            "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433"
+          },
+          "historical_identity_json_path": "media.raw_identity_reused",
+          "machine_binding_source": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0177-coastal-normalprep\\SUMMARY.actual-a01.json",
+            "bytes": 9940,
+            "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "existing-raw table R0177 coastal preparation; P2 permits as its own independent coastal arrival case, not R13 alternate arrival"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Independent coastal movement-to-arrival example to inspect before replacement capture, retained explicitly in latest shot priority.",
+        "next_use": "Review (4,10]s state transition and 10-15s arrival comparison; bind independent run/date labels if used; reject unused paused tail.",
+        "candidate_spans_seconds": [
+          [
+            0,
+            4
+          ],
+          [
+            4,
+            10
+          ],
+          [
+            10,
+            15
+          ]
+        ],
+        "limitations": [
+          "Not two fresh R07 arms; exact first visual state-change PTS unknown; no continuous clean/human approval."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0182-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\raw-r182-a01\\raw.mkv",
+          "logical_bytes": 228543290,
+          "mtime_ns": 1792127845078019800,
+          "birth_ns": 1792127665031903200,
+          "file_id_metadata_or_null": 562949955903723,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "cc17504348085bc3bb5c02655a31b424bd6406f6106707c15d29a2a651e5b0fe",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\CLOSED.actual.json",
+            "bytes": 3312,
+            "sha256": "f4e8fe42e0437bda10bd6007fc107146618975e3845d27d5939e3fa19ff14311"
+          },
+          "historical_identity_json_path": "evidence.raw_video",
+          "machine_binding_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\CLOSED.actual.json",
+            "bytes": 3312,
+            "sha256": "f4e8fe42e0437bda10bd6007fc107146618975e3845d27d5939e3fa19ff14311"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "existing-raw table R182 march,174-177s candidate; instruction first review reusable old raw"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r182-march-and-county-p-12004.md",
+              "bytes": 6797,
+              "sha256": "ccbe27871760f66a39439447c80ef108db77e67ad1d7e02181a145272c389e14",
+              "source_id": "R182-TOPIC",
+              "Root_reviewed_semantic_selector": "raw review candidate and precise limit: no arrival visible through179s"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "Short actual date/march candidate requiring exact continuous review; latest plan still lists it for possible reuse rather than treating all historic footage as unused.",
+        "next_use": "Inspect only 174-177s first against existing sample index, decide exact usable interval or reject; no need to preserve the whole scene to do this.",
+        "candidate_spans_seconds": [
+          [
+            174,
+            177
+          ]
+        ],
+        "limitations": [
+          "0-170s mostly paused; no arrival in retained raw through179s; later native2635 arrival cannot be inserted as video evidence; current equal soldier endpoints do not prove no intermediate debit."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      },
+      {
+        "asset_id": "e04-r0183-raw",
+        "category": "raw_evidence",
+        "owner": "Root",
+        "machine_id": "desktop-3fevhd2-1c74096080",
+        "actual_metadata": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv",
+          "logical_bytes": 2883584,
+          "mtime_ns": 1792136698874662200,
+          "birth_ns": 1792136689799877300,
+          "file_id_metadata_or_null": 1125899907371246,
+          "volume_metadata_or_null": 13886423844274364792
+        },
+        "historical_sha256": "d232680842948124ea57f8138fc2d1a8cb4261a3db8bc2ec5062a3194e3c1e73",
+        "raw_body_rehashed_now": false,
+        "historical_SHA_not_present_byte_identity_claim": true,
+        "exact_small_source_identity_chain": {
+          "raw_input_review": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "historical_identity_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-audit.actual.json",
+            "bytes": 18077,
+            "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32"
+          },
+          "historical_identity_json_path": "raw",
+          "machine_binding_source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-audit.actual.json",
+            "bytes": 18077,
+            "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32"
+          },
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "Root_reviewed_semantic_selector": "existing-raw table R183 window capture: failure capture evidence only"
+            },
+            {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-portable-facts.actual.json",
+              "bytes": 5059,
+              "sha256": "8431a2c562903fee5e5e1ce15fdd07468e5098f12488d8bd02bcb622a53aca94",
+              "source_id": "R183-FACTS",
+              "Root_reviewed_semantic_selector": "video/full_decode/capture limitations and claims all false"
+            }
+          ],
+          "identity_contract": "Historical exact original receipt SHA+path+size, fresh small-source SHA and current path/size/mtime/fileID; raw body not opened or rehashed."
+        },
+        "purpose": "One minimal corrected-region-capture failure/partial comparison for recorder remediation, not clean footage or a game-mechanism positive.",
+        "next_use": "Compare original 239-frame partial metadata/content bounds with next corrected recording and close the failure review; do not feed it as a clean or full90s source.",
+        "candidate_spans_seconds": [
+          [
+            0,
+            7.966
+          ]
+        ],
+        "limitations": [
+          "239 frames; available end7.966s; container90s is planned header; capacity abort; three native days not all proven inside raw; all business/clean/human claims false."
+        ],
+        "business_or_clean_or_signoff_credit": false,
+        "protected_until_utc": "2026-10-16T17:39:06.531146+00:00",
+        "protection_created_by_actual_Root_execution": true
+      }
+    ],
+    "current_static_consumer_pins": [],
+    "unselected_old_assets": "No new protection. Root current-use classification in review applies; normal policy TTL/expiry review continues. No deletion authorized by this script.",
+    "Root_review": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-ROOT-REVIEW.proposal-a02.json",
+      "bytes": 27747,
+      "sha256": "ced7c115fe6d8dda5821ec9497592951f099d664ac867b1d3858eba2c4ebb665"
+    },
+    "review_facts": {
+      "schema": "xar.e04.r184-root-review-proposal.v1",
+      "status": "PROPOSAL_EFFECTIVE_ONLY_IF_ROOT_REVIEWS_AND_RUNS_EXECUTE_LIVE",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "reviewer": "Root",
+      "authority": "Root explicitly selected the exact seven R173/R174/R175/R176/R177/R182/R183 raw files for one fresh six-hour protection in the current task. This proposal maps that selection; only actual Root --execute-live creates protection/admission.",
+      "all_project_roots_accounted": true,
+      "all_writers_accounted": true,
+      "all_nonheavy_agents_share128MiB": true,
+      "postcandidate_existing_small_writes_at_most128MiB": true,
+      "old_other1870851481_retained": true,
+      "no_new_raw_or_heavy_asset_since_increment_scan": true,
+      "writer_review_basis": "Root must affirm at actual execution: the completed80-root metadata increment plus original128MiB scan envelope is retained conservatively; a further128MiB covers all existing small code/docs/portable evidence appends after the candidate. Disk worker deleted already-accounted old objects and wrote only bounded small receipts; none of its4,040,678,590 C logical bytes is deducted again. Root accounts all non-bus agents within ONE shared future128MiB. Runtime process inventory and old scene shutdown are checked inside the bus lock.",
+      "current_Review02_raw_assets": [
+        {
+          "asset_id": "e04-r0173-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0173",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-scoped-payment-a01/raw-boarding-halt-a01/raw.mkv",
+          "bytes": 461374695,
+          "historical_sha256": "de5599ae3d5fc3bad714317b7723fc17fcbc49793d47f96d7307bbbbcfbd922b",
+          "purpose": "Actual boarding transition candidates for the current 69-cue Episode04 edit; story-a05 explicitly retains the three existing encoded ranges.",
+          "next_use": "Review exact candidate endpoints and continuous content; if acceptable bind source SHA plus frame interval to current cues. This source is needed until that review or explicit rejection, not as generic history.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\media-audit-a01\\cut-candidates-a01\\cut-candidates.json",
+            "bytes": 14910,
+            "sha256": "a001f16c6c9e34970d6343bbe16ffc645d69a869a442408d75f459b84dcee68a",
+            "source_id": "R173-CUTS"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-scoped-payment-a01\\CLOSED.actual-a01.json",
+            "bytes": 3742,
+            "sha256": "c258bb85495b3b0933eab5171931312c96b2d379549e971536405bd055ba5b52",
+            "source_id": "R173-CLOSED",
+            "selector": "machine_id and run_id explicitly bind the same raw path/bytes/SHA"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0173-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a02\\claim-shot-agent-map.json",
+              "bytes": 71886,
+              "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1",
+              "source_id": "STORY-A02",
+              "selector": "shots.S173-PRE/S173-SEA/S173-POST; paragraphs C01-02,C04-10,C05-13,C06-08"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "selector": "paragraph C04-09: actual_shot_ids R0173-BOARDING-CANDIDATES and explicit shot_direction timecodes"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "selector": "cues C01-02,C04-09,C04-10,C05-13,C06-08 legacy_actual_shot_ids_to_review_only"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              147.5,
+              153.5
+            ],
+            [
+              153.5,
+              161.6
+            ],
+            [
+              168.9,
+              174.9
+            ]
+          ],
+          "limitations": [
+            "Candidate only; Halt is outside this raw; pixels do not independently establish payment attribution; no current clean approval."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0174-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0174",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-t0-control-a01/raw-t0-halt-a01/raw.mkv",
+          "bytes": 56479663,
+          "historical_sha256": "6d28162df56f95b7ea85c252dd8d61794c73b87c00c54b6ab7002945f46f1f12",
+          "purpose": "Unlocked Halt movement-to-standby candidate for current route-control explanation and contrast with R0175 locked Halt.",
+          "next_use": "Review 0-4s transition and 4-20s standby with left-top tooltip occlusion; bind accepted interval or reject before shooting replacement.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\CLOSED.actual-a01.json",
+            "bytes": 2915,
+            "sha256": "a32cd992cac20dd98b0730934b9cdc15aff73de8d5c1ecf7f1733d5ba4a72a5e",
+            "source_id": "R174-CLOSED"
+          },
+          "historical_identity_json_path": "raw",
+          "machine_binding_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-t0-control-a01\\CLOSED.actual-a01.json",
+            "bytes": 2915,
+            "sha256": "a32cd992cac20dd98b0730934b9cdc15aff73de8d5c1ecf7f1733d5ba4a72a5e",
+            "source_id": "R174-CLOSED",
+            "selector": "explicit machine_id, run_id and raw identity"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0174-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "existing raw table: R0174 unlocked Halt; instruction to review reusable old raw first"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "selector": "cue C06-10 references S174; older story-a02 S174 pending cutpoint is superseded only by later actual media receipt, not rewritten"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              20
+            ]
+          ],
+          "limitations": [
+            "45s raw does not contain all 21 natural control days; no seven-day R07 or continuous clean credit."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0175-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0175",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-locked-route-a01/raw-locked-halt-a01/raw.mkv",
+          "bytes": 59537290,
+          "historical_sha256": "bd157fe4d86df56e1eec92213b3e71cfa58c27b319e3780e99d8465131eacb11",
+          "purpose": "Locked Halt suffix truncation while front continues; current story still uses this distinct actual transition.",
+          "next_use": "Review continuous 0-4s,4-24s,24-43.5s against notification/tooltip bounds; select exact source intervals or reject before duplicate filming.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-locked-route-a01\\media-locked-route-a01\\ROOT-CUT-DELIVERY-a02.json",
+            "bytes": 4013,
+            "sha256": "7d7aee86839f0b3da5647155bd02dde5f544c3421471a0617dc8010553c66e8b",
+            "source_id": "R175-CUTS"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source_pin": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r12-locked-halt-r0175-12004.md",
+            "bytes": 3578,
+            "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01",
+            "source_id": "R175-TOPIC",
+            "selector": "explicit machine_id/run_id for R0175 and link to actual original media reports"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0175-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a04\\claim-shot-agent-map.json",
+              "bytes": 58341,
+              "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d",
+              "source_id": "STORY-A04",
+              "selector": "shot_candidates R12-PRE/R12-TAIL/R12-FIRST; C04-05,C04-06,C04-07"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "selector": "C01-04 shot_direction explicitly R0175 4-24s; C01-03 uses R0175/R0176 run/date labels"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "selector": "C04-05,C04-06,C04-07 legacy R12 shot IDs"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "R0175 existing-raw table; P2 says review R0175/R0176 first and keep C04-07 dependent on R0175 candidate or independent reshoot"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              24
+            ],
+            [
+              24,
+              43.5
+            ]
+          ],
+          "limitations": [
+            "Next-day static state is outside raw; native 96.7% progress is not a directly readable video number; no clean signoff."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0176-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0176",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-r13-normal-a01/raw-locked-reroute-a01/raw.mkv",
+          "bytes": 60656946,
+          "historical_sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535",
+          "purpose": "Locked reroute original route, suffix change, preserved front progression for current story; these are distinct from R0175 Halt.",
+          "next_use": "Review existing candidate ranges before reshoot; preserve precise interval binding, then shoot only missing readable ETA/actual alternate endpoint if still necessary.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r13-normal-a01\\media-locked-reroute-a01\\ROOT-CUT-DELIVERY.actual-a01.json",
+            "bytes": 4301,
+            "sha256": "e403ae2fa2fe1a26d9568b8dea5a220ac8a36531075d46991c97e0b20322eb89",
+            "source_id": "R176-CUTS"
+          },
+          "historical_identity_json_path": "raw_identity_reused",
+          "machine_binding_source_pin": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+            "bytes": 2289,
+            "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b",
+            "source_id": "R176-TOPIC",
+            "selector": "explicit same machine and R0176 source/run identity"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0176-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a04\\claim-shot-agent-map.json",
+              "bytes": 58341,
+              "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d",
+              "source_id": "STORY-A04",
+              "selector": "R13-PRE/R13-TAIL/R13-FIRST; C04-01,C04-04,C04-06,C04-08"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+              "bytes": 80422,
+              "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+              "source_id": "STORY-A05",
+              "selector": "C01-06 and C06-03 shot_direction explicitly consume R0176 0-4/4-10/10-20s candidates"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+              "bytes": 118194,
+              "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+              "source_id": "EDIT69",
+              "selector": "C04-01,C04-04,C04-06,C04-08 legacy R13 IDs"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "R0176 existing-raw table and P2 first-review/reuse requirement"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              20
+            ]
+          ],
+          "limitations": [
+            "Alternate arrival occurs after the 45s raw; cannot manufacture continuous endpoint or import later R09 experiment into this raw."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0177-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0177",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-source-a01/raw-coastal-arrival-a01/raw.mkv",
+          "bytes": 59607616,
+          "historical_sha256": "88f37c5911ffa25491122c2f11dd04b3c17aeecdc0ff6f72605df77e3530231d",
+          "purpose": "Independent coastal movement-to-arrival example to inspect before replacement capture, retained explicitly in latest shot priority.",
+          "next_use": "Review (4,10]s state transition and 10-15s arrival comparison; bind independent run/date labels if used; reject unused paused tail.",
+          "historical_identity_source_pin": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0177-coastal-normalprep\\SUMMARY.actual-a01.json",
+            "bytes": 9940,
+            "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433",
+            "source_id": "R177-SUMMARY"
+          },
+          "historical_identity_json_path": "media.raw_identity_reused",
+          "machine_binding_source_pin": {
+            "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0177-coastal-normalprep\\SUMMARY.actual-a01.json",
+            "bytes": 9940,
+            "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433",
+            "source_id": "R177-SUMMARY",
+            "selector": "machine_identity_addendum binds media report run_id and code-index runtime identity to explicit machine"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0177-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "existing-raw table R0177 coastal preparation; P2 permits as its own independent coastal arrival case, not R13 alternate arrival"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              0,
+              4
+            ],
+            [
+              4,
+              10
+            ],
+            [
+              10,
+              15
+            ]
+          ],
+          "limitations": [
+            "Not two fresh R07 arms; exact first visual state-change PTS unknown; no continuous clean/human approval."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0182-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0182",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-refill-receiver-a23-a01/raw-r182-a01/raw.mkv",
+          "bytes": 228543290,
+          "historical_sha256": "cc17504348085bc3bb5c02655a31b424bd6406f6106707c15d29a2a651e5b0fe",
+          "purpose": "Short actual date/march candidate requiring exact continuous review; latest plan still lists it for possible reuse rather than treating all historic footage as unused.",
+          "next_use": "Inspect only 174-177s first against existing sample index, decide exact usable interval or reject; no need to preserve the whole scene to do this.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\CLOSED.actual.json",
+            "bytes": 3312,
+            "sha256": "f4e8fe42e0437bda10bd6007fc107146618975e3845d27d5939e3fa19ff14311",
+            "source_id": "R182-CLOSED"
+          },
+          "historical_identity_json_path": "evidence.raw_video",
+          "machine_binding_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\CLOSED.actual.json",
+            "bytes": 3312,
+            "sha256": "f4e8fe42e0437bda10bd6007fc107146618975e3845d27d5939e3fa19ff14311",
+            "source_id": "R182-CLOSED",
+            "selector": "explicit machine_id/run_id plus raw identity"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0182-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "existing-raw table R182 march,174-177s candidate; instruction first review reusable old raw"
+            },
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r182-march-and-county-p-12004.md",
+              "bytes": 6797,
+              "sha256": "ccbe27871760f66a39439447c80ef108db77e67ad1d7e02181a145272c389e14",
+              "source_id": "R182-TOPIC",
+              "selector": "raw review candidate and precise limit: no arrival visible through179s"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              174,
+              177
+            ]
+          ],
+          "limitations": [
+            "0-170s mostly paused; no arrival in retained raw through179s; later native2635 arrival cannot be inserted as video evidence; current equal soldier endpoints do not prove no intermediate debit."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        },
+        {
+          "asset_id": "e04-r0183-raw",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+          "path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/raw.mkv",
+          "bytes": 2883584,
+          "historical_sha256": "d232680842948124ea57f8138fc2d1a8cb4261a3db8bc2ec5062a3194e3c1e73",
+          "purpose": "One minimal corrected-region-capture failure/partial comparison for recorder remediation, not clean footage or a game-mechanism positive.",
+          "next_use": "Compare original 239-frame partial metadata/content bounds with next corrected recording and close the failure review; do not feed it as a clean or full90s source.",
+          "historical_identity_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-audit.actual.json",
+            "bytes": 18077,
+            "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32",
+            "source_id": "R183-AUDIT"
+          },
+          "historical_identity_json_path": "raw",
+          "machine_binding_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-audit.actual.json",
+            "bytes": 18077,
+            "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32",
+            "source_id": "R183-AUDIT",
+            "selector": "explicit machine_id and same scene/run source chain"
+          },
+          "metadata_source_pin": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+            "bytes": 27040,
+            "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+          },
+          "metadata_entry_asset_id": "e04-r0183-raw",
+          "current_consumer_pins": [
+            {
+              "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+              "bytes": 14120,
+              "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+              "source_id": "R184-SHOT-PRIORITY",
+              "selector": "existing-raw table R183 window capture: failure capture evidence only"
+            },
+            {
+              "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\r183-raw-portable-facts.actual.json",
+              "bytes": 5059,
+              "sha256": "8431a2c562903fee5e5e1ce15fdd07468e5098f12488d8bd02bcb622a53aca94",
+              "source_id": "R183-FACTS",
+              "selector": "video/full_decode/capture limitations and claims all false"
+            }
+          ],
+          "candidate_spans_seconds": [
+            [
+              0,
+              7.966
+            ]
+          ],
+          "limitations": [
+            "239 frames; available end7.966s; container90s is planned header; capacity abort; three native days not all proven inside raw; all business/clean/human claims false."
+          ],
+          "fresh_raw_hash_claimed": false,
+          "raw_payload_read_for_this_mapping": false,
+          "historical_native_SHA_plus_current_metadata_only": true,
+          "scope": "This exact video file only; parent scene/profile/cache/save/source/derived groups are not protected."
+        }
+      ],
+      "current_static_consumer_pins": [
+        {
+          "path": "C:/ck3-e04-resume-20261015-a01/review02-composer-candidate-a01/input-config.methodology.json",
+          "sha256": "a724e97b2ef701c514e1650a87cf989cfb7da5455f98c7dca7035895c9328c60"
+        }
+      ],
+      "unselected_old_assets_not_blanket_renewed": true,
+      "unselected_old_assets_current_use_review": "Only the selected seven exact raws plus current R182 normal checkpoint receive new six-hour protection. R171/R172 are not selected by this limited current-consumer review; that does not authorize deletion or assert absence of other recovery/task references. No whole scene or blanket old raw protection is renewed.",
+      "necessary_checkpoint": "The adopter independently reads R182 NORMAL-SAVE.actual.json and rehashes only its73,446,058-byte normal checkpoint. That exact input receives a fresh explicit six-hour use/review deadline; whole old scenes are not protected.",
+      "future_workload": {
+        "scene_bytes": 1610612736,
+        "new_native_build_bytes": 805306368,
+        "shared_offline_bytes": 134217728,
+        "C_system_growth_reserve_bytes": 4294967296,
+        "render_bytes": 0
+      },
+      "correction_of_a01": "The static composer was only one consumer. Current story/shotplan and recorder fault remediation consume the seven exact existing raw candidates below; the old no_current_raw_consumers assumption is withdrawn without changing a01 historical bytes.",
+      "raw_input_review_source_pin": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-RAW-INPUT-REVIEW.candidate-a01.json",
+        "bytes": 27040,
+        "sha256": "4b7ffba4fc5bb2555c448e250b26779139d03a581876463a4c2f0327fa1c19b7"
+      },
+      "current_raw_count": 7,
+      "current_raw_total_existing_bytes": 929083084,
+      "existing_raw_bytes_already_in_project_upper_not_recharged": true,
+      "proposal_mapped_at_utc": "2026-10-16T11:16:15.126316+00:00"
+    },
+    "scheduler_ledger_automatically_updated": false
+  },
+  "fresh_root_coverage": {
+    "current_root_count": 80,
+    "increment_root_count": 80,
+    "new_roots_after_increment": [],
+    "new_root_bytes_charged_inside_same128MiB_not_added_again": 0,
+    "removed_roots_no_deletion_credit": [],
+    "outside_recognized_envelope_requires_Root_scope_attestation": true
+  },
+  "evidence": {
+    "candidate": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.candidate-a01.json",
+      "bytes": 46080,
+      "sha256": "95ad5da591c8eb8c958c75ed0dab400e708b4d6fe32b2a857cafb390ea715662"
+    },
+    "increment": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-INCREMENT.pass10.json",
+      "bytes": 17757,
+      "sha256": "ce4bb53ae88414a7dff6630c98c87aafb54f0a840f989b6bb21116f720f75f70"
+    },
+    "shared_policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "cleanup_summary": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\maintenance\\storage-retention-2026-10-16-dedicated-worker\\summary.actual.json",
+      "bytes": 2171,
+      "sha256": "7d12ec8ad62fd61dcbc357fdc8bddf009c00e11b9693606ee54a43132b2b6e30"
+    },
+    "Root_review": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-ROOT-REVIEW.proposal-a02.json",
+      "bytes": 27747,
+      "sha256": "ced7c115fe6d8dda5821ec9497592951f099d664ac867b1d3858eba2c4ebb665"
+    },
+    "task_bus_owner": {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-r184-capacity-a01.json",
+      "bytes": 537,
+      "sha256": "f20559845f882088540df1105d28dcd6f5897217fb85cca174ff0a5312aa9e86"
+    },
+    "prior_capacity_registry": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 1150,
+      "sha256": "5646895b792c0d9cd072d55f6bc63cd1925182e812b9fd4c1b22e7ee2c0a722f"
+    },
+    "immutable_R183_closure": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.R183-CLOSURE.actual.json",
+      "bytes": 4392,
+      "sha256": "c6a684e22c20034c9c67aa5be308852fa24a5a33409674fede841e9de7abc6dc"
+    },
+    "minimum_necessary_protection_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.PROTECTIONS.actual.json",
+      "bytes": 58328,
+      "sha256": "3662429395dc403dda7efff8a46d3e62b5131aaab346dbdf764794130f9d9ef3"
+    },
+    "task_bus_capacity_registry": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 4326,
+      "sha256": "83f224e4c0d52e78c976078c68bad9e2dda91243e3f1c40cf3f9ee0fe45fd3c3"
+    }
+  },
+  "game_SDK_desktop_build_or_delete_performed": false,
+  "actual_retention_scheduler_ledger_automatically_changed": false,
+  "root_adopted_at_utc": "2026-10-16T11:39:06.531146+00:00",
+  "capacity_bus_task_id": "e04-r184-capacity-a01",
+  "root_atomic_adoption_required": false
+}

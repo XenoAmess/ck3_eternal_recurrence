@@ -218,7 +218,7 @@ def prepare(bundle):
     return {'status': 'SOURCE-COMPOSITION-PREPARED', **binding,
             'machine_id': bundle['machine_id'], 'SDK_calls': 0, 'provider_imported': False,
             'live_qualification_granted': False,
-            'live_provider_status': ('NO_GO_LEGACY_LOCKED_CONSTRUCTOR' if guard is not None
+            'live_provider_status': ('EXPLICIT_OPERATION_CONSTRUCTOR_REQUIRES_REVIEW' if guard is not None
                                      else 'HISTORICAL_FINITE_BINDING_ONLY')}
 
 
@@ -231,22 +231,22 @@ def provider(bundle, args):
     need(prepare(bundle)['status']=='SOURCE-COMPOSITION-PREPARED', 'complete concrete Root bindings before any live phase')
     binding = runtime_binding(bundle)
     guards, guard = operation_guard(bundle, actual_machine=True)
-    need(guard is None, 'NO_GO_LEGACY_LOCKED_CONSTRUCTOR: new C binding is readonly preparation only; parameterize the reviewed constructor before live use')
+    need(guard is not None, 'NO_GO_LEGACY_PROVIDER: new C execution requires exact live-operation binding')
     base_path = checked(bundle['modules']['root_relay'])
-    tree = ast.parse(base_path.read_text(encoding='utf-8-sig'))
-    changed = 0
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Constant) and node.value == 'locked-routes-helper-a02':
-            node.value = 'strategy-c-phased-a03'
-            changed += 1
-    need(changed == 1, 'reviewed base ledger seam changed')
-    base = types.ModuleType('C_pinned_existing_Root_relay')
-    base.__file__ = str(base_path)
-    exec(compile(ast.fix_missing_locations(tree), str(base_path), 'exec'), base.__dict__)
-    base.SOURCE = binding['source_head']
-    base.TARGET_ASSETS = Path(bundle['context']['path']).parent.name
-    base.RUN_BUDGET = bundle['runtime_request_budget_bytes']
+    base = module(base_path, 'C_reviewed_operation_root_relay')
+    need(getattr(base, 'OPERATION_BINDING_API', None) == 'xar.e04.C.root-operation-relay.v1',
+         'NO_GO_LEGACY_LOCKED_CONSTRUCTOR: select the reviewed operation constructor')
     values = provider_arguments(bundle, args, binding)
+    values.context_sha256 = bundle['context']['sha256']
+    values.runtime_guard = Path(__file__).resolve().parents[1]/'runtime_binding.py'
+    values.runtime_guard_sha256 = guard.document['guard_sha256']
+    values.live_binding = Path(bundle['live_binding']['path'])
+    values.live_binding_sha256 = bundle['live_binding']['sha256']
+    values.plan = Path(bundle['plan']['path']); values.plan_sha256 = bundle['plan']['sha256']
+    values.prepared = Path(bundle['prepared']['path']); values.prepared_sha256 = bundle['prepared']['sha256']
+    values.runtime = deepcopy(bundle['runtime'])
+    values.loaded_save_sha256 = guard.binding['normal_save_sha256']
+    values.max_runtime_total_bytes = bundle['runtime_request_budget_bytes']
     io = base.Live(values)
     io._runtime_budget_base = base
     need(io.c == load(checked(bundle['context'])) and io.transport.CONTEXT == io.c,

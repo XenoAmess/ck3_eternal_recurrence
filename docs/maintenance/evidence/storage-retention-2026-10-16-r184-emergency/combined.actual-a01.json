@@ -1,0 +1,101 @@
+{
+  "schema": "xar.r184-emergency-reclamation-combined.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-16T13:34:29.199692+00:00",
+  "policy_version": "1.0.0",
+  "policy_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "source_observation_window_utc": [
+    "2026-10-16T12:36:16.500254+00:00",
+    "2026-10-16T12:58:36.644371+00:00"
+  ],
+  "actual": {
+    "C:": {
+      "deleted_count": 50912,
+      "logical_bytes": 3248069992,
+      "allocated_bytes": 3362532384
+    },
+    "D:": {
+      "deleted_count": 4,
+      "logical_bytes": 1153433600,
+      "allocated_bytes": 1153433600
+    }
+  },
+  "combined_distinct_deleted_leaf_count": 50916,
+  "lanes": [
+    {
+      "owner": "disk_reclamation_worker",
+      "receipt": "worker-root-delivery.actual-a01.json",
+      "C_allocated_bytes": 2095438880,
+      "D_allocated_bytes": 1153433600,
+      "C_count": 47892,
+      "D_count": 4
+    },
+    {
+      "owner": "e04_event_1070_followup",
+      "receipt": "native-root-delivery.actual-a02.json",
+      "C_allocated_bytes": 1267093504,
+      "D_allocated_bytes": 0,
+      "C_count": 3020,
+      "D_count": 0
+    }
+  ],
+  "uniqueness": {
+    "worker_distinct_paths_and_file_ids_checked_in_original_audit": 47896,
+    "native_unique_path_check_from_actual_final_receipt": true,
+    "cross_lane_overlap": 0,
+    "cross_lane_basis": "C worker deleted only shadercache .bin/.scache; C native deleted only .obj/.lib in closed build roots; D worker deleted four exact failed model partials. These scopes and paths are disjoint. All counted leaves were single-link.",
+    "new_full_file_id_union_or_filesystem_scan_by_packaging": false
+  },
+  "protections": {
+    "R184_scene_whole_root_excluded": "C:/ck3-e04-resume-20261015-a01/live12004-r184-window-capture-a01",
+    "a27_whole_root_excluded": "C:/ck3-war-episode04-research-20261004-a01/native12004-r184-a27",
+    "R182_normal_save_and_7_raw_excluded": true,
+    "frozen_protection_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.PROTECTIONS.actual.json",
+      "bytes": 58328,
+      "sha256": "3662429395dc403dda7efff8a46d3e62b5131aaab346dbdf764794130f9d9ef3"
+    },
+    "new_protection_extension_or_new_asset_hash_claim": false
+  },
+  "historical_free_snapshots_only": {
+    "at_utc": "2026-10-16T12:58:36.645284+00:00",
+    "bytes": {
+      "C:": 30442319872,
+      "D:": 48300220416
+    },
+    "C_original_required_bytes": 29640597575,
+    "C_original_requirement_margin_bytes": 801722297,
+    "C_root_requested_target_bytes": 30500000000,
+    "C_root_target_reached_at_utc": "2026-10-16T12:55:33.969894+00:00",
+    "C_at_target_reached_free_bytes": 30515802112,
+    "whole_volume_deltas_not_exclusively_attributed_to_this_worker": true,
+    "capacity_preflight_still_owned_by_root": true
+  },
+  "whole_volume_free_delta_exclusively_attributed_to_reclamation": false,
+  "new_capacity_or_recording_admission_claim": false,
+  "payload_verification_boundary": "Worker cache/partial targets used same-handle SHA checks and single-link allocation. Native .obj/.lib used exact frozen metadata identities/same-handle deletion plus retained Ninja/CMake recipe pins; native payload body hash bytes were0. Do not describe all native objects as content-SHA-verified.",
+  "daily_task": {
+    "task_name": "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+    "local_time": "04:00",
+    "timezone": "Asia/Shanghai",
+    "enabled_as_observed": true,
+    "last_task_result_as_observed": 0,
+    "run_level": 0,
+    "start_when_available": true,
+    "action": "read_only_inspection",
+    "actual_readback_window_utc": [
+      "2026-10-16T12:16:45.061132+00:00",
+      "2026-10-16T12:18:22+00:00"
+    ],
+    "source_receipt": "daily-readonly-task-followup.actual-a01.json"
+  },
+  "automatic_gc_implemented": false,
+  "new_scheduler_run_or_change": false,
+  "prior_156_leaf_28545642496_byte_round_included": false,
+  "availability": "Deleted historical payload paths are retired_unavailable. Exact original receipts are preserved; no same-name replacement was created. Large per-leaf journals remain only at their source-machine external paths referenced by the receipts and copied small journal index.",
+  "native_path_addendum": "The worker original receipt preserved IPC-only native path:null. This new package independently read and SHA-verified the exact capacity-lane/native-intermediate-retirement-r184-a01 final a02 path. No historical receipt was rewritten.",
+  "record_review_at_utc": "2027-04-14T13:34:29.199692+00:00",
+  "external_detailed_ledger_default_review_date_utc": "2026-11-15",
+  "new_cleanup_scanning_SDK_screen_actions": 0
+}

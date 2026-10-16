@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "completed_days": 8,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.2150411,
+  "within_six_seconds": true,
+  "error": "RuntimeError('early pause without modal; preserve diagnostic')",
+  "observed_at_utc": "2026-10-16T12:51:06.601078+00:00"
+}

@@ -1,0 +1,60 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:07:26.064748+00:00",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "source_clean": true,
+  "producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\native-msvc-result.json",
+    "bytes": 1835,
+    "sha256": "257af111927ae4c36d8bfacea6d7a7598b493302655ae5487675c83399a8e661"
+  },
+  "defender_system_actual_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\defender-exe-exclusions\\20261016T115351Z-bba1a118\\receipt.json",
+    "bytes": 350697,
+    "sha256": "9c37a76799c1372bdbcfcf8726c60d80a902babd768d0f8e5965b3ec642a6f1b"
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge.dll",
+      "bytes": 12982784,
+      "sha256": "372ed8dc1c1881b8bea75415cafd4e696aacb90690f30a15f0a555ca91234d4e"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "862668cd668c3677d7316c9afa91a2f1ae8ccd56c8f22e401dbac0ee22920836"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r184-a27\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "a0c3bd97e9f1e3a8c41e42501f5fa95193f8ec9defa46d35f48be457256d1f01"
+    }
+  },
+  "fixture_exit_codes": {
+    "xar_test_gui_refill_receiver_candidates_12004": 0,
+    "xar_ck3_county_predicate_trace_fixture": 0
+  },
+  "actual_game_exe": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "actual_steam_appmanifest": {
+    "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4285,
+    "sha256": "53f2236cca465b3dac67e73d0bfe8507c61b3337ed868f35924acadaf095b4dd"
+  },
+  "steam_build_id": "25734779",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R184-CAPACITY.actual-root-a01.json",
+    "bytes": 70420,
+    "sha256": "8d8d1169650a8c42331ac1a65994943f0bc619373fb993e8e19c0037ce09429d"
+  },
+  "bootstrap_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+    "bytes": 38107,
+    "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d"
+  },
+  "game_started": false,
+  "new_live_business_qualified": false
+}

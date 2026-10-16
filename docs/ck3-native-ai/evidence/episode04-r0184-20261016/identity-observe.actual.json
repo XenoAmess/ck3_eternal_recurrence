@@ -1,0 +1,55 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T12:27:47.877443+00:00",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "config": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\bootstrap-input.actual-a01.json",
+    "bytes": 4393,
+    "sha256": "3e8018fecf78605cd59992bbd97841744a6aebe78fb2d460bb1c4a593e001d62"
+  },
+  "pid": 3504,
+  "connection_generation": 1,
+  "episode_run_id": "native-31254-3d3fad411eb2",
+  "process_creation_filetime_100ns": 134366269232060188,
+  "actor_id": 31254,
+  "date_raw": 53147928,
+  "prepared": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\prepared-a02\\prepared.json",
+    "bytes": 11588,
+    "sha256": "7f0f8d041b84066a963e06c2d51358d6eff3c02d47771182f1f1aa4bc168b4c9"
+  },
+  "source_checkpoint": {
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73446058,
+      "sha256": "af291da7e2af3b8b0870dc3aa21291b55452a78e08a241994ba6358411c7c96b"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+      "bytes": 20376,
+      "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\prepared-a01\\prepared.json",
+      "bytes": 11682,
+      "sha256": "5853e766531a904ceb20db4bdb30aeb1e05c7576553fa9cea79920254191c2be"
+    }
+  },
+  "diag": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-01-diag.json",
+    "bytes": 55890,
+    "sha256": "0e25e6c427f4dc03972eea0983254b807bc09fa9c3391b4b40033b7fe5ab1a27"
+  },
+  "snapshot": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-02-snapshot.json",
+    "bytes": 123377,
+    "sha256": "0ff0ffe5b0fe865d139b2b1068beda9a4822dda2a0502178e2f8b28ba9891ec4"
+  },
+  "campaign_root": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0184\\responses\\r184-film-a01-identity-03-campaign-root-once.json",
+    "bytes": 147340,
+    "sha256": "2c32814166cd1d544fbb7c14339634afa40811ae9fc4b86b2f7fbd6487e8f1fb"
+  },
+  "runtime_identity_sealed": false
+}

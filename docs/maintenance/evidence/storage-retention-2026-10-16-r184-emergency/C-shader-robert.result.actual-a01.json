@@ -1,0 +1,50 @@
+{
+  "schema": "xar.r184-closed-profile-shader-duplicate-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T12:55:33.969894+00:00",
+  "policy_version": "1.0.0",
+  "deleted_count": 2000,
+  "deleted_logical_bytes": 143342475,
+  "deleted_single_link_allocated_bytes": 148029440,
+  "free_before": 30368501760,
+  "free_after": 30515802112,
+  "concurrent_volume_delta_not_all_attributed_to_this_worker": true,
+  "seconds": 46.29785430012271,
+  "batches": [
+    {
+      "batch": 1,
+      "attempted": 1000,
+      "deleted": 1000,
+      "deleted_logical_bytes": 114627981,
+      "deleted_allocated_bytes": 116838400,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-ROBERT.batch-001.result.json.gz",
+        "bytes": 69070,
+        "sha256": "f09fa762b6330f75c0765a4910f2216fb7d265625d660f90eb77df6cbadf132b"
+      }
+    },
+    {
+      "batch": 2,
+      "attempted": 1000,
+      "deleted": 1000,
+      "deleted_logical_bytes": 28714494,
+      "deleted_allocated_bytes": 31191040,
+      "result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-ROBERT.batch-002.result.json.gz",
+        "bytes": 70056,
+        "sha256": "dba398f39a540cde72e4ac22b7ff4803641f0799b611885e8304fce60a15dbf3"
+      }
+    }
+  ],
+  "skipped_reason_counts": {
+    "No corresponding canonical leaf": 29
+  },
+  "retained_source_files": 2000,
+  "all_retained_source_identities_unchanged": true,
+  "source_identity_ledger": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-reclaim-r184-emergency-a01\\C-SHADER-ROBERT.kept-sources.actual.json.gz",
+    "bytes": 96678,
+    "sha256": "823983695c7e021d61658ef520a1d0e7e46a3b2b07bb7548a0bcd8073d488913"
+  },
+  "scope": "Only exact same-SHA independently allocated shadercache leaves in old explicitly closed C resume profiles. Retained R183canonical complete; currentR184 full scene/a27, R182normal save+7raw, native/build/source/game/dependencies untouched. No directory deletion."
+}

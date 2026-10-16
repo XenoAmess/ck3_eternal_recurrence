@@ -80,7 +80,7 @@ capacity必须是Root实际adopted的有界JSON，`admitted=true`、`policy_vers
 
 每次请求前重新检查binding/capacity精确bytes/SHA和期限，仍独立核PID/create-time；同case不能更换operation pin或把旧case领成新场。R09新场meter同时计请求/响应、case及完整native-session sidecars，并预留下一response与该次完整Driver结果；A/B继续复用既有RuntimeTotal meter。实际共享卷空间与原子预留由Root做，guard不制造新的容量授权。
 
-**C新binding目前仅提供离线准备，provider明确返回`NO_GO_LEGACY_LOCKED_CONSTRUCTOR`并拒绝live。** 所选历史locked constructor仍含literal旧机器/资产限制，本轮未通过AST、`__new__`或动态重写绕过它；下一轮须正常参数化并验收该constructor才能启用。其余新guard/入口测试只用synthetic JSON、fake metadata/transport，没有新游戏日、SDK或录像；不能算ABC 3/3。A原本已有独立constructor覆写，此次只在该既有入口加资格检查，没有改冻结base源码。
+**截至2026-10-16 10:45Z的历史C新binding仅提供离线准备，provider返回`NO_GO_LEGACY_LOCKED_CONSTRUCTOR`并拒绝live。** 所选历史locked constructor仍含literal旧机器/资产限制，本轮未通过AST、`__new__`或动态重写绕过它；下一轮须正常参数化并验收该constructor才能启用。其余新guard/入口测试只用synthetic JSON、fake metadata/transport，没有新游戏日、SDK或录像；不能算ABC 3/3。A原本已有独立constructor覆写，此次只在该既有入口加资格检查，没有改冻结base源码。
 
 2026-10-16T10:45:49Z，同机离线回归：新guard/入口边界12项、A stages5项、B stages9项、B CLI→真实Root admission的synthetic绑定5项、C既有显式绑定6项、R09合同7项，共**44项通过**；`git diff --check`通过。使用`tools/.venv/Scripts/python.exe -B -X utf8`，未调用SDK、桌面、CK3或构建。B旧full-packet测试补齐实际Evidence、bounded load与显式单军scope；旧期限正向fixture固定在其历史时间，生产旧期限没有被延长。源仍待Root最终审阅/提交/构建，不能据此声称部署或新场通过。
 
@@ -97,7 +97,7 @@ promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10
 
 真实stage名：A为`baseline / Move-once / Move-post / advance / post`及显式`advance-common-horizon`；B为`baseline / split-once / post-split / rest / merge-once / post-merge / route`及common-horizon/recovery；C为`prepare / probe-via / admit / move-once / path-after / advance / recover-day / report`及common-horizon/recovery。B普通阶段不推进时间或发Move；交还Root已有route/exact-day通路。大小写和参数以各入口真实help为准，不能虚构统一 `run-abc` 命令。
 
-**这些有限relay不因新增源码就获得新ABC现场资格。** 整改前阅读点中[A入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_stages.py)第57–59行、[C入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py)第140/172行绑定`2026-10-16T07:45:01.597Z`；本次审阅已过期。整改后无新binding仍保留这个旧限制；source/run/module参数不自动延长现场授权。有新binding的A/R09/B依照上一节的实际Root有界输入逐项重验；C新provider仍NO-GO。未来操作必须重新取得当场期限、source和容量资格，不修改旧场或旧approval。pure消费者、字段语义、一次动作和阶段顺序可复用。
+**这些有限relay不因新增源码就获得新ABC现场资格。** 整改前阅读点中[A入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_a_stages.py)第57–59行、[C入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py)第140/172行绑定`2026-10-16T07:45:01.597Z`；本次审阅已过期。整改后无新binding仍保留这个旧限制；source/run/module参数不自动延长现场授权。有新binding的A/R09/B依照上一节的实际Root有界输入逐项重验；C当前接线修正见下节，旧legacy provider仍拒绝。未来操作必须重新取得当场期限、source和容量资格，不修改旧场或旧approval。pure消费者、字段语义、一次动作和阶段顺序可复用。
 
 准备好真实小证据后，继续使用已有只读核验命令：
 
@@ -109,3 +109,9 @@ promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10
 `r10_compare.py:279/291/336/352/391`分别是paused frame、完整endpoint、plan、逐日clock和三臂比较的现有检查。结果固定 `live_execution_performed=false / research_card_closed=false / human_media_review_performed=false`；`controlled_comparison_records_eligible`只验供应记录一致性，不证明来源真实性、所有策略动作或因果账真实性。影片还需[R10逐句动态映射](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/r10-claim-result-shot-map.json)的同场raw/时码、合格clean、声音、完整机器审计、实际人审与交付，各自结算。
 
 容量与期限按[统一策略](../storage-retention-policy.md)和[参数1.0.0](../storage-retention-policy.json)在任务开始、重写入前、闭场检查；旧512MiB默认不是本轮容量准入，超过默认需exact Root admission，16/32MiB单文件与总量是两项限制。普通full样本曾约9.66MB，270日不能套一个小场额度；先pilot估算真实请求、完整sidecar、profile/保存和媒体峰值，再协调所有并发预留。当前活跃S0、正式计划和未解决问题最小证据限期保护；不可变输入单份引用，过期可重建导出按策略回收。本文为≤24KiB的record，180日复核归纳，不新设raw永久保留或续期。
+
+## 正常 C constructor 已接线（2026-10-16 后续）
+
+机器 `desktop-3fevhd2-1c74096080`。新增具名 [operation_root_relay.py](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/operation_root_relay.py)，provider正常import后调用完整constructor；不改旧 frozen 源码、不跳过constructor、不用AST重写其执行类。plan冻结必须早于独立cold start，prepared正常S0、machine/run/PID/create/gen/episode、source/DLL及实际Root容量逐项核对。无live binding或legacy API仍拒绝。
+
+根据R184实际`state-a02`与run根日志修正了两处使用问题：从精确prepared.state_dir定位native-session/完整Driver原件；计量整个run（含mcp-calls.jsonl）、实际native-session和case ledger，路径去重并在请求前预留。新增14项仓库内离线回归覆盖这些实际问题及正常provider接线，旧C套件42项与共享12项一并复核；全为synthetic IO/transport/process metadata，没有新SDK或ABC成绩。正式 **0/3**、新T0与三次独立冷载要求均不变。

@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.r184.portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T13:24:23.610641+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0184",
+  "source_head": "163530f1bbcabe5a97854625b3fab7568006ee65",
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 11904058,
+    "sha256": "6d1704561753f74adc689fe1c2a3be391b1e15063e3b7c83d06476d3ea605f19"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 3504,
+    "owned_ck3_create_time": 1792153323.2060187,
+    "hwnd": 101517432,
+    "foreground_hwnd": 101517432,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T12:50:40.495177+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "recorder_state": "NORMAL_TREE_EMPTY",
+  "recorder_job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 22212,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-16T12:51:07.474944+00:00"
+  },
+  "media": {
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "frames": 683,
+    "container_seconds": 22.766,
+    "last_pts_seconds": 22.733,
+    "last_frame_end_seconds": 22.766,
+    "audio_streams": 0,
+    "premature_end_reported": false,
+    "full_av_decode_exit_code": 0,
+    "full_av_decode_stderr_bytes": 0
+  },
+  "exact_day_receipts": {
+    "completed_count": 8,
+    "start_date_raw": 53147928,
+    "last_completed_date_raw": 53148120,
+    "ninth_day_completed_receipt": false
+  },
+  "normal_close": {
+    "saved_date_raw": 53148144,
+    "checkpoint": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r184-window-capture-a01\\state-a02\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73664718,
+      "sha256": "fe0ef524ec71a77f830faf1cce1d46167790799796f006eb5335a3637836f2b8"
+    },
+    "session_exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "cleanup_proven": true,
+    "screen_release_sequence": 5763,
+    "screen_state": "done",
+    "screen_resources": [],
+    "screen_release_observed_at_utc": "2026-10-16T13:07:47.690137+00:00"
+  },
+  "capacity_scope": {
+    "adopted_at_utc": "2026-10-16T11:39:06.531146+00:00",
+    "quota_review_at_utc": "2026-10-16T17:39:06.531146+00:00",
+    "scene_ceiling_bytes": 1610612736,
+    "raw_ceiling_bytes": 536870912,
+    "old_R183_admission_transferred": false,
+    "new_admission_from_this_integration": false
+  },
+  "claims": {
+    "business_positive": false,
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false,
+    "qualified_dynamic_cells_added": 0
+  },
+  "limits": [
+    "Actual recorder normal finish produced a valid22.766s file, not the planned90s capture.",
+    "Eight exact-day completion receipts and later normal-save date53148144 are separate observations; later date does not retroactively certify ninth helper completion.",
+    "Three observed still dates1067-02-12/15/21 do not prove every day or all eight receipt days is visible.",
+    "Early-pause analysis confirms a false early-stop classification with native and public revision changes; exact native publication cause is unproven; offline regression is not new live qualification.",
+    "Client-region screen pixels may be occluded between guard observations; no independent HWND rendering capture or full-desktop recording is implied."
+  ]
+}
