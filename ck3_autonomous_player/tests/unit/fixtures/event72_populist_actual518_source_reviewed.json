@@ -1,0 +1,284 @@
+{
+  "counterfactual_refusal_receipt": {
+    "result": {
+      "accepted": true,
+      "event_instance_id": 72,
+      "event_selection": {
+        "bridge_pid": 249712,
+        "connection_generation": 2,
+        "ending_revision": 511,
+        "ending_snapshot_id": "native:513",
+        "episode_run_id": "native-40526-c7a6edcc32b8",
+        "new_event_instance_id": null,
+        "old_event_instance_id": 72,
+        "postcondition_verified": true,
+        "selected_native_option_index": 3,
+        "selected_option_number": 4,
+        "starting_revision": 510,
+        "starting_snapshot_id": "native:512",
+        "status": "event_instance_advanced"
+      },
+      "option_index": 3,
+      "option_number": 4,
+      "progress_status": "postcondition",
+      "revision": 511,
+      "snapshot_id": "native:513",
+      "status": "submitted",
+      "step": "select-event-option-4"
+    },
+    "selected_step": "select-event-option-4",
+    "status": "executed"
+  },
+  "plan": {
+    "active_event": {
+      "instance_id": 72,
+      "option_count": 4,
+      "selected_option_index": null,
+      "selected_option_number": 3,
+      "source_knowledge_status": "source_reviewed_known"
+    },
+    "event_decision": {
+      "classification": "offline-source-reviewed-user-first-rendered-policy",
+      "event_definition_key": "faction_demand.1001",
+      "material_effects_verified": false,
+      "registry_contract_accepted": false,
+      "registry_known": true,
+      "selected_native_option_index": 2,
+      "selected_option_number": 3,
+      "selected_rendered_index": 0,
+      "semantic_optimal": false,
+      "source_classification": "offline-source-reviewed-user-first-rendered-policy",
+      "source_registry_known": true,
+      "status": "source_reviewed_known"
+    },
+    "phase": "active_event_source_reviewed_first_rendered_option",
+    "policy": "one-life-turn-v1",
+    "reason": "Source-reviewed event: choose its current first shown enabled option under the owner's policy; material effects remain unverified.",
+    "selected_step": "select-event-option-3",
+    "unhandled_event_fallback": {
+      "binding": {
+        "actor_character_id": 40526,
+        "bridge_pid": 249712,
+        "connection_generation": 2,
+        "date_raw": 53348928,
+        "episode_run_id": "native-40526-c7a6edcc32b8",
+        "map_ready": true,
+        "native_revision": 512,
+        "paused": true,
+        "revision": 510,
+        "snapshot_id": "native:512"
+      },
+      "current_event_instance_id": 72,
+      "event_definition_key": "faction_demand.1001",
+      "offline_followup_required": false,
+      "policy": "user-authorized-capture-then-first-rendered-option",
+      "registry_known": true,
+      "schema": "xar.unhandled-event-first-rendered/v1",
+      "selection": {
+        "enabled": true,
+        "excluded_disabled_rendered_indices": [],
+        "native_option_index": 2,
+        "option_number": 3,
+        "rendered_index": 0,
+        "resolved_name": "行吧，我要你们这些聒噪的刁民也没用！",
+        "selected_step": "select-event-option-3",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter"
+      },
+      "snapshot_option_count": 4,
+      "source_knowledge": {
+        "binding_mode": "exact",
+        "entry_sha256": "38b671952eef8416594f8c124b8c433abb28ff26349f24452bda1e32db53259d",
+        "fingerprint": "f41794487b9ed31454e9687052b9b84b761104f61db412ae76c5c0518ecdf96c",
+        "material_effects_verified": false,
+        "registry_contract_accepted": false,
+        "status": "offline-source-reviewed"
+      },
+      "window_context": {
+        "calculated_event_id": 3551001,
+        "current_event_instance_id": 72,
+        "date_raw": 53348928,
+        "event_definition_key": "faction_demand.1001",
+        "options": [
+          {
+            "enabled": true,
+            "native_option_index": 2,
+            "rendered_index": 0,
+            "resolved_name": "行吧，我要你们这些聒噪的刁民也没用！",
+            "shown": true
+          },
+          {
+            "enabled": true,
+            "native_option_index": 3,
+            "rendered_index": 1,
+            "resolved_name": "你想要自由？去阴间找去吧！",
+            "shown": true
+          }
+        ],
+        "provenance": {
+          "backend_id": "ck3-1.20.0.4-native-event-window-v1",
+          "idler_vtable_rva": "0x44BC418",
+          "manager_offset": "+0x28",
+          "root": "module+0x5C6A520->+0x10"
+        },
+        "root_scope": {
+          "raw_type_index": 4,
+          "status": "available",
+          "subtype": 0,
+          "type_key": "character",
+          "typed_identity": {
+            "character_id": 40526,
+            "kind": "character",
+            "status": "available"
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "faction",
+            "name_identifier": 68,
+            "scope": {
+              "raw_type_index": 25,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "faction",
+              "typed_identity": {
+                "faction_id": 134217793,
+                "kind": "faction",
+                "status": "available"
+              }
+            }
+          },
+          {
+            "name": "peasant_county",
+            "name_identifier": 21280,
+            "scope": {
+              "raw_type_index": 5,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "landed_title",
+              "typed_identity": {
+                "kind": "landed_title",
+                "status": "available",
+                "title_id": 2204
+              }
+            }
+          },
+          {
+            "name": "faction_target",
+            "name_identifier": 23214,
+            "scope": {
+              "raw_type_index": 4,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "character",
+              "typed_identity": {
+                "character_id": 40526,
+                "kind": "character",
+                "status": "available"
+              }
+            }
+          },
+          {
+            "name": "target_title",
+            "name_identifier": 283,
+            "scope": {
+              "raw_type_index": 5,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "landed_title",
+              "typed_identity": {
+                "kind": "landed_title",
+                "status": "available",
+                "title_id": 2204
+              }
+            }
+          },
+          {
+            "name": "peasant_leader",
+            "name_identifier": 5808,
+            "scope": {
+              "raw_type_index": 4,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "character",
+              "typed_identity": {
+                "character_id": 84750,
+                "kind": "character",
+                "status": "available"
+              }
+            }
+          },
+          {
+            "name": "new_title",
+            "name_identifier": 70,
+            "scope": {
+              "raw_type_index": 5,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "landed_title",
+              "typed_identity": {
+                "kind": "landed_title",
+                "status": "available",
+                "title_id": 16796050
+              }
+            }
+          },
+          {
+            "name": "faction_leader",
+            "name_identifier": 23213,
+            "scope": {
+              "raw_type_index": 4,
+              "status": "available",
+              "subtype": 0,
+              "type_key": "character",
+              "typed_identity": {
+                "character_id": 84750,
+                "kind": "character",
+                "status": "available"
+              }
+            }
+          }
+        ],
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "snapshot_revision": 512,
+        "status": "available",
+        "window_match_count": 1
+      }
+    }
+  },
+  "provenance": {
+    "actual_auto518_sha256": "3f73ab91b1f083991190752b392d21bba728ab8e70b9c56b9ba99d1a73589a27",
+    "counterfactual_refusal_receipt": "synthetic, not an actual game result; mirrors actual event ACK shape with authored option index 3",
+    "event_context_and_binding": "selected exact fields copied from actual AUTO518 then annotated by existing managed source loader",
+    "snapshot": "synthetic minimal projection of actual AUTO518 binding"
+  },
+  "schema": "xar.event72-populist-source-reviewed-portable-fixture/v1",
+  "snapshot": {
+    "active_event": {
+      "instance_id": 72,
+      "option_count": 4
+    },
+    "date_raw": 53348928,
+    "diagnostics": {
+      "bridge_pid": 249712,
+      "connection_generation": 2
+    },
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "map_ready": true,
+    "native_revision": 512,
+    "paused": true,
+    "played_character": {
+      "alive": true,
+      "character_id": 40526
+    },
+    "revision": 510,
+    "snapshot_id": "native:512"
+  },
+  "stock_source": {
+    "option2": "FACTION_DEMAND_POPULIST_ACCEPT_GRANT_INDEPENDENCE",
+    "option3": "FACTION_DEMAND_POPULIST_REFUSE or FACTION_DEMAND_POPULIST_REFUSE_ADMIN",
+    "refusal_effect": "faction_start_war",
+    "relative_path": "events/factions/faction_demands.txt",
+    "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+  }
+}

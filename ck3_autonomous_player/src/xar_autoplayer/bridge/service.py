@@ -4633,6 +4633,16 @@ class GameplayBridgeService:
             # The actual response still carries the ACK/postcondition. Never
             # retry an already submitted option because evidence writing failed.
             evidence = {"before": ticket["before"], "after_capture_error": str(capture_error), "replay_allowed": False}
+        if plan.get("phase") == "active_event_source_reviewed_populist_refusal":
+            from ..vanilla_events.populist1001_known_refusal_v1 import (
+                verify_source_reviewed_populist_refusal_result_v1,
+            )
+            try:
+                verify_source_reviewed_populist_refusal_result_v1({
+                    **outcome, "unhandled_event_fallback_evidence": evidence})
+            except ValueError as error:
+                error.unhandled_event_fallback_evidence = evidence
+                raise
         return {**outcome, "unhandled_event_fallback_evidence": evidence}
 
     def _execute_planned_turn_without_unhandled_capture(

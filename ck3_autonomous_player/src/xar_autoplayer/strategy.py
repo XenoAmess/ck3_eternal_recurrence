@@ -7890,6 +7890,10 @@ def choose_one_life_turn(
 
         plan = annotate_source_reviewed_event_plan_v1(
             plan, pending_interaction_registry_state_dir)
+        from .vanilla_events.populist1001_known_refusal_v1 import choose_source_reviewed_populist_refusal_v1
+
+        plan = choose_source_reviewed_populist_refusal_v1(
+            plan, snapshot=snapshot, action_steps=steps)
 
     if (plan.get("selected_step") is None
             and isinstance(plan.get("phase"), str) and plan["phase"].startswith("pending_")
