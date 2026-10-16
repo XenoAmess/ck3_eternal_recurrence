@@ -9965,13 +9965,54 @@ class NativeHeadlessGameplayDriver:
                 step, expected_revision=expected_revision
             )
         if step == "query-player-default-raise-v1":
+            from .player_default_raise import (
+                normalize_player_default_raise_v1,
+                player_default_raise_frame_binding,
+            )
             starting = self.take_snapshot()
-            if starting.get("paused") is not True:
+            player = starting.get("played_character")
+            if (
+                starting.get("paused") is not True
+                or starting.get("map_ready") is not True
+                or not isinstance(player, dict)
+                or player.get("alive") is not True
+            ):
                 raise BridgeUnavailableError("native default raise query requires a paused snapshot")
-            return self._execute_primitive_step(
+            raw = self._execute_primitive_step(
                 step, expected_revision=expected_revision,
                 required_capability="game.command.query-player-default-raise-v1",
             )
+            if not (
+                raw.get("step") == step
+                and raw.get("accepted") is True
+                and raw.get("status") == "completed"
+                and raw.get("read_only") is True
+                and raw.get("snapshot_revision") == starting.get("native_revision")
+                and raw.get("date_raw") == starting.get("date_raw")
+            ):
+                raise BridgeUnavailableError("native default raise returned malformed envelope")
+            try:
+                normalized = normalize_player_default_raise_v1(
+                    raw.get("player_default_raise"), snapshot=starting,
+                )
+            except ValueError as error:
+                raise BridgeUnavailableError(str(error)) from error
+            if player_default_raise_frame_binding(self.take_snapshot()) != player_default_raise_frame_binding(starting):
+                raise BridgeUnavailableError("native default raise crossed its paused frame or episode")
+            diagnostics = starting.get("diagnostics")
+            return {
+                **raw, "player_default_raise": normalized,
+                "queried_snapshot_id": starting.get("snapshot_id"),
+                "queried_revision": starting.get("revision"),
+                "queried_native_revision": starting.get("native_revision"),
+                "queried_episode_run_id": starting.get("episode_run_id"),
+                "queried_connection_generation": (
+                    diagnostics.get("connection_generation")
+                    if isinstance(diagnostics, dict) else None),
+                "queried_bridge_pid": (
+                    diagnostics.get("bridge_pid")
+                    if isinstance(diagnostics, dict) else None),
+            }
         if step == "query-player-mercenary-context-v1":
             starting = self.take_snapshot()
             if starting.get("paused") is not True:

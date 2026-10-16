@@ -5017,6 +5017,11 @@ class GameplayBridgeService:
                 result = submit_holy_order_siege_reinforcement_v1(
                     self.driver, plan=plan, expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == "query-player-default-raise-v1":
+                # AUTO must use the explicit typed same-frame query path.
+                result = self.query_player_default_raise_v1(
+                    expected_revision=int(planned["revision"]),
+                )
             elif selected_step == QUERY_ARMY_STRENGTHS_STEP:
                 from .native_driver import NativeHeadlessGameplayDriver
 
@@ -6751,10 +6756,18 @@ class GameplayBridgeService:
             raise BridgeUnavailableError(str(error)) from error
         if player_default_raise_frame_binding(self.snapshot()) != player_default_raise_frame_binding(snapshot):
             raise BridgeUnavailableError("default raise query crossed its paused frame or episode")
+        diagnostics = snapshot.get("diagnostics")
         return {**result, "player_default_raise": normalized,
                 "queried_snapshot_id": snapshot.get("snapshot_id"),
                 "queried_revision": revision,
-                "queried_native_revision": snapshot.get("native_revision")}
+                "queried_native_revision": snapshot.get("native_revision"),
+                "queried_episode_run_id": snapshot.get("episode_run_id"),
+                "queried_connection_generation": (
+                    diagnostics.get("connection_generation")
+                    if isinstance(diagnostics, dict) else None),
+                "queried_bridge_pid": (
+                    diagnostics.get("bridge_pid")
+                    if isinstance(diagnostics, dict) else None)}
 
     def hire_mercenary_v1(
         self, *, company_id: int, expected_revision: int,

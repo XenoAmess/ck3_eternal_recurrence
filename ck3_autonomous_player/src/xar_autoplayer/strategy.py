@@ -112,6 +112,10 @@ from .bridge.council_assign_councillor_action_contract import (
 )
 from .bridge.settlement_contract import ONE_LIFE_SETTLEMENT_CAPABILITY
 from .bridge.public_unit_contract import is_public_cunit_id
+from .bridge.player_default_raise import (
+    STEP as QUERY_PLAYER_DEFAULT_RAISE_STEP,
+    normalize_player_default_raise_v1,
+)
 from .bridge.succession_transition_contract import (
     CONTINUE_AS_RECONCILED_SUCCESSOR_STEP,
     ORDINARY_CAMPAIGN_SUCCESSION,
@@ -10493,6 +10497,31 @@ def _choose_one_life_turn_core(
             battle_control_state=battle_control_state,
         )
         if siege_relief.get("status") == "observation_unavailable":
+            reserve_plan = _defender_siege_reserve_raise_plan(
+                rows,
+                snapshot if isinstance(snapshot, dict) else {},
+                siege_relief=siege_relief,
+                active_wars=active_wars,
+                controlled_armies=controlled_armies,
+                available_steps=available_steps,
+                war_summary=war_summary,
+            )
+            if reserve_plan is not None:
+                return reserve_plan
+            siege_watch = _defender_siege_observation_one_day_watch(
+                rows,
+                snapshot if isinstance(snapshot, dict) else {},
+                siege_relief=siege_relief,
+                active_wars=active_wars,
+                controlled_armies=controlled_armies,
+                hostile_army_ids=route_threat_enemy_ids,
+                route_evidence_issues=route_evidence_issues,
+                battle_control_status=battle_control_status,
+                available_steps=available_steps,
+                war_summary=war_summary,
+            )
+            if siege_watch is not None:
+                return siege_watch
             return {
                 "policy": "one-life-turn-v1",
                 "phase": "native_war_defender_siege_relief_observation_blocked",
@@ -18569,6 +18598,369 @@ def _defender_siege_is_relief_relevant(
         actor_id is not None and actor_id > 0
         and _native_int(enemy.get("siege_province_holder_character_id")) == actor_id
     )
+
+
+def _defender_siege_reserve_raise_plan(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    siege_relief: dict[str, object],
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Only a native legal/reserve read can authorize additional defenders."""
+    war_ids = siege_relief.get("war_ids")
+    if not (
+        siege_relief.get("required_observation")
+        == "complete-same-frame-siege-position-and-war-strength"
+        and isinstance(war_ids, list) and war_ids
+        and all(type(war_id) is int and war_id > 0 for war_id in war_ids)
+        and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and len(controlled_armies) == 1
+        and QUERY_PLAYER_DEFAULT_RAISE_STEP in available_steps
+        and RAISE_TROOPS_STEP in available_steps
+        and snapshot.get("army_strengths_status") in {"partial", "available"}
+        and snapshot.get("army_strengths_queried_snapshot_id")
+        == snapshot.get("snapshot_id")
+        and snapshot.get("army_strengths_queried_revision")
+        == snapshot.get("revision")
+    ):
+        return None
+    army = controlled_armies[0]
+    army_id = _public_cunit_int(army.get("army_id"))
+    if not (
+        army_id is not None
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+    ):
+        return None
+    rows = snapshot.get("army_strengths")
+    if not isinstance(rows, list):
+        return None
+    by_id = {
+        row["army_id"]: row for row in rows
+        if isinstance(row, dict) and type(row.get("army_id")) is int
+    }
+    own = by_id.get(army_id)
+    own_soldiers = own.get("current_soldiers") if isinstance(own, dict) else None
+    if not (
+        isinstance(own, dict) and own.get("status") == "available"
+        and own.get("scope_role") == "player"
+        and type(own_soldiers) is int and own_soldiers > 0
+    ):
+        return None
+    siege_enemy_ids: set[int] = set()
+    for war in active_wars:
+        if _native_int(war.get("war_id")) not in war_ids:
+            continue
+        for enemy in war.get("enemy_armies", []):
+            if (
+                isinstance(enemy, dict)
+                and _army_tactical_state(enemy) == "sieging"
+                and enemy.get("retreating") is not True
+                and _defender_siege_is_relief_relevant(snapshot, war, enemy)
+            ):
+                enemy_id = _public_cunit_int(enemy.get("army_id"))
+                if enemy_id is None:
+                    return None
+                siege_enemy_ids.add(enemy_id)
+    if not siege_enemy_ids:
+        return None
+    enemy_soldiers = 0
+    for enemy_id in siege_enemy_ids:
+        row = by_id.get(enemy_id)
+        soldiers = row.get("current_soldiers") if isinstance(row, dict) else None
+        if not (
+            isinstance(row, dict) and row.get("status") == "available"
+            and row.get("scope_role") == "active_war_enemy"
+            and type(soldiers) is int and soldiers >= 0
+        ):
+            return None
+        enemy_soldiers += soldiers
+    if enemy_soldiers * 2 < own_soldiers * 3:
+        return None
+    diagnostics = snapshot.get("diagnostics")
+    player = snapshot.get("played_character")
+    if not (isinstance(diagnostics, dict) and isinstance(player, dict)):
+        return None
+    identity = (
+        snapshot.get("episode_run_id"),
+        diagnostics.get("connection_generation"),
+        diagnostics.get("bridge_pid"),
+        player.get("character_id"),
+    )
+    if not (
+        isinstance(identity[0], str) and identity[0]
+        and all(type(value) is int for value in identity[1:])
+    ):
+        return None
+    for row in reversed(_history_after_latest_restore(commands)):
+        if _effective_command(row) != QUERY_PLAYER_DEFAULT_RAISE_STEP:
+            continue
+        result = _effective_command_result(row)
+        observation = result.get("player_default_raise") if isinstance(result, dict) else None
+        if not isinstance(observation, dict):
+            continue
+        if (
+            result.get("queried_episode_run_id"),
+            result.get("queried_connection_generation"),
+            result.get("queried_bridge_pid"),
+            observation.get("actor_character_id"),
+        ) != identity:
+            continue
+        observed_date = observation.get("date_raw")
+        if type(observed_date) is not int or observed_date > snapshot.get("date_raw", -1):
+            continue
+        if observed_date == snapshot.get("date_raw"):
+            # No same-frame retry. The native schema and public lease must
+            # both be exact before the existing raise step can be selected.
+            if not (
+                row.get("ok") is True
+                and result.get("accepted") is True
+                and result.get("status") == "completed"
+                and result.get("read_only") is True
+                and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+                and result.get("queried_revision") == snapshot.get("revision")
+                and result.get("queried_native_revision") == snapshot.get("native_revision")
+            ):
+                return None
+            try:
+                normalized = normalize_player_default_raise_v1(
+                    observation, snapshot=snapshot,
+                )
+            except ValueError:
+                return None
+            if not (
+                normalized.get("native_default_raise_legal") is True
+                and normalized.get("unraised_troops_status") == "available"
+                and type(normalized.get("unraised_soldiers")) is int
+                and normalized["unraised_soldiers"] > 0
+            ):
+                return None
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_defender_siege_raise_verified_reserve",
+                "selected_step": RAISE_TROOPS_STEP,
+                "reason": "same-frame native default raise is legal with unraised troops; add defenders without authorizing siege contact",
+                "default_raise": normalized,
+                "siege_relief": siege_relief,
+                "active_wars": war_summary,
+            }
+        if (
+            0 < snapshot["date_raw"] - observed_date < 72
+            and row.get("ok") is True
+            and result.get("accepted") is True
+            and result.get("status") == "completed"
+            and result.get("read_only") is True
+            and observation.get("status") == "available"
+            and observation.get("unraised_troops_status") == "available"
+            and (observation.get("native_default_raise_legal") is False
+                 or observation.get("unraised_soldiers") == 0)
+        ):
+            return None
+        break
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_defender_siege_reserve_query",
+        "selected_step": QUERY_PLAYER_DEFAULT_RAISE_STEP,
+        "reason": "read native default raise legality and unraised troops; deployed soldiers are not reserves",
+        "observed_player_soldiers": own_soldiers,
+        "observed_enemy_siege_soldiers": enemy_soldiers,
+        "siege_relief": siege_relief,
+        "active_wars": war_summary,
+    }
+
+def _defender_siege_observation_one_day_watch(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    siege_relief: dict[str, object],
+    active_wars: list[dict[str, object]],
+    controlled_armies: list[dict[str, object]],
+    hostile_army_ids: tuple[int, ...],
+    route_evidence_issues: list[dict[str, object]],
+    battle_control_status: object,
+    available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Watch one proven contact-free day without granting siege relief.
+
+    Native CUnit rows with no CArmy can make the participant-strength scope
+    partial even when the visible siege and all hostile routes are complete.
+    This permits only a full-hostile route-contact read and the existing
+    exact-one-day sentinel. It never supplies a combat or relief forecast.
+    """
+    war_ids = siege_relief.get("war_ids")
+    if not (
+        siege_relief.get("required_observation")
+        == "complete-same-frame-siege-position-and-war-strength"
+        and isinstance(war_ids, list)
+        and war_ids
+        and all(type(war_id) is int and war_id > 0 for war_id in war_ids)
+        and snapshot.get("army_strengths_status") in {"partial", "available"}
+        and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("route_contact_horizon_supported") is True
+        and snapshot.get("army_routes_supported") is True
+        and battle_control_status == "not_in_combat"
+        and not route_evidence_issues
+        and len(controlled_armies) == 1
+        and hostile_army_ids
+        and len(hostile_army_ids) <= MAX_ROUTE_CONTACT_HOSTILE_IDS
+        and "life-advance-one-day" in available_steps
+    ):
+        return None
+    army = controlled_armies[0]
+    army_id = _public_cunit_int(army.get("army_id"))
+    province_id = _native_int(army.get("current_province_id"))
+    if not (
+        army_id is not None
+        and province_id is not None
+        and province_id > 0
+        and _army_tactical_state(army) == "regular"
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and "move_target_province_id" in army
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+    ):
+        return None
+    enemies = [
+        enemy for enemy in enemy_armies_from_wars(active_wars)
+        if _army_tactical_state(enemy) != "retreating"
+    ]
+    if (
+        {int(enemy_id) for enemy_id in hostile_army_ids}
+        != {_public_cunit_int(enemy.get("army_id")) for enemy in enemies}
+        or any(_native_int(enemy.get("current_province_id")) is None
+               or _native_int(enemy.get("current_province_id")) <= 0
+               for enemy in enemies)
+    ):
+        return None
+    # A missing strength row is tolerable for waiting, never an unobserved
+    # siege position or a potentially active player assault.
+    incomplete_sieges = set()
+    observed_siege_wars = set()
+    for war in active_wars:
+        war_id = _native_int(war.get("war_id"))
+        if war_id not in war_ids:
+            continue
+        for enemy in war.get("enemy_armies", []):
+            if not (
+                isinstance(enemy, dict)
+                and _army_tactical_state(enemy) == "sieging"
+                and enemy.get("retreating") is not True
+                and _defender_siege_is_relief_relevant(snapshot, war, enemy)
+            ):
+                continue
+            observed_siege_wars.add(war_id)
+            if not (
+                _public_cunit_int(enemy.get("army_id")) is not None
+                and _native_int(enemy.get("current_province_id")) is not None
+                and enemy.get("in_combat") is False
+                and enemy.get("retreating") is False
+                and "move_target_province_id" in enemy
+                and enemy.get("move_target_province_id") is None
+                and enemy.get("route_province_ids") == []
+            ):
+                incomplete_sieges.add(war_id)
+    if incomplete_sieges or observed_siege_wars != set(war_ids):
+        return None
+    assaults = _review_all_player_assaults(
+        snapshot, active_wars=active_wars, enemies=enemies, commands=commands,
+    )
+    if any(review.get("status") != "inactive" for review in assaults):
+        return None
+    # P15 actual zero-hop query to current Province returned Native
+    # route_unavailable. Query one published *other* hostile Province only as
+    # a read-only source of the complete hostile timelines. This never
+    # proposes moving toward that Province.
+    reference_targets: list[int] = []
+    for enemy in enemies:
+        if _army_tactical_state(enemy) != "sieging":
+            continue
+        target = _native_int(enemy.get("current_province_id"))
+        if (
+            target is not None and target > 0 and target != province_id
+            and target not in reference_targets
+            and query_route_contact_horizon_step(
+                army_id, target, hostile_army_ids,
+            ) in available_steps
+        ):
+            reference_targets.append(target)
+        if len(reference_targets) == 2:
+            break
+    for reference_target in reference_targets:
+        query_step = query_route_contact_horizon_step(
+            army_id, reference_target, hostile_army_ids,
+        )
+        contact = None
+        for row in reversed(_history_after_latest_restore(commands)):
+            if (
+                parse_query_route_contact_horizon_step(_effective_command(row))
+                != (army_id, reference_target, hostile_army_ids)
+                or row.get("ok") is not True
+            ):
+                continue
+            result = _effective_command_result(row)
+            horizon = result.get("route_contact_horizon") if isinstance(result, dict) else None
+            subject = horizon.get("subject_route") if isinstance(horizon, dict) else None
+            observed_route = subject.get("route_province_ids") if isinstance(subject, dict) else None
+            if not isinstance(observed_route, list):
+                continue
+            contact = _fresh_route_contact_horizon(
+                commands, snapshot,
+                army_id=army_id,
+                origin_province_id=province_id,
+                target_province_id=reference_target,
+                hostile_army_ids=hostile_army_ids,
+                route_province_ids=observed_route,
+            )
+            break
+        if contact is None:
+            if _current_frame_route_contact_query_failure(
+                commands, snapshot, query_step,
+            ) is not None:
+                continue
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_defender_siege_observation_contact_query",
+                "selected_step": query_step,
+                "reason": "read a full-hostile route timeline for stationary one-day observation; the reference target is read-only and relief/battle remain unqualified",
+                "siege_relief": siege_relief,
+                "active_wars": war_summary,
+            }
+        if contact.get("target_province_id") != reference_target:
+            return None
+        try:
+            stationary_free = stationary_province_contact_free_in_horizon(
+                contact, province_id,
+            )
+        except ValueError:
+            return None
+        if not stationary_free:
+            return None
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_defender_siege_observation_one_day_watch",
+            "selected_step": "life-advance-one-day",
+            "reason": "the complete same-frame hostile timeline proves one stationary day at the actual current Province without contact; the reference route is read-only and never submitted, and relief/combat remain unqualified",
+            "reference_route_query_step": query_step,
+            "contact_horizon": contact,
+            "siege_relief": siege_relief,
+            "active_wars": war_summary,
+        }
+    return None
 
 
 def _primary_defender_siege_relief_assessment(
