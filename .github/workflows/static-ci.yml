@@ -136,7 +136,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py ck3_autonomous_player/tests/unit/test_native_negative_route_regroup.py ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py
       - name: Test native legal stewardship selection and receipt guards without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src

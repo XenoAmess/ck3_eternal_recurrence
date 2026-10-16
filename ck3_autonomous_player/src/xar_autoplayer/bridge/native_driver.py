@@ -24531,6 +24531,10 @@ class NativeHeadlessGameplayDriver:
                 mode="terminal_or_sentinel", watch_army_ids=(),
                 sentinel_scope="exact_one_day",
             )
+            from .clock_observation_timing_v1 import (
+                start_clock_observation_v1, finish_clock_observation_v1,
+            )
+            clock_observation = start_clock_observation_v1(self, current)
             clock_wait_timing = start_army_timing("driver.exact_clock_resume_to_paused")
             try:
                 current = self._resume_life_advance(
@@ -24542,6 +24546,7 @@ class NativeHeadlessGameplayDriver:
                     timeout_seconds=self.life_advance_timeout_seconds,
                 )
             finally:
+                finish_clock_observation_v1(self, clock_observation, current)
                 finish_army_timing(clock_wait_timing, step="life-advance",
                     date_raw=(current.get("date_raw") if isinstance(current, dict) else None))
             if (_life_advance_new_modal_hint(current, starting) is not None
@@ -24984,6 +24989,9 @@ class NativeHeadlessGameplayDriver:
             if self.state.capabilities()["snapshot"]:
                 self.state.wait_for_public_change(after_revision, timeout)
             changed = self.take_internal_semantic_snapshot()
+            if getattr(self, "_exact_clock_observation_v1", None) is not None:
+                from .clock_observation_timing_v1 import observe_clock_snapshot_v1
+                observe_clock_snapshot_v1(self, changed)
             return changed
         finally:
             finish_army_timing(
@@ -31001,7 +31009,24 @@ def _capital_regroup_capability_scope(
     controlled = controllable_armies(
         [army for army in armies if isinstance(army, dict)]
     )
-    if not (war.get("player_is_primary_war_leader") is True and controlled):
+    nonleader_owned_attacker = bool(
+        war.get("player_side") == "attacker"
+        and war.get("player_is_primary_war_leader") is False
+        and len(controlled) == 1
+        and isinstance(played_character, dict)
+        and played_character.get("alive") is True
+        and controlled[0].get("owner_character_id") == actor_id
+        and controlled[0].get("controllable") is True
+        and snapshot.get("route_contact_horizon_supported") is True
+        and readiness.get("held_title_partition_ready") is True
+        and isinstance(war.get("player_relative_war_score"), int)
+        and not isinstance(war.get("player_relative_war_score"), bool)
+        and -100 < war["player_relative_war_score"] < 100
+    )
+    if not (controlled and (
+        war.get("player_is_primary_war_leader") is True
+        or nonleader_owned_attacker
+    )):
         return None
     attacker_scope = war.get("player_side") == "attacker"
     if attacker_scope and not (
@@ -31011,6 +31036,24 @@ def _capital_regroup_capability_scope(
         and snapshot.get("war_objective_assault_supported") is True
     ):
         return None
+    if nonleader_owned_attacker:
+        partition = context.get("held_title_partition")
+        if not isinstance(partition, list) or not partition:
+            return None
+        county_capitals: set[int] = set()
+        for row in partition:
+            if not isinstance(row, dict) or not isinstance(row.get("title"), dict):
+                return None
+            title = row["title"]
+            if not _positive_native_id(title.get("title_id")) or not isinstance(title.get("tier_raw"), int):
+                return None
+            if title["tier_raw"] == 2:
+                province_id = row.get("capital_province_id")
+                if not _positive_native_id(province_id) or province_id in county_capitals:
+                    return None
+                county_capitals.add(int(province_id))
+        if capital_province_id not in county_capitals:
+            return None
     defender_scope = war.get("player_side") == "defender"
     if defender_scope:
         partition = context.get("held_title_partition")

@@ -188,3 +188,37 @@ The actual P26 runtime source and public source differ in that final preserved
 cross-day branch; public integration does not rewrite the frozen live SDK.
 No uninterrupted 30-year, 0.5 seconds/day or victory credit follows from this
 single observed day.
+
+### Same-day move/negative-contact/Halt loop
+
+P26 actual AUTO56/58/62, 74/76/80, 91/93/97 and 109/111/115 each show the same
+day 53411208: a move to 5965 whose geometric audit said safe, a fresh Native
+contact result saying `one_day_contact_free=false`, then Halt. The former
+candidate loop queried exact contact only for geometrically unsafe routes.
+Geometric separation therefore allowed repeated moving-hostile conflicts.
+
+The public planner now obtains the complete fresh Native hostile horizon for
+both geometrically safe and unsafe candidate routes. A negative result vetoes
+the candidate; a positive hypothetical horizon alone does not authorize Move.
+Existing original preview, source freshness, command legality and 1.5 combat
+admission stay in place.
+
+After every exact objective has a native-negative rejection, a single owned,
+controllable, stationary nonleader attacking army may evaluate its directly
+held capital through the existing query/preview/horizon route. This uses a
+same-frame complete held-title partition; it does not assume a capital from
+missing context. With every objective and capital exit still negative, the
+ordinary planner can retain position and use existing exact-one-day defensive
+observation. It does not order an offensive move or label contact safe.
+
+The evidence projections and six rejecting capability/route variants are in
+the portable gzip fixture. Its capital context and title 999 are explicitly
+synthetic. A public ordinary-chooser test also proves that geometric safety
+first selects the complete hostile query, then respects a synthetic Native
+negative without issuing Move. Existing route guards and the new clock profile
+passed the combined 41-test, five-subtest public suite. External candidate:
+`continuation42-cold-prep/p26-same-day-route-loop-candidate02/DELIVERY.json`,
+SHA-256 `f693d2cd62f9853377d02ccd9528c9d4f18c8748520bf9b61743f646ffea64b7`.
+No actual capital query, capital preview, successful return or defensive hold
+is established by these offline cases; Root separately deploys and observes
+the normal planner. The four original cycles remain actual failed progress.
