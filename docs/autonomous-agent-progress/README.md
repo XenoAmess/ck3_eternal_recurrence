@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-16：G2剩余项公共源码增量，6/8保持
+
+本机 xenoamess-full-tower-eb9d2c1186 的并发研究已将 [ordinary Sway](../ck3-native-ai/g2-ordinary-sway-service-v1.md) 六处小接线整理到当前公共源码，3个便携完整planner compound一次通过；真实family retry旧输入在任何可选IO前跳过。未部署活SDK，真实Start/有用终态/独立收益仍缺。新[owner冷载证据工具](../ck3-native-ai/g2-owner-cold-evidence.md)及3项定向测试通过，已用既有闭场小件核对owner/load/checkpoint/frame与后来hot/plan；不追加现场操作、政府资格或稳定窗口天数。原M0–M7仍6/8，M6/M7未完成；连续30年由主ledger独立计量。此前7b121960的Official38837456244与Linear38837456199已实际success，本次新commit的CI另记。
+
 **当前入口（2026-10-13）：[G2 运行就绪状态纠正](../ck3-native-ai/g2-runtime-readiness-correction-2026-10-13.md)。当前运行就绪未验收；旧 5/8、6/8 是历史合同计数，不能解释为可稳定打战争。以下日期记录保留当时事实。**
 
 **Current owner instruction (2026-10-11T05:05:16.995792+00:00): local CK3 is reserved for the owner's play.**

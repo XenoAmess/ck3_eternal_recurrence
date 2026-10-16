@@ -1657,12 +1657,9 @@ class GameplayBridgeService:
         """Return a detached public plan after its private readers finish."""
         plan_timing = start_army_timing("service.normal_plan_turn")
         try:
-            from ..ordinary_sway_lifecycle_observation_v1 import observe_resolved_sway_lifecycle_v1
-
-            # Reuse the retained original identity outside the planning-view
-            # lock. The full planner then reads the current resulting frame.
-            sway_observation = observe_resolved_sway_lifecycle_v1(self)
             planned = self._plan_turn_internal()
+            from .ordinary_sway_service_v1 import stage_ordinary_sway_v1
+            planned = stage_ordinary_sway_v1(self, planned)
             from ..vanilla_events.rite_growth_material import (
                 capture_rite_growth_fulfillment_observation_v1,
                 plan_rite_growth_material_postcondition_v1,
@@ -1686,8 +1683,6 @@ class GameplayBridgeService:
                     )
                     planned = {**planned, "plan": {
                         **plan, "event_material_postcondition": material}}
-            if sway_observation is not None:
-                planned = {**planned, "sway_lifecycle_observation": sway_observation}
             return copy.deepcopy(planned)
         finally:
             finish_army_timing(plan_timing, step="plan-turn")
@@ -2221,6 +2216,9 @@ class GameplayBridgeService:
                     _effective_command_result(row), planning_snapshot)) is not None), None)
             planned["plan"] = {**planned["plan"], "player_risk_context":
                 build_ordinary_player_risk_context_v1(planning_snapshot, risk_root)}
+            from .ordinary_sway_service_v1 import project_ordinary_sway_input_v1
+            planned["_ordinary_sway_input_v1"] = project_ordinary_sway_input_v1(
+                planning_snapshot, risk_root)
             return planned
 
         if use_internal_view:
@@ -4381,8 +4379,13 @@ class GameplayBridgeService:
                     "snapshot_id": planned["snapshot_id"], "revision": planned["revision"],
                     "planning_source_frame": planned["planning_source_frame"],
                     "plan": planned["plan"], "result": unavailable}
-        outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(
-            self._execute_planned_turn(planned, before_submit=before_submit)))
+        outcome = self._execute_planned_turn(planned, before_submit=before_submit)
+        following_plan = outcome.pop("_ordinary_sway_following_plan_v1", None)
+        if isinstance(following_plan, dict):
+            # Attribute the ordinary command to its actual fresh frame; the
+            # optional Sway read/receipt remains in ordinary_sway_optional.
+            planned = following_plan
+        outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(outcome))
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
             outcome, planning_frame=planned)
         cooldown_receipt = self._observe_declaration_cooldown_after_turn_v1(
@@ -4663,6 +4666,9 @@ class GameplayBridgeService:
                     "revision": planned.get("revision"),
                     "interception": copy.deepcopy(interception),
                 }
+        if selected_step == "ordinary-sway-opportunity-v1":
+            from .ordinary_sway_service_v1 import execute_ordinary_sway_v1
+            return execute_ordinary_sway_v1(self, planned, before_submit=before_submit)
         planned_event = (
             plan.get("active_event") if isinstance(plan, dict) else None
         )

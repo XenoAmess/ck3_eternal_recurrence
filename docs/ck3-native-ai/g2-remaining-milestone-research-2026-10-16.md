@@ -2,6 +2,8 @@
 
 2026-10-16。此轮研究全程不操作 CK3、Steam、OBS、桌面、Native pipe 或活跃 Driver。自动游玩与演进由原 owner 持续运行；研究候选不作为当前会话的停机条件。
 
+后续公共源码增量：[ordinary Sway正式接线](g2-ordinary-sway-service-v1.md)已在当前Service应用六处最小span，3项便携完整planner验证通过；活SDK未安装，原文“hook未应用”描述保留为当时阶段。[owner冷载证据工具](g2-owner-cold-evidence.md)补齐公共入口的显式来源字段投影，3项新测试及一次既有闭场材料摘录通过。原M6/M7仍未完成，不扩政府范围或计入游戏日。
+
 新目标是**连续三十游戏年没有需要停机修复、阻塞自动游玩的错误**，由主 continuity ledger 单独计量。它与原 G2 八项资格、累计已玩年数分开；既往带修复的累计约二十一年不追认为稳定三十年。
 
 ## 八项定义与本轮范围

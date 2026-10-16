@@ -67,7 +67,7 @@ def observe_resolved_sway_lifecycle_v1(
         return None
     target = resolved.get("target_character_id")
     full_id, generation = identity.get("scheme_instance_id"), identity.get("scheme_instance_generation")
-    if (type(target) is not int or not 0 < target < 2**31
+    if (type(target) is not int or not 0 < target <= 0xFFFFFFFF
             or (target_character_id is not None and target != target_character_id)
             or type(full_id) is not int or not 0 <= full_id < 0xFFFFFFFF
             or type(generation) is not int or not 0 <= generation <= 255

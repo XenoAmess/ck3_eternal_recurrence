@@ -1,6 +1,6 @@
 # Ordinary Sway target scheduler, CK3 1.20.0.4
 
-2026-10-16. Readiness: **standalone Python static-ready**. The ordinary Service hook is not installed by this package. No current target, native selection, Start, new useful terminal, runtime throughput gain or M6 completion is claimed.
+2026-10-16. Readiness: **ordinary Service source wired and offline integration verified**. The first scheduler package was standalone; the later [ordinary Service increment](g2-ordinary-sway-service-v1.md) applies six reviewed source spans and the unchanged V2 adapter. The active SDK has not received this hook. No current target, native selection, Start, new useful terminal, runtime throughput gain or M6 completion is claimed.
 
 ## Actual current stock source
 
@@ -35,13 +35,13 @@ The existing formal consumer still owns complete current native terms, opinion<=
 - Current actor change, changed observed frontier membership, or the first independently recorded terminal for the original action resets the opportunity deadline. Native frontier reorder alone does not. No new signal provider is assumed.
 - Existing90-day save cadence is retained. The bounded explicit-target runner's break/forced checkpoint flow is not reused.
 
-## Ordinary hook still to be applied
+## Original hookup recipe
 
-Current Service.plan_turn calls observe_resolved_sway_lifecycle_v1 before its ordinary planner. Connecting this candidate requires replacing that unconditional read orchestration with the scheduler at the already selected ordinary opportunity stage, outside the planning-view lock. Reuse an already available same-frame Root; do not add a daily root refresh or target sweep.
+Before the later source increment, Service.plan_turn called observe_resolved_sway_lifecycle_v1 before its ordinary planner. The recipe replaces that unconditional read orchestration with the scheduler at the already selected ordinary opportunity stage, outside the planning-view lock. It reuses an already available same-frame Root without a daily root refresh or target sweep.
 
 query_selected_target stages the existing single-target query and then the formal consumer's actual action route during execution, never during a read-only plan. observe_applied invokes the existing lifecycle helper only when due. reconcile_pending uses the existing pending-only read path. Completed observations update the small scheduler state without overwriting original action/terminal/material ledgers. Higher-priority war/event/receipt routes remain intact, and optional read failure leaves the selected ordinary turn runnable.
 
-Shared Service hunks require review against its current SHA. This package supplies only new helper/test files, not an old whole-file replacement or an applied hook.
+The initial scheduler package supplied only helper/test files. The later increment matched five Service spans and one lifecycle ID predicate against current source, preserving intervening performance changes; it did not replace Service with an old whole-file copy.
 
 ## Verification and evidence limits
 

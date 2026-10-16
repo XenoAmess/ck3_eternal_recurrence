@@ -99,6 +99,10 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test terminal readonly route unavailable and exact strategy lease without CK3
         run: python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_*route*unavailable*.py"
+      - name: Test ordinary Sway complete planner integration without CK3
+        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_ordinary_sway_service_v1.py
+      - name: Test closed owner cold evidence projection without CK3
+        run: python -B -X utf8 -m unittest discover -s tools -p "test_extract_g2_owner_cold_evidence.py"
       - name: Test strict army route read-status contract
         run: |
           python -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
