@@ -1,0 +1,95 @@
+{
+  "schema": "xar.storage-relocated-cold-export-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:41:11.587831+00:00",
+  "policy_version": "1.0.0",
+  "task": "disk-reclamation-20261016-a01",
+  "count": 1,
+  "target": {
+    "path": "C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\melted.ck3",
+    "info": {
+      "id": [
+        3061637496,
+        1125899907475583
+      ],
+      "b": 102441939,
+      "ft": 134355327156465634,
+      "links": 1,
+      "allocation": 102445056
+    },
+    "sha256": "8558f1aff1aa2f85b3130b21064c940284a6aaa325ba7ef6bfd4c7561f290ae5"
+  },
+  "retained_inputs": [
+    {
+      "path": "C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\checkpoint.ck3",
+      "info": {
+        "id": [
+          3061637496,
+          1125899907475577
+        ],
+        "b": 69952343,
+        "ft": 134355327139468167,
+        "links": 1,
+        "allocation": 69955584
+      },
+      "sha256": "444b8fb753694981619daaa9a2368da6eabba6f767e523c74a09d41bea141cd3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "info": {
+        "id": [
+          882653518,
+          281474978564543
+        ],
+        "b": 6552576,
+        "ft": 134347235892391183,
+        "links": 1,
+        "allocation": 6553600
+      },
+      "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d"
+    },
+    {
+      "path": "C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\report.json",
+      "info": {
+        "id": [
+          3061637496,
+          1125899907475584
+        ],
+        "b": 1695,
+        "ft": 134355327166584078,
+        "links": 1,
+        "allocation": 4096
+      },
+      "sha256": "c551aeb95f1b97a55685df37109b99336c6b915f976960374f384d1780300eb5"
+    }
+  ],
+  "original_recipe": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "D:\\ck3-experience-drain-feasibility-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\checkpoint.ck3",
+    "--format",
+    "ck3",
+    "--unknown-key",
+    "stringify",
+    "-o",
+    "D:\\ck3-experience-drain-feasibility-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\melted.ck3"
+  ],
+  "relocation_boundary": "Original D-path readback report remains historical. Current C cold archive binary SHA equals original retained checkpoint. Rebuild using same pinned decoder with current SOURCE path and a NEW output path; original deleted path remains unavailable.",
+  "rebuild_argv_to_new_derived_output": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+    "melt",
+    "C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\checkpoint.ck3",
+    "--format",
+    "ck3",
+    "--unknown-key",
+    "stringify",
+    "-o",
+    "<NEW_DERIVED_OUTPUT_PATH>"
+  ],
+  "closed_at_utc": "2026-10-04T06:24:47.284641+00:00",
+  "last_used_at_utc": "2026-10-03T20:25:15.656928+00:00",
+  "category": "derived",
+  "active_references": [],
+  "valid_protection": null,
+  "reason": "Closed Superman acceptance release; full decoded export older than48h; retained binary and exact decoder both current SHA verified; exact useful summary/report retained; daily inspector identified this pending candidate"
+}

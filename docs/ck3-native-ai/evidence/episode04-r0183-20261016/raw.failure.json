@@ -1,0 +1,18 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T07:45:02.781143+00:00",
+  "error": "RuntimeError('capacity review deadline reached')",
+  "recorder_started": true,
+  "terminal": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "ABORT_TREE_EMPTY",
+    "pid": 26452,
+    "returncode": 1,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-16T07:45:02.778499+00:00"
+  },
+  "raw_retained": true,
+  "unknown_native_request_never_replayed": true,
+  "business_positive_claim": false
+}

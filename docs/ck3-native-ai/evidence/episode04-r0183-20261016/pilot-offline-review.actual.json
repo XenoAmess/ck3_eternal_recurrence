@@ -1,0 +1,28 @@
+{
+  "schema": "xar.e04.r183.portable-offline-pilot-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T08:48:06.742891+00:00",
+  "reviewer": "Codex offline evidence integration agent /root/r183_evidence_portable",
+  "method": "Directly viewed each existing unmodified original PNG with view_image; no live desktop capture or action",
+  "failed_hwnd_pilot": {
+    "source": {
+      "path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/window-pilot-a01/window-original.png",
+      "bytes": 4349,
+      "sha256": "c75a2ed02c9febc37d11a8a8d1dfdf9fbb232f93391776012defca490618ea6f"
+    },
+    "observation": "The entire 1280x720 pilot image is visibly black.",
+    "not_a_recorded_video": true
+  },
+  "corrected_client_region_pilot": {
+    "source": {
+      "path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/window-pilot-a02/window-original.png",
+      "bytes": 1705366,
+      "sha256": "0b84faac2edccfa7901eb7b76912ba318e89d17186efc9ce3b09daf2c319d5d5"
+    },
+    "observation": "1280x720 CK3 paused map and Army18 panel; no Steam, Windows border or surrounding desktop visible.",
+    "scope": "This single still only; no continuous unobstructed-video or clean-span certification."
+  },
+  "live_game_or_sdk_or_desktop_action": false,
+  "human_full_video_review": false,
+  "human_signoff": false
+}

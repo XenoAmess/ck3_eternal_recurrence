@@ -112,11 +112,14 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     std::array<std::uintptr_t,8> visited{};
     for(std::uint32_t depth=0;context;++depth){
       diagnostic.ancestor_depth=depth;diagnostic.stage="parent_walk";
+      // These fields describe this context, not the last completed one. A
+      // depth/cycle guard can return before its definition has been read.
+      diagnostic.context_present=context!=0;
+      diagnostic.raw_definition_entry_count.reset();
+      diagnostic.definition_present.reset();
       if(depth==visited.size()){failure="candidate_parent_depth_exhausted";diagnostic.kind="parent_depth_exhausted";return false;}
       for(std::size_t n=0;n<depth;++n)if(visited[n]==context){failure="candidate_parent_cycle";diagnostic.kind="parent_cycle";return false;}
       visited[depth]=context;
-      diagnostic.ancestor_depth=depth;diagnostic.raw_definition_entry_count.reset();
-      diagnostic.definition_present.reset();
       std::uintptr_t definition=0,table=0,parent=0,matched=0;std::int32_t entries=0;std::uint8_t active=0;
       if(!load("context_definition_e0",context,0xE0,definition))return false;
       diagnostic.definition_present=definition!=0;
@@ -142,7 +145,9 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
         std::uint32_t actual=0;const auto offset=static_cast<std::size_t>(n)*0x50;
         if(!load("definition_entry_key_48",table,offset+0x48,actual))return false;
         identity.push_back(actual);
-        if(!matched&&actual==key){if(table>UINTPTR_MAX-offset)return false;matched=table+offset;}
+        // Actual3AC3FE3/3AC4167 leaves lookup on the first matching key. A
+        // later entry is unrelated and must not cause extra reads/failures.
+        if(actual==key){if(table>UINTPTR_MAX-offset)return false;matched=table+offset;break;}
       }
       if(matched){
         game::GuiRefillReceiverEntry12004V1 e;e.ancestor_depth=depth;

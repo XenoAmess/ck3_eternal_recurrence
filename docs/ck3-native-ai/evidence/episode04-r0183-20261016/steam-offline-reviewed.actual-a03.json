@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T06:45:16.594751+00:00",
+  "current_offline_ui_observed": true,
+  "reviewer": "Root directly read current nonce 7F7159E25634 and Steam offline text in the same unaltered second original image",
+  "observed_text": [
+    "Steam 当前处于离线模式",
+    "上线",
+    "离线模式"
+  ],
+  "screenshot": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\steam-live-challenge-a02\\full-original-2.png",
+    "bytes": 503457,
+    "sha256": "d2cfe9da9e5c92e7f2bc2f45a4bc04d40ecff78076f113f9eaf54414cd96838d"
+  },
+  "challenge": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\steam-live-challenge-a02\\challenge.json",
+    "bytes": 1318,
+    "sha256": "dd1750cdbc1bc0fb03c7eb106e518df7fc39a54b504175d8dabc4fb3ebe3ea1a"
+  },
+  "challenge_first": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\steam-live-challenge-a02\\full-original-1.png",
+    "bytes": 503878,
+    "sha256": "045a11337fbf57bf54167867c97d95126ba3b971437501c8f4b9e3c4bd42fa08"
+  },
+  "challenge_nonce_read_from_second_original": "7F7159E25634",
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "screen_task": "e04-live-20261016-r0183-a03",
+  "screen_sequence": 5705,
+  "desktop_shell_clock_stale": true,
+  "freshness_basis": "The reviewed second original displays this lease's nonce issued at capture time and Steam offline UI together; screen clock remains stale and full desktop recovery is not claimed.",
+  "game_started": false,
+  "steam_online_toggled": false
+}

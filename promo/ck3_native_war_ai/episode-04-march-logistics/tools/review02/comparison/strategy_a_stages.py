@@ -55,14 +55,31 @@ def make_live_class(h,c,a,ri):
             self.assets=self.context_path.parent;self.run=self.assets/identity['run_id']
             h.need(self.run.is_dir(),'Root allocated new run absent')
             self.deadline=datetime.fromisoformat(args.deadline_utc.replace('Z','+00:00'))
-            h.need(self.deadline.tzinfo is not None and self.deadline<=datetime.fromisoformat('2026-10-16T07:45:01.597000+00:00'),
-                   'original admitted deadline cannot be extended')
+            guards=load_module(Path(__file__).resolve().parents[1]/'runtime_binding.py','A_explicit_runtime_guard')
+            binding_path=getattr(args,'live_binding',None)
+            if binding_path is not None:
+                h.need(guards.current_machine_id(self.repo)==self.machine,'actual execution machine differs')
+            self.live_operation_guard=guards.optional_guard(binding_path,getattr(args,'live_binding_sha256',None),
+                context=self.c,runtime=guards.arm_runtime(self.runtime),scene_root=self.assets,
+                source_head=source,machine_id=self.machine,run_id=identity['run_id'],
+                max_runtime_total_bytes=args.max_runtime_total_bytes,deadline_utc=args.deadline_utc,
+                normal_save_sha256=args.loaded_save_sha256)
+            if self.live_operation_guard is None:
+                h.need(self.deadline.tzinfo is not None and self.deadline<=datetime.fromisoformat('2026-10-16T07:45:01.597000+00:00'),
+                       'new deadline requires an exact explicit live binding; historical deadline cannot be extended')
+            h.need(self.deadline.tzinfo is not None and datetime.now(timezone.utc)<self.deadline,
+                   'operation deadline reached; no new live stage')
             h.need(0<=args.army_id<=2**31-1 and 0<=args.native_carmy_id<=2**31-1,
                    'public CUnit and separately observed native CArmy permit zero')
             self.binding={'pid':self.runtime['pid'],'process_create_time_100ns':self.runtime['process_create_time_100ns'],
                 'generation':self.runtime['connection_generation'],'actor':self.runtime['player_character_id'],
                 'episode':self.runtime['episode'],'army_id':args.army_id,'native_carmy_id':args.native_carmy_id}
             self.proof_pin=h.pin(self.e.root/self.runtime['source_proof']['path'])
+            if self.live_operation_guard:
+                proof=h.load(self.proof_pin['path'],1024*1024)
+                h.need(guards.proof_runtime(proof)==self.live_operation_guard.runtime
+                       and proof.get('machine_id')==self.machine and proof.get('run_id')==identity['run_id']
+                       and proof.get('source_head')==source,'source proof differs from the new live operation')
             self.helper_pin=h.pin(args.request_helper,65536)
             h.need(self.helper_pin['sha256']==args.request_helper_sha256,'Root request helper changed')
             self.transport=load_module(args.request_helper,'A_owned_existing_request_relay')
@@ -81,12 +98,17 @@ def make_live_class(h,c,a,ri):
                 'existing_relay':h.pin(args.relay_source),'runtime_proof':self.proof_pin,
                 'request_helper':self.helper_pin,'deadline_utc':self.deadline.isoformat(),
                 'phases_chained':False,'SDK_connection_created':False,'new_run_capacity_granted_by_adapter':False}
-            budget=c.runtime_total_budget(vars(args),scene_root=self.assets,source_head=source,
+            if self.live_operation_guard:
+                self.meta.update(live_operation_binding=self.live_operation_guard.pin,
+                                 capacity_admission=self.live_operation_guard.capacity_pin)
+            budget=c.runtime_total_budget(guards.runtime_options(vars(args),self.live_operation_guard),scene_root=self.assets,source_head=source,
                 machine_id=self.machine,deadline_utc=self.deadline.isoformat())
             budget.bind_live(self,base_module=h,raw_file_max=args.max_evidence_file_bytes)
             saved=self.case/'binding.actual.json'
             if saved.exists():
                 prior=h.load(saved,1024*1024)
+                h.need(prior.get('live_operation_binding')==self.meta.get('live_operation_binding'),
+                       'case operation binding changed; cannot adopt old/different case')
                 h.need(prior['deadline_utc']==self.meta['deadline_utc'],'case deadline changed')
                 h.need(all(prior['binding'][k]==v for k,v in self.binding.items() if k!='native_carmy_id'),
                        'case crossed owned runtime')
@@ -94,6 +116,10 @@ def make_live_class(h,c,a,ri):
             else:h.write_new(saved,{**self.meta,'binding':self.binding})
             self.check_process()
             h.write_new(self.attempt/'START.actual.json',{**self.meta,'binding':self.binding})
+
+        def request(self,*values,**kwargs):
+            if getattr(self,'live_operation_guard',None):self.live_operation_guard.check()
+            return super().request(*values,**kwargs)
 
         def used_bytes(self):
             # Include the full query sidecars absent from the older relay meter.
@@ -308,6 +334,7 @@ def parser():
     p.add_argument('--army-id',type=int,required=True);p.add_argument('--native-carmy-id',type=int,required=True)
     p.add_argument('--max-runtime-total-bytes',type=int,default=512*1024*1024)
     p.add_argument('--runtime-capacity-admission',nargs=2,metavar=('PATH','SHA256'))
+    p.add_argument('--live-binding',type=Path);p.add_argument('--live-binding-sha256')
     p.add_argument('--max-evidence-file-bytes',type=int,choices=(16777216,33554432),default=16777216)
     p.add_argument('--evidence-capacity-admission',nargs=2,action='append',default=[],metavar=('PATH','SHA256'))
     p.add_argument('--state',type=Path)

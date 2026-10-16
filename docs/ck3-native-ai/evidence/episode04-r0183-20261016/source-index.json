@@ -1,0 +1,278 @@
+{
+  "schema": "xar.e04.r183.portable-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T08:48:06.742891+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "scene_root": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01",
+  "audit_root": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01",
+  "purpose": "Reusable factual record for CK3 agent development and Episode04 video; does not confer live-machine qualification elsewhere",
+  "original_files": [
+    {
+      "relative_path": "r183-raw-portable-facts.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/r183-raw-portable-facts.actual.json",
+      "bytes": 5059,
+      "sha256": "8431a2c562903fee5e5e1ce15fdd07468e5098f12488d8bd02bcb622a53aca94",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-raw-audit.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/r183-raw-audit.actual.json",
+      "bytes": 18077,
+      "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "ffprobe.stdout.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/ffprobe.stdout.json",
+      "bytes": 2445,
+      "sha256": "8fa63f49696d228be5ffdcaa9c5a48c87e917fd4cb1cede2d90fe99b559d63f2",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "ffprobe.stderr.txt",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/ffprobe.stderr.txt",
+      "bytes": 59,
+      "sha256": "8d7958d79a84ba50ac523a922f1671894c00dbead98476597098cc686c7d429c",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "frames.stdout.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/frames.stdout.json",
+      "bytes": 28642,
+      "sha256": "a38705ff9f446c5cb1290b0d64fd683f7cca70a7188c95a78a9d87f829e09c84",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "decode.stderr.txt",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/r183-raw-audit-a01/decode.stderr.txt",
+      "bytes": 64,
+      "sha256": "ab5b17ee3f9eaa8379f7aea85c8b855b04a159e1cfbcdb80b35a9d12e6b4c7a6",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "production-build-qualification.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/production-build-qualification.actual-a01.json",
+      "bytes": 13145,
+      "sha256": "42612f595fec5bafa3f17f53a500666362ad7cb5af5d33e2a0dc8c78c8125760",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "runtime-actor-identity.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/runtime-actor-identity.actual-a01.json",
+      "bytes": 6974,
+      "sha256": "672a98e7a9e9e705948246c456db74068323c968acdfa3db524b27f5a2fc46c0",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "runtime-actor-guard-check.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/runtime-actor-guard-check.actual-a01.json",
+      "bytes": 1822,
+      "sha256": "42b7dd5482de50009e33456281f01059bd671489b2dec6f8d92321d7c5f398e3",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-identity-root-observe.actual-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/r183-identity-root-observe.actual-a01.json",
+      "bytes": 2166,
+      "sha256": "90843ae493f7176ec7f4df895b14b45772a4d40a1934c52cc8e7b288ec6dd523",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "steam-offline-reviewed.actual-a03.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/steam-offline-reviewed.actual-a03.json",
+      "bytes": 1651,
+      "sha256": "973ed126fb5bc40edcfa9e4acb0b48064f6d62b780c39a4dfbece212abfac610",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "R183-CAPACITY.actual-root-a01.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/capacity-r183-a01/R183-CAPACITY.actual-root-a01.json",
+      "bytes": 5681,
+      "sha256": "7010823a135d93e6f6db6a44836b196868b8c043acf010c938cbf68d2adbbb0e",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "window-pilot-a01.pilot.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/window-pilot-a01/pilot.actual.json",
+      "bytes": 1539,
+      "sha256": "ecc1103f94848abec53e52867728f17be6c978ad5dee042fa3ab3ce571e3cf27",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "window-pilot-a02.pilot.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/window-pilot-a02/pilot.actual.json",
+      "bytes": 1815,
+      "sha256": "2e62c704fa2bacdafc846d5eeba56b30282d2e61747fd9011c82f1dd47ba6e0b",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "window-pilot-a02.pilot-reviewed.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/window-pilot-a02/pilot-reviewed.actual.json",
+      "bytes": 706,
+      "sha256": "8419b577a601029888c8ef71195f73a8430dc5cfce54f4c6a0211bef37f42f32",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.intent.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/intent.json",
+      "bytes": 3665,
+      "sha256": "1b977e668c6e3cbada4ecd7d11cd7129df5295143501a43f6928ea778feb0eed",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.process-ready.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/process-ready.json",
+      "bytes": 552,
+      "sha256": "6f77e1b4895eecb97c8e0c36b0feb3dec56a1db174cbf848aa14df398830ecf4",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.job-start.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/job-start.json",
+      "bytes": 1029,
+      "sha256": "a6104240b01a20ee4c6215134e365ac13a2b6057c2757febd2e517ba91130436",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-window-film-handoff.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/r183-window-film-handoff.actual.json",
+      "bytes": 421,
+      "sha256": "2cf96aa9a4fe2e278a16c94618e96b4aeb3e72bce40c595d0bd6b1d28621a858",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.failure.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/failure.json",
+      "bytes": 548,
+      "sha256": "7a51511a5eb3e50ded0ab29002e1967937b84a6b144ef8da9cf651c2dc66be13",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.job-abort.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/job-abort-1359551464378300.json",
+      "bytes": 204,
+      "sha256": "13b73cf37a346092c21d82e6629804a08edbd6d8b8583a21e019ae5917219df8",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "raw.unsafe-recorder-cleanup.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/unsafe-recorder-cleanup.json",
+      "bytes": 175,
+      "sha256": "a85eda41da9417a6387af758664a8919ec9e107bf90603008af018b5c3306519",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-film-d01-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/r183-film-d01-complete.actual.json",
+      "bytes": 2306,
+      "sha256": "437974ea59b06a615b34be803323b0f40e8fb4094575a823d60205bd49f08072",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-film-d02-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/r183-film-d02-complete.actual.json",
+      "bytes": 2306,
+      "sha256": "f9f52e9fdcc14ae59c08b7a4f9fe055cba513494281e0b935cd673ea883c7469",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-film-d03-complete.actual.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/r183-film-d03-complete.actual.json",
+      "bytes": 2306,
+      "sha256": "dab975cfe06d1f13ff6d10c7e194a96ef2659e1c24c224a8e07fd766a6d05b0f",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "session-result.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/session-result.json",
+      "bytes": 12844,
+      "sha256": "056ff7a3b6b644be54584ac16cfb9efa06c276d70cfe30321c85d99fb26cc921",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "bootstrap-result.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/bootstrap-result.json",
+      "bytes": 14215,
+      "sha256": "6e258f04037d6e0124f9b79ac8ae12c1bbae698b910f7e7403ab58cbf5c54007",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "screen-task-after-release.actual.json",
+      "original_source_path": "D:/workspace/.codex-task-bus/tasks/e04-live-20261016-r0183-a03.json",
+      "bytes": 535,
+      "sha256": "2f769aeaf4f6510b5569e53263d551d247cad9ae42c7dbb211a6dd50664bf5a1",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-identity-a01-01-diag.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-identity-a01-01-diag.json",
+      "bytes": 55890,
+      "sha256": "2171f7fe15f5694940f86ec1b27d9397b237ab7937470f2b889eff5d1d56cde0",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-window-film-01-before.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-window-film-01-before.json",
+      "bytes": 123939,
+      "sha256": "bed9eff02326d33cee4acf3bb83d67fb5553da04364bdeeb384579ea3e7e34a5",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-film-d03-poll-008.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-film-d03-poll-008.json",
+      "bytes": 124970,
+      "sha256": "b50430ac90b19a24042ea6eb255b1717e813c9962072576f97dce41c12f46732",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-film-d03-sentinel-status.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-film-d03-sentinel-status.json",
+      "bytes": 4656,
+      "sha256": "b3af4b931894759c7078faeaee8fee6561d3b225e8732423aa43106fa8c48207",
+      "copy_kind": "exact-original-bytes"
+    },
+    {
+      "relative_path": "r183-identity-a01-06-save-once.json",
+      "original_source_path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-identity-a01-06-save-once.json",
+      "bytes": 20311,
+      "sha256": "418d369b63c3feb4f1b44e469ce0efbced7d9fb4ef07b396132f8d59d9eeac12",
+      "copy_kind": "exact-original-bytes"
+    }
+  ],
+  "generated_review": {
+    "relative_path": "pilot-offline-review.actual.json",
+    "bytes": 1381,
+    "sha256": "1d9edc07430b10031098e8858808844a1e92d0d142ada1041333baed1b4de561"
+  },
+  "external_media_not_copied": {
+    "path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/raw-r183-a01/raw.mkv",
+    "bytes": 2883584,
+    "sha256": "d232680842948124ea57f8138fc2d1a8cb4261a3db8bc2ec5062a3194e3c1e73",
+    "availability_basis": "Existing local audit read on 2026-10-16; no claim of remote availability or permanent retention"
+  },
+  "claim_boundaries": {
+    "capture_source": "FFmpeg gdigrab desktop region matching verified CK3 client, not independent HWND pixels",
+    "complete_90_second_recording": false,
+    "business_positive": false,
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false,
+    "bootstrap_recorder_NOT_STARTED_scope": "Only the bootstrap-owned recorder; external managed recorder raw-r183-a01 did start and was aborted"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "original_copy_bytes": 460717,
+    "write_ceiling_bytes": 1048576,
+    "free_bytes_at_task_start": {
+      "C:/": 31669526528,
+      "D:/": 22650236928
+    },
+    "heavy_write_performed": false,
+    "old_quota_override_renewed": false,
+    "record_review_at_utc": "2027-04-14T08:48:06.742891+00:00",
+    "source_asset_retention": "Source assets remain governed by shared retention policy and Root inventory; this index does not create or renew protection."
+  },
+  "screen_source_machine_binding": "The exact copied task JSON lacks machine_id; association comes from the same named R183 task in the machine-bound bootstrap result plus the current machine command output, not its path alone."
+}

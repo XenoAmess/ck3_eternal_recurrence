@@ -3,6 +3,9 @@
 #include <cassert>
 #include <cstring>
 #include <map>
+#ifdef NDEBUG
+#error This cold fixture requires active runtime assertions.
+#endif
 struct Memory {
   std::map<std::uintptr_t,unsigned char> data;int contexts=0;bool change=false;
   template<class T> void put(std::uintptr_t p,T x){const auto *b=reinterpret_cast<const unsigned char*>(&x);for(std::size_t n=0;n<sizeof x;++n)data[p+n]=b[n];}
@@ -53,4 +56,35 @@ int main(){
   Memory unread;unread.data.erase(0x10C0);v=sample(unread);
   assert(v.status=="unavailable"&&v.failure_diagnostic&&v.failure_diagnostic->stage=="callback_indices_pointer_c0"&&v.failure_diagnostic->kind=="memory_read_failed");
   Memory null;null.put<std::uintptr_t>(0x5038,0);v=sample(null);assert(v.status=="available"&&!v.entries[0].provider_present&&!v.entries[0].provider_slot2_rva);
+  // Native lookup stops at the first match. The declared tail key is not
+  // mapped: reading it would incorrectly reject an already found entry.
+  Memory tail;tail.put<std::int32_t>(0x409C,2);
+  v=sample(tail);assert(v.status=="available"&&v.stable_double_read&&v.entries.size()==1&&v.entries[0].provider_slot2_rva==0x2000);
+  // Prefix keys still matter: an unmatched first row is read, then the
+  // matching second entry supplies the actual candidate.
+  Memory prefix;
+  for(std::uintptr_t offset=0;offset<0x50;++offset){
+    const auto it=prefix.data.find(0x5000+offset);
+    if(it!=prefix.data.end())prefix.data[0x5050+offset]=it->second;
+  }
+  prefix.put<std::uint32_t>(0x5048,636);prefix.put<std::int32_t>(0x409C,2);
+  v=sample(prefix);assert(v.status=="available"&&v.stable_double_read&&v.entries.size()==1&&v.entries[0].entry_type_48==635&&v.entries[0].provider_slot2_rva==0x2000);
+  prefix.data.erase(0x5048);v=sample(prefix);
+  assert(v.status=="unavailable"&&v.failure_diagnostic&&v.failure_diagnostic->stage=="definition_entry_key_48"&&v.failure_diagnostic->kind=="memory_read_failed");
+  // Visit exactly depth0..7, whose final definition has a real count. The
+  // next unmapped context is stopped before any read at the unchanged cap8;
+  // its diagnostic must not inherit depth7's definition/count.
+  Memory depth;depth.put<std::uint8_t>(0x504C,0);depth.put<std::uintptr_t>(0x20E8,0x21000);
+  for(std::uintptr_t n=1;n<8;++n){
+    const auto context=0x20000+n*0x1000,definition=0x40000+n*0x1000,table=0x60000+n*0x1000;
+    depth.put<std::uintptr_t>(context+0xE0,definition);
+    depth.put<std::uintptr_t>(definition+0x90,table);depth.put<std::int32_t>(definition+0x9C,1);
+    depth.put<std::uint32_t>(table+0x48,636);depth.put<std::uintptr_t>(definition+0x108,0);
+    depth.put<std::uintptr_t>(context+0xE8,context+0x1000);
+  }
+  v=sample(depth);
+  assert(v.status=="unavailable"&&!v.stable_double_read&&v.entries.empty()&&!v.receiver_variable_index&&!v.declared_type_id&&v.failure_diagnostic);
+  const auto &d=*v.failure_diagnostic;
+  assert(v.unavailable_reason=="candidate_parent_depth_exhausted"&&d.stage=="parent_walk"&&d.kind=="parent_depth_exhausted"&&d.ancestor_depth==8);
+  assert(d.context_present==true&&!d.definition_present&&!d.raw_definition_entry_count&&d.raw_declaration_count==1&&d.raw_index_count==1&&d.local_definition_active_raw==1);
 }

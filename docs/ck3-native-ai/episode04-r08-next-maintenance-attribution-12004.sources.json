@@ -1,0 +1,72 @@
+{
+  "schema": "xar.e04.r08.next-maintenance-attribution-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T09:07:20.828256+00:00",
+  "base_commit": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "scope": "offline_existing_source_only",
+  "new_EXE_bytes": 0,
+  "runtime_actions": 0,
+  "maintenance_attribution": "unclosed",
+  "paid_military_amount_raw": null,
+  "storage_policy_version": "1.0.0",
+  "record_review_at_utc": "2027-04-14T09:07:20.828276+00:00",
+  "output_budget_bytes": 32768,
+  "current_document": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.md",
+  "source_pins": [
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0174-actual-parent-source-12004.md",
+      "bytes": 9921,
+      "sha256": "ea1abf4a0ab59145e8489890946199ad7da776e70c2e3c4dd8ef37d4cdb25d19"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-r0178-writer-source-12004.md",
+      "bytes": 7886,
+      "sha256": "47d4bd9dd0ab908b84256bf105564f65bbdb800dba2e70225bfe876ce0cbc50f"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-payment-net-settlement-allocation-12004.md",
+      "bytes": 9542,
+      "sha256": "665f9c83c814129b269e99bb42b068b5b09e5557f45d3d8791b7fbbef1eefd1d"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0174-maintenance-source/FACTS.actual.json",
+      "bytes": 2688,
+      "sha256": "ac6138248d36cadbc3afd12cc00ba9125602c88bf39df7d1af6cd69e4a29bd87"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r0178-maintenance-writers/FACTS.actual.json",
+      "bytes": 2083,
+      "sha256": "73fd1919d810c719103dd882d3c4601d9c945b892b4865c5df5558bc105bcfee"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r08-cash-getter-inventory/source-index.json",
+      "bytes": 10284,
+      "sha256": "2b02c0bdc5884d296242c05509134d50a9abe5423e13c2161c3509303a551bfb"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/cold_observer.cpp",
+      "bytes": 26419,
+      "sha256": "48d36e93f178dcdc229dd7f257e1d00c49ec7bd61d463e0b79f9f04396d17d73"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_cold.py",
+      "bytes": 11790,
+      "sha256": "cf11f90702a3a1a2e5752b4b73bdf5ab3a151d7e49f02c612104c8fa248c25e3"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/consume_writer_actual.py",
+      "bytes": 22992,
+      "sha256": "7ce91eab8da071f26538993944a6ce868f935e17c3cb3c9735eb51a7e1687829"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_known_copy_caller.py",
+      "bytes": 5294,
+      "sha256": "f1ecd2965b9738edbdbd8176f28652a12ef16395e1e4836f1dd8872e95b81d85"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp",
+      "bytes": 10061,
+      "sha256": "1126fb936eeb9b5beb67e5935452af17983121562011c2c90ddb9f4c9aaf921b"
+    }
+  ]
+}

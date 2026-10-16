@@ -1,0 +1,151 @@
+{
+  "schema": "xar.e04.r183-root-adopted-capacity.v1",
+  "status": "ROOT_ADOPTED_R183_EXCLUSIVE",
+  "admitted": true,
+  "policy_version": "1.0.0",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T06:30:22.544822+00:00",
+  "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "run_id_at_capacity_adoption": "expected_only_not_yet_allocated",
+  "post_adoption_allocator_exact_match_required": true,
+  "allocator_mismatch_or_failure_must_not_start": true,
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 134217728,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "component_usage_bytes": {
+    "profile": 0,
+    "driver": 0,
+    "raw": 0,
+    "other": 0
+  },
+  "remaining_scene_growth_bytes": {
+    "profile": 805306368,
+    "driver": 134217728,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "aggregate_scene_ceiling_bytes": 1610612736,
+  "volume_reservations": {
+    "C:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 2147483648,
+      "other_unspent_reservations_bytes": 1870851481
+    },
+    "D:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_unspent_reservations_bytes": 0
+    }
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "free_bytes": 28949180416,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 2147483648,
+      "other_unspent_reservations_bytes": 1870851481,
+      "required_free_bytes": 27103784345,
+      "margin_bytes": 1845396071
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "free_bytes": 22654554112,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_unspent_reservations_bytes": 0,
+      "required_free_bytes": 21609054208,
+      "margin_bytes": 1045499904
+    }
+  },
+  "current_project_usage_bytes": null,
+  "current_project_usage_upper_bound_bytes": 162712621169,
+  "project_usage_basis": "inventory_plus_write_upper_bound",
+  "scan_window_write_upper_bound_bytes": 536870912,
+  "previous_R182_conservative_peak_bytes": 165679987656,
+  "post_R182_retained_asset_roots": [
+    {
+      "role": "native_a26",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26",
+      "logical_bytes": 366767885,
+      "metadata_entries": 2548
+    },
+    {
+      "role": "aborted_a25",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-refill-diagnostic-20261016-a25",
+      "logical_bytes": 37959680,
+      "metadata_entries": 1879
+    }
+  ],
+  "post_R182_retained_asset_logical_bytes": 404727565,
+  "post_R182_other_retained_upper_bound_bytes": 536870912,
+  "projected_project_peak_bytes": 168232198869,
+  "effective_project_quota_bytes": 171798691840,
+  "quota_override": {
+    "owner": "Root",
+    "reason": "Reuse original explicit 160 GiB temporary project quota only until the original R182 protection deadline; no extension",
+    "max_project_bytes": 171798691840,
+    "review_at_utc": "2026-10-16T07:45:01.597Z"
+  },
+  "capacity_conditions": {
+    "C:/_free_fits": true,
+    "D:/_free_fits": true,
+    "project_quota_fits": true
+  },
+  "capacity_numbers_fit": true,
+  "quota_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "deadline_extended": false,
+  "R182_receipt_used_only_as_baseline": true,
+  "R182_admission_transferred": false,
+  "execution_granted_by_this_readonly_tool": false,
+  "root_atomic_adoption_required": false,
+  "evidence": {
+    "shared_policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "R182_baseline": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-followup-a22\\R182-EXCLUSIVE-CAPACITY.actual-root-a25.json",
+      "bytes": 6601,
+      "sha256": "11d89fce916ba780249d69ce42e9b4eaab4e3d800196ea3d762a9ffc1f75a9f4"
+    },
+    "R182_closed": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\r182-close-a01\\CLOSED.actual.json",
+      "bytes": 3312,
+      "sha256": "f4e8fe42e0437bda10bd6007fc107146618975e3845d27d5939e3fa19ff14311"
+    },
+    "coordinator_ledger": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R183-COORDINATOR-LEDGER.actual-root-reviewed-a01.json",
+      "bytes": 6077,
+      "sha256": "0850c74599ff5a35d45590b646b1a76133a42402c95206a71a9f81ca9fc8be54"
+    },
+    "project_usage_inventory": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R183-PROJECT-USAGE.pass10.json",
+      "bytes": 7087,
+      "sha256": "da65273a397634d17c17be8f89b34643198c9186e94bdf7c5fe849d770662797"
+    },
+    "candidate": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R183-CAPACITY.candidate-a01.json",
+      "bytes": 4899,
+      "sha256": "db8f1a3f9403453a57adc3ff95d0ac20bf3ceef969f280ac2398ff6180216e34"
+    },
+    "task_bus_owner": {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-r183-capacity-a01.json",
+      "bytes": 510,
+      "sha256": "ed5c57a6403529ef5f065aeac9c9f1414fbc3473624c63a245e1c8d53c8808e9"
+    },
+    "task_bus_capacity_registry": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 1150,
+      "sha256": "5646895b792c0d9cd072d55f6bc63cd1925182e812b9fd4c1b22e7ee2c0a722f"
+    }
+  },
+  "metadata_entries_scene": 0,
+  "root_adopted_at_utc": "2026-10-16T06:30:22.544822+00:00",
+  "capacity_bus_task_id": "e04-r183-capacity-a01"
+}

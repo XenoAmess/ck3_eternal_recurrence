@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "state": "RECORDING",
+  "pid": 26452,
+  "started_at_utc": "2026-10-16T07:44:49.651173+00:00",
+  "monotonic_ns": 1359538303918800,
+  "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+  "capture_size": [
+    1280,
+    720
+  ],
+  "managed_job_start": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\job-start.json",
+    "bytes": 1029,
+    "sha256": "a6104240b01a20ee4c6215134e365ac13a2b6057c2757febd2e517ba91130436"
+  }
+}

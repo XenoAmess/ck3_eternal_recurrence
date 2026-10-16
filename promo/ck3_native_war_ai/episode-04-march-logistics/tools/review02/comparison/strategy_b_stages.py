@@ -397,7 +397,8 @@ def relay_arguments(args):
         need(all(present), 'explicit Relay binding requires source-head, run-sequence, module-pins and module-pins-sha256 together')
         need(isinstance(args.source_head, str) and len(args.source_head) == 40
              and all(c in '0123456789abcdef' for c in args.source_head), 'exact lowercase source-head SHA required')
-        need(type(args.run_sequence) is int and args.run_sequence >= 176, 'explicit allocated run sequence required')
+        minimum=1 if getattr(args,'live_binding',None) is not None else 176
+        need(type(args.run_sequence) is int and args.run_sequence >= minimum, 'explicit allocated run sequence required')
         need(isinstance(args.module_pins_sha256, str) and len(args.module_pins_sha256) == 64
              and all(c in '0123456789abcdef' for c in args.module_pins_sha256), 'exact reviewed module-pins SHA required')
     result = deepcopy(args)
@@ -424,6 +425,8 @@ def main(argv=None):
     p.add_argument('--run-sequence', type=int, default=argparse.SUPPRESS)
     p.add_argument('--module-pins', type=Path, default=argparse.SUPPRESS)
     p.add_argument('--module-pins-sha256', default=argparse.SUPPRESS)
+    p.add_argument('--live-binding', type=Path)
+    p.add_argument('--live-binding-sha256')
     p.add_argument('--max-evidence-file-bytes', type=int, default=16 * 1024 * 1024)
     p.add_argument('--max-runtime-total-bytes', type=int, default=512 * 1024 * 1024)
     p.add_argument('--runtime-capacity-admission', nargs=2, metavar=('PATH', 'SHA256'))
@@ -444,9 +447,10 @@ def main(argv=None):
     next_adapter = reviewed_module(a.next_adapter, 'reviewed_B_next', a.next_adapter_sha256)
     # Policy/schema/evidence checks happen before constructing a live Relay.
     plan = root.load(a.plan)
+    intended_machine=(root.load(a.context).get('machine_id') if a.live_binding is not None else root.MACHINE)
     evidence = next_adapter.b.c.Evidence(a.evidence_root, max_file_bytes=a.max_evidence_file_bytes,
         capacity_admissions=[{'path': path, 'sha256': sha} for path, sha in a.evidence_capacity_admission],
-        expected_source_head=plan['build']['source_head'], expected_machine_ids={root.MACHINE})
+        expected_source_head=plan['build']['source_head'], expected_machine_ids={intended_machine})
     next_adapter.b.recipe(plan, evidence)
     previous_pin = root.pin(a.previous_state) if a.previous_state else None
     if previous_pin:
@@ -455,9 +459,13 @@ def main(argv=None):
     if a.s0_arm:
         need(root.pin(a.s0_arm)['sha256'] == a.s0_arm_sha256, 'actual S0 B arm SHA differs')
     s0_arm = root.load(a.s0_arm) if a.s0_arm else None
-    budget = next_adapter.b.c.runtime_total_budget(vars(a), scene_root=a.context.resolve().parent,
-        source_head=plan['build']['source_head'], machine_id=root.MACHINE, deadline_utc=root.DEADLINE)
     live = root.Relay(base_args)
+    options=vars(a)
+    if getattr(live,'live_operation_guard',None):
+        guards=root.module(Path(__file__).resolve().parents[1]/'runtime_binding.py','B_explicit_runtime_guard')
+        options=guards.runtime_options(options,live.live_operation_guard)
+    budget = next_adapter.b.c.runtime_total_budget(options, scene_root=a.context.resolve().parent,
+        source_head=plan['build']['source_head'], machine_id=live.machine, deadline_utc=live.deadline.isoformat())
     budget.bind_live(live, raw_file_max=a.max_evidence_file_bytes)
     stages = BStages(root, live, next_adapter, plan, plan_pin=root.pin(a.plan), evidence=evidence,
                      previous=previous, previous_pin=previous_pin, s0_arm=s0_arm)

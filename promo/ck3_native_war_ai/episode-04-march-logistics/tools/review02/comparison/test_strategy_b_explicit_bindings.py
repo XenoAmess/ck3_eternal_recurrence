@@ -8,6 +8,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
+from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 sys.dont_write_bytecode = True
@@ -133,9 +134,23 @@ class Tests(unittest.TestCase):
             owner.assertEqual(ROOT.pin(path)['sha256'], expected)
             return ROOT if Path(path) == RELAY_PATH else owner.adapter
 
+        original_module = ROOT.module
+        def metadata_module(path, name):
+            result = original_module(path, name)
+            if Path(path).name == 'runtime_binding.py':
+                result.current_machine_id = lambda repo: MACHINE
+            return result
+
+        class HistoricalClock(datetime):
+            @classmethod
+            def now(cls, tz=None):
+                return cls(2026,10,15,22,tzinfo=timezone.utc)
+
         with patch.object(B, 'reviewed_module', side_effect=reviewed), \
              patch.object(B, 'BStages', NoActionStage), \
              patch.object(ROOT, 'Relay', side_effect=self.relay), \
+             patch.object(ROOT, 'module', side_effect=metadata_module), \
+             patch.object(ROOT, 'datetime', HistoricalClock), \
              patch.object(ROOT.subprocess, 'check_output', return_value=HEAD + '\n'):
             return B.main(self.argv + extra)
 
@@ -172,6 +187,42 @@ class Tests(unittest.TestCase):
                     self.invoke(partial)
         self.assertEqual(self.seen, [])
         self.assertFalse((self.assets / 'r09-split-merge-relay-a01').exists())
+
+    def operation(self, *, expired=False):
+        now = datetime.now(timezone.utc)
+        deadline = now + timedelta(minutes=-1 if expired else 30)
+        capacity = ROOT.load(self.capacity)
+        capacity.update(policy_version='1.0.0',source_head=HEAD,run_id=self.run_id,
+            scene_root=str(self.assets),source_binding={'new_clean_integrated_source_head':HEAD},
+            root_atomic_adoption_required=False,root_adopted_at_utc=(now-timedelta(minutes=3)).isoformat(),
+            quota_review_at_utc=deadline.isoformat(),component_ceiling_bytes={'driver':128*1024*1024},
+            new_scene_aggregate_bytes=256*1024*1024)
+        self.put(self.capacity,capacity)
+        guard_path=COMPARISON.parent/'runtime_binding.py'
+        document={'schema':'xar.e04.live-operation-binding.v1','operation_id':'SYNTHETIC-new-B',
+            'machine_id':MACHINE,'source_head':HEAD,'scene_root':str(self.assets),
+            'run_id':self.run_id,'run_sequence':188,'runtime':{'pid':101,'process_create_time_100ns':202,
+                'generation':303,'actor':404,'episode':'unit-only-no-game'},
+            'normal_save_sha256':'b'*64,'created_at_utc':(now-timedelta(minutes=2)).isoformat(),
+            'deadline_utc':deadline.isoformat(),'max_runtime_total_bytes':64*1024*1024,
+            'capacity_admission':ROOT.pin(self.capacity),'guard_sha256':ROOT.pin(guard_path)['sha256']}
+        binding=self.put(self.assets/'new-operation.json',document)
+        return self.explicit+['--live-binding',str(binding),'--live-binding-sha256',ROOT.pin(binding)['sha256'],
+            '--max-runtime-total-bytes',str(64*1024*1024)]
+
+    def test_explicit_new_operation_reaches_real_root_admission_without_game_requests(self):
+        self.assertEqual(self.invoke(self.operation()),0)
+        result=ROOT.load(self.assets/'r09-split-merge-relay-a01/Bbinding/first/binding-unit-result.json')
+        self.assertEqual(result['sequence'],188)
+        meta=ROOT.load(self.assets/'r09-split-merge-relay-a01/Bbinding/binding.actual.json')
+        self.assertEqual(meta['live_operation_binding'],ROOT.pin(self.assets/'new-operation.json'))
+        self.assertEqual(meta['capacity_admission'],ROOT.pin(self.capacity))
+        self.assertFalse((self.run/'requests').exists())
+
+    def test_expired_new_operation_refuses_before_new_case_or_transport(self):
+        with self.assertRaisesRegex(ValueError,'expired'):
+            self.invoke(self.operation(expired=True))
+        self.assertFalse((self.assets/'r09-split-merge-relay-a01').exists())
 
 
 if __name__ == '__main__':

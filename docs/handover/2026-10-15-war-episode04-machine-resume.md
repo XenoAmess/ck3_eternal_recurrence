@@ -219,3 +219,13 @@ R0175独立正常Move后首段进度96666/100000，大于实际锁定线50000；
 - R03原件在raw53147472、同一callback188中，7条preferred writer实际扣兵11（1+1+3+1+2+1+2），siege11/raid0，原件正消费通过。正式整卡审结仍待Root；本次汇报暂保留整卡5/14＝35.7%、核心业务3/11，不先增加分子。
 - [story-a05完整草稿](../../promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/README.md)为69/69＝100%，8351字；`TTS/provider=0`。这是草稿接受率，不等于最终冻结、声音、新成片或人审完成。
 - 共享源码解释见[拆合军库存权重/取整顺序](../ck3-native-ai/episode04-split-merge-stock-weight-order-12004.md)、[统帅容量与零准备量](../ck3-native-ai/episode04-commander-capacity-zero-preparation-12004.md)。新增source的最终提交、a08 DLL、构建及新冷验结果由实际回执另记，本段不预填未来SHA、CI通过或实机资格。
+
+## 2026-10-16 R183 截断录制、共享修复与专属回收
+
+本节机器仍为 **`desktop-3fevhd2-1c74096080`**。当前入口统一为[缺口与执行图](../ck3-native-ai/episode04-current-execution-map-12004.md)，其中明确研究整卡 **6/14（42.9%）**、核心业务 **4/11（36.4%）**；R03 已由正式围城专题接受，前节“待Root审结”的5/14属于较早切点。合格连续动态 **0/11**、最终稿/声音各 **0/69**，69/69仍是草稿覆盖。
+
+R183使用 source/native `20c7319b6964c80fa419540cf4e30852feff4810`、a26、CK3 1.20.0.4，独立新进程身份和正常保存已核；输入为R182正常checkpoint。首次 `gdigrab hwnd` 得到黑图，修正为实际客户区 `[640,360,1920,1080]` 的1280×720屏幕区域采集。07:44:49 UTC实际开录，0.3726659秒后Resume；原配额07:45:01.597截止，外置recorder在07:45:02 abort，保留239帧／实际7.966秒partial。容器90秒字段不是内容时长。三日原生回执末date53148000、Army18仍2635围城，不证明三日全部入片。游戏07:45:38 timeout清理，非正常UI退出，没有拍后新checkpoint。08:26:18屏幕CAS5732→5733，waiting/resources=[]。精确来源见[R183便携专题](../ck3-native-ai/episode04-r183-window-capture-12004.md)和[视频结果](../../promo/ck3_native_war_ai/episode-04-march-logistics/r183-capture-result-2026-10-16.md)。
+
+本轮canonical recorder改为动态客户区区域采集，保留原始全桌面预检图，独立250ms监测前台、尺寸、进程身份及遮挡；开始和spawn前均要求完整片长加至少120秒闭场余量，容量JSON精确绑定machine/scene/run/source。回执连续写失败也必须清理FFmpeg。R06 reader另修首key命中后无关尾项读取与depth诊断上一层残留，8层及其他预算不扩大。它们是源码/离线资格，**不追认为R183已部署或新实录通过**，下一生产构建与实机另记。
+
+专属回收线程已实际回收156件过期派生及验证重复对象，已知单链接分配 **28,545,642,496B（26.59GiB）**、失败0；C25件、D131件。原件keeper和当前E04恢复基线不在删除清单。机器本地每日北京时间04:00的只读巡检任务已用普通用户最低权限安装，并由Task Scheduler实际运行exit0；自动发现候选不等于自动删除新对象。工具、精简availability记录、调度冻结与读回见[维护记录](../maintenance/storage-retention-2026-10-16-dedicated-worker.md)。旧07:45额度及旧D例外均已到期，没有改旧回执；下一重型任务必须单独fresh review及原子登记。

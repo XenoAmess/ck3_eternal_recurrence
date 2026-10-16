@@ -1,0 +1,67 @@
+{
+  "schema": "xar.e04.r183.client-region-pilot.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T07:34:19.147692+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "window": {
+    "hwnd": 32639418,
+    "pid": 7640,
+    "title": "Crusader Kings III",
+    "window_rect": [
+      632,
+      329,
+      1928,
+      1088
+    ],
+    "window_size": [
+      1296,
+      759
+    ],
+    "client_size": [
+      1280,
+      720
+    ],
+    "client_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "desktop_size": [
+      2560,
+      1440
+    ]
+  },
+  "frame": {
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "frame": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\window-pilot-a02\\window-original.png",
+      "bytes": 1705366,
+      "sha256": "0b84faac2edccfa7901eb7b76912ba318e89d17186efc9ce3b09daf2c319d5d5"
+    },
+    "actual_size": [
+      1280,
+      720
+    ],
+    "capture_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "full_desktop_capture": false
+  },
+  "frame_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-ck3-frame-reviewed.actual-a03.json",
+    "bytes": 1249,
+    "sha256": "f15214642ba73e46a251945ee70cca8f9f5565da643adcbdd1ce1435ef1f9b95"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R183-CAPACITY.actual-root-a01.json",
+    "bytes": 5681,
+    "sha256": "7010823a135d93e6f6db6a44836b196868b8c043acf010c938cbf68d2adbbb0e"
+  },
+  "ffmpeg_sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a",
+  "raw_recording_started": false,
+  "business_positive_claim": false
+}

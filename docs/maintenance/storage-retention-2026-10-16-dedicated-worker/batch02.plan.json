@@ -1,0 +1,833 @@
+{
+  "schema": "xar.storage-exact-media-replica-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:26:59.453987+00:00",
+  "policy_version": "1.0.0",
+  "task": "disk-reclamation-20261016-a01",
+  "roots": [
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-001",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0002",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0004",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-A0002",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-A0004",
+    "C:\\ck3-superman-qiang-promo-20261004\\render-A0005"
+  ],
+  "count": 23,
+  "logical_bytes": 15740227276,
+  "allocated_single_link_bytes": 15740268544,
+  "retained_replica_review_at_utc": "2026-10-23T09:26:59.454047+00:00",
+  "review_note": "No auto renewal; no new independent lifetime is created for retained immutable originals; review expiry and current use using shared policy",
+  "rows": [
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978515587
+          ],
+          "b": 1440131934,
+          "ft": 134346116072699847,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978527305
+          ],
+          "b": 1440131934,
+          "ft": 134346724411142972,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "category": "raw_evidence",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978511206
+          ],
+          "b": 1440131934,
+          "ft": 134346097104603285,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978527305
+          ],
+          "b": 1440131934,
+          "ft": 134346724411142972,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "category": "raw_evidence",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978519688
+          ],
+          "b": 1440131934,
+          "ft": 134346134869866681,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+        "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+        "info": {
+          "id": [
+            882653518,
+            281474978527305
+          ],
+          "b": 1440131934,
+          "ft": 134346724411142972,
+          "links": 1,
+          "allocation": 1440133120
+        }
+      },
+      "category": "raw_evidence",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+        "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+        "info": {
+          "id": [
+            882653518,
+            281474978516566
+          ],
+          "b": 1928022579,
+          "ft": 134346120682843584,
+          "links": 1,
+          "allocation": 1928024064
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+        "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+        "info": {
+          "id": [
+            882653518,
+            281474978528266
+          ],
+          "b": 1928022579,
+          "ft": 134346729132420361,
+          "links": 1,
+          "allocation": 1928024064
+        }
+      },
+      "category": "raw_evidence",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+        "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+        "info": {
+          "id": [
+            882653518,
+            281474978519754
+          ],
+          "b": 1928022579,
+          "ft": 134346135709355301,
+          "links": 1,
+          "allocation": 1928024064
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+        "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+        "info": {
+          "id": [
+            882653518,
+            281474978528266
+          ],
+          "b": 1928022579,
+          "ft": 134346729132420361,
+          "links": 1,
+          "allocation": 1928024064
+        }
+      },
+      "category": "raw_evidence",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip",
+        "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+        "info": {
+          "id": [
+            882653518,
+            281474978519815
+          ],
+          "b": 426330687,
+          "ft": 134346137139612024,
+          "links": 1,
+          "allocation": 426332160
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip",
+        "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+        "info": {
+          "id": [
+            882653518,
+            281474978517796
+          ],
+          "b": 426330687,
+          "ft": 134346126140138965,
+          "links": 1,
+          "allocation": 426332160
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip",
+        "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+        "info": {
+          "id": [
+            882653518,
+            281474978519762
+          ],
+          "b": 369188341,
+          "ft": 134346136077450167,
+          "links": 1,
+          "allocation": 369188864
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip",
+        "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+        "info": {
+          "id": [
+            882653518,
+            281474978516610
+          ],
+          "b": 369188341,
+          "ft": 134346121342142204,
+          "links": 1,
+          "allocation": 369188864
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip",
+        "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+        "info": {
+          "id": [
+            882653518,
+            281474978519727
+          ],
+          "b": 379311170,
+          "ft": 134346135357107572,
+          "links": 1,
+          "allocation": 379314176
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip",
+        "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+        "info": {
+          "id": [
+            882653518,
+            281474978516203
+          ],
+          "b": 379311170,
+          "ft": 134346118394924025,
+          "links": 1,
+          "allocation": 379314176
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip",
+        "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+        "info": {
+          "id": [
+            882653518,
+            281474978519788
+          ],
+          "b": 425400448,
+          "ft": 134346136587307827,
+          "links": 1,
+          "allocation": 425402368
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip",
+        "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+        "info": {
+          "id": [
+            882653518,
+            281474978517198
+          ],
+          "b": 425400448,
+          "ft": 134346123699510580,
+          "links": 1,
+          "allocation": 425402368
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip",
+        "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+        "info": {
+          "id": [
+            882653518,
+            281474978519698
+          ],
+          "b": 378717175,
+          "ft": 134346135095742940,
+          "links": 1,
+          "allocation": 378720256
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip",
+        "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+        "info": {
+          "id": [
+            882653518,
+            281474978515616
+          ],
+          "b": 378717175,
+          "ft": 134346116435900929,
+          "links": 1,
+          "allocation": 378720256
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\001-process.zip",
+        "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+        "info": {
+          "id": [
+            882653518,
+            281474978515612
+          ],
+          "b": 378717175,
+          "ft": 134346116356719136,
+          "links": 1,
+          "allocation": 378720256
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip",
+        "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+        "info": {
+          "id": [
+            882653518,
+            281474978515616
+          ],
+          "b": 378717175,
+          "ft": 134346116435900929,
+          "links": 1,
+          "allocation": 378720256
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\002-process.zip",
+        "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+        "info": {
+          "id": [
+            882653518,
+            281474978516199
+          ],
+          "b": 379311170,
+          "ft": 134346118303681220,
+          "links": 1,
+          "allocation": 379314176
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip",
+        "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+        "info": {
+          "id": [
+            882653518,
+            281474978516203
+          ],
+          "b": 379311170,
+          "ft": 134346118394924025,
+          "links": 1,
+          "allocation": 379314176
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\003-process.zip",
+        "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+        "info": {
+          "id": [
+            882653518,
+            281474978516607
+          ],
+          "b": 369188341,
+          "ft": 134346121174180197,
+          "links": 1,
+          "allocation": 369188864
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip",
+        "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+        "info": {
+          "id": [
+            882653518,
+            281474978516610
+          ],
+          "b": 369188341,
+          "ft": 134346121342142204,
+          "links": 1,
+          "allocation": 369188864
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\004-process.zip",
+        "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+        "info": {
+          "id": [
+            882653518,
+            281474978517194
+          ],
+          "b": 425400448,
+          "ft": 134346123518332821,
+          "links": 1,
+          "allocation": 425402368
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip",
+        "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+        "info": {
+          "id": [
+            882653518,
+            281474978517198
+          ],
+          "b": 425400448,
+          "ft": 134346123699510580,
+          "links": 1,
+          "allocation": 425402368
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\005-process.zip",
+        "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+        "info": {
+          "id": [
+            882653518,
+            281474978517792
+          ],
+          "b": 426330687,
+          "ft": 134346125945422124,
+          "links": 1,
+          "allocation": 426332160
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip",
+        "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+        "info": {
+          "id": [
+            882653518,
+            281474978517796
+          ],
+          "b": 426330687,
+          "ft": 134346126140138965,
+          "links": 1,
+          "allocation": 426332160
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\001-process.zip",
+        "sha256": "dd50bd3922b0304ddfda7f8c7693024b869b76d0c61456b1019a836b8b732fc4",
+        "info": {
+          "id": [
+            882653518,
+            281474978527329
+          ],
+          "b": 379152826,
+          "ft": 134346724695569060,
+          "links": 1,
+          "allocation": 379154432
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\DD\\DD50BD3922B0304DDFDA7F8C7693024B869B76D0C61456B1019A836B8B732FC4.zip",
+        "sha256": "dd50bd3922b0304ddfda7f8c7693024b869b76d0c61456b1019a836b8b732fc4",
+        "info": {
+          "id": [
+            882653518,
+            281474978527333
+          ],
+          "b": 379152826,
+          "ft": 134346724779501624,
+          "links": 1,
+          "allocation": 379154432
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\002-process.zip",
+        "sha256": "8ba9533c74f40a4b33efbb133f94a3995d73a52dc634c982817c017a290e9b7b",
+        "info": {
+          "id": [
+            882653518,
+            281474978527918
+          ],
+          "b": 383705328,
+          "ft": 134346726704336877,
+          "links": 1,
+          "allocation": 383709184
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\8B\\8BA9533C74F40A4B33EFBB133F94A3995D73A52DC634C982817C017A290E9B7B.zip",
+        "sha256": "8ba9533c74f40a4b33efbb133f94a3995d73a52dc634c982817c017a290e9b7b",
+        "info": {
+          "id": [
+            882653518,
+            281474978527922
+          ],
+          "b": 383705328,
+          "ft": 134346726804259033,
+          "links": 1,
+          "allocation": 383709184
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\003-process.zip",
+        "sha256": "e25a3349c893f1fca6ec83b8bbf4ba0134fb3aa164a128338fb5cf71c4b91827",
+        "info": {
+          "id": [
+            882653518,
+            281474978528288
+          ],
+          "b": 382298205,
+          "ft": 134346729635965059,
+          "links": 1,
+          "allocation": 382300160
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\E2\\E25A3349C893F1FCA6EC83B8BBF4BA0134FB3AA164A128338FB5CF71C4B91827.zip",
+        "sha256": "e25a3349c893f1fca6ec83b8bbf4ba0134fb3aa164a128338fb5cf71c4b91827",
+        "info": {
+          "id": [
+            882653518,
+            281474978528292
+          ],
+          "b": 382298205,
+          "ft": 134346729802401491,
+          "links": 1,
+          "allocation": 382300160
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\004-process.zip",
+        "sha256": "c4ecd726f3d00a6380d35284bd65210f63eb9cb5ecb832e815cc3111e669d2a8",
+        "info": {
+          "id": [
+            882653518,
+            281474978528879
+          ],
+          "b": 441147104,
+          "ft": 134346732056064301,
+          "links": 1,
+          "allocation": 441147392
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\C4\\C4ECD726F3D00A6380D35284BD65210F63EB9CB5ECB832E815CC3111E669D2A8.zip",
+        "sha256": "c4ecd726f3d00a6380d35284bd65210f63eb9cb5ecb832e815cc3111e669d2a8",
+        "info": {
+          "id": [
+            882653518,
+            281474978528883
+          ],
+          "b": 441147104,
+          "ft": 134346732237689771,
+          "links": 1,
+          "allocation": 441147392
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\005-process.zip",
+        "sha256": "e41a4ac6c712b2c9fbb6fd254ace856afe84ef4e0846ac7473a1495d1cf92582",
+        "info": {
+          "id": [
+            882653518,
+            281474978529470
+          ],
+          "b": 432538246,
+          "ft": 134346734539274239,
+          "links": 1,
+          "allocation": 432541696
+        }
+      },
+      "retained_replica": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\E4\\E41A4AC6C712B2C9FBB6FD254ACE856AFE84EF4E0846AC7473A1495D1CF92582.zip",
+        "sha256": "e41a4ac6c712b2c9fbb6fd254ace856afe84ef4e0846ac7473a1495d1cf92582",
+        "info": {
+          "id": [
+            882653518,
+            281474978529474
+          ],
+          "b": 432538246,
+          "ft": 134346734739967373,
+          "links": 1,
+          "allocation": 432541696
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0002\\process-materials.zip",
+        "sha256": "cc354251dadefb7f7b3b6c502c227ba1f2bca853ea058080d9dcfac2941a8ad7",
+        "info": {
+          "id": [
+            3061637496,
+            281474978677905
+          ],
+          "b": 217798273,
+          "ft": 134355802411099081,
+          "links": 1,
+          "allocation": 217800704
+        }
+      },
+      "retained_replica": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\native-run\\artifacts\\derived\\sha256\\CC\\CC354251DADEFB7F7B3B6C502C227BA1F2BCA853EA058080D9DCFAC2941A8AD7.zip",
+        "sha256": "cc354251dadefb7f7b3b6c502c227ba1f2bca853ea058080d9dcfac2941a8ad7",
+        "info": {
+          "id": [
+            3061637496,
+            281474978677907
+          ],
+          "b": 217798273,
+          "ft": 134355802428876459,
+          "links": 1,
+          "allocation": 217800704
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0004\\process-materials.zip",
+        "sha256": "f9497d508cc79d59df7eaf45e73f9811de7756f01b8dd5e2a1bc3ba55b89b0f3",
+        "info": {
+          "id": [
+            3061637496,
+            281474978680160
+          ],
+          "b": 199466886,
+          "ft": 134355823631955408,
+          "links": 1,
+          "allocation": 199467008
+        }
+      },
+      "retained_replica": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\native-run\\artifacts\\derived\\sha256\\F9\\F9497D508CC79D59DF7EAF45E73F9811DE7756F01B8DD5E2A1BC3BA55B89B0F3.zip",
+        "sha256": "f9497d508cc79d59df7eaf45e73f9811de7756f01b8dd5e2a1bc3ba55b89b0f3",
+        "info": {
+          "id": [
+            3061637496,
+            281474978680162
+          ],
+          "b": 199466886,
+          "ft": 134355823649938403,
+          "links": 1,
+          "allocation": 199467008
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    },
+    {
+      "target": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005\\process-materials.zip",
+        "sha256": "7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+        "info": {
+          "id": [
+            3061637496,
+            281474978681977
+          ],
+          "b": 1169783806,
+          "ft": 134355856086036374,
+          "links": 1,
+          "allocation": 1169784832
+        }
+      },
+      "retained_replica": {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\artifacts\\derived\\sha256\\7D\\7DCBB70F95C2E7BADD3C74AD6E864FCC6BE43CE8D4D8321617AEF370B5A355DD.zip",
+        "sha256": "7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+        "info": {
+          "id": [
+            3061637496,
+            281474978681993
+          ],
+          "b": 1169783806,
+          "ft": 134355856146568512,
+          "links": 1,
+          "allocation": 1169784832
+        }
+      },
+      "category": "derived",
+      "reason": "Closed old v3/v4/Superman promo immutable duplicate. Full current SHA equals retained readable replica. Early reclamation under shared policy verified duplicate exception; current E04 and episode02 files excluded",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "availability_after": "deleted_unavailable; exact same bytes remain at retained_replica.path"
+    }
+  ],
+  "rejected": [],
+  "method": "Full content SHA from exclusive target handles; retained exact replicas write/delete protected and hashed; physical IDs differ; no zip extraction or new media output"
+}

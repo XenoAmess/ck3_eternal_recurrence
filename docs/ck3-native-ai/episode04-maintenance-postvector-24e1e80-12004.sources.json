@@ -1,0 +1,108 @@
+{
+  "schema": "xar.e04.r08.postvector-existing-source-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T10:09:25.734837+00:00",
+  "base_commit": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "scope": "existing_repository_source_reuse_no_new_EXE_read",
+  "exact_exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_origin_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_captured_at_utc": "2026-10-15T23:41:35.042039+00:00",
+  "source_pins": [
+    {
+      "path": "docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-cash-current-military-vector-tail-12004.md",
+      "bytes": 5675,
+      "sha256": "38bc48f2045f194cfe1fead376d61a4a482de0bdadd04402ec3e0243e2e18873"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/SOURCE-CONTRACT.actual.json",
+      "bytes": 8200,
+      "sha256": "c9b0b2577f595d0ad0e8c8a4f3613b8c1857f6afc271937d228e87d1c5463ce9"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/ARCHIVE-INDEX.json",
+      "bytes": 3055,
+      "sha256": "2ab8866685d0abbf44628b4d2c2b61b1f180aff6f5e74bc6dab5846e594e802b"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/originals.zip",
+      "bytes": 34464,
+      "sha256": "8f78241ef95cbb742b60d737cd127dd01f3aea0d56f3c90a6fba9f07845887a8"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/verify_repository.py",
+      "bytes": 3826,
+      "sha256": "9c5edfd75b8d445a7c57dfc4cbd32b473bf9144dd6f0c2924e268b647cb57b90"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-maintenance-callee-28c43a0-12004.sources.json",
+      "bytes": 16425,
+      "sha256": "7c25e5adc00c1acf601818577bd9c3e2ed46af068333396e4dbb2f405bb372fc"
+    },
+    {
+      "path": "docs/ck3-native-ai/native71-conception-first-value-12004.md",
+      "bytes": 9243,
+      "sha256": "7eb38ee7453f6d8d87a1a806d4d2c2c89b7486df83c94466b6e9b06e1c401789"
+    },
+    {
+      "path": "docs/ck3-native-ai/native71-conception-default-context-12004.md",
+      "bytes": 5345,
+      "sha256": "fc34b22a1c96c8ea9a0c08334a2762d53ac870b7e5ce376976e923f1573ff62d"
+    }
+  ],
+  "function": {
+    "entry_rva": "24E1E80",
+    "end_rva_exclusive": "24E215C",
+    "bytes": 732,
+    "sha256": "32d27096049217575f2d92104d74cb42198bd53f8cbda90a053703e8810f4a05",
+    "instructions": 211,
+    "branches": 17,
+    "unique_branch_targets": 11,
+    "new_source_bytes": 0
+  },
+  "verification_already_executed": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-O",
+      "docs/ck3-native-ai/acceptance/2026-10-16-current-military-tail24e1e80/verify_repository.py"
+    ],
+    "exit_code": 0,
+    "result": "PORTABLE_SOURCE_AND_ALL_BRANCHES_PASS",
+    "note": "Execution preceded this receipt; verifier not rerun by receipt writer."
+  },
+  "newly_connected_knowledge": {
+    "known_caller": "28C451A ->24E1E80(out80,Character,0)",
+    "optional_242C370_branch_taken_by_known_caller": false,
+    "context_getter_28C3AC0_existing_knowledge": "owned Model10 or native initialized default C5D67B90; no second-layer read in this lane",
+    "key": "AE",
+    "key_business_name": null,
+    "modified_output_slots": [
+      0,
+      6,
+      7
+    ],
+    "output30_is_settlement_context30": false
+  },
+  "maintenance_attribution": "unclosed",
+  "paid_military_amount_raw": null,
+  "runtime_credit_added": 0,
+  "new_EXE_bytes": 0,
+  "SDK_calls": 0,
+  "builds": 0,
+  "desktop_actions": 0,
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_at_utc": "2027-04-14T10:09:25.734837+00:00",
+    "heavy_write": false,
+    "c_free": 32208736256,
+    "d_free": 47152525312
+  },
+  "output_budget_bytes": 32768,
+  "cross_machine": "source knowledge reusable; machine/environment/live facts not transferred"
+}

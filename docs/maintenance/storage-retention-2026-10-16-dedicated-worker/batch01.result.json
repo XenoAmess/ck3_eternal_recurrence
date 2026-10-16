@@ -1,0 +1,290 @@
+{
+  "schema": "xar.storage-superman-melt-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:20:20.893860+00:00",
+  "policy_version": "1.0.0",
+  "plan_sha256": "906d22fa9754a49a7bbd5ea8f5888a0952b20ba620876219d13b2a8894d82e08",
+  "attempted": 21,
+  "deleted": 21,
+  "failed": 0,
+  "deleted_logical_bytes": 2351187686,
+  "deleted_single_link_allocated_bytes": 2351239168,
+  "free_before": {
+    "C:/": 28017938432,
+    "D:/": 22649503744
+  },
+  "free_after": {
+    "C:/": 30369230848,
+    "D:/": 22649503744
+  },
+  "volume_change_attribution": "Only same-handle confirmed single-link allocation counted as retired; C/D whole-volume delta includes concurrent Root/OS activity and is not attributed entirely to reclamation",
+  "retained_inputs_after": [
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\checkpoint.ck3",
+      "sha256": "48d573a9e60c009172df481fcffcc8e7349883e6b635945f5461d7a27a96afbd",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+      "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\report.json",
+      "sha256": "01264d74b013b50b892babf22d29a4c24232ac6aa3791c98f3b9bcd43d077abb",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\checkpoint.ck3",
+      "sha256": "757921ce51c1a9807a7739945ee3f534a5e4d2d066534483e3a97d3171b839f6",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\report.json",
+      "sha256": "b1a77e82d758f777a3d27989894ca51324e44a370be8e39ec9170d1e9ae9ead9",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\checkpoint.ck3",
+      "sha256": "2585a6f72cd5a67fda82163b290ede8478c99ee6639efef6d693b11b7dd6f9cb",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\report.json",
+      "sha256": "f96b17580740de0270522e4e5a40dd4ab1d178b70b785bba32f673d7fd65d059",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\checkpoint.ck3",
+      "sha256": "40e2ce879a053870a818d9eeee052e1a26fa847f6e87015c681456ee5a4f666f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\report.json",
+      "sha256": "ca1675a9f4d379d87390806088326b7be4ef756f05326f99cc63da6142cef131",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\checkpoint.ck3",
+      "sha256": "5a6f6b27a6ec7caeec22ae292bd7e6fd5321efae115f1aa7a7a47112811b2589",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\report.json",
+      "sha256": "2b03ac7b0d61dc0ac6c5a3883ab5e5222bce0bad0d2a24dd4599bb6c4d4acb1c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\checkpoint.ck3",
+      "sha256": "ea6ae54e343b9058b5586a3395ce4f36d6854590107ecc080988707a4807b55c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\report.json",
+      "sha256": "f2d7439d3e64710cd2c2ac5e7ff48e8da036feb2bfd8fdc47f6ade8650dc52d2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\checkpoint.ck3",
+      "sha256": "b6f341c9879b572a0eb4325f96fd0338433d0fc4c9fa36fa4dfc0fbebb61506e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\report.json",
+      "sha256": "7a80ebb43f5a31d52d4c8334871083f2a332606acc3f9c04ee524fd354ffd207",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\checkpoint.ck3",
+      "sha256": "6c70b6b1c2ab0b7ea49e1c8960505440e16118b79a68a85d2c4bd36fbc9154f8",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\report.json",
+      "sha256": "80dfe9f2a20ee565f6acaeb6d21d184fba963fd2d3d1a943b2f487b4b3e979ef",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\checkpoint.ck3",
+      "sha256": "f609f7490cd02b0c819292be6b290c9ffa7b53e7ea9bd480e837c2866a6262c4",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\report.json",
+      "sha256": "56cb0d16c54d3fe48a21db24aaa71b119c366cb5474df5f723e4fe192bc51c54",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\checkpoint.ck3",
+      "sha256": "5786ab0368f3e44ccde4cd2f7f55febefad00f7efde513eaf57075d7e5900cb1",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\report.json",
+      "sha256": "3c21f1af85673be4dc2d649563d0989b9a96d88a353165d3f62fb3c235abdf98",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\checkpoint.ck3",
+      "sha256": "7db6e4935fbb9292f812993d7244e798d68c720dd7ab1a412c87c555527d82f2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\report.json",
+      "sha256": "246603b2871532948c95458b8c1d4eac6d1e1ac49f4b8bd1ba04e4998c228a57",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\checkpoint.ck3",
+      "sha256": "cfc05a4a43eb37b415f282fe71d6904f7924c19775b216980a205d3a33a8ffa5",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\report.json",
+      "sha256": "efb039c991a9644b95f4ec283ff89aa567b9d1ea2ebee2bd657c61e7af94dd65",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\checkpoint.ck3",
+      "sha256": "d0323776c51534a417b1bd27a36ae90f2ff006f1d5fab82d0274742ae6a351df",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\report.json",
+      "sha256": "828893c8733e4893ddf3c8ee0e1b58e8f01e400cb22c0ee4c688a4ea91d6c292",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\checkpoint.ck3",
+      "sha256": "30e1c1b5758d5cfbd00f9e2ccd55aedf53fd2befdc0b05634709fe02958a9758",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\report.json",
+      "sha256": "776b758fab59e00636ef9e884e4808c29bc246f1abd3365a1c8aa78aefd10ac6",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\checkpoint.ck3",
+      "sha256": "206bd624f8193c808f4b62c10ae4141c86e5c96dde917149e8a21400a9d46485",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\report.json",
+      "sha256": "54299a251230f4b0dde3f5e9e372f909e731e72f95b794892b682cf7b0f18425",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\checkpoint.ck3",
+      "sha256": "61af3b785e3d36aa5930e818de43b15170a1dca7a667bd493c6c9c9d7a1842d9",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\report.json",
+      "sha256": "bbb0766f3c2d1af782c776cbc2e8042907ca372aa6b76b92100c8f01854184ab",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\checkpoint.ck3",
+      "sha256": "78dbfe32697f80df79284aad5620ced03e65ce5d91e45750a78ef191b3e4bcb3",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\report.json",
+      "sha256": "a78d8275606044940eb10a59d9964ec4c656400297898be1ed44816b0ebc941a",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\checkpoint.ck3",
+      "sha256": "4f3da01b82afab1fbdcb05c335dbe117235ba4035a255ac7b3c11ddf74197d43",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\report.json",
+      "sha256": "6c26b970366fc1cdfc9d36e0c1f87a410e20096b493d744f0bb080a7a90add0e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\checkpoint.ck3",
+      "sha256": "860f1528181a2f1b808ef1374a0fb6fac94b5a5503c8db8f4ee5036375b46d46",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\report.json",
+      "sha256": "0097ac9d6cbcb1d5f237b89ddcd699dbfc2f2df65288b5204ca450a16403d3d8",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\checkpoint.ck3",
+      "sha256": "e38a77c2a440906bb336b220b4b11a9bd49f2c0ec61a7c47ab6b1cd18581f9f9",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\report.json",
+      "sha256": "e4f1c4599a81f14a9e95c92ad416c28dffe723a1b4faeb3a59eb80bdbb239854",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\checkpoint.ck3",
+      "sha256": "a9843d89aba28643818fd37babf993ffc10233985e11930516f221bf34ad7ff2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\report.json",
+      "sha256": "eb513d1f46b333762996f0bea4f44117bae62316ce31a6c62286eeb622380387",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    }
+  ],
+  "excluded": [
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0014\\save-readback-a01\\melted.ck3",
+      "reason": "Missing checkpoint SHA / exact decoder recipe; R0014 retained"
+    }
+  ],
+  "directory_deletions": 0,
+  "recovery_note": "Deleted original melted paths are no longer readable; original historical results/SHA remain true. Rebuild only to a NEW derived output path with preserved command and retained binary; do not fabricate the original file.",
+  "detailed_ledger_sha256": "d783a9ce887d4ab02be8e7595d989a85182be77101348e22cece839dc2526c4c"
+}

@@ -1,0 +1,1565 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T09:43:05.429171+00:00",
+  "rows": [
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\melted.ck3",
+      "sha256": "9cc5851a00537758919e936e675d5f81fcdb37f38c471a8069aad932983fd3f2",
+      "logical_bytes": 101129098,
+      "allocated_single_link_bytes": 101130240,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\melted.ck3",
+      "sha256": "77043633faa9a96eda9aa48a72b277288a77b2628cec1c6198d2db7963be97de",
+      "logical_bytes": 101167543,
+      "allocated_single_link_bytes": 101171200,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\melted.ck3",
+      "sha256": "963f08616362019574844007c7c7068aa6bb326ded544b6b268ff15a0aa67cf5",
+      "logical_bytes": 101168108,
+      "allocated_single_link_bytes": 101171200,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\melted.ck3",
+      "sha256": "d418bf0bf10139204440e56ba3dfe539650bf04ea4015f2bcdfe75791cbc69d4",
+      "logical_bytes": 101130512,
+      "allocated_single_link_bytes": 101134336,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\melted.ck3",
+      "sha256": "8ee33816ef23a4411150b12e1c126397712921a6e8ea5084f948b70466ce691e",
+      "logical_bytes": 100019078,
+      "allocated_single_link_bytes": 100020224,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\melted.ck3",
+      "sha256": "4c72a4ad36309404d43682d3b490f7f223e936ca49471c0b5432813bf89f8021",
+      "logical_bytes": 104995782,
+      "allocated_single_link_bytes": 104996864,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\melted.ck3",
+      "sha256": "53587b98c8acb8a9fa47777654551c14a26623c2688557b7fa07373a10f54b37",
+      "logical_bytes": 100667280,
+      "allocated_single_link_bytes": 100667392,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\melted.ck3",
+      "sha256": "ddd20db453527347b188581a57331cffc464e647859e286ec6eb62de6eba0910",
+      "logical_bytes": 100700280,
+      "allocated_single_link_bytes": 100704256,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\melted.ck3",
+      "sha256": "359fedeea86094a796fd87518c91b571d42fef8c2990c0a35eeb9ec5907b8281",
+      "logical_bytes": 100073644,
+      "allocated_single_link_bytes": 100077568,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\melted.ck3",
+      "sha256": "234cb1936e3963d3826bd4d4eb6d6d33ce811c8d7ccf589edeb963f47f381c40",
+      "logical_bytes": 100777094,
+      "allocated_single_link_bytes": 100777984,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\melted.ck3",
+      "sha256": "a8f5b575e8291f702d388d37e9cee711e74d9d222eec047065b979245f9104fa",
+      "logical_bytes": 100115706,
+      "allocated_single_link_bytes": 100118528,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\melted.ck3",
+      "sha256": "153df0984ef09d0f5e2396a423abce1a8b81f8954906a28df967c7531e65ba90",
+      "logical_bytes": 100782049,
+      "allocated_single_link_bytes": 100782080,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\melted.ck3",
+      "sha256": "d8e7939b5ecfa7b3bf7652c16a618f6a222d42b35a791437d0db943f03a0c80f",
+      "logical_bytes": 130785694,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\melted.ck3",
+      "sha256": "d705a45acbd512653287013ad87dbff5944c1a99e7781f97d57fa36d7acfc2a1",
+      "logical_bytes": 130785694,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\melted.ck3",
+      "sha256": "d47a36938910daf8a711fc7e93287ed97ec4504b7fdd0d251800cd2ece2b017b",
+      "logical_bytes": 130785694,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\melted.ck3",
+      "sha256": "56cc1ef32ebb80ccf123b1f7ea0cf056db7f708331ac7f9d77f2d8c29a716375",
+      "logical_bytes": 130785694,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\melted.ck3",
+      "sha256": "3511fee1b0ec7eff1e11b80197437992e8a8f690c649b70fc452c490e0632922",
+      "logical_bytes": 106840110,
+      "allocated_single_link_bytes": 106844160,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\melted.ck3",
+      "sha256": "05d72bd5c971b2a5f4d0ea406e3deb95abaf28c88db7d9aa0e65704ef51074fa",
+      "logical_bytes": 123679103,
+      "allocated_single_link_bytes": 123682816,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\melted.ck3",
+      "sha256": "9d114cada6b048470d0890e0eacfe8b04a94010e957d8487e7a60493a420e948",
+      "logical_bytes": 123222338,
+      "allocated_single_link_bytes": 123224064,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\melted.ck3",
+      "sha256": "85c9feb160f265c45f40d0a8ca5c18515853f651ecddb85dba1a217531d1851d",
+      "logical_bytes": 130788691,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 1,
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3",
+      "sha256": "7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41",
+      "logical_bytes": 130788494,
+      "allocated_single_link_bytes": 130789376,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+      "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+      "logical_bytes": 1440131934,
+      "allocated_single_link_bytes": 1440133120,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+      "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+      "logical_bytes": 1440131934,
+      "allocated_single_link_bytes": 1440133120,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+      "sha256": "b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+      "logical_bytes": 1440131934,
+      "allocated_single_link_bytes": 1440133120,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+      "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+      "logical_bytes": 1928022579,
+      "allocated_single_link_bytes": 1928024064,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+      "sha256": "5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+      "logical_bytes": 1928022579,
+      "allocated_single_link_bytes": 1928024064,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip",
+      "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+      "logical_bytes": 426330687,
+      "allocated_single_link_bytes": 426332160,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip",
+      "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+      "logical_bytes": 369188341,
+      "allocated_single_link_bytes": 369188864,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip",
+      "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+      "logical_bytes": 379311170,
+      "allocated_single_link_bytes": 379314176,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip",
+      "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+      "logical_bytes": 425400448,
+      "allocated_single_link_bytes": 425402368,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip",
+      "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+      "logical_bytes": 378717175,
+      "allocated_single_link_bytes": 378720256,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\001-process.zip",
+      "sha256": "e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+      "logical_bytes": 378717175,
+      "allocated_single_link_bytes": 378720256,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\002-process.zip",
+      "sha256": "9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+      "logical_bytes": 379311170,
+      "allocated_single_link_bytes": 379314176,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\003-process.zip",
+      "sha256": "1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+      "logical_bytes": 369188341,
+      "allocated_single_link_bytes": 369188864,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\004-process.zip",
+      "sha256": "c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+      "logical_bytes": 425400448,
+      "allocated_single_link_bytes": 425402368,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\005-process.zip",
+      "sha256": "10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+      "logical_bytes": 426330687,
+      "allocated_single_link_bytes": 426332160,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\001-process.zip",
+      "sha256": "dd50bd3922b0304ddfda7f8c7693024b869b76d0c61456b1019a836b8b732fc4",
+      "logical_bytes": 379152826,
+      "allocated_single_link_bytes": 379154432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\DD\\DD50BD3922B0304DDFDA7F8C7693024B869B76D0C61456B1019A836B8B732FC4.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\002-process.zip",
+      "sha256": "8ba9533c74f40a4b33efbb133f94a3995d73a52dc634c982817c017a290e9b7b",
+      "logical_bytes": 383705328,
+      "allocated_single_link_bytes": 383709184,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\8B\\8BA9533C74F40A4B33EFBB133F94A3995D73A52DC634C982817C017A290E9B7B.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\003-process.zip",
+      "sha256": "e25a3349c893f1fca6ec83b8bbf4ba0134fb3aa164a128338fb5cf71c4b91827",
+      "logical_bytes": 382298205,
+      "allocated_single_link_bytes": 382300160,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\E2\\E25A3349C893F1FCA6EC83B8BBF4BA0134FB3AA164A128338FB5CF71C4B91827.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\004-process.zip",
+      "sha256": "c4ecd726f3d00a6380d35284bd65210f63eb9cb5ecb832e815cc3111e669d2a8",
+      "logical_bytes": 441147104,
+      "allocated_single_link_bytes": 441147392,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\C4\\C4ECD726F3D00A6380D35284BD65210F63EB9CB5ECB832E815CC3111E669D2A8.zip"
+    },
+    {
+      "batch": 2,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\005-process.zip",
+      "sha256": "e41a4ac6c712b2c9fbb6fd254ace856afe84ef4e0846ac7473a1495d1cf92582",
+      "logical_bytes": 432538246,
+      "allocated_single_link_bytes": 432541696,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\run\\artifacts\\derived\\sha256\\E4\\E41A4AC6C712B2C9FBB6FD254ACE856AFE84EF4E0846AC7473A1495D1CF92582.zip"
+    },
+    {
+      "batch": 2,
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0002\\process-materials.zip",
+      "sha256": "cc354251dadefb7f7b3b6c502c227ba1f2bca853ea058080d9dcfac2941a8ad7",
+      "logical_bytes": 217798273,
+      "allocated_single_link_bytes": 217800704,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "C:\\ck3-superman-qiang-promo-20261004\\render-A0002\\native-run\\artifacts\\derived\\sha256\\CC\\CC354251DADEFB7F7B3B6C502C227BA1F2BCA853EA058080D9DCFAC2941A8AD7.zip"
+    },
+    {
+      "batch": 2,
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0004\\process-materials.zip",
+      "sha256": "f9497d508cc79d59df7eaf45e73f9811de7756f01b8dd5e2a1bc3ba55b89b0f3",
+      "logical_bytes": 199466886,
+      "allocated_single_link_bytes": 199467008,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "C:\\ck3-superman-qiang-promo-20261004\\render-A0004\\native-run\\artifacts\\derived\\sha256\\F9\\F9497D508CC79D59DF7EAF45E73F9811DE7756F01B8DD5E2A1BC3BA55B89B0F3.zip"
+    },
+    {
+      "batch": 2,
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005\\process-materials.zip",
+      "sha256": "7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+      "logical_bytes": 1169783806,
+      "allocated_single_link_bytes": 1169784832,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\artifacts\\derived\\sha256\\7D\\7DCBB70F95C2E7BADD3C74AD6E864FCC6BE43CE8D4D8321617AEF370B5A355DD.zip"
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\torch-2.8.0+cu128-cp311-cp311-win_amd64.whl",
+      "sha256": "34c55443aafd31046a7963b63d30bc3b628ee4a704f826796c865fdfd05bb596",
+      "logical_bytes": 3461420395,
+      "allocated_single_link_bytes": 3461423104,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0000-attempt-1.partial",
+      "sha256": "55be86c0738ff8fee4ab3d5c2abbbcf645cea5add5c9df20555b612f6c3bc0f2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0001-attempt-1.partial",
+      "sha256": "8d86c58579e8c10445214322f859f2664608283698ab2f6e6060ecd5a0233a4e",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0002-attempt-1.partial",
+      "sha256": "5841c7525443ab57d96338eea9f545c23999e925806646b83cfd06466cadfd7f",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0003-attempt-1.partial",
+      "sha256": "a2127b1340f8e04d2649d60ba89d858a70a22a2c9c4646de485d89263e4b9df5",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0004-attempt-1.partial",
+      "sha256": "edee12d53cfc816fd2730e5f90b24ec5b2693c45294c7efcad006b0af18fec19",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0005-attempt-1.partial",
+      "sha256": "874514a458ac7d59d42fe4fefc7be31a4ef832f6d3358e7556fe3b50026fe4fd",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0006-attempt-1.partial",
+      "sha256": "c2061e2a5b1b49276313c90e78efe80cb723b1a8d4621a69d9c7d3a50fbac918",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0007-attempt-1.partial",
+      "sha256": "73947ac8fee7cdb9356a15e54adc41dd380b3c7bb437c09d3ffe0a9aea13e0b8",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0008-attempt-1.partial",
+      "sha256": "32dee3580c125235804dc053328bfdb05643589ece17f0e64d099abc1998c258",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0009-attempt-1.partial",
+      "sha256": "d65e74b544952f629a5a7c2e42542df5ae8ae7f94f51f2cf01f4684f16dd85a1",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0010-attempt-1.partial",
+      "sha256": "7bf4c1fd0905d2f727bc10cdec37a56214b3ef75a84c14b21ba89c0b8dfad83c",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0011-attempt-1.partial",
+      "sha256": "63bb2e7d342752e168e783df78b4fdaf9194a5e695a3ee448589110102a81f43",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0012-attempt-1.partial",
+      "sha256": "7ed4ac914000749dd6a48822874d0ed47a4b00f45b0a2d3c085456532a70b59d",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0013-attempt-1.partial",
+      "sha256": "61aa3bb4dac891ec381658c67ac0317d943cc6f40b62719288737bb76dbf288c",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0014-attempt-1.partial",
+      "sha256": "168e34d8bb989b91d87c7c5b5c3f092eefce746752d994e36d94be0a1cf95139",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0015-attempt-1.partial",
+      "sha256": "5966b7b722f518035351ce9868c76f04d46df74481e77f4e8496b3f3c886b840",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0016-attempt-1.partial",
+      "sha256": "d4ab81be8bc9ffbd081802722c68a3e077b3ff683c804251365c471174f97e6a",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0017-attempt-1.partial",
+      "sha256": "ac1439d9549b37d03ad0a40f8ccb480c0a8a943a35c90c380ce6a37968d8e245",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0018-attempt-1.partial",
+      "sha256": "04dd35888d111ec3e824b19fe59224d6be62159ccb3db9027fa80e26575b137b",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0019-attempt-1.partial",
+      "sha256": "0fbb0a2a201dbfab61320a9b2875878ea0a60c10da4ceef4bb97cb0fa9b8bdb7",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0020-attempt-1.partial",
+      "sha256": "abb458a9ca5357a63b60529e2293898d3018ae67236ee2a9041ed4e979402da2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0021-attempt-1.partial",
+      "sha256": "cd0b42d78abab7af1fa120f1e2a4e1e12f94c4c089572772aa6e3da21165bd66",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0022-attempt-1.partial",
+      "sha256": "708bec3785b4d1b7080101f2cf58614e7adaa7ed9a6b3668cef303bdefb805bd",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0023-attempt-1.partial",
+      "sha256": "6222749affe20f231cb224b6e43099cb5166c7a182d174d2dc827df3fa1c8955",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0024-attempt-1.partial",
+      "sha256": "81e2b6910912ca7dda5d398c2cfb6fba80b8fd1665f3b81eabbf58b7ba0e6f29",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0025-attempt-1.partial",
+      "sha256": "bc421918462e8c33f5fe89302c7362f6e2a180e6c933bcb60eb572a243675acb",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0026-attempt-1.partial",
+      "sha256": "9c551ea524a726c30cc360b5d7265993ed352637ecca2b158ed5aab20853ac36",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0027-attempt-1.partial",
+      "sha256": "92690d5d094fb24c0a5d66a131dbbdd8de0262bb42109e8e9d8e4df55283af48",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0028-attempt-1.partial",
+      "sha256": "5c5cff80d96cc5ca3cf2c678313a7545ab20e81dab6c592fa539633f14a11fe9",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0029-attempt-1.partial",
+      "sha256": "1aef8776c3e702dfbe88cea56abce21da69e3931b028c4557ee140f9edcb8bff",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0030-attempt-1.partial",
+      "sha256": "9a7b781918c148fdb1d303cbe8d426a90489f09dc2db4382a5506bbed3e3bb43",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0031-attempt-1.partial",
+      "sha256": "c3d2368758ea90a9bf584434e504984f70edb1a3f5ad8d392fc515247971afaa",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0032-attempt-1.partial",
+      "sha256": "607ff603d7a32d4941f8fee87b6789f8e3de60cc486ee891f96b4540e2d5dd5e",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0033-attempt-1.partial",
+      "sha256": "305df8eed20ede29859af2d7228933221a9f7d718077d8272fcca6493a43daab",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0034-attempt-1.partial",
+      "sha256": "da62c93c58e26c870e493e24a3270aa0363ad9944b4c85dd45a411846af38256",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0035-attempt-1.partial",
+      "sha256": "afe1e3c00479ccc5f57c8875d74720ad5ce15808a714570501fac40bde09c3a2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0036-attempt-1.partial",
+      "sha256": "a359cb57d803a25896f1abf4bafd00f3bbd57a693e310165bdf339cecce0e0bc",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0037-attempt-1.partial",
+      "sha256": "6a554198e82e68ff88b90fbcd41f868d005952d9a5ba8217751e1bc673557d63",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0038-attempt-1.partial",
+      "sha256": "892b6d31b95b58ec4439f9ea8524c2dc7885a731ecded93e2f47214fec6af178",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0039-attempt-1.partial",
+      "sha256": "cde7e5bae7b8d8542e8625e728e88e8a6e13378a5c2955775f2ec8ae42e5b518",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0040-attempt-1.partial",
+      "sha256": "f88e60c69da536e0862cf0bec1a002fa0453eb3ef5b03d2186e29e76beba1dc7",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0041-attempt-1.partial",
+      "sha256": "fb501135fd94b9181aa65592b38ca795e77cda9754a8cba41ecbc5a6752e2298",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0042-attempt-1.partial",
+      "sha256": "afaf8bb762129b058a44b4006b4611ff2711e2dca8964bd7ff3de5e68556b42f",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0043-attempt-1.partial",
+      "sha256": "ce1b85800904198b33d5aea3561e01a4321b16a9f679626987b4ab02265c4aee",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0044-attempt-1.partial",
+      "sha256": "74cd67066eafe0adaa9a307b8349145731616b0f5bb65015bc5cfe38a8e8dc7a",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0045-attempt-1.partial",
+      "sha256": "0928a732b0a80b9062aa3d45c98c031816ac01174b47f4199b8e23c89f7ec022",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0046-attempt-1.partial",
+      "sha256": "250ee7a41d17f4beae46034f5adc41955dfb6698358c5910d98ab7dcfd636d86",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0047-attempt-1.partial",
+      "sha256": "1a132580d2d0859de3c13974c906b190dd51383c834ab9481c1a70f630eaff12",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0048-attempt-1.partial",
+      "sha256": "e1a3af383ee8ae188999e0108109e6c57b37d6efb20dabb6136f375fa90f12cd",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0049-attempt-1.partial",
+      "sha256": "228dece96d54444fa33b64ea414b20111b5d1480329d429d98879587f5cf0e9f",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0050-attempt-1.partial",
+      "sha256": "ce5cb7b7bdb6384a8c7ddd560ee1bb79c2b2a9be999401baa7d5834eb0b00c2f",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0051-attempt-1.partial",
+      "sha256": "51fd4a55f5c9f1b7b0530ae78f49c7a28b5fd23950eef32b8cdb21a7bc4800d5",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0052-attempt-1.partial",
+      "sha256": "41327c729a25c2debb498971bcd2eb7a10c24f109a4ef063bdb5be51aef74186",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0053-attempt-1.partial",
+      "sha256": "447bca9c7888d8e2afa691be76f11b4407d7d853010901dfcefc55764d501e0c",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0054-attempt-1.partial",
+      "sha256": "7e7b17ca20ff263e9e0625c67bffa119ff6a4a601679f8977e607352978c3ada",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0055-attempt-1.partial",
+      "sha256": "21f1cc48dd98d10ed654ed761121fafb489ce49ee0be03b67f4a34737882d497",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0056-attempt-1.partial",
+      "sha256": "cffca78051aa7892897b38879c0ccb8c86a657f4c9f939af8c71d02373740078",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0057-attempt-1.partial",
+      "sha256": "ec29bbe2a68e81a33bfb6d05ea21d099ab7e93d41e3f19b91b8559b3aa4ccc3e",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0058-attempt-1.partial",
+      "sha256": "9721e0e0b548ba88f43f8c84a8f743b707d2005656998964e1b8a77f0cac9dcd",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0059-attempt-1.partial",
+      "sha256": "a826e740716599eb17091f391abe6367b4ee94744dde545b770caa4d48929fdd",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0060-attempt-1.partial",
+      "sha256": "a1229ca52fbe637676774bae17d54741379003eaa9b86375e1a25e59d8359451",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0061-attempt-1.partial",
+      "sha256": "b31d0e78c462d8812e1bcb2fbfefb8092786ac8471193f9eaddfa50f55aaab95",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0062-attempt-1.partial",
+      "sha256": "b9088b4b2e0599bfec066476dc281f2b54e9ef72b91ef773273b0af8fa59e734",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0063-attempt-1.partial",
+      "sha256": "01b9d737f24f444ce3b7e0211840abf0a0d0c858137990f3f132e11852a3ade4",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0064-attempt-1.partial",
+      "sha256": "433c923cf04b91bb2e79b8f9a327588f1bccaf8100254f6a21f041e5d53f18a2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0065-attempt-1.partial",
+      "sha256": "ab378245e9b1e267ce45d80f545b39876303c2703a603807378a379000b4bae3",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0066-attempt-1.partial",
+      "sha256": "2fe19e5b19c2b7a70300365662c30d0752b890bcc5164df56f629955c7e45a1d",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0067-attempt-1.partial",
+      "sha256": "cf7cc99e81f6c21fd55e2f7b7cab8dd80066fab2df05993efe9092090cb42a1b",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0068-attempt-1.partial",
+      "sha256": "404b817bb75db2f4ed84c7ccddedce6012a0ab10791a66b1cb4bc9cccb126ce2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0069-attempt-1.partial",
+      "sha256": "433007ec833eb4c29cee6428047201fc951047260a76f0eeb03af31643986454",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0070-attempt-1.partial",
+      "sha256": "f5666fde1600aba2fbb07366a6604610159ee5fcf6b65f01d46779254beef1c6",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0071-attempt-1.partial",
+      "sha256": "901688b654beab72e548841f9ad21d929fa4b835921aa2a0e4b8013db6c239a3",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0072-attempt-1.partial",
+      "sha256": "d3819ee01b7507ec39b14f3794661919a96761fc670a80148645e7a4a8ebaaac",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0073-attempt-1.partial",
+      "sha256": "99839672f5961ba0898977fa81549ec872342f99b48c24883c29ac275b286923",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0074-attempt-1.partial",
+      "sha256": "12708f47f0564d31489c947a0049df1b5758824722fb94ac0a5206e2f5fbaa8f",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0075-attempt-1.partial",
+      "sha256": "0ba02148f26e53c5b33bec7eacec01ff5bbcec5e7e49162e7b70f5186d69a464",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0076-attempt-1.partial",
+      "sha256": "10f951520dfdbde6d36d8c43d13adcca7610500b6581801c9e4c8a456ecd91e2",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0077-attempt-1.partial",
+      "sha256": "1beea72274f1efd0518ea31d5fe94e91e587a977e8a091efedde5e77645f1721",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0078-attempt-1.partial",
+      "sha256": "52ac7f5db9e7796e8aef9268d503204ef4998d0617695f01b4223346187e5cf9",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0079-attempt-1.partial",
+      "sha256": "f55b22ecc519f8d282dedb232efdcda1e1f75097aeb09ff84f6e00059370a506",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0080-attempt-1.partial",
+      "sha256": "0070b1643165f2ff2d44462fc8eb3658cb86fe0d4593b3ce39921597d3f2c9f1",
+      "logical_bytes": 28311552,
+      "allocated_single_link_bytes": 28311552,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0080-attempt-2.partial",
+      "sha256": "2fd3ab7ad02838a199d8edc956801bad8042bf3d8b81ec002f539d545b55d018",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0081-attempt-1.partial",
+      "sha256": "b37cb0d213a3ce54542b192f2963ed6ba23667ecae3122e6e1dd71f7d250bf38",
+      "logical_bytes": 22020096,
+      "allocated_single_link_bytes": 22020096,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0081-attempt-2.partial",
+      "sha256": "d3a39dc39eeef7063a1236297d0cca49dac39061abc5505c319ea391073a43e4",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0082-attempt-1.partial",
+      "sha256": "c16e87de8abcbbf6e4fb95dcc9809463f74b5fcfb5717ed8c43bcb475b0bc4c7",
+      "logical_bytes": 13631488,
+      "allocated_single_link_bytes": 13631488,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0082-attempt-2.partial",
+      "sha256": "2037e798ad51e77c411c0e40d342ac8ecfc7c2a0870807652d506097e044d7d1",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0083-attempt-1.partial",
+      "sha256": "61a4e18b3d5727ac40cb2fc165d47a55a63d1f91466d558479005cf48abb3c53",
+      "logical_bytes": 5242880,
+      "allocated_single_link_bytes": 5242880,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0083-attempt-2.partial",
+      "sha256": "eb4dbd1af8a0e42ebe60a3f37957772dc37406e11724b4ade5b52f1935e5b203",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0084-attempt-1.partial",
+      "sha256": "6198b2226e4d1bc1d02452afc41df7ac034c7b6550f39a89c625a02eefed6cea",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0085-attempt-1.partial",
+      "sha256": "f2476ced3f56e09b398f591b29ff351f7841acfbcff0705557ae1c0c39c6a0cb",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0086-attempt-1.partial",
+      "sha256": "90e4e07363061cfcd1bc3553742661d769c71e185098c94a41d5c0db317dab43",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0087-attempt-1.partial",
+      "sha256": "7a4c509b4c25bd0d172c4e3f6e0427683ffdf7c5ce998a56a868885e9da98534",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0088-attempt-1.partial",
+      "sha256": "71f27f0b0deaf60f77c5e3cd33f3163b86e6f0462707e41b41f4a2c0c511593b",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0089-attempt-1.partial",
+      "sha256": "43fa53a3394db8b3b867218bfea99b0892344d940f2c312a3cf5bb0ac5b3eb64",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0090-attempt-1.partial",
+      "sha256": "f22d2ae2a129b285675f430fe92f614fe8aab1cb169010281fa9e9747fc7a3cb",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0091-attempt-1.partial",
+      "sha256": "8174ad6522da4e5b72427c1ac661c11e10cf67cf1d7f493a9631f77c62829780",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0092-attempt-1.partial",
+      "sha256": "b9d52b85b7f98375a2982e96151752495497396dd3f0cb814db044094b60ad7a",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0093-attempt-1.partial",
+      "sha256": "7d35d55b13653343eb27868db34427cb07c150d9733b2bff041296497b4f1b0b",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0094-attempt-1.partial",
+      "sha256": "bac185f7fb026d4f2e5514caacbf99f2add2fb5e7137798c8938de53352ecfaa",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0095-attempt-1.partial",
+      "sha256": "78372dcede18e801675fae334dbebd75a2e8706cb369be80d2f358e657e3d8d4",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0096-attempt-1.partial",
+      "sha256": "1c158e6dd8e05cc4e378ee85dd6f15d740a30cef8227c0b8bd3b48d9fb36fb62",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0097-attempt-1.partial",
+      "sha256": "450d6b9c847e0ea8ef1948d4b6f3fab563b3f3ec29ffa56b2aa3270900155aff",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0098-attempt-1.partial",
+      "sha256": "95b4f8a0b75549c40b60ce57cf477eab6765c420b1585eefbdfa46612ead5b7e",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0099-attempt-1.partial",
+      "sha256": "15adafac2b0c37c9e3a34d8038a68ed9f770a1cea3a54d74817eeede9a3288af",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0100-attempt-1.partial",
+      "sha256": "ea0e653320de3f64c3dbaa1936000a0f6e4def5ee1a9a9429d8ced8fce623c18",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0101-attempt-1.partial",
+      "sha256": "2fa9b93c7637e9da2405be498d811b6e4e600ee026afbe8919fa458ee797bb7a",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0102-attempt-1.partial",
+      "sha256": "de1d9643e42e6619665ec8703a42978cd9c68014b28531c6bf6736e4679d59d5",
+      "logical_bytes": 33554432,
+      "allocated_single_link_bytes": 33554432,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0103-attempt-1.partial",
+      "sha256": "bdce96900fb6a1cfd42c736e2e29a45fc752d9ab6fc83662165108dd58904a41",
+      "logical_bytes": 5313899,
+      "allocated_single_link_bytes": 5316608,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-resume-1790091380847337400\\IndexTeam--IndexTTS-2.5--gpt.pth.network-failure-1.partial",
+      "sha256": "04ed626f74878171f0fa565502e55c3f04ad6441dc09e28be459c8034d17fafd",
+      "logical_bytes": 1900019712,
+      "allocated_single_link_bytes": 1900019712,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 3,
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-resume-1790091380847337400\\facebook--w2v-bert-2.0--model.safetensors.network-failure-1.partial",
+      "sha256": "623bd522057d25e7621af94186fbd096b149b1dd70703089a01523e2c7502eb1",
+      "logical_bytes": 1459617792,
+      "allocated_single_link_bytes": 1459617792,
+      "availability": "deleted_unavailable",
+      "observed_absent": true,
+      "retained_replica": null
+    },
+    {
+      "batch": 4,
+      "path": "C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\melted.ck3",
+      "sha256": "8558f1aff1aa2f85b3130b21064c940284a6aaa325ba7ef6bfd4c7561f290ae5",
+      "logical_bytes": 102441939,
+      "allocated_single_link_bytes": 102445056,
+      "availability": "deleted_unavailable",
+      "observed_absent": true
+    }
+  ]
+}

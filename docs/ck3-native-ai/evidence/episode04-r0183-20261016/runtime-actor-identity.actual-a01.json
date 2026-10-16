@@ -1,0 +1,143 @@
+{
+  "schema": "xar.e04.robert-identity-source-chain.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T06:54:27.278427+00:00",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "native_build_source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "pid": 7640,
+  "connection_generation": 1,
+  "process_creation_filetime_100ns": 134366067983295206,
+  "episode_run_id": "native-31254-f71419cd501a",
+  "stable_character_intent": {
+    "bookmark_character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "historical_id": 1128,
+    "historical_name": "Robert Guiscard",
+    "historical_title_key": "d_apulia"
+  },
+  "actual_runtime_character_full_id": 31254,
+  "initial_date_raw": 53147928,
+  "proof_chain": [
+    {
+      "layer": "source-controlled-flow",
+      "facts": "R182 normal closed checkpoint loaded in a new R183 process; not a new 1066 bookmark Start.",
+      "files": [
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\prepared-a01\\prepared.json",
+          "bytes": 11608,
+          "sha256": "dc2ee94f5eb2bba52309def2f7b3b4037e7bd1bde51c3c3bacc9d80a7780984f"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-close-a01-07-save-once.json",
+          "bytes": 20376,
+          "sha256": "5656b3cbc23dd84993abff243e4f23edb1f8e3b0ebd3ff32ec2417f7c393427a"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\runtime-actor-identity.actual-a01.json",
+          "bytes": 6114,
+          "sha256": "e1dfa2b6ce32b5dc243540370997178226b22ff842a24f31a35b006f28b0fa49"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\production-build-qualification.actual-a01.json",
+          "bytes": 13145,
+          "sha256": "42612f595fec5bafa3f17f53a500666362ad7cb5af5d33e2a0dc8c78c8125760"
+        }
+      ]
+    },
+    {
+      "layer": "independent-live-reads-produced-by-root",
+      "facts": "New R183 exact CK3 PID/create-time/generation/episode and paused Robert root.",
+      "files": [
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-01-diag.json",
+          "bytes": 55890,
+          "sha256": "2171f7fe15f5694940f86ec1b27d9397b237ab7937470f2b889eff5d1d56cde0"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-02-snapshot.json",
+          "bytes": 123377,
+          "sha256": "4148f47f5a92c51d450b745b1e2180b8ae8f0ece8da3177a0d90bb4175222931"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-03-campaign-root-once.json",
+          "bytes": 147332,
+          "sha256": "19fbc720ed4e83bbed3bdddb412be2385dcc1027627fe14fc8f073c02ad599a4"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-04-save-diag.json",
+          "bytes": 55916,
+          "sha256": "c242cdccac4724c2bb5c9ff56572012dae7c83e0f3b13300eb4f1947b17faf73"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-05-save-before.json",
+          "bytes": 123399,
+          "sha256": "80cfaf8442ce9afabc25892d8871f6f2c0c6a2a78363f9f892b32004c7fe39da"
+        },
+        {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-07-save-after.json",
+          "bytes": 123929,
+          "sha256": "c01d815e551ced856df3555d982c353367be4daf19619419faf20d0f1f3a24d1"
+        }
+      ]
+    },
+    {
+      "layer": "normal-save-materialization-and-bounded-header-read",
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-06-save-once.json",
+        "bytes": 20311,
+        "sha256": "418d369b63c3feb4f1b44e469ce0efbced7d9fb4ef07b396132f8d59d9eeac12"
+      },
+      "checkpoint": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73445818,
+        "sha256": "c7d9de734ab0fdd613046cac99f6d6b8f4b338a08ecd85f9bac209993b1d2fe1"
+      },
+      "episode_seed": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\state-a01\\profile\\save games\\xar_episode_seed.ck3",
+        "bytes": 73445818,
+        "sha256": "c7d9de734ab0fdd613046cac99f6d6b8f4b338a08ecd85f9bac209993b1d2fe1"
+      },
+      "header": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\runtime-identity-save-header-first2048.actual-a01.bin",
+        "bytes": 2048,
+        "sha256": "1027e4ed6ce29fdd70fee2f0a43fff3b448af983bae2cd91b99cdf6e8920eb3c"
+      },
+      "header_bytes_read": 2048,
+      "utf8_literals": [
+        {
+          "utf8_literal": "1.20.0.4",
+          "offset": 48,
+          "meaning": "Actual header literal, not decoded named history field"
+        },
+        {
+          "utf8_literal": "公爵罗贝尔",
+          "offset": 84,
+          "meaning": "Actual header literal, not decoded named history field"
+        },
+        {
+          "utf8_literal": "阿普利亚公国",
+          "offset": 107,
+          "meaning": "Actual header literal, not decoded named history field"
+        }
+      ],
+      "raw_u32_occurrence": {
+        "offset": 754,
+        "payload": 31254,
+        "not_a_decoded_named_history_field": true
+      }
+    }
+  ],
+  "superseded_prelaunch_numeric_expectation": {
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\prepared-a01\\prepared.json",
+      "bytes": 11608,
+      "sha256": "dc2ee94f5eb2bba52309def2f7b3b4037e7bd1bde51c3c3bacc9d80a7780984f"
+    },
+    "old_expected_character_id": 31254,
+    "reason": "The source checkpoint actor was reverified in this owned runtime."
+  },
+  "direct_history_to_runtime_id_field_observed": false,
+  "character_record_first_name_parsed": false,
+  "character_record_birth_parsed": false,
+  "limits": "This machine/PID/create-time/generation/episode only; new combat outcomes remain pending."
+}

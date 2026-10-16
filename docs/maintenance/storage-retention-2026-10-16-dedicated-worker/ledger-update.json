@@ -1,0 +1,11 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:43:04.572896+00:00",
+  "initial_frozen_ledger_path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\asset-ledger.initial-frozen-a01.json",
+  "initial_frozen_ledger_sha256": "90d4d5afdc8afc65a6e82c21a6dc0ac4988b388ac136c4cc6fce0eb55dae4848",
+  "new_ledger_sha256": "f1a38edf27819cf5cfb71de86ea2c23e7ad2d9cbd1b44aee674a3460e7fb7ebe",
+  "asset_groups": 157,
+  "deleted_unavailable": 156,
+  "review_candidate": 1,
+  "reason": "Record all four actual batches; mark initial R6 candidate unavailable; preserve R14 with corrected schema and missing decoder pin boundary. No task XML or executable change."
+}

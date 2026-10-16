@@ -1,0 +1,132 @@
+{
+  "schema": "xar.e04.r183.raw-portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T08:29:52.600479+00:00",
+  "runtime_source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "source_audit": {
+    "filename": "r183-raw-audit.actual.json",
+    "bytes": 18077,
+    "sha256": "f1ac860bf7794e90a5d7c29c0c43c0d06c9e55d87a70a6b1960a7f45fbaecb32"
+  },
+  "raw": {
+    "filename": "raw-r183-a01/raw.mkv",
+    "bytes": 2883584,
+    "sha256": "d232680842948124ea57f8138fc2d1a8cb4261a3db8bc2ec5062a3194e3c1e73"
+  },
+  "capture": {
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "client_size": [
+      1280,
+      720
+    ],
+    "client_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "full_desktop_capture": false,
+    "audio_requested": false,
+    "implementation": "FFmpeg gdigrab desktop region matched to verified CK3 client bounds; this is screen-region capture, not independent HWND capture"
+  },
+  "video": {
+    "codec": "h264",
+    "pixel_format": "yuv420p",
+    "width": 1280,
+    "height": 720,
+    "fps": 30,
+    "decoded_frames": 239,
+    "last_frame_timestamp_seconds": 7.933,
+    "available_frame_end_seconds": 7.966,
+    "container_duration_field_seconds": 90,
+    "container_duration_field_is_not_actual_content_duration": true,
+    "audio_streams": 0
+  },
+  "full_decode": {
+    "exit_code": 0,
+    "diagnostic": "File ended prematurely",
+    "classification": "truncated partial with 239 available decodable frames; not a complete 90-second recording"
+  },
+  "recording_started_at_utc": "2026-10-16T07:44:49.651173+00:00",
+  "recorder_ready_to_resume_ack_seconds": 0.3726659,
+  "capacity_deadline_abort_at_utc": "2026-10-16T07:45:02.781143+00:00",
+  "completed_days": 3,
+  "day_receipts": [
+    {
+      "filename": "r183-film-d01-complete.actual.json",
+      "sha256": "437974ea59b06a615b34be803323b0f40e8fb4094575a823d60205bd49f08072",
+      "at_utc": "2026-10-16T07:44:58.209266+00:00",
+      "start_date_raw": 53147928,
+      "date_raw": 53147952,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "filename": "r183-film-d02-complete.actual.json",
+      "sha256": "f9f52e9fdcc14ae59c08b7a4f9fe055cba513494281e0b935cd673ea883c7469",
+      "at_utc": "2026-10-16T07:45:00.391581+00:00",
+      "start_date_raw": 53147952,
+      "date_raw": 53147976,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "filename": "r183-film-d03-complete.actual.json",
+      "sha256": "dab975cfe06d1f13ff6d10c7e194a96ef2659e1c24c224a8e07fd766a6d05b0f",
+      "at_utc": "2026-10-16T07:45:02.739902+00:00",
+      "start_date_raw": 53147976,
+      "date_raw": 53148000,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    }
+  ],
+  "last_verified_state": {
+    "at_utc": "2026-10-16T07:45:02.739902+00:00",
+    "date_raw": 53148000,
+    "army": {
+      "army_id": 18,
+      "owner_character_id": 31254,
+      "soldiers": null,
+      "current_province_id": 2635,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "sieging",
+      "army_state_code": 3,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "pause_observed": true
+  },
+  "preflight_frame": {
+    "filename": "raw-r183-a01/preflight-window.png",
+    "sha256": "1c50e7728ddd15239db9992150645ea47f4c8901b2430c4d15d1c8ab24f5b64c",
+    "reviewed_original": true,
+    "observation": "1280x720 CK3 map with selected army panel, visible paused label; no Windows title bar, desktop, Steam, or other application visible in this preflight frame. This inspection covers only this still image."
+  },
+  "claims": {
+    "business_positive": false,
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false,
+    "march_or_arrival_positive": false
+  },
+  "limitations": [
+    "Recording aborted at capacity deadline and did not reach planned 90 seconds; the container duration field reflects the planned 90 seconds and must not be reported as actual retained duration.",
+    "Full decode returned exit 0 but reported File ended prematurely; available packets decode, while the recording is a truncated partial.",
+    "No clean-span certification or full real-time human viewing was performed.",
+    "A matched desktop region can include occluders if another window overlays it; this audit does not certify every recorded frame as unobstructed.",
+    "Three exact-day receipts prove date advances; Army 18 remained in siege state at province 2635, not a march or arrival positive."
+  ]
+}

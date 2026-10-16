@@ -1,0 +1,307 @@
+{
+  "schema": "xar.e04.maintenance-callee2c142b0.held-source-revalidation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T09:59:32.285190+00:00",
+  "started_at_utc": "2026-10-16T09:59:31.850218+00:00",
+  "base_commit": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "scope": "reuse_existing_named_source_only",
+  "game_source_version": "1.20.0.4",
+  "steam_build_id_source": 25734779,
+  "source_image_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "image_identity_scope": "Historical pinned source image only; no new EXE read, hash, metadata inspection, install or runtime qualification.",
+  "existing_source_original_observed_at_utc": "2026-10-15T23:20:17.216272+00:00",
+  "function": {
+    "begin_rva": "2C142B0",
+    "end_rva_exclusive": "2C14D6F",
+    "bytes": 2751,
+    "sha256": "6b3b7a7a3228442366a29e2c15676e55b7364bd29268d3ec721a25a5a5608628",
+    "instructions": 650,
+    "branches": 62,
+    "calls": 43
+  },
+  "verification": {
+    "status": "PASS",
+    "asm_contiguous_coverage_matches_raw": true,
+    "all_branch_encodings_targets_and_boundaries": true,
+    "all_direct_CALL_targets_match": true,
+    "branch_groups_cover_once": true,
+    "source_receipt_and_contract_pins_match": true,
+    "semantic_business_or_runtime_credit": false
+  },
+  "selected_source_instructions": [
+    {
+      "rva": "02C142DA",
+      "bytes": "4d8be0",
+      "mnemonic": "mov",
+      "operands": "r12, r8"
+    },
+    {
+      "rva": "02C142DD",
+      "bytes": "4c8bfa",
+      "mnemonic": "mov",
+      "operands": "r15, rdx"
+    },
+    {
+      "rva": "02C142E0",
+      "bytes": "4c8be9",
+      "mnemonic": "mov",
+      "operands": "r13, rcx"
+    },
+    {
+      "rva": "02C142E3",
+      "bytes": "488b82c0010000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rdx + 0x1c0]"
+    },
+    {
+      "rva": "02C142EF",
+      "bytes": "0fb6b8a9040000",
+      "mnemonic": "movzx",
+      "operands": "edi, byte ptr [rax + 0x4a9]"
+    },
+    {
+      "rva": "02C1437B",
+      "bytes": "4881c6a0860100",
+      "mnemonic": "add",
+      "operands": "rsi, 0x186a0"
+    },
+    {
+      "rva": "02C14382",
+      "bytes": "490f48f6",
+      "mnemonic": "cmovs",
+      "operands": "rsi, r14"
+    },
+    {
+      "rva": "02C143BE",
+      "bytes": "488d442450",
+      "mnemonic": "lea",
+      "operands": "rax, [rsp + 0x50]"
+    },
+    {
+      "rva": "02C143C3",
+      "bytes": "4889442440",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x40], rax"
+    },
+    {
+      "rva": "02C143C8",
+      "bytes": "488d45a0",
+      "mnemonic": "lea",
+      "operands": "rax, [rbp - 0x60]"
+    },
+    {
+      "rva": "02C143CC",
+      "bytes": "4889442448",
+      "mnemonic": "mov",
+      "operands": "qword ptr [rsp + 0x48], rax"
+    },
+    {
+      "rva": "02C143D1",
+      "bytes": "498b87c0010000",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [r15 + 0x1c0]"
+    },
+    {
+      "rva": "02C143DD",
+      "bytes": "480508010000",
+      "mnemonic": "add",
+      "operands": "rax, 0x108"
+    },
+    {
+      "rva": "02C14440",
+      "bytes": "e82b090000",
+      "mnemonic": "call",
+      "operands": "0x2c14d70"
+    },
+    {
+      "rva": "02C145BE",
+      "bytes": "e81d81a1ff",
+      "mnemonic": "call",
+      "operands": "0x262c6e0"
+    },
+    {
+      "rva": "02C145D8",
+      "bytes": "e83378a1ff",
+      "mnemonic": "call",
+      "operands": "0x262be10"
+    },
+    {
+      "rva": "02C14685",
+      "bytes": "e88677a1ff",
+      "mnemonic": "call",
+      "operands": "0x262be10"
+    },
+    {
+      "rva": "02C14708",
+      "bytes": "e80377a1ff",
+      "mnemonic": "call",
+      "operands": "0x262be10"
+    },
+    {
+      "rva": "02C1485F",
+      "bytes": "e8accc4a00",
+      "mnemonic": "call",
+      "operands": "0x30c1510"
+    },
+    {
+      "rva": "02C148A6",
+      "bytes": "e8e50ccafe",
+      "mnemonic": "call",
+      "operands": "0x18b5590"
+    },
+    {
+      "rva": "02C148DA",
+      "bytes": "e8b10ccafe",
+      "mnemonic": "call",
+      "operands": "0x18b5590"
+    },
+    {
+      "rva": "02C148E2",
+      "bytes": "0f84ea030000",
+      "mnemonic": "je",
+      "operands": "0x2c14cd2"
+    },
+    {
+      "rva": "02C14CD2",
+      "bytes": "0f284560",
+      "mnemonic": "movaps",
+      "operands": "xmm0, xmmword ptr [rbp + 0x60]"
+    },
+    {
+      "rva": "02C14CD6",
+      "bytes": "410f114500",
+      "mnemonic": "movups",
+      "operands": "xmmword ptr [r13], xmm0"
+    },
+    {
+      "rva": "02C14D34",
+      "bytes": "49014528",
+      "mnemonic": "add",
+      "operands": "qword ptr [r13 + 0x28], rax"
+    },
+    {
+      "rva": "02C14D3C",
+      "bytes": "49014530",
+      "mnemonic": "add",
+      "operands": "qword ptr [r13 + 0x30], rax"
+    },
+    {
+      "rva": "02C14D54",
+      "bytes": "49014548",
+      "mnemonic": "add",
+      "operands": "qword ptr [r13 + 0x48], rax"
+    },
+    {
+      "rva": "02C14D58",
+      "bytes": "498bc5",
+      "mnemonic": "mov",
+      "operands": "rax, r13"
+    }
+  ],
+  "source_pins": [
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/SOURCE-CONTRACT.actual.json",
+      "bytes": 7857,
+      "sha256": "4cdbd5142a75dd3d6d06a09fc7919ac9935c63ff94a736af4afa4c370dd0973d"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/READ-RECEIPT.actual.json",
+      "bytes": 9256,
+      "sha256": "a0d159e651e4396925a6bb27511d2ebf159c898ad5a471559e4f6ba6ffc53001"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/actual-function.bin",
+      "bytes": 2751,
+      "sha256": "6b3b7a7a3228442366a29e2c15676e55b7364bd29268d3ec721a25a5a5608628"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/actual-function.asm",
+      "bytes": 49491,
+      "sha256": "2ed74f8a2ee912fdf484c1ce51eb47c343c6efef88d6496e62338fead875dfc6"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/BRANCHES.actual.json",
+      "bytes": 16253,
+      "sha256": "cc843873980c7ff279450bd31db4ea22fa68ddd2ad1490c4a8c9782e3b89c43a"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-vector2c142b0/SECOND-VECTOR-SOURCE.md",
+      "bytes": 3616,
+      "sha256": "5d5a73bba841656c6b9bc854149b7b2c4e24ca160b69e8ef15a0f900a312e940"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.md",
+      "bytes": 9208,
+      "sha256": "f8484a575c76e9837090d45f8231e1105a7c6b53a4631af361e002f6fcce2f40"
+    },
+    {
+      "path": "docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.sources.json",
+      "bytes": 3122,
+      "sha256": "113c06baee969f6790b960721434fd928b623d904a28b9dba36df7c63314daf9"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-r08-cash-getter-inventory/source-index.json",
+      "bytes": 10284,
+      "sha256": "2b02c0bdc5884d296242c05509134d50a9abe5423e13c2161c3509303a551bfb"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-cash-current-military-context-helper-12004.md",
+      "bytes": 4563,
+      "sha256": "729e7dab8c040bfbd964200f0945e009d97a30c1371bd157731a3986d1f9aa42"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-current-military-context2c14d70/SOURCE-CONTRACT.actual.json",
+      "bytes": 5907,
+      "sha256": "1e8470164a208a3b169af4a33ed4eee061d702f71d6df7838b032620ea6e0da0"
+    },
+    {
+      "path": "docs/ck3-native-ai/war-cash-persistent-cost-vector-12004.md",
+      "bytes": 5473,
+      "sha256": "a3d0c0cb11562c3615ec2fd019a192839caa376e646a0da3beb14d68eec8e4b7"
+    },
+    {
+      "path": "docs/ck3-native-ai/acceptance/2026-10-16-persistent-cost262be10/SOURCE-CONTRACT.actual.json",
+      "bytes": 12634,
+      "sha256": "f761d564c9b05bba042bfe3780e29f358deb0e8bd877347f3b4c4eef4d36fd25"
+    },
+    {
+      "path": "docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  ],
+  "outdated_inventory_correction": {
+    "input_next_source_status": "The next-maintenance source document and original inventory said the 2C142B0 body was absent. Existing repository artifacts contain the complete named function and later 2C14D70 and 262BE10 helpers. Preserve input as history; consume current linked sources.",
+    "mode_correction": "Original 2C142B0 contract used bool-shaped labels for R8B. Later held262BE10 body proves raw dispatch mode contains0/1/2; formal enum names remain unknown."
+  },
+  "agent_consumption": {
+    "maintenance_attribution": "unclosed",
+    "paid_military_amount_raw": null,
+    "expense_rate_vs_paid": "Keep getter rate output separate from actual wallet application.",
+    "do_not_merge_offset_aliases": [
+      "caller out80 offsets28/30",
+      "stack accumulator offsets28/30",
+      "Regi raw28",
+      "Character secondary context28/30"
+    ],
+    "remaining_required_edges": [
+      "settlement c/d producer business category",
+      "same-application military component and payer wallet store",
+      "refresh invalidation and consumed cadence"
+    ]
+  },
+  "new_EXE_bytes": 0,
+  "whole_EXE_hashes": 0,
+  "global_scans": 0,
+  "live_SDK_desktop_build_actions": 0,
+  "runtime_credit_added": 0,
+  "storage": {
+    "policy_version": "1.0.0",
+    "output_budget_bytes": 32768,
+    "category": "record",
+    "review_at_utc": "2027-04-14T09:59:32.285190+00:00",
+    "source_originals_duplicated": false,
+    "disk_available_at_check_bytes": 47152635904,
+    "capacity_scope": "Small documentation output only; no capacity override or heavy-write admission."
+  }
+}

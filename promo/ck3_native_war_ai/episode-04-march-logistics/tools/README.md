@@ -12,6 +12,17 @@ queue, checks paused source identity, and preserves army supply/strength and
 optional actor-global cash packets. Import and help perform no live operations.
 No external Episode03 helper path is needed by these tools after checkout.
 
+Recording now captures the verified CK3 client screen rectangle at its actual
+pixel size, using bounded desktop-region capture. It does not isolate the HWND
+render surface. See [capture-recorder.md](capture-recorder.md) for ownership,
+occlusion monitoring, exact capacity admission and the two deadline checks.
+For a recording run, add `--recording-capacity-admission <actual-json> <sha256>`
+to the `run` command below (or supply the equivalent runtime admission). Its
+machine, scene, run, source and cutoff must match. Missing admission permits
+ordinary research requests but blocks recording. A full clip plus at least
+120 seconds for normal close must fit before both cutoffs; warmup consumes the
+original session timeout.
+
 Every prepare and sample command requires `--assets-root`; state/run/raw/outputs
 must remain below this explicit root, outside the source repository. Run them
 with the task's explicit verified venv interpreter. Root freezes actual source,

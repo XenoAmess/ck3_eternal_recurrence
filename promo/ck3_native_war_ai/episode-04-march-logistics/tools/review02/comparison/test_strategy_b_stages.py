@@ -21,8 +21,11 @@ class Root:
         if cls.pin(ref['path']) != ref:
             raise RuntimeError('changed pin')
     @staticmethod
-    def load(path):
-        return json.loads(Path(path).read_text(encoding='utf-8'))
+    def load(path, limit=16*1024*1024):
+        raw = Path(path).read_bytes()
+        if len(raw)>limit:
+            raise RuntimeError('synthetic bounded input too large')
+        return json.loads(raw.decode('utf-8'))
     @classmethod
     def write_new(cls, path, value):
         with Path(path).open('x', encoding='utf-8') as stream:
@@ -67,7 +70,8 @@ class Inputs:
         self.live.request = request
         adapter = SimpleNamespace(b=SimpleNamespace(recipe=lambda plan, evidence: None),
             _at=next_adapter._at, _movement_dependency=next_adapter._movement_dependency)
-        self.stages = BStages(Root, self.live, adapter, self.plan, plan_pin=Root.pin(p), evidence=None)
+        self.stages = BStages(Root, self.live, adapter, self.plan, plan_pin=Root.pin(p),
+                              evidence=next_adapter.b.c.Evidence(self.dir))
         self.stages.state.update(phase='rest', main_id=1, child_id=2)
         self.current = self.packet(1000, [20, 21])
         self.stages.observe = lambda name: deepcopy(self.current)
@@ -182,7 +186,7 @@ class Tests(unittest.TestCase):
         snap = Root.write_new(self.i.dir / 'raw-snapshot.json', {'body': frame})
         raw = Root.write_new(self.i.dir / 'raw-ordinary.json', query)
         commander = Root.write_new(self.i.dir / 'raw-commander.json', {'body': {'synthetic': True}})
-        packet = {'frame': frame, 'query': {'army_strengths': [{'army_id': 1}]},
+        packet = {'frame': frame, 'strategy_army_ids': [1], 'query': {'army_strengths': [{'army_id': 1}]},
             'refs': {'snapshot': {'response': snap}, 'same_frame_readback': {'response': snap},
                      'strength_raw': raw, 'commanders': {'1': {'response': commander}}}}
         result = self.i.stages.full_packet(packet)

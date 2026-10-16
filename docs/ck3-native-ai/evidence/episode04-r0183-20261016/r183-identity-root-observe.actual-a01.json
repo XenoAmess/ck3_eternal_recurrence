@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T06:54:17.171526+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "pid": 7640,
+  "process_creation_filetime_100ns": 134366067983295206,
+  "connection_generation": 1,
+  "episode_run_id": "native-31254-f71419cd501a",
+  "actor_id": 31254,
+  "date_raw": 53147928,
+  "prepared": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\prepared-a01\\prepared.json",
+    "bytes": 11608,
+    "sha256": "dc2ee94f5eb2bba52309def2f7b3b4037e7bd1bde51c3c3bacc9d80a7780984f"
+  },
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\allocated-context.actual-a01.json",
+    "bytes": 2895,
+    "sha256": "9540a5fc363dc84f9c78fe2e04e11e503ad9fb20e9472130c45ea8360edfc38a"
+  },
+  "production": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\production-build-qualification.actual-a01.json",
+    "bytes": 13145,
+    "sha256": "42612f595fec5bafa3f17f53a500666362ad7cb5af5d33e2a0dc8c78c8125760"
+  },
+  "diagnostics": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-01-diag.json",
+    "bytes": 55890,
+    "sha256": "2171f7fe15f5694940f86ec1b27d9397b237ab7937470f2b889eff5d1d56cde0"
+  },
+  "snapshot": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-02-snapshot.json",
+    "bytes": 123377,
+    "sha256": "4148f47f5a92c51d450b745b1e2180b8ae8f0ece8da3177a0d90bb4175222931"
+  },
+  "campaign_root": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-identity-a01-03-campaign-root-once.json",
+    "bytes": 147332,
+    "sha256": "19fbc720ed4e83bbed3bdddb412be2385dcc1027627fe14fc8f073c02ad599a4"
+  },
+  "ordinary_save_submitted": false,
+  "runtime_identity_sealed": false
+}

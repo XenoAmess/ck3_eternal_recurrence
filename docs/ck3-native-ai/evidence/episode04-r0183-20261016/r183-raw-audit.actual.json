@@ -1,0 +1,499 @@
+{
+  "schema": "xar.e04.r183.raw-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T08:29:27.091488+00:00",
+  "runtime_source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "scene_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01",
+  "raw": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv",
+    "bytes": 2883584,
+    "sha256": "d232680842948124ea57f8138fc2d1a8cb4261a3db8bc2ec5062a3194e3c1e73"
+  },
+  "intent": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\intent.json",
+    "bytes": 3665,
+    "sha256": "1b977e668c6e3cbada4ecd7d11cd7129df5295143501a43f6928ea778feb0eed"
+  },
+  "capture": {
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "client_size": [
+      1280,
+      720
+    ],
+    "client_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "full_desktop_capture": false,
+    "audio_requested": false,
+    "implementation": "FFmpeg gdigrab desktop region matched to verified CK3 client bounds; this is screen-region capture, not independent HWND capture"
+  },
+  "process_ready": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "state": "RECORDING",
+    "pid": 26452,
+    "started_at_utc": "2026-10-16T07:44:49.651173+00:00",
+    "monotonic_ns": 1359538303918800,
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "capture_size": [
+      1280,
+      720
+    ],
+    "managed_job_start": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\job-start.json",
+      "bytes": 1029,
+      "sha256": "a6104240b01a20ee4c6215134e365ac13a2b6057c2757febd2e517ba91130436"
+    }
+  },
+  "handoff": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-10-16T07:44:49.957005+00:00",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+    "recorder_ready_to_resume_ack_seconds": 0.3726659,
+    "within_six_seconds": true,
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "full_desktop_capture": false,
+    "first_day_result_pending": true,
+    "business_positive_claim": false
+  },
+  "failure": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-10-16T07:45:02.781143+00:00",
+    "error": "RuntimeError('capacity review deadline reached')",
+    "recorder_started": true,
+    "terminal": {
+      "schema": "xar.promo.recorder-job/v1",
+      "state": "ABORT_TREE_EMPTY",
+      "pid": 26452,
+      "returncode": 1,
+      "job_active_processes": 0,
+      "error": null,
+      "at_utc": "2026-10-16T07:45:02.778499+00:00"
+    },
+    "raw_retained": true,
+    "unknown_native_request_never_replayed": true,
+    "business_positive_claim": false
+  },
+  "ffprobe": {
+    "tool": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    },
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "error",
+      "-count_frames",
+      "-show_format",
+      "-show_streams",
+      "-of",
+      "json",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\ffprobe.stdout.json",
+      "bytes": 2445,
+      "sha256": "8fa63f49696d228be5ffdcaa9c5a48c87e917fd4cb1cede2d90fe99b559d63f2"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\ffprobe.stderr.txt",
+      "bytes": 59,
+      "sha256": "8d7958d79a84ba50ac523a922f1671894c00dbead98476597098cc686c7d429c"
+    },
+    "parsed": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "h264",
+          "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+          "profile": "Constrained Baseline",
+          "codec_type": "video",
+          "codec_tag_string": "[0][0][0][0]",
+          "codec_tag": "0x0000",
+          "mime_codec_string": "avc1.42c01f",
+          "width": 1280,
+          "height": 720,
+          "coded_width": 1280,
+          "coded_height": 720,
+          "has_b_frames": 0,
+          "pix_fmt": "yuv420p",
+          "level": 31,
+          "color_range": "tv",
+          "chroma_location": "left",
+          "field_order": "progressive",
+          "refs": 1,
+          "is_avc": "true",
+          "nal_length_size": "4",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "time_base": "1/1000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "bits_per_raw_sample": "8",
+          "nb_read_frames": "239",
+          "extradata_size": 38,
+          "disposition": {
+            "default": 0,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "ENCODER": "Lavc63.1.101 libx264"
+          }
+        }
+      ],
+      "format": {
+        "filename": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv",
+        "nb_streams": 1,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "matroska,webm",
+        "format_long_name": "Matroska / WebM",
+        "start_time": "0.000000",
+        "duration": "90.000000",
+        "size": "2883584",
+        "bit_rate": "256318",
+        "probe_score": 100,
+        "tags": {
+          "ENCODER": "Lavf63.1.101"
+        }
+      }
+    }
+  },
+  "available_frame_timeline": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "error",
+      "-select_streams",
+      "v:0",
+      "-show_frames",
+      "-show_entries",
+      "frame=best_effort_timestamp_time,duration_time,pkt_duration_time",
+      "-of",
+      "json",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\frames.stdout.json",
+      "bytes": 28642,
+      "sha256": "a38705ff9f446c5cb1290b0d64fd683f7cca70a7188c95a78a9d87f829e09c84"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\frames.stderr.txt",
+      "bytes": 59,
+      "sha256": "ba0711bffeed62dc0be1e6f401a8af88b351aad0fa358ec0995f13b24e4d499f"
+    },
+    "decoded_frames": 239,
+    "first_frame_timestamp_seconds": 0.0,
+    "last_frame_timestamp_seconds": 7.933,
+    "available_frame_end_seconds": 7.966,
+    "container_duration_is_planned_header_not_actual_content": true
+  },
+  "full_decode": {
+    "tool": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "-hide_banner",
+      "-v",
+      "error",
+      "-xerror",
+      "-i",
+      "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv",
+      "-map",
+      "0:v:0",
+      "-f",
+      "null",
+      "-"
+    ],
+    "returncode": 0,
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\decode.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r183-raw-audit-a01\\decode.stderr.txt",
+      "bytes": 64,
+      "sha256": "ab5b17ee3f9eaa8379f7aea85c8b855b04a159e1cfbcdb80b35a9d12e6b4c7a6"
+    },
+    "stderr_text": "[in#0/matroska,webm @ 000002bf4de5ca00] File ended prematurely\r\n"
+  },
+  "preflight_frame": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\preflight-window.png",
+      "bytes": 1704916,
+      "sha256": "1c50e7728ddd15239db9992150645ea47f4c8901b2430c4d15d1c8ab24f5b64c"
+    },
+    "reviewed_original": true,
+    "reviewer": "Codex offline audit agent /root/r183_raw_audit_now",
+    "observation": "1280x720 CK3 map with selected army panel, visible paused label; no Windows title bar, desktop, Steam, or other application visible in this preflight frame. This inspection covers only this still image."
+  },
+  "completed_day_receipts": [
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-film-d01-complete.actual.json",
+        "bytes": 2306,
+        "sha256": "437974ea59b06a615b34be803323b0f40e8fb4094575a823d60205bd49f08072"
+      },
+      "at_utc": "2026-10-16T07:44:58.209266+00:00",
+      "start_date_raw": 53147928,
+      "date_raw": 53147952,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "sentinel_status": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53147928,
+        "target_date_raw": 53147952,
+        "last_observed_date_raw": 53147952,
+        "trigger_date_raw": 53147952,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-film-d02-complete.actual.json",
+        "bytes": 2306,
+        "sha256": "f9f52e9fdcc14ae59c08b7a4f9fe055cba513494281e0b935cd673ea883c7469"
+      },
+      "at_utc": "2026-10-16T07:45:00.391581+00:00",
+      "start_date_raw": 53147952,
+      "date_raw": 53147976,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "sentinel_status": {
+        "state": "triggered",
+        "generation": 2,
+        "starting_date_raw": 53147952,
+        "target_date_raw": 53147976,
+        "last_observed_date_raw": 53147976,
+        "trigger_date_raw": 53147976,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-film-d03-complete.actual.json",
+        "bytes": 2306,
+        "sha256": "dab975cfe06d1f13ff6d10c7e194a96ef2659e1c24c224a8e07fd766a6d05b0f"
+      },
+      "at_utc": "2026-10-16T07:45:02.739902+00:00",
+      "start_date_raw": 53147976,
+      "date_raw": 53148000,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0,
+      "army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "sentinel_status": {
+        "state": "triggered",
+        "generation": 3,
+        "starting_date_raw": 53147976,
+        "target_date_raw": 53148000,
+        "last_observed_date_raw": 53148000,
+        "trigger_date_raw": 53148000,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    }
+  ],
+  "completed_days": 3,
+  "last_verified_state": {
+    "receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-film-d03-complete.actual.json",
+      "bytes": 2306,
+      "sha256": "dab975cfe06d1f13ff6d10c7e194a96ef2659e1c24c224a8e07fd766a6d05b0f"
+    },
+    "at_utc": "2026-10-16T07:45:02.739902+00:00",
+    "start_date_raw": 53147976,
+    "date_raw": 53148000,
+    "completed_daily_ticks": 1,
+    "overshoot_days": 0,
+    "army": {
+      "army_id": 18,
+      "owner_character_id": 31254,
+      "soldiers": null,
+      "current_province_id": 2635,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "sieging",
+      "army_state_code": 3,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "sentinel_status": {
+      "state": "triggered",
+      "generation": 3,
+      "starting_date_raw": 53147976,
+      "target_date_raw": 53148000,
+      "last_observed_date_raw": 53148000,
+      "trigger_date_raw": 53148000,
+      "speed": 3,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 1,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 1,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": 0,
+      "pause_wrapper_called": true,
+      "pause_observed": true,
+      "terminal_observed": false,
+      "abnormal": false
+    }
+  },
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_full_review_claim": false,
+  "human_signoff": false,
+  "limitations": [
+    "Recording aborted at capacity deadline and did not reach planned 90 seconds; the container duration field reflects the planned 90 seconds and must not be reported as actual retained duration.",
+    "Full decode returned exit 0 but reported File ended prematurely; available packets decode, while the recording is a truncated partial.",
+    "No clean-span certification or full real-time human viewing was performed.",
+    "A matched desktop region can include occluders if another window overlays it; this audit does not certify every recorded frame as unobstructed.",
+    "Three exact-day receipts prove date advances; Army 18 remained in siege state at province 2635, not a march or arrival positive."
+  ]
+}

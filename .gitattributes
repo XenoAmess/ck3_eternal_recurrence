@@ -250,3 +250,11 @@ docs/ck3-native-ai/war-cash-persistent-cost-vector-12004.md -text whitespace=cr-
 # Preserve exact pinned episode04 intake source/evidence bytes.
 docs/ck3-native-ai/acceptance/2026-10-16-r0180-land-arrival-media/CLOSED.actual-a01.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-16-r0180-land-arrival-media/recording-closure.actual-a01.json -text whitespace=cr-at-eol
+
+# Preserve this round's exact portable capture and reclamation receipts.
+docs/ck3-native-ai/evidence/episode04-r0183-20261016/** -text whitespace=cr-at-eol
+docs/maintenance/storage-retention-2026-10-16-dedicated-worker/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-r08-next-maintenance-attribution-12004.sources.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-maintenance-callee-28c43a0-12004.sources.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-maintenance-callee-2c142b0-12004.sources.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-maintenance-postvector-24e1e80-12004.sources.json -text whitespace=cr-at-eol

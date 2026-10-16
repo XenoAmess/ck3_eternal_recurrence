@@ -70,15 +70,15 @@ def roster(frame):
         result[identity]=row
     return result
 def same_frame(first,second):need(frame_key(first)==frame_key(second),'paused frame drifted; do not submit')
-def admission(context,proof,*,run_id,source=SOURCE,sequence=176):
+def admission(context,proof,*,run_id,source=SOURCE,sequence=176,machine=MACHINE,minimum_sequence=176):
     identity=context.get('identity',{})
-    need(context.get('machine_id')==MACHINE and identity.get('machine_id')==MACHINE,'machine binding differs')
+    need(context.get('machine_id')==machine and identity.get('machine_id')==machine,'machine binding differs')
     need(re.fullmatch('[0-9a-f]{40}',source) is not None
          and context.get('source_head')==source and proof.get('source_head')==source,'reviewed normal source differs')
-    need(type(sequence) is int and sequence>=176 and identity.get('run_id')==run_id
+    need(type(sequence) is int and sequence>=minimum_sequence and identity.get('run_id')==run_id
          and identity.get('sequence')==sequence and identity.get('mod_key')=='vanilla'
-         and run_id==MACHINE+'--vanilla--R'+str(sequence).zfill(4),'actual explicitly allocated run differs')
-    need(proof.get('machine_id')==MACHINE and proof.get('run_id')==run_id,'runtime proof belongs to another run')
+         and run_id==machine+'--vanilla--R'+str(sequence).zfill(4),'actual explicitly allocated run differs')
+    need(proof.get('machine_id')==machine and proof.get('run_id')==run_id,'runtime proof belongs to another run')
     intent=proof.get('stable_character_intent',{})
     need(intent.get('historical_id')==1128 and intent.get('bookmark_character_name_key')=='bookmark_rags_to_riches_duke_robert',
          'normal Robert intent missing')
@@ -267,7 +267,8 @@ class Relay:
     def __init__(self,args,*,transport=None,process_probe=process_time):
         self.a=args;self.repo=args.repo.resolve();self.process_probe=process_probe
         self.source=getattr(args,'source_head',SOURCE);self.sequence=getattr(args,'run_sequence',176)
-        if self.sequence==176:need(self.source==SOURCE and args.army_id==93,'historical R0176 scope remains exact')
+        if self.sequence==176 and getattr(args,'live_binding',None) is None:
+            need(self.source==SOURCE and args.army_id==93,'historical R0176 scope remains exact')
         need(pin(Path(__file__))['sha256']==args.self_sha256,'reviewed stage helper SHA differs')
         for path,expected in ((args.context,args.context_sha256),(args.runtime_proof,args.runtime_proof_sha256),
                               (args.request_helper,args.request_helper_sha256)):
@@ -290,21 +291,57 @@ class Relay:
         self.observation=observation;self.normalize=normalize_regiment_replenishment_records_v1
         self.consumer=module(self.sidecar,'r09_pinned_freshsplit')
         self.c=load(args.context);proof=load(args.runtime_proof)
-        self.binding=admission(self.c,proof,run_id=args.run_id,source=self.source,sequence=self.sequence)
         self.assets=args.context.resolve().parent;self.run=self.assets/args.run_id
+        guard_module=module(Path(__file__).resolve().parents[1]/'runtime_binding.py','r09_explicit_runtime_guard')
+        binding_path=getattr(args,'live_binding',None)
+        self.machine=(guard_module.current_machine_id(self.repo) if binding_path is not None else MACHINE)
+        self.live_operation_guard=guard_module.optional_guard(binding_path,getattr(args,'live_binding_sha256',None),
+            context=self.c,runtime=guard_module.proof_runtime(proof),scene_root=self.assets,
+            source_head=self.source,machine_id=self.machine,run_id=args.run_id,
+            max_runtime_total_bytes=getattr(args,'max_runtime_total_bytes',512*1024*1024))
+        self.deadline=(guard_module.timestamp(self.live_operation_guard.binding['deadline_utc'])
+                       if self.live_operation_guard else datetime.fromisoformat(DEADLINE))
+        need(datetime.now(timezone.utc)<self.deadline,'operation deadline reached; no new live stage')
+        self.binding=admission(self.c,proof,run_id=args.run_id,source=self.source,sequence=self.sequence,
+            machine=self.machine,minimum_sequence=1 if self.live_operation_guard else 176)
+        if self.live_operation_guard:
+            need(getattr(args,'resume_baseline_strength_response',None) is None,'historical R0176 baseline cannot resume in a new operation')
+            self.runtime_total_budget_bytes=self.live_operation_guard.binding['max_runtime_total_bytes']
         need(self.run.is_dir(),'Root existing run missing')
         self.case=self.assets/'r09-split-merge-relay-a01'/args.case_id
         need(re.fullmatch('[A-Za-z][A-Za-z0-9_-]{0,47}',args.case_id) is not None
              and re.fullmatch('[A-Za-z][A-Za-z0-9_-]{0,47}',args.attempt) is not None,'safe case/attempt required')
         self.attempt=self.case/args.attempt;self.attempt.mkdir(parents=True,exist_ok=False)
-        self.meta={'machine_id':MACHINE,'observed_at_utc':utc(),'source_head':self.source,'run_id':args.run_id,
+        self.meta={'machine_id':self.machine,'observed_at_utc':utc(),'source_head':self.source,'run_id':args.run_id,
           'context':pin(args.context),'runtime_proof':pin(args.runtime_proof),'helper':pin(Path(__file__)),
           'request_helper':pin(args.request_helper),'consumer':pin(self.sidecar),'binding':self.binding,
-          'deadline_utc':DEADLINE,'case_id':args.case_id,'stage':args.stage,'SDK_connection_created':False,
+          'deadline_utc':self.deadline.isoformat(),'case_id':args.case_id,'stage':args.stage,'SDK_connection_created':False,
           'capture_started':False,'time_advanced':False,'unknown_action_retried':False,
           'merge_destination':getattr(args,'merge_destination','source'),
           'explicit_merge_source_army_id':getattr(args,'merge_source_army_id',None),'module_pins':pin(pins_path)}
-        capacity_path=Path(self.c['capacity_admission']);capacity=load(capacity_path)
+        if self.live_operation_guard:
+            capacity_path=Path(self.live_operation_guard.capacity_pin['path'])
+            self.meta['live_operation_binding']=self.live_operation_guard.pin
+            self.meta['capacity_admission']=self.live_operation_guard.capacity_pin
+        else:
+            capacity_path=Path(self.c['capacity_admission']);capacity=load(capacity_path)
+            self._legacy_capacity(capacity)
+            self.meta['capacity_admission']=pin(capacity_path)
+        fixed=self.case/'binding.actual.json'
+        if fixed.exists():
+            prior=load(fixed)
+            need(prior.get('live_operation_binding')==self.meta.get('live_operation_binding'),'case operation binding changed')
+            for key in ('source_head','run_id','context','runtime_proof','helper','request_helper','consumer','binding','deadline_utc','capacity_admission','merge_destination','explicit_merge_source_army_id','module_pins'):
+                need(prior[key]==self.meta[key],'case changed pinned identity/source/deadline: '+key)
+        else:write_new(fixed,self.meta)
+        self.serial=0;self.pending=False
+        self.check_process()
+        self.transport=transport if transport is not None else module(args.request_helper,'r09_existing_root_transport')
+        need(Path(self.transport.RUN).resolve()==self.run.resolve()
+             and Path(self.transport.ASSETS).resolve()==self.assets.resolve()
+             and self.transport.CONTEXT==self.c,'reviewed Root transport context/run differs')
+        write_new(self.attempt/'START.actual.json',self.meta)
+    def _legacy_capacity(self,capacity):
         shared_limit=capacity.get('shared_child_limit_bytes')
         if 'original_shared_child_total_limit_bytes' in capacity:
             need('shared_child_limit_bytes' not in capacity
@@ -318,39 +355,43 @@ class Relay:
              and shared_limit==512*1024*1024
              and datetime.fromisoformat(capacity['quota_review_at_utc'])==datetime.fromisoformat(DEADLINE),
              'actual Root admission/shared pool/original deadline differs')
-        self.meta['capacity_admission']=pin(capacity_path)
-        fixed=self.case/'binding.actual.json'
-        if fixed.exists():
-            prior=load(fixed)
-            for key in ('source_head','run_id','context','runtime_proof','helper','request_helper','consumer','binding','deadline_utc','capacity_admission','merge_destination','explicit_merge_source_army_id','module_pins'):
-                need(prior[key]==self.meta[key],'case changed pinned identity/source/deadline: '+key)
-        else:write_new(fixed,self.meta)
-        self.serial=0;self.pending=False
-        self.check_process()
-        self.transport=transport if transport is not None else module(args.request_helper,'r09_existing_root_transport')
-        need(Path(self.transport.RUN).resolve()==self.run.resolve()
-             and Path(self.transport.ASSETS).resolve()==self.assets.resolve()
-             and self.transport.CONTEXT==self.c,'reviewed Root transport context/run differs')
-        write_new(self.attempt/'START.actual.json',self.meta)
     def check_process(self):
         need(self.process_probe(self.binding['pid'])==self.binding['process_create_time_100ns'],'PID/create-time differs')
     def request(self,name,tool,arguments):
-        need(datetime.now(timezone.utc)<=datetime.fromisoformat(DEADLINE),'original deadline reached')
+        if self.live_operation_guard:self.live_operation_guard.check()
+        need(datetime.now(timezone.utc)<self.deadline,'operation deadline reached')
         self.check_process();self.serial+=1;identifier=self.a.attempt+'-'+str(self.serial).zfill(3)+'-'+name
         req=self.run/'requests'/(identifier+'.json');res=self.run/'responses'/req.name
         need(not req.exists() and not res.exists(),'exact request exists; inspect original, never replay')
         # One bounded request at a time. Root remains the sole heavy writer and
         # accounts other lanes; this also bounds the newly allocated run ledger.
-        accounted=sum(p.stat().st_size for directory in (self.run/'requests',self.run/'responses')
-                      for p in directory.iterdir() if p.is_file())
-        accounted+=sum(p.stat().st_size for p in self.case.rglob('*') if p.is_file())
-        need(accounted+MAX_PACKET+65536<=getattr(self,'runtime_total_budget_bytes',512*1024*1024),'admitted run/relay budget cannot admit next packet')
+        if self.live_operation_guard:
+            # New bindings count complete Driver sidecars as well as packets.
+            # Preserve the historical meter only for the old finite contract.
+            seen=set();accounted=0
+            for directory in (self.run/'requests',self.run/'responses',self.case.parent,self.assets/'state-a01/native-session'):
+                if not directory.exists():continue
+                for path in directory.rglob('*'):
+                    if not path.is_file():continue
+                    resolved=path.resolve()
+                    need(resolved.is_relative_to(self.assets),'runtime evidence escapes adopted scene')
+                    if resolved in seen:continue
+                    seen.add(resolved);need(len(seen)<=50000,'finite runtime file count reached')
+                    accounted+=path.stat().st_size
+            raw_reserve=(getattr(self.a,'max_evidence_file_bytes',MAX_DRIVER_RAW)
+                         if tool=='ck3_query_army_strengths' else 0)
+        else:
+            accounted=sum(p.stat().st_size for directory in (self.run/'requests',self.run/'responses')
+                          for p in directory.iterdir() if p.is_file())
+            accounted+=sum(p.stat().st_size for p in self.case.rglob('*') if p.is_file())
+            raw_reserve=0
+        need(accounted+MAX_PACKET+raw_reserve+65536<=getattr(self,'runtime_total_budget_bytes',512*1024*1024),'admitted run/relay budget cannot admit next packet and complete Driver result')
         self.pending=True
         try:value=self.transport.request(identifier,tool,arguments,timeout=55)
         finally:self.pending=not res.exists()
         need(res.exists(),'response not present; inspect exact original only')
         refs={'request':pin(req),'response':pin(res)}
-        need(value.get('machine_id')==MACHINE and value.get('request',{}).get('request_id')==identifier,'response identity differs')
+        need(value.get('machine_id')==self.machine and value.get('request',{}).get('request_id')==identifier,'response identity differs')
         need(value.get('is_error') is False,'actual native/MCP error retained at '+str(res))
         return value,refs
     def snapshot(self,name):
@@ -383,7 +424,7 @@ class Relay:
              'response-local Driver exceeds admitted input limit; preserve raw and stop before hash/read')
         actual=driver_raw_pin(path);need(actual['bytes']==raw.get('bytes') and actual['sha256']==raw.get('sha256'),'Driver ref bytes/SHA differs')
         q=load(path,limit)
-        need(ev.get('machine_id')==MACHINE and ev.get('request_id')==row['request']['request_id']
+        need(ev.get('machine_id')==self.machine and ev.get('request_id')==row['request']['request_id']
              and ev.get('query_sequence')==q.get('query_sequence'),'response-local query sequence differs')
         need(q.get('accepted') is True and q.get('status') in {'available','partial'}
              and type(q.get('query_sequence')) is int and q['query_sequence']>0
@@ -485,7 +526,7 @@ class Relay:
     def original(self,kind):
         claim=load(self.case/(kind+'.once.claim.json'));need(claim['binding']==self.binding,'claim runtime differs')
         req=load(claim['request_path']);need(req.get('request_id')==claim['request_id'] and req.get('arguments')==claim['arguments'],'original request differs')
-        row=load(claim['response_path']);need(row.get('machine_id')==MACHINE
+        row=load(claim['response_path']);need(row.get('machine_id')==self.machine
           and row.get('request',{}).get('request_id')==claim['request_id'] and row.get('is_error') is False
           and row.get('body',{}).get('accepted') is True and row.get('body',{}).get('step')==claim['step'],
           'original pending/rejected/unknown; inspect exact response, never resubmit')
@@ -607,6 +648,8 @@ def main():
     p.add_argument('--source-head',default=SOURCE,help='Exact actual normal build/context/proof Git source; no inferred upgrade')
     p.add_argument('--run-sequence',type=int,default=176,help='Exact independently allocated actual run sequence')
     p.add_argument('--module-pins',type=Path);p.add_argument('--module-pins-sha256')
+    p.add_argument('--live-binding',type=Path);p.add_argument('--live-binding-sha256')
+    p.add_argument('--max-runtime-total-bytes',type=int,default=512*1024*1024)
     p.add_argument('--merge-destination',choices=('source','sibling'),default='source')
     p.add_argument('--merge-source-army-id',type=int,help='pre-merge only: explicit existing pair for distinct-stock/cap observation, no split')
     args=p.parse_args();live=None

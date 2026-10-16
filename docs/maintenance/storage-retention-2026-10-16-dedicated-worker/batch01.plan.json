@@ -1,0 +1,1691 @@
+{
+  "schema": "xar.storage-superman-melt-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:19:58.880224+00:00",
+  "policy_version": "1.0.0",
+  "input_manifest_sha256": "b65d63c0f359aecf7c1a4a740ef8eadba976a3f9255a2a277556e0f8b8ce9ed3",
+  "context_sha256": "e9418feb2dfe81f0fd139afb4f6a860a4dcb0103f4817cb299ee9841da62ff7a",
+  "closure_evidence": [
+    "docs/release-changelogs/superman-qiang/1.0.0.md",
+    "docs/release-changelogs/superman-qiang/1.1.0.md"
+  ],
+  "task": "disk-reclamation-20261016-a01",
+  "authorized_roots": [
+    "C:\\ck3-superman-qiang-20261004",
+    "C:\\ck3-superman-qiang-110-20261004",
+    "C:\\ck3-superman-qiang-media-redo-20261004"
+  ],
+  "candidate_count": 21,
+  "logical_candidate_bytes": 2351187686,
+  "allocated_single_link_candidate_bytes": 2351239168,
+  "retained_input_review_at_utc": "2026-10-18T09:19:58.880783+00:00",
+  "retention_note": "Current original binary saves and exact decoder remain readable; review sources at this deadline without automatic renewal. This receipt does not change their independent lifecycle.",
+  "rows": [
+    {
+      "asset_id": "derived-superman-melt-9cc5851a00537758919e936e675d5f81fcdb37f38c471a8069aad932983fd3f2",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\melted.ck3",
+      "sha256": "9cc5851a00537758919e936e675d5f81fcdb37f38c471a8069aad932983fd3f2",
+      "info": {
+        "id": [
+          3061637496,
+          281474978619023
+        ],
+        "b": 101129098,
+        "ft": 134355380797227708,
+        "links": 1,
+        "allocation": 101130240
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T21:54:39.734129+00:00",
+      "expires_at_utc": "2026-10-05T21:54:39.734129+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "48d573a9e60c009172df481fcffcc8e7349883e6b635945f5461d7a27a96afbd",
+          "info": {
+            "id": [
+              3061637496,
+              281474978619022
+            ],
+            "b": 69126866,
+            "ft": 134355380779505163,
+            "links": 1,
+            "allocation": 69128192
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\report.json",
+          "sha256": "01264d74b013b50b892babf22d29a4c24232ac6aa3791c98f3b9bcd43d077abb",
+          "info": {
+            "id": [
+              3061637496,
+              281474978619026
+            ],
+            "b": 1776,
+            "ft": 134355380803837106,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-77043633faa9a96eda9aa48a72b277288a77b2628cec1c6198d2db7963be97de",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\melted.ck3",
+      "sha256": "77043633faa9a96eda9aa48a72b277288a77b2628cec1c6198d2db7963be97de",
+      "info": {
+        "id": [
+          3061637496,
+          281474978623721
+        ],
+        "b": 101167543,
+        "ft": 134355393012897649,
+        "links": 1,
+        "allocation": 101171200
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:15:01.298280+00:00",
+      "expires_at_utc": "2026-10-05T22:15:01.298280+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\checkpoint.ck3",
+          "sha256": "757921ce51c1a9807a7739945ee3f534a5e4d2d066534483e3a97d3171b839f6",
+          "info": {
+            "id": [
+              3061637496,
+              281474978623720
+            ],
+            "b": 69165228,
+            "ft": 134355392997915617,
+            "links": 1,
+            "allocation": 69169152
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\report.json",
+          "sha256": "b1a77e82d758f777a3d27989894ca51324e44a370be8e39ec9170d1e9ae9ead9",
+          "info": {
+            "id": [
+              3061637496,
+              281474978623724
+            ],
+            "b": 1776,
+            "ft": 134355393018236180,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-963f08616362019574844007c7c7068aa6bb326ded544b6b268ff15a0aa67cf5",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\melted.ck3",
+      "sha256": "963f08616362019574844007c7c7068aa6bb326ded544b6b268ff15a0aa67cf5",
+      "info": {
+        "id": [
+          3061637496,
+          281474978623894
+        ],
+        "b": 101168108,
+        "ft": 134355399617129296,
+        "links": 1,
+        "allocation": 101171200
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:26:01.736430+00:00",
+      "expires_at_utc": "2026-10-05T22:26:01.736430+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\checkpoint.ck3",
+          "sha256": "2585a6f72cd5a67fda82163b290ede8478c99ee6639efef6d693b11b7dd6f9cb",
+          "info": {
+            "id": [
+              3061637496,
+              281474978623893
+            ],
+            "b": 69165792,
+            "ft": 134355399601439376,
+            "links": 1,
+            "allocation": 69169152
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\report.json",
+          "sha256": "f96b17580740de0270522e4e5a40dd4ab1d178b70b785bba32f673d7fd65d059",
+          "info": {
+            "id": [
+              3061637496,
+              281474978623897
+            ],
+            "b": 1777,
+            "ft": 134355399623565881,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-d418bf0bf10139204440e56ba3dfe539650bf04ea4015f2bcdfe75791cbc69d4",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\melted.ck3",
+      "sha256": "d418bf0bf10139204440e56ba3dfe539650bf04ea4015f2bcdfe75791cbc69d4",
+      "info": {
+        "id": [
+          3061637496,
+          281474978624221
+        ],
+        "b": 101130512,
+        "ft": 134355402709492321,
+        "links": 1,
+        "allocation": 101134336
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:31:10.958409+00:00",
+      "expires_at_utc": "2026-10-05T22:31:10.958409+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "40e2ce879a053870a818d9eeee052e1a26fa847f6e87015c681456ee5a4f666f",
+          "info": {
+            "id": [
+              3061637496,
+              10977524092599593
+            ],
+            "b": 69127215,
+            "ft": 134355402694776602,
+            "links": 1,
+            "allocation": 69128192
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\report.json",
+          "sha256": "ca1675a9f4d379d87390806088326b7be4ef756f05326f99cc63da6142cef131",
+          "info": {
+            "id": [
+              3061637496,
+              281474978624224
+            ],
+            "b": 1775,
+            "ft": 134355402715849714,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-8ee33816ef23a4411150b12e1c126397712921a6e8ea5084f948b70466ce691e",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\melted.ck3",
+      "sha256": "8ee33816ef23a4411150b12e1c126397712921a6e8ea5084f948b70466ce691e",
+      "info": {
+        "id": [
+          3061637496,
+          281474978632293
+        ],
+        "b": 100019078,
+        "ft": 134355415220124135,
+        "links": 1,
+        "allocation": 100020224
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:52:02.027752+00:00",
+      "expires_at_utc": "2026-10-05T22:52:02.027752+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "5a6f6b27a6ec7caeec22ae292bd7e6fd5321efae115f1aa7a7a47112811b2589",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632292
+            ],
+            "b": 68456008,
+            "ft": 134355415204281078,
+            "links": 1,
+            "allocation": 68456448
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\report.json",
+          "sha256": "2b03ac7b0d61dc0ac6c5a3883ab5e5222bce0bad0d2a24dd4599bb6c4d4acb1c",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632296
+            ],
+            "b": 1776,
+            "ft": 134355415226530039,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-4c72a4ad36309404d43682d3b490f7f223e936ca49471c0b5432813bf89f8021",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\melted.ck3",
+      "sha256": "4c72a4ad36309404d43682d3b490f7f223e936ca49471c0b5432813bf89f8021",
+      "info": {
+        "id": [
+          3061637496,
+          281474978632349
+        ],
+        "b": 104995782,
+        "ft": 134355416345497250,
+        "links": 1,
+        "allocation": 104996864
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:53:54.559871+00:00",
+      "expires_at_utc": "2026-10-05T22:53:54.559871+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\checkpoint.ck3",
+          "sha256": "ea6ae54e343b9058b5586a3395ce4f36d6854590107ecc080988707a4807b55c",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632348
+            ],
+            "b": 71503708,
+            "ft": 134355416329244507,
+            "links": 1,
+            "allocation": 71503872
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\report.json",
+          "sha256": "f2d7439d3e64710cd2c2ac5e7ff48e8da036feb2bfd8fdc47f6ade8650dc52d2",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632352
+            ],
+            "b": 1776,
+            "ft": 134355416351775448,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-53587b98c8acb8a9fa47777654551c14a26623c2688557b7fa07373a10f54b37",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\melted.ck3",
+      "sha256": "53587b98c8acb8a9fa47777654551c14a26623c2688557b7fa07373a10f54b37",
+      "info": {
+        "id": [
+          3061637496,
+          281474978632530
+        ],
+        "b": 100667280,
+        "ft": 134355419170853119,
+        "links": 1,
+        "allocation": 100667392
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T22:58:37.094933+00:00",
+      "expires_at_utc": "2026-10-05T22:58:37.094933+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "b6f341c9879b572a0eb4325f96fd0338433d0fc4c9fa36fa4dfc0fbebb61506e",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632529
+            ],
+            "b": 68930809,
+            "ft": 134355419155605446,
+            "links": 1,
+            "allocation": 68931584
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\report.json",
+          "sha256": "7a80ebb43f5a31d52d4c8334871083f2a332606acc3f9c04ee524fd354ffd207",
+          "info": {
+            "id": [
+              3061637496,
+              281474978632533
+            ],
+            "b": 1776,
+            "ft": 134355419177992459,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-ddd20db453527347b188581a57331cffc464e647859e286ec6eb62de6eba0910",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\melted.ck3",
+      "sha256": "ddd20db453527347b188581a57331cffc464e647859e286ec6eb62de6eba0910",
+      "info": {
+        "id": [
+          3061637496,
+          281474978636718
+        ],
+        "b": 100700280,
+        "ft": 134355426874746173,
+        "links": 1,
+        "allocation": 100704256
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-03T23:11:27.483712+00:00",
+      "expires_at_utc": "2026-10-05T23:11:27.483712+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\checkpoint.ck3",
+          "sha256": "6c70b6b1c2ab0b7ea49e1c8960505440e16118b79a68a85d2c4bd36fbc9154f8",
+          "info": {
+            "id": [
+              3061637496,
+              281474978636717
+            ],
+            "b": 68963772,
+            "ft": 134355426859832977,
+            "links": 1,
+            "allocation": 68964352
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\report.json",
+          "sha256": "80dfe9f2a20ee565f6acaeb6d21d184fba963fd2d3d1a943b2f487b4b3e979ef",
+          "info": {
+            "id": [
+              3061637496,
+              281474978636721
+            ],
+            "b": 1775,
+            "ft": 134355426880020018,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-359fedeea86094a796fd87518c91b571d42fef8c2990c0a35eeb9ec5907b8281",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\melted.ck3",
+      "sha256": "359fedeea86094a796fd87518c91b571d42fef8c2990c0a35eeb9ec5907b8281",
+      "info": {
+        "id": [
+          3061637496,
+          281474978652221
+        ],
+        "b": 100073644,
+        "ft": 134355600250746858,
+        "links": 1,
+        "allocation": 100077568
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T04:00:25.083822+00:00",
+      "expires_at_utc": "2026-10-06T04:00:25.083822+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\checkpoint.ck3",
+          "sha256": "f609f7490cd02b0c819292be6b290c9ffa7b53e7ea9bd480e837c2866a6262c4",
+          "info": {
+            "id": [
+              3061637496,
+              562949955362876
+            ],
+            "b": 68485885,
+            "ft": 134355600231459381,
+            "links": 1,
+            "allocation": 68489216
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\report.json",
+          "sha256": "56cb0d16c54d3fe48a21db24aaa71b119c366cb5474df5f723e4fe192bc51c54",
+          "info": {
+            "id": [
+              3061637496,
+              281474978652224
+            ],
+            "b": 1692,
+            "ft": 134355600256636390,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-234cb1936e3963d3826bd4d4eb6d6d33ce811c8d7ccf589edeb963f47f381c40",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\melted.ck3",
+      "sha256": "234cb1936e3963d3826bd4d4eb6d6d33ce811c8d7ccf589edeb963f47f381c40",
+      "info": {
+        "id": [
+          3061637496,
+          281474978656785
+        ],
+        "b": 100777094,
+        "ft": 134355613436960060,
+        "links": 1,
+        "allocation": 100777984
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T04:22:23.704227+00:00",
+      "expires_at_utc": "2026-10-06T04:22:23.704227+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\checkpoint.ck3",
+          "sha256": "5786ab0368f3e44ccde4cd2f7f55febefad00f7efde513eaf57075d7e5900cb1",
+          "info": {
+            "id": [
+              3061637496,
+              281474978656784
+            ],
+            "b": 68916158,
+            "ft": 134355613419954109,
+            "links": 1,
+            "allocation": 68919296
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\report.json",
+          "sha256": "3c21f1af85673be4dc2d649563d0989b9a96d88a353165d3f62fb3c235abdf98",
+          "info": {
+            "id": [
+              3061637496,
+              281474978656788
+            ],
+            "b": 1687,
+            "ft": 134355613442158289,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-a8f5b575e8291f702d388d37e9cee711e74d9d222eec047065b979245f9104fa",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\melted.ck3",
+      "sha256": "a8f5b575e8291f702d388d37e9cee711e74d9d222eec047065b979245f9104fa",
+      "info": {
+        "id": [
+          3061637496,
+          281474978656669
+        ],
+        "b": 100115706,
+        "ft": 134355612537671578,
+        "links": 1,
+        "allocation": 100118528
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T04:20:53.775396+00:00",
+      "expires_at_utc": "2026-10-06T04:20:53.775396+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\checkpoint.ck3",
+          "sha256": "7db6e4935fbb9292f812993d7244e798d68c720dd7ab1a412c87c555527d82f2",
+          "info": {
+            "id": [
+              3061637496,
+              281474978656668
+            ],
+            "b": 68506653,
+            "ft": 134355612522603138,
+            "links": 1,
+            "allocation": 68509696
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\report.json",
+          "sha256": "246603b2871532948c95458b8c1d4eac6d1e1ac49f4b8bd1ba04e4998c228a57",
+          "info": {
+            "id": [
+              3061637496,
+              281474978656672
+            ],
+            "b": 1706,
+            "ft": 134355612543720777,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-153df0984ef09d0f5e2396a423abce1a8b81f8954906a28df967c7531e65ba90",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\melted.ck3",
+      "sha256": "153df0984ef09d0f5e2396a423abce1a8b81f8954906a28df967c7531e65ba90",
+      "info": {
+        "id": [
+          3061637496,
+          281474978661223
+        ],
+        "b": 100782049,
+        "ft": 134355617405332325,
+        "links": 1,
+        "allocation": 100782080
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T04:29:00.541776+00:00",
+      "expires_at_utc": "2026-10-06T04:29:00.541776+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\checkpoint.ck3",
+          "sha256": "cfc05a4a43eb37b415f282fe71d6904f7924c19775b216980a205d3a33a8ffa5",
+          "info": {
+            "id": [
+              3061637496,
+              281474978661222
+            ],
+            "b": 68917743,
+            "ft": 134355617388977275,
+            "links": 1,
+            "allocation": 68919296
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\report.json",
+          "sha256": "efb039c991a9644b95f4ec283ff89aa567b9d1ea2ebee2bd657c61e7af94dd65",
+          "info": {
+            "id": [
+              3061637496,
+              281474978661226
+            ],
+            "b": 1699,
+            "ft": 134355617411148461,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-d8e7939b5ecfa7b3bf7652c16a618f6a222d42b35a791437d0db943f03a0c80f",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\melted.ck3",
+      "sha256": "d8e7939b5ecfa7b3bf7652c16a618f6a222d42b35a791437d0db943f03a0c80f",
+      "info": {
+        "id": [
+          3061637496,
+          281474978665922
+        ],
+        "b": 130785694,
+        "ft": 134355641888123171,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T05:09:48.823410+00:00",
+      "expires_at_utc": "2026-10-06T05:09:48.823410+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\checkpoint.ck3",
+          "sha256": "d0323776c51534a417b1bd27a36ae90f2ff006f1d5fab82d0274742ae6a351df",
+          "info": {
+            "id": [
+              3061637496,
+              562949955376577
+            ],
+            "b": 87247120,
+            "ft": 134355641865811150,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\report.json",
+          "sha256": "828893c8733e4893ddf3c8ee0e1b58e8f01e400cb22c0ee4c688a4ea91d6c292",
+          "info": {
+            "id": [
+              3061637496,
+              281474978665925
+            ],
+            "b": 1697,
+            "ft": 134355641895734855,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-d705a45acbd512653287013ad87dbff5944c1a99e7781f97d57fa36d7acfc2a1",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\melted.ck3",
+      "sha256": "d705a45acbd512653287013ad87dbff5944c1a99e7781f97d57fa36d7acfc2a1",
+      "info": {
+        "id": [
+          3061637496,
+          281474978665614
+        ],
+        "b": 130785694,
+        "ft": 134355619552187870,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T04:32:35.230646+00:00",
+      "expires_at_utc": "2026-10-06T04:32:35.230646+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\checkpoint.ck3",
+          "sha256": "30e1c1b5758d5cfbd00f9e2ccd55aedf53fd2befdc0b05634709fe02958a9758",
+          "info": {
+            "id": [
+              3061637496,
+              281474978665613
+            ],
+            "b": 87247120,
+            "ft": 134355619531776063,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\report.json",
+          "sha256": "776b758fab59e00636ef9e884e4808c29bc246f1abd3365a1c8aa78aefd10ac6",
+          "info": {
+            "id": [
+              3061637496,
+              281474978665617
+            ],
+            "b": 1699,
+            "ft": 134355619560220775,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-d47a36938910daf8a711fc7e93287ed97ec4504b7fdd0d251800cd2ece2b017b",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\melted.ck3",
+      "sha256": "d47a36938910daf8a711fc7e93287ed97ec4504b7fdd0d251800cd2ece2b017b",
+      "info": {
+        "id": [
+          3061637496,
+          281474978670657
+        ],
+        "b": 130785694,
+        "ft": 134355658161226863,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T05:36:56.134295+00:00",
+      "expires_at_utc": "2026-10-06T05:36:56.134295+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\checkpoint.ck3",
+          "sha256": "206bd624f8193c808f4b62c10ae4141c86e5c96dde917149e8a21400a9d46485",
+          "info": {
+            "id": [
+              3061637496,
+              281474978670656
+            ],
+            "b": 87247120,
+            "ft": 134355658140595271,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\report.json",
+          "sha256": "54299a251230f4b0dde3f5e9e372f909e731e72f95b794892b682cf7b0f18425",
+          "info": {
+            "id": [
+              3061637496,
+              562949955381318
+            ],
+            "b": 1697,
+            "ft": 134355658169642280,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-56cc1ef32ebb80ccf123b1f7ea0cf056db7f708331ac7f9d77f2d8c29a716375",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\melted.ck3",
+      "sha256": "56cc1ef32ebb80ccf123b1f7ea0cf056db7f708331ac7f9d77f2d8c29a716375",
+      "info": {
+        "id": [
+          3061637496,
+          281474978670557
+        ],
+        "b": 130785694,
+        "ft": 134355653430744152,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T05:29:03.086071+00:00",
+      "expires_at_utc": "2026-10-06T05:29:03.086071+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\checkpoint.ck3",
+          "sha256": "61af3b785e3d36aa5930e818de43b15170a1dca7a667bd493c6c9c9d7a1842d9",
+          "info": {
+            "id": [
+              3061637496,
+              281474978670556
+            ],
+            "b": 87247120,
+            "ft": 134355653409749501,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\report.json",
+          "sha256": "bbb0766f3c2d1af782c776cbc2e8042907ca372aa6b76b92100c8f01854184ab",
+          "info": {
+            "id": [
+              3061637496,
+              281474978670562
+            ],
+            "b": 1699,
+            "ft": 134355653438985017,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-3511fee1b0ec7eff1e11b80197437992e8a8f690c649b70fc452c490e0632922",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\melted.ck3",
+      "sha256": "3511fee1b0ec7eff1e11b80197437992e8a8f690c649b70fc452c490e0632922",
+      "info": {
+        "id": [
+          3061637496,
+          844424931490307
+        ],
+        "b": 106840110,
+        "ft": 134355501106071771,
+        "links": 1,
+        "allocation": 106844160
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T01:15:10.616806+00:00",
+      "expires_at_utc": "2026-10-06T01:15:10.616806+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\checkpoint.ck3",
+          "sha256": "78dbfe32697f80df79284aad5620ced03e65ce5d91e45750a78ef191b3e4bcb3",
+          "info": {
+            "id": [
+              3061637496,
+              844424931490304
+            ],
+            "b": 72663403,
+            "ft": 134355501087392331,
+            "links": 1,
+            "allocation": 72667136
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\report.json",
+          "sha256": "a78d8275606044940eb10a59d9964ec4c656400297898be1ed44816b0ebc941a",
+          "info": {
+            "id": [
+              3061637496,
+              844424931490312
+            ],
+            "b": 1679,
+            "ft": 134355501113349905,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-05d72bd5c971b2a5f4d0ea406e3deb95abaf28c88db7d9aa0e65704ef51074fa",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\melted.ck3",
+      "sha256": "05d72bd5c971b2a5f4d0ea406e3deb95abaf28c88db7d9aa0e65704ef51074fa",
+      "info": {
+        "id": [
+          3061637496,
+          562949954666178
+        ],
+        "b": 123679103,
+        "ft": 134355535433164497,
+        "links": 1,
+        "allocation": 123682816
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T02:12:23.332567+00:00",
+      "expires_at_utc": "2026-10-06T02:12:23.332567+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\checkpoint.ck3",
+          "sha256": "4f3da01b82afab1fbdcb05c335dbe117235ba4035a255ac7b3c11ddf74197d43",
+          "info": {
+            "id": [
+              3061637496,
+              562949954666139
+            ],
+            "b": 82851358,
+            "ft": 134355535406692706,
+            "links": 1,
+            "allocation": 82853888
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\report.json",
+          "sha256": "6c26b970366fc1cdfc9d36e0c1f87a410e20096b493d744f0bb080a7a90add0e",
+          "info": {
+            "id": [
+              3061637496,
+              562949954666181
+            ],
+            "b": 1708,
+            "ft": 134355535440011925,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-9d114cada6b048470d0890e0eacfe8b04a94010e957d8487e7a60493a420e948",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\melted.ck3",
+      "sha256": "9d114cada6b048470d0890e0eacfe8b04a94010e957d8487e7a60493a420e948",
+      "info": {
+        "id": [
+          3061637496,
+          844424931375926
+        ],
+        "b": 123222338,
+        "ft": 134355524204255244,
+        "links": 1,
+        "allocation": 123224064
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T01:53:40.436447+00:00",
+      "expires_at_utc": "2026-10-06T01:53:40.436447+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\checkpoint.ck3",
+          "sha256": "860f1528181a2f1b808ef1374a0fb6fac94b5a5503c8db8f4ee5036375b46d46",
+          "info": {
+            "id": [
+              3061637496,
+              844424931375924
+            ],
+            "b": 82611862,
+            "ft": 134355524170162420,
+            "links": 1,
+            "allocation": 82612224
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\report.json",
+          "sha256": "0097ac9d6cbcb1d5f237b89ddcd699dbfc2f2df65288b5204ca450a16403d3d8",
+          "info": {
+            "id": [
+              3061637496,
+              844424931375944
+            ],
+            "b": 1692,
+            "ft": 134355524211236265,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-85c9feb160f265c45f40d0a8ca5c18515853f651ecddb85dba1a217531d1851d",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\melted.ck3",
+      "sha256": "85c9feb160f265c45f40d0a8ca5c18515853f651ecddb85dba1a217531d1851d",
+      "info": {
+        "id": [
+          3061637496,
+          562949954670045
+        ],
+        "b": 130788691,
+        "ft": 134355558671893152,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T02:51:07.200029+00:00",
+      "expires_at_utc": "2026-10-06T02:51:07.200029+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\checkpoint.ck3",
+          "sha256": "e38a77c2a440906bb336b220b4b11a9bd49f2c0ec61a7c47ab6b1cd18581f9f9",
+          "info": {
+            "id": [
+              3061637496,
+              562949954670043
+            ],
+            "b": 87246766,
+            "ft": 134355558652139846,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\report.json",
+          "sha256": "e4f1c4599a81f14a9e95c92ad416c28dffe723a1b4faeb3a59eb80bdbb239854",
+          "info": {
+            "id": [
+              3061637496,
+              562949954670060
+            ],
+            "b": 1686,
+            "ft": 134355558679089913,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\report.json"
+    },
+    {
+      "asset_id": "derived-superman-melt-7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41",
+      "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3",
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3",
+      "sha256": "7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41",
+      "info": {
+        "id": [
+          3061637496,
+          562949954669836
+        ],
+        "b": 130788494,
+        "ft": 134355553881635073,
+        "links": 1,
+        "allocation": 130789376
+      },
+      "category": "derived",
+      "state": "closed_and_superseded",
+      "last_used_at_utc": "2026-10-04T02:43:08.175677+00:00",
+      "expires_at_utc": "2026-10-06T02:43:08.175677+00:00",
+      "active_references": [],
+      "protected_until_utc_or_null": null,
+      "reason": "Closed Oct4 published Superman acceptance/media; decoded text is reconstructible from retained immutable binary and pinned exact decoder; no current consumer or valid protection identified",
+      "melt_command": [
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+        "melt",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\checkpoint.ck3",
+        "--format",
+        "ck3",
+        "--unknown-key",
+        "stringify",
+        "-o",
+        "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3"
+      ],
+      "retained_inputs": [
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\checkpoint.ck3",
+          "sha256": "a9843d89aba28643818fd37babf993ffc10233985e11930516f221bf34ad7ff2",
+          "info": {
+            "id": [
+              3061637496,
+              562949954669834
+            ],
+            "b": 87246807,
+            "ft": 134355553860063735,
+            "links": 1,
+            "allocation": 87248896
+          }
+        },
+        {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode01-effect-save-attempt-008\\rakaly-0.8.19-x86_64-pc-windows-msvc\\rakaly.exe",
+          "sha256": "e154af990aaed2c2f44284946772188c9749ad3f6b641b41f6c23456a6f1633d",
+          "info": {
+            "id": [
+              882653518,
+              281474978564543
+            ],
+            "b": 6552576,
+            "ft": 134347235892391183,
+            "links": 1,
+            "allocation": 6553600
+          }
+        },
+        {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\report.json",
+          "sha256": "eb513d1f46b333762996f0bea4f44117bae62316ce31a6c62286eeb622380387",
+          "info": {
+            "id": [
+              3061637496,
+              562949954669860
+            ],
+            "b": 1690,
+            "ft": 134355553889579637,
+            "links": 1,
+            "allocation": 4096
+          }
+        }
+      ],
+      "summary_evidence": "C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\report.json"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0014\\save-readback-a01\\melted.ck3",
+      "reason": "Missing checkpoint SHA / exact decoder recipe; R0014 retained"
+    }
+  ],
+  "method": "Target SHA under exclusive read handle; retained checkpoint and decoder current SHA under write/delete-denying handles; no directory deletion"
+}

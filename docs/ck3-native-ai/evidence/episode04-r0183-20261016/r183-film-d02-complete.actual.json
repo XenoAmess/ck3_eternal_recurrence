@@ -1,0 +1,67 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T07:45:00.391581+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "start_date_raw": 53147952,
+  "date_raw": 53147976,
+  "completed_daily_ticks": 1,
+  "overshoot_days": 0,
+  "arm_generation": 2,
+  "sentinel_status": {
+    "state": "triggered",
+    "generation": 2,
+    "starting_date_raw": 53147952,
+    "target_date_raw": 53147976,
+    "last_observed_date_raw": 53147976,
+    "trigger_date_raw": 53147976,
+    "speed": 3,
+    "mode": "terminal_or_sentinel",
+    "army_count": 0,
+    "combat_count": 0,
+    "completed_daily_ticks": 1,
+    "intermediate_pause_count": 0,
+    "trigger_flags": 1,
+    "trigger_reasons": [
+      "date_deadline"
+    ],
+    "signed_date_delta_from_target_raw": 0,
+    "overshoot_days": 0,
+    "pause_wrapper_called": true,
+    "pause_observed": true,
+    "terminal_observed": false,
+    "abnormal": false
+  },
+  "army": {
+    "army_id": 18,
+    "owner_character_id": 31254,
+    "soldiers": null,
+    "current_province_id": 2635,
+    "move_target_province_id": null,
+    "move_target_observable": false,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "route_source_count": 0,
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "source_snapshot_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-film-d02-poll-007.json",
+    "bytes": 124938,
+    "sha256": "a3d3bd5324e875bc3bcbe87696f5ce232cc4337520db7131b21e8b32df8b798c"
+  },
+  "status_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-film-d02-sentinel-status.json",
+    "bytes": 4656,
+    "sha256": "4c50a4ed8496c9dd29ffb375d10daf4b26a16b7280ebecfd1f97fe3d8ece9dde"
+  },
+  "business_positive_claim": false,
+  "clean_span_claim": false
+}

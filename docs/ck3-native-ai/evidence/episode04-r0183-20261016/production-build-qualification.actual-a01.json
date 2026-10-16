@@ -1,0 +1,207 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T06:33:20.321829+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0183",
+  "source_head": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "ck3_version": "1.20.0.4",
+  "game_executable": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "prepared": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\prepared-a01\\prepared.json",
+    "bytes": 11608,
+    "sha256": "dc2ee94f5eb2bba52309def2f7b3b4037e7bd1bde51c3c3bacc9d80a7780984f"
+  },
+  "context": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\prelaunch-context.actual-a01.json",
+    "bytes": 3125,
+    "sha256": "565a1c233cc4917e2096289c0c2ce94b44982f97c9ef459230aa683f6351a73f"
+  },
+  "steam_offline_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\steam-offline-reviewed.actual-a01.json",
+    "bytes": 1310,
+    "sha256": "e5d510c3c14579f78e5c8b89f843ccd7dda51d31e34d786f2137396b92514f01"
+  },
+  "production_build_seal": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r183-filming-prep-a01\\production-build-qualified.actual-a01.json",
+    "bytes": 2889,
+    "sha256": "5dd1daafa5ddeb9d7dbbc0da905f0d203f8e2b08c4d2ac94164c4d54d90525a1"
+  },
+  "native_msvc_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\native-msvc-result.json",
+    "bytes": 1884,
+    "sha256": "35fdd0934a7faa2c42253efc5ac02bb9180fa64c224b40b5035f1640545dcc66"
+  },
+  "SYSTEM_actual_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\defender-exe-exclusions\\20261016T060602Z-f9ede27a\\receipt.json",
+    "bytes": 347329,
+    "sha256": "5bbbbc08eebe318f45aa6e57bb583a5d9b44b2ee01843fd3da0395011ad6dd52"
+  },
+  "new_exact_EXE_paths_verified": [
+    "c:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\xar_ck3_bridge_host.exe",
+    "c:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\xar_ck3_bridge_injector.exe"
+  ],
+  "actual_bridge_defines": {
+    "rules": [
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
+        "build_header": "build CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj: CXX_COMPILER__xar_ck3_bridge_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp || cmake_object_order_depends_target_xar_ck3_bridge",
+        "definitions": "-DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_BRIDGE_VERSION=\\\"0.1.0\\\" -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0 -DXAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004=1 -DXAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -DXAR_ENABLE_WAR_PAYMENT_PASSIVE_12004=1 -DXAR_NATIVE71_ARMY_NATURAL_PHASE_12004=1 -DXAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004=1 -D_UNICODE -Dxar_ck3_bridge_EXPORTS -DXAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1=1",
+        "link_libraries": null,
+        "required_macros": {
+          "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": true,
+          "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": true,
+          "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": true,
+          "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": true,
+          "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": true,
+          "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": true,
+          "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": true
+        },
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_supply_callback_journal.cpp.obj",
+        "build_header": "build CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_supply_callback_journal.cpp.obj: CXX_COMPILER__xar_ck3_12002_runtime_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_actual_supply_callback_journal.cpp || cmake_object_order_depends_target_xar_ck3_12002_runtime",
+        "definitions": "-DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -D_UNICODE",
+        "link_libraries": null,
+        "required_macros": {
+          "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": true
+        },
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_loss_writer_journal.cpp.obj",
+        "build_header": "build CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_loss_writer_journal.cpp.obj: CXX_COMPILER__xar_ck3_12002_runtime_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_actual_loss_writer_journal.cpp || cmake_object_order_depends_target_xar_ck3_12002_runtime",
+        "definitions": "-DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -D_UNICODE",
+        "link_libraries": null,
+        "required_macros": {
+          "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": true,
+          "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": true
+        },
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_residual_parent_hook.cpp.obj",
+        "build_header": "build CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_residual_parent_hook.cpp.obj: CXX_COMPILER__xar_ck3_12002_runtime_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_residual_parent_hook.cpp || cmake_object_order_depends_target_xar_ck3_12002_runtime",
+        "definitions": "-DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -D_UNICODE",
+        "link_libraries": null,
+        "required_macros": {
+          "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": true,
+          "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": true
+        },
+        "all_required_enabled": true
+      }
+    ],
+    "runtime_archive_contains_required_objects": {
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_supply_callback_journal.cpp.obj": true,
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_loss_writer_journal.cpp.obj": true,
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_residual_parent_hook.cpp.obj": true
+    },
+    "production_dll_links_runtime_archive": true,
+    "all_required_production_macros_enabled": true,
+    "bridge_join_macro_not_required": "JOIN is PRIVATE to xar_ck3_12002_runtime by cmake/actual_supply_callback_observations_12004.cmake:3-5",
+    "cash3TU_and_military_opener_checks": [
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12003_war_cash_current_reader.cpp.obj",
+        "required_macros": {
+          "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": true
+        },
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12003_war_cash_current_serializer.cpp.obj",
+        "required_macros": {
+          "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": true
+        },
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_war_cash_claim_terms.cpp.obj",
+        "required_macros": {
+          "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": true
+        },
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
+        "required_macros": {
+          "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": true
+        },
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_adapter.cpp.obj",
+        "required_macros": {
+          "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": true
+        },
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/ingame_military_opener_12004.cpp.obj",
+        "required_macros": {},
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/frontend_gui_route_v1.cpp.obj",
+        "required_macros": {},
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      },
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/game_adapter.cpp.obj",
+        "required_macros": {},
+        "compiled_object_rule_exists": true,
+        "all_required_enabled": true
+      }
+    ],
+    "runtime_archive_cash_and_adapter_objects": {
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12003_war_cash_current_reader.cpp.obj": true,
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12003_war_cash_current_serializer.cpp.obj": true,
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_war_cash_claim_terms.cpp.obj": true,
+      "CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_adapter.cpp.obj": true
+    },
+    "DLL_opener_route_gameadapter_objects": {
+      "CMakeFiles/xar_ck3_bridge.dir/src/ingame_military_opener_12004.cpp.obj": true,
+      "CMakeFiles/xar_ck3_bridge.dir/src/frontend_gui_route_v1.cpp.obj": true,
+      "CMakeFiles/xar_ck3_bridge.dir/src/game_adapter.cpp.obj": true
+    },
+    "all_required_production_link_objects_present": true,
+    "county_P_exact_production_checks": [
+      {
+        "target": "CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj",
+        "P_macro_enabled": true
+      }
+    ],
+    "county_P_trace_production_enabled": true
+  },
+  "outputs": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\xar_ck3_bridge.dll",
+      "bytes": 12935168,
+      "sha256": "d5f6217ba0a5d785e1e9e4d57472d7bf652b337d2aab189fc111d1cc7b547735",
+      "target": "xar_ck3_bridge"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "ca8927a2d6690390c1c885427aa2d149af48556419784ce1b323968043741f0e",
+      "target": "xar_ck3_bridge_injector"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r183-a26\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "f884a1f229faae1e7369b3285d753be8de1f565219b637c595c3cbfda24d3cff",
+      "target": "xar_ck3_bridge_host"
+    }
+  ],
+  "game_started": false,
+  "dynamic_shot_or_business_positive_qualified": false
+}

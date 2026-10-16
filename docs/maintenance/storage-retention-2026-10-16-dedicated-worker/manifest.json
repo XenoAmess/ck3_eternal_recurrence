@@ -1,0 +1,66 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T09:43:05.582466+00:00",
+  "schema": "xar.storage-retirement-small-package.v1",
+  "files": {
+    "availability.actual.json": {
+      "bytes": 74223,
+      "sha256": "8ba8f3c80e779be78dd6040a7936a80a0613c2c8272e9a5d72fedc8fead2c396"
+    },
+    "batch01.plan.json": {
+      "bytes": 73682,
+      "sha256": "906d22fa9754a49a7bbd5ea8f5888a0952b20ba620876219d13b2a8894d82e08"
+    },
+    "batch01.result.json": {
+      "bytes": 14686,
+      "sha256": "bbc474154150e406743b37131a62f918835d992ef7898f8c25565a9acba914e2"
+    },
+    "batch02.plan.json": {
+      "bytes": 35481,
+      "sha256": "c9a6056a2e77fef028f3efdb0f4b724c7c0e9ce86d961bfc5f86bc7c8f4a2244"
+    },
+    "batch02.result.json": {
+      "bytes": 6555,
+      "sha256": "a25f9fff05583d06bd255ee663f6c0477ca76f012275bfb09926f5b80f4afe50"
+    },
+    "batch03.plan.json": {
+      "bytes": 201787,
+      "sha256": "7f357adecf787490eb3c0f3874e1dced678d1ebed3ec7d42e844de48c6388569"
+    },
+    "batch03.result.json": {
+      "bytes": 37847,
+      "sha256": "5ab50c09bdc1f6243d7ac3e617ea12acafcc778ffa22dcfb0e8f455797854b78"
+    },
+    "batch04.plan.json": {
+      "bytes": 3686,
+      "sha256": "3a618e4c27c1ce6082907fe61dfe1d6da9c06eab67610d6138f6cd605620c963"
+    },
+    "batch04.result.json": {
+      "bytes": 2092,
+      "sha256": "b0b110786849250b1e8162a519e77d9041a567a780c6a36190aebef68a81dccb"
+    },
+    "ledger-close-check.json": {
+      "bytes": 441,
+      "sha256": "a84ff8b63e4b2c84bb822e832101cfda7717f612ec31df8774c74ef0c8a770a7"
+    },
+    "ledger-update.json": {
+      "bytes": 717,
+      "sha256": "8983fd836a7902b27cca990d7cb2f6bc0c7a297d2caa0345dd27b7ecbd77456e"
+    },
+    "scheduler-intent.json": {
+      "bytes": 2983,
+      "sha256": "4f876560f01f394d49cd56955fcd2b15a77bd1b81201f79c80b622d6736f39b6"
+    },
+    "scheduler-readback.json": {
+      "bytes": 23606,
+      "sha256": "cb8a6c9dc0fc9dec5aac4343749087deac3df289f88b19e68662d2bd60a231ac"
+    },
+    "summary.actual.json": {
+      "bytes": 2171,
+      "sha256": "7d12ec8ad62fd61dcbc357fdc8bddf009c00e11b9693606ee54a43132b2b6e30"
+    }
+  },
+  "source_root": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01",
+  "source_available_on_this_machine": true,
+  "availability_boundary": "All listed deleted target paths are unavailable. Kept input/replica paths are machine-local; no other-machine persistence or remote-copy claim."
+}

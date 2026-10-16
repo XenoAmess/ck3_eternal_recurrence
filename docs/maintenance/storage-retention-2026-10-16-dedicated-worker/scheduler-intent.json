@@ -1,0 +1,66 @@
+{
+  "schema": "xar.storage-daily-task-frozen-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:38:41.423867+00:00",
+  "task_name": "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+  "account": "desktop-3fevhd2\\1",
+  "sid": "S-1-5-21-4063940640-1897558599-686929869-1001",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\pythonw.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py",
+    "--profile",
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json",
+    "--ledger",
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\asset-ledger.json",
+    "--output-dir",
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports",
+    "--trigger",
+    "daily"
+  ],
+  "working_directory": "D:\\workspace\\ck3_eternal_recurrence",
+  "schedule": "Daily 04:00 Asia/Shanghai (+08:00)",
+  "start_boundary": "2026-10-17T04:00:00+08:00",
+  "start_when_available": true,
+  "logon_type": "InteractiveToken",
+  "run_level": "LeastPrivilege",
+  "password_saved": false,
+  "elevation_requested": false,
+  "execution_limit": "PT2M",
+  "report_budget_bytes": 1048576,
+  "deletions_by_task": 0,
+  "pins": {
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py": {
+      "bytes": 10763,
+      "sha256": "d60450d465625110af8adcdaca7cb5cc6b1f75bc5ee5aa11842f322ebb828bf8"
+    },
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe": {
+      "bytes": 255200,
+      "sha256": "9b7bffc26240463c965a2a2a5fada1d8e741c21c25cd2e977728c339b82d9977"
+    },
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\pythonw.exe": {
+      "bytes": 251616,
+      "sha256": "c49ef336c244860f4cf6671eec58ea6461301576cf0c39c0c8fc937b5bd7d0c7"
+    },
+    "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json": {
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json": {
+      "bytes": 1717,
+      "sha256": "3d8b790a39636f2aa7d6a34849e6f888941a6cdd656e6cf928c9f3159b28cd06"
+    },
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\asset-ledger.json": {
+      "bytes": 49177,
+      "sha256": "90d4d5afdc8afc65a6e82c21a6dc0ac4988b388ac136c4cc6fce0eb55dae4848"
+    },
+    "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\task.xml": {
+      "bytes": 4042,
+      "sha256": "140055be9fcb39d74137b4954658bf86f92b4cf23918a533f79ca7be11285155"
+    }
+  },
+  "root_authorization": "Root delegated actual non-admin daily read-only task registration under user 2026-10-16 storage request",
+  "registration_executed": false
+}

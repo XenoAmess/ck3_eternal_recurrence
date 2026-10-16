@@ -38,4 +38,21 @@ class FailureDiagnosticTests(unittest.TestCase):
                 v=failed();v['failure_diagnostic']=diagnostic();v['failure_diagnostic'].update(change)
                 normalize_receiver_candidates(v)
 
+    def test_depth_guard_preserves_unknown_current_definition_without_receiver_credit(self):
+        v=failed();v['unavailable_reason']='candidate_parent_depth_exhausted'
+        v['failure_diagnostic']={**diagnostic(),'stage':'parent_walk',
+            'kind':'parent_depth_exhausted','ancestor_depth':8,
+            'raw_definition_entry_count':None,'definition_present':None}
+        got=normalize_receiver_candidates(v)
+        self.assertIsNone(got['failure_diagnostic']['definition_present'])
+        self.assertIsNone(got['failure_diagnostic']['raw_definition_entry_count'])
+        self.assertEqual(got['failure_diagnostic']['ancestor_depth'],8)
+        self.assertEqual(got['status'],'unavailable')
+        self.assertEqual(got['entries'],[])
+        self.assertIsNone(got['receiver_variable_index'])
+        self.assertIsNone(got['declared_type_id'])
+        self.assertFalse(got['stable_double_read'])
+        self.assertFalse(got['native_receiver_selected'])
+        self.assertFalse(got['current_variable_table_observed'])
+
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T09:43:05.415695+00:00",
+  "policy_version": "1.0.0",
+  "task": "disk-reclamation-20261016-a01",
+  "batches": 4,
+  "deleted_files": 156,
+  "deleted_logical_bytes": 28545541211,
+  "deleted_single_link_allocated_bytes": 28545642496,
+  "by_volume": {
+    "C:/": {
+      "count": 25,
+      "logical_bytes": 4040678590,
+      "single_link_allocated_bytes": 4040736768
+    },
+    "D:/": {
+      "count": 131,
+      "logical_bytes": 24504862621,
+      "single_link_allocated_bytes": 24504905728
+    }
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "used_bytes": 479065440256,
+      "free_bytes": 32068505600
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "used_bytes": 452936380416,
+      "free_bytes": 47153627136
+    }
+  },
+  "whole_volume_free_delta_is_not_exclusive_reclamation": true,
+  "all_156_original_paths_observed_absent": true,
+  "directory_deletions": 0,
+  "native_game_sdk_steam_desktop_touched": false,
+  "active_E04_raw_seed_dependencies_deleted": false,
+  "quota_or_capacity_admission_changed": false,
+  "periodic_task": {
+    "name": "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+    "installed": true,
+    "scheduler_run_proven": true,
+    "runlevel": 0,
+    "logon_type": 3,
+    "last_task_result": 0,
+    "schedule": "Daily04:00Asia/Shanghai(+08:00)",
+    "start_when_available": true,
+    "password_saved": false,
+    "uac_requested": false,
+    "automatic_gc": false,
+    "same_day_routine_guard_actual": "Second direct daily call returned already_recorded without another routine report"
+  },
+  "remaining_boundary": "R0014 retained pending decoder/source reproduction qualification; unique episode02 raw and giant historical SDK log excluded pending actual-use/TTL/replay proof; all installed dependencies kept. Inventory counts include concurrent cleanup and are not an atomic current-usage measurement.",
+  "receipts_root": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01",
+  "receipt_review_at_utc": "2027-04-14T09:43:05.415938+00:00",
+  "detailed_ledger_review_at_utc": "2026-11-15T09:43:05.415953+00:00"
+}

@@ -1,0 +1,730 @@
+{
+  "schema": "xar.storage-consumed-download-retirement.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:37:20.349919+00:00",
+  "policy_version": "1.0.0",
+  "plan_sha256": "7f357adecf787490eb3c0f3874e1dced678d1ebed3ec7d42e844de48c6388569",
+  "attempted": 111,
+  "deleted": 111,
+  "failed": 0,
+  "deleted_logical_bytes": 10351684310,
+  "deleted_single_link_allocated_bytes": 10351689728,
+  "free_before": {
+    "C:/": 31969718272,
+    "D:/": 36801945600
+  },
+  "free_after": {
+    "C:/": 31968600064,
+    "D:/": 47153635328
+  },
+  "concurrent_volume_change_not_all_attributed_to_cleanup": true,
+  "retained_sources_after": [
+    {
+      "path": "D:\\workspace\\index-tts\\.venv\\Lib\\site-packages\\torch-2.8.0+cu128.dist-info\\METADATA",
+      "sha256": "6ba8c8dce515ab793cf31cc38137cd3a26b7801539660731d7106261ee4b8c58",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\1790092516111106100-torch-local-install\\result.json",
+      "sha256": "174b2613d4bb2f52586ecba2e928cc8f43653a96639ed2e62e4f48dc6dd183b3",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\1790092516111106100-torch-local-install\\command.json",
+      "sha256": "891e203409383c5fcd290e2ed85630925b7989572b853028420fc254330081b8",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\receipt.json",
+      "sha256": "6608302bc46fc12142892122441e86f02e443f21ee222cc54835ecbc611ddfa5",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\plan.json",
+      "sha256": "7bf914170c7d09435b379dbec4a1585406ed3c9f3edea212cd668afb1f18fc86",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0000-attempt-1.json",
+      "sha256": "c088d8077c9e1826e29b38cbb2f01b00c99c602e47d12e6c7d798f501cae3296",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0001-attempt-1.json",
+      "sha256": "59c2b8ddef6dd4201856a64344fee74a4315aa50a57e33fd48188f4f61f25ad0",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0002-attempt-1.json",
+      "sha256": "90ce8dea038be3a1115cd93ac90724ab1113c5d90134cdb1763ac80b7d027adb",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0003-attempt-1.json",
+      "sha256": "13b16199f6d46d03bbdc2d37a39ea00e382d9a84c7e27408d217d5d932aef33b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0004-attempt-1.json",
+      "sha256": "8e8dbe0c55bcab1524cb4625559f65c49ed2a429c3228932133fd779ff1ef142",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0005-attempt-1.json",
+      "sha256": "c05e1a9bc1d2d609154a7818e8889eaeb1f35e821db86e77fb8039a07674b03a",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0006-attempt-1.json",
+      "sha256": "f3659a0e4c3ce87576e38b1a014d37531db396de3bbbf6676a28bb31402498c9",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0007-attempt-1.json",
+      "sha256": "842860aaf311572289ce92fece9176954089d313fcfb8cf22186e3fbfc60c199",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0008-attempt-1.json",
+      "sha256": "0ab9cd86a5336cdc627189234719670d0ef4a34c6f5b5375478a43987f2cacec",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0009-attempt-1.json",
+      "sha256": "a234cb0ec4784979d68ce9cce486b60860d7ba0c6ea886034b56b10d59bb244c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0010-attempt-1.json",
+      "sha256": "c49ed93b51631a9ecdff3703149ded52b510aae3976406804cd0938486c3d60e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0011-attempt-1.json",
+      "sha256": "600ea6ff1853c438db796357eb13dd43dccee8ee924739dd1ec1805b76869e56",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0012-attempt-1.json",
+      "sha256": "02449e0e24ec860c89956f8eeff244ae0d0c3dac5218642339125a726b524f09",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0013-attempt-1.json",
+      "sha256": "fd28a66c79283990bd1f6649e141e1a55561f5b7d69493425af2426cb4a66605",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0014-attempt-1.json",
+      "sha256": "d3bd88b0d8a5bd8ee16e23ffa49e76703ee3319c3fdfd8a223c8f94353ef39cf",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0015-attempt-1.json",
+      "sha256": "5422da2ca0cd876a5d43d8a6553d8ecad5b11e93fb9ed72ba3e599b77bcda47e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0016-attempt-1.json",
+      "sha256": "f1a107a2db07da094333f425be5f7d6008251f2102a10c682f88fa3dd0a039c5",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0017-attempt-1.json",
+      "sha256": "dede9509eaf3d562cc677a85a58878d6abd3591ca2b1f46a13c3aa0116df6f43",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0018-attempt-1.json",
+      "sha256": "e88cf28820bea3f035174dc53e8f4d88e446f113e3931e804138a7e1d6a0bb42",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0019-attempt-1.json",
+      "sha256": "27a6c318865e4c3bfaa4ba2bc819b8c20dace2d92479c14fbf9d813fd68626ad",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0020-attempt-1.json",
+      "sha256": "fafb597fa4df32f3e63058b061c9da8061c2a30e7e9330fc8d59ae2877711d2a",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0021-attempt-1.json",
+      "sha256": "d53f0ab6c8db9d950ca37ce244a671824ef7fd86b778088a3a7ee407bb2a9a00",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0022-attempt-1.json",
+      "sha256": "fb97bc144d7735b054b86cd2abe540cea8cd78ebcc62b8d00cf74a0990822021",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0023-attempt-1.json",
+      "sha256": "cfeca8827af731eb14704135c55df2f5efac4ed86250a422f61f0f271a8060c1",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0024-attempt-1.json",
+      "sha256": "bcdb34363d1a7c7efc3bcc9065b32b9ba9b015e616f70f2a0eda8288448b7fa8",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0025-attempt-1.json",
+      "sha256": "40cdb0dd493189da81652272fe999f58275106509193e7fbe6c3d6e8f3614d8f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0026-attempt-1.json",
+      "sha256": "eb7a920c893570b9fd892d2afab21ce4582857d9cf8fe273fb3bc5beea364798",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0027-attempt-1.json",
+      "sha256": "17f70510bf4dc7184c456300adad1e41edbf7b9037e70c919cd4d344260ea3a2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0028-attempt-1.json",
+      "sha256": "2d5e40604e933f16cd1e7fb711d71f9b86ea037127a269cea598d267763dffb5",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0029-attempt-1.json",
+      "sha256": "bbc538f19421b51acb97f8ab847e8b4c9e76a1a06b93d2afda901a756da326d8",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0030-attempt-1.json",
+      "sha256": "4ad35cf9b87a75a981ef8f4b38e6aaea2468d8f4a900e75ba4a269dbc3f27c6b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0031-attempt-1.json",
+      "sha256": "2981564a42a8ab0daf8b3209e6fc8639d4b2092daa5fdd90e728fafd6a356582",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0032-attempt-1.json",
+      "sha256": "0115a2fbcc100aa14937c55445c7da61c38ae9d1c5adf8ae9482272ec03db594",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0033-attempt-1.json",
+      "sha256": "e31cc4cd389ec8a201dbdd14a9f2ce823d364cf7f24d8ef932e5269626e7c093",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0034-attempt-1.json",
+      "sha256": "658f6a518d42dc806d4cf3ae8974673be3ce05801beeb2abba94c0fba52e201f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0035-attempt-1.json",
+      "sha256": "6fb2b63a5d11ce95f254dff781edbb5dd2c411b2f042ad37bb3f99d275f95598",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0036-attempt-1.json",
+      "sha256": "15ed0179121e5891306239787435a1dad3a94bdc01b2cfe1e29372f49a776baf",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0037-attempt-1.json",
+      "sha256": "fe8ccf779759b792ffb0b9a1d00134bea55eba342ca64f8303ac093b72a636a4",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0038-attempt-1.json",
+      "sha256": "35e0f47ce143e1252ee73646cc736f605e852e90e4c2c96c01e8a4194e9abd3d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0039-attempt-1.json",
+      "sha256": "5a7ef432129babab88c16571c56062b641f5b78f3e8c24355bb2f99886a30797",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0040-attempt-1.json",
+      "sha256": "24ae405ffc607f7435862ad7bd6c470cbf251d8303bf116d58a767b73836c39e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0041-attempt-1.json",
+      "sha256": "703eb37b42b7d39d148ff0257b88d50af467a881b3c6adf85e7b61b31b8479b4",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0042-attempt-1.json",
+      "sha256": "24d92949229631d46468c4a69ff3a69391e2146a65edc1b79ffa6cace962d631",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0043-attempt-1.json",
+      "sha256": "1b9ae5175f9d19b0df58a910b15dc735df0058e236c3671b69b6eddb93c7ed98",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0044-attempt-1.json",
+      "sha256": "e3289eec3d9982076711ea23edf7b2b43ae9de5b87eb1acfb1013cc77828430f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0045-attempt-1.json",
+      "sha256": "a43360496497879e479d5a02ebf789be870f4f0f625022a84ef605bc96d7def2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0046-attempt-1.json",
+      "sha256": "4603cbe6349cd16823cd023dbad1bff2ced5ffc2788317ed47d485fda0285dac",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0047-attempt-1.json",
+      "sha256": "133bcdc51f496549115c637d12cefa9dfacce6fdab40f33a10043b4ab22c66af",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0048-attempt-1.json",
+      "sha256": "af93c2187f2825bd2fab0595634b71faf47ff9035007fc05fb40024a765dd110",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0049-attempt-1.json",
+      "sha256": "a9e071d27bd8106c6eae78830a1d8eb6767f7279a01773d507dee61f9b8cc264",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0050-attempt-1.json",
+      "sha256": "51b13248785bafefdcc922fee56f43bea4caccf9c7dc1aa4ea706e0bf0895fe0",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0051-attempt-1.json",
+      "sha256": "7d0f730aea3694a973d151a50a84b22552037d7743ffcf0fc91cf007906e8317",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0052-attempt-1.json",
+      "sha256": "6c773c81d5552e6b834a6a4b94bab7c8a950349d87230dffdf7be1d7ced4b923",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0053-attempt-1.json",
+      "sha256": "8f1ea0279821f8df15d7964f82cfd5f277b03e2db222a092d0b2c7a73bde819e",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0054-attempt-1.json",
+      "sha256": "7e3da0c0b34bee0aa3f0e61a48c8c04744f8b884ee7b11c415812202af6c891f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0055-attempt-1.json",
+      "sha256": "a69c4eb9b22c5f8aae4b5a7cf05ea986b131471fabbf0ed6b1c60fc49c461e66",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0056-attempt-1.json",
+      "sha256": "4d9d59dc9171d0ed0a1e8bf270a748b70a407785de54b31bc0f2c4256b7f7b36",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0057-attempt-1.json",
+      "sha256": "ab63cce167aac025662942bbfc797743544f7462efa87b3e24e1a6928c32e627",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0058-attempt-1.json",
+      "sha256": "364f882af50e4983965018fb5a2e3729e4692c23f6879a44d0040171348d592c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0059-attempt-1.json",
+      "sha256": "5664ccff28a0c9f80361d85f7a0b05b54a25b5385cd1b062b5f024af571c6ef3",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0060-attempt-1.json",
+      "sha256": "67e2e238991cdfa69e90f467cfac124ed65397f220752e44cdf84ddfc52c8a4f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0061-attempt-1.json",
+      "sha256": "ed505d24459453fea0b147c0cf155cff938e0e336c6885160834acc9d297ae3a",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0062-attempt-1.json",
+      "sha256": "eb1fb1d5b68ed9bcf85d202792299ebb3540a39faad6a5441ff65f45dd58f142",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0063-attempt-1.json",
+      "sha256": "0aab219520f3ebd35a7b129d360f4a864d6ac13270f272c088e697ae89cb0efe",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0064-attempt-1.json",
+      "sha256": "5d7e02c6ace72f89f1f9b1f69162b08cbde8f5c97ff29e8838153830f268d684",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0065-attempt-1.json",
+      "sha256": "7fd436bed24d839d91e233085caa2c69f312cc0fc6922bf492ba78e8512c5afa",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0066-attempt-1.json",
+      "sha256": "3d99d10b719131c3a0b1e52e2fff29902431bd99d0dbc6f2cf318e5b1fb9af53",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0067-attempt-1.json",
+      "sha256": "0a25356aff8fdbd0e295d8ba156196bfbd65cbe4eb977e6042216c23f67db0b7",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0068-attempt-1.json",
+      "sha256": "f0a18584ca459ae8395c03e77985db1ddf0e6528cce7b4642543fb8716ec5a58",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0069-attempt-1.json",
+      "sha256": "f2a2696c1d641dacf25d0a6d88541281e694beab24bb98c2e4c5b05bb3eab80c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0070-attempt-1.json",
+      "sha256": "f0ed70ac7d64c82c69112f97b24f1c9bdb9d42cba554a4d98fc9c4c6ad30d53d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0071-attempt-1.json",
+      "sha256": "4398d7ca8ce672d8179b34e4327bedcc51dd7c448335a7d231efbe0b86d1589b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0072-attempt-1.json",
+      "sha256": "abb3a50ec482f5f78934d45e34b0de39ba0b09d494162caff2dbac9ad7656ffb",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0073-attempt-1.json",
+      "sha256": "e84e655f626d767a738da8729d6bcb00c0af4faba1f1655e6279d165f00b9a1d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0074-attempt-1.json",
+      "sha256": "39fd00efbfb38bc321ac2dbf18f3d5c1426ffab37a325e2601cb813ca4d42431",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0075-attempt-1.json",
+      "sha256": "1acf223462b873aba14d8ee964034039c05a8be22a044cdd50ed99ba62586c88",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0076-attempt-1.json",
+      "sha256": "ecc5749f98c729f3e108c125b8828c72e6ac213a985b1b8d8b762083093022e1",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0077-attempt-1.json",
+      "sha256": "c7858ddfc5b87ccd31c28180a1e88fc9805a570a1fb863bcba71ca2f7d2dfe45",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0078-attempt-1.json",
+      "sha256": "439cb63797638bb4ba3c3cdea5478a85e35fb5c0d4766456aab4acb1742f0c40",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0079-attempt-1.json",
+      "sha256": "8ca8f914cd0413f95a2ca99311076209513c32ce8dd37fedd435ca2a052b5e3f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0080-attempt-1.json",
+      "sha256": "0113c4117731bb69b16794b023677305719b86c7552aa3f5cb22e59d34fd0496",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0080-attempt-2.json",
+      "sha256": "ac362edc22490478b9a4a566697b235a928e4d79a7e6b8c54fdb602ea3c263e2",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0081-attempt-1.json",
+      "sha256": "563fc34cadace8ca50eb7f6974dbc36ee4794284a8dfa611c6ea2a22eab2f473",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0081-attempt-2.json",
+      "sha256": "467291356d4b38ecbadc130516d1c4f7e7ac2b5de6b60b63f82aa21fec97bd41",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0082-attempt-1.json",
+      "sha256": "e149888eee4985c002787e4e3aff7185652cffc09841b31f4a144dcdcf10bd1b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0082-attempt-2.json",
+      "sha256": "864dbdda5ba4037a5bf2f719f93099ba1f5fb4dee0fdf14b4c7d5cd494526164",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0083-attempt-1.json",
+      "sha256": "f5e4056bbb8bd4e2b40f8a9ab4bdeb5f7c6c0430089a29783165ca6bb161cdb6",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0083-attempt-2.json",
+      "sha256": "aed1d3580bfd5672cd49f2b78b91135dc616c0f2526c33368036e51d74c0ecb4",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0084-attempt-1.json",
+      "sha256": "ebf6803831a97bdbd7f39f7f2b8f3baf93f6382819786e10b8f9ff4bf928e8fd",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0085-attempt-1.json",
+      "sha256": "15f8e4d27a41ea5ea5abb1d1d388776d73e8e4344eda9656aa6f1a188113d562",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0086-attempt-1.json",
+      "sha256": "ca564c2185a12683d9d34fc08d8f0706e50bdeda3c205e8ade87cebc762d5baf",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0087-attempt-1.json",
+      "sha256": "27ee661d9560fe9232022b8655f0129d233642c4eaeaa27c962514c8c9e1a068",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0088-attempt-1.json",
+      "sha256": "ca2fe3e4a36d67eff27e1c98a2b636c738bfcd4042ef9fc23b9f3ba8b97d2f7c",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0089-attempt-1.json",
+      "sha256": "5e59d0132455514e53f7cae4ba155f54eb1f72059ccb43966baf0253000fcac7",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0090-attempt-1.json",
+      "sha256": "baecd90f1723d6f47f65a10784df18ca28b09ce14ed4b31c6f403a5ccbc2ef0b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0091-attempt-1.json",
+      "sha256": "0ce2d2d7482ef4f38a98c81fda0a637c88b02fa228d87dcd81b196c56dffa30d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0092-attempt-1.json",
+      "sha256": "142f7065f9acc0d01c3286ac2574b834e1ec0311aebcef36c4178d03537ff7ba",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0093-attempt-1.json",
+      "sha256": "09c15db4cf996b28e313ab0aac1cb6beceaac786a6c3991ffe1aec6b77c2b5fd",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0094-attempt-1.json",
+      "sha256": "70f7d2591ddea81e2ff6ee7e6750070217c17d348bfadfafa7c07c3a06eebfcf",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0095-attempt-1.json",
+      "sha256": "aa8ba85ae5ea9b5b2a4a1e69f2bc08c7302b77d8e1d75c96294b8eb565b69aa3",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0096-attempt-1.json",
+      "sha256": "65858bd31c9f8adadc01cb388aa22e963eb5a3a21666b100cbd02aa228c3dbef",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0097-attempt-1.json",
+      "sha256": "31d92bde84858357ff89d22f3257bd3a477fe8b4d4605d4022ed702bcac69477",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0098-attempt-1.json",
+      "sha256": "7626b793876f1bed636b1dfeaac3640b1372e44934c4bea875f62c68de0765a3",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0099-attempt-1.json",
+      "sha256": "385f5979708be0c8f9272316eb981a36e17f54d016f67e26d05accdd424e569a",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0100-attempt-1.json",
+      "sha256": "3b56b0d1e663b977cece9308991e5f95fc3311916249b263166840040712ba14",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0101-attempt-1.json",
+      "sha256": "eaaba4d672ed95852b09341d59e2288c03a6ea0e373aa6529fa6b9e9012f0e5b",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0102-attempt-1.json",
+      "sha256": "98adec99c72cf7444174ad9de0146143024517312c35d5a16d763dc772b007c4",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\torch-ranges-1790091926430673300\\0103-attempt-1.json",
+      "sha256": "6b16d369fb71cd2fde4e9e6db83af2e7dfc8622bff5c6216c478ab308c4bc483",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\gpt.pth",
+      "sha256": "43a8f4c30eccdf201958d3b9713511482c19d56dc20b0b1c4ee1e6b080b19d85",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-resume-1790091380847337400\\IndexTeam--IndexTTS-2.5--gpt.pth.json",
+      "sha256": "59dcb55f5f116cf3939877e7f1ca8cb7114ca4b7baf99206abe5af06b83fa84d",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\index-tts\\checkpoints\\hf_cache\\w2v-bert-2.0\\model.safetensors",
+      "sha256": "eb890c9660ed6e3414b6812e27257b8ce5454365d5490d3ad581ea60b93be043",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\indextts-install-20260922-r1\\model-download-resume-1790091380847337400\\facebook--w2v-bert-2.0--model.safetensors.json",
+      "sha256": "091334cd0e0144b433c1e4d8909602c9f83039f5b454b698cd137eff6089db8f",
+      "identity_metadata_unchanged": true,
+      "exists_after": true
+    }
+  ],
+  "directory_deletions": 0,
+  "scope": "ONLY consumed whl/range partials and two superseded model network partials. No uv-python, uv-cache archive, installed venv, models, source, executable, interpreter or personal files selected",
+  "cache_recovery": "Deleted consumed wheel and range chunks require a future redownload from retained exact URL/SHA if needed. Installed runtime files were not selected or modified. No runtime execution requalification is claimed. Historical plan wording about usable runtime is not an actual business qualification.",
+  "runtime_execution_requalified": false,
+  "detailed_ledger_sha256": "e3dbdea1008956ba699a303f98c39e5bcd245f8e37c3a851683bd4c841f427e0"
+}

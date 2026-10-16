@@ -99,6 +99,29 @@ def runtime_binding(bundle):
             'run_id': run_id, 'run_sequence': sequence}
 
 
+def operation_guard(bundle, *, actual_machine=False):
+    """A new live window is explicit; old bundle/source evidence stays frozen."""
+    guards = module(Path(__file__).resolve().parents[1]/'runtime_binding.py', 'C_explicit_runtime_guard')
+    entry = bundle.get('live_binding')
+    if entry is None:
+        return guards, None
+    need(type(entry) is dict and set(entry) == {'path','bytes','sha256'}, 'exact new C live binding pin required')
+    checked(entry, limit=1024*1024)
+    identity = runtime_binding(bundle)
+    if actual_machine:
+        need(guards.current_machine_id(bundle['repo']) == identity['machine_id'], 'actual C execution machine differs')
+    context = load(checked(bundle['context']))
+    proof = load(checked(bundle['runtime_proof']))
+    plan = load(checked(bundle['plan']))
+    guard = guards.OperationGuard(entry['path'], entry['sha256'], context=context,
+        runtime=guards.proof_runtime(proof), scene_root=Path(bundle['context']['path']).resolve().parent,
+        source_head=identity['source_head'], machine_id=identity['machine_id'], run_id=identity['run_id'],
+        max_runtime_total_bytes=bundle['runtime_request_budget_bytes'], deadline_utc=bundle['deadline_utc'],
+        normal_save_sha256=plan['normal_save']['sha256'])
+    need(guard.capacity_pin == bundle['capacity'], 'C capacity differs from the explicit live operation')
+    return guards, guard
+
+
 def provider_arguments(bundle, args, binding):
     """Pass the verified source and allocated sequence to the existing Root IO."""
     return argparse.Namespace(repo=Path(bundle['repo']), context=Path(bundle['context']['path']),
@@ -106,7 +129,7 @@ def provider_arguments(bundle, args, binding):
         request_helper=Path(bundle['request_helper']['path']), request_helper_sha256=bundle['request_helper']['sha256'],
         source_head=binding['source_head'], run_id=binding['run_id'], run_sequence=binding['run_sequence'],
         case_id=bundle['case_id'], card='C', attempt=args.attempt, army_id=bundle['army_id'],
-        deadline_utc=DEADLINE, stage=args.stage)
+        deadline_utc=bundle['deadline_utc'], stage=args.stage)
 
 
 def runtime_total_input(bundle, capacity):
@@ -169,7 +192,8 @@ def prepare(bundle):
     if gaps:
         return {'status':'NEEDS_ROOT_BINDINGS','gaps':gaps,'SDK_calls':0,
                 'live_qualification_granted':False,'provider_imported':False}
-    need(bundle['deadline_utc'] == DEADLINE, 'original deadline differs; no extension')
+    if 'live_binding' not in bundle:
+        need(bundle['deadline_utc'] == DEADLINE, 'new C deadline requires an exact explicit live binding')
     need(type(bundle['modules']) is dict
          and {'root_relay','dcda_coherent_reader','next_adapter'} <= set(bundle['modules']),
          'explicit reviewed C module pins are incomplete')
@@ -180,17 +204,22 @@ def prepare(bundle):
     for key in ('plan', 'context', 'runtime_proof', 'request_helper', 'capacity', 'prepared'):
         checked(bundle[key])
     binding = runtime_binding(bundle)
+    _, guard = operation_guard(bundle)
     plan = load(checked(bundle['plan']))
     if plan.get('follow_after_arrival_to_day90') is True and plan.get('post_arrival_policy') == 'hold-arrival-position-until-day90':
         need('common_horizon' in bundle['modules'], 'pin the C common_horizon helper before this frozen normal arm')
     capacity = load(bundle['capacity']['path'])
     need(capacity['machine_id'] == bundle['machine_id'] and capacity['admitted'] is True
-         and datetime.fromisoformat(capacity['quota_review_at_utc']) == datetime.fromisoformat(DEADLINE),
-         'Root capacity or unchanged deadline missing')
+         and datetime.fromisoformat(capacity['quota_review_at_utc']) == datetime.fromisoformat(bundle['deadline_utc']),
+         'Root capacity or exact operation deadline missing')
+    if guard is not None:
+        guard.check()
     runtime_total_input(bundle, capacity)
     return {'status': 'SOURCE-COMPOSITION-PREPARED', **binding,
             'machine_id': bundle['machine_id'], 'SDK_calls': 0, 'provider_imported': False,
-            'live_qualification_granted': False}
+            'live_qualification_granted': False,
+            'live_provider_status': ('NO_GO_LEGACY_LOCKED_CONSTRUCTOR' if guard is not None
+                                     else 'HISTORICAL_FINITE_BINDING_ONLY')}
 
 
 def provider(bundle, args):
@@ -201,6 +230,8 @@ def provider(bundle, args):
     """
     need(prepare(bundle)['status']=='SOURCE-COMPOSITION-PREPARED', 'complete concrete Root bindings before any live phase')
     binding = runtime_binding(bundle)
+    guards, guard = operation_guard(bundle, actual_machine=True)
+    need(guard is None, 'NO_GO_LEGACY_LOCKED_CONSTRUCTOR: new C binding is readonly preparation only; parameterize the reviewed constructor before live use')
     base_path = checked(bundle['modules']['root_relay'])
     tree = ast.parse(base_path.read_text(encoding='utf-8-sig'))
     changed = 0
@@ -268,8 +299,12 @@ class CStages:
             'player_character_id': proof['actual_runtime_character_full_id']}
         self.evidence = Evidence(bundle['evidence_roots'], self.reader,
             input_options=bundle.get('evidence_input'), runtime=self.runtime)
-        self.runtime_budget = self.reader.runtime_total_budget(bundle.get('runtime_total_budget_input',
-            {'max_runtime_total_bytes': bundle['runtime_request_budget_bytes'], 'runtime_capacity_admission': None}),
+        budget_options=bundle.get('runtime_total_budget_input',
+            {'max_runtime_total_bytes': bundle['runtime_request_budget_bytes'], 'runtime_capacity_admission': None})
+        if getattr(io,'live_operation_guard',None):
+            guards=module(Path(__file__).resolve().parents[1]/'runtime_binding.py','C_budget_runtime_guard')
+            budget_options=guards.runtime_options(budget_options,io.live_operation_guard)
+        self.runtime_budget = self.reader.runtime_total_budget(budget_options,
             scene_root=io.assets, source_head=self.runtime['source_head'], machine_id=bundle['machine_id'],
             deadline_utc=bundle['deadline_utc'])
         self.runtime_budget.bind_live(io, base_module=getattr(io, '_runtime_budget_base', None),
@@ -279,12 +314,13 @@ class CStages:
         self.log = io.case/'state-pins.jsonl'
         fixed = io.case/'C-inputs.actual.json'
         binding = {'plan': bundle['plan'], 'prepared': bundle['prepared'],
-                   'runtime': self.runtime, **self.source_binding, 'deadline_utc': DEADLINE,
+                   'runtime': self.runtime, **self.source_binding, 'deadline_utc': bundle['deadline_utc'],
                    'context': bundle['context'], 'runtime_proof': bundle['runtime_proof'],
                    'request_helper': bundle['request_helper'], 'module_pins': bundle['modules'],
                    **({'evidence_input': deepcopy(bundle['evidence_input'])} if 'evidence_input' in bundle else {}),
                    **({'runtime_total_budget_input': deepcopy(bundle['runtime_total_budget_input'])}
-                      if 'runtime_total_budget_input' in bundle else {})}
+                      if 'runtime_total_budget_input' in bundle else {}),
+                   **({'live_binding': deepcopy(bundle['live_binding'])} if 'live_binding' in bundle else {})}
         if fixed.exists():
             need(load(fixed) == binding, 'C source/S0/policy/runtime changed within this case')
         else:

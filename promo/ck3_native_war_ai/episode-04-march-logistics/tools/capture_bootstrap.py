@@ -20,6 +20,7 @@ import uuid
 
 from capture_runtime_evidence import (ROBERT_INTENT, army_history_evidence,
     admit_army_history_budget, validate_army_history_limit, validate_prepared_robert_intent, validate_runtime_actor_context)
+from capture_deadline import recording_deadline_guard
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path[:0] = [str(ROOT), str(ROOT / "ck3_autonomous_player/src"), str(ROOT / "tools"),
@@ -374,6 +375,12 @@ def run_owned(args: argparse.Namespace) -> int:
         source_head=(subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
                      if getattr(args, "runtime_capacity_admission", None) is not None else None),
         machine_id=current_machine_id())
+    recording_deadline = recording_deadline_guard(args, machine_id=current_machine_id(),
+        prepared=body, run_dir=args.run_dir,
+        source_head=(subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
+                     if (getattr(args, "recording_capacity_admission", None) is not None
+                         or getattr(args, "runtime_capacity_admission", None) is not None) else None),
+        runtime_budget=history_budget)
     runtime_actor_receipt_reservation = reserve_runtime_actor_identity_receipt(
         args.runtime_actor_identity_receipt)
     offline_receipt(args.steam_offline_receipt)
@@ -401,7 +408,8 @@ def run_owned(args: argparse.Namespace) -> int:
         journal=args.run_dir / "screen-lease-journal.jsonl", abort=stop,
         audit_dir=args.run_dir / "screen-bus-commands")
     require(args.run_dir.resolve().is_relative_to(Path(body["assets_root"]).resolve()), "Actual run escaped prepared external assets root")
-    recorder = OwnedRecorder(args.run_dir, keeper, args.steam_offline_receipt, body)
+    recorder = OwnedRecorder(args.run_dir, keeper, args.steam_offline_receipt, body,
+        start_admission=recording_deadline)
     keeper.on_abort = recorder.abort
 
     async def sdk_loop() -> None:
@@ -491,6 +499,15 @@ def run_owned(args: argparse.Namespace) -> int:
         thread.start()
         require(sdk_ready.wait(30) and not stop.is_set(), f"SDK bootstrap failed: {worker['error']}")
         with (args.run_dir / "session.jsonl").open("x", encoding="utf-8") as stream:
+            # native_session's one timeout includes Frontend warm-up and final
+            # load. Bind conservatively before invocation, never at map-ready.
+            deadline_binding = recording_deadline.bind_session_timeout(args.timeout)
+            write_new(args.run_dir / "recording-session-deadline.json", {
+                "machine_id": current_machine_id(), "observed_at_utc": now(),
+                "session_deadline": deadline_binding,
+                "absolute_deadlines": recording_deadline.absolute,
+                "normal_close_reserve_seconds": recording_deadline.reserve,
+                "missing_absolute_deadline_blocks_recording_start": True})
             session_result = native_session(make_spec(Path(body["state_dir"]), Path(body["game_dir"])),
                 timeout_seconds=args.timeout, native_bridge=NativeBridgeLaunchConfig(mode="native-headless",
                     pipe_name=body["pipe_name"], dll_path=Path(body["bridge_dll"]["path"]),
@@ -548,6 +565,12 @@ def parser() -> argparse.ArgumentParser:
     owned.add_argument("--screen-expected-sequence", required=True, type=int)
     owned.add_argument("--screen-cli-sha256", required=True)
     owned.add_argument("--timeout", type=float, default=21600)
+    owned.add_argument("--recording-deadline-utc",
+                       help="Optional earlier absolute recording cutoff with timezone; never replaces a bound capacity admission")
+    owned.add_argument("--recording-capacity-admission", nargs=2, metavar=("PATH", "SHA256"),
+                       help="Exact Root-admitted capacity JSON bound to machine/scene/run/source; otherwise reuse runtime-capacity-admission. Missing both blocks only recording start")
+    owned.add_argument("--recording-close-reserve-seconds", type=float, default=120,
+                       help="Normal finish/save/exit reserve after full recording duration; finite and at least120seconds")
     owned.add_argument("--default-desktop", action="store_true")
     owned.add_argument("--runtime-actor-identity-receipt", type=Path,
                        help="Reserved absolute path for Root's new runtime proof; pin/validate only at recording start")

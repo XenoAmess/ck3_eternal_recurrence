@@ -1,0 +1,356 @@
+{
+  "schema": "xar.storage-daily-task-actual-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T09:39:48.621231+00:00",
+  "task_name": "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+  "checks": {
+    "command_matches": true,
+    "arguments_match": true,
+    "working_directory_matches": true,
+    "daily_once": true,
+    "start_boundary_matches": true,
+    "start_when_available": true,
+    "interactive_token": true,
+    "least_privilege": true,
+    "bounded_execution": true,
+    "enabled": true
+  },
+  "typed_com_readback": {
+    "run_level": 0,
+    "logon_type": 3,
+    "start_when_available": true,
+    "enabled": true,
+    "state": 3,
+    "last_task_result": 0,
+    "next_run_time": "2026-10-17 04:00:00+00:00",
+    "user_id": "1",
+    "last_run_time": "2026-10-16 17:39:47+00:00"
+  },
+  "runlevel_xml_boundary": "Windows canonical XML omitted default RunLevel; typed COM Principal.RunLevel is required to prove LUA=0. Initial string-only check failed before any run; no task re-registration.",
+  "query_xml": {
+    "argv": [
+      "schtasks",
+      "/Query",
+      "/TN",
+      "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+      "/XML"
+    ],
+    "exit_code": 0,
+    "stdout": "<?xml version=\"1.0\" encoding=\"UTF-16\"?>\r\r\n<Task version=\"1.4\" xmlns=\"http://schemas.microsoft.com/windows/2004/02/mit/task\">\r\r\n  <RegistrationInfo>\r\r\n    <Date>2026-10-16T09:38:41.089131+00:00</Date>\r\r\n    <Author>desktop-3fevhd2\\1</Author>\r\r\n    <Description>Current-user read-only CK3 storage retention inspection on desktop-3fevhd2-1c74096080; no asset deletion, elevation, password, quota grant or automatic GC.</Description>\r\r\n    <URI>\\XAR-CK3-Storage-Daily-ReadOnly-Inspection</URI>\r\r\n  </RegistrationInfo>\r\r\n  <Principals>\r\r\n    <Principal id=\"CurrentUser\">\r\r\n      <UserId>S-1-5-21-4063940640-1897558599-686929869-1001</UserId>\r\r\n      <LogonType>InteractiveToken</LogonType>\r\r\n    </Principal>\r\r\n  </Principals>\r\r\n  <Settings>\r\r\n    <DisallowStartIfOnBatteries>false</DisallowStartIfOnBatteries>\r\r\n    <StopIfGoingOnBatteries>false</StopIfGoingOnBatteries>\r\r\n    <ExecutionTimeLimit>PT2M</ExecutionTimeLimit>\r\r\n    <MultipleInstancesPolicy>IgnoreNew</MultipleInstancesPolicy>\r\r\n    <StartWhenAvailable>true</StartWhenAvailable>\r\r\n    <IdleSettings>\r\r\n      <StopOnIdleEnd>true</StopOnIdleEnd>\r\r\n      <RestartOnIdle>false</RestartOnIdle>\r\r\n    </IdleSettings>\r\r\n    <UseUnifiedSchedulingEngine>true</UseUnifiedSchedulingEngine>\r\r\n  </Settings>\r\r\n  <Triggers>\r\r\n    <CalendarTrigger>\r\r\n      <StartBoundary>2026-10-17T04:00:00+08:00</StartBoundary>\r\r\n      <ScheduleByDay>\r\r\n        <DaysInterval>1</DaysInterval>\r\r\n      </ScheduleByDay>\r\r\n    </CalendarTrigger>\r\r\n  </Triggers>\r\r\n  <Actions Context=\"CurrentUser\">\r\r\n    <Exec>\r\r\n      <Command>D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\pythonw.exe</Command>\r\r\n      <Arguments>-B -X utf8 D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py --profile C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json --ledger C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\asset-ledger.json --output-dir C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports --trigger daily</Arguments>\r\r\n      <WorkingDirectory>D:\\workspace\\ck3_eternal_recurrence</WorkingDirectory>\r\r\n    </Exec>\r\r\n  </Actions>\r\r\n</Task>",
+    "stderr": ""
+  },
+  "query_verbose": {
+    "argv": [
+      "schtasks",
+      "/Query",
+      "/TN",
+      "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+      "/V",
+      "/FO",
+      "CSV"
+    ],
+    "exit_code": 0,
+    "stdout": "\"主机名\",\"任务名\",\"下次运行时间\",\"模式\",\"登录状态\",\"上次运行时间\",\"上次结果\",\"创建者\",\"要运行的任务\",\"起始于\",\"注释\",\"计划任务状态\",\"空闲时间\",\"电源管理\",\"作为用户运行\",\"删除没有计划的任务\",\"如果运行了 X 小时 X 分钟，停止任务\",\"计划\",\"计划类型\",\"开始时间\",\"开始日期\",\"结束日期\",\"天\",\"月\",\"重复: 每\",\"重复: 截止: 时间\",\"重复: 截止: 持续时间\",\"重复: 如果还在运行，停止\"\r\n\"DESKTOP-3FEVHD2\",\"\\XAR-CK3-Storage-Daily-ReadOnly-Inspection\",\"2026/10/17 4:00:00\",\"就绪\",\"只使用交互方式\",\"2026/10/16 17:39:47\",\"0\",\"desktop-3fevhd2\\1\",\"D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\pythonw.exe -B -X utf8 D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py --profile C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-p\",\"D:\\workspace\\ck3_eternal_recurrence\",\"Current-user read-only CK3 storage retention inspection on desktop-3fevhd2-1c74096080; no asset deletion, elevation, password, quota grant or automatic GC.\",\"已启用\",\"已禁用\",\"\",\"1\",\"已禁用\",\"00:02:00\",\"计划数据在此格式中不可用。\",\"每天 \",\"4:00:00\",\"2026/10/17\",\"N/A\",\"每 1 天\",\"N/A\",\"已禁用\",\"已禁用\",\"已禁用\",\"已禁用\"\r\n",
+    "stderr": ""
+  },
+  "immediate_run": {
+    "argv": [
+      "schtasks",
+      "/Run",
+      "/TN",
+      "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection"
+    ],
+    "exit_code": 0,
+    "stdout": "成功: 尝试运行 \"\\XAR-CK3-Storage-Daily-ReadOnly-Inspection\"。\r\n",
+    "stderr": ""
+  },
+  "actual_new_daily_report": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports\\20261016T093948126121Z-daily.json",
+    "bytes": 16476,
+    "sha256": "8d2c523bda058c4b36a06926fe6f977125c02b2588f18210893d6c6a313dcd19",
+    "body": {
+      "schema": "xar.storage-retention-inspection.v1",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-16T09:39:48.126121+00:00",
+      "policy_version": "1.0.0",
+      "asset_groups": 45,
+      "counts": {
+        "already_unavailable": 44,
+        "review_due": 1
+      },
+      "outcomes": [
+        {
+          "asset_id": "batch01:9cc5851a00537758919e936e675d5f81fcdb37f38c471a8069aad932983fd3f2",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:77043633faa9a96eda9aa48a72b277288a77b2628cec1c6198d2db7963be97de",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a02\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:963f08616362019574844007c7c7068aa6bb326ded544b6b268ff15a0aa67cf5",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0009\\save-readback-a03\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:d418bf0bf10139204440e56ba3dfe539650bf04ea4015f2bcdfe75791cbc69d4",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0010\\save-readback-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:8ee33816ef23a4411150b12e1c126397712921a6e8ea5084f948b70466ce691e",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:4c72a4ad36309404d43682d3b490f7f223e936ca49471c0b5432813bf89f8021",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0011\\save-readback-a02\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:53587b98c8acb8a9fa47777654551c14a26623c2688557b7fa07373a10f54b37",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0012\\save-readback-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:ddd20db453527347b188581a57331cffc464e647859e286ec6eb62de6eba0910",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-20261004\\acceptance\\desktop-3fevhd2-1c74096080--superman-qiang--R0013\\save-readback-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:359fedeea86094a796fd87518c91b571d42fef8c2990c0a35eeb9ec5907b8281",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0001\\session\\save-readback-baseline-before-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:234cb1936e3963d3826bd4d4eb6d6d33ce811c8d7ccf589edeb963f47f381c40",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-after-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:a8f5b575e8291f702d388d37e9cee711e74d9d222eec047065b979245f9104fa",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0002\\session\\save-readback-health-baseline-before-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:153df0984ef09d0f5e2396a423abce1a8b81f8954906a28df967c7531e65ba90",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0003\\session\\save-readback-health-after-reload-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:d8e7939b5ecfa7b3bf7652c16a618f6a222d42b35a791437d0db943f03a0c80f",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-after-views-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:d705a45acbd512653287013ad87dbff5944c1a99e7781f97d57fa36d7acfc2a1",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0004\\session\\save-readback-normal-before-views-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:d47a36938910daf8a711fc7e93287ed97ec4504b7fdd0d251800cd2ece2b017b",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-after-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:56cc1ef32ebb80ccf123b1f7ea0cf056db7f708331ac7f9d77f2d8c29a716375",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-110-20261004\\acceptance\\live-H0005\\session\\save-readback-direct-toast-before-A0001\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:3511fee1b0ec7eff1e11b80197437992e8a8f690c649b70fc452c490e0632922",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0001\\session\\save-readback-capture-final-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:05d72bd5c971b2a5f4d0ea406e3deb95abaf28c88db7d9aa0e65704ef51074fa",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-amelina-seduce-start-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:9d114cada6b048470d0890e0eacfe8b04a94010e957d8487e7a60493a420e948",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-seduce-start-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:85c9feb160f265c45f40d0a8ca5c18515853f651ecddb85dba1a217531d1851d",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-final-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch01:7c15dcc77a1fc5c12c070a446c2d3e45757a1241c79935fad041a195e2b91d41",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-media-redo-20261004\\capture-P0002\\session\\save-readback-actual-sex-outcome-a01\\melted.ck3",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-001\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\B0\\B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\raw\\sha256\\5C\\5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\10\\10A9D3B0DDBDF2E144CDF82830F37B3EF5DC2261CF73A352DF87824D289EBF46.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\1E\\1EC2D9D195CFE5D1625F6490C5E3031DB36062B5736200974717E60A341E7D3E.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\9D\\9D6BA21B29D4B06E1FF3E740EC112F65179CF34FA0510A52540B1D90A61AC6BF.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\C7\\C74DF040267438CFAF82BD4D9BE6974B3207405355E94E828EE12D5785E0A452.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-003\\run\\artifacts\\derived\\sha256\\E6\\E655E06D4F768FFF22B1D7FA0679E4906BA737E70828B31ECCD18830616F410E.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:e655e06d4f768fff22b1d7fa0679e4906ba737e70828b31eccd18830616f410e",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\001-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:9d6ba21b29d4b06e1ff3e740ec112f65179cf34fa0510a52540b1d90a61ac6bf",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\002-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:1ec2d9d195cfe5d1625f6490c5e3031db36062b5736200974717e60a341e7d3e",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\003-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:c74df040267438cfaf82bd4d9be6974b3207405355e94e828ee12d5785e0a452",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\004-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:10a9d3b0ddbdf2e144cdf82830f37b3ef5dc2261cf73a352df87824d289ebf46",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v3-film-attempt-002\\capture\\005-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:dd50bd3922b0304ddfda7f8c7693024b869b76d0c61456b1019a836b8b732fc4",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\001-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:8ba9533c74f40a4b33efbb133f94a3995d73a52dc634c982817c017a290e9b7b",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\002-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:e25a3349c893f1fca6ec83b8bbf4ba0134fb3aa164a128338fb5cf71c4b91827",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\003-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:c4ecd726f3d00a6380d35284bd65210f63eb9cb5ecb832e815cc3111e669d2a8",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\004-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:e41a4ac6c712b2c9fbb6fd254ace856afe84ef4e0846ac7473a1495d1cf92582",
+          "replica_id": "desktop-3fevhd2-1c74096080:D:\\workspace\\ck3_native_war_ai_promo_work\\v4-index-film-attempt-001\\capture\\005-process.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:cc354251dadefb7f7b3b6c502c227ba1f2bca853ea058080d9dcfac2941a8ad7",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0002\\process-materials.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:f9497d508cc79d59df7eaf45e73f9811de7756f01b8dd5e2a1bc3ba55b89b0f3",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0004\\process-materials.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "batch02:7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-qiang-promo-20261004\\render-retention-A0005\\process-materials.zip",
+          "state": "already_unavailable"
+        },
+        {
+          "asset_id": "superman-R0006-derived-melt",
+          "replica_id": "desktop-3fevhd2-1c74096080:C:\\ck3-superman-cold-archive-20261004\\desktop-3fevhd2-1c74096080--superman-qiang--R0006\\save-readback-a01\\melted.ck3",
+          "state": "review_due",
+          "policy_expiry_utc": "2026-10-06T06:24:47.284641+00:00",
+          "early_reclamation_reason": null,
+          "deletion_authorized": false,
+          "next_action": "Review ownership, exact current paths, sources, protection, file identity and OS handles before any separate reclamation"
+        }
+      ],
+      "volumes": {
+        "C:/": {
+          "total_bytes": 511133945856,
+          "free_bytes": 31970414592,
+          "safety_bytes": 21474836480,
+          "budget_missing_inputs": [
+            "system_growth_reserve_bytes",
+            "other_unspent_reservations_bytes",
+            "current_project_usage_bytes",
+            "effective_project_quota_bytes"
+          ],
+          "heavy_write_admission": "NOT_GRANTED",
+          "low_space": null
+        },
+        "D:/": {
+          "total_bytes": 500090007552,
+          "free_bytes": 47153635328,
+          "safety_bytes": 21474836480,
+          "budget_missing_inputs": [
+            "system_growth_reserve_bytes",
+            "other_unspent_reservations_bytes",
+            "current_project_usage_bytes",
+            "effective_project_quota_bytes"
+          ],
+          "heavy_write_admission": "NOT_GRANTED",
+          "low_space": null
+        }
+      },
+      "deletions": 0,
+      "automatic_gc_deployed_by_this_tool": false,
+      "boundary": "Only explicit ledger groups inspected; unlisted files/roots are UNKNOWN. No content scan, deletion, quota extension, capacity reservation, schedule installation or remote-machine claim.",
+      "trigger": "daily",
+      "input_pins": {
+        "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json": "3d8b790a39636f2aa7d6a34849e6f888941a6cdd656e6cf928c9f3159b28cd06",
+        "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\asset-ledger.json": "90d4d5afdc8afc65a6e82c21a6dc0ac4988b388ac136c4cc6fce0eb55dae4848",
+        "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+      }
+    }
+  },
+  "installed": true,
+  "scheduled_execution_proven": true,
+  "automatic_gc": false,
+  "password_saved": false,
+  "uac_requested": false
+}

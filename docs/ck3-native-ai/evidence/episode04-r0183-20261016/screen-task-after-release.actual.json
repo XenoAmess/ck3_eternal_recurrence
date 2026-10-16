@@ -1,0 +1,17 @@
+{
+  "git": {
+    "branch": "master",
+    "dirty_entries": 0,
+    "head": "20c7319b6964c80fa419540cf4e30852feff4810"
+  },
+  "last_sequence": 5733,
+  "next_step": "fresh-challenge-then-bootstrap",
+  "pid": 25932,
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "resources": [],
+  "schema": "codex.task_bus.v1",
+  "state": "waiting",
+  "summary": "desktop-3fevhd2-R183-timeout-cleanup-proven-partial-raw-retained",
+  "task_id": "e04-live-20261016-r0183-a03",
+  "updated_at_utc": "2026-10-16T08:26:18.399798+00:00"
+}

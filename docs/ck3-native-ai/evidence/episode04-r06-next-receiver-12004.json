@@ -1,0 +1,144 @@
+{
+  "schema": "episode04-r06-next-receiver-offline-review-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "offline_review_at_utc": "2026-10-16T09:03:08Z",
+  "source_commit": "20c7319b6964c80fa419540cf4e30852feff4810",
+  "runtime_query_performed_by_this_review": false,
+  "source_response": {
+    "path": "C:/ck3-e04-resume-20261015-a01/live12004-r183-siege-diagnostic-a01/desktop-3fevhd2-1c74096080--vanilla--R0183/responses/r183-military-tree-a26-001.json",
+    "bytes": 936825,
+    "sha256": "85d06c9afd8b8cbb181be551c4e8428b9142d799b735761d343597aaeb4fc773",
+    "observed_at": "2026-10-16T06:58:42.782312+00:00",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "is_error": false
+  },
+  "tree_projection": {
+    "scope_root_name": "military_view",
+    "root_available": true,
+    "truncated": false,
+    "widget_count": 506,
+    "root_effective_visible": false,
+    "refill_receiver_frame_12004": {
+      "native_revision": 3,
+      "connection_generation": 1,
+      "pump_epoch": 30923,
+      "ticket_sequence": 2,
+      "game_pid": 7640,
+      "thread_id": 23912,
+      "played_character_full_id": 31254,
+      "date_raw": 53147928,
+      "owner_thread_verified": true,
+      "frame_stable": true,
+      "gui_owner_stable": true
+    },
+    "refill_receiver_public_binding_12004": {
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "episode_run_id": "native-31254-f71419cd501a"
+    },
+    "candidate_widget_paths": [
+      "0/0/0/2/3/0/0/0",
+      "0/0/0/3/5/0/0/0"
+    ],
+    "both_widgets_effective_visible": false,
+    "both_widgets_enabled": true,
+    "both_callback_index": 0,
+    "common_expression_identity": {
+      "callback_slot2_rva_hex": "3AA30E0",
+      "native_target_8_rva_hex": "3A9F960",
+      "final_target_38_rva_hex": "1303D40",
+      "chain_count_24_raw": 0,
+      "final_kind_34_raw": 3,
+      "receiver_type_id_48": 635,
+      "receiver_flag_4c_raw": 0
+    },
+    "both_candidates_identical": true,
+    "common_candidate": {
+      "source": "native_gui_type635_definition_candidates_12004",
+      "status": "unavailable",
+      "unavailable_reason": "candidate_parent_depth_exhausted",
+      "receiver_type_id": 635,
+      "current_variable_table_observed": false,
+      "native_receiver_selected": false,
+      "receiver_variable_index": null,
+      "declared_type_id": null,
+      "stable_double_read": false,
+      "entries": [],
+      "failure_diagnostic": {
+        "stage": "parent_walk",
+        "kind": "parent_depth_exhausted",
+        "capture_pass": 1,
+        "read_ordinal": 51,
+        "ancestor_depth": 8,
+        "raw_declaration_count": 1,
+        "raw_index_count": 1,
+        "raw_definition_entry_count": null,
+        "context_present": true,
+        "definition_present": false,
+        "local_definition_active_raw": 1
+      }
+    }
+  },
+  "interpretation": {
+    "a26_candidate_reader_executed": true,
+    "current_failure_is_eight_context_policy_limit": true,
+    "depth_eight_definition_null_proven": false,
+    "R182_original_failure_stage_proven": false,
+    "real_native_receiver_selected": false,
+    "toggle_action_qualified": false,
+    "actual_CK3_ADD_observed": false,
+    "R06_business_credit_added": false
+  },
+  "reviewed_source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_12004.hpp",
+      "bytes": 11986,
+      "sha256": "227ccc94cd0d29c72972022dfbaca5a6be112aceaffeffe95a135b81ab9466e3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_military_open_12004.py",
+      "bytes": 6926,
+      "sha256": "053857dff634f2e35c1abf28c3fc23297af34b00342e04eecb88bfa9075e8665"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "bytes": 8120,
+      "sha256": "9b448a8c7efe4e86fc2f30fd4fe41e0dd5f43830b6c6c90c81ab7b2d1090d0cd"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-receiver3ac3ef0-source-a15/3AC3EF0.bin",
+      "bytes": 879,
+      "sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-entry3ac1c00-source-a16/3AC1C00.bin",
+      "bytes": 449,
+      "sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc"
+    }
+  ],
+  "next_live_experiment": {
+    "implemented_opener_tool": "ck3_execute_step",
+    "implemented_opener_arguments": {
+      "step": "activate-ingame-military-v1",
+      "expected_revision": "FROM_NEW_CURRENT_PAUSED_SNAPSHOT"
+    },
+    "maximum_opener_submissions": 1,
+    "opener_internal_later_visible_deadline_seconds": 5,
+    "implemented_read_tool": "ck3_inspect_gui_window_tree_v1",
+    "implemented_read_arguments": {"window_kind": "military"},
+    "maximum_explicit_after_open_tree_queries": 1,
+    "new_native_endpoint_allowed": false,
+    "toggle_or_provider_evaluation_allowed": false,
+    "unknown_opener_result_retry_allowed": false,
+    "source_admission_and_current_capacity_required": true
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "new_raw_copy": false,
+    "old_capacity_deadline_renewed": false,
+    "retention_category": "record",
+    "record_review_at_utc": "2027-04-14T09:03:08Z"
+  }
+}

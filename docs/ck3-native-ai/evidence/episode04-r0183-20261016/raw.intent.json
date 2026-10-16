@@ -1,0 +1,124 @@
+{
+  "schema": "xar.e04.r183.window-film.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T07:44:49.552648+00:00",
+  "window": {
+    "hwnd": 32639418,
+    "pid": 7640,
+    "title": "Crusader Kings III",
+    "window_rect": [
+      632,
+      329,
+      1928,
+      1088
+    ],
+    "window_size": [
+      1296,
+      759
+    ],
+    "client_size": [
+      1280,
+      720
+    ],
+    "client_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "desktop_size": [
+      2560,
+      1440
+    ]
+  },
+  "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostats",
+    "-n",
+    "-thread_queue_size",
+    "512",
+    "-f",
+    "gdigrab",
+    "-framerate",
+    "30",
+    "-draw_mouse",
+    "0",
+    "-offset_x",
+    "640",
+    "-offset_y",
+    "360",
+    "-video_size",
+    "1280x720",
+    "-i",
+    "desktop",
+    "-an",
+    "-c:v",
+    "libx264",
+    "-preset",
+    "ultrafast",
+    "-crf",
+    "18",
+    "-pix_fmt",
+    "yuv420p",
+    "-fps_mode",
+    "cfr",
+    "-t",
+    "90",
+    "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\raw.mkv"
+  ],
+  "preflight_window": {
+    "source": "screen-region-of-verified-CK3-client:640,360,1280,720",
+    "frame": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\raw-r183-a01\\preflight-window.png",
+      "bytes": 1704916,
+      "sha256": "1c50e7728ddd15239db9992150645ea47f4c8901b2430c4d15d1c8ab24f5b64c"
+    },
+    "actual_size": [
+      1280,
+      720
+    ],
+    "capture_rect_screen": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "full_desktop_capture": false
+  },
+  "source_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\r183-ck3-frame-reviewed.actual-a04.json",
+    "bytes": 1249,
+    "sha256": "d84b7cf0711d3c6faa1e752430ee2a80c6fe47d9758fe883d40f66cc82f77979"
+  },
+  "pilot": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\window-pilot-a02\\pilot.actual.json",
+    "bytes": 1815,
+    "sha256": "2e62c704fa2bacdafc846d5eeba56b30282d2e61747fd9011c82f1dd47ba6e0b"
+  },
+  "pilot_review": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\window-pilot-a02\\pilot-reviewed.actual.json",
+    "bytes": 706,
+    "sha256": "8419b577a601029888c8ef71195f73a8430dc5cfce54f4c6a0211bef37f42f32"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r183-a01\\R183-CAPACITY.actual-root-a01.json",
+    "bytes": 5681,
+    "sha256": "7010823a135d93e6f6db6a44836b196868b8c043acf010c938cbf68d2adbbb0e"
+  },
+  "identity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 6974,
+    "sha256": "672a98e7a9e9e705948246c456db74068323c968acdfa3db524b27f5a2fc46c0"
+  },
+  "snapshot_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r183-siege-diagnostic-a01\\desktop-3fevhd2-1c74096080--vanilla--R0183\\responses\\r183-window-film-01-before.json",
+    "bytes": 123939,
+    "sha256": "bed9eff02326d33cee4acf3bb83d67fb5553da04364bdeeb384579ea3e7e34a5"
+  },
+  "ffmpeg_sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a",
+  "full_desktop_capture": false,
+  "clean_spans_certified": false,
+  "human_approval": false
+}
