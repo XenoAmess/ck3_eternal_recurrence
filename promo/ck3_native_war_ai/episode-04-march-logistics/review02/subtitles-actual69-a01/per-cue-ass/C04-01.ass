@@ -1,0 +1,32 @@
+[Script Info]
+Title: 路线的三个时间节点
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.47,English,en-0,0,0,0,,{\q2}For a route, distinguish three timings: the expected arrival
+Dialogue: 2,0:00:00.10,0:00:04.16,Chinese,zh-0,0,0,0,,{\q2}路线先看三个时间点：下令前的预期抵达、
+Dialogue: 2,0:00:04.16,0:00:08.22,Chinese,zh-1,0,0,0,,{\q2}走起来后的当前估计，以及军队真正到达。
+Dialogue: 1,0:00:04.47,0:00:08.98,English,en-1,0,0,0,,{\q2}before ordering, the current estimate while moving, and actual
+Dialogue: 2,0:00:08.22,0:00:11.69,Chinese,zh-2,0,0,0,,{\q2}预览告诉我们这次计划怎样走；下
+Dialogue: 1,0:00:08.98,0:00:09.56,English,en-2,0,0,0,,{\q2}arrival.
+Dialogue: 1,0:00:09.56,0:00:12.14,English,en-3,0,0,0,,{\q2}A preview describes the plan; after
+Dialogue: 2,0:00:11.69,0:00:14.93,Chinese,zh-3,0,0,0,,{\q2}令后，再读实际存下来的路线。
+Dialogue: 1,0:00:12.14,0:00:14.64,English,en-4,0,0,0,,{\q2}the order, read the route actually
+Dialogue: 1,0:00:14.64,0:00:15.16,English,en-5,0,0,0,,{\q2}stored.
+Dialogue: 2,0:00:14.93,0:00:19.86,Chinese,zh-4,0,0,0,,{\q2}到了观察终点，还要确认当前地点和剩余路线。
+Dialogue: 1,0:00:15.16,0:00:20.60,English,en-6,0,0,0,,{\q2}At the observation endpoint, check the current location and remaining route.
+Dialogue: 2,0:00:19.86,0:00:24.53,Chinese,zh-5,0,0,0,,{\q2}我们这轮改道的终点，就是靠后来的独立状态确认
+Dialogue: 1,0:00:20.60,0:00:25.55,English,en-7,0,0,0,,{\q2}In this reroute test, later independent state confirmed the endpoint.
+Dialogue: 2,0:00:24.53,0:00:29.21,Chinese,zh-6,0,0,0,,{\q2}，而不是因为预览线已经画到那里，就宣布抵达。
+Dialogue: 1,0:00:25.55,0:00:29.28,English,en-8,0,0,0,,{\q2}A preview line reaching it was not proof of arrival.

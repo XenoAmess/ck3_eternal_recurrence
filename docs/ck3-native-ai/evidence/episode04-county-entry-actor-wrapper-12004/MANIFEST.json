@@ -1,0 +1,58 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T00:42:05.783943+00:00",
+  "archive": {
+    "bytes": 15465,
+    "sha256": "4ea0fb1aa4455389940741c9fb7137323d7a05960e81750541b26cd4a07a2deb"
+  },
+  "members": {
+    "failed-a01/FAILED-READ.actual-a01.json": {
+      "bytes": 1584,
+      "sha256": "413cc46cc6fcd816cede451c33c19c04fccf7284c8b83c517484b22a496fb231"
+    },
+    "failed-a01/RESEARCH-PLAN.proposed-a01.json": {
+      "bytes": 4954,
+      "sha256": "c292827760921db38a5d0d808fd240aeec1369faeb9e85b120ec97593f3591d6"
+    },
+    "failed-a01/PLAN-CHECK.actual-a01.json": {
+      "bytes": 1654,
+      "sha256": "d27daf911de05739e14a42c098a8430f07a35bbd33524777d32b33e4d7a27eb2"
+    },
+    "failed-a01/SOURCE-FIRST.actual-a01.json": {
+      "bytes": 1278,
+      "sha256": "0d2c5adadd472bda3b2490efe986877e526c64d1bcd1d96c355279e6ce2140b4"
+    },
+    "attempt-a02/FUNCTION.actual-a01.json": {
+      "bytes": 5963,
+      "sha256": "fc914c66d0baa982f9eebe295c40acf072f879ae5aec94b7a1c7ea793396175f"
+    },
+    "attempt-a02/actual-function.bin": {
+      "bytes": 131,
+      "sha256": "344dc31069a905f0615c45fd59967f35530a14f75e496cda079841c897a3652b"
+    },
+    "attempt-a02/actual-function.asm": {
+      "bytes": 2593,
+      "sha256": "dde127b51a9430ba699a1c8b5b2ec605180aab18a24793f6691839bdbc383106"
+    },
+    "attempt-a02/READ-RECEIPT.actual-a01.json": {
+      "bytes": 4948,
+      "sha256": "b639210b26f0a112a01a86a0c26aefeb8a4d93824fa5877d3b03fbb82e2c319e"
+    },
+    "attempt-a02/RESEARCH-PLAN.proposed-a01.json": {
+      "bytes": 5082,
+      "sha256": "1bbcbedf38bf861c8541b0939d9f40a166e8fcca5b1aea9ed8dc6c7ec8c3daaf"
+    },
+    "attempt-a02/PLAN-CHECK.actual-a01.json": {
+      "bytes": 1667,
+      "sha256": "89fb547d6b220f45a5989ebf978a83590177cc548c14fd5f7a0134201331bd8a"
+    },
+    "attempt-a02/SOURCE-FIRST.actual-a01.json": {
+      "bytes": 1224,
+      "sha256": "4287b1780c69a2d95a415be5963807e1233a6f5ff24a4918e4576c7aec61ea9b"
+    },
+    "SOURCE-CONTRACT.actual-a02.json": {
+      "bytes": 5926,
+      "sha256": "7f0340e0228bb885cd4ccd70bae86cf6574762406e81709fa57e51ab4bfa5a21"
+    }
+  }
+}

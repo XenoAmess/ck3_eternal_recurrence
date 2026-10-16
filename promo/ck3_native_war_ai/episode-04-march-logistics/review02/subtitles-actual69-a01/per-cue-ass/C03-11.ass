@@ -1,0 +1,31 @@
+[Script Info]
+Title: 库存零没有额外档也不停止扣兵
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.02,English,en-0,0,0,0,,{\q2}Zero stock does not add another tier in this ordinary supply chain.
+Dialogue: 2,0:00:00.10,0:00:04.71,Chinese,zh-0,0,0,0,,{\q2}零库存也没有在这条普通供给链里另加一档。
+Dialogue: 2,0:00:04.71,0:00:10.12,Chinese,zh-1,0,0,0,,{\q2}假设当次加载的是六十、十、零这组原版阈值，零与
+Dialogue: 1,0:00:05.02,0:00:09.87,English,en-1,0,0,0,,{\q2}Suppose the loaded vanilla thresholds are 60, 10, and 0: zero and
+Dialogue: 1,0:00:09.87,0:00:14.56,English,en-2,0,0,0,,{\q2}9.99999 fall in the same tier, while exactly 10 enters the tier
+Dialogue: 2,0:00:10.12,0:00:15.30,Chinese,zh-2,0,0,0,,{\q2}九点九九九九九进入同一档，正好十进入上一档。
+Dialogue: 1,0:00:14.56,0:00:15.01,English,en-3,0,0,0,,{\q2}above.
+Dialogue: 1,0:00:15.01,0:00:18.23,English,en-4,0,0,0,,{\q2}Commander modifiers, fleet suppression, and
+Dialogue: 2,0:00:15.30,0:00:19.54,Chinese,zh-3,0,0,0,,{\q2}将领修正、舰队抑制和合格人数还会影响最
+Dialogue: 1,0:00:18.23,0:00:21.46,English,en-5,0,0,0,,{\q2}eligible troop counts also affect the final
+Dialogue: 2,0:00:19.54,0:00:23.77,Chinese,zh-4,0,0,0,,{\q2}终预算，所以不能把零库存理解成安全，也
+Dialogue: 1,0:00:21.46,0:00:21.98,English,en-6,0,0,0,,{\q2}budget.
+Dialogue: 1,0:00:21.98,0:00:25.03,English,en-7,0,0,0,,{\q2}Zero stock is neither proof of safety nor
+Dialogue: 2,0:00:23.77,0:00:28.00,Chinese,zh-5,0,0,0,,{\q2}不能一看到零就固定写成每团扣百分之五。
+Dialogue: 1,0:00:25.03,0:00:28.08,English,en-8,0,0,0,,{\q2}a fixed 5% deduction from every regiment.

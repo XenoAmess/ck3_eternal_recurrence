@@ -1,0 +1,27 @@
+[Script Info]
+Title: A整军直达
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.43,English,en-0,0,0,0,,{\q2}Plan A keeps the army intact and follows the direct route shown in this run's actual preview.
+Dialogue: 2,0:00:00.10,0:00:05.36,Chinese,zh-0,0,0,0,,{\q2}方案A保持整军，按这次实际预览的直达路线前进。
+Dialogue: 2,0:00:05.36,0:00:10.68,Chinese,zh-1,0,0,0,,{\q2}命令之后先确认路线真的生效，再逐日看它的位置。
+Dialogue: 1,0:00:05.43,0:00:08.27,English,en-1,0,0,0,,{\q2}After the order, first confirm that the route has
+Dialogue: 1,0:00:08.27,0:00:11.11,English,en-2,0,0,0,,{\q2}taken effect, then track its position day by day.
+Dialogue: 2,0:00:10.68,0:00:14.43,Chinese,zh-2,0,0,0,,{\q2}真正到达，要同时看到军队已经在目标
+Dialogue: 1,0:00:11.11,0:00:14.35,English,en-3,0,0,0,,{\q2}Actual arrival requires the army to be at the target, in
+Dialogue: 1,0:00:14.35,0:00:17.65,English,en-4,0,0,0,,{\q2}an appropriate state, with the remaining route completed.
+Dialogue: 2,0:00:14.43,0:00:18.18,Chinese,zh-3,0,0,0,,{\q2}地点，状态合适，剩余路线走完；预计
+Dialogue: 1,0:00:17.65,0:00:22.01,English,en-5,0,0,0,,{\q2}Neither an estimated date nor an order confirmation can replace that moment.
+Dialogue: 2,0:00:18.18,0:00:21.93,Chinese,zh-4,0,0,0,,{\q2}日期和下令确认，都不能代替这一刻。

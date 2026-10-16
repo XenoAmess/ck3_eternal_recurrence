@@ -1,0 +1,33 @@
+[Script Info]
+Title: 同日改令不等于已经走完
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.03,English,en-0,0,0,0,,{\q2}Immediately before and after the reroute,
+Dialogue: 2,0:00:00.10,0:00:04.57,Chinese,zh-0,0,0,0,,{\q2}这轮改道的前后，游戏日期相同，军队也还在
+Dialogue: 1,0:00:03.03,0:00:05.61,English,en-1,0,0,0,,{\q2}the game date and army location were
+Dialogue: 2,0:00:04.57,0:00:08.82,Chinese,zh-1,0,0,0,,{\q2}原位置；改变的是已经储存的路线后半段。
+Dialogue: 1,0:00:05.61,0:00:06.32,English,en-2,0,0,0,,{\q2}unchanged.
+Dialogue: 1,0:00:06.32,0:00:09.82,English,en-3,0,0,0,,{\q2}What changed was the stored route's later section.
+Dialogue: 2,0:00:08.82,0:00:13.50,Chinese,zh-2,0,0,0,,{\q2}它没有因为命令被接受，就立刻走到新地点。
+Dialogue: 1,0:00:09.82,0:00:14.01,English,en-4,0,0,0,,{\q2}Accepting the order did not move the army to a new location.
+Dialogue: 2,0:00:13.50,0:00:16.80,Chinese,zh-3,0,0,0,,{\q2}之后我们继续推进自然时间，分
+Dialogue: 1,0:00:14.01,0:00:17.61,English,en-5,0,0,0,,{\q2}Advancing game time later showed it at the original
+Dialogue: 2,0:00:16.80,0:00:20.09,Chinese,zh-4,0,0,0,,{\q2}别看到原首段终点和替代终点。
+Dialogue: 1,0:00:17.61,0:00:21.35,English,en-6,0,0,0,,{\q2}first-leg endpoint and then the alternative endpoint.
+Dialogue: 2,0:00:20.09,0:00:24.99,Chinese,zh-5,0,0,0,,{\q2}把同日下令后的状态，与后来真正走到的位置分开，
+Dialogue: 1,0:00:21.35,0:00:24.90,English,en-7,0,0,0,,{\q2}Keep the same-day order result separate from later
+Dialogue: 1,0:00:24.90,0:00:28.60,English,en-8,0,0,0,,{\q2}movement, so an acknowledgment is not presented as a
+Dialogue: 2,0:00:24.99,0:00:29.68,Chinese,zh-6,0,0,0,,{\q2}才不会把一条确认消息剪成一次已经完成的行军。
+Dialogue: 1,0:00:28.60,0:00:29.74,English,en-9,0,0,0,,{\q2}completed march.

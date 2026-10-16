@@ -128,3 +128,6 @@ Defender/source/容量及finite observation plan，才可取得一条实际physi
 
 
 受控 synthetic 双 EXE 的实际冷运行、DWORD wrap、TID/失配、有限退出与 debug-register 恢复资格，以及已修的 process-query 权限阻点，见[冷夹具资格](episode04-refill-hardware-add-cold-qualification-12004.md)。该资格不计作 CK3 actual ADD 或 R06 业务验收。
+
+
+生产工具 target/实际参数、严格 production wire consumer 与独立 item 发布候选见[ADD发布专题](episode04-refill-instruction-add-provider-12004.md)。它尚未构建/执行，不把冷 EXE 或 entry/return NET 改成实际 CK3 ADD。

@@ -1,0 +1,337 @@
+{
+  "schema": "xar.e04.R0180-land-arrival-visual-review.actual.v1",
+  "state": "MACHINE_MEDIA_PASS_ACTUAL_ARRIVAL_SAMPLES_CANDIDATE_ONLY",
+  "at_utc": "2026-10-16T01:09:33.174625+00:00",
+  "raw_identity_reused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "machine_report": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\report.json",
+    "bytes": 7768,
+    "sha256": "2f518a74a87f12810d1c2e9d37b71474941ca949991d5e43bb801b347066a6ee"
+  },
+  "native_boundary": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\native-boundary.actual-a01.json",
+    "bytes": 6254,
+    "sha256": "f9756ad7bd9a7fa4e80c63d04a5dcbf74dfd56ceeb31737e6e925d4d1aa0f933"
+  },
+  "samples": [
+    {
+      "selected_ordinal": 0,
+      "original_pts_ticks": 0,
+      "original_pts_time": "0",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 0,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-00.jpg",
+        "bytes": 127943,
+        "sha256": "fb9b20a5b416bfa115ea38ef33c5198115bed3223fc953db24e210ec790e59ed"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月26日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "围攻",
+        "selected_army_attrition_icon_text": "1%",
+        "map_army_position": "Palermo附近旧位置",
+        "map_siege_graphic": "旧位置附近可见围城图形",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1431,
+        "right_event_troops_text": 246,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    },
+    {
+      "selected_ordinal": 1,
+      "original_pts_ticks": 4000,
+      "original_pts_time": "4",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 120,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-01.jpg",
+        "bytes": 133260,
+        "sha256": "c7f30e9e076d4edfcebdd8e79f8f25205ca27108312a98022f133ad411ed8471"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月26日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "围攻",
+        "selected_army_attrition_icon_text": "1%",
+        "map_army_position": "Palermo附近旧位置",
+        "map_siege_graphic": "旧位置附近可见围城图形",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1431,
+        "right_event_troops_text": 246,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    },
+    {
+      "selected_ordinal": 2,
+      "original_pts_ticks": 8000,
+      "original_pts_time": "8",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 240,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-02.jpg",
+        "bytes": 133019,
+        "sha256": "5a62cccf78f6541e10254142fcef19edc9c8b66ad90038949205e292878e00fa"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月27日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "围攻",
+        "selected_army_attrition_icon_text": "1%",
+        "map_army_position": "Palermo附近旧位置",
+        "map_siege_graphic": "旧位置附近可见围城图形",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1416,
+        "right_event_troops_text": 231,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    },
+    {
+      "selected_ordinal": 3,
+      "original_pts_ticks": 12000,
+      "original_pts_time": "12",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 360,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-03.jpg",
+        "bytes": 132052,
+        "sha256": "c41094ff04d16b46c1f8ac56138aa1133cc5ea3772d2b4089ef433f949731c96"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月28日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "围攻",
+        "selected_army_attrition_icon_text": "1%",
+        "map_army_position": "Palermo附近旧位置",
+        "map_siege_graphic": "旧位置附近可见围城图形",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1402,
+        "right_event_troops_text": 217,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    },
+    {
+      "selected_ordinal": 4,
+      "original_pts_ticks": 18000,
+      "original_pts_time": "18",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 540,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-04.jpg",
+        "bytes": 134887,
+        "sha256": "d316c41f4dc17eedfe7fa15e32dcb54f1d2342377f863c22b32c5e3804d0a20b"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月29日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "待命",
+        "selected_army_attrition_icon_text": "0%",
+        "map_army_position": "首段后新位置",
+        "map_siege_graphic": "不再见旧围城条",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1371,
+        "right_event_troops_text": 186,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    },
+    {
+      "selected_ordinal": 5,
+      "original_pts_ticks": 40000,
+      "original_pts_time": "40",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 1200,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-05.jpg",
+        "bytes": 133231,
+        "sha256": "a1f8ce29a184986f2a919316b753ec6a3f2e554c882c06eda4f5e735da644448"
+      },
+      "AI_visual_observation": {
+        "bottom_game_date": "公元1067年1月29日",
+        "selected_army_soldiers_text": "1184",
+        "selected_army_supply_text": "300/300",
+        "selected_army_panel_state_text": "待命",
+        "selected_army_attrition_icon_text": "0%",
+        "map_army_position": "首段后新位置",
+        "map_siege_graphic": "不再见旧围城条",
+        "right_military_panel_open": true,
+        "right_military_total_soldiers_text": 1371,
+        "right_event_troops_text": 186,
+        "right_panel_scope": "总军力/事件兵为其他集合，不是左下选中1184人的同一计数",
+        "pause_banner_visible": true,
+        "tooltip_or_system_modal_visible": false,
+        "old_notification_panel_visible": false,
+        "composition_limit": "右军事面板约占右侧三成画幅，左下Army面板遮部分地图；目标军旗与前后位置仍可见。"
+      },
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false,
+      "AI_sample_viewed": true
+    }
+  ],
+  "span_candidates": [
+    {
+      "id": "R180-old-position-siege-context",
+      "in_seconds": 0,
+      "out_seconds": 8,
+      "support_seconds": [
+        0,
+        4,
+        8
+      ],
+      "purpose": "开场地理与军队上下文候选；1184人、300/300，原生/画面围攻状态，不能改称已处于moving UI。",
+      "source_time_base": "1/1000",
+      "in_PTS_ticks": 0,
+      "out_PTS_ticks": 8000,
+      "state": "CANDIDATE_PENDING_ROOT_CONTINUOUS_REVIEW",
+      "clean_spans_certified": false,
+      "human_1x_review": false,
+      "human_signoff": false
+    },
+    {
+      "id": "R180-arrival-before-after",
+      "in_seconds": 12,
+      "out_seconds": 18,
+      "support_seconds": [
+        12,
+        18
+      ],
+      "purpose": "原位置围攻面板→新位置待命面板、Jan28→Jan29；仅授到达视觉bracket(12,18]秒。",
+      "source_time_base": "1/1000",
+      "in_PTS_ticks": 12000,
+      "out_PTS_ticks": 18000,
+      "state": "CANDIDATE_PENDING_ROOT_CONTINUOUS_REVIEW",
+      "clean_spans_certified": false,
+      "human_1x_review": false,
+      "human_signoff": false
+    },
+    {
+      "id": "R180-arrived-stationary",
+      "in_seconds": 18,
+      "out_seconds": 40,
+      "support_seconds": [
+        18,
+        40
+      ],
+      "purpose": "到达后1184人/300/300/待命留屏；优先剪短，右军事面板持续作为构图限制。",
+      "source_time_base": "1/1000",
+      "in_PTS_ticks": 18000,
+      "out_PTS_ticks": 40000,
+      "state": "CANDIDATE_PENDING_ROOT_CONTINUOUS_REVIEW",
+      "clean_spans_certified": false,
+      "human_1x_review": false,
+      "human_signoff": false
+    }
+  ],
+  "arrival_visual_bracket_seconds": "(12,18]",
+  "exact_first_transition_PTS": null,
+  "marks_scope": "AI proposed source-PTS editorial marks only; no pre-existing clean capture marks/timeline supplied or fabricated",
+  "R02_R03_opening_routing": {
+    "opening": "Candidate for Palermo geography/actual Army18/arrival contrast; retain or later crop right military panel only under compositor policy.",
+    "R02": "Shared land-route/arrival illustration candidate; native day3/4 have route[2645] but state=sieging, so no newly demonstrated moving-UI or complete chapter proof.",
+    "R03": "Shared actual before/after arrival illustration candidate; exact chapter-specific gameplay proof and acceptance remain with intake.",
+    "qualified_R02_R03_positive_credited_here": false
+  },
+  "scope_limits": [
+    "右军力总数和事件兵变化不是选中Army18的县损耗；选中1184人六样本均未变。",
+    "骷髅1%到0%的UI显示不能充当实际物理扣兵；R04 HOLD/conditionfalse和窗口不完整保留。",
+    "0/4/8/12样本是sieging/围攻，不能改称native moving。",
+    "6帧不是连续观看；所有样本暂停不能推断全区间一直暂停。",
+    "不自动提高dynamic0/11，不记录human1×或approval。"
+  ],
+  "R04_positive_accepted": false,
+  "dynamic_counter_auto_increment": 0,
+  "continuous_clean_review": false,
+  "human_1x_review": false,
+  "human_signoff": false,
+  "adapter_GREEN_capture_report_created": false,
+  "raw_SHA_reads": 0,
+  "raw_reencodes": 0,
+  "metadata_probe_count": 1,
+  "strict_whole_decode_count": 1,
+  "extra_seek_count": 0,
+  "new_SDK_desktop_game_main_provider_signoff_actions": 0,
+  "sealing_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\preparation\\seal_r0180_candidates_a01.py",
+    "bytes": 13380,
+    "sha256": "12ec3f02dd6b49584cd6574903e67ff573d7c8437e0eb6a1b9fd220b3ecf4393"
+  }
+}

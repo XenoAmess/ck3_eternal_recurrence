@@ -242,6 +242,27 @@ def compare_merge_supply(before,after,ids):
       'distinct_pre_stock_observed':destination['current_supply_raw']!=source['current_supply_raw'],
       'capacity_predicted_from_quality':False,'source_PC_execution_observed':False,'full_card_closed':False}
 
+def selected_query_ids(frame,army_ids=None,*,split_before_roster=None):
+    """Query scope never changes the complete native snapshot roster."""
+    current=roster(frame)
+    if army_ids is None:
+        need(split_before_roster is None,'split delta requires explicit strategy scope')
+        return sorted(current)
+    need(type(army_ids) is list and 0<len(army_ids)<=32
+         and all(type(i) is int and 0<=i<2**31 for i in army_ids)
+         and len(set(army_ids))==len(army_ids),'complete distinct selected Army IDs required')
+    ids=set(army_ids)
+    if split_before_roster is not None:
+        need(type(split_before_roster) is list and len(set(split_before_roster))==len(split_before_roster),
+             'complete pre-split roster IDs required')
+        old=set(split_before_roster);added=set(current)-old
+        need(len(ids)==1 and ids<=old and len(added)==1 and set(current)==old|added,
+             'fresh split requires exact full snapshot addition and no removal')
+        ids|=added
+    need(ids<=set(current),'selected Army absent from complete snapshot roster')
+    return sorted(ids)
+
+
 class Relay:
     def __init__(self,args,*,transport=None,process_probe=process_time):
         self.a=args;self.repo=args.repo.resolve();self.process_probe=process_probe
@@ -323,7 +344,7 @@ class Relay:
         accounted=sum(p.stat().st_size for directory in (self.run/'requests',self.run/'responses')
                       for p in directory.iterdir() if p.is_file())
         accounted+=sum(p.stat().st_size for p in self.case.rglob('*') if p.is_file())
-        need(accounted+MAX_PACKET+65536<=512*1024*1024,'512MiB run/relay guard cannot admit next packet')
+        need(accounted+MAX_PACKET+65536<=getattr(self,'runtime_total_budget_bytes',512*1024*1024),'admitted run/relay budget cannot admit next packet')
         self.pending=True
         try:value=self.transport.request(identifier,tool,arguments,timeout=55)
         finally:self.pending=not res.exists()
@@ -335,8 +356,10 @@ class Relay:
     def snapshot(self,name):
         value,refs=self.request(name,'ck3_take_snapshot',{'include_native_command_history':False})
         frame=value['body'];validate_frame(frame,self.binding);return frame,refs
-    def packet(self,name):
-        s,sref=self.snapshot(name+'-frame');ids=sorted(roster(s))
+    def packet(self,name,*,army_ids=None,split_before_roster=None,raw_file_limit=None):
+        s,sref=self.snapshot(name+'-frame');full_roster=roster(s)
+        selected=army_ids is not None
+        ids=selected_query_ids(s,army_ids,split_before_roster=split_before_roster)
         cap,cref=self.request(name+'-capabilities','ck3_get_capabilities',{})
         need(READ_CAPS<=set(cap['body'].get('bridge_capabilities',[])),'actual query capabilities missing')
         resume=getattr(self.a,'resume_baseline_strength_response',None)
@@ -354,8 +377,12 @@ class Relay:
         need(path.is_absolute() and path.parent.resolve()==(self.assets/'state-a01/native-session/army-query-history-results').resolve()
              and raw.get('kind')=='complete-driver-army-query-result-json-v1' and raw.get('wire_bytes_preserved') is False,
              'response-local ordinary Driver reference missing; no latest/glob fallback')
+        limit=MAX_DRIVER_RAW if raw_file_limit is None else raw_file_limit(path)
+        need(type(limit) is int and 0<limit<=MAX_DRIVER_RAW,'bounded Driver input limit required')
+        need(type(raw.get('bytes')) is int and 0<=raw['bytes']<=limit and path.stat().st_size<=limit,
+             'response-local Driver exceeds admitted input limit; preserve raw and stop before hash/read')
         actual=driver_raw_pin(path);need(actual['bytes']==raw.get('bytes') and actual['sha256']==raw.get('sha256'),'Driver ref bytes/SHA differs')
-        q=load(path,MAX_DRIVER_RAW)
+        q=load(path,limit)
         need(ev.get('machine_id')==MACHINE and ev.get('request_id')==row['request']['request_id']
              and ev.get('query_sequence')==q.get('query_sequence'),'response-local query sequence differs')
         need(q.get('accepted') is True and q.get('status') in {'available','partial'}
@@ -368,7 +395,11 @@ class Relay:
             need(q.get(qkey)==s.get(skey),'query frame differs: '+qkey)
         need(q.get('queried_connection_generation')==self.binding['generation'],'query connection differs')
         armies=q.get('army_strengths');need(type(armies) is list and sorted(v.get('army_id') for v in armies)==ids,'incomplete Army strength map')
-        available,excluded=selected_available_cohorts(armies,s,self.a.army_id)
+        if selected:
+            need(q.get('status')=='available' and (q.get('army_strengths_query_scope') or {}).get('published_scope_status')=='available'
+                 and all(a.get('status')=='available' for a in armies),'actual selected query unavailable; no row deletion or zero fill')
+            available,excluded=armies,[]
+        else:available,excluded=selected_available_cohorts(armies,s,self.a.army_id)
         self.observation.compare_split_merge_cohorts(available,available)
         commanders={};commander_refs={}
         for army in available:
@@ -397,7 +428,9 @@ class Relay:
                  'paused','map_ready','played_character','player_armies')}
         frame['diagnostics']={k:s['diagnostics'][k] for k in ('bridge_pid','connection_generation','connected','hello')}
         return {'frame':frame,'excluded_unavailable_cohorts':excluded,
-          'qualified_scope':'selected available pair; unchanged other available cohorts; explicit unavailable row excluded',
+          'strategy_army_ids':ids if selected else None,
+          'unrelated_physical_DATA_coverage':'not_requested' if selected else 'available_cohorts_only',
+          'qualified_scope':'only strategy cohort audited; complete snapshot roster retained' if selected else 'selected available pair; unchanged other available cohorts; explicit unavailable row excluded',
           'all_roster_strengths_qualified':False,'R09_full_card_closed':False,
           'query':qp,'commanders':commanders,'capabilities':cap['body'],
           'refs':{'snapshot':sref,'capabilities':cref,'strength_response':qref,'strength_raw':actual,
@@ -415,9 +448,9 @@ class Relay:
         return value
     def save_packet(self,name,packet,**extra):
         return write_new(self.case/(name+'.actual.json'),{**self.meta,'packet':packet,**extra})
-    def baseline(self):
+    def baseline(self,*,strategy_scope=False,raw_file_limit=None):
         need(not (self.case/'split.once.claim.json').exists(),'split already claimed; baseline cannot reset case')
-        packet=self.packet('baseline');need(self.a.army_id in roster(packet['frame']),'Root selected source absent')
+        packet=self.packet('baseline',army_ids=[self.a.army_id] if strategy_scope else None,raw_file_limit=raw_file_limit);need(self.a.army_id in roster(packet['frame']),'Root selected source absent')
         return self.save_packet('baseline',packet,source_army_id=self.a.army_id,live_split_merge_qualification=False,R09_full_card_closed=False)
     def submit_once(self,kind):
         phase='baseline' if kind=='split' else 'pre-merge' if (self.case/'pre-merge.actual.json').exists() else 'post-split'
@@ -473,15 +506,19 @@ class Relay:
         value.update(excluded_unavailable_cohorts=list(post_ex.values()),all_roster_strengths_qualified=False)
         need(value['frozen_exact_cohort_pass'],'unrelated Army cohort changed')
         return value
-    def post_split(self):
-        claim,original=self.original('split');before=self.saved('baseline');after=self.packet('post-split')
+    def post_split(self,*,strategy_scope=False,raw_file_limit=None):
+        claim,original=self.original('split');before=self.saved('baseline')
+        source=before['source_army_id']
+        after=self.packet('post-split',army_ids=[source] if strategy_scope else None,
+          split_before_roster=list(roster(before['packet']['frame'])) if strategy_scope else None,raw_file_limit=raw_file_limit)
         observed=self.save_packet('post-split-observation',after,original_action=original,
           qualification='Independent packet only; assertions have not run')
         source=before['source_army_id']
         result=self.consumer.assert_fresh_split_transfer_12004(before['packet']['frame'],after['frame'],source_army_id=source,
           pre_strengths=before['packet']['query'],post_strengths=after['query'],pre_commander=before['packet']['commanders'][str(source)],
           post_commanders={int(k):v for k,v in after['commanders'].items()})
-        unchanged=self.unchanged_others(before['packet'],after,[source])
+        unchanged=({'coverage':'not_requested','only_strategy_cohort_audited':True} if strategy_scope
+                   else self.unchanged_others(before['packet'],after,[source]))
         old={v['army_id']:v for v in before['packet']['query']['army_strengths']}
         new={v['army_id']:v for v in after['query']['army_strengths']}
         supply_fields=('current_supply_raw','current_supply_scale','current_supply_capacity_raw','current_supply_capacity_scale')

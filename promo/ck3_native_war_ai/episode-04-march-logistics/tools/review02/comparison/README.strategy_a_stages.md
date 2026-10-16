@@ -74,3 +74,22 @@ DATA/query/log peak separately. No source or binary algorithm changed here.
 
 Packaging source machine_id: `desktop-3fevhd2-1c74096080`; exact UTC, source pins,
 layout/apply checks and unchanged-program proof are in the external READY receipt.
+
+
+## Explicit post-arrival common horizon
+
+`advance-common-horizon --days 1..30 --state <exact prior STATE>` is a separate
+Root stage. It requires an independently observed first arrival and a plan
+frozen before its cold runtime with `follow_after_arrival_to_day90=true` and
+`post_arrival_policy="hold-arrival-position-until-day90"`. It reuses the existing
+exact_day and permanent Arm/Resume claims; no Move is submitted. Starting at90
+is rejected, and a batch never passes the original absolute day90.
+
+First arrival, its endpoint and interval remain fixed. Source/runtime/Army,
+commander, ordered cached ArRg IDs/max and full DATA container/record identities
+and maxima stay fenced. Current soldiers, supply and wallet may change naturally.
+A hold interruption preserves the actual completed day/state/endpoint in
+`HOLD-INTERRUPTION.actual.json` before failing; it is not erased as no advance.
+Unknown Arm/Resume use the original claims and responses, without automatic retry.
+Original `advance` still stops on arrival; original `post` remains readonly.
+This source adds no new live qualification, storage reservation or deadline.

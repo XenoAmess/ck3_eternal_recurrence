@@ -1,0 +1,33 @@
+[Script Info]
+Title: 换机器复用判断方法
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.79,English,en-0,0,0,0,,{\q2}This method can be taken to another machine.
+Dialogue: 2,0:00:00.10,0:00:03.43,Chinese,zh-0,0,0,0,,{\q2}这套读法也可以带到另一台机器。
+Dialogue: 1,0:00:02.79,0:00:07.94,English,en-1,0,0,0,,{\q2}The reusable parts are the mechanics, reading methods, and order of checks: confirm
+Dialogue: 2,0:00:03.43,0:00:07.48,Chinese,zh-1,0,0,0,,{\q2}可复用的是机制、读取方法和核对顺序
+Dialogue: 2,0:00:07.48,0:00:11.53,Chinese,zh-2,0,0,0,,{\q2}：先确认当前游戏版本，再把人物、军
+Dialogue: 1,0:00:07.94,0:00:13.08,English,en-2,0,0,0,,{\q2}the current game version, then align the character, army, date, and the same paused
+Dialogue: 2,0:00:11.53,0:00:15.11,Chinese,zh-3,0,0,0,,{\q2}队、日期和同一次暂停状态对齐。
+Dialogue: 1,0:00:13.08,0:00:13.45,English,en-3,0,0,0,,{\q2}state.
+Dialogue: 1,0:00:13.45,0:00:17.98,English,en-4,0,0,0,,{\q2}Which route was actually traveled, how many troops were lost, and whether
+Dialogue: 2,0:00:15.11,0:00:18.82,Chinese,zh-4,0,0,0,,{\q2}实际走过哪条路、少了多少人、是否真
+Dialogue: 1,0:00:17.98,0:00:22.39,English,en-5,0,0,0,,{\q2}payment really occurred must still be answered by the new session's own
+Dialogue: 2,0:00:18.82,0:00:22.54,Chinese,zh-5,0,0,0,,{\q2}的付款，仍由新会话自己的记录回答。
+Dialogue: 1,0:00:22.39,0:00:22.88,English,en-6,0,0,0,,{\q2}records.
+Dialogue: 2,0:00:22.54,0:00:26.37,Chinese,zh-6,0,0,0,,{\q2}保留下来的原件能重算旧结论；它们不会
+Dialogue: 1,0:00:22.88,0:00:26.56,English,en-7,0,0,0,,{\q2}Retained originals allow old conclusions to be recalculated.
+Dialogue: 2,0:00:26.37,0:00:29.99,Chinese,zh-7,0,0,0,,{\q2}替另一台机器生成一次新的行军结果。
+Dialogue: 1,0:00:26.56,0:00:30.05,English,en-8,0,0,0,,{\q2}They do not create a new march result on another machine.

@@ -1,0 +1,35 @@
+[Script Info]
+Title: 罗贝尔新案与独立运行
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.86,English,en-0,0,0,0,,{\q2}For this episode, we switch to Robert of Apulia in version 1.20.0.4.
+Dialogue: 2,0:00:00.10,0:00:03.22,Chinese,zh-0,0,0,0,,{\q2}本期改用阿普利亚的罗贝尔，游
+Dialogue: 2,0:00:03.22,0:00:06.12,Chinese,zh-1,0,0,0,,{\q2}戏版本为一点二零点零点四。
+Dialogue: 1,0:00:04.86,0:00:08.78,English,en-1,0,0,0,,{\q2}A new normal campaign gives us one consistent character
+Dialogue: 2,0:00:06.12,0:00:09.64,Chinese,zh-2,0,0,0,,{\q2}新的普通战役给我们同一个人物来源
+Dialogue: 1,0:00:08.78,0:00:12.90,English,en-2,0,0,0,,{\q2}origin, and separate normal loads let us observe different
+Dialogue: 2,0:00:09.64,0:00:13.17,Chinese,zh-3,0,0,0,,{\q2}，再用独立正常载入观察不同操作。
+Dialogue: 1,0:00:12.90,0:00:13.47,English,en-3,0,0,0,,{\q2}actions.
+Dialogue: 2,0:00:13.17,0:00:16.72,Chinese,zh-4,0,0,0,,{\q2}画面会标清是哪一场、哪一天。
+Dialogue: 1,0:00:13.47,0:00:16.34,English,en-4,0,0,0,,{\q2}Each scene will identify its run and day.
+Dialogue: 1,0:00:16.34,0:00:19.14,English,en-5,0,0,0,,{\q2}We can compare separate loads, but will
+Dialogue: 2,0:00:16.72,0:00:20.66,Chinese,zh-5,0,0,0,,{\q2}前后两次载入可以比较各自结果，但不会剪
+Dialogue: 1,0:00:19.14,0:00:21.72,English,en-6,0,0,0,,{\q2}not edit them into one uninterrupted
+Dialogue: 2,0:00:20.66,0:00:24.59,Chinese,zh-6,0,0,0,,{\q2}成一段没有中断的现场；旧版本威廉案例的
+Dialogue: 1,0:00:21.72,0:00:22.29,English,en-7,0,0,0,,{\q2}session.
+Dialogue: 1,0:00:22.29,0:00:24.95,English,en-8,0,0,0,,{\q2}William's troop counts from the older
+Dialogue: 2,0:00:24.59,0:00:28.11,Chinese,zh-7,0,0,0,,{\q2}具体人数，也不叠到罗贝尔的军队上。
+Dialogue: 1,0:00:24.95,0:00:27.82,English,en-9,0,0,0,,{\q2}version will not be overlaid on Robert's
+Dialogue: 1,0:00:27.82,0:00:28.18,English,en-10,0,0,0,,{\q2}army.

@@ -1,0 +1,36 @@
+[Script Info]
+Title: 阈值规则与实测边界
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.98,English,en-0,0,0,0,,{\q2}Both lock tests used progress strictly
+Dialogue: 2,0:00:00.10,0:00:02.96,Chinese,zh-0,0,0,0,,{\q2}这两次锁定测试，都选择了进
+Dialogue: 2,0:00:02.96,0:00:05.83,Chinese,zh-1,0,0,0,,{\q2}度严格超过当次阈值的时刻。
+Dialogue: 1,0:00:02.98,0:00:05.94,English,en-1,0,0,0,,{\q2}above the threshold read for that test.
+Dialogue: 2,0:00:05.83,0:00:09.03,Chinese,zh-2,0,0,0,,{\q2}现在能确认的是：超过以后，停
+Dialogue: 1,0:00:05.94,0:00:08.02,English,en-2,0,0,0,,{\q2}They show what stopping and
+Dialogue: 1,0:00:08.02,0:00:10.56,English,en-3,0,0,0,,{\q2}rerouting actually retained after
+Dialogue: 2,0:00:09.03,0:00:12.22,Chinese,zh-3,0,0,0,,{\q2}止和改道各自实际留下了什么。
+Dialogue: 1,0:00:10.56,0:00:11.48,English,en-4,0,0,0,,{\q2}crossing it.
+Dialogue: 1,0:00:11.48,0:00:16.05,English,en-5,0,0,0,,{\q2}The current route code selects a committed first leg using a
+Dialogue: 2,0:00:12.22,0:00:16.72,Chinese,zh-4,0,0,0,,{\q2}当前路线实现按“严格大于”选取已经承诺的
+Dialogue: 1,0:00:16.05,0:00:20.53,English,en-6,0,0,0,,{\q2}strict greater-than comparison; equality falls on the other
+Dialogue: 2,0:00:16.72,0:00:21.21,Chinese,zh-5,0,0,0,,{\q2}首段，正好相等落在另一侧；这是代码规则。
+Dialogue: 1,0:00:20.53,0:00:20.92,English,en-7,0,0,0,,{\q2}side.
+Dialogue: 1,0:00:20.92,0:00:22.56,English,en-8,0,0,0,,{\q2}That is the code rule.
+Dialogue: 2,0:00:21.21,0:00:26.30,Chinese,zh-6,0,0,0,,{\q2}正好一半那一帧的停止与改道，并没有在这两场里实测
+Dialogue: 1,0:00:22.56,0:00:26.52,English,en-9,0,0,0,,{\q2}Neither test measured stopping or rerouting at exact
+Dialogue: 2,0:00:26.30,0:00:31.17,Chinese,zh-7,0,0,0,,{\q2}，不能把超过阈值的结果写成等号边界也已经验证。
+Dialogue: 1,0:00:26.52,0:00:30.56,English,en-10,0,0,0,,{\q2}equality, so these results do not verify the equality
+Dialogue: 1,0:00:30.56,0:00:31.25,English,en-11,0,0,0,,{\q2}boundary.

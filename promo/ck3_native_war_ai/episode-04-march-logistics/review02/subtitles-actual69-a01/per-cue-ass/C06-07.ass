@@ -1,0 +1,33 @@
+[Script Info]
+Title: 实际补员和到场后重读
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.43,English,en-0,0,0,0,,{\q2}Read troop recovery in the same order.
+Dialogue: 2,0:00:00.10,0:00:03.09,Chinese,zh-0,0,0,0,,{\q2}兵员恢复也按这个顺序看。
+Dialogue: 1,0:00:02.43,0:00:05.55,English,en-1,0,0,0,,{\q2}Reinforcement preparation values, eligibility, and
+Dialogue: 2,0:00:03.09,0:00:08.15,Chinese,zh-1,0,0,0,,{\q2}补员准备值、许可和计算出的请求，说明条件走到
+Dialogue: 1,0:00:05.55,0:00:08.80,English,en-2,0,0,0,,{\q2}calculated requests show how far the conditions have
+Dialogue: 2,0:00:08.15,0:00:12.99,Chinese,zh-2,0,0,0,,{\q2}了哪一步；真正新增多少，要看兵槽实际写入。
+Dialogue: 1,0:00:08.80,0:00:09.49,English,en-3,0,0,0,,{\q2}progressed.
+Dialogue: 1,0:00:09.49,0:00:12.86,English,en-4,0,0,0,,{\q2}Actual additions require the writes to the troop slots.
+Dialogue: 1,0:00:12.86,0:00:17.64,English,en-5,0,0,0,,{\q2}The net change across one update can also include zeroing and cache refreshes.
+Dialogue: 2,0:00:12.99,0:00:15.98,Chinese,zh-3,0,0,0,,{\q2}一次更新的前后净变化里，还
+Dialogue: 2,0:00:15.98,0:00:18.74,Chinese,zh-4,0,0,0,,{\q2}可能夹着清零和缓存刷新。
+Dialogue: 1,0:00:17.64,0:00:19.78,English,en-6,0,0,0,,{\q2}After arrival, reread stock, troop
+Dialogue: 2,0:00:18.74,0:00:23.00,Chinese,zh-5,0,0,0,,{\q2}到场以后，再按新地点读库存、缺员和当
+Dialogue: 1,0:00:19.78,0:00:22.41,English,en-7,0,0,0,,{\q2}shortfalls, and current conditions for the
+Dialogue: 1,0:00:22.41,0:00:23.23,English,en-8,0,0,0,,{\q2}new location.
+Dialogue: 2,0:00:23.00,0:00:27.26,Chinese,zh-6,0,0,0,,{\q2}前条件，别沿用海上或出发时的旧判断。
+Dialogue: 1,0:00:23.23,0:00:27.34,English,en-9,0,0,0,,{\q2}Do not carry over old judgments from the sea or the starting point.

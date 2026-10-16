@@ -1,0 +1,32 @@
+[Script Info]
+Title: 到达表与同日表
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.58,English,en-0,0,0,0,,{\q2}The arrival table first lists each plan's own arrival time and arrival state.
+Dialogue: 2,0:00:00.10,0:00:03.93,Chinese,zh-0,0,0,0,,{\q2}抵达表先列各方案自己的到场时间和到
+Dialogue: 2,0:00:03.93,0:00:07.76,Chinese,zh-1,0,0,0,,{\q2}场状态；同日表再列第七、第十四、第
+Dialogue: 1,0:00:04.58,0:00:07.49,English,en-1,0,0,0,,{\q2}The same-day table then lists the actual readings
+Dialogue: 1,0:00:07.49,0:00:09.87,English,en-2,0,0,0,,{\q2}on days seven, fourteen, twenty-one, and
+Dialogue: 2,0:00:07.76,0:00:11.14,Chinese,zh-2,0,0,0,,{\q2}二十一和第二十八天的实际读数。
+Dialogue: 1,0:00:09.87,0:00:10.64,English,en-3,0,0,0,,{\q2}twenty-eight.
+Dialogue: 1,0:00:10.64,0:00:12.45,English,en-4,0,0,0,,{\q2}Read the two tables separately.
+Dialogue: 2,0:00:11.14,0:00:13.14,Chinese,zh-3,0,0,0,,{\q2}两种表分开看。
+Dialogue: 1,0:00:12.45,0:00:15.21,English,en-5,0,0,0,,{\q2}Any additional recovery opportunities and costs
+Dialogue: 2,0:00:13.14,0:00:18.62,Chinese,zh-4,0,0,0,,{\q2}走得更久的一队，多出来的恢复机会和费用也属于行程的一部
+Dialogue: 1,0:00:15.21,0:00:18.09,English,en-6,0,0,0,,{\q2}from the longer journey are part of that journey.
+Dialogue: 1,0:00:18.09,0:00:20.65,English,en-7,0,0,0,,{\q2}Troop counts from different dates cannot be
+Dialogue: 2,0:00:18.62,0:00:23.89,Chinese,zh-5,0,0,0,,{\q2}分，不能拿不同日期的人数，直接称为同一天的补员优势。
+Dialogue: 1,0:00:20.65,0:00:23.38,English,en-8,0,0,0,,{\q2}presented directly as a same-day reinforcement
+Dialogue: 1,0:00:23.38,0:00:23.98,English,en-9,0,0,0,,{\q2}advantage.

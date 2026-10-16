@@ -1,0 +1,32 @@
+[Script Info]
+Title: 低补给的阈值和实际应用
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.09,English,en-0,0,0,0,,{\q2}Low supply also depends on the threshold table loaded for that run.
+Dialogue: 2,0:00:00.10,0:00:03.88,Chinese,zh-0,0,0,0,,{\q2}低补给还要看当次加载的阈值表。
+Dialogue: 2,0:00:03.88,0:00:06.20,Chinese,zh-1,0,0,0,,{\q2}按原版十的那条边界，
+Dialogue: 1,0:00:04.09,0:00:07.83,English,en-1,0,0,0,,{\q2}At the vanilla boundary of ten, nine point nine nine nine nine
+Dialogue: 2,0:00:06.20,0:00:09.90,Chinese,zh-2,0,0,0,,{\q2}九点九九九九九已经低于十，正好十
+Dialogue: 1,0:00:07.83,0:00:11.76,English,en-2,0,0,0,,{\q2}nine is already below ten, while exactly ten remains on the other
+Dialogue: 2,0:00:09.90,0:00:11.29,Chinese,zh-3,0,0,0,,{\q2}仍在另一侧。
+Dialogue: 2,0:00:11.29,0:00:15.69,Chinese,zh-4,0,0,0,,{\q2}游戏先更新库存，再计算这次供给损失；
+Dialogue: 1,0:00:11.76,0:00:12.06,English,en-3,0,0,0,,{\q2}side.
+Dialogue: 1,0:00:12.06,0:00:15.93,English,en-4,0,0,0,,{\q2}The game updates stock before calculating the supply-loss budget.
+Dialogue: 2,0:00:15.69,0:00:19.84,Chinese,zh-5,0,0,0,,{\q2}舰队、宽限和兵团条件也会影响结果。
+Dialogue: 1,0:00:15.93,0:00:19.56,English,en-5,0,0,0,,{\q2}Fleet, grace, and regiment conditions also affect the result.
+Dialogue: 1,0:00:19.56,0:00:22.17,English,en-6,0,0,0,,{\q2}Low stock and how many troops were actually
+Dialogue: 2,0:00:19.84,0:00:25.33,Chinese,zh-6,0,0,0,,{\q2}所以库存低，和这次确实扣了多少兵，仍要分别确认。
+Dialogue: 1,0:00:22.17,0:00:24.72,English,en-7,0,0,0,,{\q2}deducted must therefore still be confirmed
+Dialogue: 1,0:00:24.72,0:00:25.39,English,en-8,0,0,0,,{\q2}separately.

@@ -1,0 +1,30 @@
+[Script Info]
+Title: 当地压力与携带库存
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.54,English,en-0,0,0,0,,{\q2}Carried supply, carrying capacity and the number of
+Dialogue: 2,0:00:00.10,0:00:03.95,Chinese,zh-0,0,0,0,,{\q2}军队携带的补给、能够携带的容量，以及
+Dialogue: 1,0:00:03.54,0:00:07.12,English,en-1,0,0,0,,{\q2}soldiers a location can support have their own units.
+Dialogue: 2,0:00:03.95,0:00:07.80,Chinese,zh-1,0,0,0,,{\q2}当地能支持多少士兵，各有自己的单位。
+Dialogue: 1,0:00:07.12,0:00:09.80,English,en-2,0,0,0,,{\q2}If both armies remain in the same place
+Dialogue: 2,0:00:07.80,0:00:13.05,Chinese,zh-2,0,0,0,,{\q2}分兵以后，两队仍在同一个地方，就还要看当地实际用
+Dialogue: 1,0:00:09.80,0:00:12.33,English,en-3,0,0,0,,{\q2}after a split, check the actual local
+Dialogue: 1,0:00:12.33,0:00:12.74,English,en-4,0,0,0,,{\q2}usage.
+Dialogue: 1,0:00:12.74,0:00:15.55,English,en-5,0,0,0,,{\q2}Looking only at the smaller army does not
+Dialogue: 2,0:00:13.05,0:00:18.08,Chinese,zh-3,0,0,0,,{\q2}量；不能只盯着较小的那队，便认定压力已经消失。
+Dialogue: 1,0:00:15.55,0:00:17.67,English,en-6,0,0,0,,{\q2}establish that the pressure has
+Dialogue: 1,0:00:17.67,0:00:18.50,English,en-7,0,0,0,,{\q2}disappeared.
+Dialogue: 2,0:00:18.08,0:00:22.12,Chinese,zh-4,0,0,0,,{\q2}离开原地后，也要重新读新地点的条件。
+Dialogue: 1,0:00:18.50,0:00:22.18,English,en-8,0,0,0,,{\q2}After moving, read the new location's conditions again.

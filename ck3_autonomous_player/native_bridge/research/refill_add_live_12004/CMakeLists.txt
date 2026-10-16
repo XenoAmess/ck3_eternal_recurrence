@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.24)
+project(refill_add_live_12004 LANGUAGES CXX)
+option(XAR_ENABLE_REFILL_ADD_HWPROBE_12004 "Explicit Root-owned instruction ADD observation" OFF)
+add_executable(refill_add_hwprobe_12004 ../refill_add_hwprobe_12004.cpp)
+target_compile_features(refill_add_hwprobe_12004 PRIVATE cxx_std_20)
+add_executable(refill_add_thread_ownership_policy_test thread_ownership_policy_test.cpp)
+target_compile_features(refill_add_thread_ownership_policy_test PRIVATE cxx_std_20)
+target_compile_definitions(refill_add_hwprobe_12004 PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  XAR_ENABLE_REFILL_ADD_HWPROBE_12004=$<BOOL:${XAR_ENABLE_REFILL_ADD_HWPROBE_12004}>)
+if(MSVC)
+  target_compile_options(refill_add_hwprobe_12004 PRIVATE /EHsc /W4)
+  target_link_options(refill_add_hwprobe_12004 PRIVATE /INCREMENTAL:NO)
+endif()

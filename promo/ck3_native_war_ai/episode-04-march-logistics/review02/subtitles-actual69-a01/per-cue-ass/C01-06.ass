@@ -1,0 +1,31 @@
+[Script Info]
+Title: 时间读数先标范围
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.55,English,en-0,0,0,0,,{\q2}A march has several kinds of timing.
+Dialogue: 2,0:00:00.10,0:00:02.43,Chinese,zh-0,0,0,0,,{\q2}行军还有几种时间。
+Dialogue: 2,0:00:02.43,0:00:07.95,Chinese,zh-1,0,0,0,,{\q2}地图预览给计划，军队窗口给当前估计，当前首段有自己
+Dialogue: 1,0:00:02.55,0:00:06.76,English,en-1,0,0,0,,{\q2}The map preview gives a plan; the army window gives a current
+Dialogue: 1,0:00:06.76,0:00:10.76,English,en-2,0,0,0,,{\q2}estimate; the first leg has its own progress and remaining
+Dialogue: 2,0:00:07.95,0:00:13.25,Chinese,zh-2,0,0,0,,{\q2}的进度和剩余时量；军队真正到达，又是后来的结果。
+Dialogue: 1,0:00:10.76,0:00:11.38,English,en-3,0,0,0,,{\q2}duration.
+Dialogue: 1,0:00:11.38,0:00:13.69,English,en-4,0,0,0,,{\q2}Actual arrival is a later outcome.
+Dialogue: 2,0:00:13.25,0:00:17.91,Chinese,zh-3,0,0,0,,{\q2}整条路线与第一段的数字不同，不一定互相矛盾。
+Dialogue: 1,0:00:13.69,0:00:18.72,English,en-5,0,0,0,,{\q2}Different figures for the whole route and its first leg need not conflict.
+Dialogue: 2,0:00:17.91,0:00:23.17,Chinese,zh-4,0,0,0,,{\q2}我们会把它们各自描述的范围标出来，再用实际位置和剩
+Dialogue: 1,0:00:18.72,0:00:22.99,English,en-6,0,0,0,,{\q2}We will label their scope, then verify arrival from the actual
+Dialogue: 1,0:00:22.99,0:00:27.81,English,en-7,0,0,0,,{\q2}position and remaining route, rather than making one date mean several
+Dialogue: 2,0:00:23.17,0:00:28.22,Chinese,zh-5,0,0,0,,{\q2}余路线核对到达，让一个日期不再承担几种不同意思。
+Dialogue: 1,0:00:27.81,0:00:28.30,English,en-8,0,0,0,,{\q2}things.

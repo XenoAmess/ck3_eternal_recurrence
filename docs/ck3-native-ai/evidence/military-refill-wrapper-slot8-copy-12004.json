@@ -1,0 +1,146 @@
+{
+  "schema": "xar.ck3.refill-wrapper-slot8-copy.12004.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T01:52:18.620357+00:00",
+  "status": "SLOT8_OBJECT_COPY_SOURCE_CLOSED_NOT_FLAG_EXECUTOR",
+  "slot8_source": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T01:48:11.202105+00:00",
+    "plan_path": "C:\\ck3-e04-resume-20261015-a01\\refill-factory-slot8-source-a14\\source-plan-slot8.json",
+    "plan_sha256": "64f12a2e4dea42138213cfbf6e07e49f4c4f0a05d698a0c208de969d79f1554f",
+    "reader_source_sha256": "89c9e84399425dbffc81fc0ad1ee2d1379957ae0598f62565dc355c80132a39a",
+    "source_identity": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+    "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "exact_data_rva": "476A560",
+    "file_offset": 74879840,
+    "raw_hex": "f07a974201000000",
+    "raw_and_ledger_fsynced_before_decode": true,
+    "preferred_image_base": 5368709120,
+    "pointer_preferred_va_hex": "142977AF0",
+    "derived_target_rva": "2977AF0",
+    "derived_target_in_image_text": true,
+    "metadata_bytes": 0,
+    "data_bytes": 8,
+    "reads": 1,
+    "error": null,
+    "no_other_EXE_or_runtime_access": true
+  },
+  "function": {
+    "schema": "xar.e04.actual4.exact-source-body.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T01:49:02.702238+00:00",
+    "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_identity_path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+    "full_exe_hash_recomputed": false,
+    "extent": {
+      "begin_rva": "2977AF0",
+      "end_rva_exclusive": "2977B73",
+      "size": 131,
+      "pdata_index": 142363,
+      "unwind_rva": "5109D50",
+      "unwind_version": 1,
+      "unwind_flags": 0,
+      "unique_entry": true,
+      "chained": false
+    },
+    "file_offset": 43478768,
+    "span_sha256": "8375968c28a031e073f4af5a9d2b3e8e04558f2ac4fc8fb99d6e7e0bdbec9986",
+    "raw_and_ledger_fsynced_before_decode": true,
+    "decoded_bytes": 131,
+    "all_extent_bytes_decoded": true,
+    "instruction_count": 34,
+    "assembly_path": "2977AF0.asm",
+    "calls": [
+      {
+        "rva": "2977B05",
+        "bytes": "e88ac08a01",
+        "mnemonic": "call",
+        "operands": "0x4223b94",
+        "direct_target_rva": "4223B94"
+      }
+    ],
+    "branches": [],
+    "external_edges_not_followed": true
+  },
+  "raw_hex": "48895c2408574883ec20488bd9488bfab930000000e88ac08a014c8bc8488d059435b101498901488d05022adf01440fb6430845884108448b430c4589410c448b4310458941108b5314498901488d05ac29df0149894118418951148b4320418941208b4324418941240fb64328488b5c243041884128488bc74c890f4883c4205fc3",
+  "assembly": " 2977AF0 48895c2408                     mov      qword ptr [rsp + 8], rbx\n 2977AF5 57                             push     rdi\n 2977AF6 4883ec20                       sub      rsp, 0x20\n 2977AFA 488bd9                         mov      rbx, rcx\n 2977AFD 488bfa                         mov      rdi, rdx\n 2977B00 b930000000                     mov      ecx, 0x30\n 2977B05 e88ac08a01                     call     0x4223b94\n 2977B0A 4c8bc8                         mov      r9, rax\n 2977B0D 488d059435b101                 lea      rax, [rip + 0x1b13594]\n 2977B14 498901                         mov      qword ptr [r9], rax\n 2977B17 488d05022adf01                 lea      rax, [rip + 0x1df2a02]\n 2977B1E 440fb64308                     movzx    r8d, byte ptr [rbx + 8]\n 2977B23 45884108                       mov      byte ptr [r9 + 8], r8b\n 2977B27 448b430c                       mov      r8d, dword ptr [rbx + 0xc]\n 2977B2B 4589410c                       mov      dword ptr [r9 + 0xc], r8d\n 2977B2F 448b4310                       mov      r8d, dword ptr [rbx + 0x10]\n 2977B33 45894110                       mov      dword ptr [r9 + 0x10], r8d\n 2977B37 8b5314                         mov      edx, dword ptr [rbx + 0x14]\n 2977B3A 498901                         mov      qword ptr [r9], rax\n 2977B3D 488d05ac29df01                 lea      rax, [rip + 0x1df29ac]\n 2977B44 49894118                       mov      qword ptr [r9 + 0x18], rax\n 2977B48 41895114                       mov      dword ptr [r9 + 0x14], edx\n 2977B4C 8b4320                         mov      eax, dword ptr [rbx + 0x20]\n 2977B4F 41894120                       mov      dword ptr [r9 + 0x20], eax\n 2977B53 8b4324                         mov      eax, dword ptr [rbx + 0x24]\n 2977B56 41894124                       mov      dword ptr [r9 + 0x24], eax\n 2977B5A 0fb64328                       movzx    eax, byte ptr [rbx + 0x28]\n 2977B5E 488b5c2430                     mov      rbx, qword ptr [rsp + 0x30]\n 2977B63 41884128                       mov      byte ptr [r9 + 0x28], al\n 2977B67 488bc7                         mov      rax, rdi\n 2977B6A 4c890f                         mov      qword ptr [rdi], r9\n 2977B6D 4883c420                       add      rsp, 0x20\n 2977B71 5f                             pop      rdi\n 2977B72 c3                             ret      \n",
+  "source_semantics": {
+    "requested_size_at_4223B94_call": 48,
+    "allocator_callee_source_read": false,
+    "output_pointer_argument": "RDX (savedRDI)",
+    "returned_value": "original output pointer argument; writes returned call object pointer into [RDX]",
+    "final_wrapper_descriptor_rva": "476A520",
+    "embedded_descriptor_rva": "476A4F0",
+    "embedded_descriptor_object_offset": "18",
+    "copied_fields": [
+      {
+        "offset": "8",
+        "width": 1
+      },
+      {
+        "offset": "C",
+        "width": 4
+      },
+      {
+        "offset": "10",
+        "width": 4
+      },
+      {
+        "offset": "14",
+        "width": 4
+      },
+      {
+        "offset": "20",
+        "width": 4
+      },
+      {
+        "offset": "24",
+        "width": 4
+      },
+      {
+        "offset": "28",
+        "width": 1
+      }
+    ],
+    "owner_full_id_wrapper_offset": "24",
+    "desired_bool_wrapper_offset": "28",
+    "owner_full_id_embedded_offset": "C",
+    "desired_bool_embedded_offset": "10",
+    "constant_dword_one_wrapper_offset": "20",
+    "constant_one_role_proven": false,
+    "direct_4A9_write": false,
+    "sync_or_queued_submission_proven": false,
+    "external_callees_followed": false
+  },
+  "receiver_contract": {
+    "held_source_files": [
+      "3A9F960",
+      "3AC38C0",
+      "3E4C090"
+    ],
+    "callback_F0_is_MilitaryView_proven": false,
+    "receiver_selection": {
+      "index_pointer_argblock_offset": "B0",
+      "index_count_argblock_offset": "BC",
+      "index_selection": "last signed32 index",
+      "variable_entry_stride": 16,
+      "variable_pointer_offset": 0,
+      "variable_type_offset": 8,
+      "required_type_id": 635,
+      "actual_chain_count": 0,
+      "actual_receiver_flag": 0,
+      "final_kind": 3,
+      "final_call_site_rva": "3E4C202"
+    },
+    "normal_call": "Original source-bound callback slot2 ->3AA30E0 ->3A9F960 ->3AC38C0 ->3E4C090 ->1303D40 ->12FF8D0",
+    "readonly_getter_first_missing_exact_source": "3AC3EF0",
+    "edge_proof": "3AC3B55 CALL3AC3EF0; RCX=GuiContext,RDX=&variablesbuffer, before final evaluator",
+    "additional_argument_preparation_source": "3E4BC50 (called3E4C0C6); not read",
+    "implementation_rule": "Resolve stable actual typed receiver under fixed source-bound GUI context; requiretype635/nonnull, then validate native receiver+218 fullCharacter generation and Character+1C0/+4A9. No [F0+218], player substitute or arbitrary pointer public API."
+  },
+  "future_execution_guard": "Dispatch only the fixed stock outer reinforcement control with exact source/profile/ownerthread/modal/world revision guards and one-shot ticket; independent sameowner raw4A9 after. No action credited here.",
+  "next_flag_executor_source": "Source-proven descriptor476A4F0, but method slot roles are not established; do not guess a slot.",
+  "actual_flag_transition_observed": false,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false
+}

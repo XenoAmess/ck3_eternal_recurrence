@@ -1,0 +1,31 @@
+[Script Info]
+Title: 合军后保留实际效果
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.92,English,en-0,0,0,0,,{\q2}Regrouping means both armies have reached the
+Dialogue: 2,0:00:00.10,0:00:05.30,Chinese,zh-0,0,0,0,,{\q2}会合是两队到了同一地点，合并以后才成为一支。
+Dialogue: 1,0:00:02.92,0:00:05.75,English,en-1,0,0,0,,{\q2}same place; only merging turns them into one.
+Dialogue: 2,0:00:05.30,0:00:08.22,Chinese,zh-1,0,0,0,,{\q2}合后要再读库存、容量、
+Dialogue: 1,0:00:05.75,0:00:10.84,English,en-2,0,0,0,,{\q2}After the merge, reread stock, capacity, the actual commander, and every regiment.
+Dialogue: 2,0:00:08.22,0:00:10.87,Chinese,zh-2,0,0,0,,{\q2}实际统帅和全部兵团。
+Dialogue: 1,0:00:10.84,0:00:14.63,English,en-3,0,0,0,,{\q2}Count the original regiments separately from later additions.
+Dialogue: 2,0:00:10.87,0:00:16.43,Chinese,zh-3,0,0,0,,{\q2}原始兵团与后来新增的记录分开统计；如果合法合军改变
+Dialogue: 1,0:00:14.63,0:00:17.73,English,en-4,0,0,0,,{\q2}If a legal merge changes these conditions, retain
+Dialogue: 2,0:00:16.43,0:00:21.99,Chinese,zh-4,0,0,0,,{\q2}了这些条件，就把变化作为这次安排的实际后果，不能删
+Dialogue: 1,0:00:17.73,0:00:20.51,English,en-5,0,0,0,,{\q2}those changes as actual consequences of this
+Dialogue: 1,0:00:20.51,0:00:21.27,English,en-6,0,0,0,,{\q2}arrangement.
+Dialogue: 1,0:00:21.27,0:00:24.16,English,en-7,0,0,0,,{\q2}Do not delete new entries or change commanders
+Dialogue: 2,0:00:21.99,0:00:27.11,Chinese,zh-5,0,0,0,,{\q2}掉新增记录，或事后换将，把结果修成预想的样子。
+Dialogue: 1,0:00:24.16,0:00:27.17,English,en-8,0,0,0,,{\q2}afterward to make the result match expectations.

@@ -1,0 +1,37 @@
+[Script Info]
+Title: 合军加权的输入与取整
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.51,English,en-0,0,0,0,,{\q2}In the verified normal path with positive weights, merging
+Dialogue: 2,0:00:00.10,0:00:03.97,Chinese,zh-0,0,0,0,,{\q2}在已核的普通正权重路径里，合军先分
+Dialogue: 1,0:00:03.51,0:00:07.04,English,en-1,0,0,0,,{\q2}calculates each army's weight share and truncates each to an
+Dialogue: 2,0:00:03.97,0:00:07.85,Chinese,zh-1,0,0,0,,{\q2}别算两军的权重份额，各自取整；再各
+Dialogue: 1,0:00:07.04,0:00:07.51,English,en-2,0,0,0,,{\q2}integer.
+Dialogue: 1,0:00:07.51,0:00:10.17,English,en-3,0,0,0,,{\q2}Each share is then multiplied by its original
+Dialogue: 2,0:00:07.85,0:00:11.72,Chinese,zh-2,0,0,0,,{\q2}自乘原来的库存，再取整，最后相加。
+Dialogue: 1,0:00:10.17,0:00:13.07,English,en-4,0,0,0,,{\q2}stock and truncated again, before the results are
+Dialogue: 2,0:00:11.72,0:00:14.85,Chinese,zh-3,0,0,0,,{\q2}两个份额合计可能略低于百分之
+Dialogue: 1,0:00:13.07,0:00:13.42,English,en-5,0,0,0,,{\q2}added.
+Dialogue: 1,0:00:13.42,0:00:18.81,English,en-6,0,0,0,,{\q2}The shares may total slightly less than 100 percent; the game does not restore the remainder.
+Dialogue: 2,0:00:14.85,0:00:17.97,Chinese,zh-4,0,0,0,,{\q2}一百，游戏不会把余数补回去。
+Dialogue: 2,0:00:17.97,0:00:21.87,Chinese,zh-5,0,0,0,,{\q2}合计库存还要按零和合后实际容量截
+Dialogue: 1,0:00:18.81,0:00:21.87,English,en-7,0,0,0,,{\q2}The total stock is then clamped between zero and the
+Dialogue: 1,0:00:21.87,0:00:25.17,English,en-8,0,0,0,,{\q2}actual merged capacity, so this is not a single ordinary
+Dialogue: 2,0:00:21.87,0:00:25.53,Chinese,zh-6,0,0,0,,{\q2}断，所以不能化成一次普通平均。
+Dialogue: 1,0:00:25.17,0:00:25.65,English,en-9,0,0,0,,{\q2}average.
+Dialogue: 2,0:00:25.53,0:00:29.45,Chinese,zh-7,0,0,0,,{\q2}大值另有保护分支，不能套这条简式。
+Dialogue: 1,0:00:25.65,0:00:30.57,English,en-10,0,0,0,,{\q2}Large values have a separate safeguard branch and cannot use this simplified formula.
+Dialogue: 2,0:00:29.45,0:00:33.33,Chinese,zh-8,0,0,0,,{\q2}真正合后库存，再用实际读数核对。
+Dialogue: 1,0:00:30.57,0:00:33.41,English,en-11,0,0,0,,{\q2}Check the final stock against the actual reading.

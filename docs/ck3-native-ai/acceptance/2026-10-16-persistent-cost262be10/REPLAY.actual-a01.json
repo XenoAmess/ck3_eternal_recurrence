@@ -1,0 +1,18 @@
+{
+  "result": "SAVED_COST_SOURCE_BYTES_AND_STRUCTURE_VERIFIED",
+  "archive_sha256": "d5c986e673444b507eb9e6fdcab166c07ee576ca9fe2ddd534ead40c3b4756db",
+  "source_bytes": 660,
+  "instructions": 171,
+  "branches": 32,
+  "call_instructions": 9,
+  "self_recursive_calls": 2,
+  "upstream_calls": 6,
+  "checked_members": 13,
+  "semantic_correctness_automatically_proven": false,
+  "new_EXE_reads": 0,
+  "new_runtime_actions": 0,
+  "maintenance_attribution": "unclosed",
+  "limits": "Hashes/coverage/relativecontroltargets/declaredcontractsverified; manualsemantics andpaidcausalitynotautomaticallyproved. Historicalabsolutepathsnotfollowed.",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-15T23:52:15.354750+00:00"
+}

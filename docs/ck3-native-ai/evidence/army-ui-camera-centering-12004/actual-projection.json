@@ -1,0 +1,250 @@
+{
+  "schema": "xar-army-camera-centering-correction-12004-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "origin_run_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01",
+  "original_response_pins": [
+    {
+      "run_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0180/responses/015-a09-current-capabilities.json",
+      "bytes": 126955,
+      "sha256": "56c30aa2362e765e6197357270fdf699ca249683ec6fa419d97e6d7bf4650a52",
+      "at": "2026-10-16T00:15:40.210699+00:00"
+    },
+    {
+      "run_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0180/responses/035-a09-war4-occupation-targets.json",
+      "bytes": 106866,
+      "sha256": "43f697693caf2017adf9c52ca9435e4dc5ed245530de8fad35c9baa9888e57b3",
+      "at": "2026-10-16T00:57:55.595535+00:00"
+    },
+    {
+      "run_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0180/responses/037-a09-title2192-actual.json",
+      "bytes": 6127,
+      "sha256": "92ef6f11f3ce15155df57494895f93b8adc65cff78d97ae663bf3b7fb939eff2",
+      "at": "2026-10-16T00:59:08.687517+00:00"
+    },
+    {
+      "run_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0180/responses/038b-a09-center-palermo-once.json",
+      "bytes": 7743,
+      "sha256": "50bb6d86cdbf8530f22d041ec7e28bafc3483b87f44d11d77a55ca7c3705ce81",
+      "at": "2026-10-16T01:00:24.260604+00:00"
+    },
+    {
+      "run_relative_path": "desktop-3fevhd2-1c74096080--vanilla--R0180/responses/038c-a09-realm-camera-status.json",
+      "bytes": 1633,
+      "sha256": "5d3e176ad272d6dc513af85aca9300118f9de1ecadcf81c1232f59d5a7e099bb",
+      "at": "2026-10-16T01:00:26.424775+00:00"
+    }
+  ],
+  "capability_observation": {
+    "at": "2026-10-16T00:15:40.210699+00:00",
+    "advertised_capability": "game.command.center-map-on-landed-title-v1",
+    "episode_run_id": "native-31254-75ef9942b4cf",
+    "connection_generation": 1
+  },
+  "occupation_literal_row": {
+    "holding_title_id": 2192,
+    "county_title_id": 2191,
+    "province_id": 2635,
+    "legal_holder_character_id": 34960,
+    "territory_side": "defender",
+    "occupation_observable": true,
+    "is_occupied": false,
+    "occupying_character_id": null,
+    "occupier_side": "none",
+    "counted_occupied_by_opposing_side": false,
+    "fort_level": 6,
+    "garrison_size": 466,
+    "besieging_strength": 0,
+    "current_besieging_army_selection": {
+      "native_carmy_id": 18,
+      "public_unit_id": 18,
+      "controllable": true
+    },
+    "siege_observable": true,
+    "active_siege": {
+      "siege_id": 12,
+      "besieging_army_id": 18,
+      "player_army_besieging": true,
+      "progress_fraction": {
+        "raw": 2831,
+        "scale": 100000
+      },
+      "current_work": {
+        "raw": 942760,
+        "scale": 100000
+      },
+      "total_work": {
+        "raw": 33299650,
+        "scale": 100000
+      },
+      "remaining_work": {
+        "raw": 32356890,
+        "scale": 100000
+      },
+      "days_left": null,
+      "ordinary_daily_progress": {
+        "raw": 50000,
+        "scale": 100000
+      },
+      "current_phase_length": {
+        "raw": 1800000,
+        "scale": 100000
+      },
+      "prepared_phase_length": {
+        "raw": 1800000,
+        "scale": 100000
+      },
+      "phase_counter": 13,
+      "can_advance": false,
+      "phase_event_state": {
+        "breach_level": 0,
+        "starvation_level": 0,
+        "disease_level": 0,
+        "desertion_count": 0,
+        "stalemate_count": 0
+      },
+      "prepared_selected_phase_event_enum": 5,
+      "assault_observable": true,
+      "breach_level": 0,
+      "walls_breached": false,
+      "assault_in_progress": false,
+      "can_start_assault": false,
+      "can_stop_assault": false,
+      "assault_daily_progress": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "assault_daily_casualties": 0,
+      "eligible_regiment_siege_work": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "highest_eligible_siege_tier": 0,
+      "province_unit_occurrences": [
+        {
+          "occurrence_index": 0,
+          "public_unit_id": 18,
+          "native_carmy_id": 18,
+          "eligible": false,
+          "qualified_regiment_ids": []
+        }
+      ]
+    }
+  },
+  "title_query_literal": {
+    "schema": "xar.ck3.title-holder.v1",
+    "schema_version": 1,
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "status": "available",
+    "snapshot_revision": 10,
+    "date_raw": 53147520,
+    "actor_character_id": 31254,
+    "title_id": 2192,
+    "title_tier_raw": 1,
+    "title_tier_key": "barony",
+    "title_key": "b_palermo",
+    "title_key_available": true,
+    "title_key_status": "available",
+    "title_key_unavailable_reason": null,
+    "holder_character_id": 34960,
+    "holder_is_player": false,
+    "holder_in_player_realm": false,
+    "holder_immediate_liege_character_id": null,
+    "holder_top_liege_character_id": 34960,
+    "available": true,
+    "unavailable_reason": null
+  },
+  "center_request_literal": {
+    "request_id": "038b-a09-center-palermo-once",
+    "tool": "ck3_center_map_on_landed_title_v1",
+    "arguments": {
+      "title_key": "b_palermo",
+      "expected_revision": 11
+    }
+  },
+  "center_result_literal": {
+    "native_action_ack": {
+      "sequence": 20,
+      "status": "dispatched"
+    },
+    "source": {
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "backend_id": "ck3-1.20.0.4-native-title-map-navigation-v1"
+    },
+    "title": {
+      "key": "b_palermo",
+      "title_id": 2192,
+      "tier_raw": 1,
+      "tier_key": "barony",
+      "anchor_kind": "title_bounds_center",
+      "capital_province_id": 2635,
+      "bounds_extent": [
+        1739,
+        2208,
+        1739,
+        2208
+      ],
+      "map_x_adjustment": 0
+    },
+    "binding": {
+      "snapshot_id": "native:10",
+      "revision": 11,
+      "native_revision": 10,
+      "date_raw": 53147520,
+      "episode_run_id": "native-31254-75ef9942b4cf",
+      "connection_generation": 1
+    },
+    "camera_center": {
+      "status": "centered",
+      "postcondition_verified": true,
+      "expected_position_xyz": [
+        1739.0,
+        0.0,
+        2208.0
+      ],
+      "current_state": [
+        1739.0,
+        0.0,
+        2208.0,
+        174.0,
+        1.0821040868759155,
+        0.0
+      ],
+      "target_state": [
+        1739.0,
+        0.0,
+        2208.0,
+        174.0,
+        1.0821040868759155,
+        0.0
+      ],
+      "zoom_index": 4,
+      "expected_zoom_value": 174.0,
+      "settled": true,
+      "target_write_blocked": false,
+      "completion_predicate": "exact-build-native-camera-settled-v1"
+    },
+    "schema_version": 1,
+    "status": "centered",
+    "accepted": true,
+    "step": "center-map-on-landed-title-v1"
+  },
+  "realm_request_literal": {
+    "request_id": "038c-a09-realm-camera-status",
+    "tool": "ck3_realm_camera_status_v1",
+    "arguments": {}
+  },
+  "realm_result_literal": {
+    "status": "not_requested",
+    "requested_sequence": null,
+    "native_actual": null,
+    "same_frame_with_gameplay_claim": false
+  },
+  "qualification": {
+    "actual_12004_typed_title_center_verified": true,
+    "army_exact_pixel_center_proven": false,
+    "new_game_or_SDK_actions_by_this_lane": 0,
+    "internal_12004_camera_source_reaudit": false
+  }
+}

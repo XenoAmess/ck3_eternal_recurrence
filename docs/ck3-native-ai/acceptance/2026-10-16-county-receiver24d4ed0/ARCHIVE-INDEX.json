@@ -1,0 +1,69 @@
+{
+  "schema": "xar.e04.county-receiver-source.archive-index.v1",
+  "archive": {
+    "bytes": 15575,
+    "sha256": "93b9d65e0fe9aec49ee10360be22d3bdc66435ab47ac98b918bf24112a83011a"
+  },
+  "members": [
+    {
+      "member": "FUNCTION.actual-a01.json",
+      "bytes": 8137,
+      "sha256": "7737a5371594e924a6d093491d75857d6b56431b3ab23bfdbe694f8a98765628"
+    },
+    {
+      "member": "PLAN-CHECK.actual-a01.json",
+      "bytes": 1647,
+      "sha256": "d81b63e8f53b4e7eb566cf2531c34a8d98af87dbaed48c3723c20b1599952372"
+    },
+    {
+      "member": "RAW-READ-ATTEMPTS.actual.ndjson",
+      "bytes": 3295,
+      "sha256": "7010dfc39399fafe9153501e4900f8c0fd33fb3a77d0030c2766dffccca744e1"
+    },
+    {
+      "member": "RAW-READ-LEDGER.actual-a01.json",
+      "bytes": 4000,
+      "sha256": "a5045c3af0cd620dced0dff205a064258e3a8cdc482bf3f1c3868424dfaa4d40"
+    },
+    {
+      "member": "READ-RECEIPT.actual-a01.json",
+      "bytes": 4841,
+      "sha256": "86fdf829ecda5f609329d325298736f05ffb64ea62e68caf0ebe811548d9e105"
+    },
+    {
+      "member": "RESEARCH-PLAN.proposed-a01.json",
+      "bytes": 4884,
+      "sha256": "7f032504209e0d3932dc5dfb3a1ff4d8bfa49930abb4ffb9d2d38015f4b8a8ed"
+    },
+    {
+      "member": "SOURCE-CONTRACT.actual-a03.json",
+      "bytes": 8133,
+      "sha256": "4bd76211f6289fc2788b81733c38057552eb8767b4292df885b680e527b9fa0b"
+    },
+    {
+      "member": "SOURCE-FIRST.actual-a01.json",
+      "bytes": 1572,
+      "sha256": "a0ed98728a09d73730efdf29c24eb6cbe2a51ba2aa4ae17ffe46900bf0ad86c3"
+    },
+    {
+      "member": "actual-function.asm",
+      "bytes": 3535,
+      "sha256": "ca5fc2fb72ddf23599b2eea47174649bc843f8afb7882aaa303e93c898aab04a"
+    },
+    {
+      "member": "actual-function.bin",
+      "bytes": 192,
+      "sha256": "e6b73ab9e779bc7d856d61731fc73366caf63f1ec5adbababa3580c357e67d38"
+    },
+    {
+      "member": "wrapper-2C09DF0.bin",
+      "bytes": 131,
+      "sha256": "344dc31069a905f0615c45fd59967f35530a14f75e496cda079841c897a3652b"
+    },
+    {
+      "member": "wrapper-SOURCE-CONTRACT.actual-a02.json",
+      "bytes": 5926,
+      "sha256": "7f0340e0228bb885cd4ccd70bae86cf6574762406e81709fa57e51ab4bfa5a21"
+    }
+  ]
+}

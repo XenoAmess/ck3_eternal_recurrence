@@ -1,0 +1,29 @@
+[Script Info]
+Title: 付款当前闭合范围
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.81,English,en-0,0,0,0,,{\q2}Check payments once more: this example has a matched three-gold embarkation debit.
+Dialogue: 2,0:00:00.10,0:00:05.12,Chinese,zh-0,0,0,0,,{\q2}支付再核一次：本例已经对上三金币登船扣款。
+Dialogue: 1,0:00:04.81,0:00:07.85,English,en-1,0,0,0,,{\q2}The current monthly military-maintenance rate, total
+Dialogue: 2,0:00:05.12,0:00:09.76,Chinese,zh-1,0,0,0,,{\q2}军事维护的当前月率、总支出和钱包净变化，各
+Dialogue: 1,0:00:07.85,0:00:11.29,English,en-2,0,0,0,,{\q2}expenditure, and net treasury change can each help read the
+Dialogue: 2,0:00:09.76,0:00:14.40,Chinese,zh-2,0,0,0,,{\q2}自可以帮助读账；要说实际付了多少军事维护，
+Dialogue: 1,0:00:11.29,0:00:11.82,English,en-3,0,0,0,,{\q2}accounts.
+Dialogue: 1,0:00:11.82,0:00:15.38,English,en-4,0,0,0,,{\q2}To state how much military maintenance was actually paid, the
+Dialogue: 2,0:00:14.40,0:00:18.61,Chinese,zh-3,0,0,0,,{\q2}还要把对应费用分量和那次真正结算接上。
+Dialogue: 1,0:00:15.38,0:00:19.16,English,en-5,0,0,0,,{\q2}corresponding cost component still has to be linked to the actual
+Dialogue: 2,0:00:18.61,0:00:23.93,Chinese,zh-4,0,0,0,,{\q2}缺这笔明细时，费用列保留未知，也不解释成免费。
+Dialogue: 1,0:00:19.16,0:00:19.81,English,en-6,0,0,0,,{\q2}settlement.
+Dialogue: 1,0:00:19.81,0:00:24.00,English,en-7,0,0,0,,{\q2}Without that detail, leave the cost unknown; do not interpret it as free.

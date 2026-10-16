@@ -1,0 +1,34 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T01:02:49.166557+00:00",
+  "recorder": {
+    "state": "NORMAL_TREE_EMPTY",
+    "job": {
+      "schema": "xar.promo.recorder-job/v1",
+      "state": "NORMAL_TREE_EMPTY",
+      "pid": 22028,
+      "returncode": 0,
+      "job_active_processes": 0,
+      "error": null,
+      "at_utc": "2026-10-16T01:02:48.726013+00:00"
+    },
+    "raw": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+      "bytes": 94042804,
+      "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+    },
+    "started_at_utc": "2026-10-16T01:01:57.648835+00:00",
+    "completed_at_utc": "2026-10-16T01:02:49.088874+00:00",
+    "start_monotonic_ns": 1335368309089100,
+    "end_monotonic_ns": 1335419749154500,
+    "partial_assets_retained": true,
+    "clean_spans_certified": false,
+    "human_approval": false,
+    "media_probe_pending": true
+  },
+  "business_failure": null,
+  "actual_arrival_observed": true,
+  "R04_positive_claim": false,
+  "continuous_clean_certified": false,
+  "human_signoff": false
+}

@@ -1,0 +1,32 @@
+[Script Info]
+Title: 补给库存与兵员恢复走两条线
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.55,English,en-0,0,0,0,,{\q2}Supply recovery concerns the material carried by the
+Dialogue: 2,0:00:00.10,0:00:03.58,Chinese,zh-0,0,0,0,,{\q2}恢复补给，要看军队携带的物资；
+Dialogue: 1,0:00:03.55,0:00:07.00,English,en-1,0,0,0,,{\q2}army; troop recovery concerns actual soldiers in its
+Dialogue: 2,0:00:03.58,0:00:07.05,Chinese,zh-1,0,0,0,,{\q2}恢复兵员，要看实体兵团的人数。
+Dialogue: 1,0:00:07.00,0:00:07.66,English,en-2,0,0,0,,{\q2}regiments.
+Dialogue: 2,0:00:07.05,0:00:09.74,Chinese,zh-2,0,0,0,,{\q2}游戏分别处理这两件事。
+Dialogue: 1,0:00:07.66,0:00:09.81,English,en-3,0,0,0,,{\q2}The game handles them separately.
+Dialogue: 2,0:00:09.74,0:00:14.09,Chinese,zh-3,0,0,0,,{\q2}补给增加，不会自动把缺额变成士兵；兵员
+Dialogue: 1,0:00:09.81,0:00:13.71,English,en-4,0,0,0,,{\q2}More supply does not automatically fill troop deficits, and
+Dialogue: 1,0:00:13.71,0:00:18.21,English,en-5,0,0,0,,{\q2}replenishment eligibility cannot be determined just by whether stock
+Dialogue: 2,0:00:14.09,0:00:18.22,Chinese,zh-4,0,0,0,,{\q2}能否补充，也不能只问库存是不是满的。
+Dialogue: 1,0:00:18.21,0:00:18.74,English,en-6,0,0,0,,{\q2}is full.
+Dialogue: 2,0:00:18.22,0:00:23.34,Chinese,zh-5,0,0,0,,{\q2}对一支准备继续赶路的军队，先读库存，再展开实
+Dialogue: 1,0:00:18.74,0:00:23.59,English,en-7,0,0,0,,{\q2}Before marching on, read the stock, expand the actual regiments, and check
+Dialogue: 2,0:00:23.34,0:00:28.45,Chinese,zh-6,0,0,0,,{\q2}际兵团，分别确认当前人数、满员数和补员条件。
+Dialogue: 1,0:00:23.59,0:00:28.51,English,en-8,0,0,0,,{\q2}current strength, maximum strength and replenishment conditions separately.

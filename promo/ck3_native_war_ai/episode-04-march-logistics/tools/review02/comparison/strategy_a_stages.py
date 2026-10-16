@@ -38,7 +38,8 @@ def make_live_class(h,c,a,ri):
         def __init__(self,args):
             self.args=args;self.repo=args.repo.resolve();self.process_probe=h.process_time
             self.plan=h.load(args.plan,1024*1024);self.runtime=h.load(args.runtime,1024*1024)
-            c.schema_check(self.runtime,'runtime');self.e=c.Evidence(args.evidence_root)
+            c.schema_check(self.runtime,'runtime');self.e=c.Evidence(args.evidence_root, **c.evidence_file_options(vars(args),
+                source_head=self.runtime['source_head'], machine_ids=[self.runtime['machine_id']]))
             self.e.all_pins(self.runtime);self.features=h.load(args.features_binding,1024*1024)
             self.e.bound(self.features)
             h.need(self.plan['status']=='frozen' and self.plan['strategies']['A']['mode']=='whole-direct',
@@ -80,6 +81,9 @@ def make_live_class(h,c,a,ri):
                 'existing_relay':h.pin(args.relay_source),'runtime_proof':self.proof_pin,
                 'request_helper':self.helper_pin,'deadline_utc':self.deadline.isoformat(),
                 'phases_chained':False,'SDK_connection_created':False,'new_run_capacity_granted_by_adapter':False}
+            budget=c.runtime_total_budget(vars(args),scene_root=self.assets,source_head=source,
+                machine_id=self.machine,deadline_utc=self.deadline.isoformat())
+            budget.bind_live(self,base_module=h,raw_file_max=args.max_evidence_file_bytes)
             saved=self.case/'binding.actual.json'
             if saved.exists():
                 prior=h.load(saved,1024*1024)
@@ -212,6 +216,77 @@ def make_live_class(h,c,a,ri):
                 state=self.exact_day(state)
             return {'state':h.pin(self.save_state(state)),'report':a.report(state),'Move_submitted':False}
 
+        def common_horizon_anchor(self,state):
+            h.need(self.plan.get('status')=='frozen'
+                   and self.plan.get('follow_after_arrival_to_day90') is True
+                   and self.plan.get('post_arrival_policy')=='hold-arrival-position-until-day90',
+                   'common horizon requires the prespecified hold-arrival-position-until-day90 policy')
+            frozen=datetime.fromisoformat(self.plan['frozen_at_utc'].replace('Z','+00:00'))
+            started=datetime.fromisoformat(self.runtime['started_at_utc'].replace('Z','+00:00'))
+            h.need(frozen.tzinfo is not None and started.tzinfo is not None and frozen<started,
+                   'hold policy was not frozen before this cold session')
+            day=len(state['days']);first=state['first_arrival_day']
+            h.need(type(first) is int and 1<=first<=day<90 and state['move_postcondition'] is not None,
+                   'common horizon needs an actual arrival before absolute day90')
+            endpoints=[ep for ep in state['observations'] if ep['day']==first]
+            h.need(len(endpoints)==1 and state['observations'][-1]['day']==day,
+                   'original arrival/latest endpoint absent or ambiguous')
+            arrival,_=a._whole(endpoints[0],self.plan,self.e,self.runtime,self.binding['army_id'])
+            current,_=a._whole(state['observations'][-1],self.plan,self.e,self.runtime,self.binding['army_id'])
+            h.need(arrival==state['arrival_actual'] and current==state['actual']
+                   and c.arrived(arrival,self.plan) and c.arrived(current,self.plan),
+                   'actual arrival/current hold position differs from the preserved endpoints')
+            clock=c.clock_days({'runtime':self.runtime,'days':state['days']},self.plan,self.e)
+            h.need(clock['first_arrival']==first,'first arrival differs from original daily scan')
+            return first,state['last_not_arrived_day'],arrival,endpoints[0]
+
+        def hold_signature(self,actual,endpoint):
+            # Current soldiers, stock, rates and wallet may change naturally.
+            # Preserve cached ArRg/full DATA identities and maxima independently.
+            query=c.body(self.e.json(endpoint['army_result']))
+            cached=tuple((unit['army_id'],tuple((r['army_regiment_id'],r['maximum_soldiers'])
+                         for r in unit['regiment_strengths'])) for unit in query['army_strengths'])
+            records=[]
+            for row in query['army_strengths'][0]['regiment_replenishment_records_v1']:
+                items=[]
+                for rec in row['records']:
+                    values=tuple(rec.get(k) for k in ('record_index','persistent_regiment_id','chunk_index','maximum_soldiers'))
+                    h.need(type(values[1]) is int and -(1<<31)<=values[1]<(1<<31),
+                           'hold requires signed32 persistent FullID')
+                    h.need(all(type(values[n]) is int and 0<=values[n]<(1<<31) for n in (0,2,3)),
+                           'hold requires complete DATA index/slot/max')
+                    items.append(values+(rec.get('chunk_army_regiment_id'),))
+                records.append((row['army_regiment_id'],row['native_data_record_count'],tuple(items)))
+            maxima=tuple((u['army_id'],u['maximum_soldiers']) for u in actual['units'])
+            return actual['player_character_id'],actual['commander_id'],cached,tuple(records),maxima
+
+        def advance_common_horizon(self):
+            state=self.state();first,last_not,arrival,arrival_ep=self.common_horizon_anchor(state)
+            import copy
+            anchor=copy.deepcopy((first,last_not,arrival,arrival_ep))
+            signature=self.hold_signature(arrival,arrival_ep)
+            h.need(self.hold_signature(state['actual'],state['observations'][-1])==signature,'hold-arrival commander/cohort/DATA/max changed')
+            for _ in range(self.args.days):
+                if len(state['days'])==90:break
+                state=self.exact_day(state)  # Existing global once Arm/Resume and full exact-day consumer.
+                try:
+                    h.need((state['first_arrival_day'],state['last_not_arrived_day'],state['arrival_actual'],
+                            next(ep for ep in state['observations'] if ep['day']==first))==anchor,
+                           'first arrival or its original endpoint was rewritten')
+                    h.need(c.arrived(state['actual'],self.plan),'hold-arrival position interrupted; ordinary policy must inspect')
+                    h.need(self.hold_signature(state['actual'],state['observations'][-1])==signature,'hold-arrival commander/cohort/DATA/max changed')
+                except Exception as error:
+                    h.write_new(self.attempt/'HOLD-INTERRUPTION.actual.json',{**self.meta,
+                        'error':str(error),'actual_day_executed':True,'date_raw':state['actual']['date_raw'],
+                        'actual_state':h.pin(self.attempt/f"STATE.day-{len(state['days'])}.actual.json"),
+                        'original_day_complete':h.pin(self.case/f"day-{state['actual']['date_raw']-24}.complete.actual.json"),
+                        'actual_endpoint':state['observations'][-1],'original_arrival_endpoint':arrival_ep,
+                        'Arm_Resume_Move_reissued':False,'ordinary_policy_inspection_required':True})
+                    raise
+            return {'state':h.pin(self.save_state(state)),'report':a.report(state),'Move_submitted':False,
+                    'common_horizon_policy':'hold-arrival-position-until-day90',
+                    'first_arrival_preserved':True,'absolute_D90_reached':len(state['days'])==90}
+
         def post(self):
             state=self.state();ep=self.endpoint('arrival-or-bound-independent-post')
             actual,_=a._whole(ep,self.plan,self.e,self.runtime,self.binding['army_id'])
@@ -225,12 +300,16 @@ def make_live_class(h,c,a,ri):
 
 def parser():
     p=argparse.ArgumentParser(description=__doc__,fromfile_prefix_chars='@')
-    p.add_argument('stage',choices=('baseline','Move-once','Move-post','advance','post'))
+    p.add_argument('stage',choices=('baseline','Move-once','Move-post','advance','advance-common-horizon','post'))
     for name in ('repo','relay-source','consumer-root','consumer-manifest','plan','runtime','features-binding',
                  'evidence-root','context','request-helper'):p.add_argument('--'+name,type=Path,required=True)
     for name in ('relay-sha256','request-helper-sha256','loaded-save-sha256','case-id','attempt','deadline-utc'):
         p.add_argument('--'+name,required=True)
     p.add_argument('--army-id',type=int,required=True);p.add_argument('--native-carmy-id',type=int,required=True)
+    p.add_argument('--max-runtime-total-bytes',type=int,default=512*1024*1024)
+    p.add_argument('--runtime-capacity-admission',nargs=2,metavar=('PATH','SHA256'))
+    p.add_argument('--max-evidence-file-bytes',type=int,choices=(16777216,33554432),default=16777216)
+    p.add_argument('--evidence-capacity-admission',nargs=2,action='append',default=[],metavar=('PATH','SHA256'))
     p.add_argument('--state',type=Path)
     p.add_argument('--days',type=int,default=1)
     return p
@@ -242,7 +321,7 @@ def main():
     h,c,a,ri=load_dependencies(args);live=None
     try:
         live=make_live_class(h,c,a,ri)(args)
-        fn={'baseline':live.baseline,'Move-once':live.move_once,'Move-post':live.move_post,'advance':live.advance,'post':live.post}[args.stage]
+        fn={'baseline':live.baseline,'Move-once':live.move_once,'Move-post':live.move_post,'advance':live.advance,'advance-common-horizon':live.advance_common_horizon,'post':live.post}[args.stage]
         result=fn();path=h.write_new(live.attempt/'RESULT.actual.json',{**live.meta,'result':result})
         print(json.dumps({'phase':args.stage,'result':str(path),'phases_chained':False}));return 0
     except BaseException as error:

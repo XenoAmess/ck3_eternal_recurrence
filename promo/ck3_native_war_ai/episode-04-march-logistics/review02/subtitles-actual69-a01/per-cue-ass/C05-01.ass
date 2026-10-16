@@ -1,0 +1,27 @@
+[Script Info]
+Title: 比较问题
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.49,English,en-0,0,0,0,,{\q2}To compare the three plans, first ask four questions: how long until arrival, how many troops
+Dialogue: 2,0:00:00.10,0:00:05.54,Chinese,zh-0,0,0,0,,{\q2}把三个方案放到一起，先问四件事：多久到，原始兵团
+Dialogue: 1,0:00:05.49,0:00:10.71,English,en-1,0,0,0,,{\q2}remain in the original regiments, how much supply each army has, and how much was actually
+Dialogue: 2,0:00:05.54,0:00:10.75,Chinese,zh-1,0,0,0,,{\q2}剩多少人，每支军队还有多少补给，实际支付多少。
+Dialogue: 1,0:00:10.71,0:00:11.00,English,en-2,0,0,0,,{\q2}paid.
+Dialogue: 2,0:00:10.75,0:00:16.17,Chinese,zh-2,0,0,0,,{\q2}抵达时的状态回答这条路线把军队送成了什么样；同一天
+Dialogue: 1,0:00:11.00,0:00:15.41,English,en-3,0,0,0,,{\q2}The state on arrival tells us what condition the route delivered the army in.
+Dialogue: 1,0:00:15.41,0:00:18.16,English,en-4,0,0,0,,{\q2}The state on the same day tells us how far each
+Dialogue: 2,0:00:16.17,0:00:21.37,Chinese,zh-3,0,0,0,,{\q2}的状态回答同样过了这些天，各种安排走到了哪一步。
+Dialogue: 1,0:00:18.16,0:00:21.14,English,en-5,0,0,0,,{\q2}arrangement has progressed after the same amount of
+Dialogue: 1,0:00:21.14,0:00:21.43,English,en-6,0,0,0,,{\q2}time.

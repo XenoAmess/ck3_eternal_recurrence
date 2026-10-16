@@ -1,0 +1,34 @@
+[Script Info]
+Title: 新增1/1可能是角色记录
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.89,English,en-0,0,0,0,,{\q2}After merging, a new entry showing one current troop
+Dialogue: 2,0:00:00.10,0:00:02.91,Chinese,zh-0,0,0,0,,{\q2}合军后多出一条一人满员一人
+Dialogue: 1,0:00:02.89,0:00:05.80,English,en-1,0,0,0,,{\q2}and a maximum of one can also have a character source.
+Dialogue: 2,0:00:02.91,0:00:05.72,Chinese,zh-1,0,0,0,,{\q2}的记录，还有一种角色来源。
+Dialogue: 2,0:00:05.72,0:00:10.85,Chinese,zh-2,0,0,0,,{\q2}已查明的条件分支，会在处理旧统帅时创建新的军
+Dialogue: 1,0:00:05.80,0:00:10.27,English,en-2,0,0,0,,{\q2}A verified conditional branch creates a new army-regiment record while processing a
+Dialogue: 1,0:00:10.27,0:00:14.63,English,en-3,0,0,0,,{\q2}former commander, associates it with that character, then refreshes the character
+Dialogue: 2,0:00:10.85,0:00:15.74,Chinese,zh-3,0,0,0,,{\q2}队兵团记录，关联这个角色，再刷新角色缓存。
+Dialogue: 1,0:00:14.63,0:00:14.96,English,en-4,0,0,0,,{\q2}cache.
+Dialogue: 1,0:00:14.96,0:00:17.03,English,en-5,0,0,0,,{\q2}Its data list is empty at construction.
+Dialogue: 2,0:00:15.74,0:00:19.80,Chinese,zh-4,0,0,0,,{\q2}构造时的数据列表是空的；后来出现一比一
+Dialogue: 1,0:00:17.03,0:00:22.04,English,en-6,0,0,0,,{\q2}A later one-out-of-one display does not directly mean an ordinary troop slot gained a soldier.
+Dialogue: 2,0:00:19.80,0:00:23.66,Chinese,zh-5,0,0,0,,{\q2}，也不能直接当作普通兵槽补了一个人。
+Dialogue: 1,0:00:22.04,0:00:25.92,English,en-7,0,0,0,,{\q2}Whether this is the new entry in this case, whether the character is the
+Dialogue: 2,0:00:23.66,0:00:27.16,Chinese,zh-6,0,0,0,,{\q2}它是否对应这次新增行、是不是现
+Dialogue: 1,0:00:25.92,0:00:29.91,English,en-8,0,0,0,,{\q2}current commander, and whether the character is a knight must each be read
+Dialogue: 2,0:00:27.16,0:00:30.42,Chinese,zh-7,0,0,0,,{\q2}任统帅或骑士，都要分别读取。
+Dialogue: 1,0:00:29.91,0:00:30.50,English,en-9,0,0,0,,{\q2}separately.

@@ -1,5 +1,24 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-16：并发源码入口与R0180普通陆路抵达
+
+最新整合交接见[并发研究与R0180](../handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)。
+`machine_id=desktop-3fevhd2-1c74096080`；R0180实际source `c4992c3`/a09，5个自然日后Army18在2645停稳。
+新源码与该旧运行分别绑定，不因本次知识入库追认部署或业务通过。研究核心仍 **6/14＝42.9%**、
+业务 **4/11＝36.4%**、合格动态 **0/11**；人工1×、完整新版成片和签核未完成。
+
+| 下一问题 | 可直接复用的入口 | 资格边界 |
+| --- | --- | --- |
+| 县入境判据与预览 | [condition](episode04-county-entry-condition-12004.md)、[actor wrapper](episode04-county-entry-actor-wrapper-12004.md)、[relation core](episode04-county-entry-relation-core-12004.md)、[preview合同](episode04-county-entry-preview-condition-12004.md) | actual4 source/只读输入；R0180 condition=false、窗口不完整，没有R04正因果或零总损失信用。 |
+| ready T0与下一损耗窗口 | [同帧决策入口](episode04-ready-t0-decision-12004.md) | 完整DATA、typed当前统帅、库存容量、现金、war与正常save分层；R180 regular=1已纠正旧候选0，9项focused通过仍不是新live T0。 |
+| 实际ADD与owner | [instruction ADD publisher](episode04-refill-instruction-add-provider-12004.md)、[硬件观察器](episode04-refill-hardware-add-observer-12004.md)、[下一场准备](episode04-zero-readiness-publication-next-scene-12004.md) | publisher/owner修正为source/fixture能力，不授实际补员ADD或R06整卡。 |
+| 补员开关提交 | [12FF8D0](military-refill-toggle-command-12ff8d0-12004.md)、[1303D40](military-refill-finaltarget-1303d40-12004.md) | 只证明owner、desired及submission，实际执行时机仍unknown。 |
+| R10共同终点与证据容量 | [A/B分阶段入口](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/README.strategy_a_stages.md)、[B horizon](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_common_horizon.py)、[C horizon](../../promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/common_horizon.py) | source-only；共同absolute horizon与按证据角色限额不等于三臂已跑、已有winner或可比较实付费用。 |
+| R0180抵达画面 | [小证据索引](acceptance/2026-10-16-r0180-land-arrival-media/INDEX.actual-a01.json)、[样本/候选范围](acceptance/2026-10-16-r0180-land-arrival-media/visual-review-and-spans.actual-a01.json) | 45秒全解码PASS，六个AI样本只支持抵达bracket(12,18]秒；continuous clean/human1×/dynamic均未授。 |
+
+旧条目按原截止日期保留。已退休E03无损stem不可再承诺原字节重剪，压缩final保留；v4原raw仍HELD，详见本次交接和[可用性记录](../maintenance/storage-retention-2026-10-16-e03-completed-stems/availability.actual.json)。
+
+
 ## 2026-10-16：战争四期 Review02 的共享机制、实证与消费入口
 
 本条是机器 `desktop-3fevhd2-1c74096080` 的战争四期最新记录，实际切点为2026-10-16 03:01 CST（2026-10-15 19:01 UTC）；下文旧日期的G2、其他机器和旧版本记录保留各自当时范围。R0175锁定Halt与R0176锁定改道均已正常闭场，独立原生后果及各45秒原片已经取得。研究整卡 **5/14＝35.7%**（R00/R02/R11/R12/R13），业务实验 **3/11＝27.3%**；新版合格动态包仍 **0/11**，连续clean和人工1×不能由全解码或单帧代替。详见[R12实证与便携重算](episode04-r12-locked-halt-r0175-12004.md)、[R13实证与便携重算](episode04-r13-locked-reroute-r0176-12004.md)、[10月16日日报](../autonomous-agent-progress/daily/2026-10-16.md)和[本机交接](../handover/2026-10-15-war-episode04-machine-resume.md)。

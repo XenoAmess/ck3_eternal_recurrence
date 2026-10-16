@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.concurrent-source-intake.qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T02:07:45.411638+00:00",
+  "baseline_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "runtime_observation_source": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "qualification_scope": "source integration and focused Python behavior; native compilation pending",
+  "changed_file_count_before_this_receipt": 214,
+  "focused_checks": {
+    "python_AST": 44,
+    "json_parse": 45,
+    "ZIP_CRC": 5
+  },
+  "python_only_findings": [],
+  "python_entry_coverage": 17,
+  "focused_behavior_cases": 66,
+  "initial_integration_failures": [
+    "B binding fixture mocked an old Evidence signature; updated and rerun successfully",
+    "R01 synthetic regular=0 masked actual regular=1; corrected with actual1/legacy0 behavior case",
+    "One external summary wrapper referenced missing B variable before launching evidence smoke; smoke separately ran5 cases successfully"
+  ],
+  "native_build_executed": false,
+  "native_executable_tests_executed": false,
+  "actual_new_game_qualification": false,
+  "research_completed": 6,
+  "research_total": 14,
+  "business_completed": 4,
+  "business_total": 11,
+  "qualified_dynamic": 0,
+  "qualified_dynamic_total": 11,
+  "human_signoff": false
+}

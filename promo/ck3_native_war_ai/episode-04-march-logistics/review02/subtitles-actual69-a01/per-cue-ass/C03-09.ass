@@ -1,0 +1,31 @@
+[Script Info]
+Title: 请求到物理槽仍有整数层
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.83,English,en-0,0,0,0,,{\q2}Once the army-wide budget is an integer, it is allocated to
+Dialogue: 2,0:00:00.10,0:00:03.63,Chinese,zh-0,0,0,0,,{\q2}整军预算取成整数以后，还要按顺
+Dialogue: 2,0:00:03.63,0:00:06.92,Chinese,zh-1,0,0,0,,{\q2}序分给兵团，再写进实际兵槽。
+Dialogue: 1,0:00:03.83,0:00:07.56,English,en-1,0,0,0,,{\q2}regiments in order, then written to physical soldier slots.
+Dialogue: 2,0:00:06.92,0:00:10.78,Chinese,zh-2,0,0,0,,{\q2}每一步都有自己的分母、上限和取整，
+Dialogue: 1,0:00:07.56,0:00:10.88,English,en-2,0,0,0,,{\q2}Each step has its own denominator, cap, and rounding.
+Dialogue: 2,0:00:10.78,0:00:14.64,Chinese,zh-3,0,0,0,,{\q2}兵团请求也不直接等于最终物理减少。
+Dialogue: 1,0:00:10.88,0:00:15.46,English,en-3,0,0,0,,{\q2}A regiment's requested amount need not equal the final physical decrease.
+Dialogue: 2,0:00:14.64,0:00:18.68,Chinese,zh-4,0,0,0,,{\q2}同一个兵槽被多条数据引用时，核算那次
+Dialogue: 1,0:00:15.46,0:00:18.40,English,en-4,0,0,0,,{\q2}Within that individual write, count a physical
+Dialogue: 1,0:00:18.40,0:00:21.22,English,en-5,0,0,0,,{\q2}slot referenced by several data entries only
+Dialogue: 2,0:00:18.68,0:00:22.71,Chinese,zh-5,0,0,0,,{\q2}实际写回只计一份；这里被截掉的小数，
+Dialogue: 1,0:00:21.22,0:00:21.54,English,en-6,0,0,0,,{\q2}once.
+Dialogue: 1,0:00:21.54,0:00:26.81,English,en-7,0,0,0,,{\q2}Fractions discarded here are not retained as fractional soldiers in this write path.
+Dialogue: 2,0:00:22.71,0:00:26.75,Chinese,zh-6,0,0,0,,{\q2}也没有在这条写回里留下小数兵员余量。

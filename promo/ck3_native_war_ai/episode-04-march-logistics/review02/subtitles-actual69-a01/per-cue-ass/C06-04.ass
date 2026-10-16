@@ -1,0 +1,34 @@
+[Script Info]
+Title: 途中无变化也需读上下文
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.04,English,en-0,0,0,0,,{\q2}Reread the current state when the monthly change turns from
+Dialogue: 2,0:00:00.10,0:00:03.77,Chinese,zh-0,0,0,0,,{\q2}途中看到月变化由正转负、移动锁
+Dialogue: 2,0:00:03.77,0:00:07.43,Chinese,zh-1,0,0,0,,{\q2}定或路线改变，就重读当前状态。
+Dialogue: 1,0:00:04.04,0:00:07.98,English,en-1,0,0,0,,{\q2}positive to negative, movement becomes locked, or the route
+Dialogue: 2,0:00:07.43,0:00:11.36,Chinese,zh-2,0,0,0,,{\q2}库存暂时没变，也可能有几种解释：还
+Dialogue: 1,0:00:07.98,0:00:08.51,English,en-2,0,0,0,,{\q2}changes.
+Dialogue: 1,0:00:08.51,0:00:13.70,English,en-3,0,0,0,,{\q2}Unchanged stock can have several explanations: no permitted update opportunity
+Dialogue: 2,0:00:11.36,0:00:15.29,Chinese,zh-3,0,0,0,,{\q2}没到允许更新的机会，条件被拒绝，当
+Dialogue: 1,0:00:13.70,0:00:18.63,English,en-4,0,0,0,,{\q2}yet, rejected conditions, a zero current contribution, or a gain capped by
+Dialogue: 2,0:00:15.29,0:00:19.22,Chinese,zh-4,0,0,0,,{\q2}前贡献为零，或者增加后碰到了容量。
+Dialogue: 1,0:00:18.63,0:00:19.23,English,en-5,0,0,0,,{\q2}capacity.
+Dialogue: 2,0:00:19.22,0:00:22.36,Chinese,zh-5,0,0,0,,{\q2}它们不能只靠一个不变的数分开。
+Dialogue: 1,0:00:19.23,0:00:22.19,English,en-6,0,0,0,,{\q2}One unchanged number cannot distinguish them.
+Dialogue: 1,0:00:22.19,0:00:25.99,English,en-7,0,0,0,,{\q2}Retain the dates, locations, stock, and update conditions
+Dialogue: 2,0:00:22.36,0:00:26.45,Chinese,zh-6,0,0,0,,{\q2}把前后日期、地点、库存和更新条件一
+Dialogue: 1,0:00:25.99,0:00:30.20,English,en-8,0,0,0,,{\q2}before and after, then keep observing the changes that actually
+Dialogue: 2,0:00:26.45,0:00:30.54,Chinese,zh-7,0,0,0,,{\q2}起保留，再继续观察真正发生的变化。
+Dialogue: 1,0:00:30.20,0:00:30.60,English,en-9,0,0,0,,{\q2}occur.

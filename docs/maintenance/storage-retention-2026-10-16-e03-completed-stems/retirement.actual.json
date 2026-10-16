@@ -1,0 +1,180 @@
+{
+  "schema": "xar.e03.completed-three-stems-retirement.actual.v1",
+  "status": "ACTUAL_COMPLETED",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T01:19:39.701473+00:00",
+  "source_review": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e01-e03-media-retirement-a01/EXACT-MEDIA-PURPOSE-REVIEW.sealed-a01.json",
+    "bytes": 24903,
+    "sha256": "96300cc61228745bb242b88f003686fcef92007e466e3f507abfef16711d2d85"
+  },
+  "actual_deleted_count": 3,
+  "actual_not_deleted_count": 0,
+  "actual_deleted_logical_bytes": 1515045948,
+  "actual_deleted_singlelink_allocation_bytes": 1515053056,
+  "items": [
+    {
+      "asset_id": "E03-a03-dry",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a03/native-run/artifacts/derived/sha256/3B/3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D.mov",
+      "expected_bytes": 581461738,
+      "original_recorded_SHA256": "3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D",
+      "status": "deleted_missing_confirmed",
+      "same_handle_verified": {
+        "id": [
+          3061637496,
+          281474978596944
+        ],
+        "b": 581461738,
+        "ft": 134354925586890756,
+        "links": 1,
+        "allocation": 581464064
+      },
+      "old_original_availability": "retired_unavailable"
+    },
+    {
+      "asset_id": "E03-a04-dry",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+      "expected_bytes": 580809766,
+      "original_recorded_SHA256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+      "status": "deleted_missing_confirmed",
+      "same_handle_verified": {
+        "id": [
+          3061637496,
+          281474978600969
+        ],
+        "b": 580809766,
+        "ft": 134354991659347842,
+        "links": 1,
+        "allocation": 580812800
+      },
+      "old_original_availability": "retired_unavailable"
+    },
+    {
+      "asset_id": "E03-a04-narration-grid",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/media-audit-native-a04/artifacts/derived/sha256/78/78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951.wav",
+      "expected_bytes": 352774444,
+      "original_recorded_SHA256": "78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951",
+      "status": "deleted_missing_confirmed",
+      "same_handle_verified": {
+        "id": [
+          3061637496,
+          562949955316168
+        ],
+        "b": 352774444,
+        "ft": 134355029905217897,
+        "links": 1,
+        "allocation": 352776192
+      },
+      "old_original_availability": "retired_unavailable"
+    }
+  ],
+  "availability_receipt": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e03-three-stems-retirement-a01/AVAILABILITY.actual-a01.json",
+    "bytes": 8195,
+    "sha256": "a1fe7b9b9b3a0562d34ba770872329c290c2505b6e6358c6bedea0ea97f0b257"
+  },
+  "intent_receipt": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e03-three-stems-retirement-a01/INTENT.actual-a01.json",
+    "bytes": 13605,
+    "sha256": "6fa2fb35385550ac5a423a51b90e95afa60538c9fdfe9fd3ad9352cc30a6d1d5"
+  },
+  "protected_read_handle_count": 11,
+  "four_final_theme_keepers": [
+    {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a03/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+      "before": {
+        "id": [
+          3061637496,
+          281474978596938
+        ],
+        "b": 274305689,
+        "ft": 134354925537362418,
+        "links": 1,
+        "allocation": 274309120
+      },
+      "why": "Historical a03 crop-RED encoded subject remains"
+    },
+    {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a04/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+      "before": {
+        "id": [
+          3061637496,
+          281474978600963
+        ],
+        "b": 273653717,
+        "ft": 134354991609335394,
+        "links": 1,
+        "allocation": 273653760
+      },
+      "why": "Actual completed E03 expansion delivery subject remains"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/war-ai-full-film-review.mp4",
+      "before": {
+        "id": [
+          882653518,
+          281474978531190
+        ],
+        "b": 228899890,
+        "ft": 134346797159885340,
+        "links": 1,
+        "allocation": 228900864
+      },
+      "why": "v4 draft final render remains even though delivery unproven"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/run/artifacts/raw/sha256/FD/FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+      "before": {
+        "id": [
+          882653518,
+          281474978532373
+        ],
+        "b": 30726160,
+        "ft": 134346945134849929,
+        "links": 1,
+        "allocation": 30728192
+      },
+      "why": "Series theme remains active E04 input, never candidate"
+    }
+  ],
+  "protected_metadata_changed": [],
+  "free_before": {
+    "C": {
+      "total_bytes": 511133945856,
+      "used_bytes": 482924179456,
+      "free_bytes": 28209766400
+    },
+    "D": {
+      "total_bytes": 500090007552,
+      "used_bytes": 477422686208,
+      "free_bytes": 22667321344
+    }
+  },
+  "free_after": {
+    "C": {
+      "total_bytes": 511133945856,
+      "used_bytes": 481409171456,
+      "free_bytes": 29724774400
+    },
+    "D": {
+      "total_bytes": 500090007552,
+      "used_bytes": 477422686208,
+      "free_bytes": 22667321344
+    }
+  },
+  "observed_free_delta_bytes": {
+    "C": 1515008000,
+    "D": 0
+  },
+  "free_delta_not_exclusively_attributed_current_E04_and_OS_may_write": true,
+  "irreversible_loss_accepted": "Exact three old lossless picture/narration stems and precise re-edit ability retired. Named compressed final and historical failed encoded subjects remain; no lossless rebuild promise.",
+  "old_B8_keeper_and_its_prior_duplicate_alias_now_retired_unavailable_if_actual_deleted": true,
+  "immutable_manifests_and_prior_alias_receipts_unchanged": true,
+  "D_v4_held_no_delete": true,
+  "directories_deleted": 0,
+  "media_bodies_rehashed": 0,
+  "main_tree_SDK_desktop_game_build_security_mutations": 0,
+  "global_quota_changed": false,
+  "new_heavy_write_admission_claimed": false,
+  "metadata_budget_bytes": 131072
+}

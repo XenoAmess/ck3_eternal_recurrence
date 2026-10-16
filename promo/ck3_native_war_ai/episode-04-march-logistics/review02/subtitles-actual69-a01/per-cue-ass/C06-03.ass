@@ -1,0 +1,36 @@
+[Script Info]
+Title: 出发前把路线与警告连起来
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.04,English,en-0,0,0,0,,{\q2}Before departure, review the first stop, final
+Dialogue: 2,0:00:00.10,0:00:03.33,Chinese,zh-0,0,0,0,,{\q2}出发前，再把第一站、最终目的
+Dialogue: 1,0:00:03.04,0:00:05.66,English,en-1,0,0,0,,{\q2}destination, and current arrival estimate
+Dialogue: 2,0:00:03.33,0:00:06.55,Chinese,zh-1,0,0,0,,{\q2}地和当前抵达估计放在一起看。
+Dialogue: 1,0:00:05.66,0:00:06.24,English,en-2,0,0,0,,{\q2}together.
+Dialogue: 1,0:00:06.24,0:00:10.31,English,en-3,0,0,0,,{\q2}A legal route only shows that this movement is currently allowed.
+Dialogue: 2,0:00:06.55,0:00:11.19,Chinese,zh-2,0,0,0,,{\q2}路线合法，只说明这次可以这样走；沿途能否
+Dialogue: 1,0:00:10.31,0:00:13.13,English,en-4,0,0,0,,{\q2}Whether the army can rest along the way, and
+Dialogue: 2,0:00:11.19,0:00:15.59,Chinese,zh-3,0,0,0,,{\q2}休整、可能支付什么，还要核对各自条件。
+Dialogue: 1,0:00:13.13,0:00:15.94,English,en-5,0,0,0,,{\q2}what it may pay, require their own condition
+Dialogue: 2,0:00:15.59,0:00:19.44,Chinese,zh-4,0,0,0,,{\q2}把当前库存、缺员、下一步地点和警告
+Dialogue: 1,0:00:15.94,0:00:16.39,English,en-6,0,0,0,,{\q2}checks.
+Dialogue: 1,0:00:16.39,0:00:19.26,English,en-7,0,0,0,,{\q2}Save the current stock, troop shortfall, next
+Dialogue: 1,0:00:19.26,0:00:22.71,English,en-8,0,0,0,,{\q2}location, and warnings to establish a baseline for the
+Dialogue: 2,0:00:19.44,0:00:23.29,Chinese,zh-5,0,0,0,,{\q2}保存下来，途中才有可以回看的基线。
+Dialogue: 1,0:00:22.71,0:00:23.22,English,en-9,0,0,0,,{\q2}journey.
+Dialogue: 1,0:00:23.22,0:00:26.57,English,en-10,0,0,0,,{\q2}After issuing the order, confirm the actual route; on
+Dialogue: 2,0:00:23.29,0:00:26.64,Chinese,zh-6,0,0,0,,{\q2}下令以后再确认实际路线，真正
+Dialogue: 1,0:00:26.57,0:00:30.05,English,en-11,0,0,0,,{\q2}actual arrival, compare reality with the original plan.
+Dialogue: 2,0:00:26.64,0:00:29.99,Chinese,zh-7,0,0,0,,{\q2}到场时再把现实与原计划对上。

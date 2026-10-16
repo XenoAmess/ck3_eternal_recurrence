@@ -1,0 +1,32 @@
+[Script Info]
+Title: 不伪造胜负
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.96,English,en-0,0,0,0,,{\q2}The old replays did not establish a strict winner among the three plans.
+Dialogue: 2,0:00:00.10,0:00:05.55,Chinese,zh-0,0,0,0,,{\q2}旧回放没有给出严格的三方案胜负：B在第三十八天因冻
+Dialogue: 1,0:00:03.96,0:00:06.58,English,en-1,0,0,0,,{\q2}B stopped on day thirty-eight because the frozen
+Dialogue: 2,0:00:05.55,0:00:11.01,Chinese,zh-1,0,0,0,,{\q2}结条件未通过而停止，仍有五十二天预算；C保留十五次
+Dialogue: 1,0:00:06.58,0:00:09.52,English,en-2,0,0,0,,{\q2}conditions were not met, with fifty-two days of budget
+Dialogue: 1,0:00:09.52,0:00:10.07,English,en-3,0,0,0,,{\q2}remaining.
+Dialogue: 1,0:00:10.07,0:00:13.36,English,en-4,0,0,0,,{\q2}C retains fifteen two-day sampling deviations, so arrival can
+Dialogue: 2,0:00:11.01,0:00:16.46,Chinese,zh-2,0,0,0,,{\q2}两日采样偏差，抵达只能落在第七十五到七十七天之间。
+Dialogue: 1,0:00:13.36,0:00:16.77,English,en-5,0,0,0,,{\q2}only be placed after day seventy-five and by day seventy-seven.
+Dialogue: 2,0:00:16.46,0:00:19.33,Chinese,zh-3,0,0,0,,{\q2}这些历史记录继续保留。
+Dialogue: 1,0:00:16.77,0:00:18.48,English,en-6,0,0,0,,{\q2}These historical records remain.
+Dialogue: 1,0:00:18.48,0:00:22.66,English,en-7,0,0,0,,{\q2}For the new comparison, we will discuss the trade-offs in actual routes, rest
+Dialogue: 2,0:00:19.33,0:00:23.13,Chinese,zh-4,0,0,0,,{\q2}新版比较等三条独立回放完成后，再
+Dialogue: 1,0:00:22.66,0:00:26.51,English,en-8,0,0,0,,{\q2}locations, and enemy conditions once all three independent replays have
+Dialogue: 2,0:00:23.13,0:00:26.92,Chinese,zh-5,0,0,0,,{\q2}按实际路线、驻点和敌情讨论取舍。
+Dialogue: 1,0:00:26.51,0:00:27.00,English,en-9,0,0,0,,{\q2}finished.

@@ -1,0 +1,33 @@
+[Script Info]
+Title: 人数变化先分实体与角色记录
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.15,English,en-0,0,0,0,,{\q2}After splitting or merging, check physical troop counts first, then characters and commanders.
+Dialogue: 2,0:00:00.10,0:00:05.42,Chinese,zh-0,0,0,0,,{\q2}分合军以后，先核对实体兵员，再看角色和统帅。
+Dialogue: 1,0:00:05.15,0:00:10.30,English,en-1,0,0,0,,{\q2}In this case, the selected small army split off a new army and merged it back into the original.
+Dialogue: 2,0:00:05.42,0:00:10.10,Chinese,zh-1,0,0,0,,{\q2}这次选中小军拆出新队、再合回原队，四条实体
+Dialogue: 2,0:00:10.10,0:00:14.78,Chinese,zh-2,0,0,0,,{\q2}兵员始终合计二百五十人；与此同时，另一军里
+Dialogue: 1,0:00:10.30,0:00:14.22,English,en-2,0,0,0,,{\q2}Its four physical troop records continued to total two hundred and fifty.
+Dialogue: 1,0:00:14.22,0:00:16.90,English,en-3,0,0,0,,{\q2}Meanwhile, a character record with no troop data,
+Dialogue: 2,0:00:14.78,0:00:19.46,Chinese,zh-3,0,0,0,,{\q2}一条显示一比一的空兵员角色记录消失，同一个
+Dialogue: 1,0:00:16.90,0:00:19.30,English,en-4,0,0,0,,{\q2}displayed as one out of one in another army,
+Dialogue: 1,0:00:19.30,0:00:19.96,English,en-5,0,0,0,,{\q2}disappeared.
+Dialogue: 2,0:00:19.46,0:00:23.70,Chinese,zh-4,0,0,0,,{\q2}角色成为新队、再成为合军后原队的统帅。
+Dialogue: 1,0:00:19.96,0:00:25.06,English,en-6,0,0,0,,{\q2}The same character became commander of the new army, then of the original army after the merge.
+Dialogue: 2,0:00:23.70,0:00:26.71,Chinese,zh-5,0,0,0,,{\q2}那一比一的显示变化不能记成补
+Dialogue: 1,0:00:25.06,0:00:29.99,English,en-7,0,0,0,,{\q2}That one-out-of-one display change cannot be counted as one physical soldier gained or lost.
+Dialogue: 2,0:00:26.71,0:00:29.50,Chinese,zh-6,0,0,0,,{\q2}了一名或少了一名实体士兵。
+Dialogue: 2,0:00:29.50,0:00:34.97,Chinese,zh-7,0,0,0,,{\q2}实体人数、角色关联和当前统帅，要分别核对。
+Dialogue: 1,0:00:29.99,0:00:35.04,English,en-8,0,0,0,,{\q2}Physical counts, character associations, and the current commander must be checked separately.

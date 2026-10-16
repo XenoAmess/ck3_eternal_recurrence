@@ -1,0 +1,32 @@
+[Script Info]
+Title: 先提出三个观察区别
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.50,English,en-0,0,0,0,,{\q2}First, keep three distinctions clear.
+Dialogue: 2,0:00:00.10,0:00:03.05,Chinese,zh-0,0,0,0,,{\q2}先抓住三组容易混淆的数。
+Dialogue: 1,0:00:02.50,0:00:06.51,English,en-1,0,0,0,,{\q2}Supply stock is material; actual troop strength counts people.
+Dialogue: 2,0:00:03.05,0:00:07.75,Chinese,zh-1,0,0,0,,{\q2}补给库存是物资，实体兵员是人数；一条显示一比
+Dialogue: 1,0:00:06.51,0:00:11.76,English,en-2,0,0,0,,{\q2}A character record showing 1/1 does not automatically mean one soldier was added.
+Dialogue: 2,0:00:07.75,0:00:12.24,Chinese,zh-2,0,0,0,,{\q2}一的角色记录，也不自动等于补进了一名士兵。
+Dialogue: 1,0:00:11.76,0:00:15.32,English,en-3,0,0,0,,{\q2}Movement locking is another distinction: after Stop is
+Dialogue: 2,0:00:12.24,0:00:15.48,Chinese,zh-3,0,0,0,,{\q2}另一组是移动锁定：按停止以后，
+Dialogue: 1,0:00:15.32,0:00:18.88,English,en-4,0,0,0,,{\q2}pressed, the army may still have to finish its current
+Dialogue: 2,0:00:15.48,0:00:18.50,Chinese,zh-4,0,0,0,,{\q2}军队可能还要走完眼前这一段。
+Dialogue: 2,0:00:18.50,0:00:23.46,Chinese,zh-5,0,0,0,,{\q2}它们都会影响我们对“恢复了”“少人了”“停下了”的判断。
+Dialogue: 1,0:00:18.88,0:00:19.15,English,en-5,0,0,0,,{\q2}leg.
+Dialogue: 1,0:00:19.15,0:00:23.03,English,en-6,0,0,0,,{\q2}These affect what we mean by 'recovered,' 'lost troops' and
+Dialogue: 1,0:00:23.03,0:00:27.43,English,en-7,0,0,0,,{\q2}'stopped.' We will examine the actual records before explaining the
+Dialogue: 2,0:00:23.46,0:00:27.89,Chinese,zh-6,0,0,0,,{\q2}接下来分别看实际记录，再解释这些变化。
+Dialogue: 1,0:00:27.43,0:00:27.96,English,en-8,0,0,0,,{\q2}changes.

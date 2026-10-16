@@ -1,0 +1,37 @@
+[Script Info]
+Title: 锁定后停止的实际终点
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.07,English,en-0,0,0,0,,{\q2}After locking, we issued stop just once.
+Dialogue: 2,0:00:00.10,0:00:03.62,Chinese,zh-0,0,0,0,,{\q2}这次锁定后，我们只下达一次停止。
+Dialogue: 1,0:00:03.07,0:00:07.46,English,en-1,0,0,0,,{\q2}A later independent read showed the four-leg route reduced
+Dialogue: 2,0:00:03.62,0:00:07.22,Chinese,zh-1,0,0,0,,{\q2}后来独立读取，四段路线只剩原来的
+Dialogue: 2,0:00:07.22,0:00:10.82,Chinese,zh-2,0,0,0,,{\q2}第一站，已经走过的首段进度保留。
+Dialogue: 1,0:00:07.46,0:00:11.32,English,en-2,0,0,0,,{\q2}to its original first stop, with first-leg progress
+Dialogue: 2,0:00:10.82,0:00:15.16,Chinese,zh-3,0,0,0,,{\q2}军队没有原地停下；两天后，它实际到了原
+Dialogue: 1,0:00:11.32,0:00:12.07,English,en-3,0,0,0,,{\q2}preserved.
+Dialogue: 1,0:00:12.07,0:00:14.38,English,en-4,0,0,0,,{\q2}The army did not stop in place.
+Dialogue: 1,0:00:14.38,0:00:18.17,English,en-5,0,0,0,,{\q2}Two days later, it reached that first-leg endpoint
+Dialogue: 2,0:00:15.16,0:00:19.50,Chinese,zh-4,0,0,0,,{\q2}首段终点，路线变空，下一天仍留在那里。
+Dialogue: 1,0:00:18.17,0:00:22.03,English,en-6,0,0,0,,{\q2}with an empty route, and stayed there the following
+Dialogue: 2,0:00:19.50,0:00:23.54,Chinese,zh-5,0,0,0,,{\q2}这个结果把停止的作用说清了：撤掉后续
+Dialogue: 1,0:00:22.03,0:00:22.34,English,en-7,0,0,0,,{\q2}day.
+Dialogue: 1,0:00:22.34,0:00:26.87,English,en-8,0,0,0,,{\q2}Stop removed later travel while completing the committed leg.
+Dialogue: 2,0:00:23.54,0:00:27.36,Chinese,zh-6,0,0,0,,{\q2}行程，同时把已经承诺的这一段走完。
+Dialogue: 1,0:00:26.87,0:00:29.54,English,en-9,0,0,0,,{\q2}The target field was not read then;
+Dialogue: 2,0:00:27.36,0:00:30.32,Chinese,zh-7,0,0,0,,{\q2}目标字段当时没有读到，结果
+Dialogue: 1,0:00:29.54,0:00:32.59,English,en-10,0,0,0,,{\q2}actual location and route establish this
+Dialogue: 2,0:00:30.32,0:00:33.05,Chinese,zh-8,0,0,0,,{\q2}就用实际位置和路线说明。
+Dialogue: 1,0:00:32.59,0:00:33.12,English,en-11,0,0,0,,{\q2}result.

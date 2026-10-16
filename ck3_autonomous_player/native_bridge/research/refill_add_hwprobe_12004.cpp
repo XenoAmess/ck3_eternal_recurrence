@@ -1,7 +1,8 @@
 // Candidate actual CK3 1.20.0.4 physical ADD hardware observer. DEFAULT OFF.
 // Source-derived from war31_two_point_hwprobe.cpp; no injected target callback,
 // target code/data write, instruction emulation, or target XSTATE modification.
-// New cold-window / cleanup / register preservation fixture remains NOT RUN.
+// Shared debugger lifecycle has synthetic cold qualification; this production
+// executable still requires its own frozen build/SYSTEM gate and Root live plan.
 #ifndef XAR_ENABLE_REFILL_ADD_HWPROBE_12004
 #define XAR_ENABLE_REFILL_ADD_HWPROBE_12004 0
 #endif
@@ -29,6 +30,8 @@ namespace {
 
 constexpr std::array<DWORD64, 2> kSiteRvas{0x2A98B88, 0x2A98B8B};
 DWORD g_expected_tid=0;
+std::array<std::uint8_t,3> g_verified_pre{};
+std::array<std::uint8_t,6> g_verified_post{};
 std::map<DWORD,std::array<DWORD64,6>> g_saved_debug;
 std::uint32_t g_expected_regiment=0;
 unsigned g_expected_slot=7;
@@ -67,9 +70,15 @@ bool ReadExact(HANDLE process, DWORD64 address, void *dest, std::size_t size) {
 bool ExactAnchorsAt(HANDLE process, const std::array<DWORD64, 2> &sites) {
   std::array<std::uint8_t, kSetupBytes.size()> setup{};
   std::array<std::uint8_t, kResolveBytes.size()> resolve{};
-  return ReadExact(process, sites[0], setup.data(), setup.size()) &&
-         ReadExact(process, sites[1], resolve.data(), resolve.size()) &&
-         setup == kSetupBytes && resolve == kResolveBytes;
+  if (!ReadExact(process, sites[0], setup.data(), setup.size()) ||
+      !ReadExact(process, sites[1], resolve.data(), resolve.size()) ||
+      setup != kSetupBytes || resolve != kResolveBytes) return false;
+  g_verified_pre = setup; g_verified_post = resolve; return true;
+}
+
+template<std::size_t N> std::string ByteHex(const std::array<std::uint8_t,N> &bytes) {
+  constexpr char digits[]="0123456789abcdef"; std::string out; out.reserve(N*2);
+  for (auto b:bytes) {out.push_back(digits[b>>4]);out.push_back(digits[b&15]);} return out;
 }
 
 DWORD64 ModuleBase(DWORD pid) {
@@ -181,6 +190,8 @@ bool SuspendAndClearAll(const std::map<DWORD, HANDLE> &threads,
 }
 
 
+#include "refill_add_live_12004/debug_thread_ownership_12004.hpp"
+
 struct Hit {
   int site=-1; DWORD tid=0; DWORD64 pointer=0,regi=0,rsp=0,iterator=0;
   std::uint64_t qpc=0,core_caller=0;
@@ -262,9 +273,9 @@ bool PairIsUnique(const std::vector<Hit> &hits) {
 void LogHit(std::ofstream &o,const Hit &h,DWORD pid,std::uint64_t ordinal) {
   o<<"{\"kind\":\"raw_ADD_boundary\",\"machine_id\":\""<<g_machine<<"\",\"site_rva\":\""
    <<Hex(kSiteRvas[h.site])<<"\",\"pid\":"<<pid<<",\"thread_id\":"<<h.tid
-   <<",\"event_ordinal\":"<<ordinal<<",\"qpc\":"<<h.qpc<<",\"regi_pointer\":\""<<Hex(h.regi)
+   <<",\"event_ordinal\":"<<ordinal<<",\"debug_event_ordinal\":"<<g_debug_hits<<",\"qpc\":"<<h.qpc<<",\"regi_pointer\":\""<<Hex(h.regi)
    <<"\",\"regi_full_id_u32\":"<<h.full_id<<",\"physical_slot\":"<<h.slot
-   <<",\"rax_anchor\":\""<<Hex(h.pointer)<<"\",\"rsp\":\""<<Hex(h.rsp)
+   <<",\"rax_anchor\":\""<<Hex(h.pointer)<<"\",\"rsp\":\""<<Hex(h.rsp)<<"\",\"core_caller_raw\":\""<<Hex(h.core_caller)
    <<"\",\"manager_iterator\":\""<<Hex(h.iterator)<<"\",\"q_index\":"<<h.q_index
    <<",\"q_u32\":"<<h.q_bits<<",\"q_i32\":"<<static_cast<std::int32_t>(h.q_bits)
    <<",\"current_u32\":"<<h.current<<",\"maximum_u32\":"<<h.maximum
@@ -285,10 +296,13 @@ bool WriteReady(const std::filesystem::path &path, DWORD pid, DWORD64 base) {
   if (std::filesystem::exists(path)) return false;
   std::ofstream ready(path, std::ios::binary | std::ios::out);
   if (!ready) return false;
-  ready << "{\"schema\":\"xar.ck3.refill_ADD_12004.hwprobe_ready.v1\","
+  ready << "{\"schema\":\"xar.ck3.refill_ADD_12004.hwprobe_ready.v2\","
         << "\"pid\":" << pid << ",\"module_base\":\"" << Hex(base)
         << "\",\"site_0\":\"" << Hex(kSiteRvas[0])
-        << "\",\"site_1\":\"" << Hex(kSiteRvas[1]) << "\"}\n";
+        << "\",\"site_1\":\"" << Hex(kSiteRvas[1])
+        << "\",\"machine_id\":\"" << g_machine << "\",\"process_created_filetime\":" << g_expected_created
+        << ",\"thread_id\":" << g_expected_tid << ",\"regi_full_id_u32\":" << g_expected_regiment
+        << ",\"physical_slot\":" << g_expected_slot << "}\n";
   ready.flush();
   return ready.good();
 }
@@ -310,6 +324,14 @@ bool HasExpectedImageAndAnchors(HANDLE process, DWORD pid, DWORD64 &base) {
   base = ModuleBase(pid);
   return base && ExactAnchorsAt(process,
                                 {base + kSiteRvas[0], base + kSiteRvas[1]});
+}
+
+bool AttachedIdentityMatches(HANDLE process,DWORD pid,DWORD64 base,bool fixture,
+                             const std::array<DWORD64,2>&sites){
+  if(ProcessCreationTime(process)!=g_expected_created)return false;
+  if(fixture)return ExactAnchorsAt(process,sites);
+  DWORD64 actual_base=0;
+  return HasExpectedImageAndAnchors(process,pid,actual_base)&&actual_base==base;
 }
 
 int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
@@ -356,10 +378,14 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
     return 2;
   }
   output << "{\"machine_id\":\"" << g_machine << "\",\"exact_exe_sha256_basis\":\"external-frozen-runtime-admission\",\"kind\":\"start\",\"schema\":"
-         << "\"xar.ck3.refill_ADD_12004.hwprobe_raw.v1\",\"pid\":" << pid
+         << "\"xar.ck3.refill_ADD_12004.hwprobe_raw.v2\",\"pid\":" << pid
          << ",\"process_created_filetime\":" << process_created
          << ",\"module_base\":\"" << Hex(base)
-         << "\",\"fixture\":" << (fixture ? "true" : "false") << "}\n";
+         << "\",\"fixture\":" << (fixture ? "true" : "false")
+         << ",\"thread_id\":" << g_expected_tid << ",\"regi_full_id_u32\":" << g_expected_regiment
+         << ",\"physical_slot\":" << g_expected_slot << ",\"timeout_ms\":" << timeout_ms
+         << ",\"verified_site_0_hex\":\"" << ByteHex(g_verified_pre)
+         << "\",\"verified_site_1_hex\":\"" << ByteHex(g_verified_post) << "\"}\n";
   output.flush();
 
   (void)SetConsoleCtrlHandler(OnConsoleControl, TRUE);
@@ -403,31 +429,35 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
     DWORD disposition = DBG_CONTINUE;
     switch (event.dwDebugEventCode) {
       case CREATE_PROCESS_DEBUG_EVENT:
-        threads[event.dwThreadId] = event.u.CreateProcessInfo.hThread;
-        if (event.u.CreateProcessInfo.hFile)
-          CloseHandle(event.u.CreateProcessInfo.hFile);
-        if (event.u.CreateProcessInfo.hProcess)
-          CloseHandle(event.u.CreateProcessInfo.hProcess);
-        if (event.dwThreadId!=g_expected_tid) break;
-        if (!ArmThread(event.u.CreateProcessInfo.hThread, sites))
-          { reason = "cannot_arm_process_thread";
-            if(g_saved_debug.contains(event.dwThreadId))armed_tids.insert(event.dwThreadId); }
-        else armed_tids.insert(event.dwThreadId);
+        if(event.u.CreateProcessInfo.hFile)CloseHandle(event.u.CreateProcessInfo.hFile);
+        // Debug-event hProcess/hThread are borrowed; close only duplicated ownership.
+        if(!AttachedIdentityMatches(process,pid,base,fixture,sites)){
+          reason="attached_identity_changed";break;
+        }
+        if(!OwnDebugThread(event.dwThreadId,event.u.CreateProcessInfo.hThread,threads,armed_tids)){
+          reason="cannot_own_process_thread";break;
+        }
+        if(event.dwThreadId!=g_expected_tid)break;
+        if(!ArmThread(threads.at(event.dwThreadId),sites)){
+          reason="cannot_arm_process_thread";
+          if(g_saved_debug.contains(event.dwThreadId))armed_tids.insert(event.dwThreadId);
+        }else armed_tids.insert(event.dwThreadId);
         break;
       case CREATE_THREAD_DEBUG_EVENT:
-        threads[event.dwThreadId] = event.u.CreateThread.hThread;
-        if (event.dwThreadId!=g_expected_tid) break;
-        if (!ArmThread(event.u.CreateThread.hThread, sites))
-          { reason = "cannot_arm_new_thread";
-            if(g_saved_debug.contains(event.dwThreadId))armed_tids.insert(event.dwThreadId); }
-        else armed_tids.insert(event.dwThreadId);
+        if(!OwnDebugThread(event.dwThreadId,event.u.CreateThread.hThread,threads,armed_tids)){
+          reason="cannot_own_new_thread";break;
+        }
+        if(event.dwThreadId!=g_expected_tid)break;
+        if(!AttachedIdentityMatches(process,pid,base,fixture,sites)){
+          reason="attached_identity_changed";break;
+        }
+        if(!ArmThread(threads.at(event.dwThreadId),sites)){
+          reason="cannot_arm_new_thread";
+          if(g_saved_debug.contains(event.dwThreadId))armed_tids.insert(event.dwThreadId);
+        }else armed_tids.insert(event.dwThreadId);
         break;
       case EXIT_THREAD_DEBUG_EVENT:
-        if (const auto exiting = threads.find(event.dwThreadId);
-            exiting != threads.end() && exiting->second)
-          CloseHandle(exiting->second);
-        threads.erase(event.dwThreadId);
-        armed_tids.erase(event.dwThreadId);
+        RetireDebugThread(event.dwThreadId,threads,armed_tids);
         break;
       case LOAD_DLL_DEBUG_EVENT:
         if (event.u.LoadDll.hFile) CloseHandle(event.u.LoadDll.hFile);
@@ -439,7 +469,8 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
       case EXCEPTION_DEBUG_EVENT: {
         const DWORD code = event.u.Exception.ExceptionRecord.ExceptionCode;
         if (code == EXCEPTION_BREAKPOINT && !ready) {
-          ready = armed_tids.contains(g_expected_tid) && WriteReady(ready_path, pid, base);
+          ready = AttachedIdentityMatches(process,pid,base,fixture,sites) &&
+              armed_tids.contains(g_expected_tid) && WriteReady(ready_path, pid, base);
           if (!ready) reason = "ready_receipt_failed";
           break;
         }
@@ -521,15 +552,11 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
         event = DEBUG_EVENT{};
         if (!WaitForDebugEvent(&event, kWaitSliceMs)) continue;
         pending_event = true;
-        if (event.dwDebugEventCode == CREATE_THREAD_DEBUG_EVENT)
-          threads[event.dwThreadId] = event.u.CreateThread.hThread;
-        if (event.dwDebugEventCode == EXIT_THREAD_DEBUG_EVENT) {
-          if (const auto exiting = threads.find(event.dwThreadId);
-              exiting != threads.end() && exiting->second)
-            CloseHandle(exiting->second);
-          threads.erase(event.dwThreadId);
-          armed_tids.erase(event.dwThreadId);
-        }
+        if(event.dwDebugEventCode==CREATE_THREAD_DEBUG_EVENT &&
+            !OwnDebugThread(event.dwThreadId,event.u.CreateThread.hThread,threads,armed_tids))
+          reason="cleanup_cannot_own_new_thread";
+        if(event.dwDebugEventCode==EXIT_THREAD_DEBUG_EVENT)
+          RetireDebugThread(event.dwThreadId,threads,armed_tids);
         if (event.dwDebugEventCode == LOAD_DLL_DEBUG_EVENT && event.u.LoadDll.hFile)
           CloseHandle(event.u.LoadDll.hFile);
         if (event.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT) process_exited = true;
@@ -563,12 +590,8 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
   } else if (process_exited) {
     detached = true;
   }
-  if (!process_exited) {
-    for (const auto &[tid, handle] : threads) {
-      (void)tid;
-      if (handle) CloseHandle(handle);
-    }
-  }
+  // Only duplicated handles are stored, including when the process has exited.
+  for(const auto &[tid,handle]:threads){(void)tid;if(handle)CloseHandle(handle);}
   if (pending_event) reason = "pending_debug_event_cleanup_failed";
   if (reason == "paired" && (!cleared || !detached))
     reason = "cleanup_not_proven";
@@ -582,6 +605,7 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
       <<",\"natural_parent_token\":null,\"natural_attribution_ready\":false,\"full_window_coverage_ready\":false}\n";
     output.flush();
   }
+  output << "{\"kind\":\"debug_hit_budget\",\"debug_hits\":" << g_debug_hits << ",\"limit\":100000}\n";
   LogTerminal(output, reason == "paired" ? "paired" : "red", reason,
               cleared || process_exited, detached, hits.size());
   CloseHandle(process);

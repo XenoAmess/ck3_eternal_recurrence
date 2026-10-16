@@ -1,0 +1,31 @@
+[Script Info]
+Title: 当前人数与满员人数
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.36,English,en-0,0,0,0,,{\q2}Read the army's current and maximum strength, then expand each regiment.
+Dialogue: 2,0:00:00.10,0:00:03.16,Chinese,zh-0,0,0,0,,{\q2}先读军队面板的当前人数和满
+Dialogue: 2,0:00:03.16,0:00:06.21,Chinese,zh-1,0,0,0,,{\q2}员人数，再展开到每个兵团。
+Dialogue: 1,0:00:05.36,0:00:08.06,English,en-1,0,0,0,,{\q2}Locate deficits by comparing current
+Dialogue: 2,0:00:06.21,0:00:11.32,Chinese,zh-2,0,0,0,,{\q2}缺额在哪里，要看同一兵团身份的当前值与上限。
+Dialogue: 1,0:00:08.06,0:00:10.38,English,en-2,0,0,0,,{\q2}and maximum values for the same
+Dialogue: 1,0:00:10.38,0:00:11.05,English,en-3,0,0,0,,{\q2}regiment.
+Dialogue: 1,0:00:11.05,0:00:16.53,English,en-4,0,0,0,,{\q2}To explain actual replenishment, also check the underlying soldier records.
+Dialogue: 2,0:00:11.32,0:00:15.96,Chinese,zh-3,0,0,0,,{\q2}需要解释实体补兵时，还要继续核对实际兵员记
+Dialogue: 2,0:00:15.96,0:00:20.38,Chinese,zh-4,0,0,0,,{\q2}录；面板里已确认的空兵员角色记录要单列。
+Dialogue: 1,0:00:16.53,0:00:21.13,English,en-5,0,0,0,,{\q2}Keep confirmed character records with no soldier DATA separate.
+Dialogue: 2,0:00:20.38,0:00:24.70,Chinese,zh-5,0,0,0,,{\q2}这既避免把不同军队的数拼在一起，也避免
+Dialogue: 1,0:00:21.13,0:00:25.03,English,en-6,0,0,0,,{\q2}This avoids combining counts from different armies or
+Dialogue: 2,0:00:24.70,0:00:29.03,Chinese,zh-6,0,0,0,,{\q2}把角色的一比一显示误记成新增实体士兵。
+Dialogue: 1,0:00:25.03,0:00:29.09,English,en-7,0,0,0,,{\q2}treating a character's 1/1 display as an added soldier.

@@ -561,6 +561,10 @@ game::MoveArmyResult WorkerAdapter::submit_move_army(std::int32_t army_id, std::
   SemanticRequest request{};
   request.operation = SemanticOperation::move;
   request.id = army_id; request.other_id = province_id;
+  // A successful actual4 move may change its route before FinishQueryMailbox.
+  // Keep the player/date core fence; native SubmitMoveArmy keeps its validators.
+  if (game::IsCk3_12004Descriptor(descriptor()))
+    request.envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
   return Run(request) ? static_cast<game::MoveArmyResult>(request.result) : game::MoveArmyResult::unavailable;
 }
 game::DisbandArmyResult WorkerAdapter::submit_disband_army(std::int32_t army_id) const noexcept {

@@ -1,0 +1,29 @@
+[Script Info]
+Title: C整军经中转
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.16,English,en-0,0,0,0,,{\q2}Plan C keeps the army intact, passes through the legal
+Dialogue: 2,0:00:00.10,0:00:03.74,Chinese,zh-0,0,0,0,,{\q2}方案C保持整军，依次经过事先选好
+Dialogue: 1,0:00:03.16,0:00:06.06,English,en-1,0,0,0,,{\q2}waypoints chosen in advance, then heads to the same
+Dialogue: 2,0:00:03.74,0:00:07.16,Chinese,zh-1,0,0,0,,{\q2}的合法中转点，再去同一个终点。
+Dialogue: 1,0:00:06.06,0:00:06.74,English,en-2,0,0,0,,{\q2}destination.
+Dialogue: 1,0:00:06.74,0:00:09.24,English,en-3,0,0,0,,{\q2}It changes the route, while supply and troop
+Dialogue: 2,0:00:07.16,0:00:11.36,Chinese,zh-2,0,0,0,,{\q2}它是换路线，补给和人数沿途照实记录。
+Dialogue: 1,0:00:09.24,0:00:11.97,English,en-4,0,0,0,,{\q2}counts are recorded as they actually stand along
+Dialogue: 2,0:00:11.36,0:00:15.76,Chinese,zh-3,0,0,0,,{\q2}每一段都等实际到达再转向下一点，不能用镜
+Dialogue: 1,0:00:11.97,0:00:12.43,English,en-5,0,0,0,,{\q2}the way.
+Dialogue: 1,0:00:12.43,0:00:16.39,English,en-6,0,0,0,,{\q2}Each leg waits for actual arrival before turning toward the next point.
+Dialogue: 2,0:00:15.76,0:00:19.95,Chinese,zh-4,0,0,0,,{\q2}头已经移到那里，代替军队已经走到那里。
+Dialogue: 1,0:00:16.39,0:00:20.02,English,en-7,0,0,0,,{\q2}Moving the camera there cannot stand in for the army reaching it.

@@ -1,0 +1,35 @@
+[Script Info]
+Title: 拆小军与同省聚合压力
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.09,English,en-0,0,0,0,,{\q2}Splitting a hundred troops into two groups of fifty
+Dialogue: 2,0:00:00.10,0:00:03.50,Chinese,zh-0,0,0,0,,{\q2}把一百人拆成两支五十人，并不会让
+Dialogue: 1,0:00:03.09,0:00:06.09,English,en-1,0,0,0,,{\q2}does not make the same location support only fifty.
+Dialogue: 2,0:00:03.50,0:00:06.68,Chinese,zh-1,0,0,0,,{\q2}同一个地方只承担五十人的压力。
+Dialogue: 1,0:00:06.09,0:00:10.09,English,en-2,0,0,0,,{\q2}Take a hypothetical case: aggregate local usage is six thousand, the
+Dialogue: 2,0:00:06.68,0:00:10.91,Chinese,zh-2,0,0,0,,{\q2}用一个假设场景：当地聚合用量六千，上
+Dialogue: 1,0:00:10.09,0:00:13.87,English,en-3,0,0,0,,{\q2}limit is four thousand, and the selected army has only a hundred
+Dialogue: 2,0:00:10.91,0:00:14.89,Chinese,zh-3,0,0,0,,{\q2}限四千，其中选中的军队只有一百人。
+Dialogue: 1,0:00:13.87,0:00:14.28,English,en-4,0,0,0,,{\q2}troops.
+Dialogue: 1,0:00:14.28,0:00:17.99,English,en-5,0,0,0,,{\q2}If both armies remain in the same province and the contributing
+Dialogue: 2,0:00:14.89,0:00:18.22,Chinese,zh-4,0,0,0,,{\q2}两队还在同省，而且贡献兵团和
+Dialogue: 1,0:00:17.99,0:00:21.77,English,en-6,0,0,0,,{\q2}regiments and their eligibility are unchanged, usage remains six
+Dialogue: 2,0:00:18.22,0:00:21.30,Chinese,zh-5,0,0,0,,{\q2}资格都没变，用量仍是六千。
+Dialogue: 2,0:00:21.30,0:00:24.84,Chinese,zh-6,0,0,0,,{\q2}分兵能否改善补给，要看实际占用怎
+Dialogue: 1,0:00:21.77,0:00:22.30,English,en-7,0,0,0,,{\q2}thousand.
+Dialogue: 1,0:00:22.30,0:00:25.14,English,en-8,0,0,0,,{\q2}Whether splitting improves supply depends on how
+Dialogue: 2,0:00:24.84,0:00:28.16,Chinese,zh-7,0,0,0,,{\q2}样改变，以及各队真正去了哪里。
+Dialogue: 1,0:00:25.14,0:00:27.93,English,en-9,0,0,0,,{\q2}actual usage changes and where each army really
+Dialogue: 1,0:00:27.93,0:00:28.22,English,en-10,0,0,0,,{\q2}goes.

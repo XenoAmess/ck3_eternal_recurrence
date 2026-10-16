@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/army_county_entry_preview_condition_v1_serializer.hpp"
+
 #include "xar_bridge/ck3_12004_actual_loss_writer_journal.hpp"
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #include "xar_bridge/ck3_12004_battle_casualty_observer.hpp"
@@ -1680,6 +1682,11 @@ inline void AppendMoveRoutePreviewV1(
     output += ",\"province_supply\":";
     AppendArmyProvinceSupplyV1(output, *preview.province_supply, number,
                                append_json_string);
+  }
+  if (preview.county_entry_condition_v1.has_value()) {
+    output += ",\"county_entry_condition_v1\":";
+    AppendCountyEntryPreviewConditionV1(output, *preview.county_entry_condition_v1,
+                                      number, append_json_string);
   }
   output += '}';
 }

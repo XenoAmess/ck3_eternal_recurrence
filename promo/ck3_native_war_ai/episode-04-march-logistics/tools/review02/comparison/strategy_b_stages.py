@@ -1,6 +1,6 @@
 """Root-only staged B composition over the existing admitted file Relay.
 
-Import/--help perform no relay requests. Stages never advance time, create a
+Import/--help perform no relay requests. Ordinary stages never advance time, create a
 session, run SDK, dispatch movement or infer native legality from capability ACK.
 """
 from __future__ import annotations
@@ -81,6 +81,7 @@ class BStages:
     def write(self, status, *, packet=None, **extra):
         if packet is not None:
             self.state['latest_packet_refs'] = packet['refs']
+            self.state['latest_strategy_army_ids'] = packet.get('strategy_army_ids')
         value = {**deepcopy(self.state), 'status': status, 'observed_at_utc': self.r.utc(),
                  'stage': self.live.a.stage, 'time_advanced': False,
                  'SDK_connection_created': False, **extra}
@@ -92,6 +93,10 @@ class BStages:
     def full_packet(self, packet):
         """Hydrate source raw, not the small R09 DTO which omits stock/cap."""
         refs = packet['refs']
+        raw_limit = self.evidence.file_limit(Path(refs['strength_raw']['path']))
+        need(type(refs['strength_raw'].get('bytes')) is int and refs['strength_raw']['bytes'] <= raw_limit
+             and Path(refs['strength_raw']['path']).stat().st_size == refs['strength_raw']['bytes'] <= raw_limit,
+             'B Driver reference exceeds admitted input limit; stop before hash/read')
         for key in ('snapshot', 'strength_raw', 'same_frame_readback'):
             ref = refs[key]
             if key == 'strength_raw':
@@ -103,7 +108,7 @@ class BStages:
         self.r.same_frame(packet['frame'], frame)
         check = self.r.load(refs['same_frame_readback']['response']['path'])['body']
         self.r.same_frame(frame, check)
-        query = self.r.load(refs['strength_raw']['path'])
+        query = self.r.load(refs['strength_raw']['path'], raw_limit)
         need(query.get('accepted') is True and query.get('status') == 'available', 'complete ordinary query unavailable')
         for qkey, skey in (('queried_snapshot_id', 'snapshot_id'), ('queried_revision', 'revision'),
                            ('queried_native_revision', 'native_revision'), ('queried_date_raw', 'date_raw'),
@@ -112,11 +117,14 @@ class BStages:
         need(query.get('queried_connection_generation') == self.live.binding['generation'], 'query generation differs')
         scope = query.get('army_strengths_query_scope') or {}
         rows = query.get('army_strengths')
+        selected = packet.get('strategy_army_ids') or self.strategy_ids()
+        need(type(selected) is list and selected and len(set(selected)) == len(selected)
+             and set(selected) <= set(self.r.roster(frame)), 'B selected scope is not in complete snapshot roster')
         need(type(rows) is list and scope.get('published_scope_status') == 'available'
-             and set(scope.get('army_ids', [])) == set(self.r.roster(frame)), 'complete actual roster/query scope missing')
+             and set(scope.get('army_ids', [])) == set(selected), 'complete actual selected query scope missing')
         self.live.observation.compare_split_merge_cohorts(rows, rows)
         mapping = {r['army_id']: r for r in rows}
-        need(len(mapping) == len(rows) and set(mapping) == set(self.r.roster(frame)), 'actual Army map incomplete')
+        need(len(mapping) == len(rows) and set(mapping) == set(selected), 'actual selected Army map incomplete')
         supply = {}
         for aid, row in mapping.items():
             resolution = row.get('native_army_resolution_v1') or {}
@@ -136,8 +144,14 @@ class BStages:
                 'view': {'positions': self.r.roster(frame)}, 'supply': supply,
                 'assigned_commanders': assigned, 'packet': packet}
 
-    def observe(self, name):
-        packet = self.live.packet('B-' + name)
+    def strategy_ids(self):
+        if self.state['phase'] == 'merged':
+            return [self.state['surviving_army_id']]
+        return sorted({i for i in (self.state.get('main_id') or self.live.a.army_id, self.state.get('child_id')) if i is not None})
+
+    def observe(self, name, *, army_ids=None):
+        packet = self.live.packet('B-' + name, army_ids=self.strategy_ids() if army_ids is None else army_ids,
+                                  raw_file_limit=self.evidence.file_limit)
         self.pending_packet = packet
         return self.full_packet(packet)
 
@@ -146,7 +160,8 @@ class BStages:
         need(refs is not None, 'B previous packet missing')
         # No directory latest/glob: read only the explicitly pinned original.
         frame = self.r.load(refs['snapshot']['response']['path'])['body']
-        return self.full_packet({'frame': frame, 'refs': refs})
+        return self.full_packet({'frame': frame, 'refs': refs,
+                                 'strategy_army_ids': self.state.get('latest_strategy_army_ids')})
 
     def horizon(self, frame):
         elapsed = frame['date_raw'] - self.plan['t0_raw']
@@ -170,7 +185,7 @@ class BStages:
         expected = c.check_plan(self.plan, self.evidence)
         cold = c.endpoint(self.s0_arm['cold_start'], self.plan, self.evidence, runtime)
         need(cold == expected, 'actual independent cold S0 observables differ from frozen baseline')
-        ref = self.live.baseline()
+        ref = self.live.baseline(strategy_scope=True, raw_file_limit=self.evidence.file_limit)
         saved = self.live.saved('baseline')
         current = self.full_packet(saved['packet'])
         need(current['frame']['date_raw'] == self.plan['t0_raw'], 'B did not cold-load the frozen common S0 date')
@@ -210,7 +225,7 @@ class BStages:
 
     def post_split(self):
         need(self.state['phase'] in ('baseline', 'split-submitted'), 'B split post-state requires original one-shot submission')
-        result = self.live.post_split()
+        result = self.live.post_split(strategy_scope=True, raw_file_limit=self.evidence.file_limit)
         saved = self.live.saved('post-split')
         need(saved['split_assertion']['accepted'] is True, 'fresh split transfer not accepted')
         self.full_packet(saved['packet'])
@@ -314,23 +329,24 @@ class BStages:
              and response.get('request', {}).get('request_id') == claim['request_id'], 'B original result unknown/rejected; read original only')
         before = self.full_packet({'frame': self.r.load(claim['before_packet_refs']['snapshot']['response']['path'])['body'],
                                    'refs': claim['before_packet_refs']})
-        current = self.observe('post-merge')
+        current = self.observe('post-merge', army_ids=[claim['ids'][0]])
         self.live.observation._fresh_pair(before['frame'], current['frame'])
         destination, source = claim['ids']
-        need(set(current['rows']) == set(before['rows']) - {source} and destination in current['rows'], 'actual B source removal is incomplete')
+        need(set(self.r.roster(current['frame'])) == set(self.r.roster(before['frame'])) - {source}
+             and set(current['rows']) == set(before['rows']) - {source} and destination in current['rows'],
+             'actual B source removal is incomplete in selected query or complete snapshot roster')
         need(before['rows'][destination]['native_carmy_id'] == current['rows'][destination]['native_carmy_id'], 'B destination generation changed')
         old_position, new_position = before['view']['positions'][destination], current['view']['positions'][destination]
         need(new_position.get('owner_character_id') == self.live.binding['actor']
              and new_position.get('controllable') is True
              and new_position.get('current_province_id') == old_position.get('current_province_id'), 'merged B destination owner/control/site changed')
-        others = sorted(set(before['rows']) - set(claim['ids']))
-        unchanged = self.live.observation.compare_split_merge_cohorts([before['rows'][i] for i in others],
-                                                                     [current['rows'][i] for i in others])
-        need(unchanged['frozen_exact_cohort_pass'], 'unrelated actual Army cohort changed in no-tick B merge')
+        unchanged = {'coverage': 'not_requested', 'only_strategy_cohort_audited': True,
+                     'complete_snapshot_roster_retained': True}
         roles = self.r.compare_data_roles(self.live.consumer, [before['rows'][i] for i in claim['ids']], [current['rows'][destination]])
         need(roles['accepted'], 'actual B ordered/physical DATA changed or unexplained role transition; preserve original packet')
         self.state.update(phase='merged', surviving_army_id=destination)
         return self.write('ACTUAL_MERGE_POSTSTATE_OBSERVED_ROUTE_HANDOFF', packet=current['packet'], DATA_roles=roles,
+                           unrelated_cohorts=unchanged,
                           assigned_commanders_before=before['assigned_commanders'], assigned_commanders_after=current['assigned_commanders'],
                           physical_refill=None, dynamic_video_qualified=False)
 
@@ -348,9 +364,23 @@ class BStages:
                           packet=current['packet'], route_handoff=dependency, move_command=None,
                           absolute_deadline_raw=self.plan['t0_raw'] + 90 * 24, fees=None, loss_or_refill_cause=None)
 
+    def common_horizon_stage(self, *, recovery=False):
+        a = self.live.a
+        need(a.common_horizon is not None and a.common_horizon_sha256
+             and a.arrival_arm is not None and a.arrival_arm_sha256,
+             'explicit reviewed common-horizon helper and actual arrival arm required')
+        helper = reviewed_module(a.common_horizon, 'B_reviewed_common_horizon', a.common_horizon_sha256)
+        self.common_horizon_pin = self.r.pin(a.common_horizon)
+        arrival = self.r.pin(a.arrival_arm)
+        need(arrival['sha256'] == a.arrival_arm_sha256, 'actual first-arrival arm pin differs')
+        return helper.advance(self, arrival, a.days,
+            recovery_start=a.day_start_raw if recovery else None)
+
     def run(self, stage):
         methods = {'baseline': self.baseline, 'split-once': self.split_once, 'post-split': self.post_split,
-                   'rest': self.rest, 'merge-once': self.merge_once, 'post-merge': self.post_merge, 'route': self.route}
+                   'rest': self.rest, 'merge-once': self.merge_once, 'post-merge': self.post_merge, 'route': self.route,
+                   'advance-common-horizon': self.common_horizon_stage,
+                   'recover-common-horizon-day': lambda: self.common_horizon_stage(recovery=True)}
         try:
             return methods[stage]()
         except (RuntimeError, ValueError, KeyError, TypeError, OSError) as error:
@@ -359,9 +389,25 @@ class BStages:
                 instruction='Read original exact request/response and actual state; never remove one-shot claim or retry unknown action.')
 
 
+def relay_arguments(args):
+    """Keep the historical Relay defaults or forward one complete reviewed binding."""
+    fields = ('source_head', 'run_sequence', 'module_pins', 'module_pins_sha256')
+    present = [hasattr(args, name) for name in fields]
+    if any(present):
+        need(all(present), 'explicit Relay binding requires source-head, run-sequence, module-pins and module-pins-sha256 together')
+        need(isinstance(args.source_head, str) and len(args.source_head) == 40
+             and all(c in '0123456789abcdef' for c in args.source_head), 'exact lowercase source-head SHA required')
+        need(type(args.run_sequence) is int and args.run_sequence >= 176, 'explicit allocated run sequence required')
+        need(isinstance(args.module_pins_sha256, str) and len(args.module_pins_sha256) == 64
+             and all(c in '0123456789abcdef' for c in args.module_pins_sha256), 'exact reviewed module-pins SHA required')
+    result = deepcopy(args)
+    result.self_sha256 = args.root_relay_sha256
+    return result
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('stage', choices=('baseline', 'split-once', 'post-split', 'rest', 'merge-once', 'post-merge', 'route'))
+    p.add_argument('stage', choices=('baseline', 'split-once', 'post-split', 'rest', 'merge-once', 'post-merge', 'route', 'advance-common-horizon', 'recover-common-horizon-day'))
     for name in ('repo', 'context', 'runtime-proof', 'request-helper', 'root-relay', 'next-adapter', 'plan', 'evidence-root'):
         p.add_argument('--' + name, type=Path, required=True)
     for name in ('self-sha256', 'context-sha256', 'runtime-proof-sha256', 'request-helper-sha256',
@@ -372,7 +418,24 @@ def main(argv=None):
     p.add_argument('--previous-state-sha256')
     p.add_argument('--s0-arm', type=Path)
     p.add_argument('--s0-arm-sha256')
+    # Suppressed defaults preserve the historical R0176/dcda Relay scope. A new
+    # source/run must supply the complete reviewed binding; never infer HEAD.
+    p.add_argument('--source-head', default=argparse.SUPPRESS)
+    p.add_argument('--run-sequence', type=int, default=argparse.SUPPRESS)
+    p.add_argument('--module-pins', type=Path, default=argparse.SUPPRESS)
+    p.add_argument('--module-pins-sha256', default=argparse.SUPPRESS)
+    p.add_argument('--max-evidence-file-bytes', type=int, default=16 * 1024 * 1024)
+    p.add_argument('--max-runtime-total-bytes', type=int, default=512 * 1024 * 1024)
+    p.add_argument('--runtime-capacity-admission', nargs=2, metavar=('PATH', 'SHA256'))
+    p.add_argument('--evidence-capacity-admission', nargs=2, metavar=('PATH', 'SHA256'), action='append', default=[])
+    p.add_argument('--common-horizon', type=Path)
+    p.add_argument('--common-horizon-sha256')
+    p.add_argument('--arrival-arm', type=Path)
+    p.add_argument('--arrival-arm-sha256')
+    p.add_argument('--days', type=int, default=1)
+    p.add_argument('--day-start-raw', type=int)
     a = p.parse_args(argv)
+    base_args = relay_arguments(a)
     root = reviewed_module(a.root_relay, 'reviewed_r09_root_relay_for_B', a.root_relay_sha256)
     need(root.pin(Path(__file__))['sha256'] == a.self_sha256, 'reviewed B composer SHA differs')
     for path, expected in ((a.root_relay, a.root_relay_sha256), (a.next_adapter, a.next_adapter_sha256), (a.plan, a.plan_sha256)):
@@ -381,7 +444,9 @@ def main(argv=None):
     next_adapter = reviewed_module(a.next_adapter, 'reviewed_B_next', a.next_adapter_sha256)
     # Policy/schema/evidence checks happen before constructing a live Relay.
     plan = root.load(a.plan)
-    evidence = next_adapter.b.c.Evidence(a.evidence_root)
+    evidence = next_adapter.b.c.Evidence(a.evidence_root, max_file_bytes=a.max_evidence_file_bytes,
+        capacity_admissions=[{'path': path, 'sha256': sha} for path, sha in a.evidence_capacity_admission],
+        expected_source_head=plan['build']['source_head'], expected_machine_ids={root.MACHINE})
     next_adapter.b.recipe(plan, evidence)
     previous_pin = root.pin(a.previous_state) if a.previous_state else None
     if previous_pin:
@@ -390,9 +455,10 @@ def main(argv=None):
     if a.s0_arm:
         need(root.pin(a.s0_arm)['sha256'] == a.s0_arm_sha256, 'actual S0 B arm SHA differs')
     s0_arm = root.load(a.s0_arm) if a.s0_arm else None
-    base_args = deepcopy(a)
-    base_args.self_sha256 = a.root_relay_sha256
+    budget = next_adapter.b.c.runtime_total_budget(vars(a), scene_root=a.context.resolve().parent,
+        source_head=plan['build']['source_head'], machine_id=root.MACHINE, deadline_utc=root.DEADLINE)
     live = root.Relay(base_args)
+    budget.bind_live(live, raw_file_max=a.max_evidence_file_bytes)
     stages = BStages(root, live, next_adapter, plan, plan_pin=root.pin(a.plan), evidence=evidence,
                      previous=previous, previous_pin=previous_pin, s0_arm=s0_arm)
     result = stages.run(a.stage)

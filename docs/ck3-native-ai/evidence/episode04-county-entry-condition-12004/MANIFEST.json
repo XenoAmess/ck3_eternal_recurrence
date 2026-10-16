@@ -1,0 +1,42 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T00:34:38.871645+00:00",
+  "archive": {
+    "bytes": 12761,
+    "sha256": "5cebd37bb8be9b0d9322a941b991147f6d5a02fd0654add55e7f93f909c8ba19"
+  },
+  "members": {
+    "FUNCTION.actual-a01.json": {
+      "bytes": 19500,
+      "sha256": "ede6544701f225f254b5ce30ccba036a917ea7e846f61493d92c0dc55c8dcded"
+    },
+    "actual-function.bin": {
+      "bytes": 420,
+      "sha256": "d011c6bb38172950e99324f1fa7157d0083cbe5316587b7945ed5b168f80370c"
+    },
+    "actual-function.asm": {
+      "bytes": 7745,
+      "sha256": "0baef2d610c27c839e81fba4cb50dd912e203ec3a9e2aba8c2ae31a73a9969ce"
+    },
+    "READ-RECEIPT.actual-a01.json": {
+      "bytes": 4899,
+      "sha256": "085dc66735a7dc7c887dd15e5599f60ea596fc4afbd54e8ade38d1076491f432"
+    },
+    "SOURCE-CONTRACT.actual-a01.json": {
+      "bytes": 7547,
+      "sha256": "3e43b5d98b9e13c497c8437818c3fd24c028dd4a60f41814aae7f7d6ae8ab544"
+    },
+    "RESEARCH-PLAN.proposed-a01.json": {
+      "bytes": 5116,
+      "sha256": "9c29f37733c776cff9b75761613c5857177ab2a175c76a59094e580df7626e45"
+    },
+    "PLAN-CHECK.actual-a01.json": {
+      "bytes": 1651,
+      "sha256": "cd9a2e0a482ef634d860405687b549a2cb53f3e2d6642c454a240d6dcbaffac1"
+    },
+    "SOURCE-FIRST.actual-a01.json": {
+      "bytes": 1799,
+      "sha256": "7ee3670c7b6ed799dc1ee854508f773b78b2bcb35647282249d8510fc4ceebb8"
+    }
+  }
+}

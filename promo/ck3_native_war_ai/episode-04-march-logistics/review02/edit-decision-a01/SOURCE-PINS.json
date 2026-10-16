@@ -1,0 +1,106 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "sources": [
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/claim-shot-agent-map.json",
+      "bytes": 71886,
+      "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a02/source-index.json",
+      "bytes": 29623,
+      "sha256": "73da71711997545fa314303f8a546fe680e57e2382822d4492155cada8ebf8bc"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/claim-shot-agent-map.json",
+      "bytes": 53716,
+      "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/source-index.json",
+      "bytes": 22343,
+      "sha256": "796e24a8684068b93943d1085b32f6b246b863c11dc5f842c072b99f3a3084b2"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/claim-shot-agent-map.json",
+      "bytes": 58341,
+      "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/source-index.json",
+      "bytes": 8666,
+      "sha256": "0407f63082734b7a174d8b6f6ae9e3419331cb3443ae7f4d67e077057ddb405c"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/claim-shot-agent-map.json",
+      "bytes": 80422,
+      "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/source-index.json",
+      "bytes": 9957,
+      "sha256": "9fa4025ae3cac5e83bf6cea388087e7492524759b8698be259f7d08c9dd25602"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a03/cards-svg-a04/index.json",
+      "bytes": 4906,
+      "sha256": "f94dcf16f77bbaccda49dbb21540705bb51fdc812224682b0c686e127eedcf3e"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a04/cards-svg/index.json",
+      "bytes": 1326,
+      "sha256": "0a013c950538e2c2917a9ca0e07bd07ceac0c30c5d4c58314b653a9c95e69a68"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/review02/story-a05/cards-svg/index.json",
+      "bytes": 923,
+      "sha256": "a9f8d3003c2d195918b6d8f021af4d5f0a0a677ba374b1fefbcecc15deaa66c0"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+      "bytes": 35458,
+      "sha256": "67b224864e80780621f44d549f7fb15ba6b9a608d054e99dc9e45566a1a4ba4c"
+    },
+    {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md",
+      "bytes": 50493,
+      "sha256": "4db4c86d18bce8089d047d78b31cb725517d4a659ec66ce5dd9ec0d52b4ce3b9"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/review02-tts-rest68-a03/RESULT.actual.json",
+      "bytes": 1567,
+      "sha256": "a893dce82f485afc920900d188b1cbf584e10e5a0200149fd93406529dc573c3"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/review02-render-inputs-a03-materialized-a01/inputs/narration.cues.bilingual.json",
+      "bytes": 61341,
+      "sha256": "8d7de9e7c01e691dd2ac72af335ba35717f2c3a6238a0fe6045ddc4f7b6bfc16"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/review02-render-inputs-a03-materialized-a01/inputs/english.cues.json",
+      "bytes": 39742,
+      "sha256": "401734ae8f00c890ebec49504bb50b8a551b85fa17f525fddf54aad6b8b682ff"
+    }
+  ],
+  "composer": {
+    "path": "D:/workspace/ck3_eternal_recurrence/promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02.py",
+    "bytes": 6547,
+    "sha256": "6de4269d38f9d4a676a2a9d30a39ec59e3eb52da8a5d6fec0d24d5be880c9d15"
+  },
+  "subtitle_delivery": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-subtitles-actual69-a01/attempt-a02/ROOT-DELIVERY.actual.json",
+    "bytes": 2863,
+    "sha256": "82f8bd421200095cd69fed3303f5fe5ce60975e32f9741fca4bdff9b3c64eadd"
+  },
+  "frame_timeline_metadata": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/narration69.timeline.actual.json",
+    "bytes": 41942,
+    "sha256": "14b41b9aa02f8f969d4e21449840a5b6d03c2c96283595f52b312958616dc8c0"
+  },
+  "audio_actual_metadata_reference_only": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/production-inputs69.merged.json",
+    "bytes": 164686,
+    "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50"
+  }
+}

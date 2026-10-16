@@ -1,0 +1,35 @@
+[Script Info]
+Title: 锁定进度只描述当前路段
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.20,English,en-0,0,0,0,,{\q2}Now consider movement lock.
+Dialogue: 2,0:00:00.10,0:00:01.97,Chinese,zh-0,0,0,0,,{\q2}再看移动锁定。
+Dialogue: 2,0:00:01.97,0:00:05.72,Chinese,zh-1,0,0,0,,{\q2}停止测试前，当前首段进度约百分之
+Dialogue: 1,0:00:02.20,0:00:05.70,English,en-1,0,0,0,,{\q2}Before the stop test, first-leg progress was
+Dialogue: 1,0:00:05.70,0:00:09.51,English,en-2,0,0,0,,{\q2}about 96.7%, and the threshold actually read was
+Dialogue: 2,0:00:05.72,0:00:10.39,Chinese,zh-2,0,0,0,,{\q2}九十六点七，当次实际读到的锁定阈值是百分
+Dialogue: 1,0:00:09.51,0:00:09.83,English,en-3,0,0,0,,{\q2}50%.
+Dialogue: 1,0:00:09.83,0:00:13.95,English,en-4,0,0,0,,{\q2}This percentage describes the current first leg, not
+Dialogue: 2,0:00:10.39,0:00:11.33,Chinese,zh-3,0,0,0,,{\q2}之五十。
+Dialogue: 2,0:00:11.33,0:00:15.74,Chinese,zh-4,0,0,0,,{\q2}这个比例描述正在走的第一段，不是整趟旅程
+Dialogue: 1,0:00:13.95,0:00:17.59,English,en-5,0,0,0,,{\q2}over 90% of the whole journey: three more legs
+Dialogue: 2,0:00:15.74,0:00:19.93,Chinese,zh-5,0,0,0,,{\q2}已经完成了九成多；后面仍存着另外三段。
+Dialogue: 1,0:00:17.59,0:00:18.31,English,en-6,0,0,0,,{\q2}remained.
+Dialogue: 1,0:00:18.31,0:00:21.41,English,en-7,0,0,0,,{\q2}To know the choices left after locking,
+Dialogue: 2,0:00:19.93,0:00:25.07,Chinese,zh-6,0,0,0,,{\q2}锁定以后还剩哪些选择，要继续看停止或改道后的真
+Dialogue: 1,0:00:21.41,0:00:24.75,English,en-8,0,0,0,,{\q2}inspect the actual route after stopping or
+Dialogue: 1,0:00:24.75,0:00:25.54,English,en-9,0,0,0,,{\q2}rerouting.
+Dialogue: 2,0:00:25.07,0:00:30.21,Chinese,zh-7,0,0,0,,{\q2}实路线，不能只凭一个百分比推断军队会停在哪里。
+Dialogue: 1,0:00:25.54,0:00:30.29,English,en-10,0,0,0,,{\q2}One percentage alone cannot tell us where the army will stop.

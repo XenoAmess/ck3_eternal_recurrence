@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/army_county_entry_preview_condition_v1.hpp"
+
 #include "xar_bridge/battle_reinforcement_arrival_admission_12003.hpp"
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
 #include "xar_bridge/battle_current_finalizer_manager_inputs_v1.hpp"
@@ -2439,6 +2441,7 @@ struct PreviewMoveArmyResult {
   std::vector<std::int32_t> route_province_ids;
   // Exact .3 additive observation. Its failure does not alter movement legality.
   std::optional<ArmyProvinceSupplySnapshot> province_supply;
+  std::optional<ArmyCountyEntryPreviewConditionV1> county_entry_condition_v1;
 
   friend bool operator==(const PreviewMoveArmyResult &,
                          const PreviewMoveArmyResult &) = default;

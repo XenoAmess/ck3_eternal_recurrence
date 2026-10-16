@@ -1,0 +1,186 @@
+{
+  "schema": "xar.e04.county.relation2c09620.actual4.source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T00:53:19.957101+00:00",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source": {
+    "begin_rva": "0x2c09620",
+    "end_exclusive": "0x2c096df",
+    "bytes": 191,
+    "sha256": "701c63b6a5f7ed78ce75d6a591fcc4dc0ae2464267a05a23f5b5feb3a3cd8edb",
+    "instructions": 58,
+    "unique_unchained": true
+  },
+  "inputs": {
+    "receiver": "entryRCX, resultof24D4ED0(County) through2C09DF0; copiedRSI",
+    "actor": "entryRDX, originalcountyactor; copiedRDI",
+    "aux": "entryR8 64bit copiedRBX, nullableobjectpointer. Wrapper zeroextendsR8D0, soactualnull; not mode/boolean/enum."
+  },
+  "ordered_logic": [
+    "receiver+18==actor+18 => false",
+    "CALL28BC250 withentryRCXreceiver/RDXactor registersretained; returnedobject+20 fullWarID. Itsbody notreadhere.",
+    "WhenWarID!=-1 resolvefullID throughknownWarregistry5D1DE58 withfull+8 match orfallback5D1DE40. No extraLand/Char tagtestorWarID!=-1 testonfallback appearsinthisbody.",
+    "If selectedobject+358byte==0 and(aux==null ORaux==selectedobject), returntrue.",
+    "Else CALL2C09580 withRCXreceiver/RDXactor/R8aux; ifALtrue returntrue.",
+    "Else CALL2C09780 withRCXreceiver/RDXactor; ifALtrue returntrue elsefalse."
+  ],
+  "branches": [
+    {
+      "id": "same_character",
+      "branch_rvas": [
+        "2C0963E"
+      ],
+      "contract": "receiver+18 fullID==actor+18 returnsfalse beforeanycallee"
+    },
+    {
+      "id": "pair_war_sentinel",
+      "branch_rvas": [
+        "2C0964F"
+      ],
+      "contract": "28BC250 returnedobject+20 signedID -1 skips directwarpath"
+    },
+    {
+      "id": "full_war_resolution",
+      "branch_rvas": [
+        "2C0965B",
+        "2C09668",
+        "2C09679",
+        "2C0967E"
+      ],
+      "contract": "registry5D1DE58 null/indexcapacity/rownull/fullID+8 mismatch usefallback5D1DE40; otherwiseexactresolvedWar pointer"
+    },
+    {
+      "id": "raw_war_byte",
+      "branch_rvas": [
+        "2C0968E"
+      ],
+      "contract": "selectedWarOrFallback+358 nonzero skips directwartrue path"
+    },
+    {
+      "id": "aux_context_filter",
+      "branch_rvas": [
+        "2C09693",
+        "2C09698"
+      ],
+      "contract": "whenbyte358zero: auxptrnull OR auxptrEQUALselectedWar goestrue; nonnullunequal falls back. 9698isJE, notJNE"
+    },
+    {
+      "id": "fallback_OR",
+      "branch_rvas": [
+        "2C096AA",
+        "2C096B9"
+      ],
+      "contract": "2C09580(receiver,actor,aux)true OR2C09780(receiver,actor)true returnstrue; elsefalse"
+    }
+  ],
+  "raw0_correction": "Actualaux isnullable64bitpointer. Earlieroralmessage incorrectlysaid auxdifferentselectedWar directtrue; exact9698JE provesEQUALITY. Thatoralclaimissuperseded; rawnullcaller pathunchanged.",
+  "unexpanded_callees": [
+    {
+      "entry": "28BC250",
+      "callsite": "2C09644",
+      "observed_usage": "returnedobject+20 treatedasWarFullID; prioradoptedmigrationwitnesscallsit roster_pair_lookup_source(176B)",
+      "body_read": false
+    },
+    {
+      "entry": "2C09580",
+      "callsite": "2C096A3",
+      "observed_usage": "receiver,actor,aux-pointer ALpredicate; firstORleg",
+      "body_read": false
+    },
+    {
+      "entry": "2C09780",
+      "callsite": "2C096B2",
+      "observed_usage": "receiver,actor ALpredicate; secondORleg",
+      "body_read": false
+    }
+  ],
+  "existing_source_witnesses": [
+    {
+      "pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_4_world.json",
+        "bytes": 6139,
+        "sha256": "328f620312d7f869fa2aff0fb00d1f8ac7ab3db1b0750924fd1f160bae92c85d"
+      },
+      "supports": "Actual4 adoptedwar_registry_slot5D1DE58, notguessedfromnumericlayout"
+    },
+    {
+      "pin": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_4_army_world.json",
+        "bytes": 32899,
+        "sha256": "4cb97ccdf7b7e09edee462f6a5cf0f0b751b6fb7c00b5080b6334d4ea1c89762"
+      },
+      "supports": "Adopted176B roster_pair_lookup_source identifies28BC250; historicalZfullsource notread"
+    }
+  ],
+  "independent_helper_source": {
+    "read_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-receiver24D4ED0-source-a03\\READ-RECEIPT.actual-a01.json",
+      "bytes": 4841,
+      "sha256": "86fdf829ecda5f609329d325298736f05ffb64ea62e68caf0ebe811548d9e105"
+    },
+    "scope": "Formalowner separatelyread24D4ED0; resultisChar-like/Characterregistry pointer orfallback, notyetnamedholder/controller",
+    "this_lane_read_helper_body": false
+  },
+  "join_to24E2230": "Mode1 validatescounty through2C09DF0 thenapplies thisrelation tohelperreturnedreceiver andactor, threetimesource/target chain. SameIDfalse canreject oneofthesesource/targetcalls. Alltrue stilldoesnotfinish24E2230 neighborpredicatechain.",
+  "published_readonly_sufficiency": {
+    "already_available": [
+      "final24E2230storedfirsttargetbool andactor/source/target/mode",
+      "currentWarIDs/participants/holdingcounty_title_id/legalholder/occupier",
+      "actuallegalpreview pathanddefinitionbytes"
+    ],
+    "missing": [
+      "exact24D4ED0receiver forsource/targetcountyatthisframe",
+      "28BC250 pairrecord+20 rawWarID forreceiver/actor",
+      "selectedWarOrFallback+358 rawbyte",
+      "2C09580 and2C09780 actualbool results"
+    ],
+    "can_derive_sameID_false_if_exact_receiver_ID_is_observed": true,
+    "can_substitute_holder_for_receiver": false,
+    "can_substitute_activewar_for_raw358": false,
+    "current_public_inputs_can_fully_predict_relation": false,
+    "R180_specific_false_branch_identified": false
+  },
+  "unique_next_source_candidates_not_read": "The directwar branch meaning needs28BC250record/+358producer source; unresolvedORbranches actual2C09580 and2C09780. No sourceacquisition beyond2C09620authorized orperformed.",
+  "actual_budget": {
+    "code_bytes": 191,
+    "metadata_bytes": 244,
+    "read_calls": 22,
+    "new_header_or_wholeimage_reads": 0,
+    "wholeEXE_hashes": 0,
+    "callee_reads": 0
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\FUNCTION.actual-a01.json",
+      "bytes": 8904,
+      "sha256": "e94876dfb2545f064b6eaa9b3f00dad7a2244701f5f5ffcdb6569317d3fd1ece"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\actual-function.bin",
+      "bytes": 191,
+      "sha256": "701c63b6a5f7ed78ce75d6a591fcc4dc0ae2464267a05a23f5b5feb3a3cd8edb"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\actual-function.asm",
+      "bytes": 3953,
+      "sha256": "e16e66f9028b9cd5a607f898a5deb6fcb36c5acbd7371c38cf6aa87c4e4164c9"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\RAW-READ-LEDGER.actual-a01.json",
+      "bytes": 4167,
+      "sha256": "bea6c5637e42f296aee72054d6ecea4591bd7cc992b42157fc0793864fcf1a3f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\READ-RECEIPT.actual-a01.json",
+      "bytes": 5011,
+      "sha256": "f87d695bfae0eab0a0a41b4fce552bdbf2e042571cfdf054e28248b29f4da671"
+    }
+  ],
+  "qualification": {
+    "this_function_source_closed": true,
+    "formal_diplomatic_relation_name_closed": false,
+    "R04_positive": false,
+    "runtime_actions": 0,
+    "main_build_or_SDK": 0
+  }
+}

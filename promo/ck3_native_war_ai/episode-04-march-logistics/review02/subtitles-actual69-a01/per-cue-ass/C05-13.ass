@@ -1,0 +1,29 @@
+[Script Info]
+Title: 费用账
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:01.90,English,en-0,0,0,0,,{\q2}Keep a separate cost ledger.
+Dialogue: 2,0:00:00.10,0:00:02.04,Chinese,zh-0,0,0,0,,{\q2}费用单独记账。
+Dialogue: 1,0:00:01.90,0:00:06.25,English,en-1,0,0,0,,{\q2}Reconcile embarkation payments, military maintenance, income during
+Dialogue: 2,0:00:02.04,0:00:06.67,Chinese,zh-1,0,0,0,,{\q2}登船支付、军事维护、期间收入和其他支出
+Dialogue: 1,0:00:06.25,0:00:10.35,English,en-2,0,0,0,,{\q2}the period, and other spending within the same account and date
+Dialogue: 2,0:00:06.67,0:00:11.05,Chinese,zh-2,0,0,0,,{\q2}，放进相同账户、相同日期范围里核对。
+Dialogue: 1,0:00:10.35,0:00:10.74,English,en-3,0,0,0,,{\q2}range.
+Dialogue: 1,0:00:10.74,0:00:13.69,English,en-4,0,0,0,,{\q2}The treasury's net change mixes these sources.
+Dialogue: 2,0:00:11.05,0:00:14.69,Chinese,zh-3,0,0,0,,{\q2}钱包的净变化混合了这些来源；即使
+Dialogue: 1,0:00:13.69,0:00:17.93,English,en-5,0,0,0,,{\q2}Even an increased balance can include military costs already paid.
+Dialogue: 2,0:00:14.69,0:00:18.11,Chinese,zh-4,0,0,0,,{\q2}余额增加，也可能已经付过军费。
+Dialogue: 1,0:00:17.93,0:00:22.99,English,en-6,0,0,0,,{\q2}Military costs included in full expenditure must not be deducted a second time.
+Dialogue: 2,0:00:18.11,0:00:22.93,Chinese,zh-5,0,0,0,,{\q2}完整支出里包含的军费，也不再额外扣第二次。

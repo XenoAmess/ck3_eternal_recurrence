@@ -1,0 +1,194 @@
+{
+  "schema": "xar.e04.county.condition.actual4.source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T00:34:38.871645+00:00",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "function": {
+    "begin_rva": "0x24e2230",
+    "end_exclusive": "0x24e23d4",
+    "bytes": 420,
+    "sha256": "d011c6bb38172950e99324f1fa7157d0083cbe5316587b7945ed5b168f80370c",
+    "instructions": 115,
+    "unique_unchained": true
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\newcounty-condition24E2230-source-a01\\FUNCTION.actual-a01.json",
+      "bytes": 19500,
+      "sha256": "ede6544701f225f254b5ce30ccba036a917ea7e846f61493d92c0dc55c8dcded"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\newcounty-condition24E2230-source-a01\\actual-function.bin",
+      "bytes": 420,
+      "sha256": "d011c6bb38172950e99324f1fa7157d0083cbe5316587b7945ed5b168f80370c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\newcounty-condition24E2230-source-a01\\actual-function.asm",
+      "bytes": 7745,
+      "sha256": "0baef2d610c27c839e81fba4cb50dd912e203ec3a9e2aba8c2ae31a73a9969ce"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\newcounty-condition24E2230-source-a01\\READ-RECEIPT.actual-a01.json",
+      "bytes": 4899,
+      "sha256": "085dc66735a7dc7c887dd15e5599f60ea596fc4afbd54e8ade38d1076491f432"
+    }
+  ],
+  "public_ABI": "bool(CCharacter* actor, CProvince* source, CProvince* target, int32 mode); existing exact4 binder24E2230",
+  "county_identity": "raw object pointers from Province+848; compared for equality, not ProvinceID/countytitlename/FullTitleID. Function does not read a county FullID. target raw+3E0 magic436F4461 is required.",
+  "mode1_ordered_gates": [
+    "source.definition1B!=0",
+    "target.definition1B!=0",
+    "source.countyPointer!=target.countyPointer",
+    "source.countyPointer!=null",
+    "actualCALL2C09DF0(actor,sourceCounty) returnsALtrue",
+    "target.countyPointer!=null",
+    "actualCALL2C09DF0(actor,targetCounty) first returnsALtrue",
+    "targetCounty.magic3E0==0x436F4461",
+    "actualCALL2C09DF0(actor,targetCounty) second returnsALtrue",
+    "for every nonnull N in targetCounty pointers+40/count4C: actualCALL2C097F0(actor,actualCALL24D4ED0(N)) returnsALfalse"
+  ],
+  "do_not_collapse_repeated_calls": "Target predicate is called twice. Its body and sideeffects have not been acquired; two calls are not relabelled as one observed result.",
+  "mode1_target88_8A": "Both bytes are read for branching but either byte value leads to the same second2C09DF0 gate for mode!=0. They are not standalone mode1 rejection gates.",
+  "mode0_distinct_rules": "Calls28BFD80(actor) and compares returnedCharacter+18 with deref(county+3C8)+30. Source/target must differ from thatID. target+88/+8A mustzero. Any null neighbor or matching neighborID rejects. No name enemy/friend/realm is inferred.",
+  "branches": [
+    {
+      "id": "province_definition",
+      "branch_rvas": [
+        "24E225B",
+        "24E2269"
+      ],
+      "contract": "source/target Province+8 definition byte1B must both be nonzero"
+    },
+    {
+      "id": "county_identity",
+      "branch_rvas": [
+        "24E2280",
+        "24E2289"
+      ],
+      "contract": "source Province+848 and target Province+848 must differ; source county pointer nonnull"
+    },
+    {
+      "id": "source_mode_gate",
+      "branch_rvas": [
+        "24E2292",
+        "24E22A9",
+        "24E22B5"
+      ],
+      "contract": "mode0 compare deref(sourceCounty+3C8)+30 with28BFD80(actor)+18 for inequality; mode!=0 actualCALL2C09DF0 with actor/sourceCounty must returntrue"
+    },
+    {
+      "id": "target_identity_and_mode",
+      "branch_rvas": [
+        "24E22C5",
+        "24E22D0",
+        "24E22E7",
+        "24E22F3"
+      ],
+      "contract": "target county nonnull; mode0 same comparison; mode!=0 target2C09DF0 firstcall must returntrue"
+    },
+    {
+      "id": "target_magic",
+      "branch_rvas": [
+        "24E2303"
+      ],
+      "contract": "targetCounty+3E0 must equal0x436F4461"
+    },
+    {
+      "id": "target_bytes_and_recheck",
+      "branch_rvas": [
+        "24E2310",
+        "24E2319",
+        "24E231D",
+        "24E2337",
+        "24E233B",
+        "24E234A"
+      ],
+      "contract": "target+88/+8A nonzero rejects mode0; mode!=0 always calls2C09DF0(actor,targetCounty) a second time and requires true"
+    },
+    {
+      "id": "neighbor_container",
+      "branch_rvas": [
+        "24E235B"
+      ],
+      "contract": "targetCounty+40 pointerarray/count+4C empty skips totrue; preserve native pointerorder"
+    },
+    {
+      "id": "neighbor_mode_and_null",
+      "branch_rvas": [
+        "24E2365",
+        "24E236A",
+        "24E236E",
+        "24E2388",
+        "24E238D",
+        "24E2391"
+      ],
+      "contract": "mode0 null neighbor rejects; otherwise compare neighbor holder to28BFD80(actor)+18 for equality. mode!=0 null neighbor isnonmatching; otherwise24D4ED0(neighbor) then2C097F0(actor,result)"
+    },
+    {
+      "id": "neighbor_rejection_and_loop",
+      "branch_rvas": [
+        "24E23A8",
+        "24E23B1"
+      ],
+      "contract": "any neighbor testtrue rejects; else continue8B pointerstride untilend"
+    },
+    {
+      "id": "normal_true_return",
+      "branch_rvas": [
+        "24E23B5"
+      ],
+      "contract": "AL1 at24E23B3 joins epilogue; all false exits AL0 at24E23B7"
+    }
+  ],
+  "unexpanded_direct_callees": {
+    "2C09DF0": {
+      "first_actual_call": "24E22AE",
+      "observed_explicit_register_arguments": "RCX actor/RDX county-object; returnedALtested",
+      "formal_semantics": null,
+      "body_read": false
+    },
+    "24D4ED0": {
+      "actual_call": "24E2396",
+      "observed_explicit_register_arguments": "RCX neighbor pointer; RAX passedasRDX",
+      "formal_semantics": null,
+      "body_read": false
+    },
+    "2C097F0": {
+      "actual_call": "24E23A1",
+      "observed_explicit_register_arguments": "RCX actor/RDX actual24D4ED0return; ALtrue rejects",
+      "formal_semantics": null,
+      "body_read": false
+    },
+    "28BFD80": {
+      "scope": "alreadyknowncashcontextgateway but no new expansionhere; returned+18 equality only",
+      "body_read": false
+    }
+  },
+  "unique_next_source_if_authorized": "2C09DF0 exactactual4; firstsourcegate andtwotargetgates. No automatic followcalls in this package.",
+  "unpublished_same_frame_operands": [
+    "source/target Province+848 pointeridentity",
+    "source/target2C09DF0 returnedbytes",
+    "targetCounty+3E0 rawmagic",
+    "ordered targetCounty+40/+4C neighborobjects",
+    "neighbor24D4ED0 outputs",
+    "neighbor2C097F0 results"
+  ],
+  "R0180_actual": "Baseline actor31254/source2635/target2645/mode1; bothdefinition1B1; B100; conditionavailablefalse. These observations do not identify which internal predicate failed.",
+  "existing_query_gap": "Public countycondition only examines stored route.front. Legal preview doesnotpublish thisboolean for hypotheticalfirsttarget. Occupation county_title_id is a separate holdingparent identity, not this rawpointer witness.",
+  "scope": {
+    "new_EXE_code_bytes": 420,
+    "new_metadata_bytes": 240,
+    "read_calls": 21,
+    "wholeEXE_hashes": 0,
+    "callee_reads": 0,
+    "native_execution": 0,
+    "SDK_game_desktop_main_build": 0
+  },
+  "qualification": {
+    "actual4_function_source_closed": true,
+    "subpredicate_semantics_closed": false,
+    "new_runtime_observation": false,
+    "R04_positive": false,
+    "physical_loss": null
+  }
+}

@@ -1,0 +1,31 @@
+[Script Info]
+Title: 财务读数按当前月份条件解释
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.41,English,en-0,0,0,0,,{\q2}Separate current monthly figures from costs accumulated during the journey.
+Dialogue: 2,0:00:00.10,0:00:03.86,Chinese,zh-0,0,0,0,,{\q2}费用先分当前月读数和旅途累计。
+Dialogue: 2,0:00:03.86,0:00:09.14,Chinese,zh-1,0,0,0,,{\q2}当前月收入减去完整月支出，得到当前净收入；这些
+Dialogue: 1,0:00:04.41,0:00:08.95,English,en-1,0,0,0,,{\q2}Current monthly income minus full monthly expenditure gives current net income.
+Dialogue: 1,0:00:08.95,0:00:11.88,English,en-2,0,0,0,,{\q2}These figures describe present income and spending
+Dialogue: 2,0:00:09.14,0:00:14.20,Chinese,zh-2,0,0,0,,{\q2}数描述眼前的收支条件，不能固定铺到整趟旅程。
+Dialogue: 1,0:00:11.88,0:00:15.21,English,en-3,0,0,0,,{\q2}conditions; they cannot be held constant across the whole
+Dialogue: 2,0:00:14.20,0:00:19.64,Chinese,zh-3,0,0,0,,{\q2}军队集结状态、来源和其他收支变了，就要重读。
+Dialogue: 1,0:00:15.21,0:00:15.68,English,en-4,0,0,0,,{\q2}journey.
+Dialogue: 1,0:00:15.68,0:00:21.14,English,en-5,0,0,0,,{\q2}Reread them when the armies' raised status, troop sources, or other income and spending change.
+Dialogue: 2,0:00:19.64,0:00:24.21,Chinese,zh-4,0,0,0,,{\q2}比较不同路线花了多少时，累计实际支付另记，
+Dialogue: 1,0:00:21.14,0:00:24.70,English,en-6,0,0,0,,{\q2}When comparing route costs, record cumulative actual payments
+Dialogue: 2,0:00:24.21,0:00:28.78,Chinese,zh-5,0,0,0,,{\q2}期间收入和其他事件也按同一个日期范围保留。
+Dialogue: 1,0:00:24.70,0:00:28.50,English,en-7,0,0,0,,{\q2}separately, and retain income and other events over the same date
+Dialogue: 1,0:00:28.50,0:00:28.85,English,en-8,0,0,0,,{\q2}range.

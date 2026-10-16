@@ -1,0 +1,2634 @@
+{
+  "format_version": 1,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "frame_rate": 30,
+  "duration_seconds": 1946.8666666666666,
+  "cues": [
+    {
+      "id": "C01-01",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-01",
+      "zh": "大军出发时的人数，只是这段行程的起点。到接战以前，还要经过补给变化、兵员变化和路线选择。我们要看的，是它什么时候真正到场，原来的兵还剩多少，带着多少补给，以及途中实际付了什么钱。",
+      "en": "An army's strength at departure is only the starting point. Before battle, its supplies, troop numbers and route can all change. We need to see when it actually arrives, how many of the original troops remain, how much supply it carries, and what it actually paid along the way.",
+      "speech_duration_seconds": 19.848,
+      "duration_seconds": 20.4,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 43578947,
+          "text": "大军出发时的人数，只是这段行程的起点。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 44078947,
+          "duration": 58552632,
+          "text": "到接战以前，还要经过补给变化、兵员变化和路线选择。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 102631580,
+          "duration": 95263159,
+          "text": "我们要看的，是它什么时候真正到场，原来的兵还剩多少，带着多少补给，以及途中实际付了什么钱。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-pilot-edge731-a02/C01-01.mp3",
+        "bytes": 119088,
+        "sha256": "1cca8c798679e0b5affc0bd1590b873c6dcd8b939cc834e008617a71f06bef9b"
+      }
+    },
+    {
+      "id": "C01-02",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-02",
+      "zh": "这一轮跟着一点二零点零点四里的罗贝尔。先把军队面板的当前读数读清，再沿着真实行军看变化。规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。",
+      "en": "This time, we follow Robert in version 1.20.0.4. First, we read the army panel's current values, then track changes during a real march. The mechanics explain how the game calculates; live records show what actually happened in this run. Together, they explain the army's condition on arrival.",
+      "speech_duration_seconds": 21.192,
+      "duration_seconds": 21.766666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 42657895,
+          "text": "这一轮跟着一点二零点零点四里的罗贝尔。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 43157895,
+          "duration": 58289474,
+          "text": "先把军队面板的当前读数读清，再沿着真实行军看变化。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 101447369,
+          "duration": 109868422,
+          "text": "规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-02.mp3",
+        "bytes": 127152,
+        "sha256": "3683cba9a4278a65404e894f57cc5c3d400b0582a9483931d463b9e8ddbf2028"
+      }
+    },
+    {
+      "id": "C01-03",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-03",
+      "zh": "本期改用阿普利亚的罗贝尔，游戏版本为一点二零点零点四。新的普通战役给我们同一个人物来源，再用独立正常载入观察不同操作。画面会标清是哪一场、哪一天。前后两次载入可以比较各自结果，但不会剪成一段没有中断的现场；旧版本威廉案例的具体人数，也不叠到罗贝尔的军队上。",
+      "en": "For this episode, we switch to Robert of Apulia in version 1.20.0.4. A new normal campaign gives us one consistent character origin, and separate normal loads let us observe different actions. Each scene will identify its run and day. We can compare separate loads, but will not edit them into one uninterrupted session. William's troop counts from the older version will not be overlaid on Robert's army.",
+      "speech_duration_seconds": 28.176,
+      "duration_seconds": 28.733333333333334,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 60684211,
+          "text": "本期改用阿普利亚的罗贝尔，游戏版本为一点二零点零点四。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 61184211,
+          "duration": 70526316,
+          "text": "新的普通战役给我们同一个人物来源，再用独立正常载入观察不同操作。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 131710527,
+          "duration": 35526316,
+          "text": "画面会标清是哪一场、哪一天。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 167236844,
+          "duration": 113815790,
+          "text": "前后两次载入可以比较各自结果，但不会剪成一段没有中断的现场；旧版本威廉案例的具体人数，也不叠到罗贝尔的军队上。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-03.mp3",
+        "bytes": 169056,
+        "sha256": "ff4a18af932d33d0e129766378d9bba1e7dbafe221aaaeb20271ba62cffc5dc8"
+      }
+    },
+    {
+      "id": "C01-04",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-04",
+      "zh": "先抓住三组容易混淆的数。补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。它们都会影响我们对“恢复了”“少人了”“停下了”的判断。接下来分别看实际记录，再解释这些变化。",
+      "en": "First, keep three distinctions clear. Supply stock is material; actual troop strength counts people. A character record showing 1/1 does not automatically mean one soldier was added. Movement locking is another distinction: after Stop is pressed, the army may still have to finish its current leg. These affect what we mean by 'recovered,' 'lost troops' and 'stopped.' We will examine the actual records before explaining the changes.",
+      "speech_duration_seconds": 27.96,
+      "duration_seconds": 28.533333333333335,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 30026316,
+          "text": "先抓住三组容易混淆的数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 30526316,
+          "duration": 91842106,
+          "text": "补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 122368422,
+          "duration": 62631579,
+          "text": "另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 185000002,
+          "duration": 49605263,
+          "text": "它们都会影响我们对“恢复了”“少人了”“停下了”的判断。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 234605266,
+          "duration": 44342105,
+          "text": "接下来分别看实际记录，再解释这些变化。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-04.mp3",
+        "bytes": 167760,
+        "sha256": "9920db84777586e3e40640cfaa253c88fec2ccc2ff32753681a35270e1ef4ecf"
+      }
+    },
+    {
+      "id": "C01-05",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-05",
+      "zh": "兵员减少也有不同入口。围城和劫掠的周期处理、进入新县时的移动损耗，各自有条件和计算顺序；不能把每次少人都叫饥饿。与此同时，补员、分合军或其他事件也会改变看到的总数。要解释一段行军，先逐团核对前后整数，再看那段时间真正发生了哪一类结算。两端的净变化，先按净变化报告。",
+      "en": "Troops can be lost through different processes. Periodic siege and raid processing, and movement attrition on entering a new county, have their own conditions and calculation order. Not every loss is starvation. Replenishment, splitting, merging and other events can also change the total. To explain a march, first compare each regiment's exact counts, then identify which processing actually occurred. A net change between readings is reported as a net change first.",
+      "speech_duration_seconds": 31.032,
+      "duration_seconds": 31.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 28973684,
+          "text": "兵员减少也有不同入口。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 29473684,
+          "duration": 99736843,
+          "text": "围城和劫掠的周期处理、进入新县时的移动损耗，各自有条件和计算顺序；不能把每次少人都叫饥饿。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 129210527,
+          "duration": 63684211,
+          "text": "与此同时，补员、分合军或其他事件也会改变看到的总数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 192894739,
+          "duration": 80131579,
+          "text": "要解释一段行军，先逐团核对前后整数，再看那段时间真正发生了哪一类结算。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 273026319,
+          "duration": 36710526,
+          "text": "两端的净变化，先按净变化报告。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-05.mp3",
+        "bytes": 186192,
+        "sha256": "d75c1bb895a40ae53411d539cbbce1cf70acd9621a13d0fa825869a149e70585"
+      }
+    },
+    {
+      "id": "C01-06",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-06",
+      "zh": "行军还有几种时间。地图预览给计划，军队窗口给当前估计，当前首段有自己的进度和剩余时量；军队真正到达，又是后来的结果。整条路线与第一段的数字不同，不一定互相矛盾。我们会把它们各自描述的范围标出来，再用实际位置和剩余路线核对到达，让一个日期不再承担几种不同意思。",
+      "en": "A march has several kinds of timing. The map preview gives a plan; the army window gives a current estimate; the first leg has its own progress and remaining duration. Actual arrival is a later outcome. Different figures for the whole route and its first leg need not conflict. We will label their scope, then verify arrival from the actual position and remaining route, rather than making one date mean several things.",
+      "speech_duration_seconds": 28.296,
+      "duration_seconds": 28.866666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 23842105,
+          "text": "行军还有几种时间。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 24342105,
+          "duration": 108157896,
+          "text": "地图预览给计划，军队窗口给当前估计，当前首段有自己的进度和剩余时量；军队真正到达，又是后来的结果。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 132500001,
+          "duration": 46578947,
+          "text": "整条路线与第一段的数字不同，不一定互相矛盾。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 179078949,
+          "duration": 103157896,
+          "text": "我们会把它们各自描述的范围标出来，再用实际位置和剩余路线核对到达，让一个日期不再承担几种不同意思。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-06.mp3",
+        "bytes": 169776,
+        "sha256": "515f7e16be10c474dbcf96199b82bc5fae37352ec1847cd6e883b502718d4be3"
+      }
+    },
+    {
+      "id": "C01-07",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-07",
+      "zh": "整军直走，争取少做中途安排；分兵休整，要付出分开驻留和重新会合的时间；换路线，则要走完预先选好的中转路径。比较这三种安排时，要从同一个普通存档出发，前往同一个目的地，分别记录各自真实到场的结果，再看同一天各队分别在哪里。",
+      "en": "Marching as one army aims to reduce arrangements along the way. Splitting to rest takes time at separate stations and to regroup. Rerouting requires completing the chosen sequence of waypoints. To compare these plans, start from the same normal save and head for the same destination. Record each plan's actual arrival outcome, then compare where the armies are on the same day.",
+      "speech_duration_seconds": 24.48,
+      "duration_seconds": 25.033333333333335,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 122552633,
+          "text": "整军直走，争取少做中途安排；分兵休整，要付出分开驻留和重新会合的时间；换路线，则要走完预先选好的中转路径。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 123552633,
+          "duration": 120526317,
+          "text": "比较这三种安排时，要从同一个普通存档出发，前往同一个目的地，分别记录各自真实到场的结果，再看同一天各队分别在哪里。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-07.mp3",
+        "bytes": 146880,
+        "sha256": "95a0f9273fd9619f0bc0569a9653b5defa4a7e671eeba69925f882c88dd4e7d5"
+      }
+    },
+    {
+      "id": "C01-08",
+      "chapter_id": "E4-01",
+      "shot_id": "S01-08",
+      "zh": "出发前，先知道军队现在有什么；途中，再看地点和路线改变了哪些条件；接战前，确认真正到了多少人。我们从补给开始。先把军队带着多少物资、最多能带多少，与当地能支持多少兵分开。看清这些量，再讨论在哪里停留、何时继续走，以及分兵是不是减轻了当地压力。",
+      "en": "Before departure, establish what the army currently has. During the march, check which conditions change with location and route. Before battle, confirm how many troops actually arrived. We begin with supply: separate what the army carries, how much it can carry, and how many troops the location can support. Then we can discuss where to stop, when to move on, and whether splitting really reduces local pressure.",
+      "speech_duration_seconds": 27.84,
+      "duration_seconds": 29.466666666666665,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 107157896,
+          "text": "出发前，先知道军队现在有什么；途中，再看地点和路线改变了哪些条件；接战前，确认真正到了多少人。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 108157896,
+          "duration": 19736842,
+          "text": "我们从补给开始。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 127894738,
+          "duration": 70657895,
+          "text": "先把军队带着多少物资、最多能带多少，与当地能支持多少兵分开。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 198552634,
+          "duration": 79210527,
+          "text": "看清这些量，再讨论在哪里停留、何时继续走，以及分兵是不是减轻了当地压力。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-08.mp3",
+        "bytes": 167040,
+        "sha256": "994da80b10551f94dcc943ad733691839d06e8b51cea52d335641ac8034246ac"
+      }
+    },
+    {
+      "id": "C02-01",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-01",
+      "zh": "先读军队面板的当前人数和满员人数，再展开到每个兵团。缺额在哪里，要看同一兵团身份的当前值与上限。需要解释实体补兵时，还要继续核对实际兵员记录；面板里已确认的空兵员角色记录要单列。这既避免把不同军队的数拼在一起，也避免把角色的一比一显示误记成新增实体士兵。",
+      "en": "Read the army's current and maximum strength, then expand each regiment. Locate deficits by comparing current and maximum values for the same regiment. To explain actual replenishment, also check the underlying soldier records. Keep confirmed character records with no soldier DATA separate. This avoids combining counts from different armies or treating a character's 1/1 display as an added soldier.",
+      "speech_duration_seconds": 29.088,
+      "duration_seconds": 29.666666666666668,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 61605263,
+          "text": "先读军队面板的当前人数和满员人数，再展开到每个兵团。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 62105263,
+          "duration": 51052632,
+          "text": "缺额在哪里，要看同一兵团身份的当前值与上限。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 113157896,
+          "duration": 90657895,
+          "text": "需要解释实体补兵时，还要继续核对实际兵员记录；面板里已确认的空兵员角色记录要单列。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 203815792,
+          "duration": 86447369,
+          "text": "这既避免把不同军队的数拼在一起，也避免把角色的一比一显示误记成新增实体士兵。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-01.mp3",
+        "bytes": 174528,
+        "sha256": "b8b52925c663ffaf15347eadc3d6deaf6d6a3273dfb40c839f9353766074c512"
+      }
+    },
+    {
+      "id": "C02-02",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-02",
+      "zh": "军队携带的补给，与补给容量使用同一种物资单位。举一个假设例子：当前补给一百、容量三百，表示现在带着一百单位，容量是三百；前面的数不是一百名士兵，也不是百分之一百。当地补给上限则要和当地兵员用量比较。先把单位摆正，才知道该比较哪两列。",
+      "en": "Carried supply and supply capacity use the same supply unit. For a hypothetical example, 100 supply and 300 capacity means the army carries 100 units and can carry 300. The first number is neither 100 soldiers nor 100 percent. The local supply limit must instead be compared with local troop usage. Get the units right before choosing which columns to compare.",
+      "speech_duration_seconds": 26.016,
+      "duration_seconds": 26.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 50552632,
+          "text": "军队携带的补给，与补给容量使用同一种物资单位。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 51052632,
+          "duration": 127500001,
+          "text": "举一个假设例子：当前补给一百、容量三百，表示现在带着一百单位，容量是三百；前面的数不是一百名士兵，也不是百分之一百。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 178552633,
+          "duration": 41578947,
+          "text": "当地补给上限则要和当地兵员用量比较。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 220131581,
+          "duration": 39342105,
+          "text": "先把单位摆正，才知道该比较哪两列。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-02.mp3",
+        "bytes": 156096,
+        "sha256": "a3d91a203d1518e689640a5ee1284feecd8b7ad0e1bb9f28b2237f81c6fd4a73"
+      }
+    },
+    {
+      "id": "C02-03",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-03",
+      "zh": "军队携带的补给、能够携带的容量，以及当地能支持多少士兵，各有自己的单位。分兵以后，两队仍在同一个地方，就还要看当地实际用量；不能只盯着较小的那队，便认定压力已经消失。离开原地后，也要重新读新地点的条件。",
+      "en": "Carried supply, carrying capacity and the number of soldiers a location can support have their own units. If both armies remain in the same place after a split, check the actual local usage. Looking only at the smaller army does not establish that the pressure has disappeared. After moving, read the new location's conditions again.",
+      "speech_duration_seconds": 22.176,
+      "duration_seconds": 22.733333333333334,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 77526316,
+          "text": "军队携带的补给、能够携带的容量，以及当地能支持多少士兵，各有自己的单位。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 78026316,
+          "duration": 102763159,
+          "text": "分兵以后，两队仍在同一个地方，就还要看当地实际用量；不能只盯着较小的那队，便认定压力已经消失。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 180789475,
+          "duration": 40394737,
+          "text": "离开原地后，也要重新读新地点的条件。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-03.mp3",
+        "bytes": 133056,
+        "sha256": "6e855bc3bd3b5c6cf393b9785d174501a774eaf900e4a9b0b85d99b4a4afa634"
+      }
+    },
+    {
+      "id": "C02-04",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-04",
+      "zh": "补给月变化的正负号，描述当前条件下的变化方向。军队换地点、用量或统帅条件变化，这个数也可能变化。实际允许更新时，游戏把当时的变化量加到库存，再按零和当前容量截断；不是我们看一眼月变化，就已经加了一次，更不是每天自动除以三十。最后增加多少，仍要重新读实际库存。",
+      "en": "The sign of the monthly supply change shows its direction under current conditions. It can change with location, usage or commander conditions. When an update is allowed, the game adds the applicable change to stock, then clamps it between zero and current capacity. Reading the monthly figure does not itself apply an update, and it is not automatically divided by thirty each day. Read the actual stock again to see how much was gained.",
+      "speech_duration_seconds": 29.688,
+      "duration_seconds": 30.266666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 53710526,
+          "text": "补给月变化的正负号，描述当前条件下的变化方向。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 54210526,
+          "duration": 62105263,
+          "text": "军队换地点、用量或统帅条件变化，这个数也可能变化。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 116315790,
+          "duration": 138684212,
+          "text": "实际允许更新时，游戏把当时的变化量加到库存，再按零和当前容量截断；不是我们看一眼月变化，就已经加了一次，更不是每天自动除以三十。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 255000003,
+          "duration": 41315789,
+          "text": "最后增加多少，仍要重新读实际库存。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-04.mp3",
+        "bytes": 178128,
+        "sha256": "7a66abbb77ad80314a6036410e7bdd1b1fddc3baed70073298e28653f9ee0104"
+      }
+    },
+    {
+      "id": "C02-05",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-05",
+      "zh": "恢复补给，要看军队携带的物资；恢复兵员，要看实体兵团的人数。游戏分别处理这两件事。补给增加，不会自动把缺额变成士兵；兵员能否补充，也不能只问库存是不是满的。对一支准备继续赶路的军队，先读库存，再展开实际兵团，分别确认当前人数、满员数和补员条件。",
+      "en": "Supply recovery concerns the material carried by the army; troop recovery concerns actual soldiers in its regiments. The game handles them separately. More supply does not automatically fill troop deficits, and replenishment eligibility cannot be determined just by whether stock is full. Before marching on, read the stock, expand the actual regiments, and check current strength, maximum strength and replenishment conditions separately.",
+      "speech_duration_seconds": 28.512,
+      "duration_seconds": 29.066666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 70026316,
+          "text": "恢复补给，要看军队携带的物资；恢复兵员，要看实体兵团的人数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 70526316,
+          "duration": 26842105,
+          "text": "游戏分别处理这两件事。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 97368422,
+          "duration": 84868422,
+          "text": "补给增加，不会自动把缺额变成士兵；兵员能否补充，也不能只问库存是不是满的。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 182236844,
+          "duration": 102236843,
+          "text": "对一支准备继续赶路的军队，先读库存，再展开实际兵团，分别确认当前人数、满员数和补员条件。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-05.mp3",
+        "bytes": 171072,
+        "sha256": "150500691d5cd4df259169df432b8a173c5c06162b0cbeaa61971880bd7664b6"
+      }
+    },
+    {
+      "id": "C02-06",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-06",
+      "zh": "这次选中的小军，四条实体兵员记录合计二百五十人，都是满员。暂停查询里，四条记录的当前补员许可都为否，已经保存的准备比例也都是零。源码中，这四条共有的类型标记会先挡住当前补员许可，早于后面的开关和资源判断。这说明的是这些记录眼下的资格，不能只看“特殊兵”这个名称，就概括所有来源的军队。",
+      "en": "The selected small army has four actual soldier records totaling 250 men, all at full strength. In the paused query, all four currently have replenishment permission set to false, and their stored prepared fractions are zero. In the source code, a type flag shared by these four blocks current permission before the toggle and resource checks. This establishes these records' present eligibility; the label 'special troops' alone cannot describe armies from every source.",
+      "speech_duration_seconds": 31.992,
+      "duration_seconds": 32.56666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 67526316,
+          "text": "这次选中的小军，四条实体兵员记录合计二百五十人，都是满员。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 68026316,
+          "duration": 79342106,
+          "text": "暂停查询里，四条记录的当前补员许可都为否，已经保存的准备比例也都是零。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 147368422,
+          "duration": 87763158,
+          "text": "源码中，这四条共有的类型标记会先挡住当前补员许可，早于后面的开关和资源判断。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 235131581,
+          "duration": 84078948,
+          "text": "这说明的是这些记录眼下的资格，不能只看“特殊兵”这个名称，就概括所有来源的军队。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-06.mp3",
+        "bytes": 191952,
+        "sha256": "a757c77ee1ba8c4f8cb67ceaa56ed6e26e9bb178ee062d0d154f49bce409f863"
+      }
+    },
+    {
+      "id": "C02-07",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-07",
+      "zh": "补员还有先后顺序。普通准备阶段，会根据固定物理槽的条件，把本轮准备比例保存下来；某些类型先检查当前许可，有些定义分支会绕过这一关。真正计算补员请求时，游戏读取已经保存的比例，再检查各个物理槽的当前条件。因此，当前计算出的比例、已经保存的比例和最后新增人数，是三个需要分别读取的数。",
+      "en": "Replenishment also has an order of operations. The normal preparation phase saves this round's prepared fraction according to conditions in the fixed physical slot. Some types first check current permission; some definition branches bypass that check. When calculating the actual replenishment request, the game reads the stored fraction, then checks current conditions in each physical slot. The currently calculated fraction, the stored fraction and the final number added must therefore be read separately.",
+      "speech_duration_seconds": 31.272,
+      "duration_seconds": 31.833333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 23578947,
+          "text": "补员还有先后顺序。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 24078947,
+          "duration": 123289475,
+          "text": "普通准备阶段，会根据固定物理槽的条件，把本轮准备比例保存下来；某些类型先检查当前许可，有些定义分支会绕过这一关。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 147368422,
+          "duration": 79078948,
+          "text": "真正计算补员请求时，游戏读取已经保存的比例，再检查各个物理槽的当前条件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 226447371,
+          "duration": 85526316,
+          "text": "因此，当前计算出的比例、已经保存的比例和最后新增人数，是三个需要分别读取的数。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-07.mp3",
+        "bytes": 187632,
+        "sha256": "4f72ed567fb12da9946bfcba703dc2578636341d97567ace6202a9c2e70b1130"
+      }
+    },
+    {
+      "id": "C02-08",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-08",
+      "zh": "也正因为有这段时序，眼前许可为否，不能自动抹掉此前已经保存的正准备比例。请求阶段会读取旧比例，再按当时的物理槽条件继续判断；它不会重新调用那一项整团许可。反过来，眼前算出正比例，也不保证下一刻就有士兵增加：请求还可能被拒绝，或者整数结果仍为零。核对补员，要一直看到实体人数写回。",
+      "en": "Because of this timing, current permission being false does not automatically erase a positive fraction stored earlier. The request phase reads that older fraction and checks the physical slots' current conditions; it does not rerun that whole-regiment permission check. Conversely, a positive fraction calculated now does not guarantee soldiers will be added next. The request may be refused, or the integer result may still be zero. Verify replenishment through the actual soldier-count writeback.",
+      "speech_duration_seconds": 31.776,
+      "duration_seconds": 32.333333333333336,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 81210527,
+          "text": "也正因为有这段时序，眼前许可为否，不能自动抹掉此前已经保存的正准备比例。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 81710527,
+          "duration": 92105264,
+          "text": "请求阶段会读取旧比例，再按当时的物理槽条件继续判断；它不会重新调用那一项整团许可。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 173815791,
+          "duration": 102631580,
+          "text": "反过来，眼前算出正比例，也不保证下一刻就有士兵增加：请求还可能被拒绝，或者整数结果仍为零。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 276447371,
+          "duration": 40526316,
+          "text": "核对补员，要一直看到实体人数写回。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-08.mp3",
+        "bytes": 190656,
+        "sha256": "98cdb11ca3dfe7e3359f3f9e073dd20b58554ca4d1270f1d5b13877e609e616b"
+      }
+    },
+    {
+      "id": "C02-09",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-09",
+      "zh": "军事页的每月补员开关，也要放回具体来源。在需要这项检查的兵士定义分支，游戏追到兵员真正的来源角色，读取那个人的军事补员开关，并继续检查资源和位置条件。来源如果是封臣，就不能拿玩家自己的勾选代替。另一些定义分支不会走同一项开关；操作以前，先确认正在观察的是谁提供的兵。",
+      "en": "The military page's monthly replenishment toggle must also be tied to the troops' source. In troop-definition branches requiring this check, the game traces the soldiers to their actual source character, reads that character's military replenishment toggle, then checks resources and location. If the source is a vassal, the player's own checkbox cannot substitute for it. Other definition branches do not use the same toggle. Before acting, establish who supplied the troops being observed.",
+      "speech_duration_seconds": 29.256,
+      "duration_seconds": 29.833333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 44500000,
+          "text": "军事页的每月补员开关，也要放回具体来源。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 45000000,
+          "duration": 117368422,
+          "text": "在需要这项检查的兵士定义分支，游戏追到兵员真正的来源角色，读取那个人的军事补员开关，并继续检查资源和位置条件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 162368423,
+          "duration": 48157895,
+          "text": "来源如果是封臣，就不能拿玩家自己的勾选代替。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 210526318,
+          "duration": 81447369,
+          "text": "另一些定义分支不会走同一项开关；操作以前，先确认正在观察的是谁提供的兵。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-09.mp3",
+        "bytes": 175536,
+        "sha256": "4d28268ce1c99576f59a2a8182dcae35085d68ffe7b45af9016682827d4eebd7"
+      }
+    },
+    {
+      "id": "C02-10",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-10",
+      "zh": "选休整地点时，先看这里的补给月变化，再等一次真正的库存更新。月变化为正，是当前条件下的读数；库存实际增加，才说明这次确实恢复了物资。兵员补充还要另看：补给回满、补员准备值刷新，都不能直接当作多了几名士兵。",
+      "en": "When choosing a rest location, first read its monthly supply change, then wait for an actual stock update. A positive monthly value is a reading under current conditions; an actual increase in stock proves that supplies recovered this time. Replenishment needs a separate check. Full supply or a refreshed prepared value does not itself mean any soldiers were added.",
+      "speech_duration_seconds": 23.328,
+      "duration_seconds": 23.9,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 65815790,
+          "text": "选休整地点时，先看这里的补给月变化，再等一次真正的库存更新。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 66315790,
+          "duration": 85131580,
+          "text": "月变化为正，是当前条件下的读数；库存实际增加，才说明这次确实恢复了物资。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 151447370,
+          "duration": 81184211,
+          "text": "兵员补充还要另看：补给回满、补员准备值刷新，都不能直接当作多了几名士兵。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-10.mp3",
+        "bytes": 139968,
+        "sha256": "b8c184d4df88fc956a919975481d35cc945676d8b0ea9679dd960de4e063ef87"
+      }
+    },
+    {
+      "id": "C02-11",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-11",
+      "zh": "拆军和合军，对补给不是同一种处理。拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。合后库存、容量和统帅，都要分别读回。",
+      "en": "Splitting and merging handle supply differently. A newly split army first copies the source's stock; it does not halve it by headcount. Each army's capacity still depends on its current commander and conditions. Merging first saves both original stocks and their weights for their respective merge roles. After selecting the commander and adjusting composition, it reads the merged capacity. The 250 actual soldiers were conserved in this small-army case, but supply need not be conserved in the same way. Read back merged stock, capacity and commander separately.",
+      "speech_duration_seconds": 33.216,
+      "duration_seconds": 33.766666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 38447368,
+          "text": "拆军和合军，对补给不是同一种处理。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 38947368,
+          "duration": 87631580,
+          "text": "拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 126578948,
+          "duration": 87631580,
+          "text": "合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 214210529,
+          "duration": 72894737,
+          "text": "这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 287105266,
+          "duration": 44473684,
+          "text": "合后库存、容量和统帅，都要分别读回。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-11.mp3",
+        "bytes": 199296,
+        "sha256": "42a481c02e4571ae45cfedaf9b267d77856ddf9d594bb2f5b39e609fa3aa3138"
+      }
+    },
+    {
+      "id": "C02-12",
+      "chapter_id": "E4-02",
+      "shot_id": "S02-12",
+      "zh": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。两个份额合计可能略低于百分之一百，游戏不会把余数补回去。合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。大值另有保护分支，不能套这条简式。真正合后库存，再用实际读数核对。",
+      "en": "In the verified normal path with positive weights, merging calculates each army's weight share and truncates each to an integer. Each share is then multiplied by its original stock and truncated again, before the results are added. The shares may total slightly less than 100 percent; the game does not restore the remainder. The total stock is then clamped between zero and the actual merged capacity, so this is not a single ordinary average. Large values have a separate safeguard branch and cannot use this simplified formula. Check the final stock against the actual reading.",
+      "speech_duration_seconds": 33.408,
+      "duration_seconds": 35.03333333333333,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 116236843,
+          "text": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 117236843,
+          "duration": 62500000,
+          "text": "两个份额合计可能略低于百分之一百，游戏不会把余数补回去。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 179736844,
+          "duration": 75526316,
+          "text": "合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 255263161,
+          "duration": 39210526,
+          "text": "大值另有保护分支，不能套这条简式。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 294473687,
+          "duration": 38815789,
+          "text": "真正合后库存，再用实际读数核对。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-12.mp3",
+        "bytes": 200448,
+        "sha256": "c1871a706ec5d74f54f517878b4ab5f8ecbf397e887f9ad900cda4366aa5abe7"
+      }
+    },
+    {
+      "id": "C03-01",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-01",
+      "zh": "看人数为什么下降，先把眼前的提示与已经发生的变化分开。当前损耗比例，说明现在相关条件怎样计算；整数预算，说明一次处理准备怎样分配。真正少了多少，要看到实体兵员前后写回，并核对同窗补员、战斗、分合军和其他事件。这样，预算不会重复算成损失，净少人数也不会被直接叫成死亡人数。",
+      "en": "To explain falling troop numbers, separate current tooltips from changes that have already happened. The current attrition rate shows how conditions are calculated now; an integer budget sets the planned allocation for one pass. Actual losses require before-and-after writes to the physical soldier count, checked against replenishment, combat, splitting, merging, and other events in the same window. This avoids counting a budget twice as a loss, or calling every net decrease a death.",
+      "speech_duration_seconds": 31.824,
+      "duration_seconds": 32.4,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 59763158,
+          "text": "看人数为什么下降，先把眼前的提示与已经发生的变化分开。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 60263158,
+          "duration": 90263159,
+          "text": "当前损耗比例，说明现在相关条件怎样计算；整数预算，说明一次处理准备怎样分配。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 150526317,
+          "duration": 93289474,
+          "text": "真正少了多少，要看到实体兵员前后写回，并核对同窗补员、战斗、分合军和其他事件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 243815792,
+          "duration": 73815790,
+          "text": "这样，预算不会重复算成损失，净少人数也不会被直接叫成死亡人数。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-01.mp3",
+        "bytes": 190944,
+        "sha256": "e05ca7bc1c0f0c7020083e93e126c5f68eb97af3f050d96f064eb7597227937f"
+      }
+    },
+    {
+      "id": "C03-02",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-02",
+      "zh": "先看游戏怎样准备损失。供给、围城和劫掠各有自己的预算；围城与劫掠先各自取成整数，再合起来分配。这些预算在第一次兵员写入以前形成，后面的分配却沿着已经变化的人数继续进行。把几个显示比例直接相加，再乘同一个总人数，会漏掉中间的取整和先后顺序。",
+      "en": "First, how does the game prepare losses? Supply, siege, and raiding each have a budget. Siege and raiding are converted separately to integers, then combined for allocation. These budgets are set before the first soldier write, but later allocations use troop counts that have already changed. Adding the displayed rates and multiplying by one total misses the intermediate rounding and processing order.",
+      "speech_duration_seconds": 27.624,
+      "duration_seconds": 28.2,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 28315789,
+          "text": "先看游戏怎样准备损失。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 28815789,
+          "duration": 84605264,
+          "text": "供给、围城和劫掠各有自己的预算；围城与劫掠先各自取成整数，再合起来分配。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 113421054,
+          "duration": 83552632,
+          "text": "这些预算在第一次兵员写入以前形成，后面的分配却沿着已经变化的人数继续进行。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 196973686,
+          "duration": 78552632,
+          "text": "把几个显示比例直接相加，再乘同一个总人数，会漏掉中间的取整和先后顺序。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-02.mp3",
+        "bytes": 165744,
+        "sha256": "33faab11f8b9e210612031d8cce73e9ac1861ef1b46ef40f2acb3ae2c9e2538b"
+      }
+    },
+    {
+      "id": "C03-03",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-03",
+      "zh": "围城和劫掠会进入同一个合并阶段。要把其中一笔具体扣兵归到围城，就要对上那次真正使用的围城预算为正、劫掠预算为零，再看这一笔物理兵员前后究竟减少多少。预算说明这次怎样安排损失，兵员写回说明这次实际少了多少；这一笔的结果也不直接代表整段旅途。",
+      "en": "Siege and raiding share a combined stage. To attribute one specific deduction to siege, the siege budget actually used must be positive and the raiding budget zero. Then check the change in that physical soldier count. The budget describes the planned loss; the soldier write shows the actual decrease. That one result does not represent the whole journey.",
+      "speech_duration_seconds": 26.688,
+      "duration_seconds": 27.266666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 37394737,
+          "text": "围城和劫掠会进入同一个合并阶段。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 37894737,
+          "duration": 125657896,
+          "text": "要把其中一笔具体扣兵归到围城，就要对上那次真正使用的围城预算为正、劫掠预算为零，再看这一笔物理兵员前后究竟减少多少。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 163552633,
+          "duration": 102500001,
+          "text": "预算说明这次怎样安排损失，兵员写回说明这次实际少了多少；这一笔的结果也不直接代表整段旅途。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-03.mp3",
+        "bytes": 160128,
+        "sha256": "1fe2919bd05931d6b14ba099e7770a1c830a434278514f57a3424ddf57c82b24"
+      }
+    },
+    {
+      "id": "C03-04",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-04",
+      "zh": "用一组假设数字看差别：一百九十九名合格兵员，供给比例百分之五，整数预算是九；围城比例百分之一，整数预算是一。两项分别计算，合计是十。要是先合成百分之六，再乘一百九十九，就会算成十一。这张卡解释的是取整顺序，随后分到各兵团，还要继续按当时的人数处理。",
+      "en": "Take a hypothetical example: 199 eligible soldiers at a 5% supply rate give an integer budget of 9. A 1% siege rate gives 1. Calculated separately, they total 10. Combine the rates into 6% first, and 199 gives 11. This illustrates rounding order. Allocation to individual regiments still depends on their troop counts at that stage.",
+      "speech_duration_seconds": 28.8,
+      "duration_seconds": 29.366666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 122157896,
+          "text": "用一组假设数字看差别：一百九十九名合格兵员，供给比例百分之五，整数预算是九；围城比例百分之一，整数预算是一。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 123157896,
+          "duration": 32763158,
+          "text": "两项分别计算，合计是十。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 155921054,
+          "duration": 56184211,
+          "text": "要是先合成百分之六，再乘一百九十九，就会算成十一。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 212105265,
+          "duration": 75131579,
+          "text": "这张卡解释的是取整顺序，随后分到各兵团，还要继续按当时的人数处理。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-04.mp3",
+        "bytes": 172800,
+        "sha256": "0a6bcc9048a57da760bd2c3968d29fe565366692537cdae8ffe84d802c59d691"
+      }
+    },
+    {
+      "id": "C03-05",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-05",
+      "zh": "进入县域的这条路径，先算整军预算，再看首选兵团一共能承担多少，提前把两者的差额存下来。首选人数已经覆盖预算，后面就不启动县剩余分配。只有预先存下的差额大于零，才进入第二部分。所以找县损耗时，不能总等着一个未必会出现的剩余阶段。",
+      "en": "On this county-entry path, the game first calculates the army-wide budget and the total the preferred regiments can absorb, then stores the difference. If those regiments already cover the budget, county remainder allocation never starts. The second part runs only when the stored difference is positive. So county attrition does not always produce a remainder stage to inspect.",
+      "speech_duration_seconds": 26.088,
+      "duration_seconds": 26.666666666666668,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 95447369,
+          "text": "进入县域的这条路径，先算整军预算，再看首选兵团一共能承担多少，提前把两者的差额存下来。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 96447369,
+          "duration": 57500000,
+          "text": "首选人数已经覆盖预算，后面就不启动县剩余分配。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 153947370,
+          "duration": 45657895,
+          "text": "只有预先存下的差额大于零，才进入第二部分。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 199605265,
+          "duration": 60526316,
+          "text": "所以找县损耗时，不能总等着一个未必会出现的剩余阶段。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-05.mp3",
+        "bytes": 156528,
+        "sha256": "7cbd6c6bed74218a1b5c7a2de398aa3c726182444f82e10a506ff17367cf6f8f"
+      }
+    },
+    {
+      "id": "C03-06",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-06",
+      "zh": "这个差额在首选扣兵之前就已经固定。后面逐团消耗的是分配出去的整数请求；即使某次写入被跳过，或者实际变化与请求不同，也不会把这部分自动退回，再重算县的剩余预算。读结果时，把预算、请求和实际物理减少分别保留，才能解释为什么几个数不一定相等。",
+      "en": "That difference is fixed before deductions from the preferred regiments. Later allocation consumes the integer amounts requested from each regiment. If a write is skipped, or the actual change differs from the request, that amount is not automatically refunded to recalculate the county remainder budget. Keep the budget, requests, and actual physical decrease separate: they need not match.",
+      "speech_duration_seconds": 27.072,
+      "duration_seconds": 27.633333333333333,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 42526316,
+          "text": "这个差额在首选扣兵之前就已经固定。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 43026316,
+          "duration": 136710528,
+          "text": "后面逐团消耗的是分配出去的整数请求；即使某次写入被跳过，或者实际变化与请求不同，也不会把这部分自动退回，再重算县的剩余预算。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 179736844,
+          "duration": 90394737,
+          "text": "读结果时，把预算、请求和实际物理减少分别保留，才能解释为什么几个数不一定相等。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-06.mp3",
+        "bytes": 162432,
+        "sha256": "0599abb0afee8f93d8877e8a0d1eb562ec44e845d959538112dd115170e0cbaa"
+      }
+    },
+    {
+      "id": "C03-07",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-07",
+      "zh": "县损耗的修正也分几层。再看一组假设输入：全军三千零一人，基础比例百分之五，修正倍率零点三三三三九。先得到有效比例百分之一点六六六，再算人数，是四十九；对应的最小值修正后是三十三，这组输入最后取四十九。把修正和人数合到最后才取整，就会多算成五十。",
+      "en": "County attrition modifiers also work in stages. Consider hypothetical inputs: 3,001 soldiers, a base rate of 5%, and a multiplier of 0.33339. The effective rate is first calculated as 1.666%, then applied to the troop count, giving 49. The corresponding modified minimum is 33, so this example uses 49. Applying everything together and rounding only at the end would give 50.",
+      "speech_duration_seconds": 28.8,
+      "duration_seconds": 29.366666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 29500000,
+          "text": "县损耗的修正也分几层。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 30000000,
+          "duration": 89736843,
+          "text": "再看一组假设输入：全军三千零一人，基础比例百分之五，修正倍率零点三三三三九。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 119736843,
+          "duration": 116710527,
+          "text": "先得到有效比例百分之一点六六六，再算人数，是四十九；对应的最小值修正后是三十三，这组输入最后取四十九。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 236447371,
+          "duration": 50921053,
+          "text": "把修正和人数合到最后才取整，就会多算成五十。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-07.mp3",
+        "bytes": 172800,
+        "sha256": "f78d36976533a226370d5fca1bee0242856e9a126e7930c5b050cb80201bf5ff"
+      }
+    },
+    {
+      "id": "C03-08",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-08",
+      "zh": "地点条件也有范围。判断下一步的补员位置条件时，要取军队实际储存路线里的第一站，而不是地图上更远的最终目的地。游戏会核对这一步的省份，以及军队所有者到当地持有者的原生条件；不能把它简写成一般通行权。没有完整路线时，保留未知。即使这一步通过，也只是替换了位置这一项，后面的准备比例和其他条件还要另看。",
+      "en": "Location checks also have a defined scope. The next-step replenishment location check uses the first stop in the army's stored route, not its distant final destination. The game checks that province and the native condition between the army owner and the local holder; this is more specific than general military access. Without a complete route, keep the result unknown. In the conditional projection, a passing check substitutes only the location input. Preparation ratios and other conditions still need separate checks.",
+      "speech_duration_seconds": 32.928,
+      "duration_seconds": 33.5,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 22526316,
+          "text": "地点条件也有范围。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 23026316,
+          "duration": 95000001,
+          "text": "判断下一步的补员位置条件时，要取军队实际储存路线里的第一站，而不是地图上更远的最终目的地。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 118026317,
+          "duration": 94736843,
+          "text": "游戏会核对这一步的省份，以及军队所有者到当地持有者的原生条件；不能把它简写成一般通行权。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 212763160,
+          "duration": 31842105,
+          "text": "没有完整路线时，保留未知。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 244605266,
+          "duration": 83815790,
+          "text": "即使这一步通过，也只是替换了位置这一项，后面的准备比例和其他条件还要另看。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-08.mp3",
+        "bytes": 197568,
+        "sha256": "8d83f662f51974604e67e511320d95a8d7c4a30eb7e9b7aa34d316b7716cdbdb"
+      }
+    },
+    {
+      "id": "C03-09",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-09",
+      "zh": "整军预算取成整数以后，还要按顺序分给兵团，再写进实际兵槽。每一步都有自己的分母、上限和取整，兵团请求也不直接等于最终物理减少。同一个兵槽被多条数据引用时，核算那次实际写回只计一份；这里被截掉的小数，也没有在这条写回里留下小数兵员余量。",
+      "en": "Once the army-wide budget is an integer, it is allocated to regiments in order, then written to physical soldier slots. Each step has its own denominator, cap, and rounding. A regiment's requested amount need not equal the final physical decrease. Within that individual write, count a physical slot referenced by several data entries only once. Fractions discarded here are not retained as fractional soldiers in this write path.",
+      "speech_duration_seconds": 26.808,
+      "duration_seconds": 27.366666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 68710527,
+          "text": "整军预算取成整数以后，还要按顺序分给兵团，再写进实际兵槽。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 69210527,
+          "duration": 77236843,
+          "text": "每一步都有自己的分母、上限和取整，兵团请求也不直接等于最终物理减少。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 146447370,
+          "duration": 121052633,
+          "text": "同一个兵槽被多条数据引用时，核算那次实际写回只计一份；这里被截掉的小数，也没有在这条写回里留下小数兵员余量。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-09.mp3",
+        "bytes": 160848,
+        "sha256": "eaf7df6e679433283867f18311963230f3cfe7283549a1e7ac026d3a83af9d34"
+      }
+    },
+    {
+      "id": "C03-10",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-10",
+      "zh": "补给已经耗尽，面板前后都显示零，也不能据此说这次没有更新。源码里的成功路径仍会把本次变化加进去，负结果再压回零，并继续往下计算供给损失。也就是说，库存从零到零，可以同时发生一次成功更新；有没有扣兵，要接着看后面的预算和实际写回。",
+      "en": "Supply can read zero both before and after an update without the update being skipped. In the source's successful path, the change is still added, a negative result is clamped to zero, and supply-loss calculations continue. So zero-to-zero stock can accompany a successful update. Whether soldiers were deducted requires the later budget and actual writes.",
+      "speech_duration_seconds": 25.992,
+      "duration_seconds": 26.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 65552632,
+          "text": "补给已经耗尽，面板前后都显示零，也不能据此说这次没有更新。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 66052632,
+          "duration": 90394737,
+          "text": "源码里的成功路径仍会把本次变化加进去，负结果再压回零，并继续往下计算供给损失。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 156447370,
+          "duration": 102763159,
+          "text": "也就是说，库存从零到零，可以同时发生一次成功更新；有没有扣兵，要接着看后面的预算和实际写回。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-10.mp3",
+        "bytes": 155952,
+        "sha256": "7df709032ca3e88bd86c349f38d5e0de1ded07c602836edec1c37413a69dd039"
+      }
+    },
+    {
+      "id": "C03-11",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-11",
+      "zh": "零库存也没有在这条普通供给链里另加一档。假设当次加载的是六十、十、零这组原版阈值，零与九点九九九九九进入同一档，正好十进入上一档。将领修正、舰队抑制和合格人数还会影响最终预算，所以不能把零库存理解成安全，也不能一看到零就固定写成每团扣百分之五。",
+      "en": "Zero stock does not add another tier in this ordinary supply chain. Suppose the loaded vanilla thresholds are 60, 10, and 0: zero and 9.99999 fall in the same tier, while exactly 10 enters the tier above. Commander modifiers, fleet suppression, and eligible troop counts also affect the final budget. Zero stock is neither proof of safety nor a fixed 5% deduction from every regiment.",
+      "speech_duration_seconds": 28.08,
+      "duration_seconds": 28.633333333333333,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 46605263,
+          "text": "零库存也没有在这条普通供给链里另加一档。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 47105263,
+          "duration": 105921053,
+          "text": "假设当次加载的是六十、十、零这组原版阈值，零与九点九九九九九进入同一档，正好十进入上一档。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 153026317,
+          "duration": 126973685,
+          "text": "将领修正、舰队抑制和合格人数还会影响最终预算，所以不能把零库存理解成安全，也不能一看到零就固定写成每团扣百分之五。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-11.mp3",
+        "bytes": 168480,
+        "sha256": "aa454b3567fc604b09ce91574cd8d42681c6a4d7c4329c6e528b4c7196cd7aba"
+      }
+    },
+    {
+      "id": "C03-12",
+      "chapter_id": "E4-03",
+      "shot_id": "S03-12",
+      "zh": "小军队还会遇到整个人数的取整。假设有效分量是百分之五，十九名合格兵员算出的整军预算是零，二十名才是一个；这一步没有每次至少扣一人的规则。但这只解释供给预算：围城、县进入和其他人数变化要分别看，日志里没读到一笔事件，也不能直接填成整个窗口零损失。",
+      "en": "Small armies also meet whole-soldier rounding. At a hypothetical effective rate of 5%, 19 eligible soldiers produce an army-wide budget of zero; 20 produce one. This step has no minimum deduction of one soldier per pass. But that explains only the supply budget. Siege, county entry, and other troop changes need separate checks. A missing event in the log does not prove zero losses across the whole window.",
+      "speech_duration_seconds": 27.528,
+      "duration_seconds": 29.133333333333333,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 34368421,
+          "text": "小军队还会遇到整个人数的取整。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 34868421,
+          "duration": 114605264,
+          "text": "假设有效分量是百分之五，十九名合格兵员算出的整军预算是零，二十名才是一个；这一步没有每次至少扣一人的规则。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 149473686,
+          "duration": 125131580,
+          "text": "但这只解释供给预算：围城、县进入和其他人数变化要分别看，日志里没读到一笔事件，也不能直接填成整个窗口零损失。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-12.mp3",
+        "bytes": 165168,
+        "sha256": "65fb7514db6c222f8bcf9cf48037a7946a0af7957e60beb25e3f24073bcae7ff"
+      }
+    },
+    {
+      "id": "C04-01",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-01",
+      "zh": "路线先看三个时间点：下令前的预期抵达、走起来后的当前估计，以及军队真正到达。预览告诉我们这次计划怎样走；下令后，再读实际存下来的路线。到了观察终点，还要确认当前地点和剩余路线。我们这轮改道的终点，就是靠后来的独立状态确认，而不是因为预览线已经画到那里，就宣布抵达。",
+      "en": "For a route, distinguish three timings: the expected arrival before ordering, the current estimate while moving, and actual arrival. A preview describes the plan; after the order, read the route actually stored. At the observation endpoint, check the current location and remaining route. In this reroute test, later independent state confirmed the endpoint. A preview line reaching it was not proof of arrival.",
+      "speech_duration_seconds": 29.28,
+      "duration_seconds": 29.833333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 81736843,
+          "text": "路线先看三个时间点：下令前的预期抵达、走起来后的当前估计，以及军队真正到达。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 82236843,
+          "duration": 67105263,
+          "text": "预览告诉我们这次计划怎样走；下令后，再读实际存下来的路线。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 149342107,
+          "duration": 49210526,
+          "text": "到了观察终点，还要确认当前地点和剩余路线。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 198552634,
+          "duration": 93552632,
+          "text": "我们这轮改道的终点，就是靠后来的独立状态确认，而不是因为预览线已经画到那里，就宣布抵达。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-01.mp3",
+        "bytes": 175680,
+        "sha256": "40cbfbee5845520c6affcb077efc7d15ac88791bd3209f7d16b1a7df1c639975"
+      }
+    },
+    {
+      "id": "C04-02",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-02",
+      "zh": "军队窗口的整条抵达估计，与当前第一段还要走多久，描述的是不同范围。陆地移动速度、海上移动速度，也各有自己的读数，不能直接当作整条路线剩余天数。并排比较时，先标清是速度、首段时量，还是终点日期。没有取得同一暂停点的完整读数，就不拿旧日期相减，补出一段看似精确的后程。",
+      "en": "The army window's full-route arrival estimate and the time left on the first leg cover different scopes. Land and sea movement speeds have their own readings too; neither is directly the remaining days for the whole route. Label comparisons as speed, first-leg duration, or final arrival date. Without complete readings from the same paused frame, subtracting old dates would invent a precise-looking later-leg duration.",
+      "speech_duration_seconds": 29.616,
+      "duration_seconds": 30.166666666666668,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 73710527,
+          "text": "军队窗口的整条抵达估计，与当前第一段还要走多久，描述的是不同范围。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 74210527,
+          "duration": 82368422,
+          "text": "陆地移动速度、海上移动速度，也各有自己的读数，不能直接当作整条路线剩余天数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 156578949,
+          "duration": 60526316,
+          "text": "并排比较时，先标清是速度、首段时量，还是终点日期。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 217105265,
+          "duration": 78421053,
+          "text": "没有取得同一暂停点的完整读数，就不拿旧日期相减，补出一段看似精确的后程。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-02.mp3",
+        "bytes": 177696,
+        "sha256": "355c3f9930e773605c675a307f9b3822bf5d296bd3e934a1bd3124571521eb9f"
+      }
+    },
+    {
+      "id": "C04-03",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-03",
+      "zh": "实际用了几天，同样先说从哪一天开始算。这轮改道，从独立载入后的行军起点到替代终点，总共十三个自然日；从重新下达替代路线到那个终点，是八个自然日。两项都是真实后果，起算点却不同。它们不能互相顶替，也不能直接拿去给整军直走、分兵休整和绕路三种方案排名；三方案仍要各自从共同起点完成。",
+      "en": "Actual duration also needs a clear starting point. In this reroute test, 13 calendar days passed from the march start after an independent load to the alternative endpoint. From the replacement route order to that endpoint, it took 8 calendar days. Both are observed outcomes with different time origins. They are not interchangeable, and cannot rank direct march, split-and-rest, and detour. Each strategy still needs to finish from the common starting point.",
+      "speech_duration_seconds": 31.344,
+      "duration_seconds": 31.9,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 45157895,
+          "text": "实际用了几天，同样先说从哪一天开始算。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 45657895,
+          "duration": 115131580,
+          "text": "这轮改道，从独立载入后的行军起点到替代终点，总共十三个自然日；从重新下达替代路线到那个终点，是八个自然日。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 160789475,
+          "duration": 38289474,
+          "text": "两项都是真实后果，起算点却不同。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 199078949,
+          "duration": 113684211,
+          "text": "它们不能互相顶替，也不能直接拿去给整军直走、分兵休整和绕路三种方案排名；三方案仍要各自从共同起点完成。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-03.mp3",
+        "bytes": 188064,
+        "sha256": "c1fc6ce20bc4710044475b10cd7dddc163eaa11649541ac3ff50eb5e37f4251b"
+      }
+    },
+    {
+      "id": "C04-04",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-04",
+      "zh": "这轮改道的前后，游戏日期相同，军队也还在原位置；改变的是已经储存的路线后半段。它没有因为命令被接受，就立刻走到新地点。之后我们继续推进自然时间，分别看到原首段终点和替代终点。把同日下令后的状态，与后来真正走到的位置分开，才不会把一条确认消息剪成一次已经完成的行军。",
+      "en": "Immediately before and after the reroute, the game date and army location were unchanged. What changed was the stored route's later section. Accepting the order did not move the army to a new location. Advancing game time later showed it at the original first-leg endpoint and then the alternative endpoint. Keep the same-day order result separate from later movement, so an acknowledgment is not presented as a completed march.",
+      "speech_duration_seconds": 29.736,
+      "duration_seconds": 30.3,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 87657895,
+          "text": "这轮改道的前后，游戏日期相同，军队也还在原位置；改变的是已经储存的路线后半段。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 88157895,
+          "duration": 46842105,
+          "text": "它没有因为命令被接受，就立刻走到新地点。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 135000001,
+          "duration": 65921053,
+          "text": "之后我们继续推进自然时间，分别看到原首段终点和替代终点。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 200921055,
+          "duration": 95921053,
+          "text": "把同日下令后的状态，与后来真正走到的位置分开，才不会把一条确认消息剪成一次已经完成的行军。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-04.mp3",
+        "bytes": 178416,
+        "sha256": "326ba6eee2caea1c34793073cd4c351b1d5fc1626e2c7cc02c411358f495f475"
+      }
+    },
+    {
+      "id": "C04-05",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-05",
+      "zh": "再看移动锁定。停止测试前，当前首段进度约百分之九十六点七，当次实际读到的锁定阈值是百分之五十。这个比例描述正在走的第一段，不是整趟旅程已经完成了九成多；后面仍存着另外三段。锁定以后还剩哪些选择，要继续看停止或改道后的真实路线，不能只凭一个百分比推断军队会停在哪里。",
+      "en": "Now consider movement lock. Before the stop test, first-leg progress was about 96.7%, and the threshold actually read was 50%. This percentage describes the current first leg, not over 90% of the whole journey: three more legs remained. To know the choices left after locking, inspect the actual route after stopping or rerouting. One percentage alone cannot tell us where the army will stop.",
+      "speech_duration_seconds": 30.288,
+      "duration_seconds": 30.866666666666667,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 19236842,
+          "text": "再看移动锁定。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 19736842,
+          "duration": 93552632,
+          "text": "停止测试前，当前首段进度约百分之九十六点七，当次实际读到的锁定阈值是百分之五十。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 113289475,
+          "duration": 86052632,
+          "text": "这个比例描述正在走的第一段，不是整趟旅程已经完成了九成多；后面仍存着另外三段。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 199342107,
+          "duration": 102763159,
+          "text": "锁定以后还剩哪些选择，要继续看停止或改道后的真实路线，不能只凭一个百分比推断军队会停在哪里。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-05.mp3",
+        "bytes": 181728,
+        "sha256": "f9472ea4b79d08ae33d5497e8ebe15922d2edc2217fe4378c1eb27cd154eb1dd"
+      }
+    },
+    {
+      "id": "C04-06",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-06",
+      "zh": "这两次锁定测试，都选择了进度严格超过当次阈值的时刻。现在能确认的是：超过以后，停止和改道各自实际留下了什么。当前路线实现按“严格大于”选取已经承诺的首段，正好相等落在另一侧；这是代码规则。正好一半那一帧的停止与改道，并没有在这两场里实测，不能把超过阈值的结果写成等号边界也已经验证。",
+      "en": "Both lock tests used progress strictly above the threshold read for that test. They show what stopping and rerouting actually retained after crossing it. The current route code selects a committed first leg using a strict greater-than comparison; equality falls on the other side. That is the code rule. Neither test measured stopping or rerouting at exact equality, so these results do not verify the equality boundary.",
+      "speech_duration_seconds": 31.248,
+      "duration_seconds": 31.8,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 57789474,
+          "text": "这两次锁定测试，都选择了进度严格超过当次阈值的时刻。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 58289474,
+          "duration": 63947369,
+          "text": "现在能确认的是：超过以后，停止和改道各自实际留下了什么。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 122236843,
+          "duration": 89868422,
+          "text": "当前路线实现按“严格大于”选取已经承诺的首段，正好相等落在另一侧；这是代码规则。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 212105265,
+          "duration": 99605264,
+          "text": "正好一半那一帧的停止与改道，并没有在这两场里实测，不能把超过阈值的结果写成等号边界也已经验证。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-06.mp3",
+        "bytes": 187488,
+        "sha256": "259187dde886dce249ba33a34a4db03c514d7d34a26abebf2ae37b27b9f53f40"
+      }
+    },
+    {
+      "id": "C04-07",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-07",
+      "zh": "这次锁定后，我们只下达一次停止。后来独立读取，四段路线只剩原来的第一站，已经走过的首段进度保留。军队没有原地停下；两天后，它实际到了原首段终点，路线变空，下一天仍留在那里。这个结果把停止的作用说清了：撤掉后续行程，同时把已经承诺的这一段走完。目标字段当时没有读到，结果就用实际位置和路线说明。",
+      "en": "After locking, we issued stop just once. A later independent read showed the four-leg route reduced to its original first stop, with first-leg progress preserved. The army did not stop in place. Two days later, it reached that first-leg endpoint with an empty route, and stayed there the following day. Stop removed later travel while completing the committed leg. The target field was not read then; actual location and route establish this result.",
+      "speech_duration_seconds": 33.12,
+      "duration_seconds": 33.7,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 35684210,
+          "text": "这次锁定后，我们只下达一次停止。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 36184210,
+          "duration": 71973685,
+          "text": "后来独立读取，四段路线只剩原来的第一站，已经走过的首段进度保留。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 108157896,
+          "duration": 86842106,
+          "text": "军队没有原地停下；两天后，它实际到了原首段终点，路线变空，下一天仍留在那里。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 195000002,
+          "duration": 78552632,
+          "text": "这个结果把停止的作用说清了：撤掉后续行程，同时把已经承诺的这一段走完。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 273552635,
+          "duration": 56973684,
+          "text": "目标字段当时没有读到，结果就用实际位置和路线说明。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-07.mp3",
+        "bytes": 198720,
+        "sha256": "1e78cfe8290beec6bc4a492c2f0c6430f3a59bceb68ecd9587bc8b3936a7312c"
+      }
+    },
+    {
+      "id": "C04-08",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-08",
+      "zh": "改道则是另一场独立正常行军。原路线还有三站，我们选择了不同的终点。重新下令以后，当前位置和首段进度没有变，原来的第一站仍然保留，后面的路线换成了通向新终点的一段。随后实际观察到军队先走到原第一站，再到替代终点，最后路线为空。锁定限制了眼前这一段，并没有把所有后续选择都固定下来。",
+      "en": "Rerouting was a separate normal march test. Three stops remained on the original route when we chose a different endpoint. After the new order, location and first-leg progress were unchanged. The original first stop remained, while the later route became a leg toward the new endpoint. We then observed the army reach the original first stop, followed by the alternative endpoint, with an empty route. Locking constrained the current leg without fixing every later choice.",
+      "speech_duration_seconds": 30.84,
+      "duration_seconds": 31.4,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 32263158,
+          "text": "改道则是另一场独立正常行军。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 32763158,
+          "duration": 41052632,
+          "text": "原路线还有三站，我们选择了不同的终点。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 73815790,
+          "duration": 103289474,
+          "text": "重新下令以后，当前位置和首段进度没有变，原来的第一站仍然保留，后面的路线换成了通向新终点的一段。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 177105265,
+          "duration": 72631579,
+          "text": "随后实际观察到军队先走到原第一站，再到替代终点，最后路线为空。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 249736845,
+          "duration": 58026316,
+          "text": "锁定限制了眼前这一段，并没有把所有后续选择都固定下来。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-08.mp3",
+        "bytes": 185040,
+        "sha256": "bf3f4e31fd85bd3837069de69c7c50d72826b3e889055da0c4fce45c778c765e"
+      }
+    },
+    {
+      "id": "C04-09",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-09",
+      "zh": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。它不自动成为所有军队的固定费率。县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。",
+      "en": "A route warning about paying an embarkation fee appears before ordering; actual payment needs separate evidence. After this army entered a sea zone, an independent cash query and the native payment chain matched a 3-gold debit for this account's embarkation. That is not a universal fee for every army. County-loss budgets are conditional too: they do not mean every province crossing must remove the same number of soldiers.",
+      "speech_duration_seconds": 29.28,
+      "duration_seconds": 29.833333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 63842106,
+          "text": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 64342106,
+          "duration": 101710527,
+          "text": "这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 166052633,
+          "duration": 34605263,
+          "text": "它不自动成为所有军队的固定费率。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 200657897,
+          "duration": 91315790,
+          "text": "县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-09.mp3",
+        "bytes": 175680,
+        "sha256": "ba75242d39005951d96a08c63539a67b7189b7d2b863b3f3496a57f303fe3afc"
+      }
+    },
+    {
+      "id": "C04-10",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-10",
+      "zh": "这次罗贝尔的军队进入海区，实际状态变成已登船。沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。",
+      "en": "When Robert's army entered the sea zone, its actual state became embarked. The native payment record identifies a 3-gold debit to the personal account, and the account balance fell by exactly 3 gold. This establishes the payment for this embarkation. Other armies and routes still need their own fee checked; 3 gold is not a universal charge.",
+      "speech_duration_seconds": 22.872,
+      "duration_seconds": 23.433333333333334,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 54500000,
+          "text": "这次罗贝尔的军队进入海区，实际状态变成已登船。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 55000000,
+          "duration": 85000001,
+          "text": "沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 140000001,
+          "duration": 87894737,
+          "text": "这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-10.mp3",
+        "bytes": 137232,
+        "sha256": "b69cf506a4cf35d41a02c15d9bb65add6c880b3dbbdba4cce9a293e8691c4958"
+      }
+    },
+    {
+      "id": "C04-11",
+      "chapter_id": "E4-04",
+      "shot_id": "S04-11",
+      "zh": "路线警告适合帮助出发前做选择。要解释走完以后少了多少兵，还要区分县进入扣兵和周期损耗：源码里它们有不同的直接调用入口，也有共用的剩余分配路径。只有共用路径的记录时，原因继续保留未知，不能看到刚跨县就把整段减少全算成跨县损耗。",
+      "en": "Route warnings help with choices before departure. Explaining later troop decreases also requires separating county-entry deductions from periodic attrition. In the source, they have distinct direct call entries and a shared remainder-allocation path. If the only record is from that shared path, the cause stays unknown. Crossing a county boundary does not justify attributing the whole decrease to county-entry attrition.",
+      "speech_duration_seconds": 25.488,
+      "duration_seconds": 27.1,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 38578947,
+          "text": "路线警告适合帮助出发前做选择。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 39078947,
+          "duration": 123157896,
+          "text": "要解释走完以后少了多少兵，还要区分县进入扣兵和周期损耗：源码里它们有不同的直接调用入口，也有共用的剩余分配路径。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 162236844,
+          "duration": 91973685,
+          "text": "只有共用路径的记录时，原因继续保留未知，不能看到刚跨县就把整段减少全算成跨县损耗。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-11.mp3",
+        "bytes": 152928,
+        "sha256": "768fdc9328a9fec0fc67aa3e7636b685eaa71ca719a44596302f535ecf3127fa"
+      }
+    },
+    {
+      "id": "C05-01",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-01",
+      "zh": "把三个方案放到一起，先问四件事：多久到，原始兵团剩多少人，每支军队还有多少补给，实际支付多少。抵达时的状态回答这条路线把军队送成了什么样；同一天的状态回答同样过了这些天，各种安排走到了哪一步。",
+      "en": "To compare the three plans, first ask four questions: how long until arrival, how many troops remain in the original regiments, how much supply each army has, and how much was actually paid. The state on arrival tells us what condition the route delivered the army in. The state on the same day tells us how far each arrangement has progressed after the same amount of time.",
+      "speech_duration_seconds": 21.432,
+      "duration_seconds": 22.0,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 106500001,
+          "text": "把三个方案放到一起，先问四件事：多久到，原始兵团剩多少人，每支军队还有多少补给，实际支付多少。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 107500001,
+          "duration": 106184211,
+          "text": "抵达时的状态回答这条路线把军队送成了什么样；同一天的状态回答同样过了这些天，各种安排走到了哪一步。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-01.mp3",
+        "bytes": 128592,
+        "sha256": "128b4ffc27c6a2cafb2a836502244ef4cdd3f3ba4e8b13df1e7236d393c06813"
+      }
+    },
+    {
+      "id": "C05-02",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-02",
+      "zh": "三次回放都要重新载入同一份普通起点，核对人物、日期、统帅、原始兵团、库存和钱包。新分出来的军队，用本次实际出现的身份识别。这样，后来多出一条记录、换了统帅，或者少了某个原始兵团，都能在结果里保留下来。",
+      "en": "Each of the three replays must reload the same normal starting save and check the character, date, commander, original regiments, stock, and treasury. Newly split armies are identified by the identities that actually appear in that run. This keeps any later extra entry, commander change, or missing original regiment visible in the results.",
+      "speech_duration_seconds": 23.04,
+      "duration_seconds": 23.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 96473685,
+          "text": "三次回放都要重新载入同一份普通起点，核对人物、日期、统帅、原始兵团、库存和钱包。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 96973685,
+          "duration": 48815790,
+          "text": "新分出来的军队，用本次实际出现的身份识别。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 145789475,
+          "duration": 83947369,
+          "text": "这样，后来多出一条记录、换了统帅，或者少了某个原始兵团，都能在结果里保留下来。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-02.mp3",
+        "bytes": 138240,
+        "sha256": "7feebb0a1461fda0c74fbc890bd8881bb1a6dad1ff3892c086295e6ab3158340"
+      }
+    },
+    {
+      "id": "C05-03",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-03",
+      "zh": "方案A保持整军，按这次实际预览的直达路线前进。命令之后先确认路线真的生效，再逐日看它的位置。真正到达，要同时看到军队已经在目标地点，状态合适，剩余路线走完；预计日期和下令确认，都不能代替这一刻。",
+      "en": "Plan A keeps the army intact and follows the direct route shown in this run's actual preview. After the order, first confirm that the route has taken effect, then track its position day by day. Actual arrival requires the army to be at the target, in an appropriate state, with the remaining route completed. Neither an estimated date nor an order confirmation can replace that moment.",
+      "speech_duration_seconds": 22.008,
+      "duration_seconds": 22.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 53052632,
+          "text": "方案A保持整军，按这次实际预览的直达路线前进。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 53552632,
+          "duration": 53289474,
+          "text": "命令之后先确认路线真的生效，再逐日看它的位置。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 106842106,
+          "duration": 112500001,
+          "text": "真正到达，要同时看到军队已经在目标地点，状态合适，剩余路线走完；预计日期和下令确认，都不能代替这一刻。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-03.mp3",
+        "bytes": 132048,
+        "sha256": "34f6b48b228ba70ef716f0e2e2030408f9f8fbafb38038a69b78995163d3c7a8"
+      }
+    },
+    {
+      "id": "C05-04",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-04",
+      "zh": "方案B先分兵，到两处验证过的驻点休整，再会合。每队从真正停驻那天开始计时；达到预定库存和缺员条件，或者用完预定驻留时间，就按原计划离开。恢复得不够，也是这次方案的结果，不能为了挑到好数字而重新开始。",
+      "en": "Plan B first splits the army, rests at two verified locations, then regroups. Each army's rest period starts on the day it actually becomes stationary. Once the preset stock and troop-shortfall conditions are met, or the preset stay expires, it leaves according to the original plan. Insufficient recovery is also a result of this plan; we cannot restart to obtain better numbers.",
+      "speech_duration_seconds": 22.776,
+      "duration_seconds": 23.333333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 56473684,
+          "text": "方案B先分兵，到两处验证过的驻点休整，再会合。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 56973684,
+          "duration": 101052632,
+          "text": "每队从真正停驻那天开始计时；达到预定库存和缺员条件，或者用完预定驻留时间，就按原计划离开。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 158026317,
+          "duration": 69078948,
+          "text": "恢复得不够，也是这次方案的结果，不能为了挑到好数字而重新开始。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-04.mp3",
+        "bytes": 136656,
+        "sha256": "40e1aa6accfed79fd497eea33a0ee8205a993ef1963c38382ccf150234db605f"
+      }
+    },
+    {
+      "id": "C05-05",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-05",
+      "zh": "方案C保持整军，依次经过事先选好的合法中转点，再去同一个终点。它是换路线，补给和人数沿途照实记录。每一段都等实际到达再转向下一点，不能用镜头已经移到那里，代替军队已经走到那里。",
+      "en": "Plan C keeps the army intact, passes through the legal waypoints chosen in advance, then heads to the same destination. It changes the route, while supply and troop counts are recorded as they actually stand along the way. Each leg waits for actual arrival before turning toward the next point. Moving the camera there cannot stand in for the army reaching it.",
+      "speech_duration_seconds": 20.016,
+      "duration_seconds": 20.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 71078948,
+          "text": "方案C保持整军，依次经过事先选好的合法中转点，再去同一个终点。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 71578948,
+          "duration": 41973684,
+          "text": "它是换路线，补给和人数沿途照实记录。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 113552633,
+          "duration": 85921053,
+          "text": "每一段都等实际到达再转向下一点，不能用镜头已经移到那里，代替军队已经走到那里。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-05.mp3",
+        "bytes": 120096,
+        "sha256": "d2c47031acb2b16710419b6d456beb0d91d70238621c81e63ba3d85c749e721b"
+      }
+    },
+    {
+      "id": "C05-06",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-06",
+      "zh": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。",
+      "en": "The balanced-split code first creates a new army, then transfers whole army-regiment records according to weights for different categories. This normal path does not cut every persistent troop slot in half, so the two displayed troop counts are not guaranteed to be exactly equal. Creating the new army also copies the original supply-stock field. Whether that stock hits the new capacity limit must be checked through the separate supply update and the actual resulting state.",
+      "speech_duration_seconds": 27.984,
+      "duration_seconds": 28.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 83184211,
+          "text": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 83684211,
+          "duration": 95000001,
+          "text": "它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 178684212,
+          "duration": 100526317,
+          "text": "新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-06.mp3",
+        "bytes": 167904,
+        "sha256": "930fbb4dff9b4e343f3810e13949ebe4ba0b1aa8b14af548453633abc27aacfe"
+      }
+    },
+    {
+      "id": "C05-07",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-07",
+      "zh": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。",
+      "en": "Splitting a hundred troops into two groups of fifty does not make the same location support only fifty. Take a hypothetical case: aggregate local usage is six thousand, the limit is four thousand, and the selected army has only a hundred troops. If both armies remain in the same province and the contributing regiments and their eligibility are unchanged, usage remains six thousand. Whether splitting improves supply depends on how actual usage changes and where each army really goes.",
+      "speech_duration_seconds": 28.224,
+      "duration_seconds": 28.8,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 66342106,
+          "text": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 66842106,
+          "duration": 82105264,
+          "text": "用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 148947370,
+          "duration": 64078948,
+          "text": "两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 213026318,
+          "duration": 68552632,
+          "text": "分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-07.mp3",
+        "bytes": 169344,
+        "sha256": "2d99b864b11e8013cad283b27efb263111b74bcbc6452942a1fcc4689680ad21"
+      }
+    },
+    {
+      "id": "C05-08",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-08",
+      "zh": "分兵以后，把每队的库存和容量分别列出来。库存是各队实际带着多少，容量是这支军队当前能带多少。比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。",
+      "en": "After splitting, list each army's stock and capacity separately. Stock is what each army actually carries; capacity is what that army can currently carry. Keep each army's real values in the comparison. Adding the two stocks or taking an average does not produce the supply of an intact army that does not exist.",
+      "speech_duration_seconds": 20.928,
+      "duration_seconds": 21.5,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 46210526,
+          "text": "分兵以后，把每队的库存和容量分别列出来。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 46710526,
+          "duration": 63289474,
+          "text": "库存是各队实际带着多少，容量是这支军队当前能带多少。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 110000001,
+          "duration": 98552632,
+          "text": "比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-08.mp3",
+        "bytes": 125568,
+        "sha256": "4f7aca9c552317da257168aa350783a9b3444b9af1ef08a676d4dd07360100a4"
+      }
+    },
+    {
+      "id": "C05-09",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-09",
+      "zh": "合军后重新看统帅，也重新展开完整兵团。一条一人满员一人的记录，首先只是这条记录的实际人数。它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。具体类别要跟它自己的原生身份对应。",
+      "en": "After merging, check the commander again and expand the complete regiment list. An entry showing one current troop out of one maximum first tells us only that entry's actual count. It may have no ordinary troop-slot data. That number alone cannot identify it as a knight or show that one ordinary soldier has just been reinforced. Its specific category must be matched to its own native identity.",
+      "speech_duration_seconds": 23.928,
+      "duration_seconds": 24.5,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 48447369,
+          "text": "合军后重新看统帅，也重新展开完整兵团。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 48947369,
+          "duration": 54605263,
+          "text": "一条一人满员一人的记录，首先只是这条记录的实际人数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 103552632,
+          "duration": 96578948,
+          "text": "它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 200131581,
+          "duration": 38552632,
+          "text": "具体类别要跟它自己的原生身份对应。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-09.mp3",
+        "bytes": 143568,
+        "sha256": "a2965b5ccc543e74b53a9d962aa40a8589eca65b24a3bf5b595cc657a516d593"
+      }
+    },
+    {
+      "id": "C05-10",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-10",
+      "zh": "会合是两队到了同一地点，合并以后才成为一支。合后要再读库存、容量、实际统帅和全部兵团。原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。",
+      "en": "Regrouping means both armies have reached the same place; only merging turns them into one. After the merge, reread stock, capacity, the actual commander, and every regiment. Count the original regiments separately from later additions. If a legal merge changes these conditions, retain those changes as actual consequences of this arrangement. Do not delete new entries or change commanders afterward to make the result match expectations.",
+      "speech_duration_seconds": 27.168,
+      "duration_seconds": 27.733333333333334,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 52526316,
+          "text": "会合是两队到了同一地点，合并以后才成为一支。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 53026316,
+          "duration": 55657895,
+          "text": "合后要再读库存、容量、实际统帅和全部兵团。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 108684211,
+          "duration": 162368423,
+          "text": "原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-10.mp3",
+        "bytes": 163008,
+        "sha256": "259f99183775c7da8a593f1dc5f6f5d7f328989f4ce86c331296ac9d32914867"
+      }
+    },
+    {
+      "id": "C05-11",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-11",
+      "zh": "费用先分当前月读数和旅途累计。当前月收入减去完整月支出，得到当前净收入；这些数描述眼前的收支条件，不能固定铺到整趟旅程。军队集结状态、来源和其他收支变了，就要重读。比较不同路线花了多少时，累计实际支付另记，期间收入和其他事件也按同一个日期范围保留。",
+      "en": "Separate current monthly figures from costs accumulated during the journey. Current monthly income minus full monthly expenditure gives current net income. These figures describe present income and spending conditions; they cannot be held constant across the whole journey. Reread them when the armies' raised status, troop sources, or other income and spending change. When comparing route costs, record cumulative actual payments separately, and retain income and other events over the same date range.",
+      "speech_duration_seconds": 28.848,
+      "duration_seconds": 29.4,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 38052632,
+          "text": "费用先分当前月读数和旅途累计。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 38552632,
+          "duration": 103421053,
+          "text": "当前月收入减去完整月支出，得到当前净收入；这些数描述眼前的收支条件，不能固定铺到整趟旅程。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 141973685,
+          "duration": 54473684,
+          "text": "军队集结状态、来源和其他收支变了，就要重读。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 196447370,
+          "duration": 91315790,
+          "text": "比较不同路线花了多少时，累计实际支付另记，期间收入和其他事件也按同一个日期范围保留。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-11.mp3",
+        "bytes": 173088,
+        "sha256": "d487439856f363dcd7e5845ed4f393ff38e0e4bd7bc9fbe72baeb5fbdaaa965e"
+      }
+    },
+    {
+      "id": "C05-12",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-12",
+      "zh": "当前军事维护月费率，与“全部集结”情景的替代月费率，是两种情况的读数，不是两笔应该相加的支出。完整月支出已经按包含军费的口径读取，所以使用净收入时，不能再把同一军费扣一次。月费率仍只是当前费率；要说旅途已经付了多少维护费，还需要实际支付来源、金额和日期对上，不能只拿钱包差来代替。",
+      "en": "The current monthly military-maintenance rate and the alternative monthly rate for the all-raised scenario describe two different situations. They are not two expenses to add together. Full monthly expenditure already includes military costs, so using net income must not deduct the same military cost again. A monthly rate is still only the current rate. To state how much maintenance has actually been paid during the journey, the actual payment source, amount, and date must match; the treasury difference alone is not a substitute.",
+      "speech_duration_seconds": 30.864,
+      "duration_seconds": 31.433333333333334,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 97421053,
+          "text": "当前军事维护月费率，与“全部集结”情景的替代月费率，是两种情况的读数，不是两笔应该相加的支出。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 98421053,
+          "duration": 87500001,
+          "text": "完整月支出已经按包含军费的口径读取，所以使用净收入时，不能再把同一军费扣一次。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 185921054,
+          "duration": 122105264,
+          "text": "月费率仍只是当前费率；要说旅途已经付了多少维护费，还需要实际支付来源、金额和日期对上，不能只拿钱包差来代替。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-12.mp3",
+        "bytes": 185184,
+        "sha256": "3bd6bf21953dd978084f8986b9741793250433f285e5ad10c805386b29af0a4a"
+      }
+    },
+    {
+      "id": "C05-13",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-13",
+      "zh": "费用单独记账。登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。完整支出里包含的军费，也不再额外扣第二次。",
+      "en": "Keep a separate cost ledger. Reconcile embarkation payments, military maintenance, income during the period, and other spending within the same account and date range. The treasury's net change mixes these sources. Even an increased balance can include military costs already paid. Military costs included in full expenditure must not be deducted a second time.",
+      "speech_duration_seconds": 22.992,
+      "duration_seconds": 23.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 19894737,
+          "text": "费用单独记账。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 20394737,
+          "duration": 90131580,
+          "text": "登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 110526317,
+          "duration": 70526316,
+          "text": "钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 181052633,
+          "duration": 48289474,
+          "text": "完整支出里包含的军费，也不再额外扣第二次。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-13.mp3",
+        "bytes": 137952,
+        "sha256": "d05b1ed66e02c8030df2305c56645655eab6e11761998a9f147d10611f10be4c"
+      }
+    },
+    {
+      "id": "C05-14",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-14",
+      "zh": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。人数、身份和组织变化一起看，才知道兵究竟去了哪里。",
+      "en": "The troop-strength table has two columns: one tracks only the regiments present at the start; the other retains all relevant armies actually held under that plan. One additional person cannot automatically cancel out a shortfall in the original regiments. Nor does a source army disappearing after a merge mean the entire army has died. Counts, identities, and organizational changes must be read together to see where the troops went.",
+      "speech_duration_seconds": 24.264,
+      "duration_seconds": 24.833333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 90052632,
+          "text": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 91052632,
+          "duration": 89078948,
+          "text": "新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 180131581,
+          "duration": 61710527,
+          "text": "人数、身份和组织变化一起看，才知道兵究竟去了哪里。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-14.mp3",
+        "bytes": 145584,
+        "sha256": "2583e7f5ddf753d25d45e43c18fbb839436d10669607668fd8abffe0daaed8cc"
+      }
+    },
+    {
+      "id": "C05-15",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-15",
+      "zh": "抵达表先列各方案自己的到场时间和到场状态；同日表再列第七、第十四、第二十一和第二十八天的实际读数。两种表分开看。走得更久的一队，多出来的恢复机会和费用也属于行程的一部分，不能拿不同日期的人数，直接称为同一天的补员优势。",
+      "en": "The arrival table first lists each plan's own arrival time and arrival state. The same-day table then lists the actual readings on days seven, fourteen, twenty-one, and twenty-eight. Read the two tables separately. Any additional recovery opportunities and costs from the longer journey are part of that journey. Troop counts from different dates cannot be presented directly as a same-day reinforcement advantage.",
+      "speech_duration_seconds": 23.976,
+      "duration_seconds": 24.533333333333335,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 110447369,
+          "text": "抵达表先列各方案自己的到场时间和到场状态；同日表再列第七、第十四、第二十一和第二十八天的实际读数。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 111447369,
+          "duration": 20000000,
+          "text": "两种表分开看。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 131447370,
+          "duration": 107500001,
+          "text": "走得更久的一队，多出来的恢复机会和费用也属于行程的一部分，不能拿不同日期的人数，直接称为同一天的补员优势。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-15.mp3",
+        "bytes": 143856,
+        "sha256": "cabf01c7671ed5e95c239e1b8ba8ddd5b7097d3a9c3716a207fb817dc53ab266"
+      }
+    },
+    {
+      "id": "C05-16",
+      "chapter_id": "E4-05",
+      "shot_id": "S05-16",
+      "zh": "旧回放没有给出严格的三方案胜负：B在第三十八天因冻结条件未通过而停止，仍有五十二天预算；C保留十五次两日采样偏差，抵达只能落在第七十五到七十七天之间。这些历史记录继续保留。新版比较等三条独立回放完成后，再按实际路线、驻点和敌情讨论取舍。",
+      "en": "The old replays did not establish a strict winner among the three plans. B stopped on day thirty-eight because the frozen conditions were not met, with fifty-two days of budget remaining. C retains fifteen two-day sampling deviations, so arrival can only be placed after day seventy-five and by day seventy-seven. These historical records remain. For the new comparison, we will discuss the trade-offs in actual routes, rest locations, and enemy conditions once all three independent replays have finished.",
+      "speech_duration_seconds": 27.0,
+      "duration_seconds": 28.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 163605265,
+          "text": "旧回放没有给出严格的三方案胜负：B在第三十八天因冻结条件未通过而停止，仍有五十二天预算；C保留十五次两日采样偏差，抵达只能落在第七十五到七十七天之间。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 164605265,
+          "duration": 28684210,
+          "text": "这些历史记录继续保留。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 193289476,
+          "duration": 75921053,
+          "text": "新版比较等三条独立回放完成后，再按实际路线、驻点和敌情讨论取舍。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-16.mp3",
+        "bytes": 162000,
+        "sha256": "8656ac9e796a72364cccf03412c02c5d0ecc5eca836c13bcaa149262c2628ad3"
+      }
+    },
+    {
+      "id": "C06-01",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-01",
+      "zh": "回到人数变化，先分别看预算、实际扣兵和整军净变化。围城与劫掠在源码里共享一个损失阶段；要解释某次围城损失，还要核对当时确在围城、没有劫掠等条件。分配也有顺序和整数尾差，不能把显示百分比各乘每个兵团，再当作实际扣兵流水。",
+      "en": "Returning to troop-count changes, first distinguish the budget, actual troop deductions, and the whole army's net change. Siege and raid losses share a loss stage in the source code. Explaining a particular siege loss also requires checking that a siege was actually underway and that conditions such as no raiding were met. Allocation has its own order and integer remainders. Multiplying the displayed percentage by each regiment does not produce a ledger of actual troop deductions.",
+      "speech_duration_seconds": 25.776,
+      "duration_seconds": 26.333333333333332,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 61078948,
+          "text": "回到人数变化，先分别看预算、实际扣兵和整军净变化。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 61578948,
+          "duration": 107631580,
+          "text": "围城与劫掠在源码里共享一个损失阶段；要解释某次围城损失，还要核对当时确在围城、没有劫掠等条件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 169210528,
+          "duration": 87763158,
+          "text": "分配也有顺序和整数尾差，不能把显示百分比各乘每个兵团，再当作实际扣兵流水。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-01.mp3",
+        "bytes": 154656,
+        "sha256": "9177256efe9278323818ae8f2824ec960bc470aee0a6ad3bdd6afe98a8945290"
+      }
+    },
+    {
+      "id": "C06-02",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-02",
+      "zh": "低补给还要看当次加载的阈值表。按原版十的那条边界，九点九九九九九已经低于十，正好十仍在另一侧。游戏先更新库存，再计算这次供给损失；舰队、宽限和兵团条件也会影响结果。所以库存低，和这次确实扣了多少兵，仍要分别确认。",
+      "en": "Low supply also depends on the threshold table loaded for that run. At the vanilla boundary of ten, nine point nine nine nine nine nine is already below ten, while exactly ten remains on the other side. The game updates stock before calculating the supply-loss budget. Fleet, grace, and regiment conditions also affect the result. Low stock and how many troops were actually deducted must therefore still be confirmed separately.",
+      "speech_duration_seconds": 25.392,
+      "duration_seconds": 25.966666666666665,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 38315789,
+          "text": "低补给还要看当次加载的阈值表。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 38815789,
+          "duration": 74078948,
+          "text": "按原版十的那条边界，九点九九九九九已经低于十，正好十仍在另一侧。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 112894738,
+          "duration": 85526316,
+          "text": "游戏先更新库存，再计算这次供给损失；舰队、宽限和兵团条件也会影响结果。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 198421055,
+          "duration": 54868421,
+          "text": "所以库存低，和这次确实扣了多少兵，仍要分别确认。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-02.mp3",
+        "bytes": 152352,
+        "sha256": "4e52d11af3f6644fd0a065bc21c5a9247a21061a3826f5c32fc01581c633aaba"
+      }
+    },
+    {
+      "id": "C06-03",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-03",
+      "zh": "出发前，再把第一站、最终目的地和当前抵达估计放在一起看。路线合法，只说明这次可以这样走；沿途能否休整、可能支付什么，还要核对各自条件。把当前库存、缺员、下一步地点和警告保存下来，途中才有可以回看的基线。下令以后再确认实际路线，真正到场时再把现实与原计划对上。",
+      "en": "Before departure, review the first stop, final destination, and current arrival estimate together. A legal route only shows that this movement is currently allowed. Whether the army can rest along the way, and what it may pay, require their own condition checks. Save the current stock, troop shortfall, next location, and warnings to establish a baseline for the journey. After issuing the order, confirm the actual route; on actual arrival, compare reality with the original plan.",
+      "speech_duration_seconds": 30.048,
+      "duration_seconds": 30.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 65026316,
+          "text": "出发前，再把第一站、最终目的地和当前抵达估计放在一起看。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 65526316,
+          "duration": 90394737,
+          "text": "路线合法，只说明这次可以这样走；沿途能否休整、可能支付什么，还要核对各自条件。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 155921054,
+          "duration": 76973685,
+          "text": "把当前库存、缺员、下一步地点和警告保存下来，途中才有可以回看的基线。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 232894739,
+          "duration": 66973685,
+          "text": "下令以后再确认实际路线，真正到场时再把现实与原计划对上。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-03.mp3",
+        "bytes": 180288,
+        "sha256": "9530119c3cc4a45fece0cc24147e3d320fd90904a926c3cb5db6aef947a265f8"
+      }
+    },
+    {
+      "id": "C06-04",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-04",
+      "zh": "途中看到月变化由正转负、移动锁定或路线改变，就重读当前状态。库存暂时没变，也可能有几种解释：还没到允许更新的机会，条件被拒绝，当前贡献为零，或者增加后碰到了容量。它们不能只靠一个不变的数分开。把前后日期、地点、库存和更新条件一起保留，再继续观察真正发生的变化。",
+      "en": "Reread the current state when the monthly change turns from positive to negative, movement becomes locked, or the route changes. Unchanged stock can have several explanations: no permitted update opportunity yet, rejected conditions, a zero current contribution, or a gain capped by capacity. One unchanged number cannot distinguish them. Retain the dates, locations, stock, and update conditions before and after, then keep observing the changes that actually occur.",
+      "speech_duration_seconds": 30.6,
+      "duration_seconds": 31.166666666666668,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 73842106,
+          "text": "途中看到月变化由正转负、移动锁定或路线改变，就重读当前状态。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 74342106,
+          "duration": 117894738,
+          "text": "库存暂时没变，也可能有几种解释：还没到允许更新的机会，条件被拒绝，当前贡献为零，或者增加后碰到了容量。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 192236844,
+          "duration": 31315789,
+          "text": "它们不能只靠一个不变的数分开。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 223552634,
+          "duration": 81842106,
+          "text": "把前后日期、地点、库存和更新条件一起保留，再继续观察真正发生的变化。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-04.mp3",
+        "bytes": 183600,
+        "sha256": "d7f585e8b7bfa730aac3de6263e23a370d107283f34476719e87c26a5f30515a"
+      }
+    },
+    {
+      "id": "C06-05",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-05",
+      "zh": "分合军以后，先核对实体兵员，再看角色和统帅。这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。那一比一的显示变化不能记成补了一名或少了一名实体士兵。实体人数、角色关联和当前统帅，要分别核对。",
+      "en": "After splitting or merging, check physical troop counts first, then characters and commanders. In this case, the selected small army split off a new army and merged it back into the original. Its four physical troop records continued to total two hundred and fifty. Meanwhile, a character record with no troop data, displayed as one out of one in another army, disappeared. The same character became commander of the new army, then of the original army after the merge. That one-out-of-one display change cannot be counted as one physical soldier gained or lost. Physical counts, character associations, and the current commander must be checked separately.",
+      "speech_duration_seconds": 35.04,
+      "duration_seconds": 35.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 53710526,
+          "text": "分合军以后，先核对实体兵员，再看角色和统帅。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 54210526,
+          "duration": 182763160,
+          "text": "这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 236973687,
+          "duration": 58026316,
+          "text": "那一比一的显示变化不能记成补了一名或少了一名实体士兵。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 295000003,
+          "duration": 54736842,
+          "text": "实体人数、角色关联和当前统帅，要分别核对。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-05.mp3",
+        "bytes": 210240,
+        "sha256": "d5cf312525b5fe3fdcf1cfb4516566ec95273b425dd7fbc1fcb77c0341311333"
+      }
+    },
+    {
+      "id": "C06-06",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-06",
+      "zh": "合军后多出一条一人满员一人的记录，还有一种角色来源。已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。",
+      "en": "After merging, a new entry showing one current troop and a maximum of one can also have a character source. A verified conditional branch creates a new army-regiment record while processing a former commander, associates it with that character, then refreshes the character cache. Its data list is empty at construction. A later one-out-of-one display does not directly mean an ordinary troop slot gained a soldier. Whether this is the new entry in this case, whether the character is the current commander, and whether the character is a knight must each be read separately.",
+      "speech_duration_seconds": 30.504,
+      "duration_seconds": 31.066666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 56736842,
+          "text": "合军后多出一条一人满员一人的记录，还有一种角色来源。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 57236842,
+          "duration": 100131580,
+          "text": "已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 157368423,
+          "duration": 79210527,
+          "text": "构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 236578950,
+          "duration": 67631579,
+          "text": "它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-06.mp3",
+        "bytes": 183024,
+        "sha256": "bc011a06056634159158f798f58bd2bae03e2a1ede9cc18de4c0f63828f2a259"
+      }
+    },
+    {
+      "id": "C06-07",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-07",
+      "zh": "兵员恢复也按这个顺序看。补员准备值、许可和计算出的请求，说明条件走到了哪一步；真正新增多少，要看兵槽实际写入。一次更新的前后净变化里，还可能夹着清零和缓存刷新。到场以后，再按新地点读库存、缺员和当前条件，别沿用海上或出发时的旧判断。",
+      "en": "Read troop recovery in the same order. Reinforcement preparation values, eligibility, and calculated requests show how far the conditions have progressed. Actual additions require the writes to the troop slots. The net change across one update can also include zeroing and cache refreshes. After arrival, reread stock, troop shortfalls, and current conditions for the new location. Do not carry over old judgments from the sea or the starting point.",
+      "speech_duration_seconds": 27.336,
+      "duration_seconds": 27.9,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 30421053,
+          "text": "兵员恢复也按这个顺序看。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 30921053,
+          "duration": 98947369,
+          "text": "补员准备值、许可和计算出的请求，说明条件走到了哪一步；真正新增多少，要看兵槽实际写入。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 129868422,
+          "duration": 57500000,
+          "text": "一次更新的前后净变化里，还可能夹着清零和缓存刷新。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 187368423,
+          "duration": 85263158,
+          "text": "到场以后，再按新地点读库存、缺员和当前条件，别沿用海上或出发时的旧判断。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-07.mp3",
+        "bytes": 164016,
+        "sha256": "7c71acfbd5c94fad95c176835eb1d410ddecd33df174e1f5ceb881be1f6436ea"
+      }
+    },
+    {
+      "id": "C06-08",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-08",
+      "zh": "支付再核一次：本例已经对上三金币登船扣款。军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。缺这笔明细时，费用列保留未知，也不解释成免费。",
+      "en": "Check payments once more: this example has a matched three-gold embarkation debit. The current monthly military-maintenance rate, total expenditure, and net treasury change can each help read the accounts. To state how much military maintenance was actually paid, the corresponding cost component still has to be linked to the actual settlement. Without that detail, leave the cost unknown; do not interpret it as free.",
+      "speech_duration_seconds": 24.0,
+      "duration_seconds": 24.566666666666666,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 50684211,
+          "text": "支付再核一次：本例已经对上三金币登船扣款。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 51184211,
+          "duration": 134868422,
+          "text": "军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 186052633,
+          "duration": 53289474,
+          "text": "缺这笔明细时，费用列保留未知，也不解释成免费。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-08.mp3",
+        "bytes": 144000,
+        "sha256": "6a5532b8f92fdb7d8ee387475f65fef99be7dc23ac9dd0a502c850347faf3fa5"
+      }
+    },
+    {
+      "id": "C06-09",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-09",
+      "zh": "这套读法也可以带到另一台机器。可复用的是机制、读取方法和核对顺序：先确认当前游戏版本，再把人物、军队、日期和同一次暂停状态对齐。实际走过哪条路、少了多少人、是否真的付款，仍由新会话自己的记录回答。保留下来的原件能重算旧结论；它们不会替另一台机器生成一次新的行军结果。",
+      "en": "This method can be taken to another machine. The reusable parts are the mechanics, reading methods, and order of checks: confirm the current game version, then align the character, army, date, and the same paused state. Which route was actually traveled, how many troops were lost, and whether payment really occurred must still be answered by the new session's own records. Retained originals allow old conclusions to be recalculated. They do not create a new march result on another machine.",
+      "speech_duration_seconds": 30.048,
+      "duration_seconds": 30.6,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 33842105,
+          "text": "这套读法也可以带到另一台机器。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 34342105,
+          "duration": 116710527,
+          "text": "可复用的是机制、读取方法和核对顺序：先确认当前游戏版本，再把人物、军队、日期和同一次暂停状态对齐。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 151052633,
+          "duration": 74342106,
+          "text": "实际走过哪条路、少了多少人、是否真的付款，仍由新会话自己的记录回答。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 225394739,
+          "duration": 74473685,
+          "text": "保留下来的原件能重算旧结论；它们不会替另一台机器生成一次新的行军结果。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-09.mp3",
+        "bytes": 180288,
+        "sha256": "75ac56e88ec4d4640a9f931a29964cf5341f16fc421f837a98d6c001582776b5"
+      }
+    },
+    {
+      "id": "C06-10",
+      "chapter_id": "E4-06",
+      "shot_id": "S06-10",
+      "zh": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。",
+      "en": "Before departure, read troop counts, stock, and route. During the journey, track actual changes. Before battle, confirm the army's actual arrival state. For Robert's stop after embarkation, issued while movement was unlocked, we verified that the route cleared and that the army remained in place the next day. That is the result of this particular action. Link each action to its own resulting state, then choose the next step using the conditions visible in this run, so the march plan keeps pace with the road the army has actually traveled.",
+      "speech_duration_seconds": 27.528,
+      "duration_seconds": 29.133333333333333,
+      "sentence_boundaries": [
+        {
+          "type": "SentenceBoundary",
+          "offset": 1000000,
+          "duration": 85684211,
+          "text": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 86184211,
+          "duration": 94736843,
+          "text": "罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。"
+        },
+        {
+          "type": "SentenceBoundary",
+          "offset": 180921054,
+          "duration": 93815790,
+          "text": "把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。"
+        }
+      ],
+      "audio_binding_reference_only": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-10.mp3",
+        "bytes": 165168,
+        "sha256": "df5d7989a187f0a41a93e41da5c65e01b544778eecebe6ab2a1d9b9a2f8e7717"
+      }
+    }
+  ],
+  "audio_payload_read": false,
+  "English_timing": "Proportional English sentences within each actual measured speech span; not English forcedalignment",
+  "Chinese_timing": "Existing legacy.caption_cues uses actual provider SentenceBoundary offsets/durations then unchanged timed_groups",
+  "placement": "Existing defaultcard bilingual style only; actual gameplay placement remains pending visual binding"
+}

@@ -1,0 +1,36 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-15T23:45:01.654780+00:00",
+  "actual_result": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-tts-rest68-a03/RESULT.actual.json",
+    "bytes": 1567,
+    "sha256": "a893dce82f485afc920900d188b1cbf584e10e5a0200149fd93406529dc573c3"
+  },
+  "measured69_metadata": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/production-inputs69.merged.json",
+    "bytes": 164686,
+    "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50"
+  },
+  "timeline69_metadata": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/narration69.timeline.actual.json",
+    "bytes": 41942,
+    "sha256": "14b41b9aa02f8f969d4e21449840a5b6d03c2c96283595f52b312958616dc8c0"
+  },
+  "bilingual_script": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-render-inputs-a03-materialized-a01/inputs/narration.cues.bilingual.json",
+    "bytes": 61341,
+    "sha256": "8d7de9e7c01e691dd2ac72af335ba35717f2c3a6238a0fe6045ddc4f7b6bfc16"
+  },
+  "English_hashbound": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-render-inputs-a03-materialized-a01/inputs/english.cues.json",
+    "bytes": 39742,
+    "sha256": "401734ae8f00c890ebec49504bb50b8a551b85fa17f525fddf54aad6b8b682ff"
+  },
+  "project_config": {
+    "path": "C:/ck3-e04-resume-20261015-a01/review02-render-inputs-a03-materialized-a01/project/promo-project.json",
+    "bytes": 86060,
+    "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140"
+  },
+  "audio_source_pins_referenced_only": true,
+  "input_path_resolution": "Root RESULT merged69 points to review02-audio-rest68-edge731-a03; no assumed same-name path under tts-run"
+}

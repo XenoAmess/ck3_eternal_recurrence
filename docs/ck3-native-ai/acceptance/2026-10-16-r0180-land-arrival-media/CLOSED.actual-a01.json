@@ -1,0 +1,82 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T01:15:12.595077+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0180",
+  "runtime_source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "native_build_source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "normal_exit_code": 0,
+  "game_recorder_SDK_keeper_closed": true,
+  "source_freeze_released": true,
+  "actual_complete_days": 5,
+  "actual_arrival_province": 2645,
+  "R04_positive_qualified": false,
+  "raw_recorded": true,
+  "raw_media_audit_complete": true,
+  "human_signoff": false,
+  "dynamic_specific_credit": false,
+  "evidence": {
+    "bootstrap": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\desktop-3fevhd2-1c74096080--vanilla--R0180\\bootstrap-result.json",
+      "bytes": 14495,
+      "sha256": "8901ffda2f0da87d26f63a64372ad9912353ded1c0a0ac5238bbcee6705f1c74"
+    },
+    "sampling_off": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\arrival-closure-a01\\SAMPLING-OFF.actual.json",
+      "bytes": 3700,
+      "sha256": "f347acd5256443ec2950baa325f4593466dc72da1c71960a9c9a3f515ab142f3"
+    },
+    "normal_save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\arrival-closure-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 1379,
+      "sha256": "d17aa2bd77d706f7017ca512deb812b0cd0ed60aa529a1dfcdab627397c82e1d"
+    },
+    "archive": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\arrival-closure-a01\\ARCHIVE.actual.json",
+      "bytes": 1947,
+      "sha256": "04632327c459b1634295e612c14fc2fb92e3674d0122802919f0d860a57ac9b4"
+    },
+    "recording": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\land-arrival-recording-closure.actual-a01.json",
+      "bytes": 1172,
+      "sha256": "cb40ba8aac383dc578f6f79307596a6beec2b2af84022d7029b6f1f75e469743"
+    },
+    "arrival": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-05.complete.actual.json",
+      "bytes": 1317,
+      "sha256": "b53a12ca3eee87e019ddfacc6026b10592c1292c8472ef04b590a4bea26c8541"
+    },
+    "county_card": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\R04-ARRIVAL.actual-a01.json",
+      "bytes": 10917,
+      "sha256": "bc2bfe8dc719566f966a5a00f00dcbf283adf137d5254fa3c53638906f72c242"
+    },
+    "display_restore": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\display-restore.actual-a01.json",
+      "bytes": 687,
+      "sha256": "25a9222ae04322dad08afb18ef873ec4871a34367a687fde48641b2c50677cc8"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\screen-release.actual-a01.json",
+      "bytes": 2565,
+      "sha256": "ee34a8b18c303dc1f25d79b1b14b69178dd8c4ac826a110cb738deedf0e99cad"
+    }
+  },
+  "scene_usage_before_receipt": {
+    "by_component_bytes": {
+      "profile": 546230530,
+      "driver": 47634701,
+      "raw": 97474983,
+      "other": 140582558
+    },
+    "total_bytes": 831922772,
+    "caps": {
+      "profile": 805306368,
+      "driver": 402653184,
+      "raw": 268435456,
+      "other": 268435456
+    },
+    "scene_ceiling_bytes": 1744830464
+  },
+  "C_free": 27818594304,
+  "D_free": 22668505088
+}

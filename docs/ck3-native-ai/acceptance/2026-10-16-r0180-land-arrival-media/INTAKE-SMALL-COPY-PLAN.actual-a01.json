@@ -1,0 +1,129 @@
+{
+  "schema": "xar.e04.R0180-intake-small-copy-plan.actual.v1",
+  "at_utc": "2026-10-16T01:09:33.212971+00:00",
+  "state": "ACTUAL_SOURCE_FILES_PINNED_COPY_PLAN_ONLY",
+  "source_root": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01",
+  "target_root": null,
+  "target_chosen_and_copy_owned_by_intake": true,
+  "files": [
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\preparation\\audit_r0180_finished_raw_a01.py",
+      "relative_path": "preparation/audit_r0180_finished_raw_a01.py",
+      "bytes": 18354,
+      "sha256": "b1ab75737a56a57b5cc874d62dfb5e0845bd14bb7a153116c6e05441406ca605"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\preparation\\actual-finished-binding-a01.json",
+      "relative_path": "preparation/actual-finished-binding-a01.json",
+      "bytes": 1620,
+      "sha256": "aa10ff557248b82237ea028a463bccf18f889ec69a24acc496d0a48a24a6f872"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\preparation\\seal_r0180_candidates_a01.py",
+      "relative_path": "preparation/seal_r0180_candidates_a01.py",
+      "bytes": 13380,
+      "sha256": "12ec3f02dd6b49584cd6574903e67ff573d7c8437e0eb6a1b9fd220b3ecf4393"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\report.json",
+      "relative_path": "attempt-a01/report.json",
+      "bytes": 7768,
+      "sha256": "2f518a74a87f12810d1c2e9d37b71474941ca949991d5e43bb801b347066a6ee"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\ACTUAL-METADATA.json",
+      "relative_path": "attempt-a01/ACTUAL-METADATA.json",
+      "bytes": 3564,
+      "sha256": "7e4222999008d508d054d573bd03ffab1a307281253b8cd9c9c99be6d010af59"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\PLAN-AND-INPUTS.json",
+      "relative_path": "attempt-a01/PLAN-AND-INPUTS.json",
+      "bytes": 4268,
+      "sha256": "a66a5594a0b020d8511ae8d5b0a3c6a6c6141c904755cef2b9019dbaa6168165"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\argv.json",
+      "relative_path": "attempt-a01/strict-whole-decode-and-samples/argv.json",
+      "bytes": 1308,
+      "sha256": "926c4817273c3fec2aee7fdc4382500f8b6f3cb7d19a1bddb1881063ed1e5599"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\result.json",
+      "relative_path": "attempt-a01/strict-whole-decode-and-samples/result.json",
+      "bytes": 1187,
+      "sha256": "b2e9ad471f04340cf3c0a266fa4c101fc1fb7bc6fab84b5505c03207c87e1df5"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\native-boundary.actual-a01.json",
+      "relative_path": "native-boundary.actual-a01.json",
+      "bytes": 6254,
+      "sha256": "f9756ad7bd9a7fa4e80c63d04a5dcbf74dfd56ceeb31737e6e925d4d1aa0f933"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\visual-review-and-spans.actual-a01.json",
+      "relative_path": "visual-review-and-spans.actual-a01.json",
+      "bytes": 14756,
+      "sha256": "b3082e1238e28865f68581420255c2de7bd6ffe2bd6bfa03298e11b763ccb0df"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\release-check-a01\\result.json",
+      "relative_path": "release-check-a01/result.json",
+      "bytes": 843,
+      "sha256": "c8d56ebb6f5ee5c53dfb162f816f2f28e74b87fa3d38b56714ba101d2628a76b"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\release-check-a01\\stdout.json",
+      "relative_path": "release-check-a01/stdout.json",
+      "bytes": 980,
+      "sha256": "6f842f19733fdbf0e6596fd0bfca4b09d41c63360460fa22df21895414531e03"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-00.jpg",
+      "relative_path": "attempt-a01/samples/frame-00.jpg",
+      "bytes": 127943,
+      "sha256": "fb9b20a5b416bfa115ea38ef33c5198115bed3223fc953db24e210ec790e59ed"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-01.jpg",
+      "relative_path": "attempt-a01/samples/frame-01.jpg",
+      "bytes": 133260,
+      "sha256": "c7f30e9e076d4edfcebdd8e79f8f25205ca27108312a98022f133ad411ed8471"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-02.jpg",
+      "relative_path": "attempt-a01/samples/frame-02.jpg",
+      "bytes": 133019,
+      "sha256": "5a62cccf78f6541e10254142fcef19edc9c8b66ad90038949205e292878e00fa"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-03.jpg",
+      "relative_path": "attempt-a01/samples/frame-03.jpg",
+      "bytes": 132052,
+      "sha256": "c41094ff04d16b46c1f8ac56138aa1133cc5ea3772d2b4089ef433f949731c96"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-04.jpg",
+      "relative_path": "attempt-a01/samples/frame-04.jpg",
+      "bytes": 134887,
+      "sha256": "d316c41f4dc17eedfe7fa15e32dcb54f1d2342377f863c22b32c5e3804d0a20b"
+    },
+    {
+      "source_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-05.jpg",
+      "relative_path": "attempt-a01/samples/frame-05.jpg",
+      "bytes": 133231,
+      "sha256": "a1f8ce29a184986f2a919316b753ec6a3f2e554c882c06eda4f5e735da644448"
+    }
+  ],
+  "planned_copy_bytes": 868674,
+  "raw_identity_reference_only_do_not_copy": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "raw_hash_reused_from_actual_recorder": true,
+  "actual_copy_performed_here": false,
+  "clip_creation_performed_here": false,
+  "render_dynamic_credit_or_human_approval": false,
+  "append_only_intake_instruction": "Copy only these bounded code/text/JPEG files into a fresh intake attempt and verify their small pins; consume exact raw identity separately without hashing the large original again. Do not convert samples into continuous-clean or R04 approval."
+}

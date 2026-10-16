@@ -1,0 +1,31 @@
+[Script Info]
+Title: 围城和整数扣兵
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.09,English,en-0,0,0,0,,{\q2}Returning to troop-count changes, first distinguish the
+Dialogue: 2,0:00:00.10,0:00:03.25,Chinese,zh-0,0,0,0,,{\q2}回到人数变化，先分别看预算
+Dialogue: 1,0:00:03.09,0:00:06.18,English,en-1,0,0,0,,{\q2}budget, actual troop deductions, and the whole army's net
+Dialogue: 2,0:00:03.25,0:00:06.16,Chinese,zh-1,0,0,0,,{\q2}、实际扣兵和整军净变化。
+Dialogue: 2,0:00:06.16,0:00:11.65,Chinese,zh-2,0,0,0,,{\q2}围城与劫掠在源码里共享一个损失阶段；要解释某次围
+Dialogue: 1,0:00:06.18,0:00:06.56,English,en-2,0,0,0,,{\q2}change.
+Dialogue: 1,0:00:06.56,0:00:09.76,English,en-3,0,0,0,,{\q2}Siege and raid losses share a loss stage in the source code.
+Dialogue: 1,0:00:09.76,0:00:13.53,English,en-4,0,0,0,,{\q2}Explaining a particular siege loss also requires checking that a siege
+Dialogue: 2,0:00:11.65,0:00:16.92,Chinese,zh-3,0,0,0,,{\q2}城损失，还要核对当时确在围城、没有劫掠等条件。
+Dialogue: 1,0:00:13.53,0:00:17.29,English,en-5,0,0,0,,{\q2}was actually underway and that conditions such as no raiding were met.
+Dialogue: 2,0:00:16.92,0:00:21.43,Chinese,zh-4,0,0,0,,{\q2}分配也有顺序和整数尾差，不能把显示百分
+Dialogue: 1,0:00:17.29,0:00:20.06,English,en-6,0,0,0,,{\q2}Allocation has its own order and integer remainders.
+Dialogue: 1,0:00:20.06,0:00:22.92,English,en-7,0,0,0,,{\q2}Multiplying the displayed percentage by each regiment
+Dialogue: 2,0:00:21.43,0:00:25.70,Chinese,zh-5,0,0,0,,{\q2}比各乘每个兵团，再当作实际扣兵流水。
+Dialogue: 1,0:00:22.92,0:00:25.78,English,en-8,0,0,0,,{\q2}does not produce a ledger of actual troop deductions.

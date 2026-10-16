@@ -1,0 +1,31 @@
+[Script Info]
+Title: 怎样把一笔扣兵限定为围城
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.20,English,en-0,0,0,0,,{\q2}Siege and raiding share a combined stage.
+Dialogue: 2,0:00:00.10,0:00:03.79,Chinese,zh-0,0,0,0,,{\q2}围城和劫掠会进入同一个合并阶段。
+Dialogue: 1,0:00:03.20,0:00:07.42,English,en-1,0,0,0,,{\q2}To attribute one specific deduction to siege, the siege
+Dialogue: 2,0:00:03.79,0:00:08.12,Chinese,zh-1,0,0,0,,{\q2}要把其中一笔具体扣兵归到围城，就要对上那
+Dialogue: 1,0:00:07.42,0:00:12.03,English,en-2,0,0,0,,{\q2}budget actually used must be positive and the raiding budget
+Dialogue: 2,0:00:08.12,0:00:12.46,Chinese,zh-2,0,0,0,,{\q2}次真正使用的围城预算为正、劫掠预算为零，
+Dialogue: 1,0:00:12.03,0:00:12.41,English,en-3,0,0,0,,{\q2}zero.
+Dialogue: 1,0:00:12.41,0:00:16.42,English,en-4,0,0,0,,{\q2}Then check the change in that physical soldier count.
+Dialogue: 2,0:00:12.46,0:00:16.36,Chinese,zh-3,0,0,0,,{\q2}再看这一笔物理兵员前后究竟减少多少。
+Dialogue: 2,0:00:16.36,0:00:21.59,Chinese,zh-4,0,0,0,,{\q2}预算说明这次怎样安排损失，兵员写回说明这次实际
+Dialogue: 1,0:00:16.42,0:00:19.36,English,en-5,0,0,0,,{\q2}The budget describes the planned loss;
+Dialogue: 1,0:00:19.36,0:00:21.99,English,en-6,0,0,0,,{\q2}the soldier write shows the actual
+Dialogue: 2,0:00:21.59,0:00:26.61,Chinese,zh-5,0,0,0,,{\q2}少了多少；这一笔的结果也不直接代表整段旅途。
+Dialogue: 1,0:00:21.99,0:00:22.68,English,en-7,0,0,0,,{\q2}decrease.
+Dialogue: 1,0:00:22.68,0:00:26.69,English,en-8,0,0,0,,{\q2}That one result does not represent the whole journey.

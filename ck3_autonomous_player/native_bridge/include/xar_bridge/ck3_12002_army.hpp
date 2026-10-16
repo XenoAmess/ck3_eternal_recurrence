@@ -293,4 +293,9 @@ game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview(
     const ArmyBindings &, const MilitaryWorldAccess &,
     const game::PreviewMoveArmyResult &) noexcept;
 
+// Exact .4 optional first-edge condition; never stores a route or executes entry.
+game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
+    const ArmyBindings &, const MilitaryWorldAccess &,
+    const game::PreviewMoveArmyResult &) noexcept;
+
 } // namespace xar::ck3_12002

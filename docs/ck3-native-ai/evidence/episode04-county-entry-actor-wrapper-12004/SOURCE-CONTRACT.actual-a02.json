@@ -1,0 +1,145 @@
+{
+  "schema": "xar.e04.actor-county2c09df0.source-contract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T00:42:05.783943+00:00",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source": {
+    "begin_rva": "0x2c09df0",
+    "end_exclusive": "0x2c09e73",
+    "bytes": 131,
+    "raw_sha256": "344dc31069a905f0615c45fd59967f35530a14f75e496cda079841c897a3652b",
+    "instructions": 37,
+    "unique_unchained": true
+  },
+  "caller_connection": "24E2230 mode1 calls this at24E22AE forsourceCounty,24E22EC/24E2343 twicefortargetCounty; ALmusttrue eachtime. Do notcollapse repeatedcalls.",
+  "observed_ABI": "RCX originalactor; RDX nonnullCounty-like object already admitted by24E2230. Thiswrapper returnsALfromopaque tailcallee or immediatefalse. Formalgame semantics notidentified.",
+  "county_identity_gate": {
+    "county_magic": "argRDX+3E0 ==0x436F4461 CoDa",
+    "candidate_fullID": "argRDX+18 int32 completegeneration; low24 indexonlyforlookup",
+    "registry_slot_rva": "5D1DAF8",
+    "registry_layout": "registry+2C capacity/registry+20 objects;16Brow+8 objectpointer",
+    "match": "object+10 equalsfullcandidateID",
+    "fallback_slot_rva": "5D1DAE0",
+    "resolved_object_admission": "object+14 ==0x4C616E64 Land ANDobject+10!=-1",
+    "identity_semantics": "CompleteLand-tagged native identity; county_title_id publishedelsewhere is notobservedhereasactualargvalue or guaranteeofthisresolution"
+  },
+  "forwarded_relationship": {
+    "callsite": "2C09E53",
+    "direct_call": "24D4ED0",
+    "explicit_input": "RCX=originalCountyarg",
+    "output_usage": "RAX→RCXofnexttail",
+    "tail_site": "2C09E66",
+    "tail_target": "2C09620",
+    "tail_explicit_args": "RCX=actual24D4ED0return; RDX=originalactor; R8D=0; no stackargs newlywritten",
+    "formal_receiver_type": null,
+    "formal_meaning_of_raw0": null,
+    "both_bodies_unexpanded": true
+  },
+  "branches": [
+    {
+      "id": "county_magic",
+      "branch_rvas": [
+        "2C09E03"
+      ],
+      "contract": "County argRDX raw+3E0 mustCoDa; mismatch directfalse"
+    },
+    {
+      "id": "registry_resolution",
+      "branch_rvas": [
+        "2C09E0F",
+        "2C09E21",
+        "2C09E32",
+        "2C09E38"
+      ],
+      "contract": "Nullregistry/outofbounds/nullrow/fullIDmismatch choosefallback at5D1DAE0; validmatch joins resolvedobject"
+    },
+    {
+      "id": "resolved_land_identity",
+      "branch_rvas": [
+        "2C09E48",
+        "2C09E4E"
+      ],
+      "contract": "resolved/fallback object+14 mustLand; fullID+10 mustnot-1, otherwisefalse"
+    },
+    {
+      "id": "tail_delegate",
+      "branch_rvas": [
+        "2C09E66"
+      ],
+      "contract": "AfterCALL24D4ED0(County), RCX=actualRAX/RDX=originalactor/R8D=0; stackrestored; unconditionaltailtransfer2C09620, bodyunexpanded"
+    }
+  ],
+  "source_false_boundary": "Immediatefalse is only rawCountyCoDa mismatch or Landidentity admissionfailure. Valididentity doesnot itself yieldtrue; finalrelation result isdelegated.",
+  "existing_published_inputs": {
+    "available": [
+      "county_entry_inputs.condition final24E2230bool/actor/source/target/mode",
+      "movementdefinition1B raw",
+      "waroccupationholding/province/countytitleref/holder/occupier"
+    ],
+    "missing": [
+      "actualCounty+18 candidateFullID andregistryresolution usedbythiswrapper",
+      "actual24D4ED0returnedreceiveridentity",
+      "2C09620result andraw0semantic"
+    ],
+    "sufficient_to_predict_wrapper_true": false,
+    "R180_false_subgate_identified": false
+  },
+  "next_unique_entry_if_separately_authorized": "2C09620, actualtailreceiver=24D4ED0return; do not labelenemy/friendly/realm relation beforeitsbody. Common24D4ED0 stillunknown.",
+  "attempt_accounting": {
+    "first_failed_attempt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-actor-condition2C09DF0-source-a02\\FAILED-READ.actual-a01.json",
+      "bytes": 1584,
+      "sha256": "413cc46cc6fcd816cede451c33c19c04fccf7284c8b83c517484b22a496fb231"
+    },
+    "first_exact_read_ledger_persisted": false,
+    "second_actual": {
+      "code": 131,
+      "metadata": 224,
+      "read_calls": 21
+    },
+    "cumulative_certified_conservative_upper_bounds": {
+      "code": 8323,
+      "metadata": 736,
+      "read_calls": 69
+    },
+    "Root_explicit_cumulative_limits": {
+      "code": 16384,
+      "metadata": 1024,
+      "read_calls": 96
+    },
+    "first_counts_not_fabricated": true,
+    "completed_in_one_attempt": false
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-actor-condition2C09DF0-source-a02\\attempt-a02\\FUNCTION.actual-a01.json",
+      "bytes": 5963,
+      "sha256": "fc914c66d0baa982f9eebe295c40acf072f879ae5aec94b7a1c7ea793396175f"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-actor-condition2C09DF0-source-a02\\attempt-a02\\actual-function.bin",
+      "bytes": 131,
+      "sha256": "344dc31069a905f0615c45fd59967f35530a14f75e496cda079841c897a3652b"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-actor-condition2C09DF0-source-a02\\attempt-a02\\actual-function.asm",
+      "bytes": 2593,
+      "sha256": "dde127b51a9430ba699a1c8b5b2ec605180aab18a24793f6691839bdbc383106"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\county-actor-condition2C09DF0-source-a02\\attempt-a02\\READ-RECEIPT.actual-a01.json",
+      "bytes": 4948,
+      "sha256": "b639210b26f0a112a01a86a0c26aefeb8a4d93824fa5877d3b03fbb82e2c319e"
+    }
+  ],
+  "prior_complete24E2230": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\newcounty-condition24E2230-source-a01\\SOURCE-CONTRACT.actual-a01.json",
+    "bytes": 7547,
+    "sha256": "3e43b5d98b9e13c497c8437818c3fd24c028dd4a60f41814aae7f7d6ae8ab544"
+  },
+  "new_callee_reads": 0,
+  "whole_EXE_hashes": 0,
+  "SDK_game_desktop_main_build": 0,
+  "R04_positive": false,
+  "military_relation_semantics_closed": false
+}

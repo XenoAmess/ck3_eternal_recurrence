@@ -1,0 +1,32 @@
+[Script Info]
+Title: 路线警告和真实扣兵
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.13,English,en-0,0,0,0,,{\q2}Route warnings help with choices before departure.
+Dialogue: 2,0:00:00.10,0:00:03.91,Chinese,zh-0,0,0,0,,{\q2}路线警告适合帮助出发前做选择。
+Dialogue: 1,0:00:03.13,0:00:05.97,English,en-1,0,0,0,,{\q2}Explaining later troop decreases also requires
+Dialogue: 2,0:00:03.91,0:00:08.09,Chinese,zh-1,0,0,0,,{\q2}要解释走完以后少了多少兵，还要区分县进
+Dialogue: 1,0:00:05.97,0:00:08.93,English,en-2,0,0,0,,{\q2}separating county-entry deductions from periodic
+Dialogue: 2,0:00:08.09,0:00:12.27,Chinese,zh-2,0,0,0,,{\q2}入扣兵和周期损耗：源码里它们有不同的直
+Dialogue: 1,0:00:08.93,0:00:09.55,English,en-3,0,0,0,,{\q2}attrition.
+Dialogue: 1,0:00:09.55,0:00:12.31,English,en-4,0,0,0,,{\q2}In the source, they have distinct direct call
+Dialogue: 2,0:00:12.27,0:00:16.22,Chinese,zh-3,0,0,0,,{\q2}接调用入口，也有共用的剩余分配路径。
+Dialogue: 1,0:00:12.31,0:00:15.19,English,en-5,0,0,0,,{\q2}entries and a shared remainder-allocation path.
+Dialogue: 1,0:00:15.19,0:00:19.37,English,en-6,0,0,0,,{\q2}If the only record is from that shared path, the cause stays unknown.
+Dialogue: 2,0:00:16.22,0:00:20.93,Chinese,zh-4,0,0,0,,{\q2}只有共用路径的记录时，原因继续保留未知，不
+Dialogue: 1,0:00:19.37,0:00:22.03,English,en-7,0,0,0,,{\q2}Crossing a county boundary does not justify
+Dialogue: 2,0:00:20.93,0:00:25.42,Chinese,zh-5,0,0,0,,{\q2}能看到刚跨县就把整段减少全算成跨县损耗。
+Dialogue: 1,0:00:22.03,0:00:24.87,English,en-8,0,0,0,,{\q2}attributing the whole decrease to county-entry
+Dialogue: 1,0:00:24.87,0:00:25.49,English,en-9,0,0,0,,{\q2}attrition.

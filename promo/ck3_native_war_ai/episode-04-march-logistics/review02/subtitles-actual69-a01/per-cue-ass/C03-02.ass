@@ -1,0 +1,33 @@
+[Script Info]
+Title: 独立预算的顺序
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.85,English,en-0,0,0,0,,{\q2}First, how does the game prepare losses?
+Dialogue: 2,0:00:00.10,0:00:02.88,Chinese,zh-0,0,0,0,,{\q2}先看游戏怎样准备损失。
+Dialogue: 1,0:00:02.85,0:00:06.02,English,en-1,0,0,0,,{\q2}Supply, siege, and raiding each have a budget.
+Dialogue: 2,0:00:02.88,0:00:07.11,Chinese,zh-1,0,0,0,,{\q2}供给、围城和劫掠各有自己的预算；围城
+Dialogue: 1,0:00:06.02,0:00:08.94,English,en-2,0,0,0,,{\q2}Siege and raiding are converted separately
+Dialogue: 2,0:00:07.11,0:00:11.34,Chinese,zh-2,0,0,0,,{\q2}与劫掠先各自取成整数，再合起来分配。
+Dialogue: 1,0:00:08.94,0:00:11.87,English,en-3,0,0,0,,{\q2}to integers, then combined for allocation.
+Dialogue: 2,0:00:11.34,0:00:15.63,Chinese,zh-3,0,0,0,,{\q2}这些预算在第一次兵员写入以前形成，后面
+Dialogue: 1,0:00:11.87,0:00:15.86,English,en-4,0,0,0,,{\q2}These budgets are set before the first soldier write, but
+Dialogue: 2,0:00:15.63,0:00:19.70,Chinese,zh-4,0,0,0,,{\q2}的分配却沿着已经变化的人数继续进行。
+Dialogue: 1,0:00:15.86,0:00:19.50,English,en-5,0,0,0,,{\q2}later allocations use troop counts that have already
+Dialogue: 1,0:00:19.50,0:00:20.05,English,en-6,0,0,0,,{\q2}changed.
+Dialogue: 2,0:00:19.70,0:00:23.74,Chinese,zh-5,0,0,0,,{\q2}把几个显示比例直接相加，再乘同一个总
+Dialogue: 1,0:00:20.05,0:00:23.49,English,en-7,0,0,0,,{\q2}Adding the displayed rates and multiplying by one
+Dialogue: 1,0:00:23.49,0:00:27.20,English,en-8,0,0,0,,{\q2}total misses the intermediate rounding and processing
+Dialogue: 2,0:00:23.74,0:00:27.55,Chinese,zh-6,0,0,0,,{\q2}人数，会漏掉中间的取整和先后顺序。
+Dialogue: 1,0:00:27.20,0:00:27.62,English,en-9,0,0,0,,{\q2}order.

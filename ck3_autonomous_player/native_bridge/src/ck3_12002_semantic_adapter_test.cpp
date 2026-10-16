@@ -1,12 +1,14 @@
 ﻿#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <array>
 #include <atomic>
 #include <cstdio>
 #include <cstring>
 #include <thread>
+#include <utility>
 #include <vector>
 
 namespace {
@@ -395,6 +397,78 @@ bool ExecuteTyped(void *opaque,
   request.executed_thread = GetCurrentThreadId();
   ++request.calls;
   return build::FinishQueryMailbox(envelope);
+}
+
+// Exercise the original Enter/Finish functions through the real concrete
+// actual4 software adapter and its existing injected core-prefix reader.
+game::Snapshot *g_move_finish_frame = nullptr;
+std::uint32_t g_move_finish_core_reads = 0;
+bool ReadMoveFinishCore(const build::CoreBindings &,
+                        build::CoreSnapshotPrefix &output) noexcept {
+  ++g_move_finish_core_reads;
+  if (g_move_finish_frame == nullptr) return false;
+  const auto &frame = *g_move_finish_frame;
+  output = {};
+  output.clock.date_raw = frame.date_raw;
+  output.clock.speed = frame.speed;
+  output.clock.paused = frame.paused;
+  output.local_player_id = frame.player_id;
+  output.map_ready = frame.map_ready;
+  output.has_played_character = frame.has_played_character;
+  output.played_character_id = frame.played_character_id;
+  output.played_character_alive = frame.played_character_alive;
+  return true;
+}
+bool TestActual4MoveCoreFinish() {
+  FixtureAdapter source;
+  source.frame.paused = true;
+  const auto initial = source.frame;
+  game::Ck3_12002AdapterBindings bindings{};
+  bindings.core.enabled = true;
+  bindings.read_core_snapshot = &ReadMoveFinishCore;
+  auto actual4 = game::CreateCrozierAdapterFromBindings(
+      std::move(bindings), game::Ck3_12004AdapterDescriptor());
+  CHECK(actual4 != nullptr && actual4->enabled());
+  g_move_finish_frame = &source.frame;
+  const auto reads_before = g_move_finish_core_reads;
+  for (int mutation = 0; mutation != 3; ++mutation) {
+    source.frame = initial;
+    api::MainThreadQueryMailboxV1 mailbox{};
+    build::QueryMailboxEnvelope envelope{};
+    envelope.game = actual4.get();
+    envelope.mailbox = &mailbox;
+    envelope.ticket.sequence = 1;
+    envelope.expected_snapshot_revision = 1;
+    envelope.expected_snapshot = initial;
+    envelope.snapshot_comparison = build::QuerySnapshotComparison12002::core_frame;
+    api::MainThreadExecutionStampV1 stamp{};
+    stamp.pump_epoch = 1;
+    stamp.thread_id = GetCurrentThreadId();
+    stamp.date_raw = initial.date_raw;
+    stamp.paused = true;
+    stamp.tls_initialized = stamp.tls_main_thread_marker = 1;
+    stamp.tls_context = stamp.jomini_state = stamp.game_state = 1;
+    mailbox.state.store(api::MainThreadQueryMailboxStateV1::executing);
+    mailbox.published_sequence.store(1);
+    mailbox.owner_thread_id.store(stamp.thread_id);
+    mailbox.executor.store(&ExecuteTyped);
+    mailbox.executor_context = &envelope;
+    CHECK(build::EnterQueryMailbox(envelope, stamp, &ExecuteTyped));
+    if (mutation == 0) {
+      source.frame.player_armies.front().route_province_ids = {901};
+      source.frame.player_armies.front().move_target_province_id = 901;
+      CHECK(source.frame != initial); // the intended full-frame mutation exists
+    } else if (mutation == 1) {
+      ++source.frame.date_raw;
+    } else {
+      ++source.frame.played_character_id;
+    }
+    CHECK(build::FinishQueryMailbox(envelope) == (mutation == 0));
+    CHECK(envelope.frame_stable == (mutation == 0));
+  }
+  CHECK(g_move_finish_core_reads == reads_before + 6);
+  g_move_finish_frame = nullptr;
+  return true;
 }
 
 void Pump(api::MainThreadQueryMailboxV1 &mailbox) {
@@ -818,6 +892,7 @@ bool TestWorkerAdapter(bool patch3) {
 int main(int argc, char **argv) {
   const bool patch3 = argc == 2 && std::strcmp(argv[1], "--patch3") == 0;
   if (!TestWorkerAdapter(patch3)) return 1;
+  if (!TestActual4MoveCoreFinish()) return 1;
   std::puts("PASS: owner-only raw snapshots, worker cache, nine-second queued owner delay, war-options route update, war-score rejection, unchanged write scope, fixed inbox owner execution/allocation/release/RNG owner-scope restoration/JSON/world mutation/player-date-paused scope, typed actor coexistence, observation failure recovery; no live CK3 access");
   return 0;
 }

@@ -1,0 +1,34 @@
+[Script Info]
+Title: 四条实际记录的当前补员资格
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.34,English,en-0,0,0,0,,{\q2}The selected small army has four actual soldier
+Dialogue: 2,0:00:00.10,0:00:03.57,Chinese,zh-0,0,0,0,,{\q2}这次选中的小军，四条实体兵员记
+Dialogue: 1,0:00:03.34,0:00:06.57,English,en-1,0,0,0,,{\q2}records totaling 250 men, all at full strength.
+Dialogue: 2,0:00:03.57,0:00:06.80,Chinese,zh-1,0,0,0,,{\q2}录合计二百五十人，都是满员。
+Dialogue: 1,0:00:06.57,0:00:10.59,English,en-2,0,0,0,,{\q2}In the paused query, all four currently have replenishment
+Dialogue: 2,0:00:06.80,0:00:10.88,Chinese,zh-2,0,0,0,,{\q2}暂停查询里，四条记录的当前补员许可都
+Dialogue: 1,0:00:10.59,0:00:15.02,English,en-3,0,0,0,,{\q2}permission set to false, and their stored prepared fractions are
+Dialogue: 2,0:00:10.88,0:00:14.74,Chinese,zh-3,0,0,0,,{\q2}为否，已经保存的准备比例也都是零。
+Dialogue: 2,0:00:14.74,0:00:19.13,Chinese,zh-4,0,0,0,,{\q2}源码中，这四条共有的类型标记会先挡住当
+Dialogue: 1,0:00:15.02,0:00:15.36,English,en-4,0,0,0,,{\q2}zero.
+Dialogue: 1,0:00:15.36,0:00:18.97,English,en-5,0,0,0,,{\q2}In the source code, a type flag shared by these four
+Dialogue: 1,0:00:18.97,0:00:22.85,English,en-6,0,0,0,,{\q2}blocks current permission before the toggle and resource
+Dialogue: 2,0:00:19.13,0:00:23.51,Chinese,zh-5,0,0,0,,{\q2}前补员许可，早于后面的开关和资源判断。
+Dialogue: 1,0:00:22.85,0:00:23.34,English,en-7,0,0,0,,{\q2}checks.
+Dialogue: 1,0:00:23.34,0:00:27.60,English,en-8,0,0,0,,{\q2}This establishes these records' present eligibility; the label
+Dialogue: 2,0:00:23.51,0:00:27.72,Chinese,zh-6,0,0,0,,{\q2}这说明的是这些记录眼下的资格，不能只看“
+Dialogue: 1,0:00:27.60,0:00:31.99,English,en-9,0,0,0,,{\q2}'special troops' alone cannot describe armies from every source.
+Dialogue: 2,0:00:27.72,0:00:31.92,Chinese,zh-7,0,0,0,,{\q2}特殊兵”这个名称，就概括所有来源的军队。

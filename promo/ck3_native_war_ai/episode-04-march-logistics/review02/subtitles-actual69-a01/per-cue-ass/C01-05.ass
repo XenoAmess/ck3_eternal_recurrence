@@ -1,0 +1,33 @@
+[Script Info]
+Title: 人数减少先界定变化窗口
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.24,English,en-0,0,0,0,,{\q2}Troops can be lost through different processes.
+Dialogue: 2,0:00:00.10,0:00:02.95,Chinese,zh-0,0,0,0,,{\q2}兵员减少也有不同入口。
+Dialogue: 2,0:00:02.95,0:00:08.05,Chinese,zh-1,0,0,0,,{\q2}围城和劫掠的周期处理、进入新县时的移动损耗，各
+Dialogue: 1,0:00:03.24,0:00:07.38,English,en-1,0,0,0,,{\q2}Periodic siege and raid processing, and movement attrition on
+Dialogue: 1,0:00:07.38,0:00:11.72,English,en-2,0,0,0,,{\q2}entering a new county, have their own conditions and calculation
+Dialogue: 2,0:00:08.05,0:00:12.92,Chinese,zh-2,0,0,0,,{\q2}自有条件和计算顺序；不能把每次少人都叫饥饿。
+Dialogue: 1,0:00:11.72,0:00:12.13,English,en-3,0,0,0,,{\q2}order.
+Dialogue: 1,0:00:12.13,0:00:14.06,English,en-4,0,0,0,,{\q2}Not every loss is starvation.
+Dialogue: 2,0:00:12.92,0:00:16.11,Chinese,zh-3,0,0,0,,{\q2}与此同时，补员、分合军或其
+Dialogue: 1,0:00:14.06,0:00:19.21,English,en-5,0,0,0,,{\q2}Replenishment, splitting, merging and other events can also change the total.
+Dialogue: 2,0:00:16.11,0:00:19.29,Chinese,zh-4,0,0,0,,{\q2}他事件也会改变看到的总数。
+Dialogue: 1,0:00:19.21,0:00:22.91,English,en-6,0,0,0,,{\q2}To explain a march, first compare each regiment's exact
+Dialogue: 2,0:00:19.29,0:00:23.41,Chinese,zh-5,0,0,0,,{\q2}要解释一段行军，先逐团核对前后整数，
+Dialogue: 1,0:00:22.91,0:00:26.76,English,en-7,0,0,0,,{\q2}counts, then identify which processing actually occurred.
+Dialogue: 2,0:00:23.41,0:00:27.30,Chinese,zh-6,0,0,0,,{\q2}再看那段时间真正发生了哪一类结算。
+Dialogue: 1,0:00:26.76,0:00:31.03,English,en-8,0,0,0,,{\q2}A net change between readings is reported as a net change first.
+Dialogue: 2,0:00:27.30,0:00:30.97,Chinese,zh-7,0,0,0,,{\q2}两端的净变化，先按净变化报告。

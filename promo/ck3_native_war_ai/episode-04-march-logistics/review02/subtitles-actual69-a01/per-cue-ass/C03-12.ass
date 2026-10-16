@@ -1,0 +1,31 @@
+[Script Info]
+Title: 小军整数门槛与零事件边界
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.23,English,en-0,0,0,0,,{\q2}Small armies also meet whole-soldier rounding.
+Dialogue: 2,0:00:00.10,0:00:03.49,Chinese,zh-0,0,0,0,,{\q2}小军队还会遇到整个人数的取整。
+Dialogue: 1,0:00:03.23,0:00:06.76,English,en-1,0,0,0,,{\q2}At a hypothetical effective rate of 5%, 19 eligible
+Dialogue: 2,0:00:03.49,0:00:07.38,Chinese,zh-1,0,0,0,,{\q2}假设有效分量是百分之五，十九名合格兵
+Dialogue: 1,0:00:06.76,0:00:10.64,English,en-2,0,0,0,,{\q2}soldiers produce an army-wide budget of zero; 20 produce
+Dialogue: 2,0:00:07.38,0:00:11.27,Chinese,zh-2,0,0,0,,{\q2}员算出的整军预算是零，二十名才是一个
+Dialogue: 1,0:00:10.64,0:00:10.92,English,en-3,0,0,0,,{\q2}one.
+Dialogue: 1,0:00:10.92,0:00:14.94,English,en-4,0,0,0,,{\q2}This step has no minimum deduction of one soldier per pass.
+Dialogue: 2,0:00:11.27,0:00:14.95,Chinese,zh-3,0,0,0,,{\q2}；这一步没有每次至少扣一人的规则。
+Dialogue: 1,0:00:14.94,0:00:17.73,English,en-5,0,0,0,,{\q2}But that explains only the supply budget.
+Dialogue: 2,0:00:14.95,0:00:19.12,Chinese,zh-4,0,0,0,,{\q2}但这只解释供给预算：围城、县进入和其
+Dialogue: 1,0:00:17.73,0:00:22.22,English,en-6,0,0,0,,{\q2}Siege, county entry, and other troop changes need separate checks.
+Dialogue: 2,0:00:19.12,0:00:23.29,Chinese,zh-5,0,0,0,,{\q2}他人数变化要分别看，日志里没读到一笔
+Dialogue: 1,0:00:22.22,0:00:27.53,English,en-7,0,0,0,,{\q2}A missing event in the log does not prove zero losses across the whole window.
+Dialogue: 2,0:00:23.29,0:00:27.46,Chinese,zh-6,0,0,0,,{\q2}事件，也不能直接填成整个窗口零损失。

@@ -1,0 +1,31 @@
+[Script Info]
+Title: 补员开关跟随真正来源角色
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.43,English,en-0,0,0,0,,{\q2}The military page's monthly replenishment toggle must also be tied to the troops' source.
+Dialogue: 2,0:00:00.10,0:00:04.50,Chinese,zh-0,0,0,0,,{\q2}军事页的每月补员开关，也要放回具体来源。
+Dialogue: 2,0:00:04.50,0:00:08.55,Chinese,zh-1,0,0,0,,{\q2}在需要这项检查的兵士定义分支，游戏追到
+Dialogue: 1,0:00:05.43,0:00:09.44,English,en-1,0,0,0,,{\q2}In troop-definition branches requiring this check, the game traces
+Dialogue: 2,0:00:08.55,0:00:12.61,Chinese,zh-2,0,0,0,,{\q2}兵员真正的来源角色，读取那个人的军事补
+Dialogue: 1,0:00:09.44,0:00:12.90,English,en-2,0,0,0,,{\q2}the soldiers to their actual source character, reads that
+Dialogue: 2,0:00:12.61,0:00:16.24,Chinese,zh-3,0,0,0,,{\q2}员开关，并继续检查资源和位置条件。
+Dialogue: 1,0:00:12.90,0:00:16.79,English,en-3,0,0,0,,{\q2}character's military replenishment toggle, then checks resources
+Dialogue: 2,0:00:16.24,0:00:21.05,Chinese,zh-4,0,0,0,,{\q2}来源如果是封臣，就不能拿玩家自己的勾选代替。
+Dialogue: 1,0:00:16.79,0:00:17.58,English,en-4,0,0,0,,{\q2}and location.
+Dialogue: 1,0:00:17.58,0:00:22.25,English,en-5,0,0,0,,{\q2}If the source is a vassal, the player's own checkbox cannot substitute for it.
+Dialogue: 2,0:00:21.05,0:00:25.13,Chinese,zh-5,0,0,0,,{\q2}另一些定义分支不会走同一项开关；操作
+Dialogue: 1,0:00:22.25,0:00:25.42,English,en-6,0,0,0,,{\q2}Other definition branches do not use the same toggle.
+Dialogue: 2,0:00:25.13,0:00:29.20,Chinese,zh-6,0,0,0,,{\q2}以前，先确认正在观察的是谁提供的兵。
+Dialogue: 1,0:00:25.42,0:00:29.26,English,en-7,0,0,0,,{\q2}Before acting, establish who supplied the troops being observed.

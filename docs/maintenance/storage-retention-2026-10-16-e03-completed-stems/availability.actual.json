@@ -1,0 +1,172 @@
+{
+  "schema": "xar.e03.completed-stems-retired-availability.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T01:19:39.699430+00:00",
+  "source_review": {
+    "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e01-e03-media-retirement-a01/EXACT-MEDIA-PURPOSE-REVIEW.sealed-a01.json",
+    "bytes": 24903,
+    "sha256": "96300cc61228745bb242b88f003686fcef92007e466e3f507abfef16711d2d85"
+  },
+  "status": "ACTUAL_AVAILABILITY_AFTER_EXACT_RETIREMENT",
+  "records": [
+    {
+      "asset_id": "E03-a03-dry",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a03/native-run/artifacts/derived/sha256/3B/3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D.mov",
+      "original_SHA256": "3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D",
+      "original_bytes": 581461738,
+      "actual_status": "retired_unavailable",
+      "reason": "completed-purpose retirement; old lossless re-edit use explicitly released",
+      "original_roles": [
+        {
+          "artifact_id": "visual.episode03-full-picture",
+          "collection": "derived",
+          "role": "visual-input",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "narration.episode03-full-picture",
+          "collection": "derived",
+          "role": "narration",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "audio.episode03-full-picture.episode03-narration",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "dry-master.mov"
+        }
+      ],
+      "source_roles_available": false,
+      "immutable_manifest_evidence_key": "E03_a03_immutable_manifest",
+      "reconstruction_claimed": false,
+      "MP4_is_not_a_byte_identical_role_replacement": true,
+      "replacement_path": null
+    },
+    {
+      "asset_id": "E03-a04-dry",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+      "original_SHA256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+      "original_bytes": 580809766,
+      "actual_status": "retired_unavailable",
+      "reason": "completed-purpose retirement; old lossless re-edit use explicitly released",
+      "original_roles": [
+        {
+          "artifact_id": "visual.episode03-full-picture",
+          "collection": "derived",
+          "role": "visual-input",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "narration.episode03-full-picture",
+          "collection": "derived",
+          "role": "narration",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "audio.episode03-full-picture.episode03-narration",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "dry-master.mov"
+        }
+      ],
+      "source_roles_available": false,
+      "immutable_manifest_evidence_key": "E03_a04_immutable_manifest",
+      "reconstruction_claimed": false,
+      "MP4_is_not_a_byte_identical_role_replacement": true,
+      "replacement_path": null
+    },
+    {
+      "old_alias_source": {
+        "candidate_index": 0,
+        "old_candidate_path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+        "expected_old_identity": [
+          3061637496,
+          844424932026831
+        ],
+        "content_sha256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+        "content_bytes": 580809766,
+        "keeper_path": "C:\\ck3-war-episode03-expansion-20261003-a01\\expansion-production-a04\\native-run\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+        "keeper_identity": [
+          3061637496,
+          281474978600969
+        ],
+        "keeper_verified_metadata_held": true,
+        "keeper_failure": null,
+        "exact_manifest_references": [
+          {
+            "run_manifest": {
+              "path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\run-manifest.json",
+              "bytes": 250083,
+              "sha256": "d63f9ad4e83834543b843607eb937f2adbba82d6403ecc7f75ab546a7e4c659e"
+            },
+            "artifact_id": "media-proof-054",
+            "role": "narration",
+            "collection": "derived",
+            "old_path": "artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+            "sha256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+            "bytes": 580809766
+          }
+        ],
+        "candidate_availability": "deleted_unreadable_at_old_path",
+        "future_resolution": "Use retained keeper for listed immutable artifactIDs after actual oldpath retirement; no same-name file replacement.",
+        "actual_deletion_result": {
+          "kind": "duplicate",
+          "index": 0,
+          "path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+          "expected_bytes": 580809766,
+          "status": "deleted",
+          "actual": {
+            "id": [
+              3061637496,
+              844424932026831
+            ],
+            "b": 580809766,
+            "ft": 134355030013332949,
+            "links": 1,
+            "allocation": 580812800
+          },
+          "same_handle_disposition_succeeded": true,
+          "absence_confirmed": true
+        },
+        "keeper_availability": "available_verified_identity_metadata_held"
+      },
+      "retired_keeper_path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+      "keeper_original_SHA256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+      "actual_resolution_status": "retired_unavailable",
+      "reason": "Canonical keeper now retired by completed-purpose release; previous duplicate remains absent. Preserve old mapping as history, do not redirect to different MP4 bytes.",
+      "replacement_path": null,
+      "original_manifest_not_modified": true
+    },
+    {
+      "asset_id": "E03-a04-narration-grid",
+      "old_path": "C:/ck3-war-episode03-expansion-20261003-a01/media-audit-native-a04/artifacts/derived/sha256/78/78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951.wav",
+      "original_SHA256": "78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951",
+      "original_bytes": 352774444,
+      "actual_status": "retired_unavailable",
+      "reason": "completed-purpose retirement; old lossless re-edit use explicitly released",
+      "original_roles": [
+        {
+          "artifact_id": "media-proof-053",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "narration-frame-grid.wav"
+        }
+      ],
+      "source_roles_available": false,
+      "immutable_manifest_evidence_key": "E03_public_media_audit_manifest",
+      "reconstruction_claimed": false,
+      "MP4_is_not_a_byte_identical_role_replacement": true,
+      "replacement_path": null
+    }
+  ],
+  "old_records_and_original_manifests_unchanged": true,
+  "no_same_name_replacement_created": true,
+  "four_preserved_final_theme_paths": [
+    "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a03/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+    "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a04/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+    "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/war-ai-full-film-review.mp4",
+    "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/run/artifacts/raw/sha256/FD/FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav"
+  ],
+  "all_other_source_code_text_research_coldhelper_failed_raw_save_and_E04_inputs_retained": true,
+  "D_v4_raw_still_HELD": true
+}

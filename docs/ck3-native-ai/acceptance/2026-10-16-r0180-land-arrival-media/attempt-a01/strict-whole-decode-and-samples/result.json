@@ -1,0 +1,25 @@
+{
+  "returncode": 0,
+  "started_at_utc": "2026-10-16T01:06:00.604020+00:00",
+  "completed_at_utc": "2026-10-16T01:06:11.708771+00:00",
+  "elapsed_seconds": 11.104755999986082,
+  "argv": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\argv.json",
+    "bytes": 1308,
+    "sha256": "926c4817273c3fec2aee7fdc4382500f8b6f3cb7d19a1bddb1881063ed1e5599"
+  },
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\stdout.bin",
+    "bytes": 618,
+    "sha256": "fdb7791763ce782686ac445082029279a200970c9028721067d23466718a3ae5"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\stderr.bin",
+    "bytes": 5949,
+    "sha256": "2708f08bc1d61b1830801db5eec975bc2072d1b62f8ec55cffbc83b13311d963"
+  },
+  "all_partials_retained": true,
+  "owned_process_timed_out": false,
+  "command_runtime_limit_seconds": 60,
+  "fixed_deadline_utc": "2026-10-16T07:45:01.597000+00:00"
+}

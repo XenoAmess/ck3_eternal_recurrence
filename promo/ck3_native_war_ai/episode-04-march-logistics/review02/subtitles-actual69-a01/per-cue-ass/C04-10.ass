@@ -1,0 +1,28 @@
+[Script Info]
+Title: 登船实付正例
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.07,English,en-0,0,0,0,,{\q2}When Robert's army entered the sea zone, its actual state became embarked.
+Dialogue: 2,0:00:00.10,0:00:05.50,Chinese,zh-0,0,0,0,,{\q2}这次罗贝尔的军队进入海区，实际状态变成已登船。
+Dialogue: 1,0:00:05.07,0:00:09.03,English,en-1,0,0,0,,{\q2}The native payment record identifies a 3-gold debit to the
+Dialogue: 2,0:00:05.50,0:00:09.75,Chinese,zh-1,0,0,0,,{\q2}沿着原生付款记录，可以核到一笔三金币的
+Dialogue: 1,0:00:09.03,0:00:13.06,English,en-2,0,0,0,,{\q2}personal account, and the account balance fell by exactly 3
+Dialogue: 2,0:00:09.75,0:00:14.00,Chinese,zh-2,0,0,0,,{\q2}个人账户扣款，账户前后恰好减少三金币。
+Dialogue: 1,0:00:13.06,0:00:13.40,English,en-3,0,0,0,,{\q2}gold.
+Dialogue: 1,0:00:13.40,0:00:16.76,English,en-4,0,0,0,,{\q2}This establishes the payment for this embarkation.
+Dialogue: 2,0:00:14.00,0:00:18.50,Chinese,zh-3,0,0,0,,{\q2}这给出了本例登船的实际支付；以后别的军队和
+Dialogue: 1,0:00:16.76,0:00:19.75,English,en-5,0,0,0,,{\q2}Other armies and routes still need their own
+Dialogue: 2,0:00:18.50,0:00:22.79,Chinese,zh-4,0,0,0,,{\q2}路线，仍要看当次费用，不能一律套三金币。
+Dialogue: 1,0:00:19.75,0:00:22.87,English,en-6,0,0,0,,{\q2}fee checked; 3 gold is not a universal charge.

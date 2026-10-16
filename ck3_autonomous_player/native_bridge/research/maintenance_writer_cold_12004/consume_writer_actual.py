@@ -13,6 +13,57 @@ require = None
 REGISTERS = {"rax","rbx","rcx","rdx","r8","r9","r10","r11","rsi","rdi","rbp","rsp"}
 LIMIT = 8 * 1024**2
 
+
+COPY_SOURCE_SHA = "ffebf7d960edb76b71d2456b7f8722cc09092952b41c565f648410b42a47dede"
+COPY_PROLOGUE_HEX = "48895c2410488974241848897c2420554154415541564157488d6c24b04881ec50010000"
+
+def project_known_copy_caller(row, start, thread_generation):
+    """Optional raw stack observation. It grants no caller business semantics."""
+    leaf = row.get("known_copy_caller_v1")
+    if leaf is None:
+        return None
+    def need(ok, message):
+        if not ok:
+            raise ValueError(message)
+    def u64(value):
+        return type(value) is int and 0 <= value < (1 << 64)
+    need(type(leaf) is dict, "Known-copy caller leaf shape")
+    need((row["slot"], row["RIP_after_rva"]) in ((0, 0x28A645B), (1, 0x28A6466)),
+         "Caller capture is not at a source-qualified store post-PC")
+    need(leaf["source_entry_rva"] == "28A63E0" and leaf["source_raw_sha256"] == COPY_SOURCE_SHA,
+         "Caller capture source differs")
+    need(type(leaf["capture_ordinal"]) is int and 1 <= leaf["capture_ordinal"] <= 8,
+         "Caller capture ordinal")
+    need(type(leaf["admission_generation"]) is int
+         and leaf["admission_generation"] == start["admission_generation"], "Caller admission generation differs")
+    for key in ("prologue_matches", "frame_relation_matches", "register_context_matches",
+                "identity_after", "read_before_complete", "read_after_complete", "return_stable"):
+        need(type(leaf[key]) is bool, "Caller read flag: " + key)
+    regs = row["registers"]
+    frame = regs["rsp"] <= (1 << 64)-1-0x178 and regs["rbp"] <= (1 << 64)-1-0x78 and regs["rsp"]+0x178 == regs["rbp"]+0x78
+    obj = regs["r9"] == row["context"] and regs["rsi"] == row["character"]
+    need(leaf["frame_relation_matches"] is frame and leaf["register_context_matches"] is obj,
+         "Caller source frame/object proof differs")
+    need(leaf["return_slot_address"] == (regs["rsp"]+0x178 if frame else None), "Caller return slot differs")
+    for complete, value in (("read_before_complete", "return_before"), ("read_after_complete", "return_after")):
+        need(u64(leaf[value]) if leaf[complete] else leaf[value] is None, "Caller raw read availability differs")
+    stable = leaf["prologue_matches"] and frame and obj and leaf["identity_after"] and leaf["read_before_complete"] and leaf["read_after_complete"] and leaf["return_before"] == leaf["return_after"] and leaf["return_before"] != 0
+    need(leaf["return_stable"] is stable, "Caller return stability differs")
+    address = leaf["return_before"] if stable else None
+    base, size = start["module_base"], start["module_size"]
+    rva = address-base if address is not None and base <= address < base+size else None
+    need(leaf["candidate_return_absolute"] == address and leaf["candidate_return_rva"] == rva,
+         "Caller raw/RVA mapping differs")
+    return dict(source_entry_rva="28A63E0", source_raw_sha256=COPY_SOURCE_SHA,
+                caller_return_absolute=address, caller_return_rva=rva,
+                source_status="source_qualified_return_slot" if stable else "unavailable_return_slot",
+                return_slot_address=leaf["return_slot_address"], raw_read_before=leaf["return_before"],
+                raw_read_after=leaf["return_after"], return_stable=stable,
+                prologue_matches=leaf["prologue_matches"], identity_after=leaf["identity_after"],
+                thread_generation=thread_generation, admission_generation=start["admission_generation"],
+                capture_ordinal=leaf["capture_ordinal"], instruction_start=None,
+                known_c_d_producer=False, maintenance_attribution="unclosed")
+
 def configure(repo):
     global OFFSETS, integer, require
     repo = Path(repo).resolve()
@@ -221,6 +272,7 @@ def project(rows, binding):
                         same_value_write=row["same_value_write"],registers=row["registers"],
                         physical_write_qualified=not reasons,unavailable_reasons=reasons,
                         known_producer=False,maintenance_attribution="unclosed")
+            item["known_copy_caller_v1"] = project_known_copy_caller(row, start, active[tid]["generation"])
             (unknown if reasons else hits).append(item)
             if row["after_read_complete"] and row["context_identity_stable"]:
                 last[slot] = after

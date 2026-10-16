@@ -43,8 +43,202 @@ def schema_check(value,kind):
         detail='; '.join('/'.join(map(str,x.absolute_path))+': '+x.message for x in e.context[:8])
         raise ValueError('schema '+kind+': '+(detail or e.message))
 
+def evidence_file_options(config,*,source_head,machine_ids):
+    need(isinstance(config,dict),'explicit evidence input options must be an object')
+    entries=config.get('evidence_capacity_admission',[])
+    need(isinstance(entries,(list,tuple)),'capacity admission options must be a list')
+    pins=[]
+    for entry in entries:
+        if isinstance(entry,dict):pins.append(entry)
+        else:
+            need(isinstance(entry,(list,tuple)) and len(entry)==2,'capacity option requires PATH SHA256')
+            pins.append({'path':entry[0],'sha256':entry[1]})
+    return {'max_file_bytes':config.get('max_evidence_file_bytes',MAX_FILE),
+            'capacity_admissions':pins,'expected_source_head':source_head,
+            'expected_machine_ids':machine_ids}
+
+DEFAULT_RUNTIME_TOTAL_BYTES = 512 * 1024 * 1024
+
+
+def runtime_total_budget(options, *, scene_root, source_head, machine_id, deadline_utc):
+    """A runtime opt-in is separate from the offline evidence file input cap."""
+    need(isinstance(options, dict), 'runtime budget options must be an object')
+    return RuntimeTotalBudget(options.get('max_runtime_total_bytes', DEFAULT_RUNTIME_TOTAL_BYTES),
+        options.get('runtime_capacity_admission'), scene_root=scene_root, source_head=source_head,
+        machine_id=machine_id, deadline_utc=deadline_utc)
+
+
+class RuntimeTotalBudget:
+    def __init__(self, limit_bytes=DEFAULT_RUNTIME_TOTAL_BYTES, admission=None, *, scene_root,
+                 source_head, machine_id, deadline_utc, clock=None):
+        need(type(limit_bytes) is int and 17*1024*1024 <= limit_bytes < 2**63,
+             'explicit bounded runtime total bytes required')
+        self.limit_bytes = limit_bytes
+        self.scene_root = Path(scene_root).resolve()
+        self.clock = clock or (lambda: datetime.now(timezone.utc))
+        self.deadline = datetime.fromisoformat(deadline_utc.replace('Z', '+00:00'))
+        need(self.deadline.tzinfo is not None, 'runtime deadline needs timezone')
+        self.binding = {'scene_root': str(self.scene_root), 'source_head': source_head,
+            'machine_id': machine_id, 'limit_bytes': limit_bytes, 'admission': None,
+            'deadline_utc': self.deadline.isoformat()}
+        self.admission_path = None
+        if admission is None:
+            need(limit_bytes <= DEFAULT_RUNTIME_TOTAL_BYTES,
+                 'runtime total above default512MiB requires exact Root capacity admission')
+            return
+        if isinstance(admission, (list, tuple)):
+            need(len(admission) == 2, 'runtime capacity requires PATH SHA256')
+            admission = dict(zip(('path', 'sha256'), admission))
+        need(isinstance(admission, dict) and set(admission) == {'path', 'sha256'},
+             'runtime capacity requires exact path/SHA pin')
+        p = Path(admission['path']).resolve()
+        need(p.suffix.lower() == '.json' and p.is_file() and 0 < p.stat().st_size <= 1024*1024,
+             'runtime capacity must be bounded JSON')
+        raw = p.read_bytes()
+        need(len(raw) <= 1024*1024 and type(admission['sha256']) is str
+             and digest(raw) == admission['sha256'].lower(), 'runtime capacity exact SHA differs')
+        row = parse(raw); ceilings = row.get('component_ceiling_bytes') or {}
+        source = row.get('source_binding') or {}
+        need(row.get('admitted') is True and row.get('machine_id') == machine_id
+             and row.get('source_head') == source_head
+             and source.get('new_clean_integrated_source_head') == source_head,
+             'runtime capacity machine/source/admitted differs')
+        need(type(row.get('scene_root')) is str and Path(row['scene_root']).is_absolute()
+             and Path(row['scene_root']).resolve() == self.scene_root,
+             'runtime capacity belongs to another scene')
+        need(type(ceilings.get('driver')) is int and limit_bytes <= ceilings['driver']
+             and type(row.get('new_scene_aggregate_bytes')) is int
+             and ceilings['driver'] <= row['new_scene_aggregate_bytes'],
+             'runtime total exceeds actual Root driver ceiling or aggregate')
+        review = datetime.fromisoformat(row['quota_review_at_utc'].replace('Z', '+00:00'))
+        need(review.tzinfo is not None and review == self.deadline,
+             'runtime admission original deadline differs')
+        self.admission_path = p
+        self.binding['admission'] = {'path':str(p), 'bytes':len(raw), 'sha256':digest(raw)}
+        self.check_fresh()
+
+    def check_fresh(self):
+        need(self.clock() <= self.deadline, 'runtime capacity expired; no further request')
+        if self.admission_path is not None:
+            pin = self.binding['admission']; p = self.admission_path
+            need(p.is_file() and p.stat().st_size == pin['bytes'], 'runtime capacity metadata changed')
+            need(digest(p.read_bytes()) == pin['sha256'], 'runtime capacity metadata exact SHA changed')
+
+    def used_bytes(self, roots):
+        """Count all Driver state, raw sidecars and original packets once."""
+        seen = set(); total = 0
+        for root in roots:
+            root = Path(root).resolve()
+            need(root.is_relative_to(self.scene_root), 'runtime meter escapes admitted scene')
+            if not root.exists():
+                continue
+            for p in root.rglob('*'):
+                if not p.is_file():
+                    continue
+                path = p.resolve()
+                need(path.is_relative_to(self.scene_root), 'runtime file escapes admitted scene')
+                if path not in seen:
+                    seen.add(path); total += p.stat().st_size
+                    need(len(seen) <= 50000, 'finite runtime file count exceeded')
+        return total
+
+    def reserve(self, roots, *, full_query=False, raw_file_max=MAX_FILE):
+        self.check_fresh()
+        need(type(raw_file_max) is int and raw_file_max in (MAX_FILE, 2*MAX_FILE),
+             'runtime raw reserve must match bounded16/32MiB input cap')
+        reserve = MAX_FILE + 65536 + (raw_file_max if full_query else 0)
+        need(self.used_bytes(roots) + reserve <= self.limit_bytes,
+             'actual runtime total cannot reserve next response and complete Driver sidecar')
+
+    def bind_live(self, io, base_module=None, raw_file_max=MAX_FILE):
+        need(Path(io.assets).resolve() == self.scene_root and io.meta.get('machine_id') == self.binding['machine_id']
+             and io.meta.get('source_head') == self.binding['source_head'], 'runtime IO differs from capacity binding')
+        need(not getattr(io, '_runtime_total_bound', False), 'runtime IO budget already bound')
+        ledger = getattr(io, 'ledger', None) or io.case.parent
+        roots = (io.run/'requests', io.run/'responses', self.scene_root/'state-a01', ledger)
+        self.check_fresh()
+        need(self.used_bytes(roots) + 65536 <= self.limit_bytes, 'runtime existing evidence exceeds total budget')
+        p = io.case/'runtime-total-budget.binding.actual.json'
+        value = {'machine_id':self.binding['machine_id'], 'source_head':self.binding['source_head'],
+            'process_binding':{k:io.binding[k] for k in ('pid','process_create_time_100ns','generation','actor','episode')},
+            'runtime_total_budget':self.binding}
+        if p.exists():
+            previous = parse(p.read_bytes()); previous.pop('bound_at_utc', None)
+            need(previous == value, 'case runtime total/admission changed')
+        else:
+            with p.open('xb') as stream:
+                stream.write((json.dumps({**value,'bound_at_utc':self.clock().isoformat()}, ensure_ascii=False)+'\n').encode())
+        original = io.request
+        def request(name, tool, arguments):
+            self.reserve(roots, full_query=tool == 'ck3_query_army_strengths', raw_file_max=raw_file_max)
+            prior = getattr(base_module, 'RUN_BUDGET', None) if base_module is not None else None
+            if base_module is not None:
+                base_module.RUN_BUDGET = self.limit_bytes
+            try:
+                result = original(name, tool, arguments)
+            finally:
+                if base_module is not None:
+                    base_module.RUN_BUDGET = prior
+            need(self.used_bytes(roots) <= self.limit_bytes,
+                 'actual runtime write crossed bound; original evidence retained, never retry action')
+            return result
+        io.request = request
+        io.used_bytes = lambda: self.used_bytes(roots)
+        io.runtime_total_budget_bytes = self.limit_bytes
+        io._runtime_total_bound = True
+        io.meta['runtime_total_budget'] = self.binding
+        return self.binding
+
+
 class Evidence:
-    def __init__(self,root):self.root=Path(root).resolve();self.cache=OrderedDict();self.cache_bytes=0
+    def __init__(self,root,*,max_file_bytes=MAX_FILE,capacity_admissions=(),
+                 expected_source_head=None,expected_machine_ids=()):
+        self.root=Path(root).resolve();self.cache=OrderedDict();self.cache_bytes=0
+        need(type(max_file_bytes) is int and max_file_bytes in (MAX_FILE,2*MAX_FILE),
+             'evidence file cap must be explicit16MiB or32MiB')
+        self.max_file_bytes=max_file_bytes;self.admitted_scenes=[]
+        if max_file_bytes==MAX_FILE:
+            need(not capacity_admissions,'capacity input requires explicit32MiB opt-in')
+            return
+        machines=set(expected_machine_ids)
+        need(isinstance(expected_source_head,str) and len(expected_source_head)==40
+             and machines and all(type(x) is str and x for x in machines),
+             '32MiB requires exact source and intended machine bindings')
+        need(isinstance(capacity_admissions,(list,tuple)) and capacity_admissions,
+             '32MiB requires exact single-scene capacity admission pins')
+        for entry in capacity_admissions:
+            need(isinstance(entry,dict) and set(entry)=={'path','sha256'},'capacity pin requires path and SHA')
+            path=Path(entry['path']).resolve();expected=entry['sha256']
+            need(path.suffix.lower()=='.json' and path.is_file() and 0<path.stat().st_size<=MAX_FILE,
+                 'capacity metadata is bounded JSON, independent of larger evidence cap')
+            raw=path.read_bytes()
+            need(len(raw)<=MAX_FILE and type(expected) is str and digest(raw)==expected.lower(),
+                 'capacity admission exact SHA differs')
+            row=parse(raw);source_binding=row.get('source_binding') or {}
+            need(row.get('admitted') is True and row.get('machine_id') in machines
+                 and row.get('source_head')==expected_source_head
+                 and source_binding.get('new_clean_integrated_source_head')==expected_source_head,
+                 'capacity admission machine/source/admitted differs')
+            root=row.get('scene_root');ceilings=row.get('component_ceiling_bytes') or {}
+            need(type(root) is str and Path(root).is_absolute()
+                 and type(ceilings.get('driver')) is int and ceilings['driver']>=max_file_bytes
+                 and type(row.get('new_scene_aggregate_bytes')) is int
+                 and row['new_scene_aggregate_bytes']>=ceilings['driver'],
+                 'capacity admission lacks bounded same-scene Driver allowance')
+            review=datetime.fromisoformat(row['quota_review_at_utc'].replace('Z','+00:00'))
+            need(review.tzinfo is not None,'capacity review deadline needs timezone')
+            self.admitted_scenes.append({'root':Path(root).resolve(),'machine_id':row['machine_id'],
+                'source_head':row['source_head'],'admission_path':str(path),'admission_sha256':digest(raw)})
+    def file_limit(self,path):
+        path=Path(path).resolve()
+        return self.max_file_bytes if path.suffix.lower()=='.json' and any(
+            path.is_relative_to(row['root']) for row in self.admitted_scenes) else MAX_FILE
+    def check_runtime_pin(self,pin,runtime):
+        if pin['bytes']<=MAX_FILE:return
+        path=(self.root/pin['path']).resolve()
+        need(any(path.is_relative_to(row['root']) and row['machine_id']==runtime['machine_id']
+                 and row['source_head']==runtime['source_head'] for row in self.admitted_scenes),
+             'larger evidence does not belong to this actual runtime scene')
     def raw(self,pin):
         path=Path(pin['path'])
         need(not path.is_absolute() and ':' not in str(path),'evidence paths must be package-relative, not historical machine locators')
@@ -53,7 +247,8 @@ class Evidence:
         need(full.is_relative_to(self.root),'evidence path escapes root')
         key=(str(full),pin['bytes'],pin['sha256'])
         if key not in self.cache:
-            need(full.is_file() and full.stat().st_size==pin['bytes'] and pin['bytes']<=MAX_FILE,'evidence missing/size/16MiB limit: '+str(path))
+            limit=self.file_limit(full)
+            need(full.is_file() and full.stat().st_size==pin['bytes'] and pin['bytes']<=limit,'evidence missing/size/'+str(limit//(1024*1024))+'MiB limit: '+str(path))
             raw=full.read_bytes();need(len(raw)==pin['bytes'] and digest(raw)==pin['sha256'],'evidence SHA mismatch: '+str(path))
             while self.cache and self.cache_bytes+len(raw)>32*1024*1024:
                 _,old=self.cache.popitem(last=False);self.cache_bytes-=len(old)
@@ -96,6 +291,7 @@ def frame(value,runtime=None):
 def endpoint(ep,plan,evidence,runtime=None):
     b=frame(evidence.json(ep['snapshot']),runtime)
     need(b['date_raw']==plan['t0_raw']+24*ep['day'],'endpoint natural day/raw mismatch')
+    if runtime is not None and hasattr(evidence,'check_runtime_pin'):evidence.check_runtime_pin(ep['army_result'],runtime)
     q=body(evidence.json(ep['army_result']))
     need(q.get('accepted') is True and isinstance(q.get('army_strengths'),list),'not a complete Driver Army result; summary/partial rejected')
     for qk,bk in [('queried_snapshot_id','snapshot_id'),('queried_revision','revision'),('queried_native_revision','native_revision'),('queried_date_raw','date_raw'),('queried_episode_run_id','episode_run_id')]:
@@ -273,16 +469,26 @@ def compare(plan,results,evidence):
 
 def main(argv=None):
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('mode',choices=('check-plan','compare','reject-legacy'));p.add_argument('input',type=Path);p.add_argument('--plan',type=Path);p.add_argument('--evidence-root',type=Path);p.add_argument('--output',type=Path)
+    p.add_argument('--max-evidence-file-bytes',type=int,choices=(MAX_FILE,2*MAX_FILE),default=MAX_FILE)
+    p.add_argument('--evidence-capacity-admission',nargs=2,action='append',default=[],metavar=('PATH','SHA256'))
+    p.add_argument('--evidence-machine-id',action='append',default=[])
     a=p.parse_args(argv)
     try:
         data=parse(a.input.read_bytes());need(isinstance(data,dict),'input must be JSON object')
         if a.mode=='reject-legacy':out=legacy_rejection(data)
         else:
-            need(a.evidence_root is not None,'--evidence-root required');e=Evidence(a.evidence_root)
+            need(a.evidence_root is not None,'--evidence-root required')
+            pins=[{'path':path,'sha256':sha} for path,sha in a.evidence_capacity_admission]
             if a.mode=='check-plan':
+                e=Evidence(a.evidence_root,max_file_bytes=a.max_evidence_file_bytes,capacity_admissions=pins,
+                    expected_source_head=(data.get('build') or {}).get('source_head'),expected_machine_ids=a.evidence_machine_id)
                 b=check_plan(data,e);out={'plan_consistent':True,'baseline_date_raw':b['date_raw'],'deadline_date_raw':data['t0_raw']+2160,'live_execution_performed':False,'semantic_qualification_granted':False}
             else:
                 need(a.plan is not None,'--plan required');pr=a.plan.read_bytes();plan=parse(pr)
+                machines=a.evidence_machine_id or sorted({rt['machine_id'] for arm in data.get('arms',[])
+                    if isinstance(arm,dict) and isinstance(rt:=arm.get('runtime'),dict) and type(rt.get('machine_id')) is str})
+                e=Evidence(a.evidence_root,max_file_bytes=a.max_evidence_file_bytes,capacity_admissions=pins,
+                    expected_source_head=(plan.get('build') or {}).get('source_head'),expected_machine_ids=machines)
                 need(data.get('plan_sha256')==digest(pr),'results do not bind exact frozen plan bytes');out=compare(plan,data,e)
         code=0 if out.get('controlled_comparison_records_eligible',True) and out.get('accepted_as_R10_result',True) else 2
     except (ValueError,KeyError,TypeError,OSError,json.JSONDecodeError) as error:

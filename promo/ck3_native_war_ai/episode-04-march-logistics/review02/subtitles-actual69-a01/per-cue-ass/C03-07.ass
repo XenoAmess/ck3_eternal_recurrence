@@ -1,0 +1,33 @@
+[Script Info]
+Title: 县预算多层取整
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.74,English,en-0,0,0,0,,{\q2}County attrition modifiers also work in stages.
+Dialogue: 2,0:00:00.10,0:00:03.00,Chinese,zh-0,0,0,0,,{\q2}县损耗的修正也分几层。
+Dialogue: 2,0:00:03.00,0:00:07.49,Chinese,zh-1,0,0,0,,{\q2}再看一组假设输入：全军三千零一人，基础
+Dialogue: 1,0:00:03.74,0:00:07.25,English,en-1,0,0,0,,{\q2}Consider hypothetical inputs: 3,001 soldiers,
+Dialogue: 1,0:00:07.25,0:00:10.93,English,en-2,0,0,0,,{\q2}a base rate of 5%, and a multiplier of 0.33339.
+Dialogue: 2,0:00:07.49,0:00:11.97,Chinese,zh-2,0,0,0,,{\q2}比例百分之五，修正倍率零点三三三三九。
+Dialogue: 1,0:00:10.93,0:00:14.17,English,en-3,0,0,0,,{\q2}The effective rate is first calculated as
+Dialogue: 2,0:00:11.97,0:00:15.86,Chinese,zh-3,0,0,0,,{\q2}先得到有效比例百分之一点六六六，再
+Dialogue: 1,0:00:14.17,0:00:17.33,English,en-4,0,0,0,,{\q2}1.666%, then applied to the troop count,
+Dialogue: 2,0:00:15.86,0:00:19.75,Chinese,zh-4,0,0,0,,{\q2}算人数，是四十九；对应的最小值修正
+Dialogue: 1,0:00:17.33,0:00:18.12,English,en-5,0,0,0,,{\q2}giving 49.
+Dialogue: 1,0:00:18.12,0:00:23.23,English,en-6,0,0,0,,{\q2}The corresponding modified minimum is 33, so this example uses 49.
+Dialogue: 2,0:00:19.75,0:00:23.64,Chinese,zh-5,0,0,0,,{\q2}后是三十三，这组输入最后取四十九。
+Dialogue: 1,0:00:23.23,0:00:25.78,English,en-7,0,0,0,,{\q2}Applying everything together and
+Dialogue: 2,0:00:23.64,0:00:28.74,Chinese,zh-6,0,0,0,,{\q2}把修正和人数合到最后才取整，就会多算成五十。
+Dialogue: 1,0:00:25.78,0:00:28.56,English,en-8,0,0,0,,{\q2}rounding only at the end would give
+Dialogue: 1,0:00:28.56,0:00:28.80,English,en-9,0,0,0,,{\q2}50.

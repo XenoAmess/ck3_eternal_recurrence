@@ -1,0 +1,31 @@
+[Script Info]
+Title: 三策略定义
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.21,English,en-0,0,0,0,,{\q2}Marching as one army aims to reduce arrangements along the way.
+Dialogue: 2,0:00:00.10,0:00:04.26,Chinese,zh-0,0,0,0,,{\q2}整军直走，争取少做中途安排；分兵休整
+Dialogue: 1,0:00:04.21,0:00:08.44,English,en-1,0,0,0,,{\q2}Splitting to rest takes time at separate stations and to regroup.
+Dialogue: 2,0:00:04.26,0:00:08.42,Chinese,zh-1,0,0,0,,{\q2}，要付出分开驻留和重新会合的时间；换
+Dialogue: 2,0:00:08.42,0:00:12.36,Chinese,zh-2,0,0,0,,{\q2}路线，则要走完预先选好的中转路径。
+Dialogue: 1,0:00:08.44,0:00:12.55,English,en-2,0,0,0,,{\q2}Rerouting requires completing the chosen sequence of waypoints.
+Dialogue: 2,0:00:12.36,0:00:16.37,Chinese,zh-3,0,0,0,,{\q2}比较这三种安排时，要从同一个普通存档出
+Dialogue: 1,0:00:12.55,0:00:15.42,English,en-3,0,0,0,,{\q2}To compare these plans, start from the same
+Dialogue: 1,0:00:15.42,0:00:17.62,English,en-4,0,0,0,,{\q2}normal save and head for the same
+Dialogue: 2,0:00:16.37,0:00:20.39,Chinese,zh-4,0,0,0,,{\q2}发，前往同一个目的地，分别记录各自真实
+Dialogue: 1,0:00:17.62,0:00:18.42,English,en-5,0,0,0,,{\q2}destination.
+Dialogue: 1,0:00:18.42,0:00:21.22,English,en-6,0,0,0,,{\q2}Record each plan's actual arrival outcome,
+Dialogue: 2,0:00:20.39,0:00:24.41,Chinese,zh-5,0,0,0,,{\q2}到场的结果，再看同一天各队分别在哪里。
+Dialogue: 1,0:00:21.22,0:00:24.21,English,en-7,0,0,0,,{\q2}then compare where the armies are on the same
+Dialogue: 1,0:00:24.21,0:00:24.48,English,en-8,0,0,0,,{\q2}day.

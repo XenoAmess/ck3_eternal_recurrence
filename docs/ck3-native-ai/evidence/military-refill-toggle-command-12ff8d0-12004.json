@@ -1,0 +1,280 @@
+{
+  "schema": "xar.ck3.military-refill-toggle-command-source.12004.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T01:09:41.696111+00:00",
+  "status": "OWNER_FLAG_READ_DESIRED_PAYLOAD_CLOSED_SUBMISSION_TARGET_UNREAD",
+  "build_version": "1.20.0.4",
+  "source": {
+    "schema": "xar.e04.actual4.exact-source-body.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T01:07:13.414739+00:00",
+    "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_identity_path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+    "full_exe_hash_recomputed": false,
+    "extent": {
+      "begin_rva": "12FF8D0",
+      "end_rva_exclusive": "12FFA2A",
+      "size": 346,
+      "pdata_index": 62793,
+      "unwind_rva": "5183350",
+      "unwind_version": 1,
+      "unwind_flags": 2,
+      "unique_entry": true,
+      "chained": false
+    },
+    "file_offset": 19918032,
+    "span_sha256": "ce0f29a8f9228a72d7dc913150238fe2a0bdbbe660353d425fa377653aa11a0e",
+    "raw_and_ledger_fsynced_before_decode": true,
+    "decoded_bytes": 346,
+    "all_extent_bytes_decoded": true,
+    "instruction_count": 90,
+    "assembly_path": "12FF8D0.asm",
+    "calls": [
+      {
+        "rva": "12FF9C0",
+        "bytes": "ffd0",
+        "mnemonic": "call",
+        "operands": "rax",
+        "direct_target_rva": null
+      },
+      {
+        "rva": "12FF9F3",
+        "bytes": "e8d80c4f02",
+        "mnemonic": "call",
+        "operands": "0x37f06d0",
+        "direct_target_rva": "37F06D0"
+      },
+      {
+        "rva": "12FFA09",
+        "bytes": "ff10",
+        "mnemonic": "call",
+        "operands": "qword ptr [rax]",
+        "direct_target_rva": null
+      },
+      {
+        "rva": "12FFA21",
+        "bytes": "ff10",
+        "mnemonic": "call",
+        "operands": "qword ptr [rax]",
+        "direct_target_rva": null
+      }
+    ],
+    "branches": [
+      {
+        "rva": "12FF8EA",
+        "bytes": "742e",
+        "mnemonic": "je",
+        "operands": "0x12ff91a",
+        "direct_target_rva": "12FF91A"
+      },
+      {
+        "rva": "12FF8FF",
+        "bytes": "7319",
+        "mnemonic": "jae",
+        "operands": "0x12ff91a",
+        "direct_target_rva": "12FF91A"
+      },
+      {
+        "rva": "12FF912",
+        "bytes": "7406",
+        "mnemonic": "je",
+        "operands": "0x12ff91a",
+        "direct_target_rva": "12FF91A"
+      },
+      {
+        "rva": "12FF918",
+        "bytes": "7403",
+        "mnemonic": "je",
+        "operands": "0x12ff91d",
+        "direct_target_rva": "12FF91D"
+      },
+      {
+        "rva": "12FF927",
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x12ff932",
+        "direct_target_rva": "12FF932"
+      },
+      {
+        "rva": "12FF930",
+        "bytes": "eb02",
+        "mnemonic": "jmp",
+        "operands": "0x12ff934",
+        "direct_target_rva": "12FF934"
+      },
+      {
+        "rva": "12FF93D",
+        "bytes": "7431",
+        "mnemonic": "je",
+        "operands": "0x12ff970",
+        "direct_target_rva": "12FF970"
+      },
+      {
+        "rva": "12FF952",
+        "bytes": "731c",
+        "mnemonic": "jae",
+        "operands": "0x12ff970",
+        "direct_target_rva": "12FF970"
+      },
+      {
+        "rva": "12FF965",
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x12ff970",
+        "direct_target_rva": "12FF970"
+      },
+      {
+        "rva": "12FF96B",
+        "bytes": "7503",
+        "mnemonic": "jne",
+        "operands": "0x12ff970",
+        "direct_target_rva": "12FF970"
+      },
+      {
+        "rva": "12FFA01",
+        "bytes": "7409",
+        "mnemonic": "je",
+        "operands": "0x12ffa0c",
+        "direct_target_rva": "12FFA0C"
+      },
+      {
+        "rva": "12FFA17",
+        "bytes": "740b",
+        "mnemonic": "je",
+        "operands": "0x12ffa24",
+        "direct_target_rva": "12FFA24"
+      }
+    ],
+    "external_edges_not_followed": true
+  },
+  "raw_hex": "40534883ec604c8bd14c8b05887c9604488b15897c96044d85c0742e448b8918020000418bc125ffffff00413b402c73198bc84803c9498b4020488b44c8084885c07406443948187403488bc2488b88c00100004885c974090fb681a9040000eb0232c084c0410f94c34d85c07431458b8a18020000418bc125ffffff00413b402c731c8bc84803c9498b40204c8b44c8084d85c07409453948187503498bd08b4218c64424300033db48895c2434895c243c488d0d96ab460348894c2428488d0d5aab460348894c2440c7442448010000008944244c44885c2450488b05adab4603488d942488000000488d4c2428ffd090488b08488918488d442478488944242048895c247848898c2480000000448d430e488d942480000000488d0d4d189c04e8d80c4f0290488b4c24784885c97409488b018d5301ff1090488b8c24880000004885c9740b488b01ba01000000ff10904883c4605bc3",
+  "assembly": " 12FF8D0 4053                           push     rbx\n 12FF8D2 4883ec60                       sub      rsp, 0x60\n 12FF8D6 4c8bd1                         mov      r10, rcx\n 12FF8D9 4c8b05887c9604                 mov      r8, qword ptr [rip + 0x4967c88]\n 12FF8E0 488b15897c9604                 mov      rdx, qword ptr [rip + 0x4967c89]\n 12FF8E7 4d85c0                         test     r8, r8\n 12FF8EA 742e                           je       0x12ff91a\n 12FF8EC 448b8918020000                 mov      r9d, dword ptr [rcx + 0x218]\n 12FF8F3 418bc1                         mov      eax, r9d\n 12FF8F6 25ffffff00                     and      eax, 0xffffff\n 12FF8FB 413b402c                       cmp      eax, dword ptr [r8 + 0x2c]\n 12FF8FF 7319                           jae      0x12ff91a\n 12FF901 8bc8                           mov      ecx, eax\n 12FF903 4803c9                         add      rcx, rcx\n 12FF906 498b4020                       mov      rax, qword ptr [r8 + 0x20]\n 12FF90A 488b44c808                     mov      rax, qword ptr [rax + rcx*8 + 8]\n 12FF90F 4885c0                         test     rax, rax\n 12FF912 7406                           je       0x12ff91a\n 12FF914 44394818                       cmp      dword ptr [rax + 0x18], r9d\n 12FF918 7403                           je       0x12ff91d\n 12FF91A 488bc2                         mov      rax, rdx\n 12FF91D 488b88c0010000                 mov      rcx, qword ptr [rax + 0x1c0]\n 12FF924 4885c9                         test     rcx, rcx\n 12FF927 7409                           je       0x12ff932\n 12FF929 0fb681a9040000                 movzx    eax, byte ptr [rcx + 0x4a9]\n 12FF930 eb02                           jmp      0x12ff934\n 12FF932 32c0                           xor      al, al\n 12FF934 84c0                           test     al, al\n 12FF936 410f94c3                       sete     r11b\n 12FF93A 4d85c0                         test     r8, r8\n 12FF93D 7431                           je       0x12ff970\n 12FF93F 458b8a18020000                 mov      r9d, dword ptr [r10 + 0x218]\n 12FF946 418bc1                         mov      eax, r9d\n 12FF949 25ffffff00                     and      eax, 0xffffff\n 12FF94E 413b402c                       cmp      eax, dword ptr [r8 + 0x2c]\n 12FF952 731c                           jae      0x12ff970\n 12FF954 8bc8                           mov      ecx, eax\n 12FF956 4803c9                         add      rcx, rcx\n 12FF959 498b4020                       mov      rax, qword ptr [r8 + 0x20]\n 12FF95D 4c8b44c808                     mov      r8, qword ptr [rax + rcx*8 + 8]\n 12FF962 4d85c0                         test     r8, r8\n 12FF965 7409                           je       0x12ff970\n 12FF967 45394818                       cmp      dword ptr [r8 + 0x18], r9d\n 12FF96B 7503                           jne      0x12ff970\n 12FF96D 498bd0                         mov      rdx, r8\n 12FF970 8b4218                         mov      eax, dword ptr [rdx + 0x18]\n 12FF973 c644243000                     mov      byte ptr [rsp + 0x30], 0\n 12FF978 33db                           xor      ebx, ebx\n 12FF97A 48895c2434                     mov      qword ptr [rsp + 0x34], rbx\n 12FF97F 895c243c                       mov      dword ptr [rsp + 0x3c], ebx\n 12FF983 488d0d96ab4603                 lea      rcx, [rip + 0x346ab96]\n 12FF98A 48894c2428                     mov      qword ptr [rsp + 0x28], rcx\n 12FF98F 488d0d5aab4603                 lea      rcx, [rip + 0x346ab5a]\n 12FF996 48894c2440                     mov      qword ptr [rsp + 0x40], rcx\n 12FF99B c744244801000000               mov      dword ptr [rsp + 0x48], 1\n 12FF9A3 8944244c                       mov      dword ptr [rsp + 0x4c], eax\n 12FF9A7 44885c2450                     mov      byte ptr [rsp + 0x50], r11b\n 12FF9AC 488b05adab4603                 mov      rax, qword ptr [rip + 0x346abad]\n 12FF9B3 488d942488000000               lea      rdx, [rsp + 0x88]\n 12FF9BB 488d4c2428                     lea      rcx, [rsp + 0x28]\n 12FF9C0 ffd0                           call     rax\n 12FF9C2 90                             nop      \n 12FF9C3 488b08                         mov      rcx, qword ptr [rax]\n 12FF9C6 488918                         mov      qword ptr [rax], rbx\n 12FF9C9 488d442478                     lea      rax, [rsp + 0x78]\n 12FF9CE 4889442420                     mov      qword ptr [rsp + 0x20], rax\n 12FF9D3 48895c2478                     mov      qword ptr [rsp + 0x78], rbx\n 12FF9D8 48898c2480000000               mov      qword ptr [rsp + 0x80], rcx\n 12FF9E0 448d430e                       lea      r8d, [rbx + 0xe]\n 12FF9E4 488d942480000000               lea      rdx, [rsp + 0x80]\n 12FF9EC 488d0d4d189c04                 lea      rcx, [rip + 0x49c184d]\n 12FF9F3 e8d80c4f02                     call     0x37f06d0\n 12FF9F8 90                             nop      \n 12FF9F9 488b4c2478                     mov      rcx, qword ptr [rsp + 0x78]\n 12FF9FE 4885c9                         test     rcx, rcx\n 12FFA01 7409                           je       0x12ffa0c\n 12FFA03 488b01                         mov      rax, qword ptr [rcx]\n 12FFA06 8d5301                         lea      edx, [rbx + 1]\n 12FFA09 ff10                           call     qword ptr [rax]\n 12FFA0B 90                             nop      \n 12FFA0C 488b8c2488000000               mov      rcx, qword ptr [rsp + 0x88]\n 12FFA14 4885c9                         test     rcx, rcx\n 12FFA17 740b                           je       0x12ffa24\n 12FFA19 488b01                         mov      rax, qword ptr [rcx]\n 12FFA1C ba01000000                     mov      edx, 1\n 12FFA21 ff10                           call     qword ptr [rax]\n 12FFA23 90                             nop      \n 12FFA24 4883c460                       add      rsp, 0x60\n 12FFA28 5b                             pop      rbx\n 12FFA29 c3                             ret      \n",
+  "source_caller": {
+    "rva": "1303D40",
+    "call_rva": "1303D49",
+    "target_rva": "12FF8D0",
+    "proof_path": "C:\\ck3-e04-resume-20261015-a01\\refill-toggle-actual-next-a09\\refill-final-1303d40-source-a11\\1303D40.actual.json",
+    "proof_sha256": "6865d5887e6c6ef5abc4fdfca45d25c2c7e13cb2b0cb3b3ad4d9e0a0cc914d46"
+  },
+  "receiver_owner": {
+    "full_character_id_offset": "218",
+    "registry_global_rva": "5C67568",
+    "fallback_global_rva": "5C67570",
+    "slot_index_mask": "00FFFFFF",
+    "registry_count_offset": "2C",
+    "registry_table_offset": "20",
+    "slot_stride": 16,
+    "slot_object_pointer_offset": 8,
+    "character_full_id_offset": "18",
+    "character_magic_checked_by_native_function": false,
+    "resolution_repeated_before_payload": true,
+    "player_owner_substitution_allowed": false
+  },
+  "flag_read": {
+    "character_military_pointer_offset": "1C0",
+    "military_flag_byte_offset": "4A9",
+    "read_rva": "12FF929",
+    "null_military_old_enabled": false,
+    "enabled_expression": "raw4A9 != 0",
+    "desired_expression": "raw4A9 == 0 (or true when military pointer null)",
+    "normalize_instruction_rva": "12FF936",
+    "normalization": "sete r11b yields exactly0or1"
+  },
+  "command_packet": {
+    "stack_base": "RSP after pushRBX/sub60",
+    "wrapper_descriptor_lea_rva": "476A520",
+    "embedded_command_descriptor_lea_rva": "476A4F0",
+    "payload_refcount_dword_stack_offset": "48",
+    "payload_refcount_dword_value": 1,
+    "full_character_id_stack_offset": "4C",
+    "desired_bool_stack_offset": "50",
+    "factory_pointer_global_rva": "476A560",
+    "factory_call_rva": "12FF9C0",
+    "actual_factory_pointer_or_body_read": false,
+    "factory_arguments": {
+      "RCX": "RSP+28",
+      "RDX": "RSP+88 output holder"
+    },
+    "direct_4A9_store_in_this_body": false,
+    "command_execution_body_read": false,
+    "command_business_type_name_proven": false,
+    "submission_call_rva": "12FF9F3",
+    "submission_direct_target_rva": "37F06D0",
+    "submission_context_address_rva": "5CC1240",
+    "submission_arguments": {
+      "RCX": "&module[5CC1240]",
+      "RDX": "&stack[80] unique command holder",
+      "R8D": 14,
+      "stack20": "&stack[78] output holder"
+    },
+    "factory_role_source_verified": false,
+    "command_submission_role": "Structural inference from descriptor, owner+desired payload, indirect returned holder and the37F06D0 call; callee bodies not read.",
+    "submission_synchronous_or_queued": "unknown"
+  },
+  "branch_contract": [
+    {
+      "phase": "first owner resolution",
+      "sites": [
+        "12FF8EA",
+        "12FF8FF",
+        "12FF912",
+        "12FF918"
+      ],
+      "cases": "registry null, low24index>=count, slot null, or fullID mismatch select fallback global5C67570; exact fullID selects slot object"
+    },
+    {
+      "phase": "old flag",
+      "site": "12FF927",
+      "cases": "nonnull military reads byte4A9; null military synthesizes0"
+    },
+    {
+      "phase": "desired",
+      "sites": [
+        "12FF934",
+        "12FF936"
+      ],
+      "cases": "old byte zero ->1; every nonzero byte including2 ->0"
+    },
+    {
+      "phase": "second owner resolution",
+      "sites": [
+        "12FF93D",
+        "12FF952",
+        "12FF965",
+        "12FF96B"
+      ],
+      "cases": "same full-generation resolution, fallback on invalid; selected Character+18 becomes command payload ID"
+    },
+    {
+      "phase": "command production",
+      "sites": [
+        "12FF9C0",
+        "12FF9F3"
+      ],
+      "cases": "factory pointer indirect call, then queue37F06D0 category0xE; no immediate flag store"
+    },
+    {
+      "phase": "cleanup",
+      "sites": [
+        "12FFA01",
+        "12FFA17"
+      ],
+      "cases": "nonnull output holders invoke virtual slot0 withEDX1; external targets not followed"
+    }
+  ],
+  "next_minimal_source": {
+    "data_anchor_rva": "476A560",
+    "data_bytes": 8,
+    "reason": "Resolve actual factory target used by this exact OnClick; also source-pinned command descriptor476A4F0 can identify execution slot with a separate bounded plan. Generic37F06D0 must not be presumed actual setter."
+  },
+  "future_guard_requirements": [
+    "Bind actual GUI native receiver owner+218 fullID, not guessed player or callback+F0",
+    "Reject invalid/fallback owner for typed action admission even though stock code uses fallback",
+    "Read source Character+1C0/+4A9 independently before and after; preserve full generation and async postcondition",
+    "Dispatch source-bound original callback once; ACK/AL1 is not transition evidence"
+  ],
+  "actual_UI_action_executed": false,
+  "actual_flag_transition_observed": false,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false
+}

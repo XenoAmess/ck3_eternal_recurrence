@@ -157,14 +157,24 @@ class ArmyQueryHistoryStore:
     diagnostic while leaving the successful current read and its cache intact.
     """
 
-    def __init__(self, evidence_dir: Path, limit_bytes: int) -> None:
+    def __init__(self, evidence_dir: Path, limit_bytes: int, *, admission_guard=None) -> None:
         if type(limit_bytes) is not int or limit_bytes < 0:
             raise ValueError("Army history sidecar limit must be a nonnegative integer")
+        if admission_guard is not None and not callable(admission_guard):
+            raise ValueError("Army sidecar admission guard must be callable or None")
+        self.admission_guard = admission_guard
         self.evidence_dir = evidence_dir
         self.limit_bytes = limit_bytes
         self._budget: ByteBudget | None = None
 
     def record(self, result: dict[str, object]) -> dict[str, object]:
+        if self.admission_guard is not None:
+            try:
+                self.admission_guard()
+            except (ValueError, OSError) as error:
+                return build_army_query_history_summary(result, None,
+                    unavailable_reason="sidecar_admission_rejected",
+                    diagnostic={"limit_bytes": self.limit_bytes, "reason": str(error)[:1000]})
         if is_compact_army_history_result(result):
             return copy.deepcopy(result)
         if self.limit_bytes == 0:

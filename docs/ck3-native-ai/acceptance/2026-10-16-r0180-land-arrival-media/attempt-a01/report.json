@@ -1,0 +1,204 @@
+{
+  "schema": "xar.e04.R0180-land-arrival-raw-offline-audit.v1",
+  "state": "PASS_RAW_METADATA_AND_STRICT_DECODE_ONLY",
+  "at_utc": "2026-10-16T01:06:11.795969+00:00",
+  "errors": [],
+  "raw_identity_reused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "raw_stat_before": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "mtime_ns": 1792112565810390800
+  },
+  "raw_stat_after": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "mtime_ns": 1792112565810390800
+  },
+  "actual_source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "actual_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0180",
+  "recorder_rc0_job_empty": true,
+  "actual_duration_seconds": "45.000000",
+  "decoded_frames": 1350,
+  "width": 2560,
+  "height": 1440,
+  "fps": "30/1",
+  "time_base": "1/1000",
+  "codec": "h264",
+  "pixel_format": "yuv420p",
+  "audio_streams": 0,
+  "actual_metadata": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\ACTUAL-METADATA.json",
+    "bytes": 3564,
+    "sha256": "7e4222999008d508d054d573bd03ffab1a307281253b8cd9c9c99be6d010af59"
+  },
+  "strict_decode_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\strict-whole-decode-and-samples\\result.json",
+    "bytes": 1187,
+    "sha256": "b2e9ad471f04340cf3c0a266fa4c101fc1fb7bc6fab84b5505c03207c87e1df5"
+  },
+  "plan_and_inputs": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\PLAN-AND-INPUTS.json",
+    "bytes": 4268,
+    "sha256": "a66a5594a0b020d8511ae8d5b0a3c6a6c6141c904755cef2b9019dbaa6168165"
+  },
+  "audit_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\preparation\\audit_r0180_finished_raw_a01.py",
+    "bytes": 18354,
+    "sha256": "b1ab75737a56a57b5cc874d62dfb5e0845bd14bb7a153116c6e05441406ca605"
+  },
+  "samples": [
+    {
+      "selected_ordinal": 0,
+      "original_pts_ticks": 0,
+      "original_pts_time": "0",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 0,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-00.jpg",
+        "bytes": 127943,
+        "sha256": "fb9b20a5b416bfa115ea38ef33c5198115bed3223fc953db24e210ec790e59ed"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    },
+    {
+      "selected_ordinal": 1,
+      "original_pts_ticks": 4000,
+      "original_pts_time": "4",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 120,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-01.jpg",
+        "bytes": 133260,
+        "sha256": "c7f30e9e076d4edfcebdd8e79f8f25205ca27108312a98022f133ad411ed8471"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    },
+    {
+      "selected_ordinal": 2,
+      "original_pts_ticks": 8000,
+      "original_pts_time": "8",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 240,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-02.jpg",
+        "bytes": 133019,
+        "sha256": "5a62cccf78f6541e10254142fcef19edc9c8b66ad90038949205e292878e00fa"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    },
+    {
+      "selected_ordinal": 3,
+      "original_pts_ticks": 12000,
+      "original_pts_time": "12",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 360,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-03.jpg",
+        "bytes": 132052,
+        "sha256": "c41094ff04d16b46c1f8ac56138aa1133cc5ea3772d2b4089ef433f949731c96"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    },
+    {
+      "selected_ordinal": 4,
+      "original_pts_ticks": 18000,
+      "original_pts_time": "18",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 540,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-04.jpg",
+        "bytes": 134887,
+        "sha256": "d316c41f4dc17eedfe7fa15e32dcb54f1d2342377f863c22b32c5e3804d0a20b"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    },
+    {
+      "selected_ordinal": 5,
+      "original_pts_ticks": 40000,
+      "original_pts_time": "40",
+      "pixel_format_before_JPEG": "yuv420p",
+      "width": 2560,
+      "height": 1440,
+      "encoded_sample_width": 1600,
+      "encoded_sample_height": 900,
+      "source_frame_ordinal": 1200,
+      "time_base": "1/1000",
+      "image": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\samples\\frame-05.jpg",
+        "bytes": 133231,
+        "sha256": "a1f8ce29a184986f2a919316b753ec6a3f2e554c882c06eda4f5e735da644448"
+      },
+      "AI_visual_observation": null,
+      "Root_visual_review": null,
+      "native_event_exact_frame_claimed": false,
+      "human_approval": false
+    }
+  ],
+  "strict_error_lines": [],
+  "decode_progress_end": true,
+  "raw_SHA_reads": 0,
+  "raw_reencodes": 0,
+  "metadata_probe_count": 1,
+  "strict_whole_decode_count": 1,
+  "extra_seek_count": 0,
+  "selected_JPEG_count": 6,
+  "source_wall_to_PTS_calibrated": false,
+  "native_event_exact_encoded_frame": null,
+  "land_arrival_business_acceptance": null,
+  "land_arrival_in_source_confirmed": null,
+  "nextday_in_source_claimed": false,
+  "clean_spans_certified": false,
+  "continuous_clean_review": false,
+  "Root_visual_approval": null,
+  "human_1x_review": false,
+  "human_signoff": false,
+  "SDK_game_desktop_recorder_main_tree_Git_OneDrive_operations": 0,
+  "budget_pool": "R0180_scene_other256MiB_Root_allocated8MiB",
+  "derived_bytes_before_report": 840535,
+  "derived_bytes_limit": 8388608,
+  "deadline_utc": "2026-10-16T07:45:01.597000+00:00"
+}

@@ -1,0 +1,26 @@
+[Script Info]
+Title: 观众问题与结果维度
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.32,English,en-0,0,0,0,,{\q2}An army's strength at departure is only the starting point.
+Dialogue: 2,0:00:00.10,0:00:04.41,Chinese,zh-0,0,0,0,,{\q2}大军出发时的人数，只是这段行程的起点。
+Dialogue: 1,0:00:04.32,0:00:09.19,English,en-1,0,0,0,,{\q2}Before battle, its supplies, troop numbers and route can all change.
+Dialogue: 2,0:00:04.41,0:00:07.45,Chinese,zh-1,0,0,0,,{\q2}到接战以前，还要经过补给变
+Dialogue: 2,0:00:07.45,0:00:10.26,Chinese,zh-2,0,0,0,,{\q2}化、兵员变化和路线选择。
+Dialogue: 1,0:00:09.19,0:00:14.41,English,en-2,0,0,0,,{\q2}We need to see when it actually arrives, how many of the original troops
+Dialogue: 2,0:00:10.26,0:00:15.13,Chinese,zh-3,0,0,0,,{\q2}我们要看的，是它什么时候真正到场，原来的兵还剩
+Dialogue: 1,0:00:14.41,0:00:19.56,English,en-3,0,0,0,,{\q2}remain, how much supply it carries, and what it actually paid along the
+Dialogue: 2,0:00:15.13,0:00:19.79,Chinese,zh-4,0,0,0,,{\q2}多少，带着多少补给，以及途中实际付了什么钱。
+Dialogue: 1,0:00:19.56,0:00:19.85,English,en-4,0,0,0,,{\q2}way.

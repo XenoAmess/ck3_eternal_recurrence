@@ -1,0 +1,33 @@
+[Script Info]
+Title: 同一终点也要对齐起算日
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.53,English,en-0,0,0,0,,{\q2}Actual duration also needs a clear starting point.
+Dialogue: 2,0:00:00.10,0:00:04.57,Chinese,zh-0,0,0,0,,{\q2}实际用了几天，同样先说从哪一天开始算。
+Dialogue: 1,0:00:03.53,0:00:07.69,English,en-1,0,0,0,,{\q2}In this reroute test, 13 calendar days passed from the march
+Dialogue: 2,0:00:04.57,0:00:08.48,Chinese,zh-1,0,0,0,,{\q2}这轮改道，从独立载入后的行军起点到替
+Dialogue: 1,0:00:07.69,0:00:11.84,English,en-2,0,0,0,,{\q2}start after an independent load to the alternative endpoint.
+Dialogue: 2,0:00:08.48,0:00:12.39,Chinese,zh-2,0,0,0,,{\q2}代终点，总共十三个自然日；从重新下达
+Dialogue: 1,0:00:11.84,0:00:16.99,English,en-3,0,0,0,,{\q2}From the replacement route order to that endpoint, it took 8 calendar days.
+Dialogue: 2,0:00:12.39,0:00:16.08,Chinese,zh-3,0,0,0,,{\q2}替代路线到那个终点，是八个自然日。
+Dialogue: 2,0:00:16.08,0:00:19.91,Chinese,zh-4,0,0,0,,{\q2}两项都是真实后果，起算点却不同。
+Dialogue: 1,0:00:16.99,0:00:20.77,English,en-4,0,0,0,,{\q2}Both are observed outcomes with different time origins.
+Dialogue: 2,0:00:19.91,0:00:23.70,Chinese,zh-5,0,0,0,,{\q2}它们不能互相顶替，也不能直接拿去给
+Dialogue: 1,0:00:20.77,0:00:23.58,English,en-5,0,0,0,,{\q2}They are not interchangeable, and cannot
+Dialogue: 1,0:00:23.58,0:00:26.25,English,en-6,0,0,0,,{\q2}rank direct march, split-and-rest, and
+Dialogue: 2,0:00:23.70,0:00:27.49,Chinese,zh-6,0,0,0,,{\q2}整军直走、分兵休整和绕路三种方案排
+Dialogue: 1,0:00:26.25,0:00:26.74,English,en-7,0,0,0,,{\q2}detour.
+Dialogue: 1,0:00:26.74,0:00:31.34,English,en-8,0,0,0,,{\q2}Each strategy still needs to finish from the common starting point.
+Dialogue: 2,0:00:27.49,0:00:31.28,Chinese,zh-7,0,0,0,,{\q2}名；三方案仍要各自从共同起点完成。

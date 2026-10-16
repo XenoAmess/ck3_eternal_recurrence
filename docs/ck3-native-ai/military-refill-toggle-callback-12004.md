@@ -119,3 +119,6 @@ source profile可继续消费，新 profile要求准确子叶，缺失/越界保
 
 此后续 source-only 候选的8项新增严格消费检查、两个修改TU的 `/Zs` 均通过；
 没有重跑旧测试，没有新EXE或实机动作，尚需未来成对native/Python build后的实际只读回执。
+
+
+R0180 的实际补员 final target 与完整 28B 包装函数已补入 [1303D40 专题](military-refill-finaltarget-1303d40-12004.md)；唯一下一源码入口为实际 call `12FF8D0`，未执行开关。

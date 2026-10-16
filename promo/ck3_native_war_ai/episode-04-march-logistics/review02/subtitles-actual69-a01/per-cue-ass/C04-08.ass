@@ -1,0 +1,33 @@
+[Script Info]
+Title: 锁定后改道保留首段替换后缀
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.93,English,en-0,0,0,0,,{\q2}Rerouting was a separate normal march test.
+Dialogue: 2,0:00:00.10,0:00:03.28,Chinese,zh-0,0,0,0,,{\q2}改道则是另一场独立正常行军。
+Dialogue: 1,0:00:02.93,0:00:08.06,English,en-1,0,0,0,,{\q2}Three stops remained on the original route when we chose a different endpoint.
+Dialogue: 2,0:00:03.28,0:00:07.38,Chinese,zh-1,0,0,0,,{\q2}原路线还有三站，我们选择了不同的终点。
+Dialogue: 2,0:00:07.38,0:00:12.55,Chinese,zh-2,0,0,0,,{\q2}重新下令以后，当前位置和首段进度没有变，原来的第
+Dialogue: 1,0:00:08.06,0:00:12.54,English,en-2,0,0,0,,{\q2}After the new order, location and first-leg progress were unchanged.
+Dialogue: 1,0:00:12.54,0:00:15.43,English,en-3,0,0,0,,{\q2}The original first stop remained, while the
+Dialogue: 2,0:00:12.55,0:00:17.71,Chinese,zh-3,0,0,0,,{\q2}一站仍然保留，后面的路线换成了通向新终点的一段。
+Dialogue: 1,0:00:15.43,0:00:18.06,English,en-4,0,0,0,,{\q2}later route became a leg toward the new
+Dialogue: 2,0:00:17.71,0:00:21.46,Chinese,zh-4,0,0,0,,{\q2}随后实际观察到军队先走到原第一站
+Dialogue: 1,0:00:18.06,0:00:18.66,English,en-5,0,0,0,,{\q2}endpoint.
+Dialogue: 1,0:00:18.66,0:00:22.38,English,en-6,0,0,0,,{\q2}We then observed the army reach the original first stop,
+Dialogue: 2,0:00:21.46,0:00:24.97,Chinese,zh-5,0,0,0,,{\q2}，再到替代终点，最后路线为空。
+Dialogue: 1,0:00:22.38,0:00:26.23,English,en-7,0,0,0,,{\q2}followed by the alternative endpoint, with an empty route.
+Dialogue: 2,0:00:24.97,0:00:27.98,Chinese,zh-6,0,0,0,,{\q2}锁定限制了眼前这一段，并没有
+Dialogue: 1,0:00:26.23,0:00:30.84,English,en-8,0,0,0,,{\q2}Locking constrained the current leg without fixing every later choice.
+Dialogue: 2,0:00:27.98,0:00:30.78,Chinese,zh-7,0,0,0,,{\q2}把所有后续选择都固定下来。

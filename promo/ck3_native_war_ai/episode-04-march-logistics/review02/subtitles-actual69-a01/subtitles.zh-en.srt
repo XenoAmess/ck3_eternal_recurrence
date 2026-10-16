@@ -1,0 +1,5375 @@
+1
+00:00:00,100 --> 00:00:04,321
+大军出发时的人数，只是这段行程的起点。
+An army's strength at departure is only the starting point.
+
+2
+00:00:04,321 --> 00:00:04,408
+大军出发时的人数，只是这段行程的起点。
+Before battle, its supplies, troop numbers and route can all change.
+
+3
+00:00:04,408 --> 00:00:07,453
+到接战以前，还要经过补给变
+Before battle, its supplies, troop numbers and route can all change.
+
+4
+00:00:07,453 --> 00:00:09,187
+化、兵员变化和路线选择。
+Before battle, its supplies, troop numbers and route can all change.
+
+5
+00:00:09,187 --> 00:00:10,263
+化、兵员变化和路线选择。
+We need to see when it actually arrives, how many of the original troops
+
+6
+00:00:10,263 --> 00:00:14,409
+我们要看的，是它什么时候真正到场，原来的兵还剩
+We need to see when it actually arrives, how many of the original troops
+
+7
+00:00:14,409 --> 00:00:15,132
+我们要看的，是它什么时候真正到场，原来的兵还剩
+remain, how much supply it carries, and what it actually paid along the
+
+8
+00:00:15,132 --> 00:00:19,558
+多少，带着多少补给，以及途中实际付了什么钱。
+remain, how much supply it carries, and what it actually paid along the
+
+9
+00:00:19,558 --> 00:00:19,789
+多少，带着多少补给，以及途中实际付了什么钱。
+way.
+
+10
+00:00:19,789 --> 00:00:19,848
+way.
+
+11
+00:00:20,500 --> 00:00:23,991
+这一轮跟着一点二零点零点四里的罗贝尔。
+This time, we follow Robert in version 1.20.0.4.
+
+12
+00:00:23,991 --> 00:00:24,716
+这一轮跟着一点二零点零点四里的罗贝尔。
+First, we read the army panel's current
+
+13
+00:00:24,716 --> 00:00:26,894
+先把军队面板的当前读数读清
+First, we read the army panel's current
+
+14
+00:00:26,894 --> 00:00:27,747
+先把军队面板的当前读数读清
+values, then track changes during a real
+
+15
+00:00:27,747 --> 00:00:29,872
+，再沿着真实行军看变化。
+values, then track changes during a real
+
+16
+00:00:29,872 --> 00:00:30,319
+，再沿着真实行军看变化。
+march.
+
+17
+00:00:30,319 --> 00:00:30,545
+，再沿着真实行军看变化。
+The mechanics explain how the game calculates;
+
+18
+00:00:30,545 --> 00:00:33,733
+规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次
+The mechanics explain how the game calculates;
+
+19
+00:00:33,733 --> 00:00:36,146
+规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次
+live records show what actually happened in this
+
+20
+00:00:36,146 --> 00:00:37,295
+实际发生了什么；两层接起来，才能解释抵达时的状态。
+live records show what actually happened in this
+
+21
+00:00:37,295 --> 00:00:37,592
+实际发生了什么；两层接起来，才能解释抵达时的状态。
+run.
+
+22
+00:00:37,592 --> 00:00:41,532
+实际发生了什么；两层接起来，才能解释抵达时的状态。
+Together, they explain the army's condition on arrival.
+
+23
+00:00:41,532 --> 00:00:41,592
+Together, they explain the army's condition on arrival.
+
+24
+00:00:42,267 --> 00:00:45,387
+本期改用阿普利亚的罗贝尔，游
+For this episode, we switch to Robert of Apulia in version 1.20.0.4.
+
+25
+00:00:45,387 --> 00:00:47,028
+戏版本为一点二零点零点四。
+For this episode, we switch to Robert of Apulia in version 1.20.0.4.
+
+26
+00:00:47,028 --> 00:00:48,285
+戏版本为一点二零点零点四。
+A new normal campaign gives us one consistent character
+
+27
+00:00:48,285 --> 00:00:50,942
+新的普通战役给我们同一个人物来源
+A new normal campaign gives us one consistent character
+
+28
+00:00:50,942 --> 00:00:51,811
+新的普通战役给我们同一个人物来源
+origin, and separate normal loads let us observe different
+
+29
+00:00:51,811 --> 00:00:55,070
+，再用独立正常载入观察不同操作。
+origin, and separate normal loads let us observe different
+
+30
+00:00:55,070 --> 00:00:55,338
+，再用独立正常载入观察不同操作。
+actions.
+
+31
+00:00:55,338 --> 00:00:55,640
+画面会标清是哪一场、哪一天。
+actions.
+
+32
+00:00:55,640 --> 00:00:58,510
+画面会标清是哪一场、哪一天。
+Each scene will identify its run and day.
+
+33
+00:00:58,510 --> 00:00:58,890
+画面会标清是哪一场、哪一天。
+We can compare separate loads, but will
+
+34
+00:00:58,890 --> 00:01:01,307
+前后两次载入可以比较各自结果，但不会剪
+We can compare separate loads, but will
+
+35
+00:01:01,307 --> 00:01:02,822
+前后两次载入可以比较各自结果，但不会剪
+not edit them into one uninterrupted
+
+36
+00:01:02,822 --> 00:01:03,888
+成一段没有中断的现场；旧版本威廉案例的
+not edit them into one uninterrupted
+
+37
+00:01:03,888 --> 00:01:04,461
+成一段没有中断的现场；旧版本威廉案例的
+session.
+
+38
+00:01:04,461 --> 00:01:06,754
+成一段没有中断的现场；旧版本威廉案例的
+William's troop counts from the older
+
+39
+00:01:06,754 --> 00:01:07,115
+具体人数，也不叠到罗贝尔的军队上。
+William's troop counts from the older
+
+40
+00:01:07,115 --> 00:01:09,984
+具体人数，也不叠到罗贝尔的军队上。
+version will not be overlaid on Robert's
+
+41
+00:01:09,984 --> 00:01:10,272
+具体人数，也不叠到罗贝尔的军队上。
+army.
+
+42
+00:01:10,272 --> 00:01:10,343
+army.
+
+43
+00:01:11,000 --> 00:01:13,397
+先抓住三组容易混淆的数。
+First, keep three distinctions clear.
+
+44
+00:01:13,397 --> 00:01:13,953
+先抓住三组容易混淆的数。
+Supply stock is material; actual troop strength counts people.
+
+45
+00:01:13,953 --> 00:01:17,414
+补给库存是物资，实体兵员是人数；一条显示一比
+Supply stock is material; actual troop strength counts people.
+
+46
+00:01:17,414 --> 00:01:18,652
+补给库存是物资，实体兵员是人数；一条显示一比
+A character record showing 1/1 does not automatically mean one soldier was added.
+
+47
+00:01:18,652 --> 00:01:22,662
+一的角色记录，也不自动等于补进了一名士兵。
+A character record showing 1/1 does not automatically mean one soldier was added.
+
+48
+00:01:22,662 --> 00:01:23,137
+一的角色记录，也不自动等于补进了一名士兵。
+Movement locking is another distinction: after Stop is
+
+49
+00:01:23,137 --> 00:01:26,224
+另一组是移动锁定：按停止以后，
+Movement locking is another distinction: after Stop is
+
+50
+00:01:26,224 --> 00:01:26,376
+另一组是移动锁定：按停止以后，
+pressed, the army may still have to finish its current
+
+51
+00:01:26,376 --> 00:01:29,400
+军队可能还要走完眼前这一段。
+pressed, the army may still have to finish its current
+
+52
+00:01:29,400 --> 00:01:29,785
+它们都会影响我们对“恢复了”“少人了”“停下了”的判断。
+pressed, the army may still have to finish its current
+
+53
+00:01:29,785 --> 00:01:30,048
+它们都会影响我们对“恢复了”“少人了”“停下了”的判断。
+leg.
+
+54
+00:01:30,048 --> 00:01:33,928
+它们都会影响我们对“恢复了”“少人了”“停下了”的判断。
+These affect what we mean by 'recovered,' 'lost troops' and
+
+55
+00:01:33,928 --> 00:01:34,361
+它们都会影响我们对“恢复了”“少人了”“停下了”的判断。
+'stopped.' We will examine the actual records before explaining the
+
+56
+00:01:34,361 --> 00:01:38,334
+接下来分别看实际记录，再解释这些变化。
+'stopped.' We will examine the actual records before explaining the
+
+57
+00:01:38,334 --> 00:01:38,795
+接下来分别看实际记录，再解释这些变化。
+changes.
+
+58
+00:01:38,795 --> 00:01:38,860
+changes.
+
+59
+00:01:39,533 --> 00:01:42,381
+兵员减少也有不同入口。
+Troops can be lost through different processes.
+
+60
+00:01:42,381 --> 00:01:42,673
+围城和劫掠的周期处理、进入新县时的移动损耗，各
+Troops can be lost through different processes.
+
+61
+00:01:42,673 --> 00:01:46,811
+围城和劫掠的周期处理、进入新县时的移动损耗，各
+Periodic siege and raid processing, and movement attrition on
+
+62
+00:01:46,811 --> 00:01:47,478
+围城和劫掠的周期处理、进入新县时的移动损耗，各
+entering a new county, have their own conditions and calculation
+
+63
+00:01:47,478 --> 00:01:51,152
+自有条件和计算顺序；不能把每次少人都叫饥饿。
+entering a new county, have their own conditions and calculation
+
+64
+00:01:51,152 --> 00:01:51,559
+自有条件和计算顺序；不能把每次少人都叫饥饿。
+order.
+
+65
+00:01:51,559 --> 00:01:52,354
+自有条件和计算顺序；不能把每次少人都叫饥饿。
+Not every loss is starvation.
+
+66
+00:01:52,354 --> 00:01:53,496
+与此同时，补员、分合军或其
+Not every loss is starvation.
+
+67
+00:01:53,496 --> 00:01:55,539
+与此同时，补员、分合军或其
+Replenishment, splitting, merging and other events can also change the total.
+
+68
+00:01:55,539 --> 00:01:58,640
+他事件也会改变看到的总数。
+Replenishment, splitting, merging and other events can also change the total.
+
+69
+00:01:58,640 --> 00:01:58,723
+他事件也会改变看到的总数。
+To explain a march, first compare each regiment's exact
+
+70
+00:01:58,723 --> 00:02:02,348
+要解释一段行军，先逐团核对前后整数，
+To explain a march, first compare each regiment's exact
+
+71
+00:02:02,348 --> 00:02:02,844
+要解释一段行军，先逐团核对前后整数，
+counts, then identify which processing actually occurred.
+
+72
+00:02:02,844 --> 00:02:06,190
+再看那段时间真正发生了哪一类结算。
+counts, then identify which processing actually occurred.
+
+73
+00:02:06,190 --> 00:02:06,736
+再看那段时间真正发生了哪一类结算。
+A net change between readings is reported as a net change first.
+
+74
+00:02:06,736 --> 00:02:10,407
+两端的净变化，先按净变化报告。
+A net change between readings is reported as a net change first.
+
+75
+00:02:10,407 --> 00:02:10,465
+A net change between readings is reported as a net change first.
+
+76
+00:02:11,133 --> 00:02:13,468
+行军还有几种时间。
+A march has several kinds of timing.
+
+77
+00:02:13,468 --> 00:02:13,579
+地图预览给计划，军队窗口给当前估计，当前首段有自己
+A march has several kinds of timing.
+
+78
+00:02:13,579 --> 00:02:17,788
+地图预览给计划，军队窗口给当前估计，当前首段有自己
+The map preview gives a plan; the army window gives a current
+
+79
+00:02:17,788 --> 00:02:18,986
+地图预览给计划，军队窗口给当前估计，当前首段有自己
+estimate; the first leg has its own progress and remaining
+
+80
+00:02:18,986 --> 00:02:21,791
+的进度和剩余时量；军队真正到达，又是后来的结果。
+estimate; the first leg has its own progress and remaining
+
+81
+00:02:21,791 --> 00:02:22,412
+的进度和剩余时量；军队真正到达，又是后来的结果。
+duration.
+
+82
+00:02:22,412 --> 00:02:24,283
+的进度和剩余时量；军队真正到达，又是后来的结果。
+Actual arrival is a later outcome.
+
+83
+00:02:24,283 --> 00:02:24,722
+整条路线与第一段的数字不同，不一定互相矛盾。
+Actual arrival is a later outcome.
+
+84
+00:02:24,722 --> 00:02:28,941
+整条路线与第一段的数字不同，不一定互相矛盾。
+Different figures for the whole route and its first leg need not conflict.
+
+85
+00:02:28,941 --> 00:02:29,749
+我们会把它们各自描述的范围标出来，再用实际位置和剩
+Different figures for the whole route and its first leg need not conflict.
+
+86
+00:02:29,749 --> 00:02:34,023
+我们会把它们各自描述的范围标出来，再用实际位置和剩
+We will label their scope, then verify arrival from the actual
+
+87
+00:02:34,023 --> 00:02:34,204
+我们会把它们各自描述的范围标出来，再用实际位置和剩
+position and remaining route, rather than making one date mean several
+
+88
+00:02:34,204 --> 00:02:38,847
+余路线核对到达，让一个日期不再承担几种不同意思。
+position and remaining route, rather than making one date mean several
+
+89
+00:02:38,847 --> 00:02:39,257
+余路线核对到达，让一个日期不再承担几种不同意思。
+things.
+
+90
+00:02:39,257 --> 00:02:39,329
+things.
+
+91
+00:02:40,000 --> 00:02:44,107
+整军直走，争取少做中途安排；分兵休整
+Marching as one army aims to reduce arrangements along the way.
+
+92
+00:02:44,107 --> 00:02:44,162
+整军直走，争取少做中途安排；分兵休整
+Splitting to rest takes time at separate stations and to regroup.
+
+93
+00:02:44,162 --> 00:02:48,324
+，要付出分开驻留和重新会合的时间；换
+Splitting to rest takes time at separate stations and to regroup.
+
+94
+00:02:48,324 --> 00:02:48,344
+路线，则要走完预先选好的中转路径。
+Splitting to rest takes time at separate stations and to regroup.
+
+95
+00:02:48,344 --> 00:02:52,255
+路线，则要走完预先选好的中转路径。
+Rerouting requires completing the chosen sequence of waypoints.
+
+96
+00:02:52,255 --> 00:02:52,451
+比较这三种安排时，要从同一个普通存档出
+Rerouting requires completing the chosen sequence of waypoints.
+
+97
+00:02:52,451 --> 00:02:55,318
+比较这三种安排时，要从同一个普通存档出
+To compare these plans, start from the same
+
+98
+00:02:55,318 --> 00:02:56,273
+比较这三种安排时，要从同一个普通存档出
+normal save and head for the same
+
+99
+00:02:56,273 --> 00:02:57,518
+发，前往同一个目的地，分别记录各自真实
+normal save and head for the same
+
+100
+00:02:57,518 --> 00:02:58,318
+发，前往同一个目的地，分别记录各自真实
+destination.
+
+101
+00:02:58,318 --> 00:03:00,290
+发，前往同一个目的地，分别记录各自真实
+Record each plan's actual arrival outcome,
+
+102
+00:03:00,290 --> 00:03:01,116
+到场的结果，再看同一天各队分别在哪里。
+Record each plan's actual arrival outcome,
+
+103
+00:03:01,116 --> 00:03:04,114
+到场的结果，再看同一天各队分别在哪里。
+then compare where the armies are on the same
+
+104
+00:03:04,114 --> 00:03:04,308
+到场的结果，再看同一天各队分别在哪里。
+day.
+
+105
+00:03:04,308 --> 00:03:04,380
+day.
+
+106
+00:03:05,033 --> 00:03:08,822
+出发前，先知道军队现在有什么；途中，再看地点和路
+Before departure, establish what the army currently has.
+
+107
+00:03:08,822 --> 00:03:10,505
+出发前，先知道军队现在有什么；途中，再看地点和路
+During the march, check which conditions change with location and route.
+
+108
+00:03:10,505 --> 00:03:13,694
+线改变了哪些条件；接战前，确认真正到了多少人。
+During the march, check which conditions change with location and route.
+
+109
+00:03:13,694 --> 00:03:15,749
+线改变了哪些条件；接战前，确认真正到了多少人。
+Before battle, confirm how many troops actually arrived.
+
+110
+00:03:15,749 --> 00:03:17,483
+我们从补给开始。
+Before battle, confirm how many troops actually arrived.
+
+111
+00:03:17,483 --> 00:03:17,723
+我们从补给开始。
+We begin with supply: separate what the army carries, how
+
+112
+00:03:17,723 --> 00:03:21,256
+先把军队带着多少物资、最多能带
+We begin with supply: separate what the army carries, how
+
+113
+00:03:21,256 --> 00:03:21,403
+多少，与当地能支持多少兵分开。
+We begin with supply: separate what the army carries, how
+
+114
+00:03:21,403 --> 00:03:24,789
+多少，与当地能支持多少兵分开。
+much it can carry, and how many troops the location can
+
+115
+00:03:24,789 --> 00:03:25,187
+看清这些量，再讨论在哪里停留、何时继
+much it can carry, and how many troops the location can
+
+116
+00:03:25,187 --> 00:03:25,737
+看清这些量，再讨论在哪里停留、何时继
+support.
+
+117
+00:03:25,737 --> 00:03:28,749
+看清这些量，再讨论在哪里停留、何时继
+Then we can discuss where to stop, when to move on,
+
+118
+00:03:28,749 --> 00:03:29,221
+续走，以及分兵是不是减轻了当地压力。
+Then we can discuss where to stop, when to move on,
+
+119
+00:03:29,221 --> 00:03:32,710
+续走，以及分兵是不是减轻了当地压力。
+and whether splitting really reduces local pressure.
+
+120
+00:03:32,710 --> 00:03:32,773
+and whether splitting really reduces local pressure.
+
+121
+00:03:34,500 --> 00:03:37,555
+先读军队面板的当前人数和满
+Read the army's current and maximum strength, then expand each regiment.
+
+122
+00:03:37,555 --> 00:03:39,757
+员人数，再展开到每个兵团。
+Read the army's current and maximum strength, then expand each regiment.
+
+123
+00:03:39,757 --> 00:03:40,611
+员人数，再展开到每个兵团。
+Locate deficits by comparing current
+
+124
+00:03:40,611 --> 00:03:42,455
+缺额在哪里，要看同一兵团身份的当前值与上限。
+Locate deficits by comparing current
+
+125
+00:03:42,455 --> 00:03:44,778
+缺额在哪里，要看同一兵团身份的当前值与上限。
+and maximum values for the same
+
+126
+00:03:44,778 --> 00:03:45,453
+缺额在哪里，要看同一兵团身份的当前值与上限。
+regiment.
+
+127
+00:03:45,453 --> 00:03:45,716
+缺额在哪里，要看同一兵团身份的当前值与上限。
+To explain actual replenishment, also check the underlying soldier records.
+
+128
+00:03:45,716 --> 00:03:50,359
+需要解释实体补兵时，还要继续核对实际兵员记
+To explain actual replenishment, also check the underlying soldier records.
+
+129
+00:03:50,359 --> 00:03:50,929
+录；面板里已确认的空兵员角色记录要单列。
+To explain actual replenishment, also check the underlying soldier records.
+
+130
+00:03:50,929 --> 00:03:54,782
+录；面板里已确认的空兵员角色记录要单列。
+Keep confirmed character records with no soldier DATA separate.
+
+131
+00:03:54,782 --> 00:03:55,529
+这既避免把不同军队的数拼在一起，也避免
+Keep confirmed character records with no soldier DATA separate.
+
+132
+00:03:55,529 --> 00:03:59,104
+这既避免把不同军队的数拼在一起，也避免
+This avoids combining counts from different armies or
+
+133
+00:03:59,104 --> 00:03:59,435
+把角色的一比一显示误记成新增实体士兵。
+This avoids combining counts from different armies or
+
+134
+00:03:59,435 --> 00:04:03,426
+把角色的一比一显示误记成新增实体士兵。
+treating a character's 1/1 display as an added soldier.
+
+135
+00:04:03,426 --> 00:04:03,488
+treating a character's 1/1 display as an added soldier.
+
+136
+00:04:04,167 --> 00:04:08,535
+军队携带的补给，与补给容量使用同一种物资单位。
+Carried supply and supply capacity use the same supply unit.
+
+137
+00:04:08,535 --> 00:04:09,172
+军队携带的补给，与补给容量使用同一种物资单位。
+For a hypothetical example, 100 supply and 300
+
+138
+00:04:09,172 --> 00:04:11,947
+举一个假设例子：当前补给一百、容量三百，
+For a hypothetical example, 100 supply and 300
+
+139
+00:04:11,947 --> 00:04:13,568
+举一个假设例子：当前补给一百、容量三百，
+capacity means the army carries 100 units and can
+
+140
+00:04:13,568 --> 00:04:15,582
+表示现在带着一百单位，容量是三百；前面的
+capacity means the army carries 100 units and can
+
+141
+00:04:15,582 --> 00:04:16,324
+表示现在带着一百单位，容量是三百；前面的
+carry 300.
+
+142
+00:04:16,324 --> 00:04:17,965
+表示现在带着一百单位，容量是三百；前面的
+The first number is neither 100 soldiers nor 100 percent.
+
+143
+00:04:17,965 --> 00:04:20,473
+数不是一百名士兵，也不是百分之一百。
+The first number is neither 100 soldiers nor 100 percent.
+
+144
+00:04:20,473 --> 00:04:21,922
+数不是一百名士兵，也不是百分之一百。
+The local supply limit must instead be compared with local troop usage.
+
+145
+00:04:21,922 --> 00:04:25,642
+当地补给上限则要和当地兵员用量比较。
+The local supply limit must instead be compared with local troop usage.
+
+146
+00:04:25,642 --> 00:04:26,080
+当地补给上限则要和当地兵员用量比较。
+Get the units right before choosing which columns to compare.
+
+147
+00:04:26,080 --> 00:04:30,014
+先把单位摆正，才知道该比较哪两列。
+Get the units right before choosing which columns to compare.
+
+148
+00:04:30,014 --> 00:04:30,083
+Get the units right before choosing which columns to compare.
+
+149
+00:04:30,733 --> 00:04:34,178
+军队携带的补给、能够携带的容量，以及
+Carried supply, carrying capacity and the number of
+
+150
+00:04:34,178 --> 00:04:34,585
+军队携带的补给、能够携带的容量，以及
+soldiers a location can support have their own units.
+
+151
+00:04:34,585 --> 00:04:37,758
+当地能支持多少士兵，各有自己的单位。
+soldiers a location can support have their own units.
+
+152
+00:04:37,758 --> 00:04:38,436
+当地能支持多少士兵，各有自己的单位。
+If both armies remain in the same place
+
+153
+00:04:38,436 --> 00:04:40,430
+分兵以后，两队仍在同一个地方，就还要看当地实际用
+If both armies remain in the same place
+
+154
+00:04:40,430 --> 00:04:42,966
+分兵以后，两队仍在同一个地方，就还要看当地实际用
+after a split, check the actual local
+
+155
+00:04:42,966 --> 00:04:43,377
+分兵以后，两队仍在同一个地方，就还要看当地实际用
+usage.
+
+156
+00:04:43,377 --> 00:04:43,683
+分兵以后，两队仍在同一个地方，就还要看当地实际用
+Looking only at the smaller army does not
+
+157
+00:04:43,683 --> 00:04:46,185
+量；不能只盯着较小的那队，便认定压力已经消失。
+Looking only at the smaller army does not
+
+158
+00:04:46,185 --> 00:04:48,308
+量；不能只盯着较小的那队，便认定压力已经消失。
+establish that the pressure has
+
+159
+00:04:48,308 --> 00:04:48,712
+量；不能只盯着较小的那队，便认定压力已经消失。
+disappeared.
+
+160
+00:04:48,712 --> 00:04:49,130
+离开原地后，也要重新读新地点的条件。
+disappeared.
+
+161
+00:04:49,130 --> 00:04:52,752
+离开原地后，也要重新读新地点的条件。
+After moving, read the new location's conditions again.
+
+162
+00:04:52,752 --> 00:04:52,809
+After moving, read the new location's conditions again.
+
+163
+00:04:53,467 --> 00:04:56,051
+补给月变化的正负号，描述当前条件下的变化方向。
+The sign of the monthly supply change
+
+164
+00:04:56,051 --> 00:04:58,357
+补给月变化的正负号，描述当前条件下的变化方向。
+shows its direction under current
+
+165
+00:04:58,357 --> 00:04:58,788
+补给月变化的正负号，描述当前条件下的变化方向。
+conditions.
+
+166
+00:04:58,788 --> 00:04:59,125
+军队换地点、用量或统帅条件
+conditions.
+
+167
+00:04:59,125 --> 00:05:02,017
+军队换地点、用量或统帅条件
+It can change with location, usage or commander conditions.
+
+168
+00:05:02,017 --> 00:05:03,148
+变化，这个数也可能变化。
+It can change with location, usage or commander conditions.
+
+169
+00:05:03,148 --> 00:05:04,998
+变化，这个数也可能变化。
+When an update is allowed, the game adds the applicable
+
+170
+00:05:04,998 --> 00:05:06,960
+实际允许更新时，游戏把当时的变化量加到库存，
+When an update is allowed, the game adds the applicable
+
+171
+00:05:06,960 --> 00:05:09,766
+实际允许更新时，游戏把当时的变化量加到库存，
+change to stock, then clamps it between zero and current
+
+172
+00:05:09,766 --> 00:05:10,841
+再按零和当前容量截断；不是我们看一眼月变化，
+change to stock, then clamps it between zero and current
+
+173
+00:05:10,841 --> 00:05:11,465
+再按零和当前容量截断；不是我们看一眼月变化，
+capacity.
+
+174
+00:05:11,465 --> 00:05:14,533
+再按零和当前容量截断；不是我们看一眼月变化，
+Reading the monthly figure does not itself apply an
+
+175
+00:05:14,533 --> 00:05:15,003
+就已经加了一次，更不是每天自动除以三十。
+Reading the monthly figure does not itself apply an
+
+176
+00:05:15,003 --> 00:05:18,681
+就已经加了一次，更不是每天自动除以三十。
+update, and it is not automatically divided by thirty
+
+177
+00:05:18,681 --> 00:05:18,867
+就已经加了一次，更不是每天自动除以三十。
+each day.
+
+178
+00:05:18,867 --> 00:05:19,305
+最后增加多少，仍要重新读实际库存。
+each day.
+
+179
+00:05:19,305 --> 00:05:22,998
+最后增加多少，仍要重新读实际库存。
+Read the actual stock again to see how much was gained.
+
+180
+00:05:22,998 --> 00:05:23,055
+Read the actual stock again to see how much was gained.
+
+181
+00:05:23,733 --> 00:05:27,181
+恢复补给，要看军队携带的物资；
+Supply recovery concerns the material carried by the
+
+182
+00:05:27,181 --> 00:05:27,210
+恢复补给，要看军队携带的物资；
+army; troop recovery concerns actual soldiers in its
+
+183
+00:05:27,210 --> 00:05:30,629
+恢复兵员，要看实体兵团的人数。
+army; troop recovery concerns actual soldiers in its
+
+184
+00:05:30,629 --> 00:05:30,686
+恢复兵员，要看实体兵团的人数。
+regiments.
+
+185
+00:05:30,686 --> 00:05:31,292
+游戏分别处理这两件事。
+regiments.
+
+186
+00:05:31,292 --> 00:05:33,370
+游戏分别处理这两件事。
+The game handles them separately.
+
+187
+00:05:33,370 --> 00:05:33,443
+补给增加，不会自动把缺额变成士兵；兵员
+The game handles them separately.
+
+188
+00:05:33,443 --> 00:05:37,345
+补给增加，不会自动把缺额变成士兵；兵员
+More supply does not automatically fill troop deficits, and
+
+189
+00:05:37,345 --> 00:05:37,728
+补给增加，不会自动把缺额变成士兵；兵员
+replenishment eligibility cannot be determined just by whether stock
+
+190
+00:05:37,728 --> 00:05:41,842
+能否补充，也不能只问库存是不是满的。
+replenishment eligibility cannot be determined just by whether stock
+
+191
+00:05:41,842 --> 00:05:41,857
+能否补充，也不能只问库存是不是满的。
+is full.
+
+192
+00:05:41,857 --> 00:05:42,371
+对一支准备继续赶路的军队，先读库存，再展开实
+is full.
+
+193
+00:05:42,371 --> 00:05:46,969
+对一支准备继续赶路的军队，先读库存，再展开实
+Before marching on, read the stock, expand the actual regiments, and check
+
+194
+00:05:46,969 --> 00:05:47,225
+际兵团，分别确认当前人数、满员数和补员条件。
+Before marching on, read the stock, expand the actual regiments, and check
+
+195
+00:05:47,225 --> 00:05:52,081
+际兵团，分别确认当前人数、满员数和补员条件。
+current strength, maximum strength and replenishment conditions separately.
+
+196
+00:05:52,081 --> 00:05:52,145
+current strength, maximum strength and replenishment conditions separately.
+
+197
+00:05:52,800 --> 00:05:56,037
+这次选中的小军，四条实体兵员记
+The selected small army has four actual soldier
+
+198
+00:05:56,037 --> 00:05:56,267
+这次选中的小军，四条实体兵员记
+records totaling 250 men, all at full strength.
+
+199
+00:05:56,267 --> 00:05:59,274
+录合计二百五十人，都是满员。
+records totaling 250 men, all at full strength.
+
+200
+00:05:59,274 --> 00:05:59,503
+录合计二百五十人，都是满员。
+In the paused query, all four currently have replenishment
+
+201
+00:05:59,503 --> 00:06:03,288
+暂停查询里，四条记录的当前补员许可都
+In the paused query, all four currently have replenishment
+
+202
+00:06:03,288 --> 00:06:03,583
+暂停查询里，四条记录的当前补员许可都
+permission set to false, and their stored prepared fractions are
+
+203
+00:06:03,583 --> 00:06:07,437
+为否，已经保存的准备比例也都是零。
+permission set to false, and their stored prepared fractions are
+
+204
+00:06:07,437 --> 00:06:07,718
+源码中，这四条共有的类型标记会先挡住当
+permission set to false, and their stored prepared fractions are
+
+205
+00:06:07,718 --> 00:06:08,065
+源码中，这四条共有的类型标记会先挡住当
+zero.
+
+206
+00:06:08,065 --> 00:06:11,670
+源码中，这四条共有的类型标记会先挡住当
+In the source code, a type flag shared by these four
+
+207
+00:06:11,670 --> 00:06:11,825
+源码中，这四条共有的类型标记会先挡住当
+blocks current permission before the toggle and resource
+
+208
+00:06:11,825 --> 00:06:15,552
+前补员许可，早于后面的开关和资源判断。
+blocks current permission before the toggle and resource
+
+209
+00:06:15,552 --> 00:06:16,038
+前补员许可，早于后面的开关和资源判断。
+checks.
+
+210
+00:06:16,038 --> 00:06:16,213
+前补员许可，早于后面的开关和资源判断。
+This establishes these records' present eligibility; the label
+
+211
+00:06:16,213 --> 00:06:20,296
+这说明的是这些记录眼下的资格，不能只看“
+This establishes these records' present eligibility; the label
+
+212
+00:06:20,296 --> 00:06:20,417
+这说明的是这些记录眼下的资格，不能只看“
+'special troops' alone cannot describe armies from every source.
+
+213
+00:06:20,417 --> 00:06:24,621
+特殊兵”这个名称，就概括所有来源的军队。
+'special troops' alone cannot describe armies from every source.
+
+214
+00:06:24,621 --> 00:06:24,692
+'special troops' alone cannot describe armies from every source.
+
+215
+00:06:25,367 --> 00:06:27,675
+补员还有先后顺序。
+Replenishment also has an order of operations.
+
+216
+00:06:27,675 --> 00:06:28,206
+普通准备阶段，会根据固定物理槽的条件，
+Replenishment also has an order of operations.
+
+217
+00:06:28,206 --> 00:06:31,723
+普通准备阶段，会根据固定物理槽的条件，
+The normal preparation phase saves this round's prepared
+
+218
+00:06:31,723 --> 00:06:31,858
+普通准备阶段，会根据固定物理槽的条件，
+fraction according to conditions in the fixed physical
+
+219
+00:06:31,858 --> 00:06:35,114
+把本轮准备比例保存下来；某些类型先检查
+fraction according to conditions in the fixed physical
+
+220
+00:06:35,114 --> 00:06:35,428
+把本轮准备比例保存下来；某些类型先检查
+slot.
+
+221
+00:06:35,428 --> 00:06:36,041
+把本轮准备比例保存下来；某些类型先检查
+Some types first check current permission; some definition branches bypass that check.
+
+222
+00:06:36,041 --> 00:06:40,004
+当前许可，有些定义分支会绕过这一关。
+Some types first check current permission; some definition branches bypass that check.
+
+223
+00:06:40,004 --> 00:06:40,737
+真正计算补员请求时，游戏读取已经保存
+Some types first check current permission; some definition branches bypass that check.
+
+224
+00:06:40,737 --> 00:06:43,957
+真正计算补员请求时，游戏读取已经保存
+When calculating the actual replenishment request, the game reads the
+
+225
+00:06:43,957 --> 00:06:45,026
+的比例，再检查各个物理槽的当前条件。
+When calculating the actual replenishment request, the game reads the
+
+226
+00:06:45,026 --> 00:06:47,911
+的比例，再检查各个物理槽的当前条件。
+stored fraction, then checks current conditions in each physical slot.
+
+227
+00:06:47,911 --> 00:06:49,378
+因此，当前计算出的比例、已经保存的比例和
+stored fraction, then checks current conditions in each physical slot.
+
+228
+00:06:49,378 --> 00:06:52,297
+因此，当前计算出的比例、已经保存的比例和
+The currently calculated fraction, the stored fraction
+
+229
+00:06:52,297 --> 00:06:52,770
+最后新增人数，是三个需要分别读取的数。
+The currently calculated fraction, the stored fraction
+
+230
+00:06:52,770 --> 00:06:55,848
+最后新增人数，是三个需要分别读取的数。
+and the final number added must therefore be read
+
+231
+00:06:55,848 --> 00:06:56,464
+最后新增人数，是三个需要分别读取的数。
+separately.
+
+232
+00:06:56,464 --> 00:06:56,539
+separately.
+
+233
+00:06:57,200 --> 00:07:01,008
+也正因为有这段时序，眼前许可为否，不
+Because of this timing, current permission being false does
+
+234
+00:07:01,008 --> 00:07:01,236
+也正因为有这段时序，眼前许可为否，不
+not automatically erase a positive fraction stored earlier.
+
+235
+00:07:01,236 --> 00:07:04,815
+能自动抹掉此前已经保存的正准备比例。
+not automatically erase a positive fraction stored earlier.
+
+236
+00:07:04,815 --> 00:07:05,271
+能自动抹掉此前已经保存的正准备比例。
+The request phase reads that older fraction and checks the physical slots'
+
+237
+00:07:05,271 --> 00:07:09,582
+请求阶段会读取旧比例，再按当时的物理槽条件
+The request phase reads that older fraction and checks the physical slots'
+
+238
+00:07:09,582 --> 00:07:09,989
+请求阶段会读取旧比例，再按当时的物理槽条件
+current conditions; it does not rerun that whole-regiment permission check.
+
+239
+00:07:09,989 --> 00:07:14,414
+继续判断；它不会重新调用那一项整团许可。
+current conditions; it does not rerun that whole-regiment permission check.
+
+240
+00:07:14,414 --> 00:07:14,482
+继续判断；它不会重新调用那一项整团许可。
+Conversely, a positive fraction calculated now
+
+241
+00:07:14,482 --> 00:07:17,389
+反过来，眼前算出正比例，也不保证下一刻就有士兵
+Conversely, a positive fraction calculated now
+
+242
+00:07:17,389 --> 00:07:19,727
+反过来，眼前算出正比例，也不保证下一刻就有士兵
+does not guarantee soldiers will be added next.
+
+243
+00:07:19,727 --> 00:07:20,429
+增加：请求还可能被拒绝，或者整数结果仍为零。
+does not guarantee soldiers will be added next.
+
+244
+00:07:20,429 --> 00:07:24,745
+增加：请求还可能被拒绝，或者整数结果仍为零。
+The request may be refused, or the integer result may still be zero.
+
+245
+00:07:24,745 --> 00:07:24,781
+核对补员，要一直看到实体人数写回。
+The request may be refused, or the integer result may still be zero.
+
+246
+00:07:24,781 --> 00:07:28,797
+核对补员，要一直看到实体人数写回。
+Verify replenishment through the actual soldier-count writeback.
+
+247
+00:07:28,797 --> 00:07:28,876
+Verify replenishment through the actual soldier-count writeback.
+
+248
+00:07:29,533 --> 00:07:33,933
+军事页的每月补员开关，也要放回具体来源。
+The military page's monthly replenishment toggle must also be tied to the troops' source.
+
+249
+00:07:33,933 --> 00:07:34,862
+在需要这项检查的兵士定义分支，游戏追到
+The military page's monthly replenishment toggle must also be tied to the troops' source.
+
+250
+00:07:34,862 --> 00:07:37,988
+在需要这项检查的兵士定义分支，游戏追到
+In troop-definition branches requiring this check, the game traces
+
+251
+00:07:37,988 --> 00:07:38,872
+兵员真正的来源角色，读取那个人的军事补
+In troop-definition branches requiring this check, the game traces
+
+252
+00:07:38,872 --> 00:07:42,042
+兵员真正的来源角色，读取那个人的军事补
+the soldiers to their actual source character, reads that
+
+253
+00:07:42,042 --> 00:07:42,336
+员开关，并继续检查资源和位置条件。
+the soldiers to their actual source character, reads that
+
+254
+00:07:42,336 --> 00:07:45,670
+员开关，并继续检查资源和位置条件。
+character's military replenishment toggle, then checks resources
+
+255
+00:07:45,670 --> 00:07:46,225
+来源如果是封臣，就不能拿玩家自己的勾选代替。
+character's military replenishment toggle, then checks resources
+
+256
+00:07:46,225 --> 00:07:47,015
+来源如果是封臣，就不能拿玩家自己的勾选代替。
+and location.
+
+257
+00:07:47,015 --> 00:07:50,486
+来源如果是封臣，就不能拿玩家自己的勾选代替。
+If the source is a vassal, the player's own checkbox cannot substitute for it.
+
+258
+00:07:50,486 --> 00:07:51,685
+另一些定义分支不会走同一项开关；操作
+If the source is a vassal, the player's own checkbox cannot substitute for it.
+
+259
+00:07:51,685 --> 00:07:54,558
+另一些定义分支不会走同一项开关；操作
+Other definition branches do not use the same toggle.
+
+260
+00:07:54,558 --> 00:07:54,858
+以前，先确认正在观察的是谁提供的兵。
+Other definition branches do not use the same toggle.
+
+261
+00:07:54,858 --> 00:07:58,631
+以前，先确认正在观察的是谁提供的兵。
+Before acting, establish who supplied the troops being observed.
+
+262
+00:07:58,631 --> 00:07:58,689
+Before acting, establish who supplied the troops being observed.
+
+263
+00:07:59,367 --> 00:08:02,302
+选休整地点时，先看这里的补给月
+When choosing a rest location, first read its
+
+264
+00:08:02,302 --> 00:08:02,632
+选休整地点时，先看这里的补给月
+monthly supply change, then wait for an actual stock
+
+265
+00:08:02,632 --> 00:08:05,693
+变化，再等一次真正的库存更新。
+monthly supply change, then wait for an actual stock
+
+266
+00:08:05,693 --> 00:08:05,898
+变化，再等一次真正的库存更新。
+update.
+
+267
+00:08:05,898 --> 00:08:06,149
+月变化为正，是当前条件下的读数；库存
+update.
+
+268
+00:08:06,149 --> 00:08:10,155
+月变化为正，是当前条件下的读数；库存
+A positive monthly value is a reading under current conditions; an
+
+269
+00:08:10,155 --> 00:08:10,405
+实际增加，才说明这次确实恢复了物资。
+A positive monthly value is a reading under current conditions; an
+
+270
+00:08:10,405 --> 00:08:14,411
+实际增加，才说明这次确实恢复了物资。
+actual increase in stock proves that supplies recovered this time.
+
+271
+00:08:14,411 --> 00:08:14,660
+兵员补充还要另看：补给回满、补员准备
+actual increase in stock proves that supplies recovered this time.
+
+272
+00:08:14,660 --> 00:08:17,028
+兵员补充还要另看：补给回满、补员准备
+Replenishment needs a separate check.
+
+273
+00:08:17,028 --> 00:08:18,471
+兵员补充还要另看：补给回满、补员准备
+Full supply or a refreshed prepared value
+
+274
+00:08:18,471 --> 00:08:19,713
+值刷新，都不能直接当作多了几名士兵。
+Full supply or a refreshed prepared value
+
+275
+00:08:19,713 --> 00:08:22,202
+值刷新，都不能直接当作多了几名士兵。
+does not itself mean any soldiers were
+
+276
+00:08:22,202 --> 00:08:22,530
+值刷新，都不能直接当作多了几名士兵。
+added.
+
+277
+00:08:22,530 --> 00:08:22,595
+added.
+
+278
+00:08:23,267 --> 00:08:26,115
+拆军和合军，对补给不是同一种处理。
+Splitting and merging handle supply differently.
+
+279
+00:08:26,115 --> 00:08:27,061
+拆军和合军，对补给不是同一种处理。
+A newly split army first copies the source's stock; it does not halve it by headcount.
+
+280
+00:08:27,061 --> 00:08:31,219
+拆出的新军先复制来源库存，不按人数除半
+A newly split army first copies the source's stock; it does not halve it by headcount.
+
+281
+00:08:31,219 --> 00:08:31,561
+拆出的新军先复制来源库存，不按人数除半
+Each army's capacity still depends on its current commander and conditions.
+
+282
+00:08:31,561 --> 00:08:35,670
+；两军容量却要各自看当前统帅和条件。
+Each army's capacity still depends on its current commander and conditions.
+
+283
+00:08:35,670 --> 00:08:35,825
+；两军容量却要各自看当前统帅和条件。
+Merging first saves both original stocks and their weights for their respective merge roles.
+
+284
+00:08:35,825 --> 00:08:40,206
+合军先保存两侧原库存和各自角色权重，
+Merging first saves both original stocks and their weights for their respective merge roles.
+
+285
+00:08:40,206 --> 00:08:41,130
+选将、调整编成以后，再读取合后容量。
+Merging first saves both original stocks and their weights for their respective merge roles.
+
+286
+00:08:41,130 --> 00:08:44,588
+选将、调整编成以后，再读取合后容量。
+After selecting the commander and adjusting composition, it reads the merged capacity.
+
+287
+00:08:44,588 --> 00:08:46,234
+这次小军实体兵员二百五十人守恒，
+After selecting the commander and adjusting composition, it reads the merged capacity.
+
+288
+00:08:46,234 --> 00:08:48,350
+这次小军实体兵员二百五十人守恒，
+The 250 actual soldiers were conserved in this
+
+289
+00:08:48,350 --> 00:08:49,013
+不代表库存也按同一种方式守恒。
+The 250 actual soldiers were conserved in this
+
+290
+00:08:49,013 --> 00:08:51,877
+不代表库存也按同一种方式守恒。
+small-army case, but supply need not be conserved in the
+
+291
+00:08:51,877 --> 00:08:52,397
+合后库存、容量和统帅，都要分别读回。
+small-army case, but supply need not be conserved in the
+
+292
+00:08:52,397 --> 00:08:52,941
+合后库存、容量和统帅，都要分别读回。
+same way.
+
+293
+00:08:52,941 --> 00:08:56,325
+合后库存、容量和统帅，都要分别读回。
+Read back merged stock, capacity and commander separately.
+
+294
+00:08:56,325 --> 00:08:56,383
+Read back merged stock, capacity and commander separately.
+
+295
+00:08:57,033 --> 00:09:00,446
+在已核的普通正权重路径里，合军先分
+In the verified normal path with positive weights, merging
+
+296
+00:09:00,446 --> 00:09:00,908
+在已核的普通正权重路径里，合军先分
+calculates each army's weight share and truncates each to an
+
+297
+00:09:00,908 --> 00:09:03,977
+别算两军的权重份额，各自取整；再各
+calculates each army's weight share and truncates each to an
+
+298
+00:09:03,977 --> 00:09:04,448
+别算两军的权重份额，各自取整；再各
+integer.
+
+299
+00:09:04,448 --> 00:09:04,782
+别算两军的权重份额，各自取整；再各
+Each share is then multiplied by its original
+
+300
+00:09:04,782 --> 00:09:07,107
+自乘原来的库存，再取整，最后相加。
+Each share is then multiplied by its original
+
+301
+00:09:07,107 --> 00:09:08,657
+自乘原来的库存，再取整，最后相加。
+stock and truncated again, before the results are
+
+302
+00:09:08,657 --> 00:09:10,002
+两个份额合计可能略低于百分之
+stock and truncated again, before the results are
+
+303
+00:09:10,002 --> 00:09:10,357
+两个份额合计可能略低于百分之
+added.
+
+304
+00:09:10,357 --> 00:09:11,782
+两个份额合计可能略低于百分之
+The shares may total slightly less than 100 percent; the game does not restore the remainder.
+
+305
+00:09:11,782 --> 00:09:14,907
+一百，游戏不会把余数补回去。
+The shares may total slightly less than 100 percent; the game does not restore the remainder.
+
+306
+00:09:14,907 --> 00:09:15,744
+合计库存还要按零和合后实际容量截
+The shares may total slightly less than 100 percent; the game does not restore the remainder.
+
+307
+00:09:15,744 --> 00:09:18,805
+合计库存还要按零和合后实际容量截
+The total stock is then clamped between zero and the
+
+308
+00:09:18,805 --> 00:09:18,808
+断，所以不能化成一次普通平均。
+The total stock is then clamped between zero and the
+
+309
+00:09:18,808 --> 00:09:22,108
+断，所以不能化成一次普通平均。
+actual merged capacity, so this is not a single ordinary
+
+310
+00:09:22,108 --> 00:09:22,460
+断，所以不能化成一次普通平均。
+average.
+
+311
+00:09:22,460 --> 00:09:22,579
+大值另有保护分支，不能套这条简式。
+average.
+
+312
+00:09:22,579 --> 00:09:26,381
+大值另有保护分支，不能套这条简式。
+Large values have a separate safeguard branch and cannot use this simplified formula.
+
+313
+00:09:26,381 --> 00:09:27,503
+真正合后库存，再用实际读数核对。
+Large values have a separate safeguard branch and cannot use this simplified formula.
+
+314
+00:09:27,503 --> 00:09:30,262
+真正合后库存，再用实际读数核对。
+Check the final stock against the actual reading.
+
+315
+00:09:30,262 --> 00:09:30,341
+Check the final stock against the actual reading.
+
+316
+00:09:32,067 --> 00:09:34,876
+看人数为什么下降，先把眼前的
+To explain falling troop numbers, separate
+
+317
+00:09:34,876 --> 00:09:35,140
+看人数为什么下降，先把眼前的
+current tooltips from changes that have already
+
+318
+00:09:35,140 --> 00:09:37,993
+提示与已经发生的变化分开。
+current tooltips from changes that have already
+
+319
+00:09:37,993 --> 00:09:38,019
+当前损耗比例，说明现在相关条件怎样计算
+current tooltips from changes that have already
+
+320
+00:09:38,019 --> 00:09:38,621
+当前损耗比例，说明现在相关条件怎样计算
+happened.
+
+321
+00:09:38,621 --> 00:09:42,506
+当前损耗比例，说明现在相关条件怎样计算
+The current attrition rate shows how conditions are calculated
+
+322
+00:09:42,506 --> 00:09:42,717
+；整数预算，说明一次处理准备怎样分配。
+The current attrition rate shows how conditions are calculated
+
+323
+00:09:42,717 --> 00:09:46,945
+；整数预算，说明一次处理准备怎样分配。
+now; an integer budget sets the planned allocation for one pass.
+
+324
+00:09:46,945 --> 00:09:47,019
+；整数预算，说明一次处理准备怎样分配。
+Actual losses require before-and-after writes to the
+
+325
+00:09:47,019 --> 00:09:50,414
+真正少了多少，要看到实体兵员前后写回，并
+Actual losses require before-and-after writes to the
+
+326
+00:09:50,414 --> 00:09:51,803
+真正少了多少，要看到实体兵员前后写回，并
+physical soldier count, checked against replenishment,
+
+327
+00:09:51,803 --> 00:09:54,017
+核对同窗补员、战斗、分合军和其他事件。
+physical soldier count, checked against replenishment,
+
+328
+00:09:54,017 --> 00:09:56,348
+核对同窗补员、战斗、分合军和其他事件。
+combat, splitting, merging, and other events in the same
+
+329
+00:09:56,348 --> 00:09:57,752
+这样，预算不会重复算成损失，净少
+combat, splitting, merging, and other events in the same
+
+330
+00:09:57,752 --> 00:09:58,219
+这样，预算不会重复算成损失，净少
+window.
+
+331
+00:09:58,219 --> 00:10:00,158
+这样，预算不会重复算成损失，净少
+This avoids counting a budget twice as a
+
+332
+00:10:00,158 --> 00:10:00,904
+人数也不会被直接叫成死亡人数。
+This avoids counting a budget twice as a
+
+333
+00:10:00,904 --> 00:10:03,388
+人数也不会被直接叫成死亡人数。
+loss, or calling every net decrease a
+
+334
+00:10:03,388 --> 00:10:03,730
+人数也不会被直接叫成死亡人数。
+death.
+
+335
+00:10:03,730 --> 00:10:03,791
+death.
+
+336
+00:10:04,467 --> 00:10:07,219
+先看游戏怎样准备损失。
+First, how does the game prepare losses?
+
+337
+00:10:07,219 --> 00:10:07,248
+先看游戏怎样准备损失。
+Supply, siege, and raiding each have a budget.
+
+338
+00:10:07,248 --> 00:10:10,384
+供给、围城和劫掠各有自己的预算；围城
+Supply, siege, and raiding each have a budget.
+
+339
+00:10:10,384 --> 00:10:11,479
+供给、围城和劫掠各有自己的预算；围城
+Siege and raiding are converted separately
+
+340
+00:10:11,479 --> 00:10:13,309
+与劫掠先各自取成整数，再合起来分配。
+Siege and raiding are converted separately
+
+341
+00:10:13,309 --> 00:10:15,709
+与劫掠先各自取成整数，再合起来分配。
+to integers, then combined for allocation.
+
+342
+00:10:15,709 --> 00:10:16,233
+这些预算在第一次兵员写入以前形成，后面
+to integers, then combined for allocation.
+
+343
+00:10:16,233 --> 00:10:19,999
+这些预算在第一次兵员写入以前形成，后面
+These budgets are set before the first soldier write, but
+
+344
+00:10:19,999 --> 00:10:20,222
+的分配却沿着已经变化的人数继续进行。
+These budgets are set before the first soldier write, but
+
+345
+00:10:20,222 --> 00:10:23,862
+的分配却沿着已经变化的人数继续进行。
+later allocations use troop counts that have already
+
+346
+00:10:23,862 --> 00:10:24,064
+的分配却沿着已经变化的人数继续进行。
+changed.
+
+347
+00:10:24,064 --> 00:10:24,422
+把几个显示比例直接相加，再乘同一个总
+changed.
+
+348
+00:10:24,422 --> 00:10:27,856
+把几个显示比例直接相加，再乘同一个总
+Adding the displayed rates and multiplying by one
+
+349
+00:10:27,856 --> 00:10:28,104
+把几个显示比例直接相加，再乘同一个总
+total misses the intermediate rounding and processing
+
+350
+00:10:28,104 --> 00:10:31,570
+人数，会漏掉中间的取整和先后顺序。
+total misses the intermediate rounding and processing
+
+351
+00:10:31,570 --> 00:10:31,919
+人数，会漏掉中间的取整和先后顺序。
+order.
+
+352
+00:10:31,919 --> 00:10:31,991
+order.
+
+353
+00:10:32,667 --> 00:10:35,764
+围城和劫掠会进入同一个合并阶段。
+Siege and raiding share a combined stage.
+
+354
+00:10:35,764 --> 00:10:36,356
+围城和劫掠会进入同一个合并阶段。
+To attribute one specific deduction to siege, the siege
+
+355
+00:10:36,356 --> 00:10:39,987
+要把其中一笔具体扣兵归到围城，就要对上那
+To attribute one specific deduction to siege, the siege
+
+356
+00:10:39,987 --> 00:10:40,689
+要把其中一笔具体扣兵归到围城，就要对上那
+budget actually used must be positive and the raiding budget
+
+357
+00:10:40,689 --> 00:10:44,595
+次真正使用的围城预算为正、劫掠预算为零，
+budget actually used must be positive and the raiding budget
+
+358
+00:10:44,595 --> 00:10:44,979
+次真正使用的围城预算为正、劫掠预算为零，
+zero.
+
+359
+00:10:44,979 --> 00:10:45,022
+次真正使用的围城预算为正、劫掠预算为零，
+Then check the change in that physical soldier count.
+
+360
+00:10:45,022 --> 00:10:48,922
+再看这一笔物理兵员前后究竟减少多少。
+Then check the change in that physical soldier count.
+
+361
+00:10:48,922 --> 00:10:48,982
+预算说明这次怎样安排损失，兵员写回说明这次实际
+Then check the change in that physical soldier count.
+
+362
+00:10:48,982 --> 00:10:51,923
+预算说明这次怎样安排损失，兵员写回说明这次实际
+The budget describes the planned loss;
+
+363
+00:10:51,923 --> 00:10:54,161
+预算说明这次怎样安排损失，兵员写回说明这次实际
+the soldier write shows the actual
+
+364
+00:10:54,161 --> 00:10:54,555
+少了多少；这一笔的结果也不直接代表整段旅途。
+the soldier write shows the actual
+
+365
+00:10:54,555 --> 00:10:55,251
+少了多少；这一笔的结果也不直接代表整段旅途。
+decrease.
+
+366
+00:10:55,251 --> 00:10:59,172
+少了多少；这一笔的结果也不直接代表整段旅途。
+That one result does not represent the whole journey.
+
+367
+00:10:59,172 --> 00:10:59,255
+That one result does not represent the whole journey.
+
+368
+00:10:59,933 --> 00:11:03,606
+用一组假设数字看差别：一百九十九名合
+Take a hypothetical example: 199 eligible
+
+369
+00:11:03,606 --> 00:11:04,005
+用一组假设数字看差别：一百九十九名合
+soldiers at a 5% supply rate give an integer
+
+370
+00:11:04,005 --> 00:11:07,547
+格兵员，供给比例百分之五，整数预算是
+soldiers at a 5% supply rate give an integer
+
+371
+00:11:07,547 --> 00:11:08,077
+格兵员，供给比例百分之五，整数预算是
+budget of 9.
+
+372
+00:11:08,077 --> 00:11:08,622
+九；围城比例百分之一，整数预算是一。
+budget of 9.
+
+373
+00:11:08,622 --> 00:11:10,729
+九；围城比例百分之一，整数预算是一。
+A 1% siege rate gives 1.
+
+374
+00:11:10,729 --> 00:11:12,149
+九；围城比例百分之一，整数预算是一。
+Calculated separately, they total 10.
+
+375
+00:11:12,149 --> 00:11:13,976
+两项分别计算，合计是十。
+Calculated separately, they total 10.
+
+376
+00:11:13,976 --> 00:11:15,425
+两项分别计算，合计是十。
+Combine the rates into 6% first, and 199 gives 11.
+
+377
+00:11:15,425 --> 00:11:18,122
+要是先合成百分之六，再乘
+Combine the rates into 6% first, and 199 gives 11.
+
+378
+00:11:18,122 --> 00:11:18,365
+一百九十九，就会算成十一。
+Combine the rates into 6% first, and 199 gives 11.
+
+379
+00:11:18,365 --> 00:11:21,044
+一百九十九，就会算成十一。
+This illustrates rounding order.
+
+380
+00:11:21,044 --> 00:11:21,173
+这张卡解释的是取整顺序，随后分到各
+This illustrates rounding order.
+
+381
+00:11:21,173 --> 00:11:24,768
+这张卡解释的是取整顺序，随后分到各
+Allocation to individual regiments still
+
+382
+00:11:24,768 --> 00:11:24,914
+这张卡解释的是取整顺序，随后分到各
+depends on their troop counts at that
+
+383
+00:11:24,914 --> 00:11:28,094
+兵团，还要继续按当时的人数处理。
+depends on their troop counts at that
+
+384
+00:11:28,094 --> 00:11:28,557
+兵团，还要继续按当时的人数处理。
+stage.
+
+385
+00:11:28,557 --> 00:11:28,633
+stage.
+
+386
+00:11:29,300 --> 00:11:33,961
+进入县域的这条路径，先算整军预算，再看首选
+On this county-entry path, the game first calculates the army-wide budget
+
+387
+00:11:33,961 --> 00:11:34,427
+兵团一共能承担多少，提前把两者的差额存下来。
+On this county-entry path, the game first calculates the army-wide budget
+
+388
+00:11:34,427 --> 00:11:38,845
+兵团一共能承担多少，提前把两者的差额存下来。
+and the total the preferred regiments can absorb, then stores the
+
+389
+00:11:38,845 --> 00:11:38,992
+首选人数已经覆盖预算，后
+and the total the preferred regiments can absorb, then stores the
+
+390
+00:11:38,992 --> 00:11:39,765
+首选人数已经覆盖预算，后
+difference.
+
+391
+00:11:39,765 --> 00:11:41,845
+首选人数已经覆盖预算，后
+If those regiments already cover the
+
+392
+00:11:41,845 --> 00:11:42,319
+面就不启动县剩余分配。
+If those regiments already cover the
+
+393
+00:11:42,319 --> 00:11:44,595
+面就不启动县剩余分配。
+budget, county remainder allocation never
+
+394
+00:11:44,595 --> 00:11:45,228
+只有预先存下的差额大于零，才进入第二部分。
+budget, county remainder allocation never
+
+395
+00:11:45,228 --> 00:11:45,724
+只有预先存下的差额大于零，才进入第二部分。
+starts.
+
+396
+00:11:45,724 --> 00:11:49,161
+只有预先存下的差额大于零，才进入第二部分。
+The second part runs only when the stored difference is positive.
+
+397
+00:11:49,161 --> 00:11:50,229
+所以找县损耗时，不能总等着
+The second part runs only when the stored difference is positive.
+
+398
+00:11:50,229 --> 00:11:52,187
+所以找县损耗时，不能总等着
+So county attrition does not always produce a remainder stage to inspect.
+
+399
+00:11:52,187 --> 00:11:55,213
+一个未必会出现的剩余阶段。
+So county attrition does not always produce a remainder stage to inspect.
+
+400
+00:11:55,213 --> 00:11:55,288
+So county attrition does not always produce a remainder stage to inspect.
+
+401
+00:11:55,967 --> 00:12:00,169
+这个差额在首选扣兵之前就已经固定。
+That difference is fixed before deductions from the preferred regiments.
+
+402
+00:12:00,169 --> 00:12:00,972
+后面逐团消耗的是分配出去的整数请求；即使某
+That difference is fixed before deductions from the preferred regiments.
+
+403
+00:12:00,972 --> 00:12:04,800
+后面逐团消耗的是分配出去的整数请求；即使某
+Later allocation consumes the integer amounts requested from each regiment.
+
+404
+00:12:04,800 --> 00:12:06,185
+次写入被跳过，或者实际变化与请求不同，也不
+Later allocation consumes the integer amounts requested from each regiment.
+
+405
+00:12:06,185 --> 00:12:09,430
+次写入被跳过，或者实际变化与请求不同，也不
+If a write is skipped, or the actual change differs from the request, that
+
+406
+00:12:09,430 --> 00:12:11,397
+会把这部分自动退回，再重算县的剩余预算。
+If a write is skipped, or the actual change differs from the request, that
+
+407
+00:12:11,397 --> 00:12:13,840
+会把这部分自动退回，再重算县的剩余预算。
+amount is not automatically refunded to recalculate the county remainder
+
+408
+00:12:13,840 --> 00:12:16,467
+读结果时，把预算、请求和实际物理减少分别
+amount is not automatically refunded to recalculate the county remainder
+
+409
+00:12:16,467 --> 00:12:16,960
+读结果时，把预算、请求和实际物理减少分别
+budget.
+
+410
+00:12:16,960 --> 00:12:18,476
+读结果时，把预算、请求和实际物理减少分别
+Keep the budget, requests, and actual
+
+411
+00:12:18,476 --> 00:12:19,594
+保留，才能解释为什么几个数不一定相等。
+Keep the budget, requests, and actual
+
+412
+00:12:19,594 --> 00:12:22,512
+保留，才能解释为什么几个数不一定相等。
+physical decrease separate: they need not
+
+413
+00:12:22,512 --> 00:12:22,880
+保留，才能解释为什么几个数不一定相等。
+match.
+
+414
+00:12:22,880 --> 00:12:22,939
+match.
+
+415
+00:12:23,600 --> 00:12:26,500
+县损耗的修正也分几层。
+County attrition modifiers also work in stages.
+
+416
+00:12:26,500 --> 00:12:27,236
+再看一组假设输入：全军三千零一人，基础
+County attrition modifiers also work in stages.
+
+417
+00:12:27,236 --> 00:12:30,755
+再看一组假设输入：全军三千零一人，基础
+Consider hypothetical inputs: 3,001 soldiers,
+
+418
+00:12:30,755 --> 00:12:30,987
+再看一组假设输入：全军三千零一人，基础
+a base rate of 5%, and a multiplier of 0.33339.
+
+419
+00:12:30,987 --> 00:12:34,430
+比例百分之五，修正倍率零点三三三三九。
+a base rate of 5%, and a multiplier of 0.33339.
+
+420
+00:12:34,430 --> 00:12:35,474
+比例百分之五，修正倍率零点三三三三九。
+The effective rate is first calculated as
+
+421
+00:12:35,474 --> 00:12:37,672
+先得到有效比例百分之一点六六六，再
+The effective rate is first calculated as
+
+422
+00:12:37,672 --> 00:12:39,364
+先得到有效比例百分之一点六六六，再
+1.666%, then applied to the troop count,
+
+423
+00:12:39,364 --> 00:12:40,834
+算人数，是四十九；对应的最小值修正
+1.666%, then applied to the troop count,
+
+424
+00:12:40,834 --> 00:12:41,625
+算人数，是四十九；对应的最小值修正
+giving 49.
+
+425
+00:12:41,625 --> 00:12:43,254
+算人数，是四十九；对应的最小值修正
+The corresponding modified minimum is 33, so this example uses 49.
+
+426
+00:12:43,254 --> 00:12:46,730
+后是三十三，这组输入最后取四十九。
+The corresponding modified minimum is 33, so this example uses 49.
+
+427
+00:12:46,730 --> 00:12:47,145
+后是三十三，这组输入最后取四十九。
+Applying everything together and
+
+428
+00:12:47,145 --> 00:12:49,276
+把修正和人数合到最后才取整，就会多算成五十。
+Applying everything together and
+
+429
+00:12:49,276 --> 00:12:52,061
+把修正和人数合到最后才取整，就会多算成五十。
+rounding only at the end would give
+
+430
+00:12:52,061 --> 00:12:52,237
+把修正和人数合到最后才取整，就会多算成五十。
+50.
+
+431
+00:12:52,237 --> 00:12:52,300
+50.
+
+432
+00:12:52,967 --> 00:12:55,169
+地点条件也有范围。
+Location checks also have a defined scope.
+
+433
+00:12:55,169 --> 00:12:55,628
+判断下一步的补员位置条件时，要取军队实际储存路
+Location checks also have a defined scope.
+
+434
+00:12:55,628 --> 00:12:59,589
+判断下一步的补员位置条件时，要取军队实际储存路
+The next-step replenishment location check uses the first stop
+
+435
+00:12:59,589 --> 00:13:00,025
+判断下一步的补员位置条件时，要取军队实际储存路
+in the army's stored route, not its distant final destination.
+
+436
+00:13:00,025 --> 00:13:03,550
+线里的第一站，而不是地图上更远的最终目的地。
+in the army's stored route, not its distant final destination.
+
+437
+00:13:03,550 --> 00:13:04,669
+线里的第一站，而不是地图上更远的最终目的地。
+The game checks that province and the native condition between the army
+
+438
+00:13:04,669 --> 00:13:08,110
+游戏会核对这一步的省份，以及军队所有者到当地
+The game checks that province and the native condition between the army
+
+439
+00:13:08,110 --> 00:13:09,406
+游戏会核对这一步的省份，以及军队所有者到当地
+owner and the local holder; this is more specific than general military
+
+440
+00:13:09,406 --> 00:13:12,670
+持有者的原生条件；不能把它简写成一般通行权。
+owner and the local holder; this is more specific than general military
+
+441
+00:13:12,670 --> 00:13:13,120
+持有者的原生条件；不能把它简写成一般通行权。
+access.
+
+442
+00:13:13,120 --> 00:13:14,143
+持有者的原生条件；不能把它简写成一般通行权。
+Without a complete route, keep the result unknown.
+
+443
+00:13:14,143 --> 00:13:16,288
+没有完整路线时，保留未知。
+Without a complete route, keep the result unknown.
+
+444
+00:13:16,288 --> 00:13:17,327
+没有完整路线时，保留未知。
+In the conditional projection, a passing check substitutes only the location input.
+
+445
+00:13:17,327 --> 00:13:21,549
+即使这一步通过，也只是替换了位置这一项
+In the conditional projection, a passing check substitutes only the location input.
+
+446
+00:13:21,549 --> 00:13:21,631
+即使这一步通过，也只是替换了位置这一项
+Preparation ratios and other conditions still need separate checks.
+
+447
+00:13:21,631 --> 00:13:25,709
+，后面的准备比例和其他条件还要另看。
+Preparation ratios and other conditions still need separate checks.
+
+448
+00:13:25,709 --> 00:13:25,795
+Preparation ratios and other conditions still need separate checks.
+
+449
+00:13:26,467 --> 00:13:29,995
+整军预算取成整数以后，还要按顺
+Once the army-wide budget is an integer, it is allocated to
+
+450
+00:13:29,995 --> 00:13:30,197
+序分给兵团，再写进实际兵槽。
+Once the army-wide budget is an integer, it is allocated to
+
+451
+00:13:30,197 --> 00:13:33,288
+序分给兵团，再写进实际兵槽。
+regiments in order, then written to physical soldier slots.
+
+452
+00:13:33,288 --> 00:13:33,927
+每一步都有自己的分母、上限和取整，
+regiments in order, then written to physical soldier slots.
+
+453
+00:13:33,927 --> 00:13:37,150
+每一步都有自己的分母、上限和取整，
+Each step has its own denominator, cap, and rounding.
+
+454
+00:13:37,150 --> 00:13:37,250
+兵团请求也不直接等于最终物理减少。
+Each step has its own denominator, cap, and rounding.
+
+455
+00:13:37,250 --> 00:13:41,011
+兵团请求也不直接等于最终物理减少。
+A regiment's requested amount need not equal the final physical decrease.
+
+456
+00:13:41,011 --> 00:13:41,827
+同一个兵槽被多条数据引用时，核算那次
+A regiment's requested amount need not equal the final physical decrease.
+
+457
+00:13:41,827 --> 00:13:44,772
+同一个兵槽被多条数据引用时，核算那次
+Within that individual write, count a physical
+
+458
+00:13:44,772 --> 00:13:45,046
+同一个兵槽被多条数据引用时，核算那次
+slot referenced by several data entries only
+
+459
+00:13:45,046 --> 00:13:47,588
+实际写回只计一份；这里被截掉的小数，
+slot referenced by several data entries only
+
+460
+00:13:47,588 --> 00:13:47,908
+实际写回只计一份；这里被截掉的小数，
+once.
+
+461
+00:13:47,908 --> 00:13:49,082
+实际写回只计一份；这里被截掉的小数，
+Fractions discarded here are not retained as fractional soldiers in this write path.
+
+462
+00:13:49,082 --> 00:13:53,117
+也没有在这条写回里留下小数兵员余量。
+Fractions discarded here are not retained as fractional soldiers in this write path.
+
+463
+00:13:53,117 --> 00:13:53,175
+Fractions discarded here are not retained as fractional soldiers in this write path.
+
+464
+00:13:53,833 --> 00:13:56,950
+补给已经耗尽，面板前后都显示零
+Supply can read zero both before and after
+
+465
+00:13:56,950 --> 00:13:57,198
+补给已经耗尽，面板前后都显示零
+an update without the update being skipped.
+
+466
+00:13:57,198 --> 00:14:00,141
+，也不能据此说这次没有更新。
+an update without the update being skipped.
+
+467
+00:14:00,141 --> 00:14:00,339
+，也不能据此说这次没有更新。
+In the source's successful path, the change is still added, a
+
+468
+00:14:00,339 --> 00:14:04,682
+源码里的成功路径仍会把本次变化加进去，负
+In the source's successful path, the change is still added, a
+
+469
+00:14:04,682 --> 00:14:04,974
+源码里的成功路径仍会把本次变化加进去，负
+negative result is clamped to zero, and supply-loss calculations
+
+470
+00:14:04,974 --> 00:14:09,378
+结果再压回零，并继续往下计算供给损失。
+negative result is clamped to zero, and supply-loss calculations
+
+471
+00:14:09,378 --> 00:14:09,447
+也就是说，库存从零到零，可以同时发生一次成功更
+negative result is clamped to zero, and supply-loss calculations
+
+472
+00:14:09,447 --> 00:14:10,117
+也就是说，库存从零到零，可以同时发生一次成功更
+continue.
+
+473
+00:14:10,117 --> 00:14:14,224
+也就是说，库存从零到零，可以同时发生一次成功更
+So zero-to-zero stock can accompany a successful update.
+
+474
+00:14:14,224 --> 00:14:14,516
+也就是说，库存从零到零，可以同时发生一次成功更
+Whether soldiers were deducted
+
+475
+00:14:14,516 --> 00:14:16,485
+新；有没有扣兵，要接着看后面的预算和实际写回。
+Whether soldiers were deducted
+
+476
+00:14:16,485 --> 00:14:19,198
+新；有没有扣兵，要接着看后面的预算和实际写回。
+requires the later budget and actual
+
+477
+00:14:19,198 --> 00:14:19,654
+新；有没有扣兵，要接着看后面的预算和实际写回。
+writes.
+
+478
+00:14:19,654 --> 00:14:19,725
+writes.
+
+479
+00:14:20,400 --> 00:14:25,011
+零库存也没有在这条普通供给链里另加一档。
+Zero stock does not add another tier in this ordinary supply chain.
+
+480
+00:14:25,011 --> 00:14:25,320
+假设当次加载的是六十、十、零这组原版阈值，零与
+Zero stock does not add another tier in this ordinary supply chain.
+
+481
+00:14:25,320 --> 00:14:30,165
+假设当次加载的是六十、十、零这组原版阈值，零与
+Suppose the loaded vanilla thresholds are 60, 10, and 0: zero and
+
+482
+00:14:30,165 --> 00:14:30,424
+假设当次加载的是六十、十、零这组原版阈值，零与
+9.99999 fall in the same tier, while exactly 10 enters the tier
+
+483
+00:14:30,424 --> 00:14:34,861
+九点九九九九九进入同一档，正好十进入上一档。
+9.99999 fall in the same tier, while exactly 10 enters the tier
+
+484
+00:14:34,861 --> 00:14:35,308
+九点九九九九九进入同一档，正好十进入上一档。
+above.
+
+485
+00:14:35,308 --> 00:14:35,603
+九点九九九九九进入同一档，正好十进入上一档。
+Commander modifiers, fleet suppression, and
+
+486
+00:14:35,603 --> 00:14:38,534
+将领修正、舰队抑制和合格人数还会影响最
+Commander modifiers, fleet suppression, and
+
+487
+00:14:38,534 --> 00:14:39,835
+将领修正、舰队抑制和合格人数还会影响最
+eligible troop counts also affect the final
+
+488
+00:14:39,835 --> 00:14:41,759
+终预算，所以不能把零库存理解成安全，也
+eligible troop counts also affect the final
+
+489
+00:14:41,759 --> 00:14:42,285
+终预算，所以不能把零库存理解成安全，也
+budget.
+
+490
+00:14:42,285 --> 00:14:44,068
+终预算，所以不能把零库存理解成安全，也
+Zero stock is neither proof of safety nor
+
+491
+00:14:44,068 --> 00:14:45,332
+不能一看到零就固定写成每团扣百分之五。
+Zero stock is neither proof of safety nor
+
+492
+00:14:45,332 --> 00:14:48,300
+不能一看到零就固定写成每团扣百分之五。
+a fixed 5% deduction from every regiment.
+
+493
+00:14:48,300 --> 00:14:48,380
+a fixed 5% deduction from every regiment.
+
+494
+00:14:49,033 --> 00:14:52,164
+小军队还会遇到整个人数的取整。
+Small armies also meet whole-soldier rounding.
+
+495
+00:14:52,164 --> 00:14:52,420
+小军队还会遇到整个人数的取整。
+At a hypothetical effective rate of 5%, 19 eligible
+
+496
+00:14:52,420 --> 00:14:55,698
+假设有效分量是百分之五，十九名合格兵
+At a hypothetical effective rate of 5%, 19 eligible
+
+497
+00:14:55,698 --> 00:14:56,312
+假设有效分量是百分之五，十九名合格兵
+soldiers produce an army-wide budget of zero; 20 produce
+
+498
+00:14:56,312 --> 00:14:59,578
+员算出的整军预算是零，二十名才是一个
+soldiers produce an army-wide budget of zero; 20 produce
+
+499
+00:14:59,578 --> 00:14:59,855
+员算出的整军预算是零，二十名才是一个
+one.
+
+500
+00:14:59,855 --> 00:15:00,205
+员算出的整军预算是零，二十名才是一个
+This step has no minimum deduction of one soldier per pass.
+
+501
+00:15:00,205 --> 00:15:03,870
+；这一步没有每次至少扣一人的规则。
+This step has no minimum deduction of one soldier per pass.
+
+502
+00:15:03,870 --> 00:15:03,881
+；这一步没有每次至少扣一人的规则。
+But that explains only the supply budget.
+
+503
+00:15:03,881 --> 00:15:06,661
+但这只解释供给预算：围城、县进入和其
+But that explains only the supply budget.
+
+504
+00:15:06,661 --> 00:15:08,052
+但这只解释供给预算：围城、县进入和其
+Siege, county entry, and other troop changes need separate checks.
+
+505
+00:15:08,052 --> 00:15:11,153
+他人数变化要分别看，日志里没读到一笔
+Siege, county entry, and other troop changes need separate checks.
+
+506
+00:15:11,153 --> 00:15:12,223
+他人数变化要分别看，日志里没读到一笔
+A missing event in the log does not prove zero losses across the whole window.
+
+507
+00:15:12,223 --> 00:15:16,394
+事件，也不能直接填成整个窗口零损失。
+A missing event in the log does not prove zero losses across the whole window.
+
+508
+00:15:16,394 --> 00:15:16,461
+A missing event in the log does not prove zero losses across the whole window.
+
+509
+00:15:18,167 --> 00:15:22,229
+路线先看三个时间点：下令前的预期抵达、
+For a route, distinguish three timings: the expected arrival
+
+510
+00:15:22,229 --> 00:15:22,535
+走起来后的当前估计，以及军队真正到达。
+For a route, distinguish three timings: the expected arrival
+
+511
+00:15:22,535 --> 00:15:26,290
+走起来后的当前估计，以及军队真正到达。
+before ordering, the current estimate while moving, and actual
+
+512
+00:15:26,290 --> 00:15:27,048
+预览告诉我们这次计划怎样走；下
+before ordering, the current estimate while moving, and actual
+
+513
+00:15:27,048 --> 00:15:27,630
+预览告诉我们这次计划怎样走；下
+arrival.
+
+514
+00:15:27,630 --> 00:15:29,761
+预览告诉我们这次计划怎样走；下
+A preview describes the plan; after
+
+515
+00:15:29,761 --> 00:15:30,206
+令后，再读实际存下来的路线。
+A preview describes the plan; after
+
+516
+00:15:30,206 --> 00:15:32,708
+令后，再读实际存下来的路线。
+the order, read the route actually
+
+517
+00:15:32,708 --> 00:15:33,001
+令后，再读实际存下来的路线。
+stored.
+
+518
+00:15:33,001 --> 00:15:33,223
+到了观察终点，还要确认当前地点和剩余路线。
+stored.
+
+519
+00:15:33,223 --> 00:15:37,922
+到了观察终点，还要确认当前地点和剩余路线。
+At the observation endpoint, check the current location and remaining route.
+
+520
+00:15:37,922 --> 00:15:38,672
+我们这轮改道的终点，就是靠后来的独立状态确认
+At the observation endpoint, check the current location and remaining route.
+
+521
+00:15:38,672 --> 00:15:42,600
+我们这轮改道的终点，就是靠后来的独立状态确认
+In this reroute test, later independent state confirmed the endpoint.
+
+522
+00:15:42,600 --> 00:15:43,619
+，而不是因为预览线已经画到那里，就宣布抵达。
+In this reroute test, later independent state confirmed the endpoint.
+
+523
+00:15:43,619 --> 00:15:47,277
+，而不是因为预览线已经画到那里，就宣布抵达。
+A preview line reaching it was not proof of arrival.
+
+524
+00:15:47,277 --> 00:15:47,347
+A preview line reaching it was not proof of arrival.
+
+525
+00:15:48,000 --> 00:15:51,536
+军队窗口的整条抵达估计，与当前第一
+The army window's full-route arrival estimate and
+
+526
+00:15:51,536 --> 00:15:51,771
+军队窗口的整条抵达估计，与当前第一
+the time left on the first leg cover different
+
+527
+00:15:51,771 --> 00:15:54,856
+段还要走多久，描述的是不同范围。
+the time left on the first leg cover different
+
+528
+00:15:54,856 --> 00:15:55,321
+段还要走多久，描述的是不同范围。
+scopes.
+
+529
+00:15:55,321 --> 00:15:55,361
+陆地移动速度、海上移动速度，也各有自己
+scopes.
+
+530
+00:15:55,361 --> 00:15:59,431
+陆地移动速度、海上移动速度，也各有自己
+Land and sea movement speeds have their own readings too;
+
+531
+00:15:59,431 --> 00:15:59,439
+陆地移动速度、海上移动速度，也各有自己
+neither is directly the remaining days for the whole route.
+
+532
+00:15:59,439 --> 00:16:03,558
+的读数，不能直接当作整条路线剩余天数。
+neither is directly the remaining days for the whole route.
+
+533
+00:16:03,558 --> 00:16:03,643
+并排比较时，先标清是速度、
+neither is directly the remaining days for the whole route.
+
+534
+00:16:03,643 --> 00:16:06,705
+并排比较时，先标清是速度、
+Label comparisons as speed, first-leg duration, or final arrival date.
+
+535
+00:16:06,705 --> 00:16:08,597
+首段时量，还是终点日期。
+Label comparisons as speed, first-leg duration, or final arrival date.
+
+536
+00:16:08,597 --> 00:16:09,611
+首段时量，还是终点日期。
+Without complete readings from the same paused frame,
+
+537
+00:16:09,611 --> 00:16:12,409
+没有取得同一暂停点的完整读数，就不拿
+Without complete readings from the same paused frame,
+
+538
+00:16:12,409 --> 00:16:13,532
+没有取得同一暂停点的完整读数，就不拿
+subtracting old dates would invent a precise-looking later-leg
+
+539
+00:16:13,532 --> 00:16:16,869
+旧日期相减，补出一段看似精确的后程。
+subtracting old dates would invent a precise-looking later-leg
+
+540
+00:16:16,869 --> 00:16:17,453
+旧日期相减，补出一段看似精确的后程。
+duration.
+
+541
+00:16:17,453 --> 00:16:17,516
+duration.
+
+542
+00:16:18,167 --> 00:16:21,600
+实际用了几天，同样先说从哪一天开始算。
+Actual duration also needs a clear starting point.
+
+543
+00:16:21,600 --> 00:16:22,632
+实际用了几天，同样先说从哪一天开始算。
+In this reroute test, 13 calendar days passed from the march
+
+544
+00:16:22,632 --> 00:16:25,754
+这轮改道，从独立载入后的行军起点到替
+In this reroute test, 13 calendar days passed from the march
+
+545
+00:16:25,754 --> 00:16:26,543
+这轮改道，从独立载入后的行军起点到替
+start after an independent load to the alternative endpoint.
+
+546
+00:16:26,543 --> 00:16:29,909
+代终点，总共十三个自然日；从重新下达
+start after an independent load to the alternative endpoint.
+
+547
+00:16:29,909 --> 00:16:30,453
+代终点，总共十三个自然日；从重新下达
+From the replacement route order to that endpoint, it took 8 calendar days.
+
+548
+00:16:30,453 --> 00:16:34,146
+替代路线到那个终点，是八个自然日。
+From the replacement route order to that endpoint, it took 8 calendar days.
+
+549
+00:16:34,146 --> 00:16:35,059
+两项都是真实后果，起算点却不同。
+From the replacement route order to that endpoint, it took 8 calendar days.
+
+550
+00:16:35,059 --> 00:16:37,975
+两项都是真实后果，起算点却不同。
+Both are observed outcomes with different time origins.
+
+551
+00:16:37,975 --> 00:16:38,836
+它们不能互相顶替，也不能直接拿去给
+Both are observed outcomes with different time origins.
+
+552
+00:16:38,836 --> 00:16:41,647
+它们不能互相顶替，也不能直接拿去给
+They are not interchangeable, and cannot
+
+553
+00:16:41,647 --> 00:16:41,764
+它们不能互相顶替，也不能直接拿去给
+rank direct march, split-and-rest, and
+
+554
+00:16:41,764 --> 00:16:44,318
+整军直走、分兵休整和绕路三种方案排
+rank direct march, split-and-rest, and
+
+555
+00:16:44,318 --> 00:16:44,810
+整军直走、分兵休整和绕路三种方案排
+detour.
+
+556
+00:16:44,810 --> 00:16:45,554
+整军直走、分兵休整和绕路三种方案排
+Each strategy still needs to finish from the common starting point.
+
+557
+00:16:45,554 --> 00:16:49,343
+名；三方案仍要各自从共同起点完成。
+Each strategy still needs to finish from the common starting point.
+
+558
+00:16:49,343 --> 00:16:49,411
+Each strategy still needs to finish from the common starting point.
+
+559
+00:16:50,067 --> 00:16:52,998
+这轮改道的前后，游戏日期相同，军队也还在
+Immediately before and after the reroute,
+
+560
+00:16:52,998 --> 00:16:54,536
+这轮改道的前后，游戏日期相同，军队也还在
+the game date and army location were
+
+561
+00:16:54,536 --> 00:16:55,572
+原位置；改变的是已经储存的路线后半段。
+the game date and army location were
+
+562
+00:16:55,572 --> 00:16:56,287
+原位置；改变的是已经储存的路线后半段。
+unchanged.
+
+563
+00:16:56,287 --> 00:16:58,782
+原位置；改变的是已经储存的路线后半段。
+What changed was the stored route's later section.
+
+564
+00:16:58,782 --> 00:16:59,782
+它没有因为命令被接受，就立刻走到新地点。
+What changed was the stored route's later section.
+
+565
+00:16:59,782 --> 00:17:03,467
+它没有因为命令被接受，就立刻走到新地点。
+Accepting the order did not move the army to a new location.
+
+566
+00:17:03,467 --> 00:17:03,976
+之后我们继续推进自然时间，分
+Accepting the order did not move the army to a new location.
+
+567
+00:17:03,976 --> 00:17:06,763
+之后我们继续推进自然时间，分
+Advancing game time later showed it at the original
+
+568
+00:17:06,763 --> 00:17:07,575
+别看到原首段终点和替代终点。
+Advancing game time later showed it at the original
+
+569
+00:17:07,575 --> 00:17:10,059
+别看到原首段终点和替代终点。
+first-leg endpoint and then the alternative endpoint.
+
+570
+00:17:10,059 --> 00:17:11,315
+把同日下令后的状态，与后来真正走到的位置分开，
+first-leg endpoint and then the alternative endpoint.
+
+571
+00:17:11,315 --> 00:17:14,869
+把同日下令后的状态，与后来真正走到的位置分开，
+Keep the same-day order result separate from later
+
+572
+00:17:14,869 --> 00:17:14,961
+把同日下令后的状态，与后来真正走到的位置分开，
+movement, so an acknowledgment is not presented as a
+
+573
+00:17:14,961 --> 00:17:18,565
+才不会把一条确认消息剪成一次已经完成的行军。
+movement, so an acknowledgment is not presented as a
+
+574
+00:17:18,565 --> 00:17:19,651
+才不会把一条确认消息剪成一次已经完成的行军。
+completed march.
+
+575
+00:17:19,651 --> 00:17:19,703
+completed march.
+
+576
+00:17:20,367 --> 00:17:22,240
+再看移动锁定。
+Now consider movement lock.
+
+577
+00:17:22,240 --> 00:17:22,467
+停止测试前，当前首段进度约百分之
+Now consider movement lock.
+
+578
+00:17:22,467 --> 00:17:25,962
+停止测试前，当前首段进度约百分之
+Before the stop test, first-leg progress was
+
+579
+00:17:25,962 --> 00:17:25,982
+停止测试前，当前首段进度约百分之
+about 96.7%, and the threshold actually read was
+
+580
+00:17:25,982 --> 00:17:29,774
+九十六点七，当次实际读到的锁定阈值是百分
+about 96.7%, and the threshold actually read was
+
+581
+00:17:29,774 --> 00:17:30,092
+九十六点七，当次实际读到的锁定阈值是百分
+50%.
+
+582
+00:17:30,092 --> 00:17:30,660
+九十六点七，当次实际读到的锁定阈值是百分
+This percentage describes the current first leg, not
+
+583
+00:17:30,660 --> 00:17:31,596
+之五十。
+This percentage describes the current first leg, not
+
+584
+00:17:31,596 --> 00:17:34,214
+这个比例描述正在走的第一段，不是整趟旅程
+This percentage describes the current first leg, not
+
+585
+00:17:34,214 --> 00:17:36,009
+这个比例描述正在走的第一段，不是整趟旅程
+over 90% of the whole journey: three more legs
+
+586
+00:17:36,009 --> 00:17:37,860
+已经完成了九成多；后面仍存着另外三段。
+over 90% of the whole journey: three more legs
+
+587
+00:17:37,860 --> 00:17:38,573
+已经完成了九成多；后面仍存着另外三段。
+remained.
+
+588
+00:17:38,573 --> 00:17:40,201
+已经完成了九成多；后面仍存着另外三段。
+To know the choices left after locking,
+
+589
+00:17:40,201 --> 00:17:41,674
+锁定以后还剩哪些选择，要继续看停止或改道后的真
+To know the choices left after locking,
+
+590
+00:17:41,674 --> 00:17:45,013
+锁定以后还剩哪些选择，要继续看停止或改道后的真
+inspect the actual route after stopping or
+
+591
+00:17:45,013 --> 00:17:45,339
+锁定以后还剩哪些选择，要继续看停止或改道后的真
+rerouting.
+
+592
+00:17:45,339 --> 00:17:45,809
+实路线，不能只凭一个百分比推断军队会停在哪里。
+rerouting.
+
+593
+00:17:45,809 --> 00:17:50,477
+实路线，不能只凭一个百分比推断军队会停在哪里。
+One percentage alone cannot tell us where the army will stop.
+
+594
+00:17:50,477 --> 00:17:50,555
+One percentage alone cannot tell us where the army will stop.
+
+595
+00:17:51,233 --> 00:17:54,098
+这两次锁定测试，都选择了进
+Both lock tests used progress strictly
+
+596
+00:17:54,098 --> 00:17:54,116
+度严格超过当次阈值的时刻。
+Both lock tests used progress strictly
+
+597
+00:17:54,116 --> 00:17:56,962
+度严格超过当次阈值的时刻。
+above the threshold read for that test.
+
+598
+00:17:56,962 --> 00:17:57,074
+现在能确认的是：超过以后，停
+above the threshold read for that test.
+
+599
+00:17:57,074 --> 00:17:59,151
+现在能确认的是：超过以后，停
+They show what stopping and
+
+600
+00:17:59,151 --> 00:18:00,160
+现在能确认的是：超过以后，停
+rerouting actually retained after
+
+601
+00:18:00,160 --> 00:18:01,691
+止和改道各自实际留下了什么。
+rerouting actually retained after
+
+602
+00:18:01,691 --> 00:18:02,614
+止和改道各自实际留下了什么。
+crossing it.
+
+603
+00:18:02,614 --> 00:18:03,357
+止和改道各自实际留下了什么。
+The current route code selects a committed first leg using a
+
+604
+00:18:03,357 --> 00:18:07,179
+当前路线实现按“严格大于”选取已经承诺的
+The current route code selects a committed first leg using a
+
+605
+00:18:07,179 --> 00:18:07,850
+当前路线实现按“严格大于”选取已经承诺的
+strict greater-than comparison; equality falls on the other
+
+606
+00:18:07,850 --> 00:18:11,668
+首段，正好相等落在另一侧；这是代码规则。
+strict greater-than comparison; equality falls on the other
+
+607
+00:18:11,668 --> 00:18:12,049
+首段，正好相等落在另一侧；这是代码规则。
+side.
+
+608
+00:18:12,049 --> 00:18:12,344
+首段，正好相等落在另一侧；这是代码规则。
+That is the code rule.
+
+609
+00:18:12,344 --> 00:18:13,696
+正好一半那一帧的停止与改道，并没有在这两场里实测
+That is the code rule.
+
+610
+00:18:13,696 --> 00:18:17,430
+正好一半那一帧的停止与改道，并没有在这两场里实测
+Neither test measured stopping or rerouting at exact
+
+611
+00:18:17,430 --> 00:18:17,658
+，不能把超过阈值的结果写成等号边界也已经验证。
+Neither test measured stopping or rerouting at exact
+
+612
+00:18:17,658 --> 00:18:21,696
+，不能把超过阈值的结果写成等号边界也已经验证。
+equality, so these results do not verify the equality
+
+613
+00:18:21,696 --> 00:18:22,304
+，不能把超过阈值的结果写成等号边界也已经验证。
+boundary.
+
+614
+00:18:22,304 --> 00:18:22,381
+boundary.
+
+615
+00:18:23,033 --> 00:18:26,008
+这次锁定后，我们只下达一次停止。
+After locking, we issued stop just once.
+
+616
+00:18:26,008 --> 00:18:26,552
+这次锁定后，我们只下达一次停止。
+A later independent read showed the four-leg route reduced
+
+617
+00:18:26,552 --> 00:18:30,150
+后来独立读取，四段路线只剩原来的
+A later independent read showed the four-leg route reduced
+
+618
+00:18:30,150 --> 00:18:30,394
+第一站，已经走过的首段进度保留。
+A later independent read showed the four-leg route reduced
+
+619
+00:18:30,394 --> 00:18:33,749
+第一站，已经走过的首段进度保留。
+to its original first stop, with first-leg progress
+
+620
+00:18:33,749 --> 00:18:34,251
+军队没有原地停下；两天后，它实际到了原
+to its original first stop, with first-leg progress
+
+621
+00:18:34,251 --> 00:18:35,007
+军队没有原地停下；两天后，它实际到了原
+preserved.
+
+622
+00:18:35,007 --> 00:18:37,312
+军队没有原地停下；两天后，它实际到了原
+The army did not stop in place.
+
+623
+00:18:37,312 --> 00:18:38,091
+军队没有原地停下；两天后，它实际到了原
+Two days later, it reached that first-leg endpoint
+
+624
+00:18:38,091 --> 00:18:41,102
+首段终点，路线变空，下一天仍留在那里。
+Two days later, it reached that first-leg endpoint
+
+625
+00:18:41,102 --> 00:18:42,433
+首段终点，路线变空，下一天仍留在那里。
+with an empty route, and stayed there the following
+
+626
+00:18:42,433 --> 00:18:44,967
+这个结果把停止的作用说清了：撤掉后续
+with an empty route, and stayed there the following
+
+627
+00:18:44,967 --> 00:18:45,270
+这个结果把停止的作用说清了：撤掉后续
+day.
+
+628
+00:18:45,270 --> 00:18:46,473
+这个结果把停止的作用说清了：撤掉后续
+Stop removed later travel while completing the committed leg.
+
+629
+00:18:46,473 --> 00:18:49,806
+行程，同时把已经承诺的这一段走完。
+Stop removed later travel while completing the committed leg.
+
+630
+00:18:49,806 --> 00:18:50,289
+行程，同时把已经承诺的这一段走完。
+The target field was not read then;
+
+631
+00:18:50,289 --> 00:18:52,473
+目标字段当时没有读到，结果
+The target field was not read then;
+
+632
+00:18:52,473 --> 00:18:53,251
+目标字段当时没有读到，结果
+actual location and route establish this
+
+633
+00:18:53,251 --> 00:18:55,520
+就用实际位置和路线说明。
+actual location and route establish this
+
+634
+00:18:55,520 --> 00:18:55,986
+就用实际位置和路线说明。
+result.
+
+635
+00:18:55,986 --> 00:18:56,053
+result.
+
+636
+00:18:56,733 --> 00:18:59,564
+改道则是另一场独立正常行军。
+Rerouting was a separate normal march test.
+
+637
+00:18:59,564 --> 00:18:59,910
+改道则是另一场独立正常行军。
+Three stops remained on the original route when we chose a different endpoint.
+
+638
+00:18:59,910 --> 00:19:04,015
+原路线还有三站，我们选择了不同的终点。
+Three stops remained on the original route when we chose a different endpoint.
+
+639
+00:19:04,015 --> 00:19:04,698
+重新下令以后，当前位置和首段进度没有变，原来的第
+Three stops remained on the original route when we chose a different endpoint.
+
+640
+00:19:04,698 --> 00:19:09,174
+重新下令以后，当前位置和首段进度没有变，原来的第
+After the new order, location and first-leg progress were unchanged.
+
+641
+00:19:09,174 --> 00:19:09,179
+重新下令以后，当前位置和首段进度没有变，原来的第
+The original first stop remained, while the
+
+642
+00:19:09,179 --> 00:19:12,067
+一站仍然保留，后面的路线换成了通向新终点的一段。
+The original first stop remained, while the
+
+643
+00:19:12,067 --> 00:19:14,344
+一站仍然保留，后面的路线换成了通向新终点的一段。
+later route became a leg toward the new
+
+644
+00:19:14,344 --> 00:19:14,690
+随后实际观察到军队先走到原第一站
+later route became a leg toward the new
+
+645
+00:19:14,690 --> 00:19:15,296
+随后实际观察到军队先走到原第一站
+endpoint.
+
+646
+00:19:15,296 --> 00:19:18,093
+随后实际观察到军队先走到原第一站
+We then observed the army reach the original first stop,
+
+647
+00:19:18,093 --> 00:19:19,014
+，再到替代终点，最后路线为空。
+We then observed the army reach the original first stop,
+
+648
+00:19:19,014 --> 00:19:21,607
+，再到替代终点，最后路线为空。
+followed by the alternative endpoint, with an empty route.
+
+649
+00:19:21,607 --> 00:19:22,866
+锁定限制了眼前这一段，并没有
+followed by the alternative endpoint, with an empty route.
+
+650
+00:19:22,866 --> 00:19:24,616
+锁定限制了眼前这一段，并没有
+Locking constrained the current leg without fixing every later choice.
+
+651
+00:19:24,616 --> 00:19:27,410
+把所有后续选择都固定下来。
+Locking constrained the current leg without fixing every later choice.
+
+652
+00:19:27,410 --> 00:19:27,473
+Locking constrained the current leg without fixing every later choice.
+
+653
+00:19:28,133 --> 00:19:31,410
+路线提示“会支付登船费”，是下
+A route warning about paying an embarkation fee appears
+
+654
+00:19:31,410 --> 00:19:31,971
+令前的警告；实际扣款要另看。
+A route warning about paying an embarkation fee appears
+
+655
+00:19:31,971 --> 00:19:34,468
+令前的警告；实际扣款要另看。
+before ordering; actual payment needs separate evidence.
+
+656
+00:19:34,468 --> 00:19:35,878
+这次军队进入海区后，独立现金查询和原生支付链对
+before ordering; actual payment needs separate evidence.
+
+657
+00:19:35,878 --> 00:19:39,553
+这次军队进入海区后，独立现金查询和原生支付链对
+After this army entered a sea zone, an independent cash query and the
+
+658
+00:19:39,553 --> 00:19:40,716
+上了一笔三金币扣款，属于这个账户的这一次登船。
+After this army entered a sea zone, an independent cash query and the
+
+659
+00:19:40,716 --> 00:19:44,639
+上了一笔三金币扣款，属于这个账户的这一次登船。
+native payment chain matched a 3-gold debit for this account's
+
+660
+00:19:44,639 --> 00:19:45,063
+它不自动成为所有军队的固定费率。
+native payment chain matched a 3-gold debit for this account's
+
+661
+00:19:45,063 --> 00:19:45,904
+它不自动成为所有军队的固定费率。
+embarkation.
+
+662
+00:19:45,904 --> 00:19:48,099
+它不自动成为所有军队的固定费率。
+That is not a universal fee for every army.
+
+663
+00:19:48,099 --> 00:19:48,877
+县域损失预算也一样：提示的是特定条件下的计
+That is not a universal fee for every army.
+
+664
+00:19:48,877 --> 00:19:52,665
+县域损失预算也一样：提示的是特定条件下的计
+County-loss budgets are conditional too: they do not mean
+
+665
+00:19:52,665 --> 00:19:52,884
+算，不能说每经过一个省就必定少同样多的兵。
+County-loss budgets are conditional too: they do not mean
+
+666
+00:19:52,884 --> 00:19:56,681
+算，不能说每经过一个省就必定少同样多的兵。
+every province crossing must remove the same number of
+
+667
+00:19:56,681 --> 00:19:57,231
+算，不能说每经过一个省就必定少同样多的兵。
+soldiers.
+
+668
+00:19:57,231 --> 00:19:57,313
+soldiers.
+
+669
+00:19:57,967 --> 00:20:02,938
+这次罗贝尔的军队进入海区，实际状态变成已登船。
+When Robert's army entered the sea zone, its actual state became embarked.
+
+670
+00:20:02,938 --> 00:20:03,367
+这次罗贝尔的军队进入海区，实际状态变成已登船。
+The native payment record identifies a 3-gold debit to the
+
+671
+00:20:03,367 --> 00:20:06,898
+沿着原生付款记录，可以核到一笔三金币的
+The native payment record identifies a 3-gold debit to the
+
+672
+00:20:06,898 --> 00:20:07,617
+沿着原生付款记录，可以核到一笔三金币的
+personal account, and the account balance fell by exactly 3
+
+673
+00:20:07,617 --> 00:20:10,926
+个人账户扣款，账户前后恰好减少三金币。
+personal account, and the account balance fell by exactly 3
+
+674
+00:20:10,926 --> 00:20:11,267
+个人账户扣款，账户前后恰好减少三金币。
+gold.
+
+675
+00:20:11,267 --> 00:20:11,867
+个人账户扣款，账户前后恰好减少三金币。
+This establishes the payment for this embarkation.
+
+676
+00:20:11,867 --> 00:20:14,626
+这给出了本例登船的实际支付；以后别的军队和
+This establishes the payment for this embarkation.
+
+677
+00:20:14,626 --> 00:20:16,369
+这给出了本例登船的实际支付；以后别的军队和
+Other armies and routes still need their own
+
+678
+00:20:16,369 --> 00:20:17,614
+路线，仍要看当次费用，不能一律套三金币。
+Other armies and routes still need their own
+
+679
+00:20:17,614 --> 00:20:20,656
+路线，仍要看当次费用，不能一律套三金币。
+fee checked; 3 gold is not a universal charge.
+
+680
+00:20:20,656 --> 00:20:20,739
+fee checked; 3 gold is not a universal charge.
+
+681
+00:20:21,400 --> 00:20:24,430
+路线警告适合帮助出发前做选择。
+Route warnings help with choices before departure.
+
+682
+00:20:24,430 --> 00:20:25,208
+路线警告适合帮助出发前做选择。
+Explaining later troop decreases also requires
+
+683
+00:20:25,208 --> 00:20:27,270
+要解释走完以后少了多少兵，还要区分县进
+Explaining later troop decreases also requires
+
+684
+00:20:27,270 --> 00:20:29,386
+要解释走完以后少了多少兵，还要区分县进
+separating county-entry deductions from periodic
+
+685
+00:20:29,386 --> 00:20:30,235
+入扣兵和周期损耗：源码里它们有不同的直
+separating county-entry deductions from periodic
+
+686
+00:20:30,235 --> 00:20:30,852
+入扣兵和周期损耗：源码里它们有不同的直
+attrition.
+
+687
+00:20:30,852 --> 00:20:33,565
+入扣兵和周期损耗：源码里它们有不同的直
+In the source, they have distinct direct call
+
+688
+00:20:33,565 --> 00:20:33,609
+接调用入口，也有共用的剩余分配路径。
+In the source, they have distinct direct call
+
+689
+00:20:33,609 --> 00:20:36,487
+接调用入口，也有共用的剩余分配路径。
+entries and a shared remainder-allocation path.
+
+690
+00:20:36,487 --> 00:20:37,524
+接调用入口，也有共用的剩余分配路径。
+If the only record is from that shared path, the cause stays unknown.
+
+691
+00:20:37,524 --> 00:20:40,668
+只有共用路径的记录时，原因继续保留未知，不
+If the only record is from that shared path, the cause stays unknown.
+
+692
+00:20:40,668 --> 00:20:42,235
+只有共用路径的记录时，原因继续保留未知，不
+Crossing a county boundary does not justify
+
+693
+00:20:42,235 --> 00:20:43,326
+能看到刚跨县就把整段减少全算成跨县损耗。
+Crossing a county boundary does not justify
+
+694
+00:20:43,326 --> 00:20:46,170
+能看到刚跨县就把整段减少全算成跨县损耗。
+attributing the whole decrease to county-entry
+
+695
+00:20:46,170 --> 00:20:46,721
+能看到刚跨县就把整段减少全算成跨县损耗。
+attrition.
+
+696
+00:20:46,721 --> 00:20:46,788
+attrition.
+
+697
+00:20:48,500 --> 00:20:53,890
+把三个方案放到一起，先问四件事：多久到，原始兵团
+To compare the three plans, first ask four questions: how long until arrival, how many troops
+
+698
+00:20:53,890 --> 00:20:53,938
+把三个方案放到一起，先问四件事：多久到，原始兵团
+remain in the original regiments, how much supply each army has, and how much was actually
+
+699
+00:20:53,938 --> 00:20:59,106
+剩多少人，每支军队还有多少补给，实际支付多少。
+remain in the original regiments, how much supply each army has, and how much was actually
+
+700
+00:20:59,106 --> 00:20:59,150
+剩多少人，每支军队还有多少补给，实际支付多少。
+paid.
+
+701
+00:20:59,150 --> 00:20:59,395
+抵达时的状态回答这条路线把军队送成了什么样；同一天
+paid.
+
+702
+00:20:59,395 --> 00:21:03,811
+抵达时的状态回答这条路线把军队送成了什么样；同一天
+The state on arrival tells us what condition the route delivered the army in.
+
+703
+00:21:03,811 --> 00:21:04,568
+抵达时的状态回答这条路线把军队送成了什么样；同一天
+The state on the same day tells us how far each
+
+704
+00:21:04,568 --> 00:21:06,558
+的状态回答同样过了这些天，各种安排走到了哪一步。
+The state on the same day tells us how far each
+
+705
+00:21:06,558 --> 00:21:09,540
+的状态回答同样过了这些天，各种安排走到了哪一步。
+arrangement has progressed after the same amount of
+
+706
+00:21:09,540 --> 00:21:09,768
+的状态回答同样过了这些天，各种安排走到了哪一步。
+time.
+
+707
+00:21:09,768 --> 00:21:09,832
+time.
+
+708
+00:21:10,500 --> 00:21:15,299
+三次回放都要重新载入同一份普通起点，核对
+Each of the three replays must reload the same normal starting save and
+
+709
+00:21:15,299 --> 00:21:15,369
+人物、日期、统帅、原始兵团、库存和钱包。
+Each of the three replays must reload the same normal starting save and
+
+710
+00:21:15,369 --> 00:21:20,033
+人物、日期、统帅、原始兵团、库存和钱包。
+check the character, date, commander, original regiments, stock, and
+
+711
+00:21:20,033 --> 00:21:20,097
+人物、日期、统帅、原始兵团、库存和钱包。
+treasury.
+
+712
+00:21:20,097 --> 00:21:20,650
+新分出来的军队，用本次实际出现的身份识别。
+treasury.
+
+713
+00:21:20,650 --> 00:21:23,422
+新分出来的军队，用本次实际出现的身份识别。
+Newly split armies are identified by the
+
+714
+00:21:23,422 --> 00:21:24,979
+新分出来的军队，用本次实际出现的身份识别。
+identities that actually appear in that
+
+715
+00:21:24,979 --> 00:21:26,125
+这样，后来多出一条记录、换了统帅，或者少
+identities that actually appear in that
+
+716
+00:21:26,125 --> 00:21:26,402
+这样，后来多出一条记录、换了统帅，或者少
+run.
+
+717
+00:21:26,402 --> 00:21:29,284
+这样，后来多出一条记录、换了统帅，或者少
+This keeps any later extra entry, commander change,
+
+718
+00:21:29,284 --> 00:21:29,887
+了某个原始兵团，都能在结果里保留下来。
+This keeps any later extra entry, commander change,
+
+719
+00:21:29,887 --> 00:21:33,374
+了某个原始兵团，都能在结果里保留下来。
+or missing original regiment visible in the results.
+
+720
+00:21:33,374 --> 00:21:33,440
+or missing original regiment visible in the results.
+
+721
+00:21:34,100 --> 00:21:39,355
+方案A保持整军，按这次实际预览的直达路线前进。
+Plan A keeps the army intact and follows the direct route shown in this run's actual preview.
+
+722
+00:21:39,355 --> 00:21:39,434
+命令之后先确认路线真的生效，再逐日看它的位置。
+Plan A keeps the army intact and follows the direct route shown in this run's actual preview.
+
+723
+00:21:39,434 --> 00:21:42,272
+命令之后先确认路线真的生效，再逐日看它的位置。
+After the order, first confirm that the route has
+
+724
+00:21:42,272 --> 00:21:44,684
+命令之后先确认路线真的生效，再逐日看它的位置。
+taken effect, then track its position day by day.
+
+725
+00:21:44,684 --> 00:21:45,111
+真正到达，要同时看到军队已经在目标
+taken effect, then track its position day by day.
+
+726
+00:21:45,111 --> 00:21:48,351
+真正到达，要同时看到军队已经在目标
+Actual arrival requires the army to be at the target, in
+
+727
+00:21:48,351 --> 00:21:48,434
+真正到达，要同时看到军队已经在目标
+an appropriate state, with the remaining route completed.
+
+728
+00:21:48,434 --> 00:21:51,649
+地点，状态合适，剩余路线走完；预计
+an appropriate state, with the remaining route completed.
+
+729
+00:21:51,649 --> 00:21:52,184
+地点，状态合适，剩余路线走完；预计
+Neither an estimated date nor an order confirmation can replace that moment.
+
+730
+00:21:52,184 --> 00:21:55,934
+日期和下令确认，都不能代替这一刻。
+Neither an estimated date nor an order confirmation can replace that moment.
+
+731
+00:21:55,934 --> 00:21:56,008
+Neither an estimated date nor an order confirmation can replace that moment.
+
+732
+00:21:56,667 --> 00:21:59,587
+方案B先分兵，到两处验证
+Plan B first splits the army, rests at two verified locations, then regroups.
+
+733
+00:21:59,587 --> 00:22:01,298
+过的驻点休整，再会合。
+Plan B first splits the army, rests at two verified locations, then regroups.
+
+734
+00:22:01,298 --> 00:22:02,264
+过的驻点休整，再会合。
+Each army's rest period starts on the day it actually becomes stationary.
+
+735
+00:22:02,264 --> 00:22:05,689
+每队从真正停驻那天开始计时；达到预定库存和缺员
+Each army's rest period starts on the day it actually becomes stationary.
+
+736
+00:22:05,689 --> 00:22:07,429
+每队从真正停驻那天开始计时；达到预定库存和缺员
+Once the preset stock and troop-shortfall conditions are met, or
+
+737
+00:22:07,429 --> 00:22:09,568
+条件，或者用完预定驻留时间，就按原计划离开。
+Once the preset stock and troop-shortfall conditions are met, or
+
+738
+00:22:09,568 --> 00:22:12,369
+条件，或者用完预定驻留时间，就按原计划离开。
+the preset stay expires, it leaves according to the original plan.
+
+739
+00:22:12,369 --> 00:22:13,568
+恢复得不够，也是这次方案的结果，
+the preset stay expires, it leaves according to the original plan.
+
+740
+00:22:13,568 --> 00:22:15,935
+恢复得不够，也是这次方案的结果，
+Insufficient recovery is also a result of this
+
+741
+00:22:15,935 --> 00:22:16,394
+不能为了挑到好数字而重新开始。
+Insufficient recovery is also a result of this
+
+742
+00:22:16,394 --> 00:22:18,851
+不能为了挑到好数字而重新开始。
+plan; we cannot restart to obtain better
+
+743
+00:22:18,851 --> 00:22:19,277
+不能为了挑到好数字而重新开始。
+numbers.
+
+744
+00:22:19,277 --> 00:22:19,343
+numbers.
+
+745
+00:22:20,000 --> 00:22:23,064
+方案C保持整军，依次经过事先选好
+Plan C keeps the army intact, passes through the legal
+
+746
+00:22:23,064 --> 00:22:23,643
+方案C保持整军，依次经过事先选好
+waypoints chosen in advance, then heads to the same
+
+747
+00:22:23,643 --> 00:22:25,958
+的合法中转点，再去同一个终点。
+waypoints chosen in advance, then heads to the same
+
+748
+00:22:25,958 --> 00:22:26,639
+的合法中转点，再去同一个终点。
+destination.
+
+749
+00:22:26,639 --> 00:22:27,058
+的合法中转点，再去同一个终点。
+It changes the route, while supply and troop
+
+750
+00:22:27,058 --> 00:22:29,142
+它是换路线，补给和人数沿途照实记录。
+It changes the route, while supply and troop
+
+751
+00:22:29,142 --> 00:22:31,255
+它是换路线，补给和人数沿途照实记录。
+counts are recorded as they actually stand along
+
+752
+00:22:31,255 --> 00:22:31,874
+每一段都等实际到达再转向下一点，不能用镜
+counts are recorded as they actually stand along
+
+753
+00:22:31,874 --> 00:22:32,329
+每一段都等实际到达再转向下一点，不能用镜
+the way.
+
+754
+00:22:32,329 --> 00:22:35,661
+每一段都等实际到达再转向下一点，不能用镜
+Each leg waits for actual arrival before turning toward the next point.
+
+755
+00:22:35,661 --> 00:22:36,290
+头已经移到那里，代替军队已经走到那里。
+Each leg waits for actual arrival before turning toward the next point.
+
+756
+00:22:36,290 --> 00:22:39,847
+头已经移到那里，代替军队已经走到那里。
+Moving the camera there cannot stand in for the army reaching it.
+
+757
+00:22:39,847 --> 00:22:39,916
+Moving the camera there cannot stand in for the army reaching it.
+
+758
+00:22:40,567 --> 00:22:44,387
+平分的源码会先建新军队，再按不同类别
+The balanced-split code first creates a new army, then transfers
+
+759
+00:22:44,387 --> 00:22:44,819
+平分的源码会先建新军队，再按不同类别
+whole army-regiment records according to weights for different
+
+760
+00:22:44,819 --> 00:22:48,087
+的权重，把整条军队兵团记录搬过去。
+whole army-regiment records according to weights for different
+
+761
+00:22:48,087 --> 00:22:48,744
+的权重，把整条军队兵团记录搬过去。
+categories.
+
+762
+00:22:48,744 --> 00:22:48,835
+的权重，把整条军队兵团记录搬过去。
+This normal path does not cut every persistent troop slot in half, so
+
+763
+00:22:48,835 --> 00:22:52,832
+它没有在这条普通路径里，把每个持久兵槽直接
+This normal path does not cut every persistent troop slot in half, so
+
+764
+00:22:52,832 --> 00:22:53,585
+它没有在这条普通路径里，把每个持久兵槽直接
+the two displayed troop counts are not guaranteed to be exactly equal.
+
+765
+00:22:53,585 --> 00:22:56,979
+切成两半，因此两边界面人数不保证严格各半。
+the two displayed troop counts are not guaranteed to be exactly equal.
+
+766
+00:22:56,979 --> 00:22:58,335
+切成两半，因此两边界面人数不保证严格各半。
+Creating the new army also copies the original supply-stock field.
+
+767
+00:22:58,335 --> 00:23:00,862
+新军建立时还会复制原来的补给库存字段；是否碰到
+Creating the new army also copies the original supply-stock field.
+
+768
+00:23:00,862 --> 00:23:03,473
+新军建立时还会复制原来的补给库存字段；是否碰到
+Whether that stock hits the new capacity limit must be checked
+
+769
+00:23:03,473 --> 00:23:04,567
+新容量，要继续按独立的补给更新和实际后态看。
+Whether that stock hits the new capacity limit must be checked
+
+770
+00:23:04,567 --> 00:23:08,092
+新容量，要继续按独立的补给更新和实际后态看。
+through the separate supply update and the actual resulting
+
+771
+00:23:08,092 --> 00:23:08,388
+新容量，要继续按独立的补给更新和实际后态看。
+state.
+
+772
+00:23:08,388 --> 00:23:08,451
+state.
+
+773
+00:23:09,133 --> 00:23:12,126
+把一百人拆成两支五十人，并不会让
+Splitting a hundred troops into two groups of fifty
+
+774
+00:23:12,126 --> 00:23:12,532
+把一百人拆成两支五十人，并不会让
+does not make the same location support only fifty.
+
+775
+00:23:12,532 --> 00:23:15,118
+同一个地方只承担五十人的压力。
+does not make the same location support only fifty.
+
+776
+00:23:15,118 --> 00:23:15,718
+同一个地方只承担五十人的压力。
+Take a hypothetical case: aggregate local usage is six thousand, the
+
+777
+00:23:15,718 --> 00:23:19,127
+用一个假设场景：当地聚合用量六千，上
+Take a hypothetical case: aggregate local usage is six thousand, the
+
+778
+00:23:19,127 --> 00:23:19,940
+用一个假设场景：当地聚合用量六千，上
+limit is four thousand, and the selected army has only a hundred
+
+779
+00:23:19,940 --> 00:23:22,899
+限四千，其中选中的军队只有一百人。
+limit is four thousand, and the selected army has only a hundred
+
+780
+00:23:22,899 --> 00:23:23,312
+限四千，其中选中的军队只有一百人。
+troops.
+
+781
+00:23:23,312 --> 00:23:23,928
+限四千，其中选中的军队只有一百人。
+If both armies remain in the same province and the contributing
+
+782
+00:23:23,928 --> 00:23:27,026
+两队还在同省，而且贡献兵团和
+If both armies remain in the same province and the contributing
+
+783
+00:23:27,026 --> 00:23:27,251
+两队还在同省，而且贡献兵团和
+regiments and their eligibility are unchanged, usage remains six
+
+784
+00:23:27,251 --> 00:23:30,336
+资格都没变，用量仍是六千。
+regiments and their eligibility are unchanged, usage remains six
+
+785
+00:23:30,336 --> 00:23:30,800
+分兵能否改善补给，要看实际占用怎
+regiments and their eligibility are unchanged, usage remains six
+
+786
+00:23:30,800 --> 00:23:31,330
+分兵能否改善补给，要看实际占用怎
+thousand.
+
+787
+00:23:31,330 --> 00:23:33,874
+分兵能否改善补给，要看实际占用怎
+Whether splitting improves supply depends on how
+
+788
+00:23:33,874 --> 00:23:34,175
+样改变，以及各队真正去了哪里。
+Whether splitting improves supply depends on how
+
+789
+00:23:34,175 --> 00:23:36,961
+样改变，以及各队真正去了哪里。
+actual usage changes and where each army really
+
+790
+00:23:36,961 --> 00:23:37,191
+样改变，以及各队真正去了哪里。
+goes.
+
+791
+00:23:37,191 --> 00:23:37,257
+goes.
+
+792
+00:23:37,933 --> 00:23:42,247
+分兵以后，把每队的库存和容量分别列出来。
+After splitting, list each army's stock and capacity separately.
+
+793
+00:23:42,247 --> 00:23:42,504
+分兵以后，把每队的库存和容量分别列出来。
+Stock is what each army actually carries;
+
+794
+00:23:42,504 --> 00:23:45,074
+库存是各队实际带着多少，容
+Stock is what each army actually carries;
+
+795
+00:23:45,074 --> 00:23:45,669
+库存是各队实际带着多少，容
+capacity is what that army can currently
+
+796
+00:23:45,669 --> 00:23:47,833
+量是这支军队当前能带多少。
+capacity is what that army can currently
+
+797
+00:23:47,833 --> 00:23:48,246
+量是这支军队当前能带多少。
+carry.
+
+798
+00:23:48,246 --> 00:23:48,833
+量是这支军队当前能带多少。
+Keep each army's real values in the comparison.
+
+799
+00:23:48,833 --> 00:23:51,414
+比较时保留每支军队的真实值，不把两队库存相加，
+Keep each army's real values in the comparison.
+
+800
+00:23:51,414 --> 00:23:53,870
+比较时保留每支军队的真实值，不把两队库存相加，
+Adding the two stocks or taking an average does not
+
+801
+00:23:53,870 --> 00:23:54,916
+或者求个平均，就写成一支并不存在的整军补给。
+Adding the two stocks or taking an average does not
+
+802
+00:23:54,916 --> 00:23:58,349
+或者求个平均，就写成一支并不存在的整军补给。
+produce the supply of an intact army that does not
+
+803
+00:23:58,349 --> 00:23:58,689
+或者求个平均，就写成一支并不存在的整军补给。
+exist.
+
+804
+00:23:58,689 --> 00:23:58,761
+exist.
+
+805
+00:23:59,433 --> 00:24:04,228
+合军后重新看统帅，也重新展开完整兵团。
+After merging, check the commander again and expand the complete regiment list.
+
+806
+00:24:04,228 --> 00:24:04,235
+一条一人满员一人的记录，首先只是这条记录的实际人数。
+After merging, check the commander again and expand the complete regiment list.
+
+807
+00:24:04,235 --> 00:24:07,027
+一条一人满员一人的记录，首先只是这条记录的实际人数。
+An entry showing one current troop out of one
+
+808
+00:24:07,027 --> 00:24:09,689
+一条一人满员一人的记录，首先只是这条记录的实际人数。
+maximum first tells us only that entry's actual
+
+809
+00:24:09,689 --> 00:24:09,942
+它可能没有普通兵槽数据；只凭这个数字，还不能叫
+maximum first tells us only that entry's actual
+
+810
+00:24:09,942 --> 00:24:10,314
+它可能没有普通兵槽数据；只凭这个数字，还不能叫
+count.
+
+811
+00:24:10,314 --> 00:24:12,745
+它可能没有普通兵槽数据；只凭这个数字，还不能叫
+It may have no ordinary troop-slot data.
+
+812
+00:24:12,745 --> 00:24:14,625
+它可能没有普通兵槽数据；只凭这个数字，还不能叫
+That number alone cannot identify it as a knight or
+
+813
+00:24:14,625 --> 00:24:15,904
+它骑士，也不能说这是刚补进来的一个普通士兵。
+That number alone cannot identify it as a knight or
+
+814
+00:24:15,904 --> 00:24:18,629
+它骑士，也不能说这是刚补进来的一个普通士兵。
+show that one ordinary soldier has just been
+
+815
+00:24:18,629 --> 00:24:19,310
+它骑士，也不能说这是刚补进来的一个普通士兵。
+reinforced.
+
+816
+00:24:19,310 --> 00:24:19,346
+它骑士，也不能说这是刚补进来的一个普通士兵。
+Its specific category must be matched to its own native identity.
+
+817
+00:24:19,346 --> 00:24:23,202
+具体类别要跟它自己的原生身份对应。
+Its specific category must be matched to its own native identity.
+
+818
+00:24:23,202 --> 00:24:23,261
+Its specific category must be matched to its own native identity.
+
+819
+00:24:23,933 --> 00:24:26,758
+会合是两队到了同一地点，合并以后才成为一支。
+Regrouping means both armies have reached the
+
+820
+00:24:26,758 --> 00:24:29,136
+会合是两队到了同一地点，合并以后才成为一支。
+same place; only merging turns them into one.
+
+821
+00:24:29,136 --> 00:24:29,583
+合后要再读库存、容量、
+same place; only merging turns them into one.
+
+822
+00:24:29,583 --> 00:24:32,051
+合后要再读库存、容量、
+After the merge, reread stock, capacity, the actual commander, and every regiment.
+
+823
+00:24:32,051 --> 00:24:34,674
+实际统帅和全部兵团。
+After the merge, reread stock, capacity, the actual commander, and every regiment.
+
+824
+00:24:34,674 --> 00:24:34,702
+实际统帅和全部兵团。
+Count the original regiments separately from later additions.
+
+825
+00:24:34,702 --> 00:24:38,461
+原始兵团与后来新增的记录分开统计；如果合法合军改变
+Count the original regiments separately from later additions.
+
+826
+00:24:38,461 --> 00:24:40,262
+原始兵团与后来新增的记录分开统计；如果合法合军改变
+If a legal merge changes these conditions, retain
+
+827
+00:24:40,262 --> 00:24:41,561
+了这些条件，就把变化作为这次安排的实际后果，不能删
+If a legal merge changes these conditions, retain
+
+828
+00:24:41,561 --> 00:24:44,344
+了这些条件，就把变化作为这次安排的实际后果，不能删
+those changes as actual consequences of this
+
+829
+00:24:44,344 --> 00:24:45,103
+了这些条件，就把变化作为这次安排的实际后果，不能删
+arrangement.
+
+830
+00:24:45,103 --> 00:24:45,823
+了这些条件，就把变化作为这次安排的实际后果，不能删
+Do not delete new entries or change commanders
+
+831
+00:24:45,823 --> 00:24:47,990
+掉新增记录，或事后换将，把结果修成预想的样子。
+Do not delete new entries or change commanders
+
+832
+00:24:47,990 --> 00:24:50,939
+掉新增记录，或事后换将，把结果修成预想的样子。
+afterward to make the result match expectations.
+
+833
+00:24:50,939 --> 00:24:51,001
+afterward to make the result match expectations.
+
+834
+00:24:51,667 --> 00:24:55,422
+费用先分当前月读数和旅途累计。
+Separate current monthly figures from costs accumulated during the journey.
+
+835
+00:24:55,422 --> 00:24:55,979
+当前月收入减去完整月支出，得到当前净收入；这些
+Separate current monthly figures from costs accumulated during the journey.
+
+836
+00:24:55,979 --> 00:25:00,521
+当前月收入减去完整月支出，得到当前净收入；这些
+Current monthly income minus full monthly expenditure gives current net income.
+
+837
+00:25:00,521 --> 00:25:00,708
+当前月收入减去完整月支出，得到当前净收入；这些
+These figures describe present income and spending
+
+838
+00:25:00,708 --> 00:25:03,446
+数描述眼前的收支条件，不能固定铺到整趟旅程。
+These figures describe present income and spending
+
+839
+00:25:03,446 --> 00:25:05,764
+数描述眼前的收支条件，不能固定铺到整趟旅程。
+conditions; they cannot be held constant across the whole
+
+840
+00:25:05,764 --> 00:25:06,780
+军队集结状态、来源和其他收支变了，就要重读。
+conditions; they cannot be held constant across the whole
+
+841
+00:25:06,780 --> 00:25:07,248
+军队集结状态、来源和其他收支变了，就要重读。
+journey.
+
+842
+00:25:07,248 --> 00:25:11,211
+军队集结状态、来源和其他收支变了，就要重读。
+Reread them when the armies' raised status, troop sources, or other income and spending change.
+
+843
+00:25:11,211 --> 00:25:12,710
+比较不同路线花了多少时，累计实际支付另记，
+Reread them when the armies' raised status, troop sources, or other income and spending change.
+
+844
+00:25:12,710 --> 00:25:15,777
+比较不同路线花了多少时，累计实际支付另记，
+When comparing route costs, record cumulative actual payments
+
+845
+00:25:15,777 --> 00:25:16,271
+期间收入和其他事件也按同一个日期范围保留。
+When comparing route costs, record cumulative actual payments
+
+846
+00:25:16,271 --> 00:25:20,064
+期间收入和其他事件也按同一个日期范围保留。
+separately, and retain income and other events over the same date
+
+847
+00:25:20,064 --> 00:25:20,343
+期间收入和其他事件也按同一个日期范围保留。
+range.
+
+848
+00:25:20,343 --> 00:25:20,415
+range.
+
+849
+00:25:21,067 --> 00:25:24,887
+当前军事维护月费率，与“全部集结”情景的替代月费
+The current monthly military-maintenance rate and the alternative
+
+850
+00:25:24,887 --> 00:25:26,041
+当前军事维护月费率，与“全部集结”情景的替代月费
+monthly rate for the all-raised scenario describe two different
+
+851
+00:25:26,041 --> 00:25:28,589
+率，是两种情况的读数，不是两笔应该相加的支出。
+monthly rate for the all-raised scenario describe two different
+
+852
+00:25:28,589 --> 00:25:29,236
+率，是两种情况的读数，不是两笔应该相加的支出。
+situations.
+
+853
+00:25:29,236 --> 00:25:30,809
+率，是两种情况的读数，不是两笔应该相加的支出。
+They are not two expenses to add together.
+
+854
+00:25:30,809 --> 00:25:31,669
+完整月支出已经按包含军费的口径读取，所以
+They are not two expenses to add together.
+
+855
+00:25:31,669 --> 00:25:35,174
+完整月支出已经按包含军费的口径读取，所以
+Full monthly expenditure already includes military costs, so
+
+856
+00:25:35,174 --> 00:25:35,296
+完整月支出已经按包含军费的口径读取，所以
+using net income must not deduct the same military cost again.
+
+857
+00:25:35,296 --> 00:25:38,795
+使用净收入时，不能再把同一军费扣一次。
+using net income must not deduct the same military cost again.
+
+858
+00:25:38,795 --> 00:25:39,559
+使用净收入时，不能再把同一军费扣一次。
+A monthly rate is still only the current rate.
+
+859
+00:25:39,559 --> 00:25:41,460
+月费率仍只是当前费率；要说旅途已经付
+A monthly rate is still only the current rate.
+
+860
+00:25:41,460 --> 00:25:43,629
+月费率仍只是当前费率；要说旅途已经付
+To state how much maintenance has actually been paid during the journey, the actual
+
+861
+00:25:43,629 --> 00:25:46,323
+了多少维护费，还需要实际支付来源、金
+To state how much maintenance has actually been paid during the journey, the actual
+
+862
+00:25:46,323 --> 00:25:47,699
+了多少维护费，还需要实际支付来源、金
+payment source, amount, and date must match; the treasury difference alone is not a
+
+863
+00:25:47,699 --> 00:25:51,186
+额和日期对上，不能只拿钱包差来代替。
+payment source, amount, and date must match; the treasury difference alone is not a
+
+864
+00:25:51,186 --> 00:25:51,769
+额和日期对上，不能只拿钱包差来代替。
+substitute.
+
+865
+00:25:51,769 --> 00:25:51,831
+substitute.
+
+866
+00:25:52,500 --> 00:25:54,295
+费用单独记账。
+Keep a separate cost ledger.
+
+867
+00:25:54,295 --> 00:25:54,439
+费用单独记账。
+Reconcile embarkation payments, military maintenance, income during
+
+868
+00:25:54,439 --> 00:25:58,655
+登船支付、军事维护、期间收入和其他支出
+Reconcile embarkation payments, military maintenance, income during
+
+869
+00:25:58,655 --> 00:25:59,068
+登船支付、军事维护、期间收入和其他支出
+the period, and other spending within the same account and date
+
+870
+00:25:59,068 --> 00:26:02,754
+，放进相同账户、相同日期范围里核对。
+the period, and other spending within the same account and date
+
+871
+00:26:02,754 --> 00:26:03,144
+，放进相同账户、相同日期范围里核对。
+range.
+
+872
+00:26:03,144 --> 00:26:03,453
+，放进相同账户、相同日期范围里核对。
+The treasury's net change mixes these sources.
+
+873
+00:26:03,453 --> 00:26:06,094
+钱包的净变化混合了这些来源；即使
+The treasury's net change mixes these sources.
+
+874
+00:26:06,094 --> 00:26:07,093
+钱包的净变化混合了这些来源；即使
+Even an increased balance can include military costs already paid.
+
+875
+00:26:07,093 --> 00:26:10,326
+余额增加，也可能已经付过军费。
+Even an increased balance can include military costs already paid.
+
+876
+00:26:10,326 --> 00:26:10,505
+余额增加，也可能已经付过军费。
+Military costs included in full expenditure must not be deducted a second time.
+
+877
+00:26:10,505 --> 00:26:15,334
+完整支出里包含的军费，也不再额外扣第二次。
+Military costs included in full expenditure must not be deducted a second time.
+
+878
+00:26:15,334 --> 00:26:15,392
+Military costs included in full expenditure must not be deducted a second time.
+
+879
+00:26:16,067 --> 00:26:20,541
+兵力表分成两列：一列只追踪起点那批兵团，另
+The troop-strength table has two columns: one tracks only the regiments present
+
+880
+00:26:20,541 --> 00:26:20,679
+兵力表分成两列：一列只追踪起点那批兵团，另
+at the start; the other retains all relevant armies actually held under that
+
+881
+00:26:20,679 --> 00:26:24,845
+一列保留这个方案实际拥有的全部相关军队。
+at the start; the other retains all relevant armies actually held under that
+
+882
+00:26:24,845 --> 00:26:25,072
+一列保留这个方案实际拥有的全部相关军队。
+plan.
+
+883
+00:26:25,072 --> 00:26:25,128
+新增一人，不能自动抹平原兵团的缺员；源军
+plan.
+
+884
+00:26:25,128 --> 00:26:29,640
+新增一人，不能自动抹平原兵团的缺员；源军
+One additional person cannot automatically cancel out a shortfall in the original regiments.
+
+885
+00:26:29,640 --> 00:26:30,274
+在合并后消失，也不能当作整支军队死亡。
+One additional person cannot automatically cancel out a shortfall in the original regiments.
+
+886
+00:26:30,274 --> 00:26:33,980
+在合并后消失，也不能当作整支军队死亡。
+Nor does a source army disappearing after a merge mean the entire army has died.
+
+887
+00:26:33,980 --> 00:26:34,749
+人数、身份和组织变化一起看
+Nor does a source army disappearing after a merge mean the entire army has died.
+
+888
+00:26:34,749 --> 00:26:37,189
+人数、身份和组织变化一起看
+Counts, identities, and organizational changes must be read together to see where the troops went.
+
+889
+00:26:37,189 --> 00:26:40,151
+，才知道兵究竟去了哪里。
+Counts, identities, and organizational changes must be read together to see where the troops went.
+
+890
+00:26:40,151 --> 00:26:40,231
+Counts, identities, and organizational changes must be read together to see where the troops went.
+
+891
+00:26:40,900 --> 00:26:44,732
+抵达表先列各方案自己的到场时间和到
+The arrival table first lists each plan's own arrival time and arrival state.
+
+892
+00:26:44,732 --> 00:26:45,384
+场状态；同日表再列第七、第十四、第
+The arrival table first lists each plan's own arrival time and arrival state.
+
+893
+00:26:45,384 --> 00:26:48,293
+场状态；同日表再列第七、第十四、第
+The same-day table then lists the actual readings
+
+894
+00:26:48,293 --> 00:26:48,564
+场状态；同日表再列第七、第十四、第
+on days seven, fourteen, twenty-one, and
+
+895
+00:26:48,564 --> 00:26:50,668
+二十一和第二十八天的实际读数。
+on days seven, fourteen, twenty-one, and
+
+896
+00:26:50,668 --> 00:26:51,440
+二十一和第二十八天的实际读数。
+twenty-eight.
+
+897
+00:26:51,440 --> 00:26:51,945
+二十一和第二十八天的实际读数。
+Read the two tables separately.
+
+898
+00:26:51,945 --> 00:26:53,246
+两种表分开看。
+Read the two tables separately.
+
+899
+00:26:53,246 --> 00:26:53,945
+两种表分开看。
+Any additional recovery opportunities and costs
+
+900
+00:26:53,945 --> 00:26:56,011
+走得更久的一队，多出来的恢复机会和费用也属于行程的一部
+Any additional recovery opportunities and costs
+
+901
+00:26:56,011 --> 00:26:58,894
+走得更久的一队，多出来的恢复机会和费用也属于行程的一部
+from the longer journey are part of that journey.
+
+902
+00:26:58,894 --> 00:26:59,421
+走得更久的一队，多出来的恢复机会和费用也属于行程的一部
+Troop counts from different dates cannot be
+
+903
+00:26:59,421 --> 00:27:01,449
+分，不能拿不同日期的人数，直接称为同一天的补员优势。
+Troop counts from different dates cannot be
+
+904
+00:27:01,449 --> 00:27:04,182
+分，不能拿不同日期的人数，直接称为同一天的补员优势。
+presented directly as a same-day reinforcement
+
+905
+00:27:04,182 --> 00:27:04,695
+分，不能拿不同日期的人数，直接称为同一天的补员优势。
+advantage.
+
+906
+00:27:04,695 --> 00:27:04,776
+advantage.
+
+907
+00:27:05,433 --> 00:27:09,292
+旧回放没有给出严格的三方案胜负：B在第三十八天因冻
+The old replays did not establish a strict winner among the three plans.
+
+908
+00:27:09,292 --> 00:27:10,887
+旧回放没有给出严格的三方案胜负：B在第三十八天因冻
+B stopped on day thirty-eight because the frozen
+
+909
+00:27:10,887 --> 00:27:11,910
+结条件未通过而停止，仍有五十二天预算；C保留十五次
+B stopped on day thirty-eight because the frozen
+
+910
+00:27:11,910 --> 00:27:14,855
+结条件未通过而停止，仍有五十二天预算；C保留十五次
+conditions were not met, with fifty-two days of budget
+
+911
+00:27:14,855 --> 00:27:15,400
+结条件未通过而停止，仍有五十二天预算；C保留十五次
+remaining.
+
+912
+00:27:15,400 --> 00:27:16,340
+结条件未通过而停止，仍有五十二天预算；C保留十五次
+C retains fifteen two-day sampling deviations, so arrival can
+
+913
+00:27:16,340 --> 00:27:18,695
+两日采样偏差，抵达只能落在第七十五到七十七天之间。
+C retains fifteen two-day sampling deviations, so arrival can
+
+914
+00:27:18,695 --> 00:27:21,794
+两日采样偏差，抵达只能落在第七十五到七十七天之间。
+only be placed after day seventy-five and by day seventy-seven.
+
+915
+00:27:21,794 --> 00:27:22,098
+这些历史记录继续保留。
+only be placed after day seventy-five and by day seventy-seven.
+
+916
+00:27:22,098 --> 00:27:23,813
+这些历史记录继续保留。
+These historical records remain.
+
+917
+00:27:23,813 --> 00:27:24,662
+这些历史记录继续保留。
+For the new comparison, we will discuss the trade-offs in actual routes, rest
+
+918
+00:27:24,662 --> 00:27:27,992
+新版比较等三条独立回放完成后，再
+For the new comparison, we will discuss the trade-offs in actual routes, rest
+
+919
+00:27:27,992 --> 00:27:28,458
+新版比较等三条独立回放完成后，再
+locations, and enemy conditions once all three independent replays have
+
+920
+00:27:28,458 --> 00:27:31,845
+按实际路线、驻点和敌情讨论取舍。
+locations, and enemy conditions once all three independent replays have
+
+921
+00:27:31,845 --> 00:27:32,254
+按实际路线、驻点和敌情讨论取舍。
+finished.
+
+922
+00:27:32,254 --> 00:27:32,333
+finished.
+
+923
+00:27:34,033 --> 00:27:37,019
+回到人数变化，先分别看预算
+Returning to troop-count changes, first distinguish the
+
+924
+00:27:37,019 --> 00:27:37,183
+回到人数变化，先分别看预算
+budget, actual troop deductions, and the whole army's net
+
+925
+00:27:37,183 --> 00:27:40,091
+、实际扣兵和整军净变化。
+budget, actual troop deductions, and the whole army's net
+
+926
+00:27:40,091 --> 00:27:40,112
+围城与劫掠在源码里共享一个损失阶段；要解释某次围
+budget, actual troop deductions, and the whole army's net
+
+927
+00:27:40,112 --> 00:27:40,492
+围城与劫掠在源码里共享一个损失阶段；要解释某次围
+change.
+
+928
+00:27:40,492 --> 00:27:43,695
+围城与劫掠在源码里共享一个损失阶段；要解释某次围
+Siege and raid losses share a loss stage in the source code.
+
+929
+00:27:43,695 --> 00:27:45,587
+围城与劫掠在源码里共享一个损失阶段；要解释某次围
+Explaining a particular siege loss also requires checking that a siege
+
+930
+00:27:45,587 --> 00:27:47,459
+城损失，还要核对当时确在围城、没有劫掠等条件。
+Explaining a particular siege loss also requires checking that a siege
+
+931
+00:27:47,459 --> 00:27:50,854
+城损失，还要核对当时确在围城、没有劫掠等条件。
+was actually underway and that conditions such as no raiding were met.
+
+932
+00:27:50,854 --> 00:27:51,222
+分配也有顺序和整数尾差，不能把显示百分
+was actually underway and that conditions such as no raiding were met.
+
+933
+00:27:51,222 --> 00:27:53,998
+分配也有顺序和整数尾差，不能把显示百分
+Allocation has its own order and integer remainders.
+
+934
+00:27:53,998 --> 00:27:55,361
+分配也有顺序和整数尾差，不能把显示百分
+Multiplying the displayed percentage by each regiment
+
+935
+00:27:55,361 --> 00:27:56,853
+比各乘每个兵团，再当作实际扣兵流水。
+Multiplying the displayed percentage by each regiment
+
+936
+00:27:56,853 --> 00:27:59,631
+比各乘每个兵团，再当作实际扣兵流水。
+does not produce a ledger of actual troop deductions.
+
+937
+00:27:59,631 --> 00:27:59,709
+does not produce a ledger of actual troop deductions.
+
+938
+00:28:00,367 --> 00:28:04,148
+低补给还要看当次加载的阈值表。
+Low supply also depends on the threshold table loaded for that run.
+
+939
+00:28:04,148 --> 00:28:04,354
+按原版十的那条边界，
+Low supply also depends on the threshold table loaded for that run.
+
+940
+00:28:04,354 --> 00:28:06,463
+按原版十的那条边界，
+At the vanilla boundary of ten, nine point nine nine nine nine
+
+941
+00:28:06,463 --> 00:28:08,099
+九点九九九九九已经低于十，正好十
+At the vanilla boundary of ten, nine point nine nine nine nine
+
+942
+00:28:08,099 --> 00:28:10,167
+九点九九九九九已经低于十，正好十
+nine is already below ten, while exactly ten remains on the other
+
+943
+00:28:10,167 --> 00:28:11,556
+仍在另一侧。
+nine is already below ten, while exactly ten remains on the other
+
+944
+00:28:11,556 --> 00:28:12,026
+游戏先更新库存，再计算这次供给损失；
+nine is already below ten, while exactly ten remains on the other
+
+945
+00:28:12,026 --> 00:28:12,328
+游戏先更新库存，再计算这次供给损失；
+side.
+
+946
+00:28:12,328 --> 00:28:15,955
+游戏先更新库存，再计算这次供给损失；
+The game updates stock before calculating the supply-loss budget.
+
+947
+00:28:15,955 --> 00:28:16,196
+舰队、宽限和兵团条件也会影响结果。
+The game updates stock before calculating the supply-loss budget.
+
+948
+00:28:16,196 --> 00:28:19,827
+舰队、宽限和兵团条件也会影响结果。
+Fleet, grace, and regiment conditions also affect the result.
+
+949
+00:28:19,827 --> 00:28:20,109
+舰队、宽限和兵团条件也会影响结果。
+Low stock and how many troops were actually
+
+950
+00:28:20,109 --> 00:28:22,439
+所以库存低，和这次确实扣了多少兵，仍要分别确认。
+Low stock and how many troops were actually
+
+951
+00:28:22,439 --> 00:28:24,990
+所以库存低，和这次确实扣了多少兵，仍要分别确认。
+deducted must therefore still be confirmed
+
+952
+00:28:24,990 --> 00:28:25,596
+所以库存低，和这次确实扣了多少兵，仍要分别确认。
+separately.
+
+953
+00:28:25,596 --> 00:28:25,659
+separately.
+
+954
+00:28:26,333 --> 00:28:29,275
+出发前，再把第一站、最终目的
+Before departure, review the first stop, final
+
+955
+00:28:29,275 --> 00:28:29,560
+出发前，再把第一站、最终目的
+destination, and current arrival estimate
+
+956
+00:28:29,560 --> 00:28:31,898
+地和当前抵达估计放在一起看。
+destination, and current arrival estimate
+
+957
+00:28:31,898 --> 00:28:32,473
+地和当前抵达估计放在一起看。
+together.
+
+958
+00:28:32,473 --> 00:28:32,786
+地和当前抵达估计放在一起看。
+A legal route only shows that this movement is currently allowed.
+
+959
+00:28:32,786 --> 00:28:36,546
+路线合法，只说明这次可以这样走；沿途能否
+A legal route only shows that this movement is currently allowed.
+
+960
+00:28:36,546 --> 00:28:37,422
+路线合法，只说明这次可以这样走；沿途能否
+Whether the army can rest along the way, and
+
+961
+00:28:37,422 --> 00:28:39,360
+休整、可能支付什么，还要核对各自条件。
+Whether the army can rest along the way, and
+
+962
+00:28:39,360 --> 00:28:41,825
+休整、可能支付什么，还要核对各自条件。
+what it may pay, require their own condition
+
+963
+00:28:41,825 --> 00:28:42,175
+把当前库存、缺员、下一步地点和警告
+what it may pay, require their own condition
+
+964
+00:28:42,175 --> 00:28:42,623
+把当前库存、缺员、下一步地点和警告
+checks.
+
+965
+00:28:42,623 --> 00:28:45,495
+把当前库存、缺员、下一步地点和警告
+Save the current stock, troop shortfall, next
+
+966
+00:28:45,495 --> 00:28:45,674
+把当前库存、缺员、下一步地点和警告
+location, and warnings to establish a baseline for the
+
+967
+00:28:45,674 --> 00:28:48,942
+保存下来，途中才有可以回看的基线。
+location, and warnings to establish a baseline for the
+
+968
+00:28:48,942 --> 00:28:49,452
+保存下来，途中才有可以回看的基线。
+journey.
+
+969
+00:28:49,452 --> 00:28:49,523
+保存下来，途中才有可以回看的基线。
+After issuing the order, confirm the actual route; on
+
+970
+00:28:49,523 --> 00:28:52,804
+下令以后再确认实际路线，真正
+After issuing the order, confirm the actual route; on
+
+971
+00:28:52,804 --> 00:28:52,871
+下令以后再确认实际路线，真正
+actual arrival, compare reality with the original plan.
+
+972
+00:28:52,871 --> 00:28:56,220
+到场时再把现实与原计划对上。
+actual arrival, compare reality with the original plan.
+
+973
+00:28:56,220 --> 00:28:56,281
+actual arrival, compare reality with the original plan.
+
+974
+00:28:56,933 --> 00:29:00,600
+途中看到月变化由正转负、移动锁
+Reread the current state when the monthly change turns from
+
+975
+00:29:00,600 --> 00:29:00,873
+定或路线改变，就重读当前状态。
+Reread the current state when the monthly change turns from
+
+976
+00:29:00,873 --> 00:29:04,268
+定或路线改变，就重读当前状态。
+positive to negative, movement becomes locked, or the route
+
+977
+00:29:04,268 --> 00:29:04,813
+库存暂时没变，也可能有几种解释：还
+positive to negative, movement becomes locked, or the route
+
+978
+00:29:04,813 --> 00:29:05,347
+库存暂时没变，也可能有几种解释：还
+changes.
+
+979
+00:29:05,347 --> 00:29:08,197
+库存暂时没变，也可能有几种解释：还
+Unchanged stock can have several explanations: no permitted update opportunity
+
+980
+00:29:08,197 --> 00:29:10,538
+没到允许更新的机会，条件被拒绝，当
+Unchanged stock can have several explanations: no permitted update opportunity
+
+981
+00:29:10,538 --> 00:29:12,127
+没到允许更新的机会，条件被拒绝，当
+yet, rejected conditions, a zero current contribution, or a gain capped by
+
+982
+00:29:12,127 --> 00:29:15,463
+前贡献为零，或者增加后碰到了容量。
+yet, rejected conditions, a zero current contribution, or a gain capped by
+
+983
+00:29:15,463 --> 00:29:16,057
+前贡献为零，或者增加后碰到了容量。
+capacity.
+
+984
+00:29:16,057 --> 00:29:16,062
+它们不能只靠一个不变的数分开。
+capacity.
+
+985
+00:29:16,062 --> 00:29:19,020
+它们不能只靠一个不变的数分开。
+One unchanged number cannot distinguish them.
+
+986
+00:29:19,020 --> 00:29:19,189
+它们不能只靠一个不变的数分开。
+Retain the dates, locations, stock, and update conditions
+
+987
+00:29:19,189 --> 00:29:22,826
+把前后日期、地点、库存和更新条件一
+Retain the dates, locations, stock, and update conditions
+
+988
+00:29:22,826 --> 00:29:23,281
+把前后日期、地点、库存和更新条件一
+before and after, then keep observing the changes that actually
+
+989
+00:29:23,281 --> 00:29:27,033
+起保留，再继续观察真正发生的变化。
+before and after, then keep observing the changes that actually
+
+990
+00:29:27,033 --> 00:29:27,373
+起保留，再继续观察真正发生的变化。
+occur.
+
+991
+00:29:27,373 --> 00:29:27,433
+occur.
+
+992
+00:29:28,100 --> 00:29:33,145
+分合军以后，先核对实体兵员，再看角色和统帅。
+After splitting or merging, check physical troop counts first, then characters and commanders.
+
+993
+00:29:33,145 --> 00:29:33,421
+分合军以后，先核对实体兵员，再看角色和统帅。
+In this case, the selected small army split off a new army and merged it back into the original.
+
+994
+00:29:33,421 --> 00:29:38,102
+这次选中小军拆出新队、再合回原队，四条实体
+In this case, the selected small army split off a new army and merged it back into the original.
+
+995
+00:29:38,102 --> 00:29:38,298
+兵员始终合计二百五十人；与此同时，另一军里
+In this case, the selected small army split off a new army and merged it back into the original.
+
+996
+00:29:38,298 --> 00:29:42,216
+兵员始终合计二百五十人；与此同时，另一军里
+Its four physical troop records continued to total two hundred and fifty.
+
+997
+00:29:42,216 --> 00:29:42,782
+兵员始终合计二百五十人；与此同时，另一军里
+Meanwhile, a character record with no troop data,
+
+998
+00:29:42,782 --> 00:29:44,896
+一条显示一比一的空兵员角色记录消失，同一个
+Meanwhile, a character record with no troop data,
+
+999
+00:29:44,896 --> 00:29:47,302
+一条显示一比一的空兵员角色记录消失，同一个
+displayed as one out of one in another army,
+
+1000
+00:29:47,302 --> 00:29:47,463
+一条显示一比一的空兵员角色记录消失，同一个
+disappeared.
+
+1001
+00:29:47,463 --> 00:29:47,958
+角色成为新队、再成为合军后原队的统帅。
+disappeared.
+
+1002
+00:29:47,958 --> 00:29:51,697
+角色成为新队、再成为合军后原队的统帅。
+The same character became commander of the new army, then of the original army after the merge.
+
+1003
+00:29:51,697 --> 00:29:53,057
+那一比一的显示变化不能记成补
+The same character became commander of the new army, then of the original army after the merge.
+
+1004
+00:29:53,057 --> 00:29:54,706
+那一比一的显示变化不能记成补
+That one-out-of-one display change cannot be counted as one physical soldier gained or lost.
+
+1005
+00:29:54,706 --> 00:29:57,500
+了一名或少了一名实体士兵。
+That one-out-of-one display change cannot be counted as one physical soldier gained or lost.
+
+1006
+00:29:57,500 --> 00:29:57,995
+实体人数、角色关联和当前统帅，要分别核对。
+That one-out-of-one display change cannot be counted as one physical soldier gained or lost.
+
+1007
+00:29:57,995 --> 00:30:02,974
+实体人数、角色关联和当前统帅，要分别核对。
+Physical counts, character associations, and the current commander must be checked separately.
+
+1008
+00:30:02,974 --> 00:30:03,040
+Physical counts, character associations, and the current commander must be checked separately.
+
+1009
+00:30:03,700 --> 00:30:06,495
+合军后多出一条一人满员一人
+After merging, a new entry showing one current troop
+
+1010
+00:30:06,495 --> 00:30:06,512
+合军后多出一条一人满员一人
+and a maximum of one can also have a character source.
+
+1011
+00:30:06,512 --> 00:30:09,324
+的记录，还有一种角色来源。
+and a maximum of one can also have a character source.
+
+1012
+00:30:09,324 --> 00:30:09,397
+已查明的条件分支，会在处理旧统帅时创建新的军
+and a maximum of one can also have a character source.
+
+1013
+00:30:09,397 --> 00:30:13,869
+已查明的条件分支，会在处理旧统帅时创建新的军
+A verified conditional branch creates a new army-regiment record while processing a
+
+1014
+00:30:13,869 --> 00:30:14,447
+已查明的条件分支，会在处理旧统帅时创建新的军
+former commander, associates it with that character, then refreshes the character
+
+1015
+00:30:14,447 --> 00:30:18,233
+队兵团记录，关联这个角色，再刷新角色缓存。
+former commander, associates it with that character, then refreshes the character
+
+1016
+00:30:18,233 --> 00:30:18,556
+队兵团记录，关联这个角色，再刷新角色缓存。
+cache.
+
+1017
+00:30:18,556 --> 00:30:19,337
+队兵团记录，关联这个角色，再刷新角色缓存。
+Its data list is empty at construction.
+
+1018
+00:30:19,337 --> 00:30:20,633
+构造时的数据列表是空的；后来出现一比一
+Its data list is empty at construction.
+
+1019
+00:30:20,633 --> 00:30:23,404
+构造时的数据列表是空的；后来出现一比一
+A later one-out-of-one display does not directly mean an ordinary troop slot gained a soldier.
+
+1020
+00:30:23,404 --> 00:30:25,638
+，也不能直接当作普通兵槽补了一个人。
+A later one-out-of-one display does not directly mean an ordinary troop slot gained a soldier.
+
+1021
+00:30:25,638 --> 00:30:27,258
+，也不能直接当作普通兵槽补了一个人。
+Whether this is the new entry in this case, whether the character is the
+
+1022
+00:30:27,258 --> 00:30:29,520
+它是否对应这次新增行、是不是现
+Whether this is the new entry in this case, whether the character is the
+
+1023
+00:30:29,520 --> 00:30:30,756
+它是否对应这次新增行、是不是现
+current commander, and whether the character is a knight must each be read
+
+1024
+00:30:30,756 --> 00:30:33,511
+任统帅或骑士，都要分别读取。
+current commander, and whether the character is a knight must each be read
+
+1025
+00:30:33,511 --> 00:30:34,021
+任统帅或骑士，都要分别读取。
+separately.
+
+1026
+00:30:34,021 --> 00:30:34,104
+separately.
+
+1027
+00:30:34,767 --> 00:30:37,098
+兵员恢复也按这个顺序看。
+Read troop recovery in the same order.
+
+1028
+00:30:37,098 --> 00:30:37,759
+兵员恢复也按这个顺序看。
+Reinforcement preparation values, eligibility, and
+
+1029
+00:30:37,759 --> 00:30:40,219
+补员准备值、许可和计算出的请求，说明条件走到
+Reinforcement preparation values, eligibility, and
+
+1030
+00:30:40,219 --> 00:30:42,821
+补员准备值、许可和计算出的请求，说明条件走到
+calculated requests show how far the conditions have
+
+1031
+00:30:42,821 --> 00:30:43,465
+了哪一步；真正新增多少，要看兵槽实际写入。
+calculated requests show how far the conditions have
+
+1032
+00:30:43,465 --> 00:30:44,152
+了哪一步；真正新增多少，要看兵槽实际写入。
+progressed.
+
+1033
+00:30:44,152 --> 00:30:47,526
+了哪一步；真正新增多少，要看兵槽实际写入。
+Actual additions require the writes to the troop slots.
+
+1034
+00:30:47,526 --> 00:30:47,654
+了哪一步；真正新增多少，要看兵槽实际写入。
+The net change across one update can also include zeroing and cache refreshes.
+
+1035
+00:30:47,654 --> 00:30:50,644
+一次更新的前后净变化里，还
+The net change across one update can also include zeroing and cache refreshes.
+
+1036
+00:30:50,644 --> 00:30:52,311
+可能夹着清零和缓存刷新。
+The net change across one update can also include zeroing and cache refreshes.
+
+1037
+00:30:52,311 --> 00:30:53,404
+可能夹着清零和缓存刷新。
+After arrival, reread stock, troop
+
+1038
+00:30:53,404 --> 00:30:54,443
+到场以后，再按新地点读库存、缺员和当
+After arrival, reread stock, troop
+
+1039
+00:30:54,443 --> 00:30:57,077
+到场以后，再按新地点读库存、缺员和当
+shortfalls, and current conditions for the
+
+1040
+00:30:57,077 --> 00:30:57,667
+到场以后，再按新地点读库存、缺员和当
+new location.
+
+1041
+00:30:57,667 --> 00:30:57,893
+前条件，别沿用海上或出发时的旧判断。
+new location.
+
+1042
+00:30:57,893 --> 00:31:01,930
+前条件，别沿用海上或出发时的旧判断。
+Do not carry over old judgments from the sea or the starting point.
+
+1043
+00:31:01,930 --> 00:31:02,003
+Do not carry over old judgments from the sea or the starting point.
+
+1044
+00:31:02,667 --> 00:31:07,378
+支付再核一次：本例已经对上三金币登船扣款。
+Check payments once more: this example has a matched three-gold embarkation debit.
+
+1045
+00:31:07,378 --> 00:31:07,685
+支付再核一次：本例已经对上三金币登船扣款。
+The current monthly military-maintenance rate, total
+
+1046
+00:31:07,685 --> 00:31:10,415
+军事维护的当前月率、总支出和钱包净变化，各
+The current monthly military-maintenance rate, total
+
+1047
+00:31:10,415 --> 00:31:12,328
+军事维护的当前月率、总支出和钱包净变化，各
+expenditure, and net treasury change can each help read the
+
+1048
+00:31:12,328 --> 00:31:13,861
+自可以帮助读账；要说实际付了多少军事维护，
+expenditure, and net treasury change can each help read the
+
+1049
+00:31:13,861 --> 00:31:14,387
+自可以帮助读账；要说实际付了多少军事维护，
+accounts.
+
+1050
+00:31:14,387 --> 00:31:16,971
+自可以帮助读账；要说实际付了多少军事维护，
+To state how much military maintenance was actually paid, the
+
+1051
+00:31:16,971 --> 00:31:17,943
+还要把对应费用分量和那次真正结算接上。
+To state how much military maintenance was actually paid, the
+
+1052
+00:31:17,943 --> 00:31:21,172
+还要把对应费用分量和那次真正结算接上。
+corresponding cost component still has to be linked to the actual
+
+1053
+00:31:21,172 --> 00:31:21,731
+缺这笔明细时，费用列保留未知，也不解释成免费。
+corresponding cost component still has to be linked to the actual
+
+1054
+00:31:21,731 --> 00:31:22,373
+缺这笔明细时，费用列保留未知，也不解释成免费。
+settlement.
+
+1055
+00:31:22,373 --> 00:31:26,501
+缺这笔明细时，费用列保留未知，也不解释成免费。
+Without that detail, leave the cost unknown; do not interpret it as free.
+
+1056
+00:31:26,501 --> 00:31:26,567
+Without that detail, leave the cost unknown; do not interpret it as free.
+
+1057
+00:31:27,233 --> 00:31:29,928
+这套读法也可以带到另一台机器。
+This method can be taken to another machine.
+
+1058
+00:31:29,928 --> 00:31:30,568
+这套读法也可以带到另一台机器。
+The reusable parts are the mechanics, reading methods, and order of checks: confirm
+
+1059
+00:31:30,568 --> 00:31:34,617
+可复用的是机制、读取方法和核对顺序
+The reusable parts are the mechanics, reading methods, and order of checks: confirm
+
+1060
+00:31:34,617 --> 00:31:35,070
+：先确认当前游戏版本，再把人物、军
+The reusable parts are the mechanics, reading methods, and order of checks: confirm
+
+1061
+00:31:35,070 --> 00:31:38,666
+：先确认当前游戏版本，再把人物、军
+the current game version, then align the character, army, date, and the same paused
+
+1062
+00:31:38,666 --> 00:31:40,213
+队、日期和同一次暂停状态对齐。
+the current game version, then align the character, army, date, and the same paused
+
+1063
+00:31:40,213 --> 00:31:40,584
+队、日期和同一次暂停状态对齐。
+state.
+
+1064
+00:31:40,584 --> 00:31:42,239
+队、日期和同一次暂停状态对齐。
+Which route was actually traveled, how many troops were lost, and whether
+
+1065
+00:31:42,239 --> 00:31:45,114
+实际走过哪条路、少了多少人、是否真
+Which route was actually traveled, how many troops were lost, and whether
+
+1066
+00:31:45,114 --> 00:31:45,956
+实际走过哪条路、少了多少人、是否真
+payment really occurred must still be answered by the new session's own
+
+1067
+00:31:45,956 --> 00:31:49,519
+的付款，仍由新会话自己的记录回答。
+payment really occurred must still be answered by the new session's own
+
+1068
+00:31:49,519 --> 00:31:49,673
+的付款，仍由新会话自己的记录回答。
+records.
+
+1069
+00:31:49,673 --> 00:31:50,016
+保留下来的原件能重算旧结论；它们不会
+records.
+
+1070
+00:31:50,016 --> 00:31:53,503
+保留下来的原件能重算旧结论；它们不会
+Retained originals allow old conclusions to be recalculated.
+
+1071
+00:31:53,503 --> 00:31:53,690
+替另一台机器生成一次新的行军结果。
+Retained originals allow old conclusions to be recalculated.
+
+1072
+00:31:53,690 --> 00:31:57,120
+替另一台机器生成一次新的行军结果。
+They do not create a new march result on another machine.
+
+1073
+00:31:57,120 --> 00:31:57,181
+They do not create a new march result on another machine.
+
+1074
+00:31:57,833 --> 00:32:00,581
+出发前读人数、库存和路线，途中追踪实
+Before departure, read troop counts, stock, and route.
+
+1075
+00:32:00,581 --> 00:32:02,214
+出发前读人数、库存和路线，途中追踪实
+During the journey, track actual changes.
+
+1076
+00:32:02,214 --> 00:32:02,668
+际变化，接战前确认真正到场的状态。
+During the journey, track actual changes.
+
+1077
+00:32:02,668 --> 00:32:05,466
+际变化，接战前确认真正到场的状态。
+Before battle, confirm the army's actual arrival state.
+
+1078
+00:32:05,466 --> 00:32:06,352
+际变化，接战前确认真正到场的状态。
+For Robert's stop after embarkation, issued while movement was unlocked, we
+
+1079
+00:32:06,352 --> 00:32:09,332
+罗贝尔这次登船后的未锁定停止移动，已经核到路
+For Robert's stop after embarkation, issued while movement was unlocked, we
+
+1080
+00:32:09,332 --> 00:32:11,089
+罗贝尔这次登船后的未锁定停止移动，已经核到路
+verified that the route cleared and that the army remained in place the next
+
+1081
+00:32:11,089 --> 00:32:13,249
+线清空，次日仍停在原地；这是这次操作的结果。
+verified that the route cleared and that the army remained in place the next
+
+1082
+00:32:13,249 --> 00:32:13,456
+线清空，次日仍停在原地；这是这次操作的结果。
+day.
+
+1083
+00:32:13,456 --> 00:32:15,745
+线清空，次日仍停在原地；这是这次操作的结果。
+That is the result of this particular action.
+
+1084
+00:32:15,745 --> 00:32:15,825
+线清空，次日仍停在原地；这是这次操作的结果。
+Link each action to its own resulting state, then choose the next step using the conditions
+
+1085
+00:32:15,825 --> 00:32:20,426
+把每个动作接到自己的后态，再按这次可见条件选
+Link each action to its own resulting state, then choose the next step using the conditions
+
+1086
+00:32:20,426 --> 00:32:20,516
+把每个动作接到自己的后态，再按这次可见条件选
+visible in this run, so the march plan keeps pace with the road the army has actually
+
+1087
+00:32:20,516 --> 00:32:24,798
+择下一步，行军计划才跟得上军队真正走过的路。
+visible in this run, so the march plan keeps pace with the road the army has actually
+
+1088
+00:32:24,798 --> 00:32:25,207
+择下一步，行军计划才跟得上军队真正走过的路。
+traveled.
+
+1089
+00:32:25,207 --> 00:32:25,261
+traveled.

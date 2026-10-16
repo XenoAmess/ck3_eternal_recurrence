@@ -320,6 +320,12 @@ public:
       preview.province_supply = ck3_12002::ReadArmyProvinceSupplyForPreview(
           bindings_.armies, WorldAccess(), preview);
     }
+    if (preview.status == game::PreviewMoveArmyStatus::available &&
+        IsCk3_12004Descriptor(*descriptor_)) {
+      preview.county_entry_condition_v1 =
+          ck3_12002::ReadCountyEntryConditionForPreview12004(
+              bindings_.armies, WorldAccess(), preview);
+    }
     return preview;
   }
   DisbandArmyResult submit_disband_army(std::int32_t army) const noexcept override {

@@ -1,0 +1,106 @@
+{
+  "raw_identity_reused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "probe_result": {
+    "returncode": 0,
+    "started_at_utc": "2026-10-16T01:05:59.604515+00:00",
+    "completed_at_utc": "2026-10-16T01:06:00.566606+00:00",
+    "elapsed_seconds": 0.9620974999852479,
+    "argv": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\metadata-probe\\argv.json",
+      "bytes": 441,
+      "sha256": "baf0ce305e1de64a2b3c922c7ca3b30b0c10c206aede23e9d5ecfefac0fff322"
+    },
+    "stdout": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\metadata-probe\\stdout.bin",
+      "bytes": 2444,
+      "sha256": "c1ff66fbd68c794fc7d52d56917b67f86eb3bc9e6179d55deefbaf6fbdc19b2c"
+    },
+    "stderr": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\metadata-probe\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "all_partials_retained": true,
+    "owned_process_timed_out": false,
+    "command_runtime_limit_seconds": 60,
+    "fixed_deadline_utc": "2026-10-16T07:45:01.597000+00:00"
+  },
+  "streams_and_format": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "Constrained Baseline",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "avc1.42c032",
+        "width": 2560,
+        "height": 1440,
+        "coded_width": 2560,
+        "coded_height": 1440,
+        "has_b_frames": 0,
+        "pix_fmt": "yuv420p",
+        "level": 50,
+        "color_range": "tv",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/1000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "bits_per_raw_sample": "8",
+        "extradata_size": 40,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "ENCODER": "Lavc63.1.101 libx264",
+          "DURATION": "00:00:45.000000000"
+        }
+      }
+    ],
+    "format": {
+      "filename": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "matroska,webm",
+      "format_long_name": "Matroska / WebM",
+      "start_time": "0.000000",
+      "duration": "45.000000",
+      "size": "94042804",
+      "bit_rate": "16718720",
+      "probe_score": 100,
+      "tags": {
+        "ENCODER": "Lavf63.1.101"
+      }
+    }
+  }
+}

@@ -1,0 +1,2499 @@
+1
+00:00:00,100 --> 00:00:04,321
+An army's strength at departure is only the starting point.
+
+2
+00:00:04,321 --> 00:00:09,187
+Before battle, its supplies, troop numbers and route can all change.
+
+3
+00:00:09,187 --> 00:00:14,409
+We need to see when it actually arrives, how many of the original troops
+
+4
+00:00:14,409 --> 00:00:19,558
+remain, how much supply it carries, and what it actually paid along the
+
+5
+00:00:19,558 --> 00:00:19,848
+way.
+
+6
+00:00:20,500 --> 00:00:23,991
+This time, we follow Robert in version 1.20.0.4.
+
+7
+00:00:23,991 --> 00:00:26,894
+First, we read the army panel's current
+
+8
+00:00:26,894 --> 00:00:29,872
+values, then track changes during a real
+
+9
+00:00:29,872 --> 00:00:30,319
+march.
+
+10
+00:00:30,319 --> 00:00:33,733
+The mechanics explain how the game calculates;
+
+11
+00:00:33,733 --> 00:00:37,295
+live records show what actually happened in this
+
+12
+00:00:37,295 --> 00:00:37,592
+run.
+
+13
+00:00:37,592 --> 00:00:41,592
+Together, they explain the army's condition on arrival.
+
+14
+00:00:42,267 --> 00:00:47,028
+For this episode, we switch to Robert of Apulia in version 1.20.0.4.
+
+15
+00:00:47,028 --> 00:00:50,942
+A new normal campaign gives us one consistent character
+
+16
+00:00:50,942 --> 00:00:55,070
+origin, and separate normal loads let us observe different
+
+17
+00:00:55,070 --> 00:00:55,640
+actions.
+
+18
+00:00:55,640 --> 00:00:58,510
+Each scene will identify its run and day.
+
+19
+00:00:58,510 --> 00:01:01,307
+We can compare separate loads, but will
+
+20
+00:01:01,307 --> 00:01:03,888
+not edit them into one uninterrupted
+
+21
+00:01:03,888 --> 00:01:04,461
+session.
+
+22
+00:01:04,461 --> 00:01:07,115
+William's troop counts from the older
+
+23
+00:01:07,115 --> 00:01:09,984
+version will not be overlaid on Robert's
+
+24
+00:01:09,984 --> 00:01:10,343
+army.
+
+25
+00:01:11,000 --> 00:01:13,397
+First, keep three distinctions clear.
+
+26
+00:01:13,397 --> 00:01:17,414
+Supply stock is material; actual troop strength counts people.
+
+27
+00:01:17,414 --> 00:01:22,662
+A character record showing 1/1 does not automatically mean one soldier was added.
+
+28
+00:01:22,662 --> 00:01:26,224
+Movement locking is another distinction: after Stop is
+
+29
+00:01:26,224 --> 00:01:29,785
+pressed, the army may still have to finish its current
+
+30
+00:01:29,785 --> 00:01:30,048
+leg.
+
+31
+00:01:30,048 --> 00:01:33,928
+These affect what we mean by 'recovered,' 'lost troops' and
+
+32
+00:01:33,928 --> 00:01:38,334
+'stopped.' We will examine the actual records before explaining the
+
+33
+00:01:38,334 --> 00:01:38,860
+changes.
+
+34
+00:01:39,533 --> 00:01:42,673
+Troops can be lost through different processes.
+
+35
+00:01:42,673 --> 00:01:46,811
+Periodic siege and raid processing, and movement attrition on
+
+36
+00:01:46,811 --> 00:01:51,152
+entering a new county, have their own conditions and calculation
+
+37
+00:01:51,152 --> 00:01:51,559
+order.
+
+38
+00:01:51,559 --> 00:01:53,496
+Not every loss is starvation.
+
+39
+00:01:53,496 --> 00:01:58,640
+Replenishment, splitting, merging and other events can also change the total.
+
+40
+00:01:58,640 --> 00:02:02,348
+To explain a march, first compare each regiment's exact
+
+41
+00:02:02,348 --> 00:02:06,190
+counts, then identify which processing actually occurred.
+
+42
+00:02:06,190 --> 00:02:10,465
+A net change between readings is reported as a net change first.
+
+43
+00:02:11,133 --> 00:02:13,579
+A march has several kinds of timing.
+
+44
+00:02:13,579 --> 00:02:17,788
+The map preview gives a plan; the army window gives a current
+
+45
+00:02:17,788 --> 00:02:21,791
+estimate; the first leg has its own progress and remaining
+
+46
+00:02:21,791 --> 00:02:22,412
+duration.
+
+47
+00:02:22,412 --> 00:02:24,722
+Actual arrival is a later outcome.
+
+48
+00:02:24,722 --> 00:02:29,749
+Different figures for the whole route and its first leg need not conflict.
+
+49
+00:02:29,749 --> 00:02:34,023
+We will label their scope, then verify arrival from the actual
+
+50
+00:02:34,023 --> 00:02:38,847
+position and remaining route, rather than making one date mean several
+
+51
+00:02:38,847 --> 00:02:39,329
+things.
+
+52
+00:02:40,000 --> 00:02:44,107
+Marching as one army aims to reduce arrangements along the way.
+
+53
+00:02:44,107 --> 00:02:48,344
+Splitting to rest takes time at separate stations and to regroup.
+
+54
+00:02:48,344 --> 00:02:52,451
+Rerouting requires completing the chosen sequence of waypoints.
+
+55
+00:02:52,451 --> 00:02:55,318
+To compare these plans, start from the same
+
+56
+00:02:55,318 --> 00:02:57,518
+normal save and head for the same
+
+57
+00:02:57,518 --> 00:02:58,318
+destination.
+
+58
+00:02:58,318 --> 00:03:01,116
+Record each plan's actual arrival outcome,
+
+59
+00:03:01,116 --> 00:03:04,114
+then compare where the armies are on the same
+
+60
+00:03:04,114 --> 00:03:04,380
+day.
+
+61
+00:03:05,033 --> 00:03:08,822
+Before departure, establish what the army currently has.
+
+62
+00:03:08,822 --> 00:03:13,694
+During the march, check which conditions change with location and route.
+
+63
+00:03:13,694 --> 00:03:17,483
+Before battle, confirm how many troops actually arrived.
+
+64
+00:03:17,483 --> 00:03:21,403
+We begin with supply: separate what the army carries, how
+
+65
+00:03:21,403 --> 00:03:25,187
+much it can carry, and how many troops the location can
+
+66
+00:03:25,187 --> 00:03:25,737
+support.
+
+67
+00:03:25,737 --> 00:03:29,221
+Then we can discuss where to stop, when to move on,
+
+68
+00:03:29,221 --> 00:03:32,773
+and whether splitting really reduces local pressure.
+
+69
+00:03:34,500 --> 00:03:39,757
+Read the army's current and maximum strength, then expand each regiment.
+
+70
+00:03:39,757 --> 00:03:42,455
+Locate deficits by comparing current
+
+71
+00:03:42,455 --> 00:03:44,778
+and maximum values for the same
+
+72
+00:03:44,778 --> 00:03:45,453
+regiment.
+
+73
+00:03:45,453 --> 00:03:50,929
+To explain actual replenishment, also check the underlying soldier records.
+
+74
+00:03:50,929 --> 00:03:55,529
+Keep confirmed character records with no soldier DATA separate.
+
+75
+00:03:55,529 --> 00:03:59,435
+This avoids combining counts from different armies or
+
+76
+00:03:59,435 --> 00:04:03,488
+treating a character's 1/1 display as an added soldier.
+
+77
+00:04:04,167 --> 00:04:08,535
+Carried supply and supply capacity use the same supply unit.
+
+78
+00:04:08,535 --> 00:04:11,947
+For a hypothetical example, 100 supply and 300
+
+79
+00:04:11,947 --> 00:04:15,582
+capacity means the army carries 100 units and can
+
+80
+00:04:15,582 --> 00:04:16,324
+carry 300.
+
+81
+00:04:16,324 --> 00:04:20,473
+The first number is neither 100 soldiers nor 100 percent.
+
+82
+00:04:20,473 --> 00:04:25,642
+The local supply limit must instead be compared with local troop usage.
+
+83
+00:04:25,642 --> 00:04:30,083
+Get the units right before choosing which columns to compare.
+
+84
+00:04:30,733 --> 00:04:34,178
+Carried supply, carrying capacity and the number of
+
+85
+00:04:34,178 --> 00:04:37,758
+soldiers a location can support have their own units.
+
+86
+00:04:37,758 --> 00:04:40,430
+If both armies remain in the same place
+
+87
+00:04:40,430 --> 00:04:42,966
+after a split, check the actual local
+
+88
+00:04:42,966 --> 00:04:43,377
+usage.
+
+89
+00:04:43,377 --> 00:04:46,185
+Looking only at the smaller army does not
+
+90
+00:04:46,185 --> 00:04:48,308
+establish that the pressure has
+
+91
+00:04:48,308 --> 00:04:49,130
+disappeared.
+
+92
+00:04:49,130 --> 00:04:52,809
+After moving, read the new location's conditions again.
+
+93
+00:04:53,467 --> 00:04:56,051
+The sign of the monthly supply change
+
+94
+00:04:56,051 --> 00:04:58,357
+shows its direction under current
+
+95
+00:04:58,357 --> 00:04:59,125
+conditions.
+
+96
+00:04:59,125 --> 00:05:03,148
+It can change with location, usage or commander conditions.
+
+97
+00:05:03,148 --> 00:05:06,960
+When an update is allowed, the game adds the applicable
+
+98
+00:05:06,960 --> 00:05:10,841
+change to stock, then clamps it between zero and current
+
+99
+00:05:10,841 --> 00:05:11,465
+capacity.
+
+100
+00:05:11,465 --> 00:05:15,003
+Reading the monthly figure does not itself apply an
+
+101
+00:05:15,003 --> 00:05:18,681
+update, and it is not automatically divided by thirty
+
+102
+00:05:18,681 --> 00:05:19,305
+each day.
+
+103
+00:05:19,305 --> 00:05:23,055
+Read the actual stock again to see how much was gained.
+
+104
+00:05:23,733 --> 00:05:27,181
+Supply recovery concerns the material carried by the
+
+105
+00:05:27,181 --> 00:05:30,629
+army; troop recovery concerns actual soldiers in its
+
+106
+00:05:30,629 --> 00:05:31,292
+regiments.
+
+107
+00:05:31,292 --> 00:05:33,443
+The game handles them separately.
+
+108
+00:05:33,443 --> 00:05:37,345
+More supply does not automatically fill troop deficits, and
+
+109
+00:05:37,345 --> 00:05:41,842
+replenishment eligibility cannot be determined just by whether stock
+
+110
+00:05:41,842 --> 00:05:42,371
+is full.
+
+111
+00:05:42,371 --> 00:05:47,225
+Before marching on, read the stock, expand the actual regiments, and check
+
+112
+00:05:47,225 --> 00:05:52,145
+current strength, maximum strength and replenishment conditions separately.
+
+113
+00:05:52,800 --> 00:05:56,037
+The selected small army has four actual soldier
+
+114
+00:05:56,037 --> 00:05:59,274
+records totaling 250 men, all at full strength.
+
+115
+00:05:59,274 --> 00:06:03,288
+In the paused query, all four currently have replenishment
+
+116
+00:06:03,288 --> 00:06:07,718
+permission set to false, and their stored prepared fractions are
+
+117
+00:06:07,718 --> 00:06:08,065
+zero.
+
+118
+00:06:08,065 --> 00:06:11,670
+In the source code, a type flag shared by these four
+
+119
+00:06:11,670 --> 00:06:15,552
+blocks current permission before the toggle and resource
+
+120
+00:06:15,552 --> 00:06:16,038
+checks.
+
+121
+00:06:16,038 --> 00:06:20,296
+This establishes these records' present eligibility; the label
+
+122
+00:06:20,296 --> 00:06:24,692
+'special troops' alone cannot describe armies from every source.
+
+123
+00:06:25,367 --> 00:06:28,206
+Replenishment also has an order of operations.
+
+124
+00:06:28,206 --> 00:06:31,723
+The normal preparation phase saves this round's prepared
+
+125
+00:06:31,723 --> 00:06:35,114
+fraction according to conditions in the fixed physical
+
+126
+00:06:35,114 --> 00:06:35,428
+slot.
+
+127
+00:06:35,428 --> 00:06:40,737
+Some types first check current permission; some definition branches bypass that check.
+
+128
+00:06:40,737 --> 00:06:45,026
+When calculating the actual replenishment request, the game reads the
+
+129
+00:06:45,026 --> 00:06:49,378
+stored fraction, then checks current conditions in each physical slot.
+
+130
+00:06:49,378 --> 00:06:52,770
+The currently calculated fraction, the stored fraction
+
+131
+00:06:52,770 --> 00:06:55,848
+and the final number added must therefore be read
+
+132
+00:06:55,848 --> 00:06:56,539
+separately.
+
+133
+00:06:57,200 --> 00:07:01,008
+Because of this timing, current permission being false does
+
+134
+00:07:01,008 --> 00:07:04,815
+not automatically erase a positive fraction stored earlier.
+
+135
+00:07:04,815 --> 00:07:09,582
+The request phase reads that older fraction and checks the physical slots'
+
+136
+00:07:09,582 --> 00:07:14,414
+current conditions; it does not rerun that whole-regiment permission check.
+
+137
+00:07:14,414 --> 00:07:17,389
+Conversely, a positive fraction calculated now
+
+138
+00:07:17,389 --> 00:07:20,429
+does not guarantee soldiers will be added next.
+
+139
+00:07:20,429 --> 00:07:24,781
+The request may be refused, or the integer result may still be zero.
+
+140
+00:07:24,781 --> 00:07:28,876
+Verify replenishment through the actual soldier-count writeback.
+
+141
+00:07:29,533 --> 00:07:34,862
+The military page's monthly replenishment toggle must also be tied to the troops' source.
+
+142
+00:07:34,862 --> 00:07:38,872
+In troop-definition branches requiring this check, the game traces
+
+143
+00:07:38,872 --> 00:07:42,336
+the soldiers to their actual source character, reads that
+
+144
+00:07:42,336 --> 00:07:46,225
+character's military replenishment toggle, then checks resources
+
+145
+00:07:46,225 --> 00:07:47,015
+and location.
+
+146
+00:07:47,015 --> 00:07:51,685
+If the source is a vassal, the player's own checkbox cannot substitute for it.
+
+147
+00:07:51,685 --> 00:07:54,858
+Other definition branches do not use the same toggle.
+
+148
+00:07:54,858 --> 00:07:58,689
+Before acting, establish who supplied the troops being observed.
+
+149
+00:07:59,367 --> 00:08:02,302
+When choosing a rest location, first read its
+
+150
+00:08:02,302 --> 00:08:05,693
+monthly supply change, then wait for an actual stock
+
+151
+00:08:05,693 --> 00:08:06,149
+update.
+
+152
+00:08:06,149 --> 00:08:10,405
+A positive monthly value is a reading under current conditions; an
+
+153
+00:08:10,405 --> 00:08:14,660
+actual increase in stock proves that supplies recovered this time.
+
+154
+00:08:14,660 --> 00:08:17,028
+Replenishment needs a separate check.
+
+155
+00:08:17,028 --> 00:08:19,713
+Full supply or a refreshed prepared value
+
+156
+00:08:19,713 --> 00:08:22,202
+does not itself mean any soldiers were
+
+157
+00:08:22,202 --> 00:08:22,595
+added.
+
+158
+00:08:23,267 --> 00:08:26,115
+Splitting and merging handle supply differently.
+
+159
+00:08:26,115 --> 00:08:31,219
+A newly split army first copies the source's stock; it does not halve it by headcount.
+
+160
+00:08:31,219 --> 00:08:35,670
+Each army's capacity still depends on its current commander and conditions.
+
+161
+00:08:35,670 --> 00:08:41,130
+Merging first saves both original stocks and their weights for their respective merge roles.
+
+162
+00:08:41,130 --> 00:08:46,234
+After selecting the commander and adjusting composition, it reads the merged capacity.
+
+163
+00:08:46,234 --> 00:08:49,013
+The 250 actual soldiers were conserved in this
+
+164
+00:08:49,013 --> 00:08:52,397
+small-army case, but supply need not be conserved in the
+
+165
+00:08:52,397 --> 00:08:52,941
+same way.
+
+166
+00:08:52,941 --> 00:08:56,383
+Read back merged stock, capacity and commander separately.
+
+167
+00:08:57,033 --> 00:09:00,446
+In the verified normal path with positive weights, merging
+
+168
+00:09:00,446 --> 00:09:03,977
+calculates each army's weight share and truncates each to an
+
+169
+00:09:03,977 --> 00:09:04,448
+integer.
+
+170
+00:09:04,448 --> 00:09:07,107
+Each share is then multiplied by its original
+
+171
+00:09:07,107 --> 00:09:10,002
+stock and truncated again, before the results are
+
+172
+00:09:10,002 --> 00:09:10,357
+added.
+
+173
+00:09:10,357 --> 00:09:15,744
+The shares may total slightly less than 100 percent; the game does not restore the remainder.
+
+174
+00:09:15,744 --> 00:09:18,808
+The total stock is then clamped between zero and the
+
+175
+00:09:18,808 --> 00:09:22,108
+actual merged capacity, so this is not a single ordinary
+
+176
+00:09:22,108 --> 00:09:22,579
+average.
+
+177
+00:09:22,579 --> 00:09:27,503
+Large values have a separate safeguard branch and cannot use this simplified formula.
+
+178
+00:09:27,503 --> 00:09:30,341
+Check the final stock against the actual reading.
+
+179
+00:09:32,067 --> 00:09:34,876
+To explain falling troop numbers, separate
+
+180
+00:09:34,876 --> 00:09:38,019
+current tooltips from changes that have already
+
+181
+00:09:38,019 --> 00:09:38,621
+happened.
+
+182
+00:09:38,621 --> 00:09:42,717
+The current attrition rate shows how conditions are calculated
+
+183
+00:09:42,717 --> 00:09:46,945
+now; an integer budget sets the planned allocation for one pass.
+
+184
+00:09:46,945 --> 00:09:50,414
+Actual losses require before-and-after writes to the
+
+185
+00:09:50,414 --> 00:09:54,017
+physical soldier count, checked against replenishment,
+
+186
+00:09:54,017 --> 00:09:57,752
+combat, splitting, merging, and other events in the same
+
+187
+00:09:57,752 --> 00:09:58,219
+window.
+
+188
+00:09:58,219 --> 00:10:00,904
+This avoids counting a budget twice as a
+
+189
+00:10:00,904 --> 00:10:03,388
+loss, or calling every net decrease a
+
+190
+00:10:03,388 --> 00:10:03,791
+death.
+
+191
+00:10:04,467 --> 00:10:07,219
+First, how does the game prepare losses?
+
+192
+00:10:07,219 --> 00:10:10,384
+Supply, siege, and raiding each have a budget.
+
+193
+00:10:10,384 --> 00:10:13,309
+Siege and raiding are converted separately
+
+194
+00:10:13,309 --> 00:10:16,233
+to integers, then combined for allocation.
+
+195
+00:10:16,233 --> 00:10:20,222
+These budgets are set before the first soldier write, but
+
+196
+00:10:20,222 --> 00:10:23,862
+later allocations use troop counts that have already
+
+197
+00:10:23,862 --> 00:10:24,422
+changed.
+
+198
+00:10:24,422 --> 00:10:27,856
+Adding the displayed rates and multiplying by one
+
+199
+00:10:27,856 --> 00:10:31,570
+total misses the intermediate rounding and processing
+
+200
+00:10:31,570 --> 00:10:31,991
+order.
+
+201
+00:10:32,667 --> 00:10:35,764
+Siege and raiding share a combined stage.
+
+202
+00:10:35,764 --> 00:10:39,987
+To attribute one specific deduction to siege, the siege
+
+203
+00:10:39,987 --> 00:10:44,595
+budget actually used must be positive and the raiding budget
+
+204
+00:10:44,595 --> 00:10:44,979
+zero.
+
+205
+00:10:44,979 --> 00:10:48,982
+Then check the change in that physical soldier count.
+
+206
+00:10:48,982 --> 00:10:51,923
+The budget describes the planned loss;
+
+207
+00:10:51,923 --> 00:10:54,555
+the soldier write shows the actual
+
+208
+00:10:54,555 --> 00:10:55,251
+decrease.
+
+209
+00:10:55,251 --> 00:10:59,255
+That one result does not represent the whole journey.
+
+210
+00:10:59,933 --> 00:11:03,606
+Take a hypothetical example: 199 eligible
+
+211
+00:11:03,606 --> 00:11:07,547
+soldiers at a 5% supply rate give an integer
+
+212
+00:11:07,547 --> 00:11:08,622
+budget of 9.
+
+213
+00:11:08,622 --> 00:11:10,729
+A 1% siege rate gives 1.
+
+214
+00:11:10,729 --> 00:11:13,976
+Calculated separately, they total 10.
+
+215
+00:11:13,976 --> 00:11:18,365
+Combine the rates into 6% first, and 199 gives 11.
+
+216
+00:11:18,365 --> 00:11:21,173
+This illustrates rounding order.
+
+217
+00:11:21,173 --> 00:11:24,768
+Allocation to individual regiments still
+
+218
+00:11:24,768 --> 00:11:28,094
+depends on their troop counts at that
+
+219
+00:11:28,094 --> 00:11:28,633
+stage.
+
+220
+00:11:29,300 --> 00:11:34,427
+On this county-entry path, the game first calculates the army-wide budget
+
+221
+00:11:34,427 --> 00:11:38,992
+and the total the preferred regiments can absorb, then stores the
+
+222
+00:11:38,992 --> 00:11:39,765
+difference.
+
+223
+00:11:39,765 --> 00:11:42,319
+If those regiments already cover the
+
+224
+00:11:42,319 --> 00:11:45,228
+budget, county remainder allocation never
+
+225
+00:11:45,228 --> 00:11:45,724
+starts.
+
+226
+00:11:45,724 --> 00:11:50,229
+The second part runs only when the stored difference is positive.
+
+227
+00:11:50,229 --> 00:11:55,288
+So county attrition does not always produce a remainder stage to inspect.
+
+228
+00:11:55,967 --> 00:12:00,972
+That difference is fixed before deductions from the preferred regiments.
+
+229
+00:12:00,972 --> 00:12:06,185
+Later allocation consumes the integer amounts requested from each regiment.
+
+230
+00:12:06,185 --> 00:12:11,397
+If a write is skipped, or the actual change differs from the request, that
+
+231
+00:12:11,397 --> 00:12:16,467
+amount is not automatically refunded to recalculate the county remainder
+
+232
+00:12:16,467 --> 00:12:16,960
+budget.
+
+233
+00:12:16,960 --> 00:12:19,594
+Keep the budget, requests, and actual
+
+234
+00:12:19,594 --> 00:12:22,512
+physical decrease separate: they need not
+
+235
+00:12:22,512 --> 00:12:22,939
+match.
+
+236
+00:12:23,600 --> 00:12:27,236
+County attrition modifiers also work in stages.
+
+237
+00:12:27,236 --> 00:12:30,755
+Consider hypothetical inputs: 3,001 soldiers,
+
+238
+00:12:30,755 --> 00:12:34,430
+a base rate of 5%, and a multiplier of 0.33339.
+
+239
+00:12:34,430 --> 00:12:37,672
+The effective rate is first calculated as
+
+240
+00:12:37,672 --> 00:12:40,834
+1.666%, then applied to the troop count,
+
+241
+00:12:40,834 --> 00:12:41,625
+giving 49.
+
+242
+00:12:41,625 --> 00:12:46,730
+The corresponding modified minimum is 33, so this example uses 49.
+
+243
+00:12:46,730 --> 00:12:49,276
+Applying everything together and
+
+244
+00:12:49,276 --> 00:12:52,061
+rounding only at the end would give
+
+245
+00:12:52,061 --> 00:12:52,300
+50.
+
+246
+00:12:52,967 --> 00:12:55,628
+Location checks also have a defined scope.
+
+247
+00:12:55,628 --> 00:12:59,589
+The next-step replenishment location check uses the first stop
+
+248
+00:12:59,589 --> 00:13:03,550
+in the army's stored route, not its distant final destination.
+
+249
+00:13:03,550 --> 00:13:08,110
+The game checks that province and the native condition between the army
+
+250
+00:13:08,110 --> 00:13:12,670
+owner and the local holder; this is more specific than general military
+
+251
+00:13:12,670 --> 00:13:13,120
+access.
+
+252
+00:13:13,120 --> 00:13:16,288
+Without a complete route, keep the result unknown.
+
+253
+00:13:16,288 --> 00:13:21,549
+In the conditional projection, a passing check substitutes only the location input.
+
+254
+00:13:21,549 --> 00:13:25,795
+Preparation ratios and other conditions still need separate checks.
+
+255
+00:13:26,467 --> 00:13:30,197
+Once the army-wide budget is an integer, it is allocated to
+
+256
+00:13:30,197 --> 00:13:33,927
+regiments in order, then written to physical soldier slots.
+
+257
+00:13:33,927 --> 00:13:37,250
+Each step has its own denominator, cap, and rounding.
+
+258
+00:13:37,250 --> 00:13:41,827
+A regiment's requested amount need not equal the final physical decrease.
+
+259
+00:13:41,827 --> 00:13:44,772
+Within that individual write, count a physical
+
+260
+00:13:44,772 --> 00:13:47,588
+slot referenced by several data entries only
+
+261
+00:13:47,588 --> 00:13:47,908
+once.
+
+262
+00:13:47,908 --> 00:13:53,175
+Fractions discarded here are not retained as fractional soldiers in this write path.
+
+263
+00:13:53,833 --> 00:13:56,950
+Supply can read zero both before and after
+
+264
+00:13:56,950 --> 00:14:00,141
+an update without the update being skipped.
+
+265
+00:14:00,141 --> 00:14:04,682
+In the source's successful path, the change is still added, a
+
+266
+00:14:04,682 --> 00:14:09,447
+negative result is clamped to zero, and supply-loss calculations
+
+267
+00:14:09,447 --> 00:14:10,117
+continue.
+
+268
+00:14:10,117 --> 00:14:14,224
+So zero-to-zero stock can accompany a successful update.
+
+269
+00:14:14,224 --> 00:14:16,485
+Whether soldiers were deducted
+
+270
+00:14:16,485 --> 00:14:19,198
+requires the later budget and actual
+
+271
+00:14:19,198 --> 00:14:19,725
+writes.
+
+272
+00:14:20,400 --> 00:14:25,320
+Zero stock does not add another tier in this ordinary supply chain.
+
+273
+00:14:25,320 --> 00:14:30,165
+Suppose the loaded vanilla thresholds are 60, 10, and 0: zero and
+
+274
+00:14:30,165 --> 00:14:34,861
+9.99999 fall in the same tier, while exactly 10 enters the tier
+
+275
+00:14:34,861 --> 00:14:35,308
+above.
+
+276
+00:14:35,308 --> 00:14:38,534
+Commander modifiers, fleet suppression, and
+
+277
+00:14:38,534 --> 00:14:41,759
+eligible troop counts also affect the final
+
+278
+00:14:41,759 --> 00:14:42,285
+budget.
+
+279
+00:14:42,285 --> 00:14:45,332
+Zero stock is neither proof of safety nor
+
+280
+00:14:45,332 --> 00:14:48,380
+a fixed 5% deduction from every regiment.
+
+281
+00:14:49,033 --> 00:14:52,164
+Small armies also meet whole-soldier rounding.
+
+282
+00:14:52,164 --> 00:14:55,698
+At a hypothetical effective rate of 5%, 19 eligible
+
+283
+00:14:55,698 --> 00:14:59,578
+soldiers produce an army-wide budget of zero; 20 produce
+
+284
+00:14:59,578 --> 00:14:59,855
+one.
+
+285
+00:14:59,855 --> 00:15:03,870
+This step has no minimum deduction of one soldier per pass.
+
+286
+00:15:03,870 --> 00:15:06,661
+But that explains only the supply budget.
+
+287
+00:15:06,661 --> 00:15:11,153
+Siege, county entry, and other troop changes need separate checks.
+
+288
+00:15:11,153 --> 00:15:16,461
+A missing event in the log does not prove zero losses across the whole window.
+
+289
+00:15:18,167 --> 00:15:22,535
+For a route, distinguish three timings: the expected arrival
+
+290
+00:15:22,535 --> 00:15:27,048
+before ordering, the current estimate while moving, and actual
+
+291
+00:15:27,048 --> 00:15:27,630
+arrival.
+
+292
+00:15:27,630 --> 00:15:30,206
+A preview describes the plan; after
+
+293
+00:15:30,206 --> 00:15:32,708
+the order, read the route actually
+
+294
+00:15:32,708 --> 00:15:33,223
+stored.
+
+295
+00:15:33,223 --> 00:15:38,672
+At the observation endpoint, check the current location and remaining route.
+
+296
+00:15:38,672 --> 00:15:43,619
+In this reroute test, later independent state confirmed the endpoint.
+
+297
+00:15:43,619 --> 00:15:47,347
+A preview line reaching it was not proof of arrival.
+
+298
+00:15:48,000 --> 00:15:51,536
+The army window's full-route arrival estimate and
+
+299
+00:15:51,536 --> 00:15:54,856
+the time left on the first leg cover different
+
+300
+00:15:54,856 --> 00:15:55,361
+scopes.
+
+301
+00:15:55,361 --> 00:15:59,431
+Land and sea movement speeds have their own readings too;
+
+302
+00:15:59,431 --> 00:16:03,643
+neither is directly the remaining days for the whole route.
+
+303
+00:16:03,643 --> 00:16:08,597
+Label comparisons as speed, first-leg duration, or final arrival date.
+
+304
+00:16:08,597 --> 00:16:12,409
+Without complete readings from the same paused frame,
+
+305
+00:16:12,409 --> 00:16:16,869
+subtracting old dates would invent a precise-looking later-leg
+
+306
+00:16:16,869 --> 00:16:17,516
+duration.
+
+307
+00:16:18,167 --> 00:16:21,600
+Actual duration also needs a clear starting point.
+
+308
+00:16:21,600 --> 00:16:25,754
+In this reroute test, 13 calendar days passed from the march
+
+309
+00:16:25,754 --> 00:16:29,909
+start after an independent load to the alternative endpoint.
+
+310
+00:16:29,909 --> 00:16:35,059
+From the replacement route order to that endpoint, it took 8 calendar days.
+
+311
+00:16:35,059 --> 00:16:38,836
+Both are observed outcomes with different time origins.
+
+312
+00:16:38,836 --> 00:16:41,647
+They are not interchangeable, and cannot
+
+313
+00:16:41,647 --> 00:16:44,318
+rank direct march, split-and-rest, and
+
+314
+00:16:44,318 --> 00:16:44,810
+detour.
+
+315
+00:16:44,810 --> 00:16:49,411
+Each strategy still needs to finish from the common starting point.
+
+316
+00:16:50,067 --> 00:16:52,998
+Immediately before and after the reroute,
+
+317
+00:16:52,998 --> 00:16:55,572
+the game date and army location were
+
+318
+00:16:55,572 --> 00:16:56,287
+unchanged.
+
+319
+00:16:56,287 --> 00:16:59,782
+What changed was the stored route's later section.
+
+320
+00:16:59,782 --> 00:17:03,976
+Accepting the order did not move the army to a new location.
+
+321
+00:17:03,976 --> 00:17:07,575
+Advancing game time later showed it at the original
+
+322
+00:17:07,575 --> 00:17:11,315
+first-leg endpoint and then the alternative endpoint.
+
+323
+00:17:11,315 --> 00:17:14,869
+Keep the same-day order result separate from later
+
+324
+00:17:14,869 --> 00:17:18,565
+movement, so an acknowledgment is not presented as a
+
+325
+00:17:18,565 --> 00:17:19,703
+completed march.
+
+326
+00:17:20,367 --> 00:17:22,467
+Now consider movement lock.
+
+327
+00:17:22,467 --> 00:17:25,962
+Before the stop test, first-leg progress was
+
+328
+00:17:25,962 --> 00:17:29,774
+about 96.7%, and the threshold actually read was
+
+329
+00:17:29,774 --> 00:17:30,092
+50%.
+
+330
+00:17:30,092 --> 00:17:34,214
+This percentage describes the current first leg, not
+
+331
+00:17:34,214 --> 00:17:37,860
+over 90% of the whole journey: three more legs
+
+332
+00:17:37,860 --> 00:17:38,573
+remained.
+
+333
+00:17:38,573 --> 00:17:41,674
+To know the choices left after locking,
+
+334
+00:17:41,674 --> 00:17:45,013
+inspect the actual route after stopping or
+
+335
+00:17:45,013 --> 00:17:45,809
+rerouting.
+
+336
+00:17:45,809 --> 00:17:50,555
+One percentage alone cannot tell us where the army will stop.
+
+337
+00:17:51,233 --> 00:17:54,116
+Both lock tests used progress strictly
+
+338
+00:17:54,116 --> 00:17:57,074
+above the threshold read for that test.
+
+339
+00:17:57,074 --> 00:17:59,151
+They show what stopping and
+
+340
+00:17:59,151 --> 00:18:01,691
+rerouting actually retained after
+
+341
+00:18:01,691 --> 00:18:02,614
+crossing it.
+
+342
+00:18:02,614 --> 00:18:07,179
+The current route code selects a committed first leg using a
+
+343
+00:18:07,179 --> 00:18:11,668
+strict greater-than comparison; equality falls on the other
+
+344
+00:18:11,668 --> 00:18:12,049
+side.
+
+345
+00:18:12,049 --> 00:18:13,696
+That is the code rule.
+
+346
+00:18:13,696 --> 00:18:17,658
+Neither test measured stopping or rerouting at exact
+
+347
+00:18:17,658 --> 00:18:21,696
+equality, so these results do not verify the equality
+
+348
+00:18:21,696 --> 00:18:22,381
+boundary.
+
+349
+00:18:23,033 --> 00:18:26,008
+After locking, we issued stop just once.
+
+350
+00:18:26,008 --> 00:18:30,394
+A later independent read showed the four-leg route reduced
+
+351
+00:18:30,394 --> 00:18:34,251
+to its original first stop, with first-leg progress
+
+352
+00:18:34,251 --> 00:18:35,007
+preserved.
+
+353
+00:18:35,007 --> 00:18:37,312
+The army did not stop in place.
+
+354
+00:18:37,312 --> 00:18:41,102
+Two days later, it reached that first-leg endpoint
+
+355
+00:18:41,102 --> 00:18:44,967
+with an empty route, and stayed there the following
+
+356
+00:18:44,967 --> 00:18:45,270
+day.
+
+357
+00:18:45,270 --> 00:18:49,806
+Stop removed later travel while completing the committed leg.
+
+358
+00:18:49,806 --> 00:18:52,473
+The target field was not read then;
+
+359
+00:18:52,473 --> 00:18:55,520
+actual location and route establish this
+
+360
+00:18:55,520 --> 00:18:56,053
+result.
+
+361
+00:18:56,733 --> 00:18:59,564
+Rerouting was a separate normal march test.
+
+362
+00:18:59,564 --> 00:19:04,698
+Three stops remained on the original route when we chose a different endpoint.
+
+363
+00:19:04,698 --> 00:19:09,174
+After the new order, location and first-leg progress were unchanged.
+
+364
+00:19:09,174 --> 00:19:12,067
+The original first stop remained, while the
+
+365
+00:19:12,067 --> 00:19:14,690
+later route became a leg toward the new
+
+366
+00:19:14,690 --> 00:19:15,296
+endpoint.
+
+367
+00:19:15,296 --> 00:19:19,014
+We then observed the army reach the original first stop,
+
+368
+00:19:19,014 --> 00:19:22,866
+followed by the alternative endpoint, with an empty route.
+
+369
+00:19:22,866 --> 00:19:27,473
+Locking constrained the current leg without fixing every later choice.
+
+370
+00:19:28,133 --> 00:19:31,971
+A route warning about paying an embarkation fee appears
+
+371
+00:19:31,971 --> 00:19:35,878
+before ordering; actual payment needs separate evidence.
+
+372
+00:19:35,878 --> 00:19:40,716
+After this army entered a sea zone, an independent cash query and the
+
+373
+00:19:40,716 --> 00:19:45,063
+native payment chain matched a 3-gold debit for this account's
+
+374
+00:19:45,063 --> 00:19:45,904
+embarkation.
+
+375
+00:19:45,904 --> 00:19:48,877
+That is not a universal fee for every army.
+
+376
+00:19:48,877 --> 00:19:52,884
+County-loss budgets are conditional too: they do not mean
+
+377
+00:19:52,884 --> 00:19:56,681
+every province crossing must remove the same number of
+
+378
+00:19:56,681 --> 00:19:57,313
+soldiers.
+
+379
+00:19:57,967 --> 00:20:02,938
+When Robert's army entered the sea zone, its actual state became embarked.
+
+380
+00:20:02,938 --> 00:20:06,898
+The native payment record identifies a 3-gold debit to the
+
+381
+00:20:06,898 --> 00:20:10,926
+personal account, and the account balance fell by exactly 3
+
+382
+00:20:10,926 --> 00:20:11,267
+gold.
+
+383
+00:20:11,267 --> 00:20:14,626
+This establishes the payment for this embarkation.
+
+384
+00:20:14,626 --> 00:20:17,614
+Other armies and routes still need their own
+
+385
+00:20:17,614 --> 00:20:20,739
+fee checked; 3 gold is not a universal charge.
+
+386
+00:20:21,400 --> 00:20:24,430
+Route warnings help with choices before departure.
+
+387
+00:20:24,430 --> 00:20:27,270
+Explaining later troop decreases also requires
+
+388
+00:20:27,270 --> 00:20:30,235
+separating county-entry deductions from periodic
+
+389
+00:20:30,235 --> 00:20:30,852
+attrition.
+
+390
+00:20:30,852 --> 00:20:33,609
+In the source, they have distinct direct call
+
+391
+00:20:33,609 --> 00:20:36,487
+entries and a shared remainder-allocation path.
+
+392
+00:20:36,487 --> 00:20:40,668
+If the only record is from that shared path, the cause stays unknown.
+
+393
+00:20:40,668 --> 00:20:43,326
+Crossing a county boundary does not justify
+
+394
+00:20:43,326 --> 00:20:46,170
+attributing the whole decrease to county-entry
+
+395
+00:20:46,170 --> 00:20:46,788
+attrition.
+
+396
+00:20:48,500 --> 00:20:53,890
+To compare the three plans, first ask four questions: how long until arrival, how many troops
+
+397
+00:20:53,890 --> 00:20:59,106
+remain in the original regiments, how much supply each army has, and how much was actually
+
+398
+00:20:59,106 --> 00:20:59,395
+paid.
+
+399
+00:20:59,395 --> 00:21:03,811
+The state on arrival tells us what condition the route delivered the army in.
+
+400
+00:21:03,811 --> 00:21:06,558
+The state on the same day tells us how far each
+
+401
+00:21:06,558 --> 00:21:09,540
+arrangement has progressed after the same amount of
+
+402
+00:21:09,540 --> 00:21:09,832
+time.
+
+403
+00:21:10,500 --> 00:21:15,369
+Each of the three replays must reload the same normal starting save and
+
+404
+00:21:15,369 --> 00:21:20,033
+check the character, date, commander, original regiments, stock, and
+
+405
+00:21:20,033 --> 00:21:20,650
+treasury.
+
+406
+00:21:20,650 --> 00:21:23,422
+Newly split armies are identified by the
+
+407
+00:21:23,422 --> 00:21:26,125
+identities that actually appear in that
+
+408
+00:21:26,125 --> 00:21:26,402
+run.
+
+409
+00:21:26,402 --> 00:21:29,887
+This keeps any later extra entry, commander change,
+
+410
+00:21:29,887 --> 00:21:33,440
+or missing original regiment visible in the results.
+
+411
+00:21:34,100 --> 00:21:39,434
+Plan A keeps the army intact and follows the direct route shown in this run's actual preview.
+
+412
+00:21:39,434 --> 00:21:42,272
+After the order, first confirm that the route has
+
+413
+00:21:42,272 --> 00:21:45,111
+taken effect, then track its position day by day.
+
+414
+00:21:45,111 --> 00:21:48,351
+Actual arrival requires the army to be at the target, in
+
+415
+00:21:48,351 --> 00:21:51,649
+an appropriate state, with the remaining route completed.
+
+416
+00:21:51,649 --> 00:21:56,008
+Neither an estimated date nor an order confirmation can replace that moment.
+
+417
+00:21:56,667 --> 00:22:01,298
+Plan B first splits the army, rests at two verified locations, then regroups.
+
+418
+00:22:01,298 --> 00:22:05,689
+Each army's rest period starts on the day it actually becomes stationary.
+
+419
+00:22:05,689 --> 00:22:09,568
+Once the preset stock and troop-shortfall conditions are met, or
+
+420
+00:22:09,568 --> 00:22:13,568
+the preset stay expires, it leaves according to the original plan.
+
+421
+00:22:13,568 --> 00:22:16,394
+Insufficient recovery is also a result of this
+
+422
+00:22:16,394 --> 00:22:18,851
+plan; we cannot restart to obtain better
+
+423
+00:22:18,851 --> 00:22:19,343
+numbers.
+
+424
+00:22:20,000 --> 00:22:23,064
+Plan C keeps the army intact, passes through the legal
+
+425
+00:22:23,064 --> 00:22:25,958
+waypoints chosen in advance, then heads to the same
+
+426
+00:22:25,958 --> 00:22:26,639
+destination.
+
+427
+00:22:26,639 --> 00:22:29,142
+It changes the route, while supply and troop
+
+428
+00:22:29,142 --> 00:22:31,874
+counts are recorded as they actually stand along
+
+429
+00:22:31,874 --> 00:22:32,329
+the way.
+
+430
+00:22:32,329 --> 00:22:36,290
+Each leg waits for actual arrival before turning toward the next point.
+
+431
+00:22:36,290 --> 00:22:39,916
+Moving the camera there cannot stand in for the army reaching it.
+
+432
+00:22:40,567 --> 00:22:44,387
+The balanced-split code first creates a new army, then transfers
+
+433
+00:22:44,387 --> 00:22:48,087
+whole army-regiment records according to weights for different
+
+434
+00:22:48,087 --> 00:22:48,744
+categories.
+
+435
+00:22:48,744 --> 00:22:52,832
+This normal path does not cut every persistent troop slot in half, so
+
+436
+00:22:52,832 --> 00:22:56,979
+the two displayed troop counts are not guaranteed to be exactly equal.
+
+437
+00:22:56,979 --> 00:23:00,862
+Creating the new army also copies the original supply-stock field.
+
+438
+00:23:00,862 --> 00:23:04,567
+Whether that stock hits the new capacity limit must be checked
+
+439
+00:23:04,567 --> 00:23:08,092
+through the separate supply update and the actual resulting
+
+440
+00:23:08,092 --> 00:23:08,451
+state.
+
+441
+00:23:09,133 --> 00:23:12,126
+Splitting a hundred troops into two groups of fifty
+
+442
+00:23:12,126 --> 00:23:15,118
+does not make the same location support only fifty.
+
+443
+00:23:15,118 --> 00:23:19,127
+Take a hypothetical case: aggregate local usage is six thousand, the
+
+444
+00:23:19,127 --> 00:23:22,899
+limit is four thousand, and the selected army has only a hundred
+
+445
+00:23:22,899 --> 00:23:23,312
+troops.
+
+446
+00:23:23,312 --> 00:23:27,026
+If both armies remain in the same province and the contributing
+
+447
+00:23:27,026 --> 00:23:30,800
+regiments and their eligibility are unchanged, usage remains six
+
+448
+00:23:30,800 --> 00:23:31,330
+thousand.
+
+449
+00:23:31,330 --> 00:23:34,175
+Whether splitting improves supply depends on how
+
+450
+00:23:34,175 --> 00:23:36,961
+actual usage changes and where each army really
+
+451
+00:23:36,961 --> 00:23:37,257
+goes.
+
+452
+00:23:37,933 --> 00:23:42,247
+After splitting, list each army's stock and capacity separately.
+
+453
+00:23:42,247 --> 00:23:45,074
+Stock is what each army actually carries;
+
+454
+00:23:45,074 --> 00:23:47,833
+capacity is what that army can currently
+
+455
+00:23:47,833 --> 00:23:48,246
+carry.
+
+456
+00:23:48,246 --> 00:23:51,414
+Keep each army's real values in the comparison.
+
+457
+00:23:51,414 --> 00:23:54,916
+Adding the two stocks or taking an average does not
+
+458
+00:23:54,916 --> 00:23:58,349
+produce the supply of an intact army that does not
+
+459
+00:23:58,349 --> 00:23:58,761
+exist.
+
+460
+00:23:59,433 --> 00:24:04,235
+After merging, check the commander again and expand the complete regiment list.
+
+461
+00:24:04,235 --> 00:24:07,027
+An entry showing one current troop out of one
+
+462
+00:24:07,027 --> 00:24:09,942
+maximum first tells us only that entry's actual
+
+463
+00:24:09,942 --> 00:24:10,314
+count.
+
+464
+00:24:10,314 --> 00:24:12,745
+It may have no ordinary troop-slot data.
+
+465
+00:24:12,745 --> 00:24:15,904
+That number alone cannot identify it as a knight or
+
+466
+00:24:15,904 --> 00:24:18,629
+show that one ordinary soldier has just been
+
+467
+00:24:18,629 --> 00:24:19,310
+reinforced.
+
+468
+00:24:19,310 --> 00:24:23,261
+Its specific category must be matched to its own native identity.
+
+469
+00:24:23,933 --> 00:24:26,758
+Regrouping means both armies have reached the
+
+470
+00:24:26,758 --> 00:24:29,583
+same place; only merging turns them into one.
+
+471
+00:24:29,583 --> 00:24:34,674
+After the merge, reread stock, capacity, the actual commander, and every regiment.
+
+472
+00:24:34,674 --> 00:24:38,461
+Count the original regiments separately from later additions.
+
+473
+00:24:38,461 --> 00:24:41,561
+If a legal merge changes these conditions, retain
+
+474
+00:24:41,561 --> 00:24:44,344
+those changes as actual consequences of this
+
+475
+00:24:44,344 --> 00:24:45,103
+arrangement.
+
+476
+00:24:45,103 --> 00:24:47,990
+Do not delete new entries or change commanders
+
+477
+00:24:47,990 --> 00:24:51,001
+afterward to make the result match expectations.
+
+478
+00:24:51,667 --> 00:24:55,979
+Separate current monthly figures from costs accumulated during the journey.
+
+479
+00:24:55,979 --> 00:25:00,521
+Current monthly income minus full monthly expenditure gives current net income.
+
+480
+00:25:00,521 --> 00:25:03,446
+These figures describe present income and spending
+
+481
+00:25:03,446 --> 00:25:06,780
+conditions; they cannot be held constant across the whole
+
+482
+00:25:06,780 --> 00:25:07,248
+journey.
+
+483
+00:25:07,248 --> 00:25:12,710
+Reread them when the armies' raised status, troop sources, or other income and spending change.
+
+484
+00:25:12,710 --> 00:25:16,271
+When comparing route costs, record cumulative actual payments
+
+485
+00:25:16,271 --> 00:25:20,064
+separately, and retain income and other events over the same date
+
+486
+00:25:20,064 --> 00:25:20,415
+range.
+
+487
+00:25:21,067 --> 00:25:24,887
+The current monthly military-maintenance rate and the alternative
+
+488
+00:25:24,887 --> 00:25:28,589
+monthly rate for the all-raised scenario describe two different
+
+489
+00:25:28,589 --> 00:25:29,236
+situations.
+
+490
+00:25:29,236 --> 00:25:31,669
+They are not two expenses to add together.
+
+491
+00:25:31,669 --> 00:25:35,174
+Full monthly expenditure already includes military costs, so
+
+492
+00:25:35,174 --> 00:25:38,795
+using net income must not deduct the same military cost again.
+
+493
+00:25:38,795 --> 00:25:41,460
+A monthly rate is still only the current rate.
+
+494
+00:25:41,460 --> 00:25:46,323
+To state how much maintenance has actually been paid during the journey, the actual
+
+495
+00:25:46,323 --> 00:25:51,186
+payment source, amount, and date must match; the treasury difference alone is not a
+
+496
+00:25:51,186 --> 00:25:51,831
+substitute.
+
+497
+00:25:52,500 --> 00:25:54,295
+Keep a separate cost ledger.
+
+498
+00:25:54,295 --> 00:25:58,655
+Reconcile embarkation payments, military maintenance, income during
+
+499
+00:25:58,655 --> 00:26:02,754
+the period, and other spending within the same account and date
+
+500
+00:26:02,754 --> 00:26:03,144
+range.
+
+501
+00:26:03,144 --> 00:26:06,094
+The treasury's net change mixes these sources.
+
+502
+00:26:06,094 --> 00:26:10,326
+Even an increased balance can include military costs already paid.
+
+503
+00:26:10,326 --> 00:26:15,392
+Military costs included in full expenditure must not be deducted a second time.
+
+504
+00:26:16,067 --> 00:26:20,541
+The troop-strength table has two columns: one tracks only the regiments present
+
+505
+00:26:20,541 --> 00:26:24,845
+at the start; the other retains all relevant armies actually held under that
+
+506
+00:26:24,845 --> 00:26:25,128
+plan.
+
+507
+00:26:25,128 --> 00:26:30,274
+One additional person cannot automatically cancel out a shortfall in the original regiments.
+
+508
+00:26:30,274 --> 00:26:34,749
+Nor does a source army disappearing after a merge mean the entire army has died.
+
+509
+00:26:34,749 --> 00:26:40,231
+Counts, identities, and organizational changes must be read together to see where the troops went.
+
+510
+00:26:40,900 --> 00:26:45,384
+The arrival table first lists each plan's own arrival time and arrival state.
+
+511
+00:26:45,384 --> 00:26:48,293
+The same-day table then lists the actual readings
+
+512
+00:26:48,293 --> 00:26:50,668
+on days seven, fourteen, twenty-one, and
+
+513
+00:26:50,668 --> 00:26:51,440
+twenty-eight.
+
+514
+00:26:51,440 --> 00:26:53,246
+Read the two tables separately.
+
+515
+00:26:53,246 --> 00:26:56,011
+Any additional recovery opportunities and costs
+
+516
+00:26:56,011 --> 00:26:58,894
+from the longer journey are part of that journey.
+
+517
+00:26:58,894 --> 00:27:01,449
+Troop counts from different dates cannot be
+
+518
+00:27:01,449 --> 00:27:04,182
+presented directly as a same-day reinforcement
+
+519
+00:27:04,182 --> 00:27:04,776
+advantage.
+
+520
+00:27:05,433 --> 00:27:09,292
+The old replays did not establish a strict winner among the three plans.
+
+521
+00:27:09,292 --> 00:27:11,910
+B stopped on day thirty-eight because the frozen
+
+522
+00:27:11,910 --> 00:27:14,855
+conditions were not met, with fifty-two days of budget
+
+523
+00:27:14,855 --> 00:27:15,400
+remaining.
+
+524
+00:27:15,400 --> 00:27:18,695
+C retains fifteen two-day sampling deviations, so arrival can
+
+525
+00:27:18,695 --> 00:27:22,098
+only be placed after day seventy-five and by day seventy-seven.
+
+526
+00:27:22,098 --> 00:27:23,813
+These historical records remain.
+
+527
+00:27:23,813 --> 00:27:27,992
+For the new comparison, we will discuss the trade-offs in actual routes, rest
+
+528
+00:27:27,992 --> 00:27:31,845
+locations, and enemy conditions once all three independent replays have
+
+529
+00:27:31,845 --> 00:27:32,333
+finished.
+
+530
+00:27:34,033 --> 00:27:37,019
+Returning to troop-count changes, first distinguish the
+
+531
+00:27:37,019 --> 00:27:40,112
+budget, actual troop deductions, and the whole army's net
+
+532
+00:27:40,112 --> 00:27:40,492
+change.
+
+533
+00:27:40,492 --> 00:27:43,695
+Siege and raid losses share a loss stage in the source code.
+
+534
+00:27:43,695 --> 00:27:47,459
+Explaining a particular siege loss also requires checking that a siege
+
+535
+00:27:47,459 --> 00:27:51,222
+was actually underway and that conditions such as no raiding were met.
+
+536
+00:27:51,222 --> 00:27:53,998
+Allocation has its own order and integer remainders.
+
+537
+00:27:53,998 --> 00:27:56,853
+Multiplying the displayed percentage by each regiment
+
+538
+00:27:56,853 --> 00:27:59,709
+does not produce a ledger of actual troop deductions.
+
+539
+00:28:00,367 --> 00:28:04,354
+Low supply also depends on the threshold table loaded for that run.
+
+540
+00:28:04,354 --> 00:28:08,099
+At the vanilla boundary of ten, nine point nine nine nine nine
+
+541
+00:28:08,099 --> 00:28:12,026
+nine is already below ten, while exactly ten remains on the other
+
+542
+00:28:12,026 --> 00:28:12,328
+side.
+
+543
+00:28:12,328 --> 00:28:16,196
+The game updates stock before calculating the supply-loss budget.
+
+544
+00:28:16,196 --> 00:28:19,827
+Fleet, grace, and regiment conditions also affect the result.
+
+545
+00:28:19,827 --> 00:28:22,439
+Low stock and how many troops were actually
+
+546
+00:28:22,439 --> 00:28:24,990
+deducted must therefore still be confirmed
+
+547
+00:28:24,990 --> 00:28:25,659
+separately.
+
+548
+00:28:26,333 --> 00:28:29,275
+Before departure, review the first stop, final
+
+549
+00:28:29,275 --> 00:28:31,898
+destination, and current arrival estimate
+
+550
+00:28:31,898 --> 00:28:32,473
+together.
+
+551
+00:28:32,473 --> 00:28:36,546
+A legal route only shows that this movement is currently allowed.
+
+552
+00:28:36,546 --> 00:28:39,360
+Whether the army can rest along the way, and
+
+553
+00:28:39,360 --> 00:28:42,175
+what it may pay, require their own condition
+
+554
+00:28:42,175 --> 00:28:42,623
+checks.
+
+555
+00:28:42,623 --> 00:28:45,495
+Save the current stock, troop shortfall, next
+
+556
+00:28:45,495 --> 00:28:48,942
+location, and warnings to establish a baseline for the
+
+557
+00:28:48,942 --> 00:28:49,452
+journey.
+
+558
+00:28:49,452 --> 00:28:52,804
+After issuing the order, confirm the actual route; on
+
+559
+00:28:52,804 --> 00:28:56,281
+actual arrival, compare reality with the original plan.
+
+560
+00:28:56,933 --> 00:29:00,873
+Reread the current state when the monthly change turns from
+
+561
+00:29:00,873 --> 00:29:04,813
+positive to negative, movement becomes locked, or the route
+
+562
+00:29:04,813 --> 00:29:05,347
+changes.
+
+563
+00:29:05,347 --> 00:29:10,538
+Unchanged stock can have several explanations: no permitted update opportunity
+
+564
+00:29:10,538 --> 00:29:15,463
+yet, rejected conditions, a zero current contribution, or a gain capped by
+
+565
+00:29:15,463 --> 00:29:16,062
+capacity.
+
+566
+00:29:16,062 --> 00:29:19,020
+One unchanged number cannot distinguish them.
+
+567
+00:29:19,020 --> 00:29:22,826
+Retain the dates, locations, stock, and update conditions
+
+568
+00:29:22,826 --> 00:29:27,033
+before and after, then keep observing the changes that actually
+
+569
+00:29:27,033 --> 00:29:27,433
+occur.
+
+570
+00:29:28,100 --> 00:29:33,145
+After splitting or merging, check physical troop counts first, then characters and commanders.
+
+571
+00:29:33,145 --> 00:29:38,298
+In this case, the selected small army split off a new army and merged it back into the original.
+
+572
+00:29:38,298 --> 00:29:42,216
+Its four physical troop records continued to total two hundred and fifty.
+
+573
+00:29:42,216 --> 00:29:44,896
+Meanwhile, a character record with no troop data,
+
+574
+00:29:44,896 --> 00:29:47,302
+displayed as one out of one in another army,
+
+575
+00:29:47,302 --> 00:29:47,958
+disappeared.
+
+576
+00:29:47,958 --> 00:29:53,057
+The same character became commander of the new army, then of the original army after the merge.
+
+577
+00:29:53,057 --> 00:29:57,995
+That one-out-of-one display change cannot be counted as one physical soldier gained or lost.
+
+578
+00:29:57,995 --> 00:30:03,040
+Physical counts, character associations, and the current commander must be checked separately.
+
+579
+00:30:03,700 --> 00:30:06,495
+After merging, a new entry showing one current troop
+
+580
+00:30:06,495 --> 00:30:09,397
+and a maximum of one can also have a character source.
+
+581
+00:30:09,397 --> 00:30:13,869
+A verified conditional branch creates a new army-regiment record while processing a
+
+582
+00:30:13,869 --> 00:30:18,233
+former commander, associates it with that character, then refreshes the character
+
+583
+00:30:18,233 --> 00:30:18,556
+cache.
+
+584
+00:30:18,556 --> 00:30:20,633
+Its data list is empty at construction.
+
+585
+00:30:20,633 --> 00:30:25,638
+A later one-out-of-one display does not directly mean an ordinary troop slot gained a soldier.
+
+586
+00:30:25,638 --> 00:30:29,520
+Whether this is the new entry in this case, whether the character is the
+
+587
+00:30:29,520 --> 00:30:33,511
+current commander, and whether the character is a knight must each be read
+
+588
+00:30:33,511 --> 00:30:34,104
+separately.
+
+589
+00:30:34,767 --> 00:30:37,098
+Read troop recovery in the same order.
+
+590
+00:30:37,098 --> 00:30:40,219
+Reinforcement preparation values, eligibility, and
+
+591
+00:30:40,219 --> 00:30:43,465
+calculated requests show how far the conditions have
+
+592
+00:30:43,465 --> 00:30:44,152
+progressed.
+
+593
+00:30:44,152 --> 00:30:47,526
+Actual additions require the writes to the troop slots.
+
+594
+00:30:47,526 --> 00:30:52,311
+The net change across one update can also include zeroing and cache refreshes.
+
+595
+00:30:52,311 --> 00:30:54,443
+After arrival, reread stock, troop
+
+596
+00:30:54,443 --> 00:30:57,077
+shortfalls, and current conditions for the
+
+597
+00:30:57,077 --> 00:30:57,893
+new location.
+
+598
+00:30:57,893 --> 00:31:02,003
+Do not carry over old judgments from the sea or the starting point.
+
+599
+00:31:02,667 --> 00:31:07,378
+Check payments once more: this example has a matched three-gold embarkation debit.
+
+600
+00:31:07,378 --> 00:31:10,415
+The current monthly military-maintenance rate, total
+
+601
+00:31:10,415 --> 00:31:13,861
+expenditure, and net treasury change can each help read the
+
+602
+00:31:13,861 --> 00:31:14,387
+accounts.
+
+603
+00:31:14,387 --> 00:31:17,943
+To state how much military maintenance was actually paid, the
+
+604
+00:31:17,943 --> 00:31:21,731
+corresponding cost component still has to be linked to the actual
+
+605
+00:31:21,731 --> 00:31:22,373
+settlement.
+
+606
+00:31:22,373 --> 00:31:26,567
+Without that detail, leave the cost unknown; do not interpret it as free.
+
+607
+00:31:27,233 --> 00:31:29,928
+This method can be taken to another machine.
+
+608
+00:31:29,928 --> 00:31:35,070
+The reusable parts are the mechanics, reading methods, and order of checks: confirm
+
+609
+00:31:35,070 --> 00:31:40,213
+the current game version, then align the character, army, date, and the same paused
+
+610
+00:31:40,213 --> 00:31:40,584
+state.
+
+611
+00:31:40,584 --> 00:31:45,114
+Which route was actually traveled, how many troops were lost, and whether
+
+612
+00:31:45,114 --> 00:31:49,519
+payment really occurred must still be answered by the new session's own
+
+613
+00:31:49,519 --> 00:31:50,016
+records.
+
+614
+00:31:50,016 --> 00:31:53,690
+Retained originals allow old conclusions to be recalculated.
+
+615
+00:31:53,690 --> 00:31:57,181
+They do not create a new march result on another machine.
+
+616
+00:31:57,833 --> 00:32:00,581
+Before departure, read troop counts, stock, and route.
+
+617
+00:32:00,581 --> 00:32:02,668
+During the journey, track actual changes.
+
+618
+00:32:02,668 --> 00:32:05,466
+Before battle, confirm the army's actual arrival state.
+
+619
+00:32:05,466 --> 00:32:09,332
+For Robert's stop after embarkation, issued while movement was unlocked, we
+
+620
+00:32:09,332 --> 00:32:13,249
+verified that the route cleared and that the army remained in place the next
+
+621
+00:32:13,249 --> 00:32:13,456
+day.
+
+622
+00:32:13,456 --> 00:32:15,745
+That is the result of this particular action.
+
+623
+00:32:15,745 --> 00:32:20,426
+Link each action to its own resulting state, then choose the next step using the conditions
+
+624
+00:32:20,426 --> 00:32:24,798
+visible in this run, so the march plan keeps pace with the road the army has actually
+
+625
+00:32:24,798 --> 00:32:25,261
+traveled.

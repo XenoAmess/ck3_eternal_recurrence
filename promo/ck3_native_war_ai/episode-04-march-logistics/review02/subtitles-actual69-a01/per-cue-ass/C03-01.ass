@@ -1,0 +1,36 @@
+[Script Info]
+Title: 当前损耗与已发生人数变化
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.91,English,en-0,0,0,0,,{\q2}To explain falling troop numbers, separate
+Dialogue: 2,0:00:00.10,0:00:03.17,Chinese,zh-0,0,0,0,,{\q2}看人数为什么下降，先把眼前的
+Dialogue: 1,0:00:02.91,0:00:06.05,English,en-1,0,0,0,,{\q2}current tooltips from changes that have already
+Dialogue: 2,0:00:03.17,0:00:06.03,Chinese,zh-1,0,0,0,,{\q2}提示与已经发生的变化分开。
+Dialogue: 2,0:00:06.03,0:00:10.54,Chinese,zh-2,0,0,0,,{\q2}当前损耗比例，说明现在相关条件怎样计算
+Dialogue: 1,0:00:06.05,0:00:06.65,English,en-2,0,0,0,,{\q2}happened.
+Dialogue: 1,0:00:06.65,0:00:10.75,English,en-3,0,0,0,,{\q2}The current attrition rate shows how conditions are calculated
+Dialogue: 2,0:00:10.54,0:00:15.05,Chinese,zh-3,0,0,0,,{\q2}；整数预算，说明一次处理准备怎样分配。
+Dialogue: 1,0:00:10.75,0:00:14.98,English,en-4,0,0,0,,{\q2}now; an integer budget sets the planned allocation for one pass.
+Dialogue: 1,0:00:14.98,0:00:18.45,English,en-5,0,0,0,,{\q2}Actual losses require before-and-after writes to the
+Dialogue: 2,0:00:15.05,0:00:19.84,Chinese,zh-4,0,0,0,,{\q2}真正少了多少，要看到实体兵员前后写回，并
+Dialogue: 1,0:00:18.45,0:00:22.05,English,en-6,0,0,0,,{\q2}physical soldier count, checked against replenishment,
+Dialogue: 2,0:00:19.84,0:00:24.38,Chinese,zh-5,0,0,0,,{\q2}核对同窗补员、战斗、分合军和其他事件。
+Dialogue: 1,0:00:22.05,0:00:25.79,English,en-7,0,0,0,,{\q2}combat, splitting, merging, and other events in the same
+Dialogue: 2,0:00:24.38,0:00:28.19,Chinese,zh-6,0,0,0,,{\q2}这样，预算不会重复算成损失，净少
+Dialogue: 1,0:00:25.79,0:00:26.25,English,en-8,0,0,0,,{\q2}window.
+Dialogue: 1,0:00:26.25,0:00:28.94,English,en-9,0,0,0,,{\q2}This avoids counting a budget twice as a
+Dialogue: 2,0:00:28.19,0:00:31.76,Chinese,zh-7,0,0,0,,{\q2}人数也不会被直接叫成死亡人数。
+Dialogue: 1,0:00:28.94,0:00:31.42,English,en-10,0,0,0,,{\q2}loss, or calling every net decrease a
+Dialogue: 1,0:00:31.42,0:00:31.82,English,en-11,0,0,0,,{\q2}death.

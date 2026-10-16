@@ -77,7 +77,7 @@ def _whole_data(plan, observation):
                    and c.integer(record.get('record_index')),
                    'stored DATA ordinal/order is incomplete')
             c.need(c.integer(record.get('persistent_regiment_id'))
-                   and record['persistent_regiment_id'] >= 0
+                   and -(2**31) <= record['persistent_regiment_id'] < 2**31
                    and c.integer(record.get('chunk_index')) and 0 <= record['chunk_index'] < 7,
                    'stored DATA persistent/chunk identity missing')
             c.need(all(c.integer(record.get(k)) for k in ('current_soldiers', 'maximum_soldiers'))

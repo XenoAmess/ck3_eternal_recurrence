@@ -1,0 +1,33 @@
+[Script Info]
+Title: 军事费率不重复计入净额
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.92,English,en-0,0,0,0,,{\q2}The current monthly military-maintenance rate and the alternative
+Dialogue: 2,0:00:00.10,0:00:05.07,Chinese,zh-0,0,0,0,,{\q2}当前军事维护月费率，与“全部集结”情景的替代月费
+Dialogue: 1,0:00:03.92,0:00:07.62,English,en-1,0,0,0,,{\q2}monthly rate for the all-raised scenario describe two different
+Dialogue: 2,0:00:05.07,0:00:09.84,Chinese,zh-1,0,0,0,,{\q2}率，是两种情况的读数，不是两笔应该相加的支出。
+Dialogue: 1,0:00:07.62,0:00:08.27,English,en-2,0,0,0,,{\q2}situations.
+Dialogue: 1,0:00:08.27,0:00:10.70,English,en-3,0,0,0,,{\q2}They are not two expenses to add together.
+Dialogue: 2,0:00:09.84,0:00:14.33,Chinese,zh-2,0,0,0,,{\q2}完整月支出已经按包含军费的口径读取，所以
+Dialogue: 1,0:00:10.70,0:00:14.21,English,en-4,0,0,0,,{\q2}Full monthly expenditure already includes military costs, so
+Dialogue: 1,0:00:14.21,0:00:17.83,English,en-5,0,0,0,,{\q2}using net income must not deduct the same military cost again.
+Dialogue: 2,0:00:14.33,0:00:18.59,Chinese,zh-3,0,0,0,,{\q2}使用净收入时，不能再把同一军费扣一次。
+Dialogue: 1,0:00:17.83,0:00:20.49,English,en-6,0,0,0,,{\q2}A monthly rate is still only the current rate.
+Dialogue: 2,0:00:18.59,0:00:22.66,Chinese,zh-4,0,0,0,,{\q2}月费率仍只是当前费率；要说旅途已经付
+Dialogue: 1,0:00:20.49,0:00:25.36,English,en-7,0,0,0,,{\q2}To state how much maintenance has actually been paid during the journey, the actual
+Dialogue: 2,0:00:22.66,0:00:26.73,Chinese,zh-5,0,0,0,,{\q2}了多少维护费，还需要实际支付来源、金
+Dialogue: 1,0:00:25.36,0:00:30.22,English,en-8,0,0,0,,{\q2}payment source, amount, and date must match; the treasury difference alone is not a
+Dialogue: 2,0:00:26.73,0:00:30.80,Chinese,zh-6,0,0,0,,{\q2}额和日期对上，不能只拿钱包差来代替。
+Dialogue: 1,0:00:30.22,0:00:30.86,English,en-9,0,0,0,,{\q2}substitute.

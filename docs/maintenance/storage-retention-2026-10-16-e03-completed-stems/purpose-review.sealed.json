@@ -1,0 +1,453 @@
+{
+  "schema": "xar.e04.old-E01-E03-media-readonly-purpose-review.v1",
+  "status": "SEALED_READONLY_REVIEW_NO_DELETION_AUTHORITY",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T00:58:32.314314+00:00",
+  "scope": "Five exact known leaves only: three completed E03 lossless derived/source stems for explicit purpose review; two v4 original raws held because completed E01 identity and current research release not established. No E02/E04 root inventory or body reads.",
+  "evidence": {
+    "shared_policy": {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "E03_delivered_expansion_fact": {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/handover/2026-10-03-war-episode03-expansion.md",
+      "bytes": 32066,
+      "sha256": "6490ac87dcea5e266421968a59e7dfdb7e53ef1ea0109319120fc4abf72f43be"
+    },
+    "Oct05_actual_retirement_facts": {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/handover/2026-10-05-completed-war-video-storage-cleanup.md",
+      "bytes": 4171,
+      "sha256": "dbe963dd2fa1a3d7d65c1a30e52d5e0d603f8a775bc1fbaf0214f28d461182f3"
+    },
+    "Oct05_actual_retirement_small_receipt": {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/handover/2026-10-05-completed-war-video-storage-cleanup.receipt.json",
+      "bytes": 9537,
+      "sha256": "86e6f95c567bc9236955b918a2105670c130b20b7fe94aeb9a0f902048de40d4"
+    },
+    "E03_a03_immutable_manifest": {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a03/native-run/run-manifest.json",
+      "bytes": 123347,
+      "sha256": "59a89f71b4911f20584108c7ba73cd1db37bc8387d022b6e3a1e92fc77ab1673"
+    },
+    "E03_a04_immutable_manifest": {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/run-manifest.json",
+      "bytes": 31789,
+      "sha256": "455b4d2bff1ad6676b53635e6a9bb1a4634803db0dd24ca1dee9b1d43f36cd3f"
+    },
+    "E03_public_media_audit_manifest": {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/media-audit-native-a04/run-manifest.json",
+      "bytes": 250083,
+      "sha256": "d63f9ad4e83834543b843607eb937f2adbba82d6403ecc7f75ab546a7e4c659e"
+    },
+    "v4_render_receipt_not_delivery": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/production-receipt.json",
+      "bytes": 27419,
+      "sha256": "a8defcc9496f02f914c0756f177ea32a0a44a5f85dde959abfaa173c107b208f"
+    },
+    "v4_current_manifest": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run/run-manifest.json",
+      "bytes": 165804,
+      "sha256": "1d4a781461b0715b0fc79d991a1c0520cc988d77c206fcc1d9d800a86d6179a4"
+    },
+    "v4_selected_production_inputs": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/selected-production-inputs.json",
+      "bytes": 178815,
+      "sha256": "91b2b1f23be7e13ae82e2e514e76ad662479d5fe8942d68a426dcc3d10c7280d"
+    },
+    "bounded_current_and_series_project_sharing": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e01-e03-media-retirement-a01/KNOWN-PROJECT-SHARING.actual-a01.json",
+      "bytes": 12660,
+      "sha256": "c07ba98d2990a21361d5687433bf0f4f6e3de30f43a5e7bb8e59c7aa13a22c4e"
+    },
+    "earlier_CAS_availability_aliases": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/next-c-precise-reclaim-a07-retirement-a01/AVAILABILITY-ALIASES.actual.json",
+      "bytes": 11840,
+      "sha256": "6070d432cbaaa3e8f6cd159a660d93b0817418e1e201be0a34f46c5802e551ed"
+    },
+    "prior_fullhash_duplicate_proof": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/e3-exact-derived-duplicate-groups.actual-a01.json",
+      "bytes": 8372,
+      "sha256": "a057681313c4ebd62afbbe144ac54a47b1cb0bf653d5e4e3774e07d6eb3e58af"
+    },
+    "earlier_unique_MOV_hold": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-lane/next-c-precise-reclaim-review-a07.json",
+      "bytes": 17006,
+      "sha256": "2846e09e3a808e082eb4a379e1db6eefc57d8076c85a234417222552ebe06d7b"
+    }
+  },
+  "exact_leaves": [
+    {
+      "asset_id": "E03-a03-dry",
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a03/native-run/artifacts/derived/sha256/3B/3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D.mov",
+      "allowed_root": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a03/native-run",
+      "bytes": 581461738,
+      "file_identity": [
+        3061637496,
+        281474978596944
+      ],
+      "mtime_FILETIME": 134354925586890756,
+      "hardlink_count": 1,
+      "allocation_bytes": 581464064,
+      "nonreparse_and_file_final_path_verified_by_handle": true,
+      "read_handle_shared_all_not_exclusive": true,
+      "recorded_original_sha256_from_preserved_manifest_not_rehashed_now": "3B3F8B6AF0D51D8EDFD6164888182C37DE34575EAC6882AAD339D4E280F8283D",
+      "original_manifest_evidence_key": "E03_a03_immutable_manifest",
+      "immutable_manifest_roles": [
+        {
+          "artifact_id": "visual.episode03-full-picture",
+          "collection": "derived",
+          "role": "visual-input",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "narration.episode03-full-picture",
+          "collection": "derived",
+          "role": "narration",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "audio.episode03-full-picture.episode03-narration",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "dry-master.mov"
+        }
+      ],
+      "state": "REQUIRES_ROOT_PURPOSE_RELEASE_AND_EXECUTION_REVALIDATION",
+      "rebuildability": "Not established. Do not claim exact original can be recreated from final MP4 or existing chapter sources.",
+      "purpose_impact": "Loss of old lossless full-picture/narration stem and exact future re-edit capability; finished named MP4, code, text, source configs, research/RED reports and retained case images remain.",
+      "normal_TTL_hours": 48,
+      "normal_TTL_note": "E03 derived is older than48h but current canonical/source-stem protection must be explicitly reviewed; v4 raw age does not authorize destruction.",
+      "known_protection_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+      "existing_protection_to_change_explicitly": "E03 canonical dry source/stem retained by earlier cleanup; original source/unique dry-master hold remains until Root releases present purpose.",
+      "current_project_input_hash_matches": 0,
+      "bounded_sharing_report_evidence_key": "bounded_current_and_series_project_sharing",
+      "all_machine_or_external_manifests_exhaustively_checked": false,
+      "aliases_touching_original": [],
+      "any_delete_requires_new_availability_receipt_not_original_manifest_edit": true,
+      "current_named_process_root_references": []
+    },
+    {
+      "asset_id": "E03-a04-dry",
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+      "allowed_root": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run",
+      "bytes": 580809766,
+      "file_identity": [
+        3061637496,
+        281474978600969
+      ],
+      "mtime_FILETIME": 134354991659347842,
+      "hardlink_count": 1,
+      "allocation_bytes": 580812800,
+      "nonreparse_and_file_final_path_verified_by_handle": true,
+      "read_handle_shared_all_not_exclusive": true,
+      "recorded_original_sha256_from_preserved_manifest_not_rehashed_now": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+      "original_manifest_evidence_key": "E03_a04_immutable_manifest",
+      "immutable_manifest_roles": [
+        {
+          "artifact_id": "visual.episode03-full-picture",
+          "collection": "derived",
+          "role": "visual-input",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "narration.episode03-full-picture",
+          "collection": "derived",
+          "role": "narration",
+          "label": "dry-master.mov"
+        },
+        {
+          "artifact_id": "audio.episode03-full-picture.episode03-narration",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "dry-master.mov"
+        }
+      ],
+      "state": "REQUIRES_ROOT_PURPOSE_RELEASE_AND_EXECUTION_REVALIDATION",
+      "rebuildability": "Not established. Do not claim exact original can be recreated from final MP4 or existing chapter sources.",
+      "purpose_impact": "Loss of old lossless full-picture/narration stem and exact future re-edit capability; finished named MP4, code, text, source configs, research/RED reports and retained case images remain.",
+      "normal_TTL_hours": 48,
+      "normal_TTL_note": "E03 derived is older than48h but current canonical/source-stem protection must be explicitly reviewed; v4 raw age does not authorize destruction.",
+      "known_protection_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+      "existing_protection_to_change_explicitly": "E03 canonical dry source/stem retained by earlier cleanup; original source/unique dry-master hold remains until Root releases present purpose.",
+      "current_project_input_hash_matches": 0,
+      "bounded_sharing_report_evidence_key": "bounded_current_and_series_project_sharing",
+      "all_machine_or_external_manifests_exhaustively_checked": false,
+      "aliases_touching_original": [
+        {
+          "candidate_index": 0,
+          "old_candidate_path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+          "expected_old_identity": [
+            3061637496,
+            844424932026831
+          ],
+          "content_sha256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+          "content_bytes": 580809766,
+          "keeper_path": "C:\\ck3-war-episode03-expansion-20261003-a01\\expansion-production-a04\\native-run\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+          "keeper_identity": [
+            3061637496,
+            281474978600969
+          ],
+          "keeper_verified_metadata_held": true,
+          "keeper_failure": null,
+          "exact_manifest_references": [
+            {
+              "run_manifest": {
+                "path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\run-manifest.json",
+                "bytes": 250083,
+                "sha256": "d63f9ad4e83834543b843607eb937f2adbba82d6403ecc7f75ab546a7e4c659e"
+              },
+              "artifact_id": "media-proof-054",
+              "role": "narration",
+              "collection": "derived",
+              "old_path": "artifacts/derived/sha256/B8/B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+              "sha256": "B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59",
+              "bytes": 580809766
+            }
+          ],
+          "candidate_availability": "deleted_unreadable_at_old_path",
+          "future_resolution": "Use retained keeper for listed immutable artifactIDs after actual oldpath retirement; no same-name file replacement.",
+          "actual_deletion_result": {
+            "kind": "duplicate",
+            "index": 0,
+            "path": "C:\\ck3-war-episode03-expansion-20261003-a01\\media-audit-native-a04\\artifacts\\derived\\sha256\\B8\\B8D86C8E0D50B53E7DC0C57C101E438C9A048B4E16AD1478F5FD9A2D3CE8AD59.mov",
+            "expected_bytes": 580809766,
+            "status": "deleted",
+            "actual": {
+              "id": [
+                3061637496,
+                844424932026831
+              ],
+              "b": 580809766,
+              "ft": 134355030013332949,
+              "links": 1,
+              "allocation": 580812800
+            },
+            "same_handle_disposition_succeeded": true,
+            "absence_confirmed": true
+          },
+          "keeper_availability": "available_verified_identity_metadata_held"
+        }
+      ],
+      "any_delete_requires_new_availability_receipt_not_original_manifest_edit": true,
+      "current_named_process_root_references": []
+    },
+    {
+      "asset_id": "E03-a04-narration-grid",
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/media-audit-native-a04/artifacts/derived/sha256/78/78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951.wav",
+      "allowed_root": "C:/ck3-war-episode03-expansion-20261003-a01/media-audit-native-a04",
+      "bytes": 352774444,
+      "file_identity": [
+        3061637496,
+        562949955316168
+      ],
+      "mtime_FILETIME": 134355029905217897,
+      "hardlink_count": 1,
+      "allocation_bytes": 352776192,
+      "nonreparse_and_file_final_path_verified_by_handle": true,
+      "read_handle_shared_all_not_exclusive": true,
+      "recorded_original_sha256_from_preserved_manifest_not_rehashed_now": "78F80D893FB2B30803340414AAC148CB3D1C0B9ABE793E414F3F46ADEA9EA951",
+      "original_manifest_evidence_key": "E03_public_media_audit_manifest",
+      "immutable_manifest_roles": [
+        {
+          "artifact_id": "media-proof-053",
+          "collection": "derived",
+          "role": "audio-stem",
+          "label": "narration-frame-grid.wav"
+        }
+      ],
+      "state": "REQUIRES_ROOT_PURPOSE_RELEASE_AND_EXECUTION_REVALIDATION",
+      "rebuildability": "Not established. Do not claim exact original can be recreated from final MP4 or existing chapter sources.",
+      "purpose_impact": "Loss of old lossless full-picture/narration stem and exact future re-edit capability; finished named MP4, code, text, source configs, research/RED reports and retained case images remain.",
+      "normal_TTL_hours": 48,
+      "normal_TTL_note": "E03 derived is older than48h but current canonical/source-stem protection must be explicitly reviewed; v4 raw age does not authorize destruction.",
+      "known_protection_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+      "existing_protection_to_change_explicitly": "E03 canonical dry source/stem retained by earlier cleanup; original source/unique dry-master hold remains until Root releases present purpose.",
+      "current_project_input_hash_matches": 0,
+      "bounded_sharing_report_evidence_key": "bounded_current_and_series_project_sharing",
+      "all_machine_or_external_manifests_exhaustively_checked": false,
+      "aliases_touching_original": [],
+      "any_delete_requires_new_availability_receipt_not_original_manifest_edit": true,
+      "current_named_process_root_references": []
+    },
+    {
+      "asset_id": "v4-raw5C",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run/artifacts/raw/sha256/5C/5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76.mkv",
+      "allowed_root": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run",
+      "bytes": 1928022579,
+      "file_identity": [
+        882653518,
+        281474978528266
+      ],
+      "mtime_FILETIME": 134346729132420361,
+      "hardlink_count": 1,
+      "allocation_bytes": 1928024064,
+      "nonreparse_and_file_final_path_verified_by_handle": true,
+      "read_handle_shared_all_not_exclusive": true,
+      "recorded_original_sha256_from_preserved_manifest_not_rehashed_now": "5CD5DAF6AB08E6DDFD07D5A7D5105B70D4D4E0E0953D7C05079DFCCF2249BB76",
+      "original_manifest_evidence_key": "v4_current_manifest",
+      "immutable_manifest_roles": [
+        {
+          "artifact_id": "capture-raw-5cd5daf6ab08e6ddfd07d5a7d5105b70d4d4e0e0953d7c05079dfccf2249bb76",
+          "collection": "raw",
+          "role": "capture-original-recording",
+          "label": "gameplay.mkv"
+        }
+      ],
+      "state": "HELD_COMPLETED_EPISODE01_IDENTITY_AND_USE_NOT_PROVEN",
+      "rebuildability": "Not established. Do not claim exact original can be recreated from final MP4 or existing chapter sources.",
+      "purpose_impact": "Unique original gameplay pixels. Raw currently backs five V3 capture cues in old v4 draft; completed/delivered E01 identity and release of research/current use not established.",
+      "normal_TTL_hours": 720,
+      "normal_TTL_note": "E03 derived is older than48h but current canonical/source-stem protection must be explicitly reviewed; v4 raw age does not authorize destruction.",
+      "known_protection_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+      "existing_protection_to_change_explicitly": "Unknown original research/video consumers remain held",
+      "current_project_input_hash_matches": 0,
+      "bounded_sharing_report_evidence_key": "bounded_current_and_series_project_sharing",
+      "all_machine_or_external_manifests_exhaustively_checked": false,
+      "aliases_touching_original": [],
+      "any_delete_requires_new_availability_receipt_not_original_manifest_edit": true,
+      "current_named_process_root_references": []
+    },
+    {
+      "asset_id": "v4-rawB0",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run/artifacts/raw/sha256/B0/B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885.mkv",
+      "allowed_root": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/run",
+      "bytes": 1440131934,
+      "file_identity": [
+        882653518,
+        281474978527305
+      ],
+      "mtime_FILETIME": 134346724411142972,
+      "hardlink_count": 1,
+      "allocation_bytes": 1440133120,
+      "nonreparse_and_file_final_path_verified_by_handle": true,
+      "read_handle_shared_all_not_exclusive": true,
+      "recorded_original_sha256_from_preserved_manifest_not_rehashed_now": "B047268CA6A1E5478624A8991BCCE74DDF549965BACE92143417367726ECF885",
+      "original_manifest_evidence_key": "v4_current_manifest",
+      "immutable_manifest_roles": [
+        {
+          "artifact_id": "capture-raw-b047268ca6a1e5478624a8991bcce74ddf549965bace92143417367726ecf885",
+          "collection": "raw",
+          "role": "capture-original-recording",
+          "label": "gameplay.mkv"
+        }
+      ],
+      "state": "HELD_COMPLETED_EPISODE01_IDENTITY_AND_USE_NOT_PROVEN",
+      "rebuildability": "Not established. Do not claim exact original can be recreated from final MP4 or existing chapter sources.",
+      "purpose_impact": "Unique original gameplay pixels. Raw currently backs five V3 capture cues in old v4 draft; completed/delivered E01 identity and release of research/current use not established.",
+      "normal_TTL_hours": 720,
+      "normal_TTL_note": "E03 derived is older than48h but current canonical/source-stem protection must be explicitly reviewed; v4 raw age does not authorize destruction.",
+      "known_protection_review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+      "existing_protection_to_change_explicitly": "Unknown original research/video consumers remain held",
+      "current_project_input_hash_matches": 0,
+      "bounded_sharing_report_evidence_key": "bounded_current_and_series_project_sharing",
+      "all_machine_or_external_manifests_exhaustively_checked": false,
+      "aliases_touching_original": [],
+      "any_delete_requires_new_availability_receipt_not_original_manifest_edit": true,
+      "current_named_process_root_references": []
+    }
+  ],
+  "preserve_exact_files": [
+    {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a03/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+      "bytes": 274305689,
+      "file_identity": [
+        3061637496,
+        281474978596938
+      ],
+      "mtime_FILETIME": 134354925537362418,
+      "recorded_sha256_not_rehashed_now": "32D4E2BA0D3B94879C2AB6DE6DAA323C9BF695D3C1DB5C7DD09EE2E83C804091",
+      "why": "Historical a03 crop-RED encoded subject remains",
+      "review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+    },
+    {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a04/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+      "bytes": 273653717,
+      "file_identity": [
+        3061637496,
+        281474978600963
+      ],
+      "mtime_FILETIME": 134354991609335394,
+      "recorded_sha256_not_rehashed_now": "41B7B59922D3D8397E750656E347D2DD6C7985801217F19B34CC3ABD06752175",
+      "why": "Actual completed E03 expansion delivery subject remains",
+      "review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v4-index-film-attempt-001/war-ai-full-film-review.mp4",
+      "bytes": 228899890,
+      "file_identity": [
+        882653518,
+        281474978531190
+      ],
+      "mtime_FILETIME": 134346797159885340,
+      "recorded_sha256_not_rehashed_now": "7BE5BC37CDA034F866BC8B5774EDFC121BD5BA22C0134B9CC88D6FD2DE0B96E2",
+      "why": "v4 draft final render remains even though delivery unproven",
+      "review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/v5-theme-film-attempt-001/run/artifacts/raw/sha256/FD/FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+      "bytes": 30726160,
+      "file_identity": [
+        882653518,
+        281474978532373
+      ],
+      "mtime_FILETIME": 134346945134849929,
+      "recorded_sha256_not_rehashed_now": "FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F",
+      "why": "Series theme remains active E04 input, never candidate",
+      "review_at_utc": "2026-10-16T07:45:01.597000+00:00"
+    }
+  ],
+  "E03_completed_facts": {
+    "actual_production_a04_and_OneDrive_client_delivery_complete": true,
+    "final_bytes": 273653717,
+    "final_sha256": "41B7B59922D3D8397E750656E347D2DD6C7985801217F19B34CC3ABD06752175",
+    "human1x_signoff": "not-provided",
+    "remote_independent_SHA": "unverified",
+    "a03_crop_failure_fixed_by_a04_not_reclassified_historical_PASS": true,
+    "source": "Pinned Oct03 expansion handover and Oct05 actual cleanup facts"
+  },
+  "v4_hold_facts": {
+    "production_status": "rendered-pending-human-review",
+    "full_film_rendered": true,
+    "human_signoff": "not-provided",
+    "completed_E01_delivery_proof_found": false,
+    "no_other_task_or_episode_ownership_assumed": true,
+    "two_raw_bytes_not_counted_as_ready_reclaim": true
+  },
+  "totals": {
+    "E03_C_purpose_review_only_logical_bytes": 1515045948,
+    "v4_D_held_not_ready_bytes": 3368154513,
+    "all_five_potential_bytes_not_approved_sum": 4883200461,
+    "confirmed_ready_to_execute_bytes": 0,
+    "target3to8GiB_qualified_complete_set_achieved": false,
+    "previous_Oct05_and_Oct15_deletions_excluded_from_new_candidates": true
+  },
+  "downstream_and_protection_review": {
+    "known_project_inputs_checked": 42,
+    "latest_E04_review02_zip_project_timeline_narration_included": true,
+    "candidate_hash_matches_in_known_current_inputs": 0,
+    "bounded_check_not_global_absence_proof": true,
+    "prior_a04_MOV_CAS_keeper_dependency_requires_update": "If Root retires B8 MOV keeper, previous deleted duplicate aliases must become retired_unavailable with completed-purpose reason. Do not redirect B8 MOV to41B7 MP4: different bytes and role.",
+    "unique_audio_stems_are_not_claimed_reconstructible": "Both MOV are audio/visual/narration stems and WAV is narration-frame-grid, not proven decoded-from-final cache. Retirement needs Root acceptance of lost lossless re-edit ability.",
+    "preserve_all_other_source_code_text_records_final_outputs_native_failure_case_evidence": true,
+    "OneDrive_body_read_or_hydration": false
+  },
+  "current_process_references": [],
+  "process_metadata_unknown": [],
+  "occupancy_not_exclusively_verified": true,
+  "execution_requirements": [
+    "Root explicitly releases current purpose/protection for selected exact E03 stems, and separate broader scope/ownership decision before any v4 raw proposal can proceed",
+    "Preserve all named finals/common theme/code/text/old manifests/closure/RED reports and case images; failed/coldhelper/E04 inputs outside exact plan untouched",
+    "Same-handle exclusiveDELETE|READ_ATTRIBUTES rechecks FileID/bytes/FILETIME/link1/nonreparse/finalpath, busy/changed/unknown held",
+    "Write unavailable/retired availability mapping first where prior keeper aliases depend on leaf, then only actual missing paths count; preserve original manifests"
+  ],
+  "report_catalog_body_bytes_read_this_seal": 876931,
+  "large_media_or_raw_body_reads_or_hashes": 0,
+  "whole_disk_or_old_root_recursive_scans": 0,
+  "file_deletions": 0,
+  "capacity_or_quota_credit_added": 0,
+  "main_tree_SDK_desktop_game_build_mutations": 0,
+  "review_at_utc": "2026-10-16T07:45:01.597000+00:00",
+  "deadline_extended": false,
+  "package_metadata_ceiling_bytes": 262144
+}

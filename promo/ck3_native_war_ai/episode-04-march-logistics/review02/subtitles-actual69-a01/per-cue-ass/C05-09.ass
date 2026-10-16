@@ -1,0 +1,30 @@
+[Script Info]
+Title: 统帅与特殊记录
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.90,English,en-0,0,0,0,,{\q2}After merging, check the commander again and expand the complete regiment list.
+Dialogue: 2,0:00:00.10,0:00:04.89,Chinese,zh-0,0,0,0,,{\q2}合军后重新看统帅，也重新展开完整兵团。
+Dialogue: 2,0:00:04.89,0:00:10.36,Chinese,zh-1,0,0,0,,{\q2}一条一人满员一人的记录，首先只是这条记录的实际人数。
+Dialogue: 1,0:00:04.90,0:00:07.69,English,en-1,0,0,0,,{\q2}An entry showing one current troop out of one
+Dialogue: 1,0:00:07.69,0:00:10.61,English,en-2,0,0,0,,{\q2}maximum first tells us only that entry's actual
+Dialogue: 2,0:00:10.36,0:00:15.29,Chinese,zh-2,0,0,0,,{\q2}它可能没有普通兵槽数据；只凭这个数字，还不能叫
+Dialogue: 1,0:00:10.61,0:00:10.98,English,en-3,0,0,0,,{\q2}count.
+Dialogue: 1,0:00:10.98,0:00:13.41,English,en-4,0,0,0,,{\q2}It may have no ordinary troop-slot data.
+Dialogue: 1,0:00:13.41,0:00:16.57,English,en-5,0,0,0,,{\q2}That number alone cannot identify it as a knight or
+Dialogue: 2,0:00:15.29,0:00:20.01,Chinese,zh-3,0,0,0,,{\q2}它骑士，也不能说这是刚补进来的一个普通士兵。
+Dialogue: 1,0:00:16.57,0:00:19.30,English,en-6,0,0,0,,{\q2}show that one ordinary soldier has just been
+Dialogue: 1,0:00:19.30,0:00:19.98,English,en-7,0,0,0,,{\q2}reinforced.
+Dialogue: 1,0:00:19.98,0:00:23.93,English,en-8,0,0,0,,{\q2}Its specific category must be matched to its own native identity.
+Dialogue: 2,0:00:20.01,0:00:23.87,Chinese,zh-4,0,0,0,,{\q2}具体类别要跟它自己的原生身份对应。

@@ -1,0 +1,31 @@
+[Script Info]
+Title: 缓存时序影响判断
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.91,English,en-0,0,0,0,,{\q2}Because of this timing, current permission being false does
+Dialogue: 2,0:00:00.10,0:00:04.14,Chinese,zh-0,0,0,0,,{\q2}也正因为有这段时序，眼前许可为否，不
+Dialogue: 1,0:00:03.91,0:00:07.72,English,en-1,0,0,0,,{\q2}not automatically erase a positive fraction stored earlier.
+Dialogue: 2,0:00:04.14,0:00:08.17,Chinese,zh-1,0,0,0,,{\q2}能自动抹掉此前已经保存的正准备比例。
+Dialogue: 1,0:00:07.72,0:00:12.48,English,en-2,0,0,0,,{\q2}The request phase reads that older fraction and checks the physical slots'
+Dialogue: 2,0:00:08.17,0:00:12.89,Chinese,zh-2,0,0,0,,{\q2}请求阶段会读取旧比例，再按当时的物理槽条件
+Dialogue: 1,0:00:12.48,0:00:17.31,English,en-3,0,0,0,,{\q2}current conditions; it does not rerun that whole-regiment permission check.
+Dialogue: 2,0:00:12.89,0:00:17.38,Chinese,zh-3,0,0,0,,{\q2}继续判断；它不会重新调用那一项整团许可。
+Dialogue: 1,0:00:17.31,0:00:20.29,English,en-4,0,0,0,,{\q2}Conversely, a positive fraction calculated now
+Dialogue: 2,0:00:17.38,0:00:22.63,Chinese,zh-4,0,0,0,,{\q2}反过来，眼前算出正比例，也不保证下一刻就有士兵
+Dialogue: 1,0:00:20.29,0:00:23.33,English,en-5,0,0,0,,{\q2}does not guarantee soldiers will be added next.
+Dialogue: 2,0:00:22.63,0:00:27.64,Chinese,zh-5,0,0,0,,{\q2}增加：请求还可能被拒绝，或者整数结果仍为零。
+Dialogue: 1,0:00:23.33,0:00:27.68,English,en-6,0,0,0,,{\q2}The request may be refused, or the integer result may still be zero.
+Dialogue: 2,0:00:27.64,0:00:31.70,Chinese,zh-6,0,0,0,,{\q2}核对补员，要一直看到实体人数写回。
+Dialogue: 1,0:00:27.68,0:00:31.78,English,en-7,0,0,0,,{\q2}Verify replenishment through the actual soldier-count writeback.

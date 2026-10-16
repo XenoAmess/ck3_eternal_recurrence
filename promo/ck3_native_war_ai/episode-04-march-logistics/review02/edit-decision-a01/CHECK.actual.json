@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T00:42:32.884147+00:00",
+  "original69_ID_order_and_CN_EN_SHA_PASS": true,
+  "source_map_unique69_PASS": true,
+  "all_source_refs_resolved": true,
+  "existing_card_SVGs_SHA_verified": 15,
+  "frame_total": 58406,
+  "existing_SVG_supported_cues": 61,
+  "pending_R10_method_cues": 8,
+  "shared_dynamic_tasks": 11,
+  "identity_intro_outside_original11": true,
+  "all_movie_visual_artifact_IDs_null_until_real_preservation": true,
+  "qualified_dynamic": [
+    0,
+    11
+  ],
+  "R180_credit": 0,
+  "audio_payload_reads": 0,
+  "MP3_stats_or_hashes": 0,
+  "raw_reads": 0,
+  "provider_calls": 0,
+  "render_calls": 0,
+  "main_tree_writes": 0
+}

@@ -282,3 +282,21 @@ R03 已按原始研究卡逐项复核并闭合研究核心：起点 **21/21 ArRg
 ## 2026-10-16 07:43 北京时间：实际最新状态
 
 `machine_id: desktop-3fevhd2-1c74096080`，观察截至 `2026-10-15T23:43:41Z`。R0178的32日处理臂有效；R0179对照30日后在day31接敌，未完成固定32日，**R07 pair未通过，整卡维持6/14＝42.9%、业务4/11＝36.4%**。两场均正常保存/退出0，资源关闭后源码冻结解除。已入库的R04/R05/R06/R09方案/代码、费用向量源码不增加实机卡通过；军事已付归因仍未闭合。69段实际配音已生产，但合格动态仍0/11，完整人工审阅/签核/成片交付均未完成。[实际闭场、知识入库、验证与下一步](../../../docs/handover/2026-10-16-war-episode04-source-integration-and-interrupted-control.md)。
+
+
+## 2026-10-16 并发新入口与R0180：源码、业务和素材分列
+
+机器`desktop-3fevhd2-1c74096080`；[新交接](../../../docs/handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)
+集中列出县condition/actor/relation/preview、ready T0、ADD publisher/owner、R10 horizon/evidence预算的当前真实路径。
+这些新增源码不追认为R0180/a09已部署或已取得业务正例。`12FF8D0`只证明owner+desired与submission；执行时机unknown。
+
+R0180实际运行source`c4992c304d196135d9590799d69ffb3c9f5510e6`/a09，PID16736、actor31254；
+5个自然日后Army18到2645/regular1、空route，终raw53147592，samplers独立读回OFF、正常保存并exit0。
+45秒/1350帧/1440p30无音轨raw SHA`c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964`已全解码通过。
+0/4/8/12/18/40秒为AI视审样本；到达视觉范围仅(12,18]，未绑定精确native事件PTS，也未授连续clean或人工1×。
+前四样本仍显示围攻；六样本选中Army18均1184人、300/300。右侧总军力/事件兵下降不能归成本军县损耗。
+R04仍condition=false/完整窗缺失，无正例；本次不增加研究、素材或成片信用。
+
+当前研究核心保持 **R00/R02/R03/R11/R12/R13，6/14＝42.9%**；业务 **4/11＝36.4%**，
+合格动态 **0/11**。R01 ready T0、R04/R05/R06、R07合格配对及正式ABC仍按各自真实缺项继续；
+69段配音不等于新版complete film。精确save/CLOSED、两个enum修正post SHA及清理后的源可用性见新交接。

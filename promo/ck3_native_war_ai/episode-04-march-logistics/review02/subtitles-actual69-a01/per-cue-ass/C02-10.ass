@@ -1,0 +1,31 @@
+[Script Info]
+Title: 休整地点和补兵分离
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.03,English,en-0,0,0,0,,{\q2}When choosing a rest location, first read its
+Dialogue: 2,0:00:00.10,0:00:03.37,Chinese,zh-0,0,0,0,,{\q2}选休整地点时，先看这里的补给月
+Dialogue: 1,0:00:03.03,0:00:06.43,English,en-1,0,0,0,,{\q2}monthly supply change, then wait for an actual stock
+Dialogue: 2,0:00:03.37,0:00:06.63,Chinese,zh-1,0,0,0,,{\q2}变化，再等一次真正的库存更新。
+Dialogue: 1,0:00:06.43,0:00:06.88,English,en-2,0,0,0,,{\q2}update.
+Dialogue: 2,0:00:06.63,0:00:10.89,Chinese,zh-2,0,0,0,,{\q2}月变化为正，是当前条件下的读数；库存
+Dialogue: 1,0:00:06.88,0:00:11.14,English,en-3,0,0,0,,{\q2}A positive monthly value is a reading under current conditions; an
+Dialogue: 2,0:00:10.89,0:00:15.14,Chinese,zh-3,0,0,0,,{\q2}实际增加，才说明这次确实恢复了物资。
+Dialogue: 1,0:00:11.14,0:00:15.39,English,en-4,0,0,0,,{\q2}actual increase in stock proves that supplies recovered this time.
+Dialogue: 2,0:00:15.14,0:00:19.20,Chinese,zh-4,0,0,0,,{\q2}兵员补充还要另看：补给回满、补员准备
+Dialogue: 1,0:00:15.39,0:00:17.76,English,en-5,0,0,0,,{\q2}Replenishment needs a separate check.
+Dialogue: 1,0:00:17.76,0:00:20.45,English,en-6,0,0,0,,{\q2}Full supply or a refreshed prepared value
+Dialogue: 2,0:00:19.20,0:00:23.26,Chinese,zh-5,0,0,0,,{\q2}值刷新，都不能直接当作多了几名士兵。
+Dialogue: 1,0:00:20.45,0:00:22.94,English,en-7,0,0,0,,{\q2}does not itself mean any soldiers were
+Dialogue: 1,0:00:22.94,0:00:23.33,English,en-8,0,0,0,,{\q2}added.

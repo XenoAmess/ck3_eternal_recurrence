@@ -1,0 +1,28 @@
+[Script Info]
+Title: 原队列与全部军队
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.57,English,en-0,0,0,0,,{\q2}The troop-strength table has two columns: one tracks only the regiments present
+Dialogue: 2,0:00:00.10,0:00:04.71,Chinese,zh-0,0,0,0,,{\q2}兵力表分成两列：一列只追踪起点那批兵团，另
+Dialogue: 1,0:00:04.57,0:00:08.88,English,en-1,0,0,0,,{\q2}at the start; the other retains all relevant armies actually held under that
+Dialogue: 2,0:00:04.71,0:00:09.11,Chinese,zh-1,0,0,0,,{\q2}一列保留这个方案实际拥有的全部相关军队。
+Dialogue: 1,0:00:08.88,0:00:09.16,English,en-2,0,0,0,,{\q2}plan.
+Dialogue: 2,0:00:09.11,0:00:13.67,Chinese,zh-2,0,0,0,,{\q2}新增一人，不能自动抹平原兵团的缺员；源军
+Dialogue: 1,0:00:09.16,0:00:14.31,English,en-3,0,0,0,,{\q2}One additional person cannot automatically cancel out a shortfall in the original regiments.
+Dialogue: 2,0:00:13.67,0:00:18.01,Chinese,zh-3,0,0,0,,{\q2}在合并后消失，也不能当作整支军队死亡。
+Dialogue: 1,0:00:14.31,0:00:18.78,English,en-4,0,0,0,,{\q2}Nor does a source army disappearing after a merge mean the entire army has died.
+Dialogue: 2,0:00:18.01,0:00:21.22,Chinese,zh-4,0,0,0,,{\q2}人数、身份和组织变化一起看
+Dialogue: 1,0:00:18.78,0:00:24.26,English,en-5,0,0,0,,{\q2}Counts, identities, and organizational changes must be read together to see where the troops went.
+Dialogue: 2,0:00:21.22,0:00:24.18,Chinese,zh-5,0,0,0,,{\q2}，才知道兵究竟去了哪里。

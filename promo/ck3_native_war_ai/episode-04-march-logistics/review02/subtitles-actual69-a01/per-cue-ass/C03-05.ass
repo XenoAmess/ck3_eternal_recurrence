@@ -1,0 +1,31 @@
+[Script Info]
+Title: 县残差在首选前冻结
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.23,English,en-0,0,0,0,,{\q2}On this county-entry path, the game first calculates the army-wide budget
+Dialogue: 2,0:00:00.10,0:00:04.76,Chinese,zh-0,0,0,0,,{\q2}进入县域的这条路径，先算整军预算，再看首选
+Dialogue: 2,0:00:04.76,0:00:09.64,Chinese,zh-1,0,0,0,,{\q2}兵团一共能承担多少，提前把两者的差额存下来。
+Dialogue: 1,0:00:05.23,0:00:09.79,English,en-1,0,0,0,,{\q2}and the total the preferred regiments can absorb, then stores the
+Dialogue: 2,0:00:09.64,0:00:12.64,Chinese,zh-2,0,0,0,,{\q2}首选人数已经覆盖预算，后
+Dialogue: 1,0:00:09.79,0:00:10.56,English,en-2,0,0,0,,{\q2}difference.
+Dialogue: 1,0:00:10.56,0:00:13.12,English,en-3,0,0,0,,{\q2}If those regiments already cover the
+Dialogue: 2,0:00:12.64,0:00:15.39,Chinese,zh-3,0,0,0,,{\q2}面就不启动县剩余分配。
+Dialogue: 1,0:00:13.12,0:00:16.03,English,en-4,0,0,0,,{\q2}budget, county remainder allocation never
+Dialogue: 2,0:00:15.39,0:00:19.96,Chinese,zh-4,0,0,0,,{\q2}只有预先存下的差额大于零，才进入第二部分。
+Dialogue: 1,0:00:16.03,0:00:16.52,English,en-5,0,0,0,,{\q2}starts.
+Dialogue: 1,0:00:16.52,0:00:21.03,English,en-6,0,0,0,,{\q2}The second part runs only when the stored difference is positive.
+Dialogue: 2,0:00:19.96,0:00:22.99,Chinese,zh-5,0,0,0,,{\q2}所以找县损耗时，不能总等着
+Dialogue: 1,0:00:21.03,0:00:26.09,English,en-7,0,0,0,,{\q2}So county attrition does not always produce a remainder stage to inspect.
+Dialogue: 2,0:00:22.99,0:00:26.01,Chinese,zh-6,0,0,0,,{\q2}一个未必会出现的剩余阶段。

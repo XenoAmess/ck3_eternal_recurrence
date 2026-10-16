@@ -1,0 +1,29 @@
+[Script Info]
+Title: B分兵休整会合
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.73,English,en-0,0,0,0,,{\q2}Plan B first splits the army, rests at two verified locations, then regroups.
+Dialogue: 2,0:00:00.10,0:00:03.02,Chinese,zh-0,0,0,0,,{\q2}方案B先分兵，到两处验证
+Dialogue: 2,0:00:03.02,0:00:05.70,Chinese,zh-1,0,0,0,,{\q2}过的驻点休整，再会合。
+Dialogue: 1,0:00:04.73,0:00:09.12,English,en-1,0,0,0,,{\q2}Each army's rest period starts on the day it actually becomes stationary.
+Dialogue: 2,0:00:05.70,0:00:10.86,Chinese,zh-2,0,0,0,,{\q2}每队从真正停驻那天开始计时；达到预定库存和缺员
+Dialogue: 1,0:00:09.12,0:00:13.00,English,en-2,0,0,0,,{\q2}Once the preset stock and troop-shortfall conditions are met, or
+Dialogue: 2,0:00:10.86,0:00:15.80,Chinese,zh-3,0,0,0,,{\q2}条件，或者用完预定驻留时间，就按原计划离开。
+Dialogue: 1,0:00:13.00,0:00:17.00,English,en-3,0,0,0,,{\q2}the preset stay expires, it leaves according to the original plan.
+Dialogue: 2,0:00:15.80,0:00:19.37,Chinese,zh-4,0,0,0,,{\q2}恢复得不够，也是这次方案的结果，
+Dialogue: 1,0:00:17.00,0:00:19.83,English,en-4,0,0,0,,{\q2}Insufficient recovery is also a result of this
+Dialogue: 2,0:00:19.37,0:00:22.71,Chinese,zh-5,0,0,0,,{\q2}不能为了挑到好数字而重新开始。
+Dialogue: 1,0:00:19.83,0:00:22.28,English,en-5,0,0,0,,{\q2}plan; we cannot restart to obtain better
+Dialogue: 1,0:00:22.28,0:00:22.78,English,en-6,0,0,0,,{\q2}numbers.

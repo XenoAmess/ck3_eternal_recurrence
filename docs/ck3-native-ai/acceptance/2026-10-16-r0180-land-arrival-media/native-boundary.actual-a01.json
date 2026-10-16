@@ -1,0 +1,177 @@
+{
+  "schema": "xar.e04.R0180-land-arrival-native-boundary.actual.v1",
+  "at_utc": "2026-10-16T01:09:33.173001+00:00",
+  "source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0180",
+  "actual_runtime": {
+    "pid": 16736,
+    "create_filetime_100ns": 134365825176284454,
+    "generation": 1,
+    "actor": 31254,
+    "army_id": 18,
+    "episode": "native-31254-75ef9942b4cf"
+  },
+  "raw_identity_reused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "recorder_started_at_utc": "2026-10-16T01:01:57.648835+00:00",
+  "exact_day_receipts": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-03.complete.actual.json",
+        "bytes": 1274,
+        "sha256": "79e60e72b5c6ae1bc70c2acc5db64a10ccea686bec5d114276157f2a0387f67f"
+      },
+      "at_utc": "2026-10-16T01:02:07.995969+00:00",
+      "receipt_minus_recorder_started_seconds": 10.347134,
+      "day": 3,
+      "date_raw": 53147544,
+      "actual_army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": 2645,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2645
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "clock": {
+        "state": "triggered",
+        "generation": 3,
+        "starting_date_raw": 53147520,
+        "actual_ending_date_raw": 53147544,
+        "declared_deadline_date_raw": 53147544,
+        "completed_daily_ticks": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "one_day_sampling_claim": false,
+        "actual_arrival_requires_independent_card_frames": true
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-04.complete.actual.json",
+        "bytes": 1274,
+        "sha256": "a8eb6dab850b9bb2ac73fd0e4defd6beabe98a0f4ddde2b7e65aeb62be5d6f27"
+      },
+      "at_utc": "2026-10-16T01:02:12.453096+00:00",
+      "receipt_minus_recorder_started_seconds": 14.804261,
+      "day": 4,
+      "date_raw": 53147568,
+      "actual_army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": 2645,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2645
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "clock": {
+        "state": "triggered",
+        "generation": 4,
+        "starting_date_raw": 53147544,
+        "actual_ending_date_raw": 53147568,
+        "declared_deadline_date_raw": 53147568,
+        "completed_daily_ticks": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "one_day_sampling_claim": false,
+        "actual_arrival_requires_independent_card_frames": true
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-05.complete.actual.json",
+        "bytes": 1317,
+        "sha256": "b53a12ca3eee87e019ddfacc6026b10592c1292c8472ef04b590a4bea26c8541"
+      },
+      "at_utc": "2026-10-16T01:02:16.339641+00:00",
+      "receipt_minus_recorder_started_seconds": 18.690806,
+      "day": 5,
+      "date_raw": 53147592,
+      "actual_army": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2645,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "clock": {
+        "state": "triggered",
+        "generation": 5,
+        "starting_date_raw": 53147568,
+        "actual_ending_date_raw": 53147592,
+        "declared_deadline_date_raw": 53147592,
+        "completed_daily_ticks": 1,
+        "trigger_reasons": [
+          "date_deadline",
+          "route_target_changed",
+          "army_position_changed"
+        ],
+        "one_day_sampling_claim": false,
+        "actual_arrival_requires_independent_card_frames": true
+      }
+    }
+  ],
+  "actual_R04_card": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\R04-ARRIVAL.actual-a01.json",
+    "bytes": 10917,
+    "sha256": "bc2bfe8dc719566f966a5a00f00dcbf283adf137d5254fa3c53638906f72c242"
+  },
+  "R04_status": "HOLD_NO_R04_CARD_POSITIVE",
+  "R04_positive_accepted": false,
+  "native_condition_passes": false,
+  "county_positive_physical_event_count": 0,
+  "complete_window_available": false,
+  "R04_no_matching_event_is_not_observed_zero_total": true,
+  "normal_preparation_only": true,
+  "Root_reported_arrival_after_recording_ACK_seconds": 15.74,
+  "Root_reported_ACK_delta_is_not_encoded_event_PTS": true,
+  "wall_to_encoded_PTS_calibrated": false,
+  "exact_first_arrival_pixel_PTS": null,
+  "human_approval": false
+}

@@ -1,0 +1,30 @@
+[Script Info]
+Title: 首选实际未扣足不改残差
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:05.11,English,en-0,0,0,0,,{\q2}That difference is fixed before deductions from the preferred regiments.
+Dialogue: 2,0:00:00.10,0:00:04.30,Chinese,zh-0,0,0,0,,{\q2}这个差额在首选扣兵之前就已经固定。
+Dialogue: 2,0:00:04.30,0:00:08.93,Chinese,zh-1,0,0,0,,{\q2}后面逐团消耗的是分配出去的整数请求；即使某
+Dialogue: 1,0:00:05.11,0:00:10.32,English,en-1,0,0,0,,{\q2}Later allocation consumes the integer amounts requested from each regiment.
+Dialogue: 2,0:00:08.93,0:00:13.56,Chinese,zh-2,0,0,0,,{\q2}次写入被跳过，或者实际变化与请求不同，也不
+Dialogue: 1,0:00:10.32,0:00:15.53,English,en-2,0,0,0,,{\q2}If a write is skipped, or the actual change differs from the request, that
+Dialogue: 2,0:00:13.56,0:00:17.97,Chinese,zh-3,0,0,0,,{\q2}会把这部分自动退回，再重算县的剩余预算。
+Dialogue: 1,0:00:15.53,0:00:20.60,English,en-3,0,0,0,,{\q2}amount is not automatically refunded to recalculate the county remainder
+Dialogue: 2,0:00:17.97,0:00:22.61,Chinese,zh-4,0,0,0,,{\q2}读结果时，把预算、请求和实际物理减少分别
+Dialogue: 1,0:00:20.60,0:00:21.09,English,en-4,0,0,0,,{\q2}budget.
+Dialogue: 1,0:00:21.09,0:00:23.73,English,en-5,0,0,0,,{\q2}Keep the budget, requests, and actual
+Dialogue: 2,0:00:22.61,0:00:27.01,Chinese,zh-5,0,0,0,,{\q2}保留，才能解释为什么几个数不一定相等。
+Dialogue: 1,0:00:23.73,0:00:26.64,English,en-6,0,0,0,,{\q2}physical decrease separate: they need not
+Dialogue: 1,0:00:26.64,0:00:27.07,English,en-7,0,0,0,,{\q2}match.

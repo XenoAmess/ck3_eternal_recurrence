@@ -1,0 +1,29 @@
+[Script Info]
+Title: 分军库存与容量
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.41,English,en-0,0,0,0,,{\q2}After splitting, list each army's stock and capacity separately.
+Dialogue: 2,0:00:00.10,0:00:04.67,Chinese,zh-0,0,0,0,,{\q2}分兵以后，把每队的库存和容量分别列出来。
+Dialogue: 1,0:00:04.41,0:00:07.24,English,en-1,0,0,0,,{\q2}Stock is what each army actually carries;
+Dialogue: 2,0:00:04.67,0:00:07.84,Chinese,zh-1,0,0,0,,{\q2}库存是各队实际带着多少，容
+Dialogue: 1,0:00:07.24,0:00:10.00,English,en-2,0,0,0,,{\q2}capacity is what that army can currently
+Dialogue: 2,0:00:07.84,0:00:11.00,Chinese,zh-2,0,0,0,,{\q2}量是这支军队当前能带多少。
+Dialogue: 1,0:00:10.00,0:00:10.41,English,en-3,0,0,0,,{\q2}carry.
+Dialogue: 1,0:00:10.41,0:00:13.58,English,en-4,0,0,0,,{\q2}Keep each army's real values in the comparison.
+Dialogue: 2,0:00:11.00,0:00:16.04,Chinese,zh-3,0,0,0,,{\q2}比较时保留每支军队的真实值，不把两队库存相加，
+Dialogue: 1,0:00:13.58,0:00:17.08,English,en-5,0,0,0,,{\q2}Adding the two stocks or taking an average does not
+Dialogue: 2,0:00:16.04,0:00:20.86,Chinese,zh-4,0,0,0,,{\q2}或者求个平均，就写成一支并不存在的整军补给。
+Dialogue: 1,0:00:17.08,0:00:20.52,English,en-6,0,0,0,,{\q2}produce the supply of an intact army that does not
+Dialogue: 1,0:00:20.52,0:00:20.93,English,en-7,0,0,0,,{\q2}exist.

@@ -1,0 +1,66 @@
+{
+  "schema": "xar.e04.R0180-root-media-delivery.actual.v1",
+  "at_utc": "2026-10-16T01:09:33.220520+00:00",
+  "state": "MACHINE_MEDIA_PASS_ACTUAL_ARRIVAL_SAMPLES_CANDIDATE_ONLY",
+  "raw_identity_reused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+    "bytes": 94042804,
+    "sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964"
+  },
+  "machine_report": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01\\report.json",
+    "bytes": 7768,
+    "sha256": "2f518a74a87f12810d1c2e9d37b71474941ca949991d5e43bb801b347066a6ee"
+  },
+  "native_boundary": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\native-boundary.actual-a01.json",
+    "bytes": 6254,
+    "sha256": "f9756ad7bd9a7fa4e80c63d04a5dcbf74dfd56ceeb31737e6e925d4d1aa0f933"
+  },
+  "visual_review_and_spans": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\visual-review-and-spans.actual-a01.json",
+    "bytes": 14756,
+    "sha256": "b3082e1238e28865f68581420255c2de7bd6ffe2bd6bfa03298e11b763ccb0df"
+  },
+  "intake_small_copy_plan": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\INTAKE-SMALL-COPY-PLAN.actual-a01.json",
+    "bytes": 7133,
+    "sha256": "d8e95dbfb0570209804c4ee457e8d33b87acf8d7375d39fc54fca0428139a4d7"
+  },
+  "latest_official_release_check": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\release-check-a01\\result.json",
+    "bytes": 843,
+    "sha256": "c8d56ebb6f5ee5c53dfb162f816f2f28e74b87fa3d38b56714ba101d2628a76b"
+  },
+  "media_summary": "45.000s /1350frames / native2560x1440@30 H264 yuv420p silent; 6 actual1600x900 JPEG samples from the only strict full decode",
+  "sample_seconds": [
+    0,
+    4,
+    8,
+    12,
+    18,
+    40
+  ],
+  "AI_samples_actually_viewed": 6,
+  "arrival_visual_bracket_seconds": "(12,18]",
+  "right_military_panel_composition_limit": true,
+  "R04_status": "HOLD_NO_R04_CARD_POSITIVE",
+  "dynamic_counter_auto_increment": 0,
+  "continuous_clean_review": false,
+  "human_1x_review": false,
+  "human_signoff": false,
+  "raw_SHA_reads": 0,
+  "raw_reencodes": 0,
+  "metadata_probe_count": 1,
+  "strict_full_decode_count": 1,
+  "extra_seek_count": 0,
+  "new_SDK_game_desktop_main_provider_OneDrive_actions": 0,
+  "budget_pool": "scene original other256MiB, Root allocation8MiB; global quota unchanged",
+  "all_derived_limit_bytes": 8388608,
+  "metadata_limit_bytes": 131072,
+  "actual_amounts_before_receipt": {
+    "all_derived_bytes": 893987,
+    "metadata_bytes": 99595
+  },
+  "fixed_deadline_utc": "2026-10-16T07:45:01.597000+00:00"
+}

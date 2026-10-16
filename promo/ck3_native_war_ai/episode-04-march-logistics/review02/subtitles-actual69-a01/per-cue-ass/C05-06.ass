@@ -1,0 +1,31 @@
+[Script Info]
+Title: 拆半搬整条兵团与库存字段
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.92,English,en-0,0,0,0,,{\q2}The balanced-split code first creates a new army, then transfers
+Dialogue: 2,0:00:00.10,0:00:04.35,Chinese,zh-0,0,0,0,,{\q2}平分的源码会先建新军队，再按不同类别
+Dialogue: 1,0:00:03.92,0:00:07.62,English,en-1,0,0,0,,{\q2}whole army-regiment records according to weights for different
+Dialogue: 2,0:00:04.35,0:00:08.37,Chinese,zh-1,0,0,0,,{\q2}的权重，把整条军队兵团记录搬过去。
+Dialogue: 1,0:00:07.62,0:00:08.28,English,en-2,0,0,0,,{\q2}categories.
+Dialogue: 1,0:00:08.28,0:00:12.37,English,en-3,0,0,0,,{\q2}This normal path does not cut every persistent troop slot in half, so
+Dialogue: 2,0:00:08.37,0:00:13.12,Chinese,zh-2,0,0,0,,{\q2}它没有在这条普通路径里，把每个持久兵槽直接
+Dialogue: 1,0:00:12.37,0:00:16.51,English,en-4,0,0,0,,{\q2}the two displayed troop counts are not guaranteed to be exactly equal.
+Dialogue: 2,0:00:13.12,0:00:17.87,Chinese,zh-3,0,0,0,,{\q2}切成两半，因此两边界面人数不保证严格各半。
+Dialogue: 1,0:00:16.51,0:00:20.40,English,en-5,0,0,0,,{\q2}Creating the new army also copies the original supply-stock field.
+Dialogue: 2,0:00:17.87,0:00:23.01,Chinese,zh-4,0,0,0,,{\q2}新军建立时还会复制原来的补给库存字段；是否碰到
+Dialogue: 1,0:00:20.40,0:00:24.10,English,en-6,0,0,0,,{\q2}Whether that stock hits the new capacity limit must be checked
+Dialogue: 2,0:00:23.01,0:00:27.92,Chinese,zh-5,0,0,0,,{\q2}新容量，要继续按独立的补给更新和实际后态看。
+Dialogue: 1,0:00:24.10,0:00:27.63,English,en-7,0,0,0,,{\q2}through the separate supply update and the actual resulting
+Dialogue: 1,0:00:27.63,0:00:27.98,English,en-8,0,0,0,,{\q2}state.

@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12004_county_entry_preview_condition.hpp"
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
 #include "xar_bridge/ck3_12004_current_first_route_target_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
@@ -1561,6 +1562,67 @@ game::ReadArmyStrengthsResult ReadArmyStrengths(
       AppendScope(scope, army.army_id, game::ArmyStrengthScopeRole::active_war_enemy, war.war_id);
   }
   return ReadArmyStrengthsForScope(bindings, scope, output);
+}
+
+
+game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
+    const ArmyBindings &bindings, const MilitaryWorldAccess &world,
+    const game::PreviewMoveArmyResult &preview) noexcept {
+  namespace county = ck3_12004::county_preview_detail;
+  game::ArmyCountyEntryPreviewConditionV1 context{};
+  context.subject_army_id = preview.army_id;
+  context.requested_target_province_id = preview.target_province_id;
+  context.source_province_id = preview.origin_province_id;
+  const auto unavailable = [&](const char *reason) {
+    context.unavailable_reason = reason;
+    return context;
+  };
+  if (preview.status != game::PreviewMoveArmyStatus::available)
+    return unavailable("route_preview_unavailable");
+  auto hop = preview.route_province_ids.begin();
+  if (hop != preview.route_province_ids.end() && *hop == preview.origin_province_id)
+    ++hop;
+  if (hop == preview.route_province_ids.end())
+    return unavailable("preview_has_no_remaining_first_edge");
+  context.target_province_id = *hop;
+  if (!bindings.enabled || !bindings.county_entry_inputs_enabled ||
+      bindings.county_entry_condition == nullptr ||
+      world.resolve_character == nullptr || world.resolve_province == nullptr)
+    return unavailable("native_county_preview_bindings_unavailable");
+  void *const unit = ResolveArmyUnit(bindings, preview.army_id);
+  const auto native_id = county::Read<std::int32_t>(unit, 0x178);
+  const auto actor_id = county::Read<std::int32_t>(unit, 0x174);
+  if (!native_id || !actor_id)
+    return unavailable("preview_county_unit_identity_unavailable");
+  void *const army = ResolveInternalArmy(bindings, *native_id);
+  void *const actor = world.resolve_character(world.context, *actor_id);
+  void *const source = world.resolve_province(world.context, preview.origin_province_id);
+  void *const target = world.resolve_province(world.context, *context.target_province_id);
+  if (!army || !actor || !source || !target)
+    return unavailable("preview_county_actor_army_or_province_unresolved");
+  auto before = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
+  if (!before.inputs_observation_ready) return before;
+  bool passes = false;
+  const bool returned = county::Invoke(bindings.county_entry_condition, actor, source,
+                               target, *before.mode, passes);
+  const auto after = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
+  before.native_condition_called = true;
+  if (!returned) {
+    before.unavailable_reason = "native_county_preview_predicate_read_failed";
+    return before;
+  }
+  // Compare the same sample shape, before adding the native call result.
+  auto comparable_before = before;
+  comparable_before.native_condition_called = false;
+  if (!after.inputs_observation_ready || comparable_before != after) {
+    before.unavailable_reason = "preview_county_identity_or_inputs_changed";
+    return before;
+  }
+  before.available = true;
+  before.identity_before_after_match = true;
+  before.native_condition_passes = passes;
+  before.unavailable_reason.clear();
+  return before;
 }
 
 game::ArmyProvinceSupplySnapshot ReadArmyProvinceSupplyForPreview(

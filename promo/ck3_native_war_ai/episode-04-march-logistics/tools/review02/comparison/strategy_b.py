@@ -91,7 +91,9 @@ def observe(ep, plan, evidence, runtime):
                     for r in group['records']]
             need(len(keys) == len(set(keys)) and all(r.get('status') == 'available'
                  for r in group['records']), 'DATA identities unavailable/duplicate')
-            need(all(all(c.integer(value) and value >= 0 for value in key) for key in keys),
+            need(all(c.integer(key[0]) and 0 <= key[0] < 2**31
+                 and c.integer(key[1]) and -(2**31) <= key[1] < 2**31
+                 and c.integer(key[2]) and 0 <= key[2] < 2**31 for key in keys),
                  'DATA identity fields must be complete native integers')
     return {'endpoint': metrics, 'snapshot': snapshot, 'rows': rows,
             'positions': positions, 'native': native, 'regiments': regs,

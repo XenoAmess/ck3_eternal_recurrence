@@ -1,0 +1,32 @@
+[Script Info]
+Title: 玩家行动收束与Halt真实范围
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.85,English,en-0,0,0,0,,{\q2}Before departure, read troop counts, stock, and route.
+Dialogue: 2,0:00:00.10,0:00:04.48,Chinese,zh-0,0,0,0,,{\q2}出发前读人数、库存和路线，途中追踪实
+Dialogue: 1,0:00:02.85,0:00:04.93,English,en-1,0,0,0,,{\q2}During the journey, track actual changes.
+Dialogue: 2,0:00:04.48,0:00:08.62,Chinese,zh-1,0,0,0,,{\q2}际变化，接战前确认真正到场的状态。
+Dialogue: 1,0:00:04.93,0:00:07.73,English,en-2,0,0,0,,{\q2}Before battle, confirm the army's actual arrival state.
+Dialogue: 1,0:00:07.73,0:00:11.60,English,en-3,0,0,0,,{\q2}For Robert's stop after embarkation, issued while movement was unlocked, we
+Dialogue: 2,0:00:08.62,0:00:13.36,Chinese,zh-2,0,0,0,,{\q2}罗贝尔这次登船后的未锁定停止移动，已经核到路
+Dialogue: 1,0:00:11.60,0:00:15.52,English,en-4,0,0,0,,{\q2}verified that the route cleared and that the army remained in place the next
+Dialogue: 2,0:00:13.36,0:00:18.09,Chinese,zh-3,0,0,0,,{\q2}线清空，次日仍停在原地；这是这次操作的结果。
+Dialogue: 1,0:00:15.52,0:00:15.72,English,en-5,0,0,0,,{\q2}day.
+Dialogue: 1,0:00:15.72,0:00:18.01,English,en-6,0,0,0,,{\q2}That is the result of this particular action.
+Dialogue: 1,0:00:18.01,0:00:22.69,English,en-7,0,0,0,,{\q2}Link each action to its own resulting state, then choose the next step using the conditions
+Dialogue: 2,0:00:18.09,0:00:22.78,Chinese,zh-4,0,0,0,,{\q2}把每个动作接到自己的后态，再按这次可见条件选
+Dialogue: 1,0:00:22.69,0:00:27.07,English,en-8,0,0,0,,{\q2}visible in this run, so the march plan keeps pace with the road the army has actually
+Dialogue: 2,0:00:22.78,0:00:27.47,Chinese,zh-5,0,0,0,,{\q2}择下一步，行军计划才跟得上军队真正走过的路。
+Dialogue: 1,0:00:27.07,0:00:27.53,English,en-9,0,0,0,,{\q2}traveled.

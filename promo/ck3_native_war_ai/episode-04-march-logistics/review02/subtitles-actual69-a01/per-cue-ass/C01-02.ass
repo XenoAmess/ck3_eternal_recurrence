@@ -1,0 +1,29 @@
+[Script Info]
+Title: 版本与证据层
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.59,English,en-0,0,0,0,,{\q2}This time, we follow Robert in version 1.20.0.4.
+Dialogue: 2,0:00:00.10,0:00:04.32,Chinese,zh-0,0,0,0,,{\q2}这一轮跟着一点二零点零点四里的罗贝尔。
+Dialogue: 1,0:00:03.59,0:00:06.49,English,en-1,0,0,0,,{\q2}First, we read the army panel's current
+Dialogue: 2,0:00:04.32,0:00:07.35,Chinese,zh-1,0,0,0,,{\q2}先把军队面板的当前读数读清
+Dialogue: 1,0:00:06.49,0:00:09.47,English,en-2,0,0,0,,{\q2}values, then track changes during a real
+Dialogue: 2,0:00:07.35,0:00:10.14,Chinese,zh-2,0,0,0,,{\q2}，再沿着真实行军看变化。
+Dialogue: 1,0:00:09.47,0:00:09.92,English,en-3,0,0,0,,{\q2}march.
+Dialogue: 1,0:00:09.92,0:00:13.33,English,en-4,0,0,0,,{\q2}The mechanics explain how the game calculates;
+Dialogue: 2,0:00:10.14,0:00:15.75,Chinese,zh-3,0,0,0,,{\q2}规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次
+Dialogue: 1,0:00:13.33,0:00:16.89,English,en-5,0,0,0,,{\q2}live records show what actually happened in this
+Dialogue: 2,0:00:15.75,0:00:21.13,Chinese,zh-4,0,0,0,,{\q2}实际发生了什么；两层接起来，才能解释抵达时的状态。
+Dialogue: 1,0:00:16.89,0:00:17.19,English,en-6,0,0,0,,{\q2}run.
+Dialogue: 1,0:00:17.19,0:00:21.19,English,en-7,0,0,0,,{\q2}Together, they explain the army's condition on arrival.

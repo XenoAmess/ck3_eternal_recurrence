@@ -14,11 +14,12 @@ import json
 from pathlib import Path
 import re
 import sys
+import subprocess
 import threading
 import uuid
 
 from capture_runtime_evidence import (ROBERT_INTENT, army_history_evidence,
-    validate_army_history_limit, validate_prepared_robert_intent, validate_runtime_actor_context)
+    admit_army_history_budget, validate_army_history_limit, validate_prepared_robert_intent, validate_runtime_actor_context)
 
 ROOT = Path(__file__).resolve().parents[4]
 sys.path[:0] = [str(ROOT), str(ROOT / "ck3_autonomous_player/src"), str(ROOT / "tools"),
@@ -369,7 +370,10 @@ def run_owned(args: argparse.Namespace) -> int:
     from screen_bus_lease import ScreenLeaseKeeper
     from mcp import Client
     body = load_prepared(args.prepared)
-    history_limit = validate_army_history_limit(args.army_history_sidecar_limit_bytes)
+    history_limit, history_budget = admit_army_history_budget(args, body,
+        source_head=(subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
+                     if getattr(args, "runtime_capacity_admission", None) is not None else None),
+        machine_id=current_machine_id())
     runtime_actor_receipt_reservation = reserve_runtime_actor_identity_receipt(
         args.runtime_actor_identity_receipt)
     offline_receipt(args.steam_offline_receipt)
@@ -378,6 +382,7 @@ def run_owned(args: argparse.Namespace) -> int:
     history_policy_path = args.run_dir / "army-history-sidecar-policy.json"
     write_new(history_policy_path, {"machine_id": current_machine_id(), "at_utc": now(),
         "limit_bytes": history_limit, "ordinary_default_bytes": 0,
+        **({"runtime_capacity_binding": history_budget.binding} if history_budget is not None else {}),
         "storage_kind": "complete Driver Army result, not original pipe bytes",
         "existing_files_charged": True, "retention_policy_changed": False,
         "runtime_actor_identity_receipt_reservation": runtime_actor_receipt_reservation})
@@ -402,7 +407,8 @@ def run_owned(args: argparse.Namespace) -> int:
     async def sdk_loop() -> None:
         driver = NativeHeadlessGameplayDriver(body["pipe_name"], state_dir=body["state_dir"],
             save_dir=Path(body["profile_dir"]) / "save games", succession_lifecycle_binding=body["succession_lifecycle"],
-            army_query_history_sidecar_limit_bytes=history_limit)
+            army_query_history_sidecar_limit_bytes=history_limit,
+            army_query_history_sidecar_guard=history_budget.check_fresh if history_budget is not None else None)
         driver.allow_private_war_cash_query = args.private_war_cash_queries is True
         with closing(driver):
             async with Client(create_server(driver, profile_dir=body["profile_dir"])) as client:
@@ -546,7 +552,9 @@ def parser() -> argparse.ArgumentParser:
     owned.add_argument("--runtime-actor-identity-receipt", type=Path,
                        help="Reserved absolute path for Root's new runtime proof; pin/validate only at recording start")
     owned.add_argument("--army-history-sidecar-limit-bytes", type=int, default=0,
-                       help="Explicit finite complete-Driver-result budget, 0..536870912; ordinary default 0")
+                       help="Explicit finite complete-Driver-result budget; default0, above512MiB requires Root capacity admission")
+    owned.add_argument("--runtime-capacity-admission", nargs=2, metavar=("PATH", "SHA256"),
+                       help="Root exact fresh scene admission; required to extend Army sidecars beyond512MiB")
     owned.add_argument("--private-war-cash-queries", action="store_true", help="Register the existing native cash query tools; requires matching WAR_CASH macro in actual DLL")
     request = sub.add_parser("request", help="write one immutable root tool request; does not connect to CK3")
     request.add_argument("--run-dir", required=True, type=Path)

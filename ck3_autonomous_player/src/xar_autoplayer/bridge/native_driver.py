@@ -642,6 +642,9 @@ from .title_holder_contract import (
     query_title_holder_v1_step,
     title_holder_query_actor,
 )
+from .army_county_entry_preview_condition_contract import (
+    normalize_county_entry_condition_in_route_preview,
+)
 from .army_captured_target_land_supply_inputs_contract import (
     normalize_target_land_supply_in_route_preview,
 )
@@ -1865,6 +1868,7 @@ class NativeHeadlessGameplayDriver:
         life_advance_timeout_seconds: float = 30.0,
         state_dir: str | os.PathLike[str] | None = None,
         army_query_history_sidecar_limit_bytes: int = 0,
+        army_query_history_sidecar_guard: object | None = None,
         save_dir: str | os.PathLike[str] | None = None,
         checkpoint_timeout_seconds: float = 30.0,
         checkpoint_poll_interval_seconds: float = 0.1,
@@ -2058,6 +2062,9 @@ class NativeHeadlessGameplayDriver:
         if type(army_query_history_sidecar_limit_bytes) is not int or army_query_history_sidecar_limit_bytes < 0:
             raise ValueError("Army history sidecar limit must be a nonnegative integer")
         self.army_query_history_sidecar_limit_bytes = army_query_history_sidecar_limit_bytes
+        if army_query_history_sidecar_guard is not None and not callable(army_query_history_sidecar_guard):
+            raise ValueError("Army sidecar admission guard must be callable or None")
+        self._army_query_history_sidecar_guard = army_query_history_sidecar_guard
         self._army_query_history_store = None
         self.save_dir = Path(save_dir) if save_dir is not None else None
         self.checkpoint_timeout_seconds = _positive_seconds(
@@ -10620,6 +10627,7 @@ class NativeHeadlessGameplayDriver:
                         self._army_query_history_store = ArmyQueryHistoryStore(
                             self._native_driver_state_path().parent / "army-query-history-results",
                             self.army_query_history_sidecar_limit_bytes,
+                            admission_guard=self._army_query_history_sidecar_guard,
                         )
                     row["result"] = self._army_query_history_store.record(result)
                 else:
@@ -14653,6 +14661,12 @@ class NativeHeadlessGameplayDriver:
             except ValueError as error:
                 raise BridgeUnavailableError(
                     f"native target Province supply inputs are malformed: {error}"
+                ) from error
+            try:
+                route_preview = normalize_county_entry_condition_in_route_preview(route_preview)
+            except ValueError as error:
+                raise BridgeUnavailableError(
+                    f"native preview county-entry condition is malformed: {error}"
                 ) from error
             current = self.take_internal_semantic_snapshot()
             if not _same_paused_native_frame(starting, current):

@@ -1,0 +1,33 @@
+[Script Info]
+Title: 下一步条件读取实际首段
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.76,English,en-0,0,0,0,,{\q2}Location checks also have a defined scope.
+Dialogue: 2,0:00:00.10,0:00:02.30,Chinese,zh-0,0,0,0,,{\q2}地点条件也有范围。
+Dialogue: 2,0:00:02.30,0:00:07.16,Chinese,zh-1,0,0,0,,{\q2}判断下一步的补员位置条件时，要取军队实际储存路
+Dialogue: 1,0:00:02.76,0:00:06.72,English,en-1,0,0,0,,{\q2}The next-step replenishment location check uses the first stop
+Dialogue: 1,0:00:06.72,0:00:10.68,English,en-2,0,0,0,,{\q2}in the army's stored route, not its distant final destination.
+Dialogue: 2,0:00:07.16,0:00:11.80,Chinese,zh-2,0,0,0,,{\q2}线里的第一站，而不是地图上更远的最终目的地。
+Dialogue: 1,0:00:10.68,0:00:15.24,English,en-3,0,0,0,,{\q2}The game checks that province and the native condition between the army
+Dialogue: 2,0:00:11.80,0:00:16.54,Chinese,zh-3,0,0,0,,{\q2}游戏会核对这一步的省份，以及军队所有者到当地
+Dialogue: 1,0:00:15.24,0:00:19.80,English,en-4,0,0,0,,{\q2}owner and the local holder; this is more specific than general military
+Dialogue: 2,0:00:16.54,0:00:21.28,Chinese,zh-4,0,0,0,,{\q2}持有者的原生条件；不能把它简写成一般通行权。
+Dialogue: 1,0:00:19.80,0:00:20.25,English,en-5,0,0,0,,{\q2}access.
+Dialogue: 1,0:00:20.25,0:00:23.42,English,en-6,0,0,0,,{\q2}Without a complete route, keep the result unknown.
+Dialogue: 2,0:00:21.28,0:00:24.46,Chinese,zh-5,0,0,0,,{\q2}没有完整路线时，保留未知。
+Dialogue: 1,0:00:23.42,0:00:28.68,English,en-7,0,0,0,,{\q2}In the conditional projection, a passing check substitutes only the location input.
+Dialogue: 2,0:00:24.46,0:00:28.76,Chinese,zh-6,0,0,0,,{\q2}即使这一步通过，也只是替换了位置这一项
+Dialogue: 1,0:00:28.68,0:00:32.93,English,en-8,0,0,0,,{\q2}Preparation ratios and other conditions still need separate checks.
+Dialogue: 2,0:00:28.76,0:00:32.84,Chinese,zh-7,0,0,0,,{\q2}，后面的准备比例和其他条件还要另看。

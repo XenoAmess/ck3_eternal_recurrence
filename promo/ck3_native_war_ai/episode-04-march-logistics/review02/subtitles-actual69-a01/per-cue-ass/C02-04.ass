@@ -1,0 +1,34 @@
+[Script Info]
+Title: 当前月变化与实际库存
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.68,English,en-0,0,0,0,,{\q2}The sign of the monthly supply change
+Dialogue: 2,0:00:00.10,0:00:05.42,Chinese,zh-0,0,0,0,,{\q2}补给月变化的正负号，描述当前条件下的变化方向。
+Dialogue: 1,0:00:02.68,0:00:04.99,English,en-1,0,0,0,,{\q2}shows its direction under current
+Dialogue: 1,0:00:04.99,0:00:05.76,English,en-2,0,0,0,,{\q2}conditions.
+Dialogue: 2,0:00:05.42,0:00:08.65,Chinese,zh-1,0,0,0,,{\q2}军队换地点、用量或统帅条件
+Dialogue: 1,0:00:05.76,0:00:09.78,English,en-3,0,0,0,,{\q2}It can change with location, usage or commander conditions.
+Dialogue: 2,0:00:08.65,0:00:11.63,Chinese,zh-2,0,0,0,,{\q2}变化，这个数也可能变化。
+Dialogue: 1,0:00:09.78,0:00:13.59,English,en-4,0,0,0,,{\q2}When an update is allowed, the game adds the applicable
+Dialogue: 2,0:00:11.63,0:00:16.40,Chinese,zh-3,0,0,0,,{\q2}实际允许更新时，游戏把当时的变化量加到库存，
+Dialogue: 1,0:00:13.59,0:00:17.47,English,en-5,0,0,0,,{\q2}change to stock, then clamps it between zero and current
+Dialogue: 2,0:00:16.40,0:00:21.17,Chinese,zh-4,0,0,0,,{\q2}再按零和当前容量截断；不是我们看一眼月变化，
+Dialogue: 1,0:00:17.47,0:00:18.10,English,en-6,0,0,0,,{\q2}capacity.
+Dialogue: 1,0:00:18.10,0:00:21.64,English,en-7,0,0,0,,{\q2}Reading the monthly figure does not itself apply an
+Dialogue: 2,0:00:21.17,0:00:25.50,Chinese,zh-5,0,0,0,,{\q2}就已经加了一次，更不是每天自动除以三十。
+Dialogue: 1,0:00:21.64,0:00:25.31,English,en-8,0,0,0,,{\q2}update, and it is not automatically divided by thirty
+Dialogue: 1,0:00:25.31,0:00:25.94,English,en-9,0,0,0,,{\q2}each day.
+Dialogue: 2,0:00:25.50,0:00:29.63,Chinese,zh-6,0,0,0,,{\q2}最后增加多少，仍要重新读实际库存。
+Dialogue: 1,0:00:25.94,0:00:29.69,English,en-10,0,0,0,,{\q2}Read the actual stock again to see how much was gained.

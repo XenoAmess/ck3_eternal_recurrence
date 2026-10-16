@@ -117,6 +117,35 @@ def validate_army_history_limit(limit: int) -> int:
             "Army full-result sidecar budget must be an explicit integer from 0 to 512MiB")
     return limit
 
+def admit_army_history_budget(args, prepared, *, source_head, machine_id, budget_factory=None):
+    """Only an explicit Root receipt can extend the existing sidecar budget."""
+    limit = args.army_history_sidecar_limit_bytes
+    admission = getattr(args, "runtime_capacity_admission", None)
+    if admission is None and type(limit) is int and 0 <= limit <= MAX_ARMY_HISTORY_SIDECAR_BYTES:
+        return validate_army_history_limit(limit), None
+    require(type(limit) is int and 0 <= limit < 2**63 and admission is not None,
+            "Extended Army sidecar budget requires exact Root capacity PATH SHA256")
+    require(prepared.get("machine_id") == machine_id
+            and (prepared.get("target_build") or {}).get("version") == "1.20.0.4",
+            "Extended Army sidecars require this machine's exact .4 prepared context")
+    require(isinstance(admission, (list, tuple)) and len(admission) == 2,
+            "Root capacity pin requires PATH SHA256")
+    path = Path(admission[0]).resolve()
+    require(path.suffix.lower() == ".json" and 0 < path.stat().st_size <= 1024*1024,
+            "Root capacity must be bounded JSON")
+    raw = path.read_bytes()
+    require(hashlib.sha256(raw).hexdigest() == admission[1].lower(), "Root capacity exact SHA differs")
+    capacity = json.loads(raw)
+    if budget_factory is None:
+        from review02.comparison.r10_compare import runtime_total_budget
+        budget_factory = runtime_total_budget
+    budget = budget_factory({"max_runtime_total_bytes": limit,
+            "runtime_capacity_admission": admission}, scene_root=Path(prepared["assets_root"]),
+        source_head=source_head, machine_id=machine_id,
+        deadline_utc=capacity["quota_review_at_utc"])
+    return limit, budget
+
+
 def army_history_evidence(driver, request: dict, machine_id: str, previous_history_index: int) -> dict | None:
     tool, arguments = request.get("tool"), request.get("arguments") or {}
     if not (tool == "ck3_query_army_strengths" or

@@ -1,0 +1,33 @@
+[Script Info]
+Title: 整条路线与首段时量
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.64,English,en-0,0,0,0,,{\q2}The army window's full-route arrival estimate and
+Dialogue: 2,0:00:00.10,0:00:03.87,Chinese,zh-0,0,0,0,,{\q2}军队窗口的整条抵达估计，与当前第一
+Dialogue: 1,0:00:03.64,0:00:06.96,English,en-1,0,0,0,,{\q2}the time left on the first leg cover different
+Dialogue: 2,0:00:03.87,0:00:07.42,Chinese,zh-1,0,0,0,,{\q2}段还要走多久，描述的是不同范围。
+Dialogue: 1,0:00:06.96,0:00:07.46,English,en-2,0,0,0,,{\q2}scopes.
+Dialogue: 2,0:00:07.42,0:00:11.54,Chinese,zh-2,0,0,0,,{\q2}陆地移动速度、海上移动速度，也各有自己
+Dialogue: 1,0:00:07.46,0:00:11.53,English,en-3,0,0,0,,{\q2}Land and sea movement speeds have their own readings too;
+Dialogue: 1,0:00:11.53,0:00:15.74,English,en-4,0,0,0,,{\q2}neither is directly the remaining days for the whole route.
+Dialogue: 2,0:00:11.54,0:00:15.66,Chinese,zh-3,0,0,0,,{\q2}的读数，不能直接当作整条路线剩余天数。
+Dialogue: 2,0:00:15.66,0:00:18.81,Chinese,zh-4,0,0,0,,{\q2}并排比较时，先标清是速度、
+Dialogue: 1,0:00:15.74,0:00:20.70,English,en-5,0,0,0,,{\q2}Label comparisons as speed, first-leg duration, or final arrival date.
+Dialogue: 2,0:00:18.81,0:00:21.71,Chinese,zh-5,0,0,0,,{\q2}首段时量，还是终点日期。
+Dialogue: 1,0:00:20.70,0:00:24.51,English,en-6,0,0,0,,{\q2}Without complete readings from the same paused frame,
+Dialogue: 2,0:00:21.71,0:00:25.63,Chinese,zh-6,0,0,0,,{\q2}没有取得同一暂停点的完整读数，就不拿
+Dialogue: 1,0:00:24.51,0:00:28.97,English,en-7,0,0,0,,{\q2}subtracting old dates would invent a precise-looking later-leg
+Dialogue: 2,0:00:25.63,0:00:29.55,Chinese,zh-7,0,0,0,,{\q2}旧日期相减，补出一段看似精确的后程。
+Dialogue: 1,0:00:28.97,0:00:29.62,English,en-8,0,0,0,,{\q2}duration.

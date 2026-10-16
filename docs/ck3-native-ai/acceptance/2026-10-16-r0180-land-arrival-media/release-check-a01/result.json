@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/xar_promo_toolchain/releases/latest",
+    "--jq",
+    "{tag_name,published_at,draft,prerelease,html_url,assets:[.assets[]|{name,size,digest,browser_download_url}]}"
+  ],
+  "shell": false,
+  "started_at_utc": "2026-10-16T01:05:57.548344+00:00",
+  "completed_at_utc": "2026-10-16T01:05:58.989854+00:00",
+  "returncode": 0,
+  "query_read_only": true,
+  "installed_xar_promo_toolchain_version": "0.2.1",
+  "Pillow_version": "12.3.0",
+  "actual_python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "raw_opened": false,
+  "production_run_created": false,
+  "upgraded": false,
+  "actual_latest_official_tag": "v0.2.1",
+  "installed_matches_latest": true
+}

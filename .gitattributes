@@ -233,3 +233,20 @@ docs/ck3-native-ai/acceptance/2026-10-16-episode04-r0177-a07-current-literals/PO
 docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/r0177-coastal-small-originals.zip -text whitespace=cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-16-r0177-coastal-normalprep/SUMMARY.actual-a01.json -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0177-coastal-code-index.actual-a01.json -text whitespace=cr-at-eol
+
+# Preserve exact pinned episode04 intake source/evidence bytes.
+docs/ck3-native-ai/acceptance/2026-10-16-persistent-cost262be10/MANIFEST.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-persistent-cost262be10/REPLAY.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-persistent-cost262be10/SOURCE-CONTRACT.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-county-entry-actor-wrapper-12004.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-county-entry-condition-12004.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-county-entry-relation-core-12004.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-refill-hardware-add-observer-12004.md -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-county-entry-actor-wrapper-12004/verify_source.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-county-entry-condition-12004/verify_source.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-county-entry-relation-core-12004/verify_source.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/war-cash-persistent-cost-vector-12004.md -text whitespace=cr-at-eol
+
+# Preserve exact pinned episode04 intake source/evidence bytes.
+docs/ck3-native-ai/acceptance/2026-10-16-r0180-land-arrival-media/CLOSED.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-16-r0180-land-arrival-media/recording-closure.actual-a01.json -text whitespace=cr-at-eol

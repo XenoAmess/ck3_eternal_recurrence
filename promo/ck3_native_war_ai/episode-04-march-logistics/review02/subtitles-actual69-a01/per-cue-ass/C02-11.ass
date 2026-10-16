@@ -1,0 +1,33 @@
+[Script Info]
+Title: 合军后重读库存容量与身份
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:02.95,English,en-0,0,0,0,,{\q2}Splitting and merging handle supply differently.
+Dialogue: 2,0:00:00.10,0:00:03.89,Chinese,zh-0,0,0,0,,{\q2}拆军和合军，对补给不是同一种处理。
+Dialogue: 1,0:00:02.95,0:00:08.05,English,en-1,0,0,0,,{\q2}A newly split army first copies the source's stock; it does not halve it by headcount.
+Dialogue: 2,0:00:03.89,0:00:08.39,Chinese,zh-1,0,0,0,,{\q2}拆出的新军先复制来源库存，不按人数除半
+Dialogue: 1,0:00:08.05,0:00:12.50,English,en-2,0,0,0,,{\q2}Each army's capacity still depends on its current commander and conditions.
+Dialogue: 2,0:00:08.39,0:00:12.66,Chinese,zh-2,0,0,0,,{\q2}；两军容量却要各自看当前统帅和条件。
+Dialogue: 1,0:00:12.50,0:00:17.96,English,en-3,0,0,0,,{\q2}Merging first saves both original stocks and their weights for their respective merge roles.
+Dialogue: 2,0:00:12.66,0:00:17.04,Chinese,zh-3,0,0,0,,{\q2}合军先保存两侧原库存和各自角色权重，
+Dialogue: 2,0:00:17.04,0:00:21.42,Chinese,zh-4,0,0,0,,{\q2}选将、调整编成以后，再读取合后容量。
+Dialogue: 1,0:00:17.96,0:00:23.07,English,en-4,0,0,0,,{\q2}After selecting the commander and adjusting composition, it reads the merged capacity.
+Dialogue: 2,0:00:21.42,0:00:25.18,Chinese,zh-5,0,0,0,,{\q2}这次小军实体兵员二百五十人守恒，
+Dialogue: 1,0:00:23.07,0:00:25.85,English,en-5,0,0,0,,{\q2}The 250 actual soldiers were conserved in this
+Dialogue: 2,0:00:25.18,0:00:28.71,Chinese,zh-6,0,0,0,,{\q2}不代表库存也按同一种方式守恒。
+Dialogue: 1,0:00:25.85,0:00:29.23,English,en-6,0,0,0,,{\q2}small-army case, but supply need not be conserved in the
+Dialogue: 2,0:00:28.71,0:00:33.16,Chinese,zh-7,0,0,0,,{\q2}合后库存、容量和统帅，都要分别读回。
+Dialogue: 1,0:00:29.23,0:00:29.77,English,en-7,0,0,0,,{\q2}same way.
+Dialogue: 1,0:00:29.77,0:00:33.22,English,en-8,0,0,0,,{\q2}Read back merged stock, capacity and commander separately.

@@ -1,0 +1,31 @@
+[Script Info]
+Title: 库存0→0也能成功更新
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.22,English,en-0,0,0,0,,{\q2}Supply can read zero both before and after
+Dialogue: 2,0:00:00.10,0:00:03.46,Chinese,zh-0,0,0,0,,{\q2}补给已经耗尽，面板前后都显示零
+Dialogue: 1,0:00:03.22,0:00:06.41,English,en-1,0,0,0,,{\q2}an update without the update being skipped.
+Dialogue: 2,0:00:03.46,0:00:06.61,Chinese,zh-1,0,0,0,,{\q2}，也不能据此说这次没有更新。
+Dialogue: 1,0:00:06.41,0:00:10.95,English,en-2,0,0,0,,{\q2}In the source's successful path, the change is still added, a
+Dialogue: 2,0:00:06.61,0:00:11.24,Chinese,zh-2,0,0,0,,{\q2}源码里的成功路径仍会把本次变化加进去，负
+Dialogue: 1,0:00:10.95,0:00:15.71,English,en-3,0,0,0,,{\q2}negative result is clamped to zero, and supply-loss calculations
+Dialogue: 2,0:00:11.24,0:00:15.64,Chinese,zh-3,0,0,0,,{\q2}结果再压回零，并继续往下计算供给损失。
+Dialogue: 2,0:00:15.64,0:00:20.78,Chinese,zh-4,0,0,0,,{\q2}也就是说，库存从零到零，可以同时发生一次成功更
+Dialogue: 1,0:00:15.71,0:00:16.38,English,en-4,0,0,0,,{\q2}continue.
+Dialogue: 1,0:00:16.38,0:00:20.49,English,en-5,0,0,0,,{\q2}So zero-to-zero stock can accompany a successful update.
+Dialogue: 1,0:00:20.49,0:00:22.75,English,en-6,0,0,0,,{\q2}Whether soldiers were deducted
+Dialogue: 2,0:00:20.78,0:00:25.92,Chinese,zh-5,0,0,0,,{\q2}新；有没有扣兵，要接着看后面的预算和实际写回。
+Dialogue: 1,0:00:22.75,0:00:25.46,English,en-7,0,0,0,,{\q2}requires the later budget and actual
+Dialogue: 1,0:00:25.46,0:00:25.99,English,en-8,0,0,0,,{\q2}writes.

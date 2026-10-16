@@ -1,0 +1,46 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T00:53:19.957101+00:00",
+  "archive": {
+    "bytes": 12712,
+    "sha256": "3a94ce45bd480bd5e0df1049e8f23c3abc70d80da463b9259c8459e82b5c6b22"
+  },
+  "members": {
+    "FUNCTION.actual-a01.json": {
+      "bytes": 8904,
+      "sha256": "e94876dfb2545f064b6eaa9b3f00dad7a2244701f5f5ffcdb6569317d3fd1ece"
+    },
+    "actual-function.bin": {
+      "bytes": 191,
+      "sha256": "701c63b6a5f7ed78ce75d6a591fcc4dc0ae2464267a05a23f5b5feb3a3cd8edb"
+    },
+    "actual-function.asm": {
+      "bytes": 3953,
+      "sha256": "e16e66f9028b9cd5a607f898a5deb6fcb36c5acbd7371c38cf6aa87c4e4164c9"
+    },
+    "READ-RECEIPT.actual-a01.json": {
+      "bytes": 5011,
+      "sha256": "f87d695bfae0eab0a0a41b4fce552bdbf2e042571cfdf054e28248b29f4da671"
+    },
+    "RAW-READ-LEDGER.actual-a01.json": {
+      "bytes": 4167,
+      "sha256": "bea6c5637e42f296aee72054d6ecea4591bd7cc992b42157fc0793864fcf1a3f"
+    },
+    "SOURCE-CONTRACT.actual-a01.json": {
+      "bytes": 7536,
+      "sha256": "ca8f09e272b4774e24c9aaa5d084610453ac74baa1da77a92f705b3066d4d6d5"
+    },
+    "RESEARCH-PLAN.proposed-a01.json": {
+      "bytes": 4934,
+      "sha256": "b461f15c396fb1ad902fc014c9ff8f867d0727fc3137fca0eea3c3a9c245dc3b"
+    },
+    "PLAN-CHECK.actual-a01.json": {
+      "bytes": 1647,
+      "sha256": "71ad40c9b391343232ae4fe8155a1861eeb6202f81427523f948c87aa654f3d9"
+    },
+    "SOURCE-FIRST.actual-a01.json": {
+      "bytes": 1720,
+      "sha256": "ccd69792aa4eeb20816e1ab9632b908f7542480bf7aaa93c1536d945aa1b43d9"
+    }
+  }
+}

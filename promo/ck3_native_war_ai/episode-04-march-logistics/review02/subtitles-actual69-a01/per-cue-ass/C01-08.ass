@@ -1,0 +1,31 @@
+[Script Info]
+Title: 进入供给章节的读数顺序
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:03.89,English,en-0,0,0,0,,{\q2}Before departure, establish what the army currently has.
+Dialogue: 2,0:00:00.10,0:00:05.57,Chinese,zh-0,0,0,0,,{\q2}出发前，先知道军队现在有什么；途中，再看地点和路
+Dialogue: 1,0:00:03.89,0:00:08.76,English,en-1,0,0,0,,{\q2}During the march, check which conditions change with location and route.
+Dialogue: 2,0:00:05.57,0:00:10.82,Chinese,zh-1,0,0,0,,{\q2}线改变了哪些条件；接战前，确认真正到了多少人。
+Dialogue: 1,0:00:08.76,0:00:12.55,English,en-2,0,0,0,,{\q2}Before battle, confirm how many troops actually arrived.
+Dialogue: 2,0:00:10.82,0:00:12.79,Chinese,zh-2,0,0,0,,{\q2}我们从补给开始。
+Dialogue: 1,0:00:12.55,0:00:16.47,English,en-3,0,0,0,,{\q2}We begin with supply: separate what the army carries, how
+Dialogue: 2,0:00:12.79,0:00:16.32,Chinese,zh-3,0,0,0,,{\q2}先把军队带着多少物资、最多能带
+Dialogue: 2,0:00:16.32,0:00:19.86,Chinese,zh-4,0,0,0,,{\q2}多少，与当地能支持多少兵分开。
+Dialogue: 1,0:00:16.47,0:00:20.25,English,en-4,0,0,0,,{\q2}much it can carry, and how many troops the location can
+Dialogue: 2,0:00:19.86,0:00:23.82,Chinese,zh-5,0,0,0,,{\q2}看清这些量，再讨论在哪里停留、何时继
+Dialogue: 1,0:00:20.25,0:00:20.80,English,en-5,0,0,0,,{\q2}support.
+Dialogue: 1,0:00:20.80,0:00:24.29,English,en-6,0,0,0,,{\q2}Then we can discuss where to stop, when to move on,
+Dialogue: 2,0:00:23.82,0:00:27.78,Chinese,zh-6,0,0,0,,{\q2}续走，以及分兵是不是减轻了当地压力。
+Dialogue: 1,0:00:24.29,0:00:27.84,English,en-7,0,0,0,,{\q2}and whether splitting really reduces local pressure.

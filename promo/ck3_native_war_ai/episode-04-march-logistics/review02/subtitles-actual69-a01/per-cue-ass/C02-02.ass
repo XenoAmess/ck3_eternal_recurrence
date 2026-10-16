@@ -1,0 +1,29 @@
+[Script Info]
+Title: 补给使用绝对单位
+ScriptType: v4.00+
+PlayResX: 2560
+PlayResY: 1440
+WrapStyle: 2
+ScaledBorderAndShadow: yes
+YCbCr Matrix: TV.709
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Chinese,Microsoft YaHei,49,&H00FFFFFF,&H000000FF,&H00101018,&H78081018,-1,0,0,0,100,100,0,0,1,2.5,1,2,145,145,178,1
+Style: English,Microsoft YaHei,31,&H00BBC4C9,&H000000FF,&H00101018,&H78081018,0,0,0,0,100,100,0,0,1,2,1,2,145,145,65,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.10,0:00:04.47,English,en-0,0,0,0,,{\q2}Carried supply and supply capacity use the same supply unit.
+Dialogue: 2,0:00:00.10,0:00:05.11,Chinese,zh-0,0,0,0,,{\q2}军队携带的补给，与补给容量使用同一种物资单位。
+Dialogue: 1,0:00:04.47,0:00:07.88,English,en-1,0,0,0,,{\q2}For a hypothetical example, 100 supply and 300
+Dialogue: 2,0:00:05.11,0:00:09.50,Chinese,zh-1,0,0,0,,{\q2}举一个假设例子：当前补给一百、容量三百，
+Dialogue: 1,0:00:07.88,0:00:11.52,English,en-2,0,0,0,,{\q2}capacity means the army carries 100 units and can
+Dialogue: 2,0:00:09.50,0:00:13.90,Chinese,zh-2,0,0,0,,{\q2}表示现在带着一百单位，容量是三百；前面的
+Dialogue: 1,0:00:11.52,0:00:12.26,English,en-3,0,0,0,,{\q2}carry 300.
+Dialogue: 1,0:00:12.26,0:00:16.41,English,en-4,0,0,0,,{\q2}The first number is neither 100 soldiers nor 100 percent.
+Dialogue: 2,0:00:13.90,0:00:17.86,Chinese,zh-3,0,0,0,,{\q2}数不是一百名士兵，也不是百分之一百。
+Dialogue: 1,0:00:16.41,0:00:21.58,English,en-5,0,0,0,,{\q2}The local supply limit must instead be compared with local troop usage.
+Dialogue: 2,0:00:17.86,0:00:22.01,Chinese,zh-4,0,0,0,,{\q2}当地补给上限则要和当地兵员用量比较。
+Dialogue: 1,0:00:21.58,0:00:26.02,English,en-6,0,0,0,,{\q2}Get the units right before choosing which columns to compare.
+Dialogue: 2,0:00:22.01,0:00:25.95,Chinese,zh-5,0,0,0,,{\q2}先把单位摆正，才知道该比较哪两列。

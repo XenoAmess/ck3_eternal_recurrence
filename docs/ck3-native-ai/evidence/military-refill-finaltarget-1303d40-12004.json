@@ -1,0 +1,138 @@
+{
+  "schema": "xar.ck3.military-refill-finaltarget1303D40.12004.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T00:58:34.692604+00:00",
+  "status": "ACTUAL_DESCRIPTOR_WRAPPER_SOURCE_CLOSED_SETTER_NOT_YET_READ",
+  "build_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\desktop-3fevhd2-1c74096080--vanilla--R0180\\responses\\023-a09-military-descriptor-after-open.json",
+    "bytes": 1085514,
+    "sha256": "74f294de74ceebe7eb3b70b709fc3fa1f541c1e1241470f9db565905fc8efd9a"
+  },
+  "business_payload_json_pointer": "/body",
+  "descriptor_projection_sha256": "a20b09908107cc4a57b7085faaa0b9db724d54d723f1a1d9d14390244584dc2f",
+  "gui_source_sha256": "4f5523d249c2e0a4d3c328d789ca375f154c2e102544782480936b4206c57eac",
+  "stock_onclick_lines": [
+    488,
+    898
+  ],
+  "stock_method_name": "MilitaryView.OnMilitaryReinforcementClick",
+  "stock_checked_name": "MilitaryView.IsMilitaryReinforcementsEnabled",
+  "source_bound_descriptors": [
+    {
+      "child_path": "0/0/0/2/3/0/0/0",
+      "effective_visible": true,
+      "enabled": true,
+      "named_ancestors": [
+        "tab_your_armies",
+        "footer"
+      ],
+      "callback_index": 0,
+      "callback_slot2_rva": 61485280,
+      "native_target_8_rva": 61471072,
+      "expression": {
+        "chain_count_24_raw": 0,
+        "final_type_id_30": 0,
+        "final_kind_34_raw": 3,
+        "final_target_38_rva": 19938624,
+        "final_user_data_40_present": true,
+        "receiver_type_id_48": 635,
+        "receiver_flag_4c_raw": 0,
+        "chain_calls": []
+      }
+    },
+    {
+      "child_path": "0/0/0/3/5/0/0/0",
+      "effective_visible": false,
+      "enabled": true,
+      "named_ancestors": [
+        "imperial_armies_ra_uses_this",
+        "footer"
+      ],
+      "callback_index": 0,
+      "callback_slot2_rva": 61485280,
+      "native_target_8_rva": 61471072,
+      "expression": {
+        "chain_count_24_raw": 0,
+        "final_type_id_30": 0,
+        "final_kind_34_raw": 3,
+        "final_target_38_rva": 19938624,
+        "final_user_data_40_present": true,
+        "receiver_type_id_48": 635,
+        "receiver_flag_4c_raw": 0,
+        "chain_calls": []
+      }
+    }
+  ],
+  "function": {
+    "schema": "xar.e04.actual4.exact-source-body.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T00:56:30.377429+00:00",
+    "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "source_identity_path": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+    "full_exe_hash_recomputed": false,
+    "extent": {
+      "begin_rva": "1303D40",
+      "end_rva_exclusive": "1303D5C",
+      "size": 28,
+      "pdata_index": 62894,
+      "unwind_rva": "5109614",
+      "unwind_version": 1,
+      "unwind_flags": 0,
+      "unique_entry": true,
+      "chained": false
+    },
+    "file_offset": 19935552,
+    "span_sha256": "4d9fb6d0659f30263f0921afc9d95e755b3103e9c915a8f9f31c789964f4143b",
+    "raw_and_ledger_fsynced_before_decode": true,
+    "decoded_bytes": 28,
+    "all_extent_bytes_decoded": true,
+    "instruction_count": 10,
+    "assembly_path": "1303D40.asm",
+    "calls": [
+      {
+        "rva": "1303D49",
+        "bytes": "e882bbffff",
+        "mnemonic": "call",
+        "operands": "0x12ff8d0",
+        "direct_target_rva": "12FF8D0"
+      }
+    ],
+    "branches": [
+      {
+        "rva": "1303D47",
+        "bytes": "740c",
+        "mnemonic": "je",
+        "operands": "0x1303d55",
+        "direct_target_rva": "1303D55"
+      }
+    ],
+    "external_edges_not_followed": true,
+    "raw_hex": "4883ec284885c9740ce882bbffffb0014883c428c332c04883c428c3",
+    "assembly": " 1303D40 4883ec28                       sub      rsp, 0x28\n 1303D44 4885c9                         test     rcx, rcx\n 1303D47 740c                           je       0x1303d55\n 1303D49 e882bbffff                     call     0x12ff8d0\n 1303D4E b001                           mov      al, 1\n 1303D50 4883c428                       add      rsp, 0x28\n 1303D54 c3                             ret      \n 1303D55 32c0                           xor      al, al\n 1303D57 4883c428                       add      rsp, 0x28\n 1303D5B c3                             ret      \n"
+  },
+  "branches": [
+    {
+      "condition": "RCX == 0",
+      "edge": "1303D47 -> 1303D55",
+      "result": "AL=0; no callee invoked"
+    },
+    {
+      "condition": "RCX != 0",
+      "edge": "1303D49 -> 12FF8D0",
+      "result": "RCX passed unchanged; ignores callee status and writes AL=1 after return"
+    }
+  ],
+  "next_exact_source_entry_rva": "12FF8D0",
+  "next_entry_followed": false,
+  "wrapper_contains_business_flag_write": false,
+  "receiver_type_id_48_raw": 635,
+  "receiver_native_class_name_proven": false,
+  "source_Character_from_player_assumed": false,
+  "independent_readback": "Existing persistent-Regi source-resolved refill_permission_switch_v1: Character+1C0 military +4A9, separately from GUI ACK; same full-generation source must be maintained.",
+  "actual_click_executed": false,
+  "switch_write_or_transition_proven": false,
+  "actual_ADD_observed": false,
+  "full_R06_qualified": false
+}

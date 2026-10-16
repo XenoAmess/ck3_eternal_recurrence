@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.R0180-actual-finished-raw-audit-input.v1",
+  "source_head": "c4992c304d196135d9590799d69ffb3c9f5510e6",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0180",
+  "raw_path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\raw.mkv",
+  "finished_recorder_receipt": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\raw-land-arrival-a01\\result.json",
+  "expected_raw_bytes": 94042804,
+  "expected_raw_sha256": "c51352cc2ac0f43766bc42c6439569cf62316db84c9cf6adb6e1ee9dc59d8964",
+  "output_directory": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\media-land-arrival-a01\\attempt-a01",
+  "sample_frame_ordinals": [
+    0,
+    120,
+    240,
+    360,
+    540,
+    1200
+  ],
+  "native_event_receipts": [
+    {
+      "label": "actual_normal_preparation_day3",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-03.complete.actual.json"
+    },
+    {
+      "label": "actual_normal_preparation_day4",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-04.complete.actual.json"
+    },
+    {
+      "label": "actual_normal_preparation_day5_arrival",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-05.complete.actual.json"
+    },
+    {
+      "label": "actual_Root_recording_closure",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\land-arrival-recording-closure.actual-a01.json"
+    }
+  ]
+}
