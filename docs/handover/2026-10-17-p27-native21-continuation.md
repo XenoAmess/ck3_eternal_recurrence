@@ -7,6 +7,9 @@
 本页更新 [10-13 历史交接](2026-10-13-g2-continuation-vacation-handoff.md)；
 旧启动参数、进程、期限和录像限制不是当前操作卡，不要重跑其脚本。
 
+后续更新按时间追加；SDK30的13日running是历史前缀。最新已核失败截点见
+[窗口26移动错误](#窗口26失败移动错误后已有路线)，不能据早期记录判断现场仍在推进。
+
 Native21 已实际加载，Game PID6068／FILETIME134366412679616931；DLL SHA-256
 `c0208ee8d7be6d974b536ed7c88547f01a24d06838556d9b59d0738cf633de0e`。
 SDK27 queue254904／application230732，当前 actor40526、原 campaign episode
@@ -85,3 +88,36 @@ SEM65／METRICS66同暂停帧配对，proof`ROOT-P30-CONTINUITY-RESUME01-ADMITTE
 SHA-256 `851374943480816de4c4ed5c6c58df47627d7ec9d7e83c92aacc1197c03a4350`
 开启窗口26，Root当时报告13日running前缀。失败窗口25的76日不可挪用；
 无WAL、无Game／OBS重启，30年稳定及两级速度目标仍未完成。
+
+## 窗口26失败：移动错误后已有路线
+
+2026-10-16T19:39:07.549296Z，AUTO417结束为原生错误
+`CK3 move-army state is unavailable`；命令为`move-army-402653503-to-5980`、
+request_id=`step-440-2c2de938e06a`、expected Native3207。窗口26已推进72日后失败，
+先前13日／52日截面不再代表当前运行状态。独立SEM418仍为同Game／actor、同日
+raw53436192，paused/map_ready均true，Native3208／public257，已经观察到
+目标5980及完整路线[5983,5981,5980]。原错误保留；不能重发移动，也不能按“零动作”清掉。
+
+原生泛型unavailable同时覆盖提交前缺数据／构造失败与`submit_copy=false`，
+后者又混合clone失败和已调用原生queue后的拒绝，原回执没有阶段区分。
+所以只能分别记录“命令结果未知”和“独立路线意图已观察”，不推定ACK成功、
+到达或战果。后续SDK31准备可重复自动reconcile；本截点尚未验收其恢复。
+Root已收SDK30真实queue/app退出1/0，Game与原录像保持，未启WAL。
+
+窗口26的正常处理段单独计时：AUTO68 start19:32:00.731840Z至AUTO415
+end19:38:45.227582Z，404.495742秒／72日＝5.6179964167秒／日。
+不含AUTO417的22.271467秒失败及之后停机，也不是整场均速；旧P28的
+4.671秒／日继续作历史具名段。当前目标顺序为稳定连续30年、先低于1秒／日、
+再0.5秒／日，均未完成。
+
+## SDK31 源码收口与随后分类恢复
+
+SDK31移动不确定回执修复已进入本次公共提交：只读新帧严格匹配原始请求、目标完整路线和同Game作用域，
+输出 ACK unknown 观察；不重放 AUTO417、不补业务或日期信用。公共9个新生产路径用例含public256/native3207，
+连同相关旧用例26项、22个子用例通过。[原增量与测试边界](../ck3-native-ai/research/move-unknown-ack-sdk31/README.md)
+保留旧Hybrid/equal-revision GREEN被替代的事实。
+
+SDK31首次实际 AUTO14 已推进3日，但旧外置分类器以 `route-window frozen route proof differs` 拒绝结算。
+同SDK控制16安装 `1637aa68…`，17重消费原14；FULL18只读MET19结算原3日到11039cycles/raw53436264。
+原 clock 没有重放，没有Game/SDK/OBS重启。FULL20随后发布；此记录截止点尚未开启窗口27。
+窗口26失败72日仍保留，后续成功批次不能倒填旧窗口为稳定验收。目标仍为30年稳定优先，其后<1秒/日，再0.5秒/日。

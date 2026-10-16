@@ -1,0 +1,16 @@
+{
+  "schema": "xar.research.move-unknown-ack-sdk31/v1",
+  "status": "PUBLIC_SOURCE_AND_SYNTHETIC_WIRE_TESTED_NOT_FUTURE_NATIVE_RUNTIME_ACCEPTANCE",
+  "driver_final_sdk31_sha256": "57c32b319d7312913b18d93f8068deb793163080ce7bf8706adbd79aecb4198b",
+  "extension_sha256": "368be96d2db003be021f2800ee310f1dd63643a906571e9180dfae8cc2a48382",
+  "original_auto417_replayed": false,
+  "original_auto417_ack_verified": false,
+  "old_equal_revision_hybrid_green_superseded": true,
+  "public_tests": {
+    "path": "ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py",
+    "new_cases": 9,
+    "focused_total_cases": 26,
+    "focused_subtests": 22,
+    "boundary": "actual Service auto_turn -> Driver execute_step -> primitive -> FakeEndpoint send/actual command-result state; snapshot and planner inputs synthetic; no Native execution or chooser claim"
+  }
+}

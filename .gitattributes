@@ -177,6 +177,7 @@ docs/coat-of-arms-fit-artifacts/epsilon-q-v14-smoke-1024/** -text whitespace=cr-
 # Preserve native cash serializer fixture bytes bound by their original provenance SHA-256.
 tools/g2_saved_campaign/patches/p28-*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 tools/g2_saved_campaign/patches/p30-land-halt-classifier-runtime.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+docs/ck3-native-ai/evidence/p31-command-queue-return-abi/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 ck3_autonomous_player/native_bridge/research/fixtures/ck3_12002_war_cash_*.json -text whitespace=cr-at-eol
 
@@ -388,3 +389,4 @@ docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-fi
 docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-film-a01-d12-resume-once.json -text
 docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-monthroll-a01-execute-19-terminal-g12.json -text
 docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-natural-after-a01.json -text
+docs/ck3-native-ai/research/move-unknown-ack-sdk31/classifier_extension.py -text whitespace=cr-at-eol

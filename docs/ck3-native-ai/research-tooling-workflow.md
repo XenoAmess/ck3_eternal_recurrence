@@ -160,3 +160,17 @@ py ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_sc
 RED 元数据不晋升、空分母、真实生产函数回放、缺输入、不支持结果与输出保护。拒绝行为的关键子进程也覆盖 `-O`。
 PE 测试默认不读游戏文件，两个真实 EXE 扩展检查显式 skip；有已核验本地 EXE 时才传 `--exact-exe` 单独执行。
 依赖型检查使用相对 venv；如缺失，须先显式核验并记录主 worktree venv 的解释器和依赖，不静默回退后误报代码失败。
+
+### 普通auto恢复热修的生产边界（2026-10-17补充）
+
+本条只约束宣称修复普通auto调用链的Native恢复／热修验证，不要求全仓新增矩阵。
+先定位实际`Service.auto_turn → Driver.execute_step → 底层wire`，说明问题在哪一段。
+焦点链的假边界只mock Native I/O，不以FakeHybrid已计算DTO替换该生产入口；
+孤立helper／分类器测试可以保留，但其通过不能授实际入口通过。
+至少一份public和native序号不相等的帧夹具，分别校验public规划绑定、
+wire的native expected_revision及独立后态，原始错误packet不可凭投影猜造。
+
+SDK31本次早期3项GREEN使用相等序号，且Hybrid路径未检验真实发送入口；
+后续recording代理在public/native分离链发现缺口，旧结果已superseded。
+旧成功记录不删除、不继续充当新链验收；最终生产路径和新的实际测试证据独立记录。
+这些回归验证代码合同，不产生实机业务或完整普通planner覆盖信用。

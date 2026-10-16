@@ -1,0 +1,46 @@
+{
+  "schema": "xar.queue-precall-argument-liveness-existing-source.v1",
+  "at_utc": "2026-10-16T20:10:36.679520+00:00",
+  "status": "PRECALL_BODY_INCOMING_R8_R9_STACK_ARGS_NOT_READ",
+  "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\new-03808E00-03808F82-INSTRUCTIONS.json",
+  "source_sha256": "3c2b27f098dff27e01395d47bf8f986087fa78555ad42b8237d87c476ba2ac74",
+  "whole_body_bytes": 386,
+  "instruction_count": 103,
+  "decode_complete": true,
+  "all_R8_R9_operand_instructions": [
+    "03808E7A mov r8d, 8",
+    "03808E91 mov r8, qword ptr [rcx + 0x40]",
+    "03808E98 call r8",
+    "03808EAE xor r8d, r8d",
+    "03808EB4 mov qword ptr [rdx], r8",
+    "03808ED0 mov r9d, ebp",
+    "03808ED3 mov r8d, r15d",
+    "03808F42 mov r9d, ebx",
+    "03808F45 lea r8d, [rbx + 0x42]"
+  ],
+  "incoming_R8_R9_reads": false,
+  "R8_definitions_before_body_uses": [
+    "03808E7A mov r8d,8",
+    "03808E91 mov r8,[rcx+40] before call r8",
+    "03808EAE xor r8d,r8d",
+    "03808ED3 mov r8d,r15d",
+    "03808F45 lea r8d,[rbx+42]"
+  ],
+  "R9_definitions_before_body_uses": [
+    "03808ED0 mov r9d,ebp",
+    "03808F42 mov r9d,ebx"
+  ],
+  "stack": {
+    "prologue_delta": "-0x58 (push RDI,R14,R15;sub rsp,0x40)",
+    "fifth_input_slot": "entry_rsp+0x28 = current_rsp+0x80",
+    "incoming_stack_args_read": false,
+    "restoration_slots": "current+60/68/70 restore entry+8/10/18, which this callee itself saved at03808E00/E05/E0A",
+    "current_20_28_slots": "outgoing logger arguments written locally at03808F2C/F38"
+  },
+  "early_external_call": "If observer enabled, mutex import call03808E33 occurs before command virtual calls; incoming R8/R9 are not saved. Win64 volatile values cannot be relied on as propagated argument data after it. Disabled observer returns without reading them.",
+  "boundary": "This strengthens only the held queue body plus held 3808E00 body. Unknown command clone/class-key/destructor and descendant helper bodies are not a complete recursive ABI/no-side-effects proof. The FINAL packet effective-input statement is limited to these inspected normal-path bodies; no unseen exception funclet or future executable is admitted.",
+  "actual_AUTO417_stage_credit": false,
+  "Game_MCP_Driver_SDK_calls": 0,
+  "new_executable_reads": 0,
+  "old_packet_overwrites": 0
+}

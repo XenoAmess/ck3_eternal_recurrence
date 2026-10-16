@@ -1,0 +1,122 @@
+{
+  "schema": "xar.test.move-unknown-ack-projection/v1",
+  "origin": "actual 413 planning frame and 418 army; starting no-target tuple reconstructed from retained 407 evidence; synthetic Native wire in tests",
+  "raw_sources": [
+    {
+      "name": "0407-1-result.json",
+      "sha256": "090b27d3d9d8520e005f803ff52d5be9db014f3a22ca20c4c94282dc485fe73c"
+    },
+    {
+      "name": "0413-1-result.json",
+      "sha256": "3f90a259b5b23ba9897eedfdcded337d637dcb7a8e5abdd07f7d0d2a231087a1"
+    },
+    {
+      "name": "0417-1-result.json",
+      "sha256": "c1f5fee04513524064b32a07abd87b63fd997b8bb6fd74304d1ac6151f1a44a9"
+    },
+    {
+      "name": "0418-1-result.json",
+      "sha256": "1ba1988cabeacf4297aec0b53dfb9af6b5cb451789692a6335a7a42205c3aeb7"
+    }
+  ],
+  "before": {
+    "snapshot_id": "native:3207",
+    "revision": 256,
+    "native_revision": 3207,
+    "date_raw": 53436192,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "played_character": {
+      "character_id": 40526,
+      "alive": true
+    },
+    "diagnostics": {
+      "bridge_pid": 6068,
+      "connection_generation": 4
+    },
+    "active_event": null,
+    "pending_character_interaction": null,
+    "terminal": null,
+    "player_armies": [
+      {
+        "army_id": 402653503,
+        "owner_character_id": 40526,
+        "soldiers": null,
+        "current_province_id": 5965,
+        "move_target_province_id": null,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ]
+  },
+  "after": {
+    "snapshot_id": "native:3208",
+    "revision": 257,
+    "native_revision": 3208,
+    "date_raw": 53436192,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "played_character": {
+      "character_id": 40526,
+      "alive": true
+    },
+    "diagnostics": {
+      "bridge_pid": 6068,
+      "connection_generation": 4
+    },
+    "active_event": null,
+    "pending_character_interaction": null,
+    "terminal": null,
+    "player_armies": [
+      {
+        "army_id": 402653503,
+        "owner_character_id": 40526,
+        "soldiers": null,
+        "current_province_id": 5965,
+        "move_target_province_id": 5980,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          5983,
+          5981,
+          5980
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 3,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ]
+  },
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:3207",
+    "revision": 256,
+    "native_revision": 3207,
+    "date_raw": 53436192,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "connection_generation": 4,
+    "bridge_pid": 6068
+  }
+}

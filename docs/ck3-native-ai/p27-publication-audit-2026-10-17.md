@@ -166,3 +166,48 @@ Game6068／Native21／OBS278060及原D盘录制未重启，WAL未启用。
 和完整历史窄patch；帧绑定须由已审核调用方注入，拒绝回执零action／business／date信用。
 公共CUnit0正例是兼容校正，未改已部署de0077；公共所有runner的接入不在本次验收内。
 最终生产source、pure classifier和相邻既有守卫合计41项／43子测试通过。
+
+## 窗口26后来失败与移动结果不确定
+
+此前13日running是历史前缀。AUTO417在2026-10-16T19:39:07.549296Z返回
+`CK3 move-army state is unavailable`，window26在72日后失败；原request
+`step-440-2c2de938e06a`／move402653503→5980／expectedNative3207保留。
+独立SEM418同paused日raw53436192、Native3208／public257已看到目标5980和
+完整[5983,5981,5980]，并非可以安全重试的纯读取或无动作错误。
+原命令结果未知和独立意图观察必须分开；不得重发原移动、伪造ACK、标为零动作清除，
+也不凭路线存在授到达、接敌安全或战果信用。Root正准备可重复自动reconcile，
+待最终源码／fixture一批入库，本条不冒称已恢复。
+
+原生`SubmitMoveArmy`把缺bindings／ReadCurrent／构造失败与submit_copy=false
+合成unavailable；`SubmitCommandCopyCompat`再把clone前unavailable与queue已调用后
+rejected压成false，bridge只发同一句错误。原始417没有阶段诊断，不能从错误串
+判断实际走了哪个分支。阶段归因仍unknown，既有后验足以禁止重发。
+Root已关闭SDK30（queue1／app0），Game和原录像未重启，WAL关闭。
+
+Root核算正常段AUTO68 start2026-10-16T19:32:00.731840Z至AUTO415
+end19:38:45.227582Z：404.495742秒／72日＝5.6179964167秒／日。
+明确排除417耗22.271467秒的失败和后续停机，不是full-campaign平均。
+旧P28 4.671秒／日保留为历史段；稳定30年优先，再先低于1秒／日、后0.5秒／日，
+目前仍未达标。
+
+同段已完成回执的离线阶段审计另见外置`p31-current-siege-performance01/`
+（FINDINGS SHA`9e14a6a9…`／MANIFEST SHA`58d3b9e5…`）：69次Army查询总157.882秒，
+其中pipe发送／等待92.351秒、普通规划59.539秒，Python行normalization仅0.0428秒。
+68次围城单日调用总188.143秒，life阶段143.378秒**内含**完整state持久化48.676秒，
+普通规划42.557秒。这些嵌套／重叠阶段不能相加；pipe wall也不等于Native CPU。
+compact回执不能证明private-scalar AB已启用。既有private scalar仍读完整53–55军scope，
+普通requested IDs在全读后才筛选；不能把它说成安全subset或宣称节省90秒。
+本期只有一次preview，未证preview-first可替代完整兵力／接敌守卫，本批不部署该研究候选。
+
+## 第四批：移动 ACK 未知与源链验收
+
+公共 Driver 已窄合 SDK31 的“原生报错后独立读回路线”修复，保留原始失败包与未知 ACK，
+不把已见路线改写成确定未提交，也不重发原命令。纯分类器与3.6KB实际字段投影已入本批，
+详见[完整小增量与测试边界](research/move-unknown-ack-sdk31/README.md)。
+真实 Service→Driver→primitive wire 的9个新用例及既有移动回归共26项、22个子用例通过；
+规划公共序号256与 Native3207分别核验。旧等序号/Hybrid 三项 GREEN 明确 superseded。
+
+第三批 `c535719b` 的[官方 CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38956954264)
+已实际 success。SDK31首次实际推进3日后又遇外置 route-window 分类遗漏；控制16/17仅安装分类器并重消费
+原 AUTO14，FULL18/MET19结算原3日到11039cycles/raw53436264，无原 clock 重放，Game/SDK/OBS没有再重启。
+随后 FULL20 已发布；此时间点尚未开启窗口27，不能写成已稳定完成30年。新 route-window 修复另包收口。

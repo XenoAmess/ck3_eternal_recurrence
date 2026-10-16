@@ -9054,7 +9054,10 @@ class NativeHeadlessGameplayDriver:
                 persistence_failure = self._record_command(
                     step, ok=(result.get("accepted") is True if (step in {
                         QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP,
-                    } or (parse_query_route_contact_horizon_step(step) is not None
+                    } or (parse_move_army_step(step) is not None
+                          and result.get("status") == "observed_after_native_error"
+                          and result.get("native_ack_verified") is False)
+                        or (parse_query_route_contact_horizon_step(step) is not None
                           and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
                           and result.get("status") == "unavailable")
                         or (parse_query_battle_control_snapshot_v1_step(step) is not None
@@ -14938,6 +14941,90 @@ class NativeHeadlessGameplayDriver:
                     step, expected_revision=selected_revision
                 )
             except _NativeCommandRejectedError as error:
+                if error.native_error == "CK3 move-army state is unavailable":
+                    # Native coalesces pre-submit and queue outcomes into this
+                    # error. Only an independently newer exact route can
+                    # settle the view; the original ACK remains unknown.
+                    current = self.take_snapshot()
+                    observed_army = _army_by_id(current, army_id)
+                    old_actor = starting.get("played_character") or {}
+                    new_actor = current.get("played_character") or {}
+                    old_diag = starting.get("diagnostics") or {}
+                    new_diag = current.get("diagnostics") or {}
+                    old_route = starting_army.get("route_province_ids")
+                    route = observed_army.get("route_province_ids") if isinstance(observed_army, dict) else None
+                    request, response, rid = (error.native_request_frame,
+                                              error.native_command_result_frame,
+                                              error.native_request_id)
+                    if (starting.get("paused") is True and starting.get("map_ready") is True
+                            and current.get("paused") is True and current.get("map_ready") is True
+                            and current.get("date_raw") == submitted_date_raw
+                            and current.get("episode_run_id") == starting.get("episode_run_id")
+                            and old_actor.get("alive") is True and new_actor.get("alive") is True
+                            and new_actor.get("character_id") == old_actor.get("character_id")
+                            and type(old_diag.get("bridge_pid")) is int and old_diag["bridge_pid"] > 0
+                            and new_diag.get("bridge_pid") == old_diag["bridge_pid"]
+                            and new_diag.get("connection_generation") == old_diag.get("connection_generation")
+                            and type(current.get("native_revision")) is int
+                            and current["native_revision"] > starting["native_revision"]
+                            and type(current.get("revision")) is int
+                            and current["revision"] >= starting["revision"]
+                            and current.get("snapshot_id") == f"native:{current['native_revision']}"
+                            and isinstance(rid, str) and rid
+                            and isinstance(request, dict) and request.get("type") == "execute_step"
+                            and request.get("protocol_version") == 1
+                            and request.get("request_id") == rid and request.get("step") == step
+                            and request.get("expected_revision") == starting.get("native_revision")
+                            and isinstance(response, dict) and response.get("type") == "command_result"
+                            and response.get("protocol_version") == 1
+                            and response.get("request_id") == rid and response.get("ok") is False
+                            and response.get("error") == error.native_error
+                            and starting_army.get("owner_character_id") == old_actor.get("character_id")
+                            and starting_army.get("move_target_province_id") != province_id
+                            and isinstance(observed_army, dict)
+                            and observed_army.get("owner_character_id") == old_actor.get("character_id")
+                            and observed_army.get("controllable") is True
+                            and observed_army.get("move_target_observable") is True
+                            and observed_army.get("move_target_province_id") == province_id
+                            and observed_army.get("route_read_status") == "complete_nonempty"
+                            and observed_army.get("current_province_id") == starting_army.get("current_province_id")
+                            and observed_army.get("in_combat") is False
+                            and observed_army.get("retreating") is False
+                            and isinstance(route, list) and route and route[-1] == province_id
+                            and route != old_route
+                            and _army_move_postcondition(current, army_id, province_id,
+                                require_route=True, starting_snapshot=starting) == "moving"):
+                        return {
+                            "step": step, "accepted": False,
+                            "status": "observed_after_native_error", "backend_id": "native-headless",
+                            "native_ack_verified": False, "native_ack_status": "unknown_after_error",
+                            "native_error": error.native_error,
+                            "native_error_evidence": {"native_request_id": rid,
+                                "native_request": copy.deepcopy(request),
+                                "native_command_result": copy.deepcopy(response)},
+                            "business_submission_may_have_applied": True,
+                            "war_action": {"status": "route_intent_observed", "army_id": army_id,
+                                "target_province_id": province_id, "submitted_date_raw": submitted_date_raw,
+                                "postcondition_verified": True, "original_native_ack_verified": False},
+                            "source_frame": {"snapshot_id": starting["snapshot_id"],
+                                "revision": starting["revision"], "native_revision": starting["native_revision"],
+                                "date_raw": submitted_date_raw, "actor_character_id": old_actor["character_id"],
+                                "episode_run_id": starting["episode_run_id"],
+                                "connection_generation": old_diag["connection_generation"],
+                                "bridge_pid": old_diag["bridge_pid"]},
+                            "observed_frame": {"snapshot_id": current["snapshot_id"],
+                                "revision": current["revision"], "native_revision": current["native_revision"],
+                                "date_raw": current["date_raw"], "actor_character_id": new_actor["character_id"],
+                                "episode_run_id": current["episode_run_id"],
+                                "connection_generation": new_diag["connection_generation"],
+                                "bridge_pid": new_diag["bridge_pid"]},
+                            "starting_army_route": list(old_route) if isinstance(old_route, list) else None,
+                            "starting_army_target": starting_army.get("move_target_province_id"),
+                            "observed_army_route": list(route),
+                            "player_armies": current.get("player_armies", []),
+                            "snapshot_id": current["snapshot_id"], "revision": current["revision"],
+                        }
+                    raise
                 if error.native_error not in _ARMY_MOVE_DEFERRED_ERRORS:
                     raise
                 current = self.take_snapshot()

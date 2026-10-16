@@ -30,6 +30,12 @@
    再比较原生调用次数与端到端墙钟，计入索引构建、缓存失效、MCP、队列和回执开销。
    有随机或状态写入的原版函数先查调用副作用，不能直接重复调用来制造对照。
    差异未解释前不替换原实现；有用的窄范围先收口，不要求穷举所有游戏场景。
+   对宣称修复普通auto的Native恢复/热修，先定位实际Service.auto_turn →
+   Driver.execute_step → 底层wire生产路径，再设计焦点测试；假边界只放在Native I/O。
+   不得用FakeHybrid预计算返回DTO替代欲验证的生产入口，纯helper测试另标范围。
+   至少一份public revision != native revision的帧夹具：规划/Service绑public，
+   wire.expected_revision绑native；两者各自的前后帧及错误raw packet均须核对。
+   等号夹具通过不能代替此检查，旧已被新链推翻的GREEN保留但明确superseded。
 6. 性能修改保持玩法策略中立；需要改变机会范围、战争意愿或风险偏好时另列玩法变更，
    不能把它计作性能收益。不以模拟/ACK/单个样本宣称真实战果或普遍优于原版。
 

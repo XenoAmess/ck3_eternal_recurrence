@@ -1,0 +1,251 @@
+{
+  "schema": "xar.ck3-12004.queue-return-abi-existing-source-audit.v1",
+  "at_utc": "2026-10-16T20:09:06.921549+00:00",
+  "status": "BOOL_AL_RETURN_CONFIRMED_FROM_EXACT_ACTUAL4_CALLEE",
+  "offline_reviewer_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "old_core_map_capture_machine_id": null,
+  "old_core_map_identity_boundary": "The held packet supplies executable identity and source_freeze, but this audit does not retroactively assign its capture to the reviewer machine.",
+  "executable_sha256_from_existing_freeze": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "queue_rva": "0x037F06D0",
+  "end_rva_exclusive": "0x037F07CA",
+  "whole_span_bytes": 250,
+  "instruction_count": 79,
+  "all_bytes_decoded_and_match_retained_raw": true,
+  "raw_binary_hex": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803a8017407488b0280480820488b89d80300004885c97408488b12e8f18601000fb6c32401488b0f80be9a02000000743684c075320fb651080fb6c224063c067425f6c20875204885c9740a488b01ba01000000ff1048c7070000000032c04883c4205f5e5bc38b86ec03000089410c488bb6d0030000c1eb0280e301488b0748c7070000000048894424587423488d4e78ff15099fbe00488d542458488bcee8acfb08fd488d4e78ff153aa0be00eb0e488d542458488bcee893fb08fd90488b0f4885c9740a488b01ba01000000ff10b0014883c4205f5e5bc3",
+  "source_pins": [
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\CORE-FUNCTION-MAP.json",
+      "sha256": "a065f974170f0ac1d945366dec40cbea91eb7f80b03a225ca9a74af3fb997859",
+      "bytes": 14166
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\new-037F06D0-037F07CA-INSTRUCTIONS.json",
+      "sha256": "34d7d084b2230a0531a20c09439b88548542852852f7adadba8f95999d51e427",
+      "bytes": 19126
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\new-037F06D0-037F07CA.bin",
+      "sha256": "35be39318795009ef6176e9c135e9cd7ecdade099f895515f3dd664949e34d0c",
+      "bytes": 250
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\new-03808E00-03808F82-INSTRUCTIONS.json",
+      "sha256": "3c2b27f098dff27e01395d47bf8f986087fa78555ad42b8237d87c476ba2ac74",
+      "bytes": 25235
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\new-03808E00-03808F82.bin",
+      "sha256": "260c1c6a0a725e0c1f444a146774be17e664aed114cd2ff9c3cb3a1860da4535",
+      "bytes": 386
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\military-refill-toggle-command-12ff8d0-12004.json",
+      "sha256": "d7fe60724e1a608b030a816208a09b658e5bb96a9c3e66ddc8292cf72d7b9514",
+      "bytes": 15442
+    }
+  ],
+  "body_mapping": {
+    "packet": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\function-match-core\\CORE-FUNCTION-MAP.json",
+    "json_pointer": "/functions/7",
+    "mapping": {
+      "name": "QueueOwnedCommand",
+      "old_anchor": "0x037F06F0",
+      "new_anchor": "0x037F06D0",
+      "old_range": [
+        "0x037F06F0",
+        "0x037F07EA"
+      ],
+      "new_range": [
+        "0x037F06D0",
+        "0x037F07CA"
+      ],
+      "normalized_body_equal": true,
+      "ordered_edge_shape_equal": true,
+      "edge_status_counts": {
+        "local_control_flow_equal": 10,
+        "callee_interval_and_normalized_body_equal": 3,
+        "observed_target_pair_requires_data_identity": 2
+      },
+      "data_identity_owner": "migration_global_slots",
+      "readiness": "offline_body_verified; data identities and runtime owned separately"
+    }
+  },
+  "return_paths": [
+    {
+      "set_rva": "0x037F074C",
+      "bytes": "32c0",
+      "instruction": "xor al, al",
+      "physical_json_line": 371,
+      "ret_rva": "0x037F0755",
+      "epilogue_preserves_AL": true
+    },
+    {
+      "set_rva": "0x037F07C0",
+      "bytes": "b001",
+      "instruction": "mov al, 1",
+      "physical_json_line": 668,
+      "ret_rva": "0x037F07C9",
+      "epilogue_preserves_AL": true
+    }
+  ],
+  "abi_conclusion": "Every normal return intentionally supplies AL 0 or 1. This directly proves a bool-compatible return, without header / .2 inference. Upper RAX is not a usable pointer return.",
+  "argument_liveness": {
+    "entry_RSP_symbol": "S0",
+    "post_prologue_RSP": "S0 - 0x38",
+    "R9_original_store": "037F06D0: mov [S0+0x20], r9",
+    "same_slot_overwrite": "037F0776: mov [current_rsp+0x58], rax == [S0+0x20], before any later read or address-taking",
+    "later_local_address_uses": [
+      "037F0787",
+      "037F07A0"
+    ],
+    "incoming_R9_value_read": false,
+    "fifth_argument_location": "S0+0x28 == post_prologue_rsp+0x60",
+    "fifth_argument_read_or_written_in_whole_body": false,
+    "channel_0E_special_argument_dependency": false,
+    "conclusion": "Three effective inputs suffice for the held normal-return body, including channel0E. This does not reconstruct source-language formal parameters or qualify uninspected exception funclets / future executables."
+  },
+  "before_false": {
+    "writes": [
+      "037F06F7 may OR command flags byte+8 with0x20 when channel bit3 is set"
+    ],
+    "optional_call": "037F070A -> 03808E00 when manager+0x3D8 is nonnull",
+    "precall_body_bytes": 386,
+    "precall_body_instruction_count": 103,
+    "precall_observed_operations": [
+      "Owner vector capacity / allocation and ownership relocation",
+      "Command primary virtual+0x40 at03808E98 or03808EF5 places a copy in the vector",
+      "Command primary virtual+0x48 at03808F01 precedes logging helpers"
+    ],
+    "false_cleanup": "037F0743 invokes primary virtual+0 with EDX1, then clears *owned at037F0745",
+    "main_queue_insert_880340_reachable_on_false_path": false,
+    "main_queue_insert_call_rvas": [
+      "037F078F",
+      "037F07A8"
+    ],
+    "boundary": "The optional observer body has no direct secondary Execute or main queue insertion. Clone / class-key / logging roles are structural inference supported by existing command-slot contracts. Unknown virtual bodies and descendant helper effects were not expanded; no absolute no-business-side-effects claim follows from AL false."
+  },
+  "known_stock_caller": {
+    "source": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\military-refill-toggle-command-12ff8d0-12004.json",
+    "assembly_physical_json_line": 151,
+    "source_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "call_rva": "012FF9F3",
+    "channel": 14,
+    "fifth_argument_setup": "012FF9C9 lea rax,[rsp+78];012FF9CE mov [rsp+20],rax",
+    "after_call": "012FF9F8 nop;012FF9F9 mov rcx,[rsp+78];012FF9FE test rcx,rcx; optional cleanup virtual call",
+    "AL_consumed": false,
+    "conclusion": "This actual4 caller ignores AL. The complete callee, not this caller, proves bool. No consuming actual4 stock caller was found in the narrow inspected packet."
+  },
+  "public_bridge_reference": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_commands.cpp",
+      "sha256": "c599c60dcb261ace696b071fdc62782720a4916b0e460eeaae92e392b6a9c4a8",
+      "bytes": 7822
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_commands.hpp",
+      "sha256": "1d94c5ff22a61c90ebbce49c13dc04c2f90d218f1f49ec7a6aaa20f9a6698d85",
+      "bytes": 4140
+    }
+  ],
+  "bridge_source_lines": "typedef25-26;SubmitCommandCopy91-96 captures bool before cleanup, then maps submitted/rejected. These public source pins do not assert loaded Native21 identity.",
+  "actual_AUTO417_boundary": "No actual per-stage clone / queue AL / completion trace was read or supplied to this child. The move error followed by a later effective route cannot be attributed to a bool-versus-void/pointer ABI bug. Exact stage evidence plus independent actual state remains necessary; the current error is not reclassified by this source audit.",
+  "compact_disassembly": [
+    "037F06D0 4c894c2420 mov qword ptr [rsp + 0x20], r9",
+    "037F06D5 4889542410 mov qword ptr [rsp + 0x10], rdx",
+    "037F06DA 53 push rbx",
+    "037F06DB 56 push rsi",
+    "037F06DC 57 push rdi",
+    "037F06DD 4883ec20 sub rsp, 0x20",
+    "037F06E1 418bd8 mov ebx, r8d",
+    "037F06E4 488bfa mov rdi, rdx",
+    "037F06E7 488bf1 mov rsi, rcx",
+    "037F06EA 418bc0 mov eax, r8d",
+    "037F06ED c1e803 shr eax, 3",
+    "037F06F0 a801 test al, 1",
+    "037F06F2 7407 je 0x37f06fb",
+    "037F06F4 488b02 mov rax, qword ptr [rdx]",
+    "037F06F7 80480820 or byte ptr [rax + 8], 0x20",
+    "037F06FB 488b89d8030000 mov rcx, qword ptr [rcx + 0x3d8]",
+    "037F0702 4885c9 test rcx, rcx",
+    "037F0705 7408 je 0x37f070f",
+    "037F0707 488b12 mov rdx, qword ptr [rdx]",
+    "037F070A e8f1860100 call 0x3808e00",
+    "037F070F 0fb6c3 movzx eax, bl",
+    "037F0712 2401 and al, 1",
+    "037F0714 488b0f mov rcx, qword ptr [rdi]",
+    "037F0717 80be9a02000000 cmp byte ptr [rsi + 0x29a], 0",
+    "037F071E 7436 je 0x37f0756",
+    "037F0720 84c0 test al, al",
+    "037F0722 7532 jne 0x37f0756",
+    "037F0724 0fb65108 movzx edx, byte ptr [rcx + 8]",
+    "037F0728 0fb6c2 movzx eax, dl",
+    "037F072B 2406 and al, 6",
+    "037F072D 3c06 cmp al, 6",
+    "037F072F 7425 je 0x37f0756",
+    "037F0731 f6c208 test dl, 8",
+    "037F0734 7520 jne 0x37f0756",
+    "037F0736 4885c9 test rcx, rcx",
+    "037F0739 740a je 0x37f0745",
+    "037F073B 488b01 mov rax, qword ptr [rcx]",
+    "037F073E ba01000000 mov edx, 1",
+    "037F0743 ff10 call qword ptr [rax]",
+    "037F0745 48c70700000000 mov qword ptr [rdi], 0",
+    "037F074C 32c0 xor al, al",
+    "037F074E 4883c420 add rsp, 0x20",
+    "037F0752 5f pop rdi",
+    "037F0753 5e pop rsi",
+    "037F0754 5b pop rbx",
+    "037F0755 c3 ret",
+    "037F0756 8b86ec030000 mov eax, dword ptr [rsi + 0x3ec]",
+    "037F075C 89410c mov dword ptr [rcx + 0xc], eax",
+    "037F075F 488bb6d0030000 mov rsi, qword ptr [rsi + 0x3d0]",
+    "037F0766 c1eb02 shr ebx, 2",
+    "037F0769 80e301 and bl, 1",
+    "037F076C 488b07 mov rax, qword ptr [rdi]",
+    "037F076F 48c70700000000 mov qword ptr [rdi], 0",
+    "037F0776 4889442458 mov qword ptr [rsp + 0x58], rax",
+    "037F077B 7423 je 0x37f07a0",
+    "037F077D 488d4e78 lea rcx, [rsi + 0x78]",
+    "037F0781 ff15099fbe00 call qword ptr [rip + 0xbe9f09]",
+    "037F0787 488d542458 lea rdx, [rsp + 0x58]",
+    "037F078C 488bce mov rcx, rsi",
+    "037F078F e8acfb08fd call 0x880340",
+    "037F0794 488d4e78 lea rcx, [rsi + 0x78]",
+    "037F0798 ff153aa0be00 call qword ptr [rip + 0xbea03a]",
+    "037F079E eb0e jmp 0x37f07ae",
+    "037F07A0 488d542458 lea rdx, [rsp + 0x58]",
+    "037F07A5 488bce mov rcx, rsi",
+    "037F07A8 e893fb08fd call 0x880340",
+    "037F07AD 90 nop",
+    "037F07AE 488b0f mov rcx, qword ptr [rdi]",
+    "037F07B1 4885c9 test rcx, rcx",
+    "037F07B4 740a je 0x37f07c0",
+    "037F07B6 488b01 mov rax, qword ptr [rcx]",
+    "037F07B9 ba01000000 mov edx, 1",
+    "037F07BE ff10 call qword ptr [rax]",
+    "037F07C0 b001 mov al, 1",
+    "037F07C2 4883c420 add rsp, 0x20",
+    "037F07C6 5f pop rdi",
+    "037F07C7 5e pop rsi",
+    "037F07C8 5b pop rbx",
+    "037F07C9 c3 ret"
+  ],
+  "costs": {
+    "new_executable_reads": 0,
+    "process_memory_reads": 0,
+    "Game_MCP_Driver_SDK_calls": 0,
+    "builds": 0,
+    "desktop_actions": 0,
+    "W_index_mutations": 0,
+    "old_packet_overwrites": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "policy_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5",
+    "uses_existing_parent_packet_budget": true,
+    "new_reservation_claimed": false,
+    "available_bytes": 1061905596416,
+    "maximum_packet_bytes": 32768,
+    "record_review_days": 180
+  }
+}

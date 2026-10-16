@@ -146,6 +146,24 @@
       "relative_path": "p30-halt-classifier-public01/ACTUAL-HALT-ACK-OFFLINE-REPLAY.json",
       "sha256": "7b457672c49cdcdb2146f0e7edb2ccd1b3563b4cb022fa864df03d3242771bd0",
       "bytes": 2419
+    },
+    {
+      "name": "p30-original-move-error",
+      "relative_path": "native21-cold-generation03/p30-responses/0417-1-result.json",
+      "sha256": "c1f5fee04513524064b32a07abd87b63fd997b8bb6fd74304d1ac6151f1a44a9",
+      "bytes": 843
+    },
+    {
+      "name": "p30-independent-move-intent",
+      "relative_path": "native21-cold-generation03/p30-responses/0418-1-result.json",
+      "sha256": "1ba1988cabeacf4297aec0b53dfb9af6b5cb451789692a6335a7a42205c3aeb7",
+      "bytes": 53677
+    },
+    {
+      "name": "p31-current-siege-performance",
+      "relative_path": "p31-current-siege-performance01/MANIFEST.json",
+      "sha256": "58d3b9e5b1f03fac94850e7e2c6ac53dc6a89c9263f923d219d30141335e3b36",
+      "bytes": 1457
     }
   ],
   "large_inputs_in_git": false,
@@ -183,7 +201,9 @@
     "land_route_public_final_subtests": 43,
     "public_halt_classifier_cunit_zero_fixture": true,
     "public_halt_classifier_all_runners_installed": false,
-    "actual_native_validator_veto_seen": false
+    "actual_native_validator_veto_seen": false,
+    "original_move417_replayed": false,
+    "original_move417_zero_action_claimed": false
   },
   "goal_status": {
     "seconds_per_day_half_second_met": false,
@@ -203,12 +223,15 @@
     "sdk28_rev2_attempt02_same_game": true,
     "window24_failed_days": 0,
     "window25_failed_days": 76,
-    "latest_status_source": "Root SDK30 same-Game resume, first batch eight days and window26 reported thirteen-day running prefix; previous window25 failed76 remains",
+    "latest_status_source": "Original P30 AUTO417 unavailable move error plus independent SEM418 existing route; SDK30 owner closed1/0; SDK31 preparation not accepted here",
     "continuous_thirty_years_met": false,
     "wal_sdk29_deployed": false,
     "sdk30_same_game": true,
     "window26_reported_running_days": 13,
-    "window26_baseline_date_raw": 53434464
+    "window26_baseline_date_raw": 53434464,
+    "window26_failed_days": 72,
+    "window26_last_date_raw": 53436192,
+    "latest_status": "SDK31 first 3-day result reclassified locally via controls16/17, settled FULL18/MET19; FULL20 issued; window27 not yet admitted at this observation"
   },
   "source_delta": {
     "public_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
@@ -220,5 +243,53 @@
     "public_only": 41,
     "research_reconstruction_not_production_rollback": true,
     "actual_source_reads_during_git_only_verify": 0
+  },
+  "performance_segments": [
+    {
+      "source": "Root completed AUTO68..415 timestamps and p31-current-siege-performance01",
+      "started_at_utc": "2026-10-16T19:32:00.731840+00:00",
+      "ended_at_utc": "2026-10-16T19:38:45.227582+00:00",
+      "game_days": 72,
+      "elapsed_seconds": 404.495742,
+      "seconds_per_game_day": 5.617996416666667,
+      "excludes_failed_AUTO417_and_downtime": true,
+      "full_campaign_average": false,
+      "nested_timings_must_not_be_added": true
+    }
+  ],
+  "sdk31_move_unknown_ack_publication": {
+    "driver": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+    "outcome": "tools/g2_saved_campaign/move_unknown_ack_outcome.py",
+    "tests": "ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py",
+    "research": "docs/ck3-native-ai/research/move-unknown-ack-sdk31/SOURCE-PINS.json",
+    "original417_replayed": false,
+    "native_ack_verified": false,
+    "future_runtime_branch_live_verified": false,
+    "public_revision": 256,
+    "native_revision": 3207,
+    "focused_cases": 26,
+    "focused_subtests": 22
+  },
+  "third_public_ci": {
+    "commit": "c535719b04428c0723c5474258c9a7f7f6bd861b",
+    "official_run": 38956954264,
+    "conclusion": "success",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38956954264"
+  },
+  "p31_command_queue_abi": {
+    "return_abi": "bool AL proven by full current .4 79-instruction function",
+    "actual417_native_stage": "unknown",
+    "evidence": [
+      {
+        "path": "docs/ck3-native-ai/evidence/p31-command-queue-return-abi/NATIVE-RETURN-ABI-FINAL.json",
+        "bytes": 11891,
+        "sha256": "eb27cacb01eb3d1b8fda82a2304b032abe0abfeb481eb98bd0dbd7077f85835f"
+      },
+      {
+        "path": "docs/ck3-native-ai/evidence/p31-command-queue-return-abi/PRECALL-ARGUMENT-LIVENESS-SUPPLEMENT.json",
+        "bytes": 2342,
+        "sha256": "ba8dbf301bff73c53b4715c144bf2412528d5fddb852e0bae2a152f32fe54af5"
+      }
+    ]
   }
 }
