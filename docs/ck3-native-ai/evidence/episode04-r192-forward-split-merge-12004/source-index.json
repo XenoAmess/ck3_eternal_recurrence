@@ -1,0 +1,143 @@
+{
+  "schema": "xar.e04.r192-portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0192",
+  "archive": {
+    "file": "r192-forward-evidence.zip",
+    "bytes": 80655,
+    "sha256": "675bbbfd9089793b7af7cd72640e8471e1510c7ad862d5661f9341c0fab45ffe"
+  },
+  "normal_close": {
+    "NORMAL-SAVE.actual.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\r09-forward-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 4745,
+      "sha256": "241d04d7edf1cd918e86a58c9ac7b2c56802ddc32485b0480786b0125ba985ad"
+    },
+    "BOOTSTRAP-OBSERVED.actual.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\r09-forward-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 916,
+      "sha256": "1508feaea1d088635b3e984bcaba156c83a764052407099df6c1465d5354114e"
+    },
+    "SCREEN-RELEASE.actual.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\r09-forward-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4831,
+      "sha256": "c475ee410f0ed2f9361302006c098d8cdd73fdd3ffea333349f0ae6a6db990ea"
+    }
+  },
+  "production_sources": {
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/split_merge/root_relay.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+      "bytes": 53070,
+      "sha256": "cf348d964ddef87fe8406d4de02eb16a5373ebe2a6ce5d8be91584aef8758071"
+    },
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/split_merge/army_split_transfer_assertions_12004.py": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\army_split_transfer_assertions_12004.py",
+      "bytes": 8731,
+      "sha256": "7005539716e559f3bcad8a38d620e0a46528179c2f7101b6d42288b7935421b6"
+    }
+  },
+  "members": {
+    "original/F0-baseline.actual.json": {
+      "bytes": 152618,
+      "sha256": "ef4a366e8179db0d969873d346915e6513c6034a24edaf3549626a53c15e039d"
+    },
+    "original/F1-post-split-observation.actual.json": {
+      "bytes": 157700,
+      "sha256": "94644d5a84ee0f10c11c546cdbdd7c7d7a89551523d14a7a95efd8529ac1c3f8"
+    },
+    "original/F0-endpoint.actual.json": {
+      "bytes": 71272,
+      "sha256": "2dbb679dd967632f9869f53d56ce96a141ccbba879678faf1b2c3901b410b3e8"
+    },
+    "original/split.once.claim.json": {
+      "bytes": 5113,
+      "sha256": "822654ce547ef44014d8c5d4982b6b76a27fe8d6b1c796322b37492f7678520e"
+    },
+    "original/split.submission.actual.json": {
+      "bytes": 4235,
+      "sha256": "f2829aba7c87e799547a640cd1f1cb7915bae3cd2cd1320b48b9f93301833b4a"
+    },
+    "original/FILM-CONTROLLER.actual.json": {
+      "bytes": 5327,
+      "sha256": "7c0fff07708c2ff2c4d02cae48defd03fcce5fac3e940369924499b221f4ffa6"
+    },
+    "original/independent-analysis.json": {
+      "bytes": 18285,
+      "sha256": "0a55fabbd809965d6bb691147154b641ea01dd90854fe533a19ccd34cc4fad9e"
+    },
+    "analysis/SPLIT-ANALYSIS.actual.json": {
+      "bytes": 15950,
+      "sha256": "3bacc6681cf8cd94297c77396b836096db46e35ba46266abdb7ed5236ecdda10"
+    },
+    "analysis/MERGE-ANALYSIS.actual.json": {
+      "bytes": 15268,
+      "sha256": "a4b4f8e2fb75d99f2142906bc7132cc76dfec65f0cde3862c23ad5cc261b6da6"
+    },
+    "analysis/POSTMERGE-PACKET.actual.json": {
+      "bytes": 64733,
+      "sha256": "b86aad1c8dcad5beb2e92269273b17d5ca3f8fa8f429f3a52617f40ae86dd606"
+    },
+    "analysis/POSTSPLIT-CURRENT-FLAGS.actual.json": {
+      "bytes": 6752,
+      "sha256": "713ab2a46c673490c70eceb11255686b646a2e7af44b06a831ae8f2e2a8b8ea4"
+    },
+    "analysis/postsplit-full.read-once.claim.json": {
+      "bytes": 702,
+      "sha256": "abcfbaa79a811c8c944de9ab3cb6c5e33ebd0d34406bf1b0b2414a7fdf218d97"
+    },
+    "analysis/postmerge-full.read-once.claim.json": {
+      "bytes": 624,
+      "sha256": "1a4e2ab9ae8976e5dfd938291378e98fde62665970327725c37a94c6141d05b0"
+    },
+    "analysis/POSTSPLIT-CURRENT-FLAGS.portable.zip": {
+      "bytes": 2406,
+      "sha256": "0de87d264fbb6d80748a4bc51736ceafcc89719c4093ebfd37b800831da3c18f"
+    },
+    "independent/F0-F1-F2-RESULT.actual-a01.json": {
+      "bytes": 17176,
+      "sha256": "b8a3d574d458b3579058ddda4594d6d667bb9dacf9cbaff53942aa5351b2da1b"
+    },
+    "independent/consume_f0_f1_f2.py": {
+      "bytes": 11216,
+      "sha256": "c00d92b3ec8db216cc29c91d115b19b2d64158580de1fc607fe978b8373a70b3"
+    },
+    "original/runtime-actor-identity.actual-a01.json": {
+      "bytes": 7767,
+      "sha256": "b17492b1d1e1fdae1e95aaab9684ae9080202874ca9d1bf4eb3c93f4bf5520ff"
+    },
+    "original/controller-input.actual.json": {
+      "bytes": 5988,
+      "sha256": "825b9db75970f697769d05f81029dc92f9296b8fc63be294941f0b867a17e347"
+    },
+    "close/NORMAL-SAVE.actual.json": {
+      "bytes": 4745,
+      "sha256": "241d04d7edf1cd918e86a58c9ac7b2c56802ddc32485b0480786b0125ba985ad"
+    },
+    "close/BOOTSTRAP-OBSERVED.actual.json": {
+      "bytes": 916,
+      "sha256": "1508feaea1d088635b3e984bcaba156c83a764052407099df6c1465d5354114e"
+    },
+    "close/SCREEN-RELEASE.actual.json": {
+      "bytes": 4831,
+      "sha256": "c475ee410f0ed2f9361302006c098d8cdd73fdd3ffea333349f0ae6a6db990ea"
+    },
+    "media/portable-media-facts.actual-a01.json": {
+      "bytes": 9913,
+      "sha256": "c7dfccf1d06d38a47ec28ef7175562fe97886d2593f3bb0caad31b5549aa0c33"
+    }
+  },
+  "offline_unique_Driver_body_reads": {
+    "F0": 0,
+    "F1": 1,
+    "F2": 1
+  },
+  "limits": [
+    "Original strict unrelated gate and partial filmed chain remain RED.",
+    "Forward Merge was outside original film; reverse independent cold-load from same S0 remains pending.",
+    "Equal stocks100 and cap100 match native formula but prove no positive upper clamp or differing-stock weighting.",
+    "0DATA cache1/1 Character roles are not physical soldiers or observed creation-PC events.",
+    "Archive value projections are not original pipe bytes or whole Driver originals."
+  ],
+  "R09_full_card_closed": false
+}

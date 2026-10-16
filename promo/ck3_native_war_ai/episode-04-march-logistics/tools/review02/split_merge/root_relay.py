@@ -397,7 +397,7 @@ class Relay:
     def snapshot(self,name):
         value,refs=self.request(name,'ck3_take_snapshot',{'include_native_command_history':False})
         frame=value['body'];validate_frame(frame,self.binding);return frame,refs
-    def packet(self,name,*,army_ids=None,split_before_roster=None,raw_file_limit=None):
+    def packet(self,name,*,army_ids=None,split_before_roster=None,raw_file_limit=None,required_army_id=None):
         s,sref=self.snapshot(name+'-frame');full_roster=roster(s)
         selected=army_ids is not None
         ids=selected_query_ids(s,army_ids,split_before_roster=split_before_roster)
@@ -440,7 +440,7 @@ class Relay:
             need(q.get('status')=='available' and (q.get('army_strengths_query_scope') or {}).get('published_scope_status')=='available'
                  and all(a.get('status')=='available' for a in armies),'actual selected query unavailable; no row deletion or zero fill')
             available,excluded=armies,[]
-        else:available,excluded=selected_available_cohorts(armies,s,self.a.army_id)
+        else:available,excluded=selected_available_cohorts(armies,s,self.a.army_id if required_army_id is None else required_army_id)
         self.observation.compare_split_merge_cohorts(available,available)
         commanders={};commander_refs={}
         for army in available:
@@ -571,7 +571,7 @@ class Relay:
         need(result['accepted'],'complete split postcondition refused; keep actual packet and do not retry')
         return ref
     def post_merge(self):
-        claim,original=self.original('merge');before=self.saved(claim.get('before_phase','post-split'));after=self.packet('post-merge')
+        claim,original=self.original('merge');before=self.saved(claim.get('before_phase','post-split'));after=self.packet('post-merge',required_army_id=claim['army_ids'][0])
         observed=self.save_packet('post-merge-observation',after,original_action=original,
           qualification='Independent packet only; assertions have not run')
         first,last=before['packet']['frame'],after['frame'];self.observation._fresh_pair(first,last)

@@ -1,0 +1,144 @@
+{
+  "schema": "xar.r08.raw-selector4-wallet-getter-link.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T22:02:32.190751+00:00",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "image_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "getter": {
+    "begin_rva": "28B9490",
+    "end_exclusive": "28B9590",
+    "raw_hex": "4883ec284c8b91b00100004c8bca488bd14d85d20f84bf0000004183f8050f87b50000004963c04c8d05426b74fd418b8c8078958b024903c8ffe1498b8200010000498901498bc14883c428c3488b82c00100004885c0741483b8ec010000007425488b80e00100008b08eb1f488b82d00100004885c0740e837874007408488b40688b08eb05b9ffffffff894c2430488d4c2430e8c6d811fe817814646e614c7536837810ff7430488b8018030000498901498bc14883c428c3488b82c00100004885c07412488b80a0040000498901498bc14883c428c349c70100000000498bc14883c428c3cb948b0269958b0269958b02dd948b024b958b0269958b02",
+    "sha256": "a321c1283d0c8348674bb0fd9dca7598507d909fbba956c147917a67fe315557",
+    "code_bytes": 232,
+    "table_bytes": 24,
+    "table_rva": "28B9578",
+    "table_targets": [
+      "28B94CB",
+      "28B9569",
+      "28B9569",
+      "28B94DD",
+      "28B954B",
+      "28B9569"
+    ],
+    "instructions": 59,
+    "ABI": "out64*=fn(Character* RCX,out64* RDX,rawselector R8D); normal return original out pointer",
+    "raw4_load": [
+      "28B954B",
+      "488b82c0010000",
+      "28B9557",
+      "488b80a0040000"
+    ],
+    "raw4_out": [
+      "28B955E",
+      "498901"
+    ],
+    "normal_returns": [
+      "28B94DC",
+      "28B954A",
+      "28B9568",
+      "28B9577"
+    ],
+    "original_ASM_tail_is_data_not_instructions": true,
+    "old_source_path_provenance_only": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a04\\resource_read.bin",
+    "old_read_receipt_pin": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a04\\READ-RECEIPT.actual.json",
+      "bytes": 16297,
+      "sha256": "23ba24261cda88e9c8facbba7edcde0bfee660b6e1bf5ea4a7f89b61e9451a1a"
+    },
+    "old_extent_record": {
+      "label": "resource_read",
+      "begin_rva": 42701968,
+      "declared_end_rva": 42702224,
+      "captured_end_rva": 42702224,
+      "bytes": 256,
+      "sha256": "a321c1283d0c8348674bb0fd9dca7598507d909fbba956c147917a67fe315557",
+      "calls": [
+        {
+          "at_rva": 42702075,
+          "target_rva": 42702108,
+          "kind": "jmp"
+        },
+        {
+          "at_rva": 42702101,
+          "target_rva": 42702108,
+          "kind": "jmp"
+        },
+        {
+          "at_rva": 42702117,
+          "target_rva": 10317296,
+          "kind": "call"
+        }
+      ],
+      "extra": {
+        "pdata_index": 139835,
+        "unwind_rva": 84973076,
+        "partial": false
+      }
+    }
+  },
+  "writers": {
+    "prior_bundle_relative_path": "docs/ck3-native-ai/evidence/episode04-r08-rate-application-12004/sources.json",
+    "prior_bundle_sha256": "b89421fe2d0fb06ff8075226f1a7522aa2d0b4691989198ca497210e9af43182",
+    "gateway": {
+      "begin_rva": "28B9950",
+      "bytes": 540,
+      "end_rva_exclusive": "28B9B6C",
+      "hex": "48895c24104889742418574883ec20498bd84963f14c8b81b0010000488bf94d85c00f84cb0100004885db0f84c201000083fa050f87b90100004863c2488d156c6674fd8b8c82549b8b024803caffe1498d88f8000000488bd34c8bc7e81e55faff488b87b0010000488b887802000048837920000f8478010000448bce4c8bc333d2488b5c2438488b7424404883c4205fe9d91b13ff488bcfe891632f0084c00f844c010000488b87c00100004885c0741483b8ec010000007425488b80e00100008b08eb1f488b87d00100004885c0740e837874007408488b40688b08eb05b9ffffffff894c2430488d4c2430e8acd311fe817814646e614c0f85f2000000837810ff0f84e8000000488d88100300004c8bc7488bd3e88355faff488b87b0010000488b8878020000488b51204885d20f84bb0000004885db0f88b20000004881c2a00100000f84a50000004533c983fe047429488b04f2488d0cf2483bc37c16482bc3488901488b5c2438488b7424404883c4205fc3482bd84c890941b803000000418bc00f1f840000000000488b0cc2483bcb7d29482bd94c890cc241ffc84883e80179e74885db7e4548295a18488b5c2438488b7424404883c4205fc34963c048291cc2488b5c2438488b7424404883c4205fc3488bcfe8ff632f0084c0740e488b87c0010000482998a0040000488b5c2438488b7424404883c4205fc390a0998b02439b8b02439b8b02e7998b02299b8b02439b8b02",
+      "sha256": "0205c578926ef03ce75675789c86f9813d1d192dda86acdedcd9a7048e84c530"
+    },
+    "parent_tail": {
+      "begin_rva": "28F7BDF",
+      "bytes": 191,
+      "end_rva_exclusive": "28F7C9E",
+      "hex": "4883bdc0010000000f84a7000000488bcde8fbb1fcff8178384f6244470f8592000000488b404048c1e829a8010f84820000004533c9488d8c24b0000000488bd5e8fbb62d004533c0488d4c2430488bd5e82bc33100488b9c24b0000000488b4048482bd84885db7e2e4883bdb0010000007441488bcde8d5822b0084c07435488b85c0010000480198a00400004881c4980000005d5bc34885c0741841b90300000048f7db4c8bc3488bcd418d5101e8bc1cfcff4881c4980000005d5bc3",
+      "sha256": "1194f5fa6b33ad1ba282c8aa4e87960ac14a2ce0ebdc21146f85a2f1b0ac5be9"
+    },
+    "known_physical_path": "Character+1C0 -> context+4A0",
+    "add_site": "28F7C66",
+    "sub_site": "28B9B3C",
+    "write_gate": "2BAFF30 AL true; additional original caller/gateway guards apply"
+  },
+  "incoming": {
+    "begin": "2BCA600",
+    "captured_prefix_hex": "40555741564883ec208bea4c8bf185d2740583fa037517448bc5488d542450e86ceeceff488b7c24504885ff780eb8ffffffff4883c420415e5f5dc3",
+    "sha256": "e5e77acb2da2a552ecb24d4c214d44637a0de5136cba7c0d9e45d49e41219351",
+    "call_rva": "2BCA61F",
+    "call_hex": "e86ceeceff",
+    "passes_only_rawselectors": [
+      0,
+      3
+    ],
+    "raw4_actual_incoming_observed": false
+  },
+  "semantics": {
+    "physical_writer_getter_alias_confirmed": true,
+    "selector4_authoritative_business_name": null,
+    "selector4_GetCurrency_registration_confirmed": false,
+    "native_getter_does_not_call_2BAFF30_in_raw4_case": true,
+    "missing_extension_or_context_writes_default_zero": true,
+    "default_zero_does_not_establish_physical_balance_zero": true,
+    "readability_is_not_debit_eligibility": true,
+    "unsupported_rawselectors": [
+      1,
+      2,
+      5
+    ],
+    "paid_military_amount_raw": null,
+    "payer": null,
+    "cadence": null,
+    "new_live_credit": 0
+  },
+  "new_EXE_reads": {
+    "code": 0,
+    "metadata": 0,
+    "whole_hashes": 0,
+    "scans": 0
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r192-r09-a01\\R192-CAPACITY.actual-root-a01.json",
+    "sha256": "c7d2cf94ae16a4b0bf1242f5496e3c4f01677de7f93cebe5122360c79d96a9ac",
+    "shared_offline_pool_bytes": 134217728,
+    "lane_package_limit_bytes": 98304,
+    "deadline_utc": "2026-10-16T23:17:53.812799Z"
+  }
+}

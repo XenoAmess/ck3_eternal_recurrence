@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:58:30.250877+00:00",
+  "scope": "fresh independent EDL preparation query; not copied R192 release evidence",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "official_query": {
+    "argv": [
+      "gh",
+      "api",
+      "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+    ],
+    "exit_code": 0,
+    "stderr": ""
+  },
+  "release_response": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\official-release.actual.raw.json",
+    "bytes": 7123,
+    "sha256": "78119567a35336d16a72e38283675960d188e02241be866fd5e4a718a4fcdc9f",
+    "verification": "fresh-small-file-bytes"
+  },
+  "release_tag": "v0.2.1",
+  "published_at": "2026-09-02T06:57:15Z",
+  "wheel": {
+    "name": "xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "size": 190405,
+    "digest": "sha256:f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "browser_download_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+  },
+  "installed_version": "0.2.1",
+  "installed_origin": {
+    "archive_info": {
+      "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+      "hashes": {
+        "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+  },
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "cli_probes": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "xar-promo 0.2.1\r\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: xar-promo [-h] [--version]\r\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\r\n\r\nCreate, verify, and preserve reusable promotional-video project metadata.\r\n\r\npositional arguments:\r\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\r\n    init                create a ProjectConfig and its first bound run without\r\n                        overwriting files\r\n    start-run           create another run bound to the current exact\r\n                        ProjectConfig bytes\r\n    validate            validate a ProjectConfig, RunManifest, or legacy\r\n                        showcase v1 manifest\r\n    preserve            copy a file to immutable content-addressed storage and\r\n                        append its run record\r\n    signoff             append an explicit human decision bound to preserved\r\n                        artifact bytes\r\n    plan                compose and validate a pipeline plan without invoking\r\n                        providers or writing\r\n    build               run a composed pipeline and preserve success or\r\n                        failure material in its run\r\n    audit               write and preserve an automated audit without creating\r\n                        human approval\r\n    review              plan or create a pending human-review package without\r\n                        recording sign-off\r\n    export              validate or create an offline release bundle from an\r\n                        explicit policy\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --version             show program's version number and exit\r\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "plan",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: xar-promo plan [-h] --workdir WORKDIR --composer COMPOSER\r\n                      [--validate-only]\r\n                      document\r\n\r\npositional arguments:\r\n  document             native ProjectConfig or RunManifest\r\n\r\noptions:\r\n  -h, --help           show this help message and exit\r\n  --workdir WORKDIR    fresh attempt path to validate without creating\r\n  --composer COMPOSER  project PipelineComposer as MODULE:ATTRIBUTE\r\n  --validate-only      explicitly request the command's always-read-only\r\n                       validation mode\r\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "validate",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: xar-promo validate [-h] [--profile {authoring,release}]\r\n                          [--structure-only] [--json]\r\n                          [document]\r\n\r\npositional arguments:\r\n  document\r\n\r\noptions:\r\n  -h, --help            show this help message and exit\r\n  --profile {authoring,release}\r\n  --structure-only      skip referenced-file byte and SHA checks\r\n  --json                write the GREEN result as JSON\r\n",
+      "stderr": ""
+    }
+  ]
+}

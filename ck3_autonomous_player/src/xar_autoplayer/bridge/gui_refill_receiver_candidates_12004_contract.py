@@ -20,6 +20,7 @@ def normalize_receiver_candidates(raw):
     fields=FIELDS | ({"failure_diagnostic"} if type(raw) is dict and "failure_diagnostic" in raw else set())
     if type(raw) is dict and "local_definition_entry_only" in raw:fields=fields|{"local_definition_entry_only"}
     if type(raw) is dict and "definition_chain_prefix_depth8" in raw:fields=fields|{"definition_chain_prefix_depth8"}
+    if type(raw) is dict and "definition_frontier_continuation_depth8_12" in raw:fields=fields|{"definition_frontier_continuation_depth8_12"}
     if (type(raw) is not dict or raw.keys()!=fields or raw['source']!=SOURCE
             or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
             or raw['current_variable_table_observed'] is not False
@@ -49,6 +50,14 @@ def normalize_receiver_candidates(raw):
                     or prefix['rows'][0]['raw_definition_entry_count']!=local['raw_definition_entry_count']
                     or prefix['rows'][0]['definition_present']!=local['definition_present']):
                 raise ValueError('definition prefix differs from independent local view')
+    continuation=None
+    if 'definition_frontier_continuation_depth8_12' in raw:
+        if prefix is None:
+            raise ValueError('frontier continuation lacks its original depth8 prefix')
+        continuation=normalize_definition_frontier_continuation_depth8_12(raw['definition_frontier_continuation_depth8_12'])
+        if continuation['status']=='available':
+            if prefix['status']!='available' or any(continuation[k]!=prefix[k] for k in ('receiver_variable_index','declared_type_id')):
+                raise ValueError('frontier continuation crossed its stable prefix/declaration')
     if 'failure_diagnostic' in raw:
         if raw['status']!='unavailable':raise ValueError('failure diagnostic cannot qualify an available candidate')
         normalize_receiver_failure(raw['failure_diagnostic'])
@@ -57,7 +66,7 @@ def normalize_receiver_candidates(raw):
                 or raw['stable_double_read'] or raw['entries']
                 or raw['receiver_variable_index'] is not None or raw['declared_type_id'] is not None):
             raise ValueError('unavailable candidate must preserve unknown values')
-        return {**raw, **({"local_definition_entry_only":local} if local is not None else {}), **({"definition_chain_prefix_depth8":prefix} if prefix is not None else {})}
+        return {**raw, **({"local_definition_entry_only":local} if local is not None else {}), **({"definition_chain_prefix_depth8":prefix} if prefix is not None else {}), **({"definition_frontier_continuation_depth8_12":continuation} if continuation is not None else {})}
     if (raw['status']!='available' or raw['unavailable_reason'] is not None
             or raw['stable_double_read'] is not True
             or not integer(raw['receiver_variable_index'],0,255)
@@ -157,6 +166,100 @@ def normalize_definition_chain_prefix_depth8(raw):
                 raise ValueError('filtered parent entry cannot qualify provider/owner observation')
     return {**raw,'rows':rows}
 
+def normalize_definition_frontier_continuation_depth8_12(raw):
+    fields={'source','scope','status','unavailable_reason','receiver_type_id','start_depth','depth_limit',
+            'current_variable_table_observed','native_receiver_selected','provider_invoked',
+            'receiver_variable_index','declared_type_id','stop_depth','stop_reason','next_context_present',
+            'stable_double_read','rows'}
+    if type(raw) is dict and 'failure_diagnostic' in raw:fields=fields|{'failure_diagnostic'}
+    if (type(raw) is not dict or raw.keys()!=fields
+            or raw['source']!='native_gui_type635_frontier_continuation_depth8_12_12004'
+            or raw['scope']!='definition_frontier_depth8_through11'
+            or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
+            or type(raw['start_depth']) is not int or raw['start_depth']!=8
+            or type(raw['depth_limit']) is not int or raw['depth_limit']!=12
+            or any(raw[k] is not False for k in ('current_variable_table_observed','native_receiver_selected','provider_invoked'))
+            or type(raw['stable_double_read']) is not bool or type(raw['rows']) is not list or len(raw['rows'])>4):
+        raise ValueError('frontier continuation schema/scope')
+    if 'failure_diagnostic' in raw:
+        if raw['status']!='unavailable':raise ValueError('available continuation cannot contain a failed capture')
+        normalize_receiver_failure(raw['failure_diagnostic'],max_depth=12)
+    observed=('receiver_variable_index','declared_type_id','stop_depth','stop_reason','next_context_present')
+    if raw['status']=='unavailable':
+        if (type(raw['unavailable_reason']) is not str or not raw['unavailable_reason']
+                or raw['stable_double_read'] or raw['rows'] or any(raw[k] is not None for k in observed)):
+            raise ValueError('unavailable continuation must preserve unknown')
+        return dict(raw)
+    if (raw['status']!='available' or raw['unavailable_reason'] is not None or not raw['stable_double_read']
+            or not integer(raw['receiver_variable_index'],0,255)
+            or type(raw['declared_type_id']) is not int or raw['declared_type_id']!=635
+            or not integer(raw['stop_depth'],8,12)
+            or type(raw['stop_reason']) is not str
+            or raw['stop_reason'] not in {'null_end','cycle','static_direct_terminal','depth_limit'}):
+        raise ValueError('frontier continuation boundary/double-read')
+    rows=[];entries=[]
+    for ordinal,row in enumerate(raw['rows']):
+        depth=8+ordinal
+        if (type(row) is not dict or row.keys()!={'ancestor_depth','definition_present',
+                'raw_definition_entry_count','first_match_entry_index','entries','parent_edge','parent_present'}
+                or type(row['ancestor_depth']) is not int or row['ancestor_depth']!=depth
+                or type(row['definition_present']) is not bool
+                or type(row['entries']) is not list or len(row['entries'])>1
+                or type(row['parent_edge']) is not str
+                or row['parent_edge'] not in {'definition_108','context_e8','not_read_native_static_stop'}
+                or (row['parent_present'] is not None and type(row['parent_present']) is not bool)):
+            raise ValueError('frontier continuation row/depth/edge')
+        if not row['definition_present']:
+            if row['raw_definition_entry_count'] is not None or row['entries'] or row['parent_edge']!='context_e8':
+                raise ValueError('null continuation definition cannot supply a table/definition edge')
+        elif (not integer(row['raw_definition_entry_count'],0,256)
+                or (row['entries'] and row['raw_definition_entry_count']==0)):
+            raise ValueError('frontier continuation definition count')
+        if row['entries']:
+            if not integer(row['first_match_entry_index'],0,row['raw_definition_entry_count']-1):
+                raise ValueError('continuation first match index outside its definition table')
+        elif row['first_match_entry_index'] is not None:
+            raise ValueError('continuation no-match cannot claim a matching entry index')
+        if row['parent_edge']=='definition_108' and row['parent_present'] is not True:
+            raise ValueError('definition parent edge must have an actual nonnull parent')
+        terminal=False
+        for entry in row['entries']:
+            if type(entry) is not dict or entry.get('ancestor_depth')!=depth:
+                raise ValueError('frontier continuation entry depth')
+            # Reuse production descriptor width/RVA/owner rules with an internal
+            # ordinal rebasing only. This does not claim a native receiver.
+            entries.append({**entry,'ancestor_depth':ordinal})
+            if entry.get('entry_flag_4c')==0 and any(entry.get(k) is not None for k in
+                    ('provider_vtable_rva','provider_slot2_rva','direct_owner_full_id')):
+                raise ValueError('filtered continuation parent cannot supply provider/owner')
+            if entry.get('entry_flag_4c')==0 and entry.get('direct_owner_identity_verified') is not False:
+                raise ValueError('filtered continuation parent cannot verify owner')
+            terminal=integer(entry.get('entry_mode_40'),0,1) and integer(entry.get('entry_flag_4c'),1,255)
+        last=ordinal==len(raw['rows'])-1
+        if terminal:
+            if (not last or raw['stop_reason']!='static_direct_terminal'
+                    or row['parent_edge']!='not_read_native_static_stop' or row['parent_present'] is not None):
+                raise ValueError('continuation reads beyond a native static direct stop')
+        elif row['parent_edge']=='not_read_native_static_stop' or row['parent_present'] is None:
+            raise ValueError('continuation fabricates a static parent stop')
+        if not last and row['parent_present'] is not True:
+            raise ValueError('continuation continues beyond null/end')
+        rows.append(dict(row))
+    envelope={k:raw[k] for k in FIELDS if k!='entries'}
+    envelope.update(source=SOURCE,entries=entries)
+    normalize_receiver_candidates(envelope)
+    reason=raw['stop_reason'];count=len(rows)
+    if reason=='depth_limit':
+        valid=count==4 and raw['stop_depth']==12 and raw['next_context_present'] is True and rows[-1]['parent_present'] is True
+    elif reason=='null_end':
+        valid=count>=1 and raw['stop_depth']==8+count and raw['next_context_present'] is False and rows[-1]['parent_present'] is False
+    elif reason=='cycle':
+        valid=count<=3 and raw['stop_depth']==8+count and raw['next_context_present'] is True and (not rows or rows[-1]['parent_present'] is True)
+    else:
+        valid=count>=1 and raw['stop_depth']==7+count and raw['next_context_present'] is None and rows[-1]['parent_edge']=='not_read_native_static_stop'
+    if not valid:raise ValueError('continuation stop reason contradicts rows/frontier')
+    return {**raw,'rows':rows}
+
 def normalize_local_definition_entry_only(raw):
     fields={"source","scope","status","unavailable_reason","receiver_type_id","ancestor_depth",
             "current_variable_table_observed","native_receiver_selected","receiver_variable_index",
@@ -198,7 +301,7 @@ def normalize_local_definition_entry_only(raw):
     if any(e['ancestor_depth']!=0 for e in entries):raise ValueError('local prefix entry is not depth0')
     return {**raw,'entries':entries}
 
-def normalize_receiver_failure(raw):
+def normalize_receiver_failure(raw,*,max_depth=8):
     fields={'stage','kind','capture_pass','read_ordinal','ancestor_depth','raw_declaration_count',
             'raw_index_count','raw_definition_entry_count','context_present','definition_present',
             'local_definition_active_raw'}
@@ -211,7 +314,7 @@ def normalize_receiver_failure(raw):
             raise ValueError('receiver failure diagnostic label')
     if not integer(raw['capture_pass'],1,2) or not integer(raw['read_ordinal'],0,4097):
         raise ValueError('receiver failed-capture pass/read ordinal')
-    if raw['ancestor_depth'] is not None and not integer(raw['ancestor_depth'],0,8):
+    if raw['ancestor_depth'] is not None and not integer(raw['ancestor_depth'],0,max_depth):
         raise ValueError('receiver failure depth')
     for key in ('raw_declaration_count','raw_index_count','raw_definition_entry_count'):
         if raw[key] is not None and not integer(raw[key],-2**31,2**31-1):

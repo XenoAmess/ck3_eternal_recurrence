@@ -1,0 +1,1961 @@
+{
+  "schema": "xar.e04.review02.candidate-edl.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:58:30.250877+00:00",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "scope": "Candidate EDL, not bind_payloads visuals; null bindings intentionally fail production promotion",
+  "fps": 30,
+  "total_frames": 58406,
+  "duration_seconds": 1946.8666666666666,
+  "reuse_existing_audio": true,
+  "provider_calls": 0,
+  "source_card_count": 23,
+  "candidates": [
+    {
+      "id": "R191_SIEGE",
+      "state": "RAW_COMPLETE_BUSINESS_EVENT_PROVEN_SELECTION_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-media-audit-bounded-a01\\portable-media-facts.actual-a01.json",
+        "bytes": 12264,
+        "sha256": "50653b8453aa58b6705333bcf8c5a3a0eb4f90ec7bceffda945c1a54896f1e03",
+        "verification": "fresh-small-file-bytes"
+      },
+      "raw_inherited": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "bytes": 66574010,
+        "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872"
+      },
+      "raw_hash_fresh_in_this_lane": false,
+      "frames": 3359,
+      "encoded_end_seconds": 111.966,
+      "review_window_seconds": [
+        0,
+        111.966
+      ],
+      "selection": null,
+      "native_fact": {
+        "callback": 8,
+        "date_raw": 53148192,
+        "positive_writer_count": 7,
+        "physical_debit_sum": 11,
+        "source": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\r191-portable-candidate-a01\\reader-derived-a03\\STRICT-SOURCE-FACTS.actual.json",
+          "bytes": 9964,
+          "sha256": "f3ade075421681ce83031ed49bb49a27ff328dc4233908ad1c6b6ad580f5ff98",
+          "verification": "fresh-small-file-bytes"
+        }
+      },
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C01-05",
+        "C03-01",
+        "C03-02",
+        "C03-03",
+        "C06-01"
+      ],
+      "limit": "Native writer evidence is strict; UTC/native day completion is not encoded PTS. Inspect exact scene first; 82.9820883 wall seconds are paused tail, not gameplay advancement."
+    },
+    {
+      "id": "R175_LOCKED_HALT",
+      "state": "EXISTING_RAW_CANDIDATES_REVIEW_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r12-locked-halt-r0175-12004.md",
+        "bytes": 3578,
+        "sha256": "3e2100afcf3a0611bc783647d86181787cb964cd98e01d30061eaa801e784e01",
+        "verification": "fresh-small-file-bytes"
+      },
+      "review_windows_seconds": [
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          24
+        ],
+        [
+          24,
+          43.5
+        ]
+      ],
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C01-04",
+        "C04-05",
+        "C04-06",
+        "C04-07"
+      ],
+      "limit": "24s onward notification; candidate ranges are not clean approval. Exact96.7percent/cutoff50percent retain original R175 identity."
+    },
+    {
+      "id": "R176_LOCKED_REROUTE",
+      "state": "EXISTING_RAW_CANDIDATES_REVIEW_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r13-locked-reroute-r0176-12004.md",
+        "bytes": 2289,
+        "sha256": "6e9e3c9c53d9fa6c5f135388c97f24ac3694df202f707258d4d24e8f322e4a3b",
+        "verification": "fresh-small-file-bytes"
+      },
+      "raw_inherited": {
+        "bytes": 60656946,
+        "sha256": "e8eccb2e36b143a94ee73f6f481a792d79adc55df9e387ad1284ef3216c40535"
+      },
+      "review_windows_seconds": [
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          10,
+          20
+        ]
+      ],
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C01-06",
+        "C04-01",
+        "C04-02",
+        "C04-03",
+        "C04-04",
+        "C04-06",
+        "C04-08",
+        "C06-03"
+      ],
+      "limit": "Alternate endpoint is outside45s raw; historical13days/8days remain native data-card facts, not filmed endpoint."
+    },
+    {
+      "id": "R09_FORWARD_NEW",
+      "state": "AWAIT_ROOT_ACTUAL_R192",
+      "expected_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0192",
+      "raw_inherited": null,
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C02-11",
+        "C02-12",
+        "C05-06",
+        "C05-08",
+        "C05-09",
+        "C05-10",
+        "C05-14",
+        "C06-05",
+        "C06-06"
+      ],
+      "limit": "Paused same-date split/merge only; bind full identity/physical rows/roleweights/both stock/caps/commander. Do not prefill250 or commander34232 as newly observed."
+    },
+    {
+      "id": "R09_REVERSE_NEW",
+      "state": "AWAIT_SEPARATE_ROOT_ADMISSION_AND_ACTUAL",
+      "expected_run_id": null,
+      "raw_inherited": null,
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C02-11",
+        "C02-12",
+        "C05-06",
+        "C05-08",
+        "C05-09",
+        "C05-10",
+        "C05-14",
+        "C06-05",
+        "C06-06"
+      ],
+      "limit": "Independent normal cold load from exact same baseline; freeze reverse direction before action. No capacity or run allocated by this plan."
+    },
+    {
+      "id": "R173_BOARDING",
+      "state": "EXISTING_RAW_CANDIDATES_REVIEW_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r0173-boarding-halt-12004.md",
+        "bytes": 4722,
+        "sha256": "376753404be14d6370acd26c43b2b8f3c8cebb83e7ff65360b3a5596006b1745",
+        "verification": "fresh-small-file-bytes"
+      },
+      "review_windows_seconds": [
+        [
+          147.5,
+          153.5
+        ],
+        [
+          153.5,
+          161.6
+        ],
+        [
+          168.9,
+          174.9
+        ]
+      ],
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C04-09",
+        "C04-10",
+        "C05-13",
+        "C06-08"
+      ],
+      "limit": "3gold belongs to R173; neither R1781gold nor generic wallet difference substitutes. Halt is not in this raw."
+    },
+    {
+      "id": "R174_UNLOCKED_HALT",
+      "state": "EXISTING_RAW_CANDIDATES_REVIEW_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r0174-common-t0-control-12004.md",
+        "bytes": 5254,
+        "sha256": "0ea6848c37b88526d7fa5872ec680877785df907c083dd0a7f951e5e1ce0bc92",
+        "verification": "fresh-small-file-bytes"
+      },
+      "review_windows_seconds": [
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          20
+        ]
+      ],
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C06-10"
+      ],
+      "limit": "Independent R174 illustration only; cannot splice as continuous R173 postboarding Halt. Left-upper tooltip obstruction to review."
+    },
+    {
+      "id": "R177_COASTAL",
+      "state": "EXISTING_RAW_CANDIDATES_REVIEW_PENDING",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r0177-coastal-normalprep-12004.md",
+        "bytes": 3089,
+        "sha256": "1329266497235aed4e9beeeb1aefc1d4c0a9b66741a91f858275b1ae9c28d412",
+        "verification": "fresh-small-file-bytes"
+      },
+      "review_windows_seconds": [
+        [
+          0,
+          4
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          10,
+          15
+        ]
+      ],
+      "selection": null,
+      "native_event_PTS": null,
+      "continuous_clean": false,
+      "cues": [
+        "C01-02",
+        "C06-07"
+      ],
+      "limit": "Independent coastal arrival Broll, not R13 endpoint/ABC result; visual transition bracket(4,10] only."
+    },
+    {
+      "id": "REVIEW01_HISTORY",
+      "state": "HISTORICAL_APPENDIX_ONLY",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-war-episode04-review01-delivery.md",
+        "bytes": 6788,
+        "sha256": "419345f6a4c89c1aad10f76f011078c0ba9911ed5af3dd7946968d8867b4a92f",
+        "verification": "fresh-small-file-bytes"
+      },
+      "selection": null,
+      "continuous_clean": false,
+      "cues": [
+        "C05-16"
+      ],
+      "limit": "Keep original1.20.0.3/William source label. No reuse as Robert/.4 numbers, ABCwinner or fresh clean credit."
+    }
+  ],
+  "cues": [
+    {
+      "id": "C01-01",
+      "timeline_frames": [
+        0,
+        612
+      ],
+      "speech_seconds": 19.848,
+      "text_sha256": {
+        "zh": "2501d2370e47a7487257ba09a5586f3245d656053f0acc8d099502045dedf514",
+        "en": "1b9517bc98b88822c570935cba94d0507c7ce258df7bc78ee8d00e8a2afdcd4e"
+      },
+      "audio_artifact_id_future": "audio.C01-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-pilot-edge731-a02/C01-01.mp3",
+        "bytes": 119088,
+        "sha256": "1cca8c798679e0b5affc0bd1590b873c6dcd8b939cc834e008617a71f06bef9b"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-02",
+      "timeline_frames": [
+        612,
+        1265
+      ],
+      "speech_seconds": 21.192,
+      "text_sha256": {
+        "zh": "4b88c6f144404eff63ec0061c26cd9d680274b33a55982eea0216c7855c5d287",
+        "en": "282585c96ebd1b4d2e2d26c4ddc7869dafd7b4659e1b1a585c363f256b166aad"
+      },
+      "audio_artifact_id_future": "audio.C01-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-02.mp3",
+        "bytes": 127152,
+        "sha256": "3683cba9a4278a65404e894f57cc5c3d400b0582a9483931d463b9e8ddbf2028"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [
+        "R177_COASTAL"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-03",
+      "timeline_frames": [
+        1265,
+        2127
+      ],
+      "speech_seconds": 28.176,
+      "text_sha256": {
+        "zh": "7964b0041e2398187ade70673817d4c14fd3a98a834998ae2b984998b0fa784b",
+        "en": "3a51046fe3b9a3d1956e467bd42b2ed5a777ae42c98c4a657c8f46b8ae555747"
+      },
+      "audio_artifact_id_future": "audio.C01-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-03.mp3",
+        "bytes": 169056,
+        "sha256": "ff4a18af932d33d0e129766378d9bba1e7dbafe221aaaeb20271ba62cffc5dc8"
+      },
+      "source_card_id": "D16",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-04",
+      "timeline_frames": [
+        2127,
+        2983
+      ],
+      "speech_seconds": 27.96,
+      "text_sha256": {
+        "zh": "15b8a0eefa1bcbcf6c2fc520fb9bb83de33636a67dc88724ae94b33d0ba2ee87",
+        "en": "1053cc439a3d3588f09fbeb94f80d5832d2c7a90d06c932b121eb9046651ef86"
+      },
+      "audio_artifact_id_future": "audio.C01-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-04.mp3",
+        "bytes": 167760,
+        "sha256": "9920db84777586e3e40640cfaa253c88fec2ccc2ff32753681a35270e1ef4ecf"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [
+        "R175_LOCKED_HALT"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-05",
+      "timeline_frames": [
+        2983,
+        3931
+      ],
+      "speech_seconds": 31.032,
+      "text_sha256": {
+        "zh": "cd8bbf877d1e7017a05bdb9e09a820778985892bdfe3c85e55eeb93316778612",
+        "en": "e07157aa044425a233707b94a1e707f8b85ed800de8679106b9ea325051026b6"
+      },
+      "audio_artifact_id_future": "audio.C01-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-05.mp3",
+        "bytes": 186192,
+        "sha256": "d75c1bb895a40ae53411d539cbbce1cf70acd9621a13d0fa825869a149e70585"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [
+        "R191_SIEGE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-06",
+      "timeline_frames": [
+        3931,
+        4797
+      ],
+      "speech_seconds": 28.296,
+      "text_sha256": {
+        "zh": "99cbbd778d9fc8bfe18f803204938c86e8a8ad5280e3225053a7dedebc428036",
+        "en": "a397b51dc997aba942830cd8535fe2705055cbaf359ddc70ad74b05d85be1a49"
+      },
+      "audio_artifact_id_future": "audio.C01-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-06.mp3",
+        "bytes": 169776,
+        "sha256": "515f7e16be10c474dbcf96199b82bc5fae37352ec1847cd6e883b502718d4be3"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-07",
+      "timeline_frames": [
+        4797,
+        5548
+      ],
+      "speech_seconds": 24.48,
+      "text_sha256": {
+        "zh": "381cbc4e639855cb7a7caec7a7cf4b09311c76096cc8411735d4e244c858cead",
+        "en": "abeca2f7942d30c144d173ee64812e7f2644d2a8d4c315cf494331909307b776"
+      },
+      "audio_artifact_id_future": "audio.C01-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-07.mp3",
+        "bytes": 146880,
+        "sha256": "95a0f9273fd9619f0bc0569a9653b5defa4a7e671eeba69925f882c88dd4e7d5"
+      },
+      "source_card_id": "D17",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C01-08",
+      "timeline_frames": [
+        5548,
+        6432
+      ],
+      "speech_seconds": 27.84,
+      "text_sha256": {
+        "zh": "ccb764261ee45b41a51949c1e2d42a467be5ad23bae71a5803d97475512de7fc",
+        "en": "f1a6873ee1cf766a9504943fe100c1543127ea83be9a119041b7522563afa5bc"
+      },
+      "audio_artifact_id_future": "audio.C01-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-08.mp3",
+        "bytes": 167040,
+        "sha256": "994da80b10551f94dcc943ad733691839d06e8b51cea52d335641ac8034246ac"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-01",
+      "timeline_frames": [
+        6432,
+        7322
+      ],
+      "speech_seconds": 29.088,
+      "text_sha256": {
+        "zh": "651011ed7253a6eff36079d635590b95f622db82faca524322833993f7d4ce1d",
+        "en": "64f30e8345fbc7a70608c01cac92a8d289dfa0a46c290425d189f53c2838dbcb"
+      },
+      "audio_artifact_id_future": "audio.C02-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-01.mp3",
+        "bytes": 174528,
+        "sha256": "b8b52925c663ffaf15347eadc3d6deaf6d6a3273dfb40c839f9353766074c512"
+      },
+      "source_card_id": "D12",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-02",
+      "timeline_frames": [
+        7322,
+        8119
+      ],
+      "speech_seconds": 26.016,
+      "text_sha256": {
+        "zh": "8b50c960fd5311d3224162b5a9dbc4ceb626302acbe761429a58bb00390826e9",
+        "en": "80e1f60e15dc82473bec53fa3761935f270b3492b872d792d86b8e2d2cc4f70b"
+      },
+      "audio_artifact_id_future": "audio.C02-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-02.mp3",
+        "bytes": 156096,
+        "sha256": "a3d91a203d1518e689640a5ee1284feecd8b7ad0e1bb9f28b2237f81c6fd4a73"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-03",
+      "timeline_frames": [
+        8119,
+        8801
+      ],
+      "speech_seconds": 22.176,
+      "text_sha256": {
+        "zh": "9c6b363dc24cddf3039046b2e31f6a4883b96bc17a099fc5fd22a6f516993a9e",
+        "en": "04f3c14231d2bfd1d7d8faf5ff16c3e3ec1b558dbc0c1d3e92f0b0eb3726006e"
+      },
+      "audio_artifact_id_future": "audio.C02-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-03.mp3",
+        "bytes": 133056,
+        "sha256": "6e855bc3bd3b5c6cf393b9785d174501a774eaf900e4a9b0b85d99b4a4afa634"
+      },
+      "source_card_id": "D08",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-04",
+      "timeline_frames": [
+        8801,
+        9709
+      ],
+      "speech_seconds": 29.688,
+      "text_sha256": {
+        "zh": "7a0c089f4f2a0d06b2e8e5d62267c5e5530ab94070ad9985ac4574910f322185",
+        "en": "b4ae8d4d81c45afeecfe4774b3a0d87f8134d7eced453e9b83de68bedc7c9721"
+      },
+      "audio_artifact_id_future": "audio.C02-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-04.mp3",
+        "bytes": 178128,
+        "sha256": "7a66abbb77ad80314a6036410e7bdd1b1fddc3baed70073298e28653f9ee0104"
+      },
+      "source_card_id": "D01",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-05",
+      "timeline_frames": [
+        9709,
+        10581
+      ],
+      "speech_seconds": 28.512,
+      "text_sha256": {
+        "zh": "01af73fc633dcbd669f2c06e5b018cae8814c796aa08138ecceafb6a6784bd10",
+        "en": "4eb49580c0e21c6709a03cbdecb6a4ed3e05673625e46959fa98eccd0b34ebcf"
+      },
+      "audio_artifact_id_future": "audio.C02-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-05.mp3",
+        "bytes": 171072,
+        "sha256": "150500691d5cd4df259169df432b8a173c5c06162b0cbeaa61971880bd7664b6"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-06",
+      "timeline_frames": [
+        10581,
+        11558
+      ],
+      "speech_seconds": 31.992,
+      "text_sha256": {
+        "zh": "27148e622a964485369cfd9c001eecf3843efcef62361b7806b00a7d84ee0c01",
+        "en": "bf4b11dcc102f5f8a7111d95efa28f8e37bc655ead14156c7e89d8afeedfbdb2"
+      },
+      "audio_artifact_id_future": "audio.C02-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-06.mp3",
+        "bytes": 191952,
+        "sha256": "a757c77ee1ba8c4f8cb67ceaa56ed6e26e9bb178ee062d0d154f49bce409f863"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-07",
+      "timeline_frames": [
+        11558,
+        12513
+      ],
+      "speech_seconds": 31.272,
+      "text_sha256": {
+        "zh": "8419d90aacac179343fbb40ff70f450eb2e0ab5402f4f78315fbd37cb28b0f4a",
+        "en": "c448dce2721e157c665c4b513b083cc9811c181d12c667e8f542029bc4d34a79"
+      },
+      "audio_artifact_id_future": "audio.C02-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-07.mp3",
+        "bytes": 187632,
+        "sha256": "4f72ed567fb12da9946bfcba703dc2578636341d97567ace6202a9c2e70b1130"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-08",
+      "timeline_frames": [
+        12513,
+        13483
+      ],
+      "speech_seconds": 31.776,
+      "text_sha256": {
+        "zh": "6881f1c03c7a0afbe2a44a9869ff806fd754791532bbf267f936b357cb318fe9",
+        "en": "a315ef51a2d90709e347d5010e6a6336e91a165a969b875fe8189d48150a1bfa"
+      },
+      "audio_artifact_id_future": "audio.C02-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-08.mp3",
+        "bytes": 190656,
+        "sha256": "98cdb11ca3dfe7e3359f3f9e073dd20b58554ca4d1270f1d5b13877e609e616b"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-09",
+      "timeline_frames": [
+        13483,
+        14378
+      ],
+      "speech_seconds": 29.256,
+      "text_sha256": {
+        "zh": "cca39bd6fb648ba4fc14eb2458fe680f07fd94c3f49fd5627707a33010bb8aa3",
+        "en": "dcda36a30fea6fadb25db6da3b08506b3d75406d2d16bfa1b0e98aba6886b7f1"
+      },
+      "audio_artifact_id_future": "audio.C02-09",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-09.mp3",
+        "bytes": 175536,
+        "sha256": "4d28268ce1c99576f59a2a8182dcae35085d68ffe7b45af9016682827d4eebd7"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-10",
+      "timeline_frames": [
+        14378,
+        15095
+      ],
+      "speech_seconds": 23.328,
+      "text_sha256": {
+        "zh": "3ef86887f55bfdd970453690f541266393b3251987c062bf5306b35e6ff4c207",
+        "en": "0ba97c01d416dff3390337993656d5aec03a2dd416c4ec62d214f7f4944b7137"
+      },
+      "audio_artifact_id_future": "audio.C02-10",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-10.mp3",
+        "bytes": 139968,
+        "sha256": "b8c184d4df88fc956a919975481d35cc945676d8b0ea9679dd960de4e063ef87"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-11",
+      "timeline_frames": [
+        15095,
+        16108
+      ],
+      "speech_seconds": 33.216,
+      "text_sha256": {
+        "zh": "8b7aefcb7cd49f738d5831e45705f5282f308b7ca321ce194098e2fe09cb721f",
+        "en": "2222f8b585eb2b307c48b20ee4517e2c77f480f8bddfb3e705ebd7aba9cd09db"
+      },
+      "audio_artifact_id_future": "audio.C02-11",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-11.mp3",
+        "bytes": 199296,
+        "sha256": "42a481c02e4571ae45cfedaf9b267d77856ddf9d594bb2f5b39e609fa3aa3138"
+      },
+      "source_card_id": "D12",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C02-12",
+      "timeline_frames": [
+        16108,
+        17159
+      ],
+      "speech_seconds": 33.408,
+      "text_sha256": {
+        "zh": "9590f0675b27c297170f08484ff69574a694472d7aa4586ec15c0b5de4b2939c",
+        "en": "7c324355dff85c60b4caa722a5c04ef26a1a6faa6acb138f753812c23aa8a2a6"
+      },
+      "audio_artifact_id_future": "audio.C02-12",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-12.mp3",
+        "bytes": 200448,
+        "sha256": "c1871a706ec5d74f54f517878b4ab5f8ecbf397e887f9ad900cda4366aa5abe7"
+      },
+      "source_card_id": "D15",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-01",
+      "timeline_frames": [
+        17159,
+        18131
+      ],
+      "speech_seconds": 31.824,
+      "text_sha256": {
+        "zh": "942e5ef1b386c5a4dfc2dc97bf416a085bd3bceecbd6d1812f0bfc4a40d810e7",
+        "en": "eb84c903ee21b69a254d3b82efce6e41dd2bd2bc81977fd682425b6684425753"
+      },
+      "audio_artifact_id_future": "audio.C03-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-01.mp3",
+        "bytes": 190944,
+        "sha256": "e05ca7bc1c0f0c7020083e93e126c5f68eb97af3f050d96f064eb7597227937f"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [
+        "R191_SIEGE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-02",
+      "timeline_frames": [
+        18131,
+        18977
+      ],
+      "speech_seconds": 27.624,
+      "text_sha256": {
+        "zh": "02628255a980cf29758ab369fda48ff9f40ca76adfde2664bd99fa76c3575ddc",
+        "en": "4125a4a902d32287b702b484a424883b18477e3cef1762cd4169554f2d39e8e2"
+      },
+      "audio_artifact_id_future": "audio.C03-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-02.mp3",
+        "bytes": 165744,
+        "sha256": "33faab11f8b9e210612031d8cce73e9ac1861ef1b46ef40f2acb3ae2c9e2538b"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [
+        "R191_SIEGE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-03",
+      "timeline_frames": [
+        18977,
+        19795
+      ],
+      "speech_seconds": 26.688,
+      "text_sha256": {
+        "zh": "c19e1e854463a5426375800b8b3db9c26d17d39b33213b57196a3b021bf5f8f7",
+        "en": "99c918529a16b7f427cc1946afb6c45d2599f2c956309b8e52418b984d7b310f"
+      },
+      "audio_artifact_id_future": "audio.C03-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-03.mp3",
+        "bytes": 160128,
+        "sha256": "1fe2919bd05931d6b14ba099e7770a1c830a434278514f57a3424ddf57c82b24"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [
+        "R191_SIEGE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-04",
+      "timeline_frames": [
+        19795,
+        20676
+      ],
+      "speech_seconds": 28.8,
+      "text_sha256": {
+        "zh": "5a8e64ea11949cf86798b09586d7d1edd86de9970df6833876d0338103a63236",
+        "en": "57c689a2a9571f770d69a720629b462dd1419132dec076b76556dfbe374eaec9"
+      },
+      "audio_artifact_id_future": "audio.C03-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-04.mp3",
+        "bytes": 172800,
+        "sha256": "0a6bcc9048a57da760bd2c3968d29fe565366692537cdae8ffe84d802c59d691"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-05",
+      "timeline_frames": [
+        20676,
+        21476
+      ],
+      "speech_seconds": 26.088,
+      "text_sha256": {
+        "zh": "05adc1836509c99f627ca374845e5341c277d5b3f4e65cc4ea44188b6444c5df",
+        "en": "d4c8a2a69ae7a4d2fb7e0073418e87d05afe755e6d1e1c1c32d0d4c0828a77e0"
+      },
+      "audio_artifact_id_future": "audio.C03-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-05.mp3",
+        "bytes": 156528,
+        "sha256": "7cbd6c6bed74218a1b5c7a2de398aa3c726182444f82e10a506ff17367cf6f8f"
+      },
+      "source_card_id": "D04",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-06",
+      "timeline_frames": [
+        21476,
+        22305
+      ],
+      "speech_seconds": 27.072,
+      "text_sha256": {
+        "zh": "cb8bf53d9b2ec5dc98a2de4232d422ff9304f20f84a9ea427621c82aa7c53347",
+        "en": "e88881ba40a5a8976eabd7112b781ed3f848b7e5dab77a88d6799c1b503edd76"
+      },
+      "audio_artifact_id_future": "audio.C03-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-06.mp3",
+        "bytes": 162432,
+        "sha256": "0599abb0afee8f93d8877e8a0d1eb562ec44e845d959538112dd115170e0cbaa"
+      },
+      "source_card_id": "D04",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-07",
+      "timeline_frames": [
+        22305,
+        23186
+      ],
+      "speech_seconds": 28.8,
+      "text_sha256": {
+        "zh": "c217fdfef8444c751751991e8a2ea069f0f61237b0f90bb6ff686098e966659b",
+        "en": "90dfeb32015ac807928598375049aa10b61311b1def6f02d3d643cd191011c56"
+      },
+      "audio_artifact_id_future": "audio.C03-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-07.mp3",
+        "bytes": 172800,
+        "sha256": "f78d36976533a226370d5fca1bee0242856e9a126e7930c5b050cb80201bf5ff"
+      },
+      "source_card_id": "D05",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-08",
+      "timeline_frames": [
+        23186,
+        24191
+      ],
+      "speech_seconds": 32.928,
+      "text_sha256": {
+        "zh": "cf4cc7b30eec888c9cb6493b8051c7772dc908164078a5e238c7769d3310446f",
+        "en": "e58b9f813749f169bd878da452bfe3ab181c319ef0995132f21d609c5794b532"
+      },
+      "audio_artifact_id_future": "audio.C03-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-08.mp3",
+        "bytes": 197568,
+        "sha256": "8d83f662f51974604e67e511320d95a8d7c4a30eb7e9b7aa34d316b7716cdbdb"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-09",
+      "timeline_frames": [
+        24191,
+        25012
+      ],
+      "speech_seconds": 26.808,
+      "text_sha256": {
+        "zh": "28728e429efa8b6cbabd68e33f00e38b14763ca3c2756046e4800734edecc371",
+        "en": "01fbbb1a01410dc71b0de1b0ab0fc345362d1790cdf89f97cc89fad4b2c8354b"
+      },
+      "audio_artifact_id_future": "audio.C03-09",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-09.mp3",
+        "bytes": 160848,
+        "sha256": "eaf7df6e679433283867f18311963230f3cfe7283549a1e7ac026d3a83af9d34"
+      },
+      "source_card_id": "D06",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-10",
+      "timeline_frames": [
+        25012,
+        25809
+      ],
+      "speech_seconds": 25.992,
+      "text_sha256": {
+        "zh": "d21df6ea1f1bd22fabea8e13c0def054036781cf1ccf4d29a759a6d32422cf18",
+        "en": "5df430e0526891b0a4e6d23097a76e2a5cd7aa1feadaea5c4257c3e399e31e09"
+      },
+      "audio_artifact_id_future": "audio.C03-10",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-10.mp3",
+        "bytes": 155952,
+        "sha256": "7df709032ca3e88bd86c349f38d5e0de1ded07c602836edec1c37413a69dd039"
+      },
+      "source_card_id": "D01",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-11",
+      "timeline_frames": [
+        25809,
+        26668
+      ],
+      "speech_seconds": 28.08,
+      "text_sha256": {
+        "zh": "2863b6c88df21e4e22a5879d57f4d3d1bc0aa79ade7e2639c07ba14198ff6949",
+        "en": "4d90d88a97afe116cafcb508f407fbcd890ddd0eb7fb1e1a3474dc1063d62dff"
+      },
+      "audio_artifact_id_future": "audio.C03-11",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-11.mp3",
+        "bytes": 168480,
+        "sha256": "aa454b3567fc604b09ce91574cd8d42681c6a4d7c4329c6e528b4c7196cd7aba"
+      },
+      "source_card_id": "D02",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C03-12",
+      "timeline_frames": [
+        26668,
+        27542
+      ],
+      "speech_seconds": 27.528,
+      "text_sha256": {
+        "zh": "1db418c0cc1eff38366f1e6644d0df43b6f71f4eaf591351e288765ae1a8b7e0",
+        "en": "d173b335db715017c54a7d077097f5fe7eac9df8df86b6f1492786595418ffb8"
+      },
+      "audio_artifact_id_future": "audio.C03-12",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C03-12.mp3",
+        "bytes": 165168,
+        "sha256": "65fb7514db6c222f8bcf9cf48037a7946a0af7957e60beb25e3f24073bcae7ff"
+      },
+      "source_card_id": "D06",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-01",
+      "timeline_frames": [
+        27542,
+        28437
+      ],
+      "speech_seconds": 29.28,
+      "text_sha256": {
+        "zh": "2e8582c941918e339bd9f68f4143c1185b2bb530df08fa266963e325cdf109dd",
+        "en": "19f9111179a0389520b5020160b981acd7a8f8b2059be01e43a7cbeda11d49a5"
+      },
+      "audio_artifact_id_future": "audio.C04-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-01.mp3",
+        "bytes": 175680,
+        "sha256": "40cbfbee5845520c6affcb077efc7d15ac88791bd3209f7d16b1a7df1c639975"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-02",
+      "timeline_frames": [
+        28437,
+        29342
+      ],
+      "speech_seconds": 29.616,
+      "text_sha256": {
+        "zh": "001fa1a3b7f95fd854e0fc0c21d099b18e05f237fbbecae3ba77837fb7377767",
+        "en": "6eb3491afcdc011422f6832344b111f5f44d20c640a209d76f1f83bad01ddd6c"
+      },
+      "audio_artifact_id_future": "audio.C04-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-02.mp3",
+        "bytes": 177696,
+        "sha256": "355c3f9930e773605c675a307f9b3822bf5d296bd3e934a1bd3124571521eb9f"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-03",
+      "timeline_frames": [
+        29342,
+        30299
+      ],
+      "speech_seconds": 31.344,
+      "text_sha256": {
+        "zh": "05badb15f315b77c1e499adfac52a0bd752e89a8bb28bb9f01d1dd104d272232",
+        "en": "c2d6223528448efccfaa3fb77103833da99a5d47b18726ce12f856dc73b5ddef"
+      },
+      "audio_artifact_id_future": "audio.C04-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-03.mp3",
+        "bytes": 188064,
+        "sha256": "c1fc6ce20bc4710044475b10cd7dddc163eaa11649541ac3ff50eb5e37f4251b"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-04",
+      "timeline_frames": [
+        30299,
+        31208
+      ],
+      "speech_seconds": 29.736,
+      "text_sha256": {
+        "zh": "211ddee371e68038cace65b562d9c36d13910b77fb8cf2ba40ccab786889cc41",
+        "en": "4c1aff9ac653eafdd2c63fa3b52d054b9ccf470ab873685c11ca7e1c2c8f9515"
+      },
+      "audio_artifact_id_future": "audio.C04-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-04.mp3",
+        "bytes": 178416,
+        "sha256": "326ba6eee2caea1c34793073cd4c351b1d5fc1626e2c7cc02c411358f495f475"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-05",
+      "timeline_frames": [
+        31208,
+        32134
+      ],
+      "speech_seconds": 30.288,
+      "text_sha256": {
+        "zh": "b53f61fb8687f4dbf3981b2ec61d0d92f3984c5e08f10226fd074f0e5dab3d68",
+        "en": "c1046172e5fe039eac86b07b1631ee1840ffb22383ade210f714b4b66aa8f2eb"
+      },
+      "audio_artifact_id_future": "audio.C04-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-05.mp3",
+        "bytes": 181728,
+        "sha256": "f9472ea4b79d08ae33d5497e8ebe15922d2edc2217fe4378c1eb27cd154eb1dd"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R175_LOCKED_HALT"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-06",
+      "timeline_frames": [
+        32134,
+        33088
+      ],
+      "speech_seconds": 31.248,
+      "text_sha256": {
+        "zh": "142c5dda71a1393860ab7e72f4361f1a1aa2d72d3bbef73342d27bdbef518176",
+        "en": "3b504fd5044ab5d9c45dfcf39454784162530e98321cd7a908ccfce2c5140a87"
+      },
+      "audio_artifact_id_future": "audio.C04-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-06.mp3",
+        "bytes": 187488,
+        "sha256": "259187dde886dce249ba33a34a4db03c514d7d34a26abebf2ae37b27b9f53f40"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R175_LOCKED_HALT",
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-07",
+      "timeline_frames": [
+        33088,
+        34099
+      ],
+      "speech_seconds": 33.12,
+      "text_sha256": {
+        "zh": "8fd2fb398499584097bd1ff50c6008db16721bf11614e2c6521aacbebd6d827f",
+        "en": "6ac12750e2f666c83556569ba8d2b2e4ccc44c359c2b3413ade0c47d18d0061a"
+      },
+      "audio_artifact_id_future": "audio.C04-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-07.mp3",
+        "bytes": 198720,
+        "sha256": "1e78cfe8290beec6bc4a492c2f0c6430f3a59bceb68ecd9587bc8b3936a7312c"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R175_LOCKED_HALT"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-08",
+      "timeline_frames": [
+        34099,
+        35041
+      ],
+      "speech_seconds": 30.84,
+      "text_sha256": {
+        "zh": "1d57a8f78baaed579efab18da59f16e7d234ceba4ad6a6d8debbda4ab22e09db",
+        "en": "861a2107cf7e4174eb61b18d961503f5d23acd3ac427f173c4680c00079923c1"
+      },
+      "audio_artifact_id_future": "audio.C04-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-08.mp3",
+        "bytes": 185040,
+        "sha256": "bf3f4e31fd85bd3837069de69c7c50d72826b3e889055da0c4fce45c778c765e"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-09",
+      "timeline_frames": [
+        35041,
+        35936
+      ],
+      "speech_seconds": 29.28,
+      "text_sha256": {
+        "zh": "bdd5a1caec5fcfc4dd4d953aca38cd87bd08de382b98decccbcf2c4ac7353f64",
+        "en": "749dca74de13606401996b34f0063fe70581b43fb86686d40c49a560f047d1bf"
+      },
+      "audio_artifact_id_future": "audio.C04-09",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-09.mp3",
+        "bytes": 175680,
+        "sha256": "ba75242d39005951d96a08c63539a67b7189b7d2b863b3f3496a57f303fe3afc"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [
+        "R173_BOARDING"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-10",
+      "timeline_frames": [
+        35936,
+        36639
+      ],
+      "speech_seconds": 22.872,
+      "text_sha256": {
+        "zh": "04a62bcc9a223a5cc84c704780dc01c3c2546df0c10ac2f4a12d044492ee756e",
+        "en": "4798f7946943220066161179f220a711728176494a316ad191f6bc7c5acb6d18"
+      },
+      "audio_artifact_id_future": "audio.C04-10",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-10.mp3",
+        "bytes": 137232,
+        "sha256": "b69cf506a4cf35d41a02c15d9bb65add6c880b3dbbdba4cce9a293e8691c4958"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [
+        "R173_BOARDING"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C04-11",
+      "timeline_frames": [
+        36639,
+        37452
+      ],
+      "speech_seconds": 25.488,
+      "text_sha256": {
+        "zh": "e40dfe9bee423d81d74923c28eb507813613b4e9b73a49169dc6c94b0799acd9",
+        "en": "99e433f202cb3c2f22674daac3a267fd6f1a5e8f65acc8b70983eb0b5d289fba"
+      },
+      "audio_artifact_id_future": "audio.C04-11",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-11.mp3",
+        "bytes": 152928,
+        "sha256": "768fdc9328a9fec0fc67aa3e7636b685eaa71ca719a44596302f535ecf3127fa"
+      },
+      "source_card_id": "D04",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-01",
+      "timeline_frames": [
+        37452,
+        38112
+      ],
+      "speech_seconds": 21.432,
+      "text_sha256": {
+        "zh": "0afbef979a7ce6e53dc87d16829746b50d36268f969f551db0db86ba9763a83d",
+        "en": "500ee297ac16a622a9781db0b4cfd0c7cff2889828bb6b0fbb2e5007ec05593e"
+      },
+      "audio_artifact_id_future": "audio.C05-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-01.mp3",
+        "bytes": 128592,
+        "sha256": "128b4ffc27c6a2cafb2a836502244ef4cdd3f3ba4e8b13df1e7236d393c06813"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-02",
+      "timeline_frames": [
+        38112,
+        38820
+      ],
+      "speech_seconds": 23.04,
+      "text_sha256": {
+        "zh": "99cf47faf66b350e30a9dd8a234cef88e6a7f821fc58d7d9d61cf19c6fcadc17",
+        "en": "4da1db88122187f1a038fb64f4d9613bcabbf4f59424063cf46d2dba95eac535"
+      },
+      "audio_artifact_id_future": "audio.C05-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-02.mp3",
+        "bytes": 138240,
+        "sha256": "7feebb0a1461fda0c74fbc890bd8881bb1a6dad1ff3892c086295e6ab3158340"
+      },
+      "source_card_id": "D18",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-03",
+      "timeline_frames": [
+        38820,
+        39497
+      ],
+      "speech_seconds": 22.008,
+      "text_sha256": {
+        "zh": "bbee047836aee6838256c7531278aeb6bf91dfe27a38e43a8f691429a53a90bc",
+        "en": "208d235ace0966eb71943723c6a21dca3f1d1508e86539937af37af4bbd2c37d"
+      },
+      "audio_artifact_id_future": "audio.C05-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-03.mp3",
+        "bytes": 132048,
+        "sha256": "34f6b48b228ba70ef716f0e2e2030408f9f8fbafb38038a69b78995163d3c7a8"
+      },
+      "source_card_id": "D19",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-04",
+      "timeline_frames": [
+        39497,
+        40197
+      ],
+      "speech_seconds": 22.776,
+      "text_sha256": {
+        "zh": "c4759c9c46e8dad7cf3428b1a0ba9c2f4ad92a2f505bf1a7f760f2f44ec0684e",
+        "en": "b09928da56e1bf9163110cbf7723a20363d4d0cbcf07b08500bdbb55e1a2a9ef"
+      },
+      "audio_artifact_id_future": "audio.C05-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-04.mp3",
+        "bytes": 136656,
+        "sha256": "40e1aa6accfed79fd497eea33a0ee8205a993ef1963c38382ccf150234db605f"
+      },
+      "source_card_id": "D20",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-05",
+      "timeline_frames": [
+        40197,
+        40814
+      ],
+      "speech_seconds": 20.016,
+      "text_sha256": {
+        "zh": "b9bcbc6329c12226e8a0d0cec944a4ee4835da30e90ea1df0197177330e61c8c",
+        "en": "129f6fc31d3343020fdfe2b72d931a70e7b4f6622a5701929f2aea4b30a36caf"
+      },
+      "audio_artifact_id_future": "audio.C05-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-05.mp3",
+        "bytes": 120096,
+        "sha256": "d2c47031acb2b16710419b6d456beb0d91d70238621c81e63ba3d85c749e721b"
+      },
+      "source_card_id": "D21",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-06",
+      "timeline_frames": [
+        40814,
+        41671
+      ],
+      "speech_seconds": 27.984,
+      "text_sha256": {
+        "zh": "d858491c8a0a3697dc8ff92ddda3c2d8fd4a5015ccbabbb5191da4bdb1865d94",
+        "en": "6972228627400b6abc003ebcdae847084cef273ad49859b3834bd1001d122203"
+      },
+      "audio_artifact_id_future": "audio.C05-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-06.mp3",
+        "bytes": 167904,
+        "sha256": "930fbb4dff9b4e343f3810e13949ebe4ba0b1aa8b14af548453633abc27aacfe"
+      },
+      "source_card_id": "D07",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-07",
+      "timeline_frames": [
+        41671,
+        42535
+      ],
+      "speech_seconds": 28.224,
+      "text_sha256": {
+        "zh": "4addf5b04a8d01cc53cec552d88396248e6df100096f93ef0e7542925a647678",
+        "en": "bd8dcc559602d4d8c1d72db69254a076d1b19f1a150757ede32520c4e01faf0d"
+      },
+      "audio_artifact_id_future": "audio.C05-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-07.mp3",
+        "bytes": 169344,
+        "sha256": "2d99b864b11e8013cad283b27efb263111b74bcbc6452942a1fcc4689680ad21"
+      },
+      "source_card_id": "D08",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-08",
+      "timeline_frames": [
+        42535,
+        43180
+      ],
+      "speech_seconds": 20.928,
+      "text_sha256": {
+        "zh": "66cd4f076f66747d642bd1d9dd791a69ab6868fb599727d2ec850eeec4c0e80c",
+        "en": "39b36bddde69da8e0c225e32d00a83d7f1d12d8ff87ea545c9bc3c4f3ca21002"
+      },
+      "audio_artifact_id_future": "audio.C05-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-08.mp3",
+        "bytes": 125568,
+        "sha256": "4f7aca9c552317da257168aa350783a9b3444b9af1ef08a676d4dd07360100a4"
+      },
+      "source_card_id": "D15",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-09",
+      "timeline_frames": [
+        43180,
+        43915
+      ],
+      "speech_seconds": 23.928,
+      "text_sha256": {
+        "zh": "66e1f8d4f7be188e33031b44e0ef6d4e2d19b0e1c56feb305b9b54fd706368d3",
+        "en": "1e283a2c189bd7b30ba98fab45fb340a89f02080857ac311697d4789a6e6963c"
+      },
+      "audio_artifact_id_future": "audio.C05-09",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-09.mp3",
+        "bytes": 143568,
+        "sha256": "a2965b5ccc543e74b53a9d962aa40a8589eca65b24a3bf5b595cc657a516d593"
+      },
+      "source_card_id": "D09",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-10",
+      "timeline_frames": [
+        43915,
+        44747
+      ],
+      "speech_seconds": 27.168,
+      "text_sha256": {
+        "zh": "2279f054ff37acef57b7dd951fcfc49ed6ab6fc5e21ecdb0d594c2cf94c55188",
+        "en": "086d5e65ff6eba67cb6e0d346da342887536ccd98c7c22b4fdc7a08a6c78ac87"
+      },
+      "audio_artifact_id_future": "audio.C05-10",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-10.mp3",
+        "bytes": 163008,
+        "sha256": "259f99183775c7da8a593f1dc5f6f5d7f328989f4ce86c331296ac9d32914867"
+      },
+      "source_card_id": "D15",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-11",
+      "timeline_frames": [
+        44747,
+        45629
+      ],
+      "speech_seconds": 28.848,
+      "text_sha256": {
+        "zh": "64bfc5156634961b38c7be8a60fb311a9df984806ca262875acc40471d2ecf4b",
+        "en": "3ded2f48889a60f86e893275793991d1b8b6d12b0d6a6e44ef08e6f4cc0171a0"
+      },
+      "audio_artifact_id_future": "audio.C05-11",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-11.mp3",
+        "bytes": 173088,
+        "sha256": "d487439856f363dcd7e5845ed4f393ff38e0e4bd7bc9fbe72baeb5fbdaaa965e"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-12",
+      "timeline_frames": [
+        45629,
+        46572
+      ],
+      "speech_seconds": 30.864,
+      "text_sha256": {
+        "zh": "23b89135a1df3171dbb8231ff715eee2280249c0fdfac0fd769d40195f1cbbe9",
+        "en": "04e510d7d8ab3e53720596555fb21bf6a94468622dfe05dde0f151dabd947c2f"
+      },
+      "audio_artifact_id_future": "audio.C05-12",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-12.mp3",
+        "bytes": 185184,
+        "sha256": "3bd6bf21953dd978084f8986b9741793250433f285e5ad10c805386b29af0a4a"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-13",
+      "timeline_frames": [
+        46572,
+        47279
+      ],
+      "speech_seconds": 22.992,
+      "text_sha256": {
+        "zh": "343fe19c73e0e102b1153188e5bea3520b748f562b31490c71a7bae524411189",
+        "en": "4494e277a7b26b5aa61c938db77b2f4691eea4f250bef638e5056425a0eccb8d"
+      },
+      "audio_artifact_id_future": "audio.C05-13",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-13.mp3",
+        "bytes": 137952,
+        "sha256": "d05b1ed66e02c8030df2305c56645655eab6e11761998a9f147d10611f10be4c"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [
+        "R173_BOARDING"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-14",
+      "timeline_frames": [
+        47279,
+        48024
+      ],
+      "speech_seconds": 24.264,
+      "text_sha256": {
+        "zh": "3699f7dc89b81538e2cdf645d4b3ad472db46d8d81197aad166214590b141371",
+        "en": "8046ad5280ee994cf0dd95aee5532255debc28bf5e1ac22c68c70e6639e963a1"
+      },
+      "audio_artifact_id_future": "audio.C05-14",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-14.mp3",
+        "bytes": 145584,
+        "sha256": "2583e7f5ddf753d25d45e43c18fbb839436d10669607668fd8abffe0daaed8cc"
+      },
+      "source_card_id": "D07",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-15",
+      "timeline_frames": [
+        48024,
+        48760
+      ],
+      "speech_seconds": 23.976,
+      "text_sha256": {
+        "zh": "71d264d88823533e0bc4c967e46f12fef7f4d2f0ce131fb2ff4c78119f065964",
+        "en": "69ca48e7bfd88143b67a317abf29a882ef4a125a4c12a0ea76034e37d3149b65"
+      },
+      "audio_artifact_id_future": "audio.C05-15",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-15.mp3",
+        "bytes": 143856,
+        "sha256": "cabf01c7671ed5e95c239e1b8ba8ddd5b7097d3a9c3716a207fb817dc53ab266"
+      },
+      "source_card_id": "D22",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C05-16",
+      "timeline_frames": [
+        48760,
+        49618
+      ],
+      "speech_seconds": 27.0,
+      "text_sha256": {
+        "zh": "85534874e6b97d84446633c25b5d67cda5599bee1a1583974e8ae1a22d2b211c",
+        "en": "710cb052832716fe8dd5438d256659cd9592203ed952637b6108b94a1e40f0a7"
+      },
+      "audio_artifact_id_future": "audio.C05-16",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-16.mp3",
+        "bytes": 162000,
+        "sha256": "8656ac9e796a72364cccf03412c02c5d0ecc5eca836c13bcaa149262c2628ad3"
+      },
+      "source_card_id": "D23",
+      "candidate_ids": [
+        "REVIEW01_HISTORY"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-01",
+      "timeline_frames": [
+        49618,
+        50408
+      ],
+      "speech_seconds": 25.776,
+      "text_sha256": {
+        "zh": "501dcdf2f16c77504050267c26491d0478d1bfcfb8f6a1165515fd5c572a0948",
+        "en": "94105bbdfed260db69ad8601325581de79339b95cd0f42dc4faaecfd083095ad"
+      },
+      "audio_artifact_id_future": "audio.C06-01",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-01.mp3",
+        "bytes": 154656,
+        "sha256": "9177256efe9278323818ae8f2824ec960bc470aee0a6ad3bdd6afe98a8945290"
+      },
+      "source_card_id": "D03",
+      "candidate_ids": [
+        "R191_SIEGE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-02",
+      "timeline_frames": [
+        50408,
+        51187
+      ],
+      "speech_seconds": 25.392,
+      "text_sha256": {
+        "zh": "4766669ee256cbc9a101cf54f8d498800ce48032873e16e86dfa3e3f53f6392b",
+        "en": "b5e5c039090417ca1e29f74c53f540770b18b755d68d38c5afe193d22db28f65"
+      },
+      "audio_artifact_id_future": "audio.C06-02",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-02.mp3",
+        "bytes": 152352,
+        "sha256": "4e52d11af3f6644fd0a065bc21c5a9247a21061a3826f5c32fc01581c633aaba"
+      },
+      "source_card_id": "D01",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-03",
+      "timeline_frames": [
+        51187,
+        52105
+      ],
+      "speech_seconds": 30.048,
+      "text_sha256": {
+        "zh": "5e9b8f9d2f121ad094edce673a2d2a65d5f2af9866e0ebeb3c9032b9432a2ca7",
+        "en": "8ff072a78de8225c1448951f89a8e52ac40a5b655a1cba483778b07414aa91ef"
+      },
+      "audio_artifact_id_future": "audio.C06-03",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-03.mp3",
+        "bytes": 180288,
+        "sha256": "9530119c3cc4a45fece0cc24147e3d320fd90904a926c3cb5db6aef947a265f8"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R176_LOCKED_REROUTE"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-04",
+      "timeline_frames": [
+        52105,
+        53040
+      ],
+      "speech_seconds": 30.6,
+      "text_sha256": {
+        "zh": "9f392804b2ff23849baedb974057be6715f39cb25d1cad0e8e05c3c17aa34f08",
+        "en": "4cd8e02665afd079238e5e41326d106e729f2a60cc5a0def0e3ecb7048be7406"
+      },
+      "audio_artifact_id_future": "audio.C06-04",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-04.mp3",
+        "bytes": 183600,
+        "sha256": "d7f585e8b7bfa730aac3de6263e23a370d107283f34476719e87c26a5f30515a"
+      },
+      "source_card_id": "D01",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-05",
+      "timeline_frames": [
+        53040,
+        54108
+      ],
+      "speech_seconds": 35.04,
+      "text_sha256": {
+        "zh": "7158be15efa2cd807c9be78e835487ef6ebf312ddd62e1b8c23cb7afcdc621d5",
+        "en": "78c76a88c83e00f5eabcc7bb2159ce8a208678b117d3376db43fb4f5cfa35efe"
+      },
+      "audio_artifact_id_future": "audio.C06-05",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-05.mp3",
+        "bytes": 210240,
+        "sha256": "d5cf312525b5fe3fdcf1cfb4516566ec95273b425dd7fbc1fcb77c0341311333"
+      },
+      "source_card_id": "D12",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-06",
+      "timeline_frames": [
+        54108,
+        55040
+      ],
+      "speech_seconds": 30.504,
+      "text_sha256": {
+        "zh": "1668bc95486acd3c433acaefc95bc7397f2f6d47511a628399d2421deed54c97",
+        "en": "2f50116ef4b7f30d8005fcee23557ce13d12b8b0ed338274c1411af0f53ba876"
+      },
+      "audio_artifact_id_future": "audio.C06-06",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-06.mp3",
+        "bytes": 183024,
+        "sha256": "bc011a06056634159158f798f58bd2bae03e2a1ede9cc18de4c0f63828f2a259"
+      },
+      "source_card_id": "D09",
+      "candidate_ids": [
+        "R09_FORWARD_NEW",
+        "R09_REVERSE_NEW"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-07",
+      "timeline_frames": [
+        55040,
+        55877
+      ],
+      "speech_seconds": 27.336,
+      "text_sha256": {
+        "zh": "da00c769843a331e165cf6fc8c9e5cb9f2aff7ca40974e870c1a68d9cbc9d516",
+        "en": "49201c3b03144dc88fd76128041f01a3fb9d929030e62928754064c299ebffb4"
+      },
+      "audio_artifact_id_future": "audio.C06-07",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-07.mp3",
+        "bytes": 164016,
+        "sha256": "7c71acfbd5c94fad95c176835eb1d410ddecd33df174e1f5ceb881be1f6436ea"
+      },
+      "source_card_id": "D10",
+      "candidate_ids": [
+        "R177_COASTAL"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-08",
+      "timeline_frames": [
+        55877,
+        56614
+      ],
+      "speech_seconds": 24.0,
+      "text_sha256": {
+        "zh": "3f2c29b8d5c0ffaa2cbd4e5b52e98db61cdc3656645c83eacb56c3dd12371327",
+        "en": "258ac1bea8765d7ac7708ae102f8b56100a35118edc2b676bd1b83e467261723"
+      },
+      "audio_artifact_id_future": "audio.C06-08",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-08.mp3",
+        "bytes": 144000,
+        "sha256": "6a5532b8f92fdb7d8ee387475f65fef99be7dc23ac9dd0a502c850347faf3fa5"
+      },
+      "source_card_id": "D14",
+      "candidate_ids": [
+        "R173_BOARDING"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-09",
+      "timeline_frames": [
+        56614,
+        57532
+      ],
+      "speech_seconds": 30.048,
+      "text_sha256": {
+        "zh": "c56e80e8c32e42cd6a16a70694fc0bb2f528877386f38ebe5458aadde7db7d2d",
+        "en": "b71f5707ace45d7173d933f36b294edc145467e291823f0aa123aaf625b8d3a7"
+      },
+      "audio_artifact_id_future": "audio.C06-09",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-09.mp3",
+        "bytes": 180288,
+        "sha256": "75ac56e88ec4d4640a9f931a29964cf5341f16fc421f837a98d6c001582776b5"
+      },
+      "source_card_id": "D13",
+      "candidate_ids": [],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    },
+    {
+      "id": "C06-10",
+      "timeline_frames": [
+        57532,
+        58406
+      ],
+      "speech_seconds": 27.528,
+      "text_sha256": {
+        "zh": "b8541c40061b57a3c72e534f36bc4a1f65d937603d50aeb5fe12f5aa23e23514",
+        "en": "c84d0be7bed330bcfdcce7a596899ab5af288c6978d0406f7aafb49e666cc7e1"
+      },
+      "audio_artifact_id_future": "audio.C06-10",
+      "audio_source_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-10.mp3",
+        "bytes": 165168,
+        "sha256": "df5d7989a187f0a41a93e41da5c65e01b544778eecebe6ab2a1d9b9a2f8e7717"
+      },
+      "source_card_id": "D11",
+      "candidate_ids": [
+        "R174_UNLOCKED_HALT"
+      ],
+      "movie_visual_artifact_id": null,
+      "capture_clip": null,
+      "continuous_clean": false
+    }
+  ],
+  "actual_movie_created": false,
+  "render_ready": false,
+  "human_signoff": false,
+  "promotion_required": [
+    "per-cue exactly one actual preserved visual_artifact_id with source-explanation-card role OR capture_clip with continuous_clean=true",
+    "capture clip receipt+raw+control artifacts, exact measured duration, actual frame range",
+    "1080p mixed composer geometry review; no engine replacement",
+    "new native run and exact production-inputs-v1 preservation under separate render capacity"
+  ]
+}

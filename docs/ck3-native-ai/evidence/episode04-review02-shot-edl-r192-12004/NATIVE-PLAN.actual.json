@@ -1,0 +1,26 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:58:41.956420+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "plan",
+    "C:\\ck3-e04-resume-20261015-a01\\review02-render-inputs-a03-materialized-a01\\project\\promo-project.json",
+    "--workdir",
+    "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\PROPOSED_NATIVE_PLAN_WORKDIR_MUST_NOT_EXIST",
+    "--composer",
+    "war_ai_promo.episode04_review02:compose",
+    "--validate-only"
+  ],
+  "exit_code": 2,
+  "stdout": "",
+  "stderr": "{\"adapter\": \"ck3-native-war-ai-v1\", \"audit\": null, \"audit_report\": null, \"command\": \"plan\", \"config\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\review02-render-inputs-a03-materialized-a01\\\\project\\\\promo-project.json\", \"document\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\review02-render-inputs-a03-materialized-a01\\\\project\\\\promo-project.json\", \"exit_status\": 2, \"failure\": {\"exception_type\": \"ValueError\", \"message\": \"Composition requires preserved production inputs in a native run\"}, \"pipeline\": null, \"preserved_artifacts\": [], \"preset\": \"ck3-native-war-ai-longform-zh-v2\", \"run\": null, \"status\": \"failed\", \"workdir\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\shot-edl-r192-a01\\\\PROPOSED_NATIVE_PLAN_WORKDIR_MUST_NOT_EXIST\"}\r\n",
+  "workdir_exists_after": false,
+  "new_run_created": false,
+  "media_calls": 0,
+  "result_scope": "Actual CLI plan against existing config; missing preserved native production input is a real pre-render dependency, not media RED"
+}

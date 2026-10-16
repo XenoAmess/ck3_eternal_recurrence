@@ -511,3 +511,35 @@ docs/ck3-native-ai/research/sdk31-route-window-sdk32-ui-defer/** -text whitespac
 
 docs/ck3-native-ai/research/war-results-first-read-state-changed/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/war-results-first-read-state-changed/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Exact hash-bound candidate inputs; no directory-wide rule.
+docs/ck3-native-ai/evidence/episode04-army-public-native-identity-12004/originals.exact.zip -text
+docs/ck3-native-ai/evidence/episode04-army-public-native-identity-12004/source-index.json -text
+docs/ck3-native-ai/evidence/episode04-r0191-20261017/facts.derived-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0191-20261017/provenance.prepared.exact-a01.zip -text
+docs/ck3-native-ai/evidence/episode04-r0191-20261017/results.exact-a01.zip -text
+docs/ck3-native-ai/evidence/episode04-r0191-20261017/scope-correction-history.exact-a01.zip -text
+docs/ck3-native-ai/evidence/episode04-r0191-20261017/source-index.json -text
+docs/ck3-native-ai/evidence/episode04-r08-selector-wallet-link-12004/observer-candidate.json -text
+docs/ck3-native-ai/evidence/episode04-r08-selector-wallet-link-12004/source.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/EDIT-CANDIDATES.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/GRAPH-CHECK.actual-a03.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/GRAPH-TIME.actual.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/INPUTPINS.actual.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/NATIVE-PLAN.actual.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/ROOT-DELIVERY.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/ROOT-DELIVERY.actual-a02.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/ROUGH-INPUTS.source-list-a03.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/ROUGH-PLAN.actual-a03.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/TOOLCHAIN.actual.json -text
+docs/ck3-native-ai/evidence/episode04-review02-shot-edl-r192-12004/official-release.actual.raw.json -text
+# R192 final exact archive and source index.
+docs/ck3-native-ai/evidence/episode04-r192-forward-split-merge-12004/r192-forward-evidence.zip -text
+docs/ck3-native-ai/evidence/episode04-r192-forward-split-merge-12004/source-index.json -text
+
+# R193 exact portable history and canonical source policy.
+docs/ck3-native-ai/episode04-r193-reverse-pair-12004.md -text
+docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/r193-reverse-pair-evidence.zip -text
+docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/verify_portable.py -text
+docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/source-index.json -text
+ck3_autonomous_player/src/xar_autoplayer/bridge/army_split_unrelated_role_transfer_12004.py -text

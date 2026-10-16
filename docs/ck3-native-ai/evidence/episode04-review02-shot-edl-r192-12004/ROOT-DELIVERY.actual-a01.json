@@ -1,0 +1,52 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:58:41.958267+00:00",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "scope": "EDL+exact small input pins+fresh release/CLI plan only",
+  "files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\EDIT-CANDIDATES.actual-a01.json",
+      "bytes": 64629,
+      "sha256": "a235f11842337103e94795a1e5bb1c5e6a28c340800100b99c9a2c4246a1ddfd",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\INPUTPINS.actual.json",
+      "bytes": 7655,
+      "sha256": "8946ec0ef05c5d0c2d1bf8e39ad961ed587b0cf76645b7ffc2ad92e123b5e6a4",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\NATIVE-PLAN.actual.json",
+      "bytes": 1659,
+      "sha256": "d13f8741c4564c849ac75ba3a438cc62f3dc48471238eab6dd753741a5fe2345",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\official-release.actual.raw.json",
+      "bytes": 7123,
+      "sha256": "78119567a35336d16a72e38283675960d188e02241be866fd5e4a718a4fcdc9f",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\prepare_edl_a01.py",
+      "bytes": 14114,
+      "sha256": "544e1243dd621caa9b782fc78313f28a082ae4656942bcd790183398c85ca2fb",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\shot-edl-r192-a01\\TOOLCHAIN.actual.json",
+      "bytes": 5547,
+      "sha256": "50e194b481b6c165091ff506c9fc33045da14ee857d0005c691951c75e998c67",
+      "verification": "fresh-small-file-bytes"
+    }
+  ],
+  "output_limit_bytes": 131072,
+  "actual_current_output_bytes": 100727,
+  "new_run_created": false,
+  "render_or_media_or_SDK_or_desktop_calls": 0,
+  "raw_or_audio_or_PNG_body_reads": 0,
+  "source_tree_mutations": 0,
+  "R09_actual_credit_added": 0,
+  "clean_credit_added": 0
+}

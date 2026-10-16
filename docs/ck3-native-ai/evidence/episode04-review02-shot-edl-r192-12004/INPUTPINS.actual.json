@@ -1,0 +1,167 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:58:35.554872+00:00",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "fresh_small_file_pins": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r192-r09-a01\\R192-CAPACITY.actual-root-a01.json",
+      "bytes": 11966,
+      "sha256": "c7d2cf94ae16a4b0bf1242f5496e3c4f01677de7f93cebe5122360c79d96a9ac",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r184-shot-priority-2026-10-16.md",
+      "bytes": 14120,
+      "sha256": "3bda1254021264a3596703417aa0fae92e20827d120aebc1fcbb01af31a21729",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+      "bytes": 118194,
+      "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\subtitles-actual69-a01\\CHECK.actual.json",
+      "bytes": 37041,
+      "sha256": "6f8b752f3075fe0b1312c7bf5bca2df1ead4b6e91e185530643f774f1841881b",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\narration69.timeline.actual.json",
+      "bytes": 41942,
+      "sha256": "14b41b9aa02f8f969d4e21449840a5b6d03c2c96283595f52b312958616dc8c0",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-composer-candidate-a01\\input-config.methodology.json",
+      "bytes": 42093,
+      "sha256": "a724e97b2ef701c514e1650a87cf989cfb7da5455f98c7dca7035895c9328c60",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-composer-candidate-a01\\promo-project.methodology.json",
+      "bytes": 94874,
+      "sha256": "6e2949829adafb9b93e8f84e0487e443c40e3dcff7c704cc50529e5b16f6636d",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-render-inputs-a03-materialized-a01\\project\\promo-project.json",
+      "bytes": 86060,
+      "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-static-raster-production-a01\\raster-manifest.actual.json",
+      "bytes": 52756,
+      "sha256": "7d1e7afbfb9d1e5944a35242e9b9d19d2b90a707cded651a1e6e5f5b507922f0",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full23-plan-a03\\FULL23-JOIN-PLAN.actual-a03.json",
+      "bytes": 18906,
+      "sha256": "f7602a5496288225494f37ebf5eba32c22d9f9389b9f4cb5c229df6a82d17af7",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full23-plan-a03\\ROOT-EXACT-ARGV.NOT-EXECUTED-a03.json",
+      "bytes": 4635,
+      "sha256": "883de630d5719b2d1c8aadc21c064ae226d76d37ab525607936f53f048a3de16",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\src\\war_ai_promo\\episode04_review02.py",
+      "bytes": 6547,
+      "sha256": "6de4269d38f9d4a676a2a9d30a39ec59e3eb52da8a5d6fec0d24d5be880c9d15",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\src\\war_ai_promo\\composer.py",
+      "bytes": 10203,
+      "sha256": "8912e1e057aea5c9fbf8ed57783246c8292719ce9d3ed2ea492d9fe101418628",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-real-dry-plan-a02\\review02_png_composer.py",
+      "bytes": 4329,
+      "sha256": "b99cfdb14bdb9318f8fff1307a7f0671225321419f81f60506aa719c7cf32f1e",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-real-dry-plan-a02\\prepare_png_run_a02.py",
+      "bytes": 7397,
+      "sha256": "910ab64f1a3b76e38ff87fb77bf8025b6aebd10eb9ad9e7455e29e4d9b3ea308",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-real-dry-plan-a02\\run_png_pipeline_a02.py",
+      "bytes": 2214,
+      "sha256": "fda234207d25e0c04010d59967ef0c60b13448e574c35ab9c90397ebb70e318d",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-media-audit-bounded-a01\\portable-media-facts.actual-a01.json",
+      "bytes": 12264,
+      "sha256": "50653b8453aa58b6705333bcf8c5a3a0eb4f90ec7bceffda945c1a54896f1e03",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r191-portable-candidate-a01\\reader-derived-a03\\STRICT-SOURCE-FACTS.actual.json",
+      "bytes": 9964,
+      "sha256": "f3ade075421681ce83031ed49bb49a27ff328dc4233908ad1c6b6ad580f5ff98",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r191-portable-candidate-a01\\reader-derived-a03\\ANALYSIS.actual.json",
+      "bytes": 13451,
+      "sha256": "3cd0507323451eec2bbecdf95951caba338e0303b7622ae4bbab4e1c1d2f3cd8",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a02\\claim-shot-agent-map.json",
+      "bytes": 71886,
+      "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a03\\claim-shot-agent-map.json",
+      "bytes": 53716,
+      "sha256": "f6ab6a8371f5dda5f5d8d314cf9c61acc5c8c2fe2a8dc7c2de99daa1282c3cd6",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a04\\claim-shot-agent-map.json",
+      "bytes": 58341,
+      "sha256": "f3385b713c1e2fff12b4874f12bac4d106df33f96f73b2f706a63f5be587884d",
+      "verification": "fresh-small-file-bytes"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+      "bytes": 80422,
+      "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa",
+      "verification": "fresh-small-file-bytes"
+    }
+  ],
+  "audio_metadata_stat_count": 69,
+  "audio_body_reads": 0,
+  "PNG_body_reads": 0,
+  "raw_body_reads": 0,
+  "full_payload_reads": 0,
+  "render_reservation_bytes": 0,
+  "native_render_run_exists": false,
+  "prior_run_roots_not_created_by_this_lane": true,
+  "volumes_at_start": {
+    "C:/": {
+      "free_bytes": 33713201152
+    },
+    "D:/": {
+      "free_bytes": 47836008448
+    }
+  }
+}

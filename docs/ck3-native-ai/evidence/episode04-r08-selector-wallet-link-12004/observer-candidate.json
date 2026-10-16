@@ -1,0 +1,18 @@
+{
+  "status": "FUTURE_CANDIDATE_RECIPE_NOT_IMPLEMENTED_OR_EXECUTED",
+  "native_entry_rva": "28B9490",
+  "ABI": "out64*=fn(Character* RCX,out64* RDX,rawselector R8D); normal return original out pointer",
+  "filter": "Only actual natural entry R8D==4; no forced calls or replay",
+  "required_capture": [
+    "actual caller return PC and exact-image range",
+    "Char fullID and existing native class/owner checks",
+    "entry RDX out identity; normal return RAX==same out pointer",
+    "entry/return extension1B0 and context1C0 identities",
+    "out64 after original exactly once",
+    "context4A0 before/after when readable; explicit missing/default-zero reason",
+    "machine/PID-create/generation/episode/native/date/thread/clock/sequence"
+  ],
+  "qualification": "Getter-source/caller discovery only. No resource name, payer, debit, paid amount or cadence inference. No raw4 calls means unknown trigger, not zero resource/use.",
+  "next_authority_edge": "Follow the actual captured raw4 caller to its named GUI/script registrar. HUD GetPlayer.GetCurrency(barter_goods) is the independently named target; do not equate it to this getter before actual callback/source linkage.",
+  "current_a31_change": false
+}

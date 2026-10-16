@@ -1,0 +1,243 @@
+{
+  "schema": "xar.e04.r191-portable-final-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T21:56:52.565779+00:00",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "state": "CLOSED_PORTABLE_CANDIDATE_NOT_APPLIED",
+  "build": {
+    "a31_production_bytes_qualified": true,
+    "fixture_execution_count": 2,
+    "prior_fixture_reuse_count": 4,
+    "fixtures_once": true,
+    "build_receipt_itself_live_runtime_qualified": false,
+    "build_receipt_itself_gameplay_qualified": false
+  },
+  "identity_reds_preserved": {
+    "a02_timeout_result_unknown": true,
+    "old_request_replay_allowed": false,
+    "a03_independent_state_changed": true,
+    "a04_new_observe_and_normal_save_not_collection_of_old_timeout": true
+  },
+  "UI": {
+    "native_select_not_ArmyUI_success": true,
+    "two_ArmyUI_false_preserved": true,
+    "Root_guarded_counter_click_screen_xy": [
+      1064,
+      950
+    ],
+    "independent_UI_true_after_click": true,
+    "native_only_qualification": false
+  },
+  "sampling": {
+    "a01_to_a03_are_not_complete_PASS": true,
+    "a03_final_error": "army_observer_research_sampling_frame_invalid",
+    "natural_enable_actual_calls": 1,
+    "payment_enable_actual_calls": 1,
+    "a04_method": "reuse exact a02 enable ACK + independent a03 ON readbacks; no enable replay",
+    "actual_a04_status": "ADMITTED_FROM_EXISTING_ORIGINAL_ENABLE_AND_INDEPENDENT_ON_READBACKS"
+  },
+  "cleanup": {
+    "actual_deleted_count": 1000,
+    "C_allocation_reclaimed_bytes": 372740096,
+    "D_credit_bytes": 0,
+    "old_credit_repeated": 0,
+    "registry_or_admission_changed": false,
+    "deleted_original_OBJ_bodies_unreadable": true,
+    "per_leaf_ledger_archived": true,
+    "automatic_GC": false,
+    "daily_groups": 157,
+    "daily_deletions": 0,
+    "daily_local_date": "2026-10-17",
+    "utc_offset": "+0800",
+    "future_scheduled_run_or_logout_recovery_observed": false
+  },
+  "Root_reported_preparation_corrections": {
+    "source_CRLF_a01_preflight_rejected": true,
+    "a02_Git_clean_source_fix_does_not_relabel_old_RED": true,
+    "scenephase_receipt_budget_KiB": [
+      128,
+      192
+    ],
+    "CI_green_for_source_reported_by_Root": true
+  },
+  "future_R09": {
+    "state": "PLAN_ONLY_NO_RUN_ALLOCATED",
+    "common_start_candidate": "R0176 postmerge normal checkpoint",
+    "actual_new_source_hash_coldload_step_legality_NOT_QUALIFIED": true,
+    "arms": [
+      "forward merge destination original U",
+      "independent coldload same S0 bytes then reverse destination new sibling V"
+    ],
+    "expected_output": "same source F0/F1/F2, exact DATA/alias/stock/cap/commander invariants and dynamic capture",
+    "fallback_if_start_or_step_invalid": [
+      "R13 dynamic outcome",
+      "R12 dynamic outcome"
+    ]
+  },
+  "no_main_or_Git_writes": true,
+  "no_SDK_desktop_or_full_Driver_reads": true,
+  "no_new_business_clean_or_human_signoff": false,
+  "prepared_snapshot_preserved": true,
+  "qualification": {
+    "strict_single_event_siege_physical_positive": true,
+    "strict_positive_events": 7,
+    "strict_debit_sum": 11,
+    "whole_R03_card": false,
+    "complete_interval_total": false,
+    "R05_zero_stock": false,
+    "exact_event_PTS": false,
+    "whole_clip_clean": false,
+    "full_1x_human_review": false,
+    "human_signoff": false,
+    "note": "Final reader found strict event positives after the prepared snapshot; no complete card or media signoff follows.",
+    "scope": "R191 run-local new qualification only; does not revoke R0177 original-card closure",
+    "existing_R0177_R03_research_core_closed": true,
+    "new_research_card_credit": 0,
+    "aggregate_research_closed": 6,
+    "aggregate_research_total": 14,
+    "aggregate_business_closed": 4,
+    "aggregate_business_total": 11,
+    "aggregate_qualified_dynamic": 0,
+    "aggregate_dynamic_total": 11,
+    "aggregate_ABC_closed": 0,
+    "aggregate_ABC_total": 3
+  },
+  "film": {
+    "completed_days": 2,
+    "date_raw": [
+      53148144,
+      53148168,
+      53148192
+    ],
+    "first_resume_seconds": 3.7233502,
+    "encoded_frames": 3359,
+    "encoded_end_seconds": 111.966,
+    "recorder_wall_seconds": 115.694511,
+    "wall_before_finish_seconds": 115.0005729,
+    "paused_tail_seconds": 82.9820883,
+    "paused_tail_snapshots": 83,
+    "extra_resumes": 0,
+    "raw": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "bytes": 66574010,
+      "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872"
+    },
+    "continuous_advancing_110_seconds": false,
+    "capture_source": {
+      "kind": "gdigrab-desktop-client-region",
+      "owned_ck3_pid": 32028,
+      "owned_ck3_create_time": 1792185505.0798807,
+      "hwnd": 40437848,
+      "foreground_hwnd": 40437848,
+      "desktop": [
+        2560,
+        1440
+      ],
+      "client_screen_rect": [
+        640,
+        360,
+        1920,
+        1080
+      ],
+      "occluding_windows": [],
+      "coordinates": "physical-primary-screen-pixels",
+      "direct_hwnd_capture": false,
+      "window_border_included": false,
+      "observed_at_utc": "2026-10-16T21:37:09.252120+00:00",
+      "output_size": [
+        1280,
+        720
+      ]
+    }
+  },
+  "loss": {
+    "physical_current": [
+      1174,
+      1174,
+      1163
+    ],
+    "physical_maximum": 1185,
+    "cached_current": [
+      1184,
+      1184,
+      1173
+    ],
+    "cached_maximum": 1195,
+    "physical_slots": 21,
+    "stable_empty_character_1_1_count": 10,
+    "stock_and_capacity_raw": 30000000,
+    "scale": 100000,
+    "positive_writer_sequences": [
+      478,
+      479,
+      480,
+      492,
+      494,
+      495,
+      497
+    ],
+    "callback_sequence": 8,
+    "callback_date_raw_low32": 53148192,
+    "strict_source_supply_budget": 0,
+    "strict_source_siege_budget": 11,
+    "combined_siege_raid_budget": 11,
+    "strict_source_raid_budget": 0,
+    "global_latest": [
+      0,
+      283,
+      513
+    ],
+    "day2_oldest": 2,
+    "day2_global_overwritten": 1,
+    "selected_interval_baseline": 283,
+    "selected_interval_coverage_complete": true,
+    "allworld_dates_available": false,
+    "baseline_complete_normalized_DTO_held": false,
+    "baseline_projection_only": true,
+    "actual_full_reads_by_day": {
+      "0": 1,
+      "1": 2,
+      "2": 1
+    }
+  },
+  "preview": {
+    "route": [
+      2635,
+      2645,
+      2644
+    ],
+    "first_edge_county_objects_differ": false,
+    "first_edge_native_P": false,
+    "predicate_stage_counts": [
+      0,
+      0,
+      0
+    ],
+    "neighbor_Q_observed": false,
+    "target2644_resupply_eligible": false,
+    "R01_closed": false,
+    "R04_positive": false,
+    "Move_or_Halt": 0
+  },
+  "close": {
+    "game_process_exit": 0,
+    "recorder_state": "NORMAL_TREE_EMPTY",
+    "bootstrap_recorder_state": "NORMAL_TREE_EMPTY",
+    "screen_sequence": 5923,
+    "screen_state": "done",
+    "resources": [],
+    "capacity_reservation_returned_at_release_receipt": false
+  },
+  "portability": {
+    "knowledge_and_selected_DTOs_reusable": true,
+    "installation_steam_permission_capacity_runtime_not_transferred": true,
+    "source_must_match_for_strict_replay": true,
+    "whole_original_raw_or_saves_included": false
+  },
+  "retention": {
+    "small_record_review_days": 180,
+    "raw_or_checkpoint_protection_extended_by_this_package": false,
+    "shared_policy": "docs/storage-retention-policy.md",
+    "parameters": "docs/storage-retention-policy.json"
+  }
+}

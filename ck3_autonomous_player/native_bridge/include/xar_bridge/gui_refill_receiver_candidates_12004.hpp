@@ -12,6 +12,12 @@
 #ifndef XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
 #define XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004 0
 #endif
+#ifndef XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004
+#define XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004 0
+#endif
+#if XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004 && !XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+#error frontier continuation requires the independently stable depth8 prefix
+#endif
 
 namespace xar::game {
 struct GuiRefillReceiverEntry12004V1 {
@@ -61,6 +67,26 @@ struct GuiRefillDefinitionPrefix12004V1 {
   std::vector<GuiRefillDefinitionPrefixRow12004V1> rows;
   bool operator==(const GuiRefillDefinitionPrefix12004V1 &) const=default;
 };
+struct GuiRefillContinuationRow12004V1 {
+  std::uint32_t ancestor_depth=0;
+  bool definition_present=false;
+  std::optional<std::int32_t> raw_definition_entry_count;
+  std::optional<std::int32_t> first_match_entry_index;
+  std::vector<GuiRefillReceiverEntry12004V1> entries;
+  std::string parent_edge;
+  std::optional<bool> parent_present;
+  bool operator==(const GuiRefillContinuationRow12004V1 &) const=default;
+};
+struct GuiRefillDefinitionContinuation12004V1 {
+  std::string status="unavailable",unavailable_reason="frontier_continuation_not_admitted",stop_reason;
+  std::optional<std::int32_t> receiver_variable_index;
+  std::optional<std::uint32_t> declared_type_id,stop_depth;
+  std::optional<bool> next_context_present;
+  bool stable_double_read=false;
+  std::vector<GuiRefillContinuationRow12004V1> rows;
+  std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
+  bool operator==(const GuiRefillDefinitionContinuation12004V1 &) const=default;
+};
 struct GuiRefillReceiverCandidates12004V1 {
   std::string status="unavailable",unavailable_reason="candidate_read_not_admitted";
   std::optional<std::int32_t> receiver_variable_index;
@@ -70,6 +96,7 @@ struct GuiRefillReceiverCandidates12004V1 {
   std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
   std::optional<GuiRefillLocalDefinitionEntry12004V1> local_definition_entry_only;
   std::optional<GuiRefillDefinitionPrefix12004V1> definition_chain_prefix_depth8;
+  std::optional<GuiRefillDefinitionContinuation12004V1> definition_frontier_continuation_depth8_12;
   bool operator==(const GuiRefillReceiverCandidates12004V1 &) const=default;
 };
 struct GuiRefillReceiverFrame12004V1 {
@@ -122,6 +149,11 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     bool local_complete=false,prefix_boundary=false;
     std::vector<game::GuiRefillDefinitionPrefixRow12004V1> prefix_rows;
     std::optional<game::GuiRefillReceiverFailure12004V1> local_failure;
+    std::uintptr_t frontier_context=0;
+    std::array<std::uintptr_t,8> prefix_contexts{};
+    game::GuiRefillDefinitionContinuation12004V1 continuation;
+    std::vector<std::uintptr_t> continuation_identity;
+    bool continuation_complete=false;
   };
   const auto once=[&](Capture &out,bool local_only=false,bool prefix_only=false) {
     auto &v=out.result;auto &identity=out.private_identity;
@@ -162,6 +194,7 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
       diagnostic.definition_present.reset();
       if(depth==visited.size()){
         out.prefix_boundary=true;
+        out.frontier_context=context;out.prefix_contexts=visited;
         // A prefix replay stops before reading depth8. It never turns the
         // failed full traversal into an available full candidate.
         if(prefix_only)return true;
@@ -311,6 +344,108 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     destination.definition_chain_prefix_depth8=std::move(leaf);
   };
 #endif
+  // Resume only the actual depth8 frontier saved by each complete prefix
+  // capture. This is a bounded source walk, never the native resolver/provider.
+#if XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004
+  const auto continue_frontier=[&](Capture &out) {
+    auto &v=out.continuation;auto &identity=out.continuation_identity;
+    auto context=out.frontier_context;
+    std::array<std::uintptr_t,12> visited{};
+    for(std::size_t n=0;n<out.prefix_contexts.size();++n)visited[n]=out.prefix_contexts[n];
+    v.receiver_variable_index=out.result.receiver_variable_index;
+    v.declared_type_id=out.result.declared_type_id;
+    const auto finish=[&](const char *reason,std::uint32_t depth,std::optional<bool> next) {
+      v.stop_reason=reason;v.stop_depth=depth;v.next_context_present=next;
+      out.continuation_complete=true;return true;
+    };
+    for(std::uint32_t depth=8;depth<12;++depth){
+      diagnostic.ancestor_depth=depth;diagnostic.stage="continuation_parent_walk";
+      diagnostic.context_present=context!=0;diagnostic.definition_present.reset();
+      diagnostic.raw_definition_entry_count.reset();
+      identity.push_back(context);
+      if(!context)return finish("null_end",depth,false);
+      for(std::size_t n=0;n<depth;++n)if(visited[n]==context)return finish("cycle",depth,true);
+      visited[depth]=context;
+      game::GuiRefillContinuationRow12004V1 row;row.ancestor_depth=depth;
+      std::uintptr_t definition=0,table=0,matched=0,parent=0;std::int32_t count=0;
+      if(!load("continuation_context_definition_e0",context,0xE0,definition))return false;
+      row.definition_present=definition!=0;diagnostic.definition_present=definition!=0;
+      if(definition){
+        if(!load("continuation_entry_pointer_90",definition,0x90,table)||
+            !load("continuation_entry_count_9c",definition,0x9C,count))return false;
+        diagnostic.raw_definition_entry_count=count;row.raw_definition_entry_count=count;
+        if(!guard(count>=0&&count<=256,"continuation_entry_count_out_of_bound")||
+            !guard(count==0||table!=0,"continuation_entry_pointer_null"))return false;
+      }
+      identity.insert(identity.end(),{context,definition,table,static_cast<std::uintptr_t>(count)});
+      for(std::int32_t n=0;n<count;++n){
+        std::uint32_t key=0;const auto offset=static_cast<std::size_t>(n)*0x50;
+        if(!load("continuation_entry_key_48",table,offset+0x48,key))return false;
+        identity.push_back(key);
+        if(key==635U){if(table>UINTPTR_MAX-offset)return false;matched=table+offset;row.first_match_entry_index=n;break;}
+      }
+      bool static_stop=false;
+      if(matched){
+        game::GuiRefillReceiverEntry12004V1 e;e.ancestor_depth=depth;
+        std::uintptr_t direct=0,provider=0,vt=0,target=0;
+        if(!load("continuation_matched_type_48",matched,0x48,e.entry_type_48)||
+            !guard(e.entry_type_48==635U,"continuation_matched_type_changed")||
+            !load("continuation_entry_mode_40",matched,0x40,e.entry_mode_40)||
+            !load("continuation_entry_flag_4c",matched,0x4C,e.entry_flag_4c)||
+            !load("continuation_direct_value_0",matched,0,direct)||
+            !load("continuation_provider_38",matched,0x38,provider))return false;
+        e.direct_value_present=direct!=0;e.provider_present=provider!=0;
+        identity.insert(identity.end(),{matched,direct,provider,static_cast<std::uintptr_t>(static_cast<std::uint8_t>(e.entry_mode_40)),e.entry_flag_4c});
+        // Parent flag0 is filtered before resolver/provider dispatch.
+        if(e.entry_flag_4c!=0&&e.entry_mode_40>=2&&provider){
+          if(!load("continuation_provider_vtable",provider,0,vt))return false;
+          e.provider_vtable_rva=rva(vt,24);
+          if(e.provider_vtable_rva){if(!load("continuation_provider_slot2",vt,0x10,target))return false;e.provider_slot2_rva=rva(target,1);}
+          identity.insert(identity.end(),{vt,target});
+        }
+        if(e.entry_flag_4c!=0&&e.entry_mode_40==1&&direct){
+          std::int32_t owner=-1;std::uintptr_t storage=0,slots=0,character=0;std::int32_t capacity=0,id=-1;std::uint32_t magic=0;
+          if(!load("continuation_direct_owner_218",direct,0x218,owner))return false;
+          e.direct_owner_full_id=owner;const auto slot=static_cast<std::uint32_t>(owner)&0xFFFFFFU;
+          if(owner!=-1&&load("continuation_character_registry",module_base,0x5C67568,storage)&&storage&&
+              load("continuation_character_slots",storage,0x20,slots)&&load("continuation_character_capacity",storage,0x2C,capacity)&&slots&&capacity>0&&slot<static_cast<std::uint32_t>(capacity)&&
+              load("continuation_character_object",slots,static_cast<std::size_t>(slot)*0x10+8,character)&&character&&
+              load("continuation_character_full_id",character,0x18,id)&&load("continuation_character_magic",character,0x1C,magic)&&id==owner&&magic==0x43686172)
+            e.direct_owner_identity_verified=true;
+          identity.insert(identity.end(),{static_cast<std::uintptr_t>(static_cast<std::uint32_t>(owner)),storage,slots,character,static_cast<std::uintptr_t>(static_cast<std::uint32_t>(capacity)),static_cast<std::uintptr_t>(static_cast<std::uint32_t>(id)),magic});
+        }
+        static_stop=e.entry_flag_4c!=0&&e.entry_mode_40>=0&&e.entry_mode_40<=1;
+        row.entries.push_back(e);
+      }
+      if(static_stop){
+        row.parent_edge="not_read_native_static_stop";out.continuation.rows.push_back(std::move(row));
+        return finish("static_direct_terminal",depth,std::nullopt);
+      }
+      if(definition&&!load("continuation_definition_parent_108",definition,0x108,parent))return false;
+      const bool definition_edge=parent!=0;
+      if(!parent&&!load("continuation_context_parent_e8",context,0xE8,parent))return false;
+      row.parent_edge=definition_edge?"definition_108":"context_e8";row.parent_present=parent!=0;
+      identity.push_back(parent);out.continuation.rows.push_back(std::move(row));
+      context=parent;
+      if(!context)return finish("null_end",depth+1U,false);
+    }
+    return finish("depth_limit",12U,true);
+  };
+  const auto attach_continuation=[&](Result &destination,const Capture &a,const Capture &b) {
+    game::GuiRefillDefinitionContinuation12004V1 leaf;
+    if(reads>4096||bytes>65536||std::chrono::steady_clock::now()-started>std::chrono::milliseconds(20))
+      leaf.unavailable_reason="frontier_continuation_shared_budget_exhausted";
+    else if(!destination.definition_chain_prefix_depth8||destination.definition_chain_prefix_depth8->status!="available")
+      leaf.unavailable_reason="frontier_continuation_prefix_not_stable";
+    else if(!a.continuation_complete||!b.continuation_complete){
+      leaf.unavailable_reason="frontier_continuation_capture_incomplete";
+      leaf.failure_diagnostic=a.continuation.failure_diagnostic?a.continuation.failure_diagnostic:b.continuation.failure_diagnostic;
+    }else if(a.continuation_identity!=b.continuation_identity||a.continuation!=b.continuation)
+      leaf.unavailable_reason="frontier_continuation_identity_or_rows_changed";
+    else{leaf=a.continuation;leaf.status="available";leaf.unavailable_reason.clear();leaf.stable_double_read=true;}
+    destination.definition_frontier_continuation_depth8_12=std::move(leaf);
+  };
+#endif
   Capture a,b;
   diagnostic.capture_pass=1;
   if(!once(a)){
@@ -323,7 +458,14 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     diagnostic.capture_pass=2;
 #if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
     const bool capture_prefix=a.prefix_boundary&&a.prefix_rows.size()==8;
+#if XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004
+    if(capture_prefix){diagnostic.capture_pass=1;if(!continue_frontier(a))a.continuation.failure_diagnostic=diagnostic;}
+    diagnostic.capture_pass=2;
+#endif
     const bool local_ok=once(b,!capture_prefix,capture_prefix);
+#if XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004
+    if(capture_prefix&&local_ok){if(!continue_frontier(b))b.continuation.failure_diagnostic=diagnostic;}
+#endif
 #else
     const bool local_ok=once(b,true);
 #endif
@@ -332,6 +474,9 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     attach_local(rejected,a,b,local_failure);
 #if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
     if(capture_prefix)attach_prefix(rejected,a,b);
+#if XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004
+    if(capture_prefix)attach_continuation(rejected,a,b);
+#endif
 #endif
     return rejected;
   }

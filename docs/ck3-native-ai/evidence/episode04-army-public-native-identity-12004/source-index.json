@@ -1,0 +1,68 @@
+{
+  "schema": "xar.army-public-native-identity.portable.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+  "source_observed_interval_utc": [
+    "2026-10-16T22:18:26.378955+00:00",
+    "2026-10-16T22:18:56.430455+00:00"
+  ],
+  "archive": {
+    "path": "originals.exact.zip",
+    "bytes": 15614,
+    "sha256": "34ddc17332dbf620d64225b0b6735075c51463886d1915f089a2ccfec9592b44"
+  },
+  "originals": [
+    {
+      "member": "root_ui_frame.py",
+      "bytes": 12440,
+      "sha256": "b4be3f7eb26d2f4d7b1545ce9c24cfdb2a457e363203e72dbcd4959d485fc8be",
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r192-ui-frame-a01\\root_ui_frame.py"
+    },
+    {
+      "member": "root_ui_frame_a02.py",
+      "bytes": 7468,
+      "sha256": "1af79abfaf366d4b3554231d2a5019a8bb4a6c15dc5001a653a38d36be572eb5",
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r192-ui-frame-a01\\root_ui_frame_a02.py"
+    },
+    {
+      "member": "ROOT-DELIVERY.actual-a02.json",
+      "bytes": 1981,
+      "sha256": "706990dcab3ddeda2cf3a09f6daff04dc0adde453dda92da062b480d12abd91b",
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r192-ui-frame-a01\\ROOT-DELIVERY.actual-a02.json"
+    },
+    {
+      "member": "ARMY93-UI-SELECT.actual-a01.json",
+      "bytes": 3364,
+      "sha256": "4a28848e01b2c2b70c028c18d863b515db7d0999c5b1902b2e004adaadd5c7e3",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\ARMY93-UI-SELECT.actual-a01.json"
+    },
+    {
+      "member": "R192-UI-CUNIT-CARMY-CORRECTION.actual-a02.json",
+      "bytes": 3821,
+      "sha256": "38537a4256aa171204ced8f26c499ce6c592c147489a672d5643858a89fa9a96",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\R192-UI-CUNIT-CARMY-CORRECTION.actual-a02.json"
+    },
+    {
+      "member": "r192-pre-film-frame-a01.actual.json",
+      "bytes": 1610,
+      "sha256": "fd9f06c3222dd0418e89180b90645fce0caf0a725401bb3e926fd9af698b2a85",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\r192-pre-film-frame-a01.actual.json"
+    },
+    {
+      "member": "R09-FRAME-REVIEW.actual-a01.json",
+      "bytes": 1640,
+      "sha256": "df782cbe9817185e604aa18cb1416729564be9c4af1b903c22288595caed46c5",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\R09-FRAME-REVIEW.actual-a01.json"
+    },
+    {
+      "member": "runtime-actor-identity.actual-a01.json",
+      "bytes": 7767,
+      "sha256": "b17492b1d1e1fdae1e95aaab9684ae9080202874ca9d1bf4eb3c93f4bf5520ff",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r192-r09-forward-a01\\runtime-actor-identity.actual-a01.json"
+    }
+  ],
+  "scope": "Existing corrected assembly/foreground review receipts; original helper process source only; no SDK, UI packets, images, baseline or saves replayed",
+  "Root_reports_single_native_Select_no_counter_click": true,
+  "human_approval": false,
+  "R09_whole_card_qualified": false
+}

@@ -50,6 +50,25 @@ template<class Text> inline void AppendGuiRefillDefinitionPrefix12004(std::strin
     s+=",\"parent_edge\":";text(s,row.parent_edge);s+=",\"parent_present\":";s+=row.parent_present?"true":"false";s+='}';
   }s+="]}";
 }
+template<class Text> inline void AppendGuiRefillDefinitionContinuation12004(std::string &s,const GuiRefillDefinitionContinuation12004V1 &v,Text text) {
+  s+="{\"source\":\"native_gui_type635_frontier_continuation_depth8_12_12004\",\"scope\":\"definition_frontier_depth8_through11\",\"status\":";text(s,v.status);
+  s+=",\"unavailable_reason\":";if(v.unavailable_reason.empty())s+="null";else text(s,v.unavailable_reason);
+  s+=",\"receiver_type_id\":635,\"start_depth\":8,\"depth_limit\":12,\"current_variable_table_observed\":false,\"native_receiver_selected\":false,\"provider_invoked\":false";
+  const auto o=[&](const char *k,const auto &x){s+=",\"";s+=k;s+="\":";s+=x?std::to_string(*x):"null";};
+  o("receiver_variable_index",v.receiver_variable_index);o("declared_type_id",v.declared_type_id);o("stop_depth",v.stop_depth);
+  s+=",\"stop_reason\":";if(v.stop_reason.empty())s+="null";else text(s,v.stop_reason);
+  s+=",\"next_context_present\":";s+=v.next_context_present?(*v.next_context_present?"true":"false"):"null";
+  s+=",\"stable_double_read\":";s+=v.stable_double_read?"true":"false";s+=",\"rows\":[";
+  bool first=true;for(const auto &row:v.rows){
+    if(!first)s+=',';first=false;s+="{\"ancestor_depth\":"+std::to_string(row.ancestor_depth);
+    s+=",\"definition_present\":";s+=row.definition_present?"true":"false";
+    o("raw_definition_entry_count",row.raw_definition_entry_count);
+    o("first_match_entry_index",row.first_match_entry_index);
+    s+=",\"entries\":[";if(!row.entries.empty())AppendGuiRefillReceiverEntry12004(s,row.entries.front());s+=']';
+    s+=",\"parent_edge\":";text(s,row.parent_edge);s+=",\"parent_present\":";s+=row.parent_present?(*row.parent_present?"true":"false"):"null";s+='}';
+  }s+=']';
+  if(v.failure_diagnostic){s+=",\"failure_diagnostic\":";AppendGuiRefillReceiverFailure12004(s,*v.failure_diagnostic,text);}s+='}';
+}
 template<class Text> inline void AppendGuiRefillReceiverCandidates12004(std::string &s,const GuiRefillReceiverCandidates12004V1 &v,Text text) {
   s+="{\"source\":\"native_gui_type635_definition_candidates_12004\",\"status\":";text(s,v.status);
   s+=",\"unavailable_reason\":";if(v.unavailable_reason.empty())s+="null";else text(s,v.unavailable_reason);
@@ -60,7 +79,8 @@ template<class Text> inline void AppendGuiRefillReceiverCandidates12004(std::str
   bool first=true;for(const auto &e:v.entries){if(!first)s+=',';first=false;AppendGuiRefillReceiverEntry12004(s,e);}s+=']';
   if(v.failure_diagnostic){s+=",\"failure_diagnostic\":";AppendGuiRefillReceiverFailure12004(s,*v.failure_diagnostic,text);}
   if(v.local_definition_entry_only){s+=",\"local_definition_entry_only\":";AppendGuiRefillLocalDefinitionEntry12004(s,*v.local_definition_entry_only,text);}
-  if(v.definition_chain_prefix_depth8){s+=",\"definition_chain_prefix_depth8\":";AppendGuiRefillDefinitionPrefix12004(s,*v.definition_chain_prefix_depth8,text);}s+='}';
+  if(v.definition_chain_prefix_depth8){s+=",\"definition_chain_prefix_depth8\":";AppendGuiRefillDefinitionPrefix12004(s,*v.definition_chain_prefix_depth8,text);}
+  if(v.definition_frontier_continuation_depth8_12){s+=",\"definition_frontier_continuation_depth8_12\":";AppendGuiRefillDefinitionContinuation12004(s,*v.definition_frontier_continuation_depth8_12,text);}s+='}';
 }
 template<class Text> inline void AppendGuiRefillReceiverFrame12004(
     std::string &s,const GuiRefillReceiverFrame12004V1 &v,Text) {
