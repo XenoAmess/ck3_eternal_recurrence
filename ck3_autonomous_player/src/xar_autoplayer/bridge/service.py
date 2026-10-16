@@ -5011,6 +5011,19 @@ class GameplayBridgeService:
                 result = submit_holy_order_siege_reinforcement_v1(
                     self.driver, plan=plan, expected_revision=int(planned["revision"]),
                 )
+            elif selected_step == QUERY_ARMY_STRENGTHS_STEP:
+                from .native_driver import NativeHeadlessGameplayDriver
+
+                if type(self.driver) is NativeHeadlessGameplayDriver:
+                    # AUTO consumes scalars; direct/explicit queries stay full.
+                    result = self.driver.query_army_strengths(
+                        expected_revision=int(planned["revision"]),
+                        _auto_core_only=True,
+                    )
+                else:
+                    result = self.execute_step(
+                        selected_step, expected_revision=int(planned["revision"]),
+                    )
             else:
                 result = self.execute_step(
                     selected_step,

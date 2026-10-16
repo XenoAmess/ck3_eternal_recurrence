@@ -13455,6 +13455,7 @@ class NativeHeadlessGameplayDriver:
         self, *, profile: str = ORDINARY_CORE_PROFILE,
         expected_revision: int | None = None,
         army_ids: list[int] | None = None,
+        _auto_core_only: bool = False,
     ) -> dict[str, object]:
         """Read an explicit Army profile without advancing the game.
 
@@ -13462,6 +13463,9 @@ class NativeHeadlessGameplayDriver:
         default. A rejected profile never falls back to another profile.
         """
         profile = require_army_strengths_profile(profile)
+        if type(_auto_core_only) is not bool or (_auto_core_only and
+                (profile != ORDINARY_CORE_PROFILE or army_ids is not None)):
+            raise ValueError("private auto Army core requires the complete ordinary scope")
         try:
             if expected_revision is not None:
                 _validate_revision(expected_revision, "expected_revision")
@@ -13473,6 +13477,7 @@ class NativeHeadlessGameplayDriver:
             result = self._execute_army_strength_query(
                 starting=starting, selected_revision=selected_revision,
                 profile=profile, requested_ids=army_ids,
+                auto_core_only=_auto_core_only,
             )
         except Exception as error:
             timing = start_army_timing("driver.record_command")
@@ -14867,8 +14872,9 @@ class NativeHeadlessGameplayDriver:
         selected_revision: int,
         profile: str = ORDINARY_CORE_PROFILE,
         requested_ids: list[int] | None = None,
+        auto_core_only: bool = False,
     ) -> dict[str, object]:
-        """Read one exact published scope, retaining every field of selected rows."""
+        """Read one exact scope; explicit queries retain every selected row field."""
         profile = require_army_strengths_profile(profile)
         # A failed refresh must not leave an older query advertised as its result.
         with self._driver_state_lock:
@@ -14933,14 +14939,19 @@ class NativeHeadlessGameplayDriver:
                 raise BridgeUnavailableError("native army-strength query scope echo is malformed")
         army_normalize_timing = start_army_timing("driver.army_normalize")
         try:
-            # Expand the lossless wire view before the existing independent
-            # per-row normalization. The raw command evidence stays unchanged.
+            # Expand the lossless wire view before validation. Explicit queries
+            # retain complete manager normalization; auto uses a scalar view.
             result = expand_army_strengths_manager_inputs(result, detached=False)
             validate_army_strengths_profile_coverage(result, expected_profile=profile)
-            rows = normalize_army_strengths(
-                result.get("army_strengths"),
-                expected_scope=expected_scope,
-            )
+            if auto_core_only:
+                from .auto_army_core_validation_v1 import normalize_auto_army_core_v1
+                rows = normalize_auto_army_core_v1(
+                    result.get("army_strengths"), expected_scope=expected_scope,
+                )
+            else:
+                rows = normalize_army_strengths(
+                    result.get("army_strengths"), expected_scope=expected_scope,
+                )
         except ValueError as error:
             raise BridgeUnavailableError(
                 f"native army-strength query returned malformed rows: {error}"
@@ -15025,7 +15036,8 @@ class NativeHeadlessGameplayDriver:
             # A subset never impersonates the complete-scope snapshot cache.
             self._army_strength_query = cache_entry if requested_ids is None else None
         return {
-            **result,
+            **({key: value for key, value in result.items()
+                if key != ARMY_MANAGER_INPUTS_SHARED_KEY} if auto_core_only else result),
             "status": status,
             "army_strengths": rows,
             "query_sequence": query_sequence,
