@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve the production Native21 serializer fixture and its original SHA pin.
+ck3_autonomous_player/tests/unit/native21-actual-query-final.json -text whitespace=cr-at-eol
+
 # Original QOL acceptance inputs retain their reviewed BOM, CRLF and SHA pins.
 tools/ck3_mod_acceptance_cases/xqol_followup_cases/** -text whitespace=cr-at-eol
 tools/ck3_mod_acceptance_cases/xqol_followup_cases/prison_payment/fixture/common/scripted_effects/zqa_effects.txt -text whitespace=-blank-at-eol,cr-at-eol
