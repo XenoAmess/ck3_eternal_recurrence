@@ -1,0 +1,44 @@
+{
+  "source_relative_path": "p20-responses/2448-1-result.json",
+  "source_sha256": "43888484577a9b3e6f5ac9d0f14af02d581153653e54e6927f311b6930ad93a7",
+  "selected_step": "query-route-contact-horizon-v1-620757086-to-5969-h-12-218104322-318767378-318767449-385876199-452985064-520093840-536871076-536871097-587202636-603980042-637534455-704643297",
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:3403",
+    "revision": 2848,
+    "native_revision": 3403,
+    "date_raw": 53409336,
+    "actor_character_id": 40526,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "connection_generation": 3,
+    "bridge_pid": 249712
+  },
+  "family_wartime_opportunity_cooldown_v1": {
+    "schema": "xar.ck3.family-wartime-opportunity-cadence/v1",
+    "status": "active",
+    "consecutive_noop_dates": 0,
+    "qualified_source": true,
+    "cooldown_until_date_raw": 53410008,
+    "remaining_days": 28,
+    "heir_character_id": 39979,
+    "player_spouse_signature": [
+      null,
+      null,
+      [
+        30887
+      ]
+    ],
+    "expected_successor_character_id": 39979
+  },
+  "current_first_heir_relationship": {
+    "status": "available",
+    "read_only": true,
+    "bilateral_verified": true,
+    "native_revision": 3403,
+    "heir_character_id": 39979,
+    "betrothed_character_id": null,
+    "primary_spouse_character_id": null,
+    "spouse_character_ids": []
+  }
+}

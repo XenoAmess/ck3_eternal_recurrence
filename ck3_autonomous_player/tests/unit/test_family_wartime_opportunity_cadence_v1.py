@@ -147,6 +147,58 @@ def test_service_skips_only_when_fresh_heir_same_and_no_pending(tmp_path, monkey
     assert reads == [frame['native_revision']]
 
 
+def test_actual_route_query_uses_active_family_cooldown_without_changing_route(tmp_path, monkeypatch):
+    """P20 q2448 was a route query with an active lease but a full family read."""
+    actual = json.loads((Path(__file__).resolve().parents[1] / 'fixtures' /
+                         'route_family_cd_2448.json').read_text(encoding='utf-8'))
+    frame = actual['planning_source_frame']
+    receipt = actual['family_wartime_opportunity_cooldown_v1']
+    state = cadence._empty(frame)
+    state.update({key: receipt[key] for key in (
+        'consecutive_noop_dates', 'qualified_source', 'cooldown_until_date_raw',
+        'heir_character_id', 'player_spouse_signature',
+        'expected_successor_character_id')})
+    state['last_observed_end_date_raw'] = frame['date_raw']
+    cadence._write(tmp_path, state)
+    snapshot = _snapshot(frame)
+    snapshot['played_character']['primary_spouse_id'] = None
+    planned = {'plan': {'selected_step': actual['selected_step'],
+                        'phase': 'advance_route_contact_horizon'}}
+    heavy_reads = []
+    relation_reads = []
+    monkeypatch.setattr(service, 'read_family_marriage_ledger',
+                        lambda _: {'pending': None, 'resolved': None})
+    monkeypatch.setattr(transport, 'query_current_first_heir_relationship_private_v1',
+                        lambda driver, *, expected_native_revision:
+                        relation_reads.append(expected_native_revision)
+                        or actual['current_first_heir_relationship'])
+    driver = SimpleNamespace(allow_private_family_marriage_formal_trial=True,
+                             allow_private_current_first_heir_relationship_query=True,
+                             take_internal_semantic_snapshot=lambda: snapshot,
+                             _with_internal_planning_view=lambda *_: {'pending': None})
+    fake = SimpleNamespace(
+        driver=driver, _last_war_family_observation=None,
+        _strategy_state_dir=lambda: tmp_path,
+        _observed_planning_source_frame=lambda _: frame,
+        _unresolved_family_child_focus_v1=lambda *_: {'pending': None},
+        _plan_private_family_opportunity_v1=lambda *_args, **_kwargs:
+            heavy_reads.append(1) or planned,
+    )
+    fake._skip_private_family_wartime_during_cooldown_v1 = lambda *args: (
+        service.GameplayBridgeService._skip_private_family_wartime_during_cooldown_v1(
+            fake, *args))
+    plan = service.GameplayBridgeService._plan_private_family_wartime_v1(
+        fake, planned, snapshot)['plan']
+    assert plan['selected_step'] == actual['selected_step']
+    assert plan['phase'] == planned['plan']['phase']
+    assert plan['family_wartime_opportunity_cooldown_v1']['status'] == 'active'
+    assert heavy_reads == []
+    assert relation_reads == [frame['native_revision']]
+    snapshot['pending_character_interaction'] = {'instance_id': 72}
+    assert fake._skip_private_family_wartime_during_cooldown_v1(planned, snapshot) is None
+    assert relation_reads == [frame['native_revision']]
+
+
 def test_prior_heir_resolved_is_evidence_not_current_pending(tmp_path, monkeypatch):
     frame, _ = active_after_two(tmp_path)
     snapshot = _snapshot(frame)

@@ -3339,7 +3339,9 @@ class GameplayBridgeService:
         if (not isinstance(plan, dict)
                 or plan.get("selected_step") not in ("life-advance", "query-army-strengths-v1")
                 and not (isinstance(plan.get("selected_step"), str)
-                         and plan["selected_step"].startswith("query-war-termination-options-"))
+                         and plan["selected_step"].startswith((
+                             "query-war-termination-options-",
+                             "query-route-contact-horizon-v1-")))
                 or snapshot.get("paused") is not True
                 or snapshot.get("map_ready") is not True
                 or not isinstance(snapshot.get("active_wars"), list)
