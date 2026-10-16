@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-16T01:44:41.983560+00:00",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p06-responses\\0008-1-result.json",
+    "bytes": 131820,
+    "sha256": "ff5cb2b10ded7ed2c10a142e156814a0c44733687ffe567c2b1b06be9cf76b9a",
+    "json_path": "$.result.structured_content.result.campaign_root_context"
+  },
+  "evidence_layer": "closed actual Native Root identity; no new call",
+  "binding": {
+    "status": "available",
+    "player_character_id": 40526,
+    "snapshot_revision": 142,
+    "date_raw": 53328720
+  },
+  "government": {
+    "key": "feudal_government",
+    "flags": [
+      "government_is_feudal",
+      "government_is_settled",
+      "government_uses_crown_authority",
+      "government_uses_domain_limit",
+      "may_elevate_co_monarch"
+    ],
+    "native_flag_count": 5
+  },
+  "matches_later_P06_normal_plan_frame": true,
+  "limit": "Later native142 identity, not P02 cold-frame government and not government-specific gameplay qualification",
+  "M7_complete": false,
+  "new_game_days": 0
+}

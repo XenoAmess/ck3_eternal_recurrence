@@ -33,7 +33,7 @@
 
 ## M7：已保留真实 successor goal，政府玩法仍需分项施工
 
-[新罗贝尔继承后意图观测](g2-successor-goal-observation-2026-10-16.md)复用两份闭场小回执，确认31254→40526的同一 dynasty_continuity goal已进入真实 successor SAVE，并在另一实际 Game PID 语义帧保留。随后已闭场 P06普通plan的 campaign_goal_plan_used又确认同一goal/campaign/current/progress四项全等，实际普通planner消费已补齐。完整物理 cold anchor 对比字段仍单列，不能据不同 PID、同日期自动补齐。
+[新罗贝尔继承后意图观测](g2-successor-goal-observation-2026-10-16.md)复用两份闭场小回执，确认31254→40526的同一 dynasty_continuity goal已进入真实 successor SAVE，并在另一实际 Game PID 语义帧保留。随后已闭场 P06普通plan的 campaign_goal_plan_used又确认同一goal/campaign/current/progress四项全等，实际普通planner消费已补齐。首轮未审阅完整物理 cold anchor，后续已由实际owner启动/SAVE13/P02小回执补齐该场来源链，见[永久证据增量](g2-remaining-evidence-2026-10-16/README.md)；没有根据不同PID、同日期猜测。
 
 政府身份 observer 的 core_supported 是身份/core verdict。原始00a70009普通 planner 已通过 CampaignRoot 消费当前政府 key/flags，当时建设、LIFE、三类主动宣战入口均明确限 feudal；本日后续只拆建设的 Clan 窄分支，LIFE/战争不扩。普通路径没有调用旧内部 nonwar Government context leaf，不应为补 metadata 恢复旧公共受限模式或增加重查询。
 
@@ -49,7 +49,7 @@
 
 [Clan construction scene](m7-clan-construction-scene-12004.md)公共源码仅拆建设资格，复用当前 played actor自身地产、native final CanConstruct/gold-only quote和同帧cash-v2 NET预算；Clan可选观测缺失保留原推进。原封建 helper逐字委托、pending/material/cold逻辑保留；Tribal/LIFE/战争不扩。新增Clan stock块实际parser通过，一次原外置10项合成与一次新增可移植投影compound分别通过；全部0实机动作。公共代码存在不授Clan业务/政府资格，真实quote→动作→独立material→following/cold仍缺。
 
-原G2仍6/8；M7后继普通goal消费已有真实材料，但完整physical cold-anchor字段与广ruler/seed/government资格未补齐。连续30年计数由主流程独立重起，研究不增加任何天数、录像或战争成绩。
+原G2仍6/8；首轮的M7 physical owner-anchor缺口已在后来闭场材料中补证，广ruler/seed/government实际玩法仍未完整。M6未部署V2 hook，但其完整普通planner接线已有新3项离线验证，详见[完整边界](g2-remaining-evidence-2026-10-16/README.md)。连续30年计数由主流程独立计量，研究不增加天数、录像或战争成绩。
 
 ## 出处与边界
 
