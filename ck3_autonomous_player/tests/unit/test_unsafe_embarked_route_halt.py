@@ -173,6 +173,32 @@ class UnsafeEmbarkedRouteHalt(unittest.TestCase):
         self.assertEqual(plan["retained_edge_watch"]["halt_submission"]["submitted_date_raw"],
                          FIXTURE["snapshot"]["date_raw"])
 
+    def test_unadvertised_capital_preview_uses_existing_retained_edge_watch(self):
+        """P24 AUTO75 branch regression; fresh halt/query data here remain synthetic."""
+        self.ack()
+        self.shorten_route()
+        self.publish_synthetic_replan_queries()
+        self.snapshot["campaign_root_context"]["capital_province_id"] = 2619
+        preview = f"preview-move-army-{ARMY}-to-2619"
+        self.assertNotIn(preview, self.steps)
+        plan = self.plan()
+        self.assertEqual(plan["phase"], "native_war_retained_unsafe_edge_one_day_watch")
+        self.assertEqual(plan["selected_step"], "life-advance-one-day")
+        self.assertTrue(plan["retained_edge_watch"]["halt_submission"]["suffix_cancellation_observed"])
+        self.assertFalse(plan["retained_edge_watch"]["contact_free_proven"])
+        self.assertFalse(plan["retained_edge_watch"]["offensive_combat_permission"])
+        self.assertFalse(plan["retained_edge_watch"]["movement_resubmitted"])
+        self.steps.add(preview)
+        plan = self.plan()
+        self.assertEqual(plan["phase"], "native_war_capital_regroup_preview")
+        self.assertEqual(plan["selected_step"], preview)
+
+    def test_unadvertised_capital_preview_does_not_advance_without_halt_postread(self):
+        self.ack()
+        self.publish_synthetic_replan_queries()
+        self.snapshot["campaign_root_context"]["capital_province_id"] = 2619
+        self.assertNotEqual(self.plan()["selected_step"], "life-advance-one-day")
+
     def test_watch_requires_fresh_halt_postread_and_exhausted_safe_replans(self):
         self.ack()
         self.shorten_route()

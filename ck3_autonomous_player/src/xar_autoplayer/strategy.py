@@ -13127,6 +13127,17 @@ def _choose_one_life_turn_core(
                             army_id, capital_province_id
                         )
                         if preview is None:
+                            # Observe the already retained edge only after the
+                            # existing halt/readback and unsafe-route guards.
+                            # An advertised preview must still be queried first.
+                            if preview_step not in available_steps:
+                                retained_edge_watch = _retained_unsafe_edge_one_day_watch_plan(
+                                    rows, snapshot, pursuit_army, passive_route_audit,
+                                    route_rejections=route_rejections,
+                                    available_steps=available_steps, war_summary=war_summary,
+                                )
+                                if retained_edge_watch is not None:
+                                    return retained_edge_watch
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": "native_war_capital_regroup_preview",

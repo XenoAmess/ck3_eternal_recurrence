@@ -133,3 +133,27 @@ cases. Candidate: external
 `continuation42-cold-prep/p22-retained-edge-watch-candidate01/DELIVERY.json`.
 Live Halt, landing, outcome, uninterrupted years and speed remain separate
 runtime evidence.
+
+### Unadvertised capital preview after actual suffix readback
+
+P24 AUTO32 submitted the existing Halt; independent SEM33 actually retained
+only `[5967]` with target5967. Fresh AUTO41's horizon still reported unsafe
+contact. AUTO75 then stopped at `native_war_capital_regroup_preview` because
+the required `preview-move-army-620757086-to-2619` was not advertised. This was
+an early return before the existing retained-edge observation exit.
+
+The public planner now tries that same strict exit in this one unadvertised
+preview branch. An advertised preview is still queried first. The existing
+halt/post-read, source identity, retained-edge, exhausted-route, complete
+hostile horizon and one-day-action guards remain authoritative. No Move or
+Halt is replayed, and unsafe contact does not become safe or qualified combat.
+
+The four actual receipts, original candidate and public replay are recorded
+under external `continuation42-cold-prep/p25-retained-edge-watch01/`.
+`PUBLIC-FOCUSED-RESULT.json`, SHA-256
+`b9e5e829d530f4de62359d7dd0e3f78b7a0e1eb9450e98c31fb672f75d4adead`,
+replays the actual early branch plus six rejecting variants against public
+source. The portable ordinary chooser suite passes 10 tests and 5 subtests;
+its original P21 inputs and synthetic halt/readback/root-capital adaptations
+are explicitly distinguished from actual P24 receipts. These tests establish
+source behavior, not P25 game-day advancement, survival or a successful battle.
