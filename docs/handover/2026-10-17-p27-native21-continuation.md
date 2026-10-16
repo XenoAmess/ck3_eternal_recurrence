@@ -7,8 +7,8 @@
 本页更新 [10-13 历史交接](2026-10-13-g2-continuation-vacation-handoff.md)；
 旧启动参数、进程、期限和录像限制不是当前操作卡，不要重跑其脚本。
 
-后续更新按时间追加；SDK30的13日running是历史前缀。最新已核失败截点见
-[窗口26移动错误](#窗口26失败移动错误后已有路线)，不能据早期记录判断现场仍在推进。
+后续更新按时间追加；SDK30／31的running与失败均为历史截点。最近具名状态见
+[SDK32窗口27](#sdk32-window27)，不能据早期记录判断当前现场。
 
 Native21 已实际加载，Game PID6068／FILETIME134366412679616931；DLL SHA-256
 `c0208ee8d7be6d974b536ed7c88547f01a24d06838556d9b59d0738cf633de0e`。
@@ -121,3 +121,22 @@ SDK31首次实际 AUTO14 已推进3日，但旧外置分类器以 `route-window 
 同SDK控制16安装 `1637aa68…`，17重消费原14；FULL18只读MET19结算原3日到11039cycles/raw53436264。
 原 clock 没有重放，没有Game/SDK/OBS重启。FULL20随后发布；此记录截止点尚未开启窗口27。
 窗口26失败72日仍保留，后续成功批次不能倒填旧窗口为稳定验收。目标仍为30年稳定优先，其后<1秒/日，再0.5秒/日。
+<a id="sdk32-window27"></a>
+
+## SDK31 再次阻塞并正常退出；SDK32开启窗口27
+
+SDK31 FULL83推进5日后在AUTO104同帧overview查询失败缓存阻塞，SEM105仍paused、raw53436696／Native3266／public59。
+CTRL106本地零MCP／零信用／不重放清理，保留11079cycles。随后SDK31 queue/app实际0/0退出；watchdog精确stop
+不当正常退出证明。SDK31 resume01从未attach，不补写其稳定窗口。此前窗口26失败72日保持。
+
+SDK32同Game热接三叶UI修复后FULL3实际成功12日；SEM64／MET65配对，FULL66已存在再挂runner2752。
+Root 20:55:46Z具名观察：窗口27起点raw53436984，当前raw53437440／11158cycles，即19日；
+`ROOT-P32-CONTINUITY-RESUME01-ADMITTED.json` SHA `be270b5572b8b2d7712374a45dc860c46846762b2bdd7e1f4aa2c57520c050cc`。
+Game6068／Native21／原OBS278060与f333录像保持，Desktop1及决策悬浮窗、watchdog232328健康。
+本次没有Native新build、WAL或peace实验；results首次查询失败的非致命分支尚未完成，UI分支尚未实机触发验收。
+19日是当前截点，不能外推30年稳定、<1秒或0.5秒目标已完成。[源码及验收边界](../ck3-native-ai/research/sdk31-route-window-sdk32-ui-defer/README.md)。
+
+Root随后在21:02:10Z报告同窗口累计302日，11323cycles/raw53444232，无新阻塞且watchdog健康。
+具名连续段20:58:32.782396Z（raw53439624）至21:02:10.187353Z（raw53444232）为192日／217.404957秒，
+约1.132318秒／日，含该段排队／规划；排除此前战争和人工修复，不是整场均速，也尚未低于1秒／日。
+本次公共CI相同focused入口52项／36子用例及Python-only通过；未以公开提交干扰这段实机。

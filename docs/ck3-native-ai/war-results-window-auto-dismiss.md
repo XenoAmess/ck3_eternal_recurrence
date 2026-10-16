@@ -13,3 +13,11 @@
 本机不可变候选为 `D:/codex-ck3-demos/2026-10-14-robert-30year/native-war-results-b15-final01/`，`FINAL-FREEZE.json` SHA-256 为 `976960f91e9a9fbfce6f28571da3034acef9b07aa92a48b1002f5ca1f880bb67`，Native DLL 为 `146c05e88d94232cc898116b2331bdb4654855ba417e7e2e6da5d6597a6c001f`。仓库源码见 `native_bridge/src/ingame_ui_navigation_v1.cpp`、`native_bridge/include/xar_bridge/war_results_dismiss_adapter_v1.hpp` 与 `src/xar_autoplayer/bridge/war_results_window_contract.py`。定向 Python 测试 `tests/test_war_results_window_contract_b15.py` 连同原优先级测试共 7 项通过；MSVC mock 回调测试 `native_bridge/tests/war_results_dismiss_adapter_v1_test.cpp` 返回 0，覆盖正常返回、空预检和 SEH。`open_kaishek` 当前没有对应的 CK3 GUI 回调 ABI 或该 SDK wire 语义可预验，故此项为 not-applicable。
 
 旧游戏进程 PID 127268 在 WM_CLOSE 等待约 60 秒未退出后需要强制终止；`continuation37/ROOT-ACTUAL-GAME-EXIT.json` 实际记录内核退出码 1、`normal_wm_close_qualified=false`。后续 `continuation38-cold-prep/ROOT-OLD-GAME-EXIT-VERIFIED.json` 只证明旧代际已退出，不能写成正常关闭。B15 已在新的同场续行中加载，P13 的空查询仍读到结果窗隐藏；截至本记录，**尚无 B15 对可见结果窗执行 Dismiss 后 `closed_verified` 的实机回执**。旧七日标准的历史未验收记录保留，当前目标以上述十日弱保证为准。
+## 2026-10-17：读取失败与关闭成功分离
+
+SDK31的AUTO104因同帧overview `state_changed` 失败缓存再次阻塞。SDK32三叶窄修复使overview首次精确拒绝
+重新规划一次，并使overview/results已有同帧failed读取缓存释放普通规划；保留请求ID、失败原句和unknown可见性。
+已知visible与close-pending继续选择原有关闭／独立读回，不会由读失败获得absent、hidden或关闭成功信用。
+本批**war-results首次query失败的非致命消费仍未覆盖**，另有后续候选；不能把负缓存释放外推到所有UI错误。
+新4项及原优先级回归通过，含Service真实Native查询public2/native40路径；
+完整patch及便携用例见[收口包](research/sdk31-route-window-sdk32-ui-defer/README.md)。

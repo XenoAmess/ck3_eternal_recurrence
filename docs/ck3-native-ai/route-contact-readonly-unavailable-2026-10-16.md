@@ -320,3 +320,11 @@ actual Army0 execution. The final public source/classifier/adjacent guard
 scope passed41 tests/43 subtests, including actual ACK/suffix projections and
 explicitly synthetic veto/error variants. Public common-runner installation
 still needs a reviewed adapter; library publication does not deploy one.
+## SDK31 实际三日路线结果分类修正
+
+实际query12与AUTO14使用同帧完整敌军集合，但旧class把已撤退军也列入watch，拒结算真实3日。
+同SDK控制16安装 `1637aa68…`、17重消费原14，FULL18／MET19结算72raw，原clock未重放。
+公共[便携分类器](../../tools/g2_saved_campaign/route_window_advance_outcome.py)只排除原生明确retreating=true，
+保留unknown为敌军、完整scope和原clock守卫；战争自然变动只计日期，无胜利或物质信用。
+实际完整回执与13KB投影输出一致，新增12项分类用例通过；宿主仍须注入已审核帧绑定／parser／sentinel validator。
+完整窄patch、原件SHA和边界见[研究提取](research/sdk31-route-window-sdk32-ui-defer/README.md)。

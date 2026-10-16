@@ -86,6 +86,14 @@ def plan_ordinary_war_declared_overview_v1(
     # A fresh read can remove the UI blocker while an older close remains unconfirmed.
     if presence in ("absent", "hidden"):
         return None
+    if (presence == "unknown" and current_attempt
+            and attempt.get("status") == "failed"
+            and not isinstance(pending, Mapping)):
+        # A failed read has not proved a visible window.  Keep its exact-frame
+        # negative attempt, then let ordinary planning run under its own
+        # native action guards.  A changed frame makes this attempt stale and
+        # schedules a new read; a known visible window never takes this path.
+        return None
     selected = None
     reason = "war overview visibility is unknown"
     status = "blocked"

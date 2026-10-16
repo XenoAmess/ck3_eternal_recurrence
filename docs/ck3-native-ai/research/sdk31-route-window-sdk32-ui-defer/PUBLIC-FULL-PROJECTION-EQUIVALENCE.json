@@ -1,0 +1,9 @@
+{
+  "status": "GREEN",
+  "actual_full_and_projected_and_portable_equal": true,
+  "raw_auto14_sha256": "8d96b77fd1165ecc959abb5ca43e7386f8a3d97b968188aa457fe7002ccd44a0",
+  "reviewed_runtime_source_sha256": "1637aa68e616de1084c929ac16dab88a726c1de29e3072a6eb7599ba6eb382a6",
+  "date_delta_raw": 72,
+  "business_success_inferred": false,
+  "source": "public SDK pure parser/sentinel validator + real original frame binding; zero Native/MCP/clock calls"
+}

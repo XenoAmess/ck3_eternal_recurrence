@@ -211,3 +211,23 @@ compact回执不能证明private-scalar AB已启用。既有private scalar仍读
 已实际 success。SDK31首次实际推进3日后又遇外置 route-window 分类遗漏；控制16/17仅安装分类器并重消费
 原 AUTO14，FULL18/MET19结算原3日到11039cycles/raw53436264，无原 clock 重放，Game/SDK/OBS没有再重启。
 随后 FULL20 已发布；此时间点尚未开启窗口27，不能写成已稳定完成30年。新 route-window 修复另包收口。
+## 第五批：路线窗口分类与可选 UI 负缓存
+
+route-window实际原14已在同SDK重消费结算3日，无clock重放；公共自含callback提取与实际完整原件、13KB投影
+输出一致。SDK32的Service／overview／results三叶窄hunks及便携测试一并收口，保留读取失败ID和unknown；
+results首次query失败仍是明确未完成项，不宣称absent或close成功。[完整研究patch与边界](research/sdk31-route-window-sdk32-ui-defer/README.md)。
+新16项及已有窗口优先级回归共25项通过；第四d8dca28e的Official38962991406和Linear38962991499均success。
+
+后续现场实际：SDK31 FULL83已推进5日后又因AUTO104负缓存阻塞；SEM105为raw53436696／Native3266／public59。
+CTRL106仅本地clearNoAction，0MCP／0credit／0replay，保持11079cycles；SDK31随后queue/app真实0/0退出，
+watchdog精确stop不冒称normal exit。resume01从未attach，不能补造窗口27在SDK31稳定running。
+
+Root在2026-10-16T20:55:46Z报告SDK32已实际热接：FULL3成功12日，SEM64／MET65配对后先发FULL66再挂runner2752，
+窗口27从53436984开始，当前具名截点11158cycles／raw53437440，累计19日；proof SHA `be270b5572b8b2d7712374a45dc860c46846762b2bdd7e1f4aa2c57520c050cc`。
+同Game6068／Native21／OBS278060、Desktop1及原f333录像持续，watchdog232328健康；无Native新build、WAL或peace实验。
+这证明启动和19日推进，不证明UI首次失败分支已实机触发，更不等于30年稳定或两级速度目标完成。
+
+后续Root 21:02:10Z具名截点已达窗口27的302日／11323cycles／raw53444232，watchdog健康，无新阻塞。
+20:58:32.782396Z至21:02:10.187353Z，两次完成队列样本覆盖192日／217.404957秒≈1.132318秒／日，
+包含该连续段排队与规划，排除前面的战争／人工修复，非全campaign平均。SDK33首次results失败候选保持离线，
+未打断SDK32；本批共享CI定向命令52项／36子用例及Python-only检查通过。

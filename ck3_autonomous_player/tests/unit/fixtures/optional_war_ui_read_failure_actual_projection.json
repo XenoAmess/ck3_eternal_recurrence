@@ -1,0 +1,45 @@
+{
+  "schema": "xar.test.optional-war-ui-failure-actual-projection/v1",
+  "source_kind": "actual SEM105 fields; additional result-window/mutation cases synthetic",
+  "sources": [
+    {
+      "name": "0104-1-result.json",
+      "sha256": "e78c443c8dcfec07dc1b88d330603cf1467316ac36c8c5370cc415f403929055"
+    },
+    {
+      "name": "0105-1-result.json",
+      "sha256": "0c8f7a6916936cb17ed19776a97fb55fcc65262d1db2700bac732fde1f34739a"
+    }
+  ],
+  "snapshot": {
+    "snapshot_id": "native:3266",
+    "revision": 59,
+    "native_revision": 3266,
+    "date_raw": 53436696,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-40526-c7a6edcc32b8",
+    "played_character": {
+      "character_id": 40526,
+      "alive": true
+    },
+    "diagnostics": {
+      "bridge_pid": 6068,
+      "connection_generation": 5
+    },
+    "war_declared_overview_v1_query_attempt": {
+      "validation_schema": "war-declared-overview-query-attempt-v1",
+      "step": "query-war-declared-overview-v1",
+      "native_request_id": "war-overview-query-fcb183ea7f9b476eaf4a9df62fd6b237",
+      "status": "failed",
+      "error": "Native war overview refused: state_changed",
+      "queried_snapshot_id": "native:3266",
+      "queried_revision": 59,
+      "queried_native_revision": 3266,
+      "queried_date_raw": 53436696,
+      "queried_actor_character_id": 40526,
+      "queried_connection_generation": 5,
+      "queried_episode_run_id": "native-40526-c7a6edcc32b8"
+    }
+  }
+}

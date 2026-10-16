@@ -1,0 +1,68 @@
+{
+  "schema": "xar.research.route-window-and-optional-ui-defer/v1",
+  "sources": [
+    {
+      "path": "P31-ROUTE-WINDOW-CLASSIFIER.patch",
+      "sha256": "73ca99a6bbf5d340c01c8e5d6a70354e3bfa47d5e911ba41db462c2d3b01716c",
+      "bytes": 5536
+    },
+    {
+      "path": "SDK31-TO-SDK32-TECHNICAL-DEFER.patch",
+      "sha256": "c52e59b300728eb07b553f783489ebf643fddb67cabb4caa19ec73dae068e2b0",
+      "bytes": 3766
+    },
+    {
+      "external_path": "p31-route-window-classifier-repair01/test_focused.py",
+      "sha256": "b85722ee72c0aad03480cc97d4b1e7b5621031e71b8ed5d48f6c3260fef7404a",
+      "bytes": 5096
+    },
+    {
+      "external_path": "p31-overview-negativecache-repair01/DELIVERY-FINAL02.json",
+      "sha256": "dfc105230320f68a8079a307239b414bb724921f8fcc882abfe4c1578b81690b",
+      "bytes": 1591
+    },
+    {
+      "external_path": "p31-overview-negativecache-repair01/CONNECTED-SDK32-WAR-OVERVIEW-RESULT.json",
+      "sha256": "89b908aae3ac4a61d138c02e81ad3c1c40f800ff663c098bbd4edf237408838f",
+      "bytes": 1876
+    },
+    {
+      "path": "tools/g2_saved_campaign/route_window_advance_outcome.py",
+      "bytes": 11914,
+      "sha256_normalized_lf": "6fe5144f20449c78f2e5b88979458c7d8b3c3362777094d021cd3d3a7dba89bc"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_route_window_advance_outcome.py",
+      "bytes": 5360,
+      "sha256_normalized_lf": "311e00dd4fbd43ca52d11697ae384e9fcca2ba82a11861842a7f13e6a89ab7b7"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_optional_war_ui_read_defer.py",
+      "bytes": 4989,
+      "sha256_normalized_lf": "48bf1c14b8b1cafe060057f412489eefef46633af763b84042383c00c5eb1c61"
+    },
+    {
+      "path": "PUBLIC-FULL-PROJECTION-EQUIVALENCE.json",
+      "sha256": "8d41de42d3e0592b3783dd1a7bf4da20f41898399ec280f8bfb3e1bc40a32644",
+      "bytes": 462
+    }
+  ],
+  "focused_tests": {
+    "cases": 25,
+    "new_cases": 16
+  },
+  "known_limitations": [
+    "war-results first query failure remains fatal in this source batch; cached failure is deferred",
+    "runtime host installation remains external reviewed operation",
+    "no 30-year stability or speed goal completion"
+  ],
+  "public_module_runtime_installation_verified": false,
+  "ui_first_state_changed_branch_live_verified": false,
+  "route_window_original14_reconsume_live_verified": true,
+  "shared_ci_focused_verification": {
+    "cases": 52,
+    "subtests": 36,
+    "python_only": "GREEN",
+    "live_native_calls": 0
+  }
+}

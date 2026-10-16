@@ -1,0 +1,396 @@
+{
+  "schema": "xar.test.route-window-actual-projection/v1",
+  "source_kind": "actual completed query12/advance14 field projection; all mutant tests synthetic",
+  "sources": [
+    {
+      "name": "0012-1-result.json",
+      "sha256": "61f9291e43a1e7c4c7d973e1f3d20be408e3aaf3fdcb5dbb9c0ce62cf6a77926"
+    },
+    {
+      "name": "0014-1-result.json",
+      "sha256": "8d96b77fd1165ecc959abb5ca43e7386f8a3d97b968188aa457fe7002ccd44a0"
+    }
+  ],
+  "query": {
+    "selected_step": "query-route-contact-horizon-v1-402653503-to-5980-h-11-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871097-587202636-603980042-704643297",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:3209",
+      "revision": 2,
+      "native_revision": 3209,
+      "date_raw": 53436192,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "connection_generation": 5,
+      "bridge_pid": 6068
+    }
+  },
+  "body": {
+    "status": "executed",
+    "selected_step": "advance-route-contact-window-v1-402653503-to-5980-days-3-h-11-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871097-587202636-603980042-704643297",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:3209",
+      "revision": 2,
+      "native_revision": 3209,
+      "date_raw": 53436192,
+      "actor_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "connection_generation": 5,
+      "bridge_pid": 6068
+    },
+    "plan": {
+      "selected_step": "advance-route-contact-window-v1-402653503-to-5980-days-3-h-11-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871097-587202636-603980042-704643297",
+      "route_contact_window_days": 3,
+      "active_wars": [
+        {
+          "war_id": 201326630
+        }
+      ],
+      "policy": "one-life-turn-v1",
+      "phase": "native_war_route_contact_horizon_progress"
+    },
+    "result": {
+      "step": "advance-route-contact-window-v1-402653503-to-5980-days-3-h-11-16777794-218104322-318767378-318767449-385876199-452985064-520093840-536871097-587202636-603980042-704643297",
+      "backend_id": "native-headless",
+      "source": "native-tactical-daily-sentinel-composite",
+      "starting_date": {
+        "date_raw": 53436192
+      },
+      "ending_date": {
+        "date_raw": 53436264
+      },
+      "starting_date_raw": 53436192,
+      "target_date_raw": 53436264,
+      "ending_date_raw": 53436264,
+      "elapsed_days": 3,
+      "requested_horizon_days": 3,
+      "timeline_speed": 3,
+      "timeline_policy": "terminal_or_sentinel",
+      "sentinel_mode": "terminal_or_sentinel",
+      "sentinel_scope": "route_contact_window",
+      "watch_army_ids": [
+        16777794,
+        218104322,
+        318767378,
+        318767449,
+        385876199,
+        402653503,
+        452985064,
+        520093840,
+        536871097,
+        587202636,
+        603980042,
+        704643297
+      ],
+      "progress_status": "postcondition",
+      "stop_kind": "decision_epoch",
+      "terminal_reached": false,
+      "one_life_terminal": false,
+      "one_life_terminal_reason": null,
+      "trigger_reasons": [
+        "date_deadline"
+      ],
+      "sentinel_generation": 528,
+      "completed_daily_ticks": 3,
+      "intermediate_pause_count": 0,
+      "overshoot_days": 0,
+      "zero_intermediate_pause": true,
+      "armed_tactical_daily_sentinel": {
+        "state": "armed",
+        "generation": 528,
+        "starting_date_raw": 53436192,
+        "target_date_raw": 53436264,
+        "last_observed_date_raw": 53436192,
+        "trigger_date_raw": 0,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 12,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "tactical_daily_sentinel": {
+        "state": "triggered",
+        "generation": 528,
+        "starting_date_raw": 53436192,
+        "target_date_raw": 53436264,
+        "last_observed_date_raw": 53436264,
+        "trigger_date_raw": 53436264,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 12,
+        "combat_count": 0,
+        "completed_daily_ticks": 3,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "player_decision_boundary": null,
+      "player_decision_boundary_cancel": null,
+      "war_progress_before": {
+        "date_raw": 53436192,
+        "wars": [
+          {
+            "war_id": 201326630,
+            "player_armies": [
+              {
+                "army_id": 402653503,
+                "retreating": false
+              }
+            ],
+            "enemy_armies": [
+              {
+                "army_id": 16777794,
+                "retreating": false
+              },
+              {
+                "army_id": 218104322,
+                "retreating": false
+              },
+              {
+                "army_id": 318767378,
+                "retreating": false
+              },
+              {
+                "army_id": 318767449,
+                "retreating": false
+              },
+              {
+                "army_id": 385876199,
+                "retreating": false
+              },
+              {
+                "army_id": 452985064,
+                "retreating": false
+              },
+              {
+                "army_id": 520093840,
+                "retreating": false
+              },
+              {
+                "army_id": 536871076,
+                "retreating": true
+              },
+              {
+                "army_id": 536871097,
+                "retreating": false
+              },
+              {
+                "army_id": 587202636,
+                "retreating": false
+              },
+              {
+                "army_id": 603980042,
+                "retreating": false
+              },
+              {
+                "army_id": 704643297,
+                "retreating": false
+              }
+            ]
+          }
+        ]
+      },
+      "war_progress_after": {
+        "date_raw": 53436264,
+        "wars": [
+          {
+            "war_id": 201326630,
+            "player_armies": [
+              {
+                "army_id": 402653503,
+                "retreating": false
+              }
+            ],
+            "enemy_armies": [
+              {
+                "army_id": 16777794,
+                "retreating": false
+              },
+              {
+                "army_id": 218104322,
+                "retreating": false
+              },
+              {
+                "army_id": 318767378,
+                "retreating": false
+              },
+              {
+                "army_id": 318767449,
+                "retreating": false
+              },
+              {
+                "army_id": 385876199,
+                "retreating": false
+              },
+              {
+                "army_id": 452985064,
+                "retreating": false
+              },
+              {
+                "army_id": 520093840,
+                "retreating": false
+              },
+              {
+                "army_id": 536871076,
+                "retreating": true
+              },
+              {
+                "army_id": 536871097,
+                "retreating": false
+              },
+              {
+                "army_id": 587202636,
+                "retreating": false
+              },
+              {
+                "army_id": 603980042,
+                "retreating": false
+              },
+              {
+                "army_id": 704643297,
+                "retreating": false
+              }
+            ]
+          }
+        ]
+      },
+      "actions": [
+        {
+          "step": "set-speed-3",
+          "result": {
+            "step": "set-speed-3",
+            "accepted": true,
+            "status": "submitted",
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "research-arm-tactical-daily-sentinel-v1-53436192-to-53436264-speed-3-mode-terminal-a-12-16777794-218104322-318767378-318767449-385876199-402653503-452985064-520093840-536871097-587202636-603980042-704643297",
+          "result": {
+            "step": "research-arm-tactical-daily-sentinel-v1-53436192-to-53436264-speed-3-mode-terminal-a-12-16777794-218104322-318767378-318767449-385876199-402653503-452985064-520093840-536871097-587202636-603980042-704643297",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "armed",
+              "generation": 528,
+              "starting_date_raw": 53436192,
+              "target_date_raw": 53436264,
+              "last_observed_date_raw": 53436192,
+              "trigger_date_raw": 0,
+              "speed": 3,
+              "mode": "terminal_or_sentinel",
+              "army_count": 12,
+              "combat_count": 0,
+              "completed_daily_ticks": 0,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 0,
+              "trigger_reasons": [],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": -1,
+              "pause_wrapper_called": false,
+              "pause_observed": false,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "resume-map",
+          "result": {
+            "step": "resume-map",
+            "accepted": true,
+            "status": "submitted",
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "research-query-tactical-daily-sentinel-v1",
+          "result": {
+            "step": "research-query-tactical-daily-sentinel-v1",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "triggered",
+              "generation": 528,
+              "starting_date_raw": 53436192,
+              "target_date_raw": 53436264,
+              "last_observed_date_raw": 53436264,
+              "trigger_date_raw": 53436264,
+              "speed": 3,
+              "mode": "terminal_or_sentinel",
+              "army_count": 12,
+              "combat_count": 0,
+              "completed_daily_ticks": 3,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 1,
+              "trigger_reasons": [
+                "date_deadline"
+              ],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": 0,
+              "pause_wrapper_called": true,
+              "pause_observed": true,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        }
+      ],
+      "external_pause_count": 0,
+      "player_decision_boundary_pause_count": 0,
+      "external_rich_query_count": 0,
+      "managed_failure_cleanup": {
+        "attempted": false,
+        "error": null
+      },
+      "paused": true,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "final_screen": "map_hud",
+      "snapshot_id": "native:3216",
+      "revision": 9,
+      "native_revision": 3216,
+      "bridge_pid": 6068,
+      "connection_generation": 5,
+      "episode_character_id": 40526,
+      "episode_run_id": "native-40526-c7a6edcc32b8",
+      "played_character_id": 40526,
+      "played_character_alive": true,
+      "route_contact_window": {
+        "status": "available",
+        "context_basis": "frozen_current_routes",
+        "horizon_days": 3,
+        "window_start_date_raw": 53436192,
+        "window_end_date_raw": 53436264,
+        "contact_free": true,
+        "conflicts": [],
+        "first_contact_date_raw": null,
+        "contact_free_whole_days": 3,
+        "missing": []
+      },
+      "route_contact_window_context_basis": "frozen_current_routes"
+    }
+  }
+}

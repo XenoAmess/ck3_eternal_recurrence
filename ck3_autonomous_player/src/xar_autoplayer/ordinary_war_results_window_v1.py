@@ -86,6 +86,13 @@ def plan_ordinary_war_results_window_v1(
     # A fresh read can remove the UI blocker while an older close remains unconfirmed.
     if presence in ("absent", "hidden"):
         return None
+    if (presence == "unknown" and current_attempt
+            and attempt.get("status") == "failed"
+            and not isinstance(pending, Mapping)):
+        # Read failure is neither a visible result window nor a verified
+        # dismissal.  Defer the optional read for this exact source frame;
+        # the next frame may query again, while close-pending/visible stay strict.
+        return None
     if (presence == "unknown" and snapshot.get("war_results_window_v1_check_due") is False
             and not isinstance(pending, Mapping)):
         return None

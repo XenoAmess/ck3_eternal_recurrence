@@ -231,7 +231,13 @@
     "window26_baseline_date_raw": 53434464,
     "window26_failed_days": 72,
     "window26_last_date_raw": 53436192,
-    "latest_status": "SDK31 first 3-day result reclassified locally via controls16/17, settled FULL18/MET19; FULL20 issued; window27 not yet admitted at this observation"
+    "latest_status": "Root observed SDK32 window27 +302days at 2026-10-16T21:02:10Z: raw53444232/cycles11323; no new blocker; Game/OBS retained; sample192days/217.404957seconds=1.132318sec/day, not campaign average",
+    "sdk31_normal_close": {
+      "queue_exit": 0,
+      "app_exit": 0,
+      "watchdog_stop_not_normal_exit_claim": true,
+      "resume01_never_attached": true
+    }
   },
   "source_delta": {
     "public_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
@@ -291,5 +297,52 @@
         "sha256": "ba8dbf301bff73c53b4715c144bf2412528d5fddb852e0bae2a152f32fe54af5"
       }
     ]
+  },
+  "fourth_public_ci": {
+    "commit": "d8dca28e74b345bbaee8518e0f4729af67008138",
+    "official_run": 38962991406,
+    "linear_run": 38962991499,
+    "conclusion": "success"
+  },
+  "sdk31_route_window_sdk32_optional_ui": {
+    "portable_classifier": "tools/g2_saved_campaign/route_window_advance_outcome.py",
+    "source_pins": "docs/ck3-native-ai/research/sdk31-route-window-sdk32-ui-defer/SOURCE-PINS.json",
+    "focused_cases": 25,
+    "scope": "overview first state_changed replans once; both same-frame cached failed observations defer; results first query failure not fixed",
+    "old_clock14_replayed": false,
+    "sdk31_resume01_attached": false,
+    "shared_ci_focused_cases": 52,
+    "shared_ci_focused_subtests": 36
+  },
+  "sdk32_actual_window27": {
+    "root_reported_at": "2026-10-16T20:55:46Z",
+    "proof_sha256": "be270b5572b8b2d7712374a45dc860c46846762b2bdd7e1f4aa2c57520c050cc",
+    "baseline_date_raw": 53436984,
+    "observed_date_raw": 53437440,
+    "observed_days": 19,
+    "completed_cycles": 11158,
+    "first_full_request": 66,
+    "original_clock14_replayed": false,
+    "ui_first_failure_branch_live_verified": false,
+    "WAL_enabled": false,
+    "new_native_build": false,
+    "continuous_30_year_goal_achieved": false,
+    "later_root_sample": {
+      "at": "2026-10-16T21:02:10Z",
+      "date_raw": 53444232,
+      "window_days": 302,
+      "cycles": 11323,
+      "watchdog": "healthy"
+    },
+    "continuous_prefix_performance": {
+      "start_at": "2026-10-16T20:58:32.782396Z",
+      "end_at": "2026-10-16T21:02:10.187353Z",
+      "start_date_raw": 53439624,
+      "end_date_raw": 53444232,
+      "days": 192,
+      "wall_seconds": 217.404957,
+      "seconds_per_day": 1.132317484375,
+      "scope": "Root completed-queue samples; includes this prefix queue/plan time; excludes earlier war/manual repairs; not full campaign average"
+    }
   }
 }

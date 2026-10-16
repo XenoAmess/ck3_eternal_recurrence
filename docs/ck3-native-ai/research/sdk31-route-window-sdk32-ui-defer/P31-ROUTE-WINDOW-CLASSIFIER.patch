@@ -1,0 +1,80 @@
+--- a/root_p31_canonical_result_classifier.py
++++ b/root_p31_canonical_result_classifier.py
+@@ -778,7 +778,7 @@
+     before_wars = before_progress.get("wars") if isinstance(before_progress, dict) else None
+     if not isinstance(before_wars, list) or not before_wars:
+         raise ValueError("route-window actual war watch source absent")
+-    all_army_ids = []
++    own_army_ids, eligible_hostile_ids = set(), set()
+     for watched_war in before_wars:
+         if not isinstance(watched_war, dict):
+             raise ValueError("route-window actual war watch row invalid")
+@@ -788,13 +788,19 @@
+                 raise ValueError("route-window actual war watch armies absent")
+             for watched in watched_rows:
+                 watched_id = watched.get("army_id") if isinstance(watched, dict) else None
+-                if type(watched_id) is not int or watched_id <= 0:
++                if type(watched_id) is not int or not 0 <= watched_id < 2**31:
+                     raise ValueError("route-window actual war watch army invalid")
+-                all_army_ids.append(watched_id)
+-    # The same actual army can be listed in multiple simultaneous wars.
+-    watches = tuple(sorted(set(all_army_ids)))
+-    if not set((subject, *hostiles)) <= set(watches):
+-        raise ValueError("route-window selected armies not all watched")
++                if side == "player_armies":
++                    own_army_ids.add(watched_id)
++                elif watched.get("retreating") is not True:
++                    # Match the existing exact-day reader: a missing retreat
++                    # bit remains hostile; only an explicit True is excluded.
++                    eligible_hostile_ids.add(watched_id)
++    if subject not in own_army_ids or tuple(sorted(eligible_hostile_ids)) != tuple(hostiles):
++        raise ValueError("route-window selected complete nonretreating hostile scope differs")
++    # Native arms all owned armies plus the qualified hostile query scope.
++    # A retreating enemy remains in the war roster but is not a contact watch.
++    watches = tuple(sorted(own_army_ids | eligible_hostile_ids))
+     if (not isinstance(proof, dict) or proof.get("status") != "available"
+             or proof.get("context_basis") != "frozen_current_routes" or proof.get("horizon_days") != horizon
+             or proof.get("window_start_date_raw") != start or proof.get("window_end_date_raw") != deadline
+@@ -806,7 +812,9 @@
+     for key, date in (("war_progress_before", start), ("war_progress_after", end)):
+         progress = inner.get(key)
+         wars = progress.get("wars") if isinstance(progress, dict) else None
+-        if not isinstance(wars, list) or not 1 <= len(wars) <= 64 or progress.get("date_raw") != date:
++        if (not isinstance(wars, list) or len(wars) > 64
++                or key == "war_progress_before" and not wars
++                or progress.get("date_raw") != date):
+             raise ValueError("route-window war/date proof missing")
+         ids, friendly, enemy = set(), set(), set()
+         for war in wars:
+@@ -821,10 +829,10 @@
+                     if not isinstance(army, dict) or type(army.get("army_id")) is not int:
+                         raise ValueError("route-window army identity invalid")
+                     result_ids.add(army["army_id"])
+-        if subject not in friendly or not set(hostiles) <= enemy:
++        if key == "war_progress_before" and (subject not in friendly or not set(hostiles) <= enemy):
+             raise ValueError("route-window subject/hostile war scope differs")
+         war_sets.append(ids)
+-    if (war_sets[0] != war_sets[1] or not isinstance(plan.get("active_wars"), list)
++    if (not isinstance(plan.get("active_wars"), list)
+             or {war.get("war_id") for war in plan["active_wars"] if isinstance(war, dict)} != war_sets[0]):
+         raise ValueError("route-window selected active war scope differs")
+     arm, stop, actions = (inner.get(k) for k in ("armed_tactical_daily_sentinel", "tactical_daily_sentinel", "actions"))
+@@ -835,7 +843,17 @@
+             or arm["generation"] <= 0 or not isinstance(stop, dict) or not isinstance(actions, list)
+             or [a.get("step") if isinstance(a, dict) else None for a in actions] != expected_steps
+             or any(not isinstance(a.get("result"), dict) or a["result"].get("accepted") is not True
+-                   or a["result"].get("step") != a["step"] for a in actions)
++                   or a["result"].get("step") != a["step"] for a in actions[1:])
++            or not isinstance(actions[0].get("result"), dict)
++            or not (actions[0]["result"].get("accepted") is True
++                    and actions[0]["result"].get("step") == actions[0]["step"]
++                    or actions[0]["result"].get("status") == "already_observed"
++                    and actions[0]["result"].get("submitted") is False
++                    and actions[0]["result"].get("accepted") is None
++                    and actions[0]["result"].get("observed_speed") == speed
++                    and actions[0]["result"].get("source_snapshot_id") == binding["snapshot_id"]
++                    and actions[0]["result"].get("source_native_revision") == binding["native_revision"]
++                    and actions[0]["result"].get("source_date_raw") == start)
+             or actions[1]["result"].get("tactical_daily_sentinel") != arm
+             or actions[3]["result"].get("tactical_daily_sentinel") != stop
+             or inner.get("sentinel_generation") != arm["generation"]

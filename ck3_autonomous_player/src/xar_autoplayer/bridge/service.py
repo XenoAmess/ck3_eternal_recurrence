@@ -1769,6 +1769,29 @@ class GameplayBridgeService:
         try:
             self.query_war_declared_overview_v1(expected_revision=snapshot["revision"])
         except (BridgeUnavailableError, UnsupportedStepError, ValueError) as error:
+            if (isinstance(error, BridgeUnavailableError)
+                    and str(error) == "Native war overview refused: state_changed"):
+                # Native rejected this readonly query before owner GUI work.
+                # Its failed attempt is now published on the same lease.  A
+                # fresh internal plan defers this optional UI read for one
+                # frame, preserving all ordinary gameplay action guards.
+                getter = getattr(
+                    self.driver, "get_current_war_declared_overview_v1_query_attempt", None)
+                failed_attempt = getter(snapshot) if callable(getter) else None
+                deferred = {"status": "technical_read_deferred",
+                    "error": f"{type(error).__name__}: {error}",
+                    "request_retried": False,
+                    "failed_attempt": copy.deepcopy(failed_attempt)
+                        if isinstance(failed_attempt, dict) else None,
+                    "source_frame": self._observed_planning_source_frame(snapshot)}
+                refreshed = self._plan_turn_internal(
+                    allow_prewar_force_query=allow_prewar_force_query,
+                    allow_war_overview_query=False)
+                refreshed_plan = refreshed.get("plan")
+                if isinstance(refreshed_plan, dict):
+                    refreshed = {**refreshed, "plan": {**refreshed_plan,
+                        "war_declared_overview_query": deferred}}
+                return refreshed
             return {**planned, "plan": {**plan, "selected_step": None,
                 "pending_actions": [], "status": "pending",
                 "reason": "the war overview read failed; do not repeat it on this frame",
