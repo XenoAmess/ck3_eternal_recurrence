@@ -87,3 +87,45 @@ target is introduced. The public test main/CMake wiring and full public Native
 build were not run in this focused package. Root separately deploys the
 candidate and verifies actual point/owned-perk material change. At this source
 delivery the current character's remaining point had not been spent.
+
+## Actual two-point material verification
+
+Later on 2026-10-16 UTC, Root deployed Native20 and the repaired SDK in P24.
+Game PID 100984, actor 40526 and raw date 53411184 are the actual observed
+scope. The current loaded save had **two** unspent stewardship points and four
+used points; the earlier P21 one-point snapshot describes an earlier date.
+
+| Ordinary AUTO | Target | Independently observed result |
+| --- | --- | --- |
+| 14, followed by receipt 16 | `defensive_measures_perk` | `applied`, `post_target_perk_owned=true`, `postcondition_verified=true` |
+| 20, followed by receipt 22 | `organized_muster_rolls_perk` | `applied`, `post_target_perk_owned=true`, `postcondition_verified=true` |
+
+The second submission observed one unspent/five used points. AUTO26's fresh
+lifestyle decision then reported `no_unspent_points` with zero remaining;
+the verified pair leaves six used points. Each receipt matches its original
+action request ID. The submissions' pending ACKs are retained separately and
+are not the material proof. This verifies the current two points were spent
+through the ordinary planner using the repair published at
+`84bc846a550db5c4dff10abcdcfd00eb272f54cc`.
+
+The original external evidence root is
+`continuation42-cold-prep/native20-cold-generation02/`:
+
+- `ROOT-STEWARDSHIP-POINTS-ACTUALLY-SPENT.json`, SHA-256
+  `65483ae44e650c4c59f25d345bab875536988894e1579090fb579e93e6481cfb4`.
+- `p24-responses/0014-1-result.json`, SHA-256
+  `c6a55327d726757142017a7a3fa039d7882e1a5593dcc2995919ae4759ec69e4`;
+  `0016-1-result.json`, SHA-256
+  `5f113f7ce62886ba2e1bcaf57bffcd306584d60377f3176734eab717f694b76d`.
+- `p24-responses/0020-1-result.json`, SHA-256
+  `c31cc9157c875f0a5e50c0d3f521a2a90fdb71f1153c09938feb82df19c064d4`;
+  `0022-1-result.json`, SHA-256
+  `a70dc75e353e960de220bbef6fb44142631aa1152f3c7a863213334d3a3ff5c66`.
+- `p24-responses/0026-1-result.json`, SHA-256
+  `96f634a0963edac4e76d5bd1be8cdeffebb8b2068c2e1df4aa7aab7c718fca5ce`.
+
+Official CI 38912764176 and Linear history 38912764306 for that public commit
+both completed successfully. This live result covers the two named
+stewardship perks; other lifestyle policies remain at their previous small
+scope. It does not establish every tree, 0.5 seconds/game-day, the current
+naval route's safety, or an uninterrupted 30-year completion.
