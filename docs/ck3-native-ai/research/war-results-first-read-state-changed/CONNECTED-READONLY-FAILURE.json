@@ -1,0 +1,227 @@
+{
+  "status": "GREEN",
+  "source": {
+    "transport_sha256": "f9c25d9631966d50e45e35aeee1a7322b68a0fa8b2c67036bb17570c1efa7f1d",
+    "service_sha256": "38f715455115e42a3e50fa8eb65f6dfca70235e37cf4ba4adb9a40d2d5884a51",
+    "classifier_sha256": "036ea2d0101a652fe66591284e57f514a49e600e695940145e03e4b78246b26c",
+    "driver_sha256": "57c32b319d7312913b18d93f8068deb793163080ce7bf8706adbd79aecb4198b"
+  },
+  "public_revision": 2,
+  "native_revision": 40,
+  "native_request": {
+    "type": "execute_step",
+    "protocol_version": 1,
+    "request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+    "step": "query-war-results-window-v1",
+    "expected_revision": 40
+  },
+  "outcome": {
+    "status": "observed",
+    "selected_step": "query-war-results-window-v1",
+    "plan": {
+      "policy": "ordinary-war-results-window-v1",
+      "phase": "war_results_window",
+      "status": "ready",
+      "selected_step": "query-war-results-window-v1",
+      "reason": "observe the war results once before ordinary actions",
+      "pending_actions": [
+        "query-war-results-window-v1"
+      ],
+      "war_results_window": {
+        "presence": "unknown",
+        "close_pending": false,
+        "query_attempt_status": null,
+        "check_due": true,
+        "next_check_date_raw": 53171400,
+        "close_action_credit": false
+      },
+      "player_risk_context": {
+        "schema": "xar.ck3.ordinary-player-risk-context/v1",
+        "status": "unavailable",
+        "binding": null,
+        "source": null,
+        "current_scope": null,
+        "health": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+        },
+        "stress": {
+          "status": "unavailable",
+          "value": null,
+          "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+        },
+        "alerts": {
+          "ruler_health_below_fine": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          },
+          "ruler_stress_at_or_above_100": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          },
+          "no_primary_title_heir": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          },
+          "succession_partition_split": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          }
+        },
+        "planner_signals": {
+          "succession_preparation_priority": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          },
+          "avoid_discretionary_stress_gain": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          },
+          "protect_legitimacy_floor": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+          }
+        },
+        "readiness": {
+          "health_ready": false,
+          "stress_ready": false,
+          "succession_priority_ready": false,
+          "legitimacy_protection_ready": false
+        },
+        "unavailable_reason": "same_frame_campaign_root_result_unavailable"
+      }
+    },
+    "result": {
+      "schema": "xar.war-results-readonly-state-changed/v1",
+      "step": "query-war-results-window-v1",
+      "status": "technical_read_deferred",
+      "accepted": false,
+      "available": false,
+      "read_only": true,
+      "business_submission": false,
+      "native_ack_verified": false,
+      "request_retried": false,
+      "ui_action_credit": false,
+      "date_advance_observed": false,
+      "window_presence": "unknown",
+      "close_dispatched": false,
+      "native_request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+      "native_error_evidence": {
+        "native_request": {
+          "type": "execute_step",
+          "protocol_version": 1,
+          "request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+          "step": "query-war-results-window-v1",
+          "expected_revision": 40
+        },
+        "native_command_result": {
+          "type": "command_result",
+          "protocol_version": 1,
+          "request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+          "ok": false,
+          "error": "state_changed"
+        }
+      },
+      "failed_attempt": {
+        "validation_schema": "war-results-window-query-attempt-v1",
+        "step": "query-war-results-window-v1",
+        "native_request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+        "status": "failed",
+        "error": "Native war results refused: state_changed",
+        "queried_snapshot_id": "native:40",
+        "queried_revision": 2,
+        "queried_native_revision": 40,
+        "queried_date_raw": 53171400,
+        "queried_actor_character_id": 29829,
+        "queried_connection_generation": 17,
+        "queried_episode_run_id": "native-29829-16bec0d23c05"
+      },
+      "source_frame": {
+        "snapshot_id": "native:40",
+        "revision": 2,
+        "native_revision": 40,
+        "date_raw": 53171400,
+        "actor_character_id": 29829,
+        "episode_run_id": "native-29829-16bec0d23c05",
+        "connection_generation": 17,
+        "bridge_pid": 4242
+      },
+      "queried_snapshot_id": "native:40",
+      "queried_revision": 2,
+      "queried_native_revision": 40,
+      "queried_date_raw": 53171400,
+      "queried_actor_character_id": 29829,
+      "queried_connection_generation": 17,
+      "queried_episode_run_id": "native-29829-16bec0d23c05"
+    },
+    "ui_action_credit": false,
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:40",
+      "revision": 2,
+      "native_revision": 40,
+      "date_raw": 53171400,
+      "actor_character_id": 29829,
+      "episode_run_id": "native-29829-16bec0d23c05",
+      "connection_generation": 17,
+      "bridge_pid": 4242
+    },
+    "declaration_opportunity_cooldown_v1": null,
+    "family_opportunity_cooldown_v1": null,
+    "family_wartime_opportunity_cooldown_v1": null,
+    "camera_follow": {
+      "status": "synthetic_no_camera_dispatch"
+    }
+  },
+  "classification": {
+    "schema": "g2.queue.ordinary-result-credit/v1",
+    "selected_step": "query-war-results-window-v1",
+    "service_status": "observed",
+    "result_status": "technical_read_deferred",
+    "category": "war_results_readonly_state_changed_deferred",
+    "source_gameplay_frame": {
+      "snapshot_id": "native:40",
+      "revision": 2,
+      "native_revision": 40,
+      "date_raw": 53171400,
+      "actor_character_id": 29829,
+      "episode_run_id": "native-29829-16bec0d23c05",
+      "connection_generation": 17,
+      "bridge_pid": 4242
+    },
+    "source_native_request_id": "war-overview-query-7cc2a7ee117b4a848f2c541f2c19ab73",
+    "window_presence": "unknown",
+    "war_results_window_closed_verified": false,
+    "submitted_pending": false,
+    "primitive_accepted": false,
+    "typed_nonmaterial_observation": true,
+    "existing_typed_material_verified": false,
+    "ui_action_credit": false,
+    "date_advance_observed": false,
+    "business_success_inferred": false,
+    "replay_allowed": false
+  },
+  "negative_cases": [
+    "wrong_native_error",
+    "wrong_request_id",
+    "wrong_game_pid",
+    "fake_acceptance",
+    "fake_close",
+    "wrong_plan_phase",
+    "arbitrary_query_error_raises",
+    "close_state_changed_raises"
+  ],
+  "game_or_live_driver_calls": 0,
+  "fake_boundaries": [
+    "Native endpoint command_result"
+  ]
+}

@@ -5195,6 +5195,13 @@ class GameplayBridgeService:
                 "selected_step": selected_step, "plan": plan, "result": result,
                 "ui_action_credit": closed,
             }
+        if (selected_step == QUERY_WAR_RESULTS_WINDOW_V1_STEP
+                and isinstance(result, dict)
+                and result.get("schema") == "xar.war-results-readonly-state-changed/v1"):
+            # One readonly Native preflight rejection is an observed technical
+            # outcome.  It cannot become a window observation or close credit.
+            return {"status": "observed", "selected_step": selected_step,
+                    "plan": plan, "result": result, "ui_action_credit": False}
         if selected_step == CLOSE_WAR_RESULTS_WINDOW_V1_STEP:
             clear = war_results_window_presence_v1(result) in ("absent", "hidden")
             closed = (result.get("status") == "closed_verified"

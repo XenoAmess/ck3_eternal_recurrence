@@ -165,9 +165,11 @@ def execute_war_results_window_v1(
                 **_lease(binding),
             }
     frame = None
+    native_request = {"type": "execute_step", "protocol_version": 1,
+                      "request_id": request_id, "step": step,
+                      "expected_revision": binding["native_revision"]}
     try:
-        driver.endpoint.send({"type": "execute_step", "protocol_version": 1, "request_id": request_id,
-                              "step": step, "expected_revision": binding["native_revision"]})
+        driver.endpoint.send(native_request)
         frame = driver.state.wait_for_command_result(request_id, max(driver.command_timeout_seconds, 35.0))
         if frame is None:
             raise BridgeUnavailableError("war results original command_result timed out")
@@ -208,13 +210,60 @@ def execute_war_results_window_v1(
             _publish(driver, result, token, after)
         return result
     except Exception as error:
+        failed_attempt = None
         with driver._driver_state_lock:
             if operation == "query" and driver._war_results_window_attempt == token:
                 driver._war_results_window_query_attempt.update(status="failed", error=str(error)[:2048])
+                failed_attempt = deepcopy(driver._war_results_window_query_attempt)
             elif operation == "close":
                 active = driver._war_results_window_close_pending
                 if isinstance(active, dict) and active.get("native_request_id") == request_id:
                     active.update(status="unknown", error=str(error)[:2048], collectable=frame is None)
+        diagnostics = before.get("diagnostics")
+        hello = diagnostics.get("hello") if isinstance(diagnostics, Mapping) else None
+        bridge_pid = diagnostics.get("bridge_pid") if isinstance(diagnostics, Mapping) else None
+        if (operation == "query" and isinstance(error, BridgeUnavailableError)
+                and str(error) == "Native war results refused: state_changed"
+                and type(bridge_pid) is int and bridge_pid > 0
+                and isinstance(hello, Mapping) and hello.get("pid") == bridge_pid
+                and isinstance(failed_attempt, dict)
+                and failed_attempt.get("native_request_id") == request_id
+                and isinstance(frame, Mapping)
+                and set(frame) == {"type", "protocol_version", "request_id", "ok", "error"}
+                and frame.get("type") == "command_result"
+                and type(frame.get("protocol_version")) is int and frame["protocol_version"] == 1
+                and frame.get("request_id") == request_id
+                and frame.get("ok") is False and frame.get("error") == "state_changed"):
+            # Native rejected this readonly query in fixed-window preflight,
+            # before the GUI-owner mailbox or any close dispatch.  Preserve
+            # the negative packet and its exact source; another AUTO may plan
+            # from a new frame, but this request is never replayed here.
+            return {
+                "schema": "xar.war-results-readonly-state-changed/v1",
+                "step": QUERY_STEP, "status": "technical_read_deferred",
+                "accepted": False, "available": False, "read_only": True,
+                "business_submission": False, "native_ack_verified": False,
+                "request_retried": False, "ui_action_credit": False,
+                "date_advance_observed": False,
+                "window_presence": "unknown", "close_dispatched": False,
+                "native_request_id": request_id,
+                "native_error_evidence": {
+                    "native_request": deepcopy(native_request),
+                    "native_command_result": deepcopy(dict(frame)),
+                },
+                "failed_attempt": failed_attempt,
+                "source_frame": {
+                    "snapshot_id": binding["snapshot_id"],
+                    "revision": binding["revision"],
+                    "native_revision": binding["native_revision"],
+                    "date_raw": binding["date_raw"],
+                    "actor_character_id": binding["actor_character_id"],
+                    "episode_run_id": binding["episode_run_id"],
+                    "connection_generation": binding["connection_generation"],
+                    "bridge_pid": bridge_pid,
+                },
+                **_lease(binding),
+            }
         raise
 
 

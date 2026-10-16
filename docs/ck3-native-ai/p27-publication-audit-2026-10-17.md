@@ -231,3 +231,13 @@ Root在2026-10-16T20:55:46Z报告SDK32已实际热接：FULL3成功12日，SEM64
 20:58:32.782396Z至21:02:10.187353Z，两次完成队列样本覆盖192日／217.404957秒≈1.132318秒／日，
 包含该连续段排队与规划，排除前面的战争／人工修复，非全campaign平均。SDK33首次results失败候选保持离线，
 未打断SDK32；本批共享CI定向命令52项／36子用例及Python-only检查通过。
+
+## 第六批：results 首次只读竞争的非致命观察
+
+第五批 `18393cce` Official38967170365／Linear38967169970 均已 success。后续两叶最小修复仅消费 results query
+精确 pre-owner `state_changed`，保留完整失败包／ID／租约和 unknown，可继续普通规划；不会关闭窗口或重放原请求。
+12项新真实 Service／NativeDriver 测试与相关回归共25项通过。独立正式队列 AST／check_after／full_loop／持久化
+回放保持零日期／业务／close信用、TURN2454B；[完整增量与复核](research/war-results-first-read-state-changed/README.md)。
+
+本候选未部署，当前 SDK32 连续运行未被打断；不以离线回放宣称实机首次失败分支已验收。
+稳定30年优先，其后<1秒／日、再0.5秒／日，均未达；已有302日具名样本与1.132318秒／日段仍按历史范围保留。

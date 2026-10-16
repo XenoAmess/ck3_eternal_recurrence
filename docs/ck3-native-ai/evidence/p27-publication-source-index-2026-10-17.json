@@ -164,6 +164,18 @@
       "relative_path": "p31-current-siege-performance01/MANIFEST.json",
       "sha256": "58d3b9e5b1f03fac94850e7e2c6ac53dc6a89c9263f923d219d30141335e3b36",
       "bytes": 1457
+    },
+    {
+      "name": "results-first-query-candidate",
+      "relative_path": "p32-war-results-first-failure-candidate01/DELIVERY.json",
+      "sha256": "45594a4110a6f5bf71ee017e122c5fd0cdc524b7bfdfbf743ff6d1717d4ae249",
+      "bytes": 2418
+    },
+    {
+      "name": "results-first-query-independent-review",
+      "relative_path": "p32-war-results-independent-review01/REVIEW-FINAL.json",
+      "sha256": "375a40c7dc3b018c2a370f8b7207d9586879eda5dca64c1c1f5c90e26ac48fcb",
+      "bytes": 5051
     }
   ],
   "large_inputs_in_git": false,
@@ -344,5 +356,28 @@
       "seconds_per_day": 1.132317484375,
       "scope": "Root completed-queue samples; includes this prefix queue/plan time; excludes earlier war/manual repairs; not full campaign average"
     }
+  },
+  "fifth_public_ci": {
+    "commit": "18393ccec7dbab061f0a6a5a4e036c2a8d09a8f0",
+    "official_run": 38967170365,
+    "linear_run": 38967169970,
+    "conclusion": "success"
+  },
+  "war_results_first_read_state_changed": {
+    "research": "docs/ck3-native-ai/research/war-results-first-read-state-changed/SOURCE-PINS.json",
+    "portable_outcome": "tools/g2_saved_campaign/war_results_first_read_outcome.py",
+    "public_tests": 12,
+    "related_tests": 25,
+    "independent_formal_queue_review": true,
+    "TURN_bytes": 2454,
+    "deployed": false,
+    "live_recurrence_verified": false,
+    "date_credit": 0,
+    "business_credit": 0,
+    "close_credit": 0,
+    "original_query_replayed": false,
+    "shared_ci_focused_cases": 64,
+    "shared_ci_focused_subtests": 36,
+    "python_only_validation": "GREEN"
   }
 }

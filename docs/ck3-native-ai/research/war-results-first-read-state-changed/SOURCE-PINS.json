@@ -1,0 +1,66 @@
+{
+  "schema": "xar.research.war-results-first-read/v1",
+  "status": "INDEPENDENT_OFFLINE_REVIEW_GREEN_NOT_DEPLOYED",
+  "original_delivery_sha256": "45594a4110a6f5bf71ee017e122c5fd0cdc524b7bfdfbf743ff6d1717d4ae249",
+  "native_preowner_source": {
+    "public_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+    "sha256": "7c6a22ad7b6322a1b0da2cefc5c7e41ba3f5ce16966b30b40e00a62b48518e13",
+    "range": "1310-1313: state_changed before mailbox/GUI context assignment at1321"
+  },
+  "portable_tests": {
+    "cases": 12,
+    "actual_Service_driver": "NativeHeadlessGameplayDriver",
+    "public_revision": 2,
+    "native_revision": 40,
+    "next_plan_clock_selected": true,
+    "Native_endpoint": "synthetic; no actual Game"
+  },
+  "files": [
+    {
+      "path": "CONNECTED-READONLY-FAILURE.json",
+      "sha256": "931a2bffa47cda926924e1dfeee76d1f12fe9e30b44c44bea94c69e0305a2649",
+      "bytes": 8226
+    },
+    {
+      "path": "SDK32-TO-RESULTS-FIRST-FAILURE.patch",
+      "sha256": "5831873499b8bf6edcfb69774eae557b65c9c7bb4a26571d2dad7d3ceb818296",
+      "bytes": 5529
+    },
+    {
+      "path": "war_results_first_failure_classifier_extension.py",
+      "sha256": "e1f6d5ca33121361f81287b38bc7db0870f210f746917a4f0944c83835b5f483",
+      "bytes": 6185
+    },
+    {
+      "path": "REVIEW-FINAL.json",
+      "sha256": "375a40c7dc3b018c2a370f8b7207d9586879eda5dca64c1c1f5c90e26ac48fcb",
+      "bytes": 5051
+    },
+    {
+      "path": "FORMAL-QUEUE-REVIEW.json",
+      "sha256": "e29972d4f497b85d1d503461d786db43a633e6da001d25846f6b68b4bca08a04",
+      "bytes": 3908
+    }
+  ],
+  "known_limitations": [
+    "not installed in SDK32",
+    "no actual war-results first-state_changed recurrence evidence",
+    "close/timeout/other errors remain strict"
+  ],
+  "review": {
+    "path": "REVIEW-FINAL.json",
+    "sha256": "375a40c7dc3b018c2a370f8b7207d9586879eda5dca64c1c1f5c90e26ac48fcb",
+    "formal_queue": "FORMAL-QUEUE-REVIEW.json"
+  },
+  "formal_queue": {
+    "passed": true,
+    "typed_nonmaterial_credit": 1,
+    "date_credit": 0,
+    "business_credit": 0,
+    "close_credit": 0,
+    "TURN_bytes": 2454
+  },
+  "public_related_tests": 25,
+  "public_shared_CI_tests": 64,
+  "public_shared_CI_subtests": 36
+}

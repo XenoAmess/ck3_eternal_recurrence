@@ -1,0 +1,103 @@
+{
+  "status": "INDEPENDENT_OFFLINE_REVIEW_GREEN_NOT_LIVE",
+  "at_utc": "2026-10-16T21:51:48.336505+00:00",
+  "candidate_delivery": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\DELIVERY.json",
+    "sha256": "45594a4110a6f5bf71ee017e122c5fd0cdc524b7bfdfbf743ff6d1717d4ae249"
+  },
+  "formal_queue_replay": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-independent-review01\\FORMAL-QUEUE-REVIEW.json",
+    "sha256": "e29972d4f497b85d1d503461d786db43a633e6da001d25846f6b68b4bca08a04"
+  },
+  "review_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-independent-review01\\review_formal_queue.py",
+    "sha256": "6663c91d9cb32825d42568294764dd821a9e16d529d9e8d3ed95b641af9ac193"
+  },
+  "finding": "No confirmed executed-guard defect; full canonical AST-loaded wrapper handles observed typed DTO first. No source change requested.",
+  "scope_changes": {
+    "xar_autoplayer/bridge/war_results_window_transport.py": [
+      "execute_war_results_window_v1"
+    ],
+    "xar_autoplayer/bridge/service.py": [
+      "GameplayBridgeService",
+      "GameplayBridgeService._execute_planned_turn_without_unhandled_capture"
+    ]
+  },
+  "native_preowner": {
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate03\\sources\\src\\ingame_ui_navigation_v1.cpp",
+    "sha256": "7c6a22ad7b6322a1b0da2cefc5c7e41ba3f5ce16966b30b40e00a62b48518e13",
+    "compile_receipt": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\realm-camera-native-candidate03\\ingame_ui_navigation_v1.compile.json",
+    "compile_receipt_sha256": "bb740186cd4beb4bc84702fd38ff1a964f0c09e4e45281e2f68ccba1f195e60a",
+    "state_changed_return_line": 1313,
+    "unique_return_in_translation_unit": true,
+    "conditions": "Native state/expected revision, previous snapshot availability or fresh ReadSnapshot/equality failed before assigning query owner context",
+    "bridge_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\patched\\src\\bridge.cpp",
+    "bridge_source_sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9",
+    "admission_error_response_lines": [
+      18165,
+      18166
+    ],
+    "TrySubmitMainThreadQuery_line": 18168,
+    "business_or_close_dispatch_before_error": false
+  },
+  "public_no_facade_tests": {
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-results-first-failure-public01\\public\\ck3_autonomous_player\\tests\\unit\\test_war_results_first_read_defer.py",
+    "source_sha256": "cfabec0804361f063a6e55b6298d63542369ccf746bfbd0eb15ea381f4efb70b",
+    "count": 12,
+    "passed": 12,
+    "elapsed_seconds": 0.54,
+    "real_service_real_native_headless_driver": true,
+    "only_Native_IO_is_fake": true,
+    "independent_candidate_source_overlay": true,
+    "pytest_cache_disabled": true
+  },
+  "strict_failures": [
+    "arbitrary query error",
+    "generic owner submission/completion failure",
+    "close state_changed",
+    "missing command_result timeout",
+    "wrong raw request_id",
+    "wire public revision replacing native revision",
+    "source native revision replacing public revision",
+    "cache lease mismatch",
+    "fake acceptance/window absence/close"
+  ],
+  "persistent_bounds": {
+    "candidate_classifier": 259993,
+    "typed_DTO": 1758,
+    "AUTO_body": 4286,
+    "TURN": 2454,
+    "loop_state": 1453,
+    "governance_sidecar": 425
+  },
+  "canonical_AST_delta": "55 existing functions kept verbatim except renaming final entry; 2 new real function definitions appended, no skipped alias dependency",
+  "settlement": {
+    "cycles_before": 1,
+    "cycles_after": 2,
+    "typed_nonmaterial_observations": 1,
+    "date_credit": 0,
+    "business_credit": 0,
+    "ui_close_credit": 0,
+    "pending_after": null
+  },
+  "limits": [
+    "Synthetic Native reply and offline method replay; not actual Game recurrence or live acceptance",
+    "Process/UI admission and live transport were not exercised",
+    "No deployment, restart, queue publication or ledger change"
+  ],
+  "storage": {
+    "admission_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+    "admission_sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+    "review_at_utc": "2026-10-17T11:49:00.265518+00:00",
+    "same_N_64GiB_reservation_no_extra": true,
+    "new_reservation_bytes": 0,
+    "current_D_free_bytes": 1057849491456,
+    "review_limit_bytes": 16777216,
+    "temporary_candidate_classifier_copy_reclaimed": true,
+    "review_source_and_receipt_bytes_before_final": 24858,
+    "retention_review_within_hours": 48
+  },
+  "live_Driver_reads": 0,
+  "live_writes": 0,
+  "W_index_or_Git_writes": 0
+}

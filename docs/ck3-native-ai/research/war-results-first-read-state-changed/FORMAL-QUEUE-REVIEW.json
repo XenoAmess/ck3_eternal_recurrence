@@ -1,0 +1,65 @@
+{
+  "status": "GREEN_OFFLINE_FORMAL_QUEUE_REPLAY_NOT_LIVE",
+  "at_utc": "2026-10-16T21:48:43.413194+00:00",
+  "pins": {
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\DELIVERY.json": "45594a4110a6f5bf71ee017e122c5fd0cdc524b7bfdfbf743ff6d1717d4ae249",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p32-candidate\\src\\xar_autoplayer\\bridge\\war_results_window_transport.py": "1e8de534c2b31f2fa374e769deb5fd0eacc0e962c5bed698252ceeb73195febc",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\candidate\\xar_autoplayer\\bridge\\war_results_window_transport.py": "f9c25d9631966d50e45e35aeee1a7322b68a0fa8b2c67036bb17570c1efa7f1d",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p32-candidate\\src\\xar_autoplayer\\bridge\\service.py": "d6c7fc70b7d3681a79850fb82d7bbb12fb5d29c75545722683f50b2afc260bfc",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\candidate\\xar_autoplayer\\bridge\\service.py": "38f715455115e42a3e50fa8eb65f6dfca70235e37cf4ba4adb9a40d2d5884a51",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\root_p33_candidate_result_classifier.py": "036ea2d0101a652fe66591284e57f514a49e600e695940145e03e4b78246b26c",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\war_results_first_failure_classifier_extension.py": "e1f6d5ca33121361f81287b38bc7db0870f210f746917a4f0944c83835b5f483",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\test_connected.py": "d73b1a4615ff673d301c0b9f2cf895cf442625030065c4e5127624617ca6753e",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-war-results-first-failure-candidate01\\CONNECTED-READONLY-FAILURE.json": "931a2bffa47cda926924e1dfeee76d1f12fe9e30b44c44bea94c69e0305a2649",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p32_sdk_queue.py": "0fe3e89d17e41a82be78c5d2d3a7ffa033859bca18a66fddf902b6ee6b3b5d91"
+  },
+  "public_revision": 2,
+  "native_revision": 40,
+  "formal_loader": "actual load_cold_result_classifier AST unchanged; candidate source in isolated temp campaign",
+  "formal_methods": [
+    "FreshQueue.check_after(AUTO)",
+    "FreshQueue.full_loop(max_turns=1)",
+    "persist_loop_state",
+    "atomic",
+    "frame"
+  ],
+  "wrapper_precedes_executed_guard": true,
+  "false_executed_guard_suspicion_reproduced": false,
+  "negative_checks": [
+    "wire_uses_public_instead_of_native",
+    "source_uses_native_instead_of_public",
+    "lease_revision_mismatch",
+    "request_id_mismatch",
+    "fake_window_absence",
+    "fake_close",
+    "fake_acceptance",
+    "wrong_phase",
+    "wrong_error"
+  ],
+  "sizes_bytes": {
+    "candidate_classifier": 259993,
+    "typed_DTO": 1758,
+    "AUTO_body": 4286,
+    "TURN": 2454,
+    "loop_state": 1453,
+    "governance_sidecar": 425
+  },
+  "settlement": {
+    "cycles_before": 1,
+    "cycles_after": 2,
+    "typed_nonmaterial_observations": 1,
+    "date_credit": 0,
+    "business_credit": 0,
+    "ui_close_credit": 0,
+    "pending_after": null
+  },
+  "replay": "JSON serialized AUTO restored and classified identically; real atomic TURN and state roundtrip",
+  "boundaries": [
+    "Native endpoint fake",
+    "generated AUTO/METRICS supplied offline to actual queue methods",
+    "process/UI admission not exercised",
+    "no actual Game recurrence or live acceptance"
+  ],
+  "runtime_calls_or_live_writes": 0,
+  "temp_directory_reclaimed": true
+}

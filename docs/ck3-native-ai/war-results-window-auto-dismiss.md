@@ -21,3 +21,11 @@ SDK31的AUTO104因同帧overview `state_changed` 失败缓存再次阻塞。SDK3
 本批**war-results首次query失败的非致命消费仍未覆盖**，另有后续候选；不能把负缓存释放外推到所有UI错误。
 新4项及原优先级回归通过，含Service真实Native查询public2/native40路径；
 完整patch及便携用例见[收口包](research/sdk31-route-window-sdk32-ui-defer/README.md)。
+
+## 2026-10-17 后续：首次 results 只读拒绝
+
+公共 transport／Service 已补齐上节未覆盖的精确 query `state_changed`：保留原始请求及失败回执，返回技术读取延后，
+窗口可见性仍 unknown，没有关闭、日期或业务信用。原生拒绝发生在 owner mailbox 提交之前；关闭、超时与其他错误不被软化。
+真实 Service／NativeDriver 的 12 项新测试及相关回归共 25 项通过，独立正式队列回放也通过。
+这是**未部署的源码修复与离线验收**，当前 SDK32 不切换，未将此分支写成实机成功。
+[源码、独立复核与限制](research/war-results-first-read-state-changed/README.md)。
