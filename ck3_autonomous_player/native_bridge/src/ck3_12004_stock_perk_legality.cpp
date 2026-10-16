@@ -1,4 +1,5 @@
 // Actual 1.20.0.4 bindings: finite LIFE proof manifest; software DTO semantics retained.
+#include "xar_bridge/player_lifestyle_stewardship_frontier_v2.hpp"
 #include "xar_bridge/ck3_12004_stock_perk_legality.hpp"
 #include "xar_bridge/lifestyle_perk_predicate_288b1b0_12004.hpp"
 #include "xar_bridge/source_read_leaf_frame_12004.hpp"
@@ -806,10 +807,7 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
     const StockPerkLegalityAccessV1 &access,
     std::string_view target_key) noexcept {
   StockPerkLegalityResultV1 out{};
-  if (target_key != kStockPerkLegalityTargetV1 &&
-      target_key != kStockPerkLegalityFollowupTargetV1 &&
-      target_key != kStockPerkLegalityNextTargetV1 &&
-      target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
+  if (!StewardshipPerkAdmittedV2(target_key) &&
       target_key != kDiplomacyThoughtfulPerkV1 &&
       target_key != kMartialServeTheCrownPerkV1) {
     out.status = Status::unavailable_candidate;

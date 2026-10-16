@@ -90,3 +90,49 @@ DLL SHA `048949105a22ca47a56fdb2bea5fe14bd14cfaaaada55d1496689a34e4f298cf`。
 旧 `CB-FOCUSED-FIXTURE-RESULT.windows-stream-lock-RED.json` 保留 Windows 日志 stream 未关就删除的真实失败；仅补测试的 `stream.close()` 后重跑同一 focused，生产四叶未因此改变。
 另外一次独立来源对照核实：15 个编译规则的 key、mask、文件 SHA 与原版 AST inventory 完全一致，inventory guard 和运行负责人 loaded-source review 的精确摘要一致。
 这些结果证明离线实现与测试范围；完整 Native18 依赖闭包、实际加载及同帧 shadow／CB-first 实机对照仍由运行负责人交付。
+
+## P23 actual same-frame directory comparison
+
+Machine `xenoamess-full-tower-eb9d2c1186`, 2026-10-16 13:39-13:42 UTC.
+Actual MCP queries 3 (shadow) and 5 (cb-first) ran on Game PID213812, creation
+FILETIME134366283843706505, paused actor40526/date53411184, public/native
+revision2. Only semantic query4 occurred between them; no gameplay mutation
+was submitted. Source pins were equal; only the runtime policy file changed.
+
+All **920 exposed declaration tuples**, complete ordered title lists, claimant,
+configuration, CB/target full identities, output order and duplicates matched.
+Missing0/extra0; both ordered SHA-256 values are
+`489e6c28b23b558f6aac2e4976c8f62158a510c147a87e5b2c29e3c0dbc713c4`.
+Costs and complete native target shape were exposed for 0/920 rows, so the
+overall report remains **PARTIAL**, not full semantic parity.
+
+| Actual two-query measurement | Shadow | CB-first |
+| --- | ---: | ---: |
+| Original native evaluator calls | 3,522,864 | 2,534,377 |
+| Native query wall seconds | 6.5894119 | 4.0355039 |
+| MCP elapsed seconds | 6.7532661 | 4.2344323 |
+
+The confirmed reduction is **988,487 evaluator calls (28.059%)**. Each of 25
+qualified realm-mode families fell from 38,292 calls to 10; tributary fell
+from 38,292 to 6,855. Their combined evaluator time fell 2.1253624 to0.0103122
+seconds. The remaining 66 wide families kept their call counts and account for
+99.72% of remaining calls; their evaluator time also varied 4.210876 to3.8294824
+seconds. Hungarian migration alone varied 0.7033334 to0.3222252 seconds without
+a call-count reduction. Thus not all wall-time change can be attributed to
+candidate narrowing. Two explicit query samples do not establish seconds per
+game day or the 0.5-second/day target.
+
+External evidence directory:
+`continuation42-cold-prep/native18-cold-generation01/`:
+
+- `ROOT-CB-ACTUAL-SAME-FRAME-P23.json`, SHA-256
+  `b78fee4aae7a65946051fdb65055a7c513e2842a853705aaabf7713cda083ec3`.
+- `ROOT-CB-ACTUAL-COMPARISON-P23.json`, SHA-256
+  `ed4393b88e874f20535a5aedde5a9c51965c63b7abecb9740bceb9e1000768f8`.
+- `p23-responses/0003-1-result.json` and `0005-1-result.json` are preserved
+  original MCP results. The comparison report binds their exact source hashes.
+- The first two profile rows occupy 95,616 bytes, SHA-256
+  `2888db2f3b12816cc24bb5bc408a3db26c399e781cb08fc672475ba648d3aae5`;
+  this prefix remains the bound input if ordinary profiling later appends rows.
+
+This offline comparison made no additional live calls or production changes.

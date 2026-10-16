@@ -2268,6 +2268,13 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
     AppendJsonString(result,xar::ck3_12003::kPlayerControlV1Capability);
   }
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1)
+  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
+    result += ',';
+    AppendJsonString(result,
+        xar::ck3_11906::kStewardshipFullFrontierCapabilityV2);
+  }
+#endif
 #if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)
   // Read support is independent of complete force coverage or DECLARE admission.
   if (game.enabled() && descriptor.game_version == xar::ck3_12004::kGameVersion &&

@@ -17613,6 +17613,20 @@ def _optional_check_lifestyle(self, planned, available_steps):
     if current is not None and isinstance(pending, dict):
         _optional_check_record(self.driver, "lifestyle", current, action=True)
     elif current is not None and isinstance(plan, dict):
+        catalogue = "game.state.private-lifestyle-stewardship-frontier-v2"
+        if not hasattr(self, "_optional_lifestyle_full_frontier_capability"):
+            try:
+                bridge_caps = self.driver.capabilities().get("bridge_capabilities")
+            except Exception:
+                bridge_caps = None
+            self._optional_lifestyle_full_frontier_capability = (
+                isinstance(bridge_caps, list) and catalogue in bridge_caps)
+        if self._optional_lifestyle_full_frontier_capability:
+            state_dir = _optional_check_cadence_state(self.driver)
+            if state_dir is not None:
+                from ..optional_check_cadence_v1 import requalify_lifestyle_frontier_once
+                requalify_lifestyle_frontier_once(
+                    state_dir, current, native_catalogue=catalogue)
         skipped = _optional_check_due(self.driver, "lifestyle", current)
         if skipped is not None:
             result = _optional_check_skip(planned, "lifestyle_periodic_review", skipped)

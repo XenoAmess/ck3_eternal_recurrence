@@ -25,6 +25,27 @@ _MARTIAL = "martial_lifestyle"
 _MARTIAL_CONTROL_PERK = "serve_the_crown_perk"
 _DIPLOMACY = "diplomacy_lifestyle"
 _DIPLOMACY_GIFT_PERK = "thoughtful_perk"
+# Preserve the established construction priorities, then complete the authored
+# Domain branch before opening another stewardship tree.  This is our player
+# policy order; the native final-legality verdict remains authoritative.
+_STEWARDSHIP_FALLBACK_PRIORITY = (
+    "defensive_measures_perk", "organized_muster_rolls_perk",
+    "popular_figurehead_perk", "divided_attention_perk", "architect_perk",
+    "golden_obligations_perk", "heregeld_perk", "detailed_ledgers_perk",
+    "war_profiteer_perk", "fearful_troops_perk", "it_is_my_domain_perk",
+    "golden_aplomb_perk", "at_any_cost_perk", "avaricious_perk",
+    "meritocracy_perk", "chains_of_loyalty_perk", "likable_perk",
+    "positions_of_power_perk", "large_levies_perk",
+    "soon_forgiven_perk", "toe_the_line_perk",
+    "honored_to_serve_perk", "administrator_perk",
+)
+_STEWARDSHIP_ORDERED_FRONTIER = (
+    _BUILD_COST_PERK, _BUILD_SPEED_PERK,
+    _CAPITAL_DEVELOPMENT_PERK, _COLLECT_TAXES_PERK,
+) + _STEWARDSHIP_FALLBACK_PRIORITY
+_STEWARDSHIP_AUTHORED_PERKS = frozenset(
+    _STEWARDSHIP_ORDERED_FRONTIER
+)
 _REQUIRED_READINESS = (
     "current_focus_ready",
     "lifestyle_progress_ready",
@@ -373,7 +394,36 @@ def choose_min_feudal_lifestyle_action(
                         "reason": "active_collect_taxes_effectiveness_plus_25_percent",
                     },
                 }
-        return {**result, "status": "no_legal_minimum"}
+        if current_lifestyle != _STEWARDSHIP:
+            return {**result, "status": "no_legal_minimum"}
+        points = progress.get("unspent_perk_points")
+        if not isinstance(points, int) or isinstance(points, bool) or points < 0:
+            return {**result, "status": "observation_unavailable"}
+        if points == 0:
+            return {**result, "status": "no_legal_minimum",
+                    "reason": "no_unspent_points", "unspent_perk_points": 0}
+        if not perk_keys.issubset(_STEWARDSHIP_AUTHORED_PERKS):
+            return {**result, "status": "observation_unavailable",
+                    "reason": "outside_authored_stewardship_frontier"}
+        remaining = perk_keys.difference(owned)
+        if remaining:
+            target = next(key for key in _STEWARDSHIP_ORDERED_FRONTIER
+                          if key in remaining)
+            return {
+                **result, "status": "recommend_action",
+                "selected_action": {
+                    "kind": "perk", "target_key": target,
+                    "target_lifestyle_key": current_lifestyle,
+                    "expected": binding,
+                    "reason": "remaining_native_final_legal_perk",
+                },
+            }
+        if perk_keys:
+            return {**result, "status": "observation_unavailable",
+                    "reason": "native_final_legal_candidate_already_owned"}
+        return {**result, "status": "no_legal_minimum",
+                "reason": "no_native_final_legal_candidate",
+                "unspent_perk_points": points}
     if at_peace is not True and not allow_wartime_initial_focus:
         return {**result, "status": "outside_admitted_scene"}
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":

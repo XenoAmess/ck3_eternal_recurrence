@@ -8,6 +8,8 @@
 #include "xar_bridge/player_lifestyle_stock_focus_legality_v1.hpp"
 #include "xar_bridge/player_lifestyle_stock_perk_legality_v1.hpp"
 
+#include "xar_bridge/player_lifestyle_stewardship_frontier_v2.hpp"
+
 #include <memory>
 #include <string>
 #include <string_view>
@@ -50,10 +52,7 @@ inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
 
 inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
     std::string_view target) noexcept {
-  return target == kStockPerkLegalityTargetV1 ||
-         target == kStockPerkLegalityFollowupTargetV1 ||
-         target == kStockPerkLegalityNextTargetV1 ||
-         target == kStockPerkLegalityCollectTaxesTargetV1 ||
+  return StewardshipPerkAdmittedV2(target) ||
          target == kDiplomacyThoughtfulPerkV1 ||
          target == kMartialServeTheCrownPerkV1;
 }

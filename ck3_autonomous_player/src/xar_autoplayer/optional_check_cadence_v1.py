@@ -93,6 +93,28 @@ def action_recorded(state_dir: Path, domain: str,
     return _load(state_dir, current[0])["domains"][domain]["last_actual_action_frame"] == list(current[1:])
 
 
+def requalify_lifestyle_frontier_once(
+    state_dir: Path, current: tuple[str, int, int], *,
+    native_catalogue: str,
+) -> bool:
+    """Invalidate only the old lifestyle negative result after a native upgrade.
+
+    This does not count an action or a check.  Call only after the current
+    bridge has advertised the specified native catalogue capability.
+    """
+    if not isinstance(native_catalogue, str) or not native_catalogue:
+        raise ValueError("lifestyle catalogue capability is required")
+    value = _load(state_dir, current[0])
+    row = value["domains"]["lifestyle"]
+    if row.get("native_catalogue") == native_catalogue:
+        return False
+    row.update(consecutive_no_action=0, next_due_date_raw=None,
+               last_check_frame=None, native_catalogue=native_catalogue)
+    row.pop("technical_defer", None)
+    _write(state_dir, value)
+    return True
+
+
 def record(state_dir: Path, domain: str, current: tuple[str, int, int], *,
            actual_action: bool) -> dict:
     if domain not in DOMAINS:

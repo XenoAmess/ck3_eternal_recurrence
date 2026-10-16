@@ -370,15 +370,20 @@ class LifestyleMinPolicyTests(unittest.TestCase):
             "feudal_build_speed_modifier_minus_30_percent",
         )
         snapshot["owned_perk_keys"].append("professional_workforce_perk")
+        # A fresh native final-legal list no longer advertises the owned perk.
+        snapshot["legal_perk_candidates"]["items"] = []
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
 
-    def test_second_perk_requires_owned_parent_point_and_final_legality(self) -> None:
+    def test_second_perk_trusts_final_legality_and_still_requires_point(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["legal_perk_candidates"]["items"] = [{
             "key": "professional_workforce_perk",
             "lifestyle_key": "stewardship_lifestyle",
         }]
-        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        # Synthetic final verdict tests authority over Python's parent guess.
+        selected = _choose(snapshot)
+        self.assertEqual(selected["status"], "recommend_action")
+        self.assertEqual(selected["selected_action"]["target_key"], "professional_workforce_perk")
         snapshot["owned_perk_keys"].append("cutting_corners_perk")
         snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
@@ -421,12 +426,13 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
         snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 1
         snapshot["owned_perk_keys"].append("centralization_perk")
+        snapshot["legal_perk_candidates"]["items"] = []
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
         snapshot["owned_perk_keys"].remove("professional_workforce_perk")
         snapshot["owned_perk_keys"].remove("centralization_perk")
         self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
 
-    def test_tax_man_needs_active_collect_taxes_point_and_final_legality(self) -> None:
+    def test_tax_man_final_legality_needs_point_and_active_task_keeps_priority(self) -> None:
         snapshot = _complete_snapshot()
         snapshot["owned_perk_keys"] = [
             "cutting_corners_perk", "professional_workforce_perk",
@@ -435,10 +441,12 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         snapshot["legal_perk_candidates"]["items"] = [{
             "key": "tax_man_perk", "lifestyle_key": "stewardship_lifestyle",
         }]
-        self.assertEqual(_choose(snapshot)["status"], "no_legal_minimum")
+        selected_without_task = _choose(snapshot)
+        self.assertEqual(selected_without_task["status"], "recommend_action")
+        self.assertEqual(selected_without_task["selected_action"]["target_key"], "tax_man_perk")
         self.assertEqual(
             _choose(snapshot, collect_taxes_active=False)["status"],
-            "no_legal_minimum",
+            "recommend_action",
         )
         snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
         self.assertEqual(
@@ -462,6 +470,7 @@ class LifestyleMinPolicyTests(unittest.TestCase):
             "active_collect_taxes_effectiveness_plus_25_percent",
         )
         snapshot["owned_perk_keys"].append("tax_man_perk")
+        snapshot["legal_perk_candidates"]["items"] = []
         self.assertEqual(
             _choose(snapshot, collect_taxes_active=True)["status"],
             "no_legal_minimum",
@@ -519,6 +528,8 @@ class LifestyleMinPolicyTests(unittest.TestCase):
         result = _choose(snapshot, pending_action={"status": "applied"})
         self.assertEqual(result["status"], "consume_applied_receipt")
         self.assertIsNone(result["selected_action"])
+        snapshot["current_lifestyle_progress"]["unspent_perk_points"] = 0
+        snapshot["legal_perk_candidates"]["items"] = []
         result = _choose(snapshot)
         self.assertEqual(result["status"], "no_legal_minimum")
 

@@ -33,11 +33,25 @@ FOCUS_LIFESTYLE = "stewardship_lifestyle"
 MARTIAL_TARGET = "martial_authority_focus"
 MARTIAL_LIFESTYLE = "martial_lifestyle"
 PERK_TARGETS = frozenset({
-    "cutting_corners_perk", "professional_workforce_perk", "centralization_perk",
-    "tax_man_perk",
-    "serve_the_crown_perk",
-    "thoughtful_perk",
+    # All 27 authored stewardship keys, still subject to the fresh native
+    # final-legal row and exact same-frame submit guards below.
+    "tax_man_perk", "defensive_measures_perk", "organized_muster_rolls_perk",
+    "cutting_corners_perk", "professional_workforce_perk",
+    "centralization_perk", "popular_figurehead_perk",
+    "divided_attention_perk", "architect_perk",
+    "golden_obligations_perk", "heregeld_perk", "detailed_ledgers_perk",
+    "war_profiteer_perk", "fearful_troops_perk", "it_is_my_domain_perk",
+    "golden_aplomb_perk", "at_any_cost_perk", "avaricious_perk",
+    "meritocracy_perk", "chains_of_loyalty_perk", "likable_perk",
+    "positions_of_power_perk", "large_levies_perk", "soon_forgiven_perk",
+    "toe_the_line_perk", "honored_to_serve_perk", "administrator_perk",
+    # Preserve the existing supported martial and diplomacy single targets.
+    "serve_the_crown_perk", "thoughtful_perk",
 })
+
+
+def _native_perk_target_token(value: object) -> bool:
+    return isinstance(value, str) and value in PERK_TARGETS
 
 
 def _target_in_final_legal_perks(
@@ -639,7 +653,7 @@ def _submit_player_lifestyle_selection_private_v1(
         and action.get("kind") == kind
         and isinstance(target, str)
         and (target in {FOCUS_TARGET, MARTIAL_TARGET}
-             if focus_action else target in PERK_TARGETS)
+             if focus_action else _native_perk_target_token(target))
         and (
             not focus_action
             or (

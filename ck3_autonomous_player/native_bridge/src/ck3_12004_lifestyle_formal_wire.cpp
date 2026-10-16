@@ -274,12 +274,7 @@ bool ReadStockPerkTargetPlayerState(
   output = {};
   auto *context = static_cast<PlayerLifestyleFormalWireContext12004V1 *>(opaque);
   if (context == nullptr || target_lifestyle == 0 ||
-      (target_key != kStockPerkLegalityTargetV1 &&
-       target_key != kStockPerkLegalityFollowupTargetV1 &&
-       target_key != kStockPerkLegalityNextTargetV1 &&
-       target_key != kStockPerkLegalityCollectTaxesTargetV1 &&
-       target_key != kDiplomacyThoughtfulPerkV1 &&
-       target_key != kMartialServeTheCrownPerkV1) ||
+      !PlayerLifestylePolicyStockPerkTargetAdmittedV1(target_key) ||
       !OnMain(*context) ||
       context->snapshot == nullptr ||
       context->snapshot->status !=
@@ -430,7 +425,9 @@ bool ReadCandidates(PlayerLifestyleFormalWireContext12004V1 &context) noexcept {
   StockPerkLegalityAccessV1 stock_access{
       &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
       &ReadStockPerkPlayerState};
-  const auto target = PlayerLifestylePolicyStockPerkTargetV1(*context.snapshot);
+  const bool submitting = context.mode == PlayerLifestyleFormalWireModeV1::submit_perk;
+  const auto target = submitting ? std::string_view(context.action_target_key)
+      : PlayerLifestylePolicyStockPerkTargetV1(*context.snapshot);
   if (target.empty()) {
     context.failure = "native_lifestyle_windowless_policy_perk_ownership_unavailable";
     return false;
@@ -438,8 +435,16 @@ bool ReadCandidates(PlayerLifestyleFormalWireContext12004V1 &context) noexcept {
   stock_access.read_target_player_state = &ReadStockPerkTargetPlayerState;
   stock_access.capture_source_query_metadata = &CaptureStockPerkSourceQueryMetadata;
   stock_access.capture_source_tls_array = &CaptureStockPerkSourceTlsArray;
-  context.stock_perk_result =
-      ReadStockPerkLegality12004V1(stock_environment, stock_access, target);
+  const bool stewardship_query = !submitting &&
+      context.snapshot->state.current_focus_presence ==
+          game::PlayerLifestyleFocusPresenceV1::present &&
+      PlayerLifestyleStableKeyViewV1(context.snapshot->state.current_lifestyle_key) ==
+          kStockPerkLegalityLifestyleV1;
+  context.stock_perk_result = ReadLifestylePolicyPerkFrontierV2(
+      submitting, context.action_target_key, stewardship_query, target,
+      [&](std::string_view candidate) noexcept {
+        return ReadStockPerkLegality12004V1(stock_environment, stock_access, candidate);
+      });
   if (!PublishStockPerkCandidates(context.stock_perk_result,
                                   *context.candidates)) {
     context.failure = "native_lifestyle_windowless_policy_perk_";

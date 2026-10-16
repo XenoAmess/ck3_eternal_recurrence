@@ -884,7 +884,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             row["command"] == PERK_SUBMIT_STEP for row in driver.history
         ))
 
-    def test_tax_man_requires_current_collect_taxes_and_consumes_receipt(self) -> None:
+    def test_tax_man_final_legality_selects_without_task_and_consumes_receipt(self) -> None:
         driver = _Driver()
         driver.state.tax_man_ready = True
         driver.frame["active_wars"] = [{"war_id": 16777250}]
@@ -896,7 +896,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             consume_lifestyle_private_query(
                 baseline, scope=missing, query=query,
             )["lifestyle_decision"]["status"],
-            "no_legal_minimum",
+            "recommend_action",
         )
         inactive = same_frame_feudal_lifestyle_scope(
             driver.frame, _scope_root(steward_task="task_develop_county"),
@@ -906,7 +906,7 @@ class LifestyleFormalPrivateConsumerTests(unittest.TestCase):
             consume_lifestyle_private_query(
                 baseline, scope=inactive, query=query,
             )["lifestyle_decision"]["status"],
-            "no_legal_minimum",
+            "recommend_action",
         )
         frozen = same_frame_feudal_lifestyle_scope(
             driver.frame, _scope_root(steward_task="task_collect_taxes",

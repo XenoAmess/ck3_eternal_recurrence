@@ -8,6 +8,7 @@
 namespace life = xar::ck3_12004::lifestyle;
 using namespace xar::ck3_11906;
 namespace game = xar::game;
+int RunStewardshipFrontierFixture();
 namespace {
 constexpr std::string_view kFrozenPreviousImageSha =
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
@@ -151,7 +152,8 @@ int main(int argc, char **argv) {
     Case(directory, "02-current-focus-progress", true, false, false);
     Case(directory, "03-native-sample-drift", false, true, false);
     Case(directory, "04-old-sha-rejected", false, false, true);
-    std::cout << "lifestyle actual4 first fixture: 4 cases; synthetic frame/source, actual reader/serializer\n";
+    Require(RunStewardshipFrontierFixture() == 12, "stewardship frontier fixture");
+    std::cout << "lifestyle actual4 first fixture: 4 opening and 12 frontier cases; synthetic frame/source, actual reader/serializer\n";
     return 0;
   } catch (const std::exception &error) {
     std::cerr << error.what() << '\n';
