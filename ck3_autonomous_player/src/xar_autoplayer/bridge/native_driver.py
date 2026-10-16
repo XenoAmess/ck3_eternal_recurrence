@@ -9048,7 +9048,10 @@ class NativeHeadlessGameplayDriver:
                         QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP,
                     } or (parse_query_route_contact_horizon_step(step) is not None
                           and result.get("schema") == "xar.route-contact-readonly-unavailable.v1"
-                          and result.get("status") == "unavailable")) else True), result=result,
+                          and result.get("status") == "unavailable")
+                        or (parse_query_battle_control_snapshot_v1_step(step) is not None
+                            and result.get("schema") == "xar.battle-control-readonly-unavailable.v1"
+                            and result.get("status") == "unavailable")) else True), result=result,
                 )
             finally:
                 finish_army_timing(army_record_timing)
@@ -15959,6 +15962,13 @@ class NativeHeadlessGameplayDriver:
                 )
                 break
             except _NativeCommandRejectedError as error:
+                from .battle_reader_watch_v1 import terminal_failure, observe_unavailable
+                if terminal_failure(error, step, native_revision):
+                    observed = self.take_internal_semantic_snapshot()
+                    unavailable = observe_unavailable(error, step, starting, observed)
+                    if unavailable is None:
+                        raise
+                    return unavailable
                 if not error.native_error.startswith(
                     _BATTLE_CONTROL_TRANSIENT_QUERY_ERROR
                 ):

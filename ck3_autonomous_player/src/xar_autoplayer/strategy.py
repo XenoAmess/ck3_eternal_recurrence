@@ -133,6 +133,7 @@ from .bridge.war_contract import (
     enemy_primary_default_raise_province_ids,
     enforce_demands_step,
     enemy_armies_from_wars,
+    halt_army_step,
     is_life_advance_step,
     merge_armies_step,
     observe_merge_armies_postcondition_v1,
@@ -5812,6 +5813,13 @@ def _battle_control_turn_state(
             "subject_army_ids": active_subjects,
         }
 
+    from .bridge.battle_reader_watch_v1 import select_watch
+    reader_watch = select_watch(
+        snapshot, scoped, command=_effective_command, result=_effective_command_result,
+    )
+    if reader_watch is not None:
+        return reader_watch
+
     for subject in active_subjects:
         identity_pending = _current_battle_identity_pending(
             snapshot,
@@ -9338,6 +9346,21 @@ def _choose_one_life_turn_core(
                 "subject_army_ids", []
             ),
         }
+    if battle_control_status == "reader_unavailable_hands_off":
+        from .bridge.battle_reader_watch_v1 import CLOCK_CAPABILITIES
+        clock_ready = (CLOCK_CAPABILITIES <= available_capabilities
+                       and {"life-advance-one-day", "set-speed-1", "resume-map", "pause-map"} <= available_steps)
+        return {
+            "policy": "one-life-turn-v1",
+            "phase": "native_war_battle_reader_unavailable_one_day_observation",
+            "selected_step": "life-advance-one-day" if clock_ready else None,
+            "reason": "the native battle read is incomplete; observe the ongoing battle for one exact native-stopped day without a prediction or retreat command",
+            "battle_reader_watch": battle_control_state,
+            "battle_subject_army_id": battle_control_state.get("subject_army_id"),
+            "battle_outcome_inferred": False,
+            "prediction_ready": False,
+            "retreat_authorized": False,
+        }
     if battle_control_status == "identity_pending":
         if "life-advance" in available_steps:
             return {
@@ -11568,6 +11591,19 @@ def _choose_one_life_turn_core(
             and isinstance(pursuit_army, dict)
             and isinstance(observed_route_target, int)
         ):
+            pending_halt = _pending_unsafe_route_halt(
+                rows, snapshot, army_id=army_id,
+            )
+            if pending_halt is not None:
+                return {
+                    "policy": "one-life-turn-v1",
+                    "phase": "native_war_unsafe_route_halt_pending",
+                    "selected_step": None,
+                    "required_observation": "fresh-native-army-route-clear-after-halt",
+                    "reason": "the native halt was submitted in this game day; wait for a fresh route and target readback before another command or time advance",
+                    "halt_submission": pending_halt,
+                    "active_wars": war_summary,
+                }
             observed_intent = _active_native_move_intent(
                 rows,
                 snapshot if isinstance(snapshot, dict) else {},
@@ -11919,6 +11955,14 @@ def _choose_one_life_turn_core(
                         ),
                     }
                     blocked_province_ids.add(observed_route_target)
+                    halt_plan = _unsafe_committed_route_halt_plan(
+                        snapshot, pursuit_army, passive_route_audit,
+                        army_id=army_id,
+                        available_steps=available_steps,
+                        war_summary=war_summary,
+                    )
+                    if halt_plan is not None:
+                        return halt_plan
             elif (
                 observed_intent is not None
                 and observed_route_target not in enemy_threat_province_ids
@@ -20366,6 +20410,103 @@ def _moving_route_contact_horizon_conjunction(
             }
         )
     return result
+
+
+
+
+def _pending_unsafe_route_halt(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+) -> dict[str, object] | None:
+    """Do not submit the same halt again while its same-day route is still visible."""
+    step = halt_army_step(army_id)
+    date_raw = _native_int(snapshot.get("date_raw"))
+    for row in reversed(_history_after_latest_restore(commands)):
+        command = _effective_command(row)
+        later_move = parse_move_army_step(command)
+        if later_move is not None and later_move[0] == army_id:
+            return None
+        if command != step:
+            continue
+        result = _effective_command_result(row)
+        action = result.get("war_action") if isinstance(result, dict) else None
+        if (
+            row.get("ok") is True
+            and isinstance(result, dict)
+            and result.get("accepted") is True
+            and result.get("step") == step
+            and isinstance(action, dict)
+            and action.get("status") == "halt_submitted"
+            and action.get("army_id") == army_id
+            and action.get("submitted_date_raw") == date_raw
+            and action.get("postcondition_verified") is False
+        ):
+            return {"step": step, "army_id": army_id,
+                    "submitted_date_raw": date_raw,
+                    "history_index": row.get("index"),
+                    "postcondition_verified": False}
+        return None
+    return None
+
+
+def _unsafe_committed_route_halt_plan(
+    snapshot: dict[str, object],
+    army: dict[str, object],
+    audit: dict[str, object],
+    *,
+    army_id: int,
+    available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Stop only a fully observed, unqualified committed contact route."""
+    step = halt_army_step(army_id)
+    player = snapshot.get("played_character")
+    horizon = audit.get("contact_horizon")
+    route = army.get("route_province_ids")
+    target = _native_int(audit.get("target_province_id"))
+    if not (
+        step in available_steps
+        and snapshot.get("paused") is True
+        and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and isinstance(player, dict)
+        and player.get("alive") is True
+        and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and _public_cunit_int(army.get("army_id")) == army_id
+        and army.get("in_combat") is False
+        and army.get("retreating") is False
+        and _army_tactical_state(army) == "moving"
+        and army.get("route_read_status") == "complete_nonempty"
+        and isinstance(route, list) and bool(route)
+        and target is not None
+        and army.get("move_target_province_id") == target
+        and audit.get("contact_policy")
+        == "blocked_without_qualified_combat_permission"
+        and isinstance(horizon, dict)
+        and horizon.get("status") == "available"
+        and horizon.get("one_day_contact_free") is False
+        and horizon.get("subject_army_id") == army_id
+        and horizon.get("target_province_id") == target
+        and horizon.get("date_raw") == snapshot.get("date_raw")
+        and horizon.get("snapshot_revision") == snapshot.get("native_revision")
+    ):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_unsafe_route_halt_submit",
+        "selected_step": step,
+        "reason": "the fresh full-hostile horizon shows committed contact without qualified combat permission; submit the native halt before any time advance",
+        "halt_intent": {"army_id": army_id,
+                        "current_province_id": army.get("current_province_id"),
+                        "unsafe_move_target_province_id": target,
+                        "postcondition_required": "fresh_route_empty_and_move_target_none"},
+        "route_audit": audit,
+        "active_wars": war_summary,
+    }
 
 
 def _current_frame_route_contact_query_failure(
