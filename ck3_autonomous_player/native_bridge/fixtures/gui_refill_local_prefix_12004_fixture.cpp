@@ -70,7 +70,7 @@ void LegacyDepthFailure(const xar::game::GuiRefillReceiverCandidates12004V1 &v){
   Need(v.status=="unavailable"&&v.entries.empty()&&!v.receiver_variable_index&&!v.declared_type_id&&!v.stable_double_read);
   Need(v.unavailable_reason=="candidate_parent_depth_exhausted"&&v.failure_diagnostic.has_value());
   const auto &d=*v.failure_diagnostic;
-  Need(d.stage=="parent_walk"&&d.kind=="parent_depth_exhausted"&&d.capture_pass==1&&d.ancestor_depth==8);
+  Need(d.stage=="parent_walk"&&d.kind=="parent_depth_exhausted"&&d.capture_pass==1&&d.ancestor_depth==8U);
   Need(!d.definition_present&&!d.raw_definition_entry_count);
 }
 void Quote(std::string &out,std::string_view value){
@@ -81,7 +81,7 @@ void StableLocal(){
   Need(v.failure_diagnostic->read_ordinal==51&&v.local_definition_entry_only.has_value());
   const auto &local=*v.local_definition_entry_only;
   Need(local.status=="available"&&local.stable_double_read&&local.definition_present==true&&local.local_entry_present==true);
-  Need(local.entries.size()==1&&local.entries[0].ancestor_depth==0&&local.entries[0].provider_slot2_rva==0x2000);
+  Need(local.entries.size()==1&&local.entries[0].ancestor_depth==0&&local.entries[0].provider_slot2_rva==std::uint64_t{0x2000});
   std::string json;xar::game::AppendGuiRefillReceiverCandidates12004(json,v,Quote);std::cout<<json<<'\n';
   // A complete, stable empty local lookup remains distinct from unreadable.
   Memory empty;empty.put<std::int32_t>(0x409C,0);auto e=Sample(empty);LegacyDepthFailure(e);
