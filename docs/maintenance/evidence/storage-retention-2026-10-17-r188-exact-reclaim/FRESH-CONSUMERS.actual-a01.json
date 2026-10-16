@@ -1,0 +1,17 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T18:08:17.747214+00:00",
+  "restart_manager": {
+    "start_rc": 0,
+    "registered_file_count": 1000,
+    "consumers": [],
+    "shutdown_or_restart_called": false,
+    "register_rc": 0,
+    "getlist_rc": 0,
+    "end_rc": 0
+  },
+  "old_root_producer_matches": [],
+  "relevant_process_unknown": [],
+  "blocked": false,
+  "no_shutdown_restart_game_SDK_screen_call": true
+}

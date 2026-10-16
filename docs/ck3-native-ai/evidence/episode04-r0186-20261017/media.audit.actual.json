@@ -1,0 +1,407 @@
+{
+  "schema": "xar.e04.raw-audit.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "observed_at_utc": "2026-10-16T17:17:36.762975+00:00",
+  "input_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+    "bytes": 1896,
+    "sha256": "4757ba0556848fbf50eb343ed9859524fc8b1dc3378ec3bd3d83ba709b0b2661"
+  },
+  "canonical_recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3325,
+    "sha256": "22498e7d328f80a93f003970fd7b666372566790844c747446b6475a79e15be1"
+  },
+  "canonical_recorder_state": "NORMAL_TREE_EMPTY",
+  "canonical_recorder_job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 568,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-16T16:54:31.021214+00:00"
+  },
+  "context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2430,
+    "sha256": "96ff78d4e4f140049e82d7a83a7672a04fb5567aa3d1c529b3e6d10bea9ab9fe"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 23147412,
+    "sha256": "7ca4edbcac4f46bd9dda6d796dadb20b619ad22cbdb5ec0333f18c1f23fda0bc"
+  },
+  "tools": {
+    "ffmpeg": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    },
+    "machine_probe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    }
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 16240,
+    "owned_ck3_create_time": 1792168189.8733492,
+    "hwnd": 33950264,
+    "foreground_hwnd": 33950264,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T16:53:49.625008+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "human_full_review": false,
+    "human_signoff": false
+  },
+  "limitations": [
+    "Machine checks and decoded media facts do not establish gameplay outcomes or human approval.",
+    "Desktop client-region capture remains subject to source-guard sampling; no independent HWND capture is implied.",
+    "Container duration is reported separately from decoded frame timestamps."
+  ],
+  "probe": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "warning",
+      "-count_frames",
+      "-show_format",
+      "-show_streams",
+      "-of",
+      "json",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv"
+    ],
+    "started_at_utc": "2026-10-16T17:17:36.763015+00:00",
+    "completed_at_utc": "2026-10-16T17:17:38.972378+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\probe.stdout",
+      "bytes": 2505,
+      "sha256": "b1e3d3a68f74cc44ee224dcf77763a0d17f8d4c6ab54a15599f624779f116823"
+    },
+    "stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\probe.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "media": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "Constrained Baseline",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "avc1.42c01f",
+        "width": 1280,
+        "height": 720,
+        "coded_width": 1280,
+        "coded_height": 720,
+        "has_b_frames": 0,
+        "pix_fmt": "yuv420p",
+        "level": 31,
+        "color_range": "tv",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/1000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "bits_per_raw_sample": "8",
+        "nb_read_frames": "1101",
+        "extradata_size": 38,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "ENCODER": "Lavc63.1.101 libx264",
+          "DURATION": "00:00:36.700000000"
+        }
+      }
+    ],
+    "format": {
+      "filename": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "matroska,webm",
+      "format_long_name": "Matroska / WebM",
+      "start_time": "0.000000",
+      "duration": "36.700000",
+      "size": "23147412",
+      "bit_rate": "5045757",
+      "probe_score": 100,
+      "tags": {
+        "ENCODER": "Lavf63.1.101"
+      }
+    }
+  },
+  "capture_dimensions_match": true,
+  "frame_probe": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "-v",
+      "warning",
+      "-show_frames",
+      "-show_entries",
+      "frame=media_type,stream_index,best_effort_timestamp_time,duration_time,pkt_duration_time",
+      "-of",
+      "json",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv"
+    ],
+    "started_at_utc": "2026-10-16T17:17:38.992971+00:00",
+    "completed_at_utc": "2026-10-16T17:17:40.656891+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frames.stdout",
+      "bytes": 206889,
+      "sha256": "d5e902df609653f98e37584e203ca55409cd03cd443b34d79f072bdfb258ca08"
+    },
+    "stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frames.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "decoded_frame_timelines": {
+    "0": {
+      "media_type": "video",
+      "frames": 1101,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 36.667,
+      "last_frame_end_seconds": 36.7,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "full_audio_video_decode": {
+    "argv": [
+      "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "-hide_banner",
+      "-v",
+      "warning",
+      "-xerror",
+      "-i",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "-map",
+      "0:v?",
+      "-map",
+      "0:a?",
+      "-f",
+      "null",
+      "-"
+    ],
+    "started_at_utc": "2026-10-16T17:17:40.678999+00:00",
+    "completed_at_utc": "2026-10-16T17:17:41.163883+00:00",
+    "returncode": 0,
+    "timed_out": false,
+    "output_budget_exceeded": false,
+    "stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\full-av-decode.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\full-av-decode.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "diagnostic_text": ""
+  },
+  "all_av_decode_exit_success": true,
+  "all_av_decode_diagnostics_empty": true,
+  "extracted_frames": [
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "0.000000",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png"
+      ],
+      "started_at_utc": "2026-10-16T17:17:41.167719+00:00",
+      "completed_at_utc": "2026-10-16T17:17:41.401903+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-00.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-00.stderr",
+        "bytes": 379,
+        "sha256": "2951b89d7bb11ff2cc93ff63fd00e925f895fe833bf4163f00102b58c74dc1c9"
+      },
+      "diagnostic_text": "[image2 @ 0000020c9abdd400] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 0000020c9abdd400] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 0.0,
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1020788,
+        "sha256": "2deee757edf77443e630b927d4161060c0c57d0ee62405b0adaab22c5e0c8385"
+      },
+      "visually_reviewed": false
+    },
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "18.333500",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png"
+      ],
+      "started_at_utc": "2026-10-16T17:17:41.416659+00:00",
+      "completed_at_utc": "2026-10-16T17:17:41.878053+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-01.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-01.stderr",
+        "bytes": 379,
+        "sha256": "298dc422da6b883200870e1a6adc4cd7900ffd54c4c373456deffa1416da3307"
+      },
+      "diagnostic_text": "[image2 @ 00000164d3adb000] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000164d3adb000] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 18.3335,
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1251951,
+        "sha256": "53729f7e0b7330690ab458ee9cd9969c2f159a389ea21a7433ec1a573162178e"
+      },
+      "visually_reviewed": false
+    },
+    {
+      "argv": [
+        "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "-hide_banner",
+        "-v",
+        "warning",
+        "-n",
+        "-i",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "-ss",
+        "36.667000",
+        "-map",
+        "0:0",
+        "-frames:v",
+        "1",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png"
+      ],
+      "started_at_utc": "2026-10-16T17:17:41.904257+00:00",
+      "completed_at_utc": "2026-10-16T17:17:42.544097+00:00",
+      "returncode": 0,
+      "timed_out": false,
+      "output_budget_exceeded": false,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-02.stdout",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\extract-02.stderr",
+        "bytes": 379,
+        "sha256": "274fbe4a9255250b77fd8e0ab186f29cee720529d7b1a7a6ae3abf492ed57057"
+      },
+      "diagnostic_text": "[image2 @ 000001e2b54cf6c0] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 000001e2b54cf6c0] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "requested_pts_seconds": 36.667,
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1161758,
+        "sha256": "66ac32ec1ba03066e22f6cd9d9ae15c8526c580529a7f91d84db22f80138c7cb"
+      },
+      "visually_reviewed": false
+    }
+  ],
+  "raw_after": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 23147412,
+    "sha256": "7ca4edbcac4f46bd9dda6d796dadb20b619ad22cbdb5ec0333f18c1f23fda0bc"
+  },
+  "premature_end_reported": false,
+  "audit_execution_completed": true
+}

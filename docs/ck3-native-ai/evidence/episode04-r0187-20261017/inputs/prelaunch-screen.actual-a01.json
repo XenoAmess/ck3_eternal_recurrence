@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "task_id": "e04-live-20261017-r0187",
+  "sequence": 5817,
+  "cli": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "bytes": 29120,
+    "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+  },
+  "task_bus": "D:\\workspace\\.codex-task-bus",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf"
+}

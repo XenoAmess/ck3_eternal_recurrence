@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "native_ready": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.ready.json",
+    "bytes": 41,
+    "sha256": "a3311e11a519f2ccbc822044e704f53738e76c8ec3e26122822774fd44cca881"
+  },
+  "original_Resume_request_id": "r188-film-a01-d12-resume-once",
+  "original_g12": {
+    "step": "research-query-tactical-daily-sentinel-v1",
+    "accepted": true,
+    "status": "available",
+    "tactical_daily_sentinel": {
+      "state": "armed",
+      "generation": 12,
+      "starting_date_raw": 53149056,
+      "target_date_raw": 53149080,
+      "last_observed_date_raw": 53149056,
+      "trigger_date_raw": 0,
+      "speed": 3,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 0,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 0,
+      "trigger_reasons": [],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": -1,
+      "pause_wrapper_called": false,
+      "pause_observed": false,
+      "terminal_observed": false,
+      "abnormal": false
+    },
+    "backend_id": "native-headless"
+  },
+  "no_recorder_Start_or_additional_Arm": true
+}

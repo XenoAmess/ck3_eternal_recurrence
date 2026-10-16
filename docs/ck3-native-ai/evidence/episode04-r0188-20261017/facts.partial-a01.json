@@ -1,0 +1,117 @@
+{
+  "schema": "xar.e04.r188-film-partial-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T18:17:38.113782+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01",
+  "stage": "terminated_first_raw_before_later_business_or_session_close",
+  "runtime": {
+    "pid": 12060,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-0a8ceff1be59",
+    "process_creation_filetime_100ns": 134366470385086412
+  },
+  "build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "loading": {
+    "a01_sdk_is_error": true,
+    "a02_sdk_is_error": false,
+    "a02_map_ready": false,
+    "a02_played_character": null,
+    "a02_episode_run_id": null,
+    "both_not_identity_qualified": true,
+    "a03_actual_identity_qualified": true
+  },
+  "film": {
+    "completed_exact_days": 11,
+    "start_date_raw": 53148792,
+    "end_date_raw": 53149056,
+    "date_labels_from_root_context": "1067-03-20 to 1067-03-31",
+    "all_11_days_have_triggered_sentinel_zero_overshoot": true,
+    "recorder_ready_to_resume_ack_seconds": 3.6012072,
+    "arm_generation12_issued": true,
+    "arm_generation12_start_raw": 53149056,
+    "arm_generation12_target_raw": 53149080,
+    "film_day12_resume_submitted": false,
+    "film_day12_completed": false,
+    "observer_started": false,
+    "hook_error": "prepare-only subprocess TimeoutExpired at 2.9999924001749605 seconds",
+    "hook_outer_elapsed_seconds": 4.0903673,
+    "hook_max_seconds_intent": 15,
+    "inner_three_second_timeout_not_outer_fifteen_second_expiry": true
+  },
+  "media": {
+    "raw": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\raw.mkv",
+      "bytes": 17888946,
+      "sha256": "bfea8ea5ab9cbd8daf16e5f86a86d45d261fa41e053eab3d83638acae7fb6cb7"
+    },
+    "recorder_state": "NORMAL_TREE_EMPTY",
+    "utc_wall_seconds": 34.031147,
+    "monotonic_wall_seconds": 34.0311703,
+    "container_duration_seconds": 30.466,
+    "decoded_video_frames": 914,
+    "decoded_video_end_seconds": 30.466,
+    "video_width": 1280,
+    "video_height": 720,
+    "audio_streams": 0,
+    "full_av_decode_exit0": true,
+    "full_av_decode_stderr_empty": true,
+    "premature_end_reported": false,
+    "capture_guard_error": null,
+    "minimum_required_wall_seconds": 100,
+    "duration_requirement_met": false,
+    "capture_kind": "gdigrab-desktop-client-region",
+    "direct_hwnd_capture": false,
+    "full_desktop_capture": false,
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "three_extracted_frames_visually_reviewed_in_historical_audit": false,
+    "later_Root_limited_three_original_frame_review": true,
+    "Root_frame_dates": [
+      "Mar20",
+      "Mar25",
+      "Mar30"
+    ],
+    "Root_frame_army18_visible_numbers": [
+      1173,
+      1162,
+      1162
+    ],
+    "Root_frame02_native_war_notification_covers_map": true,
+    "Root_frame02_must_not_be_relabelled_Mar31": true,
+    "Root_limited_review_is_not_full1x_clean_or_signoff": true,
+    "native_end_date_not_automatically_visible_in_raw": true
+  },
+  "qualification": {
+    "new_clean_spans": 0,
+    "new_business_positives": 0,
+    "new_human_signoffs": 0,
+    "dynamic_video_cells": "0/11",
+    "research_baseline_unchanged": "6/14",
+    "business_baseline_unchanged": "4/11"
+  },
+  "pending_separate_records": [
+    "later same-PID cross-month business, if actually completed",
+    "whole CK3 session normal close and screen release",
+    "whole-clip full1x/human signoff if later actually performed"
+  ],
+  "boundary": "The first raw ended before later business. Later same-PID work cannot extend raw duration or retroactively supply visible footage or clean qualification.",
+  "not_claimed": [
+    "13-day plan completion",
+    "observer installation or success",
+    "maintenance payment attribution",
+    "refill/loss causality",
+    "whole-session normal exit",
+    "full portable dependency closure"
+  ]
+}

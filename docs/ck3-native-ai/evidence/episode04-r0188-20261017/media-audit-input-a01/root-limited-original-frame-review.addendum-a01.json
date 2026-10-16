@@ -1,0 +1,136 @@
+{
+  "schema": "xar.e04.r188.root-limited-original-frame-review-addendum.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "observed_at_utc": "2026-10-16T18:16:41.663058+00:00",
+  "observation_time_scope": "This worker records Root direct-review report at this time; no exact earlier view timestamp was supplied or invented.",
+  "reviewer": "Root /root",
+  "review_report_source": "Root collaboration message received after actual raw audit",
+  "source_portable_facts": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\portable-facts.actual-a01.json",
+    "bytes": 20110,
+    "sha256": "9dbdf2ea0e653e0c93ab1d7b082887b0dba941a7e417143780fa4b125fe02208"
+  },
+  "source_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\audit.actual.json",
+    "bytes": 16305,
+    "sha256": "a70ec401c51383e1eb31d7b81fecb80d2cf9c6eabdd9c6cb8bf8f0690ec1e0d0"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 17888946,
+    "sha256": "bfea8ea5ab9cbd8daf16e5f86a86d45d261fa41e053eab3d83638acae7fb6cb7"
+  },
+  "limited_frame_reviews": [
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1027251,
+        "sha256": "35d3f14f7c5e634b18c817b02e55e7534e843de42c43665e409332fe2f53f4ad"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "extraction_requested_pts_seconds": 0.0,
+      "reviewer": "Root /root",
+      "review_kind": "limited direct viewing of exact original PNG",
+      "review_evidence_source": "Root collaboration message reporting direct view of these three originals",
+      "foreign_desktop_or_other_app_pixels_reported": false,
+      "client_crop_reported_true": true,
+      "army_panel_bound_by_Root_to_army_id": 18,
+      "observations": {
+        "displayed_calendar_date": "Mar20",
+        "paused": true,
+        "army_panel_visible_number": 1173,
+        "army_panel_percent_display": "1%",
+        "army_panel_resource_display": "300/300",
+        "central_native_map_overlay_reported": false
+      }
+    },
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1249110,
+        "sha256": "70ac440e85fa26c4a8a8a1d531cec60f3a728db472e9dd3df981ecb9a6e197f4"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "extraction_requested_pts_seconds": 15.2165,
+      "reviewer": "Root /root",
+      "review_kind": "limited direct viewing of exact original PNG",
+      "review_evidence_source": "Root collaboration message reporting direct view of these three originals",
+      "foreign_desktop_or_other_app_pixels_reported": false,
+      "client_crop_reported_true": true,
+      "army_panel_bound_by_Root_to_army_id": 18,
+      "observations": {
+        "displayed_calendar_date": "Mar25",
+        "paused": false,
+        "army_panel_visible_number": 1162,
+        "army_panel_percent_display": "1%",
+        "army_panel_resource_display": "300/300",
+        "central_native_map_overlay_reported": false
+      }
+    },
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1215611,
+        "sha256": "dce252b9b825873b515a861d50d5dc89a85efd9b42059cc495eb2f70bd3829e2"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "extraction_requested_pts_seconds": 30.433,
+      "reviewer": "Root /root",
+      "review_kind": "limited direct viewing of exact original PNG",
+      "review_evidence_source": "Root collaboration message reporting direct view of these three originals",
+      "foreign_desktop_or_other_app_pixels_reported": false,
+      "client_crop_reported_true": true,
+      "army_panel_bound_by_Root_to_army_id": 18,
+      "observations": {
+        "displayed_calendar_date": "Mar30",
+        "paused": true,
+        "army_panel_visible_number": 1162,
+        "central_native_map_overlay_reported": true,
+        "central_native_notification_title": "已宣战",
+        "right_native_toast_description": "新领土被围攻",
+        "map_partially_covered_by_native_UI": true
+      }
+    }
+  ],
+  "date_alignment": {
+    "frame02_displayed_date_from_Root": "Mar30",
+    "native_last_completed_date_raw": 53149056,
+    "native_last_completed_calendar_date_from_Root": "Mar31",
+    "native_day11_status_source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d11-status.json",
+      "bytes": 4654,
+      "sha256": "3d1d520da043725abe9b7c80e7992f8eabee00c0faf1fc77aa6c2c1ebb331c54"
+    },
+    "frame02_must_not_be_relabelled_Mar31": true
+  },
+  "scope": "Only three exact original PNGs; client crop observations and native UI overlays in those samples.",
+  "claims": {
+    "three_original_frames_directly_reviewed_by_Root": true,
+    "whole_clip_clean_claim": false,
+    "clean_span_certified": false,
+    "full_1x_review_performed": false,
+    "human_signoff": false,
+    "business_positive": false,
+    "minimum_100_seconds_pass": false
+  },
+  "historical_records_modified": false,
+  "limitations": [
+    "Existing audit and portable-facts visual-review flags remain historical worker observations; this append-only addendum records a later Root report.",
+    "Frame02 has a native war-declaration notification covering the map; no all-clip clean qualification is inferred.",
+    "Direct review of three frames does not establish every intervening frame, full1x viewing, signoff or business results.",
+    "Army panel figures are Root-reported visible UI text; this addendum does not infer native military numeric semantics.",
+    "Eleven native completed days reaching Mar31 do not change the visible Mar30 label in frame02.",
+    "Later same-PID live recovery remains separate from the frozen raw and this limited frame review."
+  ]
+}

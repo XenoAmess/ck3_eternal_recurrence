@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.r188-war-overview-flag-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:44:11.766434+00:00",
+  "historical_configure_source_head": "dfc5c24f7e61b0c7d8451e8319d34332e0684b2a",
+  "historical_runtime_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "actual_a29": {
+    "BOOL_feature_count": 158,
+    "ON_count": 22,
+    "flag": "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1",
+    "value": "OFF",
+    "cache_pin": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r186-a29/CMakeCache.txt",
+      "bytes": 41858,
+      "sha256": "0cc58ad405b76c856bded24bd93acc66a06e8a03f4eef434fedc36d324932c6c"
+    },
+    "actual_configure_pin": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r186-a29/ROOT-configure.actual.json",
+      "bytes": 16220,
+      "sha256": "8fbcd055af6ae52259240d2fc5bb30209bd29393d15bbcf2aa26180e597d9b97"
+    },
+    "actual_configure_argument_pair": [
+      "--cmake-define",
+      "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=OFF"
+    ],
+    "actual_incremental_producer_pin": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r186-a29/native-msvc-result.json",
+      "bytes": 1932,
+      "sha256": "e625ef7b3ad5e9fa27c13a0d28354c3c89be1e69ec7190c005b255dda6cd7fca"
+    },
+    "actual_incremental_configured": false,
+    "producer_guard_source_pin": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r186-native-prep-a01/root_build_a29_candidate.py",
+      "bytes": 16060,
+      "sha256": "2ad26455828bf9e912cb47bed8e8961c1236f5fe9c9f237f756dc4d4b22c4b4d"
+    },
+    "producer_rule": "inherit all actual a28 feature flags and require exact22 ON; new a29 incremental build retained the configured cache"
+  },
+  "a30_candidate": {
+    "built": false,
+    "deployed": false,
+    "source_head_bound": null,
+    "build_root_bound": null,
+    "flag_delta": {
+      "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": {
+        "before": "OFF",
+        "after": "ON"
+      }
+    },
+    "BOOL_feature_count": 158,
+    "expected_ON_count": 23,
+    "other_flags_unchanged": 157,
+    "next_producer_guard": "validate this exact new ON-set/count23; do not mutate historical a29 recipes/cache or global CMake default"
+  },
+  "mechanism": "CMake option defaultOFF; whenON common runtime PUBLIC define=1 propagates to bridge; same macro gates advertisement, accepted steps and owning-thread mailbox execution. SDK tool registration alone is not native capability.",
+  "worker_native_close_performed": false,
+  "native_closed_verified": false,
+  "source_packet_delivery": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r188-war-notice-native-flag-a30-candidate-a01/ROOT-DELIVERY.actual-a01.json",
+    "bytes": 4496,
+    "sha256": "b24fab3ce7d0a8e91bf52fbe6be96c93c7e2c30efeafce6fa3696ca249d35a48"
+  }
+}

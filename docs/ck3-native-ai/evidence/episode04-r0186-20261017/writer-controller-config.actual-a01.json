@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.writer-before-resume.config.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "film_input_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\film-input.actual-a01.json",
+  "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+  "request_prefix": "r186-film-a01",
+  "output_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\writer-observation-a01",
+  "static_bundle": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\writer-static-a01\\STATIC.actual.json",
+    "bytes": 2357,
+    "sha256": "ae39124825b7cd19263367fff03396282f253d8094b28997f845f20eaa3c2931"
+  },
+  "index": 27,
+  "timeout_ms": 30000,
+  "max_slot_hits": 128
+}

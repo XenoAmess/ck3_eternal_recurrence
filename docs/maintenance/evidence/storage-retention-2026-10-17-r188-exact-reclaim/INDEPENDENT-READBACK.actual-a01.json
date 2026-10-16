@@ -1,0 +1,23 @@
+{
+  "schema": "xar.r188-exact1000-independent-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:11:59.397907+00:00",
+  "policy_version": "1.0.0",
+  "actual_result_sha256": "0a93a54f9a6f836e9a24a204525a86f29f6271168fae7289493b68115bc9abd5",
+  "ledger_sha256": "79ae3799bb6c6c410726c307fceb4f87738af704dbabc36c84f762e4a4a60ce8",
+  "deleted_paths_still_absent": 1000,
+  "unique_deleted_file_ids": 1000,
+  "actual_C_deleted_allocation_bytes": 1642663936,
+  "actual_D_credit_bytes": 0,
+  "source_keeper_1129_unchanged_during_execution_from_actual_receipt": true,
+  "current_index_keeper_identity_and_small_SHA_unchanged": true,
+  "large_payload_full_hash_or_copy_bytes": 0,
+  "fresh_free_bytes": {
+    "C:/": 30140391424,
+    "D:/": 52512862208
+  },
+  "volume_free_delta_not_exclusive_cleanup_credit": true,
+  "new_deletions": 0,
+  "game_SDK_screen_TaskBus_main_repo_actions": 0,
+  "automatic_gc": false
+}

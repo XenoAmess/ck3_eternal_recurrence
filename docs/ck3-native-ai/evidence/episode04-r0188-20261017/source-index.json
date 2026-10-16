@@ -1,0 +1,734 @@
+{
+  "schema": "xar.e04.r188-portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T18:17:38.113782+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "stage": "terminated_first_raw_before_later_business_or_session_close",
+  "originals": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/allocated-context.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\allocated-context.actual-a01.json",
+        "bytes": 4555,
+        "sha256": "fe28e84371fe6567acd81eb8651d760a44b5910c030a78500d5da7d7af1e663d"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/bootstrap-input.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\bootstrap-input.actual-a01.json",
+        "bytes": 6408,
+        "sha256": "4717ae46aba73842300250df94c5e22fc498ade41e8c940388b6a95636d396a8"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/film-input.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+        "bytes": 7371,
+        "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/runtime-actor-identity.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+        "bytes": 7915,
+        "sha256": "3eaf1f661ec0fefbd0fb18db9a9955ce498cb526cc76dbd346dc2fdce179ccd0"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-observe.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-identity-ready-a03-observe.actual.json",
+        "bytes": 3801,
+        "sha256": "8aa9161db7f4ba6c43094a7ff570f5cff4c3e07ea9c2d8e1718e8771738355ff"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-guard.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-identity-ready-a03-guard.actual.json",
+        "bytes": 1740,
+        "sha256": "c009a19e051bd232e71405b4bf35d2a79a1a0461fbcdfa4ab779c34322df6fef"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-header-first2048.actual.bin",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-identity-ready-a03-header-first2048.actual.bin",
+        "bytes": 2048,
+        "sha256": "0148a232bf3dcef2cc6daff460ed4443e7596105c756fd93d40ce94cd58c2d7a"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-preflight.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-preflight.actual.json",
+        "bytes": 2087,
+        "sha256": "1443d67a7a66c3e62e0afbc08019bbbd8659abb27344c5a8e3f321ad02371987"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-frame-review.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-frame-review.actual.json",
+        "bytes": 1601,
+        "sha256": "c8bad3ffdc1e5012b1c66f55569bb24f8a9f237de126f0d105ab85d12235f043"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-single-start.claim.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-single-start.claim.json",
+        "bytes": 1216,
+        "sha256": "52d5413d55f5015bf774f242325d04a2b0ab7972673afe542b71f124f7bed35d"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-film-result.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-film-result.actual.json",
+        "bytes": 2098,
+        "sha256": "43e1655d2a7bcab02375d137aa5a0df67cb862dda66cf1b355ff08a6d54fa55c"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-d12-pre-resume-hook.claim.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d12-pre-resume-hook.claim.json",
+        "bytes": 2047,
+        "sha256": "c60722b139dd21bdbabc4760cdb03efa2cd056e12a3d8140d0ee5bf2616b379a"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-d12-pre-resume-hook.error.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d12-pre-resume-hook.error.json",
+        "bytes": 2238,
+        "sha256": "7765df230a759eda654d83f1df0bc9987a5ff74df59fb6c6a66bd41b81824a59"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/ROOT-FILM-OBSERVER-FINALIZE.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-FILM-OBSERVER-FINALIZE.actual-a01.json",
+        "bytes": 2704,
+        "sha256": "5c10bd2de098016244e8bed0c08a7586f5bb14a823ca2471e88d05defde91cfb"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d01-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d01-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "12e02ea8e0059af53a66ae2c099ab29f9796e2d4391b07de2b0f41352f8d9017"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d01-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d01-status.json",
+        "bytes": 4650,
+        "sha256": "df319723d091f685481380a5d2da2bea85e2f2e0d124b1c71548b6921af2a10c"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d02-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d02-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "e8b2a991e43fa37f10f4aedb415b9575a2ddff7da5eb476d6ca232990756d0dc"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d02-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d02-status.json",
+        "bytes": 4650,
+        "sha256": "7fea5ebfa6a61e09fbb66a61acf0582da8bb1b7326336e80d72cd9627b302e97"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d03-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d03-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "4de0fcefe37161bffec02e576643fd0990c44fd36e0eeb53f60c33f1aac9a133"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d03-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d03-status.json",
+        "bytes": 4650,
+        "sha256": "a8f5f1a91565d156f768de09ca1255929167a04d8d541bee26e3f1e9c7b0b113"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d04-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d04-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "5ec22b391b1a6ff1d18c16298c13e0198f358b51cad22ee1dc14709909336639"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d04-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d04-status.json",
+        "bytes": 4650,
+        "sha256": "29d4f9f2c59e1175d66ff2311733642441fd34e524600db6c5fd46f532cf0ff0"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d05-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d05-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "e5947764f2099450cb05e06dc6b4c433949eadc916db6219bf4f93b8b2575aa4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d05-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d05-status.json",
+        "bytes": 4650,
+        "sha256": "d2ae82d26e2c8900506ece8051826adfcddffb699a6c68d8a3d704454e25f356"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d06-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d06-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "db322dcde69b2eb9dacaea28b80b4bd97ddc37ee73deaf32ad8c813e5f6376ed"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d06-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d06-status.json",
+        "bytes": 4650,
+        "sha256": "2af95710fe0337bb32cdd91de9457acc1c875992c6de530a54354ae042804f3b"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d07-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d07-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "355a587b70c9169ff9eb73e79c59cfc11a6570de0d735e67eddc3d8a4482c079"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d07-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d07-status.json",
+        "bytes": 4650,
+        "sha256": "65413c657e12756f87fc9402f70cccf2274239922a1dccb77d1cc589ecac14f5"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d08-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d08-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "ec81dd9d5667422be253415cdc033fb68a99ad506402c86273fd61bce7c34041"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d08-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d08-status.json",
+        "bytes": 4650,
+        "sha256": "bbe45961a4a0c3b51bc0a880de1a5dbd4a8d50fd68f57c6b8086a7ed35c6ffd4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d09-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d09-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "bf57fe1668ed1fff9a1b5a7e56816acbd6f02a1e1eaae79e63ce2a059a964123"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d09-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d09-status.json",
+        "bytes": 4650,
+        "sha256": "4df25c7847982c7f64f8f600d1a28e9fd6384ded31086d24115932e09e675f41"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d10-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d10-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "f407105c8daf88931a8381c57ca0c7023c43e6931594d387e86f5b465a883f44"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d10-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d10-status.json",
+        "bytes": 4654,
+        "sha256": "a2e1ed72d937c0c381c9e8de485f7d74c9d64043c32c8266ec1065d67c4cf015"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d11-complete.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-d11-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "45041b326f0848b1a814bea8670c28e1e7f34c7e55d7130d01ce1890aba43559"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d11-status.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d11-status.json",
+        "bytes": 4654,
+        "sha256": "3d1d520da043725abe9b7c80e7992f8eabee00c0faf1fc77aa6c2c1ebb331c54"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-02-snapshot.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-02-snapshot.json",
+        "bytes": 1341,
+        "sha256": "77402925e6f2432f24c376f95dd5c935d859896b8762f91ef2b1538b9e557c9d"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a02-02-snapshot.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a02-02-snapshot.json",
+        "bytes": 87099,
+        "sha256": "cc55e8c97db8ef2a2d0420583d536388bc516384ecd8bf413afa4bad5d545453"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-01-diag.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-01-diag.json",
+        "bytes": 56196,
+        "sha256": "e4e3e9e24412189de5dc8a34375cfd5312e2ab4d6bba9b3b8577599a8f35a2d4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-02-snapshot.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-02-snapshot.json",
+        "bytes": 135607,
+        "sha256": "cde9ef02e2b496b3611e058fc915a93cf597ec9ab9124f74bf349eb0ca4a8bb2"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-03-campaign-root-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-03-campaign-root-once.json",
+        "bytes": 147366,
+        "sha256": "9b034ca0964a5f0cc01353b0210169d8986539176654d5d06af14dbd2236a6f4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-06-natural-enable-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-sampling-a01-06-natural-enable-once.json",
+        "bytes": 4819,
+        "sha256": "42c3e0913b1390e4d65be6abc37dccaa823f16664f8bbf8a060decc29b9b10a4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-08-cash-enable-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-sampling-a01-08-cash-enable-once.json",
+        "bytes": 26919,
+        "sha256": "5664e49b0f62beecd91af0f26239efdf3bdb63b4364c436523b5553dcb557713"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-10-natural-query.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-sampling-a01-10-natural-query.json",
+        "bytes": 4782,
+        "sha256": "2a5d0a2d69f7eef8a91ab5de2a65e545c4d9f24a04d78df495be6c04d0a33ac7"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-12-cash-query.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-sampling-a01-12-cash-query.json",
+        "bytes": 26836,
+        "sha256": "33e87f5e815523c791be7fefcfc79fb058abc5cca8dc4e33ed32a0b0864e197e"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-03-recorder-start-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-03-recorder-start-once.json",
+        "bytes": 6257,
+        "sha256": "9e077cb1af4afc467e437274d3315bf030f82a4a91905c17af06fd0a87aa9024"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-99-recorder-finish-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-99-recorder-finish-once.json",
+        "bytes": 4324,
+        "sha256": "9b61aaabc70897a3cabd360224096e0bf144fdc62bb882c7f98a8b414d1d832f"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d12-arm-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d12-arm-once.json",
+        "bytes": 4723,
+        "sha256": "c0c36ff1e055014cc37bf49f94c46ac3d314eb36a1aa3255a4633a25de92478f"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/ADMISSION.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\sampling-admission-a01\\ADMISSION.actual.json",
+        "bytes": 6848,
+        "sha256": "621c4c9f0058f93949a5b97bc9852c9e34ec244e6aafcc62975bd463a6076fdf"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/NATURAL-ENABLE-ACK.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\sampling-admission-a01\\NATURAL-ENABLE-ACK.actual.json",
+        "bytes": 816,
+        "sha256": "f313334eea1907f319cf49d7bb717c4f81f110414c867d93311153a245572d1f"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/PAYMENT-ENABLE-ACK.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\sampling-admission-a01\\PAYMENT-ENABLE-ACK.actual.json",
+        "bytes": 5818,
+        "sha256": "b72b3d90731bab40fc6c97b8d13a52aecf31c612a91707f3d956f3a4282ea003"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/FRESH-WINDOW.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01\\FRESH-WINDOW.actual.json",
+        "bytes": 3064,
+        "sha256": "9b3b44d5201d214a56d43f62bc2626f9670f1a0d3120918354dfac6cf04c36fc"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/HOOK.once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01\\HOOK.once.json",
+        "bytes": 824,
+        "sha256": "ae64d1f5f25d3a3fd87a137ae5821aa6b373cf8812072394cb7adc00f49d1f83"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/PLAN-CHECK.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01\\PLAN-CHECK.actual.json",
+        "bytes": 925,
+        "sha256": "600d59c37c3753d4d5517bc0e444ce6980ae31b4c494e10d03f72621b496f2bb"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/PRIMARY-ERROR.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01\\PRIMARY-ERROR.actual.json",
+        "bytes": 2037,
+        "sha256": "a1a2cc0760d989763ec892caaa1cbb9d3cbdfd918d532e018c66f19d2363d671"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\result.json",
+        "bytes": 3522,
+        "sha256": "dd87695d82301a7a0095e8076c380776a8ccee000b260f13bcffd73f59c96b88"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/process-ready.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\process-ready.json",
+        "bytes": 3785,
+        "sha256": "f287cda4887029526c72ba23509a60d778810df68f4fb3736f34ea567e007210"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/job-start.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\job-start.json",
+        "bytes": 1036,
+        "sha256": "6689ccf030ac67015e601694100dda6673bf01644b1ca94f9d2df917408f0eb5"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/job-terminal.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\job-terminal.json",
+        "bytes": 205,
+        "sha256": "e885321128a43fa8cc6c0af1bb93aacc2829bac17ff5a70a7aeaf9a46cff28c0"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/deadline-admission-at-spawn.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\deadline-admission-at-spawn.json",
+        "bytes": 2108,
+        "sha256": "8be66434c8124cfeeaeeedeea9dfab3fc6bc7e628ebad7d4eeed502172d8400a"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/input.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+        "bytes": 1896,
+        "sha256": "6d8b63bf99dd06c593d342305a6c1fc22acf4087d2f4d03d9d291cbb467bbaa8"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/context.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+        "bytes": 2806,
+        "sha256": "ec3cea56dae5b56b9f0da605c9167c80eb5ad01e698403957c195850eddedb29"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/freeze.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\freeze.actual-a01.json",
+        "bytes": 1881,
+        "sha256": "4bf5d993e8ce66558047310be7adff56fa5ee195a0e5f0c038c864e4506166ff"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/portable-facts.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\portable-facts.actual-a01.json",
+        "bytes": 20110,
+        "sha256": "9dbdf2ea0e653e0c93ab1d7b082887b0dba941a7e417143780fa4b125fe02208"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/root-limited-original-frame-review.addendum-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\root-limited-original-frame-review.addendum-a01.json",
+        "bytes": 6419,
+        "sha256": "c433d00fc9256bc2cb5378fd63b1a1cf02a76bd0bf1fe8a59efe6897218cec31"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-a01/audit.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\audit.actual.json",
+        "bytes": 16305,
+        "sha256": "a70ec401c51383e1eb31d7b81fecb80d2cf9c6eabdd9c6cb8bf8f0690ec1e0d0"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-a01/full-av-decode.command.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01\\full-av-decode.command.json",
+        "bytes": 641,
+        "sha256": "ea4a368a655f3f3ad02dd961d6e8420b9ae253cc3f5d72599cfb78b219fdea04"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/R188-CAPACITY.actual-root-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+        "bytes": 11276,
+        "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/R188-REUSED-A29-QUALIFIED.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\R188-REUSED-A29-QUALIFIED.actual-a01.json",
+        "bytes": 5010,
+        "sha256": "ee58a5199bcc97d0d28d88c4551ebfef5c9de4923cd8a9352e280b2d93fe5364"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/ALLOCATION.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\ALLOCATION.actual-a01.json",
+        "bytes": 371,
+        "sha256": "6d23786a50710f162fc1fb5ee56434d8387a1fec696ec5876dd77cfc7d6cfdeb"
+      },
+      "copy_method": "exact_bytes"
+    }
+  ],
+  "exact_original_bytes": 717503,
+  "source_provenance": [
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "bytes": 38107,
+        "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d"
+      },
+      "worktree_crc32": "ad621924",
+      "git_blob": "1b9e3337dbd739ea4566023ba1263c5fd3e6f03b",
+      "git_blob_bytes": 38107,
+      "git_blob_sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d",
+      "copied": false
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_recorder.py",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_recorder.py",
+        "bytes": 22701,
+        "sha256": "a1384fea906d2c810ace78420087aea99b6a4ea29ddc0c8c61a163afd59699d3"
+      },
+      "worktree_crc32": "490183f2",
+      "git_blob": "45cdadbf4fcabec780b95acb822879fea92d37d9",
+      "git_blob_bytes": 22701,
+      "git_blob_sha256": "a1384fea906d2c810ace78420087aea99b6a4ea29ddc0c8c61a163afd59699d3",
+      "copied": false
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/prepare_writer_admission.py",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\prepare_writer_admission.py",
+        "bytes": 13811,
+        "sha256": "3f3478da1562da09299ae10edf93674acba95a3540aa6c10257ee8842d410e00"
+      },
+      "worktree_crc32": "71a8d506",
+      "git_blob": "257236d9ef2562817fb06643da2ec5df7e2d68bf",
+      "git_blob_bytes": 13811,
+      "git_blob_sha256": "3f3478da1562da09299ae10edf93674acba95a3540aa6c10257ee8842d410e00",
+      "copied": false
+    },
+    {
+      "external_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r187-writer-controller-a01\\writer_controller.py",
+        "bytes": 34296,
+        "sha256": "d59aa5de760c1b8d802957b2893b72de3587b84d93b8ce1b2aa672ee4be5baa5"
+      },
+      "source_head_context": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "crc32": "ac5337fb",
+      "copied": false
+    },
+    {
+      "external_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-film-wrapper-a02\\root_film_and_finalize.py",
+        "bytes": 5087,
+        "sha256": "2f49c2b9851315dbe4ee874c4bb744d2fada9f5582ea0ad86902b8596c9c1b1f"
+      },
+      "source_head_context": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "crc32": "80aec4c0",
+      "copied": false
+    }
+  ],
+  "large_raw_not_rehashed_or_copied_by_packager": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 17888946,
+    "sha256": "bfea8ea5ab9cbd8daf16e5f86a86d45d261fa41e053eab3d83638acae7fb6cb7"
+  },
+  "generated": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-20261017/facts.partial-a01.json",
+      "bytes": 4284,
+      "sha256": "a78359179f78ff3b6a90a98a8d55687af04a058e4ac4fc49efc3ee240287c908"
+    }
+  ],
+  "external_only": [
+    "raw and PNG bodies",
+    "saves/native binaries/full Defender/sdk-ready",
+    "identity chain save readbacks not selected here",
+    "d12 before/cash full responses",
+    "large frame probe timeline output",
+    "helpers and prepared assets",
+    "later cross-month/normal-close evidence not yet part of this snapshot"
+  ],
+  "portable_closure": "selected exact small originals only; source and omitted dependencies remain exact external pins in original receipts",
+  "retention": {
+    "category": "record",
+    "policy_version": "1.0.0",
+    "review_after_hours": 4320,
+    "reason": "Small representative film-stage originals and qualified limitations; external large originals remain subject to current-use retention."
+  },
+  "integration": "External candidate; not applied to master at assembly."
+}

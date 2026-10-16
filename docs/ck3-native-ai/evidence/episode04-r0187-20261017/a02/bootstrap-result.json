@@ -1,0 +1,32 @@
+{
+  "at": "2026-10-16T17:48:38.855657+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "session": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at": "2026-10-16T17:48:38.850725+00:00"
+  },
+  "sdk_error": null,
+  "sdk_thread_exited": true,
+  "supervisor_error": "RuntimeError('screen task heartbeat is stale or from the future')",
+  "screen_lease": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "e04-live-20261017-r0187",
+    "last_sequence": 5817,
+    "failure": "RuntimeError('screen task heartbeat is stale or from the future')",
+    "thread_exited": true,
+    "journal": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187\\screen-lease-journal.jsonl"
+  },
+  "recorder": {
+    "state": "NOT_STARTED",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "capture_source": null,
+    "capture_guard_error": null,
+    "capture_guard_thread_alive": false,
+    "directory": null,
+    "cleanup_error": null,
+    "clean_spans_certified": false,
+    "human_approval": false
+  },
+  "recording_started_automatically": false,
+  "human_video_approval": false
+}

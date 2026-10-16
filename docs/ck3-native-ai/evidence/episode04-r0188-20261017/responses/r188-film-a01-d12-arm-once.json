@@ -1,0 +1,100 @@
+{
+  "at": "2026-10-16T18:09:22.435099+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r188-film-a01-d12-arm-once",
+    "tool": "ck3_execute_step",
+    "arguments": {
+      "step": "research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0",
+      "expected_revision": null
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\requests\\r188-film-a01-d12-arm-once.json",
+    "bytes": 233,
+    "sha256": "cf264f7b1301764f40092732cd679d09e79e1a5c026136d70942cc2c4e3b35ac"
+  },
+  "is_error": false,
+  "body": {
+    "step": "research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0",
+    "accepted": true,
+    "status": "available",
+    "tactical_daily_sentinel": {
+      "state": "armed",
+      "generation": 12,
+      "starting_date_raw": 53149056,
+      "target_date_raw": 53149080,
+      "last_observed_date_raw": 53149056,
+      "trigger_date_raw": 0,
+      "speed": 3,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 0,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 0,
+      "trigger_reasons": [],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": -1,
+      "pause_wrapper_called": false,
+      "pause_observed": false,
+      "terminal_observed": false,
+      "abnormal": false
+    },
+    "backend_id": "native-headless"
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0\",\n  \"accepted\": true,\n  \"status\": \"available\",\n  \"tactical_daily_sentinel\": {\n    \"state\": \"armed\",\n    \"generation\": 12,\n    \"starting_date_raw\": 53149056,\n    \"target_date_raw\": 53149080,\n    \"last_observed_date_raw\": 53149056,\n    \"trigger_date_raw\": 0,\n    \"speed\": 3,\n    \"mode\": \"terminal_or_sentinel\",\n    \"army_count\": 0,\n    \"combat_count\": 0,\n    \"completed_daily_ticks\": 0,\n    \"intermediate_pause_count\": 0,\n    \"trigger_flags\": 0,\n    \"trigger_reasons\": [],\n    \"signed_date_delta_from_target_raw\": 0,\n    \"overshoot_days\": -1,\n    \"pause_wrapper_called\": false,\n    \"pause_observed\": false,\n    \"terminal_observed\": false,\n    \"abnormal\": false\n  },\n  \"backend_id\": \"native-headless\"\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0",
+      "accepted": true,
+      "status": "available",
+      "tactical_daily_sentinel": {
+        "state": "armed",
+        "generation": 12,
+        "starting_date_raw": 53149056,
+        "target_date_raw": 53149080,
+        "last_observed_date_raw": 53149056,
+        "trigger_date_raw": 0,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "backend_id": "native-headless"
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0\",\n  \"accepted\": true,\n  \"status\": \"available\",\n  \"tactical_daily_sentinel\": {\n    \"state\": \"armed\",\n    \"generation\": 12,\n    \"starting_date_raw\": 53149056,\n    \"target_date_raw\": 53149080,\n    \"last_observed_date_raw\": 53149056,\n    \"trigger_date_raw\": 0,\n    \"speed\": 3,\n    \"mode\": \"terminal_or_sentinel\",\n    \"army_count\": 0,\n    \"combat_count\": 0,\n    \"completed_daily_ticks\": 0,\n    \"intermediate_pause_count\": 0,\n    \"trigger_flags\": 0,\n    \"trigger_reasons\": [],\n    \"signed_date_delta_from_target_raw\": 0,\n    \"overshoot_days\": -1,\n    \"pause_wrapper_called\": false,\n    \"pause_observed\": false,\n    \"terminal_observed\": false,\n    \"abnormal\": false\n  },\n  \"backend_id\": \"native-headless\"\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

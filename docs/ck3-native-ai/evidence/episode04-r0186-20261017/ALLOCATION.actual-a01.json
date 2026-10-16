@@ -1,0 +1,11 @@
+{
+  "schema": "xar.ck3-live-run-identity.v1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "execution_id": "9ef1b200-af48-4e20-8299-53fd7cb03146",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "mod_key": "vanilla",
+  "sequence": 186,
+  "allocated_at_utc": "2026-10-16T16:24:08.858229+00:00",
+  "allocator_pid": 19484,
+  "legacy_alias": null
+}

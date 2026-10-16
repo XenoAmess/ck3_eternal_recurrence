@@ -1,0 +1,95 @@
+{
+  "schema": "xar.e04.r186.selected-offline-observations.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T17:25:13.675101+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "payment": {
+    "source_file": "r186-payment-after-a01.response.json",
+    "raw_callback_records": 4,
+    "qualified_records": 0,
+    "natural_parent_returns": 30,
+    "overwritten": 0,
+    "natural_overwritten": 0,
+    "callback_army_ids": [
+      188,
+      33,
+      202,
+      212
+    ],
+    "current_raw_context_values": {
+      "context_identity_before": 1613734178032,
+      "context_identity_after": 1613734178032,
+      "value_2c0": 0,
+      "value_2c8": 0,
+      "value_28": 0,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "maintenance_attribution": "unclosed",
+    "paid_qualified": false
+  },
+  "natural": {
+    "compact_response": "r186-natural-after-a01.response.json",
+    "verified_driver_raw_ref": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\native-session\\army-query-history-results\\army-query-6b0e1d94c58b47a384791bcd4b61001c.json",
+      "bytes": 12078341,
+      "sha256": "df9b5db540b6176bd23ff55b4340048ca2235b8b8b945277bc593ec283a86deb",
+      "kind": "complete-driver-army-query-result-json-v1",
+      "wire_bytes_preserved": false
+    },
+    "driver_sha_verified": true,
+    "wire_bytes_preserved": false,
+    "row_path": "/army_strengths/0",
+    "subject_army_id": 18,
+    "parent_records": 30,
+    "post_date_records": 15,
+    "post_saved_mask02_admitted": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    "regular_core": null,
+    "selected_loss_writer_event_count": 0,
+    "global_loss_oldest_sequence": 3239,
+    "global_loss_latest_sequence": 3750,
+    "global_loss_overwritten_events": 3238,
+    "selected_supply_event_count": 0,
+    "supply_overwritten_events": 0,
+    "subject_roster_membership_is_not_callback_caller_identity": true
+  },
+  "event_after": {
+    "source": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r186-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0186/responses/r186-event02-after-a01.json",
+      "bytes": 137214,
+      "sha256": "82d3499da30dfee3f89064a4e5987d983c628eff3a36048f43cc96c67d9a919e"
+    },
+    "active_event": null,
+    "date_raw": 53148792,
+    "snapshot_id": "native:53",
+    "revision": 54,
+    "full_snapshot_not_bundled": true
+  },
+  "claims": {
+    "business_positive": false,
+    "paid_qualified": false,
+    "R06_full_qualified": false,
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false
+  }
+}

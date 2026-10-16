@@ -1,0 +1,69 @@
+{
+  "schema": "xar.e04.r186.root-reported-three-frame-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "recorded_at_utc": "2026-10-16T17:25:13.675101+00:00",
+  "exact_review_time_utc": null,
+  "review_time_note": "Root reported direct original-size review in the parent-agent message; exact observation timestamp was not supplied. This timestamp records the report, not a fabricated native receipt.",
+  "reviewer": "Root",
+  "source": "Root direct message to /root/r183_evidence_portable",
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 23147412,
+    "sha256": "7ca4edbcac4f46bd9dda6d796dadb20b619ad22cbdb5ec0333f18c1f23fda0bc"
+  },
+  "frames": [
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1020788,
+        "sha256": "2deee757edf77443e630b927d4161060c0c57d0ee62405b0adaab22c5e0c8385"
+      },
+      "requested_pts_seconds": 0.0,
+      "visible_date": "1067-03-05",
+      "paused_visible": true,
+      "army18_displayed_strength": 1173,
+      "attrition_icon_percent": 1,
+      "supply_display": "300/300",
+      "foreign_window_or_desktop_pixels_observed": false,
+      "additional_observation": null
+    },
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1251951,
+        "sha256": "53729f7e0b7330690ab458ee9cd9969c2f159a389ea21a7433ec1a573162178e"
+      },
+      "requested_pts_seconds": 18.3335,
+      "visible_date": "1067-03-11",
+      "paused_visible": false,
+      "army18_displayed_strength": 1173,
+      "attrition_icon_percent": 1,
+      "supply_display": "300/300",
+      "foreign_window_or_desktop_pixels_observed": false,
+      "additional_observation": null
+    },
+    {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1161758,
+        "sha256": "66ac32ec1ba03066e22f6cd9d9ae15c8526c580529a7f91d84db22f80138c7cb"
+      },
+      "requested_pts_seconds": 36.667,
+      "visible_date": "1067-03-20",
+      "paused_visible": true,
+      "army18_displayed_strength": 1173,
+      "attrition_icon_percent": 1,
+      "supply_display": "300/300",
+      "foreign_window_or_desktop_pixels_observed": false,
+      "additional_observation": "Central 礼仪变化 event box visible; body still empty in this frame"
+    }
+  ],
+  "scope": "Three original1280x720 stills only; not full1x,clean,signoff or causal attribution.",
+  "claims": {
+    "clean_span_certified": false,
+    "human_full_review": false,
+    "human_signoff": false,
+    "strength_change_inferred": false
+  }
+}

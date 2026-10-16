@@ -1,0 +1,74 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:03:50.660205+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\bootstrap-input.actual-a01.json",
+    "bytes": 6408,
+    "sha256": "4717ae46aba73842300250df94c5e22fc498ade41e8c940388b6a95636d396a8"
+  },
+  "pid": 12060,
+  "connection_generation": 1,
+  "episode_run_id": "native-31254-0a8ceff1be59",
+  "process_creation_filetime_100ns": 134366470385086412,
+  "actor_id": 31254,
+  "date_raw": 53148792,
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "prepared": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\prepared-a01\\prepared.json",
+    "bytes": 11675,
+    "sha256": "f2373458aa6ccaacf47f72a7967c6cd8f4afada9c1abad514491dd99cc2e9fd5"
+  },
+  "source_checkpoint": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+    "save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74262421,
+      "sha256": "934aa1b99cc59874eb7365eb997f520753c4db4e31afd91a2d416e28a0244aef"
+    },
+    "save_response": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-close-a01-02-save-once.json",
+      "bytes": 20444,
+      "sha256": "5e70238ead93642191ab33aad1e7d3c3a1a1ec6eef419c99d1cc29f638f35fb9"
+    },
+    "prepared": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11657,
+      "sha256": "e9c52a9e0fa3a05f064b77a9c82a6c8bc03ad59d2d4ef486fd68634837a3f36c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 4454,
+        "sha256": "ab75d4ff66243c34aefcd82dbf8cbb3ca0c8a153946bdf3caba9bb9f5b0fa230"
+      },
+      "bootstrap_result": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\bootstrap-result.json",
+        "bytes": 15162,
+        "sha256": "e05ce43491fcf802617318d797d6451953de7131d7985dc7215c5af3316b9699"
+      },
+      "screen_release": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4946,
+        "sha256": "e0d647af4a713145a2df3bbd30d1a15a7be76353e177352895c96bba499b8fe4"
+      }
+    }
+  },
+  "diag": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-01-diag.json",
+    "bytes": 56196,
+    "sha256": "e4e3e9e24412189de5dc8a34375cfd5312e2ab4d6bba9b3b8577599a8f35a2d4"
+  },
+  "snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-02-snapshot.json",
+    "bytes": 135607,
+    "sha256": "cde9ef02e2b496b3611e058fc915a93cf597ec9ab9124f74bf349eb0ca4a8bb2"
+  },
+  "campaign_root": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-identity-ready-a03-03-campaign-root-once.json",
+    "bytes": 147366,
+    "sha256": "9b034ca0964a5f0cc01353b0210169d8986539176654d5d06af14dbd2236a6f4"
+  },
+  "runtime_identity_sealed": false
+}

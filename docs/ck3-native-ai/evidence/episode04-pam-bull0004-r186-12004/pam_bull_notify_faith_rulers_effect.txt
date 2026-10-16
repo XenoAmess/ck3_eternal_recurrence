@@ -1,0 +1,13 @@
+pam_bull_notify_faith_rulers_effect = {
+	scope:bull_issuer = {
+		faith = {
+			every_faith_character = {
+				limit = {
+					is_ruler = yes
+					this != scope:bull_issuer
+				}
+				trigger_event = { id = pam_bull_events.0004 days = 1 }
+			}
+		}
+	}
+}

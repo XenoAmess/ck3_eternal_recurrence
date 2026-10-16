@@ -1,0 +1,48 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:09:22.483857+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7915,
+    "sha256": "3eaf1f661ec0fefbd0fb18db9a9955ce498cb526cc76dbd346dc2fdce179ccd0"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+    "bytes": 11276,
+    "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+  },
+  "preflight_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "hook_spec": {
+    "module": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r187-writer-controller-a01\\writer_controller.py",
+      "bytes": 34296,
+      "sha256": "d59aa5de760c1b8d802957b2893b72de3587b84d93b8ce1b2aa672ee4be5baa5"
+    },
+    "callable": "before_resume",
+    "index": 12,
+    "max_seconds": 15,
+    "expected_date_raw": 53149056,
+    "expected_target_date_raw": 53149080,
+    "expected_generation": 12,
+    "expected_request_prefix": "r188-film-a01-d12-hook",
+    "controller_config": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-controller-config.actual-a01.json",
+      "bytes": 1032,
+      "sha256": "068d122e9c23e24373034a30cdbdc2fd471a0103a017a7a789e8fe7a13f2c9e3"
+    }
+  },
+  "sentinel_generation": 12,
+  "deadline_monotonic_ns": 1397026190536500,
+  "single_invocation_no_replay": true
+}

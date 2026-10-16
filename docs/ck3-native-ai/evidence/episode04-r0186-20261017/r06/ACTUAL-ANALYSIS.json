@@ -1,0 +1,260 @@
+{
+  "schema": "r186-r06-local-entry-actual-offline-analysis-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T16:38:46.692522+00:00",
+  "offline_analyzed_at": "2026-10-16T16:41:40.527688+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "source_response": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-r06-local-a01-tree-once.json",
+    "bytes": 1029909,
+    "sha256": "899bdbf59aa7a539b37af73631af2ed5776d4ccacb82a600f6d77a623c115f81"
+  },
+  "source_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7804,
+    "sha256": "b2028b75884555bd92d00105cfa531e7295ffc885562155788f6c9974a12f951"
+  },
+  "source_production_qualification": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\A29-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 5611,
+    "sha256": "9fae4663946cf8e092c09d8ca5742558514b5cbca97af619d44ec7f616feff9b"
+  },
+  "runtime_identity": {
+    "pid": 16240,
+    "process_creation_filetime_100ns": 134366417898733491,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-68303c9ae4fb",
+    "actual_runtime_character_full_id": 31254,
+    "initial_date_raw": 53148432
+  },
+  "frame": {
+    "native_revision": 3,
+    "connection_generation": 1,
+    "pump_epoch": 25852,
+    "ticket_sequence": 7,
+    "game_pid": 16240,
+    "thread_id": 24640,
+    "played_character_full_id": 31254,
+    "date_raw": 53148432,
+    "owner_thread_verified": true,
+    "frame_stable": true,
+    "gui_owner_stable": true
+  },
+  "public_binding": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "episode_run_id": "native-31254-68303c9ae4fb"
+  },
+  "source_profile": {
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "button_base_slot13_rva": 61476128,
+    "group_dispatch_rva": 61471280,
+    "input_modifier": 0,
+    "indirect_target_thunk_rva": 61485280,
+    "indirect_target_thunk_bytes_sha256": "7a37683abfa5cb9317164e719bc14ba7cc067f79fee8e086267a11d8b18f3563",
+    "expression_target_bridge_rva": 61471072,
+    "expression_builder_rva": 61618368,
+    "expression_eval_rva": 65323152,
+    "expression_layout_bytes_sha256": "7412efd136e722993b71a8810f5d585347cde53104ba0a107551eb324ff18963",
+    "receiver_definition_parent_rva": 61619952,
+    "receiver_typed_entry_rva": 61611008,
+    "receiver_definition_parent_bytes_sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7",
+    "receiver_typed_entry_bytes_sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc"
+  },
+  "candidate_widgets": [
+    {
+      "widget_index": 220,
+      "child_path": "0/0/0/2/3/0/0/0",
+      "effective_visible": true,
+      "enabled": true,
+      "callback_index": 0,
+      "full_candidate": {
+        "source": "native_gui_type635_definition_candidates_12004",
+        "status": "unavailable",
+        "unavailable_reason": "candidate_parent_depth_exhausted",
+        "receiver_type_id": 635,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": null,
+        "declared_type_id": null,
+        "stable_double_read": false,
+        "entries": [],
+        "failure_diagnostic": {
+          "stage": "parent_walk",
+          "kind": "parent_depth_exhausted",
+          "capture_pass": 1,
+          "read_ordinal": 51,
+          "ancestor_depth": 8,
+          "raw_declaration_count": 1,
+          "raw_index_count": 1,
+          "raw_definition_entry_count": null,
+          "context_present": true,
+          "definition_present": null,
+          "local_definition_active_raw": 1
+        },
+        "local_definition_entry_only": {
+          "source": "native_gui_type635_local_definition_entry_only_12004",
+          "scope": "local_definition_entry_only",
+          "status": "available",
+          "unavailable_reason": null,
+          "receiver_type_id": 635,
+          "ancestor_depth": 0,
+          "current_variable_table_observed": false,
+          "native_receiver_selected": false,
+          "receiver_variable_index": 0,
+          "declared_type_id": 635,
+          "raw_definition_entry_count": 1,
+          "local_definition_active_raw": 1,
+          "definition_present": true,
+          "local_entry_present": true,
+          "stable_double_read": true,
+          "entries": [
+            {
+              "ancestor_depth": 0,
+              "entry_type_48": 635,
+              "entry_mode_40": 0,
+              "entry_flag_4c": 0,
+              "direct_value_present": false,
+              "provider_present": false,
+              "provider_vtable_rva": null,
+              "provider_slot2_rva": null,
+              "direct_owner_full_id": null,
+              "direct_owner_identity_verified": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "widget_index": 238,
+      "child_path": "0/0/0/3/5/0/0/0",
+      "effective_visible": false,
+      "enabled": true,
+      "callback_index": 0,
+      "full_candidate": {
+        "source": "native_gui_type635_definition_candidates_12004",
+        "status": "unavailable",
+        "unavailable_reason": "candidate_parent_depth_exhausted",
+        "receiver_type_id": 635,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": null,
+        "declared_type_id": null,
+        "stable_double_read": false,
+        "entries": [],
+        "failure_diagnostic": {
+          "stage": "parent_walk",
+          "kind": "parent_depth_exhausted",
+          "capture_pass": 1,
+          "read_ordinal": 51,
+          "ancestor_depth": 8,
+          "raw_declaration_count": 1,
+          "raw_index_count": 1,
+          "raw_definition_entry_count": null,
+          "context_present": true,
+          "definition_present": null,
+          "local_definition_active_raw": 1
+        },
+        "local_definition_entry_only": {
+          "source": "native_gui_type635_local_definition_entry_only_12004",
+          "scope": "local_definition_entry_only",
+          "status": "available",
+          "unavailable_reason": null,
+          "receiver_type_id": 635,
+          "ancestor_depth": 0,
+          "current_variable_table_observed": false,
+          "native_receiver_selected": false,
+          "receiver_variable_index": 0,
+          "declared_type_id": 635,
+          "raw_definition_entry_count": 1,
+          "local_definition_active_raw": 1,
+          "definition_present": true,
+          "local_entry_present": true,
+          "stable_double_read": true,
+          "entries": [
+            {
+              "ancestor_depth": 0,
+              "entry_type_48": 635,
+              "entry_mode_40": 0,
+              "entry_flag_4c": 0,
+              "direct_value_present": false,
+              "provider_present": false,
+              "provider_vtable_rva": null,
+              "provider_slot2_rva": null,
+              "direct_owner_full_id": null,
+              "direct_owner_identity_verified": false
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "exact_raw_subtree_spans": [
+    {
+      "file": "raw-receiver_entry_candidates_12004-0.json",
+      "json_key": "receiver_entry_candidates_12004",
+      "ordinal_in_direct_body": 0,
+      "original_byte_start": 104495,
+      "original_byte_end_exclusive": 107194,
+      "bytes": 2699,
+      "sha256": "696241d73348e61f87a5d849d0c3eff150a43c5de57331732f7a74d1ffbd6d07"
+    },
+    {
+      "file": "raw-receiver_entry_candidates_12004-1.json",
+      "json_key": "receiver_entry_candidates_12004",
+      "ordinal_in_direct_body": 1,
+      "original_byte_start": 114853,
+      "original_byte_end_exclusive": 117552,
+      "bytes": 2699,
+      "sha256": "696241d73348e61f87a5d849d0c3eff150a43c5de57331732f7a74d1ffbd6d07"
+    },
+    {
+      "file": "raw-refill_receiver_frame_12004-0.json",
+      "json_key": "refill_receiver_frame_12004",
+      "ordinal_in_direct_body": 0,
+      "original_byte_start": 247559,
+      "original_byte_end_exclusive": 247899,
+      "bytes": 340,
+      "sha256": "da26444079df012992038599faf60b314fbac0f9710ed63ba1377f3b0f070272"
+    },
+    {
+      "file": "raw-refill_receiver_public_binding_12004-0.json",
+      "json_key": "refill_receiver_public_binding_12004",
+      "ordinal_in_direct_body": 0,
+      "original_byte_start": 249175,
+      "original_byte_end_exclusive": 249316,
+      "bytes": 141,
+      "sha256": "a453097d7eea927772a13965b8365b167b26a3d9af899ab8ec3d8cbec812963c"
+    },
+    {
+      "file": "raw-callback_binding_source_12004-0.json",
+      "json_key": "callback_binding_source_12004",
+      "ordinal_in_direct_body": 0,
+      "original_byte_start": 247938,
+      "original_byte_end_exclusive": 248862,
+      "bytes": 924,
+      "sha256": "95f00c22bb0d63e30d76faf08e72489749f12bfffc50ba458df8e1b76e38ce85"
+    }
+  ],
+  "strict_current_normalizer_passed": true,
+  "findings": {
+    "local_independent_double_read_observed": true,
+    "local_mode": 0,
+    "local_flag": 0,
+    "local_direct_value_present": false,
+    "local_provider_present": false,
+    "provider_target_module": null,
+    "provider_RVA_source_entry_available": false,
+    "full_parent_chain_observed_complete": false,
+    "parent_resolution_still_required_by_source": true,
+    "native_receiver_selected": false,
+    "toggle_or_actual_ADD_qualified": false
+  },
+  "SDK_or_desktop_calls": 0,
+  "game_queries_by_this_lane": 0,
+  "EXE_or_DLL_reads": 0,
+  "main_tree_writes": 0,
+  "builds": 0
+}

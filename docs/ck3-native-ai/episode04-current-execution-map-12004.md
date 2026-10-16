@@ -1,4 +1,8 @@
-# Episode 04 当前缺口与执行入口（2026-10-16）
+# Episode 04 当前缺口与执行入口（2026-10-17）
+
+**2026-10-17 本机当前接续（machine_id: `desktop-3fevhd2-1c74096080`；核至2026-10-16 18:41 UTC）。** [R186十四日与事件](episode04-r186-window-capture-12004.md)原片36.700秒并正常闭场；[R187两次启动前RED](episode04-r187-prestart-failures-12004.md)均无CK3/镜头；[R188第一段](episode04-r188-window-capture-12004.md)原生11日Mar20→Mar31、片内914帧/30.466秒，但有限尾抽帧可见Mar30，day12 hook超时且Resume未在片内提交。随后同PID的[片后跨月与正常闭场](episode04-r188-monthroll-close-12004.md)独立证实g12 Mar31→Apr1、正常保存、游戏exit0与屏幕释放；不追加到已终结原片。两次+2C0/+2C8同值物理写和[静态copy来源](episode04-r08-r188-copy-writers-12004.md)相接，付款、payer、币种、cadence及+28/+30 producer仍unknown；有限窗口无样本不证明不存在。核心 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式ABC **0/3** 不变，69段口播草稿不抵扣成片或人工签核。
+
+新研究入口：[R06本地depth8前缀](episode04-r186-refill-parent-prefix-12004.md)仅本地mode0/flag0稳定，父链候选仍待新native与新实机；a31为**source-only/native NOT RUN**。[R08 classifier tier](episode04-r08-classifier-tier-threshold-12004.md)、[关联ID清理callee](episode04-r08-copy-callee28d6170-12004.md)及[R188 copy writer](episode04-r08-r188-copy-writers-12004.md)各自保留静态、实际和unknown边界；三份新便携消费者已离线通过，不等于付款归因。WarOverview 当前 a29 显式OFF/UI fallback，新flag与a30实机仍待验。实机 R186–R188 与 a29 native 来源是冻结 `d05b0c780b615faa714fdf0535403bb2e6941faf`；rebase 后 HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011` 加未提交源码属于新层，不能冒充旧实机部署。详情见[本轮交接](../handover/2026-10-17-war-episode04-r188-and-source-intake.md)；[精确清理](../maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)实际C回收1,642,663,936 B、D 0，此时容量不外推为后续准入。
 
 新增可移机来源已接入：[合同贡献链](episode04-r08-contract-contributions-12004.md)、[local88 的组成](episode04-r08-local88-components-12004.md)和[业务归因审查](episode04-r08-semantic-attribution-audit-12004.md)。三个追加包分别封存5个、6个和3个完整逻辑函数，另含64B精确描述符数据；消费者在标准库及 `-O` 下核验原件、控制边和跨函数连接，不把这些静态层次提升为已付军费或周期。
 

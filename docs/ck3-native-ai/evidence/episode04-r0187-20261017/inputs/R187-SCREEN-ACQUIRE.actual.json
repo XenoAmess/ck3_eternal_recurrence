@@ -1,0 +1,37 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T17:29:22.258520+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "D:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "register",
+    "--task",
+    "e04-live-20261017-r0187",
+    "--summary",
+    "desktop-3fevhd2-1c74096080 E04 R187 window filming frozen d05",
+    "--next-step",
+    "Fresh Steam offline direct review then managed bootstrap",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--resource",
+    "ck3-screen:acquired"
+  ],
+  "exit_code": 0,
+  "stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\R187-SCREEN-ACQUIRE.stdout.bin",
+    "bytes": 1405,
+    "sha256": "d3f26b2557a5e6143491340a400eabb1a6ac03b7ab83c88db22488dfd49b8892"
+  },
+  "stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\R187-SCREEN-ACQUIRE.stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

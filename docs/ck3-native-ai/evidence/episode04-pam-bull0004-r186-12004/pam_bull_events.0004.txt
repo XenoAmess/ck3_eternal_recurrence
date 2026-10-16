@@ -1,0 +1,46 @@
+pam_bull_events.0004 = {
+	type = letter_event
+	opening = pam_bull_events.0004.opening
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { scope:bull_issuer.var:bull_option = flag:crusade }
+				desc = pam_bull_events.0004.desc.crusade
+			}
+			triggered_desc = {
+				trigger = { scope:bull_issuer.var:bull_option = flag:heresy }
+				desc = pam_decision_events.0012.desc
+			}
+			triggered_desc = {
+				trigger = { scope:bull_issuer.var:bull_option = flag:tenet_permitted }
+				desc = pam_decision_events.0011.desc.permitted
+			}
+			triggered_desc = {
+				trigger = { scope:bull_issuer.var:bull_option = flag:tenet_forbidden }
+				desc = pam_decision_events.0011.desc.prohibited
+			}
+		}
+	}
+	sender = scope:bull_issuer
+
+	immediate = {
+		if = {
+			limit = {
+				scope:bull_issuer.var:bull_option = flag:heresy
+				has_trait = heresiarch
+			}
+			play_sound_effect = "event:/DLC/CE3/SFX/Stingers/ce3_mx_sting_becomeHeretic"
+		}
+	}
+
+	option = {
+		name = pam_bull_events.0004.a
+	}
+
+	option = {
+		name = pam_bull_events.0004.c
+		trigger = {
+			scope:bull_issuer.var:bull_option = flag:crusade
+		}
+	}
+}

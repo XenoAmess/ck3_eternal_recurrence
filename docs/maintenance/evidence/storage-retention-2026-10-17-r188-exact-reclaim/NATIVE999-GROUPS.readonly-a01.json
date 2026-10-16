@@ -1,0 +1,104 @@
+{
+  "schema": "xar.r188-native999-root-scope-summary.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T18:02:16.940705+00:00",
+  "policy_version": "1.0.0",
+  "plan": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\post-r185-native-candidates-a01\\NATIVE-EXACT-PLAN.readonly.json.gz",
+    "sha256": "aa81349e8552a9fc572fa18b2cc05666b209c034f01939c0316d9abdbdcbf940"
+  },
+  "state": "WAITING_ROOT_GROUP_SCOPE_CONFIRMATION_NO_DELETE",
+  "groups": [
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-r184-a27",
+      "count": 678,
+      "logical_bytes": 337377113,
+      "allocation_bytes": 338767872,
+      "suffix_counts": {
+        ".lib": 3,
+        ".obj": 675
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-r183-a26",
+      "count": 55,
+      "logical_bytes": 131334745,
+      "allocation_bytes": 131436544,
+      "suffix_counts": {
+        ".lib": 3,
+        ".obj": 52
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-county-p-receiver-20261016-a23",
+      "count": 54,
+      "logical_bytes": 439438,
+      "allocation_bytes": 532480,
+      "suffix_counts": {
+        ".obj": 54
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-logistics-controls-20261016-a09",
+      "count": 52,
+      "logical_bytes": 429260,
+      "allocation_bytes": 524288,
+      "suffix_counts": {
+        ".obj": 52
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-logistics-controls-20261016-a10",
+      "count": 52,
+      "logical_bytes": 429260,
+      "allocation_bytes": 524288,
+      "suffix_counts": {
+        ".obj": 52
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-payment-20261015-a03",
+      "count": 52,
+      "logical_bytes": 428186,
+      "allocation_bytes": 524288,
+      "suffix_counts": {
+        ".obj": 52
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-20261015-a02",
+      "count": 51,
+      "logical_bytes": 424523,
+      "allocation_bytes": 520192,
+      "suffix_counts": {
+        ".obj": 51
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    },
+    {
+      "root": "C:/ck3-war-episode04-research-20261004-a01/native12004-refill-diagnostic-20261016-a25",
+      "count": 5,
+      "logical_bytes": 43258,
+      "allocation_bytes": 49152,
+      "suffix_counts": {
+        ".obj": 5
+      },
+      "purpose": "Retire closed project-generated compile/link intermediates; retained original CMake/Ninja recipe, source and EXE/DLL permit rebuilding. No original intermediate byte fallback is required after Root adopted R186/a29 qualification."
+    }
+  ],
+  "total_count": 999,
+  "total_allocation_bytes": 472879104,
+  "total_logical_bytes": 470905783,
+  "suffix_totals": {
+    ".lib": 6,
+    ".obj": 993
+  },
+  "EXE_DLL_source_recipes_and_all_a29_R188_assets_excluded": true,
+  "actual_deletions": 0
+}

@@ -1,0 +1,30 @@
+{
+  "schema": "xar.r188-exact1000-delete-intent.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T18:08:28.292868+00:00",
+  "policy_version": "1.0.0",
+  "native_plan_sha256": "aa81349e8552a9fc572fa18b2cc05666b209c034f01939c0316d9abdbdcbf940",
+  "ZIP_plan_sha256": "9669fa6b5b2651e93d6fafec875c79a22d1ff7e9bf892a658ed8debec5d2c85c",
+  "Root_adoption": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ROOT-ADOPTION.actual-a01.json",
+    "bytes": 8854,
+    "sha256": "566274771ef435139198681948e56b705a36c59567fd27a307d2122aa550c0ad"
+  },
+  "fresh_consumers": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\FRESH-CONSUMERS.actual-a01.json",
+    "bytes": 440,
+    "sha256": "99410997e65572e7a7700c1f3e853a83d627610bc4944c2587408a169fb2586f"
+  },
+  "planned_count": 1000,
+  "eligible_held_target_count": 1000,
+  "retained_guard_count": 0,
+  "source_keeper_handles_held": 1129,
+  "native_root_source_failures": {},
+  "archive_source_failure": null,
+  "large_target_or_source_payload_rehash_bytes": 0,
+  "method": "Existing Win32 library; targets exclusive DELETE|READATTR, exact fileID/volume/size/FILETIME/link1/allocation checked on same handle; source/keeper shareREAD denies write/delete. No recursive directory deletion.",
+  "free_before": {
+    "C:/": 28495585280,
+    "D:/": 52566605824
+  }
+}

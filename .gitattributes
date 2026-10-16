@@ -276,3 +276,112 @@ docs/maintenance/evidence/storage-retention-2026-10-16-r184-emergency/** -text w
 # Preserve R185 live originals and the seven-copy reclamation proof exactly.
 docs/ck3-native-ai/evidence/episode04-r0185-20261016/** -text whitespace=cr-at-eol
 docs/maintenance/evidence/storage-retention-2026-10-16-r185-duplicates/** -text whitespace=cr-at-eol
+
+# Exact R186/R187/PAM portable original pins: only these observed CRLF targets.
+docs/ck3-native-ai/evidence/episode04-r0186-20261017/ALLOCATION.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0186-20261017/media.probe.stdout -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0186-20261017/portable-facts.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0186-20261017/source-index.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0186-20261017/steam-offline-reviewed.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0187-20261017/a01/a01.relay.stderr.txt -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/ALLOCATION.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/prelaunch-screen.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-SCREEN-ACQUIRE.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-SCREEN-ACQUIRE.stdout.bin -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-pam-bull0004-r186-12004/pam_bull_notify_faith_rulers_effect.txt -text whitespace=cr-at-eol
+
+# R188 exact film and independent monthroll originals.
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d01-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d02-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d03-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d04-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d05-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d06-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d07-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d08-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d09-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d10-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/days/r188-film-a01-d11-complete.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/ALLOCATION.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/R188-CAPACITY.actual-root-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/inputs/R188-REUSED-A29-QUALIFIED.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-a01/audit.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-a01/full-av-decode.command.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/context.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/freeze.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/input.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/portable-facts.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/media-audit-input-a01/root-limited-original-frame-review.addendum-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/deadline-admission-at-spawn.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/job-start.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/job-terminal.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/process-ready.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/raw-window-a01/result.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/ROOT-FILM-OBSERVER-FINALIZE.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/allocated-context.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/bootstrap-input.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/film-input.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-d12-pre-resume-hook.claim.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-d12-pre-resume-hook.error.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-film-result.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-frame-review.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-guard.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-header-first2048.actual.bin -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-identity-ready-a03-observe.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-preflight.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/r188-film-a01-single-start.claim.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/receipts/runtime-actor-identity.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-03-recorder-start-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-99-recorder-finish-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d01-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d02-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d03-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d04-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d05-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d06-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d07-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d08-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d09-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d10-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d11-status.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-d12-arm-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-02-snapshot.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a02-02-snapshot.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-01-diag.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-02-snapshot.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-film-a01-identity-ready-a03-03-campaign-root-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-06-natural-enable-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-08-cash-enable-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-10-natural-query.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/responses/r188-sampling-a01-12-cash-query.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/ADMISSION.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/NATURAL-ENABLE-ACK.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/sampling-admission-a01/PAYMENT-ENABLE-ACK.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/FRESH-WINDOW.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/HOOK.once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/PLAN-CHECK.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-20261017/writer-observation-a01/PRIMARY-ERROR.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/BOOTSTRAP-OBSERVED.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/NORMAL-SAVE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/ROOT-LAUNCH-CALL.actual-a01.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/SCREEN-RELEASE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/bootstrap-result.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/session-result.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/CONTROLLER-CONFIG.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/EXECUTE.once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/FRESH-WINDOW.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/NATURAL-DAY.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/OBSERVER-START.once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/OBSERVER-STARTED.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/PLAN-CHECK.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/PREPARED.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/READY-AND-RESUME.once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/ROOT-FINALIZE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/admission/ADMISSION.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/admission/writer.raw.ndjson -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/finalize-a01/FINALIZE.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/finalize-a01/WRITERS.actual.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-film-a01-close-a01-02-save-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-film-a01-d12-resume-once.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-monthroll-a01-execute-19-terminal-g12.json -text
+docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-natural-after-a01.json -text

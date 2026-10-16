@@ -19,6 +19,7 @@ def integer(x,lo,hi):
 def normalize_receiver_candidates(raw):
     fields=FIELDS | ({"failure_diagnostic"} if type(raw) is dict and "failure_diagnostic" in raw else set())
     if type(raw) is dict and "local_definition_entry_only" in raw:fields=fields|{"local_definition_entry_only"}
+    if type(raw) is dict and "definition_chain_prefix_depth8" in raw:fields=fields|{"definition_chain_prefix_depth8"}
     if (type(raw) is not dict or raw.keys()!=fields or raw['source']!=SOURCE
             or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
             or raw['current_variable_table_observed'] is not False
@@ -32,6 +33,22 @@ def normalize_receiver_candidates(raw):
         if (raw['status']=='available' and local['status']=='available' and
                 any(raw[k]!=local[k] for k in ('receiver_variable_index','declared_type_id'))):
             raise ValueError('local prefix declaration differs from full candidate')
+    prefix=None
+    if "definition_chain_prefix_depth8" in raw:
+        prefix=normalize_definition_chain_prefix_depth8(raw["definition_chain_prefix_depth8"])
+        failure=raw.get('failure_diagnostic')
+        if (raw['status']!='unavailable' or raw['unavailable_reason']!='candidate_parent_depth_exhausted'
+                or type(failure) is not dict or failure.get('capture_pass')!=1
+                or failure.get('ancestor_depth')!=8 or failure.get('kind')!='parent_depth_exhausted'):
+            raise ValueError('definition prefix lacks the original depth8 full failure')
+        if prefix['status']=='available':
+            if local is None or local['status']!='available':
+                raise ValueError('definition prefix lacks independent stable local view')
+            if (any(prefix[k]!=local[k] for k in ('receiver_variable_index','declared_type_id'))
+                    or prefix['rows'][0]['entries']!=local['entries']
+                    or prefix['rows'][0]['raw_definition_entry_count']!=local['raw_definition_entry_count']
+                    or prefix['rows'][0]['definition_present']!=local['definition_present']):
+                raise ValueError('definition prefix differs from independent local view')
     if 'failure_diagnostic' in raw:
         if raw['status']!='unavailable':raise ValueError('failure diagnostic cannot qualify an available candidate')
         normalize_receiver_failure(raw['failure_diagnostic'])
@@ -40,7 +57,7 @@ def normalize_receiver_candidates(raw):
                 or raw['stable_double_read'] or raw['entries']
                 or raw['receiver_variable_index'] is not None or raw['declared_type_id'] is not None):
             raise ValueError('unavailable candidate must preserve unknown values')
-        return {**raw, **({"local_definition_entry_only":local} if local is not None else {})}
+        return {**raw, **({"local_definition_entry_only":local} if local is not None else {}), **({"definition_chain_prefix_depth8":prefix} if prefix is not None else {})}
     if (raw['status']!='available' or raw['unavailable_reason'] is not None
             or raw['stable_double_read'] is not True
             or not integer(raw['receiver_variable_index'],0,255)
@@ -77,6 +94,68 @@ def normalize_receiver_candidates(raw):
         raise ValueError('local prefix depth0 entries differ from full candidate')
     return {**raw,'entries':rows, **({"local_definition_entry_only":local} if local is not None else {})}
 
+
+
+def normalize_definition_chain_prefix_depth8(raw):
+    fields={'source','scope','status','unavailable_reason','receiver_type_id','depth_limit',
+            'walk_complete','current_variable_table_observed','native_receiver_selected',
+            'receiver_variable_index','declared_type_id','frontier_depth','frontier_context_present',
+            'stable_double_read','rows'}
+    if (type(raw) is not dict or raw.keys()!=fields
+            or raw['source']!='native_gui_type635_definition_chain_prefix_depth8_12004'
+            or raw['scope']!='visited_definition_prefix_depth8'
+            or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
+            or type(raw['depth_limit']) is not int or raw['depth_limit']!=8
+            or any(raw[k] is not False for k in ('walk_complete','current_variable_table_observed','native_receiver_selected'))
+            or type(raw['stable_double_read']) is not bool or type(raw['rows']) is not list):
+        raise ValueError('definition chain prefix schema/scope')
+    observed=('receiver_variable_index','declared_type_id','frontier_depth','frontier_context_present')
+    if raw['status']=='unavailable':
+        if (type(raw['unavailable_reason']) is not str or not raw['unavailable_reason']
+                or raw['stable_double_read'] or raw['rows'] or any(raw[k] is not None for k in observed)):
+            raise ValueError('unavailable definition prefix must preserve unknown')
+        return dict(raw)
+    if (raw['status']!='available' or raw['unavailable_reason'] is not None or not raw['stable_double_read']
+            or not integer(raw['receiver_variable_index'],0,255)
+            or type(raw['declared_type_id']) is not int or raw['declared_type_id']!=635
+            or type(raw['frontier_depth']) is not int or raw['frontier_depth']!=8
+            or raw['frontier_context_present'] is not True or len(raw['rows'])!=8):
+        raise ValueError('definition prefix boundary/double-read incomplete')
+    rows=[];entries=[]
+    for depth,row in enumerate(raw['rows']):
+        if (type(row) is not dict or row.keys()!={'ancestor_depth','definition_present',
+                'raw_definition_entry_count','entries','parent_edge','parent_present'}
+                or type(row['ancestor_depth']) is not int or row['ancestor_depth']!=depth
+                or type(row['definition_present']) is not bool or row['parent_present'] is not True
+                or type(row['entries']) is not list or len(row['entries'])>1
+                or type(row['parent_edge']) is not str or row['parent_edge'] not in {'definition_108','context_e8'}):
+            raise ValueError('definition prefix row/edge incomplete')
+        if not row['definition_present']:
+            if (row['raw_definition_entry_count'] is not None or row['entries']
+                    or row['parent_edge']!='context_e8' or depth==0):
+                raise ValueError('null definition cannot supply a table/definition edge')
+        elif (not integer(row['raw_definition_entry_count'],0,256)
+                or (row['entries'] and row['raw_definition_entry_count']==0)):
+            raise ValueError('definition prefix entry count')
+        for entry in row['entries']:
+            if type(entry) is not dict or entry.get('ancestor_depth')!=depth:
+                raise ValueError('definition prefix entry depth mismatch')
+        entries.extend(row['entries']);rows.append(dict(row))
+    # Existing production rules check all descriptor fields, widths and branches.
+    envelope={k:raw[k] for k in FIELDS if k!='entries'}
+    envelope.update(source=SOURCE,entries=entries)
+    normalize_receiver_candidates(envelope)
+    for row in rows:
+        for entry in row['entries']:
+            depth=row['ancestor_depth']
+            if ((depth==0 and entry['entry_flag_4c']!=0)
+                    or (depth>0 and entry['entry_flag_4c']!=0 and 0<=entry['entry_mode_40']<=1)):
+                raise ValueError('definition prefix continues beyond a static native stop')
+            if depth>0 and entry['entry_flag_4c']==0 and (
+                    entry['provider_vtable_rva'] is not None or entry['provider_slot2_rva'] is not None
+                    or entry['direct_owner_full_id'] is not None or entry['direct_owner_identity_verified']):
+                raise ValueError('filtered parent entry cannot qualify provider/owner observation')
+    return {**raw,'rows':rows}
 
 def normalize_local_definition_entry_only(raw):
     fields={"source","scope","status","unavailable_reason","receiver_type_id","ancestor_depth",

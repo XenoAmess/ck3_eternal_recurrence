@@ -1,0 +1,239 @@
+{
+  "at": "2026-10-16T17:06:01.480477+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r186-event02-select-first-once",
+    "tool": "ck3_select_event_option",
+    "arguments": {
+      "option_number": 1,
+      "event_instance_id": 2,
+      "expected_revision": 53
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\requests\\r186-event02-select-first-once.json",
+    "bytes": 192,
+    "sha256": "6844a9c76da08c688cc939457e4bda48fdc4edce3fe43d2abccca8d0c89a2bf6"
+  },
+  "is_error": false,
+  "body": {
+    "step": "select-event-option-1",
+    "accepted": true,
+    "status": "submitted",
+    "backend_id": "native-headless",
+    "progress_status": "postcondition",
+    "event_selection": {
+      "status": "event_instance_advanced",
+      "postcondition_verified": true,
+      "old_event_instance_id": 2,
+      "new_event_instance_id": null,
+      "selected_option_number": 1,
+      "selected_native_option_index": 0,
+      "starting_snapshot_id": "native:52",
+      "starting_revision": 53,
+      "ending_snapshot_id": "native:53",
+      "ending_revision": 54,
+      "episode_run_id": "native-31254-68303c9ae4fb",
+      "connection_generation": 1,
+      "bridge_pid": 16240,
+      "starting_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 0,
+        "unavailable_reason": null
+      },
+      "ending_played_character_stress": {
+        "status": "available",
+        "character_id": 31254,
+        "stress_points": 0,
+        "unavailable_reason": null
+      },
+      "starting_played_character_event_traits": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 52,
+        "date_raw": 53148792,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "ending_played_character_event_traits": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 53,
+        "date_raw": 53148792,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "starting_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 26010399,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_gold": {
+        "status": "available",
+        "character_id": 31254,
+        "gold_raw": 26010399,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "starting_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 221297860,
+        "scale": 100000,
+        "unavailable_reason": null
+      },
+      "ending_played_character_prestige": {
+        "status": "available",
+        "character_id": 31254,
+        "prestige_raw": 221297860,
+        "scale": 100000,
+        "unavailable_reason": null
+      }
+    },
+    "active_event": null,
+    "paused": true,
+    "snapshot_id": "native:53",
+    "revision": 54,
+    "event_instance_id": 2,
+    "option_number": 1,
+    "option_index": 0
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"select-event-option-1\",\n  \"accepted\": true,\n  \"status\": \"submitted\",\n  \"backend_id\": \"native-headless\",\n  \"progress_status\": \"postcondition\",\n  \"event_selection\": {\n    \"status\": \"event_instance_advanced\",\n    \"postcondition_verified\": true,\n    \"old_event_instance_id\": 2,\n    \"new_event_instance_id\": null,\n    \"selected_option_number\": 1,\n    \"selected_native_option_index\": 0,\n    \"starting_snapshot_id\": \"native:52\",\n    \"starting_revision\": 53,\n    \"ending_snapshot_id\": \"native:53\",\n    \"ending_revision\": 54,\n    \"episode_run_id\": \"native-31254-68303c9ae4fb\",\n    \"connection_generation\": 1,\n    \"bridge_pid\": 16240,\n    \"starting_played_character_stress\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"stress_points\": 0,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_stress\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"stress_points\": 0,\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_event_traits\": {\n      \"schema\": \"xar.ck3.player-event-trait-membership/v1\",\n      \"game_version\": \"1.20.0.4\",\n      \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"status\": \"available\",\n      \"snapshot_revision\": 52,\n      \"date_raw\": 53148792,\n      \"played_character_id\": 31254,\n      \"traits\": {\n        \"lifestyle_poet\": false,\n        \"journaller\": false\n      },\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_event_traits\": {\n      \"schema\": \"xar.ck3.player-event-trait-membership/v1\",\n      \"game_version\": \"1.20.0.4\",\n      \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"status\": \"available\",\n      \"snapshot_revision\": 53,\n      \"date_raw\": 53148792,\n      \"played_character_id\": 31254,\n      \"traits\": {\n        \"lifestyle_poet\": false,\n        \"journaller\": false\n      },\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_gold\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"gold_raw\": 26010399,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_gold\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"gold_raw\": 26010399,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_prestige\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"prestige_raw\": 221297860,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_prestige\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"prestige_raw\": 221297860,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    }\n  },\n  \"active_event\": null,\n  \"paused\": true,\n  \"snapshot_id\": \"native:53\",\n  \"revision\": 54,\n  \"event_instance_id\": 2,\n  \"option_number\": 1,\n  \"option_index\": 0\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "select-event-option-1",
+      "accepted": true,
+      "status": "submitted",
+      "backend_id": "native-headless",
+      "progress_status": "postcondition",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 2,
+        "new_event_instance_id": null,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_snapshot_id": "native:52",
+        "starting_revision": 53,
+        "ending_snapshot_id": "native:53",
+        "ending_revision": 54,
+        "episode_run_id": "native-31254-68303c9ae4fb",
+        "connection_generation": 1,
+        "bridge_pid": 16240,
+        "starting_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 0,
+          "unavailable_reason": null
+        },
+        "ending_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 0,
+          "unavailable_reason": null
+        },
+        "starting_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 52,
+          "date_raw": 53148792,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "ending_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 53,
+          "date_raw": 53148792,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "starting_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 26010399,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 26010399,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "starting_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 221297860,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 221297860,
+          "scale": 100000,
+          "unavailable_reason": null
+        }
+      },
+      "active_event": null,
+      "paused": true,
+      "snapshot_id": "native:53",
+      "revision": 54,
+      "event_instance_id": 2,
+      "option_number": 1,
+      "option_index": 0
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"select-event-option-1\",\n  \"accepted\": true,\n  \"status\": \"submitted\",\n  \"backend_id\": \"native-headless\",\n  \"progress_status\": \"postcondition\",\n  \"event_selection\": {\n    \"status\": \"event_instance_advanced\",\n    \"postcondition_verified\": true,\n    \"old_event_instance_id\": 2,\n    \"new_event_instance_id\": null,\n    \"selected_option_number\": 1,\n    \"selected_native_option_index\": 0,\n    \"starting_snapshot_id\": \"native:52\",\n    \"starting_revision\": 53,\n    \"ending_snapshot_id\": \"native:53\",\n    \"ending_revision\": 54,\n    \"episode_run_id\": \"native-31254-68303c9ae4fb\",\n    \"connection_generation\": 1,\n    \"bridge_pid\": 16240,\n    \"starting_played_character_stress\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"stress_points\": 0,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_stress\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"stress_points\": 0,\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_event_traits\": {\n      \"schema\": \"xar.ck3.player-event-trait-membership/v1\",\n      \"game_version\": \"1.20.0.4\",\n      \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"status\": \"available\",\n      \"snapshot_revision\": 52,\n      \"date_raw\": 53148792,\n      \"played_character_id\": 31254,\n      \"traits\": {\n        \"lifestyle_poet\": false,\n        \"journaller\": false\n      },\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_event_traits\": {\n      \"schema\": \"xar.ck3.player-event-trait-membership/v1\",\n      \"game_version\": \"1.20.0.4\",\n      \"executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"status\": \"available\",\n      \"snapshot_revision\": 53,\n      \"date_raw\": 53148792,\n      \"played_character_id\": 31254,\n      \"traits\": {\n        \"lifestyle_poet\": false,\n        \"journaller\": false\n      },\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_gold\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"gold_raw\": 26010399,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_gold\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"gold_raw\": 26010399,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"starting_played_character_prestige\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"prestige_raw\": 221297860,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    },\n    \"ending_played_character_prestige\": {\n      \"status\": \"available\",\n      \"character_id\": 31254,\n      \"prestige_raw\": 221297860,\n      \"scale\": 100000,\n      \"unavailable_reason\": null\n    }\n  },\n  \"active_event\": null,\n  \"paused\": true,\n  \"snapshot_id\": \"native:53\",\n  \"revision\": 54,\n  \"event_instance_id\": 2,\n  \"option_number\": 1,\n  \"option_index\": 0\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

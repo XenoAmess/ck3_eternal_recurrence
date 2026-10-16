@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "observed_at_utc": "2026-10-16T18:13:34.546318+00:00",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+    "bytes": 1896,
+    "sha256": "6d8b63bf99dd06c593d342305a6c1fc22acf4087d2f4d03d9d291cbb467bbaa8"
+  },
+  "context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2806,
+    "sha256": "ec3cea56dae5b56b9f0da605c9167c80eb5ad01e698403957c195850eddedb29"
+  },
+  "recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3522,
+    "sha256": "dd87695d82301a7a0095e8076c380776a8ccee000b260f13bcffd73f59c96b88"
+  },
+  "fresh_capacity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-media-audit-prep-a01\\R188-AUDIT-PHASE-CAPACITY.actual-a01.json",
+    "bytes": 2835,
+    "sha256": "2cc6ae8592367d53ea8cff7396f97506141324900e34fd818654a10c0e4c3aa3"
+  },
+  "entry": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r184-media-audit-prep-a01\\audit_raw.py",
+    "bytes": 16319,
+    "sha256": "755ab650f42643569a57381518e05beb0838c2007e3a8eff0b6d7e59dbb50a55"
+  },
+  "wrapper": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-media-audit-prep-a01\\audit_inputs_from_config.py",
+    "bytes": 12621,
+    "sha256": "419930cc39584a6270ad22618b3e97690ae62452f85940175a36691040119cf4"
+  },
+  "raw_bytes_read": false,
+  "media_tools_executed": false,
+  "actual_media_audited": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false
+}

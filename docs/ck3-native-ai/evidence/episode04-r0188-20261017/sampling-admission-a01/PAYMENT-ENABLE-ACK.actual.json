@@ -1,0 +1,207 @@
+{
+  "schema": "xar.ck3.war-cash-current-resources.v1",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "status": "available",
+  "read_only": true,
+  "advertised": false,
+  "formal_action_ready": false,
+  "played_character_id": 31254,
+  "snapshot_revision": 3,
+  "date_raw": 53148792,
+  "active_war_ids": [
+    4
+  ],
+  "player_army_ids": [
+    18
+  ],
+  "current_raw_context_v1": {
+    "schema_version": 1,
+    "observation_kind": "paused_current_raw_context",
+    "attribution_scope": "current_raw_context_only",
+    "maintenance_attribution": "unclosed",
+    "character": 1779059783952,
+    "character_full_id": 31254,
+    "snapshot_revision": 3,
+    "date_raw": 53148792,
+    "actor_identity_stable": true,
+    "same_frame_ready": true,
+    "values": {
+      "context_identity_before": 1779091018144,
+      "context_identity_after": 1779091018144,
+      "value_2c0": 0,
+      "value_2c8": 0,
+      "value_28": 0,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "admission_ready": true,
+    "unavailable_reason": null
+  },
+  "current_treasury": {
+    "raw": 26010399,
+    "scale": 100000
+  },
+  "player_monthly_gross_income": {
+    "raw": 540370,
+    "scale": 100000
+  },
+  "player_monthly_total_expenses": {
+    "raw": 216342,
+    "scale": 100000
+  },
+  "player_monthly_net_income": {
+    "raw": 324028,
+    "scale": 100000
+  },
+  "monthly_income_semantics": {
+    "version": "ck3-1.20.0.4-native-income-minus-total-expenses-v2",
+    "time_basis": "month",
+    "source_scope": "played_character_personal_gold",
+    "income_source": "native_character_monthly_gold_income",
+    "expense_source": "native_character_monthly_total_gold_expenses",
+    "military_expenses_included": true
+  },
+  "monthly_gross_income_unavailable_reason": null,
+  "monthly_total_expenses_unavailable_reason": null,
+  "current_treasury_unavailable_reason": null,
+  "monthly_net_income_unavailable_reason": null,
+  "military_expenses": {
+    "current": {
+      "status": "available",
+      "resource_kind": "actor_military_current_maintenance",
+      "resource_id": "31254",
+      "owner_character_id": 31254,
+      "war_ids": [
+        4
+      ],
+      "time_basis": "month",
+      "raw_scale": 100000,
+      "source_scope": "actor_owned_military_once_across_all_wars",
+      "source": "native_character_current_military_expenses",
+      "resource_raw_native": [
+        216342,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "gold_raw": 216342,
+      "treasury_raw": 0,
+      "future_war_cost_upper_ready": false,
+      "unavailable_reason": null
+    },
+    "all_raised": {
+      "status": "available",
+      "resource_kind": "actor_military_all_raised_maintenance",
+      "resource_id": "31254",
+      "owner_character_id": 31254,
+      "war_ids": [
+        4
+      ],
+      "time_basis": "month",
+      "raw_scale": 100000,
+      "source_scope": "actor_owned_military_once_across_all_wars",
+      "source": "native_character_all_raised_military_expenses",
+      "resource_raw_native": [
+        515100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "gold_raw": 515100,
+      "treasury_raw": 0,
+      "future_war_cost_upper_ready": false,
+      "unavailable_reason": null
+    }
+  },
+  "readiness": {
+    "current_treasury_ready": true,
+    "monthly_gross_income_ready": true,
+    "monthly_total_expenses_ready": true,
+    "monthly_net_income_ready": true,
+    "current_military_expenses_ready": true,
+    "all_raised_military_expenses_ready": true,
+    "same_frame_ready": true
+  },
+  "unobserved_future_inputs": [
+    "pending_war_cash_raw",
+    "future_war_cost_upper_raw",
+    "future_risk_budget_raw",
+    "policy_minimum_gold_reserve_raw",
+    "horizon_days",
+    "future_bound_assumptions"
+  ],
+  "unavailable_reason": null,
+  "queried_snapshot_id": "native:3",
+  "queried_revision": 4,
+  "queried_native_revision": 3,
+  "war_payment_observations_v1": {
+    "schema_version": 1,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "game_version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "installed": true,
+    "install_failure_flags": 0,
+    "controlled_window_admitted": true,
+    "session_basis": "same_owned_process_no_load_window",
+    "balance_boundary": "whole_original_callback_entry_return",
+    "maintenance_attribution": "unclosed",
+    "current_session": {
+      "pid": 12060,
+      "process_create_time_100ns": 134366470385086412,
+      "connection_generation": 1,
+      "loaded_game_epoch": null,
+      "controlled_window_id": 1,
+      "same_owned_process_no_load_window": true,
+      "game_state_identity_witness": 1778503496800,
+      "player_character_full_id": 31254,
+      "snapshot_revision": 3,
+      "native_date_raw": 300336080831052920,
+      "absolute_day_raw": 389533
+    },
+    "sampling": {
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0
+    },
+    "read_complete": true,
+    "latest_sequence": 0,
+    "oldest_sequence": 0,
+    "overwritten": 0,
+    "publication_failures": 0,
+    "natural_journal_status": {
+      "read_complete": true,
+      "retained_records": 0,
+      "overwritten_records": 0,
+      "failed_appends": 0
+    },
+    "records": [],
+    "natural_parent_returns": [],
+    "qualified_boarding_debits": []
+  },
+  "war_payment_control_v1": {
+    "requested": "enable",
+    "accepted": true,
+    "reason": "enabled_controlled_no_load_window"
+  }
+}

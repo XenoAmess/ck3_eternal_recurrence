@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "completed_days": 11,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.6012072,
+  "within_six_seconds": true,
+  "error": "TimeoutExpired(['D:\\\\workspace\\\\ck3_eternal_recurrence\\\\tools\\\\.venv\\\\Scripts\\\\python.exe', '-B', '-O', 'D:\\\\workspace\\\\ck3_eternal_recurrence\\\\ck3_autonomous_player\\\\native_bridge\\\\research\\\\maintenance_writer_cold_12004\\\\prepare_writer_admission.py', '--enable-ck3-12004-data-watch', '--prepare-only', '--repo', 'D:\\\\workspace\\\\ck3_eternal_recurrence', '--build-dir', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\build-a07', '--machine-execution-gate', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\runs-a06-final-narrow\\\\EXECUTION-GATE.actual.json', '--cash-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-02-cash.json', '--before-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-01-before.json', '--output-root', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\writer-observation-a01\\\\admission', '--expected-pid', '12060', '--expected-created', '134366470385086412', '--expected-generation', '1', '--expected-window', '1', '--expected-epoch', '1', '--expected-character-id', '31254', '--expected-revision', '43', '--expected-native-revision', '42', '--expected-date', '53149056', '--expected-episode', 'native-31254-0a8ceff1be59', '--expected-machine', 'desktop-3fevhd2-1c74096080', '--timeout-ms', '30000', '--max-slot-hits', '128'], 2.9999924001749605)",
+  "observed_at_utc": "2026-10-16T18:09:26.577811+00:00"
+}

@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "result": {
+    "observer_killed": false,
+    "SDK_calls": 0,
+    "observer_restarts": 0,
+    "parent_primary_error_preserved": false,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+    "wait": {
+      "process_absent": true,
+      "exit_code": 1,
+      "exact_exit_code_observed": true,
+      "owned_handle_pid": 26796
+    },
+    "status": "CONSUMED_EXISTING_STRICT_READER_NO_BUSINESS_CREDIT",
+    "projection": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\finalize-a01\\WRITERS.actual.json",
+      "bytes": 6891,
+      "sha256": "05575043e9ca43c0469bbbfe9d3ec74e902daf62d6778e4ce010fd1db754262d"
+    },
+    "cleanup_and_partial_status_must_be_read_from_projection": true,
+    "maintenance_attribution": "unclosed",
+    "actual_military_positive": false
+  },
+  "primary_error": null,
+  "same_process_handle_retained": true,
+  "observer_killed": false
+}

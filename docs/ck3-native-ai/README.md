@@ -1,5 +1,9 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-17：战争四期当前入口（本机）
+
+`machine_id: desktop-3fevhd2-1c74096080`；核对至2026-10-16 18:41 UTC。[当前执行图](episode04-current-execution-map-12004.md)与[新交接](../handover/2026-10-17-war-episode04-r188-and-source-intake.md)连接[R186十四日与陌生事件](episode04-r186-window-capture-12004.md)、[R187两次启动前失败](episode04-r187-prestart-failures-12004.md)、[R188十一日原片](episode04-r188-window-capture-12004.md)及[片后跨月与正常闭场](episode04-r188-monthroll-close-12004.md)。R188 的 Apr1 发生在片外；两次 +2C0/+2C8 同值物理写只能按[精确 copy 来源](episode04-r08-r188-copy-writers-12004.md)解释，不是已付军费。[R06 depth8 前缀](episode04-r186-refill-parent-prefix-12004.md)及[R08 新 classifier、callee](episode04-r08-classifier-tier-threshold-12004.md)与[关联 ID 清理](episode04-r08-copy-callee28d6170-12004.md)供视频和智能体复用。研究 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式 ABC **0/3**；69段口播草稿与现有声音不等于成片或签核。R186–R188 实机与 a29 native 的冻结来源为 `d05b0c780b615faa714fdf0535403bb2e6941faf`；当前 rebase 后仓库 HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011` 加待整合工作树，不能反写旧场运行来源或把新源码当已部署。
+
 ## 2026-10-16：并发源码入口与R0180普通陆路抵达
 
 最新整合交接见[并发研究与R0180](../handover/2026-10-16-war-episode04-concurrent-research-and-r0180.md)。2026-10-16 后续入口见[当前缺口与执行图](episode04-current-execution-map-12004.md)：整卡6/14、业务4/11、合格动态0/11；R183截断原片、维护费来源库存勘误及各卡下一场条件从该页进入。下文旧时点数字保留其历史范围。

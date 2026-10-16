@@ -1,0 +1,16 @@
+{
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "button_base_slot13_rva": 61476128,
+      "group_dispatch_rva": 61471280,
+      "input_modifier": 0,
+      "indirect_target_thunk_rva": 61485280,
+      "indirect_target_thunk_bytes_sha256": "7a37683abfa5cb9317164e719bc14ba7cc067f79fee8e086267a11d8b18f3563",
+      "expression_target_bridge_rva": 61471072,
+      "expression_builder_rva": 61618368,
+      "expression_eval_rva": 65323152,
+      "expression_layout_bytes_sha256": "7412efd136e722993b71a8810f5d585347cde53104ba0a107551eb324ff18963",
+      "receiver_definition_parent_rva": 61619952,
+      "receiver_typed_entry_rva": 61611008,
+      "receiver_definition_parent_bytes_sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7",
+      "receiver_typed_entry_bytes_sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc"
+    }

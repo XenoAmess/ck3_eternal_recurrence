@@ -33,6 +33,23 @@ template<class Text> inline void AppendGuiRefillLocalDefinitionEntry12004(std::s
   bool first=true;for(const auto &e:v.entries){if(!first)s+=',';first=false;AppendGuiRefillReceiverEntry12004(s,e);}s+=']';
   if(v.failure_diagnostic){s+=",\"failure_diagnostic\":";AppendGuiRefillReceiverFailure12004(s,*v.failure_diagnostic,text);}s+='}';
 }
+template<class Text> inline void AppendGuiRefillDefinitionPrefix12004(std::string &s,const GuiRefillDefinitionPrefix12004V1 &v,Text text) {
+  s+="{\"source\":\"native_gui_type635_definition_chain_prefix_depth8_12004\",\"scope\":\"visited_definition_prefix_depth8\",\"status\":";text(s,v.status);
+  s+=",\"unavailable_reason\":";if(v.unavailable_reason.empty())s+="null";else text(s,v.unavailable_reason);
+  s+=",\"receiver_type_id\":635,\"depth_limit\":8,\"walk_complete\":false,\"current_variable_table_observed\":false,\"native_receiver_selected\":false";
+  s+=",\"receiver_variable_index\":";s+=v.receiver_variable_index?std::to_string(*v.receiver_variable_index):"null";
+  s+=",\"declared_type_id\":";s+=v.declared_type_id?std::to_string(*v.declared_type_id):"null";
+  s+=",\"frontier_depth\":";s+=v.stable_double_read?"8":"null";
+  s+=",\"frontier_context_present\":";s+=v.stable_double_read?"true":"null";
+  s+=",\"stable_double_read\":";s+=v.stable_double_read?"true":"false";s+=",\"rows\":[";
+  bool first=true;for(const auto &row:v.rows){
+    if(!first)s+=',';first=false;s+="{\"ancestor_depth\":"+std::to_string(row.ancestor_depth);
+    s+=",\"definition_present\":";s+=row.definition_present?"true":"false";
+    s+=",\"raw_definition_entry_count\":";s+=row.raw_definition_entry_count?std::to_string(*row.raw_definition_entry_count):"null";
+    s+=",\"entries\":[";if(!row.entries.empty())AppendGuiRefillReceiverEntry12004(s,row.entries.front());s+=']';
+    s+=",\"parent_edge\":";text(s,row.parent_edge);s+=",\"parent_present\":";s+=row.parent_present?"true":"false";s+='}';
+  }s+="]}";
+}
 template<class Text> inline void AppendGuiRefillReceiverCandidates12004(std::string &s,const GuiRefillReceiverCandidates12004V1 &v,Text text) {
   s+="{\"source\":\"native_gui_type635_definition_candidates_12004\",\"status\":";text(s,v.status);
   s+=",\"unavailable_reason\":";if(v.unavailable_reason.empty())s+="null";else text(s,v.unavailable_reason);
@@ -42,7 +59,8 @@ template<class Text> inline void AppendGuiRefillReceiverCandidates12004(std::str
   s+=",\"stable_double_read\":";s+=v.stable_double_read?"true":"false";s+=",\"entries\":[";
   bool first=true;for(const auto &e:v.entries){if(!first)s+=',';first=false;AppendGuiRefillReceiverEntry12004(s,e);}s+=']';
   if(v.failure_diagnostic){s+=",\"failure_diagnostic\":";AppendGuiRefillReceiverFailure12004(s,*v.failure_diagnostic,text);}
-  if(v.local_definition_entry_only){s+=",\"local_definition_entry_only\":";AppendGuiRefillLocalDefinitionEntry12004(s,*v.local_definition_entry_only,text);}s+='}';
+  if(v.local_definition_entry_only){s+=",\"local_definition_entry_only\":";AppendGuiRefillLocalDefinitionEntry12004(s,*v.local_definition_entry_only,text);}
+  if(v.definition_chain_prefix_depth8){s+=",\"definition_chain_prefix_depth8\":";AppendGuiRefillDefinitionPrefix12004(s,*v.definition_chain_prefix_depth8,text);}s+='}';
 }
 template<class Text> inline void AppendGuiRefillReceiverFrame12004(
     std::string &s,const GuiRefillReceiverFrame12004V1 &v,Text) {

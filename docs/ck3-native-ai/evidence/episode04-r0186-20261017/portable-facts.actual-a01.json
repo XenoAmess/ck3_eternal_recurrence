@@ -1,0 +1,525 @@
+{
+  "schema": "xar.e04.r186.raw-audit-portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "observed_at_utc": "2026-10-16T17:20:24.698236+00:00",
+  "audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\audit.actual.json",
+    "bytes": 16302,
+    "sha256": "0eb55254de56a381acf72ae6be953bf15351b2dd8bf494b4f7de5176fcf35a78"
+  },
+  "input_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-input-a01\\input.actual-a01.json",
+    "bytes": 1896,
+    "sha256": "4757ba0556848fbf50eb343ed9859524fc8b1dc3378ec3bd3d83ba709b0b2661"
+  },
+  "context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2430,
+    "sha256": "96ff78d4e4f140049e82d7a83a7672a04fb5567aa3d1c529b3e6d10bea9ab9fe"
+  },
+  "canonical_recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3325,
+    "sha256": "22498e7d328f80a93f003970fd7b666372566790844c747446b6475a79e15be1"
+  },
+  "canonical_recorder_state": "NORMAL_TREE_EMPTY",
+  "fresh_phase_capacity_before_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-media-audit-prep-a01\\R186-AUDIT-PHASE-CAPACITY.actual-a01.json",
+    "bytes": 2831,
+    "sha256": "81ff0c2cfc3f9ff9c531ac724f9a22cda85c0dcde9495cebd57539ce3226d0cc"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 23147412,
+    "sha256": "7ca4edbcac4f46bd9dda6d796dadb20b619ad22cbdb5ec0333f18c1f23fda0bc"
+  },
+  "raw_unchanged_during_audit": true,
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 16240,
+    "owned_ck3_create_time": 1792168189.8733492,
+    "hwnd": 33950264,
+    "foreground_hwnd": 33950264,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T16:53:49.625008+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "video": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1",
+    "container_duration_seconds": 36.7,
+    "decoded_timeline": {
+      "media_type": "video",
+      "frames": 1101,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 36.667,
+      "last_frame_end_seconds": 36.7,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "audio_stream_count": 0,
+  "full_AV_decode_exit": 0,
+  "full_AV_decode_diagnostic": "",
+  "probe_diagnostic": "",
+  "frame_probe_diagnostic": "",
+  "premature_end_reported": false,
+  "extracted_frames": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png",
+        "bytes": 1020788,
+        "sha256": "2deee757edf77443e630b927d4161060c0c57d0ee62405b0adaab22c5e0c8385"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 0.0,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 0000020c9abdd400] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-00.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 0000020c9abdd400] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png",
+        "bytes": 1251951,
+        "sha256": "53729f7e0b7330690ab458ee9cd9969c2f159a389ea21a7433ec1a573162178e"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 18.3335,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 00000164d3adb000] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-01.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 00000164d3adb000] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png",
+        "bytes": 1161758,
+        "sha256": "66ac32ec1ba03066e22f6cd9d9ae15c8526c580529a7f91d84db22f80138c7cb"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "requested_pts_seconds": 36.667,
+      "extract_exit": 0,
+      "extraction_diagnostic": "[image2 @ 000001e2b54cf6c0] The specified filename 'D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\media-audit-a01\\frame-02.png' does not contain an image sequence pattern or a pattern is invalid.\n[image2 @ 000001e2b54cf6c0] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.\n",
+      "direct_visual_review_performed_by_this_worker": false
+    }
+  ],
+  "requested_days": 28,
+  "native_completed_days": 14,
+  "completed_day_shortfall": 14,
+  "daily_receipts": [
+    {
+      "day": 1,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d01-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "ef1acc8df7692e1e399809d228347d01c27af9b2337f23d7f5a673a69a51e067"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d01-status.json",
+        "bytes": 4650,
+        "sha256": "5b7d3104c1cd4585cb66e2c1b82b3901a41d8540c7bfb4d731315f61ece2bcae"
+      },
+      "observed_at_utc": "2026-10-16T16:54:01.309532+00:00",
+      "start_date_raw": 53148432,
+      "date_raw": 53148456,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 2,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d02-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "6a3ea81983b549cac681d0d4c06cbb23bc23ce71a03583dfd7ce3719994d5ef7"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d02-status.json",
+        "bytes": 4650,
+        "sha256": "b1ec16e952558b10d4a21b1f9b5f678ec4b6d1ff4df2d26c49b2dc7c9a32ce7e"
+      },
+      "observed_at_utc": "2026-10-16T16:54:03.151750+00:00",
+      "start_date_raw": 53148456,
+      "date_raw": 53148480,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 3,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d03-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "8d475138d634b0a92df98560e458e455244e3cd184511b39915711576154a723"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d03-status.json",
+        "bytes": 4650,
+        "sha256": "353b8420a160f510bfeaef27448b2fcd14307fffa6adaa815caf080a47e391f6"
+      },
+      "observed_at_utc": "2026-10-16T16:54:04.843593+00:00",
+      "start_date_raw": 53148480,
+      "date_raw": 53148504,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 4,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d04-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "279517d1aa9222cffd6ee3f52e37867afadc2fc8ec2d3badcc12acfdd24716a6"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d04-status.json",
+        "bytes": 4650,
+        "sha256": "0647c011d9a805f7e43a0b5d58d0e83ff694269b363abaed969455e8fee8cc54"
+      },
+      "observed_at_utc": "2026-10-16T16:54:06.993693+00:00",
+      "start_date_raw": 53148504,
+      "date_raw": 53148528,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 5,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d05-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "d48a379aed91a7eb98f9f789025d2b2a1b1dbd3fc6ae4118e5664543c2cd0ad0"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d05-status.json",
+        "bytes": 4650,
+        "sha256": "8cacaae0d9c16822e68af868fe6e30a7a037407ae8a82d19849b39158605b2f8"
+      },
+      "observed_at_utc": "2026-10-16T16:54:09.361585+00:00",
+      "start_date_raw": 53148528,
+      "date_raw": 53148552,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 6,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d06-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "8f793c9f1e1aad410540fc8844819aacc21fe5236d448ca56b0976a42819f0b3"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d06-status.json",
+        "bytes": 4650,
+        "sha256": "89c594c1b607ed079541fb08de12497d678ef58119c3830d7210ae714092dfe0"
+      },
+      "observed_at_utc": "2026-10-16T16:54:11.334454+00:00",
+      "start_date_raw": 53148552,
+      "date_raw": 53148576,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 7,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d07-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "6e63fc2f7d4075b7428f197f44f859fe7117578c4dfcb27b9f31362d60ca7920"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d07-status.json",
+        "bytes": 4650,
+        "sha256": "1165c3912c251d7aaaacc8ca00b9e6c2d98a36c8673a7253de2c5e4c84967ef7"
+      },
+      "observed_at_utc": "2026-10-16T16:54:13.617118+00:00",
+      "start_date_raw": 53148576,
+      "date_raw": 53148600,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 8,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d08-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "ba0aac2432f75f773cadeb4f824cb91e63f39aa659d998cf3277991202cf7642"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d08-status.json",
+        "bytes": 4650,
+        "sha256": "adc54a68346bbbbb0e04ee2e6547d7997bcbe049d9f3fbfc4b6042abe25ef8a1"
+      },
+      "observed_at_utc": "2026-10-16T16:54:15.452443+00:00",
+      "start_date_raw": 53148600,
+      "date_raw": 53148624,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 9,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d09-complete.actual.json",
+        "bytes": 1322,
+        "sha256": "4ce4e5960f1cc232157acdf4bda5f8e42be228e3f5a084f55b76dc02f0b85070"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d09-status.json",
+        "bytes": 4650,
+        "sha256": "7e411d088fe473d5f8bc1c20b9c07a6c81198c2e3a2bcec521a1e6874560f9ec"
+      },
+      "observed_at_utc": "2026-10-16T16:54:17.443459+00:00",
+      "start_date_raw": 53148624,
+      "date_raw": 53148648,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 10,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d10-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "cb268aa321a6aa9e1d47808e902e2341ce96c5e2261735ba4e75632a326363ec"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d10-status.json",
+        "bytes": 4654,
+        "sha256": "459c14ad69510bafbabce96e7aff9a588e47857597d61276b32c64cbf05b7f2e"
+      },
+      "observed_at_utc": "2026-10-16T16:54:19.662654+00:00",
+      "start_date_raw": 53148648,
+      "date_raw": 53148672,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 11,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d11-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "dddd8b9b9c25be8c34cbc79da082edf5ab72cc1d3dcef91465f680204a720a4f"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d11-status.json",
+        "bytes": 4654,
+        "sha256": "a7f9243a74616d1bc2d019289508091362d3b4f561fe040513173a0c32f0ca55"
+      },
+      "observed_at_utc": "2026-10-16T16:54:21.714119+00:00",
+      "start_date_raw": 53148672,
+      "date_raw": 53148696,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 12,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d12-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "d109cf6a3ce9165d99f9b8e348c550fd956043fe8d39fa5bde8198b0bf7bf99c"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d12-status.json",
+        "bytes": 4654,
+        "sha256": "57dd02ae551f9757c78a10985cdb8f314f79a82f76828486f143e30753349fd3"
+      },
+      "observed_at_utc": "2026-10-16T16:54:23.723126+00:00",
+      "start_date_raw": 53148696,
+      "date_raw": 53148720,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 13,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d13-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "1810ddbc380e630b11468ebb2d51fd7d78fee0d733ff75073f8ee8ecb7fbc52f"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d13-status.json",
+        "bytes": 4654,
+        "sha256": "0636cf60f5c7d157ad7435f6905f606d0030b6999c519adeba5532b2632bbe77"
+      },
+      "observed_at_utc": "2026-10-16T16:54:25.491274+00:00",
+      "start_date_raw": 53148720,
+      "date_raw": 53148744,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    },
+    {
+      "day": 14,
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-d14-complete.actual.json",
+        "bytes": 1323,
+        "sha256": "1f5109a3e3488679ae0050a6c83ff2d6104cb428be9e028dfaa3609aeaed39c0"
+      },
+      "native_status_source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d14-status.json",
+        "bytes": 4654,
+        "sha256": "4ee5da713b4d3b223b2960af3d4a44b6b40c25810fb190fa13869706a35805cf"
+      },
+      "observed_at_utc": "2026-10-16T16:54:27.781765+00:00",
+      "start_date_raw": 53148744,
+      "date_raw": 53148768,
+      "completed_daily_ticks": 1,
+      "overshoot_days": 0
+    }
+  ],
+  "initial_date_raw": 53148432,
+  "last_completed_date_raw": 53148768,
+  "last_completed_army": {
+    "army_id": 18,
+    "owner_character_id": 31254,
+    "soldiers": null,
+    "current_province_id": 2635,
+    "move_target_province_id": null,
+    "move_target_observable": false,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "route_source_count": 0,
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "day15_modal_arrival": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-d15-poll-009.json",
+      "bytes": 138762,
+      "sha256": "b1977d414d4bc10c983b1adb8f84ed6effd74d2333f1cbf9eccbb6ec7821b491"
+    },
+    "observed_at_utc": "2026-10-16T16:54:30.136146+00:00",
+    "date_raw": 53148792,
+    "paused": true,
+    "active_event": {
+      "source": "native",
+      "instance_id": 2,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "counted_as_completed_day": false,
+    "note": "Actual native date reached the fifteenth day, but no d15 completion receipt exists; retain fourteen qualified daily completions."
+  },
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-film-result.actual.json",
+    "bytes": 606,
+    "sha256": "20bff69ad1e91581683d5b38be9cdea724f70c4cd03a98e05c2420c92baf9b6b"
+  },
+  "requested_min_wall_seconds": 100,
+  "canonical_recorder_wall_seconds": 40.390308,
+  "wall_shortfall_seconds": 59.609692,
+  "min_wall_100_met": false,
+  "encoded_frame_end_shortfall_to_100_seconds": 63.3,
+  "encoded_frame_end_100_seconds_met": false,
+  "audit_output_bytes": 3665486,
+  "audit_output_budget_bytes": 33554432,
+  "closure_capacity": {
+    "phase": "after-offline-media-audit",
+    "observed_at_utc": "2026-10-16T17:20:24.698209+00:00",
+    "original_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+      "bytes": 16403,
+      "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+    },
+    "method": "existing owner film.capacity(c,measure=True), unchanged default guards",
+    "adoption_performed": false,
+    "deadline_renewed": false,
+    "budget_parameters_changed": false,
+    "reserves_released": false,
+    "D_credit_applied_to_C": false,
+    "measured": {
+      "usage": {
+        "profile": 566016516,
+        "driver": 76588469,
+        "raw": 25174948,
+        "other": 24672286
+      },
+      "remaining_scene_bytes": 1589249157,
+      "volumes": {
+        "C:/": {
+          "free": 32547995648,
+          "required": 28580179353
+        },
+        "D:/": {
+          "free": 53221654528,
+          "required": 23198303365
+        }
+      }
+    },
+    "quota_review_at_utc": "2026-10-16T19:16:40.776628Z",
+    "admitted_under_original_envelope": true,
+    "fresh_disk_usage": {
+      "C:/": {
+        "free_bytes": 32547995648,
+        "total_bytes": 511133945856,
+        "required_bytes": 28580179353
+      },
+      "D:/": {
+        "free_bytes": 53221654528,
+        "total_bytes": 500090007552,
+        "required_bytes": 23198303365
+      }
+    }
+  },
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "human_full_review": false,
+    "human_signoff": false
+  },
+  "limitations": [
+    "Machine checks and decoded media facts do not establish gameplay outcomes or human approval.",
+    "Desktop client-region capture remains subject to source-guard sampling; no independent HWND capture is implied.",
+    "Container duration is reported separately from decoded frame timestamps.",
+    "Actual wall duration and retained encoded video both fall below the requested100-second minimum. No minimum-duration pass is asserted.",
+    "Fourteen daily completions and a fifteenth-day modal arrival do not constitute completion of the assigned28-day plan.",
+    "Army18 remained at province2635 in siege state in the last completed daily receipt; no new march/arrival business positive is asserted.",
+    "No audio stream exists; the full decode maps every present audio/video stream.",
+    "Three original PNG files were structurally verified. Root direct visual review remains separate; this worker does not certify clean spans or human signoff.",
+    "PNG image2 filename-pattern warnings are retained separately from raw probe/decode diagnostics."
+  ]
+}

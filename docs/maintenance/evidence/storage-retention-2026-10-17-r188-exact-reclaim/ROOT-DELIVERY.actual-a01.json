@@ -1,0 +1,86 @@
+{
+  "schema": "xar.r188-root-reviewed-exact-reclamation.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T18:08:29.179012+00:00",
+  "policy_version": "1.0.0",
+  "Root_adoption": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ROOT-ADOPTION.actual-a01.json",
+    "bytes": 8854,
+    "sha256": "566274771ef435139198681948e56b705a36c59567fd27a307d2122aa550c0ad"
+  },
+  "native_plan_sha256": "aa81349e8552a9fc572fa18b2cc05666b209c034f01939c0316d9abdbdcbf940",
+  "ZIP_plan_sha256": "9669fa6b5b2651e93d6fafec875c79a22d1ff7e9bf892a658ed8debec5d2c85c",
+  "planned_max_count": 1000,
+  "actual_deleted_count": 1000,
+  "retained_or_failed_count": 0,
+  "actual_C_singlelink_allocation_reclaimed_bytes": 1642663936,
+  "actual_C_logical_deleted_bytes": 1640689589,
+  "actual_D_credit_bytes": 0,
+  "by_lane": {
+    "native": {
+      "deleted_count": 999,
+      "allocation_bytes": 472879104,
+      "logical_bytes": 470905783
+    },
+    "archive": {
+      "deleted_count": 1,
+      "allocation_bytes": 1169784832,
+      "logical_bytes": 1169783806
+    }
+  },
+  "unique_deleted_paths": 1000,
+  "unique_deleted_file_ids": 1000,
+  "per_leaf_availability": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ITEMS.actual-a01.jsonl.gz",
+    "bytes": 38675,
+    "sha256": "79ae3799bb6c6c410726c307fceb4f87738af704dbabc36c84f762e4a4a60ce8"
+  },
+  "source_keeper_handles_held_through_execution": 1129,
+  "all_kept_source_identities_unchanged": true,
+  "source_keeper_protection_deadline_unchanged": "2026-10-17T17:56:09.645216+00:00",
+  "auto_protection_renewal": false,
+  "archive_index_keeper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\ARCHIVE.index.keeper-a01.json",
+    "bytes": 335729,
+    "sha256": "e0803f56c58fb6267fd1e0f08353293acd3f28289f20b63410f809e36b512ac1",
+    "identity": {
+      "id": [
+        3061637496,
+        1125899908743803
+      ],
+      "b": 335729,
+      "ft": 134366469696341227,
+      "links": 1,
+      "allocation": 335872
+    },
+    "category": "record",
+    "protected_until_utc": "2026-10-17T17:56:09.645216+00:00",
+    "record_review_at_utc": "2027-04-14T17:59:44.610089+00:00",
+    "automatic_renewal": false
+  },
+  "large_payload_copy_or_fullhash_bytes": 0,
+  "small_recipe_index_manifest_content_SHA_verified": true,
+  "free_before": {
+    "C:/": 28495585280,
+    "D:/": 52566605824
+  },
+  "free_after": {
+    "C:/": 30138322944,
+    "D:/": 52566605824
+  },
+  "whole_volume_deltas_not_exclusively_attributed_to_cleanup": true,
+  "prior_D5629001728_recounted": false,
+  "directory_deletions": 0,
+  "no_a26_fourth_LIB_added": true,
+  "main_head_before": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "main_head_after": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "main_repo_writes": 0,
+  "R188_a29_R186normal_Steam_helpers_activecapacity_mutations": 0,
+  "game_SDK_screen_TaskBus_or_security_actions": 0,
+  "automatic_gc": false,
+  "source_guard_failures": {
+    "native_roots": {},
+    "archive": null
+  },
+  "availability_note": "Deleted exact payload paths are retired_unavailable; historical manifests remain unchanged. Retained1074 original sources+index+packager permit a new derived archive, not a promise of identical historical ZIP encoding. Native EXE/DLL/source/recipes retained; original object/library bytes no longer fallback."
+}

@@ -1,0 +1,72 @@
+{
+  "schema": "xar.r188-portable-maintenance-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-16T18:11:59.728811+00:00",
+  "policy_version": "1.0.0",
+  "files": [
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/ROOT-DELIVERY.actual-a01.json",
+      "bytes": 3420,
+      "sha256": "0a93a54f9a6f836e9a24a204525a86f29f6271168fae7289493b68115bc9abd5"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/ROOT-ADOPTION.actual-a01.json",
+      "bytes": 8854,
+      "sha256": "566274771ef435139198681948e56b705a36c59567fd27a307d2122aa550c0ad"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/INTENT.actual-a01.json",
+      "bytes": 1419,
+      "sha256": "376534b5dd5d72836a7698e7999e14b983f34a610718d1cb9551c79067761c09"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/FRESH-CONSUMERS.actual-a01.json",
+      "bytes": 440,
+      "sha256": "99410997e65572e7a7700c1f3e853a83d627610bc4944c2587408a169fb2586f"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/ITEMS.actual-a01.jsonl.gz",
+      "bytes": 38675,
+      "sha256": "79ae3799bb6c6c410726c307fceb4f87738af704dbabc36c84f762e4a4a60ce8"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/INDEPENDENT-READBACK.actual-a01.json",
+      "bytes": 946,
+      "sha256": "5434c29be31d58b704efbe72ef8fb1c7c16ace95625a51fe373fd93ba7980b61"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/NATIVE-EXACT-PLAN.readonly.json.gz",
+      "bytes": 39759,
+      "sha256": "aa81349e8552a9fc572fa18b2cc05666b209c034f01939c0316d9abdbdcbf940"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/NATIVE999-GROUPS.readonly-a01.json",
+      "bytes": 4730,
+      "sha256": "9ebde7cacf6b6ff15f4be4c1635bb3db2c0ea71c5b80cf4594e1073f965ee3c5"
+    },
+    {
+      "name": "docs/maintenance/evidence/storage-retention-2026-10-17-r188-exact-reclaim/ZIP-ONE.plan.readonly-a02.json",
+      "bytes": 10403,
+      "sha256": "9669fa6b5b2651e93d6fafec875c79a22d1ff7e9bf892a658ed8debec5d2c85c"
+    },
+    {
+      "name": "docs/maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md",
+      "bytes": 5057,
+      "sha256": "d33b944f0af580c329e8e8f42085924d54f3212bb082312571002ba280c24310"
+    }
+  ],
+  "source_refs": {
+    "ROOT-DELIVERY.actual-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ROOT-DELIVERY.actual-a01.json",
+    "ROOT-ADOPTION.actual-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ROOT-ADOPTION.actual-a01.json",
+    "INTENT.actual-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\INTENT.actual-a01.json",
+    "FRESH-CONSUMERS.actual-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\FRESH-CONSUMERS.actual-a01.json",
+    "ITEMS.actual-a01.jsonl.gz": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ITEMS.actual-a01.jsonl.gz",
+    "INDEPENDENT-READBACK.actual-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\INDEPENDENT-READBACK.actual-a01.json",
+    "NATIVE-EXACT-PLAN.readonly.json.gz": "C:\\ck3-e04-resume-20261015-a01\\capacity-lane\\post-r185-native-candidates-a01\\NATIVE-EXACT-PLAN.readonly.json.gz",
+    "NATIVE999-GROUPS.readonly-a01.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\NATIVE999-GROUPS.readonly-a01.json",
+    "ZIP-ONE.plan.readonly-a02.json": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\ZIP-ONE.plan.readonly-a02.json"
+  },
+  "main_repo_applied": false,
+  "large_payload_copied": false,
+  "automatic_gc": false
+}

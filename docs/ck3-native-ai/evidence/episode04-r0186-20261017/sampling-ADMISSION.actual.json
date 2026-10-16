@@ -1,0 +1,164 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "bootstrap": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\bootstrap-input.actual-a01.json",
+    "bytes": 6136,
+    "sha256": "1d646ad3a431c4132ff9e99063e3de54db99a140fcd6422e8d058ddc1d05957d"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7804,
+    "sha256": "b2028b75884555bd92d00105cfa531e7295ffc885562155788f6c9974a12f951"
+  },
+  "request_prefix": "r186-sampling-a01",
+  "SDK_execution_owner": "Root only",
+  "actions": [
+    "enable_natural_once",
+    "enable_payment_once"
+  ],
+  "request_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-01-before.json",
+      "bytes": 136381,
+      "sha256": "2a1951e48faabaa841722679ce4821c24999d1ea3dc6f786630b8de5ce3ecb16"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-02-natural-query.json",
+      "bytes": 4738,
+      "sha256": "ca54b6850cc6dada4ddf11101ad0e24a6a1c53e794b4360cfba3c3170cdede33"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-03-before-cash.json",
+      "bytes": 136391,
+      "sha256": "38e8dc29b266db59eb946b560474c0ad9e03ae8959d5f9a33ea532471daf2ea0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-04-cash-query.json",
+      "bytes": 26580,
+      "sha256": "ec543bfc59234395b6a233c187eb1694989b944be621d236f521efc070162f1d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-05-before-natural-enable.json",
+      "bytes": 136411,
+      "sha256": "5c9a298647075a03470ad593118a916eede5bfb908fa01011533a42cdcb0ace3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-06-natural-enable-once.json",
+      "bytes": 4819,
+      "sha256": "c5b30c9a4ba34b634cb54283a45fd9e42c1e92d3986cfb627f45afb0ab9e8d45"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-07-before-cash-enable.json",
+      "bytes": 136405,
+      "sha256": "56dc4f01bd0bf4d2515b9ad483c0cf83855a803e295e6b076b19f5fb31055d85"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-08-cash-enable-once.json",
+      "bytes": 26939,
+      "sha256": "5ab3ee8279855a95ca4092c95153a2b17548430039d90c82f38c0b37cf26b3de"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-09-natural-independent-readback.json",
+      "bytes": 136425,
+      "sha256": "1597e6b636f4e7606d77e06e0036ff7e33ce20dfde48ecfc9235a137557a85b4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-10-natural-query.json",
+      "bytes": 4782,
+      "sha256": "a8ae9e9a01f77e3045e9dd51957c97ccef3d8c29b9c6776c53d2014e712bc81c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-11-cash-independent-readback.json",
+      "bytes": 136419,
+      "sha256": "8890e49a6f4cde4388ef89402aab4812eb7e3aa79b1a9f82d0afa89376025317"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-12-cash-query.json",
+      "bytes": 26856,
+      "sha256": "99a8fd4ccabc440a72d597515963fd1d8700a54e396c0851684ac53bb597cb9e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sampling-a01-13-final.json",
+      "bytes": 136378,
+      "sha256": "238bb1b3d57962644988c8966952866baec8e9c7b7a5216a4fa6479ff26ca380"
+    }
+  ],
+  "unknown_requests_never_replayed": true,
+  "Arm_Resume_Move_or_disable": 0,
+  "last_request": {
+    "request_id": "r186-sampling-a01-13-final",
+    "tool": "ck3_take_snapshot",
+    "arguments": {}
+  },
+  "status": "ADMITTED_ACTUAL_GATES_NOT_BUSINESS_PROOF",
+  "natural_before": {
+    "installed": true,
+    "available": true,
+    "capture_enabled": false,
+    "busy": false,
+    "clear_completed": true,
+    "epoch": 0,
+    "active_captures": 0,
+    "retained_records": 0,
+    "qualified_records": 0,
+    "status": "disabled",
+    "readiness": "off"
+  },
+  "natural_after": {
+    "installed": true,
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 0,
+    "qualified_records": 0,
+    "status": "enabled",
+    "readiness": "awaiting_sample"
+  },
+  "payment_before": {
+    "sampling": {
+      "available": true,
+      "capture_enabled": false,
+      "busy": false,
+      "clear_completed": true,
+      "epoch": 0,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0
+    },
+    "controlled_window_admitted": false
+  },
+  "payment_after": {
+    "sampling": {
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0
+    },
+    "current_session": {
+      "pid": 16240,
+      "process_create_time_100ns": 134366417898733491,
+      "connection_generation": 1,
+      "loaded_game_epoch": null,
+      "controlled_window_id": 1,
+      "same_owned_process_no_load_window": true,
+      "game_state_identity_witness": 1613046534224,
+      "player_character_full_id": 31254,
+      "snapshot_revision": 3,
+      "native_date_raw": 300336016406543120,
+      "absolute_day_raw": 389518
+    }
+  },
+  "final_date_raw": 53148432,
+  "final_revision": 4,
+  "actual_writer_or_refill_positive": false,
+  "sentinel_generation_not_queried": true
+}

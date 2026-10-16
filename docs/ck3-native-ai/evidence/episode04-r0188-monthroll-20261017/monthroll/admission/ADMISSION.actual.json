@@ -1,0 +1,86 @@
+{
+  "schema": "xar.maintenance.writer_pc.future-admission.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_utc": "2026-10-16T18:20:51.652693+00:00",
+  "prepare_only": true,
+  "scope": "Current raw query plus original same-frame journal/Root identity only; not a wallet callback or military attribution",
+  "expected_root_identity": {
+    "pid": 12060,
+    "process_create_time_100ns": 134366470385086412,
+    "connection_generation": 1,
+    "controlled_window_id": 1,
+    "player_character_full_id": 31254
+  },
+  "expected_payment_epoch": 1,
+  "expected_episode": "native-31254-0a8ceff1be59",
+  "raw_leaf": {
+    "schema_version": 1,
+    "observation_kind": "paused_current_raw_context",
+    "attribution_scope": "current_raw_context_only",
+    "maintenance_attribution": "unclosed",
+    "character": 1779059783952,
+    "character_full_id": 31254,
+    "snapshot_revision": 42,
+    "date_raw": 53149056,
+    "actor_identity_stable": true,
+    "same_frame_ready": true,
+    "values": {
+      "context_identity_before": 1779091018144,
+      "context_identity_after": 1779091018144,
+      "value_2c0": 469493,
+      "value_2c8": 0,
+      "value_28": 216342,
+      "value_30": 0,
+      "capture_complete": true,
+      "context_stable": true,
+      "failed_reads": 0
+    },
+    "admission_ready": true,
+    "unavailable_reason": null
+  },
+  "source_packet_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-03-fresh-cash.json",
+      "bytes": 238355,
+      "sha256": "a7897e2824732aed36bb867dd85a58ce26dd455d711265aaced4abbeedd6add2"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-01-fresh-before.json",
+      "bytes": 141159,
+      "sha256": "84605ffee4fb56dc2d026826ce7c4e1ae6838679fcf802f225d0e97d0584cfb6"
+    }
+  ],
+  "SYSTEM_receipt_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\build-a07\\defender-exe-exclusions\\20261015T173116Z-dcc6d850\\receipt.json",
+    "sha256": "c074d1eddc672eecdd13eb994db2f12a8bcd98b929820ef0e96057bdb336f57b"
+  },
+  "machine_execution_gate_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\runs-a06-final-narrow\\EXECUTION-GATE.actual.json",
+    "sha256": "e23b4f2733d4031a49ababd507a5ed9fcbe732e55f45992c4dffcb77b7b9b23b"
+  },
+  "argv": [
+    "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\build-a07\\maintenance_writer_cold_observer.exe",
+    "--enable-ck3-12004-data-watch",
+    "--fixture-meta",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\CURRENT-RAW-ADMISSION.meta.txt",
+    "--timeout-ms",
+    "30000",
+    "--raw",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.raw.ndjson",
+    "--ready",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.ready.json",
+    "--expected-hits",
+    "128",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080"
+  ],
+  "native_revalidation_required": [
+    "Exact actual4 Root-qualified SHA/build plus process create/name, mapped image size and known16B parent anchor",
+    "Character ID/magic and context pointer stable twice before watch and after each read",
+    "All observed threads watch before continuing, reserved slots never stolen"
+  ],
+  "old_packet_freshness_not_inferred_from_mtime": true,
+  "Root_responsibility": "These independently supplied current-window expectations must come from the fresh paused owned frame; this adapter never manufactures a new query, advances time, or grants observation permission from archived packet timestamps.",
+  "maintenance_attribution": "unclosed",
+  "known_producer": false
+}

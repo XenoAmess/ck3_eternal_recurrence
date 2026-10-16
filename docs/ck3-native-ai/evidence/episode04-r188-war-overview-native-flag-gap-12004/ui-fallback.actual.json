@@ -1,0 +1,82 @@
+{
+  "schema": "xar.e04.r188-war-notice-UI-fallback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:26:38.151706+00:00",
+  "native_query_failure": {
+    "original": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0188/responses/r188-war-notice-query-a01.json",
+      "bytes": 1339,
+      "sha256": "da36bf94ee4746184ad01448fc821657b8087fcbc20ffa3291eeb3bf52ee0bf4"
+    },
+    "actual_expected_revision": 43,
+    "is_error": true,
+    "text": "Error executing tool ck3_query_war_declared_overview_v1: Native does not advertise this fixed war overview operation"
+  },
+  "before": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-before-close-a01.actual.json",
+    "bytes": 725,
+    "sha256": "c6087bf78ce0ad7a04b0eed9f391d5f349908f0cd9ae184de899bfde3c76c4f5"
+  },
+  "after": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-after-close-a01.actual.json",
+    "bytes": 724,
+    "sha256": "eb6fbc4b174cc11e5a7972dc791cc86e8cabe71f05eb00147d44114ac3efef7b"
+  },
+  "original_PNGs": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\war-notice-before-close-a01.png",
+      "bytes": 1921924,
+      "sha256": "064ad39390dde62d7c1965b549df101b262de81336e3c3b510b8352d46ec6538",
+      "availability": "original_present_metadata_checked",
+      "fresh_payload_hash_performed_by_this_worker": false,
+      "observed_at_utc": "2026-10-16T18:19:28.373923+00:00",
+      "machine_id": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\war-notice-after-close-a01.png",
+      "bytes": 1954697,
+      "sha256": "06bfe3a4d28b3d2beadfc1950b6c318ab7b81a155b193826995b0dc84b2a7f10",
+      "availability": "original_present_metadata_checked",
+      "fresh_payload_hash_performed_by_this_worker": false,
+      "observed_at_utc": "2026-10-16T18:19:49.323872+00:00",
+      "machine_id": "desktop-3fevhd2-1c74096080"
+    }
+  ],
+  "coordinate_map_receipt": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-close-click-a01.png.json",
+    "bytes": 1579,
+    "sha256": "b0571fcc7ae97d60c60b9c8f91d7e934258be96c60af842bfb29aa20a6e2e755"
+  },
+  "coordinate_action": {
+    "click_count": 1,
+    "source_image_size": [
+      2560,
+      1440
+    ],
+    "desktop_size": [
+      2560,
+      1440
+    ],
+    "preview_bounds": [
+      0.0,
+      0.0,
+      2560,
+      1440
+    ],
+    "mapped_screen_point": [
+      1425,
+      456
+    ],
+    "focus_PID_before_after": 12060,
+    "click_completed": true,
+    "failures": []
+  },
+  "map_receipt_original_machine_id_present": false,
+  "machine_identity_supplement": "wrapper current machine ID and both original screenshot receipts explicitly name the same machine; guarded map before/after foreground PID/HWND and image dimensions match those originals. Original map JSON preserved unchanged.",
+  "Root_direct_review_statement": "stock notice disappeared after the single right-X coordinate_map click; still Mar31 paused, samePID12060. This is Root direct pixel review, not this worker pixel review or a Native result.",
+  "native_closed_verified": false,
+  "native_close_invoked": false,
+  "new_war_handling_credit": false,
+  "copy_big_PNGs": false,
+  "worker_SDK_or_screen_action": false
+}

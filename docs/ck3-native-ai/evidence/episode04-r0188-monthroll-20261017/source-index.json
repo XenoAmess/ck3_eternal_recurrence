@@ -1,0 +1,258 @@
+{
+  "schema": "xar.e04.r188-monthroll-close-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T18:34:03.213832+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "originals": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/NORMAL-SAVE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 4445,
+        "sha256": "dae7f83597044ab02d4dab7ce14fa3c097f42c2ca959efb213fe6aeeb7d45336"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/BOOTSTRAP-OBSERVED.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+        "bytes": 927,
+        "sha256": "8e4fa68a78ba06b85d0056d5ba9ad7584be4133a469d1b1df03d1f6a27d6b1eb"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/bootstrap-result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\bootstrap-result.json",
+        "bytes": 15168,
+        "sha256": "a5de2e4bb6404a8de82033f756f64d6b111e567fef780e3ca560bb954ba28b2b"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/session-result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\session-result.json",
+        "bytes": 12937,
+        "sha256": "7dce30fb6424de0cafc500cd809ac732bbe4d57d5f3c90938cfb019458654c41"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/ROOT-LAUNCH-CALL.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-LAUNCH-CALL.actual-a01.json",
+        "bytes": 896,
+        "sha256": "acc0bd55e6c6c11c2f4f6d09549bc21cae31f945bb299486bbbe22ffbd86820b"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-film-a01-close-a01-02-save-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-close-a01-02-save-once.json",
+        "bytes": 20444,
+        "sha256": "acc65a8baa283d750a010a59b9588285f31d7ee12d0de529a68dd49dd351c94c"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-natural-after-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-natural-after-a01.json",
+        "bytes": 5366,
+        "sha256": "b95bd4a2a87296a83ee18bd70d106a5296af4021945b491a2dd40928334ca049"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-film-a01-d12-resume-once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d12-resume-once.json",
+        "bytes": 1613,
+        "sha256": "72695912a2e7fea18029532463eac00be5213d4e778c4eef8598ad163329bfa9"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/responses/r188-monthroll-a01-execute-19-terminal-g12.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-19-terminal-g12.json",
+        "bytes": 4690,
+        "sha256": "ae6a39f1edd3f4c3fbb540b15d3085bee6c90a18afdbc8b8e827fe0e0e6f477f"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/CONTROLLER-CONFIG.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\CONTROLLER-CONFIG.actual.json",
+        "bytes": 1034,
+        "sha256": "c827dfe6880f8f241ff94a6290b1c61dd95550402d9fb1010ddd4636387928b9"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/EXECUTE.once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\EXECUTE.once.json",
+        "bytes": 337,
+        "sha256": "f9691be9f554e1ae4e8e5da30428f075c1ade20da0e4abb2e5742da57dfc0935"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/FRESH-WINDOW.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\FRESH-WINDOW.actual.json",
+        "bytes": 1867,
+        "sha256": "c80170e276eff179a726106268ef991d8bc5b2592b22955693da723ffd4ee7e6"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/NATURAL-DAY.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\NATURAL-DAY.actual.json",
+        "bytes": 7265,
+        "sha256": "289d6eac5df0db6b035961a0940117e425d4998444aa7501c69fe790b1323dc0"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/OBSERVER-START.once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\OBSERVER-START.once.json",
+        "bytes": 828,
+        "sha256": "87f05002a6e0a6b3af0849b80fde29ad782a2704e33ff63343b2c34706c5f61f"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/OBSERVER-STARTED.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\OBSERVER-STARTED.actual.json",
+        "bytes": 887,
+        "sha256": "d2f34ff9e0adabe0352c290f6e4044d1f1bff4424431b76394ddac92937fe6da"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/PLAN-CHECK.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\PLAN-CHECK.actual.json",
+        "bytes": 925,
+        "sha256": "4f44acf76c71096bd6069d569ddef8dc2d09528998394a56ac81bfa01f70f93a"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/PREPARED.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\PREPARED.actual.json",
+        "bytes": 2878,
+        "sha256": "c2f64a602ee357677e3a3101384e6ed768f83457a4b465911b502388657afcda"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/READY-AND-RESUME.once.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\READY-AND-RESUME.once.json",
+        "bytes": 1251,
+        "sha256": "6006fe32da4c9f2c10f4d86435ad507512f7bbb5a8e9ddb017b688b22ab232e2"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/ROOT-FINALIZE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\ROOT-FINALIZE.actual.json",
+        "bytes": 1035,
+        "sha256": "f68fd312f78ed6add7df2bfe77e062138a44192a45284e453d8e4ce34967deb7"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/admission/ADMISSION.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\ADMISSION.actual.json",
+        "bytes": 4007,
+        "sha256": "d5181f658f4f63f986b526c9d89d600468155863bc5e51c03f13b7ad0c30ebd8"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/admission/writer.raw.ndjson",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.raw.ndjson",
+        "bytes": 34982,
+        "sha256": "d20028e2596ea585939c033cde5ace26f804e51c7bcb8b0ccec11d06478f9a0b"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/finalize-a01/FINALIZE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\finalize-a01\\FINALIZE.actual.json",
+        "bytes": 836,
+        "sha256": "e2a36253470cc4df0c8a5872e5f998fad89669c201513e1494c26b40abb033a4"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/monthroll/finalize-a01/WRITERS.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\finalize-a01\\WRITERS.actual.json",
+        "bytes": 6891,
+        "sha256": "05575043e9ca43c0469bbbfe9d3ec74e902daf62d6778e4ce010fd1db754262d"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/close/SCREEN-RELEASE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 6337,
+        "sha256": "e8dfdb930ee229c790ec539c58613c4d262ee2678fdaa3adcde14454160bfd35"
+      },
+      "copy_method": "exact_bytes"
+    }
+  ],
+  "exact_original_bytes": 137846,
+  "external_named_driver": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\state-a01\\native-session\\army-query-history-results\\army-query-5e1bb82b14e34577b092c3bcc2b7f142.json",
+    "bytes": 12280646,
+    "sha256": "69c9655e63c658a494ceb4f855bd8925b63e0c093e9cda2c6839c9ccdf0c9afb",
+    "kind": "complete-driver-army-query-result-json-v1",
+    "wire_bytes_preserved": false
+  },
+  "generated": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/driver-selected-loss-context.derived-a01.json",
+      "bytes": 39363,
+      "sha256": "d1bdeba24d3c0c4ac98e9b15a109f7c04065329dd0ad2ff720e8c5976c62d29a"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0188-monthroll-20261017/facts.monthroll-close.derived-a01.json",
+      "bytes": 10698,
+      "sha256": "4ed8aec2d3da95519bf49bc6f3ba6451c74846c194bd8320eee753a3e7e3cb22"
+    }
+  ],
+  "prior_film_stage_patch_unchanged": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r188-portable-candidate-a01/R188-FILM-STAGE-PORTABLE.relative.patch",
+    "bytes": 812658,
+    "sha256": "528769cb26bbf89dc64d1b3aa3fcbc2e44e707d22009dcf3271f3fc1d9cded86"
+  },
+  "portable_closure": "Selected small originals and parsed JSON subtrees only; raw Driver/save/video/native/source dependencies remain exact pins, not full portable closure.",
+  "retention": {
+    "category": "record",
+    "policy_version": "1.0.0",
+    "review_after_hours": 4320,
+    "reason": "Small representative actual monthroll/close evidence; external large assets require current-use review."
+  },
+  "integration": "External append-only candidate, not applied to master."
+}

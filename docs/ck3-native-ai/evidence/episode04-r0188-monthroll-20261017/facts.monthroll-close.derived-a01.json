@@ -1,0 +1,216 @@
+{
+  "schema": "xar.e04.r188-monthroll-close-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T18:34:03.213832+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "runtime": {
+    "pid": 12060,
+    "process_creation_filetime_100ns": 134366470385086412,
+    "generation": 1,
+    "episode": "native-31254-0a8ceff1be59",
+    "actor_id": 31254
+  },
+  "stage": "same-runtime later monthroll business and session close, after first raw had ended",
+  "original_film_unchanged": {
+    "completed_days": 11,
+    "last_native_date_raw": 53149056,
+    "wall_seconds": 34.031147,
+    "media_seconds": 30.466,
+    "raw_sha256": "bfea8ea5ab9cbd8daf16e5f86a86d45d261fa41e053eab3d83638acae7fb6cb7"
+  },
+  "later_monthroll": {
+    "original_generation12_reused_not_rearmed": true,
+    "start_date_raw": 53149056,
+    "end_date_raw": 53149080,
+    "completed_daily_ticks": 1,
+    "overshoot_days": 0,
+    "calendar_label_from_Root": "Mar31 to Apr1",
+    "later_business_day_not_in_ended_raw": true,
+    "recorder_restarted": false
+  },
+  "observer": {
+    "physical_qualified_writes": 2,
+    "same_value_writes": 2,
+    "offsets": [
+      704,
+      712
+    ],
+    "offset_hex": [
+      "0x2c0",
+      "0x2c8"
+    ],
+    "RIP_after_rva_hex": [
+      "0x28a645b",
+      "0x28a6466"
+    ],
+    "offset_28_or_30_retained_samples": 0,
+    "no_28_30_absence_claim": true,
+    "original_projection_status": "ACTUAL_WRITERS_SOURCE_UNKNOWN",
+    "original_projection_known_producer": false,
+    "maintenance_attribution": "unclosed",
+    "full_window_all_writes_covered": false,
+    "restored": true,
+    "detached": true,
+    "pending_event": false,
+    "cleanup_complete": true,
+    "source_body_binding_addendum_not_in_this_snapshot": true
+  },
+  "history": {
+    "accepted_query": true,
+    "full_profile_executed": true,
+    "compact_pointer": "body.armies[0]",
+    "full_driver_pointer": "army_strengths[0]",
+    "selected_actual_loss_events": 0,
+    "global_loss_overwritten_events": 2130,
+    "natural_parent_records": 24
+  },
+  "normal_close": {
+    "normal_save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 4445,
+      "sha256": "dae7f83597044ab02d4dab7ce14fa3c097f42c2ca959efb213fe6aeeb7d45336"
+    },
+    "checkpoint_pin_only": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74492850,
+      "sha256": "13d0724240bd341ec2e88f92ee50d0deb2cd1189ae1ef2803a16e34bc86c74be"
+    },
+    "date_raw": 53149080,
+    "exit_reason": "process_exit",
+    "process_exit_code": 0,
+    "session_ok": true,
+    "sdk_thread_exited": true,
+    "sdk_error": null,
+    "supervisor_error": null,
+    "final_screen_sequence": 5841,
+    "keeper_failure": null,
+    "process_tree_gone": true,
+    "cleanup_proven": true,
+    "root_launch_exit_code": 0,
+    "recorder_state": "NORMAL_TREE_EMPTY"
+  },
+  "screen_release": {
+    "receipt_copied": true,
+    "release_qualification_pending": false,
+    "receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 6337,
+      "sha256": "e8dfdb930ee229c790ec539c58613c4d262ee2678fdaa3adcde14454160bfd35"
+    },
+    "original_body": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-16T18:33:50.346960+00:00",
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+      "bootstrap_result": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\bootstrap-result.json",
+        "bytes": 15168,
+        "sha256": "a5de2e4bb6404a8de82033f756f64d6b111e567fef780e3ca560bb954ba28b2b"
+      },
+      "config": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+        "bytes": 7371,
+        "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+      },
+      "normal_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 4445,
+        "sha256": "dae7f83597044ab02d4dab7ce14fa3c097f42c2ca959efb213fe6aeeb7d45336"
+      },
+      "guarded_click": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/normal-exit-click-a01.png.json",
+        "bytes": 1566,
+        "sha256": "27f52198cfc6378a4e93cdfff03786c545e873ef9a94854d0b628cda1d9b1fbb"
+      },
+      "confirmation_source_binding": {
+        "route": "later_exact_original_Root_reviewed",
+        "original_screenshot": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\normal-exit\\confirmation-source.png",
+          "bytes": 1637453,
+          "sha256": "1f94f9dfe4d81516cb945e4b3da1f516563af87a83848744174ba9c2a424a8bc"
+        },
+        "fresh_frame_receipt": {
+          "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/normal-exit-confirm-a01.actual.json",
+          "bytes": 721,
+          "sha256": "7d550b1c199ac6daf0d971377611fc921e021d5f60179785a75fe5f2e80c9f19"
+        },
+        "fresh_screenshot": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\normal-exit-confirm-a01.png",
+          "bytes": 1638715,
+          "sha256": "6d3e0d2adfe557551ebb8b605d169acea14c28bd4960202d5e6ed8eefda87494"
+        },
+        "Root_review_attestation": {
+          "reviewed": true,
+          "provided_by": "explicit --root-reviewed-fresh-source",
+          "attested_at_utc": "2026-10-16T18:33:49.423176+00:00",
+          "meaning": "Root states direct review occurred before the original click; attestation recorded now"
+        },
+        "source_age_before_original_click": {
+          "age_seconds": 15.638240337371826,
+          "checked_at_unix": 1792175269.8084297,
+          "maximum_seconds": 180.0,
+          "source_mtime_unix": 1792175254.1701894
+        },
+        "new_clicks": 0
+      },
+      "observer_cleanup": {
+        "controller_config": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-controller-config.actual-a01.json",
+          "bytes": 1032,
+          "sha256": "068d122e9c23e24373034a30cdbdc2fd471a0103a017a7a789e8fe7a13f2c9e3"
+        },
+        "observer_output_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01",
+        "observer_started_by_close_helper": false,
+        "observer_killed_by_close_helper": false,
+        "status": "NOT_STARTED_NO_OBSERVER_START_CLAIM"
+      },
+      "bootstrap_observation": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+        "bytes": 927,
+        "sha256": "8e4fa68a78ba06b85d0056d5ba9ad7584be4133a469d1b1df03d1f6a27d6b1eb"
+      },
+      "journal": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\screen-lease-journal.jsonl",
+        "bytes": 13281,
+        "sha256": "aeb54bcccb78cdc600eabe0e5407b98785ee2eee321df82b725fd06b3090d4f3"
+      },
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+        "--bus-dir",
+        "D:\\workspace\\.codex-task-bus",
+        "--expected-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "release-screen-cas",
+        "--task",
+        "e04-live-20261017-r0188",
+        "--expected-sequence",
+        "5841",
+        "--summary",
+        "machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0188 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged"
+      ],
+      "operation_replay_forbidden": true,
+      "exit_code": 0,
+      "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"d05b0c780b615faa714fdf0535403bb2e6941faf\"\n    },\n    \"last_sequence\": 5842,\n    \"next_step\": \"\",\n    \"pid\": 11708,\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0188 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"task_id\": \"e04-live-20261017-r0188\",\n    \"updated_at_utc\": \"2026-10-16T18:33:50.300364+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 5842,\n    \"event_id\": \"502473002b0f46878bcec341aff467e4\",\n    \"timestamp_utc\": \"2026-10-16T18:33:50.301568+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"e04-live-20261017-r0188\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0188 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"d05b0c780b615faa714fdf0535403bb2e6941faf\"\n    }\n  }\n}\n",
+      "stderr": "",
+      "task_done_resources_empty": true,
+      "normal_exit_zero": true,
+      "game_exit_code": 0,
+      "capacity_reservation_returned": false,
+      "storage_followup": "Root must perform shared-policy close check and return exact reservation separately"
+    }
+  },
+  "qualification": {
+    "new_clean": 0,
+    "new_business_positive": 0,
+    "new_human_signoff": 0,
+    "dynamic_video": "0/11",
+    "research_baseline": "6/14",
+    "business_baseline": "4/11"
+  },
+  "boundary": "No extra film days, no writer-to-maintenance attribution, no loss positive, no full-window absence; source-body annotation may arrive as a separate exact addendum."
+}

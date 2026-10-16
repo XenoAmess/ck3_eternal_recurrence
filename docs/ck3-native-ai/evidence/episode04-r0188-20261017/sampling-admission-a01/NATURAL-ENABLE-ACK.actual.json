@@ -1,0 +1,29 @@
+{
+  "step": "enable-army-observer-research-sampling-v1",
+  "accepted": true,
+  "status": "completed",
+  "army_observer_research_sampling_v1": {
+    "natural_phase": {
+      "installed": true,
+      "available": true,
+      "capture_enabled": true,
+      "busy": false,
+      "clear_completed": false,
+      "epoch": 1,
+      "active_captures": 0,
+      "retained_records": 0,
+      "qualified_records": 0,
+      "status": "enabled",
+      "readiness": "awaiting_sample"
+    }
+  },
+  "backend_id": "native-headless",
+  "observer_family": "natural_phase",
+  "queried_snapshot_id": "native:3",
+  "queried_revision": 4,
+  "queried_native_revision": 3,
+  "queried_date_raw": 53148792,
+  "queried_connection_generation": 1,
+  "queried_episode_run_id": "native-31254-0a8ceff1be59",
+  "queried_player_character_id": 31254
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "first_line": 245,
+    "last_line": 249,
+    "raw_span_sha256": "935ad6a1677abafa1bfc188085022db5ac9efb093d1303c45d0e31a20cf7b8a1",
+    "text": "option(\n  XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1\n  \"Compile exact-build war declaration window query and verified native close\"\n  OFF\n)\n"
+  },
+  {
+    "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+    "first_line": 1528,
+    "last_line": 1536,
+    "raw_span_sha256": "73c193c2243a74ee143cb8e69a82c6069b11b7b3dcec596c5e9fee5d9547db9f",
+    "text": "    XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1\n    XAR_ENABLE_PREWAR_FORCE_COALITION_V2\n    XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1\n    XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1\n    XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)\n  if(${private_option})\n    target_compile_definitions(xar_ck3_12002_runtime PUBLIC ${private_option}=1)\n  endif()\nendforeach()\n"
+  },
+  {
+    "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "first_line": 2286,
+    "last_line": 2300,
+    "raw_span_sha256": "5c65eb55745910769e955910929599bc0a5de0b6e821e333c742ceef4b5e63de",
+    "text": "#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1\n  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {\n    result += ',';\n    AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewQueryV1Capability);\n    result += ',';\n    AppendJsonString(result, xar::ck3_11906::kWarDeclaredOverviewCloseV1Capability);\n    result += ',';\n    AppendJsonString(result, xar::ck3_11906::kWarResultsQueryV1Capability);\n    result += ',';\n    AppendJsonString(result, xar::ck3_11906::kWarResultsCloseV1Capability);\n  }\n#endif\n#if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)\n  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {\n    result += ',';\n"
+  },
+  {
+    "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "first_line": 16208,
+    "last_line": 16214,
+    "raw_span_sha256": "c4aba4879e1e15ea4c15c1b1cbf74facc09b7b2bc60051d3f225825da2efe980",
+    "text": "#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1\n                    && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&\n                          (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||\n                           step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step ||\n                           step == xar::ck3_11906::kWarResultsQueryV1Step ||\n                           step == xar::ck3_11906::kWarResultsCloseV1Step))\n#endif\n"
+  },
+  {
+    "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+    "first_line": 18330,
+    "last_line": 18350,
+    "raw_span_sha256": "0ab783bd72eb4775d36f8f739e72a603514fb2c5f59193195bc1f6643455bd91",
+    "text": "#if defined(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1) && XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1\n          if (step == xar::ck3_11906::kWarDeclaredOverviewQueryV1Step ||\n              step == xar::ck3_11906::kWarDeclaredOverviewCloseV1Step ||\n              step == xar::ck3_11906::kWarResultsQueryV1Step ||\n              step == xar::ck3_11906::kWarResultsCloseV1Step) {\n            xar::ck3_11906::WarDeclaredOverviewMailboxContextV1 query{};\n            const auto admission_error = xar::ck3_11906::PrepareWarDeclaredOverviewMailboxV1(\n                game, previous_snapshot ? &previous_snapshot.value() : nullptr,\n                request_id, incoming.payload, step, state_revision, connection_generation,\n                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),\n                g_main_thread_query_mailbox_v1, query);\n            std::string response;\n            if (!admission_error.empty()) {\n              response = CommandResultFrame(request_id, step, false, admission_error);\n            } else {\n              const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(\n                  g_main_thread_query_mailbox_v1,\n                  &xar::ck3_11906::ExecuteWarDeclaredOverviewMailboxV1, &query, query.ticket);\n              if (submit == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {\n                auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(\n                    g_main_thread_query_mailbox_v1, query.ticket, 8'000);\n"
+  },
+  {
+    "relative_path": "tools/run_native_msvc.py",
+    "first_line": 128,
+    "last_line": 137,
+    "raw_span_sha256": "9b6920a4faf5746d42cf5db29a84d782b43a9742d4eab5b39bb209d0f5e5d1b8",
+    "text": "def configure_command(args: argparse.Namespace, tools: dict[str, str]) -> list[str]:\n    command = [tools[\"cmake\"], \"-S\", str(args.source_dir), \"-B\", str(args.build_dir),\n               \"-G\", \"Ninja\", f\"-DCMAKE_BUILD_TYPE={args.configuration}\",\n               f\"-DCMAKE_MAKE_PROGRAM={tools['ninja']}\", f\"-DCMAKE_CXX_COMPILER={tools['cl']}\",\n               f\"-DCMAKE_C_COMPILER={tools['cl']}\"]\n    command.extend(f\"-D{value}\" for value in args.cmake_define)\n    return command\n\n\ndef build_command(args: argparse.Namespace, tools: dict[str, str]) -> list[str]:\n"
+  }
+]

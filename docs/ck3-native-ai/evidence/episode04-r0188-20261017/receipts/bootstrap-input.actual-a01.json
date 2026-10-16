@@ -1,0 +1,131 @@
+{
+  "schema": "xar.e04.parameterized-owner-film-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "repo": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "authorized_assets_root": "D:\\workspace\\ck3_native_war_ai_promo_work",
+  "storage_policy_version": "1.0.0",
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01",
+  "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "6d23786a50710f162fc1fb5ee56434d8387a1fec696ec5876dd77cfc7d6cfdeb"
+  },
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "production_qualification": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\R188-REUSED-A29-QUALIFIED.actual-a01.json",
+    "bytes": 5010,
+    "sha256": "ee58a5199bcc97d0d28d88c4551ebfef5c9de4923cd8a9352e280b2d93fe5364"
+  },
+  "allocated_context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\allocated-context.actual-a01.json",
+    "bytes": 4555,
+    "sha256": "fe28e84371fe6567acd81eb8651d760a44b5910c030a78500d5da7d7af1e663d"
+  },
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\state-a01",
+  "prepared": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\prepared-a01\\prepared.json",
+  "raw_workdir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01",
+  "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r188_20261016_a01",
+  "request_prefix": "r188-film-a01",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+    "bytes": 11276,
+    "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge.dll",
+      "bytes": 13000704,
+      "sha256": "e4f2b7200a0029a56d83904b627aff724fb654b6983753da4c66af9d4e06fbbf"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "ed589a72f61f927bbdb658eb789f66298789e81978a15815316c3aae38f30af7"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "9c6764e834c0a3387ff6dc25da6e0166eb47cc1b525086870f32ef7c160211ef"
+    }
+  },
+  "steam_offline_receipt": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+  "screen": {
+    "cli": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_bus": "D:\\workspace\\.codex-task-bus",
+    "task_id": "e04-live-20261017-r0188",
+    "sequence": 5822
+  },
+  "checkpoint_source": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+    "save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74262421,
+      "sha256": "934aa1b99cc59874eb7365eb997f520753c4db4e31afd91a2d416e28a0244aef"
+    },
+    "save_response": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-close-a01-02-save-once.json",
+      "bytes": 20444,
+      "sha256": "5e70238ead93642191ab33aad1e7d3c3a1a1ec6eef419c99d1cc29f638f35fb9"
+    },
+    "prepared": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11657,
+      "sha256": "e9c52a9e0fa3a05f064b77a9c82a6c8bc03ad59d2d4ef486fd68634837a3f36c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 4454,
+        "sha256": "ab75d4ff66243c34aefcd82dbf8cbb3ca0c8a153946bdf3caba9bb9f5b0fa230"
+      },
+      "bootstrap_result": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\bootstrap-result.json",
+        "bytes": 15162,
+        "sha256": "e05ce43491fcf802617318d797d6451953de7131d7985dc7215c5af3316b9699"
+      },
+      "screen_release": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4946,
+        "sha256": "e0d647af4a713145a2df3bbd30d1a15a7be76353e177352895c96bba499b8fe4"
+      }
+    }
+  },
+  "identity_receipt_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+  "identity": null,
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ordinary_root": {
+    "primary_title_id": 2230,
+    "capital_province_id": 2619,
+    "government_key": "feudal_government"
+  },
+  "actor_id": 31254,
+  "army_id": 18,
+  "expected_start_date_raw": 53148792,
+  "expected_start_province_id": 2635,
+  "speed": 3,
+  "seconds": 180,
+  "min_wall_recording_seconds": 100,
+  "days": 13,
+  "session_timeout_seconds": 5400,
+  "normal_close_reserve_seconds": 180,
+  "army_history_sidecar_limit_bytes": 134217728,
+  "pre_resume_hook": null,
+  "game_started": false,
+  "promo_release_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-promo-probe-a01\\R188-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 5556,
+    "sha256": "69c055f2ee8be96a0f8ed3721797606f87857b440f31a3e797d7e0ce6aa42213"
+  }
+}

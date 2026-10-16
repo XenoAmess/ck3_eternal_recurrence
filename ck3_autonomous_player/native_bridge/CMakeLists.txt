@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
+option(XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004 "Observe stable visited depth8 refill definition prefix" OFF)
+
 option(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004
   "Observe only natural P returns inside an exact4 readonly county preview" OFF)
 add_executable(xar_ck3_county_predicate_trace_fixture EXCLUDE_FROM_ALL
@@ -1535,6 +1537,9 @@ foreach(private_option IN ITEMS
   endif()
 endforeach()
 
+if(XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004)
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1)
+endif()
 if(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
   target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_county_predicate_trace_hook.cpp)
   target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1)
@@ -9896,6 +9901,14 @@ if(BUILD_TESTING)
     target_compile_options(xar_test_gui_refill_receiver_candidates_12004 PRIVATE /EHsc /W4 /UNDEBUG)
   else()
     target_compile_options(xar_test_gui_refill_receiver_candidates_12004 PRIVATE -UNDEBUG)
+  endif()
+  add_executable(xar_test_gui_refill_parent_prefix_12004 EXCLUDE_FROM_ALL
+    fixtures/gui_refill_parent_prefix_12004_fixture.cpp)
+  target_compile_features(xar_test_gui_refill_parent_prefix_12004 PRIVATE cxx_std_20)
+  target_include_directories(xar_test_gui_refill_parent_prefix_12004 PRIVATE include)
+  target_compile_definitions(xar_test_gui_refill_parent_prefix_12004 PRIVATE XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1)
+  if(MSVC)
+    target_compile_options(xar_test_gui_refill_parent_prefix_12004 PRIVATE /EHsc /W4 /WX)
   endif()
   add_executable(xar_test_gui_refill_local_prefix_12004 EXCLUDE_FROM_ALL
     fixtures/gui_refill_local_prefix_12004_fixture.cpp)

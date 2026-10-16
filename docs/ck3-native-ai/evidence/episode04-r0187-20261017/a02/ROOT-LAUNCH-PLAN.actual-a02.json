@@ -1,0 +1,110 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T17:48:30.796648+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0187",
+  "scene": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01",
+  "new_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r187-a01\\R187-CAPACITY.actual-root-a01.json",
+    "bytes": 11046,
+    "sha256": "64ab36102d909562f7eb49a4725178bf5bc8fa3ad22f1449ee0ae867892e8773"
+  },
+  "prepared": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\prepared-a01\\prepared.json",
+    "bytes": 11675,
+    "sha256": "30f46020846ae9f7768327ac914aaf1cc1601fa66cbe51f97772b670a95df3ee"
+  },
+  "context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\allocated-context.actual-a01.json",
+    "bytes": 4553,
+    "sha256": "516e8fa15488731b9ea4efce40867a0e8341bf9feb106d000dca16d8468c3dfe"
+  },
+  "promo_release_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r187-promo-probe-a01\\R187-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 5556,
+    "sha256": "dc7001705373182d9d5b443c923f168d7dafe06a86774c33e72a274d1b07aa0f"
+  },
+  "known_prestart_failure": {
+    "original_call": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-CALL.actual-a01.json",
+      "bytes": 896,
+      "sha256": "45d2b7ec58f1f957e39bd32e80fad88646af0031ce82e2009c3d01c15cc5d5b7"
+    },
+    "original_plan": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-PLAN.actual-a01.json",
+      "bytes": 3626,
+      "sha256": "e44bac1402164fb61b5719e081173cb39937d1eb3c01413b0491c9f52e998e32"
+    },
+    "original_relay": {
+      "stdout": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stderr.txt",
+        "bytes": 3091,
+        "sha256": "ffa7d831acda9258a133f738e3328fe5d2de24b60414bef0051a2edf106e1040"
+      }
+    },
+    "game_run_dir_absent": true,
+    "identity_absent": true,
+    "ck3_process_absent": true
+  },
+  "steam_offline_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\steam-offline-reviewed.actual-a02.json",
+    "bytes": 1342,
+    "sha256": "668e5ccb59f059e1d397eecea78c55e34b99e0038e60439a8ee266115ba78f4d"
+  },
+  "screen_task": {
+    "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-live-20261017-r0187.json",
+    "bytes": 584,
+    "sha256": "60123a92c8160994a554aef9ae93909106118133ce04bd023e888a2449c289ec"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+    "run",
+    "--prepared",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\prepared-a01\\prepared.json",
+    "--run-dir",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187",
+    "--steam-offline-receipt",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\steam-offline-reviewed.actual-a02.json",
+    "--screen-cli",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--task-bus",
+    "D:\\workspace\\.codex-task-bus",
+    "--screen-repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--screen-task-id",
+    "e04-live-20261017-r0187",
+    "--screen-expected-sequence",
+    "5817",
+    "--screen-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "--timeout",
+    "5400",
+    "--recording-deadline-utc",
+    "2026-10-16T19:16:40.776628Z",
+    "--recording-capacity-admission",
+    "C:\\ck3-e04-resume-20261015-a01\\capacity-r187-a01\\R187-CAPACITY.actual-root-a01.json",
+    "64ab36102d909562f7eb49a4725178bf5bc8fa3ad22f1449ee0ae867892e8773",
+    "--recording-close-reserve-seconds",
+    "180",
+    "--runtime-actor-identity-receipt",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "--army-history-sidecar-limit-bytes",
+    "134217728",
+    "--private-war-cash-queries",
+    "--default-desktop"
+  ],
+  "actual_run_started": false,
+  "original_failure_archive": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-a01-FAILUREARCHIVE-a02\\A01-FAILURE-ARCHIVE.actual.json",
+    "bytes": 2819,
+    "sha256": "c52c60a3445202520717729d7d1ae00bdb66f3137bf2c7944add0ce1c626623a"
+  }
+}

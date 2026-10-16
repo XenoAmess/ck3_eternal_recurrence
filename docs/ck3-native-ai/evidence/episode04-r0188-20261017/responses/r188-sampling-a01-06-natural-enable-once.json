@@ -1,0 +1,103 @@
+{
+  "at": "2026-10-16T18:04:17.047246+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r188-sampling-a01-06-natural-enable-once",
+    "tool": "ck3_set_army_observer_research_sampling_v1",
+    "arguments": {
+      "observer_family": "natural_phase",
+      "expected_revision": 4,
+      "enabled": true
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\requests\\r188-sampling-a01-06-natural-enable-once.json",
+    "bytes": 229,
+    "sha256": "df411dbef571cee0e5b4f0bf3331bef58ad896ef92c9a9a1d3e5b14cb3057e17"
+  },
+  "is_error": false,
+  "body": {
+    "step": "enable-army-observer-research-sampling-v1",
+    "accepted": true,
+    "status": "completed",
+    "army_observer_research_sampling_v1": {
+      "natural_phase": {
+        "installed": true,
+        "available": true,
+        "capture_enabled": true,
+        "busy": false,
+        "clear_completed": false,
+        "epoch": 1,
+        "active_captures": 0,
+        "retained_records": 0,
+        "qualified_records": 0,
+        "status": "enabled",
+        "readiness": "awaiting_sample"
+      }
+    },
+    "backend_id": "native-headless",
+    "observer_family": "natural_phase",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "queried_date_raw": 53148792,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-31254-0a8ceff1be59",
+    "queried_player_character_id": 31254
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"enable-army-observer-research-sampling-v1\",\n  \"accepted\": true,\n  \"status\": \"completed\",\n  \"army_observer_research_sampling_v1\": {\n    \"natural_phase\": {\n      \"installed\": true,\n      \"available\": true,\n      \"capture_enabled\": true,\n      \"busy\": false,\n      \"clear_completed\": false,\n      \"epoch\": 1,\n      \"active_captures\": 0,\n      \"retained_records\": 0,\n      \"qualified_records\": 0,\n      \"status\": \"enabled\",\n      \"readiness\": \"awaiting_sample\"\n    }\n  },\n  \"backend_id\": \"native-headless\",\n  \"observer_family\": \"natural_phase\",\n  \"queried_snapshot_id\": \"native:3\",\n  \"queried_revision\": 4,\n  \"queried_native_revision\": 3,\n  \"queried_date_raw\": 53148792,\n  \"queried_connection_generation\": 1,\n  \"queried_episode_run_id\": \"native-31254-0a8ceff1be59\",\n  \"queried_player_character_id\": 31254\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "enable-army-observer-research-sampling-v1",
+      "accepted": true,
+      "status": "completed",
+      "army_observer_research_sampling_v1": {
+        "natural_phase": {
+          "installed": true,
+          "available": true,
+          "capture_enabled": true,
+          "busy": false,
+          "clear_completed": false,
+          "epoch": 1,
+          "active_captures": 0,
+          "retained_records": 0,
+          "qualified_records": 0,
+          "status": "enabled",
+          "readiness": "awaiting_sample"
+        }
+      },
+      "backend_id": "native-headless",
+      "observer_family": "natural_phase",
+      "queried_snapshot_id": "native:3",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_date_raw": 53148792,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "native-31254-0a8ceff1be59",
+      "queried_player_character_id": 31254
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"enable-army-observer-research-sampling-v1\",\n  \"accepted\": true,\n  \"status\": \"completed\",\n  \"army_observer_research_sampling_v1\": {\n    \"natural_phase\": {\n      \"installed\": true,\n      \"available\": true,\n      \"capture_enabled\": true,\n      \"busy\": false,\n      \"clear_completed\": false,\n      \"epoch\": 1,\n      \"active_captures\": 0,\n      \"retained_records\": 0,\n      \"qualified_records\": 0,\n      \"status\": \"enabled\",\n      \"readiness\": \"awaiting_sample\"\n    }\n  },\n  \"backend_id\": \"native-headless\",\n  \"observer_family\": \"natural_phase\",\n  \"queried_snapshot_id\": \"native:3\",\n  \"queried_revision\": 4,\n  \"queried_native_revision\": 3,\n  \"queried_date_raw\": 53148792,\n  \"queried_connection_generation\": 1,\n  \"queried_episode_run_id\": \"native-31254-0a8ceff1be59\",\n  \"queried_player_character_id\": 31254\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

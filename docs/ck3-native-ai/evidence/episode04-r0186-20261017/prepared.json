@@ -1,0 +1,329 @@
+{
+  "schema": "xar.war-episode04.bootstrap.v1",
+  "prepared_at": "2026-10-16T16:24:15.518036+00:00",
+  "launch_attempted": false,
+  "live_verified": false,
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01",
+  "profile_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile",
+  "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r186_20261016_a01",
+  "game": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "bridge_dll": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge.dll",
+    "bytes": 13000704,
+    "sha256": "e4f2b7200a0029a56d83904b627aff724fb654b6983753da4c66af9d4e06fbbf"
+  },
+  "bridge_injector": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "ed589a72f61f927bbdb658eb789f66298789e81978a15815316c3aae38f30af7"
+  },
+  "bridge_host": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_host.exe",
+    "bytes": 71680,
+    "sha256": "9c6764e834c0a3387ff6dc25da6e0166eb47cc1b525086870f32ef7c160211ef"
+  },
+  "profile_files": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\pdx_settings.txt",
+      "bytes": 524,
+      "sha256": "7de1177db43167522f9b67a07ac3f2c6b63820c6fd22f7788ecb1e09f035b838"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\player\\game_rules\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    }
+  ],
+  "succession_lifecycle": {
+    "schema": "xar.ck3.succession-lifecycle-binding/v1",
+    "lifecycle": "ordinary_campaign_succession",
+    "xar_enabled": "xar_off",
+    "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+    "source": "pure-vanilla-enabled-mods-empty",
+    "environment_sha256": "f7c328fd55a84403f7187f9b7c5a69e734180aad890c0ac103fa77b222d27204"
+  },
+  "environment_sha256": "f7c328fd55a84403f7187f9b7c5a69e734180aad890c0ac103fa77b222d27204",
+  "selection": "root selects a normal bookmark character after actual frontend ready; selection evidence belongs to run",
+  "bridge_host_role": "artifact identity only; production supervisor uses DLL and injector",
+  "recording_started": false,
+  "target_build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "installed_build_observation": {
+    "observed_at_utc": "2026-10-16T16:24:15.300074+00:00",
+    "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "manifest_sha256": "b3ac3e4ef05b311c474d27250a4cd5aec7ea32813b711f32560afac34470a69d",
+    "app_id": "1158310",
+    "branch": "1.20.0",
+    "numbers": {
+      "StateFlags": 4,
+      "buildid": 25734779,
+      "TargetBuildID": 25734779,
+      "BytesToDownload": 49807728,
+      "BytesDownloaded": 49807728,
+      "BytesToStage": 253338929,
+      "BytesStaged": 253338929,
+      "UpdateResult": 0
+    },
+    "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "launcher": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\launcher\\launcher-settings.json",
+      "raw_version": "1.20.0.4",
+      "display_version": "1.20.0.4 (Crozier)",
+      "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25"
+    },
+    "executable": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "exists": true,
+      "bytes": 101040248,
+      "mtime_ns": 1792052040982825200
+    },
+    "installed_depots": {
+      "1158311": {
+        "manifest": "5078208590259867811",
+        "size": "19091661807"
+      },
+      "1158312": {
+        "manifest": "8895371403079420353",
+        "size": "162583096"
+      },
+      "1158315": {
+        "manifest": "6776790621498578725",
+        "size": "198403512"
+      },
+      "1296730": {
+        "manifest": "4673314442703562503",
+        "size": "84848",
+        "dlcappid": "1296730"
+      },
+      "1296731": {
+        "manifest": "6186085975311389712",
+        "size": "65328",
+        "dlcappid": "1296731"
+      },
+      "1303183": {
+        "manifest": "319832865587329166",
+        "size": "25074458",
+        "dlcappid": "1303183"
+      },
+      "1303182": {
+        "manifest": "8349193067317801238",
+        "size": "23359792",
+        "dlcappid": "1303182"
+      },
+      "1303184": {
+        "manifest": "5526476400820247778",
+        "size": "9854377",
+        "dlcappid": "1303184"
+      },
+      "2114760": {
+        "manifest": "3994555691751599121",
+        "size": "9199940",
+        "dlcappid": "2114760"
+      },
+      "2311920": {
+        "manifest": "369571786361796926",
+        "size": "30559359",
+        "dlcappid": "2311920"
+      },
+      "2311930": {
+        "manifest": "6473405525877152548",
+        "size": "80415",
+        "dlcappid": "2311930"
+      },
+      "2313541": {
+        "manifest": "3449603529685425916",
+        "size": "6707287",
+        "dlcappid": "2313541"
+      },
+      "2313540": {
+        "manifest": "5292219204640282308",
+        "size": "15690475",
+        "dlcappid": "2313540"
+      },
+      "2671060": {
+        "manifest": "4277321347182715431",
+        "size": "15898541",
+        "dlcappid": "2671060"
+      },
+      "2671030": {
+        "manifest": "2257513862370412160",
+        "size": "100482",
+        "dlcappid": "2671030"
+      },
+      "2671040": {
+        "manifest": "836968934287748787",
+        "size": "64416",
+        "dlcappid": "2671040"
+      },
+      "2671070": {
+        "manifest": "7287565713113083837",
+        "size": "21073072",
+        "dlcappid": "2671070"
+      },
+      "3077630": {
+        "manifest": "1712003839548962838",
+        "size": "69250933",
+        "dlcappid": "3077630"
+      },
+      "2671080": {
+        "manifest": "4340206838279069052",
+        "size": "82855",
+        "dlcappid": "2671080"
+      },
+      "3275760": {
+        "manifest": "4288366890699939411",
+        "size": "99060",
+        "dlcappid": "3275760"
+      },
+      "3315550": {
+        "manifest": "2840621713410264825",
+        "size": "1852566",
+        "dlcappid": "3315550"
+      },
+      "3315540": {
+        "manifest": "1359283799129796893",
+        "size": "19982507",
+        "dlcappid": "3315540"
+      },
+      "3315500": {
+        "manifest": "4503344207642007609",
+        "size": "72114",
+        "dlcappid": "3315500"
+      },
+      "3315510": {
+        "manifest": "3363609404063344386",
+        "size": "18258763",
+        "dlcappid": "3315510"
+      },
+      "3315530": {
+        "manifest": "8595022041963600613",
+        "size": "90723385",
+        "dlcappid": "3315530"
+      },
+      "3315520": {
+        "manifest": "7521553339934362737",
+        "size": "84060",
+        "dlcappid": "3315520"
+      },
+      "3315560": {
+        "manifest": "5111920289037265676",
+        "size": "98743",
+        "dlcappid": "3315560"
+      },
+      "3315570": {
+        "manifest": "409066589632915157",
+        "size": "98734",
+        "dlcappid": "3315570"
+      },
+      "4232870": {
+        "manifest": "6970199339967430673",
+        "size": "96059",
+        "dlcappid": "4232870"
+      },
+      "4232860": {
+        "manifest": "2743333143025069241",
+        "size": "94895",
+        "dlcappid": "4232860"
+      },
+      "3315580": {
+        "manifest": "6705959764445437481",
+        "size": "4625479",
+        "dlcappid": "3315580"
+      },
+      "3315590": {
+        "manifest": "3805573564847634757",
+        "size": "35828368",
+        "dlcappid": "3315590"
+      },
+      "4232890": {
+        "manifest": "994388108942955474",
+        "size": "69984",
+        "dlcappid": "4232890"
+      },
+      "4232900": {
+        "manifest": "2794171100204849831",
+        "size": "14105945",
+        "dlcappid": "4232900"
+      }
+    }
+  },
+  "character_intent": {
+    "bookmark_key": "bm_1066_rags_to_riches",
+    "character_name_key": "bookmark_rags_to_riches_duke_robert",
+    "history_id": 1128,
+    "history_title_key": "d_apulia"
+  },
+  "expected_character_id": 31254,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_repo": "D:\\workspace\\ck3_eternal_recurrence",
+  "assets_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01",
+  "checkpoint": {
+    "source": {
+      "save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73864691,
+        "sha256": "500ed157a401f22e8ee5433a84b6fb24850f357a964e4474c7b8af4ce67335ff"
+      },
+      "receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-close-a01-02-save-once.json",
+        "bytes": 20298,
+        "sha256": "5bf4d872441b9bc5aae1c8e1855e3d0c7a37ad0c39095ad0ae24b9ea7750897f"
+      },
+      "build_receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\prepared-a01\\prepared.json",
+        "bytes": 11597,
+        "sha256": "adec9d7bc97352d2d3c31fcc1f22fb6f11070b47d290477611e5a7b744de886c"
+      },
+      "actor_id": 31254,
+      "date_raw": 53148432,
+      "source_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "db7f6702a7a182d048a6e291dd618caefcc048b13215fe7a428e9576af630a44"
+      },
+      "load_save_name": "episode04_frozen_start",
+      "driver_history_copied": false
+    },
+    "profile_copy": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\save games\\episode04_frozen_start.ck3",
+      "bytes": 73864691,
+      "sha256": "500ed157a401f22e8ee5433a84b6fb24850f357a964e4474c7b8af4ce67335ff"
+    },
+    "receipt_copy": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\checkpoint-source-receipt.json",
+      "bytes": 20298,
+      "sha256": "5bf4d872441b9bc5aae1c8e1855e3d0c7a37ad0c39095ad0ae24b9ea7750897f"
+    },
+    "build_receipt_copy": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\checkpoint-source-build.json",
+      "bytes": 11597,
+      "sha256": "adec9d7bc97352d2d3c31fcc1f22fb6f11070b47d290477611e5a7b744de886c"
+    },
+    "old_attempt_modified": false
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Pure vanilla process, SDK DTO and C++ supply getter sampling; no CK3 script mutation or script corpus"
+  }
+}

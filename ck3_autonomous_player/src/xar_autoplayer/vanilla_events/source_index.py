@@ -248,6 +248,9 @@ def load_vanilla_event_source_index(
         from .records_head_of_faith0100_12004 import (
             EVENT_KEY as HOF_EVENT_KEY, HEAD_OF_FAITH0100_12004_SOURCE,
         )
+        from .records_pam_bull0004_12004 import (
+            EVENT_KEY as PAM_EVENT_KEY, PAM_BULL0004_12004_SOURCE,
+        )
 
         document = validate_vanilla_event_source_index(document)
         document.update(ck3_build=build,
@@ -257,6 +260,7 @@ def load_vanilla_event_source_index(
         additions = {
             EVENT_KEY: FAITH_CREATION1021_12004_SOURCE,
             HOF_EVENT_KEY: HEAD_OF_FAITH0100_12004_SOURCE,
+            PAM_EVENT_KEY: PAM_BULL0004_12004_SOURCE,
         }
         if set(additions) & set(events):
             raise VanillaEventSourceIndexError("current source addition duplicates inherited event")

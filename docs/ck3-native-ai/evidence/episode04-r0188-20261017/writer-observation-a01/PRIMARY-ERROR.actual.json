@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "stage": "prepare-only",
+  "error_class": "TimeoutExpired",
+  "primary_error": "TimeoutExpired(['D:\\\\workspace\\\\ck3_eternal_recurrence\\\\tools\\\\.venv\\\\Scripts\\\\python.exe', '-B', '-O', 'D:\\\\workspace\\\\ck3_eternal_recurrence\\\\ck3_autonomous_player\\\\native_bridge\\\\research\\\\maintenance_writer_cold_12004\\\\prepare_writer_admission.py', '--enable-ck3-12004-data-watch', '--prepare-only', '--repo', 'D:\\\\workspace\\\\ck3_eternal_recurrence', '--build-dir', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\build-a07', '--machine-execution-gate', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\runs-a06-final-narrow\\\\EXECUTION-GATE.actual.json', '--cash-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-02-cash.json', '--before-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-01-before.json', '--output-root', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\writer-observation-a01\\\\admission', '--expected-pid', '12060', '--expected-created', '134366470385086412', '--expected-generation', '1', '--expected-window', '1', '--expected-epoch', '1', '--expected-character-id', '31254', '--expected-revision', '43', '--expected-native-revision', '42', '--expected-date', '53149056', '--expected-episode', 'native-31254-0a8ceff1be59', '--expected-machine', 'desktop-3fevhd2-1c74096080', '--timeout-ms', '30000', '--max-slot-hits', '128'], 2.9999924001749605)",
+  "observer_start_attempted": false,
+  "observer_pid": null,
+  "elapsed_ns": 4045485000,
+  "deadline_monotonic_ns": 1397026190536500,
+  "Resume_or_Arm_by_controller": 0,
+  "unknown_Start_never_retried": true,
+  "parent_normalfinish_required": true
+}

@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-16T17:55:55.509777+00:00",
+  "finished_at_utc": "2026-10-16T18:28:00.397926+00:00",
+  "plan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-LAUNCH-PLAN.actual-a01.json",
+    "bytes": 3424,
+    "sha256": "2540ede8a655e1e088fee9d8f2b5651c68c09b98c4cb448d30d87a21659d096e"
+  },
+  "exit_code": 0,
+  "failure": null,
+  "stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-LAUNCH.stdout.bin",
+    "bytes": 140,
+    "sha256": "951ee0668152a68de75b4271790e673a042cd3ad47d2c342018cd6ad6e566d08"
+  },
+  "stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-LAUNCH.stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

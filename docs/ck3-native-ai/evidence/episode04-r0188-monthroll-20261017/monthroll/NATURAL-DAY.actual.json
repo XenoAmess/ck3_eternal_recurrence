@@ -1,0 +1,137 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "exact_original_g12": {
+    "state": "triggered",
+    "generation": 12,
+    "starting_date_raw": 53149056,
+    "target_date_raw": 53149080,
+    "last_observed_date_raw": 53149080,
+    "trigger_date_raw": 53149080,
+    "speed": 3,
+    "mode": "terminal_or_sentinel",
+    "army_count": 0,
+    "combat_count": 0,
+    "completed_daily_ticks": 1,
+    "intermediate_pause_count": 0,
+    "trigger_flags": 1,
+    "trigger_reasons": [
+      "date_deadline"
+    ],
+    "signed_date_delta_from_target_raw": 0,
+    "overshoot_days": 0,
+    "pause_wrapper_called": true,
+    "pause_observed": true,
+    "terminal_observed": false,
+    "abnormal": false
+  },
+  "request_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-01-before-watch.json",
+      "bytes": 141159,
+      "sha256": "893d7c5c6829ec505dc0dc4d49040a6adf2a5b495368946905b335471bf376a8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-02-g12-before-watch.json",
+      "bytes": 4538,
+      "sha256": "0aabe127aeeb5ff441ff1ad48e6406ff975121ea49832f46711a320034adca53"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-03-cash-before-watch.json",
+      "bytes": 238369,
+      "sha256": "b9b50437ba7575fb83ada77d5e91b28a7cce4a3a1a9899c2d045b5a77c393ba8"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-04-ready-fresh-frame.json",
+      "bytes": 141189,
+      "sha256": "e72824f36af237f04ea528bf5fa1a5b13da3b0e744256be8b9144abfddee2d81"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-05-ready-fresh-cash.json",
+      "bytes": 238367,
+      "sha256": "b248e48d8d76ee9f69201b9cecd89e4097092d1c61541d47a6f01ec6c3fa2a9f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-06-ready-fresh-g12.json",
+      "bytes": 4536,
+      "sha256": "d61eaf4917e2175ad2c888759107b585d38add832ea150d96ba37e9445880320"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d12-resume-once.json",
+      "bytes": 1613,
+      "sha256": "72695912a2e7fea18029532463eac00be5213d4e778c4eef8598ad163329bfa9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-08-day-poll-00.json",
+      "bytes": 131269,
+      "sha256": "883f2de767834fc6289f96bdad5921bec3063a694c4100f4abd98e6140566935"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-09-day-poll-01.json",
+      "bytes": 131269,
+      "sha256": "f88ce46f0305e60ac50a6f8acd3ef8cdd4dd0bc41c067130ceb57a2a10b62722"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-10-day-poll-02.json",
+      "bytes": 131269,
+      "sha256": "29009df1ab5d3590759bf5f8fdb9c548a94cca298e6720ed4a274f73b76ba332"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-11-day-poll-03.json",
+      "bytes": 131269,
+      "sha256": "48c152584fb392e10fb662d83ceebb55d192c7a7870751c6f76a5860f381c19a"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-12-day-poll-04.json",
+      "bytes": 131269,
+      "sha256": "28667b1d046fc81f6840fa82cc798a1c0b982bf005635b7d1e2bbea28cdbd48e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-13-day-poll-05.json",
+      "bytes": 131269,
+      "sha256": "65c9eb53665a73f57db2f14c2cf3f3da20c03eb40d17b8797f182f38fe427af6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-14-day-poll-06.json",
+      "bytes": 131269,
+      "sha256": "4289a4f06d53d89d549eb321106b0c017a835384d2462f7906a620bda0417c6c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-15-day-poll-07.json",
+      "bytes": 131269,
+      "sha256": "2d3777a189f054dac2451580ef87a97c930374f392c75bc7d831cd9191f6b2bf"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-16-day-poll-08.json",
+      "bytes": 131285,
+      "sha256": "51318a1fc486da6f84fca28a238eea1244547b065158353b08001a98ce27dbe4"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-17-day-poll-09.json",
+      "bytes": 131285,
+      "sha256": "c1356d6c590dbcfe3da80492a87c2e936cd886916113f99e841dccc1e769bfa1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-18-day-poll-10.json",
+      "bytes": 141153,
+      "sha256": "1bd64e63bfdbd4708c1e026e011bd42fd67d8d6fcd64d9e04c198c01d48c87fd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-19-terminal-g12.json",
+      "bytes": 4690,
+      "sha256": "ae6a39f1edd3f4c3fbb540b15d3085bee6c90a18afdbc8b8e827fe0e0e6f477f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-execute-20-terminal-payment-journal.json",
+      "bytes": 245639,
+      "sha256": "8305cbe398a86372a59f601f0200c1212473b60f3adf2e80fd516809326255e8"
+    }
+  ],
+  "after_payment_window": {
+    "requested": "query",
+    "accepted": true,
+    "reason": "enabled_controlled_no_load_window"
+  },
+  "new_recording_or_clean100s_credit": false,
+  "actual_military_business_positive": false
+}

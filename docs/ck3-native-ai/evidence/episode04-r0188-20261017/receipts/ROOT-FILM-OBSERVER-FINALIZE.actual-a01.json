@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:09:27.330055+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "original_primary_error": "TimeoutExpired(['D:\\\\workspace\\\\ck3_eternal_recurrence\\\\tools\\\\.venv\\\\Scripts\\\\python.exe', '-B', '-O', 'D:\\\\workspace\\\\ck3_eternal_recurrence\\\\ck3_autonomous_player\\\\native_bridge\\\\research\\\\maintenance_writer_cold_12004\\\\prepare_writer_admission.py', '--enable-ck3-12004-data-watch', '--prepare-only', '--repo', 'D:\\\\workspace\\\\ck3_eternal_recurrence', '--build-dir', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\build-a07', '--machine-execution-gate', 'C:\\\\ck3-war-episode04-research-20261004-a01\\\\maintenance-writer-cold-a01\\\\runs-a06-final-narrow\\\\EXECUTION-GATE.actual.json', '--cash-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-02-cash.json', '--before-response', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\desktop-3fevhd2-1c74096080--vanilla--R0188\\\\responses\\\\r188-film-a01-d12-hook-01-before.json', '--output-root', 'D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r188-window-capture-a01\\\\writer-observation-a01\\\\admission', '--expected-pid', '12060', '--expected-created', '134366470385086412', '--expected-generation', '1', '--expected-window', '1', '--expected-epoch', '1', '--expected-character-id', '31254', '--expected-revision', '43', '--expected-native-revision', '42', '--expected-date', '53149056', '--expected-episode', 'native-31254-0a8ceff1be59', '--expected-machine', 'desktop-3fevhd2-1c74096080', '--timeout-ms', '30000', '--max-slot-hits', '128'], 2.9999924001749605)",
+  "same_process_hook_module_name": "xar_e04_explicit_d12_hook_d59aa5de760c1b8d",
+  "owned_observer_handles_before_finalize": 0,
+  "observer_finalize": {
+    "observer_killed": false,
+    "SDK_calls": 0,
+    "observer_restarts": 0,
+    "parent_primary_error_preserved": true,
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+    "status": "NOT_STARTED_NO_OBSERVER_START_CLAIM"
+  },
+  "film_finally_normalfinish_owner": "unchanged exact host.film",
+  "actual_military_or_clean_span_credit": false
+}

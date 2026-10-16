@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\capture_bootstrap.py", line 630, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\capture_bootstrap.py", line 626, in main
+    return run_owned(args)
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\capture_bootstrap.py", line 374, in run_owned
+    history_limit, history_budget = admit_army_history_budget(args, body,
+                                    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+        source_head=(subprocess.check_output(["git", "-C", str(ROOT), "rev-parse", "HEAD"], text=True).strip()
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                     if getattr(args, "runtime_capacity_admission", None) is not None else None),
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        machine_id=current_machine_id())
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\capture_runtime_evidence.py", line 142, in admit_army_history_budget
+    budget = budget_factory({"max_runtime_total_bytes": limit,
+            "runtime_capacity_admission": admission}, scene_root=Path(prepared["assets_root"]),
+        source_head=source_head, machine_id=machine_id,
+        deadline_utc=capacity["quota_review_at_utc"])
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\comparison\r10_compare.py", line 66, in runtime_total_budget
+    return RuntimeTotalBudget(options.get('max_runtime_total_bytes', DEFAULT_RUNTIME_TOTAL_BYTES),
+        options.get('runtime_capacity_admission'), scene_root=scene_root, source_head=source_head,
+        machine_id=machine_id, deadline_utc=deadline_utc)
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\comparison\r10_compare.py", line 102, in __init__
+    need(row.get('admitted') is True and row.get('machine_id') == machine_id
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and row.get('source_head') == source_head
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         and source.get('new_clean_integrated_source_head') == source_head,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         'runtime capacity machine/source/admitted differs')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\workspace\ck3_eternal_recurrence\promo\ck3_native_war_ai\episode-04-march-logistics\tools\review02\comparison\r10_compare.py", line 20, in need
+    if not ok:raise ValueError(message)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: runtime capacity machine/source/admitted differs

@@ -1,0 +1,122 @@
+{
+  "schema": "xar.e04.r186-thin-production-qualified.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T16:24:08.214082+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "runtime_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "source_clean": true,
+  "a29_inputs": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-native-verification-a01\\A29-PRODUCTION-QUALIFICATION-INPUTS.actual-a01.json",
+    "bytes": 51599,
+    "sha256": "7ef9b655bd4904c97fdc4019bd237806a000f30247fbd08fcca4e25f26234987"
+  },
+  "producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\native-msvc-result.json",
+    "bytes": 1932,
+    "sha256": "e625ef7b3ad5e9fa27c13a0d28354c3c89be1e69ec7190c005b255dda6cd7fca"
+  },
+  "defender_system_actual_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\defender-exe-exclusions\\20261016T161906Z-567115f7\\receipt.json",
+    "bytes": 450024,
+    "sha256": "09b1110bf78a51cfb7a74e2c4e1e01a91acd0ce7c3bcdf52161554ee1939160d"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+    "bytes": 16403,
+    "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+  },
+  "bootstrap_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+    "bytes": 38107,
+    "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d"
+  },
+  "machine_profile_sources": {
+    "machine_profile_candidate": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-a02\\MACHINE-PROFILE.candidate-a01.json",
+      "bytes": 2532,
+      "sha256": "e5496756a428fbb03cd12c94febabe111fe1530fa278e5e819fe75a7d4b766b7"
+    },
+    "installed_machine_profile": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json",
+      "bytes": 1717,
+      "sha256": "3d8b790a39636f2aa7d6a34849e6f888941a6cdd656e6cf928c9f3159b28cd06"
+    },
+    "shared_policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  },
+  "source_checkpoint": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73864691,
+      "sha256": "500ed157a401f22e8ee5433a84b6fb24850f357a964e4474c7b8af4ce67335ff"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-close-a01-02-save-once.json",
+      "bytes": 20298,
+      "sha256": "5bf4d872441b9bc5aae1c8e1855e3d0c7a37ad0c39095ad0ae24b9ea7750897f"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11597,
+      "sha256": "adec9d7bc97352d2d3c31fcc1f22fb6f11070b47d290477611e5a7b744de886c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3806,
+        "sha256": "4b436af6ae06e24a4d514c6c13839ff9fc26e5e759238d1d5b29b061f967ae33"
+      },
+      "bootstrap_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\bootstrap-result.json",
+        "bytes": 15038,
+        "sha256": "3d82141f7da63be4e9aa0dde039f2866ff29c149f131f84fbefd415139f14d11"
+      },
+      "screen_release": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4052,
+        "sha256": "e848c6abbd6f7d3e4ed57e16d9c638c7760a3094982a4009b947a47fe7ce6c24"
+      }
+    }
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge.dll",
+      "bytes": 13000704,
+      "sha256": "e4f2b7200a0029a56d83904b627aff724fb654b6983753da4c66af9d4e06fbbf"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "ed589a72f61f927bbdb658eb789f66298789e81978a15815316c3aae38f30af7"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "9c6764e834c0a3387ff6dc25da6e0166eb47cc1b525086870f32ef7c160211ef"
+    }
+  },
+  "fixture_exit_codes": {
+    "receiver": 0,
+    "local-prefix": 0,
+    "county-P": 0,
+    "date-pause": 0
+  },
+  "actual_game_exe": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101040248,
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "actual_steam_appmanifest": {
+    "path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "bytes": 4285,
+    "sha256": "b3ac3e4ef05b311c474d27250a4cd5aec7ea32813b711f32560afac34470a69d"
+  },
+  "steam_build_id": "25734779",
+  "game_started": false,
+  "new_live_business_qualified": false
+}

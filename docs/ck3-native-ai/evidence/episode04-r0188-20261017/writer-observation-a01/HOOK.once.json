@@ -1,0 +1,21 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "index": 12,
+  "date_raw": 53149056,
+  "target_date_raw": 53149080,
+  "sentinel_generation": 12,
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "controller_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-controller-config.actual-a01.json",
+    "bytes": 1032,
+    "sha256": "068d122e9c23e24373034a30cdbdc2fd471a0103a017a7a789e8fe7a13f2c9e3"
+  },
+  "deadline_monotonic_ns": 1397026190536500,
+  "request_replay_forbidden": true,
+  "observer_start_retry_forbidden": true
+}

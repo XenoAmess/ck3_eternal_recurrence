@@ -1,0 +1,97 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T17:54:54.080570+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "runtime_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+    "execution_id": "a7d79bdd-c70d-4c19-835e-e560caeb857c",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "mod_key": "vanilla",
+    "sequence": 188,
+    "allocated_at_utc": "2026-10-16T17:54:53.730298+00:00",
+    "allocator_pid": 13492,
+    "legacy_alias": null
+  },
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "6d23786a50710f162fc1fb5ee56434d8387a1fec696ec5876dd77cfc7d6cfdeb"
+  },
+  "allocation_call": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\ALLOCATION-CALL.actual-a01.json",
+    "bytes": 862,
+    "sha256": "b3284934f922c841f92dcc3912aefb7c0e6d6d95607548a645a163306807c397"
+  },
+  "production": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-root-prep-a01\\R188-REUSED-A29-QUALIFIED.actual-a01.json",
+    "bytes": 5010,
+    "sha256": "ee58a5199bcc97d0d28d88c4551ebfef5c9de4923cd8a9352e280b2d93fe5364"
+  },
+  "original_R186_a29_qualification": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-native-verification-a01\\A29-PRODUCTION-QUALIFICATION-INPUTS.actual-a01.json",
+    "bytes": 51599,
+    "sha256": "7ef9b655bd4904c97fdc4019bd237806a000f30247fbd08fcca4e25f26234987"
+  },
+  "original_R186_a29_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+    "bytes": 16403,
+    "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+  },
+  "new_R188_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+    "bytes": 11276,
+    "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+  },
+  "source_checkpoint": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+    "save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74262421,
+      "sha256": "934aa1b99cc59874eb7365eb997f520753c4db4e31afd91a2d416e28a0244aef"
+    },
+    "save_response": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-film-a01-close-a01-02-save-once.json",
+      "bytes": 20444,
+      "sha256": "5e70238ead93642191ab33aad1e7d3c3a1a1ec6eef419c99d1cc29f638f35fb9"
+    },
+    "prepared": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11657,
+      "sha256": "e9c52a9e0fa3a05f064b77a9c82a6c8bc03ad59d2d4ef486fd68634837a3f36c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 4454,
+        "sha256": "ab75d4ff66243c34aefcd82dbf8cbb3ca0c8a153946bdf3caba9bb9f5b0fa230"
+      },
+      "bootstrap_result": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\bootstrap-result.json",
+        "bytes": 15162,
+        "sha256": "e05ce43491fcf802617318d797d6451953de7131d7985dc7215c5af3316b9699"
+      },
+      "screen_release": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\r186-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4946,
+        "sha256": "e0d647af4a713145a2df3bbd30d1a15a7be76353e177352895c96bba499b8fe4"
+      }
+    }
+  },
+  "film_helper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r187-owner-hook-prep-a01\\owner_film_candidate.py",
+    "bytes": 54784,
+    "sha256": "7c3166df6708bcb50a14cbefaec58fba16c0114fdce5ed71bceabb84e2b9542d"
+  },
+  "controller_candidate": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r187-writer-controller-a01\\writer_controller.py",
+    "bytes": 34296,
+    "sha256": "d59aa5de760c1b8d802957b2893b72de3587b84d93b8ce1b2aa672ee4be5baa5"
+  },
+  "controller_config_actual": null,
+  "steam_offline_actual": null,
+  "screen_lease_actual": null,
+  "game_started": false
+}

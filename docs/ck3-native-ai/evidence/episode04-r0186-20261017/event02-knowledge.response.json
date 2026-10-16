@@ -1,0 +1,136 @@
+{
+  "at": "2026-10-16T17:03:48.287205+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r186-event02-knowledge-a01",
+    "tool": "ck3_query_vanilla_event_knowledge_v1",
+    "arguments": {
+      "event_definition_key": "pam_bull_events.0004",
+      "ck3_build": "1.20.0.4"
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\requests\\r186-event02-knowledge-a01.json",
+    "bytes": 201,
+    "sha256": "ee60ab2797ddfcd5f9233f974c12e8bce351092bee2a683d4ea5f5ec133c4dbb"
+  },
+  "is_error": false,
+  "body": {
+    "schema": "xar.ck3.vanilla-event-knowledge",
+    "schema_version": 1,
+    "status": "unavailable",
+    "event_definition_key": "pam_bull_events.0004",
+    "ck3_build": "1.20.0.4",
+    "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "contract": null,
+    "analysis": {
+      "migration_1_20_0_4": {
+        "previous_build": "1.20.0.3",
+        "previous_dataset_sha256": "698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880",
+        "data_depot": {
+          "depot_id": "1158311",
+          "manifest": "5078208590259867811",
+          "size_bytes": 19091661807,
+          "previous_manifest": "5078208590259867811",
+          "same_manifest": true
+        },
+        "evidence": {
+          "method": "existing frozen installed Steam metadata",
+          "new_build_freeze": "artifacts/migrations/2026-10-07/installed-build/BUILD-FREEZE.json",
+          "new_installed_manifest": "artifacts/migrations/2026-10-07/installed-build/appmanifest_1158310.acf",
+          "previous_build_identity": "artifacts/migrations/2026-10-02/intake-build-identity.json",
+          "previous_installed_manifest": "artifacts/migrations/2026-10-02/installed-build/appmanifest_1158310.acf",
+          "installed_state_flags": 4,
+          "update_result": 0,
+          "target_build_id": 0
+        },
+        "fresh_source_scan": false,
+        "runtime_call_chain_revalidated": false,
+        "new_live_evidence": false,
+        "previous_exact_build": null,
+        "previous_source_sha256": null,
+        "previous_unavailable_reason": "event_definition_key_not_registered",
+        "readiness": "static-ready"
+      },
+      "exact_build": {
+        "game_version": "1.20.0.4",
+        "ck3_executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "steam_build_id": 25734779
+      }
+    },
+    "observations": null,
+    "unavailable_reason": "event_definition_key_not_registered"
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"schema\": \"xar.ck3.vanilla-event-knowledge\",\n  \"schema_version\": 1,\n  \"status\": \"unavailable\",\n  \"event_definition_key\": \"pam_bull_events.0004\",\n  \"ck3_build\": \"1.20.0.4\",\n  \"ck3_exe_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n  \"contract\": null,\n  \"analysis\": {\n    \"migration_1_20_0_4\": {\n      \"previous_build\": \"1.20.0.3\",\n      \"previous_dataset_sha256\": \"698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880\",\n      \"data_depot\": {\n        \"depot_id\": \"1158311\",\n        \"manifest\": \"5078208590259867811\",\n        \"size_bytes\": 19091661807,\n        \"previous_manifest\": \"5078208590259867811\",\n        \"same_manifest\": true\n      },\n      \"evidence\": {\n        \"method\": \"existing frozen installed Steam metadata\",\n        \"new_build_freeze\": \"artifacts/migrations/2026-10-07/installed-build/BUILD-FREEZE.json\",\n        \"new_installed_manifest\": \"artifacts/migrations/2026-10-07/installed-build/appmanifest_1158310.acf\",\n        \"previous_build_identity\": \"artifacts/migrations/2026-10-02/intake-build-identity.json\",\n        \"previous_installed_manifest\": \"artifacts/migrations/2026-10-02/installed-build/appmanifest_1158310.acf\",\n        \"installed_state_flags\": 4,\n        \"update_result\": 0,\n        \"target_build_id\": 0\n      },\n      \"fresh_source_scan\": false,\n      \"runtime_call_chain_revalidated\": false,\n      \"new_live_evidence\": false,\n      \"previous_exact_build\": null,\n      \"previous_source_sha256\": null,\n      \"previous_unavailable_reason\": \"event_definition_key_not_registered\",\n      \"readiness\": \"static-ready\"\n    },\n    \"exact_build\": {\n      \"game_version\": \"1.20.0.4\",\n      \"ck3_executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"steam_build_id\": 25734779\n    }\n  },\n  \"observations\": null,\n  \"unavailable_reason\": \"event_definition_key_not_registered\"\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "schema": "xar.ck3.vanilla-event-knowledge",
+      "schema_version": 1,
+      "status": "unavailable",
+      "event_definition_key": "pam_bull_events.0004",
+      "ck3_build": "1.20.0.4",
+      "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "contract": null,
+      "analysis": {
+        "migration_1_20_0_4": {
+          "previous_build": "1.20.0.3",
+          "previous_dataset_sha256": "698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880",
+          "data_depot": {
+            "depot_id": "1158311",
+            "manifest": "5078208590259867811",
+            "size_bytes": 19091661807,
+            "previous_manifest": "5078208590259867811",
+            "same_manifest": true
+          },
+          "evidence": {
+            "method": "existing frozen installed Steam metadata",
+            "new_build_freeze": "artifacts/migrations/2026-10-07/installed-build/BUILD-FREEZE.json",
+            "new_installed_manifest": "artifacts/migrations/2026-10-07/installed-build/appmanifest_1158310.acf",
+            "previous_build_identity": "artifacts/migrations/2026-10-02/intake-build-identity.json",
+            "previous_installed_manifest": "artifacts/migrations/2026-10-02/installed-build/appmanifest_1158310.acf",
+            "installed_state_flags": 4,
+            "update_result": 0,
+            "target_build_id": 0
+          },
+          "fresh_source_scan": false,
+          "runtime_call_chain_revalidated": false,
+          "new_live_evidence": false,
+          "previous_exact_build": null,
+          "previous_source_sha256": null,
+          "previous_unavailable_reason": "event_definition_key_not_registered",
+          "readiness": "static-ready"
+        },
+        "exact_build": {
+          "game_version": "1.20.0.4",
+          "ck3_executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "steam_build_id": 25734779
+        }
+      },
+      "observations": null,
+      "unavailable_reason": "event_definition_key_not_registered"
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"xar.ck3.vanilla-event-knowledge\",\n  \"schema_version\": 1,\n  \"status\": \"unavailable\",\n  \"event_definition_key\": \"pam_bull_events.0004\",\n  \"ck3_build\": \"1.20.0.4\",\n  \"ck3_exe_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n  \"contract\": null,\n  \"analysis\": {\n    \"migration_1_20_0_4\": {\n      \"previous_build\": \"1.20.0.3\",\n      \"previous_dataset_sha256\": \"698F66B83C6D45FAD4D5292E3AF2E6DB3721C92F736ADB9396E177BF8878D880\",\n      \"data_depot\": {\n        \"depot_id\": \"1158311\",\n        \"manifest\": \"5078208590259867811\",\n        \"size_bytes\": 19091661807,\n        \"previous_manifest\": \"5078208590259867811\",\n        \"same_manifest\": true\n      },\n      \"evidence\": {\n        \"method\": \"existing frozen installed Steam metadata\",\n        \"new_build_freeze\": \"artifacts/migrations/2026-10-07/installed-build/BUILD-FREEZE.json\",\n        \"new_installed_manifest\": \"artifacts/migrations/2026-10-07/installed-build/appmanifest_1158310.acf\",\n        \"previous_build_identity\": \"artifacts/migrations/2026-10-02/intake-build-identity.json\",\n        \"previous_installed_manifest\": \"artifacts/migrations/2026-10-02/installed-build/appmanifest_1158310.acf\",\n        \"installed_state_flags\": 4,\n        \"update_result\": 0,\n        \"target_build_id\": 0\n      },\n      \"fresh_source_scan\": false,\n      \"runtime_call_chain_revalidated\": false,\n      \"new_live_evidence\": false,\n      \"previous_exact_build\": null,\n      \"previous_source_sha256\": null,\n      \"previous_unavailable_reason\": \"event_definition_key_not_registered\",\n      \"readiness\": \"static-ready\"\n    },\n    \"exact_build\": {\n      \"game_version\": \"1.20.0.4\",\n      \"ck3_executable_sha256\": \"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518\",\n      \"steam_build_id\": 25734779\n    }\n  },\n  \"observations\": null,\n  \"unavailable_reason\": \"event_definition_key_not_registered\"\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

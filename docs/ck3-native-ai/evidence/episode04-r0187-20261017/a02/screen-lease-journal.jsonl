@@ -1,0 +1,1 @@
+{"at_utc": "2026-10-16T17:48:38.574131+00:00", "error": "RuntimeError('screen task heartbeat is stale or from the future')", "expected_sequence": 5817, "result": "LOST_OR_UNCERTAIN_STOP"}

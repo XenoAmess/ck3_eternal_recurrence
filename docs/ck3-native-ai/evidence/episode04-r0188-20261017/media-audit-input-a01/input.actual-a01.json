@@ -1,0 +1,38 @@
+{
+  "schema": "xar.e04.raw-audit-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "raw": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\raw.mkv",
+  "recorder_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3522,
+    "sha256": "dd87695d82301a7a0095e8076c380776a8ccee000b260f13bcffd73f59c96b88"
+  },
+  "context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-input-a01\\context.actual-a01.json",
+    "bytes": 2806,
+    "sha256": "ec3cea56dae5b56b9f0da605c9167c80eb5ad01e698403957c195850eddedb29"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ffprobe": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "bytes": 222026240,
+    "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+  },
+  "machine_probe": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_live_run_id.py",
+    "bytes": 18126,
+    "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+  },
+  "out_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\media-audit-a01",
+  "max_raw_bytes": 536870912,
+  "extract_frames": 3,
+  "timeout_seconds": 120,
+  "max_decoded_frames": 18000,
+  "max_output_bytes": 33554432
+}

@@ -1,5 +1,11 @@
 # 第4期研究总账：行军、补给与损耗
 
+## 2026-10-17 当前补记：R188、源码摄入与计分边界
+
+`machine_id: desktop-3fevhd2-1c74096080`；观察至2026-10-16 18:41 UTC。[R186](../../../docs/ck3-native-ai/episode04-r186-window-capture-12004.md)完成14日／36.700秒并按第一显示项处理陌生事件；[R187](../../../docs/ck3-native-ai/episode04-r187-prestart-failures-12004.md)两次启动前RED无游戏与镜头；[R188](../../../docs/ck3-native-ai/episode04-r188-window-capture-12004.md)第一段原生11日到Mar31、片内30.466秒，有限尾抽帧为Mar30；[独立片后记录](../../../docs/ck3-native-ai/episode04-r188-monthroll-close-12004.md)完成g12到Apr1及正常保存/退出0/释放。R188 hook于片内day12 Arm后超时，observer未Start；+2C0/+2C8两条同值物理写经[copy源码连接](../../../docs/ck3-native-ai/episode04-r08-r188-copy-writers-12004.md)可审，但+28/+30源、实际已付、payer和cadence继续unknown。R06 a31仅source/native NOT RUN；WarOverview a29显式OFF/UI fallback、新flag待a30；[R08 classifier](../../../docs/ck3-native-ai/episode04-r08-classifier-tier-threshold-12004.md)与[关联ID callee](../../../docs/ck3-native-ai/episode04-r08-copy-callee28d6170-12004.md)静态可移机，不加业务分。整卡 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式ABC **0/3**；69段口播草稿/现有声音与最终成片、完整1×人工审阅和签核分开计。
+
+R186–R188实际运行及a29 native绑定旧冻结源 `d05b0c780b615faa714fdf0535403bb2e6941faf`。当前仓库已在远端master摄入后到HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011`，其上新工作树源码尚无新native/live资格，不能把旧场外推。[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)、[新交接](../../../docs/handover/2026-10-17-war-episode04-r188-and-source-intake.md)给出统一下一步；[实际精确清理](../../../docs/maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)本机C allocation回收1,642,663,936 B/D 0，容量需逐场重新准入。下文2026-10-04及后续旧段落保留各自截止状态。
+
 2026-10-04。用户已授权开始高并发研究与拍摄。本总账汇总首批并行工作包，沿用[导演案](director-plan.md)与[交接](../../../docs/handover/2026-10-04-war-episode04-march-logistics.md)的20–40分钟交付范围，编辑目标30–35分钟。**机制文件研究、最小观测增量及拍摄配方已有新成果；本期主案尚待新实机可行性核对，A/B/C出发档尚未冻结，正式录像尚未取得。**
 
 游戏身份重新核对为 CK3 **1.20.0.3 / Steam25652598**；当前安装 EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。本包读取源码最终快照为 `f8530f4aeb64735dbeae4831f3bc6c315276bb88`；后续运行必须绑定真正加载的源码、DLL与输入，不能把该阅读快照自动当作部署事实。

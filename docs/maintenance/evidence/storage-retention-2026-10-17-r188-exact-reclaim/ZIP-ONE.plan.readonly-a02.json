@@ -1,0 +1,251 @@
+{
+  "schema": "xar.r188-one-process-archive-retirement-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T17:59:44.616728+00:00",
+  "policy_version": "1.0.0",
+  "state": "ROOT_REVIEW_REQUIRED_NO_DELETE_AUTHORITY",
+  "supersedes_partial_source_scope_probe": "a01 checked only render-A0005 subroot;359 extra-directory originals were correctly outside that narrow scope. A02 checks the same indexed paths against the already-authorized machine superman_promo root; no new asset scan.",
+  "count": 1,
+  "target": {
+    "path": "C:/ck3-superman-qiang-promo-20261004/render-A0005/native-run/artifacts/derived/sha256/7D/7DCBB70F95C2E7BADD3C74AD6E864FCC6BE43CE8D4D8321617AEF370B5A355DD.zip",
+    "info": {
+      "id": [
+        3061637496,
+        281474978681993
+      ],
+      "b": 1169783806,
+      "ft": 134355856146568512,
+      "links": 1,
+      "allocation": 1169784832
+    },
+    "historical_CAS_sha256": "7dcbb70f95c2e7badd3c74ad6e864fcc6be43ce8d4d8321617aef370b5a355dd",
+    "current_large_payload_rehashed": false
+  },
+  "C_logical_candidate_bytes": 1169783806,
+  "C_single_link_allocation_candidate_bytes": 1169784832,
+  "actual_credit_bytes": 0,
+  "category": "derived",
+  "purpose": "Completed expired source-rebuildable process archive;48h expiry2026-10-06T11:07:04.391460Z. Original working ZIP is absent, so this is not a current duplicate-ZIP claim.",
+  "independent_index_keeper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\ARCHIVE.index.keeper-a01.json",
+    "bytes": 335729,
+    "sha256": "e0803f56c58fb6267fd1e0f08353293acd3f28289f20b63410f809e36b512ac1",
+    "identity": {
+      "id": [
+        3061637496,
+        1125899908743803
+      ],
+      "b": 335729,
+      "ft": 134366469696341227,
+      "links": 1,
+      "allocation": 335872
+    },
+    "category": "record",
+    "protected_until_utc": "2026-10-17T17:56:09.645216+00:00",
+    "record_review_at_utc": "2027-04-14T17:59:44.610089+00:00",
+    "automatic_renewal": false
+  },
+  "current_source_check": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\ARCHIVE-SOURCES.readonly-a02.json",
+    "bytes": 7328,
+    "sha256": "067afcbbd29350833da868fb3ffecac5d4f14d113b6463f3c38675b06c464756"
+  },
+  "source_protection_adoption_required": {
+    "state": "PROPOSED_FOR_ROOT_ADOPTION_BEFORE_DELETE",
+    "owner": "Root",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "protected_until_utc": "2026-10-17T17:56:09.645216+00:00",
+    "automatic_renewal": false,
+    "scope": "Exactly1074 source paths in the immutable index keeper, plus original native run-manifest, source retention receipt, packager, and kept current final/media. No blanket run protection or new capacity admission.",
+    "source_path_index": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\ARCHIVE.index.keeper-a01.json",
+      "bytes": 335729,
+      "sha256": "e0803f56c58fb6267fd1e0f08353293acd3f28289f20b63410f809e36b512ac1",
+      "identity": {
+        "id": [
+          3061637496,
+          1125899908743803
+        ],
+        "b": 335729,
+        "ft": 134366469696341227,
+        "links": 1,
+        "allocation": 335872
+      },
+      "category": "record",
+      "protected_until_utc": "2026-10-17T17:56:09.645216+00:00",
+      "record_review_at_utc": "2027-04-14T17:59:44.610089+00:00",
+      "automatic_renewal": false
+    },
+    "source_metadata_count": 1074,
+    "ordered_path_info_metadata_digest": "9a21464057f2e1b0754565bcbb63cf061655cdd8e4c7f90b5f82bc47efbbe913",
+    "metadata_digest_method": "SHA256(json.dumps([{path:str,info:Win32Info},...],ensure_ascii=False,separators=(comma,colon)).encode(UTF8)), in index original order",
+    "metadata_held_through_check": true,
+    "source_full_payload_SHA_recomputed": false,
+    "named_media": [
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\deliverables\\superman-qiang-player-trailer.mp4",
+        "bytes": 31740736,
+        "file_id": [
+          3061637496,
+          281474978681307
+        ],
+        "historical_index_sha256": "1cd9049a95451a5bc8dde181416021970c145fe68e4b64c599e6b9d6620f52c9",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\intermediate\\joined-visuals.mp4",
+        "bytes": 27188989,
+        "file_id": [
+          3061637496,
+          281474978681293
+        ],
+        "historical_index_sha256": "a0b2d815bb170c446a3df465b58439bfdb562a1ff866086802f81d93ad9a5209",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0001-SQP-01.mp4",
+        "bytes": 4594947,
+        "file_id": [
+          3061637496,
+          281474978681210
+        ],
+        "historical_index_sha256": "24221630a29b7440131c3395ea86181653ccaba34a090d098ac7055ffe405a94",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0002-SQP-02.mp4",
+        "bytes": 5479988,
+        "file_id": [
+          3061637496,
+          281474978681218
+        ],
+        "historical_index_sha256": "7442c444ab7a46bdf7492bc4f3b8f936e6210c47fb3158a5611420eca8f5670f",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0003-SQP-03.mp4",
+        "bytes": 4682245,
+        "file_id": [
+          3061637496,
+          281474978681225
+        ],
+        "historical_index_sha256": "60c81ef1684a700a64c70f80b07d810ea10b3b9070213ca7a0c88d2726af3199",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0004-SQP-04.mp4",
+        "bytes": 3011019,
+        "file_id": [
+          3061637496,
+          281474978681232
+        ],
+        "historical_index_sha256": "b6a423c287e1efd2d604a78aa5115c91ed2c58af44c23e5309a61b8f419eedc9",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0005-SQP-05.mp4",
+        "bytes": 1409780,
+        "file_id": [
+          3061637496,
+          281474978681239
+        ],
+        "historical_index_sha256": "8d15867718594d88275548089622dd1b2f0146b2ceeb260e60d97a09df3f6f68",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0006-SQP-06.mp4",
+        "bytes": 1635349,
+        "file_id": [
+          3061637496,
+          281474978681246
+        ],
+        "historical_index_sha256": "2ca7c306a3019054a1a6bbcdfd1bc5c89b8cb3c037940d06238bd14170ba9ca7",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0007-SQP-07.mp4",
+        "bytes": 1755096,
+        "file_id": [
+          3061637496,
+          281474978681253
+        ],
+        "historical_index_sha256": "7bfed4c495b8bc1705d75bee6a8e18f37498b8caa6005c4babdb5f9fcdb0e562",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0008-SQP-08.mp4",
+        "bytes": 1423682,
+        "file_id": [
+          3061637496,
+          281474978681260
+        ],
+        "historical_index_sha256": "d5c215959c9bb3404afb341d5064662382f68a0bcd9d79b44836123d7f365f89",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0009-SQP-09.mp4",
+        "bytes": 1491470,
+        "file_id": [
+          3061637496,
+          281474978681267
+        ],
+        "historical_index_sha256": "1ef1e0223d28b14c7ced1b0838be82d403b9e478bc9ffdc603b84cc5f39e174f",
+        "current_payload_rehashed": false
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\build\\segments\\0010-SQP-10.mp4",
+        "bytes": 4475535,
+        "file_id": [
+          3061637496,
+          281474978681274
+        ],
+        "historical_index_sha256": "943517cfa50d8274c5760c74c4555573afdece2612cf08fb9acf52b125f52eee",
+        "current_payload_rehashed": false
+      }
+    ],
+    "native_manifest": {
+      "path": "C:\\ck3-superman-qiang-promo-20261004\\render-A0005\\native-run\\run-manifest.json",
+      "bytes": 83969,
+      "sha256": "c8fee32575b2b7c5ca70364dbb83104827d9b7ddc51f3b6738610880285ce2e2"
+    },
+    "source_retention_receipt": {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/superman_qiang/evidence/audio-delivery-20261004/retention-receipt.json",
+      "bytes": 716,
+      "sha256": "c2c58b21c412a27acf0dd53595ba6afe43b4be80336f40a7b6752328027267b8"
+    },
+    "packager": {
+      "path": "D:/workspace/ck3_eternal_recurrence/promo/superman_qiang/tools/retain_render_attempt.py",
+      "bytes": 3273,
+      "sha256": "20275b1d0621fb90a201296ad699e2c2a07ae22328c4db3620ca35b97c25c633"
+    }
+  },
+  "known_prior_exact_consumers": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-16T15:17:38.911145+00:00",
+    "exact_paths": 1000,
+    "restart_manager": {
+      "start_rc": 0,
+      "register_rc": 0,
+      "getlist_rc": 0,
+      "end_rc": 0,
+      "consumers": []
+    },
+    "relevant_processes_checked": 11,
+    "root_matches": [],
+    "relevant_unknown": [],
+    "blocked": false,
+    "shutdown_or_restart_calls": 0
+  },
+  "fresh_predelete_consumers_required": true,
+  "same_exclusive_DELETE_READATTR_handle_metadata_identity_required": true,
+  "retain_on_changed_busy_unknown": true,
+  "preserve_native_EXE_DLL_source_recipe_manifests_and_final_media": true,
+  "rebuild_scope": "Original1074 source files + retained index + retained packager permit a new derived archive. No exact historical ZIP encoding/body-byte reconstruction promise.",
+  "a29_R186normal_Steam_helpers_activecapacity_excluded": true,
+  "old_target_after_deletion": "retired_unavailable; keep historical manifest untouched and add small path availability record, no same-name replacement",
+  "gross_candidate_allocation_bytes": 1169784832,
+  "new_index_keeper_allocation_bytes": 335872,
+  "potential_net_allocation_after_new_index_keeper_bytes": 1169448960,
+  "payload_deletions_performed": 0,
+  "automatic_gc": false
+}

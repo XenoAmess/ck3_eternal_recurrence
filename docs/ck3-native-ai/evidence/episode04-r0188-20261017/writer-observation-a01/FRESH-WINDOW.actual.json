@@ -1,0 +1,82 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "film_input": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7915,
+    "sha256": "3eaf1f661ec0fefbd0fb18db9a9955ce498cb526cc76dbd346dc2fdce179ccd0"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+    "bytes": 11276,
+    "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+  },
+  "armed_sentinel": {
+    "step": "research-arm-tactical-daily-sentinel-v1-53149056-to-53149080-speed-3-mode-terminal-a-0",
+    "accepted": true,
+    "status": "available",
+    "tactical_daily_sentinel": {
+      "state": "armed",
+      "generation": 12,
+      "starting_date_raw": 53149056,
+      "target_date_raw": 53149080,
+      "last_observed_date_raw": 53149056,
+      "trigger_date_raw": 0,
+      "speed": 3,
+      "mode": "terminal_or_sentinel",
+      "army_count": 0,
+      "combat_count": 0,
+      "completed_daily_ticks": 0,
+      "intermediate_pause_count": 0,
+      "trigger_flags": 0,
+      "trigger_reasons": [],
+      "signed_date_delta_from_target_raw": 0,
+      "overshoot_days": -1,
+      "pause_wrapper_called": false,
+      "pause_observed": false,
+      "terminal_observed": false,
+      "abnormal": false
+    },
+    "backend_id": "native-headless"
+  },
+  "before": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d12-hook-01-before.json",
+    "bytes": 141127,
+    "sha256": "9f1caf20ba0f627b4265362a87c26799207e6eec24ea3c6549b9f6e7a04d2f3e"
+  },
+  "cash": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-d12-hook-02-cash.json",
+    "bytes": 238335,
+    "sha256": "44210628e3bff8fc99439a210c1404cdaa08dca503a6f9e096b3470398672d16"
+  },
+  "current_session": {
+    "pid": 12060,
+    "process_create_time_100ns": 134366470385086412,
+    "connection_generation": 1,
+    "loaded_game_epoch": null,
+    "controlled_window_id": 1,
+    "same_owned_process_no_load_window": true,
+    "game_state_identity_witness": 1778503496800,
+    "player_character_full_id": 31254,
+    "snapshot_revision": 42,
+    "native_date_raw": 300336128075693440,
+    "absolute_day_raw": 389544
+  },
+  "payment_sampling": {
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 6,
+    "qualified_records": 0
+  },
+  "runtime_window_is_not_observed_writer": true
+}

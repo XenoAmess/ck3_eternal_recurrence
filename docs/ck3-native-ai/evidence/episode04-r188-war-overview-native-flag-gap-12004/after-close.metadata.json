@@ -1,0 +1,24 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:19:49.323872+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "screen_task": "e04-live-20261017-r0188",
+  "current_sequence": 5838,
+  "screenshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\war-notice-after-close-a01.png",
+    "bytes": 1954697,
+    "sha256": "06bfe3a4d28b3d2beadfc1950b6c318ab7b81a155b193826995b0dc84b2a7f10"
+  },
+  "image_size": [
+    2560,
+    1440
+  ],
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "foreground_hwnd": 206635798,
+  "foreground_pid": 12060,
+  "foreground_title": "Crusader Kings III",
+  "input_performed": false
+}

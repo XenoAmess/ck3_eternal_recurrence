@@ -9,6 +9,10 @@
 #include <utility>
 #include <vector>
 
+#ifndef XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+#define XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004 0
+#endif
+
 namespace xar::game {
 struct GuiRefillReceiverEntry12004V1 {
   std::uint32_t ancestor_depth=0,entry_type_48=0;
@@ -40,6 +44,23 @@ struct GuiRefillLocalDefinitionEntry12004V1 {
   std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
   bool operator==(const GuiRefillLocalDefinitionEntry12004V1 &) const=default;
 };
+struct GuiRefillDefinitionPrefixRow12004V1 {
+  std::uint32_t ancestor_depth=0;
+  bool definition_present=false;
+  std::optional<std::int32_t> raw_definition_entry_count;
+  std::vector<GuiRefillReceiverEntry12004V1> entries;
+  std::string parent_edge;
+  bool parent_present=false;
+  bool operator==(const GuiRefillDefinitionPrefixRow12004V1 &) const=default;
+};
+struct GuiRefillDefinitionPrefix12004V1 {
+  std::string status="unavailable",unavailable_reason="definition_prefix_double_read_incomplete";
+  std::optional<std::int32_t> receiver_variable_index;
+  std::optional<std::uint32_t> declared_type_id;
+  bool stable_double_read=false;
+  std::vector<GuiRefillDefinitionPrefixRow12004V1> rows;
+  bool operator==(const GuiRefillDefinitionPrefix12004V1 &) const=default;
+};
 struct GuiRefillReceiverCandidates12004V1 {
   std::string status="unavailable",unavailable_reason="candidate_read_not_admitted";
   std::optional<std::int32_t> receiver_variable_index;
@@ -48,6 +69,7 @@ struct GuiRefillReceiverCandidates12004V1 {
   std::vector<GuiRefillReceiverEntry12004V1> entries;
   std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
   std::optional<GuiRefillLocalDefinitionEntry12004V1> local_definition_entry_only;
+  std::optional<GuiRefillDefinitionPrefix12004V1> definition_chain_prefix_depth8;
   bool operator==(const GuiRefillReceiverCandidates12004V1 &) const=default;
 };
 struct GuiRefillReceiverFrame12004V1 {
@@ -97,10 +119,11 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     Result result;std::vector<std::uintptr_t> private_identity;
     game::GuiRefillLocalDefinitionEntry12004V1 local;
     std::vector<std::uintptr_t> local_identity;
-    bool local_complete=false;
+    bool local_complete=false,prefix_boundary=false;
+    std::vector<game::GuiRefillDefinitionPrefixRow12004V1> prefix_rows;
     std::optional<game::GuiRefillReceiverFailure12004V1> local_failure;
   };
-  const auto once=[&](Capture &out,bool local_only=false) {
+  const auto once=[&](Capture &out,bool local_only=false,bool prefix_only=false) {
     auto &v=out.result;auto &identity=out.private_identity;
     std::uintptr_t context=0,declarations=0,indices=0;
     std::int32_t count=0,index_count=0,index=0;std::uint32_t key=0;
@@ -137,7 +160,13 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
       diagnostic.context_present=context!=0;
       diagnostic.raw_definition_entry_count.reset();
       diagnostic.definition_present.reset();
-      if(depth==visited.size()){failure="candidate_parent_depth_exhausted";diagnostic.kind="parent_depth_exhausted";return false;}
+      if(depth==visited.size()){
+        out.prefix_boundary=true;
+        // A prefix replay stops before reading depth8. It never turns the
+        // failed full traversal into an available full candidate.
+        if(prefix_only)return true;
+        failure="candidate_parent_depth_exhausted";diagnostic.kind="parent_depth_exhausted";return false;
+      }
       for(std::size_t n=0;n<depth;++n)if(visited[n]==context){failure="candidate_parent_cycle";diagnostic.kind="parent_cycle";return false;}
       visited[depth]=context;
       std::uintptr_t definition=0,table=0,parent=0,matched=0;std::int32_t entries=0;std::uint8_t active=0;bool stop_here=false;
@@ -226,8 +255,20 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
       // Publish bounded entry candidates, without predicting whether a dynamic
       // provider returns success or which pending parent entry native selects.
       if(definition&&!load("definition_parent_108",definition,0x108,parent))return false;
+#if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+      const bool definition_edge=parent!=0;
+#endif
       if(!parent&&!load("context_parent_e8",context,0xE8,parent))return false;
-      identity.push_back(parent);context=parent;
+      identity.push_back(parent);
+#if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+      game::GuiRefillDefinitionPrefixRow12004V1 row;
+      row.ancestor_depth=depth;row.definition_present=definition!=0;
+      if(definition)row.raw_definition_entry_count=entries;
+      if(matched)row.entries.push_back(v.entries.back());
+      row.parent_edge=definition_edge?"definition_108":"context_e8";
+      row.parent_present=parent!=0;out.prefix_rows.push_back(std::move(row));
+#endif
+      context=parent;
     }
     v.status="available";v.unavailable_reason.clear();return true;
   };
@@ -250,6 +291,26 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     }else{leaf=a.local;leaf.stable_double_read=true;}
     destination.local_definition_entry_only=std::move(leaf);
   };
+#if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+  const auto attach_prefix=[&](Result &destination,const Capture &a,const Capture &b) {
+    game::GuiRefillDefinitionPrefix12004V1 leaf;
+    if(reads>4096||bytes>65536||
+        std::chrono::steady_clock::now()-started>std::chrono::milliseconds(20))
+      leaf.unavailable_reason="definition_prefix_shared_budget_exhausted";
+    else if(!a.prefix_boundary||!b.prefix_boundary||a.prefix_rows.size()!=8||b.prefix_rows.size()!=8)
+      leaf.unavailable_reason="definition_prefix_double_read_incomplete";
+    else if(a.private_identity!=b.private_identity||a.prefix_rows!=b.prefix_rows||
+        a.result.receiver_variable_index!=b.result.receiver_variable_index||
+        a.result.declared_type_id!=b.result.declared_type_id)
+      leaf.unavailable_reason="definition_prefix_identity_or_rows_changed";
+    else{
+      leaf.status="available";leaf.unavailable_reason.clear();leaf.stable_double_read=true;
+      leaf.receiver_variable_index=a.result.receiver_variable_index;
+      leaf.declared_type_id=a.result.declared_type_id;leaf.rows=a.prefix_rows;
+    }
+    destination.definition_chain_prefix_depth8=std::move(leaf);
+  };
+#endif
   Capture a,b;
   diagnostic.capture_pass=1;
   if(!once(a)){
@@ -260,10 +321,18 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
       attach_local(rejected,a,b,rejected.failure_diagnostic);return rejected;
     }
     diagnostic.capture_pass=2;
+#if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+    const bool capture_prefix=a.prefix_boundary&&a.prefix_rows.size()==8;
+    const bool local_ok=once(b,!capture_prefix,capture_prefix);
+#else
     const bool local_ok=once(b,true);
+#endif
     std::optional<game::GuiRefillReceiverFailure12004V1> local_failure;
     if(!local_ok)local_failure=diagnostic;
     attach_local(rejected,a,b,local_failure);
+#if XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004
+    if(capture_prefix)attach_prefix(rejected,a,b);
+#endif
     return rejected;
   }
   diagnostic.capture_pass=2;

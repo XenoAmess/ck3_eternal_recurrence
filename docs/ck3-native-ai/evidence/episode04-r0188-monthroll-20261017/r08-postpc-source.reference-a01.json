@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.r188.r08-postpc-reference.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T18:35:17.327243+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r188-r08-actual-postpc-source-a01\\ROOT-DELIVERY.actual-a01.json",
+    "bytes": 3914,
+    "sha256": "fd6d7ba877336b081633138695aa47324c042bba416adef787668d0c2eb84c24"
+  },
+  "separate_candidate_patch": {
+    "path": "r188-r08-copy-postpc-source.relative.patch",
+    "bytes": 70172,
+    "sha256": "79e1396950352a1a7775879721729ade22279cdc6d1a1217f6a762e629082942"
+  },
+  "separate_repo_topic": {
+    "path": "docs/ck3-native-ai/episode04-r08-r188-copy-writers-12004.md",
+    "before": "ABSENT",
+    "bytes": 6036,
+    "sha256": "802a797666b59ce1fef475dbaade11c1a7211ac947b1dc7d29a6abd1af0dc14c"
+  },
+  "source_body_binding": {
+    "held_function": "[28A63E0,28A6697)",
+    "held_body_bytes": 695,
+    "held_raw_sha256": "ffebf7d960edb76b71d2456b7f8722cc09092952b41c565f648410b42a47dede",
+    "new_EXE_code_bytes": 0,
+    "new_EXE_metadata_bytes": 0,
+    "existing_actual_source_matches": 2,
+    "actual_stores": [
+      "28A6454→post28A645B:+18→2C0",
+      "28A645F→post28A6466:+20→2C8"
+    ],
+    "incoming_caller_rva": null,
+    "source_derived_return_slot": 58900610072,
+    "actual_slot_value_read": false
+  },
+  "business_boundary": {
+    "military_c_d_producer": null,
+    "payer": null,
+    "currency": null,
+    "paid_military_amount_raw": null,
+    "cadence": null,
+    "maintenance_attribution": "unclosed",
+    "new_card_credit": 0
+  },
+  "original_writer_projection_not_modified": true,
+  "meaning": "Later separate source join; two actual same-value physical writes match held body [28A63E0,28A6697). Incoming caller/payer/currency/cadence remain unclosed; does not change original projection history.",
+  "three_source_targets_not_duplicated": true,
+  "integration_status": "External reference candidate; Root owns separate patch adoption."
+}

@@ -1,0 +1,163 @@
+{
+  "schema": "xar.e04.parameterized-owner-film-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "repo": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "authorized_assets_root": "D:\\workspace\\ck3_native_war_ai_promo_work",
+  "storage_policy_version": "1.0.0",
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01",
+  "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "265d5246f4ade5bdbf9826c4a223a01eb6c22ae8ac6cc6d00555201a5c4cd39d"
+  },
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "production_qualification": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\A29-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 5611,
+    "sha256": "9fae4663946cf8e092c09d8ca5742558514b5cbca97af619d44ec7f616feff9b"
+  },
+  "allocated_context": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\allocated-context.actual-a01.json",
+    "bytes": 5809,
+    "sha256": "2e2698b00f5f2381d5de4fb6384359f6daa0b438ba6bcdf059dd00699633d82d"
+  },
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01",
+  "prepared": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\prepared-a01\\prepared.json",
+  "raw_workdir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\raw-window-a01",
+  "pipe_name": "\\\\.\\pipe\\xar_e04_12004_r186_20261016_a01",
+  "request_prefix": "r186-film-a01",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+    "bytes": 16403,
+    "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+  },
+  "native": {
+    "dll": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge.dll",
+      "bytes": 13000704,
+      "sha256": "e4f2b7200a0029a56d83904b627aff724fb654b6983753da4c66af9d4e06fbbf"
+    },
+    "injector": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "ed589a72f61f927bbdb658eb789f66298789e81978a15815316c3aae38f30af7"
+    },
+    "host": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "9c6764e834c0a3387ff6dc25da6e0166eb47cc1b525086870f32ef7c160211ef"
+    }
+  },
+  "steam_offline_receipt": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+  "screen": {
+    "cli": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "bytes": 29120,
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "task_bus": "D:\\workspace\\.codex-task-bus",
+    "task_id": "e04-live-20261017-r0186",
+    "sequence": 5789
+  },
+  "checkpoint_source": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73864691,
+      "sha256": "500ed157a401f22e8ee5433a84b6fb24850f357a964e4474c7b8af4ce67335ff"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-close-a01-02-save-once.json",
+      "bytes": 20298,
+      "sha256": "5bf4d872441b9bc5aae1c8e1855e3d0c7a37ad0c39095ad0ae24b9ea7750897f"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11597,
+      "sha256": "adec9d7bc97352d2d3c31fcc1f22fb6f11070b47d290477611e5a7b744de886c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3806,
+        "sha256": "4b436af6ae06e24a4d514c6c13839ff9fc26e5e759238d1d5b29b061f967ae33"
+      },
+      "bootstrap_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\bootstrap-result.json",
+        "bytes": 15038,
+        "sha256": "3d82141f7da63be4e9aa0dde039f2866ff29c149f131f84fbefd415139f14d11"
+      },
+      "screen_release": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4052,
+        "sha256": "e848c6abbd6f7d3e4ed57e16d9c638c7760a3094982a4009b947a47fe7ce6c24"
+      }
+    }
+  },
+  "identity_receipt_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7804,
+    "sha256": "b2028b75884555bd92d00105cfa531e7295ffc885562155788f6c9974a12f951"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ordinary_root": {
+    "primary_title_id": 2230,
+    "capital_province_id": 2619,
+    "government_key": "feudal_government"
+  },
+  "actor_id": 31254,
+  "army_id": 18,
+  "expected_start_date_raw": 53148432,
+  "expected_start_province_id": 2635,
+  "speed": 3,
+  "seconds": 180,
+  "min_wall_recording_seconds": 100,
+  "days": 28,
+  "session_timeout_seconds": 5400,
+  "normal_close_reserve_seconds": 180,
+  "army_history_sidecar_limit_bytes": 134217728,
+  "pre_resume_hook": {
+    "module": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r186-writer-controller-a02\\writer_controller.py",
+      "bytes": 33927,
+      "sha256": "3b110647d37f1c1cb405f80455b23736e067da43596861b96cd644a339b5bf56"
+    },
+    "callable": "before_resume",
+    "index": 27,
+    "max_seconds": 15,
+    "expected_date_raw": 53149056,
+    "expected_target_date_raw": 53149080,
+    "expected_generation": 27,
+    "expected_request_prefix": "r186-film-a01-d27-hook",
+    "controller_config": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\writer-controller-config.actual-a01.json",
+      "bytes": 1032,
+      "sha256": "ac749e4be9f335107af552334e2756b80cc7b2c395f887678332fa5f246c6609"
+    }
+  },
+  "game_started": true,
+  "sampling_admission": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\sampling-admission-a01\\ADMISSION.actual.json",
+    "bytes": 6848,
+    "sha256": "cbf412112965c6177115b68142a649d1042396ffa13cea5c108efdc24959ece5"
+  },
+  "sentinel_generation_basis": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\responses\\r186-sentinel-baseline-a01.json",
+    "bytes": 4382,
+    "sha256": "e3ad4df9e93b878ee7475155765965ec176127fa74d35f04ce0785a72f730406"
+  },
+  "film_helper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-owner-hook-prep-a01\\owner_film_candidate.py",
+    "bytes": 54597,
+    "sha256": "a53766ea25dc1b517f12e7f99b0d3b575e8f6f21ca9d9a4c2165ab8d4f81194f"
+  }
+}

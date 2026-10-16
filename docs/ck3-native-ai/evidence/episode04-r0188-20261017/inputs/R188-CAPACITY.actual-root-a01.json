@@ -1,0 +1,267 @@
+{
+  "schema": "xar.e04.r188-cross-volume-root-capacity.v1",
+  "status": "ROOT_ADOPTED_R188_D_SCENE_REUSED_A29",
+  "admitted": true,
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "policy_version": "1.0.0",
+  "at_utc": "2026-10-16T17:54:40.834938+00:00",
+  "root_adopted_at_utc": "2026-10-16T17:54:40.834938+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "source_binding": {
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+    "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+    "clean": true,
+    "native_source_delta_empty": true,
+    "native_source_scope": "ck3_autonomous_player/native_bridge",
+    "new_native_build_authorized": false
+  },
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01",
+  "scene_volume": "D:/",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "run_id_at_capacity_adoption": "expected_only_not_yet_allocated",
+  "post_adoption_allocator_exact_match_required": true,
+  "allocator_mismatch_or_failure_must_not_start": true,
+  "quota_review_at_utc": "2026-10-16T19:16:40.776628Z",
+  "old_deadline_extended": false,
+  "old_admission_transferred": false,
+  "new_scene_aggregate_bytes": 2281701376,
+  "aggregate_scene_ceiling_bytes": 2281701376,
+  "component_ceiling_bytes": {
+    "profile": 805306368,
+    "driver": 805306368,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "component_usage_bytes": {
+    "profile": 0,
+    "driver": 0,
+    "raw": 0,
+    "other": 0
+  },
+  "remaining_scene_growth_bytes": {
+    "profile": 805306368,
+    "driver": 805306368,
+    "raw": 536870912,
+    "other": 134217728
+  },
+  "raw_child_ceiling_bytes": 536870912,
+  "max_recording_seconds": 180,
+  "capture_bounds": {
+    "maximum_recording_seconds": 180,
+    "minimum_recording_wall_seconds": 100,
+    "maximum_days": 13,
+    "start_date_raw": 53148792,
+    "target_date_raw": 53149104,
+    "natural_days": 13,
+    "no_second_Start_in_R186": true,
+    "duration_qualification_not_inferred_from_capacity": true
+  },
+  "new_native_build_ceiling_bytes": 0,
+  "reused_native_build_root": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29",
+  "reused_native_actual_bytes": 370849131,
+  "native_outputs_qualified": true,
+  "production_qualification": {
+    "qualified": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\A29-PRODUCTION-QUALIFIED.actual-a01.json",
+      "bytes": 5611,
+      "sha256": "9fae4663946cf8e092c09d8ca5742558514b5cbca97af619d44ec7f616feff9b"
+    },
+    "inputs": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r186-native-verification-a01\\A29-PRODUCTION-QUALIFICATION-INPUTS.actual-a01.json",
+      "bytes": 51599,
+      "sha256": "7ef9b655bd4904c97fdc4019bd237806a000f30247fbd08fcca4e25f26234987"
+    },
+    "producer": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\native-msvc-result.json",
+      "bytes": 1932,
+      "sha256": "e625ef7b3ad5e9fa27c13a0d28354c3c89be1e69ec7190c005b255dda6cd7fca"
+    },
+    "Defender_SYSTEM_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\defender-exe-exclusions\\20261016T161906Z-567115f7\\receipt.json",
+      "bytes": 450024,
+      "sha256": "09b1110bf78a51cfb7a74e2c4e1e01a91acd0ce7c3bcdf52161554ee1939160d"
+    },
+    "seven_outputs_attributes_equal_sealed_candidate": true,
+    "four_fixtures_exit0": true,
+    "bodies_rehashed": false,
+    "qualification_does_not_prove_new_R188_business_or_duration": true
+  },
+  "volume_write_assignments": {
+    "profile": "D:/",
+    "driver": "D:/",
+    "raw": "D:/",
+    "other": "D:/"
+  },
+  "shared_all_offline_agents_bytes": 134217728,
+  "render_reserved_bytes": 0,
+  "render_execution_authorized": false,
+  "current_project_usage_bytes": null,
+  "current_project_usage_upper_bound_bytes": 162212793772,
+  "C_project_upper_bound_bytes": 162212793772,
+  "project_usage_basis": "Inherited R187 C upper unchanged: a29 already counted. Failed R187 D actual is retained and already in fresh Dused, not added to C. No deletion/recredit or claimed game exit0.",
+  "future_C_reservations": {
+    "old_other_unspent_bytes": 1870851481,
+    "new_scene_bytes": 0,
+    "new_native_bytes": 0,
+    "shared_offline_bytes": 134217728,
+    "render_bytes": 0,
+    "total_bytes": 2005069209
+  },
+  "future_D_reservations": {
+    "new_scene_bytes": 2281701376,
+    "ordinary_growth_separate_bytes": 134217728,
+    "other_unspent_bytes": 0
+  },
+  "projected_project_peak_bytes": 164217862981,
+  "effective_project_quota_bytes": 171798691840,
+  "C_logical_headroom_bytes": 7580828859,
+  "D_current_project_physical_upper_bytes": 446946414592,
+  "D_project_logical_bytes": null,
+  "D_complete_logical_inventory_claimed": false,
+  "D_project_physical_peak_upper_bytes": 449362333696,
+  "D_effective_unique_physical_quota_bytes": 483183820800,
+  "quota_exceptions": [
+    {
+      "owner": "Root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "volume": "C:/",
+      "metric": "project_logical_bytes_conservative_upper",
+      "max_project_bytes": 171798691840,
+      "actual_review_at_utc": "2026-10-16T17:54:40.834938+00:00",
+      "review_at_utc": "2026-10-16T19:16:40.776628Z",
+      "reason": "Independent R188 D 2176MiB/13days/100–180s, reused qualified a29 native0; actual R187 D and a29 C retained once; immutable original deadline and all other/shared holds; no render or cleanup recredit."
+    },
+    {
+      "owner": "Root",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "volume": "D:/",
+      "metric": "unique_physical_upper_entire_volume_used",
+      "max_project_bytes": 483183820800,
+      "actual_review_at_utc": "2026-10-16T17:54:40.834938+00:00",
+      "review_at_utc": "2026-10-16T19:16:40.776628Z",
+      "reason": "Independent R188 D 2176MiB/13days/100–180s, reused qualified a29 native0; actual R187 D and a29 C retained once; immutable original deadline and all other/shared holds; no render or cleanup recredit."
+    }
+  ],
+  "volume_reservations": {
+    "C:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 4294967296,
+      "other_unspent_reservations_bytes": 2005069209
+    },
+    "D:/": {
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "other_unspent_reservations_bytes": 0
+    }
+  },
+  "fresh_volumes": {
+    "C:/": {
+      "total_bytes": 511133945856,
+      "used_bytes": 478614417408,
+      "free_bytes": 32519528448,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 4294967296,
+      "this_write_peak_bytes": 0,
+      "other_unspent_reservations_bytes": 2005069209,
+      "required_free_bytes": 27774872985,
+      "margin_bytes": 4744655463
+    },
+    "D:/": {
+      "total_bytes": 500090007552,
+      "used_bytes": 446946414592,
+      "free_bytes": 53143592960,
+      "safety_bytes": 21474836480,
+      "system_growth_reserve_bytes": 134217728,
+      "this_write_peak_bytes": 2281701376,
+      "other_unspent_reservations_bytes": 0,
+      "required_free_bytes": 23890755584,
+      "margin_bytes": 29252837376
+    }
+  },
+  "capacity_numbers_fit": true,
+  "minimum_necessary_protections": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-PROTECTIONS.actual.json",
+    "bytes": 1472,
+    "sha256": "591e86fb42c6b55a938c1bf4c4b79a2e92f98d7d2d9f3029e573df65d2c4c9f7"
+  },
+  "capacity_bus_task_id": "e04-r188-capacity-a01",
+  "root_atomic_adoption_required": false,
+  "transaction_id": "850a6a58fd6d44c2beec567cdd293ed4",
+  "source_checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74262421,
+    "sha256": "934aa1b99cc59874eb7365eb997f520753c4db4e31afd91a2d416e28a0244aef"
+  },
+  "evidence": {
+    "candidate": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.candidate-a02.json",
+      "bytes": 9430,
+      "sha256": "58d72f05254278db8409fba1c9ca2358f1654b68448d208e0e2b1e32b7ddce5a"
+    },
+    "original_R187_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r187-a01\\R187-CAPACITY.actual-root-a01.json",
+      "bytes": 11046,
+      "sha256": "64ab36102d909562f7eb49a4725178bf5bc8fa3ad22f1449ee0ae867892e8773"
+    },
+    "original_R186_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+      "bytes": 16403,
+      "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+    },
+    "immutable_R187_closure": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R187-CLOSURE.actual.json",
+      "bytes": 4941,
+      "sha256": "8090b74c59be6807a8e45c2633e206b1a2106be7874c2cd9ebdeb1c642092a57"
+    },
+    "prior_registry_original": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\REGISTRY-ORIGINAL.actual.json",
+      "bytes": 19314,
+      "sha256": "4e0390e513525106e941ab895ebcb482b75054654cea1190ec931ed62d1e6f22"
+    },
+    "task_bus_capacity_registry": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 22594,
+      "sha256": "95683b9aa9443f6a20efe79a2381d5dd13cef2d61b8077e502627ff2fc525d0d"
+    },
+    "task_bus_owner": {
+      "path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-r188-capacity-a01.json",
+      "bytes": 623,
+      "sha256": "4b744de1c5b8906107fd661fe97ac193367b4b0b0b3fc8dc1e89105d66d228ef"
+    },
+    "allocator_counter_readonly": {
+      "path": "C:\\Users\\1\\AppData\\Local\\XarCk3Acceptance\\live-run-ids-v1\\desktop-3fevhd2-1c74096080\\vanilla\\counter.json",
+      "bytes": 282,
+      "sha256": "b8dcbf6b6c84f5708f0380bf05d1bbe31d3f7fc0ffd04e5ab8977416ec4eca91"
+    },
+    "D_root_access": {
+      "approved_root": "D:\\workspace\\ck3_native_war_ai_promo_work",
+      "scene": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01",
+      "ancestor_reparse_rejected": true,
+      "effective_access_mask": 310,
+      "volume_serial": 882653518,
+      "filesystem": "NTFS",
+      "write_or_create_probe_performed": false
+    },
+    "shared_policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "installed_machine_profile": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json",
+      "bytes": 1717,
+      "sha256": "3d8b790a39636f2aa7d6a34849e6f888941a6cdd656e6cf928c9f3159b28cd06"
+    },
+    "taskbus_cli": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+      "sha256": "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee"
+    },
+    "pinned_atomic_helpers": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r185-a01\\atomic-a01\\r185_root_atomic_settle_adopt.py",
+      "sha256": "b1efd408822a833240c1ae97aa6223a5de125a55fa4b13a0ab39dbee8e9ae29a"
+    }
+  },
+  "game_SDK_desktop_build_delete_allocator_or_global_profile_install_performed": false
+}

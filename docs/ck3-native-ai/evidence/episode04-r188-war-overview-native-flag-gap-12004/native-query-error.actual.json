@@ -1,0 +1,45 @@
+{
+  "at": "2026-10-16T18:18:16.040488+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r188-war-notice-query-a01",
+    "tool": "ck3_query_war_declared_overview_v1",
+    "arguments": {
+      "expected_revision": 43
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\requests\\r188-war-notice-query-a01.json",
+    "bytes": 146,
+    "sha256": "f91bda0a7c1ba15ccc020abff44b49c7ceb2c22d015b89e96b383048325a4357"
+  },
+  "is_error": true,
+  "body": null,
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_query_war_declared_overview_v1: Native does not advertise this fixed war overview operation",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": null,
+    "is_error": true,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "Error executing tool ck3_query_war_declared_overview_v1: Native does not advertise this fixed war overview operation",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

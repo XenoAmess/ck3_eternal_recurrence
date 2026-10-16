@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:08:13.561179+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "current_ck3_foreground": true,
+  "paused_visible": true,
+  "selected_army_id": 18,
+  "ck3_hwnd": 206635798,
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "client_screen_rect": [
+    640,
+    360,
+    1920,
+    1080
+  ],
+  "screenshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-frame-source-a02.png",
+    "bytes": 1961869,
+    "sha256": "9eb4a021e09f525d167a06968feb5684fd725603e782d703c4f9b1fe689262dc"
+  },
+  "original_frame_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-frame-source-a02.actual.json",
+    "bytes": 719,
+    "sha256": "b78d9038e505e65b072b309db056fc5d3257702975944f2005a347b3e6cc7105"
+  },
+  "native_army_readback": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-select-army-readback-a03.json",
+    "bytes": 338864,
+    "sha256": "9af0fe3320ef694ef6c12bd9a35296d9c3e6554bf1ba3f9f8ad5f752c3adcb3a"
+  },
+  "reviewer": "Root directly reviewed original paused March20 Army18 panel1173/1percent attrition/300of300 supply, no tooltip or foreign-window occlusion. Native independent readback separately identifies Army18.",
+  "capture_method": "gdigrab desktop cropped authenticated CK3 client 1280x720",
+  "business_or_clean_span_qualified": false
+}

@@ -1,0 +1,121 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T16:24:09.233651+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "runtime_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "native_build_source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "identity": {
+    "schema": "xar.ck3-live-run-identity.v1",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+    "execution_id": "9ef1b200-af48-4e20-8299-53fd7cb03146",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "mod_key": "vanilla",
+    "sequence": 186,
+    "allocated_at_utc": "2026-10-16T16:24:08.858229+00:00",
+    "allocator_pid": 19484,
+    "legacy_alias": null
+  },
+  "allocation": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\ALLOCATION.actual-a01.json",
+    "bytes": 371,
+    "sha256": "265d5246f4ade5bdbf9826c4a223a01eb6c22ae8ac6cc6d00555201a5c4cd39d"
+  },
+  "allocation_call": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\ALLOCATION-CALL.actual-a01.json",
+    "bytes": 862,
+    "sha256": "c39b5d4f74de2b5cc2987ff7074969cea4cff72335a6f4ca4c2492e4ab1bccee"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+    "bytes": 16403,
+    "sha256": "1d0c1b58a2108c79f0ea043f6106e80a8da67280945db39d5d3014860b384184"
+  },
+  "capacity_admission": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-sourcefix-a01\\R186-CAPACITY.sourcefix.actual-a01.json",
+  "production": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-root-prep-a01\\A29-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 5611,
+    "sha256": "9fae4663946cf8e092c09d8ca5742558514b5cbca97af619d44ec7f616feff9b"
+  },
+  "a29_inputs": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-native-verification-a01\\A29-PRODUCTION-QUALIFICATION-INPUTS.actual-a01.json",
+    "bytes": 51599,
+    "sha256": "7ef9b655bd4904c97fdc4019bd237806a000f30247fbd08fcca4e25f26234987"
+  },
+  "a29_producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native12004-r186-a29\\native-msvc-result.json",
+    "bytes": 1932,
+    "sha256": "e625ef7b3ad5e9fa27c13a0d28354c3c89be1e69ec7190c005b255dda6cd7fca"
+  },
+  "promo_release_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-native-prep-a01\\R186-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 5501,
+    "sha256": "ce22cea3b3203c035029f009f6df566fd60f4b84b84d7c15a35aa2a37ba7897d"
+  },
+  "optional_day27_hook_film_helper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-owner-hook-prep-a01\\owner_film_candidate.py",
+    "bytes": 54597,
+    "sha256": "a53766ea25dc1b517f12e7f99b0d3b575e8f6f21ca9d9a4c2165ab8d4f81194f"
+  },
+  "optional_day27_hook_spec_template": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r186-owner-hook-prep-a01\\HOOK-SPEC.template.json",
+    "bytes": 599,
+    "sha256": "051cdcf7066f231f20203beef393f4d7c6e1a4f94d6a52617c88bf4ed8957820"
+  },
+  "day27_controller_module_actual": null,
+  "day27_controller_config_actual": null,
+  "day27_hook_activation": "ROOT_BIND_AFTER_CONTROLLER_ACTUAL_OR_KEEP_DISABLED",
+  "approved_D_assets_root": "D:\\workspace\\ck3_native_war_ai_promo_work",
+  "machine_profile_sources": {
+    "machine_profile_candidate": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r186-a02\\MACHINE-PROFILE.candidate-a01.json",
+      "bytes": 2532,
+      "sha256": "e5496756a428fbb03cd12c94febabe111fe1530fa278e5e819fe75a7d4b766b7"
+    },
+    "installed_machine_profile": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\machine-profile.json",
+      "bytes": 1717,
+      "sha256": "3d8b790a39636f2aa7d6a34849e6f888941a6cdd656e6cf928c9f3159b28cd06"
+    },
+    "shared_policy": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  },
+  "source_checkpoint": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0185",
+    "save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73864691,
+      "sha256": "500ed157a401f22e8ee5433a84b6fb24850f357a964e4474c7b8af4ce67335ff"
+    },
+    "save_response": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\responses\\r185-film-a01-close-a01-02-save-once.json",
+      "bytes": 20298,
+      "sha256": "5bf4d872441b9bc5aae1c8e1855e3d0c7a37ad0c39095ad0ae24b9ea7750897f"
+    },
+    "prepared": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11597,
+      "sha256": "adec9d7bc97352d2d3c31fcc1f22fb6f11070b47d290477611e5a7b744de886c"
+    },
+    "normal_close": {
+      "normal_save": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3806,
+        "sha256": "4b436af6ae06e24a4d514c6c13839ff9fc26e5e759238d1d5b29b061f967ae33"
+      },
+      "bootstrap_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0185\\bootstrap-result.json",
+        "bytes": 15038,
+        "sha256": "3d82141f7da63be4e9aa0dde039f2866ff29c149f131f84fbefd415139f14d11"
+      },
+      "screen_release": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-r185-window-capture-a01\\r185-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4052,
+        "sha256": "e848c6abbd6f7d3e4ed57e16d9c638c7760a3094982a4009b947a47fe7ce6c24"
+      }
+    }
+  },
+  "game_started": false
+}

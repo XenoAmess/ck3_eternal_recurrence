@@ -1,0 +1,20 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "argv": [
+    "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\build-a07\\maintenance_writer_cold_observer.exe",
+    "--enable-ck3-12004-data-watch",
+    "--fixture-meta",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\CURRENT-RAW-ADMISSION.meta.txt",
+    "--timeout-ms",
+    "30000",
+    "--raw",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.raw.ndjson",
+    "--ready",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\writer.ready.json",
+    "--expected-hits",
+    "128",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080"
+  ],
+  "no_retry": true
+}

@@ -1,0 +1,88 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:26:46.183174+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0188",
+  "pid": 12060,
+  "process_creation_filetime_100ns": 134366470385086412,
+  "episode_run_id": "native-31254-0a8ceff1be59",
+  "actor_id": 31254,
+  "date_raw": 53149080,
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7915,
+    "sha256": "3eaf1f661ec0fefbd0fb18db9a9955ce498cb526cc76dbd346dc2fdce179ccd0"
+  },
+  "prepared": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\prepared-a01\\prepared.json",
+    "bytes": 11675,
+    "sha256": "f2373458aa6ccaacf47f72a7967c6cd8f4afada9c1abad514491dd99cc2e9fd5"
+  },
+  "source_bootstrap": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r186-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0186\\bootstrap-result.json",
+    "bytes": 15162,
+    "sha256": "e05ce43491fcf802617318d797d6451953de7131d7985dc7215c5af3316b9699"
+  },
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\r188-film-a01-film-result.actual.json",
+    "bytes": 2098,
+    "sha256": "43e1655d2a7bcab02375d137aa5a0df67cb862dda66cf1b355ff08a6d54fa55c"
+  },
+  "recorder_start": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-03-recorder-start-once.json",
+    "bytes": 6257,
+    "sha256": "9e077cb1af4afc467e437274d3315bf030f82a4a91905c17af06fd0a87aa9024"
+  },
+  "recorder_finish": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-99-recorder-finish-once.json",
+    "bytes": 4324,
+    "sha256": "9b61aaabc70897a3cabd360224096e0bf144fdc62bb882c7f98a8b414d1d832f"
+  },
+  "observer_cleanup": {
+    "controller_config": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-controller-config.actual-a01.json",
+      "bytes": 1032,
+      "sha256": "068d122e9c23e24373034a30cdbdc2fd471a0103a017a7a789e8fe7a13f2c9e3"
+    },
+    "observer_output_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\writer-observation-a01",
+    "observer_started_by_close_helper": false,
+    "observer_killed_by_close_helper": false,
+    "status": "NOT_STARTED_NO_OBSERVER_START_CLAIM"
+  },
+  "deadline": {
+    "capacity": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r188-a01\\R188-CAPACITY.actual-root-a01.json",
+      "bytes": 11276,
+      "sha256": "fb872a2c1492f7e84a93837ee2fa30f93d118920b11d9649082abe6a21fa16d6"
+    },
+    "session_deadline": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\recording-session-deadline.json",
+      "bytes": 1576,
+      "sha256": "7577faf4c76e565989446bcf28b4d1e088291e5c359f58a2f72a9c7ee75211c4"
+    },
+    "remaining_seconds": 2999.04022,
+    "required_seconds": 180,
+    "deadline_renewed": false
+  },
+  "checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74492850,
+    "sha256": "13d0724240bd341ec2e88f92ee50d0deb2cd1189ae1ef2803a16e34bc86c74be"
+  },
+  "native_save_response": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-close-a01-02-save-once.json",
+    "bytes": 20444,
+    "sha256": "acc65a8baa283d750a010a59b9588285f31d7ee12d0de529a68dd49dd351c94c"
+  },
+  "after_snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-film-a01-close-a01-03-after-snapshot.json",
+    "bytes": 141997,
+    "sha256": "ad9e079bfce0095c303727f1834fbbbaf11a36cf86afb58f36bfb38d69a5747e"
+  },
+  "video_human_signoff": false
+}

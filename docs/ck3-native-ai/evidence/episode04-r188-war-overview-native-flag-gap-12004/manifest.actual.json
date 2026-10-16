@@ -1,0 +1,163 @@
+{
+  "schema": "xar.e04.r188-war-overview-portable-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T18:44:11.766434+00:00",
+  "integration_source_head": "53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011",
+  "copies": [
+    {
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r188-war-notice-native-flag-a30-candidate-a01/SOURCE-SPANS.actual-a01.json",
+        "bytes": 5253,
+        "sha256": "e52d646dc359c1ce01eb10f094ca075fca5cc151ff29d2aeb7040a917ab32816"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/source-spans.actual.json",
+        "bytes": 5253,
+        "sha256": "e52d646dc359c1ce01eb10f094ca075fca5cc151ff29d2aeb7040a917ab32816"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r188-war-notice-native-flag-a30-candidate-a01/A30-FEATURE-FLAGS.candidate.json",
+        "bytes": 13047,
+        "sha256": "4edc17ce763faaaca46f4055b31d8c6208a2f5d444bd08f3a41d6d59055b3065"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/a30-feature-flags.candidate.json",
+        "bytes": 13047,
+        "sha256": "4edc17ce763faaaca46f4055b31d8c6208a2f5d444bd08f3a41d6d59055b3065"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r188-war-notice-native-flag-a30-candidate-a01/UI-FALLBACK.actual-a01.json",
+        "bytes": 3483,
+        "sha256": "3e08a54c54bb944f629e22adb686caef42d5bc890af8fc499a775583c6d34577"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/ui-fallback.actual.json",
+        "bytes": 3483,
+        "sha256": "3e08a54c54bb944f629e22adb686caef42d5bc890af8fc499a775583c6d34577"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/native12004-r186-a29/ROOT-configure-flags.actual.json",
+        "bytes": 11137,
+        "sha256": "cbef75f7a9a4b6428983037641c7c8916290e3b2f99bdb13eca6d5a077855ddd"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/a29-configure-flags.actual.json",
+        "bytes": 11137,
+        "sha256": "cbef75f7a9a4b6428983037641c7c8916290e3b2f99bdb13eca6d5a077855ddd"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0188/responses/r188-war-notice-query-a01.json",
+        "bytes": 1339,
+        "sha256": "da36bf94ee4746184ad01448fc821657b8087fcbc20ffa3291eeb3bf52ee0bf4"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/native-query-error.actual.json",
+        "bytes": 1339,
+        "sha256": "da36bf94ee4746184ad01448fc821657b8087fcbc20ffa3291eeb3bf52ee0bf4"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-before-close-a01.actual.json",
+        "bytes": 725,
+        "sha256": "c6087bf78ce0ad7a04b0eed9f391d5f349908f0cd9ae184de899bfde3c76c4f5"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/before-close.metadata.json",
+        "bytes": 703,
+        "sha256": "9bb05670e214da026c91a6171a63bbb40a83aa9ad9bc64c1c72ef6abcc5727d7"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-after-close-a01.actual.json",
+        "bytes": 724,
+        "sha256": "eb6fbc4b174cc11e5a7972dc791cc86e8cabe71f05eb00147d44114ac3efef7b"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/after-close.metadata.json",
+        "bytes": 702,
+        "sha256": "fb36bf03e927abfd8cfdadaa7c815622eb63100f3baf16ee0c966211d7d83748"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r188-window-capture-a01/war-notice-close-click-a01.png.json",
+        "bytes": 1579,
+        "sha256": "b0571fcc7ae97d60c60b9c8f91d7e934258be96c60af842bfb29aa20a6e2e755"
+      },
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/coordinate-map.actual.json",
+        "bytes": 1514,
+        "sha256": "4fd6c1c967cdc547dec350f6f30afba87b674ad2b034326d3acc9abe4b6c8fbe"
+      },
+      "copy_convention": "JSON value preserved; UTF8/LF pretty serialization; original byte pin remains separate"
+    },
+    {
+      "repository_copy": {
+        "relative_path": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/configuration-facts.actual.json",
+        "bytes": 2819,
+        "sha256": "8412bcbf5c7c47671b78f884cc6408a9ad1318c81c87f28bd3750d488a1088ed"
+      },
+      "derived_from": "sealed source pins and actual a29 configure argv; no executable/game reads"
+    }
+  ],
+  "external_pixel_assets": [
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\war-notice-before-close-a01.png",
+        "bytes": 1921924,
+        "sha256": "064ad39390dde62d7c1965b549df101b262de81336e3c3b510b8352d46ec6538"
+      },
+      "availability_in_this_repository": "pixels_not_packaged",
+      "origin_receipt_observed_at_utc": "2026-10-16T18:19:28.373923+00:00",
+      "repository_receipt": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/before-close.metadata.json",
+      "read_requirement": "source machine or separately verified exact copy required to inspect pixels",
+      "this_worker_pixel_review": false,
+      "this_integration_fresh_pixel_hash": false
+    },
+    {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\war-notice-after-close-a01.png",
+        "bytes": 1954697,
+        "sha256": "06bfe3a4d28b3d2beadfc1950b6c318ab7b81a155b193826995b0dc84b2a7f10"
+      },
+      "availability_in_this_repository": "pixels_not_packaged",
+      "origin_receipt_observed_at_utc": "2026-10-16T18:19:49.323872+00:00",
+      "repository_receipt": "docs/ck3-native-ai/evidence/episode04-r188-war-overview-native-flag-gap-12004/after-close.metadata.json",
+      "read_requirement": "source machine or separately verified exact copy required to inspect pixels",
+      "this_worker_pixel_review": false,
+      "this_integration_fresh_pixel_hash": false
+    }
+  ],
+  "portability_boundary": "Repository JSON and source spans are self-contained small evidence. Absolute original paths locate source-machine artifacts only; neither their names nor hashes make PNG pixels readable on another machine. No EXE/DLL/save/PNG pixels packaged.",
+  "visual_outcome_basis": "Root direct review of originals after one guarded coordinate click: stock notice gone, stillMar31paused; this is not a native closed_verified result or human full-film signoff.",
+  "new_UI_provider": false,
+  "a30_built_or_live_qualified": false,
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_days": 180,
+    "owner": "/root/e04_event_1070_followup",
+    "next_use": "shared build-profile knowledge and future actual capability acceptance",
+    "protection_review_at_utc": "2026-10-23T18:44:11.766434+00:00",
+    "automatic_renewal": false
+  }
+}

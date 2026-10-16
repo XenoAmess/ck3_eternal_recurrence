@@ -1,0 +1,55 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 7371,
+    "sha256": "08eeff9ec02316c9666ed4520689f968a26972b853cc139a48657f88105231b6"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7915,
+    "sha256": "3eaf1f661ec0fefbd0fb18db9a9955ce498cb526cc76dbd346dc2fdce179ccd0"
+  },
+  "old_finalize": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\ROOT-FILM-OBSERVER-FINALIZE.actual-a01.json",
+    "bytes": 2704,
+    "sha256": "5c10bd2de098016244e8bed0c08a7586f5bb14a823ca2471e88d05defde91cfb"
+  },
+  "root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01",
+  "prefix": "r188-monthroll-a01",
+  "admission": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\admission\\ADMISSION.actual.json",
+    "bytes": 4007,
+    "sha256": "d5181f658f4f63f986b526c9d89d600468155863bc5e51c03f13b7ad0c30ebd8"
+  },
+  "controller_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\monthroll-watch-a01\\CONTROLLER-CONFIG.actual.json",
+    "bytes": 1034,
+    "sha256": "c827dfe6880f8f241ff94a6290b1c61dd95550402d9fb1010ddd4636387928b9"
+  },
+  "source_snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-01-fresh-before.json",
+    "bytes": 141159,
+    "sha256": "84605ffee4fb56dc2d026826ce7c4e1ae6838679fcf802f225d0e97d0584cfb6"
+  },
+  "request_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-01-fresh-before.json",
+      "bytes": 141159,
+      "sha256": "84605ffee4fb56dc2d026826ce7c4e1ae6838679fcf802f225d0e97d0584cfb6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-02-fresh-original-g12.json",
+      "bytes": 4542,
+      "sha256": "df6d6106b1ddbf04777a77dde9cfbbdf965bd6db7b28867590aae65cf4567427"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\responses\\r188-monthroll-a01-prepare-03-fresh-cash.json",
+      "bytes": 238355,
+      "sha256": "a7897e2824732aed36bb867dd85a58ce26dd455d711265aaced4abbeedd6add2"
+    }
+  ],
+  "observer_started": false,
+  "Arm_Resume_recorder_Start": 0
+}

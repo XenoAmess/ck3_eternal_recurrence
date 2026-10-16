@@ -1,0 +1,61 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T17:48:31.224489+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0187",
+  "original_failure": {
+    "original_call": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-CALL.actual-a01.json",
+      "bytes": 896,
+      "sha256": "45d2b7ec58f1f957e39bd32e80fad88646af0031ce82e2009c3d01c15cc5d5b7"
+    },
+    "original_plan": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-PLAN.actual-a01.json",
+      "bytes": 3626,
+      "sha256": "e44bac1402164fb61b5719e081173cb39937d1eb3c01413b0491c9f52e998e32"
+    },
+    "original_relay": {
+      "stdout": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stderr.txt",
+        "bytes": 3091,
+        "sha256": "ffa7d831acda9258a133f738e3328fe5d2de24b60414bef0051a2edf106e1040"
+      }
+    },
+    "game_run_dir_absent": true,
+    "identity_absent": true,
+    "ck3_process_absent": true
+  },
+  "relay_copies": {
+    "stdout": {
+      "original_canonical_path": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "a01_failure_archive_copy": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-a01-FAILUREARCHIVE-a02\\a01.relay.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "canonical_path_will_be_reused_by_a02": true
+    },
+    "stderr": {
+      "original_canonical_path": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187.relay.stderr.txt",
+        "bytes": 3091,
+        "sha256": "ffa7d831acda9258a133f738e3328fe5d2de24b60414bef0051a2edf106e1040"
+      },
+      "a01_failure_archive_copy": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-a01-FAILUREARCHIVE-a02\\a01.relay.stderr.txt",
+        "bytes": 3091,
+        "sha256": "ffa7d831acda9258a133f738e3328fe5d2de24b60414bef0051a2edf106e1040"
+      },
+      "canonical_path_will_be_reused_by_a02": true
+    }
+  },
+  "old_failed_call_remains_exit_1": true
+}

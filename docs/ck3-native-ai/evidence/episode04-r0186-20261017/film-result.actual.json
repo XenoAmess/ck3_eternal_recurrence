@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0186",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "completed_days": 14,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.8324387,
+  "within_six_seconds": true,
+  "stopped_reason": "native_modal_requires_immediate_Root_policy",
+  "last_date_raw": 53148768,
+  "min_wall_reached": false,
+  "minimum_wall_wait_skipped_for_early_stop": true,
+  "observed_at_utc": "2026-10-16T16:54:30.180929+00:00"
+}

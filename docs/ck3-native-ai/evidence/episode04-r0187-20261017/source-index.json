@@ -1,0 +1,236 @@
+{
+  "schema": "xar.e04.r187-portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T17:56:20.746086+00:00",
+  "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0187",
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01",
+  "originals": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a01/ROOT-LAUNCH-CALL.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-CALL.actual-a01.json",
+        "bytes": 896,
+        "sha256": "45d2b7ec58f1f957e39bd32e80fad88646af0031ce82e2009c3d01c15cc5d5b7"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a01/ROOT-LAUNCH-PLAN.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-PLAN.actual-a01.json",
+        "bytes": 3626,
+        "sha256": "e44bac1402164fb61b5719e081173cb39937d1eb3c01413b0491c9f52e998e32"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a01/A01-FAILURE-ARCHIVE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-a01-FAILUREARCHIVE-a02\\A01-FAILURE-ARCHIVE.actual.json",
+        "bytes": 2819,
+        "sha256": "c52c60a3445202520717729d7d1ae00bdb66f3137bf2c7944add0ce1c626623a"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a01/a01.relay.stderr.txt",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-a01-FAILUREARCHIVE-a02\\a01.relay.stderr.txt",
+        "bytes": 3091,
+        "sha256": "ffa7d831acda9258a133f738e3328fe5d2de24b60414bef0051a2edf106e1040"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a02/ROOT-LAUNCH-CALL.actual-a02.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-CALL.actual-a02.json",
+        "bytes": 904,
+        "sha256": "6694a94ea4083ed91be160c78a6f5eb0d82509e01abfc26b016a3c34f8d3b03e"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a02/ROOT-LAUNCH-PLAN.actual-a02.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\ROOT-LAUNCH-PLAN.actual-a02.json",
+        "bytes": 4964,
+        "sha256": "dc77ccb31a338bd0cc6365ec7961cb3f968e3c06e7ac4465a89a5fc96ddfe9fe"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a02/bootstrap-result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187\\bootstrap-result.json",
+        "bytes": 1163,
+        "sha256": "b4ef695628a61f0f6e2e6fa2e655bf1d7206ca37c80c552e40794cdfb25fc381"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a02/screen-lease-journal.jsonl",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187\\screen-lease-journal.jsonl",
+        "bytes": 188,
+        "sha256": "dcf5417da050fe4b289ae54a056f739519d394aa47e2696d2d416ec11854e76d"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/a02/session-result.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0187\\session-result.json",
+        "bytes": 102,
+        "sha256": "4f00761d66dba18deff6c03f0a065a1544cb5bb9b33cd590d601f4d84f374ef9"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-SCREEN-ACQUIRE.actual.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\R187-SCREEN-ACQUIRE.actual.json",
+        "bytes": 1314,
+        "sha256": "5c095e484f9a6bd3fe81df0e1a4338586a88a549f91870cd5a235b7b24f91d98"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-SCREEN-ACQUIRE.stdout.bin",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\R187-SCREEN-ACQUIRE.stdout.bin",
+        "bytes": 1405,
+        "sha256": "d3f26b2557a5e6143491340a400eabb1a6ac03b7ab83c88db22488dfd49b8892"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/prelaunch-screen.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\prelaunch-screen.actual-a01.json",
+        "bytes": 424,
+        "sha256": "5550baf28fe0574c15931331d12082921cb74babcb35cb0bfdec252ff51875ad"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/bootstrap-input.actual-a01.json",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r187-window-capture-a01\\bootstrap-input.actual-a01.json",
+        "bytes": 6407,
+        "sha256": "ba9d6847e0910e98c237ff15c7426b5b2316b03c8611454afee77822e397bc4c"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-CAPACITY.actual-root-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r187-a01\\R187-CAPACITY.actual-root-a01.json",
+        "bytes": 11046,
+        "sha256": "64ab36102d909562f7eb49a4725178bf5bc8fa3ad22f1449ee0ae867892e8773"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/R187-REUSED-A29-QUALIFIED.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r187-root-prep-a01\\R187-REUSED-A29-QUALIFIED.actual-a01.json",
+        "bytes": 5010,
+        "sha256": "db140b63b715a5ec4705e178e48906068001694b9fd907810be13ed86e3f1465"
+      },
+      "copy_method": "exact_bytes"
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/inputs/ALLOCATION.actual-a01.json",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r187-root-prep-a01\\ALLOCATION.actual-a01.json",
+        "bytes": 369,
+        "sha256": "0b7c347a6601f757848ed6a1c4152af5a8e047616ff0042cd67e66884d3a16b6"
+      },
+      "copy_method": "exact_bytes"
+    }
+  ],
+  "source_provenance": [
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "bytes": 38107,
+        "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d"
+      },
+      "worktree_crc32": "ad621924",
+      "git_blob": "1b9e3337dbd739ea4566023ba1263c5fd3e6f03b",
+      "git_blob_bytes": 38107,
+      "git_blob_sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "copied": false
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_runtime_evidence.py",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_runtime_evidence.py",
+        "bytes": 11418,
+        "sha256": "8337aeafbcd63dabe9611559dfde42a7199d8316389bba64c8f24e476be0bcde"
+      },
+      "worktree_crc32": "d11488d0",
+      "git_blob": "8f2720a4681a06a22c2cbb74c58ad3ce887e25be",
+      "git_blob_bytes": 11418,
+      "git_blob_sha256": "8337aeafbcd63dabe9611559dfde42a7199d8316389bba64c8f24e476be0bcde",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "copied": false
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\r10_compare.py",
+        "bytes": 38807,
+        "sha256": "3fffd7c2929b44f4d3337888b3767ab42e009f0a0fbd941c2041feb5f018a1b8"
+      },
+      "worktree_crc32": "9c0568d2",
+      "git_blob": "fc1fcedfae0a92eb920b62859a5d72dfc2bae4d5",
+      "git_blob_bytes": 38807,
+      "git_blob_sha256": "3fffd7c2929b44f4d3337888b3767ab42e009f0a0fbd941c2041feb5f018a1b8",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "copied": false
+    },
+    {
+      "repo_path": "promo/ck3_native_war_ai/integration/screen_bus_lease.py",
+      "worktree": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\screen_bus_lease.py",
+        "bytes": 15997,
+        "sha256": "4a8233bb640d0eeda67150da818f3898a1c9afb0229d54e4d0d39e7a932f27f0"
+      },
+      "worktree_crc32": "a64aea64",
+      "git_blob": "ad190ed520baf4ca09415b8fc7baf3129575a5d6",
+      "git_blob_bytes": 15997,
+      "git_blob_sha256": "4a8233bb640d0eeda67150da818f3898a1c9afb0229d54e4d0d39e7a932f27f0",
+      "source_head": "d05b0c780b615faa714fdf0535403bb2e6941faf",
+      "copied": false
+    }
+  ],
+  "generated": [
+    {
+      "portable_path": "docs/ck3-native-ai/evidence/episode04-r0187-20261017/facts.derived-a01.json",
+      "bytes": 2925,
+      "sha256": "b3bef6784ce0391267154eb7752308954d8833d6ba0f63dba02aaf86412f22b3"
+    }
+  ],
+  "external_dependencies_are_pins_only": true,
+  "not_included": [
+    "raw/video/PNG/save bodies",
+    "native binaries",
+    "full Defender receipt",
+    "prepared assets and helper code",
+    "mutable current task-bus state",
+    "tests"
+  ],
+  "retention": {
+    "category": "record",
+    "review_after_hours": 4320,
+    "reason": "Small exact representative prestart failure evidence for video and agent development; no indefinite large-source retention implied.",
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0"
+  },
+  "integration": "external candidate only; Root has not yet applied this patch to master"
+}
