@@ -1,4 +1,5 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include "xar_bridge/date_pause_publication_v1.hpp"
 #include "xar_bridge/war_declared_overview_v1.hpp"
 #include "xar_bridge/war_results_ui_scope_transition_v1.hpp"
 #include "xar_bridge/route_contact_horizon_v1_mailbox.hpp"
@@ -18,6 +19,7 @@
 #include <iterator>
 #include <limits>
 #include <optional>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -2752,7 +2754,60 @@ unsigned long TestWarResultsUiScopeTransitions() {
   return failures;
 }
 
+static int TestFastDatePausePublicationGuard() {
+  using xar::bridge::DatePausePublicationDueV1;
+  using xar::ck3_11906::MainThreadQueryMailboxDiagnosticsV1;
+  MainThreadQueryMailboxDiagnosticsV1 good{};
+  good.observed_stamp_read_success = true;
+  good.pump_epochs = 8;
+  good.owner_verified_pump_epochs = 8;
+  good.owner_thread_id = 100;
+  good.observed_current_thread_id = 100;
+  good.observed_tls_initialized = 1;
+  good.observed_tls_main_thread_marker = 1;
+  good.observed_tls_context = 0x1000;
+  good.observed_jomini_state = 0x2000;
+  good.observed_game_state = 0x3000;
+  good.observed_date_raw = 1008;
+  good.observed_paused = true;
+  int checks = 0;
+  const auto require = [&](bool value) {
+    ++checks;
+    if (!value) throw std::runtime_error("fast state guard fixture");
+  };
+  try {
+    // A complete day can finish before any running frame was published.
+    require(DatePausePublicationDueV1(true, 984, true, good));
+    require(DatePausePublicationDueV1(true, 1008, false, good));
+    require(!DatePausePublicationDueV1(true, 1008, true, good));
+    good.observed_paused = false;
+    require(DatePausePublicationDueV1(true, 1008, true, good));
+    good.observed_paused = true;
+    require(!DatePausePublicationDueV1(false, 984, true, good));
+    require(!DatePausePublicationDueV1(true, 0, true, good));
+    const auto rejected = [&](auto mutate) {
+      auto bad = good; mutate(bad);
+      require(!DatePausePublicationDueV1(true, 984, true, bad));
+    };
+    rejected([](auto &x) { x.stop_requested = true; });
+    rejected([](auto &x) { x.observed_stamp_read_success = false; });
+    rejected([](auto &x) { x.pump_epochs = 0; });
+    rejected([](auto &x) { x.owner_verified_pump_epochs = 0; });
+    rejected([](auto &x) { x.owner_thread_id = 0; });
+    rejected([](auto &x) { x.observed_current_thread_id = 101; });
+    rejected([](auto &x) { x.observed_tls_initialized = 0; });
+    rejected([](auto &x) { x.observed_tls_main_thread_marker = 0; });
+    rejected([](auto &x) { x.observed_tls_context = 0; });
+    rejected([](auto &x) { x.observed_jomini_state = 0; });
+    rejected([](auto &x) { x.observed_game_state = 0; });
+    rejected([](auto &x) { x.observed_date_raw = 0; });
+  } catch (...) { return -checks; }
+  return checks;
+}
+
 int main(int argc, char **argv) {
+  if (TestFastDatePausePublicationGuard() != 18) return 5;
+  if (argc == 2 && std::string_view(argv[1]) == "--date-pause-only") return 0;
   if (TestWarResultsUiScopeTransitions() != 0) return 4;
   if (argc == 2 && std::string_view(argv[1]) == "--idle-presentation-only")
     return TestIdlePresentationYieldsToGameplay() ? 0 : 3;

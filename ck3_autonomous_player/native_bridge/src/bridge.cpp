@@ -415,6 +415,7 @@
 #include "xar_bridge/startup_particle2_null_guard_v1.hpp"
 #include "xar_bridge/startup_particle2_stage_recorder_v1.hpp"
 #include "xar_bridge/tactical_daily_sentinel_v1.hpp"
+#include "xar_bridge/date_pause_publication_v1.hpp"
 #include "xar_bridge/title_map_navigation_v1_mailbox.hpp"
 #include "xar_bridge/title_map_navigation_diagnostics_v1.hpp"
 #include "xar_bridge/nonwar_private_snapshot_guard_diagnostics_v1.hpp"
@@ -15149,6 +15150,23 @@ void RunConnectedSession(
     publish_command_entry_trace(pipe);
   };
   while (connected && WaitForSingleObject(g_stop_event, 0) == WAIT_TIMEOUT) {
+    // Owner Observe samples actual date/pause transitions immediately. Publish
+    // that existing guarded cache without waiting for the 250ms maintenance
+    // heartbeat. This path never submits a query or mutates game time.
+    if (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+        game.supports_snapshot() && previous_snapshot.has_value()) {
+      const auto timeline_stamp =
+          xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
+              g_main_thread_query_mailbox_v1);
+      if (xar::bridge::DatePausePublicationDueV1(
+              true, previous_snapshot->date_raw, previous_snapshot->paused,
+              timeline_stamp)) {
+        connected = PublishSnapshot(pipe, game, previous_snapshot,
+            state_revision, checkpoint_submission,
+            published_checkpoint_sequence);
+        if (!connected) break;
+      }
+    }
     const ULONGLONG now = GetTickCount64();
     if (now >= next_heartbeat) {
       if (xar::game::IsReviewedCrozierAdapter(game))
