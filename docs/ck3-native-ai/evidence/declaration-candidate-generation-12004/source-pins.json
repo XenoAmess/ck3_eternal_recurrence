@@ -1,0 +1,68 @@
+{
+  "schema": "xar.ck3.cb-indexed-readonly-study-sources/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-16T07:52:07.483870+00:00",
+  "version_scope": "Installed game source files read under current1.20.0.4 task; SDK contracts frozenP20 exact-build98702F88...; no new loaded-rule/mod provenance capture",
+  "pins": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_war.txt",
+      "sha256": "6c4f33c2e28ea45c7403e125166593fe8d487a7b48c58123e5ed12113d55a48e",
+      "lines": "12-39"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\interaction_declare_war.gui",
+      "sha256": "b0703faef1b1162e3a41d6de3fc6415ad5f1cb23edbd353e1526d7ac54b9d527",
+      "lines": "90,121,366,411,756-757"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\debug\\window_watch_ai.gui",
+      "sha256": "8539831b5c6a14a690c12f668f50c45d204900c9abdab244929a29574d6cbc2c",
+      "lines": "720,737"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\_casus_belli.info",
+      "sha256": "270343ebae0f8ebd2e4d24f9f839a7c77cb663836d9b36af6d5138a58755bb05",
+      "lines": "63-82"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_claim.txt",
+      "sha256": "887bf0197401cb17cb4588978add556ab6b429bf55cb482e3e5f2d0e8351cfd4",
+      "lines": "52-182,273"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_dejure_war.txt",
+      "sha256": "18c0d3647fd936b37e3d26e28980ec45657841414d6397667891ad2e73ac1f85",
+      "lines": "322-361"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_religious_war.txt",
+      "sha256": "5c4b6af8742f65a720529434a2997e83ec93b6cfa8d594204ca914ae6c359d33",
+      "lines": "20-30,102-139"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\00_tributarize.txt",
+      "sha256": "087d6151be86546d4b1fcb600230534cb14c6a57ec2762e4efdb3ae98f9227c9",
+      "lines": "10-30,69-80"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p20\\src\\xar_autoplayer\\bridge\\player_claims_contract.py",
+      "sha256": "08fc5c228f16491d9faf3b065d5599662d73bbf854e380c5258e7f759ad863fc",
+      "lines": "1,14-32"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p20\\src\\xar_autoplayer\\bridge\\title_holder_contract.py",
+      "sha256": "cbd762eb4944837baa7a4caf5500c4e088e72759bc9eb1f7506b0972b4466f81",
+      "lines": "86-108"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p20\\src\\xar_autoplayer\\bridge\\campaign_root_context_contract.py",
+      "sha256": "34232dd34a1c88cda3d63962715e596eb9e50f2fa917fd5db6dec969d409c73d",
+      "lines": "42-47,513-606"
+    }
+  ],
+  "report_sha256": "0a0fd4a62961ef10519c9edbe7634bf915489805a91e513d574bd8e9aac7a8e9",
+  "live_game_calls": 0,
+  "live_driver_reads": 0,
+  "native_builds": 0,
+  "worktree_writes": 0
+}

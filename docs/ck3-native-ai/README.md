@@ -1080,6 +1080,12 @@ candidate DLL `def2617b7dd67b01b08a576c99c3bfa8dc90fa908921671b4b79f9bbad47da1e`
 新专题与新采样方案的可执行入口见 [研究工具与操作流程](research-tooling-workflow.md)：方案检查、同源证据表/制图、
 生产事件消费者离线回放、registry 即时摘要和 verifier 证据范围。该流程从后续工作采用；已有专题结论与评级不作追溯修改。
 
+2026-10-16 用户重申“先拆原版，再实现并优化”。执行与委派使用 [原版优先实施提示词](vanilla-first-implementation-prompt.md)。
+研究范围包括候选生成、索引/缓存、廉价过滤、评分、最终验证和调度；只确认某个原版末端函数不算还原其上游流程。
+玩家 GUI、原生 AI 和我方桥接分别画出；旧版已知入口未在当前 exact build 重新定位时仍是迁移缺口。
+性能优化须以同帧行为与端到端成本比较，未知分支保留现有路径，不能通过减少合法机会或战争意愿换取吞吐。
+本次宣战查询的已证来源、可缩候选及未迁移入口见 [1.20.0.4 候选生成评估](declaration-candidate-generation-12004.md)；该评估尚未部署新查询。
+
 1. [static-confirmed] 先冻结游戏版本、EXE SHA 和原版数据文件版本；不同 SHA 的地址或行为不得沿用。
 2. [static-confirmed] 先从原版 `.info`/`defines`/`txt` 和 EXE RTTI、调用链建立决策树，并把每条边标成
    `static-confirmed`、`live-confirmed`、`inference` 或 `unknown`。
