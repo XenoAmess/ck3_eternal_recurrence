@@ -8,6 +8,22 @@ from __future__ import annotations
 import argparse,asyncio,datetime as dt,hashlib,json,os,sys
 from pathlib import Path
 
+def _json_value(value):
+    """Retain MCP error content even when structured_content is absent."""
+    if hasattr(value, 'model_dump'):
+        return value.model_dump(mode='json')
+    if isinstance(value, dict):
+        return {str(key): _json_value(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_value(item) for item in value]
+    if value is None or isinstance(value, (str, int, float, bool)):
+        return value
+    if all(hasattr(value, key) for key in ('is_error', 'structured_content', 'content')):
+        return {'is_error': _json_value(value.is_error),
+                'structured_content': _json_value(value.structured_content),
+                'content': _json_value(value.content)}
+    return repr(value)
+
 async def capture(args):
     repo=args.repo_root.resolve();sys.path.insert(0,str(repo/'ck3_autonomous_player/src'));sys.path.insert(0,str(repo))
     from tools.ck3_live_run_id import current_machine_id
@@ -21,10 +37,12 @@ async def capture(args):
         async with Client(create_server(driver)) as client:
             response=await client.call_tool('ck3_inspect_gui_window_tree_v1',{'window_kind':'military'})
         value=response.structured_content
+        failed=response.is_error or type(value) is not dict
         record={'machine_id':machine,'observed_at':dt.datetime.now(dt.UTC).isoformat(),
             'source_script_sha256':hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
             'tool':'ck3_inspect_gui_window_tree_v1','arguments':{'window_kind':'military'},
             'tool_calls':1,'response_is_error':response.is_error,'body':value,
+            'error_envelope':_json_value(response) if failed else None,
             'actual_clicks':0,'native_expression_evaluations':0}
         b=(json.dumps(record,ensure_ascii=False,indent=2)+'\n').encode()
         if len(b)>2*1024*1024:raise ValueError('capture exceeds declared 2MiB output budget')
