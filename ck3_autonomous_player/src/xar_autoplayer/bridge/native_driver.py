@@ -977,7 +977,9 @@ def _route_contact_terminal_unavailable_evidence_v1(error, step, native_revision
             or type(native_revision) is not int or native_revision <= 0
             or response.get("type") != "command_result" or response.get("protocol_version") != 1
             or response.get("request_id") != request_id or response.get("ok") is not False
-            or response.get("error") != "CK3 could not build a complete contact route"):
+            or response.get("error") not in (
+                "CK3 could not build a complete contact route",
+                "CK3 route arrival timeline is unavailable")):
         return None
     failure = response.get("typed_query_failure_v1")
     if not isinstance(failure, dict):

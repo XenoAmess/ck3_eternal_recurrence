@@ -11721,6 +11721,12 @@ def _choose_one_life_turn_core(
                             )
                         )
                         if failed_query is not None:
+                            unavailable_watch = _embarked_route_timeline_unavailable_watch_plan(
+                                rows, snapshot, pursuit_army, query_step=horizon_step,
+                                available_steps=available_steps, war_summary=war_summary,
+                            )
+                            if unavailable_watch is not None:
+                                return unavailable_watch
                             return {
                                 "policy": "one-life-turn-v1",
                                 "phase": (
@@ -20845,6 +20851,62 @@ def _pending_unsafe_route_halt(
                     "postcondition_verified": False}
         return None
     return None
+
+
+def _embarked_route_timeline_unavailable_watch_plan(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: dict[str, object], *, query_step: str,
+    available_steps: set[str], war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe one native-stopped day of an existing sea route; contact is unknown."""
+    parsed = parse_query_route_contact_horizon_step(query_step)
+    player = snapshot.get("played_character")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    route = army.get("route_province_ids")
+    attempt = _current_frame_route_contact_query_failure(commands, snapshot, query_step)
+    if not (
+        parsed is not None and "life-advance-one-day" in available_steps
+        and snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and army.get("army_id") == parsed[0] and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("army_state") == "embarked" and army.get("army_state_code") == 4
+        and army.get("route_read_status") == "complete_nonempty"
+        and isinstance(route, list) and bool(route) and route[-1] == parsed[1]
+        and army.get("move_target_province_id") == parsed[1]
+        and isinstance(attempt, dict) and attempt.get("scope_status") == "current_frame"
+        and attempt.get("status") == "unavailable" and attempt.get("ok") is False
+    ):
+        return None
+    matching = [row for row in reversed(_history_after_latest_restore(commands))
+                if _effective_command(row) == query_step]
+    result = _effective_command_result(matching[0]) if matching else None
+    evidence = result.get("readonly_unavailable_evidence") if isinstance(result, dict) else None
+    raw = evidence.get("native_command_result") if isinstance(evidence, dict) else None
+    if not (isinstance(raw, dict) and raw.get("ok") is False
+            and raw.get("error") == "CK3 route arrival timeline is unavailable"):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_embarked_route_timeline_unavailable_one_day_watch",
+        "selected_step": "life-advance-one-day",
+        "reason": "the exact arrival reader is unavailable for the current committed sea route; observe one existing native-stopped day and re-read army/combat state; contact remains unknown",
+        "route_timeline_unavailable_watch": {
+            "army_id": parsed[0], "current_province_id": army.get("current_province_id"),
+            "target_province_id": parsed[1], "route_province_ids": list(route),
+            "query_step": query_step, "native_request_id": evidence.get("native_request_id"),
+            "native_error": raw["error"], "source_date_raw": snapshot.get("date_raw"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "contact_free_proven": False, "contact_status": "unknown",
+            "movement_resubmitted": False, "war_or_material_credit": False,
+        },
+        "contact_query_attempt": attempt,
+        "active_wars": war_summary,
+    }
 
 
 def _unsafe_committed_route_halt_plan(

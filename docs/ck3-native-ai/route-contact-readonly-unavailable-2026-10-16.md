@@ -33,3 +33,38 @@ python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "t
 P06 Native输入SHA为`5b449440b762dde0f1baf34cd29ab30757730aab229c8a1e3f2d507bb3d86b6a`，独立输出为`4329b216156e8bdb5b58f812d38d647d7d79ce2c48b73f617170d6892677a7fd`；P07实际SDK使用合并另包后`d1af257e…`，不能把公共源字节等同其整叶pin。下一步在自然普通回合观察新不可用结果是否被零信用消费，不重放AUTO16；三十年演示与最终成绩继续由主流程结算。
 
 本包无现场操作，不改Main、隔离runtime或冻结SDK。新增均为小型源码／测试／记录；D卷开始观察free=1,121,275,932,672B，未据此声称并发重型写入准入，未清理任何历史资产。外置工作包为派生物48小时、原错误按其原工作包用途与期限复核；协调者仍在消费的冻结输入不得据本记录删除。公共源码按Git维护规则保留。
+
+## 2026-10-16 补录：海运既有路线的到达时间不可观测
+
+P20 AUTO2588 的只读路线查询返回另一已知终局：`CK3 route arrival timeline is unavailable`。
+原件 SHA-256 为 `a20a2b151129045c546b254b8ca67758f093c30dfba5b3653979fd89598a5817`；
+实际 SEM2589 在同日53410032、native3497/public2942暂停，玩家40526的军队620757086
+处于embarked、非战斗／撤退，已有完整11段路线8651→5969。原失败不追认为成功，失败pending8444零业务信用。
+
+已加载1.20.0.4 DLL SHA为`29768ab0872f5dc4510bae3f3cc229886aab2c00e99ad0d3976150130eac0c7d`。
+实际Crozier分派调用`ck3_12002::ReadRouteContactHorizon`，不是同DLL中带海运回退的11906读取器。
+该分支会在我方或任一敌军的路径头、速度、邻接、原版时长返回或单调日期校验失败时返回
+同一timeline_unavailable。原结果没有role/army/stage，SEM没有ETA／首段剩余时长，不能判定
+究竟哪支军队、哪项时长读取失败，也不能宣称海运一概不支持。精确生产／调用链与缺口见
+[外置源码审计](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p21-arrival-unavailable-repair-candidate01/NATIVE-ARRIVAL-FAILURE-SOURCE-AUDIT.md)。
+
+NativeDriver仅把该精确文本加入既有终局正规化；完整原请求／响应、completed/stable/无异常、
+同暂停帧及完整敌军集合的资格不变。普通策略仅在同帧typed结果明确不可用、玩家自有可控海运军队
+非战斗／撤退、完整既有路线目标匹配、无必选窗口且已有`life-advance-one-day`时，选择现成单日观察。
+它不重发移动，明确contact未知、未证明contact-free；后续由普通规划器重新读取军队与战斗状态。
+原生daily之后的+24截止、速度选择、暂停、modal中断和terminal合同沿用原实现。
+
+这是解除真实玩法阻塞的退路，不是策略中立性能收益，不改变1.5倍力量准入，也不授予胜利、
+停军或物质成果信用。缺少上述资格仍走原守卫。Native海运读取器的真正修复仍待1.20.0.4
+getter/ABI与实际首段观测闭合；本包没有重编或换载DLL。
+
+公共测试直接导入NativeDriver完整战争执行方法和`choose_one_life_turn`，保留实际全军／战争名册，
+仅裁掉无关诊断；原生包络依据旧SDK投影重建并明确标synthetic。现有可用路线、未知拒绝、lease、
+Service链及新海运正负例共**20 tests、33 subtests通过**。测试与夹具无需本地工作盘；
+外置候选另有6项通过，包括真实旧单日原生结果保持不变的新phase分类兼容性。本次公共合入未调用
+Game/MCP/SDK/OBS，不给新实机天数、连续三十年或0.5秒/日信用。P21实际部署结果由主线程另行记录。
+
+来源：[候选交付](D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p21-arrival-unavailable-repair-candidate01/FINAL.json)
+SHA-256 `3bc289f893d55953112bd829ee2c3a40ae1660f0fd1d681df9c39db033d4fd85`。
+共享测试新增峰值获准64KiB，复用现有总准入；当前关键原失败与候选复核期限为2026-10-17T09:00Z，
+无额外大副本或清理。Python/JSON无新增Paradox语义，open_kaishek不适用。
