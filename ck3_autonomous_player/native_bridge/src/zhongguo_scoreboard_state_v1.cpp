@@ -1,4 +1,5 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
+#include "xar_bridge/gui_refill_receiver_source_pins_12004.hpp"
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
@@ -1667,7 +1668,8 @@ bool InspectNamedGuiTreeV1(
 // Read scalars twice on the owning GUI thread. Never evaluate the descriptor.
 static bool ReadGuiExpressionDescriptor12004(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
-    void *callback, NamedGuiExpressionDescriptor12004V1 &output) {
+    void *callback, NamedGuiExpressionDescriptor12004V1 &output,
+    bool capture_refill, std::size_t &remaining_refill_captures) {
   const auto target_rva = [module_base](const void *pointer, std::uint64_t &rva) {
     const auto value = reinterpret_cast<std::uintptr_t>(pointer);
     if (value <= module_base || value - module_base >= ck3_12004::kGuiImageSize12004V1) return false;
@@ -1709,14 +1711,34 @@ static bool ReadGuiExpressionDescriptor12004(
   NamedGuiExpressionDescriptor12004V1 first{}, second{}; void *first_chain = nullptr, *second_chain = nullptr;
   if (!read(first, first_chain) || !read(second, second_chain) ||
       first_chain != second_chain || first != second) return false;
-  output = std::move(first); return true;
+  output = std::move(first);
+  if (capture_refill && output.receiver_type_id_48 == 635 &&
+      output.receiver_flag_4c_raw == 0 && output.chain_count_24_raw == 0 &&
+      output.final_kind_34_raw == 3 && output.final_target_38_rva == 0x1303D40) {
+    output.receiver_entry_candidates_12004.emplace();
+    if (remaining_refill_captures == 0) {
+      output.receiver_entry_candidates_12004->unavailable_reason = "tree_receiver_capture_budget_exhausted";
+    } else {
+      --remaining_refill_captures;
+      const auto reader = +[](void *context, std::uintptr_t address, void *data,
+                              std::size_t size) noexcept {
+        return ReadBytes(*static_cast<const ZhongguoScoreboardAccessV1 *>(context),
+            reinterpret_cast<const void *>(address), data, size);
+      };
+      *output.receiver_entry_candidates_12004 = ck3_12004::ReadGuiRefillReceiverCandidates12004(
+          reader, const_cast<ZhongguoScoreboardAccessV1 *>(&access), module_base,
+          reinterpret_cast<std::uintptr_t>(callback));
+    }
+  }
+  return true;
 }
 
 // Source: actual .4 3AA0D20 -> 3A9FA30. Read-only standard (mode 0)
 // group selection; never invoke a callback or publish a heap pointer.
 static bool InspectStandardClickBinding12004(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
-    void *widget, void *vtable, NamedGuiStandardClickBinding12004V1 &out) {
+    void *widget, void *vtable, NamedGuiStandardClickBinding12004V1 &out,
+    bool capture_refill, std::size_t &remaining_refill_captures) {
   out = {};
   const auto in_image = [module_base](const void *pointer, std::size_t bytes) {
     const auto address = reinterpret_cast<std::uintptr_t>(pointer);
@@ -1757,7 +1779,8 @@ static bool InspectStandardClickBinding12004(
       if (!ReadValue(access, callback, 0x08U, entry) || !in_image(entry, 1) ||
           !ReadValue(access, callback, 0xF0U, receiver)) return false;
       if (reinterpret_cast<std::uintptr_t>(entry) == module_base + ck3_12004::kGuiExpression3A9F960Rva12004V1) {
-        if (!ReadGuiExpressionDescriptor12004(access, module_base, callback, target.expression_3a9f960)) return false;
+        if (!ReadGuiExpressionDescriptor12004(access, module_base, callback, target.expression_3a9f960,
+                capture_refill, remaining_refill_captures)) return false;
         target.expression_descriptor_3a9f960 = true;
       }
       // Readback stability only. The receiver's type/method is still unknown.
@@ -1779,7 +1802,8 @@ bool InspectNamedGuiSubtreeV1(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
     void *root, std::string_view scope_root_name,
     NamedGuiTreeInspectionV1 &output,
-    bool inspect_standard_click_bindings_12004) noexcept {
+    bool inspect_standard_click_bindings_12004,
+    bool capture_refill_receiver_candidates_12004) noexcept {
   output = {};
   if (root == nullptr || scope_root_name.empty() || module_base == 0) {
     return false;
@@ -1801,6 +1825,11 @@ bool InspectNamedGuiSubtreeV1(
         !verify_expression_code(ck3_12004::kGuiExpression3AC38C0Rva12004V1, ck3_12004::kGuiExpression3AC38C0Bytes12004V1) ||
         !verify_expression_code(ck3_12004::kGuiExpression3E4C090Rva12004V1, ck3_12004::kGuiExpression3E4C090Bytes12004V1)) return false;
     output.expression_layout_3a9f960_pin_verified = true;
+    if (capture_refill_receiver_candidates_12004) {
+      if (!verify_expression_code(0x3AC3EF0, ck3_12004::kGuiReceiver3AC3EF0Bytes12004) ||
+          !verify_expression_code(0x3AC1C00, ck3_12004::kGuiReceiver3AC1C00Bytes12004)) return false;
+      output.receiver_candidate_source_pins_verified = true;
+    }
   }
 
   struct Pending {
@@ -1814,6 +1843,7 @@ bool InspectNamedGuiSubtreeV1(
     output.widgets.reserve(kNamedGuiTreeInspectionMaximumWidgetsV1);
     std::size_t head = 0;
     std::size_t tail = 1;
+    std::size_t remaining_refill_captures = 4;
     pending.push_back({root, 0, {}});
     while (head < tail) {
       auto current = std::move(pending[head++]);
@@ -1854,7 +1884,8 @@ bool InspectNamedGuiSubtreeV1(
       row.enabled = enabled;
       if (inspect_standard_click_bindings_12004 &&
           !InspectStandardClickBinding12004(access, module_base, current.widget,
-              vtable, row.standard_click_binding_12004)) return false;
+              vtable, row.standard_click_binding_12004,
+              capture_refill_receiver_candidates_12004, remaining_refill_captures)) return false;
       if (current.depth >= kMaximumWidgetDepth) {
         output.truncated = true;
         continue;

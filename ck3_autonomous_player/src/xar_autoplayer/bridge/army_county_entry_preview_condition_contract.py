@@ -1,6 +1,8 @@
 """Strict optional first-edge native county condition on an existing preview."""
 from __future__ import annotations
 
+from .army_county_predicate_trace_contract import normalize_county_predicate_trace_v1
+
 _I32 = ("subject_army_id", "requested_target_province_id", "source_province_id",
         "target_province_id", "native_carmy_id", "actor_character_id", "mode")
 _U8 = ("army_1d4_raw", "source_definition_1b_u8", "target_definition_1b_u8")
@@ -18,7 +20,7 @@ _KEYS = {"schema_version", "source", "input_basis", "predicate_rva", "status",
 def normalize_county_entry_preview_condition_v1(value: object) -> dict[str, object] | None:
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) != _KEYS:
+    if not isinstance(value, dict) or set(value) not in (_KEYS, _KEYS | {"predicate_trace_v1"}):
         raise ValueError("county preview condition schema is malformed")
     if (type(value["schema_version"]) is not int or value["schema_version"] != 1
             or value["source"] != "native_preview_first_edge_county_entry_condition"
@@ -37,8 +39,8 @@ def normalize_county_entry_preview_condition_v1(value: object) -> dict[str, obje
     for key in _FLAGS:
         if type(value[key]) is not bool:
             raise ValueError(f"county preview condition {key} must be bool")
-    if value["internal_subpredicates_observed"] or value["actual_loss_observed"]:
-        raise ValueError("county preview does not observe internal predicates or actual loss")
+    if value["actual_loss_observed"]:
+        raise ValueError("county preview does not observe actual loss")
     for key in _IDENTITIES:
         x = value[key]
         if x is not None:
@@ -81,7 +83,16 @@ def normalize_county_entry_preview_condition_v1(value: object) -> dict[str, obje
                 and value["county_objects_differ"]
                 and value["target_county_magic_3e0_u32"] == 0x436F4461):
             raise ValueError("native true contradicts source-proven common gates")
-    return dict(value)
+    result = dict(value)
+    trace = None
+    if "predicate_trace_v1" in value:
+        trace = normalize_county_predicate_trace_v1(value["predicate_trace_v1"], parent=value)
+        result["predicate_trace_v1"] = trace
+    observed_P = bool(trace and trace["status"] == "available" and
+                      any(stage["call_count"] == 1 for stage in trace["stages"]))
+    if value["internal_subpredicates_observed"] is not observed_P:
+        raise ValueError("county preview partial internal observation flag differs from actual P trace")
+    return result
 
 
 def normalize_county_entry_condition_in_route_preview(preview: dict[str, object]) -> dict[str, object]:

@@ -1,0 +1,391 @@
+{
+  "schema": "xar.e04.r181.preview-false.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T03:53:57.103322+00:00",
+  "source_head": "09b83be4b46dc1938d05ccca65023905c99a8431",
+  "runtime_proof": {
+    "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/runtime-actor-identity.actual-a01.json",
+    "bytes": 7832,
+    "sha256": "b5e6d08323cc13b714b3be07956e8ceb0f3d3e1aa1c93696a9b33ae346a708cc"
+  },
+  "actual_read_count": 7,
+  "actual_current_origin2644_count": 6,
+  "parent_reported_bounded_current_count": 12,
+  "parent_reported_count_is_not_locally_reverified": true,
+  "strict_consumer": "normalize_county_entry_condition_in_route_preview",
+  "observations": [
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/050-a19-r04-preview18-1034.json",
+        "bytes": 18124,
+        "sha256": "36a1208c1d12ff2bb204b05da463dd42f09bf83a351cc32c05df76f6b622b76f"
+      },
+      "observed_at": "2026-10-16T03:48:04.091501+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 1034,
+      "route_province_ids": [
+        1034
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 1034,
+        "source_province_id": 2644,
+        "target_province_id": 1034,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 0,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": true,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1476211703824",
+        "target_county_magic_3e0_u32": 1316318316,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/053-a20-r04-preview18-2643.json",
+        "bytes": 18212,
+        "sha256": "c53b270781cfbc4bb4c15bec49af1562a433c143fe3df82f8b1931829de92112"
+      },
+      "observed_at": "2026-10-16T03:49:17.947444+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 2643,
+      "route_province_ids": [
+        2637,
+        2642,
+        2643
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2643,
+        "source_province_id": 2644,
+        "target_province_id": 2637,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": true,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877901008",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/053-a20-r04-preview18-2642.json",
+        "bytes": 18156,
+        "sha256": "9f8a9118e15b6c7bc34df88edb2a2bfcbac09653d6905eacac8e558ab345773e"
+      },
+      "observed_at": "2026-10-16T03:49:18.466990+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 2642,
+      "route_province_ids": [
+        2637,
+        2642
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2642,
+        "source_province_id": 2644,
+        "target_province_id": 2637,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": true,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877901008",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/053-a20-r04-preview18-2641.json",
+        "bytes": 18156,
+        "sha256": "e2cd71147f6169f37a5c7c3cc11259ec559e01fbde543e1db000e8a0434be796"
+      },
+      "observed_at": "2026-10-16T03:49:18.765800+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 2641,
+      "route_province_ids": [
+        2637,
+        2641
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2641,
+        "source_province_id": 2644,
+        "target_province_id": 2637,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": true,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877901008",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/053-a20-r04-preview18-2640.json",
+        "bytes": 18176,
+        "sha256": "e87eb1cae834869730285484ab7496dd49b1af0cd486c811c7d014c25713776d"
+      },
+      "observed_at": "2026-10-16T03:49:19.075386+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 2640,
+      "route_province_ids": [
+        2637,
+        2640
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2640,
+        "source_province_id": 2644,
+        "target_province_id": 2637,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": true,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877901008",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/024-a11-r04-direct-2644-preview.json",
+        "bytes": 18101,
+        "sha256": "b396c5cdb47dcf927af4f332c04bf598d33cb312123f7c5320336679864d3464"
+      },
+      "observed_at": "2026-10-16T03:16:38.023469+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:3",
+        "queried_revision": 4,
+        "queried_native_revision": 3,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147592,
+      "army_id": 18,
+      "origin_province_id": 2645,
+      "requested_target_province_id": 2644,
+      "route_province_ids": [
+        2644
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2644,
+        "source_province_id": 2645,
+        "target_province_id": 2644,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": false,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877882864",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    },
+    {
+      "source": {
+        "path": "C:/ck3-e04-resume-20261015-a01/live12004-logistics-next-a10-a01/desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03/responses/053-a20-r04-preview18-2635.json",
+        "bytes": 18160,
+        "sha256": "0edfbbb3cd3ad542295757d9ba0b8a0c283045c027f76b9f85ddc8c1c09f5605"
+      },
+      "observed_at": "2026-10-16T03:49:20.057285+00:00",
+      "frame": {
+        "queried_snapshot_id": "native:23",
+        "queried_revision": 24,
+        "queried_native_revision": 23,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "native-31254-47b496984ba5"
+      },
+      "previewed_date_raw": 53147712,
+      "army_id": 18,
+      "origin_province_id": 2644,
+      "requested_target_province_id": 2635,
+      "route_province_ids": [
+        2645,
+        2635
+      ],
+      "county_entry_condition_v1": {
+        "schema_version": 1,
+        "source": "native_preview_first_edge_county_entry_condition",
+        "input_basis": "current_unit_and_preview_first_remaining_province",
+        "predicate_rva": 38674992,
+        "status": "available",
+        "unavailable_reason": null,
+        "subject_army_id": 18,
+        "requested_target_province_id": 2635,
+        "source_province_id": 2644,
+        "target_province_id": 2645,
+        "native_carmy_id": 18,
+        "actor_character_id": 31254,
+        "mode": 1,
+        "army_1d4_raw": 0,
+        "source_definition_1b_u8": 1,
+        "target_definition_1b_u8": 1,
+        "source_county_present": true,
+        "target_county_present": true,
+        "county_objects_differ": false,
+        "source_county_identity": "native:1480877882864",
+        "target_county_identity": "native:1480877882864",
+        "target_county_magic_3e0_u32": 1131365473,
+        "inputs_observation_ready": true,
+        "native_condition_called": true,
+        "native_condition_passes": false,
+        "identity_before_after_match": true,
+        "internal_subpredicates_observed": false,
+        "actual_loss_observed": false
+      }
+    }
+  ],
+  "R04_positive": false,
+  "SDK_calls": 0,
+  "large_raw_reads": 0
+}

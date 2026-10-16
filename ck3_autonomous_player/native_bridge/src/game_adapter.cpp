@@ -314,22 +314,6 @@ bool ParseCombatSimulationInputsV3Step(
       step, kCombatInputsV3StepPrefix, request);
 }
 
-bool GameAdapter::supports(std::string_view capability) const noexcept {
-  if (!enabled()) {
-    return false;
-  }
-  for (const auto candidate : descriptor().capabilities) {
-    if (candidate == capability) {
-      return true;
-    }
-  }
-  return false;
-}
-
-bool GameAdapter::supports_snapshot() const noexcept {
-  return supports("game.state.snapshot");
-}
-
 bool GameAdapter::supports_step(std::string_view step) const noexcept {
   std::string_view capability;
   if (step == "query-core-frame-v1") {

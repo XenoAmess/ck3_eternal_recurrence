@@ -1,0 +1,75 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T04:04:21.684813+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03",
+  "game_exit_code": 1,
+  "ui_exit_used": true,
+  "normal_exit_zero": false,
+  "cleanup_proven": true,
+  "screen_released": true,
+  "day_count": 5,
+  "arrival_province": 2644,
+  "R04_positive_qualified": false,
+  "R05_qualified": false,
+  "R06_qualified": false,
+  "dynamic_specific_credit": false,
+  "first_edge_raw_retained": true,
+  "second_recorder_attempt_failed": true,
+  "human_signoff": false,
+  "video_complete": false,
+  "evidence": {
+    "bootstrap": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\desktop-3fevhd2-1c74096080--vanilla--R0181-lease-retry-a03\\bootstrap-result.json",
+      "bytes": 14504,
+      "sha256": "e10fcc732c6742cdf0bfb42244f156efdf0dc3b3148ab187bb764ffd80fbe6a4"
+    },
+    "screen_release": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\screen-release.actual-a22.json",
+      "bytes": 2570,
+      "sha256": "37a7ff65b867d62b4aa420789d15d4a9dbf84b7ad54f7f1f433cad8796a5a1f5"
+    },
+    "normal_save": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\r181-preclose-a21\\NORMAL-SAVE.actual.json",
+      "bytes": 2545,
+      "sha256": "e7081daa5cc359d305cdec0a95c795ce3f940fc0446b2bbf32309fb9aadae724"
+    },
+    "preclose_archive": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\r181-preclose-a21\\ARCHIVE.actual.json",
+      "bytes": 5637,
+      "sha256": "335b0e8164a7c5bf59c6fe58b8bc21e86873a796b7c35997a7b300ee184f4ce5"
+    },
+    "normal_ui_exit_click": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\normal-exit-owned-a22\\exit-to-desktop-click.png.json",
+      "bytes": 1609,
+      "sha256": "838b10fecc1157d0b150ecc58053d74eb645ab63e498df683ba67494c39c6c42"
+    },
+    "first_edge_raw": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\raw-r181-firstedge-a11\\raw.mkv",
+      "bytes": 64191874,
+      "sha256": "a0704910593ff7522dad9484ad93bb9bb9d13c7baec0f0396eebb64a2f149649"
+    },
+    "first_edge_recording_closure": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\r181-firstedge-recording-closure.actual-a11.json",
+      "bytes": 1097,
+      "sha256": "d9d5b20325f9bff4b4efd45ae11e88f9105e2b28aba630014ac746be41cf9c35"
+    },
+    "second_recorder_failed_attempt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\r181-arrival-failure.actual-a14.json",
+      "bytes": 292,
+      "sha256": "23010093367b2b7d8345df1361219f35658c07e55da0020f25f6c4b7f641870b"
+    },
+    "day5": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\episode41-natural-days\\r181-unfilmed-arrival-d05-a18\\day-53147688\\complete.actual.json",
+      "bytes": 13108,
+      "sha256": "b7ab201d076fcefa06da04d7eb9c4cbd983c6775e4a9785746cea70afc400751"
+    }
+  },
+  "scene_usage_bytes": {
+    "profile": 702467081,
+    "driver": 19999228,
+    "raw": 68043714,
+    "other": 92940478
+  },
+  "C_free_bytes": 31219105792,
+  "D_free_bytes": 22658023424
+}

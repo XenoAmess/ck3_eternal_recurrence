@@ -2,6 +2,16 @@ cmake_minimum_required(VERSION 3.25)
 
 project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
+option(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004
+  "Observe only natural P returns inside an exact4 readonly county preview" OFF)
+add_executable(xar_ck3_county_predicate_trace_fixture EXCLUDE_FROM_ALL
+  tests/ck3_12004_county_predicate_trace_context_test.cpp)
+target_include_directories(xar_ck3_county_predicate_trace_fixture PRIVATE include)
+target_compile_features(xar_ck3_county_predicate_trace_fixture PRIVATE cxx_std_20)
+if(MSVC)
+  target_compile_options(xar_ck3_county_predicate_trace_fixture PRIVATE /W4 /WX /EHsc)
+endif()
+
 # Explicitly built research helper. It never starts CK3 or submits actions;
 # production bridge builds do not include it by default.
 add_executable(xar_ck3_war31_two_point_hwprobe EXCLUDE_FROM_ALL
@@ -1243,6 +1253,7 @@ if(XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1)
 endif()
 list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
+  src/game_adapter_capabilities.cpp
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
     src/ck3_12004_adapter.cpp
@@ -1524,6 +1535,11 @@ foreach(private_option IN ITEMS
   endif()
 endforeach()
 
+if(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_county_predicate_trace_hook.cpp)
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1)
+endif()
+
 add_library(xar_ck3_bridge SHARED
   src/cold_map_vfs_observer_v1.cpp
   src/named_path_583_root_observer_v1.cpp
@@ -1626,6 +1642,7 @@ add_library(xar_ck3_bridge SHARED
   src/white_control_action_v1.cpp
   src/frontend_game_rules_v1.cpp
   src/game_adapter.cpp
+  src/game_adapter_capabilities.cpp
   src/government_runtime_adapter_observer_v1.cpp
   src/government_runtime_adapter_source_adapter_v1.cpp
   src/government_runtime_adapter_bridge_binder_v1.cpp
@@ -4634,6 +4651,7 @@ if(BUILD_TESTING)
     src/steward_develop_county_candidates_v1_mailbox.cpp
     src/combat_simulation_inputs_v3_mailbox.cpp
     src/game_adapter.cpp
+    src/game_adapter_capabilities.cpp
     src/loaded_feature_manifest_v1.cpp
     src/loaded_feature_manifest_v1_mailbox.cpp
     src/main_thread_query_mailbox_v1.cpp
@@ -9866,3 +9884,17 @@ include(cmake/root_adjacency_12004.cmake)
 include(cmake/realm_camera_presentation_v1.cmake)
 
 include(cmake/army_regiment_character_role_12004.cmake)
+
+# Explicit source-only type635 receiver fixture. Release must retain assertions.
+# Excluded from default builds/CTest: build and run this target deliberately.
+if(BUILD_TESTING)
+  add_executable(xar_test_gui_refill_receiver_candidates_12004 EXCLUDE_FROM_ALL
+    fixtures/gui_refill_receiver_candidates_12004_fixture.cpp)
+  target_compile_features(xar_test_gui_refill_receiver_candidates_12004 PRIVATE cxx_std_20)
+  target_include_directories(xar_test_gui_refill_receiver_candidates_12004 PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_test_gui_refill_receiver_candidates_12004 PRIVATE /EHsc /W4 /UNDEBUG)
+  else()
+    target_compile_options(xar_test_gui_refill_receiver_candidates_12004 PRIVATE -UNDEBUG)
+  endif()
+endif()

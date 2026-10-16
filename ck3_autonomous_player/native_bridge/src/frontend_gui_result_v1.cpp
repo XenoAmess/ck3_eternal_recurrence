@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_gui_result_v1.hpp"
+#include "xar_bridge/gui_refill_receiver_candidates_serializer_12004.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12004_generic_gui.hpp"
 #include "xar_bridge/ck3_12004_gui_callback_thunk.hpp"
@@ -89,7 +90,18 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
           ",\"expression_layout_bytes_sha256\":";
       AppendJsonString(result, ck3_12004::kGuiExpressionLayoutBytesSha25612004V1);
     }
+    if (inspection.receiver_candidate_source_pins_verified) {
+      if (!inspection.refill_receiver_frame_12004)
+        return GenericGuiCommandResultFrameV1(request_id, step, false, "receiver candidates lack exact owner frame");
+      result += ",\"receiver_definition_parent_rva\":61619952,\"receiver_typed_entry_rva\":61611008,"
+          "\"receiver_definition_parent_bytes_sha256\":\"476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7\","
+          "\"receiver_typed_entry_bytes_sha256\":\"8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc\"";
+    }
     result += '}';
+  }
+  if (inspection.refill_receiver_frame_12004) {
+    result += ",\"refill_receiver_frame_12004\":";
+    game::AppendGuiRefillReceiverFrame12004(result,*inspection.refill_receiver_frame_12004,AppendJsonString);
   }
   result += ",\"widgets\":[";
   for (std::size_t index = 0; index < inspection.widget_count; ++index) {
@@ -171,7 +183,14 @@ std::string FrontendGuiTreeInspectionResultFrameV1(
                   ",\"user_data_10_present\":";
               result += item.user_data_10_present ? "true" : "false"; result += '}';
             }
-            result += "]}";
+            result += ']';
+            if (expression.receiver_entry_candidates_12004) {
+              if (!inspection.receiver_candidate_source_pins_verified || !inspection.refill_receiver_frame_12004)
+                return GenericGuiCommandResultFrameV1(request_id,step,false,"receiver entry candidate has no source/frame admission");
+              result += ",\"receiver_entry_candidates_12004\":";
+              game::AppendGuiRefillReceiverCandidates12004(result,*expression.receiver_entry_candidates_12004,AppendJsonString);
+            }
+            result += '}';
           }
           result += '}';
         }

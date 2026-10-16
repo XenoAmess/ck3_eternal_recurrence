@@ -320,6 +320,8 @@ struct FrontendGuiRouteMailboxContextV1 {
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
   ck3_12003::PlayerControlReadonlyContextV1 player_control_readonly{};
 #endif
+  std::uint64_t gui_receiver_native_revision = 0;
+  std::uint64_t gui_receiver_connection_generation = 0;
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

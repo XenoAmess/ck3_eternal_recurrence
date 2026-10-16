@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_county_predicate_trace_v1_serializer.hpp"
 #include "xar_bridge/army_county_entry_preview_condition_v1.hpp"
 #include <string>
 
@@ -44,6 +45,15 @@ inline void AppendCountyEntryPreviewConditionV1(
   output += ",\"native_condition_called\":" + std::string(row.native_condition_called ? "true" : "false");
   boolean("native_condition_passes", row.native_condition_passes);
   output += ",\"identity_before_after_match\":" + std::string(row.identity_before_after_match ? "true" : "false");
-  output += ",\"internal_subpredicates_observed\":false,\"actual_loss_observed\":false}";
+  bool P_observed = false;
+  if (row.predicate_trace_v1) {
+    output += ",\"predicate_trace_v1\":";
+    AppendCountyPredicateTraceV1(output, *row.predicate_trace_v1, number, append_json_string);
+    if (row.predicate_trace_v1->available)
+      for (const auto &stage : row.predicate_trace_v1->stages)
+        P_observed = P_observed || stage.call_count == 1;
+  }
+  output += ",\"internal_subpredicates_observed\":" + std::string(P_observed ? "true" : "false");
+  output += ",\"actual_loss_observed\":false}";
 }
 } // namespace xar::game

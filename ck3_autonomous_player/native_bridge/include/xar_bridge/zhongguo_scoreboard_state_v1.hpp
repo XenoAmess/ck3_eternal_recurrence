@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/gui_refill_receiver_candidates_12004.hpp"
 
 #include "xar_bridge/zhongguo_case_snapshot_v1.hpp"
 
@@ -305,6 +306,7 @@ struct NamedGuiExpressionDescriptor12004V1 {
   std::uint32_t receiver_type_id_48 = 0;
   std::uint8_t receiver_flag_4c_raw = 0;
   std::vector<NamedGuiExpressionChainCall12004V1> chain_calls;
+  std::optional<game::GuiRefillReceiverCandidates12004V1> receiver_entry_candidates_12004;
   bool operator==(const NamedGuiExpressionDescriptor12004V1 &) const = default;
 };
 
@@ -348,6 +350,8 @@ struct NamedGuiTreeInspectionV1 {
   // Allocate rows only within the owning-thread traversal try/catch;
   // the mailbox carries the bounded vector handle, not thousands of rows.
   std::vector<NamedGuiWidgetInspectionV1> widgets;
+  bool receiver_candidate_source_pins_verified = false;
+  std::optional<game::GuiRefillReceiverFrame12004V1> refill_receiver_frame_12004;
 };
 
 enum class ZhongguoScoreboardProviderReadModeV1 : std::uint32_t {
@@ -441,7 +445,8 @@ bool InspectNamedGuiSubtreeV1(
     const ZhongguoScoreboardAccessV1 &access, std::uintptr_t module_base,
     void *root, std::string_view scope_root_name,
     NamedGuiTreeInspectionV1 &output,
-    bool inspect_standard_click_bindings_12004 = false) noexcept;
+    bool inspect_standard_click_bindings_12004 = false,
+    bool capture_refill_receiver_candidates_12004 = false) noexcept;
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,

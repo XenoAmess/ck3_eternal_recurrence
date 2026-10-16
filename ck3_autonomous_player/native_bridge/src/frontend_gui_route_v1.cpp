@@ -100,7 +100,8 @@ bool ResolveRoute(const FrontendGuiRouteMailboxContextV1 &query,
   return true;
 }
 
-bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
+bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query,
+    const MainThreadExecutionStampV1 &stamp) noexcept {
   const auto root_name = GuiWindowTreeRootForV1(query.gui_window_tree_scope);
   if (root_name.empty()) return false;
   const bool military = query.gui_window_tree_scope == GuiWindowTreeScopeV1::military;
@@ -120,8 +121,33 @@ bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
   // A missing/preloaded-hidden window is an observation, never "opened".
   if (root == nullptr) return widget == nullptr;
   if (widget != root) return false;
-  return InspectNamedGuiSubtreeV1(access, query.environment.module_base,
-                                  root, root_name, out, military);
+  game::Snapshot before{}; IngameUiGuiOwnerBindingV1 gui_before{};
+  const bool capture = military && query.ingame_game &&
+      query.gui_receiver_native_revision && query.gui_receiver_connection_generation &&
+      query.ingame_game->descriptor().game_version == ck3_12004::kGameVersion &&
+      query.ingame_game->descriptor().executable_sha256 == ck3_12004::kExecutableSha256 &&
+      IsIngameUiPausedOwnerStampV1(*query.mailbox, stamp, GetCurrentThreadId()) &&
+      game::ReadSnapshot(*query.ingame_game, before) && before == query.ingame_expected_snapshot &&
+      before.paused && before.map_ready && before.has_played_character &&
+      before.played_character_id != -1 && before.date_raw == stamp.date_raw &&
+      ReadIngameUiGuiOwnerBindingV1(query.environment, gui_before);
+  if (!InspectNamedGuiSubtreeV1(access, query.environment.module_base,
+                                root, root_name, out, military, capture)) return false;
+  if (capture) {
+    game::Snapshot after{}; IngameUiGuiOwnerBindingV1 gui_after{};
+    void *after_root=nullptr,*after_widget=nullptr;
+    if (!IsExecutingFrontendSlot(query,stamp) ||
+        !IsIngameUiPausedOwnerStampV1(*query.mailbox, stamp, GetCurrentThreadId()) ||
+        !game::ReadSnapshot(*query.ingame_game,after) || after != before ||
+        !ReadIngameUiGuiOwnerBindingV1(query.environment,gui_after) || gui_after != gui_before ||
+        !ResolveNamedGuiWidgetV1(query.environment,access,root_name,root_name,after_root,after_widget) ||
+        after_root != root || after_widget != widget) return false;
+    out.refill_receiver_frame_12004 = game::GuiRefillReceiverFrame12004V1{
+        query.gui_receiver_native_revision, query.gui_receiver_connection_generation,
+        stamp.pump_epoch, query.ticket.sequence, GetCurrentProcessId(), stamp.thread_id,
+        before.played_character_id, before.date_raw};
+  }
+  return true;
 }
 
 bool InspectActiveRouteTree(FrontendGuiRouteMailboxContextV1 &query) noexcept {
@@ -848,7 +874,7 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   }
 #endif
   if (query->operation == FrontendGuiRouteOperationV1::inspect_gui_window_tree) {
-    return InspectGuiWindowTree(*query);
+    return InspectGuiWindowTree(*query, stamp);
   }
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
   if (query->operation == FrontendGuiRouteOperationV1::normal_exit_map) {

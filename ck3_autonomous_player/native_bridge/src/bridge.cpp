@@ -172,6 +172,9 @@
 #if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
 #include "xar_bridge/ck3_12004_residual_parent_hook.hpp"
 #endif
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+#include "xar_bridge/ck3_12004_county_predicate_trace_hook.hpp"
+#endif
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
 #include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
@@ -19232,6 +19235,14 @@ void RunConnectedSession(
                   query.gui_window_tree_scope = xar::ck3_11906::GuiWindowTreeScopeForV1(window_kind);
                 }
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::inspect_gui_window_tree;
+                if (query.gui_window_tree_scope == xar::ck3_11906::GuiWindowTreeScopeV1::military &&
+                    xar::game::IsCk3_12004Descriptor(game.descriptor()) && previous_snapshot &&
+                    state_revision != 0 && connection_generation != 0) {
+                  query.ingame_game = &game;
+                  query.ingame_expected_snapshot = *previous_snapshot;
+                  query.gui_receiver_native_revision = state_revision;
+                  query.gui_receiver_connection_generation = connection_generation;
+                }
 #if defined(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
               } else if (step == xar::ck3_11906::kFrontendGameRulesV1Step) {
                 query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::query_game_rules;
@@ -29994,6 +30005,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
       return FALSE;
 #if defined(XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004)
     if (!xar::ck3_12004::InstallActualResidualParentHook12004(base, sha, true))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+    if (!xar::ck3_12004::InstallCountyPredicateTraceHook12004(base, sha, true))
       return FALSE;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)

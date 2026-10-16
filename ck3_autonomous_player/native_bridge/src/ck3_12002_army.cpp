@@ -1,5 +1,9 @@
 #include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12004_county_entry_preview_condition.hpp"
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+#include "xar_bridge/ck3_12004_county_predicate_trace_hook.hpp"
+#include <windows.h>
+#endif
 #include "xar_bridge/ck3_12003_current_daily_assault_loss.hpp"
 #include "xar_bridge/ck3_12004_current_first_route_target_supply_contributors.hpp"
 #include "xar_bridge/ck3_12003_current_fleet_supply_tick_inputs.hpp"
@@ -1603,11 +1607,28 @@ game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
   auto before = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
   if (!before.inputs_observation_ready) return before;
   bool passes = false;
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+  ck3_12004::CountyPredicateTraceScope12004 P_trace(
+      ck3_12004::CountyPredicateTraceHookInstalled12004(), *before.mode,
+      GetCurrentThreadId(), actor,
+      reinterpret_cast<const void *>(static_cast<std::uintptr_t>(before.source_county_identity.value_or(0))),
+      reinterpret_cast<const void *>(static_cast<std::uintptr_t>(before.target_county_identity.value_or(0))));
+  const auto finish_P_trace = [&](bool native_returned, bool native_passes, bool stable) {
+    before.predicate_trace_v1 = P_trace.Finish(native_returned, native_passes, stable,
+        GetCurrentThreadId(), before.source_definition_1b_u8.value_or(0) != 0 &&
+        before.target_definition_1b_u8.value_or(0) != 0 && before.source_county_present == true &&
+        before.county_objects_differ == true, before.target_county_present == true,
+        before.target_county_magic_3e0_u32 == 0x436F4461U);
+  };
+#endif
   const bool returned = county::Invoke(bindings.county_entry_condition, actor, source,
                                target, *before.mode, passes);
   const auto after = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
   before.native_condition_called = true;
   if (!returned) {
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+    finish_P_trace(false, false, false);
+#endif
     before.unavailable_reason = "native_county_preview_predicate_read_failed";
     return before;
   }
@@ -1615,12 +1636,18 @@ game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
   auto comparable_before = before;
   comparable_before.native_condition_called = false;
   if (!after.inputs_observation_ready || comparable_before != after) {
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+    finish_P_trace(true, passes, false);
+#endif
     before.unavailable_reason = "preview_county_identity_or_inputs_changed";
     return before;
   }
   before.available = true;
   before.identity_before_after_match = true;
   before.native_condition_passes = passes;
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
+  finish_P_trace(true, passes, true);
+#endif
   before.unavailable_reason.clear();
   return before;
 }

@@ -19,14 +19,25 @@ SOURCE_EXPRESSION_12004 = {
     "expression_eval_rva": 0x3E4C090,
     "expression_layout_bytes_sha256": "7412efd136e722993b71a8810f5d585347cde53104ba0a107551eb324ff18963",
 }
+SOURCE_RECEIVER_12004 = {
+    **SOURCE_EXPRESSION_12004,
+    "receiver_definition_parent_rva": 0x3AC3EF0,
+    "receiver_typed_entry_rva": 0x3AC1C00,
+    "receiver_definition_parent_bytes_sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7",
+    "receiver_typed_entry_bytes_sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc",
+}
 IMAGE_BYTES_12004 = 0x61C5000
 
 def _integer(value: object, low: int, high: int) -> bool:
     return type(value) is int and low <= value <= high
 
-def _expression_descriptor(raw: object) -> dict:
+def _expression_descriptor(raw: object, *, receiver_candidates: bool = False) -> dict:
     fields = {"chain_count_24_raw", "final_type_id_30", "final_kind_34_raw", "final_target_38_rva",
               "final_user_data_40_present", "receiver_type_id_48", "receiver_flag_4c_raw", "chain_calls"}
+    has_candidates = isinstance(raw,dict) and "receiver_entry_candidates_12004" in raw
+    if has_candidates:
+        if not receiver_candidates:raise ValueError("receiver candidates lack exact source pins")
+        fields = fields | {"receiver_entry_candidates_12004"}
     if not isinstance(raw, dict) or set(raw) != fields or not all(
         _integer(raw[k], 0, 0xFFFFFFFF) for k in ("final_type_id_30", "final_kind_34_raw", "receiver_type_id_48")
     ) or not _integer(raw["receiver_flag_4c_raw"], 0, 255) or type(raw["final_user_data_40_present"]) is not bool:
@@ -46,11 +57,18 @@ def _expression_descriptor(raw: object) -> dict:
         ):
             raise ValueError("expression receiver-chain target or ordinal is invalid")
         clean.append(dict(row))
-    return {**raw, "chain_calls": clean}
+    result = {**raw,"chain_calls":clean}
+    if has_candidates:
+        from .gui_refill_receiver_candidates_12004_contract import normalize_receiver_candidates
+        if (raw['receiver_type_id_48']!=635 or raw['receiver_flag_4c_raw']!=0 or
+                raw['chain_count_24_raw']!=0 or raw['final_kind_34_raw']!=3 or raw['final_target_38_rva']!=0x1303D40):
+            raise ValueError("receiver candidates not on the fixed refill callback")
+        result['receiver_entry_candidates_12004']=normalize_receiver_candidates(raw['receiver_entry_candidates_12004'])
+    return result
 
 def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
     source = raw.get("callback_binding_source_12004")
-    profile = next((p for p in (SOURCE_EXPRESSION_12004, SOURCE_INDIRECT_12004, SOURCE_12004) if isinstance(source, dict) and set(source) == set(p)), SOURCE_12004)
+    profile = next((p for p in (SOURCE_RECEIVER_12004, SOURCE_EXPRESSION_12004, SOURCE_INDIRECT_12004, SOURCE_12004) if isinstance(source, dict) and set(source) == set(p)), SOURCE_12004)
     if not isinstance(source, dict) or set(source) != set(profile) or any(
         type(source[key]) is not type(value) or source[key] != value
         for key, value in profile.items()
@@ -87,7 +105,7 @@ def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
             clean_target = dict(target)
             if indirect:
                 payload = target["indirect_target_3aa30e0"]
-                expression = profile is SOURCE_EXPRESSION_12004 and isinstance(payload, dict) and payload.get("native_target_8_rva") == 0x3A9F960
+                expression = profile in (SOURCE_EXPRESSION_12004,SOURCE_RECEIVER_12004) and isinstance(payload, dict) and payload.get("native_target_8_rva") == 0x3A9F960
                 payload_fields = {"native_target_8_rva", "receiver_f0_present"} | ({"expression_3a9f960"} if expression else set())
                 if not isinstance(payload, dict) or set(payload) != payload_fields or (
                     not _integer(payload["native_target_8_rva"], 1, IMAGE_BYTES_12004 - 1) or
@@ -96,10 +114,15 @@ def normalize_callback_binding_rows_12004(raw: dict, projected: dict) -> dict:
                     raise ValueError("indirect callback target does not match the source-backed thunk")
                 clean_target["indirect_target_3aa30e0"] = dict(payload)
                 if expression:
-                    clean_target["indirect_target_3aa30e0"]["expression_3a9f960"] = _expression_descriptor(payload["expression_3a9f960"])
+                    clean_target["indirect_target_3aa30e0"]["expression_3a9f960"] = _expression_descriptor(payload["expression_3a9f960"],receiver_candidates=profile is SOURCE_RECEIVER_12004)
             targets.append(clean_target)
         rows.append({**clean, "standard_click_binding_12004": {
             "button_base_slot13": button, "group": group, "callbacks": targets,
         }})
+    if profile is SOURCE_RECEIVER_12004:
+        from .gui_refill_receiver_candidates_12004_contract import normalize_receiver_frame
+        projected={**projected,'refill_receiver_frame_12004':normalize_receiver_frame(raw.get('refill_receiver_frame_12004'))}
+    elif 'refill_receiver_frame_12004' in raw:
+        raise ValueError('receiver frame lacks exact new source pins')
     return {**projected, "widgets": rows, "callback_binding_source_12004": dict(profile),
             "callback_method_name_available": False, "click_action_available": False}

@@ -7866,6 +7866,7 @@ class NativeHeadlessGameplayDriver:
         )
         if window_kind not in GUI_WINDOW_TREE_ROOTS:
             raise ValueError("unsupported GUI window census scope")
+        receiver_frame_before = self.take_snapshot() if window_kind == "military" else None
         raw = self._execute_primitive_step(
             GUI_WINDOW_TREE_STEP, expected_revision=0,
             required_capability=GUI_WINDOW_TREE_CAPABILITY,
@@ -7873,7 +7874,12 @@ class NativeHeadlessGameplayDriver:
             allow_frontend_revision_zero=True,
         )
         try:
-            return normalize_gui_window_tree_v1(raw, window_kind)
+            result = normalize_gui_window_tree_v1(raw, window_kind)
+            if "refill_receiver_frame_12004" in result:
+                from .gui_refill_receiver_candidates_12004_contract import bind_receiver_frame
+                result["refill_receiver_public_binding_12004"] = bind_receiver_frame(
+                    result["refill_receiver_frame_12004"],receiver_frame_before,self.take_snapshot())
+            return result
         except ValueError as error:
             raise BridgeUnavailableError(f"native GUI window census is malformed: {error}") from error
 
