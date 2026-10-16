@@ -538,6 +538,7 @@ from ..lifestyle_formal_consumer import (
     ROOT_QUERY_STEP as PRIVATE_LIFESTYLE_SCOPE_QUERY_STEP,
     latest_lifestyle_applied_receipt,
     same_frame_feudal_lifestyle_scope,
+    same_frame_player_lifestyle_perk_scope,
     same_frame_feudal_peace_scope,
     unresolved_lifestyle_perk_action,
 )
@@ -1629,7 +1630,7 @@ class GameplayBridgeService:
             applied = latest_lifestyle_applied_receipt(snapshot, history)
             if applied is not None:
                 planned["plan"]["lifestyle_receipt_consumed"] = applied
-            planned["_private_lifestyle_scope_v1"] = same_frame_feudal_lifestyle_scope(snapshot, history)
+            planned["_private_lifestyle_scope_v1"] = _player_lifestyle_perk_scope(self, snapshot, history)
             planned["_private_lifestyle_pending_v1"] = unresolved_lifestyle_perk_action(snapshot, history)
             planned = self._plan_private_lifestyle_trial_v1(planned, available)
         if planned["plan"].get("selected_step") != "life-advance":
@@ -2086,7 +2087,7 @@ class GameplayBridgeService:
                     plan, routable_steps
                 ),
                 "_private_lifestyle_scope_v1": (
-                    same_frame_feudal_lifestyle_scope(planning_snapshot, history)
+                    _player_lifestyle_perk_scope(self, planning_snapshot, history)
                     if getattr(
                         self.driver, "allow_private_lifestyle_formal_trial", False
                     ) is True
@@ -17490,6 +17491,24 @@ _optional_check_construction_original = plan_construction_private
 _optional_check_ransom_original = plan_ransom_private
 
 
+def _player_lifestyle_perk_scope(service, snapshot, history):
+    """Keep first focus feudal; admit native-v3 perk reads on other governments."""
+    driver = service.driver
+    if getattr(driver, "require_initial_lifestyle_focus_before_date_advance", False):
+        return same_frame_feudal_lifestyle_scope(snapshot, history)
+    if not hasattr(service, "_all_lifestyle_v3_capability"):
+        try:
+            caps = driver.capabilities().get("bridge_capabilities")
+        except Exception:
+            caps = None
+        service._all_lifestyle_v3_capability = (
+            isinstance(caps, list)
+            and "game.state.private-lifestyle-all-frontier-v3" in caps)
+    if service._all_lifestyle_v3_capability:
+        return same_frame_player_lifestyle_perk_scope(snapshot, history)
+    return same_frame_feudal_lifestyle_scope(snapshot, history)
+
+
 def _optional_check_frame(planned):
     for key in ("_private_council_snapshot_v1", "_private_construction_snapshot_v1",
                 "_private_family_marriage_snapshot_v1", "_private_m5_snapshot_v1"):
@@ -17613,20 +17632,24 @@ def _optional_check_lifestyle(self, planned, available_steps):
     if current is not None and isinstance(pending, dict):
         _optional_check_record(self.driver, "lifestyle", current, action=True)
     elif current is not None and isinstance(plan, dict):
-        catalogue = "game.state.private-lifestyle-stewardship-frontier-v2"
-        if not hasattr(self, "_optional_lifestyle_full_frontier_capability"):
+        if not hasattr(self, "_optional_lifestyle_catalogue"):
             try:
                 bridge_caps = self.driver.capabilities().get("bridge_capabilities")
             except Exception:
                 bridge_caps = None
-            self._optional_lifestyle_full_frontier_capability = (
-                isinstance(bridge_caps, list) and catalogue in bridge_caps)
-        if self._optional_lifestyle_full_frontier_capability:
+            options = (
+                "game.state.private-lifestyle-all-frontier-v3",
+                "game.state.private-lifestyle-stewardship-frontier-v2",
+            )
+            self._optional_lifestyle_catalogue = next(
+                (name for name in options if isinstance(bridge_caps, list)
+                 and name in bridge_caps), None)
+        if self._optional_lifestyle_catalogue is not None:
             state_dir = _optional_check_cadence_state(self.driver)
             if state_dir is not None:
                 from ..optional_check_cadence_v1 import requalify_lifestyle_frontier_once
                 requalify_lifestyle_frontier_once(
-                    state_dir, current, native_catalogue=catalogue)
+                    state_dir, current, native_catalogue=self._optional_lifestyle_catalogue)
         skipped = _optional_check_due(self.driver, "lifestyle", current)
         if skipped is not None:
             result = _optional_check_skip(planned, "lifestyle_periodic_review", skipped)
@@ -17634,9 +17657,15 @@ def _optional_check_lifestyle(self, planned, available_steps):
                         "_private_lifestyle_war_frame_v1"):
                 result.pop(key, None)
             return result
+    result = _optional_check_lifestyle_original(self, planned, available_steps)
+    after_plan = result.get("plan") if isinstance(result, dict) else None
+    decision = after_plan.get("lifestyle_decision") if isinstance(after_plan, dict) else None
+    if not isinstance(decision, dict) or decision.get("status") != "no_legal_minimum":
+        # Missing, partial or failed reads are not completed no-action checks.
+        return result
     return _optional_check_result(self.driver, "lifestyle", current,
                        plan.get("selected_step") if isinstance(plan, dict) else None,
-                       _optional_check_lifestyle_original(self, planned, available_steps))
+                       result)
 
 
 @_optional_check_wraps(_optional_check_construction_original)

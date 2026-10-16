@@ -51,6 +51,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
+"xar_autoplayer" = ["data/vanilla_lifestyle_catalog_12004.json"]
 "xar_autoplayer.simulation" = ["data/*.json"]
 "xar_autoplayer.vanilla_events" = [
   "data/source_index_1_19_0_6.json",

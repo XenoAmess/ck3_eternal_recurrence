@@ -10,6 +10,8 @@ from __future__ import annotations
 import uuid
 from typing import Mapping
 
+from ..all_lifestyle_catalog_v1 import PERK_TARGETS
+
 from .driver import StepPostconditionError
 from .lifestyle_perk_predicate_inputs_12004 import (
     FACTS_KEY, WIRE_KEY, decode_lifestyle_perk_predicate_source_12004,
@@ -32,22 +34,7 @@ FOCUS_TARGET = "stewardship_wealth_focus"
 FOCUS_LIFESTYLE = "stewardship_lifestyle"
 MARTIAL_TARGET = "martial_authority_focus"
 MARTIAL_LIFESTYLE = "martial_lifestyle"
-PERK_TARGETS = frozenset({
-    # All 27 authored stewardship keys, still subject to the fresh native
-    # final-legal row and exact same-frame submit guards below.
-    "tax_man_perk", "defensive_measures_perk", "organized_muster_rolls_perk",
-    "cutting_corners_perk", "professional_workforce_perk",
-    "centralization_perk", "popular_figurehead_perk",
-    "divided_attention_perk", "architect_perk",
-    "golden_obligations_perk", "heregeld_perk", "detailed_ledgers_perk",
-    "war_profiteer_perk", "fearful_troops_perk", "it_is_my_domain_perk",
-    "golden_aplomb_perk", "at_any_cost_perk", "avaricious_perk",
-    "meritocracy_perk", "chains_of_loyalty_perk", "likable_perk",
-    "positions_of_power_perk", "large_levies_perk", "soon_forgiven_perk",
-    "toe_the_line_perk", "honored_to_serve_perk", "administrator_perk",
-    # Preserve the existing supported martial and diplomacy single targets.
-    "serve_the_crown_perk", "thoughtful_perk",
-})
+ALL_LIFESTYLE_FRONTIER_CAP = "game.state.private-lifestyle-all-frontier-v3"
 
 
 def _native_perk_target_token(value: object) -> bool:
@@ -535,13 +522,43 @@ def query_player_lifestyle_private_v1(
             native_revision=native_revision, date_raw=date_raw,
             played_character_id=player_id,
         )
+    v3_progress = None
+    if query_step == QUERY_STEP:
+        try:
+            caps = driver.capabilities().get("bridge_capabilities")
+        except Exception:
+            caps = None
+        v3_supported = isinstance(caps, list) and ALL_LIFESTYLE_FRONTIER_CAP in caps
+        candidate_v3 = result.get("all_lifestyle_progress_v3")
+        if v3_supported:
+            if not isinstance(candidate_v3, Mapping) or any(
+                candidate_v3.get(name) != expected for name, expected in (
+                    ("snapshot_id", starting["snapshot_id"]),
+                    ("native_revision", native_revision),
+                    ("date_raw", date_raw),
+                    ("player_character_id", player_id),
+                    ("episode_run_id", episode_run_id),
+                )
+            ):
+                return {"status": "native_query_binding_red", "step": query_step,
+                        "request_id": request_id,
+                        "reason": "all_lifestyle_progress_v3_missing_or_stale",
+                        "native_result": result}
+            v3_progress = dict(candidate_v3)
+        elif candidate_v3 is not None:
+            return {"status": "native_query_binding_red", "step": query_step,
+                    "request_id": request_id,
+                    "reason": "all_lifestyle_progress_v3_unadvertised",
+                    "native_result": result}
     response = {
         "status": "available",
         "step": query_step,
         "request_id": request_id,
         "episode_run_id": episode_run_id,
         "formal_precondition_status": result.get("formal_precondition_status"),
-        "snapshot": {**life_snapshot, "episode_run_id": episode_run_id},
+        "snapshot": {**life_snapshot, "episode_run_id": episode_run_id,
+                     **({"all_lifestyle_progress_v3": v3_progress}
+                        if v3_progress is not None else {})},
         "source_frame": {
             "snapshot_id": starting["snapshot_id"],
             "revision": revision,

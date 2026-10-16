@@ -1,0 +1,132 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "fixture-query",
+  "ok": true,
+  "result": {
+    "step": "private-query-player-lifestyle-formal-v1",
+    "private_build": true,
+    "advertised": false,
+    "status": "available",
+    "episode_run_id": "native-40526-fixture",
+    "formal_precondition_status": "ready",
+    "snapshot": {
+      "private_build": true,
+      "advertised": false,
+      "status": "available",
+      "snapshot_id": "native:7",
+      "public_revision": 7,
+      "native_revision": 7,
+      "proof_epoch": 7,
+      "date_raw": 53411184,
+      "player_character_id": 40526,
+      "current_focus": {
+        "presence": "present",
+        "key": "stewardship_wealth_focus",
+        "lifestyle_key": ""
+      },
+      "current_lifestyle_progress": {
+        "presence": "absent"
+      },
+      "owned_perk_keys": [],
+      "actor_traits": {
+        "status": "unavailable"
+      },
+      "legal_focus_candidates": {
+        "status": "unavailable",
+        "reason": "lifestyle_window_unavailable",
+        "items": []
+      },
+      "legal_perk_candidates": {
+        "status": "available",
+        "scope": "policy_target",
+        "items": [
+          {
+            "key": "thoughtful_perk",
+            "lifestyle_key": "diplomacy_lifestyle"
+          }
+        ]
+      },
+      "readiness": {
+        "current_focus_ready": true,
+        "lifestyle_progress_ready": false,
+        "owned_perks_ready": true,
+        "legal_focus_candidates_ready": false,
+        "legal_perk_candidates_ready": true,
+        "same_frame_ready": true
+      }
+    },
+    "all_lifestyle_progress_v3": {
+      "status": "complete",
+      "snapshot_id": "native:7",
+      "episode_run_id": "native-40526-fixture",
+      "native_revision": 7,
+      "date_raw": 53411184,
+      "player_character_id": 40526,
+      "rows": [
+        {
+          "lifestyle_key": "diplomacy_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 1,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        },
+        {
+          "lifestyle_key": "intrigue_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        },
+        {
+          "lifestyle_key": "learning_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        },
+        {
+          "lifestyle_key": "martial_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        },
+        {
+          "lifestyle_key": "stewardship_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        },
+        {
+          "lifestyle_key": "wanderer_lifestyle",
+          "status": "available",
+          "xp_total_raw": 1000,
+          "xp_within_level_raw": 0,
+          "xp_per_level": 1000,
+          "unspent_perk_points": 0,
+          "used_perk_points": 4,
+          "unavailable_reason": null
+        }
+      ]
+    },
+    "lifestyle_perk_predicate_source_12004": null,
+    "lifestyle_perk_trigger_frontier_12004": null
+  }
+}

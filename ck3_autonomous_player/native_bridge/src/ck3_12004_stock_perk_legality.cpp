@@ -1,5 +1,6 @@
 // Actual 1.20.0.4 bindings: finite LIFE proof manifest; software DTO semantics retained.
 #include "xar_bridge/player_lifestyle_stewardship_frontier_v2.hpp"
+#include "xar_bridge/player_lifestyle_all_catalogue_v3.hpp"
 #include "xar_bridge/ck3_12004_stock_perk_legality.hpp"
 #include "xar_bridge/lifestyle_perk_predicate_288b1b0_12004.hpp"
 #include "xar_bridge/source_read_leaf_frame_12004.hpp"
@@ -113,11 +114,7 @@ std::string_view View(const StableKey &key) noexcept {
                              : std::string_view{};
 }
 std::string_view TargetLifestyle(std::string_view target_key) noexcept {
-  if (target_key == kDiplomacyThoughtfulPerkV1)
-    return kDiplomacyThoughtfulLifestyleV1;
-  if (target_key == kMartialServeTheCrownPerkV1)
-    return kMartialPerkLifestyleV1;
-  return kStockPerkLegalityLifestyleV1;
+  return AllLifestylePerkLifestyleV3(target_key);
 }
 bool ReadStableKey(const StockPerkLegalityAccessV1 &access,
                    std::uintptr_t owner, StableKey &output) noexcept {
@@ -663,7 +660,8 @@ bool SameRawTargets(const StockPerkLegalityRawTargetsSourceV1 &a,
 
 Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
                const StockPerkLegalityAccessV1 &access,
-               std::string_view target_key, Sample &sample) noexcept {
+               std::string_view target_key, Sample &sample,
+               bool validate = true) noexcept {
   sample = {};
   if (!access.capture_frame(access.context, sample.frame) ||
       !FrameValid(sample.frame)) {
@@ -747,6 +745,7 @@ Status ReadOne(const StockPerkLegalityEnvironmentV1 &env,
       !sample.player_state.owned_perk_state_known) {
     return Status::unavailable_state;
   }
+  if (!validate) return Status::observed_native_illegal;
   std::uintptr_t slot_target = 0;
   if (!Read(access, env.module_base + kValidatorPointerSlotRva,
             &slot_target, sizeof(slot_target)) ||
@@ -807,9 +806,7 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
     const StockPerkLegalityAccessV1 &access,
     std::string_view target_key) noexcept {
   StockPerkLegalityResultV1 out{};
-  if (!StewardshipPerkAdmittedV2(target_key) &&
-      target_key != kDiplomacyThoughtfulPerkV1 &&
-      target_key != kMartialServeTheCrownPerkV1) {
+  if (!AllLifestylePerkAdmittedV3(target_key)) {
     out.status = Status::unavailable_candidate;
     return out;
   }
@@ -936,6 +933,39 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
   }
   return out;
 }
+// Read genuine per-lifestyle getters twice without invoking the perk validator.
+StockPerkLegalityResultV1 ReadStockPerkProgress12004V3(
+    const StockPerkLegalityEnvironmentV1 &env,
+    const StockPerkLegalityAccessV1 &access,std::string_view target_key) noexcept {
+  StockPerkLegalityResultV1 out{};
+  if(!AllLifestylePerkAdmittedV3(target_key)) {out.status=Status::unavailable_candidate;return out;}
+  if(!EnvironmentValid(env)){out.status=Status::unavailable_exact_build;return out;}
+  if(!access.is_application_main_thread || !access.capture_frame || !access.read_memory ||
+     !access.read_target_player_state || !access.is_application_main_thread(access.context)) {
+    out.status=Status::unavailable_binding;return out;
+  }
+  Sample first{},second{};
+  out.status=ReadOne(env,access,target_key,first,false);
+  if(out.status!=Status::observed_native_illegal)return out;
+  out.status=ReadOne(env,access,target_key,second,false);
+  if(out.status!=Status::observed_native_illegal)return out;
+  StockPerkLegalityFrameV1 final{};
+  if(!access.capture_frame(access.context,final)||!FrameValid(final)||first!=second||final!=first.frame) {
+    out.status=Status::unavailable_drift;return out;
+  }
+  out.frame=first.frame;out.target_key=first.target_key;out.lifestyle_key=first.target_lifestyle_key;
+  out.observed_unspent_points=first.player_state.unspent_perk_points;
+  out.observed_used_points=first.player_state.used_perk_points;
+  out.observed_target_xp_total_raw=first.player_state.target_xp_total_raw;
+  out.observed_target_xp_within_level_raw=first.player_state.target_xp_within_level_raw;
+  out.observed_target_xp_per_level=first.player_state.target_xp_per_level;
+  out.observed_target_owned=first.player_state.target_perk_owned;
+  out.target_definition=first.target_definition;out.scanned_database_rows=first.span.count;
+  // observed_native_illegal here is an internal carrier only. validator_invoked_twice=false;
+  // this row is never published as a selectable candidate or a CanPick result.
+  return out;
+}
+
 std::string_view StockPerkLegalityStatusKey12004V1(Status status) noexcept {
   switch (status) {
   case Status::unavailable_exact_build: return "unavailable_exact_build";

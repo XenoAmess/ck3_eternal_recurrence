@@ -64,7 +64,7 @@ bool PlayerLifestyleNeedsPostSubmitSnapshot12004(
 }
 std::string RenderPlayerLifestyle12004(
     std::string_view request_id, std::string_view step,
-    const xar::ck3_11906::PlayerLifestyleFormalWireContextV1 &context,
+    const PlayerLifestyleFormalWireContext12004V1 &context,
     const game::AdapterDescriptor &descriptor) {
   if (!context.completed) {
     return game::Render12004BuildIdentity(CommandResultFrame(
@@ -300,6 +300,32 @@ std::string RenderPlayerLifestyle12004(
                     context.precondition_result));
     result += ",\"snapshot\":";
     result += SerializePlayerLifestyleSnapshot12004V1(*context.snapshot);
+    result += ",\"all_lifestyle_progress_v3\":{\"status\":";
+    const bool progress_complete=std::all_of(context.all_lifestyle_progress_v3.begin(),
+        context.all_lifestyle_progress_v3.end(),LifestyleProgressObservedV3);
+    AppendJsonString(result,progress_complete?"complete":"partial");
+    result += ",\"snapshot_id\":";AppendJsonString(result,context.snapshot_id);
+    result += ",\"episode_run_id\":";AppendJsonString(result,context.episode_run_id);
+    result += ",\"native_revision\":"+std::to_string(context.expected_revision);
+    result += ",\"date_raw\":"+std::to_string(context.expected_snapshot.date_raw);
+    result += ",\"player_character_id\":"+std::to_string(context.expected_snapshot.played_character_id);
+    result += ",\"rows\":[";
+    for(std::size_t i=0;i<kAllLifestyleKeysV3.size();++i) {
+      if(i)result+=',';const auto &p=context.all_lifestyle_progress_v3[i];
+      const bool available=LifestyleProgressObservedV3(p);
+      result += "{\"lifestyle_key\":";AppendJsonString(result,kAllLifestyleKeysV3[i]);
+      result += ",\"status\":";AppendJsonString(result,available?"available":"unavailable");
+      result += ",\"xp_total_raw\":"+(available?std::to_string(p.observed_target_xp_total_raw):"null");
+      result += ",\"xp_within_level_raw\":"+(available?std::to_string(p.observed_target_xp_within_level_raw):"null");
+      result += ",\"xp_per_level\":"+(available?std::to_string(p.observed_target_xp_per_level):"null");
+      result += ",\"unspent_perk_points\":"+(available?std::to_string(p.observed_unspent_points):"null");
+      result += ",\"used_perk_points\":"+(available?std::to_string(p.observed_used_points):"null");
+      result += ",\"unavailable_reason\":";
+      if(available)result+="null";else AppendJsonString(result,StockPerkLegalityStatusKey12004V1(p.status));
+      result += '}';
+    }
+    result += "]}";
+
   } else if (context.mode == xar::ck3_11906::
                                  PlayerLifestyleFormalWireModeV1::submit_perk ||
              context.mode == xar::ck3_11906::

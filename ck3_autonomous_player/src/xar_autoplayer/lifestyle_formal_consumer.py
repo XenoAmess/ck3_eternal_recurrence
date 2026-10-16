@@ -88,6 +88,7 @@ def _same_frame_feudal_scope(
     history: list[dict[str, object]],
     *,
     require_peace: bool,
+    require_feudal: bool = True,
 ) -> dict[str, object]:
     """Use an independent public campaign-root query, never a guessed flag."""
 
@@ -133,10 +134,11 @@ def _same_frame_feudal_scope(
         flags = government.get("flags")
         if not isinstance(flags, list):
             return {"status": "scope_unavailable"}
-        if (
-            government.get("key") == "feudal_government"
-            and "government_is_feudal" in flags
-        ):
+        government_key = government.get("key")
+        feudal = (government_key == "feudal_government"
+                  and "government_is_feudal" in flags)
+        if feudal or (not require_feudal and isinstance(government_key, str)
+                      and bool(government_key)):
             council = root.get("council")
             collect_taxes_active: bool | None = None
             if isinstance(council, Mapping) and council.get("status") == "available":
@@ -158,7 +160,7 @@ def _same_frame_feudal_scope(
                 "status": "admitted",
                 "at_peace": at_peace,
                 "collect_taxes_active": collect_taxes_active,
-                "government_key": "feudal_government",
+                "government_key": government_key,
                 "snapshot_revision": revision,
                 "player_character_id": player_id,
             }
@@ -180,6 +182,18 @@ def same_frame_feudal_lifestyle_scope(
     """Admit an observed war for private perk or initial focus evaluation."""
 
     return _same_frame_feudal_scope(snapshot, history, require_peace=False)
+
+
+def same_frame_player_lifestyle_perk_scope(
+    snapshot: Mapping[str, object], history: list[dict[str, object]]
+) -> dict[str, object]:
+    """Read the player's government without imposing the old focus trial gate.
+
+    The typed native final-legal perk check remains decisive for DLC and
+    government restrictions. This does not authorize a new initial focus.
+    """
+    return _same_frame_feudal_scope(snapshot, history, require_peace=False,
+                                    require_feudal=False)
 
 
 def consume_lifestyle_private_query(
@@ -235,6 +249,10 @@ def consume_lifestyle_private_query(
         collect_taxes_active=scope.get("collect_taxes_active"),
         allow_wartime_perk=scope.get("at_peace") is False,
         allow_wartime_initial_focus=allow_wartime_initial_focus,
+        # Legacy callers supply a status already admitted by the feudal-only
+        # helper without repeating its government key. The new generic helper
+        # always supplies that key, so an observed nonfeudal root stays out.
+        focus_scope_admitted=scope.get("government_key") in (None, "feudal_government"),
         preferred_focus_target_key=preferred_focus_target_key,
     )
     if recommendation.get("status") == "recommend_action":

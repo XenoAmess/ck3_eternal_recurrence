@@ -129,3 +129,10 @@ both completed successfully. This live result covers the two named
 stewardship perks; other lifestyle policies remain at their previous small
 scope. It does not establish every tree, 0.5 seconds/game-day, the current
 naval route's safety, or an uninterrupted 30-year completion.
+
+The subsequent [all-lifestyle v3 source package](all-lifestyle-frontier-v3-2026-10-16.md)
+extends the authored inventory and target-class point reading to all six
+lifestyles, 18 trees and 162 perks. Native21 and the corresponding public SDK
+passed source/fixture checks; Native21 has not yet been deployed in this
+record. The earlier paragraphs describe Native20's management-only extension
+and its two actual learned perks, not full six-class live validation.

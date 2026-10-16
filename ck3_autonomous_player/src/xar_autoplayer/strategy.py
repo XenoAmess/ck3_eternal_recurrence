@@ -20922,7 +20922,13 @@ def _pending_unsafe_route_halt(
                 and snapshot["native_revision"] > action["submitted_native_revision"]
                 and isinstance(diagnostics, dict)
                 and type(action.get("submitted_connection_generation")) is int
-                and action["submitted_connection_generation"] == diagnostics.get("connection_generation")
+                and type(diagnostics.get("connection_generation")) is int
+                and (action["submitted_connection_generation"] == diagnostics["connection_generation"]
+                     or (action["submitted_connection_generation"] < diagnostics["connection_generation"]
+                         and action["submitted_date_raw"] == date_raw
+                         and type(diagnostics.get("bridge_pid")) is int
+                         and diagnostics["bridge_pid"] > 0
+                         and (diagnostics.get("hello") or {}).get("pid") == diagnostics["bridge_pid"]))
                 and isinstance(action.get("submitted_episode_run_id"), str)
                 and bool(action["submitted_episode_run_id"])
                 and action["submitted_episode_run_id"] == snapshot.get("episode_run_id")

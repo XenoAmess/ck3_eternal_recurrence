@@ -235,7 +235,7 @@ class UnsafeEmbarkedRouteHalt(unittest.TestCase):
         self.history.append({"index": 999, "command": f"move-army-{ARMY}-to-5968", "ok": True})
         self.assertIsNone(watch())
 
-    def test_stale_or_other_generation_readback_never_confirms_suffix(self):
+    def test_stale_or_other_episode_readback_never_confirms_suffix(self):
         self.ack()
         self.shorten_route()
         for field, value in (("native_revision", 3640), ("episode_run_id", "other")):
@@ -243,7 +243,26 @@ class UnsafeEmbarkedRouteHalt(unittest.TestCase):
                 altered = dict(self.snapshot, **{field: value})
                 result = strategy._pending_unsafe_route_halt(self.history, altered, army_id=ARMY)
                 self.assertFalse(result["suffix_cancellation_observed"])
+        self.snapshot["diagnostics"]["connection_generation"] -= 1
+        self.assertFalse(strategy._pending_unsafe_route_halt(
+            self.history, self.snapshot, army_id=ARMY)["suffix_cancellation_observed"])
+
+    def test_same_game_hot_connection_suffix_requires_same_day_and_live_pid_binding(self):
+        self.ack()
+        self.shorten_route()
         self.snapshot["diagnostics"]["connection_generation"] += 1
+        # Synthetic handshake needed only for the new reconnect qualification.
+        self.snapshot["diagnostics"]["hello"] = {"pid": self.snapshot["diagnostics"]["bridge_pid"]}
+        self.assertTrue(strategy._pending_unsafe_route_halt(
+            self.history, self.snapshot, army_id=ARMY)["suffix_cancellation_observed"])
+        self.publish_synthetic_replan_queries()
+        # Queries made before reconnect must be refreshed before time can pass.
+        self.assertEqual(self.plan()["selected_step"], "query-war-termination-options-201326630")
+        self.snapshot["date_raw"] += 24
+        self.assertIsNone(strategy._pending_unsafe_route_halt(
+            self.history, self.snapshot, army_id=ARMY))
+        self.snapshot["date_raw"] -= 24
+        self.snapshot["diagnostics"]["hello"]["pid"] += 1
         self.assertFalse(strategy._pending_unsafe_route_halt(
             self.history, self.snapshot, army_id=ARMY)["suffix_cancellation_observed"])
 

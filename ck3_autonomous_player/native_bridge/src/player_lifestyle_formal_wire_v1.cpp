@@ -276,12 +276,7 @@ bool ReadStockPerkTargetPlayerState(
     return false;
   }
   const auto &state = context->snapshot->state;
-  const auto lifestyle_key =
-      target_key == kDiplomacyThoughtfulPerkV1
-          ? kDiplomacyThoughtfulLifestyleV1
-          : target_key == kMartialServeTheCrownPerkV1
-                ? kMartialPerkLifestyleV1
-                : kStockPerkLegalityLifestyleV1;
+  const auto lifestyle_key = AllLifestylePerkLifestyleV3(target_key);
   if (!AssignPlayerLifestyleWindowStableKeyV1(
           lifestyle_key, output.target_lifestyle_key)) {
     return false;

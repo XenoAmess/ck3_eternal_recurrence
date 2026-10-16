@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from .all_lifestyle_perk_policy_v3 import choose_all_lifestyle_perk_v3
+
 
 POLICY_ID = "g2-m4-lifestyle-min-v1"
 WAR_PERK_POLICY_ID = "g2-lifestyle-wartime-stewardship-perk-v1"
@@ -220,6 +222,7 @@ def choose_min_feudal_lifestyle_action(
     allow_wartime_initial_focus: bool = False,
     preferred_focus_target_key: str = _WEALTH_FOCUS,
     pending_action: Mapping[str, object] | None = None,
+    focus_scope_admitted: bool | None = None,
 ) -> dict[str, object]:
     """Choose one native focus/perk target from a complete paused observation.
 
@@ -252,8 +255,12 @@ def choose_min_feudal_lifestyle_action(
     if not isinstance(snapshot, Mapping) or snapshot.get("status") != "available":
         return {**result, "status": "observation_unavailable"}
     readiness = snapshot.get("readiness")
+    all_lifestyle_v3 = "all_lifestyle_progress_v3" in snapshot
+    required = ("same_frame_ready", "owned_perks_ready", "current_focus_ready",
+                "legal_perk_candidates_ready") \
+        if all_lifestyle_v3 else _REQUIRED_READINESS
     if not isinstance(readiness, Mapping) or not all(
-        readiness.get(name) is True for name in _REQUIRED_READINESS
+        readiness.get(name) is True for name in required
     ):
         return {**result, "status": "observation_unavailable"}
     binding = _binding(snapshot)
@@ -264,6 +271,14 @@ def choose_min_feudal_lifestyle_action(
         return {**result, "status": "observation_unavailable"}
     focus = snapshot.get("current_focus")
     progress = snapshot.get("current_lifestyle_progress")
+    if all_lifestyle_v3:
+        decision = choose_all_lifestyle_perk_v3(snapshot, binding, owned)
+        if (decision.get("status") != "no_legal_minimum"
+                or not isinstance(focus, Mapping)
+                or focus.get("presence") != "absent"):
+            return {**result, **decision}
+        # A focusless actor with no spendable point still follows the existing
+        # first-focus path. Its feudal and native final-legal gates remain.
     if not isinstance(focus, Mapping) or not isinstance(progress, Mapping):
         return {**result, "status": "observation_unavailable"}
     if focus.get("presence") == "present":
@@ -426,6 +441,9 @@ def choose_min_feudal_lifestyle_action(
                 "unspent_perk_points": points}
     if at_peace is not True and not allow_wartime_initial_focus:
         return {**result, "status": "outside_admitted_scene"}
+    if focus_scope_admitted is False:
+        return {**result, "status": "outside_admitted_scene",
+                "reason": "initial_focus_remains_feudal_scoped"}
     if focus.get("presence") != "absent" or progress.get("presence") != "absent":
         return {**result, "status": "observation_unavailable"}
     if readiness.get("legal_focus_candidates_ready") is not True:

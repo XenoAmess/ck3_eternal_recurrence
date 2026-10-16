@@ -2273,6 +2273,8 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
     result += ',';
     AppendJsonString(result,
         xar::ck3_11906::kStewardshipFullFrontierCapabilityV2);
+    result += ',';
+    AppendJsonString(result, xar::ck3_11906::kAllLifestyleFrontierCapabilityV3);
   }
 #endif
 #if defined(XAR_ENABLE_PREWAR_FORCE_COALITION_V2)

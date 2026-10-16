@@ -18,6 +18,7 @@ if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PR
   add_executable(xar_ck3_12004_lifestyle_first_v1_test
     tests/ck3_12004_lifestyle_first_v1_test.cpp
     tests/lifestyle_stewardship_frontier_12004_new_cases.cpp
+    tests/lifestyle_all_frontier_12004_new_cases.cpp
     src/player_lifestyle_snapshot_v1.cpp
     src/player_lifestyle_window_candidates_v1.cpp
     src/player_lifestyle_window_source_adapter_v1.cpp

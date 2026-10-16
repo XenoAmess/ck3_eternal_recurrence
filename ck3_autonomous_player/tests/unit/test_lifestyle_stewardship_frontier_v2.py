@@ -88,10 +88,12 @@ def test_authored_domain_frontier_precedes_other_legal_management_roots():
 
 
 def test_stewardship_fallback_is_bounded_to_authored_catalogue():
+    from xar_autoplayer.all_lifestyle_catalog_v1 import authored_perks
     assert len(policy._STEWARDSHIP_AUTHORED_PERKS) == 27
-    assert (transport.PERK_TARGETS - {
-        'serve_the_crown_perk', 'thoughtful_perk'
-    }) == policy._STEWARDSHIP_AUTHORED_PERKS
+    assert {key for key, owner in authored_perks().items()
+            if owner == 'stewardship_lifestyle'} == policy._STEWARDSHIP_AUTHORED_PERKS
+    assert policy._STEWARDSHIP_AUTHORED_PERKS | {
+        'serve_the_crown_perk', 'thoughtful_perk'} <= transport.PERK_TARGETS
     value = snapshot(1, ['tax_man_perk', 'defensive_measures_perk'],
                      [key for key in OWNED_AT_P21 if key != 'tax_man_perk'])
     assert choose(value)['selected_action']['target_key'] == 'tax_man_perk'
@@ -144,7 +146,10 @@ def test_public_service_requalifies_only_on_new_native_capability(tmp_path, monk
                 cadence.record(state_dir, domain, (episode, date, 3498), actual_action=False)
         calls = []
         monkeypatch.setattr(service, '_optional_check_lifestyle_original',
-                            lambda _self, planned, _steps: calls.append(True) or planned)
+                            lambda _self, planned, _steps: calls.append(True) or {
+                                **planned, 'plan': {**planned['plan'],
+                                    'lifestyle_decision': {'status': 'no_legal_minimum',
+                                                          'reason': 'no_unspent_points'}}})
         driver = SimpleNamespace(state_dir=state_dir, capabilities=lambda: {
             'bridge_capabilities': [catalogue] if has_cap else []})
         receiver = SimpleNamespace(driver=driver)
@@ -218,4 +223,4 @@ def test_public_service_import_and_new_perk_material_projection():
     assert observed["policy_target_final_legal"]["defensive_measures_perk"] is True
     assert observed["policy_target_owned"]["defensive_measures_perk"] is False
     assert observed["policy_target_owned"]["tax_man_perk"] is True
-    assert len(observed["policy_target_final_legal"]) == 29
+    assert set(observed["policy_target_final_legal"]) == transport.PERK_TARGETS

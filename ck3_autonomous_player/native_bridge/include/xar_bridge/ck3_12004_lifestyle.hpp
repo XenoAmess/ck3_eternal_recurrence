@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/player_lifestyle_formal_wire_v1.hpp"
+#include "xar_bridge/player_lifestyle_all_frontier_v3.hpp"
 namespace xar::ck3_12004::lifestyle {
 // The wire/state/receipt DTOs remain the master contracts. Every bound native
 // address below belongs to the exact 1.20 image; old native binders are unused.
@@ -72,6 +73,9 @@ StockPerkLegalityResultV1 ReadStockPerkLegality12004V1(
     const StockPerkLegalityEnvironmentV1 &, const StockPerkLegalityAccessV1 &,
     std::string_view) noexcept;
 std::string_view StockPerkLegalityStatusKey12004V1(StockPerkLegalityStatusV1) noexcept;
+StockPerkLegalityResultV1 ReadStockPerkProgress12004V3(
+    const StockPerkLegalityEnvironmentV1 &, const StockPerkLegalityAccessV1 &,
+    std::string_view) noexcept;
 PlayerLifestyleSelectionNativeAdapterEnvironmentV1
 BindPlayerLifestyleSelectionNativeAdapterEnvironment12004V1(
     std::uintptr_t, bool, std::string_view) noexcept;
@@ -119,6 +123,7 @@ struct PlayerLifestyleFormalWireContext12004V1 :
     ck3_11906::PlayerLifestyleFormalWireContextV1 {
   PlayerLifestyleBindings12004 bindings12004{};
   ck3_12002::QueryMailboxEnvelope envelope{};
+  std::array<StockPerkLegalityResultV1,6> all_lifestyle_progress_v3{};
 };
 bool InitializePlayerLifestyleFormalWireContext12004V1(
     PlayerLifestyleFormalWireContext12004V1 &, const PlayerLifestyleBindings12004 &,

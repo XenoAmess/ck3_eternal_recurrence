@@ -157,3 +157,34 @@ source. The portable ordinary chooser suite passes 10 tests and 5 subtests;
 its original P21 inputs and synthetic halt/readback/root-capital adaptations
 are explicitly distinguished from actual P24 receipts. These tests establish
 source behavior, not P25 game-day advancement, survival or a successful battle.
+
+### Same-Game reconnect and actual P26 first day
+
+The P25 early-return fix was insufficient by itself. Original AUTO12 still
+stopped at `native_war_unsafe_route_halt_pending`: its independent same-day
+suffix publication was in a newer SDK connection than the original Halt32.
+Those blocked receipts remain blocked. The public guard now also accepts a
+strictly newer connection only on the original submission date, with a current
+hello/bridge PID match and the existing actor/episode/newer-Native/route guards.
+The original same-connection path keeps its already verified cross-day
+retained-edge behavior; it does not acquire the reconnect-only date limit.
+
+Root's same-Game P26 FULL3 completed; AUTO46 used the existing
+`life-advance-one-day`, and independent METRICS47 actually observed paused
+actor40526 at raw53411208, one day after53411184. Game PID100984 and the D-drive
+recording continued. This is actual date advancement under the retained-edge
+observation, not a safe landing or battle result. Evidence under external
+`continuation42-cold-prep/p26-hot-halt-generation01/`:
+
+- `DELIVERY.json`, SHA-256
+  `7412a92d6bd40227a4758b5df59f9b7f4486c170a7d2d37963d17ab624b2a337`.
+- `PUBLIC-HOT-HALT-FOCUSED.json`, SHA-256
+  `10d03c4fc6882c7c435cf99ccaf213ae6b95f5fddd206d077f9a0e7a08be9753`,
+  replays actual Halt32/P25SEM13/AUTO12 plus eight rejecting variants against
+  public source. The ordinary chooser suite passes 11 tests and 5 subtests,
+  including prior same-connection next-day behavior and fresh read priority.
+
+The actual P26 runtime source and public source differ in that final preserved
+cross-day branch; public integration does not rewrite the frozen live SDK.
+No uninterrupted 30-year, 0.5 seconds/day or victory credit follows from this
+single observed day.

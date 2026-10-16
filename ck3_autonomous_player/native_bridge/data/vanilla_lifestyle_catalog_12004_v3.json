@@ -1,0 +1,4005 @@
+{
+  "schema": "xar.ck3.vanilla-lifestyle-authored-catalogue.v1",
+  "source_kind": "actual_steam_game_common_lifestyle_perks",
+  "game_root": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game",
+  "tree_count": 18,
+  "perk_count": 162,
+  "lifestyle_keys": [
+    "diplomacy_lifestyle",
+    "intrigue_lifestyle",
+    "learning_lifestyle",
+    "martial_lifestyle",
+    "stewardship_lifestyle",
+    "wanderer_lifestyle"
+  ],
+  "trees": [
+    {
+      "lifestyle_key": "diplomacy_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "foreign_affairs",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_diplomacy_1_foreign_affairs_tree_perks.txt",
+      "source_sha256": "8faeca3c3cdc756482bb3122e6df85aa9fd2c1fd26e540db0ee812837b7273f7",
+      "perks": [
+        {
+          "key": "thoughtful_perk",
+          "source_start_line": 1,
+          "source_end_line": 40,
+          "source_block_sha256": "a28c72ed007ba3c3010fb031d4dcb04c6035b9e781d187ee46631148db243c95",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            27
+          ]
+        },
+        {
+          "key": "ducal_conquest_perk",
+          "source_start_line": 42,
+          "source_end_line": 120,
+          "source_block_sha256": "e712cf52ce2f20e839b04fc3cb728e6e5217515cf2333ddd3bb984eb359eab8e",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 48,
+              "text": "parent = thoughtful_perk"
+            }
+          ]
+        },
+        {
+          "key": "forced_vassalage_perk",
+          "source_start_line": 123,
+          "source_end_line": 190,
+          "source_block_sha256": "0b9b5b209cb975ccb4fa962fac29dd98967fe9823b9cc5ad0578d8e106f767db",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 129,
+              "text": "parent = ducal_conquest_perk"
+            }
+          ]
+        },
+        {
+          "key": "adaptive_traditions_perk",
+          "source_start_line": 193,
+          "source_end_line": 225,
+          "source_block_sha256": "d2226e4645e27b3b6dde1ecfe5e4013b191b9323964e2d77761611a9a4387e39",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 199,
+              "text": "parent = thoughtful_perk"
+            }
+          ]
+        },
+        {
+          "key": "flexible_truces_perk",
+          "source_start_line": 228,
+          "source_end_line": 259,
+          "source_block_sha256": "324b0451fe5688e158772a0377c562a8e328d27828ca334e89da22a60aae6f87",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 234,
+              "text": "parent = adaptive_traditions_perk"
+            }
+          ]
+        },
+        {
+          "key": "defensive_negotiations_perk",
+          "source_start_line": 262,
+          "source_end_line": 298,
+          "source_block_sha256": "af1cf2626e1c704c80527625575c0d81d9fe434fbe9b592b6351e3c703f75f91",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 268,
+              "text": "parent = thoughtful_perk"
+            }
+          ]
+        },
+        {
+          "key": "embassies_perk",
+          "source_start_line": 301,
+          "source_end_line": 334,
+          "source_block_sha256": "b68757487d55b0f34689672ef1f394df56d5ed05c58f07adcfc5c644aa0bbed3",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 307,
+              "text": "parent = defensive_negotiations_perk"
+            }
+          ]
+        },
+        {
+          "key": "accomplished_forger_perk",
+          "source_start_line": 337,
+          "source_end_line": 383,
+          "source_block_sha256": "5dd93a9f61accb8d97a93a3c24117d087b6e226c4db5413f15d62901fe48ff82",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 343,
+              "text": "parent = forced_vassalage_perk"
+            },
+            {
+              "line": 344,
+              "text": "parent = flexible_truces_perk"
+            },
+            {
+              "line": 345,
+              "text": "parent = embassies_perk"
+            }
+          ]
+        },
+        {
+          "key": "diplomat_perk",
+          "source_start_line": 386,
+          "source_end_line": 398,
+          "source_block_sha256": "f3d4f9c26ecf46ad2339bd6525ef12f82a169868ba573f1c8a6c83eec47077c0",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "foreign_affairs",
+          "parent_source": [
+            {
+              "line": 392,
+              "text": "parent = accomplished_forger_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "diplomacy_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "majesty",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_diplomacy_2_majesty_tree_perks.txt",
+      "source_sha256": "69998573f78a112f7a9fc366ad880de50ccd208c5f631458231946754f56d40c",
+      "perks": [
+        {
+          "key": "benevolent_intent_perk",
+          "source_start_line": 1,
+          "source_end_line": 56,
+          "source_block_sha256": "431bb13d8005744f0c676e402658fc76ba52052d4f287f883e49cdbf11b5adcc",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            8,
+            35
+          ]
+        },
+        {
+          "key": "inspiring_rule_perk",
+          "source_start_line": 58,
+          "source_end_line": 117,
+          "source_block_sha256": "52113482d38836196dc5b6604011d8864cc362ae9c496296dccfdbf10597ea56",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 65,
+              "text": "parent = benevolent_intent_perk"
+            }
+          ]
+        },
+        {
+          "key": "firm_hand_perk",
+          "source_start_line": 119,
+          "source_end_line": 185,
+          "source_block_sha256": "45db1c5f42fecd63535ab9fa484d95cfb6eca32abdcdaeac792d681cd557b424",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            136,
+            163
+          ]
+        },
+        {
+          "key": "praetorian_guard_perk",
+          "source_start_line": 187,
+          "source_end_line": 250,
+          "source_block_sha256": "4c6912fb737a0fda4717e5e954b3e3100bf53ca2fa96b54345e1ce66fb110c24",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 194,
+              "text": "parent = firm_hand_perk"
+            }
+          ]
+        },
+        {
+          "key": "true_ruler_perk",
+          "source_start_line": 252,
+          "source_end_line": 317,
+          "source_block_sha256": "155b89e29d10f42d5d75dbb28b6fda52ef05e5079a6f882716fdafe49b759622",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 259,
+              "text": "parent = inspiring_rule_perk"
+            },
+            {
+              "line": 260,
+              "text": "parent = praetorian_guard_perk"
+            }
+          ]
+        },
+        {
+          "key": "writing_history_perk",
+          "source_start_line": 319,
+          "source_end_line": 367,
+          "source_block_sha256": "11a4a30934723055f94ae1750cf6e818c00c326d778d0c53c70c4f66aa08df1e",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 326,
+              "text": "parent = true_ruler_perk"
+            }
+          ]
+        },
+        {
+          "key": "a_life_of_glory_perk",
+          "source_start_line": 370,
+          "source_end_line": 388,
+          "source_block_sha256": "2a4bdf330b64be4d532dc052eaebdfa8fe9a2cc42c3980a55240e7a066e2befe",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 377,
+              "text": "parent = writing_history_perk"
+            }
+          ]
+        },
+        {
+          "key": "dignitas_perk",
+          "source_start_line": 391,
+          "source_end_line": 440,
+          "source_block_sha256": "bfd7a98cd5031a04b969517dbaed4021487a03a113840c121a4ca730bef0b18a",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 410,
+              "text": "parent = writing_history_perk"
+            }
+          ]
+        },
+        {
+          "key": "august_perk",
+          "source_start_line": 443,
+          "source_end_line": 457,
+          "source_block_sha256": "9db5ed856b5f735fb3c907950b5c919ad0a17d824ed3691970925a7dcc75b068",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "majesty",
+          "parent_source": [
+            {
+              "line": 450,
+              "text": "parent = a_life_of_glory_perk"
+            },
+            {
+              "line": 451,
+              "text": "parent = dignitas_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "diplomacy_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "family",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_diplomacy_3_family_tree_perks.txt",
+      "source_sha256": "4eedaf02f2184ccaac0b0d523571c51041e42e3ae3e89dd7723272a1007e29cb",
+      "perks": [
+        {
+          "key": "befriend_perk",
+          "source_start_line": 1,
+          "source_end_line": 68,
+          "source_block_sha256": "3b6b44a4ab3dfdbd8c594abfe907093ff8c79532952f31e0b6268937afa0e1ec",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            28
+          ]
+        },
+        {
+          "key": "confidants_perk",
+          "source_start_line": 70,
+          "source_end_line": 86,
+          "source_block_sha256": "0d2129c448ddac108d9e13f817e3ca979d24dfed2b7618125b349d3195140f0e",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 76,
+              "text": "parent = befriend_perk"
+            }
+          ]
+        },
+        {
+          "key": "flatterer_perk",
+          "source_start_line": 88,
+          "source_end_line": 103,
+          "source_block_sha256": "ae7e662269948683f041dbe6e22196ae660c6280b366be7bb1f4b8292f3761b7",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 94,
+              "text": "parent = confidants_perk"
+            }
+          ]
+        },
+        {
+          "key": "friendly_counsel_perk",
+          "source_start_line": 105,
+          "source_end_line": 176,
+          "source_block_sha256": "9986a84c7206455532d8dfcf3371cb2e2a05f3a8c524c898c49a6d5d59173262",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 111,
+              "text": "parent = flatterer_perk"
+            }
+          ]
+        },
+        {
+          "key": "familial_familiar_perk",
+          "source_start_line": 178,
+          "source_end_line": 222,
+          "source_block_sha256": "e9eb754ddc5d8bbd52c6dd94c37bf68b72e40858931a23b388d997d327f2dfd8",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            200,
+            221
+          ]
+        },
+        {
+          "key": "groomed_to_rule_perk",
+          "source_start_line": 224,
+          "source_end_line": 266,
+          "source_block_sha256": "dec75991917a76f33ec871b06a8584483cb9122598cc1e0742957c4974ab55f9",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 230,
+              "text": "parent = familial_familiar_perk"
+            }
+          ]
+        },
+        {
+          "key": "thicker_than_water_perk",
+          "source_start_line": 268,
+          "source_end_line": 286,
+          "source_block_sha256": "9975903cda07a883a0cf22fee4f8cc77de5f4afa4a81c73b60c8034360b82d25",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 274,
+              "text": "parent = groomed_to_rule_perk"
+            }
+          ]
+        },
+        {
+          "key": "sound_foundations_perk",
+          "source_start_line": 288,
+          "source_end_line": 316,
+          "source_block_sha256": "a6bda28f568fdd1fd0ad2fedda0040600631972342aa101e1ada8960b1de9db0",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 294,
+              "text": "parent = thicker_than_water_perk"
+            }
+          ]
+        },
+        {
+          "key": "family_man_perk",
+          "source_start_line": 318,
+          "source_end_line": 345,
+          "source_block_sha256": "4e54702723f40c31912c38091bb898bb3e191131866365df7423d88f442dddff",
+          "declared_lifestyle_key": "diplomacy_lifestyle",
+          "declared_tree": "family",
+          "parent_source": [
+            {
+              "line": 338,
+              "text": "parent = sound_foundations_perk"
+            },
+            {
+              "line": 339,
+              "text": "parent = friendly_counsel_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "intrigue_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "skulduggery",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_intrigue_1_skulduggery_tree_perks.txt",
+      "source_sha256": "265ffb53a529e039c21641b1e516bd8e10a9b7aea824b3cc3225c0e40a13baed",
+      "perks": [
+        {
+          "key": "truth_is_relative_perk",
+          "source_start_line": 1,
+          "source_end_line": 52,
+          "source_block_sha256": "1b37f9182eb780141449b247859f1fc819c88f10fb111b45fa40a4c73e5e2a1b",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [],
+          "can_be_picked_source_range": [
+            35,
+            37
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ],
+          "auto_selection_weight_source_range": [
+            7,
+            33
+          ]
+        },
+        {
+          "key": "digging_for_dirt_perk",
+          "source_start_line": 54,
+          "source_end_line": 84,
+          "source_block_sha256": "5e7ce93e63acc0b2d050c0ba912584b24885522087f37e8795a3a3fd2abc68aa",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 60,
+              "text": "parent = truth_is_relative_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            62,
+            64
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "kidnapper_perk",
+          "source_start_line": 86,
+          "source_end_line": 109,
+          "source_block_sha256": "a6afd2992f7e2d34ae5180d1af7a5dbc73fd6d459695735bde2142baad27ab82",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 92,
+              "text": "parent = digging_for_dirt_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            94,
+            96
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "court_of_shadows_perk",
+          "source_start_line": 111,
+          "source_end_line": 169,
+          "source_block_sha256": "50ff03ebec53441cfa76da40fcfc0f7c190fbcfa0bfcc9105f5a41250b3976e3",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 117,
+              "text": "parent = truth_is_relative_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            129,
+            131
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "prepared_for_anything_perk",
+          "source_start_line": 171,
+          "source_end_line": 192,
+          "source_block_sha256": "3ddd7c5fd656674f71603f120ddde98c27ce03291ee7619e1488a112e5a16c6f",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 177,
+              "text": "parent = court_of_shadows_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            179,
+            181
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "swift_execution_perk",
+          "source_start_line": 194,
+          "source_end_line": 214,
+          "source_block_sha256": "f7e4bb0173189499b4fef994659d5bea154937909f35ffbecc741fef9dc35cab",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 200,
+              "text": "parent = truth_is_relative_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            202,
+            204
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "a_job_done_right_perk",
+          "source_start_line": 216,
+          "source_end_line": 232,
+          "source_block_sha256": "d3be88c0ec2725b75fa57101535af8c20b55f8141a5a53f0987038f3d00720a2",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 222,
+              "text": "parent = swift_execution_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            224,
+            226
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "twice_schemed_perk",
+          "source_start_line": 234,
+          "source_end_line": 256,
+          "source_block_sha256": "952725deed4cc1455c8baac37535f7e10410c86b387b39e90b51c38dc33a9c15",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 240,
+              "text": "parent = kidnapper_perk"
+            },
+            {
+              "line": 241,
+              "text": "parent = prepared_for_anything_perk"
+            },
+            {
+              "line": 242,
+              "text": "parent = a_job_done_right_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            244,
+            246
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "schemer_perk",
+          "source_start_line": 258,
+          "source_end_line": 274,
+          "source_block_sha256": "42fe9e30d66f59355d33fd4cc3049c3285439e321508bf389d470170d676d24d",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "skulduggery",
+          "parent_source": [
+            {
+              "line": 264,
+              "text": "parent = twice_schemed_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            266,
+            268
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "intrigue_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "temptation",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_intrigue_2_temptation_tree_perks.txt",
+      "source_sha256": "b8fbce7f3edd0f265ccc14ea20fb6ae45564a43fd4fd63b1ed6d97e2d6d43787",
+      "perks": [
+        {
+          "key": "like_weed_in_a_garden_perk",
+          "source_start_line": 1,
+          "source_end_line": 37,
+          "source_block_sha256": "c8d9d7957ddc7c4c95136a16e37bfe817c2969351d5fbff69c7fc4bf60172eba",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [],
+          "can_be_picked_source_range": [
+            30,
+            32
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ],
+          "auto_selection_weight_source_range": [
+            7,
+            28
+          ]
+        },
+        {
+          "key": "unshackled_lust_perk",
+          "source_start_line": 39,
+          "source_end_line": 56,
+          "source_block_sha256": "4e2835020135184aa0409c6c7c6e8d6c934d4974bf69d7a2f2719da79969cbd5",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 45,
+              "text": "parent = like_weed_in_a_garden_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            47,
+            49
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "subtle_desire_perk",
+          "source_start_line": 58,
+          "source_end_line": 75,
+          "source_block_sha256": "08319e7df3047082851c231dbe082bff16d87d0ba662f3233beabfa87f4bc8e6",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 64,
+              "text": "parent = unshackled_lust_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            66,
+            68
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "mortal_adoration_perk",
+          "source_start_line": 77,
+          "source_end_line": 102,
+          "source_block_sha256": "fbfd8b6ab64e09e79e2944727d40a3b80b578eac0bebab4090a212808a3f5560",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 83,
+              "text": "parent = subtle_desire_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            85,
+            85
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = { always = yes }"
+          ]
+        },
+        {
+          "key": "enticing_opportunity_perk",
+          "source_start_line": 104,
+          "source_end_line": 144,
+          "source_block_sha256": "83b2a89681256aa5c4424aa005c884471491cad10e55e45850cf98273c08f168",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [],
+          "can_be_picked_source_range": [
+            133,
+            135
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ],
+          "auto_selection_weight_source_range": [
+            110,
+            131
+          ]
+        },
+        {
+          "key": "home_advantage_perk",
+          "source_start_line": 146,
+          "source_end_line": 163,
+          "source_block_sha256": "b497fd4cd06868076f4beb6b6ced6fb02d8abeea5d5833da97491467ddddef1c",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 152,
+              "text": "parent = enticing_opportunity_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            154,
+            156
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "graceful_recovery_perk",
+          "source_start_line": 165,
+          "source_end_line": 182,
+          "source_block_sha256": "0a8214de08dbbd5d8ba24a416c3bac2b325fbc9cbfa7c706da8fb6811787c081",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 171,
+              "text": "parent = home_advantage_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            173,
+            175
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "smooth_operator_perk",
+          "source_start_line": 184,
+          "source_end_line": 201,
+          "source_block_sha256": "daef5d81ea8ef3d44e7cbd8402081a115b0784321edfa173b68eed29e0076e31",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 190,
+              "text": "parent = graceful_recovery_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            192,
+            194
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "seducer_perk",
+          "source_start_line": 204,
+          "source_end_line": 231,
+          "source_block_sha256": "ff23b7f61e624c70aacd8d4e2308a6751fde9ad66e0aa06468a6a42fd219def9",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "temptation",
+          "parent_source": [
+            {
+              "line": 220,
+              "text": "parent = mortal_adoration_perk"
+            },
+            {
+              "line": 221,
+              "text": "parent = smooth_operator_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            223,
+            225
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "intrigue_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "intimidation",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_intrigue_3_intimidation_tree_perks.txt",
+      "source_sha256": "581bd24b53abb17651d9662ea0d31150e3cfce11d97c224a497aadcf9a442233",
+      "perks": [
+        {
+          "key": "dark_insights_perk",
+          "source_start_line": 1,
+          "source_end_line": 49,
+          "source_block_sha256": "74e9473e2545896c5a13ce9874b512f9eb537c42de5f1b1f7992b8d9c678258d",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [],
+          "can_be_picked_source_range": [
+            30,
+            32
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ],
+          "auto_selection_weight_source_range": [
+            7,
+            28
+          ]
+        },
+        {
+          "key": "divine_retribution_perk",
+          "source_start_line": 51,
+          "source_end_line": 68,
+          "source_block_sha256": "5fdb4e3ae23843a62ef35fca7b0f43985abe03eb826c5d0262cdd98aefe36979",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 57,
+              "text": "parent = dark_insights_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            59,
+            61
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "dreadful_perk",
+          "source_start_line": 70,
+          "source_end_line": 106,
+          "source_block_sha256": "1338e9617939a985c5e08c38ef4156bc694276f738ff928414acda039b0b30a8",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [],
+          "can_be_picked_source_range": [
+            99,
+            101
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ],
+          "auto_selection_weight_source_range": [
+            76,
+            97
+          ]
+        },
+        {
+          "key": "thriving_in_chaos_perk",
+          "source_start_line": 108,
+          "source_end_line": 125,
+          "source_block_sha256": "a43f5f7a4fb4948e508429f4ba1739c60b96b18e7fb9271d67fc351a6b03844a",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 114,
+              "text": "parent = dreadful_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            116,
+            118
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "malice_implicit_perk",
+          "source_start_line": 127,
+          "source_end_line": 166,
+          "source_block_sha256": "6c6becf523390c970f14cb4dd3f9c4fd63e739e45abfd2ceb854c22229903f83",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 133,
+              "text": "parent = divine_retribution_perk"
+            },
+            {
+              "line": 134,
+              "text": "parent = thriving_in_chaos_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            146,
+            148
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "fear_tax_perk",
+          "source_start_line": 168,
+          "source_end_line": 234,
+          "source_block_sha256": "cf79affeb17d2cb195f4db0cd546e1a5020e6817698925b765b2fdf191731656",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 173,
+              "text": "parent = malice_implicit_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            185,
+            187
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "forever_infamous_perk",
+          "source_start_line": 236,
+          "source_end_line": 264,
+          "source_block_sha256": "cbc350eec917bd1de02b3831555756fa10c0bdea9e8f5bdbefb1967d1c57cf5d",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 242,
+              "text": "parent = fear_tax_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            244,
+            246
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "prison_feudal_complex_perk",
+          "source_start_line": 266,
+          "source_end_line": 283,
+          "source_block_sha256": "623a58205bf29fd24241cec90d923b5691be035c5e5234d590dd837e32962a54",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 272,
+              "text": "parent = fear_tax_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            274,
+            276
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        },
+        {
+          "key": "torturer_perk",
+          "source_start_line": 285,
+          "source_end_line": 302,
+          "source_block_sha256": "54170fd3dae06bbe198781a6d80cd51ad420987665c1c041d39ad9a40bec39f3",
+          "declared_lifestyle_key": "intrigue_lifestyle",
+          "declared_tree": "intimidation",
+          "parent_source": [
+            {
+              "line": 291,
+              "text": "parent = forever_infamous_perk"
+            },
+            {
+              "line": 292,
+              "text": "parent = prison_feudal_complex_perk"
+            }
+          ],
+          "can_be_picked_source_range": [
+            294,
+            296
+          ],
+          "can_be_picked_excerpt": [
+            "can_be_picked = {",
+            "always = yes",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "learning_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "medicine",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_learning_1_medicine_tree_perks.txt",
+      "source_sha256": "d2ec4e294a6525b342188d1d1569bdbf8a4ce53d5220e9a9bed44de500e63897",
+      "perks": [
+        {
+          "key": "anatomical_studies_perk",
+          "source_start_line": 6,
+          "source_end_line": 39,
+          "source_block_sha256": "32831cc16f42f279d43b34a1cdce5bff97ae426074e10a7abb75482c3340f64f",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            12,
+            32
+          ]
+        },
+        {
+          "key": "carefree_perk",
+          "source_start_line": 43,
+          "source_end_line": 58,
+          "source_block_sha256": "4f50cec8f87ffb76798f75d2a2eb231c2d54114e89cd08e43383f393c3d4812f",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 49,
+              "text": "parent = anatomical_studies_perk"
+            }
+          ]
+        },
+        {
+          "key": "mental_resilience_perk",
+          "source_start_line": 62,
+          "source_end_line": 104,
+          "source_block_sha256": "15fdff9a89c42dad963b6907b53e0c7d25d9e9e49b8a7a22a85d8c691cfc8c73",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 68,
+              "text": "parent = carefree_perk"
+            }
+          ]
+        },
+        {
+          "key": "restraint_perk",
+          "source_start_line": 108,
+          "source_end_line": 121,
+          "source_block_sha256": "79309bfb97bf9c1d67462506c6c547948f5db8c219fc8a0fadce15df8e0049b0",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 114,
+              "text": "parent = anatomical_studies_perk"
+            }
+          ]
+        },
+        {
+          "key": "know_thyself_perk",
+          "source_start_line": 125,
+          "source_end_line": 138,
+          "source_block_sha256": "ca2f6525d6e4f76f6d6a47f631d5d678523264b747217b4dbf9189c7d35d5452",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 131,
+              "text": "parent = restraint_perk"
+            }
+          ]
+        },
+        {
+          "key": "wash_your_hands_perk",
+          "source_start_line": 142,
+          "source_end_line": 161,
+          "source_block_sha256": "5f6fef4bcf9c721eea9a17b81d21ff9d7e3c97c667093ddf252473820f859c61",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 148,
+              "text": "parent = anatomical_studies_perk"
+            }
+          ]
+        },
+        {
+          "key": "iron_constitution_perk",
+          "source_start_line": 165,
+          "source_end_line": 177,
+          "source_block_sha256": "64eeb03e300d681e5cd60bbc784a603b3c8bc680f352cc3779299c58b0869505",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 171,
+              "text": "parent = wash_your_hands_perk"
+            }
+          ]
+        },
+        {
+          "key": "healthy_perk",
+          "source_start_line": 181,
+          "source_end_line": 199,
+          "source_block_sha256": "cd9276cdb5a6305ea843b59d1afcb8815cf1f76229b029389c1443cbe62bccde",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 187,
+              "text": "parent = mental_resilience_perk"
+            },
+            {
+              "line": 188,
+              "text": "parent = know_thyself_perk"
+            },
+            {
+              "line": 189,
+              "text": "parent = iron_constitution_perk"
+            }
+          ]
+        },
+        {
+          "key": "whole_of_body_perk",
+          "source_start_line": 203,
+          "source_end_line": 215,
+          "source_block_sha256": "9d81fda025c1d6fe5eb358d10b480b0db31283e130d9f5b505871647d49daa44",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "medicine",
+          "parent_source": [
+            {
+              "line": 209,
+              "text": "parent = healthy_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "learning_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "scholarship",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_learning_2_scholarship_tree_perks.txt",
+      "source_sha256": "f368d0ee4d8dcdcb0287d8f26ce3ba7cf05d63e6d2ad376767ce342caf5fa60d",
+      "perks": [
+        {
+          "key": "pedagogy_perk",
+          "source_start_line": 6,
+          "source_end_line": 50,
+          "source_block_sha256": "138ce11b668ca76ac5d0c4d839b02834331881f8f5fd68079afd6be3d6e93554",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            12,
+            33
+          ]
+        },
+        {
+          "key": "open_minded_perk",
+          "source_start_line": 54,
+          "source_end_line": 91,
+          "source_block_sha256": "c59852be81c2a98373bda22844bc2c21f61e378e3ec07930fff370132effa616",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 60,
+              "text": "parent = pedagogy_perk"
+            }
+          ]
+        },
+        {
+          "key": "apostate_perk",
+          "source_start_line": 95,
+          "source_end_line": 128,
+          "source_block_sha256": "360d6aea34144ec2d65a6255fd224d64b92a729e0ee6dff2b813fd7ed88b72b9",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 101,
+              "text": "parent = open_minded_perk"
+            }
+          ]
+        },
+        {
+          "key": "scientific_perk",
+          "source_start_line": 132,
+          "source_end_line": 192,
+          "source_block_sha256": "b56f37a6f6e78888672e918dd31668c5295a927ada8059154c7053fe02599899",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            148,
+            169
+          ]
+        },
+        {
+          "key": "planned_cultivation_perk",
+          "source_start_line": 196,
+          "source_end_line": 246,
+          "source_block_sha256": "2c8377c3b106cf74a43035a9ceb07dde822ff4617a4de9a1303dffbaedb69f16",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 202,
+              "text": "parent = scientific_perk"
+            }
+          ]
+        },
+        {
+          "key": "scholarly_circles_perk",
+          "source_start_line": 250,
+          "source_end_line": 277,
+          "source_block_sha256": "6ddf9649ec2732d55375dde6ebdea355e52e9b0bdfb77f82501592a65e747362",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 256,
+              "text": "parent = planned_cultivation_perk"
+            }
+          ]
+        },
+        {
+          "key": "learn_on_the_job_perk",
+          "source_start_line": 281,
+          "source_end_line": 323,
+          "source_block_sha256": "f3086c7de81cc80a2f0dbe00437f623c729492a2fefc36254cf3399a55b98812",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 287,
+              "text": "parent = apostate_perk"
+            },
+            {
+              "line": 288,
+              "text": "parent = scholarly_circles_perk"
+            }
+          ]
+        },
+        {
+          "key": "sanctioned_loopholes_perk",
+          "source_start_line": 327,
+          "source_end_line": 418,
+          "source_block_sha256": "8eb779f705c2b9b2c0ad7ab3e7ca357d80b34a482f854390f2015b4b2487fb63",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 333,
+              "text": "parent = learn_on_the_job_perk"
+            }
+          ]
+        },
+        {
+          "key": "erudite_perk",
+          "source_start_line": 422,
+          "source_end_line": 434,
+          "source_block_sha256": "a101217d5a2b33f79fdfeb8b12897fb038ef931190bbc2714bfd76118d82cb27",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "scholarship",
+          "parent_source": [
+            {
+              "line": 428,
+              "text": "parent = sanctioned_loopholes_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "learning_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "theology",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_learning_3_theology_tree_perks.txt",
+      "source_sha256": "e20b888e902aff9e2de7567ddb39661800cee10239409f032e9ab7dfbd659e74",
+      "perks": [
+        {
+          "key": "faithful_perk",
+          "source_start_line": 1,
+          "source_end_line": 58,
+          "source_block_sha256": "a6fd7a7ccad0bb408eac6873cf259cf81136c8841cdadd451fbd6f7cc4a605b4",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            27
+          ]
+        },
+        {
+          "key": "zealous_proselytizer_perk",
+          "source_start_line": 60,
+          "source_end_line": 122,
+          "source_block_sha256": "439501b61a4b2572043336e96304ea5ec5947c44d7ec19700be3705b0debf3f7",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 66,
+              "text": "parent = faithful_perk"
+            }
+          ]
+        },
+        {
+          "key": "religious_icon_perk",
+          "source_start_line": 124,
+          "source_end_line": 184,
+          "source_block_sha256": "a53416d19f58bf238bb921781cdd9e7a5febf4f755795c5145f4723d21637ca1",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 130,
+              "text": "parent = zealous_proselytizer_perk"
+            }
+          ]
+        },
+        {
+          "key": "prophet_perk",
+          "source_start_line": 186,
+          "source_end_line": 259,
+          "source_block_sha256": "ed2e443e5ef6ea1276592b95ced62855a0e9ea8342960f68e21d54529e678f7d",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 192,
+              "text": "parent = religious_icon_perk"
+            }
+          ]
+        },
+        {
+          "key": "clerical_justifications_perk",
+          "source_start_line": 261,
+          "source_end_line": 316,
+          "source_block_sha256": "655c566d0056d4e233bae0f3f7f2c8d7bd44101e9ad9b60e4468df97223037aa",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 267,
+              "text": "parent = faithful_perk"
+            }
+          ]
+        },
+        {
+          "key": "church_and_state_perk",
+          "source_start_line": 318,
+          "source_end_line": 379,
+          "source_block_sha256": "028c5a46034ffb06a8263c194b773e396d3854828c5925041e5217cb552b577b",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 324,
+              "text": "parent = clerical_justifications_perk"
+            }
+          ]
+        },
+        {
+          "key": "radiant_perk",
+          "source_start_line": 381,
+          "source_end_line": 398,
+          "source_block_sha256": "396c1f747f8bab8e93f9f461d182a09f24ccdfc57fc2fdae28fce4ebf8f34c95",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 387,
+              "text": "parent = church_and_state_perk"
+            }
+          ]
+        },
+        {
+          "key": "defender_of_the_faith_perk",
+          "source_start_line": 400,
+          "source_end_line": 447,
+          "source_block_sha256": "4bc6211ec1b52d2b0ce543139f910cc19b2510d65b96f22504d01aa240eeafaf",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 406,
+              "text": "parent = radiant_perk"
+            },
+            {
+              "line": 407,
+              "text": "parent = prophet_perk"
+            }
+          ]
+        },
+        {
+          "key": "theologian_perk",
+          "source_start_line": 449,
+          "source_end_line": 461,
+          "source_block_sha256": "837cfbbe0efa1b4515c994b708dba65d19ce90285b93b7edd0161ec502030fb1",
+          "declared_lifestyle_key": "learning_lifestyle",
+          "declared_tree": "theology",
+          "parent_source": [
+            {
+              "line": 455,
+              "text": "parent = defender_of_the_faith_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "martial_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "strategy",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_martial_1_strategy_tree_perks.txt",
+      "source_sha256": "cf0bcfe3221cd29b7bee50de39234957b924678cce882335044603bed8f163b3",
+      "perks": [
+        {
+          "key": "bellum_justum_perk",
+          "source_start_line": 1,
+          "source_end_line": 40,
+          "source_block_sha256": "ab19e52761be91c27c15d896dbc3c3ec93ebade39ac8785b194cf010a714de43",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            33
+          ]
+        },
+        {
+          "key": "parthian_tactics_perk",
+          "source_start_line": 42,
+          "source_end_line": 63,
+          "source_block_sha256": "6ea0239af1a6066c091a7876811353771074d4c63cd7068196d27ccc876bf4e4",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 48,
+              "text": "parent = bellum_justum_perk"
+            }
+          ]
+        },
+        {
+          "key": "envelopment_perk",
+          "source_start_line": 66,
+          "source_end_line": 78,
+          "source_block_sha256": "88398aafa818f9fc73566b10f70e02e026c6b7b07d61a95b823e0fd468c19927",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 72,
+              "text": "parent = parthian_tactics_perk"
+            }
+          ]
+        },
+        {
+          "key": "organized_retreat_perk",
+          "source_start_line": 81,
+          "source_end_line": 102,
+          "source_block_sha256": "8ee92e95ca283ba122d43ca54000a6b1502f6c4d5c630f7b32a03462f0ef7440",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 87,
+              "text": "parent = bellum_justum_perk"
+            }
+          ]
+        },
+        {
+          "key": "hit_and_run_perk",
+          "source_start_line": 105,
+          "source_end_line": 129,
+          "source_block_sha256": "91d92f4871506361e6051878d8eb91486f7f0465c87a9cb0bb1fad70faabc5da",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 111,
+              "text": "parent = organized_retreat_perk"
+            }
+          ]
+        },
+        {
+          "key": "engineered_for_destruction_perk",
+          "source_start_line": 132,
+          "source_end_line": 144,
+          "source_block_sha256": "c9c446514bb6465f1153d7d17939b295af84c3406c984466dd4bd9aac15765d8",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 138,
+              "text": "parent = bellum_justum_perk"
+            }
+          ]
+        },
+        {
+          "key": "living_off_the_land_perk",
+          "source_start_line": 147,
+          "source_end_line": 170,
+          "source_block_sha256": "ca609ef9a6af94cf291140bce2fa574a379099de30fbee10abf98f72981681b6",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 153,
+              "text": "parent = engineered_for_destruction_perk"
+            }
+          ]
+        },
+        {
+          "key": "sappers_perk",
+          "source_start_line": 173,
+          "source_end_line": 195,
+          "source_block_sha256": "fb5cd6a457558e4a47604389875a18f8a3669f26114f98d48a200eb22391c4f1",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 179,
+              "text": "parent = envelopment_perk"
+            },
+            {
+              "line": 180,
+              "text": "parent = hit_and_run_perk"
+            },
+            {
+              "line": 181,
+              "text": "parent = living_off_the_land_perk"
+            }
+          ]
+        },
+        {
+          "key": "strategist_perk",
+          "source_start_line": 198,
+          "source_end_line": 210,
+          "source_block_sha256": "1cedad76ca3984b347d6c951916b0bbcaf65ddd600a0c1510514541a6ab6b42a",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "strategy",
+          "parent_source": [
+            {
+              "line": 204,
+              "text": "parent = sappers_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "martial_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "authority",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_martial_2_authority_tree_perks.txt",
+      "source_sha256": "0361b49bca4dca702e687d2db1a53fabfa9e98139205383d697bfc9850d5b4fe",
+      "perks": [
+        {
+          "key": "serve_the_crown_perk",
+          "source_start_line": 1,
+          "source_end_line": 41,
+          "source_block_sha256": "83686eef08fe050800e4ffd6814422c8f4230616ca801a6cfbc5ca9ff9ababe8",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            27
+          ]
+        },
+        {
+          "key": "a_mans_home_perk",
+          "source_start_line": 43,
+          "source_end_line": 91,
+          "source_block_sha256": "eee65820d126f8b6d1f33b5d96aabe2e6bd6f6e88bd63422c27af3fbefc6ab8f",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 49,
+              "text": "parent = serve_the_crown_perk"
+            }
+          ]
+        },
+        {
+          "key": "enduring_hardships_perk",
+          "source_start_line": 93,
+          "source_end_line": 125,
+          "source_block_sha256": "dd0853ae0d7eb9a089ad121e3383d170ec9e0257a8065b828deb054c0fa4b854",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 99,
+              "text": "parent = a_mans_home_perk"
+            }
+          ]
+        },
+        {
+          "key": "prepared_conscription_perk",
+          "source_start_line": 127,
+          "source_end_line": 160,
+          "source_block_sha256": "54ce9361de4a2bd07f6ed07fe5b0cc5f0b1c93db3e412439b47858835f4480f7",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 133,
+              "text": "parent = enduring_hardships_perk"
+            }
+          ]
+        },
+        {
+          "key": "strict_organization_perk",
+          "source_start_line": 162,
+          "source_end_line": 207,
+          "source_block_sha256": "cd1f04e3ebc497c7ca9e007e1c7ab62ce782702a873bb5a6ef2879979a3d58e3",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 168,
+              "text": "parent = serve_the_crown_perk"
+            }
+          ]
+        },
+        {
+          "key": "hard_rule_perk",
+          "source_start_line": 209,
+          "source_end_line": 246,
+          "source_block_sha256": "342569022ead5d5dc2273668a9439a8cb591d79afa6ef7a07ee6d5d718dce341",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 215,
+              "text": "parent = strict_organization_perk"
+            }
+          ]
+        },
+        {
+          "key": "soldiers_of_lesser_fortune_perk",
+          "source_start_line": 248,
+          "source_end_line": 275,
+          "source_block_sha256": "4fae2adb03e6413c3b4f4618cf7edffa3411b5d17881a3ab31d1d0eccfe002cf",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 254,
+              "text": "parent = hard_rule_perk"
+            }
+          ]
+        },
+        {
+          "key": "absolute_control_perk",
+          "source_start_line": 277,
+          "source_end_line": 322,
+          "source_block_sha256": "adece809c65c3d52205f63f2021dab129d53524a72f00c5ed77433d4e51dd7af",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 283,
+              "text": "parent = soldiers_of_lesser_fortune_perk"
+            },
+            {
+              "line": 284,
+              "text": "parent = prepared_conscription_perk"
+            }
+          ]
+        },
+        {
+          "key": "overseer_perk",
+          "source_start_line": 324,
+          "source_end_line": 336,
+          "source_block_sha256": "77139a140c490a8039b6fbec268e443e1ecbcff71a5ee0813f12e22ec5e24e5b",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "authority",
+          "parent_source": [
+            {
+              "line": 330,
+              "text": "parent = absolute_control_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "martial_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "chivalry",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_martial_3_chivalry_tree_perks.txt",
+      "source_sha256": "156574e3af2f729cad7cd149e5dae10dab8b56dfa908a7cf5d8d0ddc341acc40",
+      "perks": [
+        {
+          "key": "stalwart_leader_perk",
+          "source_start_line": 1,
+          "source_end_line": 67,
+          "source_block_sha256": "32d077673e13855004a0f377b61124f040197ba12aa092013449ae451fa9d38e",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            7,
+            27
+          ]
+        },
+        {
+          "key": "courtship_perk",
+          "source_start_line": 69,
+          "source_end_line": 92,
+          "source_block_sha256": "a3a057b5bf986ab956c921ad45fd54b70c7f8eb3f4660099a68a38c62abe2dd6",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 75,
+              "text": "parent = stalwart_leader_perk"
+            }
+          ]
+        },
+        {
+          "key": "promising_prospects_perk",
+          "source_start_line": 94,
+          "source_end_line": 107,
+          "source_block_sha256": "e754b920f1e49e244e1f6cb6b9ad647119f6ec478e9e8d6d32011fb68d688a54",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 100,
+              "text": "parent = courtship_perk"
+            }
+          ]
+        },
+        {
+          "key": "loyalty_and_respect_perk",
+          "source_start_line": 109,
+          "source_end_line": 153,
+          "source_block_sha256": "47acb0080d623b45822c5e81416d2fce89c02431e0b664eabd3df905fdb6fc33",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 115,
+              "text": "parent = promising_prospects_perk"
+            }
+          ]
+        },
+        {
+          "key": "chivalric_dominance_perk",
+          "source_start_line": 155,
+          "source_end_line": 192,
+          "source_block_sha256": "1ed87e422ed5ac169d9c203ad47c207b3d0de4e9f608ccd9197f21ffb9b7fee5",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 161,
+              "text": "parent = stalwart_leader_perk"
+            }
+          ]
+        },
+        {
+          "key": "never_back_down_perk",
+          "source_start_line": 194,
+          "source_end_line": 207,
+          "source_block_sha256": "25a8e7d9500f7253d0901dbb22c012afe837773a63a8daabc96854ff183c7d60",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 200,
+              "text": "parent = chivalric_dominance_perk"
+            }
+          ]
+        },
+        {
+          "key": "kingsguard_perk",
+          "source_start_line": 209,
+          "source_end_line": 236,
+          "source_block_sha256": "c034cf40d4ab740d94f3612fdc854888dace9add6f4a223a0c51421aea995cc2",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 215,
+              "text": "parent = never_back_down_perk"
+            }
+          ]
+        },
+        {
+          "key": "peacemaker_perk",
+          "source_start_line": 238,
+          "source_end_line": 258,
+          "source_block_sha256": "0642ce5ca9ebad687c59b9d2d2e6db1ca3fc9a0e868debd0a686beae20c4c863",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 244,
+              "text": "parent = loyalty_and_respect_perk"
+            },
+            {
+              "line": 245,
+              "text": "parent = kingsguard_perk"
+            }
+          ]
+        },
+        {
+          "key": "gallant_perk",
+          "source_start_line": 260,
+          "source_end_line": 272,
+          "source_block_sha256": "a4fcb71e5c111c090fdb54040c4a03e8ff7231faee759ee6804b79750452f596",
+          "declared_lifestyle_key": "martial_lifestyle",
+          "declared_tree": "chivalry",
+          "parent_source": [
+            {
+              "line": 266,
+              "text": "parent = peacemaker_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "stewardship_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "wealth",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_stewardship_1_wealth_tree_perks.txt",
+      "source_sha256": "ddb82c0fd4a6771bc3e6568849db11f9c3aeab504d9ae888010eaf39c06d5c54",
+      "perks": [
+        {
+          "key": "golden_obligations_perk",
+          "source_start_line": 6,
+          "source_end_line": 50,
+          "source_block_sha256": "593324dffbdac4ea9706524e2f5ef9f1266a376da2a22ef47584c52d6e0d2f55",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            12,
+            38
+          ]
+        },
+        {
+          "key": "heregeld_perk",
+          "source_start_line": 54,
+          "source_end_line": 83,
+          "source_block_sha256": "18c4bdafa5009108b95ddc2c60c0565cc5198d90d819622ce3ae40fce041ad27",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 60,
+              "text": "parent = golden_obligations_perk"
+            }
+          ]
+        },
+        {
+          "key": "detailed_ledgers_perk",
+          "source_start_line": 87,
+          "source_end_line": 144,
+          "source_block_sha256": "1875cd968d9b638e453d4fe7329034d71117b9445d52e9db6a3c388fee01a625",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 93,
+              "text": "parent = heregeld_perk"
+            }
+          ]
+        },
+        {
+          "key": "war_profiteer_perk",
+          "source_start_line": 148,
+          "source_end_line": 182,
+          "source_block_sha256": "b2698310ef05ee840582192a7e2a3f2ff2f3977cd960e66f6144d70f4e0a315f",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 154,
+              "text": "parent = golden_obligations_perk"
+            }
+          ]
+        },
+        {
+          "key": "fearful_troops_perk",
+          "source_start_line": 186,
+          "source_end_line": 220,
+          "source_block_sha256": "41e9d8c9f55ce7fbd0b5423b12700a619a2228f8266bd2029015a3b40bb6adf4",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 192,
+              "text": "parent = war_profiteer_perk"
+            }
+          ]
+        },
+        {
+          "key": "it_is_my_domain_perk",
+          "source_start_line": 224,
+          "source_end_line": 269,
+          "source_block_sha256": "5ac741c599baea5d3d870a479bc7f50ae8a2c37e8fca525f1e5f1d086f1a4380",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 230,
+              "text": "parent = golden_obligations_perk"
+            }
+          ]
+        },
+        {
+          "key": "golden_aplomb_perk",
+          "source_start_line": 273,
+          "source_end_line": 311,
+          "source_block_sha256": "d47130e412e1f2ee645bb1285fdcdd222945764282a877cb8f2f7b15a4e6a3a0",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 279,
+              "text": "parent = it_is_my_domain_perk"
+            }
+          ]
+        },
+        {
+          "key": "at_any_cost_perk",
+          "source_start_line": 315,
+          "source_end_line": 359,
+          "source_block_sha256": "dab3bc52bd6275dcf55733aff29b250059a01979cb24b64bb00ba7f82dcc306e",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 321,
+              "text": "parent = detailed_ledgers_perk"
+            },
+            {
+              "line": 322,
+              "text": "parent = fearful_troops_perk"
+            },
+            {
+              "line": 323,
+              "text": "parent = golden_aplomb_perk"
+            }
+          ]
+        },
+        {
+          "key": "avaricious_perk",
+          "source_start_line": 363,
+          "source_end_line": 375,
+          "source_block_sha256": "fa8d924a11b955ab8ca96c088a6cdc7314baae8a286e74197e638bf6c2fc75a3",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "wealth",
+          "parent_source": [
+            {
+              "line": 369,
+              "text": "parent = at_any_cost_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "stewardship_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "domain",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_stewardship_2_domain_tree_perks.txt",
+      "source_sha256": "35441a04b2a9a197a10b3a2dc97335d9770f2888530418a0c07f9c36ea0f89a0",
+      "perks": [
+        {
+          "key": "tax_man_perk",
+          "source_start_line": 6,
+          "source_end_line": 74,
+          "source_block_sha256": "76fc80598eda826701b5bc566c5bb25327a7ae4d79bf652afc3bcf5ff2db3e06",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            12,
+            33
+          ]
+        },
+        {
+          "key": "defensive_measures_perk",
+          "source_start_line": 78,
+          "source_end_line": 117,
+          "source_block_sha256": "035e943d52a8407a50dc4c2bc68e9bb4351f395349a70701b19cb508c46b4e52",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 84,
+              "text": "parent = tax_man_perk"
+            }
+          ]
+        },
+        {
+          "key": "organized_muster_rolls_perk",
+          "source_start_line": 121,
+          "source_end_line": 159,
+          "source_block_sha256": "afaf511a0994307c0d9b675f4e0f39a8554e9e6786778a540e6079a8872e78b1",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 127,
+              "text": "parent = defensive_measures_perk"
+            }
+          ]
+        },
+        {
+          "key": "cutting_corners_perk",
+          "source_start_line": 163,
+          "source_end_line": 236,
+          "source_block_sha256": "eef5dee8c0354e88c998485c408eb7cf8140239c0c3117a1b2416904cccf33d4",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            183,
+            204
+          ]
+        },
+        {
+          "key": "professional_workforce_perk",
+          "source_start_line": 240,
+          "source_end_line": 284,
+          "source_block_sha256": "8e8bd97fa91b2bb2bc8fa14fc9cc7080f8aacd64857f88f9f8d54091f126c7ef",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 246,
+              "text": "parent = cutting_corners_perk"
+            }
+          ]
+        },
+        {
+          "key": "centralization_perk",
+          "source_start_line": 288,
+          "source_end_line": 326,
+          "source_block_sha256": "d6f0a43f3409d620dad4a5aabd775c4690c8eefbab4a7c3551d80a9fefb30209",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 294,
+              "text": "parent = professional_workforce_perk"
+            }
+          ]
+        },
+        {
+          "key": "popular_figurehead_perk",
+          "source_start_line": 330,
+          "source_end_line": 365,
+          "source_block_sha256": "9e82c39eb6f965134ff00fe967a28732348fb227dac6bfdcb32d213e08cb4487",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 336,
+              "text": "parent = organized_muster_rolls_perk"
+            },
+            {
+              "line": 337,
+              "text": "parent = centralization_perk"
+            }
+          ]
+        },
+        {
+          "key": "divided_attention_perk",
+          "source_start_line": 369,
+          "source_end_line": 432,
+          "source_block_sha256": "d1ff133a5da784a926b2d7ae5d8ca05cdea01dda99faa9399d1910dacdadbec4",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 375,
+              "text": "parent = popular_figurehead_perk"
+            }
+          ]
+        },
+        {
+          "key": "architect_perk",
+          "source_start_line": 436,
+          "source_end_line": 448,
+          "source_block_sha256": "8c3435777972c0d37b8094a18d407817bc3093b78de1daaac95bfad20ac58fd7",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "domain",
+          "parent_source": [
+            {
+              "line": 442,
+              "text": "parent = divided_attention_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "stewardship_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "duty",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_stewardship_3_duty_tree_perks.txt",
+      "source_sha256": "5fb2c5a5819c299b7d7e5f4259497f9fe99e9bc0f798c0de07548a2b3d78095f",
+      "perks": [
+        {
+          "key": "meritocracy_perk",
+          "source_start_line": 6,
+          "source_end_line": 60,
+          "source_block_sha256": "2de8bcf82da8c1fbfc83a3289c082666aac573a2250aeea0b2a7fdf2b63221e0",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            12,
+            32
+          ]
+        },
+        {
+          "key": "chains_of_loyalty_perk",
+          "source_start_line": 64,
+          "source_end_line": 106,
+          "source_block_sha256": "dde6a49c3a538be95e76d38d7fd37b8560d12c2a0e9492d35a15131524bb4f49",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 70,
+              "text": "parent = meritocracy_perk"
+            }
+          ]
+        },
+        {
+          "key": "likable_perk",
+          "source_start_line": 110,
+          "source_end_line": 155,
+          "source_block_sha256": "8e48884fe8906b9b7c89a4b050776b8a7242655cbd8ef8ca3ecf3fb07163ff26",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 116,
+              "text": "parent = chains_of_loyalty_perk"
+            }
+          ]
+        },
+        {
+          "key": "positions_of_power_perk",
+          "source_start_line": 159,
+          "source_end_line": 218,
+          "source_block_sha256": "d3279a22ce939706f871574114612842a822e8398999c1068e6c0abdb0cb4d1b",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 165,
+              "text": "parent = likable_perk"
+            }
+          ]
+        },
+        {
+          "key": "large_levies_perk",
+          "source_start_line": 222,
+          "source_end_line": 275,
+          "source_block_sha256": "84a6d9078bf0aae36f1806aba8947ff35019b5069d6c9f38466abf0677442968",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 228,
+              "text": "parent = meritocracy_perk"
+            }
+          ]
+        },
+        {
+          "key": "soon_forgiven_perk",
+          "source_start_line": 279,
+          "source_end_line": 313,
+          "source_block_sha256": "82ca1f4610b537d915401a8a9fda8a74e338094ae800ea8a333e2b0f5a9a81eb",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 285,
+              "text": "parent = large_levies_perk"
+            }
+          ]
+        },
+        {
+          "key": "toe_the_line_perk",
+          "source_start_line": 317,
+          "source_end_line": 361,
+          "source_block_sha256": "6d9fdb09a38d6abd3615b9f5eb4616223c748f27b2e3447addbffefbf9eadf0d",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 323,
+              "text": "parent = soon_forgiven_perk"
+            }
+          ]
+        },
+        {
+          "key": "honored_to_serve_perk",
+          "source_start_line": 365,
+          "source_end_line": 422,
+          "source_block_sha256": "32b5a56caff5d9b13d8b5d42b25dcfac0fd11243cf8178fbfd32607e581632e5",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 371,
+              "text": "parent = toe_the_line_perk"
+            },
+            {
+              "line": 372,
+              "text": "parent = positions_of_power_perk"
+            }
+          ]
+        },
+        {
+          "key": "administrator_perk",
+          "source_start_line": 425,
+          "source_end_line": 437,
+          "source_block_sha256": "36620f0209d162a2825abb24f504150a499535dcffc052cd52a2103cbf80a2d5",
+          "declared_lifestyle_key": "stewardship_lifestyle",
+          "declared_tree": "duty",
+          "parent_source": [
+            {
+              "line": 431,
+              "text": "parent = honored_to_serve_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "wanderer_lifestyle",
+      "tree_ordinal": 1,
+      "tree_name": "surveyor",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_wanderer_1_surveyor_tree_perks.txt",
+      "source_sha256": "dad2d29706d2ca895588d8ad520b456394b329808b326f9ec7855ce7fe710fee",
+      "perks": [
+        {
+          "key": "mustering_the_troops_perk",
+          "source_start_line": 4,
+          "source_end_line": 59,
+          "source_block_sha256": "cc932faf53ac868584a0f4e7deb27c5cecb64ea8540524ea0b4c8141b0ecbc68",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            10,
+            30
+          ]
+        },
+        {
+          "key": "local_inspection_perk",
+          "source_start_line": 61,
+          "source_end_line": 120,
+          "source_block_sha256": "01fd3072cf4d0db2970a68392a23e520bdbfff647456c9ed2400d0bd3049b367",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 67,
+              "text": "parent = mustering_the_troops_perk"
+            }
+          ]
+        },
+        {
+          "key": "know_your_land_know_your_people_perk",
+          "source_start_line": 122,
+          "source_end_line": 177,
+          "source_block_sha256": "ad196fb319e2394e6130518b9d17e264fb3b903371f273f5b47f9367baa2f187",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 128,
+              "text": "parent = local_inspection_perk"
+            }
+          ]
+        },
+        {
+          "key": "no_stone_unturned_perk",
+          "source_start_line": 179,
+          "source_end_line": 223,
+          "source_block_sha256": "a228cf66d6016b834932457b1f97cb6af36b7ad45720706f54a44198b8ea22ae",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 185,
+              "text": "parent = local_inspection_perk"
+            }
+          ]
+        },
+        {
+          "key": "travel_logs_perk",
+          "source_start_line": 225,
+          "source_end_line": 247,
+          "source_block_sha256": "3ebaba2fae95af83418357aa3de651d16dc11dfd550aa9b10541ea5052beedd4",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 231,
+              "text": "parent = local_inspection_perk"
+            }
+          ]
+        },
+        {
+          "key": "local_arbitration_perk",
+          "source_start_line": 249,
+          "source_end_line": 311,
+          "source_block_sha256": "46d9fa856ec1467449bc49095bd3a2782796880610b1d30719e90c5a43633ad9",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 255,
+              "text": "parent = know_your_land_know_your_people_perk"
+            },
+            {
+              "line": 256,
+              "text": "parent = no_stone_unturned_perk"
+            }
+          ]
+        },
+        {
+          "key": "realm_charts_perk",
+          "source_start_line": 313,
+          "source_end_line": 335,
+          "source_block_sha256": "6b7f6dd45f6f3e305672f354c3a29f6f413851ffdf27b8b2248b644e8005e55a",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 319,
+              "text": "parent = no_stone_unturned_perk"
+            },
+            {
+              "line": 320,
+              "text": "parent = travel_logs_perk"
+            }
+          ]
+        },
+        {
+          "key": "personal_touch_perk",
+          "source_start_line": 337,
+          "source_end_line": 407,
+          "source_block_sha256": "6f6f0d2b3f8f61f22039d357e79240bf68029e8cbae06400c206dc718805cbdf",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 343,
+              "text": "parent = local_arbitration_perk"
+            },
+            {
+              "line": 344,
+              "text": "parent = realm_charts_perk"
+            }
+          ]
+        },
+        {
+          "key": "surveyor_perk",
+          "source_start_line": 409,
+          "source_end_line": 421,
+          "source_block_sha256": "465232de16b915e9b79c8f4811af2f300c9684b3b60a937207b44ce89b26fab9",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "surveyor",
+          "parent_source": [
+            {
+              "line": 415,
+              "text": "parent = personal_touch_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "wanderer_lifestyle",
+      "tree_ordinal": 2,
+      "tree_name": "wayfarer",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_wanderer_2_wayfarer_tree_perks.txt",
+      "source_sha256": "958ed520472473b02a3241cee5a79d7ac561c1b6f2d3d3eb86a5918c1c291a23",
+      "perks": [
+        {
+          "key": "well_prepared_perk",
+          "source_start_line": 4,
+          "source_end_line": 42,
+          "source_block_sha256": "e6a95a721d7c21a001e023b78a58ad3bc21de53617d20536255f9928ce6aa3ae",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            10,
+            30
+          ]
+        },
+        {
+          "key": "roaming_perk",
+          "source_start_line": 44,
+          "source_end_line": 61,
+          "source_block_sha256": "2015684e74a2d7df212651054e76b434c5fd2efe548fdefe26bf1afcb0fbdc87",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 50,
+              "text": "parent = well_prepared_perk"
+            }
+          ]
+        },
+        {
+          "key": "far_and_wide_perk",
+          "source_start_line": 63,
+          "source_end_line": 81,
+          "source_block_sha256": "15a4ed212537a0fe0f7a31fb28e9bea2e34a7711d07b258b53935a7eb02c1b25",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 69,
+              "text": "parent = roaming_perk"
+            }
+          ]
+        },
+        {
+          "key": "just_one_more_hill_perk",
+          "source_start_line": 83,
+          "source_end_line": 101,
+          "source_block_sha256": "79a60560ac3a53ebf0d174cf732ebf601017ea7c13fd40cff0b60ff5fccfd332",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 89,
+              "text": "parent = roaming_perk"
+            }
+          ]
+        },
+        {
+          "key": "of_the_people_perk",
+          "source_start_line": 103,
+          "source_end_line": 134,
+          "source_block_sha256": "32c6d873c97a6a1e7f1beead05ea685a5ade55872bb064cab9c96d3354c5b45b",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 109,
+              "text": "parent = far_and_wide_perk"
+            }
+          ]
+        },
+        {
+          "key": "local_hero_perk",
+          "source_start_line": 136,
+          "source_end_line": 153,
+          "source_block_sha256": "e26654f09765e5ef378aedf9c463fe86a36bed9fe00e4766690305a577b2b9c1",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 142,
+              "text": "parent = of_the_people_perk"
+            }
+          ]
+        },
+        {
+          "key": "travel_companion_perk",
+          "source_start_line": 155,
+          "source_end_line": 172,
+          "source_block_sha256": "4cd61cb6d46bf0f5a1ba4e100efb1ba27ad5ee9f7b84b4a74d1da45d426c9a0b",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 161,
+              "text": "parent = just_one_more_hill_perk"
+            }
+          ]
+        },
+        {
+          "key": "the_home_away_from_home_perk",
+          "source_start_line": 174,
+          "source_end_line": 187,
+          "source_block_sha256": "c1c68ce4897af223a9bff34952d0ffe4de66bf0976ca8928b4fee19af48b3d95",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 180,
+              "text": "parent = travel_companion_perk"
+            }
+          ]
+        },
+        {
+          "key": "wayfarer_perk",
+          "source_start_line": 189,
+          "source_end_line": 202,
+          "source_block_sha256": "0a3e64de6d6ea94ab67fecf42b97b27e5c72844f15aae1dd870f36df0fe58394",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "wayfarer",
+          "parent_source": [
+            {
+              "line": 195,
+              "text": "parent = local_hero_perk"
+            },
+            {
+              "line": 196,
+              "text": "parent = the_home_away_from_home_perk"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "lifestyle_key": "wanderer_lifestyle",
+      "tree_ordinal": 3,
+      "tree_name": "voyager",
+      "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_wanderer_3_voyager_tree_perks.txt",
+      "source_sha256": "465b9fd1023cb128e34c7951c1ab0756f79608ffc57c6f42c0fdc6edd5ed5b51",
+      "perks": [
+        {
+          "key": "power_at_home_perk",
+          "source_start_line": 5,
+          "source_end_line": 60,
+          "source_block_sha256": "563c3791fb7d950c751cacf358db08c64e23c09df033778714414caef470a00b",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            11,
+            31
+          ]
+        },
+        {
+          "key": "mercenary_contacts_perk",
+          "source_start_line": 62,
+          "source_end_line": 99,
+          "source_block_sha256": "602fc0448ee4d04bf1cc22359ba4deb3a433ee93ea669d280a501d5be5e95fb8",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [],
+          "auto_selection_weight_source_range": [
+            78,
+            98
+          ]
+        },
+        {
+          "key": "journey_perk",
+          "source_start_line": 101,
+          "source_end_line": 127,
+          "source_block_sha256": "0033028a1442fff2b6602c9ac02ae8c2d2c3aa16d80d3bb8d1f71915990b7585",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 107,
+              "text": "parent = power_at_home_perk"
+            },
+            {
+              "line": 108,
+              "text": "parent = mercenary_contacts_perk"
+            }
+          ]
+        },
+        {
+          "key": "been_there_done_that_perk",
+          "source_start_line": 129,
+          "source_end_line": 142,
+          "source_block_sha256": "6661f80dc00637cab1721e7247d642138474d32a25c32eadc6ccc80e83aebe9c",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 135,
+              "text": "parent = journey_perk"
+            }
+          ]
+        },
+        {
+          "key": "finally_there_perk",
+          "source_start_line": 144,
+          "source_end_line": 157,
+          "source_block_sha256": "0b46998f5bdb16dd61e1f11a1ceb9785293ee84512a0b323d9331d5e835a737d",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 150,
+              "text": "parent = journey_perk"
+            }
+          ]
+        },
+        {
+          "key": "souvenirs_aplenty_perk",
+          "source_start_line": 159,
+          "source_end_line": 219,
+          "source_block_sha256": "b8ce6156c1be7404511c53083907e7b3d39f41f36cbd63a2ec1913e2a61998b9",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 175,
+              "text": "parent = been_there_done_that_perk"
+            },
+            {
+              "line": 176,
+              "text": "parent = finally_there_perk"
+            }
+          ]
+        },
+        {
+          "key": "gracious_host_impeccable_guest_perk",
+          "source_start_line": 221,
+          "source_end_line": 253,
+          "source_block_sha256": "1eae845b195dc25368b9f1814456d10a57bbfda1315bdaaf633de63f565dae6c",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 227,
+              "text": "parent = souvenirs_aplenty_perk"
+            }
+          ]
+        },
+        {
+          "key": "journey_planner_perk",
+          "source_start_line": 255,
+          "source_end_line": 272,
+          "source_block_sha256": "b5dbc26fa3ca7d61483236088f07eaf4a156e95953bbe4a611e1c14b61225cee",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 261,
+              "text": "parent = souvenirs_aplenty_perk"
+            }
+          ]
+        },
+        {
+          "key": "voyager_perk",
+          "source_start_line": 274,
+          "source_end_line": 287,
+          "source_block_sha256": "a43fa133a7af5a220202261ef3c467801e72acbfd1880cd833c499ce9e526ecf",
+          "declared_lifestyle_key": "wanderer_lifestyle",
+          "declared_tree": "voyager",
+          "parent_source": [
+            {
+              "line": 280,
+              "text": "parent = gracious_host_impeccable_guest_perk"
+            },
+            {
+              "line": 281,
+              "text": "parent = journey_planner_perk"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "lifestyle_definitions": {
+    "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyles\\00_lifestyles.txt",
+    "source_sha256": "13baef069a7ca562aef9673c79490f74ece8e53e3ee734e9061b91b0adc78b98",
+    "rows": [
+      {
+        "key": "diplomacy_lifestyle",
+        "lifestyle_key": "diplomacy_lifestyle",
+        "source_range": [
+          1,
+          9
+        ],
+        "source_block_sha256": "625eec397195be9d7b0c2aef6a889887133ecc97ecc9a4935e6b56f5383d77dc",
+        "conditions": {
+          "is_highlighted": {
+            "start_line": 3,
+            "end_line": 5,
+            "excerpt": [
+              "is_highlighted = {",
+              "has_trait = education_diplomacy",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "martial_lifestyle",
+        "lifestyle_key": "martial_lifestyle",
+        "source_range": [
+          11,
+          19
+        ],
+        "source_block_sha256": "e910fe66c496fb5d5b93e48ea573fd612116ddbb8723c48c3294cb995755aeb5",
+        "conditions": {
+          "is_highlighted": {
+            "start_line": 13,
+            "end_line": 15,
+            "excerpt": [
+              "is_highlighted = {",
+              "has_trait = education_martial",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "stewardship_lifestyle",
+        "lifestyle_key": "stewardship_lifestyle",
+        "source_range": [
+          21,
+          30
+        ],
+        "source_block_sha256": "733d0ae7fd16df31ca65cd2368f27a583f7cfd7779440d4e6aba134cb661ab85",
+        "conditions": {
+          "is_highlighted": {
+            "start_line": 23,
+            "end_line": 25,
+            "excerpt": [
+              "is_highlighted = {",
+              "has_trait = education_stewardship",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "intrigue_lifestyle",
+        "lifestyle_key": "intrigue_lifestyle",
+        "source_range": [
+          32,
+          41
+        ],
+        "source_block_sha256": "3a2ab2334f945273c9092850130bb18c42ca77620761e89b01af5ee130ddf3d7",
+        "conditions": {
+          "is_highlighted": {
+            "start_line": 34,
+            "end_line": 36,
+            "excerpt": [
+              "is_highlighted = {",
+              "has_trait = education_intrigue",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "learning_lifestyle",
+        "lifestyle_key": "learning_lifestyle",
+        "source_range": [
+          43,
+          52
+        ],
+        "source_block_sha256": "af8cd08e1a4fc2eb461af642a393385800ce87341ead86eb6ab66b4e5e27844e",
+        "conditions": {
+          "is_highlighted": {
+            "start_line": 45,
+            "end_line": 47,
+            "excerpt": [
+              "is_highlighted = {",
+              "has_trait = education_learning",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "wanderer_lifestyle",
+        "lifestyle_key": "wanderer_lifestyle",
+        "source_range": [
+          54,
+          65
+        ],
+        "source_block_sha256": "779935807843a9ce22c23cd0516bcf41c5116e80950816d6a12e0189a32f5a71",
+        "conditions": {
+          "is_valid": {
+            "start_line": 55,
+            "end_line": 57,
+            "excerpt": [
+              "is_valid = {",
+              "has_dlc_feature = wandering_nobles",
+              "}"
+            ]
+          },
+          "is_highlighted": {
+            "start_line": 59,
+            "end_line": 61,
+            "excerpt": [
+              "is_highlighted = {",
+              "always = yes",
+              "}"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "focus_definitions": {
+    "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\focuses\\00_lifestyle_focuses.txt",
+    "source_sha256": "b28773f0d04454d488eadb90c1b8fbac15ef314707f2084f8fdcc4f7edc8c395",
+    "rows": [
+      {
+        "key": "diplomacy_foreign_affairs_focus",
+        "lifestyle_key": "diplomacy_lifestyle",
+        "source_range": [
+          3,
+          43
+        ],
+        "source_block_sha256": "2fd354b75a38d53abe3746facd93875dc96427bb095970dad2b071db0aeddec0",
+        "conditions": {
+          "is_shown": {
+            "start_line": 6,
+            "end_line": 8,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 9,
+            "end_line": 11,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 22,
+            "end_line": 42,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_diplomacy_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = shy",
+              "}",
+              "multiply = 0",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "diplomacy_majesty_focus",
+        "lifestyle_key": "diplomacy_lifestyle",
+        "source_range": [
+          45,
+          92
+        ],
+        "source_block_sha256": "94d05c56cc78b625a8a68e5367fc596c431a2330cb50e2b6f3fd785b4c26aebd",
+        "conditions": {
+          "is_shown": {
+            "start_line": 48,
+            "end_line": 50,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 51,
+            "end_line": 53,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 65,
+            "end_line": 91,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_diplomacy_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = arrogant",
+              "}",
+              "multiply = 5",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "diplomacy_family_focus",
+        "lifestyle_key": "diplomacy_lifestyle",
+        "source_range": [
+          94,
+          129
+        ],
+        "source_block_sha256": "0f82dfab57002b9baaab957ef88c2e24307bf81a77fb52095f52f19908934c98",
+        "conditions": {
+          "is_shown": {
+            "start_line": 97,
+            "end_line": 99,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 100,
+            "end_line": 102,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 114,
+            "end_line": 128,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_diplomacy_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}",
+              "multiply = 0",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "diplomacy_adventurer_focus",
+        "lifestyle_key": "diplomacy_lifestyle",
+        "source_range": [
+          131,
+          161
+        ],
+        "source_block_sha256": "7ca07d710cbdd7c64ef0e88fcb2a41ea53dd842ee10374b9fb15daac0e9290fc",
+        "conditions": {
+          "is_shown": {
+            "start_line": 134,
+            "end_line": 136,
+            "excerpt": [
+              "is_shown = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 137,
+            "end_line": 139,
+            "excerpt": [
+              "is_valid = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 152,
+            "end_line": 160,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 5000",
+              "if = {",
+              "limit = {",
+              "has_education_diplomacy_trigger = yes",
+              "}",
+              "add = 50000",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "martial_strategy_focus",
+        "lifestyle_key": "martial_lifestyle",
+        "source_range": [
+          163,
+          197
+        ],
+        "source_block_sha256": "32dc97411e45b810ce83157e3d767ae2e41f9f97fbd2ee14c0959a4d43bc910b",
+        "conditions": {
+          "is_shown": {
+            "start_line": 166,
+            "end_line": 168,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 169,
+            "end_line": 171,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 182,
+            "end_line": 196,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_martial_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}",
+              "multiply = 0",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "martial_authority_focus",
+        "lifestyle_key": "martial_lifestyle",
+        "source_range": [
+          199,
+          247
+        ],
+        "source_block_sha256": "dddb171a770f07aa9a9871e19b567744ba354fd3d849a7c0b6a728870d94cf6d",
+        "conditions": {
+          "is_shown": {
+            "start_line": 202,
+            "end_line": 204,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 205,
+            "end_line": 207,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 220,
+            "end_line": 246,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_martial_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = arrogant",
+              "}",
+              "multiply = 2",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "martial_chivalry_focus",
+        "lifestyle_key": "martial_lifestyle",
+        "source_range": [
+          249,
+          303
+        ],
+        "source_block_sha256": "abf51e3bc8ac1500577588f73d28236ba93f6cb0a13f27dae05763c140d1bb16",
+        "conditions": {
+          "is_shown": {
+            "start_line": 252,
+            "end_line": 254,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 255,
+            "end_line": 257,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 270,
+            "end_line": 302,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_martial_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = brave",
+              "}",
+              "multiply = 5",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "martial_adventurer_focus",
+        "lifestyle_key": "martial_lifestyle",
+        "source_range": [
+          305,
+          335
+        ],
+        "source_block_sha256": "6bc5094424c0a3f406b26eafeb7c3d7194b1b581da391783377e1dae3f7f4f0c",
+        "conditions": {
+          "is_shown": {
+            "start_line": 308,
+            "end_line": 310,
+            "excerpt": [
+              "is_shown = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 311,
+            "end_line": 313,
+            "excerpt": [
+              "is_valid = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 326,
+            "end_line": 334,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 5000",
+              "if = {",
+              "limit = {",
+              "has_education_martial_trigger = yes",
+              "}",
+              "add = 50000",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "intrigue_skulduggery_focus",
+        "lifestyle_key": "intrigue_lifestyle",
+        "source_range": [
+          337,
+          396
+        ],
+        "source_block_sha256": "b8adabb1ab3364c137224d22b8568e81e2873b60a92f6720064ad7152ae8bef6",
+        "conditions": {
+          "is_shown": {
+            "start_line": 340,
+            "end_line": 342,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 343,
+            "end_line": 345,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 357,
+            "end_line": 395,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_intrigue_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = deceitful",
+              "}",
+              "multiply = 2",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "intrigue_temptation_focus",
+        "lifestyle_key": "intrigue_lifestyle",
+        "source_range": [
+          398,
+          449
+        ],
+        "source_block_sha256": "0c3c3e8f7f6174cc932387da1d0c2dc40e7ca2d54b4c81c6d848cf415268553a",
+        "conditions": {
+          "is_shown": {
+            "start_line": 401,
+            "end_line": 403,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 404,
+            "end_line": 406,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 419,
+            "end_line": 448,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_intrigue_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = lustful",
+              "}",
+              "multiply = 7",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "intrigue_intimidation_focus",
+        "lifestyle_key": "intrigue_lifestyle",
+        "source_range": [
+          451,
+          515
+        ],
+        "source_block_sha256": "f685067f9223864fd042fa38029934214d0737e24ece67f62f55cea355fba605",
+        "conditions": {
+          "is_shown": {
+            "start_line": 454,
+            "end_line": 456,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 457,
+            "end_line": 459,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 472,
+            "end_line": 514,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_intrigue_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = callous",
+              "}",
+              "multiply = 3",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "intrigue_adventurer_focus",
+        "lifestyle_key": "intrigue_lifestyle",
+        "source_range": [
+          517,
+          548
+        ],
+        "source_block_sha256": "73b15912007055501f2e81f12065164fa2d58b7579c8e2d2db020e56d9591664",
+        "conditions": {
+          "is_shown": {
+            "start_line": 520,
+            "end_line": 522,
+            "excerpt": [
+              "is_shown = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 523,
+            "end_line": 525,
+            "excerpt": [
+              "is_valid = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 539,
+            "end_line": 547,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 5000",
+              "if = {",
+              "limit = {",
+              "has_education_intrigue_trigger = yes",
+              "}",
+              "add = 50000",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "stewardship_wealth_focus",
+        "lifestyle_key": "stewardship_lifestyle",
+        "source_range": [
+          550,
+          596
+        ],
+        "source_block_sha256": "7e2ea46c152662981c4770ba09ee6469cb59be1c3ca141e69fe13515e10ebf1b",
+        "conditions": {
+          "is_shown": {
+            "start_line": 553,
+            "end_line": 555,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 556,
+            "end_line": 558,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 569,
+            "end_line": 595,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_stewardship_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = greedy",
+              "}",
+              "multiply = 5",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "stewardship_domain_focus",
+        "lifestyle_key": "stewardship_lifestyle",
+        "source_range": [
+          598,
+          638
+        ],
+        "source_block_sha256": "98b8390221b36371260bcffd50a2af6f289c4ad58d4211d59eca24dfcc496e7a",
+        "conditions": {
+          "is_shown": {
+            "start_line": 601,
+            "end_line": 603,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 604,
+            "end_line": 606,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 617,
+            "end_line": 637,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_stewardship_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = diligent",
+              "}",
+              "multiply = 2",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "stewardship_duty_focus",
+        "lifestyle_key": "stewardship_lifestyle",
+        "source_range": [
+          640,
+          680
+        ],
+        "source_block_sha256": "3755243ade549edcbfc96cbc763032c796fdee4b8d1aefe49ebc102c5b5758d7",
+        "conditions": {
+          "is_shown": {
+            "start_line": 643,
+            "end_line": 645,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 646,
+            "end_line": 648,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 659,
+            "end_line": 679,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_stewardship_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = just",
+              "}",
+              "multiply = 5",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "stewardship_adventurer_focus",
+        "lifestyle_key": "stewardship_lifestyle",
+        "source_range": [
+          682,
+          712
+        ],
+        "source_block_sha256": "22223216689b99b13fd1a5f207027206850bc2e6d876453259dfd93fc6a1bf39",
+        "conditions": {
+          "is_shown": {
+            "start_line": 685,
+            "end_line": 687,
+            "excerpt": [
+              "is_shown = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 688,
+            "end_line": 690,
+            "excerpt": [
+              "is_valid = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 703,
+            "end_line": 711,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 5000",
+              "if = {",
+              "limit = {",
+              "has_education_stewardship_trigger = yes",
+              "}",
+              "add = 50000",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "learning_medicine_focus",
+        "lifestyle_key": "learning_lifestyle",
+        "source_range": [
+          714,
+          749
+        ],
+        "source_block_sha256": "f7a919dd8d7b3ee14997c2b54725800cbe77a6202f7b27cebe47bd15ab03de97",
+        "conditions": {
+          "is_shown": {
+            "start_line": 717,
+            "end_line": 719,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 720,
+            "end_line": 722,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 734,
+            "end_line": 748,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_learning_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}",
+              "multiply = 0",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "learning_scholarship_focus",
+        "lifestyle_key": "learning_lifestyle",
+        "source_range": [
+          751,
+          786
+        ],
+        "source_block_sha256": "6b673e708196574a701c702abb335aebe7dbc0014c7f7ef9bd3748148e146ce2",
+        "conditions": {
+          "is_shown": {
+            "start_line": 754,
+            "end_line": 756,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 757,
+            "end_line": 759,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 771,
+            "end_line": 785,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_learning_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}",
+              "multiply = 0",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "learning_theology_focus",
+        "lifestyle_key": "learning_lifestyle",
+        "source_range": [
+          788,
+          836
+        ],
+        "source_block_sha256": "ec8f541efa64365eb37047e729e5ef81291a1c1dafc21194a8a64d98c7788af3",
+        "conditions": {
+          "is_shown": {
+            "start_line": 791,
+            "end_line": 793,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 794,
+            "end_line": 796,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 809,
+            "end_line": 835,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 11",
+              "if = {",
+              "limit = {",
+              "has_education_learning_trigger = yes",
+              "}",
+              "add = 1989",
+              "}",
+              "if = {",
+              "limit = {",
+              "has_trait = zealous",
+              "}",
+              "multiply = 5",
+              "}",
+              "if = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "learning_adventurer_focus",
+        "lifestyle_key": "learning_lifestyle",
+        "source_range": [
+          838,
+          868
+        ],
+        "source_block_sha256": "a9d641b12a9421d85693eb9e0c3cd07af7068637788d798d8209e556de895df6",
+        "conditions": {
+          "is_shown": {
+            "start_line": 841,
+            "end_line": 843,
+            "excerpt": [
+              "is_shown = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 844,
+            "end_line": 846,
+            "excerpt": [
+              "is_valid = {",
+              "government_has_flag = government_is_landless_adventurer",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 859,
+            "end_line": 867,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 5000",
+              "if = {",
+              "limit = {",
+              "has_education_learning_trigger = yes",
+              "}",
+              "add = 50000",
+              "}",
+              "}"
+            ]
+          }
+        }
+      },
+      {
+        "key": "wanderer_internal_affairs_focus",
+        "lifestyle_key": "wanderer_lifestyle",
+        "source_range": [
+          870,
+          912
+        ],
+        "source_block_sha256": "34e4d380f526cece0489b5fd439319f674ec1696e9ca66695a28f529fb4f345d",
+        "conditions": {
+          "is_shown": {
+            "start_line": 873,
+            "end_line": 875,
+            "excerpt": [
+              "is_shown = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "is_valid": {
+            "start_line": 876,
+            "end_line": 878,
+            "excerpt": [
+              "is_valid = {",
+              "NOT = { government_has_flag = government_is_landless_adventurer }",
+              "}"
+            ]
+          },
+          "auto_selection_weight": {
+            "start_line": 891,
+            "end_line": 911,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 0",
+              "if = {",
+              "limit = {",
+              "has_bp3_dlc_trigger = yes",
+              "has_trait_xp = {",
+              "trait = lifestyle_traveler",
+              "track = travel",
+              "value >= 50",
+              "}",
+              "}",
+              "add = 500",
+              "}",
+              "if = {",
+              "limit = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "wanderer_journey_focus",
+        "lifestyle_key": "wanderer_lifestyle",
+        "source_range": [
+          914,
+          947
+        ],
+        "source_block_sha256": "262448790118f9b6f4c41d070670b79751199389df34a2b260cfb7408c56d0cf",
+        "conditions": {
+          "auto_selection_weight": {
+            "start_line": 926,
+            "end_line": 946,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 0",
+              "if = {",
+              "limit = {",
+              "has_bp3_dlc_trigger = yes",
+              "has_trait_xp = {",
+              "trait = lifestyle_traveler",
+              "track = travel",
+              "value >= 50",
+              "}",
+              "}",
+              "add = 500",
+              "}",
+              "if = {",
+              "limit = {"
+            ]
+          }
+        }
+      },
+      {
+        "key": "wanderer_destination_focus",
+        "lifestyle_key": "wanderer_lifestyle",
+        "source_range": [
+          949,
+          983
+        ],
+        "source_block_sha256": "16c6b0b440666032f67b16b6b97f281870eeeb3c66d801f227967d5815ed43d6",
+        "conditions": {
+          "auto_selection_weight": {
+            "start_line": 962,
+            "end_line": 982,
+            "excerpt": [
+              "auto_selection_weight = {",
+              "value = 0",
+              "if = {",
+              "limit = {",
+              "has_bp3_dlc_trigger = yes",
+              "has_trait_xp = {",
+              "trait = lifestyle_traveler",
+              "track = travel",
+              "value >= 50",
+              "}",
+              "}",
+              "add = 500",
+              "}",
+              "if = {",
+              "limit = {"
+            ]
+          }
+        }
+      }
+    ]
+  },
+  "note": "Authored identifiers and order only; native final legality, ownership, DLC and actor scope remain authoritative."
+}

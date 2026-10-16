@@ -302,12 +302,7 @@ bool ReadStockPerkTargetPlayerState(
     return false;
   }
   const auto &state = context->snapshot->state;
-  const auto lifestyle_key =
-      target_key == kDiplomacyThoughtfulPerkV1
-          ? kDiplomacyThoughtfulLifestyleV1
-          : target_key == kMartialServeTheCrownPerkV1
-                ? kMartialPerkLifestyleV1
-                : kStockPerkLegalityLifestyleV1;
+  const auto lifestyle_key = AllLifestylePerkLifestyleV3(target_key);
   if (!AssignPlayerLifestyleWindowStableKeyV1(
           lifestyle_key, output.target_lifestyle_key)) {
     return false;
@@ -425,26 +420,31 @@ bool ReadCandidates(PlayerLifestyleFormalWireContext12004V1 &context) noexcept {
   StockPerkLegalityAccessV1 stock_access{
       &context, &IsMain, &CaptureStockPerkFrame, &ReadMemory,
       &ReadStockPerkPlayerState};
-  const bool submitting = context.mode == PlayerLifestyleFormalWireModeV1::submit_perk;
-  const auto target = submitting ? std::string_view(context.action_target_key)
-      : PlayerLifestylePolicyStockPerkTargetV1(*context.snapshot);
-  if (target.empty()) {
-    context.failure = "native_lifestyle_windowless_policy_perk_ownership_unavailable";
-    return false;
+  const bool submitting=context.mode==PlayerLifestyleFormalWireModeV1::submit_perk;
+  stock_access.read_target_player_state=&ReadStockPerkTargetPlayerState;
+  stock_access.capture_source_query_metadata=&CaptureStockPerkSourceQueryMetadata;
+  stock_access.capture_source_tls_array=&CaptureStockPerkSourceTlsArray;
+  if(submitting) {
+    context.stock_perk_result=ReadStockPerkLegality12004V1(
+        stock_environment,stock_access,context.action_target_key);
+  } else {
+    for(std::size_t i=0;i<kAllLifestyleKeysV3.size();++i) {
+      auto &progress=context.all_lifestyle_progress_v3[i];
+      progress={};
+      for(const auto &entry:kAllLifestylePerksV3) {
+        if(entry.lifestyle!=kAllLifestyleKeysV3[i])continue;
+        progress=ReadStockPerkProgress12004V3(stock_environment,stock_access,entry.key);
+        if(LifestyleProgressObservedV3(progress))break;
+      }
+    }
+    context.stock_perk_result=ReadAllLifestylePerkFrontierV3(
+        context.all_lifestyle_progress_v3,
+        PlayerLifestyleStableKeyView12004V1(context.snapshot->state.current_lifestyle_key),
+        [&](std::string_view candidate) noexcept {
+          return ReadStockPerkLegality12004V1(stock_environment,stock_access,candidate);
+        });
   }
-  stock_access.read_target_player_state = &ReadStockPerkTargetPlayerState;
-  stock_access.capture_source_query_metadata = &CaptureStockPerkSourceQueryMetadata;
-  stock_access.capture_source_tls_array = &CaptureStockPerkSourceTlsArray;
-  const bool stewardship_query = !submitting &&
-      context.snapshot->state.current_focus_presence ==
-          game::PlayerLifestyleFocusPresenceV1::present &&
-      PlayerLifestyleStableKeyViewV1(context.snapshot->state.current_lifestyle_key) ==
-          kStockPerkLegalityLifestyleV1;
-  context.stock_perk_result = ReadLifestylePolicyPerkFrontierV2(
-      submitting, context.action_target_key, stewardship_query, target,
-      [&](std::string_view candidate) noexcept {
-        return ReadStockPerkLegality12004V1(stock_environment, stock_access, candidate);
-      });
+
   if (!PublishStockPerkCandidates(context.stock_perk_result,
                                   *context.candidates)) {
     context.failure = "native_lifestyle_windowless_policy_perk_";
@@ -473,9 +473,9 @@ bool CapturePrecondition(
            PlayerLifestyleFormalPreconditionResultV1::ready;
   }
   if (!ReadCandidates(*context)) return false;
-  context->precondition_result = BuildPlayerLifestyleFormalPreconditionV1(
-      *context->snapshot, *context->candidates, context->episode_run_id,
-      output);
+  context->precondition_result = BuildAllLifestylePerkPreconditionV3(
+      *context->snapshot, *context->candidates, context->stock_perk_result,
+      context->episode_run_id, output);
   return context->precondition_result ==
          PlayerLifestyleFormalPreconditionResultV1::ready;
 }
@@ -483,10 +483,22 @@ bool CaptureReceiptState(
     void *opaque,
     game::PlayerLifestyleSelectionStateObservationV1 &output) noexcept {
   auto *context = static_cast<PlayerLifestyleFormalWireContext12004V1 *>(opaque);
-  return context != nullptr && ReadState(*context) &&
-         BuildPlayerLifestyleFormalReceiptObservationV1(
-             *context->snapshot, context->episode_run_id, output) ==
-             PlayerLifestyleFormalPreconditionResultV1::ready;
+  if(context==nullptr || !ReadState(*context))return false;
+  if(context->pending_ack.kind==game::PlayerLifestyleSelectionKindV1::focus)
+    return BuildPlayerLifestyleFormalReceiptObservationV1(
+        *context->snapshot,context->episode_run_id,output)==
+        PlayerLifestyleFormalPreconditionResultV1::ready;
+  StockPerkLegalityAccessV1 access{};
+  access.context=context;access.is_application_main_thread=&IsMain;
+  access.capture_frame=&CaptureStockPerkFrame;access.read_memory=&ReadMemory;
+  access.read_target_player_state=&ReadStockPerkTargetPlayerState;
+  const auto target=PlayerLifestyleWindowStableKeyViewV1(context->pending_ack.target_key);
+  const auto progress=ReadStockPerkProgress12004V3(context->bindings12004.perk,access,target);
+  if(PlayerLifestyleWindowStableKeyViewV1(progress.lifestyle_key)!=
+      PlayerLifestyleWindowStableKeyViewV1(context->pending_ack.target_lifestyle_key))return false;
+  return BuildAllLifestylePerkObservationV3(*context->snapshot,progress,
+      context->episode_run_id,output)==PlayerLifestyleFormalPreconditionResultV1::ready;
+
 }
 bool IsPaused(void *opaque) noexcept {
   auto *context = static_cast<PlayerLifestyleFormalWireContext12004V1 *>(opaque);
@@ -664,8 +676,8 @@ static bool ExecutePlayerLifestyleFormalWireBody12004V1(
         }
         return true;
       }
-      context->precondition_result = BuildPlayerLifestyleFormalPreconditionV1(
-          *context->snapshot, *context->candidates,
+      context->precondition_result = BuildAllLifestylePerkPreconditionV3(
+          *context->snapshot, *context->candidates, context->stock_perk_result,
           context->episode_run_id, *context->precondition);
       if (AttachPlayerLifestyleFinalCandidatesV1(
               *context->candidates, *context->snapshot) !=

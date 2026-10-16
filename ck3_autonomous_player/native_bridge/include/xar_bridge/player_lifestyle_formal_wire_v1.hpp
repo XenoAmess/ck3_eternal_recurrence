@@ -9,6 +9,7 @@
 #include "xar_bridge/player_lifestyle_stock_perk_legality_v1.hpp"
 
 #include "xar_bridge/player_lifestyle_stewardship_frontier_v2.hpp"
+#include "xar_bridge/player_lifestyle_all_catalogue_v3.hpp"
 
 #include <memory>
 #include <string>
@@ -52,9 +53,7 @@ inline constexpr std::string_view kPlayerLifestyleFormalPrivateReceiptStepV1 =
 
 inline bool PlayerLifestylePolicyStockPerkTargetAdmittedV1(
     std::string_view target) noexcept {
-  return StewardshipPerkAdmittedV2(target) ||
-         target == kDiplomacyThoughtfulPerkV1 ||
-         target == kMartialServeTheCrownPerkV1;
+  return AllLifestylePerkAdmittedV3(target);
 }
 
 // The domain parent chain is cutting_corners -> professional_workforce ->
