@@ -1,0 +1,251 @@
+{
+  "schema": "xar.e04.r08.resource4.target-only-rdata-literals.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:28:59.070378+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "identity_pin_sha256": "47ff2b7951cc37faf49cd2773382306ea3256aba597a29406f5ff3fc8c3356e9",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "image_base_preferred": 5368709120,
+  "image_size": 102518784,
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 71141448,
+      "rva": 4096,
+      "raw_size": 71141888,
+      "raw_offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 17123946,
+      "rva": 71147520,
+      "raw_size": 17124352,
+      "raw_offset": 71142912
+    },
+    {
+      "name": ".data",
+      "virtual_size": 10040928,
+      "rva": 88272896,
+      "raw_size": 8571392,
+      "raw_offset": 88267264
+    },
+    {
+      "name": ".pdata",
+      "virtual_size": 2933220,
+      "rva": 98316288,
+      "raw_size": 2933248,
+      "raw_offset": 96838656
+    },
+    {
+      "name": "_RDATA",
+      "virtual_size": 1040,
+      "rva": 101253120,
+      "raw_size": 1536,
+      "raw_offset": 99771904
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 79496,
+      "rva": 101257216,
+      "raw_size": 79872,
+      "raw_offset": 99773440
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 1176160,
+      "rva": 101339136,
+      "raw_size": 1176576,
+      "raw_offset": 99853312
+    }
+  ],
+  "targets": [
+    "GetCurrency",
+    "barter_goods",
+    "government_use_barter_goods"
+  ],
+  "encodings": [
+    "utf-8",
+    "utf-16-le"
+  ],
+  "match_rule": "Exact case-sensitive name with null terminator; suffix-sharing hits labelled by preceding-null status",
+  "literal_counts": {
+    "GetCurrency/utf-8": 1,
+    "GetCurrency/utf-16-le": 0,
+    "barter_goods/utf-8": 7,
+    "barter_goods/utf-16-le": 0,
+    "government_use_barter_goods/utf-8": 0,
+    "government_use_barter_goods/utf-16-le": 0
+  },
+  "total_matches": 8,
+  "output_hits": [
+    {
+      "name": "GetCurrency",
+      "encoding": "utf-8",
+      "literal_rva": 72200488,
+      "literal_rva_hex": "44DB128",
+      "preferred_VA": 5440909608,
+      "file_offset": 72195880,
+      "terminated_pattern_hex": "47657443757272656e637900",
+      "preceding_null_or_section_start": true,
+      "context_rva": 72200440,
+      "context_hex": "80a2c6400100000070a2c6400100000060a2c640010000009063874001000000a063874001000000476574476f6c640047657443757272656e6379000000000055736573547265617375727956617373616c446576656c6f706d656e740000004861735472656173757279000000000053686f756c645265706c616365476f6c",
+      "context_bytes": 128,
+      "context_sha256": "000d20a8844ef43a77893fc81dcec8e1d1c47b5ad33dde9a18f5c1b27fdc7fc3"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 72399744,
+      "literal_rva_hex": "450BB80",
+      "preferred_VA": 5441108864,
+      "file_offset": 72395136,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": true,
+      "context_rva": 72399696,
+      "context_hex": "6368616e67655f6261727465725f676f6f647300000000006164645f6261727465725f676f6f647300000000000000006261727465725f676f6f6473000000006164642f72656d6f7665207468652076616c75652066726f6d206578697374696e672062617274657220676f6f6473003c62617274657220676f6f647320616d",
+      "context_bytes": 128,
+      "context_sha256": "e69e872633cd5f3e4f2b45b4e5439facf189262f181072d129624065e6448b26"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 72399703,
+      "literal_rva_hex": "450BB57",
+      "preferred_VA": 5441108823,
+      "file_offset": 72395095,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 72399655,
+      "context_hex": "656420696e76617269616e7473000000004368616e67656420747265617375727900000000000000006368616e67655f6261727465725f676f6f647300000000006164645f6261727465725f676f6f647300000000000000006261727465725f676f6f6473000000006164642f72656d6f7665207468652076616c7565206672",
+      "context_bytes": 128,
+      "context_sha256": "73a5280df7ca5605511f4561582d2b0f4bc1d2dae5b062d32126d2566242cc7d"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 72399724,
+      "literal_rva_hex": "450BB6C",
+      "preferred_VA": 5441108844,
+      "file_offset": 72395116,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 72399676,
+      "context_hex": "67656420747265617375727900000000000000006368616e67655f6261727465725f676f6f647300000000006164645f6261727465725f676f6f647300000000000000006261727465725f676f6f6473000000006164642f72656d6f7665207468652076616c75652066726f6d206578697374696e672062617274657220676f",
+      "context_bytes": 128,
+      "context_sha256": "5683c380898b166bafd8fb03d9258460112e2b6dca1c606e33f1a7102ef217e7"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 73185446,
+      "literal_rva_hex": "45CB8A6",
+      "preferred_VA": 5441894566,
+      "file_offset": 73180838,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 73185398,
+      "context_hex": "6f6f647320696e207468652073636f70656420736974756174696f6e2e0000000000736974756174696f6e5f746f705f6261727465725f676f6f64730000000000000000000000000000476574207468652070617274696369706174696e6720636861726163746572207769746820746865206d6f7374206865726420696e20",
+      "context_bytes": 128,
+      "context_sha256": "2944995e62e3eb05f6a0c4d73589f3043a8e8c0255ae63466e82caecc08e83db"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 74289800,
+      "literal_rva_hex": "46D9288",
+      "preferred_VA": 5442998920,
+      "file_offset": 74285192,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 74289752,
+      "context_hex": "65000000000000006d6f6e74686c795f6d657269745f7065725f6c696567655f74617800000000006d6f6e74686c795f6261727465725f676f6f6473000000006d6f6e74686c795f6261727465725f676f6f64735f6d756c74000000000000006261727465725f6d697373696f6e730063616e5f73746172745f626172746572",
+      "context_bytes": 128,
+      "context_sha256": "eb254ad131a913456dcd47b5d6dc19ce268d6540bcad7d32c85e4c6157434afc"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 74300876,
+      "literal_rva_hex": "46DBDCC",
+      "preferred_VA": 5443009996,
+      "file_offset": 74296268,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 74300828,
+      "context_hex": "696f6e5f6d756c74000000007469746c655f6372656174696f6e5f70696574795f636f7374000000000000006d696e5f6261727465725f676f6f647300000000000000006261727465725f676f6f64735f636f6e747269627574696f6e5f706f737466697800000000000000626172746572696e6700000000000000746f6767",
+      "context_bytes": 128,
+      "context_sha256": "21c1e9310382bb6519bb503f4f20abaa7ee59f5c96f3f03cf93f26092b229035"
+    },
+    {
+      "name": "barter_goods",
+      "encoding": "utf-8",
+      "literal_rva": 75969783,
+      "literal_rva_hex": "48734F7",
+      "preferred_VA": 5444678903,
+      "file_offset": 75965175,
+      "terminated_pattern_hex": "6261727465725f676f6f647300",
+      "preceding_null_or_section_start": false,
+      "context_rva": 75969735,
+      "context_hex": "0072656d6f76655f74726561737572795f6f725f676f6c640072656d6f76655f74726561737572790072656d6f76655f6261727465725f676f6f6473000000000072656d6f7665732074726561737572792066726f6d2061206368617261637465720000000000000072656d6f7665732062617274657220676f6f6473206672",
+      "context_bytes": 128,
+      "context_sha256": "b6f7963fc60e8bb0d2773afca267beb5eaa54a482e7289191f6170c7e128da05"
+    }
+  ],
+  "output_hits_truncated": false,
+  "metadata_bytes": 608,
+  "literal_rdata_bytes": 17124352,
+  "read_calls": 5,
+  "read_ledger": [
+    {
+      "file_offset": 0,
+      "bytes": 64,
+      "kind": "metadata",
+      "raw_hex": "4d5a90000300000004000000ffff0000b80000000000000040000000000000000000000000000000000000000000000000000000000000000000000058010000"
+    },
+    {
+      "file_offset": 344,
+      "bytes": 24,
+      "kind": "metadata",
+      "raw_hex": "5045000064860700359cc36a0000000000000000f0002200"
+    },
+    {
+      "file_offset": 368,
+      "bytes": 240,
+      "kind": "metadata",
+      "raw_hex": "0b020e1d008a3d04000ac801000000004042220400100000000000400100000000100000000200000600000000000000060000000000000000501c0600040000a16206060200608100004000000000000010000000000000000010000000000000100000000000000000000010000000e05142058000000060524205f401000000100906883601000030dc05e4c12c00009805067828000000500a0660f21100c0ba9f04540000000000000000000000000000000000000080bc9f042800000020bb9f0438010000000000000000000000a03d04981b0000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "file_offset": 608,
+      "bytes": 280,
+      "kind": "metadata",
+      "raw_hex": "2e7465787400000048883d0400100000008a3d0400040000000000000000000000000000200000602e726461746100006a4a050100a03d04004c0501008e3d04000000000000000000000000400000402e646174610000006036990000f0420500ca820000da4205000000000000000000000000400000c02e70646174610000e4c12c000030dc0500c22c0000a4c505000000000000000000000000400000405f524441544100001004000000000906000600000066f205000000000000000000000000400000402e72737263000000883601000010090600380100006cf205000000000000000000000000400000402e72656c6f63000060f2110000500a0600f4110000a4f30500000000000000000000000040000042"
+    },
+    {
+      "file_offset": 71142912,
+      "bytes": 17124352,
+      "kind": "literal_rdata",
+      "raw_hex": null
+    }
+  ],
+  "whole_EXE_hashes": 0,
+  "text_bytes_read": 0,
+  "registration_or_handler_confirmed": false,
+  "resource4_business_name": null,
+  "paid_military_amount_raw": null,
+  "cadence": null,
+  "new_game_SDK_desktop_build_actions": 0
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "xar.e04.agent-business-evidence-decision.v1",
+  "key": "R09_R0176_RECOVERED_SUPPLY",
+  "evidence_layer": "actual_response_local_scalar_excerpts_plus_source_bound_production_consumer",
+  "selected_physical_result": "250/250 original physical DATA conserved; existing canonical literal projection remains original cohort proof",
+  "unrelated_change": "Army18 loses only empty-DATA/cache1:1 ArRg59 associated with Character34232; same Character is independent sibling/postmerge actual commander. Original strict failure remains false; no physical soldier loss inferred.",
+  "supply_result": "stock100 copied to both split children; merge75/175 native weights gives30+70=100; actual postcap100 and stock100 match",
+  "upper_clamp_observed": false,
+  "why_not_closed": [
+    "Independent reverse merge from same original normal S0 absent",
+    "30–60second actual split/merge/survivor/commander/queue/supply film absent"
+  ],
+  "next_step": "New matching normal S0 forward/reverse arms if old original pre-split save cannot be demonstrated; preserve every actual role/unrelated change and original strict flags. Use exact fresh capabilities/native Validate, once claims, complete ordinary raw and real commander.",
+  "new_native_field_needed": false,
+  "R09_full_card_closed": false,
+  "R10_comparison_admission_granted": false,
+  "input_file": "recovered-supply.json"
+}

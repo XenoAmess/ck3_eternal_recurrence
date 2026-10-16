@@ -1,0 +1,133 @@
+{
+  "at": "2026-10-16T19:27:12.552989+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "request": {
+    "request_id": "r189-r01-full18-a01",
+    "tool": "ck3_query_army_strengths",
+    "arguments": {
+      "army_ids": [
+        18
+      ],
+      "expected_revision": 4,
+      "ordered_refill_entry_mode": "observed_prepared",
+      "ordered_besieging_entry_mode": "observed_prepared",
+      "profile": "observed_history_full_v1"
+    }
+  },
+  "request_identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\requests\\r189-r01-full18-a01.json",
+    "bytes": 317,
+    "sha256": "0228795d5e411f8d89bacbf695df1aa36ccf97a45b6f18e86e5c3b46a0b61f3c"
+  },
+  "is_error": false,
+  "body": {
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 1,
+    "army_strengths_profile": "observed_history_full_v1",
+    "army_observed_phase_coverage": "exported_retained",
+    "source": {
+      "revision": 4,
+      "native_revision": 3
+    },
+    "army_ids": [
+      18
+    ],
+    "armies": [
+      {
+        "status": "available",
+        "army_id": 18,
+        "native_carmy_id": 18,
+        "regiment_count": 21,
+        "current_soldiers": 1162,
+        "maximum_soldiers": 1195,
+        "ai_base_power_raw": 3746000000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 30000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 1000,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null
+      }
+    ],
+    "result_location": "compact_mcp_summary"
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\"accepted\":true,\"status\":\"available\",\"query_sequence\":1,\"army_strengths_profile\":\"observed_history_full_v1\",\"army_observed_phase_coverage\":\"exported_retained\",\"source\":{\"revision\":4,\"native_revision\":3},\"army_ids\":[18],\"armies\":[{\"status\":\"available\",\"army_id\":18,\"native_carmy_id\":18,\"regiment_count\":21,\"current_soldiers\":1162,\"maximum_soldiers\":1195,\"ai_base_power_raw\":3746000000,\"ai_base_power_scale\":100000,\"current_supply_raw\":30000000,\"current_supply_scale\":100000,\"current_attrition_fraction_raw\":1000,\"current_attrition_fraction_scale\":100000,\"unavailable_reason\":null}],\"result_location\":\"compact_mcp_summary\"}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "accepted": true,
+      "status": "available",
+      "query_sequence": 1,
+      "army_strengths_profile": "observed_history_full_v1",
+      "army_observed_phase_coverage": "exported_retained",
+      "source": {
+        "revision": 4,
+        "native_revision": 3
+      },
+      "army_ids": [
+        18
+      ],
+      "armies": [
+        {
+          "status": "available",
+          "army_id": 18,
+          "native_carmy_id": 18,
+          "regiment_count": 21,
+          "current_soldiers": 1162,
+          "maximum_soldiers": 1195,
+          "ai_base_power_raw": 3746000000,
+          "ai_base_power_scale": 100000,
+          "current_supply_raw": 30000000,
+          "current_supply_scale": 100000,
+          "current_attrition_fraction_raw": 1000,
+          "current_attrition_fraction_scale": 100000,
+          "unavailable_reason": null
+        }
+      ],
+      "result_location": "compact_mcp_summary"
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\"accepted\":true,\"status\":\"available\",\"query_sequence\":1,\"army_strengths_profile\":\"observed_history_full_v1\",\"army_observed_phase_coverage\":\"exported_retained\",\"source\":{\"revision\":4,\"native_revision\":3},\"army_ids\":[18],\"armies\":[{\"status\":\"available\",\"army_id\":18,\"native_carmy_id\":18,\"regiment_count\":21,\"current_soldiers\":1162,\"maximum_soldiers\":1195,\"ai_base_power_raw\":3746000000,\"ai_base_power_scale\":100000,\"current_supply_raw\":30000000,\"current_supply_scale\":100000,\"current_attrition_fraction_raw\":1000,\"current_attrition_fraction_scale\":100000,\"unavailable_reason\":null}],\"result_location\":\"compact_mcp_summary\"}",
+      "annotations": null,
+      "meta": null
+    }
+  ],
+  "army_history_evidence": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "at_utc": "2026-10-16T19:27:20.987702+00:00",
+    "request_id": "r189-r01-full18-a01",
+    "limit_bytes": 134217728,
+    "full_result_kind": "complete Driver result; not original pipe bytes",
+    "full_result_preserved": true,
+    "driver_history_index": 3,
+    "query_sequence": 1,
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "army_strengths_profile": "observed_history_full_v1",
+    "raw_result_reference": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\state-a01\\native-session\\army-query-history-results\\army-query-71180c136996450aa93d00a4ba12bc82.json",
+      "bytes": 12087988,
+      "sha256": "57934e578ba95786aec0a56fe5ff04cf66bd492a4a4d23b23d25a4cf6893b6e9",
+      "kind": "complete-driver-army-query-result-json-v1",
+      "wire_bytes_preserved": false
+    }
+  }
+}

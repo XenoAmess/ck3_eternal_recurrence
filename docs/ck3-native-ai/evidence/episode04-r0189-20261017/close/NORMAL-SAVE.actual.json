@@ -1,0 +1,81 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:50:22.179968+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "pid": 36940,
+  "process_creation_filetime_100ns": 134366517280318880,
+  "episode_run_id": "native-31254-93e28f54f041",
+  "actor_id": 31254,
+  "date_raw": 53149296,
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 6945,
+    "sha256": "e41fe58438673bc5e84de352f6bccd6b8ed0f9a95b2540f0f26dd3a7f82ce7b6"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7955,
+    "sha256": "0a205a88d161e79e329878b686c0811afe2792965d315a4abeddd8397b89c4e9"
+  },
+  "prepared": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\prepared-a01\\prepared.json",
+    "bytes": 11750,
+    "sha256": "1122a0dba8fe05e85ad1979bda9998d742d96092e077f40d469c4fb12745e918"
+  },
+  "source_bootstrap": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r188-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0188\\bootstrap-result.json",
+    "bytes": 15168,
+    "sha256": "a5de2e4bb6404a8de82033f756f64d6b111e567fef780e3ca560bb954ba28b2b"
+  },
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-film-a01-film-result.actual.json",
+    "bytes": 499,
+    "sha256": "06eab62daed0c7c900c8bcdea10483e752dce60280048d06f714f00cc3b35220"
+  },
+  "recorder_start": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-03-recorder-start-once.json",
+    "bytes": 6299,
+    "sha256": "d6f9136c1a38fe978e548590f4bb298efdbea61174cda6d7b6cb37ae409ebf48"
+  },
+  "recorder_finish": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-99-recorder-finish-once.json",
+    "bytes": 4364,
+    "sha256": "0445cf4ec0a62c697059faaf80408e69425145a761330786718abfdd936c7f59"
+  },
+  "observer_cleanup": {
+    "status": "NOT_CONFIGURED",
+    "observer_started_by_close_helper": false
+  },
+  "deadline": {
+    "capacity": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+      "bytes": 10207,
+      "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62"
+    },
+    "session_deadline": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\recording-session-deadline.json",
+      "bytes": 1599,
+      "sha256": "3f278ac1922f74af96f65ca2da25560984d8d3e04e3c909401d111c614e33b66"
+    },
+    "remaining_seconds": 1583.12338,
+    "required_seconds": 180,
+    "deadline_renewed": false
+  },
+  "checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74702236,
+    "sha256": "c5865f8743d2139f22b228f294513c759900aff85139d71b8f86e456f088a40a"
+  },
+  "native_save_response": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-close-a01-02-save-once.json",
+    "bytes": 20444,
+    "sha256": "71b9504308c2a2e805ed04932d3d6178668ac8b9136acff6d3fb58e289ecd7ef"
+  },
+  "after_snapshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-close-a01-03-after-snapshot.json",
+    "bytes": 143129,
+    "sha256": "94fdabf2c4686bea34fa8fc6ef928595a8ce1d41c994ea513325b00ccf7ee546"
+  },
+  "video_human_signoff": false
+}

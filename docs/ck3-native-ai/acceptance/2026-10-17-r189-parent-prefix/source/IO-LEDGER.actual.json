@@ -1,0 +1,51 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reads": [
+    {
+      "offset": 99388116,
+      "requested_bytes": 12,
+      "actual_bytes": 12,
+      "kind": "metadata",
+      "reason": "pdata row 212455",
+      "sha256": "0d0a8c53e1ee1595da7b22dc43a87a44fca5b0b2ff3cbddd0d87b874a618d890",
+      "io_seconds": 0.0004298000130802393,
+      "raw_hex": "50bce403acbee403dc443e05"
+    },
+    {
+      "offset": 87962332,
+      "requested_bytes": 4,
+      "actual_bytes": 4,
+      "kind": "metadata",
+      "reason": "unwind header",
+      "sha256": "2e8d51adbf464a153054663cf13de03b9b011c060696bee630e62d9034c7c5bf",
+      "io_seconds": 0.0003899000585079193,
+      "raw_hex": "01a40c00"
+    },
+    {
+      "offset": 87962336,
+      "requested_bytes": 24,
+      "actual_bytes": 24,
+      "kind": "metadata",
+      "reason": "unwind codes/padding",
+      "sha256": "dd17c6814410f7ea034f7acae870eef43b0eca757d534fa567bc319de562d211",
+      "io_seconds": 3.400025889277458e-06,
+      "raw_hex": "a4d40d009fc40e009a540f001df216f014e0127011601030"
+    },
+    {
+      "offset": 65318992,
+      "requested_bytes": 604,
+      "actual_bytes": 604,
+      "kind": "function",
+      "reason": "complete exact3E4BC50 body",
+      "sha256": "739ddc4eb092e1df091617be4a4724a0a673d41cfb76698a96a623bb82545c40",
+      "io_seconds": 0.0005149999633431435,
+      "raw_path": "3E4BC50.bin",
+      "raw_fsynced_before_decode": true
+    }
+  ],
+  "bytes": {
+    "metadata": 40,
+    "function": 604
+  },
+  "io_seconds": 0.0013381000608205795
+}

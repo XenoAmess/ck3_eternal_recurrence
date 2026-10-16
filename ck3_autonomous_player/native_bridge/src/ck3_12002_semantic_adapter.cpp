@@ -382,6 +382,11 @@ game::SaveCheckpointResult WorkerAdapter::submit_save_checkpoint() const noexcep
 bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
   auto *diagnostic = request.operation == SemanticOperation::strengths
       ? &g_army_strength_query_diagnostic_v1 : nullptr;
+  const auto fail_preview = [&](game::PreviewMoveArmyUnavailableReason reason) noexcept {
+    if (request.operation == SemanticOperation::preview)
+      request.preview.unavailable_reason = reason;
+    return false;
+  };
   try {
     request.envelope.game = native_;
     request.envelope.mailbox = mailbox_;
@@ -393,8 +398,11 @@ bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
       diagnostic->paused.store(request.envelope.expected_snapshot.paused);
       diagnostic->map_ready.store(request.envelope.expected_snapshot.map_ready);
     }
-    if (!pre_snapshot || !request.envelope.expected_snapshot.paused ||
-        !request.envelope.expected_snapshot.map_ready) return false;
+    if (!pre_snapshot)
+      return fail_preview(game::PreviewMoveArmyUnavailableReason::worker_pre_snapshot_unavailable);
+    if (!request.envelope.expected_snapshot.paused ||
+        !request.envelope.expected_snapshot.map_ready)
+      return fail_preview(game::PreviewMoveArmyUnavailableReason::worker_frame_not_ready);
     {
       std::lock_guard guard(snapshot_mutex_);
       request.envelope.expected_snapshot_revision = snapshot_revision_;
@@ -403,7 +411,8 @@ bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
     const auto submitted = ck3_11906::TrySubmitMainThreadQueryV1(
         *mailbox_, &ExecuteSemanticAdapter12002, &request.envelope, request.envelope.ticket);
     if (diagnostic != nullptr) diagnostic->submit.store(static_cast<std::int64_t>(submitted));
-    if (submitted != ck3_11906::MainThreadQuerySubmitResultV1::submitted) return false;
+    if (submitted != ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+      return fail_preview(game::PreviewMoveArmyUnavailableReason::worker_submit_failed);
     if (diagnostic != nullptr) diagnostic->worker.store("wait");
     auto wait = ck3_11906::WaitForMainThreadQueryV1(*mailbox_, request.envelope.ticket, 30'000);
     while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
@@ -423,10 +432,18 @@ bool WorkerAdapter::Run(SemanticRequest &request) const noexcept {
       diagnostic->run_success.store(success);
       diagnostic->worker.store(success ? "returned" : "failed");
     }
-    return success;
+    if (!success) {
+      const auto reason = wait != ck3_11906::MainThreadQueryWaitResultV1::completed
+          ? game::PreviewMoveArmyUnavailableReason::worker_wait_failed
+          : reclaimed != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed
+              ? game::PreviewMoveArmyUnavailableReason::worker_reclaim_failed
+              : game::PreviewMoveArmyUnavailableReason::worker_frame_unstable;
+      return fail_preview(reason);
+    }
+    return true;
   } catch (...) {
     if (diagnostic != nullptr) diagnostic->worker.store("catch");
-    return false;
+    return fail_preview(game::PreviewMoveArmyUnavailableReason::worker_exception);
   }
 }
 
@@ -638,7 +655,12 @@ game::OfferWhitePeaceResult WorkerAdapter::submit_offer_white_peace(std::int32_t
 game::PreviewMoveArmyResult WorkerAdapter::preview_move_army(std::int32_t army, std::int32_t province) const noexcept {
   SemanticRequest request{}; request.operation = SemanticOperation::preview;
   request.id = army; request.other_id = province;
-  return Run(request) ? request.preview : game::PreviewMoveArmyResult{};
+  if (Run(request)) return request.preview;
+  const auto reason = request.preview.unavailable_reason;
+  // A failed mailbox transaction must still discard any route/P result.
+  request.preview = {};
+  request.preview.unavailable_reason = reason;
+  return request.preview;
 }
 bool WorkerAdapter::read_declarable_wars(std::vector<game::DeclarableWarSnapshot> &output) const noexcept {
   output.clear(); SemanticRequest request{}; request.operation = SemanticOperation::declarations;

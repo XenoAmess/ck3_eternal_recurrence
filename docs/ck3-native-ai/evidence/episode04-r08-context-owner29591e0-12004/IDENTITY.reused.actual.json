@@ -1,0 +1,25 @@
+{
+  "schema": "xar.current-exe-static-source-identity.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T12:23:40.932306+00:00",
+  "source": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+  "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "whole_EXE_hashes": 1,
+  "hash_input_bytes": 101040248,
+  "game_operations": 0,
+  "scope": "File identity only; no runtime or business qualification"
+}

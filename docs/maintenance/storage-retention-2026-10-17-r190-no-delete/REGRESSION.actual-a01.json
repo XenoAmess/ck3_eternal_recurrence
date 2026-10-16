@@ -1,0 +1,52 @@
+{
+  "schema": "xar.storage-daily-local-date-regression.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:15:22.443959+00:00",
+  "focused_test_count": 1,
+  "source_pin": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py",
+    "bytes": 10763,
+    "sha256": "d60450d465625110af8adcdaca7cb5cc6b1f75bc5ee5aa11842f322ebb828bf8"
+  },
+  "candidate_pin": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\candidate\\tools\\storage_retention_inspect.py",
+    "bytes": 11239,
+    "sha256": "deb05cb214c4131c71783ecaa6271bfee263d43d4b8c2e360a63fe222ba6bda9"
+  },
+  "test_pin": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\test_daily_local_key.py",
+    "bytes": 4472,
+    "sha256": "ce67065a8ffdc6cb44a99cb76fa206e6fcdb05ca46add2d8052958d10f801f53"
+  },
+  "executions": [
+    {
+      "label": "original_RED",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\test_daily_local_key.py",
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\storage_retention_inspect.py"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "F\n======================================================================\nFAIL: test_first_local_0400_not_suppressed_by_install_utc_day (__main__.DailyLocalCalendarRegression.test_first_local_0400_not_suppressed_by_install_utc_day)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\test_daily_local_key.py\", line 59, in test_first_local_0400_not_suppressed_by_install_utc_day\n    self.assertEqual(inspector.call_count, 1, 'Local Oct17 04:00 must create a report despite the installation UTC-day key')\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 1 : Local Oct17 04:00 must create a report despite the installation UTC-day key\n\n----------------------------------------------------------------------\nRan 1 test in 0.118s\n\nFAILED (failures=1)\n"
+    },
+    {
+      "label": "candidate_GREEN",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\test_daily_local_key.py",
+        "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\candidate\\tools\\storage_retention_inspect.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 0.136s\n\nOK\n"
+    }
+  ],
+  "fixture_only_execution": true,
+  "actual_scheduled_task_Run_called": false,
+  "real_profile_or_ledger_inspected_by_test": false,
+  "real_report_or_daily_state_written_by_test": false,
+  "fixture_current_machine_id": "fixture-machine is synthetic and certifies no real machine state"
+}

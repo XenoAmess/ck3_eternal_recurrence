@@ -1,0 +1,11 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:39:18.613838+00:00",
+  "source": "Root task message delivered to /root/e04_r08_maintenance_next",
+  "scope": "One additional same.text71141888B read; every8B/8D opcode independently; only44DB128 target; no new strings/callee/body/hash",
+  "cumulative_sections_bytes": 176532480,
+  "cumulative_reads": 8,
+  "body_bytes": 0,
+  "package_ceiling_bytes": 131072,
+  "old_coverage_defect_preserved": true
+}

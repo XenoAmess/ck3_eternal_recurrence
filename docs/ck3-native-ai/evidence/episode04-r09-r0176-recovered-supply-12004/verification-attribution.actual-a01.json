@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.r09-portable-supply-verification-attribution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T20:07:17.350041+00:00",
+  "source_head_at_replay": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\verify_recovered_supply.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--archive",
+    "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\r0176-recovered-supply.portable.zip",
+    "--output",
+    "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\PORTABLE-VERIFICATION.actual-a01.json"
+  ],
+  "actual_tool_output_chunk_id": "eca29c",
+  "actual_exit_code": 0,
+  "result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\PORTABLE-VERIFICATION.actual-a01.json",
+    "bytes": 1216,
+    "sha256": "866195ad6c2fb2bfc344ff52ea221d66da17a6c360658dfec4ec6e23b9766450"
+  },
+  "verifier": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\verify_recovered_supply.py",
+    "bytes": 4288,
+    "sha256": "d0aba08203bb144fe358fd35c4e1464d113d04c01d28987256c41eed0201c8cb"
+  },
+  "archive": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r09-strict-freeze-followup-a01\\r0176-recovered-supply.portable.zip",
+    "bytes": 6358,
+    "sha256": "c24bf5382b25774d17a4117e99f4cbfe5c79c615477ac1edc18805c5f00b42a6"
+  },
+  "whole_raw_body_read_in_this_verification": false,
+  "SDK_game_native_fixture_actions": 0
+}

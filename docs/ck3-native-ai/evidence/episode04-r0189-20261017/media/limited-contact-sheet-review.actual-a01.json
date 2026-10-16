@@ -1,0 +1,74 @@
+{
+  "schema": "xar.e04.r189.limited-contact-sheet-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "observed_at_utc": "2026-10-16T19:54:46.975089+00:00",
+  "reviewer": "Codex offline media worker /root/r183_raw_audit_now",
+  "source_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 21575,
+    "sha256": "7f97f043666ff0ef256f4daeb455235b726e14b71f38cb535d4a73c938f87809"
+  },
+  "contact_sheet": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\first-middle-last.contact-sheet.jpg",
+    "bytes": 27631,
+    "sha256": "5eb051a6a42aeeeac39667f6bd4258e53e29dbd261f8b33f3315f0fac870efba"
+  },
+  "dimensions": [
+    1920,
+    360
+  ],
+  "actual_review_method": "Direct functions.view_image of exact1920x360 JPEG, detail=original, after successful full raw decode.",
+  "sample_mapping": [
+    {
+      "index": 0,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "0.000000",
+        "duration_time": "0.033000",
+        "side_data_list": [
+          {
+            "side_data_type": "H.26[45] User Data Unregistered SEI message"
+          }
+        ]
+      }
+    },
+    {
+      "index": 371,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "12.367000",
+        "duration_time": "0.033000"
+      }
+    },
+    {
+      "index": 743,
+      "source_frame_timestamp": {
+        "media_type": "video",
+        "stream_index": 0,
+        "best_effort_timestamp_time": "24.767000",
+        "duration_time": "0.033000"
+      }
+    }
+  ],
+  "observations": [
+    "All three samples show CK3 client-area map content, without black frames or visible foreign application/desktop pixels.",
+    "The first two samples show the selected-army/map layout; the last sample shows a native combat panel over the bottom of the map.",
+    "Precise calendar labels and panel numeric values are not transcribed from the reduced JPEG."
+  ],
+  "limitations": [
+    "Each full source frame was scaled from1280x720 to640x360 and JPEG-compressed for the bounded contact sheet.",
+    "Three reduced samples are not original-resolution frame review, every-frame review, full1x human viewing or an unobstructed clean-span certification."
+  ],
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "limited_contact_sheet_direct_review": true,
+    "clean_span_certified": false,
+    "business_positive": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  }
+}

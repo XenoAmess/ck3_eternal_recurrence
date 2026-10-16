@@ -1,0 +1,72 @@
+{
+  "schema": "xar.preview-unavailable.source-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "proof_layer": "source_candidate_only",
+  "native_build_or_execution": "NOTRUN",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "bytes": 174930,
+      "sha256": "053594655460e30482cf431151764e500ebdf50514fb09d2587d6cdd98345d83"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military.cpp",
+      "bytes": 29434,
+      "sha256": "61729d446f252fd50935ab69f0491531a8e2cc067164a471e1709c0a5bfd25f2"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "bytes": 43470,
+      "sha256": "09111d538c71cc5b7514ea865f6433ad98135685d24997e8f8c91c1e41603580"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1591551,
+      "sha256": "db365c37ee3cd67f302932ba806624a28466d300365a8c80f5a4b4d309e163d5"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military_test.cpp",
+      "bytes": 22337,
+      "sha256": "718a45c4ffccca10c98701f8ecafb3c9df3e1dd41951c27a2af3d7b32698cdba"
+    }
+  ],
+  "post_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "bytes": 175382,
+      "sha256": "6c300e7626bdf47fcafdfa4f51fcb70b56adf7c689d597db016d057ace960c2b"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military.cpp",
+      "bytes": 29699,
+      "sha256": "1c0b5696657031c47fda701a69071f54ee611155278cc61e786944d4072fe3ac"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_semantic_adapter.cpp",
+      "bytes": 44661,
+      "sha256": "ba2265b777fe6b52089a23aa5912b9f4cb47e7bfc388245084116852d6b434ba"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/preview_move_army_unavailable_reason_v1.hpp",
+      "bytes": 1387,
+      "sha256": "0796b9258d7577e3343419f35bb9fbaa2bdf0b2eb5dde7056e236f10718a2a29"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "bytes": 1592018,
+      "sha256": "2baa93c50c3d5cdafd48b704fc064306c4de7023562432238d1b3c1bc64cccb0"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_military_test.cpp",
+      "bytes": 24131,
+      "sha256": "3fe6f5adaf8c7bd6dcd0c9b1e6ad677d889e7ed10e4feb01e3daab32c8415d01"
+    }
+  ],
+  "old_tests_rerun": 0,
+  "native_calls_added": 0,
+  "guard_relaxations": 0,
+  "future_new_fixture_only_argument": "--preview-unavailable-reasons-only",
+  "worker_failure_fixture": "not authored/run; requires coherent mailbox fixture qualification",
+  "actual_cause_identified": false,
+  "current_wire_numeric_status_observed": false
+}

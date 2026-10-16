@@ -1,0 +1,68 @@
+{
+  "schema": "xar.e04.r189-production-qualified.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:11:50.815301+00:00",
+  "runtime_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "source_clean": true,
+  "R188_normal_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-owner-prep-a01\\R188-SOURCE.actual-a01.json",
+    "bytes": 2008,
+    "sha256": "02d449b61577d54a358828dd185ff5a2679abe580151fae00b0d0bd8b3bda0fd"
+  },
+  "a30_original_qualification": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\ROOT-PRODUCTION-QUALIFICATION.actual-a30.json",
+    "bytes": 30733,
+    "sha256": "c3230b67d4075b0509d5fd07650c427a15f4af55ff76117777cc1d45ec2c803d"
+  },
+  "a30_original_build_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-a02\\R189-CAPACITY.actual-root-a01.json",
+    "bytes": 12694,
+    "sha256": "b4d3f28ba60f580a934983555325abb703cf32e2a3b29b0c510eaf278aec7bf8"
+  },
+  "new_R189_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+    "bytes": 10207,
+    "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62"
+  },
+  "new_R189_scene_phase_capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+    "bytes": 10207,
+    "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62"
+  },
+  "native": {
+    "xar_ck3_bridge.dll": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge.dll",
+      "bytes": 13062144,
+      "sha256": "61a3e906affdea003b279c55584c974edebce0b2ee9685d2136e84ed05a46459"
+    },
+    "xar_ck3_bridge_injector.exe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "7b7c7e9e3136a71e8590c56c4640b1ac848b1721dc0c0bc067ab79e4997b5b07"
+    },
+    "xar_ck3_bridge_host.exe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "b95ebc9d0bf579fcd75527b3d1cc89d0cc0269603a734a99510157af69daa5c8"
+    }
+  },
+  "R189_fresh_official_promo_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-root-prep-a01\\R189-PROMO-LATEST-RELEASE.actual-a01.json",
+    "bytes": 5556,
+    "sha256": "a8152e9c08cac8dae815d1b82ae14d7fa460e11c181a114908ace516b38799ad"
+  },
+  "planned_min_wall_recording_seconds": 110,
+  "source_validator": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-owner-prep-a01\\normal_source_contract.py",
+    "bytes": 13071,
+    "sha256": "8822eb010cc07dc55572c961f4578e6c70c0468d4dc8dee382622a9846f021bc"
+  },
+  "no_hook_film_helper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-owner-prep-a01\\owner_film_candidate.py",
+    "bytes": 44432,
+    "sha256": "0a61304e9bc3dca4176af9104da6192dc6ed671fc6d62d92eb4f21b18c3cd62c"
+  },
+  "fixture_rerun": false,
+  "runtime_identity_qualified": false
+}

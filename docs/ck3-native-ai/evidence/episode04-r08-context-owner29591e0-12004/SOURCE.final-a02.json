@@ -1,0 +1,258 @@
+{
+  "schema": "xar.e04.r08.context-owner29591E0.source.final-a02",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-16T20:05:23.356415+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "machine_state_scope": "Historical actual file stat before/after only; source knowledge portable, no new runtime qualification.",
+  "question": "Find a narrow next producer/owner edge separating cached estimates from actual military paid settlement.",
+  "result": {
+    "candidate_entry": "29591E0",
+    "actual_source_caller": "28A65BE in held complete28A63E0",
+    "runtime_call_observed": false,
+    "input_receiver": "C=*(Character+1C0)",
+    "output_receiver": "Caller stack localdescriptor, later consumed into entryRDX-derived indexed output",
+    "source_extents": [
+      {
+        "begin": "29591E0",
+        "end": "2959214",
+        "bytes": 52
+      },
+      {
+        "begin": "2959214",
+        "end": "29592B1",
+        "bytes": 157
+      },
+      {
+        "begin": "29592B1",
+        "end": "29592C1",
+        "bytes": 16
+      }
+    ],
+    "instructions": 54,
+    "RET": "29592C0",
+    "ordinary_branches_within_saved_union": true,
+    "opaque_direct_calls": [
+      "2959251->230F8E0",
+      "295928C->880340"
+    ],
+    "new_callee_bodies_read": 0,
+    "body_role": "Enumerates4B FullID occurrences from C+1E0/count+1EC; filters via raw returnedtag and postcallreceiver fields; passes candidatepointer via outputhelper. Not a proved financial writer.",
+    "ownbody_direct_nonstack_store": false,
+    "ownbody_direct_context18_20_28_30_store": false,
+    "transitive_or_alias_effects": "unknown",
+    "raw_filters": [
+      "Return of230F8E0 DWORD+85C==0x50726F76",
+      "PostcallR10 QWORD+48 points to object whose DWORD+64<=1 signed",
+      "Candidate=QWORD[postcallR10+338]+620; candidateBYTE8!=0"
+    ],
+    "postcall_receiver_caveat": "The source usesR10 after opaque230F8E0. No independent proof of its register-preservation contract; do not silently assume Win64 volatileR10 retained the same pointer.",
+    "no_new_writer_PC_or_owner_binding_obtained": true
+  },
+  "causal_boundaries": [
+    "C18->C2C0 andC20->C2C8 copies precede selected helper in same invocation; latercall is not directproducer of those earlierstores. Cross-cycle effects unproved.",
+    "C28/C30 producer and category still unidentified. No directstore in one body cannot prove the wholecalltree is read-only.",
+    "Caller branchCbyte1D8!=0 clearsbyte then computes indexedoutput; rawgate is not proof of militarybudget refresh or paymentcadence.",
+    "Separate current2C13F60/current-vectors are rate/query outputs; they are not shown entering C28/C30 or an actual payerwallet in this lane."
+  ],
+  "decision": {
+    "schema": "xar.e04.r08.typed-payment-boundary.v1",
+    "maintenance_attribution": "unclosed",
+    "candidate_status": "ELIMINATED_AS_DIRECT_CONTEXT_WRITER; OUTPUT_ENUMERATION_SOURCE_ONLY",
+    "known_cache_copy_fields": [
+      "18->2C0",
+      "20->2C8"
+    ],
+    "context_c_writer_PC": null,
+    "context_d_writer_PC": null,
+    "military_component_resource_slot": null,
+    "paid_military_amount_raw": null,
+    "payer": null,
+    "cadence": null,
+    "reason_codes": [
+      "NO_C_D_PRODUCER_BINDING",
+      "NO_MILITARY_CATEGORY",
+      "NO_SAME_APPLICATION_TOKEN",
+      "NO_PAYER_STORE_BINDING",
+      "NO_NATIVE_WRITER_DATE_OR_TRIGGER_PROOF"
+    ],
+    "allowed_use": "Use held current/allraised rates only under their independent estimatecontracts; preserve actual wallet NET as its own observed transaction.",
+    "prohibited_upgrades": [
+      "Indexedcacheoutput is not walletpayment",
+      "Do not subtract estimate again from netwalletactual",
+      "No trap/no directstore/unchangedcache do not mean zerocharge",
+      "No actor-as-payer inference from copyframe"
+    ]
+  },
+  "next_observation": {
+    "kind": "NEW_QUALIFIED_RAW_C_OR_D_WRITE",
+    "existing_observer_contract": "Current frozen four slots2C0/2C8/28/30; prioritize an actual retained C+28 or C+30 write, no unauthorized18/20 argvredirect.",
+    "required": [
+      "Fresh machine/process/create/generation/actor/session/window/epoch/context and exactaddress",
+      "TruepostPC, fullregisters, thread lifecycle, rawwrittenvalue and recovery/loss status",
+      "Then limited containing-function source proving exactstore/inputproducer",
+      "Before paidclaim: sameapplication sourcecomponent+settlementparent+walletchild and actualpayer identity",
+      "Cadence needs actualnative date/trigger linkage; admission/querydate is insufficient"
+    ],
+    "current_writer_native_date": null,
+    "current_same_copy_caller": null,
+    "stop": "One Root-admitted finitewindow. Timeout or no qualifiedC/D trap staysunknown; do not extend untilhit or follow these enumerationcallees."
+  },
+  "read_budget": {
+    "code_bytes": 225,
+    "metadata_bytes": 252,
+    "read_calls": 26,
+    "whole_EXE_hashes": 0,
+    "section_sweeps": 0,
+    "game_SDK_desktop_build_mainwrite_actions": 0
+  },
+  "semantic_layer": "Human source-dataflow analysis separately labelled from retainedbytes/branch/CHAININFO verifier. No live or business completion.",
+  "files": [
+    {
+      "path": "CALLER-DETAILS-ARCHIVE.actual.json",
+      "bytes": 815,
+      "sha256": "2890d98bf7bc8deade209449ac9915ffa8a150baf731b6a3b8a263721ab8f964"
+    },
+    {
+      "path": "CALLER-DETAILS.exact.zip",
+      "bytes": 5109,
+      "sha256": "e1b7566c6438dd6d056bd6703d11c0e0c86463df8551094fb10cd44d4ae6ff72"
+    },
+    {
+      "path": "caller28A63E0.bin",
+      "bytes": 695,
+      "sha256": "ffebf7d960edb76b71d2456b7f8722cc09092952b41c565f648410b42a47dede"
+    },
+    {
+      "path": "CAPTURE.physical.actual.json",
+      "bytes": 5676,
+      "sha256": "233072fb08c3681c32d0a21b9c67e151937c0692bb43b993cf3c3bf3ec16dd0a"
+    },
+    {
+      "path": "CHECK-RENDER.before-read.corrected-a03.actual.json",
+      "bytes": 2317,
+      "sha256": "01903690435c75c6b219f7d34da3912829acad238479c1cb627f7e6e7f84f04d"
+    },
+    {
+      "path": "CHECK.before-continuation.actual.json",
+      "bytes": 1619,
+      "sha256": "7b99a37efe9aa44a618355aece2615a7dcd7452dac0b0f9a754ebc9ed2af744a"
+    },
+    {
+      "path": "compact_caller.py",
+      "bytes": 1473,
+      "sha256": "270e6b445a77555570ae8cbf088f452d167dfaa814d2d8510709b8d1de844ef8"
+    },
+    {
+      "path": "compact_preparation.py",
+      "bytes": 1740,
+      "sha256": "7a08ff5adfe4412598132e96987c85e4c0bfc48d8e042b1ac040ca1fff8579be"
+    },
+    {
+      "path": "continuation-2959214.asm.gz",
+      "bytes": 706,
+      "sha256": "214e21198b70a6779f240da419d38bc10ea578486d212f742f46c6b7bdd5bada"
+    },
+    {
+      "path": "continuation-2959214.bin",
+      "bytes": 157,
+      "sha256": "114a62311868867e6becd1af18221b89618baa1e4cac9ee874683b1654ff5f24"
+    },
+    {
+      "path": "continuation-29592B1.asm.gz",
+      "bytes": 146,
+      "sha256": "21f686b76dd1e1ed5e12e4dfb050e91962133bdea2571d15e549710d8b6451e9"
+    },
+    {
+      "path": "continuation-29592B1.bin",
+      "bytes": 16,
+      "sha256": "a33be9711f100013f43340ba3c10235efded307ea7e94aad5e28a88b6a27570a"
+    },
+    {
+      "path": "CONTINUATION.actual.json",
+      "bytes": 3233,
+      "sha256": "d479072efbc45cd846a2bce64c06c57e873dcb4c6817efbcf8790ac9171dd322"
+    },
+    {
+      "path": "DECODE.actual.json",
+      "bytes": 1069,
+      "sha256": "b6d374a9b5768c2b74514bce19aee5aabbb1747c528fc1a4f07323a02694152d"
+    },
+    {
+      "path": "EXTENT.actual.json",
+      "bytes": 5244,
+      "sha256": "be3f4899f8ebc205103601008c849d64911467a3308c2e41c4eb4178962604e6"
+    },
+    {
+      "path": "FINALIZATION-CORRECTION.actual.json",
+      "bytes": 1535,
+      "sha256": "ee307c7d812e327df0416554ceb1c536c3385199b0fa98e3043e2cd364461ac0"
+    },
+    {
+      "path": "finalize_a02.py",
+      "bytes": 3665,
+      "sha256": "a14ee1a95c18e616a00c20a99f1203f15c6f8442f2441fbb367a29b2df73e415"
+    },
+    {
+      "path": "FIRST-SEAL-AND-INITIAL-PLAN.exact.zip",
+      "bytes": 15694,
+      "sha256": "10be1fc764e51abac26b16535b5ddad4c6303ac352d22ecf554db5d44b29a2e3"
+    },
+    {
+      "path": "function.asm.gz",
+      "bytes": 291,
+      "sha256": "99ce31b97f4345f4e4ff051a0ffca12c5a1a9483e4575a2ae26835699c93a66c"
+    },
+    {
+      "path": "function.bin",
+      "bytes": 52,
+      "sha256": "c055f66d42e85fb3dd6cb49323d703c9c256184e0ea428d4a8485bc028aafbdb"
+    },
+    {
+      "path": "GRAPH.result.md",
+      "bytes": 1794,
+      "sha256": "39e7197c0669f90049379499ffc10b7d17804dbfd2d92f5537e5ee0d15e50c75"
+    },
+    {
+      "path": "IDENTITY.reused.actual.json",
+      "bytes": 855,
+      "sha256": "47ff2b7951cc37faf49cd2773382306ea3256aba597a29406f5ff3fc8c3356e9"
+    },
+    {
+      "path": "PE-MAP.held.actual.json",
+      "bytes": 1707,
+      "sha256": "283930c9f99cd6522f350545f224b1bce3b4aaf3ecddd34ff8de83b5fc47670a"
+    },
+    {
+      "path": "PLAN.before-continuation.json",
+      "bytes": 4990,
+      "sha256": "429180014ee7f224be845126eb9c4ad456e50f18eca8094c354bf91699e8598c"
+    },
+    {
+      "path": "PREPARATION-ARCHIVE.actual.json",
+      "bytes": 1920,
+      "sha256": "26828858efbde56a4981283544c3b63839a4488b2c42d507dc3012a5a16dfd58"
+    },
+    {
+      "path": "PREPARATION.exact.zip",
+      "bytes": 14284,
+      "sha256": "20ff0b12d510c9645f39c544dcbfe95a45106404ec5eb0fb20054d948e6168ee"
+    },
+    {
+      "path": "read_continuation.py",
+      "bytes": 5170,
+      "sha256": "ca5c0c1c1a17733f6c0ccf581c1215e3618de657444e986a6da9eee26937a67c"
+    },
+    {
+      "path": "START-CAPACITY.actual.json",
+      "bytes": 536,
+      "sha256": "1e456e1ee2f31abba4f658b36379210a4a086c9b859f196eda160d8711deee4e"
+    },
+    {
+      "path": "verify_portable_a02.py",
+      "bytes": 4435,
+      "sha256": "202299374b06f7f9bfd669d30ed595ad4bcd95fd96d6f002f1a325a1d43dbee0"
+    }
+  ],
+  "first_seal_correction": "FINALIZATION-CORRECTION.actual.json; exact first source/verifier/failed result retained in FIRST-SEAL-AND-INITIAL-PLAN.exact.zip"
+}

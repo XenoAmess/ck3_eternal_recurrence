@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:56:37.150964+00:00",
+  "policy_version": "1.0.0",
+  "source": "Current Root task grants this small96KiB lane within existing shared128MiB pool; historical R188 capacity deadline not extended by this receipt",
+  "total_bytes": 511133945856,
+  "free_bytes": 33806127104,
+  "write_ceiling_bytes": 98304,
+  "shared_pool_bytes": 134217728,
+  "heavy_write": false,
+  "automatic_global_reservation_claimed": false,
+  "delete_actions": 0,
+  "review_after_hours": 168
+}

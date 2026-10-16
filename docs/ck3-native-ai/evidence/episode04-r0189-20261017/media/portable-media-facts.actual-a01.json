@@ -1,0 +1,225 @@
+{
+  "schema": "xar.e04.r189.bounded-portable-media-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "observed_at_utc": "2026-10-16T19:54:47.844296+00:00",
+  "audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 21575,
+    "sha256": "7f97f043666ff0ef256f4daeb455235b726e14b71f38cb535d4a73c938f87809"
+  },
+  "limited_sample_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\limited-contact-sheet-review.actual-a01.json",
+    "bytes": 2773,
+    "sha256": "e7c21b5c4fb3e472cd4877e860ef909755e953680fd83911c7775ea5bcee0217"
+  },
+  "contact_sheet": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\first-middle-last.contact-sheet.jpg",
+    "bytes": 27631,
+    "sha256": "5eb051a6a42aeeeac39667f6bd4258e53e29dbd261f8b33f3315f0fac870efba"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 14414202,
+    "sha256": "5da29dcd728ce2ff72215582bd744c8c4302a1eeb84edda582e078f98c2ec26e"
+  },
+  "raw_after": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 14414202,
+    "sha256": "5da29dcd728ce2ff72215582bd744c8c4302a1eeb84edda582e078f98c2ec26e"
+  },
+  "canonical_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\raw-window-a01\\result.json",
+    "bytes": 3562,
+    "sha256": "8c6e5a7932a799c5cc493f2755f8857ee034cfb895f8f2ad167280c1da4d8de9"
+  },
+  "finish_response": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-99-recorder-finish-once.json",
+      "bytes": 4364,
+      "sha256": "0445cf4ec0a62c697059faaf80408e69425145a761330786718abfdd936c7f59"
+    },
+    "observed_at_utc": "2026-10-16T19:42:33.349671+00:00"
+  },
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1",
+    "timeline": {
+      "media_type": "video",
+      "frames": 744,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 24.767,
+      "last_frame_end_seconds": 24.8,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.03400000000000247
+    }
+  },
+  "audio_stream_count": 0,
+  "full_AV_decode_exit": 0,
+  "full_AV_decode_diagnostics": "",
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 36940,
+    "owned_ck3_create_time": 1792178128.031888,
+    "hwnd": 42011162,
+    "foreground_hwnd": 42011162,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T19:42:04.137528+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "native_completed_days": 8,
+  "initial_date_raw": 53149080,
+  "last_completed_date_raw": 53149272,
+  "native_daily_receipts_audit_source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\audit.actual-a01.json",
+    "bytes": 21575,
+    "sha256": "7f97f043666ff0ef256f4daeb455235b726e14b71f38cb535d4a73c938f87809"
+  },
+  "day9_combat_trigger": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-d09-poll-009.json",
+      "bytes": 143102,
+      "sha256": "21f657753454ac57adf0cc4c71122df46c92d354201a926fc087591c567953dd"
+    },
+    "observed_at_utc": "2026-10-16T19:42:33.024683+00:00",
+    "date_raw": 53149296,
+    "army": {
+      "army_id": 18,
+      "owner_character_id": 31254,
+      "soldiers": null,
+      "current_province_id": 2635,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": true,
+      "retreating": false,
+      "army_state": "combat",
+      "army_state_code": 2,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    "counted_as_completed_day": false
+  },
+  "original_film_error": "RuntimeError('watched army owner/control/state differs')",
+  "film_exit_code_reported_by_Root": 1,
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-film-a01-film-result.actual.json",
+    "bytes": 499,
+    "sha256": "06eab62daed0c7c900c8bcdea10483e752dce60280048d06f714f00cc3b35220"
+  },
+  "recorder_wall_seconds": 28.223282,
+  "encoded_frame_end_seconds": 24.8,
+  "min100_wall_met": false,
+  "min100_encoded_met": false,
+  "configured_min_wall_seconds": 110,
+  "configured_min_wall_met": false,
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "clean_span_certified": false,
+    "business_positive": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  },
+  "bounded_output_budget_bytes": 262144,
+  "capacity_before": {
+    "observed_at_utc": "2026-10-16T19:53:18.641554+00:00",
+    "original_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+      "bytes": 10207,
+      "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62"
+    },
+    "quota_review_at_utc": "2026-10-16T20:16:40.776628Z",
+    "measured": {
+      "usage": {
+        "profile": 569093126,
+        "driver": 67699221,
+        "raw": 16441434,
+        "other": 19017971
+      },
+      "remaining_scene_bytes": 1609449624,
+      "volumes": {
+        "C:/": {
+          "free": 33810378752,
+          "required": 27774872985
+        },
+        "D:/": {
+          "free": 51384082432,
+          "required": 23218503832
+        }
+      }
+    },
+    "unchanged_default_guards": true,
+    "deadline_renewed": false,
+    "D_credit_applied_to_C": false
+  },
+  "capacity_close": {
+    "observed_at_utc": "2026-10-16T19:54:47.034257+00:00",
+    "phase": "after-offline-bounded-media-audit",
+    "original_admission": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+      "bytes": 10207,
+      "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62"
+    },
+    "storage_charge": "Existing Root-authorized shared reservation, max256KiB",
+    "adoption_performed": false,
+    "deadline_renewed": false,
+    "reserves_released": false,
+    "D_credit_applied_to_C": false,
+    "current_original_guards_passed": true,
+    "measured": {
+      "usage": {
+        "profile": 569093126,
+        "driver": 67699221,
+        "raw": 16441434,
+        "other": 19017971
+      },
+      "remaining_scene_bytes": 1609449624,
+      "volumes": {
+        "C:/": {
+          "free": 33809498112,
+          "required": 27774872985
+        },
+        "D:/": {
+          "free": 51384008704,
+          "required": 23218503832
+        }
+      }
+    },
+    "quota_review_at_utc": "2026-10-16T20:16:40.776628Z"
+  },
+  "source_metadata_unchanged": true,
+  "limitations": [
+    "Three scaled JPEG samples are a limited visualization, not original-resolution frame review or full1x viewing.",
+    "Client-region capture is not independent HWND capture and three samples cannot certify every frame/occlusion.",
+    "Eight completed days are distinct from the ninth-day combat trigger; no ninth daily completion or minimum-duration pass is asserted.",
+    "This audit grants no business, all-clip clean, full human viewing or signoff credit.",
+    "The configured minwall is110 seconds; neither the requested100-second check nor that configured110-second check passed.",
+    "Apr10 combat is the stop trigger after eight completed days Apr1→Apr9, not a ninth completed daily result.",
+    "No Root/human full1x review or signoff was received by this worker."
+  ]
+}

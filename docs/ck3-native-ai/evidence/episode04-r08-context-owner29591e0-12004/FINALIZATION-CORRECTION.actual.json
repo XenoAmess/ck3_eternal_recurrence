@@ -1,0 +1,45 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T20:05:23.355383+00:00",
+  "reason": "First verifier incorrectly compared savedasm ret-with-trailing-space to exactret and rejected. Byte/source semantics unchanged. Corrected parser strips mnemonic whitespace; no new EXE read.",
+  "archive": {
+    "path": "FIRST-SEAL-AND-INITIAL-PLAN.exact.zip",
+    "bytes": 15694,
+    "sha256": "10be1fc764e51abac26b16535b5ddad4c6303ac352d22ecf554db5d44b29a2e3"
+  },
+  "members": [
+    {
+      "path": "seal.py",
+      "bytes": 8542,
+      "sha256": "e2a4bf91d593181845b75cdb43313b216fb405b1c3c3af9e7ec2f9b2aaf5d96d"
+    },
+    {
+      "path": "SOURCE.actual.json",
+      "bytes": 9880,
+      "sha256": "5a92c4c6175829ffa8f442a2373191a03055f555c2102ed59dd6d5760e5161c1"
+    },
+    {
+      "path": "VERIFY.actual.json",
+      "bytes": 1100,
+      "sha256": "8f76a997687852c6daca2e4fbb2a2fba59999bb08e20a75113cae2313948c0eb"
+    },
+    {
+      "path": "verify_portable.py",
+      "bytes": 4424,
+      "sha256": "1131190ac514fdc351a9b25aa4d689292bba0b2fc4afbaedcc6003d1197b5d4c"
+    },
+    {
+      "path": "PLAN.before-read.corrected-a03.json",
+      "bytes": 5005,
+      "sha256": "98b7cf6ca8ede0711bef9efeeb23938c4d8ff130644dd4419b8a0bf2a14f122e"
+    },
+    {
+      "path": "GRAPH.before-read.corrected-a03.md",
+      "bytes": 4397,
+      "sha256": "3ca034db0e352c7cf8c95b18d7809ec9fd7da57a111c49f6a119f606bad8b04e"
+    }
+  ],
+  "unfolded_archived_files_no_longer_present": true,
+  "whole_EXE_hashes": 0,
+  "new_EXE_reads": 0
+}

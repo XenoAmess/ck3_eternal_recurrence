@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.r08.named-RIP-coverage-correction.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:37:58.374256+00:00",
+  "original_result_pin": {
+    "path": "NAMED-RIP.actual.json",
+    "bytes": 1895,
+    "sha256": "d52984c778ec7219a314402f218cb891c0f1a57f85343b7f3b90e0dcc7a10a38"
+  },
+  "original_producer_pin": {
+    "path": "run_named_rip_locator.py",
+    "bytes": 7255,
+    "sha256": "6310a002d92561534d51d0439ce6d38b39d599a8cdc506fb5b5d74212a154da1"
+  },
+  "exe_reads": 0,
+  "new_exe_bytes": 0,
+  "conclusion": "The non-overlapping re.finditer implementation can skip a genuine overlapping raw RIP opcode start. Its zero cannot establish complete absence within .text.",
+  "retained_original_unchanged": true,
+  "corrected_result_from_actual_EXE": null,
+  "synthetic": {
+    "bytes_hex": "8b05488d051fa14d0490909090909090909090909090909090",
+    "section_rva": "0x1000",
+    "target_rva": "0x44db128",
+    "intended_prefixed_start": 2,
+    "old_matching_target_starts": [],
+    "independent_matching_opcode_starts": [
+      3
+    ]
+  },
+  "next_algorithm": "Inspect every 8B/8D opcode byte independently, check mod00/rm101, compute opcode_RVA+6+signed_disp32; optional previous REX is context, not a reason to skip any opcode start.",
+  "limits": "Synthetic proof only. No new EXE read; original .text section bytes were not retained. Original cumulative section ledger remains105390592B."
+}

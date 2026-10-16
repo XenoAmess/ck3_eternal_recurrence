@@ -1,0 +1,93 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-resource4-two-literal-data-qword-refs",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T19:30:44.420806+00:00",
+  "question": "Does actual .rdata hold preferred-VA QWORD data references to the two established exact literals, allowing a concrete registration row candidate?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Second Root-approved target-only data scan; exactly one same.rdata read, no.text/newstrings/callee",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Same exact image/file identity as first literal packet; preferredVA neverruntimeVA",
+    "producer_trigger": "not-applicable",
+    "producer": "Only two known QWORD literal references; registration schema unknown",
+    "caller": "GetCurrency44DB128 and barter_goods450BB80 exact literal locations from prior scope",
+    "consumer": "Potential native named registration/enum rows, not yet source-confirmed handlers",
+    "cache_lifetime": "Static bytes only",
+    "expected_signal": "<=32 raw QWORD-reference rows with<=128Bcontext each; any0/truncation remains explicit",
+    "zero_sample_meaning": "Zero data references only excludes retained QWORD matches in this one section; codeRIP-relative registrations and other sections/encodings uninspected",
+    "stop_condition": "Single17124352B.rdata read,1read;2exactQWORDtargets;<=32rows/128Bcontext; body0,no.text/newstrings/callee/hash; totaloutput<=131072B",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "literal",
+      "layer": "locator",
+      "path": "LITERALS.actual.json",
+      "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual two name literal RVAs and static preferredVAs; no handler mapping"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "literal",
+      "label": "Two exact literal preferredVAs"
+    },
+    {
+      "id": "data",
+      "label": "Named QWORD data references"
+    },
+    {
+      "id": "handler",
+      "label": "Registration/handler/enum UNKNOWN"
+    }
+  ],
+  "edges": [
+    {
+      "id": "refs",
+      "from": "literal",
+      "to": "data",
+      "label": "Exact8B data reference locator",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "Any actual data references to the two literalVAs?"
+    },
+    {
+      "id": "meaning",
+      "from": "data",
+      "to": "handler",
+      "label": "Raw row is not a verified handler",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "What actual schema/registration/handler does the row encode?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "Two preferredVA data references",
+      "status": "pending",
+      "evidence": [
+        "literal"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Payment/business state",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No SDK/game/desktop/state action"
+    }
+  ]
+}

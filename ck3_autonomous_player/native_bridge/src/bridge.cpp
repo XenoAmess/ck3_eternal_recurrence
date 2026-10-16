@@ -2,6 +2,7 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/first_heir_pre_read_diagnostic_v1.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
+#include "xar_bridge/preview_move_army_unavailable_reason_v1.hpp"
 #include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1)
@@ -29469,7 +29470,7 @@ void RunConnectedSession(
               connected = write_frame(
                   pipe, RoutePreviewResultFrame(request_id, step, preview));
             } else {
-              std::string_view error =
+              std::string error =
                   "CK3 move-army route preview is unavailable";
               if (preview.status ==
                   xar::game::PreviewMoveArmyStatus::requires_paused) {
@@ -29509,6 +29510,13 @@ void RunConnectedSession(
                          xar::game::PreviewMoveArmyStatus::
                              route_unavailable) {
                 error = "CK3 could not build a complete move route";
+              }
+              if (preview.status == xar::game::PreviewMoveArmyStatus::unavailable) {
+                error += " [native_preview_status=";
+                error += SignedNumber(static_cast<std::int32_t>(preview.status));
+                error += ";reason=";
+                error += xar::game::PreviewMoveArmyUnavailableReasonTagV1(preview.unavailable_reason);
+                error += "]";
               }
               connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, false, error));

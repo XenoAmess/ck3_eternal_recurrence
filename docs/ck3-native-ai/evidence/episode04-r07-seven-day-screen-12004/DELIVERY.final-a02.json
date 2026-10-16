@@ -1,0 +1,23 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:06:52.685100+00:00",
+  "authoring_correction": "Corrected the still-unadopted candidate text scope of EMBARK_GOLD_COST_PER_HUNDRED from NArmy to actual NFleet; DISEMBARK_PENALTY_DAYS remains NArmy. No runtime fact or result changed.",
+  "superseded_draft_candidate_pin": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r07-seven-day-screen-a01\\episode04-r07-seven-day-screen-12004.candidate.md",
+    "bytes": 6841,
+    "sha256": "3ce2ec056669efeec522351ac26300db10aba7bbb41a49af55eaea819fb6cb8f"
+  },
+  "current_candidate": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r07-seven-day-screen-a01\\episode04-r07-seven-day-screen-12004.candidate.md",
+    "bytes": 6848,
+    "sha256": "548d6c94d12b6c1bcb8ba3bfe302abf5bd03541cb55d0d95e6fb5fabfa92318a"
+  },
+  "source_pin": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+    "bytes": 125400,
+    "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+  },
+  "lane_bytes_before_this_receipt": 42057,
+  "new_pair_commands": 0,
+  "R07_credit_added": 0
+}

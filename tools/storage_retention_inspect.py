@@ -153,11 +153,18 @@ def main(argv=None) -> int:
     with local_lock(args.output_dir / "inspection.lock"):
         state_path = args.output_dir / "daily-state.json"
         state = small_json(state_path) if state_path.exists() else {}
-        if args.trigger == "daily" and state.get("machine_id") == machine and state.get("last_daily_date_utc") == observed.date().isoformat():
+        # The scheduler follows the execution machine calendar; asset expiry remains UTC.
+        # Legacy UTC-only state intentionally does not suppress the first local-day run.
+        local_observed = observed.astimezone()
+        daily_key = {"last_daily_date_local": local_observed.date().isoformat(),
+                     "last_daily_utc_offset": local_observed.strftime("%z")}
+        if args.trigger == "daily" and state.get("machine_id") == machine and all(state.get(key) == value for key, value in daily_key.items()):
             print(json.dumps({"machine_id": machine, "state": "daily_inspection_already_recorded", "last_report": state.get("last_daily_report")}))
             return 0
         report = inspect(profile, ledger, policy, machine, observed)
         report["trigger"] = args.trigger
+        if args.trigger == "daily":
+            report["daily_calendar"] = {"basis": "execution-machine-local-date", **daily_key}
         report["input_pins"] = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in (args.profile, args.ledger, REPO / "docs/storage-retention-policy.json")}
         encoded = (json.dumps(report, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
         if len(encoded) > policy["execution"]["inventory_report_max_bytes"]:
@@ -166,7 +173,7 @@ def main(argv=None) -> int:
         with out.open("xb") as stream:
             stream.write(encoded)
         if args.trigger == "daily":
-            state = {"machine_id": machine, "last_daily_date_utc": observed.date().isoformat(), "last_daily_report": str(out)}
+            state = {"machine_id": machine, **daily_key, "last_daily_report": str(out)}
             state_path.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
         print(json.dumps({"machine_id": machine, "report": str(out), "counts": report["counts"], "deletions": 0}, ensure_ascii=False))
     return 0

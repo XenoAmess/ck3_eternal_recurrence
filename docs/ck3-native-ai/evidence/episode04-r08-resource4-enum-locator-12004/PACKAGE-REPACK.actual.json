@@ -1,0 +1,81 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:43:28.679769+00:00",
+  "reason": "Initial portable verification passed but first closed package131445B exceeded131072B by373B. Exact producer/first-seal originals archived and byte-compared before unlinking unfolded copies.",
+  "first_seal_package_bytes": 131445,
+  "old_source_pin": {
+    "path": "SOURCE.actual.json",
+    "bytes": 9944,
+    "sha256": "e865e00852bbe09d3db6762b0af071bd0cff5470e612b0d0b2679884f87977ce"
+  },
+  "archive": {
+    "path": "PRODUCERS-FIRST-SEAL.exact.zip",
+    "bytes": 29316,
+    "sha256": "88ea885b20e898b92b166d2494bc4301f2c84265bbb2dd3c615a321be972cc66"
+  },
+  "members": [
+    {
+      "path": "DELIVERY.actual.json",
+      "bytes": 677,
+      "sha256": "1df51ff1c9223895b10530a25e240a5931d9dd3b7bb15fd2b13d631b6f500e8f"
+    },
+    {
+      "path": "SOURCE.actual.json",
+      "bytes": 9944,
+      "sha256": "e865e00852bbe09d3db6762b0af071bd0cff5470e612b0d0b2679884f87977ce"
+    },
+    {
+      "path": "VERIFY.actual.json",
+      "bytes": 1027,
+      "sha256": "d27ace080da18d528c90bfd5e3f58ea56be17270df8aae16acb1e925242ceade"
+    },
+    {
+      "path": "check_named_rip_coverage.py",
+      "bytes": 2912,
+      "sha256": "4d255196e386d482d040f3ca3bf04cee30c6702d9ee1ca817afddad69f60134c"
+    },
+    {
+      "path": "prepare_named_rip_rescan.py",
+      "bytes": 3022,
+      "sha256": "c8202c347b15106fda13d433d6a511007f00e9bebbad6634c49bdf92a3cedb98"
+    },
+    {
+      "path": "run_data_qword_refs.py",
+      "bytes": 7062,
+      "sha256": "f3e862a00eb613fca56c8d27635aa1cf9ec17280f06e3a5b34a83c144b4d9005"
+    },
+    {
+      "path": "run_data_qword_scope5.py",
+      "bytes": 6582,
+      "sha256": "a279083e4cd5a9202acc2a224c394857ccf19d91509462b43e2d5b96a9f6bbb9"
+    },
+    {
+      "path": "run_locator.py",
+      "bytes": 9509,
+      "sha256": "9b361fad07a20a91358e7a6882d2b7d67e7d7168b624d6760fef4c0052f8255f"
+    },
+    {
+      "path": "run_named_rip_locator.py",
+      "bytes": 7255,
+      "sha256": "6310a002d92561534d51d0439ce6d38b39d599a8cdc506fb5b5d74212a154da1"
+    },
+    {
+      "path": "run_named_rip_overlap_complete.py",
+      "bytes": 6242,
+      "sha256": "8b1c2834c5b09ee3bdcd17bfe2e9ae62c8ef51193fe8723fd637750f76706d58"
+    },
+    {
+      "path": "seal_locator.py",
+      "bytes": 4310,
+      "sha256": "4ee59a6ef0efbc1cecc76216e997c982682de77b018f270d099c4cd84051207d"
+    },
+    {
+      "path": "verify_portable.py",
+      "bytes": 4200,
+      "sha256": "630c4af1d365691a42471ef114f0c273ebaa104fa42d79a1ab807c9da082fa96"
+    }
+  ],
+  "unfolded_original_producers_and_first_seal_no_longer_present": true,
+  "new_EXE_reads": 0,
+  "raw_locator_receipts_unchanged": true
+}

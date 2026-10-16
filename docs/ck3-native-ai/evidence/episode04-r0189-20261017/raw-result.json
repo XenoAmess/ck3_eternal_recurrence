@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "state": "NORMAL_TREE_EMPTY",
+  "job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 24076,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-16T19:42:33.467386+00:00"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\raw-window-a01\\raw.mkv",
+    "bytes": 14414202,
+    "sha256": "5da29dcd728ce2ff72215582bd744c8c4302a1eeb84edda582e078f98c2ec26e"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 36940,
+    "owned_ck3_create_time": 1792178128.031888,
+    "hwnd": 42011162,
+    "foreground_hwnd": 42011162,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-16T19:42:04.137528+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "deadline_admission_at_spawn": {
+    "schema": "xar.e04.recording-deadline-admission.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-16T19:42:08.352303+00:00",
+    "admitted": true,
+    "recording_seconds": 180,
+    "normal_close_reserve_seconds": 180.0,
+    "required_remaining_seconds": 360.0,
+    "remaining_seconds": 2072.424324499909,
+    "session_elapsed_before_recording_seconds": 1680.8698716000654,
+    "deadlines": [
+      {
+        "source": "before-native-session-invocation",
+        "bound_at_utc": "2026-10-16T19:14:07.482430+00:00",
+        "bound_monotonic": 1400896.202019,
+        "timeout_seconds": 5400.0,
+        "deadline_monotonic": 1406296.202019,
+        "deadline_utc": "2026-10-16T20:44:07.482430+00:00",
+        "includes_frontend_warmup_and_relaunches": true,
+        "remaining_seconds": 3719.1301283999346
+      },
+      {
+        "source": "explicit-recording-deadline-utc-cli",
+        "deadline_utc": "2026-10-16T20:16:40.776628+00:00",
+        "deadline_monotonic": 1404649.4962151,
+        "remaining_seconds": 2072.424324499909
+      },
+      {
+        "source": "exact-recording-capacity-admission",
+        "argument": "recording_capacity_admission",
+        "deadline_utc": "2026-10-16T20:16:40.776628+00:00",
+        "capacity_admission": {
+          "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r189-scenephase-a01\\R189-SCENE-PHASE-CAPACITY.actual-root-a01.json",
+          "bytes": 10207,
+          "sha256": "aae49c111a87a945b00de1e6dbf32a31cdc644e0301f30a014dad6b8665f7f62",
+          "machine_id": "desktop-3fevhd2-1c74096080",
+          "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01",
+          "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+          "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+          "deadline_utc": "2026-10-16T20:16:40.776628+00:00"
+        },
+        "deadline_monotonic": 1404649.4962151,
+        "remaining_seconds": 2072.424324499909
+      }
+    ],
+    "deadline_renewed": false
+  },
+  "started_at_utc": "2026-10-16T19:42:05.331008+00:00",
+  "completed_at_utc": "2026-10-16T19:42:33.554290+00:00",
+  "start_monotonic_ns": 1402574050588500,
+  "end_monotonic_ns": 1402602273907600,
+  "partial_assets_retained": true,
+  "clean_spans_certified": false,
+  "human_approval": false,
+  "media_probe_pending": true
+}

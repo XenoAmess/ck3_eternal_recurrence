@@ -1,0 +1,74 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:56:37.150964+00:00",
+  "provenance": {
+    "path": "LITERALS.actual.json",
+    "bytes": 10501,
+    "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121"
+  },
+  "image_base": 5368709120,
+  "sections": [
+    {
+      "name": ".text",
+      "virtual_size": 71141448,
+      "rva": 4096,
+      "raw_size": 71141888,
+      "raw_offset": 1024
+    },
+    {
+      "name": ".rdata",
+      "virtual_size": 17123946,
+      "rva": 71147520,
+      "raw_size": 17124352,
+      "raw_offset": 71142912
+    },
+    {
+      "name": ".data",
+      "virtual_size": 10040928,
+      "rva": 88272896,
+      "raw_size": 8571392,
+      "raw_offset": 88267264
+    },
+    {
+      "name": ".pdata",
+      "virtual_size": 2933220,
+      "rva": 98316288,
+      "raw_size": 2933248,
+      "raw_offset": 96838656
+    },
+    {
+      "name": "_RDATA",
+      "virtual_size": 1040,
+      "rva": 101253120,
+      "raw_size": 1536,
+      "raw_offset": 99771904
+    },
+    {
+      "name": ".rsrc",
+      "virtual_size": 79496,
+      "rva": 101257216,
+      "raw_size": 79872,
+      "raw_offset": 99773440
+    },
+    {
+      "name": ".reloc",
+      "virtual_size": 1176160,
+      "rva": 101339136,
+      "raw_size": 1176576,
+      "raw_offset": 99853312
+    }
+  ],
+  "exception_directory": {
+    "rva": 98316288,
+    "bytes": 2933220,
+    "entries": 244435
+  },
+  "current_observed_stat": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+}

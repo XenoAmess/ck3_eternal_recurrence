@@ -1,0 +1,58 @@
+{
+  "schema": "xar.r189.preview-native-failure-extract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:35:59.127743+00:00",
+  "sources": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-preview-context-a02.json",
+      "bytes": 141818,
+      "sha256": "3384393f7ff965caabf3c538b1d4f9aa84c368eb57cd1299a31b2762085070bb"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\state-a01\\native-session\\driver-state.json",
+      "bytes": 253534,
+      "sha256": "ba316db4558c7b27c28ae3389656dd499731477dd129d499294ba16d0423c239"
+    }
+  ],
+  "context": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "date_raw": 53149080,
+    "paused": true,
+    "episode_run_id": "native-31254-93e28f54f041"
+  },
+  "army18": {
+    "army_id": 18,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "current_province_id": 2635,
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "in_combat": false,
+    "retreating": false
+  },
+  "native_history_matches": [
+    {
+      "json_pointer": "/command_history/7",
+      "value": {
+        "index": 8,
+        "command": "preview-move-army-18-to-2644",
+        "ok": false,
+        "error": "_NativeCommandRejectedError: native gameplay step failed: CK3 move-army route preview is unavailable"
+      }
+    },
+    {
+      "json_pointer": "/command_history/8",
+      "value": {
+        "index": 9,
+        "command": "preview-move-army-18-to-2610",
+        "ok": false,
+        "error": "_NativeCommandRejectedError: native gameplay step failed: CK3 move-army route preview is unavailable"
+      }
+    }
+  ],
+  "metadata_outbox_empty_at_read": true,
+  "SDK_calls": 0,
+  "large_Driver_query_reads": 0
+}

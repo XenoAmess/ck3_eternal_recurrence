@@ -1,0 +1,51 @@
+{
+  "schema": "xar.r190-gc-thread-daily-task-readback.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:07:53.884882+00:00",
+  "policy_version": "1.0.0",
+  "fresh_free_bytes": {
+    "C:/": 33551491072,
+    "D:/": 50487525376
+  },
+  "prior_exact1000": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\storage-followup-r188-a01\\reclaim-execution-a01\\ROOT-DELIVERY.actual-a01.json",
+    "sha256": "0a93a54f9a6f836e9a24a204525a86f29f6271168fae7289493b68115bc9abd5",
+    "actual_deleted": 1000,
+    "C_allocation_already_retired_bytes": 1642663936,
+    "new_credit_from_prior_receipt": 0
+  },
+  "task": {
+    "name": "\\XAR-CK3-Storage-Daily-ReadOnly-Inspection",
+    "enabled": true,
+    "state": 3,
+    "last_task_result": 0,
+    "LastRunTime_COM_raw": "2026-10-17 04:00:00+00:00",
+    "NextRunTime_COM_raw": "2026-10-18 04:00:00+00:00",
+    "do_not_reinterpret_raw_COM_timezone": true,
+    "XML_start_boundary": "2026-10-17T04:00:00+08:00",
+    "run_level": 0,
+    "start_when_available": true,
+    "action_matches_original": true,
+    "inspector_sha_matches_original": true,
+    "latest_report": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports\\20261016T093948126121Z-daily.json",
+      "sha256": "8d2c523bda058c4b36a06926fe6f977125c02b2588f18210893d6c6a313dcd19",
+      "bytes": 16476,
+      "observed_at_utc": "2026-10-16T09:39:48.126121+00:00",
+      "counts": {
+        "already_unavailable": 44,
+        "review_due": 1
+      },
+      "deletions": 0,
+      "trigger": "daily"
+    },
+    "this_check_called_Run": false,
+    "this_check_changed_task": false,
+    "scope": "Daily explicit-ledger readonly inspection, not automatic discovery/deletion of all project assets.",
+    "automatic_gc": false
+  },
+  "new_deletions": 0,
+  "E04_R190_a30_source_save_scene_touched": false,
+  "main_repo_mutations": 0,
+  "game_SDK_desktop_actions": 0
+}

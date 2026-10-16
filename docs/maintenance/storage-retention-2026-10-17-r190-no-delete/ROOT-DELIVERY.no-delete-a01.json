@@ -1,0 +1,34 @@
+{
+  "schema": "xar.r190-storage-worker-delivery.no-delete.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:15:22.484332+00:00",
+  "policy_version": "1.0.0",
+  "actual_deleted_count": 0,
+  "actual_C_allocation_credit_bytes": 0,
+  "actual_D_allocation_credit_bytes": 0,
+  "qualification": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\QUALIFICATION.no-delete-a01.json",
+    "bytes": 6591,
+    "sha256": "2967e9a0c8971c210a388b8718b5b2cf0cb32f0bda6e2ceede9f288566bd9c05"
+  },
+  "daily_task_readback": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\DAILY-TASK.actual-a01.json",
+    "bytes": 1944,
+    "sha256": "0a88a5322c7ccd5cb8edaedaf601b3079802b55556ddbebd1e27c03d19ab4d92"
+  },
+  "daily_key_candidate_unapplied": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\ROOT-CANDIDATE.actual-a01.json",
+    "bytes": 3878,
+    "sha256": "94ff3febef302b75284e96238a757b1e279bc964d0a556108a2b93d4a99c4e71"
+  },
+  "relative_patch": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\daily-local-key.relative-a02.patch",
+    "bytes": 6943,
+    "sha256": "f326b4236229a702013de9c063982f6856edfccb760626ec2afd5cd06ec6b17a"
+  },
+  "all_external_files_before_this_receipt_bytes": 59075,
+  "candidate_lane_before_this_receipt_bytes": 34795,
+  "automatic_gc": false,
+  "main_or_installed_mutations": 0,
+  "boundary": "No claim that E02 was formally delivered, that proposed keeper equality was freshly hashed, that LastResult0 means new inspection, or that readonly scheduling is automatic GC."
+}

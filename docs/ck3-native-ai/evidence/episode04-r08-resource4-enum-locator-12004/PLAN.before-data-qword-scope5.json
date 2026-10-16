@@ -1,0 +1,101 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-two-pinned-literal-QWORD-refs-data",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T19:41:20.861287+00:00",
+  "question": "Does .data contain QWORD preferred-VA references to the two held standalone GetCurrency/barter_goods literals?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Root-approved fifth scope: only.data8571392B, two exact pinnedVAs; no.rdataRVA32 or new strings/callee/body",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Same exact image/file identity as first literal packet; preferredVA neverruntimeVA",
+    "producer_trigger": "not-applicable",
+    "producer": "Exact QWORD patterns derived from pinned literal receipt; no instruction boundary or business interpretation",
+    "caller": "GetCurrency44DB128 and barter_goods450BB80 exact literal locations from prior scope",
+    "consumer": "Potential native named registration/enum rows, not yet source-confirmed handlers",
+    "cache_lifetime": "Static bytes only",
+    "expected_signal": "<=32 raw QWORD-reference rows with<=128Bcontext each; any0/truncation remains explicit",
+    "zero_sample_meaning": "No QWORD match in .data only, not absence of native name binding or business resource.",
+    "stop_condition": "One.data8571392B read; <=16rows/96B; cumulative185103872B sections/9reads; header608B separate; body0; package<=131072B. Zero/no named handler closes this lane.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "literal",
+      "layer": "locator",
+      "path": "LITERALS.actual.json",
+      "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual two name literal RVAs and static preferredVAs; no handler mapping"
+    },
+    {
+      "id": "corrected-RIP",
+      "layer": "locator",
+      "path": "NAMED-RIP.overlap-complete.actual.json",
+      "sha256": "243302d54fe3bda5f476dcbd61e2ee0892c741f5a727f594c55684778423b4e1",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "No named8B/8D RIPcandidate in complete specified matcher; no semantic closure"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "literal",
+      "label": "Two exact literal preferredVAs"
+    },
+    {
+      "id": "data",
+      "label": "Named QWORD data references"
+    },
+    {
+      "id": "handler",
+      "label": "Registration/handler/enum UNKNOWN"
+    }
+  ],
+  "edges": [
+    {
+      "id": "refs",
+      "from": "literal",
+      "to": "data",
+      "label": "Exact8B data reference locator",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "Any actual data references to the two literalVAs?"
+    },
+    {
+      "id": "meaning",
+      "from": "data",
+      "to": "handler",
+      "label": "Raw row is not a verified handler",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "What actual schema/registration/handler does the row encode?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "Two preferredVA data references",
+      "status": "pending",
+      "evidence": [
+        "literal"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Payment/business state",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No SDK/game/desktop/state action"
+    }
+  ]
+}

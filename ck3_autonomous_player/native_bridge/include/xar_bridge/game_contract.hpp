@@ -2433,6 +2433,20 @@ struct ArmyProvinceSupplySnapshot {
                          const ArmyProvinceSupplySnapshot &) = default;
 };
 
+enum class PreviewMoveArmyUnavailableReason {
+  unspecified,
+  military_bindings_incomplete,
+  military_snapshot_unavailable,
+  path_constructor_return_mismatch,
+  worker_pre_snapshot_unavailable,
+  worker_frame_not_ready,
+  worker_submit_failed,
+  worker_wait_failed,
+  worker_reclaim_failed,
+  worker_frame_unstable,
+  worker_exception,
+};
+
 struct PreviewMoveArmyResult {
   PreviewMoveArmyStatus status = PreviewMoveArmyStatus::unavailable;
   std::int32_t army_id = -1;
@@ -2442,6 +2456,8 @@ struct PreviewMoveArmyResult {
   // Exact .3 additive observation. Its failure does not alter movement legality.
   std::optional<ArmyProvinceSupplySnapshot> province_supply;
   std::optional<ArmyCountyEntryPreviewConditionV1> county_entry_condition_v1;
+  PreviewMoveArmyUnavailableReason unavailable_reason =
+      PreviewMoveArmyUnavailableReason::unspecified;
 
   friend bool operator==(const PreviewMoveArmyResult &,
                          const PreviewMoveArmyResult &) = default;

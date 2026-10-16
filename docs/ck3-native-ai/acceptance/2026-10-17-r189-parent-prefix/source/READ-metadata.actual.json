@@ -1,0 +1,53 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:38:05.091876+00:00",
+  "mode": "metadata",
+  "plan_path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/source-plan-metadata.json",
+  "plan_sha256": "8416596af172496ce8b5f5781369399398133f103108c3fbf2909dac3bbd0966",
+  "ordinary_check_path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/PLAN-CHECK-metadata.actual.json",
+  "reader_source_sha256": "0d63112d4b7d9661a372873386210542e69dec3827bdee7ca5f48aed3915b039",
+  "identity_path": "C:/ck3-e04-resume-20261015-a01/frozen-game-12004/IDENTITY.actual.json",
+  "identity_sha256": "15ad8093ca23930d7d440752518d3ce89097dec1b00fe234a5115011782b62b9",
+  "qualified_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "exe_stat_before": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000
+  },
+  "exe_stat_after": {
+    "size": 101040248,
+    "mtime_ns": 1792052259095683000
+  },
+  "whole_EXE_hash_recomputed": false,
+  "reused_sectionmap_and_pdata_cache": {
+    "path": "C:/ck3-e04-resume-20261015-a01/refill-entry3ac1c00-source-a16/PE-CACHE.actual.json",
+    "sha256": "dc51adbfe74e5f502f430982b5268af204af9af39f05884ebdab5e278a8ddc9b"
+  },
+  "actual_parent_call": {
+    "caller_path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3E4C090.bin",
+    "caller_sha256": "f166a756656cb0276c7c89dd74107c716d264c31f891d16cfed3b247d19ca292",
+    "rva": "3E4C0C6",
+    "bytes": "e885fbffff",
+    "target": "3E4BC50"
+  },
+  "cumulative_bytes": {
+    "metadata": 40,
+    "function": 0
+  },
+  "cumulative_reads": 3,
+  "error": null,
+  "result": {
+    "extent": {
+      "begin_rva": "3E4BC50",
+      "end_rva_exclusive": "3E4BEAC",
+      "size": 604,
+      "pdata_index": 212455,
+      "unwind_rva": "53E44DC",
+      "unwind_version": 1,
+      "unwind_flags": 0,
+      "unique_entry": true,
+      "chained_runtime_function": null
+    },
+    "body_admissible": true
+  },
+  "no_game_SDK_desktop_query_build_main_write": true
+}

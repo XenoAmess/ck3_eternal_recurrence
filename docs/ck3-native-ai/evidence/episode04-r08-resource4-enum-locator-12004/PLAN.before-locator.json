@@ -1,0 +1,97 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-resource4-three-name-rdata-locator",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T19:28:58.708792+00:00",
+  "question": "Locate only three named native currency/flag literals for a later explicit registration/handler proof of selector4; no business naming from positions.",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Root authorized exact file metadata and target-only .rdata literals; no .text, SDK, desktop or build",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact image/current same-file identity only; no runtime pointer/session qualification",
+    "producer_trigger": "not-applicable",
+    "producer": "Literal registrations not yet located; exact targets GetCurrency/barter_goods/government_use_barter_goods only",
+    "caller": "Held28B9950 selector4 writes context4A0 via2BAFF30",
+    "consumer": "Vanilla HUD GetPlayer.GetCurrency(barter_goods); native registration and enum connection unknown",
+    "cache_lifetime": "Static file bytes; no runtime cache/cadence claim",
+    "expected_signal": "Exact literal RVA/encoding and <=128B context to nominate a later bounded data-pointer registration proof",
+    "zero_sample_meaning": "Zero literal hits in this actual .rdata scope does not prove no registration, no currency, zero payment or alternate encoding elsewhere",
+    "stop_condition": "PE headers/sectionmap<=65536B; literal read<=134217728B/32reads; <=32 output hits,<=128B context each; zero .text/wholehash; output<=131072B",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "held",
+      "layer": "source-contract",
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r08-rate-resource4-application-12004.md",
+      "sha256": "598c6d12bfd6d6225209b88a98d33a9cbbf229ffeb6b9fe4f01f51bcf7956311",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Existing selector4/context4A0 direct source, with business name explicitly unknown"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "held",
+      "label": "Held selector4 ->context4A0"
+    },
+    {
+      "id": "names",
+      "label": "Three explicit names"
+    },
+    {
+      "id": "literal",
+      "label": "Native .rdata literal RVA unknown"
+    },
+    {
+      "id": "semantic",
+      "label": "Registration/handler/enum mapping unknown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "locate",
+      "from": "names",
+      "to": "literal",
+      "label": "Target-only bounded literal locator",
+      "status": "unknown",
+      "evidence": [
+        "held"
+      ],
+      "open_question": "Are named literals in actual .rdata?"
+    },
+    {
+      "id": "name",
+      "from": "literal",
+      "to": "semantic",
+      "label": "Name is not handler or selector proof",
+      "status": "unknown",
+      "evidence": [
+        "held"
+      ],
+      "open_question": "Which actual registration rows and source handlers connect to selector4?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "Three-name literal locations",
+      "status": "pending",
+      "evidence": [
+        "held"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Payment/player wallet result",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No live action or business qualification"
+    }
+  ]
+}

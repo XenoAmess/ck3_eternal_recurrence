@@ -1,0 +1,74 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:51:46.493103+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "bootstrap_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\bootstrap-result.json",
+    "bytes": 15366,
+    "sha256": "369d02519bb3c5d1d95c12dcea05f44ea54343721b27688ef9bda551284fb733"
+  },
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\film-input.actual-a01.json",
+    "bytes": 6945,
+    "sha256": "e41fe58438673bc5e84de352f6bccd6b8ed0f9a95b2540f0f26dd3a7f82ce7b6"
+  },
+  "normal_save": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+    "bytes": 4002,
+    "sha256": "92135e63aa31a388e7d0512ea76fbd9a9e74bea1d62eef74149cdb6f82d09601"
+  },
+  "guarded_click": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r189-window-capture-a01/r189-film-a01-close-a01/normal-exit/exit-desktop-click-a01.png.json",
+    "bytes": 1677,
+    "sha256": "bfffac87e16f14e1a424c620f0244fb5150e4019bc5380efa68d6c7e776e735e"
+  },
+  "confirmation_source_binding": {
+    "route": "original_OPEN_EXIT_source",
+    "original_screenshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-film-a01-close-a01\\normal-exit\\confirmation-source.png",
+      "bytes": 1675146,
+      "sha256": "d459ac4119f46ca9e4f11730f1193ba22c85afdc7be814ac39af25ded1dd7448"
+    }
+  },
+  "observer_cleanup": {
+    "status": "NOT_CONFIGURED",
+    "observer_started_by_close_helper": false
+  },
+  "bootstrap_observation": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-film-a01-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+    "bytes": 927,
+    "sha256": "b548d55a46759901e9aec08e880da745c371a4d5dabd6f121072353d797087c3"
+  },
+  "journal": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\screen-lease-journal.jsonl",
+    "bytes": 14679,
+    "sha256": "7b12a3c5fedfaa211edf33a1542031d55420d2a8151bf2a476d6b6dec94cdcf1"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "D:\\workspace\\.codex-task-bus",
+    "--expected-cli-sha256",
+    "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+    "release-screen-cas",
+    "--task",
+    "e04-live-20261017-r0189",
+    "--expected-sequence",
+    "5869",
+    "--summary",
+    "machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0189 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged"
+  ],
+  "operation_replay_forbidden": true,
+  "exit_code": 0,
+  "stdout": "{\n  \"schema\": \"codex.task_bus.v1\",\n  \"ok\": true,\n  \"task\": {\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"6bf30840af44231653f8e914389b59c8798f2cc1\"\n    },\n    \"last_sequence\": 5870,\n    \"next_step\": \"\",\n    \"pid\": 26600,\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"resources\": [],\n    \"schema\": \"codex.task_bus.v1\",\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0189 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"task_id\": \"e04-live-20261017-r0189\",\n    \"updated_at_utc\": \"2026-10-16T19:51:46.437315+00:00\"\n  },\n  \"event\": {\n    \"schema\": \"codex.task_bus.v1\",\n    \"sequence\": 5870,\n    \"event_id\": \"121aa920bb954a0ea37825c69e52205a\",\n    \"timestamp_utc\": \"2026-10-16T19:51:46.438562+00:00\",\n    \"kind\": \"completed\",\n    \"task_id\": \"e04-live-20261017-r0189\",\n    \"to\": [\n      \"*\"\n    ],\n    \"state\": \"done\",\n    \"summary\": \"machine_id desktop-3fevhd2-1c74096080: desktop-3fevhd2-1c74096080--vanilla--R0189 normal checkpoint, stock UI process_exit0, SDK/keeper/recorder empty; dynamic/signoff claims unchanged\",\n    \"next_step\": \"\",\n    \"resources\": [],\n    \"repo\": \"D:\\\\workspace\\\\ck3_eternal_recurrence\",\n    \"git\": {\n      \"branch\": \"master\",\n      \"dirty_entries\": 0,\n      \"head\": \"6bf30840af44231653f8e914389b59c8798f2cc1\"\n    }\n  }\n}\n",
+  "stderr": "",
+  "task_done_resources_empty": true,
+  "normal_exit_zero": true,
+  "game_exit_code": 0,
+  "capacity_reservation_returned": false,
+  "storage_followup": "Root must perform shared-policy close check and return exact reservation separately"
+}

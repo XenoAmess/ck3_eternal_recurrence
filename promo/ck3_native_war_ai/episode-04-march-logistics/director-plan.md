@@ -1,5 +1,19 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+2026-10-17同批R09补注（machine_id `desktop-3fevhd2-1c74096080`）：[R0176库存/容量/权重恢复](../../../docs/ck3-native-ai/episode04-r0176-split-merge-recovered-supply-12004.md)从既有三原raw的69条exact byte-offset slices恢复旧场输入，当前production消费者复算30+70=100=poststock/postcap。等于cap不是clamp阳性，Army18空DATA角色转移导致的strictfalse保留；反方向same-normalS0与合格30–60秒动态仍缺，R09整卡false。此为本轮新离线恢复，不是R189/R190新实机、actor或source部署信用；所有分子保持不变。
+
+
+## 2026-10-17 R189实际与下一源码摄入补记
+
+`machine_id: desktop-3fevhd2-1c74096080`。本轮实机来源为冻结source `6bf30840af44231653f8e914389b59c8798f2cc1` / nativea30；[R189便携专题](../../../docs/ck3-native-ai/episode04-r189-window-capture-12004.md)与[原件索引](../../../docs/ck3-native-ai/evidence/episode04-r0189-20261017/source-index.json)记录24.800秒/744帧，实际完成8日，day9战斗触发停止，正常保存/游戏exit0/释放。不能写成100/110秒、完成第9日、全片clean或完整人工1×；原始视频仅pin，不在此小包复制。
+
+[R06本场stable8前缀](../../../docs/ck3-native-ai/episode04-r189-refill-parent-prefix-12004.md)已是actual：两次一致、0..7无eligible provider，RVA列表为`[]`；depth8与更深receiver未知，未选择receiver、未执行provider/toggle/ADD。独立完整604B `3E4BC50` source及[便携显式检查入口](../../../docs/ck3-native-ai/acceptance/2026-10-17-r189-parent-prefix/verify_portable_explicit.py)可供视频与agent复用，旧assert原件保留；这段direct body不是已证纯getter，helper/indirect副作用仍unknown。[R04两次preview unavailable](../../../docs/ck3-native-ai/episode04-r189-county-preview-unavailable-12004.md)不是县条件false；新6path原因publisher及3例fixture仅AUTHORED_NOTRUN，须后续coherent build与独立新资格，不能反写a30实际来源。
+
+[R08copy incoming](../../../docs/ck3-native-ai/episode04-r08-copy-incoming-12004.md)一次E8-only `.text` locator读71141448B/17reads、0候选，止于该编码范围；[resource4 enum locator](../../../docs/ck3-native-ai/episode04-r08-resource4-enum-locator-12004.md)保留覆盖修正和精确读取账本。两者都是有限静态定位；实际同值copy不等于付款，资源4业务名、c/d producer、paid/payer/cadence仍unknown。研究 **6/14**、业务 **4/11**、合格动态 **0/11**、正式ABC **0/3** 不变，69段口播/声音/23静态图不等于合格动态或最终human signoff。
+
+此前243file已push于exact `6bf30840af44231653f8e914389b59c8798f2cc1`，Root实际gh核验[Official Runner CI 38951008899](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38951008899)与[Linear history 38951008957](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38951008957)均completed/success；此处不是新候选CI结果。本批169条路径已在R190正常闭场后按pins入库，新增六组canonical正回放与storage主仓导入测试通过；R04新增native fixture仍AUTHORED_NOTRUN，后续a31 coherent构建/资格另取。最终提交与CI状态以Git历史和对应官方run为准，不把Python正回放外推成新native/live。以下旧时点HEAD/未提交/native NOT RUN说明保留历史范围，不覆盖这条较新实际补记。
+
+
 2026-10-17 当前导演接续（`machine_id: desktop-3fevhd2-1c74096080`，核至2026-10-16 18:41 UTC）：[R186结果](r186-capture-result-2026-10-17.md)为14日／36.700秒，陌生事件依原生第一项处理、正常闭场；[R187](../../../docs/ck3-native-ai/episode04-r187-prestart-failures-12004.md)两次启动前RED均无新片；[R188片段](r188-capture-result-2026-10-17.md)原生11日Mar20→Mar31、30.466秒/914帧，但片尾有限抽帧只直接见Mar30，day12 hook失败。独立[片后跨月与闭场](r188-monthroll-close-result-2026-10-17.md)完成Mar31→Apr1并保存、游戏exit0、释放屏幕；不能剪成原片内月界。两条+2C0/+2C8同值写适合作“copy来源与未证明付款”的审慎解释，不作已付军费镜头。研究6/14、业务4/11、合格动态0/11、正式ABC0/3不变；69段口播草稿/已有声音仍需最终镜头、完整1×审阅与签核。[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)和[新交接](../../../docs/handover/2026-10-17-war-episode04-r188-and-source-intake.md)供拍摄与智能体共用。以上实机绑定冻结d05来源；当前rebase HEAD53c及工作树新源码须另行构建/实机，旧来源不重写。下文旧时点计划保留历史口径。
 
 2026-10-16 R185最新接续（machine_id: `desktop-3fevhd2-1c74096080`；观察截至15:05 UTC）：[R185拍摄结果](r185-capture-result-2026-10-16.md)、[实机专题](../../../docs/ck3-native-ai/episode04-r185-window-capture-12004.md)及[精确原件索引](../../../docs/ck3-native-ai/evidence/episode04-r0185-20261016/source-index.json)为本期新现场入口。R184正常保存接续后原生12/12自然日推进至03-05；Army18面板1184→1173仅为跨月可见变化，不授R03物理扣兵归因。客户区原片46.466秒／1394帧完整解码，正常保存／游戏exit0／释放屏幕；80秒最低录制hold时C卷新预算检查失败，故尚无合格clean镜头。研究6/14、业务4/11、合格动态0/11、正式ABC0/3不变。知识与代码复用以[当前执行图](../../../docs/ck3-native-ai/episode04-current-execution-map-12004.md)进入R06本地前缀与R08 raw贡献／语义边界；a29/a30消费者14项测试通过不代表新native或现场已验收。R186的D卷scene、`legacy_promoroot` profile核对及C卷768MiB新构建预算仍待实际准入与执行。下文各日期状态保留其当时范围。

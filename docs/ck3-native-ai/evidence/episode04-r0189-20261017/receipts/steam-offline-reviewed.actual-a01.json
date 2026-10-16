@@ -1,0 +1,31 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T19:13:52.491748+00:00",
+  "current_offline_ui_observed": true,
+  "reviewer": "Root explicitly directly reviewed both original frames with changing nonce beside Steam offline text",
+  "observed_text": [
+    "Steam 当前处于离线模式",
+    "上线",
+    "离线模式"
+  ],
+  "screenshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-live-challenge-a01\\full-original-2.png",
+    "bytes": 487291,
+    "sha256": "06826a29373d1872d284e62b350a0093df1352c6814b45109a99195e0cfa5431"
+  },
+  "challenge": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-live-challenge-a01\\challenge.json",
+    "bytes": 1366,
+    "sha256": "262355ba09c1efa482c1978c1986c6ab2bebd4b904c14934ad816bc527e6dedf"
+  },
+  "challenge_nonce_read_from_second_original": "63A792ED4492",
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "screen_task": "e04-live-20261017-r0189",
+  "screen_sequence": 5848,
+  "freshness_basis": "Root-reviewed two new display nonces and offline pixels; no shell clock freshness inferred",
+  "game_started": false,
+  "steam_online_toggled": false
+}

@@ -1,0 +1,154 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-R08-29591E0-real-sameframe-continuations",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T20:01:04.024390+00:00",
+  "question": "Close only the real fallthrough2959214 and JE29592B1 extents after proving explicit unwind relationship.",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Root-approved173B continuation only, unwindheads/CHAININFO tuples; cumulativecode225/meta252/reads26; no new callee",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact static build only, no live identity or payer qualification",
+    "producer_trigger": "not-applicable",
+    "producer": "Candidate context-taking native function29591E0; writer/owner role unknown before read",
+    "caller": "Held full695B28A63E0 actual sourceCALL28A65BE",
+    "consumer": "Caller iterates outputpointerarray then2468AC0 values->entryRDX indexed output, not confirmed wallet",
+    "cache_lifetime": "Static body; refresh/invalidation/cadence unknown",
+    "expected_signal": "Full unique ordinary functionextent and receiver dataflow; direct18/20/28/30 writes or bounded enumeration semantics",
+    "zero_sample_meaning": "No direct fixedreceiver store means own-body fact only; aliases/callees remain unknown; no zero cost inference",
+    "stop_condition": "Read only heldextent2959214..29592B1 and29592B1..29592C1 after sameframeproof; stop RET/newexternaledge; no claim farther logic complete.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "caller",
+      "layer": "source-contract",
+      "path": "CALLER.held.actual.json",
+      "sha256": "6d3999ba41fef0deeb08027d631082974dcec3e3cb9808d593d2e7d999d5c758",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual sourceCALL and same context receiver, source+18/+20 snapshots precede it"
+    },
+    {
+      "id": "map",
+      "layer": "locator",
+      "path": "PE-MAP.held.actual.json",
+      "sha256": "283930c9f99cd6522f350545f224b1bce3b4aaf3ecddd34ff8de83b5fc47670a",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Held PE section map and exception directory; no new sweep"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "ctx",
+      "label": "C=Character1C0; raw18/20/28/30"
+    },
+    {
+      "id": "copy",
+      "label": "28A6454/645F copies18->2C0,20->2C8"
+    },
+    {
+      "id": "next",
+      "label": "28A65BE calls29591E0(C,&localDescriptor)"
+    },
+    {
+      "id": "list",
+      "label": "local8Bpointerarray->2468AC0->indexedoutput"
+    },
+    {
+      "id": "settlement",
+      "label": "Separate28A6D10 consumes2C0/2C8/28/30"
+    },
+    {
+      "id": "wallet",
+      "label": "Same-invocation military paid/payer/cadenceUNKNOWN"
+    }
+  ],
+  "edges": [
+    {
+      "id": "copy-edge",
+      "from": "ctx",
+      "to": "copy",
+      "label": "Held raw source copies only",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "caller-edge",
+      "from": "copy",
+      "to": "next",
+      "label": "Later conditional call in same function, not runtime proof",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "output",
+      "from": "next",
+      "to": "list",
+      "label": "Candidate output consumed by caller; business role unknown",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "producer",
+      "from": "next",
+      "to": "ctx",
+      "label": "Does bodywrite raw fields or revealowner?",
+      "status": "unknown",
+      "evidence": [
+        "caller"
+      ],
+      "open_question": "Only this callee extent will be read"
+    },
+    {
+      "id": "apply",
+      "from": "ctx",
+      "to": "settlement",
+      "label": "Consumer known separately, current producer linkage unknown",
+      "status": "unknown",
+      "evidence": [
+        "caller"
+      ],
+      "open_question": "No same refresh/application invocation proved"
+    },
+    {
+      "id": "paid",
+      "from": "settlement",
+      "to": "wallet",
+      "label": "Militarycategory+sameapplication+payer+cadence remain unknown",
+      "status": "unknown",
+      "evidence": [
+        "caller"
+      ],
+      "open_question": "No rate/cache->paid upgrade"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "One context-owner candidatebody",
+      "status": "pending",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Actualpaid/payer/cadence",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No runtime actionauthorized in this lane"
+    }
+  ]
+}

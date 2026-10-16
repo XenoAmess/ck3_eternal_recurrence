@@ -1,0 +1,284 @@
+{
+  "schema": "xar.e04.r08.resource4-name-locator-source.final-a01",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-16T19:43:28.680888+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification_identity_sha256_reused": "47ff2b7951cc37faf49cd2773382306ea3256aba597a29406f5ff3fc8c3356e9",
+  "qualification_layer": "Previously qualified SHA reused, actual file stat identity compared before/after all scopes; no current whole hash.",
+  "scope": "Only three named UTF8/UTF16 literals in.rdata; two pinned QWORD VAs in.rdata/.data; GetCurrency target-only8B/8D RIP raw locator in.text. No function body or handler/native-enum binding.",
+  "actual_findings": [
+    "Unique standalone GetCurrency44DB128 and barter_goods450BB80 in.rdata. Other barter_goods suffix hits are explicitly labelled.",
+    ".rdata contains one QWORD pointer to standalone barter_goods at46FC9F8; adjacent rawQWORD0x3E2D is a token ID observation, not selector4.",
+    "Initial non-overlap RIP matcher returned0 but has a proven overlapping coverage defect. Original immutable result and correction retained.",
+    "Approved independent-opcode corrected matcher tested693550 candidate8B/8D+mod00/rm101 starts; target44DB128 matches0.",
+    "Approved.data8571392B QWORD scan found0 for both pinned literalVAs. No further EXE section or matcher expansion."
+  ],
+  "limits": [
+    "Negative results describe explicitly bounded collector/matcher scopes. Whole sections were not retained; portable verifier verifies small retained bytes/hashes/ledgers and synthetic correction, not fresh full-section absence.",
+    "Raw pointer/token/string proximity does not name selector4/context+4A0. Player-wallet same-slot mapping, authoritative enum mapping, paid amount, payer and cadence remain unproved.",
+    "No live business claim, game/SDK/desktop/build action, main-tree write or whole-EXE hash in this package. Historical local observations only apply to recorded machine/time."
+  ],
+  "all_EXE_read_ledger": [
+    {
+      "file_offset": 0,
+      "bytes": 64,
+      "kind": "metadata",
+      "raw_hex": "4d5a90000300000004000000ffff0000b80000000000000040000000000000000000000000000000000000000000000000000000000000000000000058010000"
+    },
+    {
+      "file_offset": 344,
+      "bytes": 24,
+      "kind": "metadata",
+      "raw_hex": "5045000064860700359cc36a0000000000000000f0002200"
+    },
+    {
+      "file_offset": 368,
+      "bytes": 240,
+      "kind": "metadata",
+      "raw_hex": "0b020e1d008a3d04000ac801000000004042220400100000000000400100000000100000000200000600000000000000060000000000000000501c0600040000a16206060200608100004000000000000010000000000000000010000000000000100000000000000000000010000000e05142058000000060524205f401000000100906883601000030dc05e4c12c00009805067828000000500a0660f21100c0ba9f04540000000000000000000000000000000000000080bc9f042800000020bb9f0438010000000000000000000000a03d04981b0000000000000000000000000000000000000000000000000000"
+    },
+    {
+      "file_offset": 608,
+      "bytes": 280,
+      "kind": "metadata",
+      "raw_hex": "2e7465787400000048883d0400100000008a3d0400040000000000000000000000000000200000602e726461746100006a4a050100a03d04004c0501008e3d04000000000000000000000000400000402e646174610000006036990000f0420500ca820000da4205000000000000000000000000400000c02e70646174610000e4c12c000030dc0500c22c0000a4c505000000000000000000000000400000405f524441544100001004000000000906000600000066f205000000000000000000000000400000402e72737263000000883601000010090600380100006cf205000000000000000000000000400000402e72656c6f63000060f2110000500a0600f4110000a4f30500000000000000000000000040000042"
+    },
+    {
+      "file_offset": 71142912,
+      "bytes": 17124352,
+      "kind": "literal_rdata",
+      "raw_hex": null
+    },
+    {
+      "file_offset": 71142912,
+      "bytes": 17124352,
+      "kind": "literal_pointer_data_locator"
+    },
+    {
+      "file_offset": 1024,
+      "bytes": 71141888,
+      "kind": "GetCurrency_only_RIP_LEA_MOV_byte_locator"
+    },
+    {
+      "file_offset": 1024,
+      "bytes": 71141888,
+      "kind": "GetCurrency_only_independent_opcode_RIP_locator"
+    },
+    {
+      "file_offset": 88267264,
+      "bytes": 8571392,
+      "kind": "two_pinned_preferredVA_QWORD_data_locator"
+    }
+  ],
+  "sections_read_bytes": 185103872,
+  "metadata_read_bytes": 608,
+  "read_calls": 9,
+  "body_source_bytes": 0,
+  "next_testable_edge": "Need independently located named GetCurrency or HasBarterGoods registrar/handler, or another authority binding native rawselector4 to name. Do not assume ten-slotvector ordering or token0x3E2D equals rawselector4.",
+  "resource4_business_name": null,
+  "player_same_wallet_slot_confirmed": false,
+  "paid_military_amount_raw": null,
+  "payer": null,
+  "cadence": null,
+  "files": [
+    {
+      "path": "CHECK-RENDER.before-data-qword-scope5.actual.json",
+      "bytes": 2398,
+      "sha256": "a46fa22fa104b80f0960d6a712a9adb0fedc10b65ce127437175bada067b3780"
+    },
+    {
+      "path": "CHECK-RENDER.before-overlap-complete-RIP.actual.json",
+      "bytes": 2433,
+      "sha256": "e234f0548aa66d14253223aff681f3ead9a18f16d4fba1cc8ffbdf3bebeb9311"
+    },
+    {
+      "path": "CHECK.before-locator.actual.json",
+      "bytes": 1686,
+      "sha256": "de98b632592461f97ab9bdcaf6692ca13f6725fdde0b6be42f1e7b913ce0da06"
+    },
+    {
+      "path": "CHECK.before-named-RIP.actual.json",
+      "bytes": 1688,
+      "sha256": "174b23eda797a812b10efb6f2130642d3e74a8c4eed7bc3c553785d874089013"
+    },
+    {
+      "path": "CHECK.before-qword-refs.actual.json",
+      "bytes": 1689,
+      "sha256": "029d0794fcc7e58ed1d4522ce0da26e0b333a60d0900d55076283f99d75b3e3b"
+    },
+    {
+      "path": "DATA-QWORD-REFS.actual.json",
+      "bytes": 2455,
+      "sha256": "69a3500dea10fd0ebdd5b913a05357da37b8cd92a6e9119b3682073accfb95e2"
+    },
+    {
+      "path": "GRAPH.data-qword-scope5.md",
+      "bytes": 3613,
+      "sha256": "132eacd0b9c774078fb077e78079799c3caeee7bfa05065dbbc6867712ad6b74"
+    },
+    {
+      "path": "GRAPH.literal-plan.md",
+      "bytes": 3648,
+      "sha256": "e857a4202c8da1d1f13be40967aec15c20d27c999057b2dbb800e6b22493578b"
+    },
+    {
+      "path": "GRAPH.named-RIP-plan.md",
+      "bytes": 3523,
+      "sha256": "ccdf7c1b8322677a237574bc352d354ebdd24313e11a7baab0446f2d6fd4b7a1"
+    },
+    {
+      "path": "GRAPH.overlap-complete-RIP-plan.md",
+      "bytes": 3983,
+      "sha256": "4300cd7854d826888fc5facb93b0c9cf2d28a03bce1fff8a6a949bfe73a1f41d"
+    },
+    {
+      "path": "GRAPH.qword-plan.md",
+      "bytes": 3422,
+      "sha256": "971ff07fa3682140ec9ebcef1de33ae80408d3c802cd3a99aa5897b27bdec976"
+    },
+    {
+      "path": "LITERALS.actual.json",
+      "bytes": 10501,
+      "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121"
+    },
+    {
+      "path": "NAMED-RIP-COVERAGE-CORRECTION.actual.json",
+      "bytes": 1445,
+      "sha256": "965c0ac7ab1d455828fc8dd7761ed4ae1ec676b8b1d63709bd364690b8d81b2b"
+    },
+    {
+      "path": "NAMED-RIP.actual.json",
+      "bytes": 1895,
+      "sha256": "d52984c778ec7219a314402f218cb891c0f1a57f85343b7f3b90e0dcc7a10a38"
+    },
+    {
+      "path": "NAMED-RIP.overlap-complete.actual.json",
+      "bytes": 2633,
+      "sha256": "243302d54fe3bda5f476dcbd61e2ee0892c741f5a727f594c55684778423b4e1"
+    },
+    {
+      "path": "PACKAGE-REPACK.actual.json",
+      "bytes": 2702,
+      "sha256": "87a4e03cb537c99ca69b795792077f37ad09394f426846c1fea870bc3aaa6be8"
+    },
+    {
+      "path": "PLAN.before-data-qword-scope5.json",
+      "bytes": 3721,
+      "sha256": "7a3b77f2de90ffc642ee9a7db768cf2220274aa7b5139e05b30d9a76108880b9"
+    },
+    {
+      "path": "PLAN.before-locator.json",
+      "bytes": 3630,
+      "sha256": "39d162434c2e91111b2e06b1e3c584d22a966c963d3286ef7e8beac9d6657197"
+    },
+    {
+      "path": "PLAN.before-named-RIP.json",
+      "bytes": 3641,
+      "sha256": "7030ea1d4fdb8d28146a4d5e5fcb08cc79d7a3802668a7376fa7905aaac93db3"
+    },
+    {
+      "path": "PLAN.before-overlap-complete-RIP.json",
+      "bytes": 4295,
+      "sha256": "b478da86964a698b2924a2c41dd43510eb739a13140f69c3cf950523365d99f4"
+    },
+    {
+      "path": "PLAN.before-qword-refs.json",
+      "bytes": 3352,
+      "sha256": "ec160339d1645a0c2e86c72a27192e35f9c56f182c966085d851ea4f75f28f6b"
+    },
+    {
+      "path": "PRODUCERS-FIRST-SEAL.exact.zip",
+      "bytes": 29316,
+      "sha256": "88ea885b20e898b92b166d2494bc4301f2c84265bbb2dd3c615a321be972cc66"
+    },
+    {
+      "path": "QWORD-REFS.actual.json",
+      "bytes": 2577,
+      "sha256": "b2903c63f08fcc6d5a3e59e7beae4214c54f54bc3ec273974a058fed3716da79"
+    },
+    {
+      "path": "repack_producers.py",
+      "bytes": 4192,
+      "sha256": "98e33aafe892b73ecd8c0b95eb5ba29aa677e9b6c811aa749d4908838b0f00d2"
+    },
+    {
+      "path": "SCOPE4-APPROVAL.actual.json",
+      "bytes": 475,
+      "sha256": "041eb7761cc10be34750e2be96658339390b110429d118e3ad91ade5f5b627df"
+    },
+    {
+      "path": "verify_portable_final.py",
+      "bytes": 4441,
+      "sha256": "66e1c5ada4786569ddce3807a200f968e48e8e2bda1041ddd143254e9b982240"
+    }
+  ],
+  "exact_archive": {
+    "path": "PRODUCERS-FIRST-SEAL.exact.zip",
+    "bytes": 29316,
+    "sha256": "88ea885b20e898b92b166d2494bc4301f2c84265bbb2dd3c615a321be972cc66"
+  },
+  "archived_members": [
+    {
+      "path": "DELIVERY.actual.json",
+      "bytes": 677,
+      "sha256": "1df51ff1c9223895b10530a25e240a5931d9dd3b7bb15fd2b13d631b6f500e8f"
+    },
+    {
+      "path": "SOURCE.actual.json",
+      "bytes": 9944,
+      "sha256": "e865e00852bbe09d3db6762b0af071bd0cff5470e612b0d0b2679884f87977ce"
+    },
+    {
+      "path": "VERIFY.actual.json",
+      "bytes": 1027,
+      "sha256": "d27ace080da18d528c90bfd5e3f58ea56be17270df8aae16acb1e925242ceade"
+    },
+    {
+      "path": "check_named_rip_coverage.py",
+      "bytes": 2912,
+      "sha256": "4d255196e386d482d040f3ca3bf04cee30c6702d9ee1ca817afddad69f60134c"
+    },
+    {
+      "path": "prepare_named_rip_rescan.py",
+      "bytes": 3022,
+      "sha256": "c8202c347b15106fda13d433d6a511007f00e9bebbad6634c49bdf92a3cedb98"
+    },
+    {
+      "path": "run_data_qword_refs.py",
+      "bytes": 7062,
+      "sha256": "f3e862a00eb613fca56c8d27635aa1cf9ec17280f06e3a5b34a83c144b4d9005"
+    },
+    {
+      "path": "run_data_qword_scope5.py",
+      "bytes": 6582,
+      "sha256": "a279083e4cd5a9202acc2a224c394857ccf19d91509462b43e2d5b96a9f6bbb9"
+    },
+    {
+      "path": "run_locator.py",
+      "bytes": 9509,
+      "sha256": "9b361fad07a20a91358e7a6882d2b7d67e7d7168b624d6760fef4c0052f8255f"
+    },
+    {
+      "path": "run_named_rip_locator.py",
+      "bytes": 7255,
+      "sha256": "6310a002d92561534d51d0439ce6d38b39d599a8cdc506fb5b5d74212a154da1"
+    },
+    {
+      "path": "run_named_rip_overlap_complete.py",
+      "bytes": 6242,
+      "sha256": "8b1c2834c5b09ee3bdcd17bfe2e9ae62c8ef51193fe8723fd637750f76706d58"
+    },
+    {
+      "path": "seal_locator.py",
+      "bytes": 4310,
+      "sha256": "4ee59a6ef0efbc1cecc76216e997c982682de77b018f270d099c4cd84051207d"
+    },
+    {
+      "path": "verify_portable.py",
+      "bytes": 4200,
+      "sha256": "630c4af1d365691a42471ef114f0c273ebaa104fa42d79a1ab807c9da082fa96"
+    }
+  ],
+  "first_seal_failure_preserved_in": "PACKAGE-REPACK.actual.json and PRODUCERS-FIRST-SEAL.exact.zip"
+}

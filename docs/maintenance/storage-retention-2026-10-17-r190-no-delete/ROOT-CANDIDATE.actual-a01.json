@@ -1,0 +1,58 @@
+{
+  "schema": "xar.storage-daily-calendar-bug-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:15:22.456009+00:00",
+  "contract": {
+    "intent": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\FROZEN-INTENT.actual-a01.json",
+      "bytes": 2983,
+      "sha256": "4f876560f01f394d49cd56955fcd2b15a77bd1b81201f79c80b622d6736f39b6"
+    },
+    "xml": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\task.xml",
+      "bytes": 4042,
+      "sha256": "140055be9fcb39d74137b4954658bf86f92b4cf23918a533f79ca7be11285155"
+    },
+    "schedule": "Daily 04:00 Asia/Shanghai (+08:00)",
+    "XML_boundary": "2026-10-17T04:00:00+08:00",
+    "machine_timezone_registry": {
+      "TimeZoneKeyName": "China Standard Time",
+      "ActiveTimeBias": 4294966816
+    },
+    "current_machine_utc_offset": "+0800"
+  },
+  "actual_task_readback": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\DAILY-TASK.actual-a01.json",
+    "bytes": 1944,
+    "sha256": "0a88a5322c7ccd5cb8edaedaf601b3079802b55556ddbebd1e27c03d19ab4d92"
+  },
+  "actual_daily_state": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports\\daily-state.json",
+    "bytes": 250,
+    "sha256": "2e034094c559c660d5df16af03f9e576de7c4e74ddfbb92694c75701df7d56c5",
+    "content": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "last_daily_date_utc": "2026-10-16",
+      "last_daily_report": "C:\\ck3-e04-resume-20261015-a01\\disk-reclamation-worker-a01\\scheduled-inspection-a01\\reports\\20261016T093948126121Z-daily.json"
+    }
+  },
+  "diagnosis": "Local Oct17 04:00 is Oct16 20:00Z, the same UTC date as the Oct16 09:39Z installation inspection. The old UTC daily key suppresses the first calendar-triggered inspection; LastTaskResult=0 alone does not prove a new inspection. Actual calendar stdout was not captured; source, persisted state and deterministic main-level regression establish the semantic bug.",
+  "change": "Use execution-machine local calendar date plus UTC offset only for daily deduplication and expose that basis in each daily report. All asset deadlines and observed timestamps remain UTC. Legacy UTC-only state does not qualify as an existing local-day run.",
+  "schedule_timezone_binding_limit": "This machine local timezone currently matches the +08:00 installed task contract. Deploying to another machine or changing the OS/task timezone requires fresh verification of that binding; no fixed C/D or +08 setting is embedded in shared code.",
+  "relative_patch": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\daily-local-key.relative-a02.patch",
+    "bytes": 6943,
+    "sha256": "f326b4236229a702013de9c063982f6856edfccb760626ec2afd5cd06ec6b17a"
+  },
+  "regression": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-reclaim-r190-a01\\daily-local-key-candidate-a01\\REGRESSION.actual-a01.json",
+    "bytes": 3371,
+    "sha256": "8f5481968e09f885c20db9a4d44a08fdabdc7537cb1648ffe90f4d23c31d70fa"
+  },
+  "installed_or_main_code_changed": false,
+  "installed_profile_or_ledger_or_task_changed": false,
+  "automatic_gc": false,
+  "actual_reclaimed_bytes_this_round": 0,
+  "next_step": "Root reviews and applies the relative patch only after R190 frozen HEAD is released, preserving this old source pin and candidate evidence. Run the focused regression, then perform one bounded read-only --trigger daily call and verify a fresh machine-bound report/new local-day state; update the installed script qualification SHA in an appended receipt. No scheduler task/privilege or automatic deletion expansion is needed.",
+  "this_worker_did_not_execute_next_step": true
+}

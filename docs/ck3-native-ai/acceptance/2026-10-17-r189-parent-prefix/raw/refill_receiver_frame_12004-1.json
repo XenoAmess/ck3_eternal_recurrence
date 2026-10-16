@@ -1,0 +1,13 @@
+{
+      "native_revision": 3,
+      "connection_generation": 1,
+      "pump_epoch": 44121,
+      "ticket_sequence": 8,
+      "game_pid": 36940,
+      "thread_id": 22932,
+      "played_character_full_id": 31254,
+      "date_raw": 53149080,
+      "owner_thread_verified": true,
+      "frame_stable": true,
+      "gui_owner_stable": true
+    }

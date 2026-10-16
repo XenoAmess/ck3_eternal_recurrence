@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.r08.GetCurrency-only-named-RIP-locator.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:35:07.103244+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "literal_pin": {
+    "path": "LITERALS.actual.json",
+    "bytes": 10501,
+    "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121"
+  },
+  "previous_data_scope_pin": {
+    "path": "QWORD-REFS.actual.json",
+    "bytes": 2577,
+    "sha256": "b2903c63f08fcc6d5a3e59e7beae4214c54f54bc3ec273974a058fed3716da79"
+  },
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "target_literal_rva": "44DB128",
+  "target_name": "GetCurrency",
+  "section": {
+    "name": ".text",
+    "virtual_size": 71141448,
+    "rva": 4096,
+    "raw_size": 71141888,
+    "raw_offset": 1024
+  },
+  "new_scope_read_ledger": [
+    {
+      "file_offset": 1024,
+      "bytes": 71141888,
+      "kind": "GetCurrency_only_RIP_LEA_MOV_byte_locator"
+    }
+  ],
+  "new_scope_text_bytes": 71141888,
+  "new_scope_metadata_bytes": 0,
+  "new_scope_reads": 1,
+  "body_source_bytes": 0,
+  "cumulative_sections_bytes": 105390592,
+  "cumulative_metadata_bytes": 608,
+  "cumulative_reads": 7,
+  "total_candidates": 0,
+  "sites": [],
+  "truncated": false,
+  "whole_EXE_hashes": 0,
+  "new_game_SDK_desktop_build_actions": 0,
+  "registration_handler_or_resource_enum_confirmed": false,
+  "resource4_business_name": null,
+  "paid_military_amount_raw": null,
+  "cadence": null
+}

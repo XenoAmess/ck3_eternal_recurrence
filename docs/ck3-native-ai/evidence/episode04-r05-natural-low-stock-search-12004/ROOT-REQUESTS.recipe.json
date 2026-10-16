@@ -1,0 +1,21 @@
+{
+  "schema": "xar.r05.normal-capacity-preparation.recipe.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "automatic_actions": 0,
+  "new_live_requests_executed": 0,
+  "root_choice": "next managed scene may load the existing R180 normal2645 checkpoint after normal identity binding; this is high-stock preparation, not a qualified R05 T0",
+  "fresh_snapshot": {"tool": "ck3_take_snapshot", "arguments": {}},
+  "fresh_same_frame_reads": [
+    {"tool": "ck3_query_army_strengths", "arguments_template": {"army_ids": [18], "expected_revision": "<fresh public F.revision int>", "profile": "observed_history_full_v1"}},
+    {"tool": "ck3_query_army_commander_candidates_v1", "arguments_template": {"army_id": 18, "expected_revision": "<fresh public F.revision int>"}}
+  ],
+  "assignment_gate": "Fresh production-normalized actual .4 candidate: available=true, final_eligibility_observable=true, can_assign=true, available exact-provenance conditional_capacity < current actual capacity. Root decides at most one assignment.",
+  "conditional_assignment": {"tool": "ck3_assign_army_commander_v1", "arguments_template": {"army_id": 18, "commander_character_id": "<fresh selected fullID int>", "expected_revision": "<fresh public F.revision int>"}},
+  "after_assignment": "Fresh snapshot then repeat selected-Army strengths. Do not reuse the assignment's pre-frame revision. Verify actual commander/capacity/rate/stock and effective loss/eligibility; candidate aggregate can change.",
+  "preview_limit": 2,
+  "new_move_limit_for_this_checkpoint_recipe": 0,
+  "stop_before_daily_capture_if": ["rate nonnegative", "effective fraction zero", "eligible count insufficient for positive integer budget", "actual callback/writer parent capture unavailable", "admission or identity cannot be bound"],
+  "positive_chain": "Natural prior low-positive stock -> same actual callback before/after first zero -> source-confirmed supply writer token/thread/depth/FullIDs/date -> writer-time stock0 -> complete unique physical debit>0. Army total net change is separate.",
+  "actual_days_to_zero": null,
+  "new_credit": 0
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "xar.actual4.refill-preparation3E4BC50.source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-16T19:44:23.870598+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/3E4BC50.bin",
+    "bytes": 604,
+    "sha256": "739ddc4eb092e1df091617be4a4724a0a673d41cfb76698a96a623bb82545c40"
+  },
+  "assembly": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/3E4BC50.asm",
+    "bytes": 5993,
+    "sha256": "69709231518618794d26f88a6008fa8c21fee29786df36e47f820c6e7bdfaf51"
+  },
+  "extent": {
+    "begin_rva": "3E4BC50",
+    "end_rva_exclusive": "3E4BEAC",
+    "size": 604,
+    "pdata_index": 212455,
+    "unwind_rva": "53E44DC",
+    "unwind_version": 1,
+    "unwind_flags": 0,
+    "unique_entry": true,
+    "chained_runtime_function": null
+  },
+  "ABI": {
+    "RCX": "expression argument block (savedR15)",
+    "RDX": "existing temporary variables buffer descriptor (savedRBX)",
+    "R8": "scratch value buffer descriptor (saved on stack)"
+  },
+  "first_phase": {
+    "count_signed32": "+8C",
+    "array_pointer": "+80",
+    "record_stride": "30",
+    "scratch_index_u32": "record+28",
+    "scratch_stride": "28",
+    "dispatch": "record+0 object vtable+28 called at3E4BCB5, returned value passed to879390 at3E4BCC1 with scratch destination; neither callee body read",
+    "bypass": "signed count<=0 at3E4BC7D jumps3E4BCE0"
+  },
+  "second_phase": {
+    "count_signed32": "+0C",
+    "array_pointer": "+0",
+    "record_stride": "40",
+    "variable_index_array": "+B0",
+    "variable_source": "Reads existing variables16B entries: +0 pointer/+8type, index bounds from variablebuffer+0C",
+    "input_gate": "record+30 expected type versus87CCC0 result or actual variable type, plus null receiver test; transitive87CCC0 semantics unknown",
+    "chain": "record+0 pointer/+0C count, chain stride18; calls chain+8 function with source-bound kind and user data",
+    "preparation_target": "record+20 target invoked at3E4BE5F, RCX selected receiver/null by rawkind/flag; RDX points scratch slot selected by record+38, R8=&temporary descriptor fromrecord+18/+28",
+    "bypass": "count0 at3E4BCF4 or signed count<=0 at3E4BD0B reachesAL1 epilogue, after any first-phase work"
+  },
+  "direct_body_role": "Prepares scratch arguments before final receiver selection; directly reads rather than fills the existing type635 variables and does not walk context+E8/definition+108.",
+  "transitive_boundary": "Provider vtable+28,879390,87CCC0,chain targets andpreparation target bodies/effects are not closed. Do not infer global purity or absence of transitive side effects.",
+  "actual_R189_count_boundary": "Observed final chain_count_24_raw0 is a different field. Actual+8C/+0C counts are not exported or observed; cannot assert this604Bbody took its no-work path at R189.",
+  "no_pure_getter_qualification": true,
+  "no_provider_execution": true,
+  "new_reads": {
+    "metadata_bytes": 40,
+    "function_bytes": 604,
+    "read_count": 4,
+    "whole_EXE_hash": false,
+    "header_or_text_scan": false
+  },
+  "next_boundary": "Final receiver still depends on existing variables from the unresolved parent chain. No new source-qualified final provider RVA obtained; upstream type635/context construction remains unheld in this bounded research."
+}

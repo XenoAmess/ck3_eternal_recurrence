@@ -1,0 +1,164 @@
+{
+                    "source": "native_gui_type635_definition_candidates_12004",
+                    "status": "unavailable",
+                    "unavailable_reason": "candidate_parent_depth_exhausted",
+                    "receiver_type_id": 635,
+                    "current_variable_table_observed": false,
+                    "native_receiver_selected": false,
+                    "receiver_variable_index": null,
+                    "declared_type_id": null,
+                    "stable_double_read": false,
+                    "entries": [],
+                    "failure_diagnostic": {
+                      "stage": "parent_walk",
+                      "kind": "parent_depth_exhausted",
+                      "capture_pass": 1,
+                      "read_ordinal": 51,
+                      "ancestor_depth": 8,
+                      "raw_declaration_count": 1,
+                      "raw_index_count": 1,
+                      "raw_definition_entry_count": null,
+                      "context_present": true,
+                      "definition_present": null,
+                      "local_definition_active_raw": 1
+                    },
+                    "local_definition_entry_only": {
+                      "source": "native_gui_type635_local_definition_entry_only_12004",
+                      "scope": "local_definition_entry_only",
+                      "status": "available",
+                      "unavailable_reason": null,
+                      "receiver_type_id": 635,
+                      "ancestor_depth": 0,
+                      "current_variable_table_observed": false,
+                      "native_receiver_selected": false,
+                      "receiver_variable_index": 0,
+                      "declared_type_id": 635,
+                      "raw_definition_entry_count": 1,
+                      "local_definition_active_raw": 1,
+                      "definition_present": true,
+                      "local_entry_present": true,
+                      "stable_double_read": true,
+                      "entries": [
+                        {
+                          "ancestor_depth": 0,
+                          "entry_type_48": 635,
+                          "entry_mode_40": 0,
+                          "entry_flag_4c": 0,
+                          "direct_value_present": false,
+                          "provider_present": false,
+                          "provider_vtable_rva": null,
+                          "provider_slot2_rva": null,
+                          "direct_owner_full_id": null,
+                          "direct_owner_identity_verified": false
+                        }
+                      ]
+                    },
+                    "definition_chain_prefix_depth8": {
+                      "source": "native_gui_type635_definition_chain_prefix_depth8_12004",
+                      "scope": "visited_definition_prefix_depth8",
+                      "status": "available",
+                      "unavailable_reason": null,
+                      "receiver_type_id": 635,
+                      "depth_limit": 8,
+                      "walk_complete": false,
+                      "current_variable_table_observed": false,
+                      "native_receiver_selected": false,
+                      "receiver_variable_index": 0,
+                      "declared_type_id": 635,
+                      "frontier_depth": 8,
+                      "frontier_context_present": true,
+                      "stable_double_read": true,
+                      "rows": [
+                        {
+                          "ancestor_depth": 0,
+                          "definition_present": true,
+                          "raw_definition_entry_count": 1,
+                          "entries": [
+                            {
+                              "ancestor_depth": 0,
+                              "entry_type_48": 635,
+                              "entry_mode_40": 0,
+                              "entry_flag_4c": 0,
+                              "direct_value_present": false,
+                              "provider_present": false,
+                              "provider_vtable_rva": null,
+                              "provider_slot2_rva": null,
+                              "direct_owner_full_id": null,
+                              "direct_owner_identity_verified": false
+                            }
+                          ],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 1,
+                          "definition_present": true,
+                          "raw_definition_entry_count": 0,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 2,
+                          "definition_present": true,
+                          "raw_definition_entry_count": 0,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 3,
+                          "definition_present": true,
+                          "raw_definition_entry_count": 0,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 4,
+                          "definition_present": true,
+                          "raw_definition_entry_count": 1,
+                          "entries": [
+                            {
+                              "ancestor_depth": 4,
+                              "entry_type_48": 635,
+                              "entry_mode_40": 0,
+                              "entry_flag_4c": 0,
+                              "direct_value_present": false,
+                              "provider_present": false,
+                              "provider_vtable_rva": null,
+                              "provider_slot2_rva": null,
+                              "direct_owner_full_id": null,
+                              "direct_owner_identity_verified": false
+                            }
+                          ],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 5,
+                          "definition_present": false,
+                          "raw_definition_entry_count": null,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 6,
+                          "definition_present": false,
+                          "raw_definition_entry_count": null,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        },
+                        {
+                          "ancestor_depth": 7,
+                          "definition_present": false,
+                          "raw_definition_entry_count": null,
+                          "entries": [],
+                          "parent_edge": "context_e8",
+                          "parent_present": true
+                        }
+                      ]
+                    }
+                  }

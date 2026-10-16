@@ -1,0 +1,161 @@
+{
+  "schema": "xar.e04.r189-portable-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-16T19:58:00.365318+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "identity": {
+    "pid": 36940,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-93e28f54f041",
+    "process_creation_filetime_100ns": 134366517280318880,
+    "actual_runtime_character_full_id": 31254,
+    "initial_date_raw": 53149080
+  },
+  "film": {
+    "completed_days": 8,
+    "start_date_raw": 53149080,
+    "completed_end_date_raw": 53149272,
+    "labels_from_Root": "Apr1 to Apr9",
+    "day9_date_raw": 53149296,
+    "day9_army18_in_combat": true,
+    "day9_counted_complete": false,
+    "film_error": "RuntimeError('watched army owner/control/state differs')",
+    "film_exit1_scope": "Root-reported film command exit; separate from final normal game exit0",
+    "ready_to_resume_ack_seconds": 3.5926975,
+    "recorder_wall_seconds": 28.223282,
+    "encoded_frame_end_seconds": 24.8,
+    "decoded_frames": 744,
+    "audio_stream_count": 0,
+    "decode_exit0": true,
+    "configured_min_wall_seconds": 110,
+    "min100_met": false,
+    "min110_met": false,
+    "capture_kind": "gdigrab-desktop-client-region",
+    "direct_hwnd_capture": false,
+    "full_desktop_capture": false,
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ]
+  },
+  "R01": {
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-r01-ready-t0-a01\\WAR4-JOIN.actual-a01.json",
+      "bytes": 27469,
+      "sha256": "f97f77d7171925cf7588aa3fda11da7f7a39bf6cf8152f863b7e2c7003cda3b7"
+    },
+    "army": {
+      "army_id": 18,
+      "native_carmy_id": 18,
+      "status": "available",
+      "regiment_count": 21,
+      "current_soldiers": 1162,
+      "maximum_soldiers": 1195,
+      "current_supply_raw": 30000000,
+      "current_supply_scale": 100000,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_capacity_scale": 100000
+    },
+    "typed_current_commander_id": 31254,
+    "conditional_goals": [
+      {
+        "goal": 2636,
+        "military_t0_frame_ready": true,
+        "normal_t0_saved": false,
+        "r01_research_core_closed": false
+      },
+      {
+        "goal": 2644,
+        "military_t0_frame_ready": true,
+        "normal_t0_saved": false,
+        "r01_research_core_closed": false
+      }
+    ],
+    "goal_preview_and_selected_normal_save_chain_closed": false,
+    "no_R01_card_credit": true
+  },
+  "R04": {
+    "two_SDK_unavailable": true,
+    "native_numeric_status_available": false,
+    "native_failpoint_known": false,
+    "no_province_or_siege_causal_guess": true
+  },
+  "R06": {
+    "actual_prefix_stable_count": 8,
+    "eligible_provider_RVAs": [],
+    "frontier8_definition_known": false,
+    "receiver_toggle_ADD_qualified": false,
+    "separate_portable_sources": {
+      "R01_join": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r189-r01-ready-t0-a01\\WAR4-JOIN.actual-a01.json",
+        "bytes": 27469,
+        "sha256": "f97f77d7171925cf7588aa3fda11da7f7a39bf6cf8152f863b7e2c7003cda3b7"
+      },
+      "R01_unadopted_bundle": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r189-r01-ready-t0-a01\\BUNDLE.war4.UNADOPTED-a01.json",
+        "bytes": 2022,
+        "sha256": "fb32a238cbc49106943d40dc5db3b115f1f6c7fb7a5a2f4df9148352c1c9959b"
+      },
+      "R06_delivery": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r06-3e4bc50-source-a35\\ROOT-DELIVERY.actual-a35.json",
+        "bytes": 4046,
+        "sha256": "a5e81e91301aa1cca146614a89900d46fba1f7f5ef19a187469bfbbd77d344fa"
+      },
+      "R06_repo_evidence_target": "docs/ck3-native-ai/acceptance/2026-10-17-r189-parent-prefix/EVIDENCE.actual-a34.json",
+      "R06_repo_evidence_bytes": 9878,
+      "R06_repo_evidence_sha256": "660339b598e8da1b00a65021d007fecdb299b954990158074d86feda20bb81ec",
+      "R06_reference_only_no_duplicate_package": true
+    }
+  },
+  "close": {
+    "normal_save_sha256": "92135e63aa31a388e7d0512ea76fbd9a9e74bea1d62eef74149cdb6f82d09601",
+    "checkpoint_pin_only": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 74702236,
+      "sha256": "c5865f8743d2139f22b228f294513c759900aff85139d71b8f86e456f088a40a"
+    },
+    "date_raw": 53149296,
+    "game_process_exit_code": 0,
+    "session_ok": true,
+    "screen_release_exit_code": 0,
+    "task_done_resources_empty": true,
+    "release_sequence": 5870,
+    "capacity_reservation_returned": false
+  },
+  "header_offsets": {
+    "version_utf8_offset": 48,
+    "version_utf8_literal": "1.20.0.4",
+    "typed_u32_candidate_tag_offset": 754,
+    "tag_hex": "1400",
+    "u32_payload_offset": 756,
+    "typed_u32_candidate_value": 31254,
+    "not_a_universal_history_to_runtime_mapping": true
+  },
+  "Root_later_limited_review": {
+    "recorded_at_utc": "2026-10-16T19:58:00.365318+00:00",
+    "actual_view_time_not_invented": true,
+    "source": "Root collaboration report",
+    "contact_sheet": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-media-audit-bounded-a01\\first-middle-last.contact-sheet.jpg",
+      "bytes": 27631,
+      "sha256": "5eb051a6a42aeeeac39667f6bd4258e53e29dbd261f8b33f3315f0fac870efba"
+    },
+    "scope": "Root directly viewed only the original 1920x360 three-cell scaled JPEG",
+    "observations": "CK3 client map/army UI in all three samples; final cell native battle UI",
+    "not_original_resolution_PNG_or_continuous_review": true,
+    "original_media_audit_Root_false_history_unchanged": true
+  },
+  "qualification": {
+    "new_clean": 0,
+    "new_business_positive": 0,
+    "human_full1x": false,
+    "human_signoff": false,
+    "dynamic_video": "0/11",
+    "research": "6/14",
+    "business": "4/11"
+  }
+}

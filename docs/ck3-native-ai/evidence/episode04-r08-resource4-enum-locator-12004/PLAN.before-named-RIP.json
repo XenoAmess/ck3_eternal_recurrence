@@ -1,0 +1,102 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-GetCurrency-only-named-RIP-locator",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T19:35:01.591717+00:00",
+  "question": "Which raw .text LEA/MOV RIP-relative byte patterns target exactly the already-held GetCurrency44DB128 literal?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Third Root-approved locator only; one.text read, one exact target, no new string or callee/body expansion",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact image and same native file identity; preferred offsets not runtime frame",
+    "producer_trigger": "not-applicable",
+    "producer": "Raw LEA/MOV candidate site; function/instruction boundaries still unknown",
+    "caller": "Unknown named registration wrapper; previous .rdata GetCurrencyQWORD refs0",
+    "consumer": "Potential named GetCurrency registration/handler route, not actual selector mapping",
+    "cache_lifetime": "Static locator bytes only",
+    "expected_signal": "<=16sites/96B each with computed RIP target44DB128; no semantic proof from raw candidate",
+    "zero_sample_meaning": "Zero means no matching retained byte pattern in this one.text scope; not no native registration or absent currency",
+    "stop_condition": "Single71141888B.text read, one read; cumulative105390592B sections<128MiB; no callee/hash/body expansion; output<=131072B",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "literal",
+      "layer": "locator",
+      "path": "LITERALS.actual.json",
+      "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Unique exact GetCurrency literal44DB128"
+    },
+    {
+      "id": "data",
+      "layer": "locator",
+      "path": "QWORD-REFS.actual.json",
+      "sha256": "b2903c63f08fcc6d5a3e59e7beae4214c54f54bc3ec273974a058fed3716da79",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "No same.rdata QWORD data reference for GetCurrency; need explicit named RIP locator"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "name",
+      "label": "GetCurrency44DB128"
+    },
+    {
+      "id": "site",
+      "label": "Raw RIP LEA/MOV candidate"
+    },
+    {
+      "id": "function",
+      "label": "Instruction/function boundary UNKNOWN"
+    }
+  ],
+  "edges": [
+    {
+      "id": "xref",
+      "from": "site",
+      "to": "name",
+      "label": "Exact computed RIP target byte locator",
+      "status": "unknown",
+      "evidence": [
+        "literal",
+        "data"
+      ],
+      "open_question": "Any matching target-only LEA/MOV pattern?"
+    },
+    {
+      "id": "boundary",
+      "from": "site",
+      "to": "function",
+      "label": "No source boundary proof yet",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "Use genuine site to locate containing.pdata and decode from function entry later"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "Named RIP site location",
+      "status": "pending",
+      "evidence": [
+        "literal"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Resource/player/payment",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No game/SDK/desktop/build in this locator"
+    }
+  ]
+}

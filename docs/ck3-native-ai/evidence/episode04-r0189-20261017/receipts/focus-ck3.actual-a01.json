@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:22:09.207875+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7955,
+    "sha256": "0a205a88d161e79e329878b686c0811afe2792965d315a4abeddd8397b89c4e9"
+  },
+  "hwnd": 42011162,
+  "pid": 36940,
+  "window_rect": [
+    632,
+    329,
+    1928,
+    1088
+  ],
+  "client_rect": [
+    0,
+    0,
+    1280,
+    720
+  ],
+  "foreground_hwnd": 42011162,
+  "screenshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\focused-frame-a01.png",
+    "bytes": 1963157,
+    "sha256": "6d6692bebba3c8aadf0c7b82848ae97da39277d87660af71430246ff9eece0c3"
+  },
+  "image_size": [
+    2560,
+    1440
+  ],
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "keyboard_input": false,
+  "mouse_input": false
+}

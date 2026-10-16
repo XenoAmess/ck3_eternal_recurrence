@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T20:05:23.639621+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-I",
+    "-B",
+    "-O",
+    "C:\\ck3-e04-resume-20261015-a01\\r08-context-owner-29591e0-a01\\verify_portable_a02.py",
+    "C:\\ck3-e04-resume-20261015-a01\\r08-context-owner-29591e0-a01"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"ok\": true, \"portable\": true, \"files_verified\": 29, \"code_bytes\": 225, \"metadata_bytes\": 252, \"read_calls\": 26, \"instructions\": 54, \"internal_jump_count\": 9, \"direct_calls\": [[43356753, 36763872], [43356812, 8913728]], \"RET_RVA\": \"29592C0\", \"runtime_or_business_proved\": false, \"semantic_layer\": \"Saved bytes/source analysis only; no opaquecallee effects or paid/payer/cadence proof\"}\n",
+  "stderr": "",
+  "source": {
+    "path": "SOURCE.final-a02.json",
+    "bytes": 10062,
+    "sha256": "73efe83ca843a7ba323f364150635122be4f08434ca1e5dcdb13af7a094c2991"
+  },
+  "reclaimed":{"file":"DELIVERY.final-a02.actual.json","bytes":1017,"sha256":"694c474fdcebcdec0b3c70d5128dd470df8b780eb8d94c7b8574cf88f6862738","at_utc":"2026-10-16T20:07:06Z","reason":"duplicate;99031B>96KiB"},
+  "close_capacity":["2026-10-16T20:07:51Z",33551491072]
+}

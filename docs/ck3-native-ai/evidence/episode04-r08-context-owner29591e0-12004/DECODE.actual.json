@@ -1,0 +1,40 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:58:30.491464+00:00",
+  "capstone_version": "5.0.7",
+  "extent": {
+    "begin_rva": 43356640,
+    "end_exclusive": 43356692,
+    "bytes": 52,
+    "pdata_index": 141968,
+    "unwind_rva": 85201420,
+    "flags": 0,
+    "chained_runtime_function": null
+  },
+  "instruction_count": 11,
+  "complete_bytes_decoded": 52,
+  "direct_calls": [],
+  "branches": [
+    {
+      "at_rva": 43356679,
+      "target_rva": 43356849,
+      "hex": "0f84a4000000",
+      "target_in_ownbody": false
+    }
+  ],
+  "RET_RVAs": [],
+  "external_jumps": [
+    {
+      "at_rva": 43356679,
+      "target_rva": 43356849,
+      "hex": "0f84a4000000",
+      "target_in_ownbody": false
+    }
+  ],
+  "raw_sha256": "c055f66d42e85fb3dd6cb49323d703c9c256184e0ea428d4a8485bc028aafbdb",
+  "assembly_sha256": "45df1215ad4744a6e11ce32b14216a2f8b3a3ae16dd03e901cdc7ff64423b236",
+  "proof_layer": "Exact bodybytes+entry-rooted disassembly; semantics not yet sealed",
+  "paid_military_amount_raw": null,
+  "payer": null,
+  "cadence": null
+}

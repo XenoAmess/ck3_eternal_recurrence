@@ -1,0 +1,38 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:41:51.062492+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "current_ck3_foreground": true,
+  "paused_visible": true,
+  "selected_army_id": 18,
+  "ck3_hwnd": 42011162,
+  "desktop_size": [
+    2560,
+    1440
+  ],
+  "client_screen_rect": [
+    640,
+    360,
+    1920,
+    1080
+  ],
+  "screenshot": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-pre-film-frame-a01.png",
+    "bytes": 1962160,
+    "sha256": "3493bf21197e7f54f9ab25e91be896f052b19dc58e75ba25c53717a61670c16a"
+  },
+  "original_frame_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\r189-pre-film-frame-a01.actual.json",
+    "bytes": 720,
+    "sha256": "1448100c35c72cd64c0a3ea2e022c2cf0a8974c5d96865c4a91bbcd548cf5163"
+  },
+  "native_army_readback": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-film-a01-assemble-army-ui-once.json",
+    "bytes": 338884,
+    "sha256": "cf0a96a2fca509e10fd9a4c55ff8380ba33ec57805b4984deca0edf228cd3cb5"
+  },
+  "reviewer": "Root explicitly directly reviewed this new original: paused foreground CK3 Army18 client, no foreign-window occlusion",
+  "capture_method": "desktop cropped to authenticated CK3 client rectangle",
+  "business_or_clean_span_qualified": false
+}

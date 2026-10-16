@@ -1,0 +1,12 @@
+{
+  "status": "PASS_HELD_BYTES_AND_DECLARED_SOURCE_PINS",
+  "instruction_pins": 17,
+  "complete_body_bytes": 604,
+  "linear_instruction_count": 162,
+  "new_metadata_bytes": 40,
+  "new_code_bytes": 604,
+  "new_EXE_read_count": 4,
+  "native_execution_performed": false,
+  "semantic_correctness_verified_by_test": false,
+  "evidence_boundary": "Checks complete held bytes/branch destinations and source instruction pins; human source review supplies semantics. No provider/helper/transitive effects or R189 preparation counts are inferred."
+}

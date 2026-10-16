@@ -1,0 +1,59 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T20:00:24.574781+00:00",
+  "reason": "Preserve exact source/check rejection and readproducer scripts while keeping approved96KiB lane bounded. Raw caller/newbody/metadata unchanged.",
+  "archive": {
+    "path": "PREPARATION.exact.zip",
+    "bytes": 14284,
+    "sha256": "20ff0b12d510c9645f39c544dcbfe95a45106404ec5eb0fb20054d948e6168ee"
+  },
+  "members": [
+    {
+      "path": "prepare.py",
+      "bytes": 8779,
+      "sha256": "7c5a13b18fd1dd47850d07174ee4c2e03f25479d840ae6d416fbc0b0d5c92c45"
+    },
+    {
+      "path": "repair_plan.py",
+      "bytes": 2079,
+      "sha256": "b9a540f9164151b61ede818fc0b30cbf88eaad0cd4ae0ea34470101223ac0d08"
+    },
+    {
+      "path": "repair_status.py",
+      "bytes": 1910,
+      "sha256": "00a121811d51e99b3fe5f3a69cbfc8af1e1234bd7f52142d7f277d4c22d0ec34"
+    },
+    {
+      "path": "derive_continuation.py",
+      "bytes": 668,
+      "sha256": "6d88f4d4a08424495de758dd762d4884153705a81ee10192afdc6fbbac503723"
+    },
+    {
+      "path": "read_body.py",
+      "bytes": 5976,
+      "sha256": "308ebc8cf8fa733d003f8ddfa9488a98e6b061da268af240a0a5bbae67126f3b"
+    },
+    {
+      "path": "PLAN.before-read.json",
+      "bytes": 4974,
+      "sha256": "28f4e1fadb2020e03b01f7fe15f37ac17a8f085df64a467d5d6621693574ef92"
+    },
+    {
+      "path": "PLAN.before-read.corrected-a02.json",
+      "bytes": 4972,
+      "sha256": "2e056992ae6a25be63c3d1de72b0809c3c2b905cff2f28dfa658a890f9200392"
+    },
+    {
+      "path": "PLAN-CHECK.rejected-a01.actual.json",
+      "bytes": 913,
+      "sha256": "377e3c56c0455628a341bfff8c8e76ddf5f207e50fd6a7fb7ac13c8ac0f357f9"
+    },
+    {
+      "path": "PLAN-CHECK.rejected-a02.actual.json",
+      "bytes": 588,
+      "sha256": "7d4b0dfa9820488157d5f71ca90375009eecba41b00fdb0b96f2723b4102ea27"
+    }
+  ],
+  "unfolded_archived_files_no_longer_present": true,
+  "new_EXE_reads": 0
+}

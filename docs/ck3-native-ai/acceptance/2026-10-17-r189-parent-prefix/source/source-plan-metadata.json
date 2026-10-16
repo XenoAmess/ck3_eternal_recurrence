@@ -1,0 +1,100 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "r06-3E4BC50-metadata",
+  "question": "What does the exact3E4C0C6 direct callee3E4BC50 prepare before the type635 final receiver is selected, and can its chain0 case identify an upstream source without executing a provider?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "R189 actor31254 fixed refill expression source; no live sampling in this static task",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "exact1.20.0.4 frozen module identity; source semantics only, no process pointer reuse",
+    "producer_trigger": "not-applicable",
+    "producer": "held actual3E4C090 passes RCX=expressionblock,RDX=&temporaryvariables,R8=&scratch into exact3E4BC50 at3E4C0C6",
+    "caller": "E8 85 FB FF FF at3E4C0C6, complete held406B caller; direct target independently verified with signedrel32",
+    "consumer": "3E4C090 tests callee AL then selects final receiver from lastindex/type635; exact new callee semantics pending source body",
+    "cache_lifetime": "Frozen immutable source only; stat/identity checked before and after bounded reads; not live runtime variables",
+    "expected_signal": "Complete unique pdata/unwind body and chain0 entry/control-flow; explicit metadata-only stop if logical extent unresolved or >8192B",
+    "zero_sample_meaning": "No eligible source from R189 visited0..7 does not prove no final receiver. Static missing/body-stop is unknown, not no-provider.",
+    "stop_condition": "Only3E4BC50, metadata<=512B/48reads, fullfunction<=8192B. No fullEXEhash/header/.text scan/callee expansion; stop on chain ambiguity/stat drift/budget; total a34+a35<=160KiB.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "source",
+      "layer": "source-contract",
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/episode04-r186-refill-parent-prefix-12004.md",
+      "sha256": "be95ff89432e79040cfc732a6e82d291d9f9fa506b55c2d742899c98e9c64540",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Caller/source contract before final receiver, parentprefix semantics and explicit unknown3E4BC50."
+    },
+    {
+      "id": "caller-bytes",
+      "layer": "exact-build",
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3E4C090.bin",
+      "sha256": "f166a756656cb0276c7c89dd74107c716d264c31f891d16cfed3b247d19ca292",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Exactcomplete406B caller bytes. Signedrel32 edge is checked before any new EXE read."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "caller",
+      "label": "held3E4C090 directcall3E4C0C6"
+    },
+    {
+      "id": "callee",
+      "label": "exact3E4BC50 preparation body"
+    },
+    {
+      "id": "receiver",
+      "label": "later final type635 receiver"
+    }
+  ],
+  "edges": [
+    {
+      "id": "direct-edge",
+      "from": "caller",
+      "to": "callee",
+      "label": "source-bound directcall with actual argument registers",
+      "status": "static-confirmed",
+      "evidence": [
+        "source",
+        "caller-bytes"
+      ]
+    },
+    {
+      "id": "prepare-role",
+      "from": "callee",
+      "to": "receiver",
+      "label": "actual preparation/chain0 role to be closed",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Body not read yet; no provider or receiver semantics inferred from function address/name."
+    }
+  ],
+  "cases": [
+    {
+      "id": "chain0",
+      "question": "How does this body behave on the actual fixed-refill chain_count0 input?",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-16T19:36:08.110738+00:00",
+  "target_exe_path": "C:/ck3-e04-resume-20261015-a01/frozen-game-12004/ck3.exe",
+  "source_budget": {
+    "metadata_bytes": 512,
+    "function_bytes": 8192,
+    "max_reads": 48,
+    "max_distinct_functions": 1,
+    "packet_bytes": 163840,
+    "max_target_io_seconds": 20
+  },
+  "authorization": "Root explicit static exact3E4BC50 source grant in this thread; a34+a35 combined<=160KiB; no SDK/runtime/query/provider."
+}

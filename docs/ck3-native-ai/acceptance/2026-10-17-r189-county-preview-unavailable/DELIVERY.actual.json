@@ -1,0 +1,116 @@
+{
+  "schema": "xar.r189.preview-unavailable.actual-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-16T19:43:25.499084+00:00",
+  "status": "READY_SOURCE_CANDIDATE_NATIVE_NOTRUN",
+  "actual_preview_attempts": 2,
+  "attempt_limit": 5,
+  "stop_current_preview_batch": true,
+  "actual_county_condition_result": null,
+  "raw_numeric_native_status_observed": false,
+  "source_conditioned_default_enum": "unavailable",
+  "source_enum_ordinal_NOT_raw": 11,
+  "actual_failure_receipts": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-preview-2644-once-a01.json",
+      "bytes": 1356,
+      "sha256": "1c20caa327289bb2fb1f42deb70ca1f3ad6bb48951c43f1160bc7b0322cf921e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-preview-2610-once-a01.json",
+      "bytes": 1356,
+      "sha256": "77f2e871bfd9e65e7cfa452c52d5068f9405605ddb158e3848df2e5e3248c1be"
+    }
+  ],
+  "failure_extract": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\FAILURES.actual.json",
+    "bytes": 1877,
+    "sha256": "11b7d5108989a884773edaed955c23d68ea06c8d1361e3c17098632d08005639"
+  },
+  "final_patch": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\preview-unavailable-reasons-a02.relative.patch",
+    "bytes": 11735,
+    "sha256": "de81880449308d267aafdcfa7cb65e153d4a1b82ab800ac14efe3c44fe3f960b"
+  },
+  "final_source_contract": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\CANDIDATE.SOURCE-a02.json",
+    "bytes": 2883,
+    "sha256": "38dba39cdc845739d077246bad8ca7fd78e12f8700333ee044e4347071a0340e"
+  },
+  "knowledge": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\ROOT-NATIVE-FAILURE.md",
+    "bytes": 5372,
+    "sha256": "7ca2f3b5d3a82d28553cd068ea002a9187bd53156bd1fbde397a50e0073c9c54"
+  },
+  "workflow_history": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\SOURCE-WORKFLOW-HISTORY.zip",
+    "bytes": 10989,
+    "sha256": "b1be01a066861bd919b9b6542d73974713cfd84e472e0398cf0afb4aaef4c3fa"
+  },
+  "archived_exact_derived_files": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\CANDIDATE.SOURCE.json",
+      "bytes": 2883,
+      "sha256": "58ac1267436852ce0f23784c6939ca51b4ee97942d21fec6d4c51674384d3479"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\extract_failure.py",
+      "bytes": 1910,
+      "sha256": "645c5c2ac5f47d5a6f421bde3b2b1830350975e15fe5b11b56a1b9a2a448768e"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\inspect_source.py",
+      "bytes": 795,
+      "sha256": "47dfc4a616fefce01bd81af3f5bb33ee4fe62fa499a673929acbe3f032534d02"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\make_diagnostic_patch.py",
+      "bytes": 10266,
+      "sha256": "eac41cc77b6dc2b7e483e27221bb93118be82e45b15b175cf347845831acfe53"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\preview-unavailable-reasons.relative.patch",
+      "bytes": 11444,
+      "sha256": "9a850a4cf8f2ca51136c42ffb309d5c67b2145be8f5afea82d2cdda3a07cb381"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r189-county-positive-a31\\route-unavailable-a03\\seal_failure.py",
+      "bytes": 4233,
+      "sha256": "02487486ee918668cb6250cb1021dfb3cfff75657625ce80098a9d29b3bbf626"
+    }
+  ],
+  "validation": {
+    "final_git_apply_check_exit": 0,
+    "native_build_or_execution": "NOTRUN",
+    "new_native_fixture_cases_authored": 3,
+    "future_fixture_only_arg": "--preview-unavailable-reasons-only",
+    "old_tests_rerun": 0,
+    "SDK_calls": 0,
+    "new_EXE_bytes": 0,
+    "large_army_query_or_save_reads": 0,
+    "main_writes": 0
+  },
+  "Root_next": "keep R189 stopped for R04; finish current lawful filming/close. Review/rebuild this coherent candidate later; qualify only new failure cases and one fresh bound native preview before resuming county search.",
+  "credit_added": false,
+  "canonical_copyplan": [
+    {
+      "from": "ROOT-NATIVE-FAILURE.md",
+      "to": "docs/ck3-native-ai/episode04-r189-county-preview-unavailable-12004.md"
+    },
+    {
+      "from": "DELIVERY.actual.json",
+      "to": "docs/ck3-native-ai/acceptance/2026-10-17-r189-county-preview-unavailable/DELIVERY.actual.json"
+    },
+    {
+      "from": "SOURCE-WORKFLOW-HISTORY.zip",
+      "to": "docs/ck3-native-ai/acceptance/2026-10-17-r189-county-preview-unavailable/source-workflow-history.zip"
+    }
+  ],
+  "storage": {
+    "derived_files_archived_then_removed_exactly": true,
+    "kept_final_patch_uncompressed": true,
+    "package_limit_bytes": 65536,
+    "review_at_utc": "2026-10-19T00:00:00Z"
+  },
+  "total_package_bytes": 38046
+}

@@ -1,0 +1,13 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0189",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "completed_days": 8,
+  "business_positive_claim": false,
+  "clean_span_claim": false,
+  "human_signoff_claim": false,
+  "recorder_ready_to_resume_ack_seconds": 3.5926975,
+  "within_six_seconds": true,
+  "error": "RuntimeError('watched army owner/control/state differs')",
+  "observed_at_utc": "2026-10-16T19:42:33.056080+00:00"
+}

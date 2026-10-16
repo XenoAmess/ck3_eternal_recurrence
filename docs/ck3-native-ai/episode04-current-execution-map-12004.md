@@ -1,5 +1,19 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+2026-10-17同批R09补注（machine_id `desktop-3fevhd2-1c74096080`）：[R0176库存/容量/权重恢复](episode04-r0176-split-merge-recovered-supply-12004.md)从既有三原raw的69条exact byte-offset slices恢复旧场输入，当前production消费者复算30+70=100=poststock/postcap。等于cap不是clamp阳性，Army18空DATA角色转移导致的strictfalse保留；反方向same-normalS0与合格30–60秒动态仍缺，R09整卡false。此为本轮新离线恢复，不是R189/R190新实机、actor或source部署信用；所有分子保持不变。
+
+
+## 2026-10-17 R189实际与下一源码摄入补记
+
+`machine_id: desktop-3fevhd2-1c74096080`。本轮实机来源为冻结source `6bf30840af44231653f8e914389b59c8798f2cc1` / nativea30；[R189便携专题](episode04-r189-window-capture-12004.md)与[原件索引](evidence/episode04-r0189-20261017/source-index.json)记录24.800秒/744帧，实际完成8日，day9战斗触发停止，正常保存/游戏exit0/释放。不能写成100/110秒、完成第9日、全片clean或完整人工1×；原始视频仅pin，不在此小包复制。
+
+[R06本场stable8前缀](episode04-r189-refill-parent-prefix-12004.md)已是actual：两次一致、0..7无eligible provider，RVA列表为`[]`；depth8与更深receiver未知，未选择receiver、未执行provider/toggle/ADD。独立完整604B `3E4BC50` source及[便携显式检查入口](acceptance/2026-10-17-r189-parent-prefix/verify_portable_explicit.py)可供视频与agent复用，旧assert原件保留；这段direct body不是已证纯getter，helper/indirect副作用仍unknown。[R04两次preview unavailable](episode04-r189-county-preview-unavailable-12004.md)不是县条件false；新6path原因publisher及3例fixture仅AUTHORED_NOTRUN，须后续coherent build与独立新资格，不能反写a30实际来源。
+
+[R08copy incoming](episode04-r08-copy-incoming-12004.md)一次E8-only `.text` locator读71141448B/17reads、0候选，止于该编码范围；[resource4 enum locator](episode04-r08-resource4-enum-locator-12004.md)保留覆盖修正和精确读取账本。两者都是有限静态定位；实际同值copy不等于付款，资源4业务名、c/d producer、paid/payer/cadence仍unknown。研究 **6/14**、业务 **4/11**、合格动态 **0/11**、正式ABC **0/3** 不变，69段口播/声音/23静态图不等于合格动态或最终human signoff。
+
+此前243file已push于exact `6bf30840af44231653f8e914389b59c8798f2cc1`，Root实际gh核验[Official Runner CI 38951008899](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38951008899)与[Linear history 38951008957](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38951008957)均completed/success；此处不是新候选CI结果。本批169条路径已在R190正常闭场后按pins入库，新增六组canonical正回放与storage主仓导入测试通过；R04新增native fixture仍AUTHORED_NOTRUN，后续a31 coherent构建/资格另取。最终提交与CI状态以Git历史和对应官方run为准，不把Python正回放外推成新native/live。以下旧时点HEAD/未提交/native NOT RUN说明保留历史范围，不覆盖这条较新实际补记。
+
+
 **2026-10-17 本机当前接续（machine_id: `desktop-3fevhd2-1c74096080`；核至2026-10-16 18:41 UTC）。** [R186十四日与事件](episode04-r186-window-capture-12004.md)原片36.700秒并正常闭场；[R187两次启动前RED](episode04-r187-prestart-failures-12004.md)均无CK3/镜头；[R188第一段](episode04-r188-window-capture-12004.md)原生11日Mar20→Mar31、片内914帧/30.466秒，但有限尾抽帧可见Mar30，day12 hook超时且Resume未在片内提交。随后同PID的[片后跨月与正常闭场](episode04-r188-monthroll-close-12004.md)独立证实g12 Mar31→Apr1、正常保存、游戏exit0与屏幕释放；不追加到已终结原片。两次+2C0/+2C8同值物理写和[静态copy来源](episode04-r08-r188-copy-writers-12004.md)相接，付款、payer、币种、cadence及+28/+30 producer仍unknown；有限窗口无样本不证明不存在。核心 **6/14＝42.9%**、业务 **4/11＝36.4%**、合格动态 **0/11**、正式ABC **0/3** 不变，69段口播草稿不抵扣成片或人工签核。
 
 新研究入口：[R06本地depth8前缀](episode04-r186-refill-parent-prefix-12004.md)仅本地mode0/flag0稳定，父链候选仍待新native与新实机；a31为**source-only/native NOT RUN**。[R08 classifier tier](episode04-r08-classifier-tier-threshold-12004.md)、[关联ID清理callee](episode04-r08-copy-callee28d6170-12004.md)及[R188 copy writer](episode04-r08-r188-copy-writers-12004.md)各自保留静态、实际和unknown边界；三份新便携消费者已离线通过，不等于付款归因。WarOverview 当前 a29 显式OFF/UI fallback，新flag与a30实机仍待验。实机 R186–R188 与 a29 native 来源是冻结 `d05b0c780b615faa714fdf0535403bb2e6941faf`；rebase 后 HEAD `53c559aa7f0caca8bc1c92b0c6f44b2ef8f72011` 加未提交源码属于新层，不能冒充旧实机部署。详情见[本轮交接](../handover/2026-10-17-war-episode04-r188-and-source-intake.md)；[精确清理](../maintenance/storage-retention-2026-10-17-r188-exact-reclaim.md)实际C回收1,642,663,936 B、D 0，此时容量不外推为后续准入。
@@ -42,3 +56,6 @@ R183 的[专题与便携原件](episode04-r183-window-capture-12004.md)证明客
 C 的具名 `operation_root_relay.py` 已接入正常 constructor，绑定新 operation/S0/runtime/source/容量；按实际 prepared state 路径定位并计量完整 Driver/run 侧车。旧 legacy API 继续拒绝，正式 ABC **0/3**。共用三冷载要求见[R10](episode04-r10-next-abc-t0-12004.md)。新运行须重新绑定，不能借本轮代码与离线回归追认旧臂。
 
 两支紧急回收的实际结果和每日只读巡检边界见[维护记录](../maintenance/storage-retention-2026-10-16-r184-emergency.md)。历史容量 deadline 没有延长；后续新场、构建和渲染分别重新准入。
+
+
+2026-10-17后续独立知识（machine_id `desktop-3fevhd2-1c74096080`）：[R05低库存搜索、R07七日预算、R08 29591E0枚举与R06变量来源](episode04-r189-followup-source-index-12004.md)。它们形成于source6bf冻结期间，本次闭场后仅入库，未在R190部署或授新业务正例；主批旧pins/历史原件保持，所有分子不变。

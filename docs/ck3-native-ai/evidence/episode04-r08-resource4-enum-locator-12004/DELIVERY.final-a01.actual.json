@@ -1,0 +1,25 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T19:43:28.959272+00:00",
+  "source": {
+    "path": "SOURCE.final-a01.json",
+    "bytes": 11354,
+    "sha256": "9e92151fd86711f7f1b2a116e426e345e7d37d2289a9a9d89ab4b020f63e81b3"
+  },
+  "verify": {
+    "path": "VERIFY.final-a01.actual.json",
+    "bytes": 1037,
+    "sha256": "913b143fade7d64fa63d46afcf7185719eb88f9c1510db1891acebc6715662cd"
+  },
+  "archive": {
+    "path": "PRODUCERS-FIRST-SEAL.exact.zip",
+    "bytes": 29316,
+    "sha256": "88ea885b20e898b92b166d2494bc4301f2c84265bbb2dd3c615a321be972cc66"
+  },
+  "repack": {
+    "path": "PACKAGE-REPACK.actual.json",
+    "bytes": 2702,
+    "sha256": "87a4e03cb537c99ca69b795792077f37ad09394f426846c1fea870bc3aaa6be8"
+  },
+  "no_new_EXE_reads_during_repack": true
+}

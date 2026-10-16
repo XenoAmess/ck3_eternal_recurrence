@@ -1,0 +1,85 @@
+{
+  "schema": "xar.e04.r08.two-literal-rdata-qword-references.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T19:30:44.714135+00:00",
+  "exe_sha256_reused": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "source_literals_pin": {
+    "path": "LITERALS.actual.json",
+    "bytes": 10501,
+    "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121"
+  },
+  "stat_before": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "stat_after": {
+    "bytes": 101040248,
+    "mtime_ns": 1792052040982825200,
+    "ctime_ns": 1792052040982825200,
+    "device": 13886423844274364792,
+    "inode": 7318349394530289
+  },
+  "targets": [
+    {
+      "name": "GetCurrency",
+      "literal_rva": 72200488,
+      "preferred_VA": 5440909608
+    },
+    {
+      "name": "barter_goods",
+      "literal_rva": 72399744,
+      "preferred_VA": 5441108864
+    }
+  ],
+  "section": {
+    "name": ".rdata",
+    "virtual_size": 17123946,
+    "rva": 71147520,
+    "raw_size": 17124352,
+    "raw_offset": 71142912
+  },
+  "read_ledger": [
+    {
+      "file_offset": 71142912,
+      "bytes": 17124352,
+      "kind": "literal_pointer_data_locator"
+    }
+  ],
+  "metadata_bytes": 0,
+  "body_bytes": 0,
+  "literal_data_bytes": 17124352,
+  "read_calls": 1,
+  "counts": {
+    "GetCurrency": 0,
+    "barter_goods": 1
+  },
+  "rows": [
+    {
+      "name": "barter_goods",
+      "literal_rva": "450BB80",
+      "literal_preferredVA": 5441108864,
+      "reference_rva": "46FC9F8",
+      "reference_file_offset": 74430456,
+      "reference_mod8": 0,
+      "qword_hex": "80bb504401000000",
+      "context_rva": "46FC9C8",
+      "context_hex": "b8926d44010000002a3e00000000000040d75844010000002b3e000000000000c8926d44010000002c3e00000000000080bb5044010000002d3e00000000000068bb5044010000002e3e00000000000080926d44010000002f3e00000000000098926d4401000000303e00000000000020936d4401000000313e000000000000",
+      "context_bytes": 128,
+      "context_sha256": "ffbb4e0d7aa405794793977def33d593529304cd00d86f1c2b3392129bb6107d"
+    }
+  ],
+  "output_truncated": false,
+  "cumulative_first_and_second_locator_bytes": 34248704,
+  "cumulative_metadata_bytes": 608,
+  "cumulative_reads": 6,
+  "text_bytes_read": 0,
+  "whole_EXE_hashes": 0,
+  "registration_or_handler_confirmed": false,
+  "resource4_business_name": null,
+  "paid_military_amount_raw": null,
+  "cadence": null
+}

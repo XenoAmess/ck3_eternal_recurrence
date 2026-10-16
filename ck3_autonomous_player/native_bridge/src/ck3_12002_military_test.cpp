@@ -475,9 +475,40 @@ void CheckOriginAndBinding() {
           !BindMilitaryImage(0, kExecutableSha256, commands).enabled,
           "wrong build does not bind");
 }
+void CheckPreviewUnavailableReasonsOnly() {
+  using Reason = xar::game::PreviewMoveArmyUnavailableReason;
+  Fixture f;
+  auto world = World(f);
+  auto missing = f.bindings;
+  missing.enabled = false;
+  const auto binding_failure = PreviewMoveArmy(missing, world, kUnit, 3);
+  Require(binding_failure.status == PreviewMoveArmyStatus::unavailable &&
+          binding_failure.unavailable_reason == Reason::military_bindings_incomplete &&
+          f.validations == 0 && f.submissions == 0,
+          "preview binding reason precedes all original validators");
+  auto no_snapshot = world;
+  no_snapshot.read_snapshot = nullptr;
+  const auto snapshot_failure = PreviewMoveArmy(f.bindings, no_snapshot, kUnit, 3);
+  Require(snapshot_failure.status == PreviewMoveArmyStatus::unavailable &&
+          snapshot_failure.unavailable_reason == Reason::military_snapshot_unavailable &&
+          f.validations == 0 && f.submissions == 0,
+          "preview snapshot reason is distinct without added calls");
+  auto wrong_constructor = f.bindings;
+  wrong_constructor.construct_move_path = [](void *) noexcept -> void * { return nullptr; };
+  const auto constructor_failure = PreviewMoveArmy(wrong_constructor, world, kUnit, 3);
+  Require(constructor_failure.status == PreviewMoveArmyStatus::unavailable &&
+          constructor_failure.unavailable_reason == Reason::path_constructor_return_mismatch &&
+          f.validations == 1 && f.submissions == 0 && f.move_destroyed == 0,
+          "preview mismatch preserves one validator and no action or invented cleanup");
+}
 } // namespace
 
-int main() {
+int main(int argc, char **argv) {
+  if (argc == 2 && std::strcmp(argv[1], "--preview-unavailable-reasons-only") == 0) {
+    CheckPreviewUnavailableReasonsOnly();
+    std::cout << "PASS new preview unavailable reason cases only\n";
+    return 0;
+  }
   CheckRaise();
   CheckMoveAndPreview();
   CheckSplitDisbandMerge();

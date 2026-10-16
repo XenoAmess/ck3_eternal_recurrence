@@ -1,0 +1,42 @@
+{
+  "status": "EXACT_EXCERPTS_AND_PRODUCTION_SUPPLY_COMPARISON_REPRODUCED",
+  "slice_count": 69,
+  "production_comparison": {
+    "status": "NATIVE_WEIGHTED_SUPPLY_MATCH",
+    "destination_army_id": 93,
+    "source_army_id": 162,
+    "weights_raw": [
+      7500000,
+      17500000
+    ],
+    "source_weight_basis": "native current_soldiers getter checked against complete ArRg sum; not source destination-role weight",
+    "stocks_raw": [
+      10000000,
+      10000000
+    ],
+    "shares_raw": [
+      30000,
+      70000
+    ],
+    "contributions_raw": [
+      3000000,
+      7000000
+    ],
+    "preclamp_raw": 10000000,
+    "post_actual_capacity_raw": 10000000,
+    "expected_stock_raw": 10000000,
+    "actual_stock_raw": 10000000,
+    "weighted_supply_match": true,
+    "upper_clamp_observed": false,
+    "distinct_pre_stock_observed": false,
+    "capacity_predicted_from_quality": false,
+    "source_PC_execution_observed": false,
+    "full_card_closed": false
+  },
+  "existing_literal_projection_SHA_matched": true,
+  "whole_originals_body_read": false,
+  "whole_original_SHA_recomputed_from_slices": false,
+  "physical_whole_fixture_rerun": false,
+  "R09_full_card_closed": false,
+  "SDK_or_game_actions": 0
+}

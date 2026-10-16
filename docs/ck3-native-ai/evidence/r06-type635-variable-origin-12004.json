@@ -1,0 +1,277 @@
+{
+  "schema": "xar.r06.type635.variable-origin.12004.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-16T20:03:06.009315+00:00",
+  "source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "sources_reused_without_copy": {
+    "construct": {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3AC38C0.bin",
+      "bytes": 927,
+      "sha256": "52fe68663033e21e395845c1f0f4dddb94cb79b4f0a6ee99dde22d9a7c6d9506"
+    },
+    "parent": {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-receiver3ac3ef0-source-a15/3AC3EF0.bin",
+      "bytes": 879,
+      "sha256": "476ac96745e7088e7dd2073cfc00e023d8a1102a8d154a51434886d6d5b5a2a7"
+    },
+    "entry": {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-entry3ac1c00-source-a16/3AC1C00.bin",
+      "bytes": 449,
+      "sha256": "8efccb736158d04c2847d98e8aa6d3400ae8591467d2628726a1f1c396e43cfc"
+    },
+    "prepare": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/3E4BC50.bin",
+      "bytes": 604,
+      "sha256": "739ddc4eb092e1df091617be4a4724a0a673d41cfb76698a96a623bb82545c40"
+    },
+    "final": {
+      "path": "C:/ck3-e04-resume-20261015-a01/refill-toggle-actual-next-a09/3E4C090.bin",
+      "bytes": 406,
+      "sha256": "f166a756656cb0276c7c89dd74107c716d264c31f891d16cfed3b247d19ca292"
+    },
+    "reviewed_prepare": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r06-3e4bc50-source-a35/SOURCE-CONTRACT.actual-a35.json",
+      "bytes": 3404,
+      "sha256": "e4773b8d40e55ac609c2427467d93b0c13b31a5f7cf9bbc52631091a00688451"
+    },
+    "reviewed_parent": {
+      "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/episode04-r186-refill-parent-prefix-12004.md",
+      "bytes": 7763,
+      "sha256": "be95ff89432e79040cfc732a6e82d291d9f9fa506b55c2d742899c98e9c64540"
+    },
+    "actual_prefix": {
+      "path": "C:/ck3-e04-resume-20261015-a01/r189-r06-actual-analysis-a34/candidate/docs/ck3-native-ai/acceptance/2026-10-17-r189-parent-prefix/EVIDENCE.actual-a34.json",
+      "bytes": 9878,
+      "sha256": "660339b598e8da1b00a65021d007fecdb299b954990158074d86feda20bb81ec"
+    }
+  },
+  "actual_R189": {
+    "runtime": {
+      "pid": 36940,
+      "connection_generation": 1,
+      "actor_full_id": 31254,
+      "date_raw": 53149080,
+      "episode_run_id": "native-31254-93e28f54f041"
+    },
+    "evidence_kind": "offline re-consumption of existing live raw cuts; not a new observation",
+    "production_strict_consumer": "b3fdc5fcd6f3616c7bef48be38a19868d3913fd5d502f48edc875b39e56f2024",
+    "rows": [
+      {
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "first_capture_declaration_count": 1,
+        "first_capture_index_count": 1,
+        "local_direct_pointer_present": false,
+        "local_AL1_is_not_final_selection": true,
+        "parent_depth4_filtered": true,
+        "frontier8_definition": "unknown",
+        "current_variable_table_observed": false
+      },
+      {
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "first_capture_declaration_count": 1,
+        "first_capture_index_count": 1,
+        "local_direct_pointer_present": false,
+        "local_AL1_is_not_final_selection": true,
+        "parent_depth4_filtered": true,
+        "frontier8_definition": "unknown",
+        "current_variable_table_observed": false
+      }
+    ]
+  },
+  "source_field_map": [
+    {
+      "block_offset": "A4",
+      "callback_offset": "B4",
+      "wire": "failure_diagnostic.raw_declaration_count",
+      "actual_first_capture_raw": 1,
+      "role": "signed declaration count; number of16B temporary variable slots"
+    },
+    {
+      "block_offset": "BC",
+      "callback_offset": "CC",
+      "wire": "failure_diagnostic.raw_index_count",
+      "actual_first_capture_raw": 1,
+      "role": "signed4B index count; last entry selects final receiver variable"
+    },
+    {
+      "block_offset": "B0[BC-1]",
+      "wire": "local/prefix.receiver_variable_index",
+      "actual_stable_raw": 0,
+      "role": "declaration/variable index, not evaluated pointer"
+    },
+    {
+      "block_offset": "8C",
+      "callback_offset": "9C",
+      "wire": null,
+      "actual_raw": null,
+      "availability": "not_published_unknown",
+      "role": "signed literal/provider record count; scratch preparation"
+    },
+    {
+      "block_offset": "0C",
+      "callback_offset": "1C",
+      "wire": null,
+      "actual_raw": null,
+      "availability": "not_published_unknown",
+      "role": "signed pre-expression record count; scratch preparation"
+    },
+    {
+      "block_offset": "24",
+      "callback_offset": "34",
+      "wire": "expression.chain_count_24_raw",
+      "role": "distinct final receiver chain; never substitute for+8C/+0C"
+    }
+  ],
+  "closed_local_dataflow": [
+    {
+      "source": "3AC3918/391F",
+      "fact": "scratch slot count reads+8C and+C; stride28"
+    },
+    {
+      "source": "3AC3994,3AC3A93..AA4",
+      "fact": "separate+A4 variable allocation; stride10, initialized pointer0/type/default/rawbyte1"
+    },
+    {
+      "source": "3AC3B5D/3AC3B61",
+      "fact": "R8=&scratch and RDX=&variables are separate descriptors"
+    },
+    {
+      "source": "3AC1D18..32,3AC1D9A..A4",
+      "fact": "mode0 directly copies entry+0, writes type and rawbyte1, returns AL1 even for pointer0"
+    },
+    {
+      "source": "3AC401C/4020,3AC41A0..AE",
+      "fact": "local flag0 stays pending; parentflag0 does not call entry resolver"
+    },
+    {
+      "source": "3E4C0D3..11D",
+      "fact": "reads last index then16B variable pointer/type, independently of scratch"
+    }
+  ],
+  "helper_triage": [
+    {
+      "rva": "879390",
+      "actual_call": "3E4BCC1",
+      "arguments": "RCX=scratch destination,RDX=dynamic literal value,R8=provider object",
+      "direct_output_connection": "scratch only",
+      "body_held": false,
+      "receiver_constructor_qualified": false,
+      "transitive_effects": "unknown"
+    },
+    {
+      "rva": "87CCC0",
+      "actual_calls": [
+        "3E4BCFA",
+        "3E4BD61",
+        "3E4BD7F",
+        "3E4C11F"
+      ],
+      "direct_use": "default type comparison or initialization",
+      "body_held": false,
+      "receiver_constructor_qualified": false,
+      "transitive_effects": "unknown"
+    },
+    {
+      "rva": null,
+      "actual_call": "3AC1D72 indirect slot2",
+      "direct_output_connection": "temporary variable pointer/type",
+      "body_held": false,
+      "reason": "no eligible provider RVA at actual visited0..7; frontier8 definition/count/match unknown"
+    }
+  ],
+  "getter_candidate": null,
+  "getter_candidate_reason": "No actual final receiver pointer/class source obtained. callback+F0, actor,Army18 and scratch are not substitutes.",
+  "remaining_unknowns": [
+    "actual +8C literal count",
+    "actual +0C preparation count",
+    "frontier8 definition/count/key635/flag",
+    "deeper eligible direct value or provider RVA",
+    "invocation-local final variable pointer and type",
+    "unread helper/provider transitive side effects"
+  ],
+  "next_minimum_observation": "Existing fixed refill expression child: independent availability for signed+8C/+0C counts. They only settle preparation bypass. To settle final receiver origin still need source-bound frontier8 definition/first key635 match or indexed actual context/definition constructor; no blind16/64 scan.",
+  "new_EXE_reads": 0,
+  "new_source_body_reads": 0,
+  "new_sdk_queries": 0,
+  "native_execution_performed": false,
+  "provider_invoked": false,
+  "record_check_scope": {
+    "schema": "xar.native-research-plan-check.v1",
+    "result": "plan-consistent",
+    "proof_layer": "record-structure-and-file-integrity",
+    "semantic_correctness_verified": false,
+    "live_execution_performed": false,
+    "observation_plan_issues": [
+      "offline-only plan does not define a live observation window",
+      "the real producer trigger must be located before live sampling"
+    ],
+    "declared_edges_by_status": {
+      "counter-policy": 0,
+      "inference": 0,
+      "live-confirmed": 0,
+      "static-confirmed": 6,
+      "unknown": 2
+    },
+    "enumerated_native_edges": 8,
+    "declared_cases_by_status": {
+      "pending": 1,
+      "observed": 0,
+      "not-applicable": 0
+    },
+    "checked_evidence_files": 7,
+    "limitations": [
+      "Evidence layers and conclusions are author declarations; hashes bind bytes, not their truth.",
+      "Counts cover this enumerated graph only, not all CK3 branches.",
+      "A consistent observation plan is not authorization to run or manipulate CK3."
+    ],
+    "plan_sha256": "2a087d0cd0896a65d562f1e2462f53eb2b2326103f1b7768f6f1821fabe05fe8"
+  },
+  "verifier_result": {
+    "status": "PASS_HELD_VARIABLE_VS_SCRATCH_SOURCE_AND_R189_BOUNDARY",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "instruction_pins": 18,
+    "direct_call_pins": 6,
+    "source_bodies_reused": 5,
+    "actual_rows_consumed": 2,
+    "production_consumer_sha256": "b3fdc5fcd6f3616c7bef48be38a19868d3913fd5d502f48edc875b39e56f2024",
+    "actual_boundary": [
+      {
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "first_capture_declaration_count": 1,
+        "first_capture_index_count": 1,
+        "local_direct_pointer_present": false,
+        "local_AL1_is_not_final_selection": true,
+        "parent_depth4_filtered": true,
+        "frontier8_definition": "unknown",
+        "current_variable_table_observed": false
+      },
+      {
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "first_capture_declaration_count": 1,
+        "first_capture_index_count": 1,
+        "local_direct_pointer_present": false,
+        "local_AL1_is_not_final_selection": true,
+        "parent_depth4_filtered": true,
+        "frontier8_definition": "unknown",
+        "current_variable_table_observed": false
+      }
+    ],
+    "unobserved_preparation_counts": [
+      "block+8C signed32",
+      "block+0C signed32"
+    ],
+    "final_receiver_pointer": "unknown; invocation-local table was not observed",
+    "new_callee_for_final_receiver": null,
+    "new_EXE_reads": 0,
+    "SDK_calls": 0,
+    "native_execution_performed": false,
+    "semantic_correctness_verified_by_test": false,
+    "scope": "Held byte/call pins and production strict consumption of existing R189 cuts; human source review supplies dataflow semantics. No helper purity, provider return, receiver selection, toggle or ADD qualification."
+  },
+  "source_semantics_supplied_by_human_review": true
+}

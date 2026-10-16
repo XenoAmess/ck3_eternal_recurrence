@@ -1,0 +1,193 @@
+{
+  "schema": "xar.r05.named-small-qualification.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:06:24.686191+00:00",
+  "source_pins": {
+    "r189_candidates": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0189\\responses\\r189-r01-commander18-a01.json",
+      "bytes": 92783,
+      "sha256": "e8609e60da08278fd68c5f7f4e42022d45357d8620a2d57ed869e23615d4c6dc"
+    },
+    "r181_preparation_a04": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a10-a01\\r05-preparation.actual-a04.json",
+      "bytes": 8971,
+      "sha256": "222bc509a55c9c40f51e9a832e314bab5eee25cf0cb5a16eeaa6cea510834e5c"
+    },
+    "r176_supply_literal": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\continuation-a07\\saved-r0176-supplies.literal-a01.json",
+      "bytes": 2229,
+      "sha256": "f6fa2e618785316cc6cbac898b914cd521c653cb64ad43558dead091426a4a9d"
+    },
+    "r180_normal_save_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\arrival-closure-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 1379,
+      "sha256": "d17aa2bd77d706f7017ca512deb812b0cd0ed60aa529a1dfcdab627397c82e1d"
+    },
+    "r180_day5": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\normal-county-preparation-a01\\day-05.complete.actual.json",
+      "bytes": 1317,
+      "sha256": "b53a12ca3eee87e019ddfacc6026b10592c1292c8472ef04b590a4bea26c8541"
+    }
+  },
+  "r189_candidate_qualification": {
+    "production_normalizer": "xar_autoplayer.bridge.army_commander_candidates.normalize_army_commander_candidates_v1",
+    "result": "PASS",
+    "snapshot_revision": 3,
+    "date_raw": 53149080,
+    "army_id": 18,
+    "native_carmy_id": 18,
+    "owner_character_id": 31254,
+    "candidate_collection_complete": true,
+    "candidate_source_count": 14,
+    "eligible_cap100_count": 10,
+    "eligible_cap100_candidates": [
+      {
+        "character_id": 32236,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 34975,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 37244,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 37702,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 35899,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 34232,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 36445,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 33946,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 45458,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      },
+      {
+        "character_id": 45464,
+        "available": true,
+        "final_eligibility_observable": true,
+        "can_assign": true,
+        "conditional_capacity_raw": 10000000,
+        "assignment_applied": false
+      }
+    ],
+    "conditional_leaf_provenance": {
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "capacity_rva": 46480368,
+      "loaded_full_rva": 96898160,
+      "additive_modifier_id": 467,
+      "multiplicative_modifier_id": 468
+    },
+    "actual_assignment_applied": false,
+    "actual_after_assignment_capacity_observed": false
+  },
+  "costs": {
+    "actual_r181_unchanged_baseline": {
+      "initial_stock_raw": 30000000,
+      "capacity_raw": 30000000,
+      "rate_raw": -175438,
+      "first_successful_post_stock_raw": 29824562,
+      "first_strict_below_10_occurrence": 166,
+      "zero": {
+        "ready": true,
+        "required_fields": [],
+        "successful_bucket_occurrences": 172,
+        "first_successful_post_stock_raw": 29824562,
+        "first_zero_same_invocation_can_apply_supply_loss": true,
+        "first_new_zero_writer_opportunity": 172,
+        "bucket_visits": null,
+        "actual_days": null,
+        "condition": "same captured rate/cap and successful updater at each original pointer occurrence",
+        "physical_loss_predicted": false
+      },
+      "actual_days": null,
+      "condition": "unchanged rate/cap and successful original updater occurrence; not calendar days"
+    },
+    "counterfactual_cap100_same_rate": {
+      "initial_stock_raw": 30000000,
+      "capacity_raw": 10000000,
+      "rate_raw": -175438,
+      "first_successful_post_stock_raw": 10000000,
+      "first_strict_below_10_occurrence": 53,
+      "zero": {
+        "ready": true,
+        "required_fields": [],
+        "successful_bucket_occurrences": 59,
+        "first_successful_post_stock_raw": 10000000,
+        "first_zero_same_invocation_can_apply_supply_loss": true,
+        "first_new_zero_writer_opportunity": 59,
+        "bucket_visits": null,
+        "actual_days": null,
+        "condition": "same captured rate/cap and successful updater at each original pointer occurrence",
+        "physical_loss_predicted": false
+      },
+      "actual_days": null,
+      "condition": "unchanged rate/cap and successful original updater occurrence; not calendar days"
+    }
+  },
+  "r180_exact_save_path_availability": [
+    {
+      "receipt_key": "path",
+      "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-logistics-next-a09-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "exists": true,
+      "bytes_now": 72973969,
+      "mtime_ns_now": 1792112879874533000,
+      "identity_now": "stat only; original save SHA not reverified"
+    }
+  ],
+  "current_low_stock_checkpoint_qualified": false,
+  "new_credit": 0,
+  "boundary": "R189 ten lawful conditional-cap100 candidates do not prove changed Army18 capacity or stock. R180 receipt availability is separate from source SHA identity; no save read/hash."
+}

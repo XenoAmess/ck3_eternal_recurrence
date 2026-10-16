@@ -1,0 +1,236 @@
+{
+  "schema": "xar.r189.r06.portable-prefix-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T19:42:12.372411+00:00",
+  "query_observed_at": "2026-10-16T19:30:09.075148+00:00",
+  "source_response": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r189-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0189/responses/r189-r06-tree-once-a01.json",
+    "bytes": 1071301,
+    "sha256": "07e9652bc6f7310077f0474eb554ad78733efe3667b6025e75b73dd96fcbcd98"
+  },
+  "exact_body_cuts": [
+    {
+      "key": "receiver_entry_candidates_12004",
+      "pointer": "/body/widgets/220/standard_click_binding_12004/callbacks/0/indirect_target_3aa30e0/expression_3a9f960/receiver_entry_candidates_12004",
+      "start": 104491,
+      "end": 112265,
+      "bytes": 7774,
+      "sha256": "226f00453fab24b56af1b1464f7ef4caa9fef2b61141d81f512437dc14f56555",
+      "portable_path": "raw/receiver_entry_candidates_12004-0.json"
+    },
+    {
+      "key": "receiver_entry_candidates_12004",
+      "pointer": "/body/widgets/238/standard_click_binding_12004/callbacks/0/indirect_target_3aa30e0/expression_3a9f960/receiver_entry_candidates_12004",
+      "start": 119924,
+      "end": 127698,
+      "bytes": 7774,
+      "sha256": "226f00453fab24b56af1b1464f7ef4caa9fef2b61141d81f512437dc14f56555",
+      "portable_path": "raw/receiver_entry_candidates_12004-0.json"
+    },
+    {
+      "key": "refill_receiver_frame_12004",
+      "pointer": "/body/refill_receiver_frame_12004",
+      "start": 257708,
+      "end": 258048,
+      "bytes": 340,
+      "sha256": "45280f183a2a0bf0eea7a89e1a4b187290c4bd1d1c289144cb6c29ab22301626",
+      "portable_path": "raw/refill_receiver_frame_12004-1.json"
+    },
+    {
+      "key": "callback_binding_source_12004",
+      "pointer": "/body/callback_binding_source_12004",
+      "start": 258087,
+      "end": 259011,
+      "bytes": 924,
+      "sha256": "95f00c22bb0d63e30d76faf08e72489749f12bfffc50ba458df8e1b76e38ce85",
+      "portable_path": "raw/callback_binding_source_12004-2.json"
+    },
+    {
+      "key": "refill_receiver_public_binding_12004",
+      "pointer": "/body/refill_receiver_public_binding_12004",
+      "start": 259324,
+      "end": 259465,
+      "bytes": 141,
+      "sha256": "84a458af0d2313b6e83bec9ca0e68d51f36d884bed1718f71dd68ca64eace837",
+      "portable_path": "raw/refill_receiver_public_binding_12004-3.json"
+    }
+  ],
+  "source_identity": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r189-window-capture-a01/runtime-actor-identity.actual-a01.json",
+    "bytes": 7955,
+    "sha256": "0a205a88d161e79e329878b686c0811afe2792965d315a4abeddd8397b89c4e9"
+  },
+  "runtime": {
+    "pid": 36940,
+    "process_creation_filetime_100ns": 134366517280318880,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-93e28f54f041",
+    "actor_full_id": 31254,
+    "date_raw": 53149080
+  },
+  "production_qualification": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r189-root-prep-a05/R189-PRODUCTION-QUALIFIED.actual-a01.json",
+    "bytes": 3340,
+    "sha256": "ebe93d50b63bff89e99a71c9108f513a7f4b07934868106a44fe273bb60931bf"
+  },
+  "original_a30_cold_build_qualification": {
+    "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a30/ROOT-PRODUCTION-QUALIFICATION.actual-a30.json",
+    "bytes": 30733,
+    "sha256": "c3230b67d4075b0509d5fd07650c427a15f4af55ff76117777cc1d45ec2c803d"
+  },
+  "deployed_native": {
+    "xar_ck3_bridge.dll": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge.dll",
+      "bytes": 13062144,
+      "sha256": "61a3e906affdea003b279c55584c974edebce0b2ee9685d2136e84ed05a46459"
+    },
+    "xar_ck3_bridge_injector.exe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "7b7c7e9e3136a71e8590c56c4640b1ac848b1721dc0c0bc067ab79e4997b5b07"
+    },
+    "xar_ck3_bridge_host.exe": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a30\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "b95ebc9d0bf579fcd75527b3d1cc89d0cc0269603a734a99510157af69daa5c8"
+    }
+  },
+  "native_build_source_head": "6bf30840af44231653f8e914389b59c8798f2cc1",
+  "source_candidate_vs_deployed_source": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_12004.hpp",
+      "a31_candidate_target": {
+        "bytes": 19701,
+        "sha256": "ba3dbfb7102f95f5f9d986b2bc9ec94a3131336b833c6ba07dcede9b746af893"
+      },
+      "deployed_source_current": {
+        "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_12004.hpp",
+        "bytes": 19701,
+        "sha256": "ba3dbfb7102f95f5f9d986b2bc9ec94a3131336b833c6ba07dcede9b746af893"
+      },
+      "equals_a31_target": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_serializer_12004.hpp",
+      "a31_candidate_target": {
+        "bytes": 6904,
+        "sha256": "c3f4adf3221bd2a499ca1fb12c16a20d61b0d44b3c354bc9dac4b63d4e9ca1fc"
+      },
+      "deployed_source_current": {
+        "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_serializer_12004.hpp",
+        "bytes": 6904,
+        "sha256": "c3f4adf3221bd2a499ca1fb12c16a20d61b0d44b3c354bc9dac4b63d4e9ca1fc"
+      },
+      "equals_a31_target": true
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "a31_candidate_target": {
+        "bytes": 17911,
+        "sha256": "b3fdc5fcd6f3616c7bef48be38a19868d3913fd5d502f48edc875b39e56f2024"
+      },
+      "deployed_source_current": {
+        "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+        "bytes": 17911,
+        "sha256": "b3fdc5fcd6f3616c7bef48be38a19868d3913fd5d502f48edc875b39e56f2024"
+      },
+      "equals_a31_target": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "a31_candidate_target": {
+        "bytes": 448455,
+        "sha256": "6e6a9ef2354521ca6b27603444597c0805bf8d41fb962e33716c12fa4e5bbbb9"
+      },
+      "deployed_source_current": {
+        "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 448455,
+        "sha256": "6e6a9ef2354521ca6b27603444597c0805bf8d41fb962e33716c12fa4e5bbbb9"
+      },
+      "equals_a31_target": true
+    }
+  ],
+  "frame": {
+    "native_revision": 3,
+    "connection_generation": 1,
+    "pump_epoch": 44121,
+    "ticket_sequence": 8,
+    "game_pid": 36940,
+    "thread_id": 22932,
+    "played_character_full_id": 31254,
+    "date_raw": 53149080,
+    "owner_thread_verified": true,
+    "frame_stable": true,
+    "gui_owner_stable": true
+  },
+  "public_binding": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "episode_run_id": "native-31254-93e28f54f041"
+  },
+  "opener": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r189-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0189/responses/r189-r06-open-military-once-a01.json",
+    "bytes": 1073659,
+    "sha256": "ae12788f9e05bdbfe1a023368095f518b9d5e873fe8fd643659ff48ec8294aa4"
+  },
+  "opener_observed_fields": {
+    "status": "verified_visible",
+    "postcondition_verified": true
+  },
+  "before": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r189-window-capture-a01/desktop-3fevhd2-1c74096080--vanilla--R0189/responses/r189-r06-before-a01.json",
+    "bytes": 141808,
+    "sha256": "8f33ff685897a9404c03edb88666886d45197e565b7b793f19c5aaba767722f2"
+  },
+  "widgets": [
+    {
+      "widget_index": 220,
+      "child_path": "0/0/0/2/3/0/0/0",
+      "effective_visible": true,
+      "enabled": true,
+      "callback_index": 0
+    },
+    {
+      "widget_index": 238,
+      "child_path": "0/0/0/3/5/0/0/0",
+      "effective_visible": false,
+      "enabled": true,
+      "callback_index": 0
+    }
+  ],
+  "strict_callback_consumer_passed": true,
+  "independent_internal_after_snapshot_read": false,
+  "pattern": {
+    "local_depth0": "definition true/count1, match mode0/flag0/direct0/provider0",
+    "depth1_3": "definition true/count0, no match",
+    "depth4": "definition true/count1, match mode0/flag0 filtered",
+    "depth5_7": "definition null/countunknown",
+    "parent_edges": "context_e8 all8",
+    "frontier8_definition": "unknown"
+  },
+  "unique_eligible_provider_slot2_rvas": [],
+  "boundary": {
+    "prefix_actual_stable": true,
+    "full_walk_complete": false,
+    "native_receiver_selected": false,
+    "provider_execution_observed": false,
+    "toggle_qualified": false,
+    "actual_ADD_qualified": false,
+    "cold_fixture_is_not_this_live_observation": true,
+    "original_full_response_not_copied": true,
+    "portable_cuts_are_exact_original_bytes_not_whole_tree_replacements": true
+  },
+  "consumer_files": [
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/r189-r06-actual-analysis-a34/candidate/docs/ck3-native-ai/acceptance/2026-10-17-r189-parent-prefix/consumer/gui_refill_receiver_candidates_12004_contract.py",
+      "bytes": 17911,
+      "sha256": "b3fdc5fcd6f3616c7bef48be38a19868d3913fd5d502f48edc875b39e56f2024"
+    },
+    {
+      "path": "C:/ck3-e04-resume-20261015-a01/r189-r06-actual-analysis-a34/candidate/docs/ck3-native-ai/acceptance/2026-10-17-r189-parent-prefix/consumer/gui_callback_binding_12004_contract.py",
+      "bytes": 8556,
+      "sha256": "399357ce80e15d61b6e317fe4e8e5e47cc99f54118ad7d9468421cf1383be6f9"
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "e04-GetCurrency-only-overlap-complete-RIP-locator",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "created_at_utc": "2026-10-16T19:38:34.958361+00:00",
+  "question": "Which independent raw 8B/8D opcode starts in .text target exactly GetCurrency44DB128?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4/Steam25734779",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Proposed corrected locator only; requires Root approval of additional71141888B before execution. This preparation does not access EXE.",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact image and same native file identity; preferred offsets not runtime frame",
+    "producer_trigger": "not-applicable",
+    "producer": "Every8B/8D opcode independently tested for RIPrelative mod00/rm101 and exact target; prior optionalREX byte is context. No function/instruction boundary proof.",
+    "caller": "Unknown named registration wrapper; previous .rdata GetCurrencyQWORD refs0",
+    "consumer": "Potential named GetCurrency registration/handler route, not actual selector mapping",
+    "cache_lifetime": "Static locator bytes only",
+    "expected_signal": "At most16rawsites/96B each; duplicate prefixed/unprefixed starts not created; no overlapping opcode skipped.",
+    "zero_sample_meaning": "Zero can cover the specified independent8B/8D raw pattern family only, not other instructions/tables/absence of registration.",
+    "stop_condition": "Proposed single71141888B .text read; cumulative176532480B sections,608B metadata,8reads; output<=131072B; no callee or new name; not executed by this preparation.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "literal",
+      "layer": "locator",
+      "path": "LITERALS.actual.json",
+      "sha256": "af76ea5a7e69ea52048dc6ed80e6c78de7244e19ed02346a8f095cf378e47121",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Unique exact GetCurrency literal44DB128"
+    },
+    {
+      "id": "data",
+      "layer": "locator",
+      "path": "QWORD-REFS.actual.json",
+      "sha256": "b2903c63f08fcc6d5a3e59e7beae4214c54f54bc3ec273974a058fed3716da79",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "No same.rdata QWORD data reference for GetCurrency; need explicit named RIP locator"
+    },
+    {
+      "id": "coverage-correction",
+      "layer": "locator",
+      "path": "NAMED-RIP-COVERAGE-CORRECTION.actual.json",
+      "sha256": "965c0ac7ab1d455828fc8dd7761ed4ae1ec676b8b1d63709bd364690b8d81b2b",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Prior matcher cannot prove full negative; synthetic overlapping counterexample without EXE read."
+    }
+  ],
+  "nodes": [
+    {
+      "id": "name",
+      "label": "GetCurrency44DB128"
+    },
+    {
+      "id": "site",
+      "label": "Raw RIP LEA/MOV candidate"
+    },
+    {
+      "id": "function",
+      "label": "Instruction/function boundary UNKNOWN"
+    }
+  ],
+  "edges": [
+    {
+      "id": "xref",
+      "from": "site",
+      "to": "name",
+      "label": "Exact target from every independent opcode start, boundary unknown",
+      "status": "unknown",
+      "evidence": [
+        "literal",
+        "data",
+        "coverage-correction"
+      ],
+      "open_question": "Any matching target-only LEA/MOV pattern?"
+    },
+    {
+      "id": "boundary",
+      "from": "site",
+      "to": "function",
+      "label": "No source boundary proof yet",
+      "status": "unknown",
+      "evidence": [
+        "literal"
+      ],
+      "open_question": "Use genuine site to locate containing.pdata and decode from function entry later"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static",
+      "question": "Named RIP site location",
+      "status": "pending",
+      "evidence": [
+        "literal"
+      ]
+    },
+    {
+      "id": "live",
+      "question": "Resource/player/payment",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "No game/SDK/desktop/build in this locator"
+    }
+  ]
+}

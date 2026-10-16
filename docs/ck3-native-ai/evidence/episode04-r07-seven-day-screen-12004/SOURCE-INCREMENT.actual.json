@@ -1,0 +1,208 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:06:21.068535+00:00",
+  "proof_scope": "Actual installed text declarations plus already recorded portable native/source evidence; no loaded define or new route observation",
+  "source_pins": {
+    "defines": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+    },
+    "tribal_innovations": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\innovations\\00_tribal_innovations.txt",
+      "bytes": 11736,
+      "sha256": "e878e75efa1dba64557b254a68c4a1f4379ea92209bfb6821d6876db68f1f961"
+    },
+    "strategy_perks": {
+      "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_martial_1_strategy_tree_perks.txt",
+      "bytes": 4028,
+      "sha256": "cf0bcfe3221cd29b7bee50de39234957b924678cce882335044603bed8f163b3"
+    },
+    "arrival": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\unit-first-edge-arrival-selection-12004.md",
+      "bytes": 8280,
+      "sha256": "e84beb8b9b14b071ebd1becc42a2915dca38879b6a78f56e88f186f2f3bdc0cb"
+    },
+    "ADD": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\unit-next-movement-weight-prefix-12004.md",
+      "bytes": 6287,
+      "sha256": "27135ecde89c8ae6c00a912c7a8d598112d95faa2a5c43b4265e4e9373ab093b"
+    },
+    "speed3": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\army-movement-speed-composition-12003.md",
+      "bytes": 24277,
+      "sha256": "93bc2863f9887f3b5c1cf7b0314b089446300e98d73d1acba65577d4fa46fdcd"
+    },
+    "speed4": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\commander-movement-metadata-migration-12004.md",
+      "bytes": 10839,
+      "sha256": "d4fd5013bdb1aaff8405a8ab0232b64210f5cc90407019d15fcee355ba091d1c"
+    },
+    "next_pair": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r07-next-fresh-arms-12004.md",
+      "bytes": 15377,
+      "sha256": "dd3d6dc216f59eed0a0819d2cd93fea3639f029e66a42626a8d6a65b619035ad"
+    },
+    "pair_actual": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r07-interrupted-pair-12004.md",
+      "bytes": 6204,
+      "sha256": "2696365e84e992152483ee97edc5cfa4aeabfb41b45c327a0ebb5673ebd0aacf"
+    },
+    "boundary": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r178-arrival-boundary-12004\\CASE.DAY29-30.actual-a01.json",
+      "bytes": 5952,
+      "sha256": "0b5c3a42e67ab436c63b0bb7c31e294247ea244bde45c6465b0fc78f758e3433"
+    },
+    "coastal_S0": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-r0177-coastal-normalprep\\SUMMARY.actual-a01.json",
+      "bytes": 9940,
+      "sha256": "8316d9325f662de34a11b3ff475fcc49f613386f0459bfcf5a8df525dc1cc433"
+    },
+    "cash_contract": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+      "bytes": 11901,
+      "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"
+    }
+  },
+  "installed_text_excerpts": {
+    "defines": {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+        "bytes": 125400,
+        "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982"
+      },
+      "selected_lines": [
+        {
+          "line": 613,
+          "text": "DISEMBARK_PENALTY_DAYS = 30\t\t\t\t\t\t# How long does an army have a penalty after disembarking?"
+        },
+        {
+          "line": 701,
+          "text": "EMBARK_GOLD_COST_PER_HUNDRED = 1\t\t# Embark cost for every hundred units"
+        },
+        {
+          "line": 1189,
+          "text": "EMBARK_COST = 30\t\t\t\t\t\t\t\t# This value will be set as pathfinding cost if it goes from land to sea"
+        },
+        {
+          "line": 1190,
+          "text": "DISEMBARK_COST = 10\t\t\t\t\t\t\t\t# This value will be set as pathfinding cost if it goes from sea to land"
+        },
+        {
+          "line": 1677,
+          "text": "TRAVEL_EMBARK_COST = 15 # The cost in days added to traveling from a land province to a water province"
+        },
+        {
+          "line": 1678,
+          "text": "TRAVEL_DISEMBARK_COST = 5 # The cost in days added to traveling from a water province to a land province"
+        }
+      ]
+    },
+    "tribal_innovations": {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\culture\\innovations\\00_tribal_innovations.txt",
+        "bytes": 11736,
+        "sha256": "e878e75efa1dba64557b254a68c4a1f4379ea92209bfb6821d6876db68f1f961"
+      },
+      "selected_lines": [
+        {
+          "line": 401,
+          "text": "embarkation_cost_mult = -0.75"
+        },
+        {
+          "line": 402,
+          "text": "naval_movement_speed_mult = 0.25"
+        },
+        {
+          "line": 485,
+          "text": "embarkation_cost_mult = -0.25"
+        }
+      ]
+    },
+    "strategy_perks": {
+      "source": {
+        "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\lifestyle_perks\\00_martial_1_strategy_tree_perks.txt",
+        "bytes": 4028,
+        "sha256": "cf0bcfe3221cd29b7bee50de39234957b924678cce882335044603bed8f163b3"
+      },
+      "selected_lines": [
+        {
+          "line": 142,
+          "text": "naval_movement_speed_mult = 0.25"
+        }
+      ]
+    }
+  },
+  "portable_archive": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r07-interrupted-pair-12004\\compact-evidence.zip",
+    "bytes": 43110,
+    "sha256": "628ccc8cd6b69d91e5129b1582a9613561e6cbd9d82ac9ae836deddee3d67513"
+  },
+  "selected_small_archive_movement_fields": [
+    {
+      "path": "history/original-scout-internal-output.json/army_summary/current_movement_progress/accumulated_movement_weight_raw",
+      "value": 0
+    },
+    {
+      "path": "history/original-scout-internal-output.json/army_summary/current_movement_progress/cached_edge_speed_raw",
+      "value": 0
+    },
+    {
+      "path": "history/original-scout-internal-output.json/army_summary/current_movement_progress/first_route_edge_weight_cost_raw",
+      "value": null
+    },
+    {
+      "path": "history/original-scout-internal-output.json/army_summary/current_movement_progress/first_edge_arrival_provider_byte_e_u8",
+      "value": null
+    },
+    {
+      "path": "history/original-scout-internal-output.json/army_summary/current_movement_progress/first_route_edge_remaining_duration",
+      "value": null
+    }
+  ],
+  "known_route": {
+    "source_normal_S0_sha256": "e6ee95c3184c00989af660c5d765a27622fd5b93f9e8930fdc5a5ed56e157d67",
+    "unit": 93,
+    "native_CArmy": 85,
+    "land": 2624,
+    "first_and_only_route_target_sea": 1036,
+    "known_cost_raw": 3000000,
+    "positive_cached_increment_raw": 100000,
+    "provider_byte_E": 0,
+    "actual_boarding_day": 31,
+    "v1_7day_GO": false
+  },
+  "conditional_budget": {
+    "assumptions": "initial W0=0, same receiver/route/cost/cache/provider, one admitted movement ADD per natural day; not a guaranteed schedule",
+    "strict_GT_formula": "minimum n with W0+n*rate>cost; floor((cost-W0)/rate)+1 when nonnegative operands, rate>0, no signed overflow",
+    "day7_weight_raw": 700000,
+    "day30_weight_raw": 3000000,
+    "day30_sufficient_with_provider0": false,
+    "conditional_first_possible_day": 31
+  },
+  "new_inference": "Stock NPathFinding.EMBARK_COST=30 is a land-to-sea pathfinding-cost declaration consistent with this cost3000000. It is not a universal fixed-duration proof. Installed script modifier names alone do not show that they alter the live positive cached boarding increment.",
+  "no_known_short_edge_in_reviewed_portable_inputs": true,
+  "search_scope": "Existing R0177 coastal S0, R0178/179 portable route/boundary/scout sources, current defines and existing movement/commander source contracts only; not a global enumeration",
+  "remaining_gaps": [
+    "Different actual legal committed land-to-sea edge with <=7-day input budget and actual arrival; no such positive held here",
+    "Actual actor economic settlement opportunity schedule or source-qualified complete opportunity-observation contract; existing current cash rates/writer list is not this schedule"
+  ],
+  "one_more_read_answer": "Known2624->1036 needs no new query: already NO-GO. For a genuinely different normal pilot after one legitimate Move, one scoped ordinary Army query can read actual W/cache-or-fallback/cost/provider/remaining/gates; preview alone supplies no ETA. This still does not publish economic cadence. No new pilot or pair requests created.",
+  "sdk_calls": 0,
+  "EXE_reads": 0,
+  "save_reads": 0,
+  "full_Driver_reads": 0,
+  "new_payment_consumer_runs": 0,
+  "R07_card_credit_added": 0,
+  "storage": {
+    "policy_version": "1.0.0",
+    "authorized_small_bytes": 98304,
+    "start_volume": {
+      "total": 511133945856,
+      "used": 477580386304,
+      "free": 33553559552
+    },
+    "heavy_write_performed": false,
+    "deletions": 0
+  }
+}

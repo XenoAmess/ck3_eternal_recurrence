@@ -1,0 +1,134 @@
+{
+  "schema": "xar.storage-reclamation-qualification.no-delete.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T20:15:20.806070+00:00",
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "policy_version": "1.0.0",
+  "scope": "Exactly two known E02 raw candidate leaves, at most 3 GiB/30 files; no expanded inventory.",
+  "candidate_count": 2,
+  "candidate_logical_bytes_metadata_only": 2646972167,
+  "actual_deleted_count": 0,
+  "actual_reclaimed_C_allocation_bytes": 0,
+  "actual_reclaimed_D_allocation_bytes": 0,
+  "previous_C_1642663936_and_D_5629001728_not_recredited": true,
+  "items": [
+    {
+      "target_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\recording-e2-02-03-a01\\raw\\e2-pursuit-d27-d32.mkv",
+      "target_current_Win32_metadata": {
+        "id": [
+          882653518,
+          281474979683468
+        ],
+        "b": 1304900034,
+        "ft": 134350603987103872,
+        "links": 1,
+        "allocation": 1304903680
+      },
+      "proposed_CAS_keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\xar-run\\artifacts\\raw\\sha256\\29\\29D11C77ABCE92B79608F5E82E66D3949C08FE30BF6219626E526ECCA5698AAB.mkv",
+      "keeper_current_Win32_metadata": {
+        "id": [
+          882653518,
+          281474979684599
+        ],
+        "b": 1304900034,
+        "ft": 134350629507062206,
+        "links": 1,
+        "allocation": 1304903680
+      },
+      "historical_recorder": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\recording-e2-02-03-a01\\recorder-final.json",
+        "bytes": 1928,
+        "sha256": "c4bed9d42150c97ad55486fc607c526355906fe4a029ca87c1e7f91333cb9eec",
+        "machine_id": "unknown",
+        "created_at_utc": "2026-09-28T09:14:44.578858+00:00",
+        "result": "ENCODED_UNREVIEWED",
+        "human_review_completed": false,
+        "raw_sha256_asserted_by_historical_receipt": "29D11C77ABCE92B79608F5E82E66D3949C08FE30BF6219626E526ECCA5698AAB"
+      },
+      "historical_recording_age_seconds": 1594836.227212,
+      "earliest_possible_raw_default_expiry_utc": "2026-10-28T09:14:44.578858+00:00",
+      "closure_and_last_actual_use_verified": false,
+      "current_payload_SHA256_verified": false,
+      "actual_availability": "present_retained_no_delete",
+      "decision": "NO_DELETE",
+      "reasons": [
+        "Raw default retention has not elapsed even when using the earlier recording receipt time; actual later close/last-use can only extend it.",
+        "Current delivered/completed qualification is not established; a09 evidence is a review copy with remote verification and human signoff absent.",
+        "No verified early-retirement replacement: this round did not full-hash either large payload or establish immutable current keeper equality.",
+        "review_preview.py RAW[p] retains an exact path binding; whether this callable renderer is obsolete or a current consumer is unresolved. No reference rewrite was made."
+      ]
+    },
+    {
+      "target_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\recording-e2-02-03-a02\\raw\\e2-pursuit-d29-d32.mkv",
+      "target_current_Win32_metadata": {
+        "id": [
+          882653518,
+          281474979684167
+        ],
+        "b": 1342072133,
+        "ft": 134350615158689467,
+        "links": 1,
+        "allocation": 1342074880
+      },
+      "proposed_CAS_keeper_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\xar-run\\artifacts\\raw\\sha256\\92\\9225EB2CCBB71CD12B5E83C2A5D788C22AE9EBC1A268A4D4611646BBF5BDE1D0.mkv",
+      "keeper_current_Win32_metadata": {
+        "id": [
+          882653518,
+          281474979684618
+        ],
+        "b": 1342072133,
+        "ft": 134350629948076631,
+        "links": 1,
+        "allocation": 1342074880
+      },
+      "historical_recorder": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\episode02-e2-02-03-live-20260928-a01\\recording-e2-02-03-a02\\recorder-final.json",
+        "bytes": 1928,
+        "sha256": "1ab9421383d92fa30bcec35daef889103d66262f8e4ced2093a72d919224d2c6",
+        "machine_id": "unknown",
+        "created_at_utc": "2026-09-28T09:33:23.683730+00:00",
+        "result": "ENCODED_UNREVIEWED",
+        "human_review_completed": false,
+        "raw_sha256_asserted_by_historical_receipt": "9225EB2CCBB71CD12B5E83C2A5D788C22AE9EBC1A268A4D4611646BBF5BDE1D0"
+      },
+      "historical_recording_age_seconds": 1593717.12234,
+      "earliest_possible_raw_default_expiry_utc": "2026-10-28T09:33:23.683730+00:00",
+      "closure_and_last_actual_use_verified": false,
+      "current_payload_SHA256_verified": false,
+      "actual_availability": "present_retained_no_delete",
+      "decision": "NO_DELETE",
+      "reasons": [
+        "Raw default retention has not elapsed even when using the earlier recording receipt time; actual later close/last-use can only extend it.",
+        "Current delivered/completed qualification is not established; a09 evidence is a review copy with remote verification and human signoff absent.",
+        "No verified early-retirement replacement: this round did not full-hash either large payload or establish immutable current keeper equality."
+      ]
+    }
+  ],
+  "consumer_source_pin": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\review_preview.py",
+    "bytes": 20834,
+    "sha256": "7f2700c24f7cfc01ced0bcb382aa5c9641320b9f0ea1a59e1e78409d7183afb0"
+  },
+  "historical_delivery_pin": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-02-battle-second-half\\evidence-a09-video-bgm-20261002\\final-delivery.json",
+    "bytes": 3696,
+    "sha256": "6acf4db925ff9efd5221ebb12bf9c9d3b66c905e455b35f13b9fe8ed73c711eb"
+  },
+  "historical_delivery_machine_id": "unknown",
+  "historical_machine_facts_not_adopted_as_current_machine": true,
+  "current_whole_payload_hashes": 0,
+  "fresh_free_bytes_nonexclusive": {
+    "C:/": 31908679680,
+    "D:/": 50221232128
+  },
+  "free_changes_are_not_cleanup_credit": true,
+  "root_registry_or_capacity_admission_changed": false,
+  "active_E04_R190_a30_sources_scenes_saves_touched": false,
+  "main_repo_mutations": 0,
+  "task_sdk_desktop_steam_security_mutations": 0,
+  "automatic_gc": false
+}

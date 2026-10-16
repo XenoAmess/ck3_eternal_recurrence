@@ -1,0 +1,42 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-16T19:21:03.146967+00:00",
+  "reviewer": "Root",
+  "existing_offline_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-offline-reviewed.actual-a01.json",
+    "bytes": 1219,
+    "sha256": "82b1a22cd0b611dd2ebfd543564830945b983d4cb3196edc729be221aacfa81a"
+  },
+  "window_motion_original_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-recovery-a01\\probe-1\\steam-frame-freshness.json",
+    "bytes": 1233,
+    "sha256": "4049d3b76ab7cd18bb1718d23577b129fef39d0dd13f9dd0907da80bcfa94c73"
+  },
+  "directly_reviewed_originals": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-recovery-a01\\probe-1\\steam-before.png",
+      "bytes": 505082,
+      "sha256": "722fa1f005239cc827d77cb7e3e1f0b412c403817653868049eaa9ba026d22fd"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r189-window-capture-a01\\steam-recovery-a01\\probe-1\\steam-moved.png",
+      "bytes": 506164,
+      "sha256": "ef19ae07f3b0173e87ac37ebe8f7b05b53cbebd0fe8712278920b8bde2d9c617"
+    }
+  ],
+  "reviewed_image_dimensions": [
+    2560,
+    1440
+  ],
+  "direct_observations": [
+    "Steam offline text is visible in both original motion images",
+    "Steam window and its offline content visibly move right from x0 to x20",
+    "Separate nonce originals show 6916678719BE and 63A792ED4492 beside offline Steam",
+    "Taskbar clock reads 02:37; this clock was not used to establish capture freshness"
+  ],
+  "basis": "Directly reviewed changing owned-window pixels and two changing display nonces; not screenshot mtime, shell UTC, or service status",
+  "old_receipt_modified": false,
+  "desktop_calls": 0,
+  "SDK_calls": 0,
+  "steam_mode_changes": 0
+}

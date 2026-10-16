@@ -368,10 +368,12 @@ PreviewMoveArmyResult PreviewMoveArmy(const MilitaryBindings &bindings,
       bindings.construct_path_context == nullptr || bindings.build_route == nullptr ||
       bindings.construct_move_path == nullptr || bindings.destroy_move == nullptr ||
       bindings.move_primary == 0 || bindings.move_secondary == 0) {
+    result.unavailable_reason = game::PreviewMoveArmyUnavailableReason::military_bindings_incomplete;
     return result;
   }
   Snapshot current{};
   if (!ReadCurrent(world, current)) {
+    result.unavailable_reason = game::PreviewMoveArmyUnavailableReason::military_snapshot_unavailable;
     return result;
   }
   if (!current.paused) {
@@ -442,6 +444,7 @@ PreviewMoveArmyResult PreviewMoveArmy(const MilitaryBindings &bindings,
   command.province_id = province_id;
   command.mode = mode;
   if (bindings.construct_move_path(command.path.data()) != command.path.data()) {
+    result.unavailable_reason = game::PreviewMoveArmyUnavailableReason::path_constructor_return_mismatch;
     return result;
   }
   CommandCleanup cleanup{bindings.destroy_move, &command, 0};
