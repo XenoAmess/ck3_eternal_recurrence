@@ -19,7 +19,17 @@ template<class Text> inline void AppendGuiRefillReceiverCandidates12004(
     optional("provider_vtable_rva",e.provider_vtable_rva);optional("provider_slot2_rva",e.provider_slot2_rva);
     optional("direct_owner_full_id",e.direct_owner_full_id);boolean("direct_owner_identity_verified",e.direct_owner_identity_verified);s+='}';
   }
-  s+="]}";
+  s+=']';
+  if(v.failure_diagnostic){
+    const auto &d=*v.failure_diagnostic;s+=",\"failure_diagnostic\":{\"stage\":";text(s,d.stage);
+    s+=",\"kind\":";text(s,d.kind);numeric("capture_pass",d.capture_pass);numeric("read_ordinal",d.read_ordinal);
+    optional("ancestor_depth",d.ancestor_depth);optional("raw_declaration_count",d.raw_declaration_count);
+    optional("raw_index_count",d.raw_index_count);optional("raw_definition_entry_count",d.raw_definition_entry_count);
+    const auto maybe_bool=[&](const char *k,const auto &x){s+=",\"";s+=k;s+="\":";s+=x?(*x?"true":"false"):"null";};
+    maybe_bool("context_present",d.context_present);maybe_bool("definition_present",d.definition_present);
+    optional("local_definition_active_raw",d.local_definition_active_raw);s+='}';
+  }
+  s+='}';
 }
 template<class Text> inline void AppendGuiRefillReceiverFrame12004(
     std::string &s,const GuiRefillReceiverFrame12004V1 &v,Text) {

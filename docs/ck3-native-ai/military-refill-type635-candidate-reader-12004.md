@@ -15,3 +15,16 @@ Root一次采集可继续用既有MCP名/参数。另提供实际实现的 `ck3_
 来源机器 `desktop-3fevhd2-1c74096080`，实际source15/16时间与完整字节见相邻来源专题；精确EXE SHA `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。本候选未native build、未实机采集。Python反例只授consumer合同；native cold fixture保留为源码。下一实际dynamic slot2 RVA须来自新leaf，再独立准入唯一source entry；不授toggle、flag转移、actualADD或完整R06。
 
 2026-10-16追加（同机）：Root已独立构建并运行该header-only冷fixture，Release构建显式`/UNDEBUG`使断言保留；目标EXE 33,280B、SHA-256 `d71f7e3cd788ae63c3dd634006a01db4fe3c4a760e44ac3465f271515dd363bc`，退出码0，SYSTEM对精确文件的Defender路径排除读回为verified。[小回执](acceptance/2026-10-16-r0181-first-edge/RECEIVER-FIXTURE.actual-a22.json)绑定构建与运行。上述“未native build”描述属于初始a18交付时点；现在仅冷fixture已验，完整Bridge DLL及真实military GUI leaf仍未构建/实机读取，不授receiver、toggle或ADD。
+
+
+## R0182：失败不能由旧粗粒度 reason 定位（2026-10-16）
+
+机器 `desktop-3fevhd2-1c74096080` 的 R0182 实际547 widgets、PID14392/gen1、playedFullID31254、date53147712、pump18196/ticket8已由Root采集。两个固定type635控件index220/238均为unavailable、reason `candidate_memory_unreadable`，entries空且变量索引/key均null；原件pin与小摘要见[失败证据](evidence/r182-refill-reader-failure-12004.json)。这不证明原生MilitaryView不存在，也不证明内存API实际失败：旧reader在任何false时丢弃partialcapture，count界限、requirednull、active0和ReadBytes失败都共用该reason。
+
+已保留完整actual.4 source支持三处reader修正。第一，3AC4107/410A的祖先definition为空时跳3AC4201，从该祖先context+E8继续；a18却要求每层definition非空并额外读取每个ancestor+115，可能误拒原生允许的链。仅初始3AC38C0检查localdefinition+115。第二，3AC401C/4020表明local匹配entry+4C非0时，这个receiver不进入pending；不应继续读取与它无关的父context。第三，eligible parent mode0/1由已闭3AC1C00直接返回AL1，native将该receiver从pending移除；后续父链不再影响它。parent flag0的entry不调用resolver，reader也无需解引用它的provider/directowner。
+
+这些是可证实现偏差，尚未证明R0182究竟命中了哪一处。callback+10的base、declaration+98/+A4与last receiverindex+B0/+BC仍与现held3AA30E0→3A9F960→3AC38C0/3E4C090一致；没有依据改RVA、猜新布局或调用provider。
+
+外置修正同时增加可选 `failure_diagnostic`：固定stage/kind、capture_pass、read_ordinal、nullable ancestor_depth、已读取的原始三count、context/definition presence及local active byte。它只描述某次失败读的进度，未经双读资格，不会填回receiver_variable_index/key或entries；status仍unavailable、stable_double_read/native_receiver_selected/current_variable_table_observed仍false。公共输出不含地址。下一Root只需新build下沿既有military-tree只读调用一次，即可区分declaration count0/越界、index守卫、本地definition缺失、ancestor/entry/provider读取和policybudget；不需扩大扫描或尝试点击。
+
+修正保留每leaf4096读/64KiB/20ms协作deadline、8context/256entry、每tree4capture及原owner/TLS/完整snapshot/GUIroot/FullID双读约束。新Python诊断反例只验合同；新增native冷夹具为源码，未在此lane编译或运行。没有新增SDK/游戏/桌面操作、EXE读取或补员/ADD资格。备用capture CLI的content-only error丢失另属独立P2，不是这次实际memory reason的已证原因。

@@ -18,12 +18,22 @@ struct GuiRefillReceiverEntry12004V1 {
   bool direct_owner_identity_verified=false;
   bool operator==(const GuiRefillReceiverEntry12004V1 &) const=default;
 };
+struct GuiRefillReceiverFailure12004V1 {
+  std::string stage,kind;
+  std::uint32_t capture_pass=0,read_ordinal=0;
+  std::optional<std::uint32_t> ancestor_depth;
+  std::optional<std::int32_t> raw_declaration_count,raw_index_count,raw_definition_entry_count;
+  std::optional<bool> context_present,definition_present;
+  std::optional<std::uint8_t> local_definition_active_raw;
+  bool operator==(const GuiRefillReceiverFailure12004V1 &) const=default;
+};
 struct GuiRefillReceiverCandidates12004V1 {
   std::string status="unavailable",unavailable_reason="candidate_read_not_admitted";
   std::optional<std::int32_t> receiver_variable_index;
   std::optional<std::uint32_t> declared_type_id;
   bool stable_double_read=false;
   std::vector<GuiRefillReceiverEntry12004V1> entries;
+  std::optional<GuiRefillReceiverFailure12004V1> failure_diagnostic;
   bool operator==(const GuiRefillReceiverCandidates12004V1 &) const=default;
 };
 struct GuiRefillReceiverFrame12004V1 {
@@ -47,13 +57,23 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
   const auto started=std::chrono::steady_clock::now();
   std::size_t reads=0,bytes=0;
   const char *failure="candidate_memory_unreadable";
-  const auto load=[&]<class T>(std::uintptr_t object,std::size_t offset,T &value) {
-    if(!object||object>UINTPTR_MAX-offset||object+offset>UINTPTR_MAX-sizeof(T))return false;
+  game::GuiRefillReceiverFailure12004V1 diagnostic;
+  const auto guard=[&](bool ok,const char *kind) {
+    if(!ok){failure="candidate_layout_guard_rejected";diagnostic.kind=kind;}
+    return ok;
+  };
+  const auto load=[&]<class T>(const char *stage,std::uintptr_t object,std::size_t offset,T &value) {
+    diagnostic.stage=stage;diagnostic.kind="condition_failed";
+    diagnostic.read_ordinal=static_cast<std::uint32_t>(reads+1);
+    if(!object||object>UINTPTR_MAX-offset||object+offset>UINTPTR_MAX-sizeof(T)){
+      diagnostic.kind="invalid_address_range";return false;
+    }
     if(++reads>4096||(bytes+=sizeof(T))>65536||
         std::chrono::steady_clock::now()-started>std::chrono::milliseconds(20)){
-      failure="candidate_read_budget_exhausted";return false;
+      failure="candidate_read_budget_exhausted";diagnostic.kind="read_budget_exhausted";return false;
     }
-    return read(opaque,object+offset,&value,sizeof(T));
+    if(!read(opaque,object+offset,&value,sizeof(T))){diagnostic.kind="memory_read_failed";return false;}
+    return true;
   };
   const auto rva=[&](std::uintptr_t p,std::size_t n)->std::optional<std::uint64_t>{
     if(p<=module_base||n>image_size||p-module_base>image_size-n)return {};
@@ -66,69 +86,110 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     std::int32_t count=0,index_count=0,index=0;std::uint32_t key=0;
     // The callback+10 expression block supplies declaration keys and the last
     // receiver-variable index. These are declarations, not an evaluated table.
-    if(!load(callback,0xF0,context)||!context||
-        !load(callback,0xA8,declarations)||!load(callback,0xB4,count)||count<1||count>256||!declarations||
-        !load(callback,0xC0,indices)||!load(callback,0xCC,index_count)||index_count<1||index_count>256||!indices||
-        !load(indices,static_cast<std::size_t>(index_count-1)*4,index)||index<0||index>=count||
-        !load(declarations,static_cast<std::size_t>(index)*8,key))return false;
+    diagnostic.ancestor_depth.reset();diagnostic.raw_declaration_count.reset();
+    diagnostic.raw_index_count.reset();diagnostic.raw_definition_entry_count.reset();
+    diagnostic.context_present.reset();diagnostic.definition_present.reset();
+    diagnostic.local_definition_active_raw.reset();
+    if(!load("callback_context_f0",callback,0xF0,context))return false;
+    diagnostic.context_present=context!=0;
+    if(!guard(context!=0,"required_context_null"))return false;
+    if(!load("callback_declaration_pointer_a8",callback,0xA8,declarations)||
+        !load("callback_declaration_count_b4",callback,0xB4,count))return false;
+    diagnostic.raw_declaration_count=count;
+    if(!guard(count>=1&&count<=256,"declaration_count_out_of_bound")||
+        !guard(declarations!=0,"required_declaration_pointer_null"))return false;
+    if(!load("callback_indices_pointer_c0",callback,0xC0,indices)||
+        !load("callback_index_count_cc",callback,0xCC,index_count))return false;
+    diagnostic.raw_index_count=index_count;
+    if(!guard(index_count>=1&&index_count<=256,"index_count_out_of_bound")||
+        !guard(indices!=0,"required_indices_pointer_null"))return false;
+    if(!load("receiver_last_index",indices,static_cast<std::size_t>(index_count-1)*4,index)||
+        !guard(index>=0&&index<count,"receiver_index_out_of_bound")||
+        !load("receiver_declaration_key",declarations,static_cast<std::size_t>(index)*8,key))return false;
     v.receiver_variable_index=index;v.declared_type_id=key;
-    if(key!=635){failure="receiver_declaration_not_type635";return false;}
+    if(key!=635){failure="receiver_declaration_not_type635";diagnostic.kind="declaration_type_mismatch";return false;}
     identity={callback,context,declarations,indices,static_cast<std::uintptr_t>(count),static_cast<std::uintptr_t>(index_count)};
     std::array<std::uintptr_t,8> visited{};
     for(std::uint32_t depth=0;context;++depth){
-      if(depth==visited.size()){failure="candidate_parent_depth_exhausted";return false;}
-      for(std::size_t n=0;n<depth;++n)if(visited[n]==context){failure="candidate_parent_cycle";return false;}
+      diagnostic.ancestor_depth=depth;diagnostic.stage="parent_walk";
+      if(depth==visited.size()){failure="candidate_parent_depth_exhausted";diagnostic.kind="parent_depth_exhausted";return false;}
+      for(std::size_t n=0;n<depth;++n)if(visited[n]==context){failure="candidate_parent_cycle";diagnostic.kind="parent_cycle";return false;}
       visited[depth]=context;
+      diagnostic.ancestor_depth=depth;diagnostic.raw_definition_entry_count.reset();
+      diagnostic.definition_present.reset();
       std::uintptr_t definition=0,table=0,parent=0,matched=0;std::int32_t entries=0;std::uint8_t active=0;
-      if(!load(context,0xE0,definition)||!definition||!load(definition,0x115,active)||
-          (depth==0&&active==0)||!load(definition,0x90,table)||!load(definition,0x9C,entries)||
-          entries<0||entries>256||(entries&&!table))return false;
+      if(!load("context_definition_e0",context,0xE0,definition))return false;
+      diagnostic.definition_present=definition!=0;
+      if(depth==0){
+        if(!guard(definition!=0,"local_definition_null")||
+            !load("local_definition_active_115",definition,0x115,active))return false;
+        diagnostic.local_definition_active_raw=active;
+        if(!guard(active!=0,"local_definition_inactive"))return false;
+      }
+      // Actual3AC4107/410A skips a null ancestor definition and follows that
+      // context's +E8. Only the initial builder checks definition+115.
+      if(definition){
+        if(!load("definition_entry_pointer_90",definition,0x90,table)||
+            !load("definition_entry_count_9c",definition,0x9C,entries))return false;
+        diagnostic.raw_definition_entry_count=entries;
+        if(!guard(entries>=0&&entries<=256,"definition_entry_count_out_of_bound")||
+            !guard(entries==0||table!=0,"required_entry_pointer_null"))return false;
+      }
       identity.insert(identity.end(),{context,definition,table,static_cast<std::uintptr_t>(entries),active});
       // First match follows native lookup order; a duplicate key is not
       // silently treated as a second native receiver candidate.
       for(std::int32_t n=0;n<entries;++n){
         std::uint32_t actual=0;const auto offset=static_cast<std::size_t>(n)*0x50;
-        if(!load(table,offset+0x48,actual))return false;
+        if(!load("definition_entry_key_48",table,offset+0x48,actual))return false;
         identity.push_back(actual);
         if(!matched&&actual==key){if(table>UINTPTR_MAX-offset)return false;matched=table+offset;}
       }
       if(matched){
         game::GuiRefillReceiverEntry12004V1 e;e.ancestor_depth=depth;
         std::uintptr_t direct=0,provider=0,vt=0,target=0;
-        if(!load(matched,0x48,e.entry_type_48)||e.entry_type_48!=key||!load(matched,0x40,e.entry_mode_40)||
-            !load(matched,0x4C,e.entry_flag_4c)||!load(matched,0,direct)||!load(matched,0x38,provider))return false;
+        if(!load("matched_entry_type_48",matched,0x48,e.entry_type_48)||!guard(e.entry_type_48==key,"matched_entry_type_changed")||!load("matched_entry_mode_40",matched,0x40,e.entry_mode_40)||
+            !load("matched_entry_flag_4c",matched,0x4C,e.entry_flag_4c)||!load("matched_direct_value_0",matched,0,direct)||!load("matched_provider_38",matched,0x38,provider))return false;
         e.direct_value_present=direct!=0;e.provider_present=provider!=0;
         identity.insert(identity.end(),{matched,direct,provider,static_cast<std::uintptr_t>(static_cast<std::uint8_t>(e.entry_mode_40)),e.entry_flag_4c});
-        if(e.entry_mode_40>=2&&provider){
-          if(!load(provider,0,vt))return false;
+        const bool branch_eligible=depth==0||e.entry_flag_4c!=0;
+        if(branch_eligible&&e.entry_mode_40>=2&&provider){
+          if(!load("provider_vtable",provider,0,vt))return false;
           e.provider_vtable_rva=rva(vt,24);
-          if(e.provider_vtable_rva){if(!load(vt,0x10,target))return false;e.provider_slot2_rva=rva(target,1);}
+          if(e.provider_vtable_rva){if(!load("provider_slot2",vt,0x10,target))return false;e.provider_slot2_rva=rva(target,1);}
           identity.insert(identity.end(),{vt,target});
         }
-        if(e.entry_mode_40==1&&direct){
+        if(branch_eligible&&e.entry_mode_40==1&&direct){
           std::int32_t owner=-1;std::uintptr_t storage=0,slots=0,character=0;std::int32_t capacity=0,id=-1;std::uint32_t magic=0;
-          if(!load(direct,0x218,owner))return false;
+          if(!load("direct_owner_218",direct,0x218,owner))return false;
           e.direct_owner_full_id=owner;
           const auto slot=static_cast<std::uint32_t>(owner)&0xFFFFFFU;
-          if(owner!=-1&&load(module_base,0x5C67568,storage)&&storage&&
-              load(storage,0x20,slots)&&load(storage,0x2C,capacity)&&slots&&capacity>0&&slot<static_cast<std::uint32_t>(capacity)&&
-              load(slots,static_cast<std::size_t>(slot)*0x10+8,character)&&character&&
-              load(character,0x18,id)&&load(character,0x1C,magic)&&id==owner&&magic==0x43686172)
+          if(owner!=-1&&load("character_registry_slot",module_base,0x5C67568,storage)&&storage&&
+              load("character_registry_slots",storage,0x20,slots)&&load("character_registry_capacity",storage,0x2C,capacity)&&slots&&capacity>0&&slot<static_cast<std::uint32_t>(capacity)&&
+              load("character_registry_object",slots,static_cast<std::size_t>(slot)*0x10+8,character)&&character&&
+              load("character_full_id_18",character,0x18,id)&&load("character_magic_1c",character,0x1C,magic)&&id==owner&&magic==0x43686172)
             e.direct_owner_identity_verified=true;
           identity.insert(identity.end(),{static_cast<std::uintptr_t>(static_cast<std::uint32_t>(owner)),storage,slots,character,static_cast<std::uintptr_t>(static_cast<std::uint32_t>(capacity)),static_cast<std::uintptr_t>(static_cast<std::uint32_t>(id)),magic});
         }
         v.entries.push_back(e);
+        // The selected receiver never becomes pending when its local flag4C
+        // is nonzero. A parent flag4C entry in mode0/1 returns AL1 by source,
+        // removing this receiver from pending. Do not read unrelated parents.
+        if((depth==0&&e.entry_flag_4c!=0)||
+            (depth>0&&e.entry_flag_4c!=0&&e.entry_mode_40>=0&&e.entry_mode_40<=1))break;
       }
       // Publish bounded entry candidates, without predicting whether a dynamic
       // provider returns success or which pending parent entry native selects.
-      if(!load(definition,0x108,parent))return false;
-      if(!parent&&!load(context,0xE8,parent))return false;
+      if(definition&&!load("definition_parent_108",definition,0x108,parent))return false;
+      if(!parent&&!load("context_parent_e8",context,0xE8,parent))return false;
       identity.push_back(parent);context=parent;
     }
     v.status="available";v.unavailable_reason.clear();return true;
   };
   Capture a,b;
-  if(!once(a)||!once(b)){rejected.unavailable_reason=failure;return rejected;}
+  diagnostic.capture_pass=1;
+  if(!once(a)){rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;return rejected;}
+  diagnostic.capture_pass=2;
+  if(!once(b)){rejected.unavailable_reason=failure;rejected.failure_diagnostic=diagnostic;return rejected;}
   if(a.private_identity!=b.private_identity||a.result!=b.result){rejected.unavailable_reason="candidate_identity_or_type_changed";return rejected;}
   a.result.stable_double_read=true;return a.result;
 }

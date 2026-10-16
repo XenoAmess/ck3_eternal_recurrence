@@ -17,13 +17,17 @@ def integer(x,lo,hi):
     return type(x) is int and lo<=x<=hi
 
 def normalize_receiver_candidates(raw):
-    if (type(raw) is not dict or raw.keys()!=FIELDS or raw['source']!=SOURCE
+    fields=FIELDS | ({"failure_diagnostic"} if type(raw) is dict and "failure_diagnostic" in raw else set())
+    if (type(raw) is not dict or raw.keys()!=fields or raw['source']!=SOURCE
             or type(raw['receiver_type_id']) is not int or raw['receiver_type_id']!=635
             or raw['current_variable_table_observed'] is not False
             or raw['native_receiver_selected'] is not False
             or type(raw['stable_double_read']) is not bool or type(raw['entries']) is not list
             or len(raw['entries'])>8):
         raise ValueError('type635 candidate schema/qualification')
+    if 'failure_diagnostic' in raw:
+        if raw['status']!='unavailable':raise ValueError('failure diagnostic cannot qualify an available candidate')
+        normalize_receiver_failure(raw['failure_diagnostic'])
     if raw['status']=='unavailable':
         if (type(raw['unavailable_reason']) is not str or not raw['unavailable_reason']
                 or raw['stable_double_read'] or raw['entries']
@@ -62,6 +66,31 @@ def normalize_receiver_candidates(raw):
             raise ValueError('direct owner source branch/identity')
         rows.append(dict(e))
     return {**raw,'entries':rows}
+
+def normalize_receiver_failure(raw):
+    fields={'stage','kind','capture_pass','read_ordinal','ancestor_depth','raw_declaration_count',
+            'raw_index_count','raw_definition_entry_count','context_present','definition_present',
+            'local_definition_active_raw'}
+    if type(raw) is not dict or raw.keys()!=fields:
+        raise ValueError('receiver failure diagnostic schema')
+    # This is one failed capture's progress, not a stable receiver observation.
+    for key in ('stage','kind'):
+        if type(raw[key]) is not str or not raw[key] or len(raw[key])>64 or not all(
+                c.isascii() and (c.islower() or c.isdigit() or c=='_') for c in raw[key]):
+            raise ValueError('receiver failure diagnostic label')
+    if not integer(raw['capture_pass'],1,2) or not integer(raw['read_ordinal'],0,4097):
+        raise ValueError('receiver failed-capture pass/read ordinal')
+    if raw['ancestor_depth'] is not None and not integer(raw['ancestor_depth'],0,8):
+        raise ValueError('receiver failure depth')
+    for key in ('raw_declaration_count','raw_index_count','raw_definition_entry_count'):
+        if raw[key] is not None and not integer(raw[key],-2**31,2**31-1):
+            raise ValueError('receiver failure raw count')
+    for key in ('context_present','definition_present'):
+        if raw[key] is not None and type(raw[key]) is not bool:
+            raise ValueError('receiver failure presence')
+    if raw['local_definition_active_raw'] is not None and not integer(raw['local_definition_active_raw'],0,255):
+        raise ValueError('receiver failure local active byte')
+    return dict(raw)
 
 def normalize_receiver_frame(raw):
     if type(raw) is not dict or raw.keys()!=FRAME:

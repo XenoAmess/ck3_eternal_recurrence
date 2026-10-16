@@ -1,0 +1,84 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at": "2026-10-16T04:58:25.361082+00:00",
+  "source_projection": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\type635-refill-projection.actual-a30.json",
+    "bytes": 2325,
+    "sha256": "030bc2f319d6ad12ec5372f4eb6bafb3013f0cac1c17b86892cbb118f6a79c07"
+  },
+  "original_response_pin": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\live12004-refill-receiver-a23-a01\\desktop-3fevhd2-1c74096080--vanilla--R0182\\responses\\r182-military-a28-04-tree-after-open.json",
+    "bytes": 1012479,
+    "sha256": "e91d3bd2505b9c8f84fcd3d81310a566e7ff49d8f2ff2cbedba14ea24bad9dcb"
+  },
+  "frame": {
+    "native_revision": 3,
+    "connection_generation": 1,
+    "pump_epoch": 18196,
+    "ticket_sequence": 8,
+    "game_pid": 14392,
+    "thread_id": 21588,
+    "played_character_full_id": 31254,
+    "date_raw": 53147712,
+    "owner_thread_verified": true,
+    "frame_stable": true,
+    "gui_owner_stable": true
+  },
+  "failed_candidates": [
+    {
+      "widget_index": 220,
+      "child_path": "0/0/0/2/3/0/0/0",
+      "runtime_name": "",
+      "callback_index": 0,
+      "candidate": {
+        "source": "native_gui_type635_definition_candidates_12004",
+        "status": "unavailable",
+        "unavailable_reason": "candidate_memory_unreadable",
+        "receiver_type_id": 635,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": null,
+        "declared_type_id": null,
+        "stable_double_read": false,
+        "entries": []
+      }
+    },
+    {
+      "widget_index": 238,
+      "child_path": "0/0/0/3/5/0/0/0",
+      "runtime_name": "",
+      "callback_index": 0,
+      "candidate": {
+        "source": "native_gui_type635_definition_candidates_12004",
+        "status": "unavailable",
+        "unavailable_reason": "candidate_memory_unreadable",
+        "receiver_type_id": 635,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": null,
+        "declared_type_id": null,
+        "stable_double_read": false,
+        "entries": []
+      }
+    }
+  ],
+  "actual_failure_stage": "UNKNOWN; old observer discarded all partial progress on every failure path",
+  "source_differences": [
+    {
+      "rva": "3AC4107/3AC410A ->3AC4201",
+      "fact": "Null ancestor.context+E0 is allowed; continue through ancestor+E8. Only builder localdefinition checks active+115."
+    },
+    {
+      "rva": "3AC401C/3AC4020 ->3AC40BD",
+      "fact": "Matching localentry+4C!=0 excludes this receiver from pending."
+    },
+    {
+      "rva": "3AC41A9/3AC41AE..3AC41CD plus3AC1D85/3AC1D9A",
+      "fact": "Eligible parent mode0/1 returnsAL1 and removes receiver pending; further parents are unrelated for that receiver."
+    }
+  ],
+  "actual_unreadable_layer_proven": false,
+  "EXE_reread": false,
+  "new_runtime_query": false,
+  "actual_toggle_or_ADD_credit": false
+}
