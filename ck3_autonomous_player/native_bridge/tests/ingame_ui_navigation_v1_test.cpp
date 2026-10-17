@@ -104,7 +104,7 @@ int main(int argc,char **argv) {
   }
   for(auto kind:{IngameUiWindowKindV1::character,IngameUiWindowKindV1::combat,IngameUiWindowKindV1::knights})
     assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,{IngameUiOperationV1::query,kind,0}));
-  assert(!IsIngameUiRequestSupportedV1(static_cast<GuiAbiRevisionV1>(2),{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0}));
+  assert(!IsIngameUiRequestSupportedV1(static_cast<GuiAbiRevisionV1>(0xFFFFFFFFU),{IngameUiOperationV1::query,IngameUiWindowKindV1::army,0}));
   assert(ParseIngameUiRequestV1(R"({"window_kind":"character","operation":"open_character","subject_id":33437})",false,r));
   assert(r.subject_id==33437);
   assert(!ParseIngameUiRequestV1(R"({"window_kind":"character","operation":"open_combat","subject_id":33437})",false,r));
