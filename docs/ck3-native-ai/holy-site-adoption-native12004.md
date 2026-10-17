@@ -76,3 +76,9 @@
 | `r2-adoption-tree-a01.json` | `0bf0e74073cddf9502823efedc6d5e9ed8e7cc36e9593cd451b877b33b239ecf` |
 
 离线来源绑定位于上述 native-candidate 根的 `r2-adoption-entry-diagnostic-a01.json`、`gui-source/fallback-and-params-tooltip-source.json` 与 `adoption-fallback-fix-a11.json`。最后一份不可变两文件 freeze 的 SHA-256 为 `9fe755d757d7f6920549350d672cad01037ef1e37103fc37189c9bf4166cdfb3`。缓存中原版 `IsPossibleForPlayer` 与 `GetCommandDescForPlayer` 的只读 ABI 也已另行闭合；它们是候选预览，不替代实际详情的最终许可。
+
+2026-10-17 `10:00:05–10:00:48 UTC`，同机 `4-8e1c2f1861` 在 Root 闭场释放 R2 后，实际复用既有 a03 source/build 完成增量：仅覆两文件并刷新 mtime，27 项既有开关不变，原生源码 5,169 文件与当时 main `e380df2d6d885c88f4fb0e89d395b85dc2d60270` 字节全等。实际重编入口和导航测试，桥 DLL 与导航 fixture 构建成功；新 EXE 经 SYSTEM 精确 Defender 设置读回 verified 后运行 exit0，保留 fallback 匹配、唯一性、禁用及 group 变化的断言。随后该新 serializer 原包经当时 main 的生产 Driver、Service、`create_server` 和真实 MCP 协议消费通过。原有详情 36 checks 未重复执行。
+
+新增回执均在 `../runtime/adoption-candidate-a03/fallback-a14/`：`qualification.json` SHA-256 `0664c0817dfc201da0b7affd6a882931d2e337f4d5785744cbc79dd1898ab58f`；`mcp-qualification.json` 为 `70ff2f1fea5e45f3b5ffe5de94a506a237ea265f8a49db1c2b6c057672192ebe`。新 DLL 为 `6a1cd648db5133a6e5f1af41ac16bc81467565a68a3e723976a4eb4926a507fe`，导航 EXE 为 `9e5500118a91b3e1f283166065673f8d79efb195dd7f48d1fe8e705ec0363cb1`。旧 DLL、旧导航 EXE 及旧可变 producer 日志在覆盖前逐字保存到该目录的 `predecessor-artifacts/`，身份及原路径见 `predecessor-preservation.json`；上文旧 build 输出路径现为新版本，不再代表旧字节。
+
+本增量仍是离线资格：夹具内存、回调、hello/frame/endpoint 及外层协议包为明确合成输入，Python 未改写原生结果体；没有执行原版游戏回调。它证明此次源码修复及生产消费通过，下一场实际打开采用详情、读取普通合法性与采用后验仍待完成。
