@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 import json
+import hashlib
 import os
 from pathlib import Path
 import sys
@@ -100,7 +101,12 @@ class HolySiteAdoptionDetailNativeMcpTests(unittest.IsolatedAsyncioTestCase):
                         self.assertFalse(actual["action_ready"])
                         self.assertFalse(actual["decision_confirm_invoked"])
                         self.assertFalse(actual["adoption_completed_observed"])
-                        self.assertIsNone(actual["native_resource_quote"])
+                        self.assertEqual(actual["native_resource_quote"], native["native_resource_quote"])
+                        for key in ("native_detail_context_verified", "native_requirements_description_available",
+                                    "native_requirements_description", "native_cost_description_available",
+                                    "native_cost_description", "native_decision_cooldown_observed", "native_decision_cooldown"):
+                            if key in native:
+                                self.assertEqual(actual[key], native[key])
                         self.assertEqual(actual["queried_native_revision"], 701)
                         self.assertEqual(len(endpoint.requests), 1)
                         if filename == "native-false.json":
@@ -120,6 +126,94 @@ class HolySiteAdoptionDetailNativeMcpTests(unittest.IsolatedAsyncioTestCase):
                         self.assertEqual(packet, original)
                 finally:
                     driver.close()
+
+    async def test_compiled_planning_fields_preserve_partial_unknown_and_original_cooldown(self):
+        from mcp import Client
+        if not (Path(FIXTURES) / "detail-context-mismatch.json").is_file():
+            self.skipTest("legacy native packets: planning extension absent")
+        for filename in ("detail-context-mismatch.json", "requirements-unavailable.json", "quote-unavailable.json",
+                         "detail-context-changed.json", "cooldown-active.json", "cooldown-expired.json", "cooldown-unavailable.json",
+                         "cooldown-malformed-map.json", "cooldown-foreign-result.json", "cooldown-clock-changed.json", "text-context-getter-changed.json"):
+            driver, endpoint, packet = self.setup_driver(filename)
+            original = deepcopy(packet)
+            native = packet["result"]["player_holy_site_adoption_detail"]
+            try:
+                async with Client(create_server(driver)) as client:
+                    arguments = {"expected_revision": driver.take_snapshot_without_native_command_history()["revision"],
+                                 "holy_site_id": native["requested_holy_site_id"]}
+                    with patch("xar_autoplayer.bridge.g2_private_query_transport.uuid.uuid4",
+                               return_value=SimpleNamespace(hex="adoption-fixture")):
+                        reply = await client.call_tool(TOOL, arguments)
+                    self.actual_mcp_results.append({"fixture": filename, "native_packet": original,
+                        "arguments": arguments, "requests": endpoint.requests, "response": reply.model_dump(mode="json")})
+                    self.assertFalse(reply.is_error, str(reply))
+                    actual = reply.structured_content
+                    self.assertFalse(actual["action_ready"])
+                    self.assertFalse(actual["decision_confirm_invoked"])
+                    self.assertIs(actual["native_can_confirm"], False)
+                    for key in ("native_detail_context_verified", "native_requirements_description_available",
+                                "native_requirements_description", "native_cost_description_available", "native_cost_description",
+                                "native_resource_quote_available", "native_resource_quote", "native_decision_cooldown_observed",
+                                "native_decision_cooldown"):
+                        self.assertEqual(actual[key], native[key])
+                    if filename in ("detail-context-mismatch.json", "detail-context-changed.json"):
+                        self.assertFalse(actual["native_detail_context_verified"])
+                        self.assertIsNone(actual["native_requirements_description"])
+                        self.assertIsNone(actual["native_resource_quote"])
+                    elif filename == "requirements-unavailable.json":
+                        self.assertIsNone(actual["native_requirements_description"])
+                        self.assertTrue(actual["native_resource_quote_available"])
+                    elif filename == "quote-unavailable.json":
+                        self.assertIn("Compatibility: false", actual["native_requirements_description"])
+                        self.assertIsNone(actual["native_resource_quote"])
+                    elif filename == "text-context-getter-changed.json":
+                        self.assertIsNone(actual["native_requirements_description"])
+                        self.assertIsNone(actual["native_cost_description"])
+                        self.assertTrue(actual["native_resource_quote_available"])
+                    elif filename in ("cooldown-unavailable.json", "cooldown-malformed-map.json", "cooldown-foreign-result.json", "cooldown-clock-changed.json"):
+                        self.assertIsNone(actual["native_decision_cooldown"])
+                        self.assertTrue(actual["native_resource_quote_available"])
+                    else:
+                        self.assertTrue(actual["native_decision_cooldown"]["present"])
+                        self.assertEqual(actual["native_decision_cooldown"]["active"], filename == "cooldown-active.json")
+                    self.assertEqual(packet, original)
+            finally:
+                driver.close()
+
+    async def test_manual_negative_mutations_of_new_native_packet_are_rejected(self):
+        from mcp import Client
+        source_path = Path(FIXTURES) / "native-false.json"
+        source_packet = json.loads(source_path.read_text(encoding="utf-8"))
+        if not source_packet["result"]["player_holy_site_adoption_detail"].get("native_resource_quote_available"):
+            self.skipTest("legacy packet lacks new planning fields")
+        for name in ("quote-currency-mismatch", "quote-vector-truncated", "context-not-verified", "absent-cooldown-active"):
+            driver, endpoint, packet = self.setup_driver("native-false.json")
+            mutated = deepcopy(packet)
+            value = mutated["result"]["player_holy_site_adoption_detail"]
+            if name == "quote-currency-mismatch":
+                value["native_resource_quote"]["costs_raw"]["piety"] += 1
+            elif name == "quote-vector-truncated":
+                value["native_resource_quote"]["resource_vector_raw"].pop()
+            elif name == "context-not-verified":
+                value["native_detail_context_verified"] = False
+            else:
+                value["native_decision_cooldown"]["active"] = True
+            endpoint.packet = mutated
+            try:
+                async with Client(create_server(driver)) as client:
+                    arguments = {"expected_revision": driver.take_snapshot_without_native_command_history()["revision"],
+                                 "holy_site_id": value["requested_holy_site_id"]}
+                    with patch("xar_autoplayer.bridge.g2_private_query_transport.uuid.uuid4",
+                               return_value=SimpleNamespace(hex="adoption-fixture")):
+                        reply = await client.call_tool(TOOL, arguments)
+                    self.actual_mcp_results.append({"negative_case": name, "input_is_manual_mutation": True,
+                        "source_file": str(source_path), "source_sha256": hashlib.sha256(source_path.read_bytes()).hexdigest(),
+                        "mutated_packet": mutated, "response": reply.model_dump(mode="json")})
+                    self.assertTrue(reply.is_error)
+                    self.assertEqual(len(endpoint.requests), 1)
+                    self.assertEqual(json.loads(source_path.read_text(encoding="utf-8")), source_packet)
+            finally:
+                driver.close()
 
     async def test_strict_admission_and_foreign_build_fail_without_forging_native_packets(self):
         from mcp import Client

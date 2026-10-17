@@ -1,11 +1,16 @@
 #pragma once
 #include "xar_bridge/ck3_12004_holy_site_snapshot.hpp"
+#include <array>
 namespace xar::ck3_12004::religion::holy_site {
 using NativeCanConfirm = bool(__fastcall *)(void *);
 using NativeConfirm = void(__fastcall *)(void *);
 using NativeRequirementsSettings = void *(__fastcall *)();
 using NativeConfirmTooltip = void *(__fastcall *)(void *,void *);
 using NativeStringDestroy = void(__fastcall *)(void *);
+using NativeDecisionCost = const void *(__fastcall *)(const void *);
+using NativeCostEvaluate = void(__fastcall *)(const void *,const void *,std::int64_t *);
+using NativeCostAffordable = bool(__fastcall *)(const void *,const void *,const void *,void *);
+using NativeCooldownLookup = const std::int32_t *(__fastcall *)(const void *,const void *);
 struct AdoptionDetailBindings {
   bool enabled=false;
   std::uintptr_t image_base=0;
@@ -19,6 +24,12 @@ struct AdoptionDetailBindings {
   NativeRequirementsSettings requirements_settings=nullptr;
   NativeConfirmTooltip confirm_tooltip=nullptr;
   NativeStringDestroy destroy_string=nullptr;
+  NativeConfirmTooltip requirements_description=nullptr,cost_description=nullptr;
+  NativeDecisionCost decision_cost=nullptr;
+  NativeCostEvaluate evaluate_cost=nullptr;
+  NativeCostAffordable affordable_cost=nullptr;
+  NativeCooldownLookup cooldown_lookup=nullptr;
+  void **character_storage=nullptr,**decision_clock=nullptr;
 };
 struct AdoptionDetailSnapshot {
   bool available=false;
@@ -39,6 +50,15 @@ struct AdoptionDetailSnapshot {
   std::uint8_t bypass_requirements_raw=0;
   bool confirm_tooltip_available=false;
   std::string confirm_tooltip;
+  bool native_detail_context_verified=false;
+  bool native_requirements_description_available=false,native_cost_description_available=false;
+  std::string native_requirements_description,native_cost_description;
+  bool native_resource_quote_available=false,native_affordable=false;
+  std::array<std::int64_t,10> native_resource_vector_raw{};
+  bool native_decision_cooldown_observed=false,native_decision_cooldown_present=false;
+  std::int32_t native_decision_clock_raw=0,native_decision_expiry_raw=0;
+  bool native_decision_cooldown_active=false;
+  std::string native_planning_unavailable_reason;
   bool parameter_and_selection_match=false;
   // Provider-private owned-window pointers never cross the public wire.
   const void *owner=nullptr,*detail=nullptr,*root=nullptr,*controller=nullptr,*context=nullptr;

@@ -35,6 +35,21 @@ bool Pins(const AdoptionDetailBindings&b)noexcept{
  Pin(b,0x1471150,"4889542410534883ec30488bda33c0894424204889024889421048c742180f00")&&
  Pin(b,0x856050,"40534883ec20488b5118488bd94883fa10722c488b0948ffc24881fa00100000");
 }
+bool TextPlanningPins(const AdoptionDetailBindings&b)noexcept{
+ std::uintptr_t getter=0;
+ return Read(b,reinterpret_cast<const void*>(b.image_base+0x45A08F0),0x10,getter)&&getter==b.image_base+0xB1DFF0&&
+ Pin(b,0x1470BF0,"48895c24084889542410574883ec30488bda488bf933c0894424204889024889")&&
+ Pin(b,0x3103A10,"48895c241048896c2418488974242057415641574883ec504d8bf94d8bf0488b")&&
+ Pin(b,0xB1DFF0,"488b4118c3")&&
+ Pin(b,0x1470DF0,"48895c2420488954241055565741564157488dac24a0fcffff4881ec60040000");
+}
+bool CostPlanningPins(const AdoptionDetailBindings&b)noexcept{
+ return Pin(b,0x14706B0,"488d81881400004c8bc1488d91e81d0000483bc2741483b8c000000000752048")&&
+ Pin(b,0x310CE50,"40534883ec70498bd80f57c00f114424200f114424300f114424400f11442450")&&
+ Pin(b,0x310CEC0,"48895c2410488974241848897c2420554154415541564157488dac24c0fcffff")&&
+ Pin(b,0x310B390,"488bc448895808574881ecc0000000498bd9498bf80f57c00f1140a80f1140b8")&&
+ Pin(b,0x310E6F0,"48895c24085556574154415541564157488dac2490fdffff4881ec700300004d");
+}
 bool Typed(const AdoptionDetailBindings&b,const void*p,std::uintptr_t vt,std::uint32_t td)noexcept{
  std::uintptr_t actual=0,col=0;std::uint32_t signature=0,type=0,self=0;
  return Read(b,p,0,actual)&&actual==b.image_base+vt&&actual>=8&&
@@ -135,13 +150,13 @@ bool Requirements(const AdoptionDetailBindings&b,std::uint8_t&raw)noexcept{
  return settings&&Read(b,settings,0x10,raw);
 }
 struct NativeString{std::array<std::byte,32>bytes{};};
-bool CallTooltip(const AdoptionDetailBindings&b,const void*detail,NativeString&out)noexcept{
- if(!b.confirm_tooltip)return false;
+bool CallTooltip(NativeConfirmTooltip reader,const void*detail,NativeString&out)noexcept{
+ if(!reader)return false;
 #if defined(_MSC_VER)
- __try{return b.confirm_tooltip(const_cast<void*>(detail),out.bytes.data())==out.bytes.data();}
+ __try{return reader(const_cast<void*>(detail),out.bytes.data())==out.bytes.data();}
  __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 #else
- return b.confirm_tooltip(const_cast<void*>(detail),out.bytes.data())==out.bytes.data();
+ return reader(const_cast<void*>(detail),out.bytes.data())==out.bytes.data();
 #endif
 }
 bool DestroyString(const AdoptionDetailBindings&b,NativeString&out)noexcept{
@@ -152,8 +167,8 @@ bool DestroyString(const AdoptionDetailBindings&b,NativeString&out)noexcept{
  b.destroy_string(out.bytes.data());return true;
 #endif
 }
-bool Tooltip(const AdoptionDetailBindings&b,const void*detail,std::string&out){
- NativeString value{};if(!CallTooltip(b,detail,value))return false;
+bool Tooltip(const AdoptionDetailBindings&b,const void*detail,std::string&out,NativeConfirmTooltip reader=nullptr){
+ NativeString value{};if(!CallTooltip(reader?reader:b.confirm_tooltip,detail,value))return false;
  bool copied=false;
  try{
   const void*text=value.bytes.data();std::uint64_t size=0,capacity=0;
@@ -165,6 +180,109 @@ bool Tooltip(const AdoptionDetailBindings&b,const void*detail,std::string&out){
  }catch(...){copied=false;}
  const bool destroyed=DestroyString(b,value);if(!copied||!destroyed)out.clear();return copied&&destroyed;
 }
+struct PlanningIdentity{
+ Scope actor{};Header dictionary{};std::vector<NamedScope>parameters;
+ const void*actor_object=nullptr;bool operator==(const PlanningIdentity&)const=default;
+};
+bool PlanningContext(const AdoptionDetailBindings&b,const Pass&p,std::uint32_t requested,PlanningIdentity&out){
+ const auto*scope=At(p.detail,0xE0);
+ if(!ScopeAt(b,scope,0,out.actor)||out.actor.kind!=4||out.actor.flags!=0||out.actor.payload!=p.actor||
+    !Array(b,p.detail,0xF8,out.dictionary))return false;
+ unsigned matches=0;
+ for(std::int32_t i=0;i<out.dictionary.count;++i){NamedScope value{};const auto*row=At(out.dictionary.data,static_cast<std::size_t>(i)*24);
+  if(!Read(b,row,0,value.key)||!ScopeAt(b,row,8,value.value))return false;
+  if(value.key==p.token){++matches;if(!HolyScope(value.value,requested)||value.value!=p.parameter||value.value!=p.selected)return false;}
+  out.parameters.push_back(value);
+ }
+ if(matches!=1)return false;
+ // The exact4 production core resolver's full-reference storage contract.
+ const void*storage=nullptr,*slots=nullptr;std::int32_t count=0,actual=-1;
+ if(!Read(b,b.character_storage,0,storage)||!storage||
+    !Read(b,storage,ck3_12004::kCharacterStorageCapacityOffset,count)||count<=0||
+    !Read(b,storage,ck3_12004::kCharacterStorageSlotsOffset,slots)||!slots||
+    (p.actor&0xFFFFFFU)>=static_cast<std::uint32_t>(count)||
+    !Read(b,slots,static_cast<std::size_t>(p.actor&0xFFFFFFU)*ck3_12004::kCharacterStorageSlotStride+ck3_12004::kCharacterStorageObjectOffset,out.actor_object)||
+    !Read(b,out.actor_object,ck3_12004::kCharacterFullIdOffset,actual)||actual!=static_cast<std::int32_t>(p.actor))return false;
+ return true;
+}
+bool CostQuote(const AdoptionDetailBindings&b,const Pass&p,const PlanningIdentity&identity,std::array<std::int64_t,10>&values,bool&affordable)noexcept{
+ if(!b.decision_cost||!b.evaluate_cost||!b.affordable_cost||!CostPlanningPins(b))return false;
+#if defined(_MSC_VER)
+ __try{
+#endif
+  const auto*cost=b.decision_cost(p.definition);if(!cost)return false;
+  b.evaluate_cost(cost,At(p.detail,0xE0),values.data());
+  affordable=b.affordable_cost(cost,At(p.detail,0xE0),identity.actor_object,nullptr);return true;
+#if defined(_MSC_VER)
+ }__except(EXCEPTION_EXECUTE_HANDLER){return false;}
+#endif
+}
+struct CooldownPass{
+ const void*state=nullptr,*rows=nullptr,*clock=nullptr;
+ std::int32_t count=0,mask=-1,current=0,expiry=0;std::uint8_t overflow=0;
+ bool present=false;std::vector<std::byte>bytes;bool operator==(const CooldownPass&)const=default;
+};
+bool CallCooldownLookup(const AdoptionDetailBindings&b,const void*map,const void*definition,const std::int32_t*&expiry)noexcept{
+#if defined(_MSC_VER)
+ __try{expiry=b.cooldown_lookup(map,definition);return true;}__except(EXCEPTION_EXECUTE_HANDLER){return false;}
+#else
+ expiry=b.cooldown_lookup(map,definition);return true;
+#endif
+}
+bool Cooldown(const AdoptionDetailBindings&b,const Pass&p,const PlanningIdentity&identity,CooldownPass&out){
+ if(!b.cooldown_lookup||!Pin(b,0x1A74790,"4c8bd90fb6c235c59d1c814c8bd24469c893010001488bc248c1e808440fb6c0")||
+    !Pin(b,0x2957F10,"48895c241048897424185557415441564157488dac24b0fdffff4881ec50030000"))return false;
+ if(!Read(b,identity.actor_object,0x1C0,out.state)||!out.state||!Read(b,b.decision_clock,0,out.clock)||
+    !out.clock||!Read(b,out.clock,8,out.current))return false;
+ const auto*map=At(out.state,0x430);
+ if(!Read(b,map,8,out.rows)||!Read(b,map,0x10,out.count)||!Read(b,map,0x14,out.mask)||!Read(b,map,0x18,out.overflow)||
+    out.count<0||out.count>65536||out.mask< -1||out.mask>65535)return false;
+ // The original writer's live count is zero: observed absence, not a native
+ // lookup on a null table (the original lookup has no empty fast-return).
+ if(out.count==0)return true;
+ const auto buckets=static_cast<std::uint32_t>(out.mask)+1U;
+ if(!out.rows||out.mask<0||!buckets||(buckets&(buckets-1U))!=0||
+    static_cast<std::uint32_t>(out.count)>buckets+out.overflow)return false;
+ const auto capacity=static_cast<std::size_t>(buckets)+out.overflow;
+ out.bytes.resize((capacity+1U)*0x18U);
+ if(!b.read_memory(b.read_context,out.rows,out.bytes.data(),out.bytes.size())||out.bytes[capacity*0x18U+4]!=std::byte{0xFF})return false;
+ const std::int32_t*expiry=nullptr;
+ if(!CallCooldownLookup(b,map,p.definition,expiry))return false;
+ if(!expiry)return true;
+ const auto start=reinterpret_cast<std::uintptr_t>(out.rows),address=reinterpret_cast<std::uintptr_t>(expiry);
+ if(address<start||address-start>=capacity*0x18U||(address-start)%0x18U!=0x10U)return false;
+ const auto*row=At(expiry,0);const void*key=nullptr;
+ // The returned pointer is row+0x10; RDX was the definition pointer VALUE.
+ if(!Read(b,reinterpret_cast<const void*>(address-8),0,key)||key!=p.definition||!Read(b,row,0,out.expiry))return false;
+ out.present=true;return true;
+}
+void Planning(const AdoptionDetailBindings&b,const Pass&p,std::uint32_t requested,AdoptionDetailSnapshot&out){
+ PlanningIdentity before{},after{};
+ if(!PlanningContext(b,p,requested,before)){out.native_planning_unavailable_reason="native_detail_scope_context_unverified";return;}
+ out.native_detail_context_verified=true;
+ if(TextPlanningPins(b)){
+  if(b.requirements_description)out.native_requirements_description_available=Tooltip(b,p.detail,out.native_requirements_description,b.requirements_description);
+  if(b.cost_description)out.native_cost_description_available=Tooltip(b,p.detail,out.native_cost_description,b.cost_description);
+ }
+ std::array<std::int64_t,10>first{},second{};bool first_afford=false,second_afford=false;
+ const bool quote_before=CostQuote(b,p,before,first,first_afford);
+ const bool quote_after=CostQuote(b,p,before,second,second_afford);
+ out.native_resource_quote_available=quote_before&&quote_after&&first==second&&first_afford==second_afford;
+ if(out.native_resource_quote_available){out.native_resource_vector_raw=first;out.native_affordable=first_afford;}
+ CooldownPass cooldown_before{},cooldown_after{};
+ out.native_decision_cooldown_observed=Cooldown(b,p,before,cooldown_before)&&Cooldown(b,p,before,cooldown_after)&&cooldown_before==cooldown_after;
+ if(out.native_decision_cooldown_observed){out.native_decision_cooldown_present=cooldown_before.present;
+  out.native_decision_clock_raw=cooldown_before.current;out.native_decision_expiry_raw=cooldown_before.expiry;
+  out.native_decision_cooldown_active=cooldown_before.present&&cooldown_before.current<cooldown_before.expiry;}
+ if(!PlanningContext(b,p,requested,after)||before!=after){
+  out.native_detail_context_verified=false;out.native_requirements_description_available=false;out.native_cost_description_available=false;
+  out.native_resource_quote_available=false;out.native_requirements_description.clear();out.native_cost_description.clear();
+  out.native_decision_cooldown_observed=false;
+  out.native_planning_unavailable_reason="native_detail_scope_context_changed";return;
+ }
+ if(!out.native_requirements_description_available||!out.native_cost_description_available||!out.native_resource_quote_available||!out.native_decision_cooldown_observed)
+  out.native_planning_unavailable_reason="native_detail_planning_component_unavailable";
+}
 }
 AdoptionDetailBindings BindHolySiteAdoptionDetailImage12004(std::uintptr_t base,std::string_view sha)noexcept{
  AdoptionDetailBindings b{};if(!base||sha!=ck3_12004::kExecutableSha256)return b;
@@ -174,6 +292,14 @@ AdoptionDetailBindings BindHolySiteAdoptionDetailImage12004(std::uintptr_t base,
  b.can_confirm=reinterpret_cast<NativeCanConfirm>(base+0x1471140);b.confirm=reinterpret_cast<NativeConfirm>(base+0x1471190);
  b.requirements_settings=reinterpret_cast<NativeRequirementsSettings>(base+0xA75D00);
  b.confirm_tooltip=reinterpret_cast<NativeConfirmTooltip>(base+0x1471150);
+ b.requirements_description=reinterpret_cast<NativeConfirmTooltip>(base+0x1470BF0);
+ b.cost_description=reinterpret_cast<NativeConfirmTooltip>(base+0x1470DF0);
+ b.decision_cost=reinterpret_cast<NativeDecisionCost>(base+0x14706B0);
+ b.evaluate_cost=reinterpret_cast<NativeCostEvaluate>(base+0x310CE50);
+ b.affordable_cost=reinterpret_cast<NativeCostAffordable>(base+0x310B390);
+ b.character_storage=reinterpret_cast<void**>(base+ck3_12004::kCharacterStorageSlotRva);
+ b.decision_clock=reinterpret_cast<void**>(base+0x5C68C50);
+ b.cooldown_lookup=reinterpret_cast<NativeCooldownLookup>(base+0x1A74790);
  b.destroy_string=reinterpret_cast<NativeStringDestroy>(base+0x856050);return b;
 }
 bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*owner,
@@ -188,6 +314,7 @@ bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*o
   if(!CanConfirm(b,first.detail,before)){out.unavailable_reason="adoption_native_can_confirm_unavailable";return false;}
   const bool bypass_observed=Requirements(b,bypass_before);
   out.confirm_tooltip_available=Tooltip(b,first.detail,out.confirm_tooltip);
+  Planning(b,first,requested,out);
   if(!ReadPass(b,owner,requested,context.played_character_id,second,out.unavailable_reason))return false;
   if(first!=second||!CanConfirm(b,second.detail,after)||before!=after){out.unavailable_reason="adoption_detail_or_native_legality_changed";return false;}
   const bool bypass_after_observed=Requirements(b,bypass_after);
@@ -205,11 +332,11 @@ bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*o
 }
 bool ConfirmHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,
  const AdoptionDetailSnapshot&prior,bool&attempted)noexcept{
- attempted=false;if(!prior.available||!prior.native_can_confirm||!prior.parameter_and_selection_match||
+ attempted=false;if(!prior.available||!prior.native_can_confirm||!prior.parameter_and_selection_match||!prior.native_detail_context_verified||
   !prior.bypass_requirements_observed||prior.bypass_requirements_raw!=0)return false;
  ck3_12002::religion::Context frame{};frame.available=true;frame.capture_epoch=prior.capture_epoch;
  frame.date_raw=prior.date_raw;frame.played_character_id=prior.played_character_id;AdoptionDetailSnapshot current{};
- if(!ReadHolySiteAdoptionDetail12004(b,prior.owner,frame,prior.requested_holy_site_id,current)||!current.native_can_confirm||
+ if(!ReadHolySiteAdoptionDetail12004(b,prior.owner,frame,prior.requested_holy_site_id,current)||!current.native_can_confirm||!current.native_detail_context_verified||
   !current.bypass_requirements_observed||current.bypass_requirements_raw!=0||
   current.detail!=prior.detail||current.root!=prior.root||current.controller!=prior.controller||current.context!=prior.context)return false;
  return Confirm(b,current.detail,attempted);

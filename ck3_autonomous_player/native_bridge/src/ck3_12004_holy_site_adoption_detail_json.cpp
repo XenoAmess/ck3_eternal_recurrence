@@ -9,6 +9,29 @@ std::string Q(std::string_view s){
 }
 const char*B(bool v)noexcept{return v?"true":"false";}
 std::string R(std::uint32_t v){return v==0xFFFFFFFFU?"null":std::to_string(v);}
+std::string PlanningFields(const AdoptionDetailSnapshot&v){
+ const bool context=v.available&&v.native_detail_context_verified;
+ const bool requirements=context&&v.native_requirements_description_available,cost=context&&v.native_cost_description_available;
+ const bool quote=context&&v.native_resource_quote_available,cooldown=context&&v.native_decision_cooldown_observed;
+ std::string out=",\"native_detail_context_verified\":"+std::string(B(context));
+ out+=",\"native_requirements_description_available\":"+std::string(B(requirements))+",\"native_requirements_description\":"+(requirements?Q(v.native_requirements_description):"null")+
+  ",\"native_requirements_description_unavailable_reason\":"+(requirements?"null":Q("native_requirements_description_unavailable"));
+ out+=",\"native_cost_description_available\":"+std::string(B(cost))+",\"native_cost_description\":"+(cost?Q(v.native_cost_description):"null")+
+  ",\"native_cost_description_unavailable_reason\":"+(cost?"null":Q("native_cost_description_unavailable"));
+ out+=",\"native_resource_quote_available\":"+std::string(B(quote))+",\"native_resource_quote\":";
+ if(quote){out+="{\"raw_scale\":100000,\"resource_vector_raw\":[";
+  for(std::size_t i=0;i<v.native_resource_vector_raw.size();++i){if(i)out+=',';out+=std::to_string(v.native_resource_vector_raw[i]);}
+  out+="],\"costs_raw\":{\"gold\":"+std::to_string(v.native_resource_vector_raw[0])+",\"prestige\":"+std::to_string(v.native_resource_vector_raw[1])+
+   ",\"piety\":"+std::to_string(v.native_resource_vector_raw[2])+",\"treasury\":"+std::to_string(v.native_resource_vector_raw[6])+"},\"native_affordable\":"+B(v.native_affordable)+"}";
+ }else out+="null";
+ out+=",\"native_decision_cooldown_observed\":"+std::string(B(cooldown))+",\"native_decision_cooldown\":";
+ if(cooldown){out+="{\"decision_key\":\"adopt_holy_site_decision\",\"present\":"+std::string(B(v.native_decision_cooldown_present))+
+  ",\"expiry_raw\":"+(v.native_decision_cooldown_present?std::to_string(v.native_decision_expiry_raw):"null")+
+  ",\"current_counter_raw\":"+std::to_string(v.native_decision_clock_raw)+",\"active\":"+B(v.native_decision_cooldown_active)+
+  ",\"counter_unit\":\"native_decision_clock_counter\",\"calendar_conversion_observed\":false}";
+ }else out+="null";
+ out+=",\"native_planning_unavailable_reason\":"+(v.available&&!v.native_planning_unavailable_reason.empty()?Q(v.native_planning_unavailable_reason):"null");return out;
+}
 }
 std::string SerializeHolySiteAdoptionDetail12004(const AdoptionDetailSnapshot&v){
  const bool normal=v.available&&v.bypass_requirements_observed&&v.bypass_requirements_raw==0;
@@ -29,7 +52,7 @@ std::string SerializeHolySiteAdoptionDetail12004(const AdoptionDetailSnapshot&v)
  ",\"confirm_tooltip_available\":"+B(v.available&&v.confirm_tooltip_available)+
  ",\"confirm_tooltip\":"+(v.available&&v.confirm_tooltip_available?Q(v.confirm_tooltip):"null")+
  ",\"confirm_tooltip_unavailable_reason\":"+(v.available&&v.confirm_tooltip_available?"null":Q("native_confirm_tooltip_unavailable"))+
- ",\"rendered_visibility_observed\":false,\"native_resource_quote_available\":false,\"native_resource_quote\":null,"
+ PlanningFields(v)+",\"rendered_visibility_observed\":false,"
  "\"action_ready\":false,\"read_only\":true,\"decision_confirm_invoked\":false,\"adoption_completed_observed\":false}";
 }
 std::string SerializeHolySiteAdoptionDetailCommand12004(const AdoptionDetailSnapshot&v,

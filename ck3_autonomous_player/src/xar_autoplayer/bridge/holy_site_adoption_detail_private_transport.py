@@ -11,6 +11,60 @@ STEP="query-player-holy-site-adoption-detail-v1"
 PERMISSION="allow_private_holy_site_adoption_detail_query"
 
 
+def _planning(value:dict[str,object])->None:
+    """Optional additive native fields; preserve all six legacy packet shapes."""
+    context=value.get("native_detail_context_verified",False)
+    if type(context)is not bool or context and value["available"]is not True:
+        raise ValueError("native detail context observation is malformed")
+    for name in ("native_requirements_description","native_cost_description"):
+        keys={name,name+"_available",name+"_unavailable_reason"}
+        if not keys.intersection(value):continue
+        if not keys.issubset(value)or type(value[name+"_available"])is not bool:
+            raise ValueError("native description observation is incomplete")
+        text,reason=value[name],value[name+"_unavailable_reason"]
+        if value[name+"_available"]:
+            if not context or not isinstance(text,str)or len(text.encode("utf-8"))>65536 or reason is not None:
+                raise ValueError("native description lacks actual context/text")
+        elif text is not None or not isinstance(reason,str)or not reason:
+            raise ValueError("unavailable native description must stay unknown")
+    ready=value.get("native_resource_quote_available")
+    quote=value.get("native_resource_quote")
+    if type(ready)is not bool:raise ValueError("native resource quote observation is malformed")
+    if ready:
+        if not context or not isinstance(quote,dict)or set(quote)!={"raw_scale","resource_vector_raw","costs_raw","native_affordable"}:
+            raise ValueError("native resource quote lacks actual detail context")
+        raw=quote["resource_vector_raw"]
+        if (type(quote["raw_scale"])is not int or quote["raw_scale"]!=100000
+                or not isinstance(raw,list)or len(raw)!=10
+                or any(type(n)is not int or not -(1<<63)<=n<(1<<63)for n in raw)
+                or type(quote["native_affordable"])is not bool):
+            raise ValueError("native resource quote raw values are malformed")
+        costs=quote["costs_raw"]
+        expected={"gold":raw[0],"prestige":raw[1],"piety":raw[2],"treasury":raw[6]}
+        if not isinstance(costs,dict)or costs!=expected or any(type(n)is not int for n in costs.values()):
+            raise ValueError("native resource quote currency indexes differ")
+    elif quote is not None:raise ValueError("unavailable native resource quote must stay unknown")
+    if "native_decision_cooldown_observed"in value or "native_decision_cooldown"in value:
+        observed=value.get("native_decision_cooldown_observed")
+        cooldown=value.get("native_decision_cooldown")
+        if type(observed)is not bool:raise ValueError("native decision cooldown observation is malformed")
+        if observed:
+            if (not context or not isinstance(cooldown,dict)or set(cooldown)!={"decision_key","present","expiry_raw","current_counter_raw","active","counter_unit","calendar_conversion_observed"}
+                    or cooldown["decision_key"]!="adopt_holy_site_decision"
+                    or cooldown["counter_unit"]!="native_decision_clock_counter"
+                    or cooldown["calendar_conversion_observed"]is not False
+                    or type(cooldown["present"])is not bool or type(cooldown["active"])is not bool
+                    or type(cooldown["current_counter_raw"])is not int or not -(1<<31)<=cooldown["current_counter_raw"]<(1<<31)):
+                raise ValueError("native decision cooldown fields are malformed")
+            expiry=cooldown["expiry_raw"]
+            if cooldown["present"]:
+                if type(expiry)is not int or not -(1<<31)<=expiry<(1<<31)or cooldown["active"]!=(cooldown["current_counter_raw"]<expiry):
+                    raise ValueError("native decision cooldown lost its original comparison")
+            elif expiry is not None or cooldown["active"]is not False:
+                raise ValueError("absent native decision cooldown acquired a deadline")
+        elif cooldown is not None:raise ValueError("unobserved native decision cooldown must stay unknown")
+
+
 def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,object],holy_site_id:int)->dict[str,object]:
     result=_availability(value,"adoption detail")
     if (result.get("schema")!="ck3_12004_holy_site_adoption_detail_v1"
@@ -26,11 +80,12 @@ def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,o
     if type(result.get("played_character_id"))is not int or type(result.get("date_raw"))is not int:
         raise ValueError("adoption detail player/date must retain native integer types")
     _ref(result.get("requested_holy_site_id"),"requested HolySite",nullable=False)
-    for field in ("rendered_visibility_observed","native_resource_quote_available","action_ready",
+    for field in ("rendered_visibility_observed","action_ready",
                   "decision_confirm_invoked","adoption_completed_observed"):
         if result.get(field)is not False:raise ValueError("adoption detail read claimed an unimplemented action/postcondition")
-    if result.get("read_only")is not True or result.get("native_resource_quote")is not None:
-        raise ValueError("adoption detail query lost readonly/unknown-cost semantics")
+    if result.get("read_only")is not True:
+        raise ValueError("adoption detail query lost readonly semantics")
+    _planning(result)
     if not result["available"]:
         if result.get("native_can_confirm")is not None or result.get("normal_requirements_can_confirm")is not None:
             raise ValueError("unavailable adoption detail cannot invent observed false legality")
