@@ -30,3 +30,11 @@ GUI 脚本只证明上述公开绑定；没有证明加载缺失模组时 C++ �
 ## 离线验证
 
 `test_saved_campaign_vanilla_profile` 七项通过（`2026-10-17`，本机，Python venv：`C:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`）。覆盖显式纯原版、旧 product-only 正向路径、非空/未知/跨 profile 清单拒绝、原投影 SHA 与冷启动 registrar 拒绝，以及存档 SHA 和 fresh-profile 守卫。结果仅为输入合同测试；没有实机加载验收。
+
+## R3 当前进程事件实例绑定
+
+补充观察时间 `2026-10-17T09:07:21Z`，`machine_id: 4-8e1c2f1861`。事件实例编号属于产生它的进程；冷载 F 时不能把 R1 的实例编号 1 当作新进程的事实。新增 `ck3-saved-campaign-startup-case-contract-v2`，字段为 v1 加 `profile_id`，只准 `faith-and-power-e01-abbasid-867`。输入显式声明 `event_instance_id: null`，固定准备事件 `xar_faith_h01_prepare.1`、日期 51394920 和原生选项 `[0,1]`。玩家/ROOT 仍须是该 frozen saved input 的同一正整数完整引用，不按历史编号或 R1 编号猜测。
+
+host 先沿用存档恢复的两个实际 owner 帧与实际 campaign root 核验，再从当前 snapshot 的原生 active event 读取实际实例。保留原 v2 input，另建绑定该实例的 runtime v1 合同，复用原先严格的 typed definition/ROOT/player/frame、显示选项、纯 proof 和独立 fresh 保持后验。回执保存 `runtime_instance_binding`（实例、进程/连接代次、帧、owner、玩家/日期）；没有选择事件或推进日期。原 v1 仍要求事先绑定具体实例，协议未变。
+
+`test_saved_campaign_dynamic_instance` 七项与旧 `test_saved_campaign_startup_admission` 十一项最终共 18/18 PASS。首次测试曾因新测试使用错误报告键及 unit 工作目录缺仓库导入路径而失败，纠正测试后重跑通过，未放宽生产校验。新测试使用不同的实际玩家引用与当前实例 612，覆盖原合同不变、无操作、两 owner 帧不可省略、旧实例/错误定义/ROOT/选项/帧拒绝及 fresh 实例改变拒绝。此结果是离线合同覆盖，尚无 R3 实机冷载结论。

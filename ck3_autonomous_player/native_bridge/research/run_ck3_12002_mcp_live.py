@@ -2943,9 +2943,12 @@ def verify_fixture_startup_case_contract(value: object, state_dir: Path) -> dict
 
 
 def verify_saved_campaign_startup_case_contract(value: object, state_dir: Path) -> dict[str, object]:
+    dynamic_instance = isinstance(value, dict) and value.get("schema") == "ck3-saved-campaign-startup-case-contract-v2"
     if (not isinstance(value, dict)
-            or set(value) != {"schema", "state_dir", "handler", "dependencies", "expected"}
-            or value.get("schema") != "ck3-saved-campaign-startup-case-contract-v1"):
+            or set(value) != ({"schema", "state_dir", "handler", "dependencies", "expected", "profile_id"}
+                if dynamic_instance else {"schema", "state_dir", "handler", "dependencies", "expected"})
+            or value.get("schema") not in ("ck3-saved-campaign-startup-case-contract-v1",
+                "ck3-saved-campaign-startup-case-contract-v2")):
         raise ValueError("saved startup case must declare its explicit schema and expected identities")
     common = {key:value[key] for key in ("state_dir", "handler", "dependencies")}
     verify_fixture_startup_case_contract({"schema":"ck3-frontend-fixture-startup-case-contract-v1", **common}, state_dir)
@@ -2955,7 +2958,8 @@ def verify_saved_campaign_startup_case_contract(value: object, state_dir: Path) 
             or not isinstance(expected.get("event_definition_key"), str) or not expected["event_definition_key"]
             or len(expected["event_definition_key"]) > 256
             or any(type(expected.get(key)) is not int or not 1 <= expected[key] <= 2**31-1
-                for key in ("event_instance_id", "root_character_id", "actor_character_id"))
+                for key in (("root_character_id", "actor_character_id") if dynamic_instance else
+                    ("event_instance_id", "root_character_id", "actor_character_id")))
             or expected["root_character_id"] != expected["actor_character_id"]
             or type(expected.get("date_raw")) is not int or not -(2**31) <= expected["date_raw"] <= 2**31-1
             or not isinstance(expected.get("native_option_indices"), list)
@@ -2963,6 +2967,11 @@ def verify_saved_campaign_startup_case_contract(value: object, state_dir: Path) 
             or any(type(index) is not int or not 0 <= index <= 2**31-1 for index in expected["native_option_indices"])
             or len(set(expected["native_option_indices"])) != len(expected["native_option_indices"])):
         raise ValueError("saved startup case expected event/root/actor/date/options are malformed")
+    if dynamic_instance and (value.get("profile_id") != "faith-and-power-e01-abbasid-867"
+            or expected["event_instance_id"] is not None
+            or expected["event_definition_key"] != "xar_faith_h01_prepare.1"
+            or expected["date_raw"] != 51394920 or expected["native_option_indices"] != [0, 1]):
+        raise ValueError("saved startup v2 requires the approved scenario and an unbound current-process event instance")
     return value
 
 
@@ -3068,10 +3077,12 @@ async def admit_saved_startup_event(client: PlanClient, snapshot: dict[str, obje
     within_session()
     verify_saved_campaign_startup_case_contract(contract, client.args.state_dir)
     wanted = contract["expected"]
+    dynamic_instance = contract["schema"] == "ck3-saved-campaign-startup-case-contract-v2"
     frame = saved_campaign_admission_frame(snapshot, expected, binding, allow_active_event=True)
     event = snapshot.get("active_event")
     if (frame is None or wanted["actor_character_id"] != expected["actor_character_id"]
-            or wanted["date_raw"] != expected["date_raw"] or event.get("instance_id") != wanted["event_instance_id"]
+            or wanted["date_raw"] != expected["date_raw"] or not isinstance(event, dict)
+            or (not dynamic_instance and event.get("instance_id") != wanted["event_instance_id"])
             or event.get("source") != "native"):
         raise RuntimeError("saved startup event differs from its explicit saved actor/date/instance")
     two_frames = state.get("first_startup_query_admission") or {}
@@ -3081,9 +3092,34 @@ async def admit_saved_startup_event(client: PlanClient, snapshot: dict[str, obje
             or {k:v for k,v in previous.items() if k != "pump_epoch"} != {k:v for k,v in current.items() if k != "pump_epoch"}
             or {k:v for k,v in current.items() if k != "pump_epoch"} != {k:v for k,v in frame.items() if k != "pump_epoch"}):
         raise RuntimeError("saved startup event lacks its actual two stable owner frames")
+    runtime_contract = contract
+    instance_binding = None
+    if dynamic_instance:
+        actual_instance = event.get("instance_id")
+        if type(actual_instance) is not int or not 1 <= actual_instance <= 2**31-1:
+            raise RuntimeError("saved startup v2 current native event instance is not a positive bounded identity")
+        # The input remains immutable with an explicitly unbound instance. Bind
+        # only the current process's observed event after both owner frames,
+        # then reuse every existing strict v1 typed-window/proof/fresh check.
+        runtime_contract = copy.deepcopy(contract)
+        runtime_contract["schema"] = "ck3-saved-campaign-startup-case-contract-v1"
+        runtime_contract.pop("profile_id")
+        runtime_contract["expected"]["event_instance_id"] = actual_instance
+        verify_saved_campaign_startup_case_contract(runtime_contract, client.args.state_dir)
+        wanted = runtime_contract["expected"]
+        instance_binding = {"schema":"ck3-saved-campaign-startup-instance-binding-v1",
+            "profile_id":contract["profile_id"], "input_schema":contract["schema"],
+            "input_event_instance_id":None, "actual_event_instance_id":actual_instance,
+            "actor_character_id":wanted["actor_character_id"], "date_raw":wanted["date_raw"],
+            "bridge_pid":binding["bridge_pid"], "connection_generation":binding["connection_generation"],
+            "snapshot_id":snapshot["snapshot_id"], "revision":snapshot["revision"],
+            "native_revision":snapshot["native_revision"], "owner_tid":frame["owner_tid"],
+            "pump_epoch":frame["pump_epoch"], "selection_attempted":False}
     record = {"status":"OBSERVING_TYPED_SAVED_STARTUP_EVENT", "selection_attempted":False,
         "retry_allowed":False, "product_acceptance_proven":False, "snapshot":snapshot,
         "contract":contract, "original_deadline":deadline}
+    if instance_binding is not None:
+        record.update(runtime_contract=runtime_contract, runtime_instance_binding=instance_binding)
     state["startup_case"] = record
     write()
     try:
@@ -3130,7 +3166,8 @@ async def admit_saved_startup_event(client: PlanClient, snapshot: dict[str, obje
                 raise RuntimeError("saved startup event native option identity differs from its explicit contract")
             option_identities.append({"option_number":rendered+1, "rendered_index":rendered, "native_option_index":native_index})
         within_session()
-        proof = fixture_startup_case_proof(contract, snapshot, packet, client.args.state_dir, saved_campaign=True)
+        proof = fixture_startup_case_proof(runtime_contract, snapshot, packet, client.args.state_dir, saved_campaign=True)
+        verify_saved_campaign_startup_case_contract(contract, client.args.state_dir)
         record["case_qualification"] = proof
         after = await asyncio.wait_for(client.fresh(), timeout=max(0, deadline-time.monotonic()))
         record["after_snapshot"] = after
@@ -3145,6 +3182,8 @@ async def admit_saved_startup_event(client: PlanClient, snapshot: dict[str, obje
             "event_context_queried_revision":packet["queried_revision"],
             "event_context_queried_native_revision":packet["queried_native_revision"],
             "product_acceptance_proven":False}
+        if instance_binding is not None:
+            admitted["runtime_instance_binding"] = instance_binding
         record.update(status="ACTUAL_SAVED_STARTUP_EVENT_OBSERVED_UNCHANGED", admission=admitted, finished_at=now())
         write()
         return after, admitted
