@@ -1,0 +1,302 @@
+{
+  "schema": "xar.e04.r10.python-execution-derived-provenance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:24:43.551734+00:00",
+  "read_source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "origin": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\DELIVERY.actual.json",
+    "bytes": 13913,
+    "sha256": "2011e42eb519086503a05d9c60a5adb71c5edfe4b0b4be9f3d7959fb7812a3a7"
+  },
+  "product_files": [
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/r10_compare.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\r10_compare.py",
+        "bytes": 38807,
+        "sha256": "3fffd7c2929b44f4d3337888b3767ab42e009f0a0fbd941c2041feb5f018a1b8"
+      },
+      "after": {
+        "bytes": 39161,
+        "sha256": "9889cb4838ab08994e8af1abed390bf9e01066b35c30503082b42b59fd22bf26"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\r10_compare.py",
+        "bytes": 39161,
+        "sha256": "9889cb4838ab08994e8af1abed390bf9e01066b35c30503082b42b59fd22bf26"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/split_merge/root_relay.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+        "bytes": 53180,
+        "sha256": "a5c94a23e83c42bb64671164397cb1f45ca70210c15282105463a1c800e70e6d"
+      },
+      "after": {
+        "bytes": 55694,
+        "sha256": "678978e6630168413f67f0a6c2097c3520639cec562c9e078d9ff5f85fa7830b"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\split_merge\\root_relay.py",
+        "bytes": 55694,
+        "sha256": "678978e6630168413f67f0a6c2097c3520639cec562c9e078d9ff5f85fa7830b"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_stages.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\strategy_b_stages.py",
+        "bytes": 33673,
+        "sha256": "43285adaa56a43c0193decede527d3922a1e021c536ff158e1d1c7268f6d2426"
+      },
+      "after": {
+        "bytes": 36519,
+        "sha256": "51a35277bf9fa2087a94332f0aa3f8684125fa8d6350e9c451fcbb04ba5e2fb6"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\B\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\strategy_b_stages.py",
+        "bytes": 36519,
+        "sha256": "51a35277bf9fa2087a94332f0aa3f8684125fa8d6350e9c451fcbb04ba5e2fb6"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_normal_stages.py",
+      "before": null,
+      "after": {
+        "bytes": 15735,
+        "sha256": "4be2b21eb7863733f85d406a88f752c54bc22108b3edec3a1e8d0d13d227897e"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\B\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\strategy_b_normal_stages.py",
+        "bytes": 15735,
+        "sha256": "4be2b21eb7863733f85d406a88f752c54bc22108b3edec3a1e8d0d13d227897e"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/strategy_b_run_argv.py",
+      "before": null,
+      "after": {
+        "bytes": 10699,
+        "sha256": "e37dacb5d7dd445a1c89a18fc700681076138edfcf847b4722f5c5749f92bc2b"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\B\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\comparison\\strategy_b_run_argv.py",
+        "bytes": 10699,
+        "sha256": "e37dacb5d7dd445a1c89a18fc700681076138edfcf847b4722f5c5749f92bc2b"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/strategy_c.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\strategy_c.py",
+        "bytes": 18460,
+        "sha256": "b3db4261b5e909c9cba32991875ce8b73244a368382a7b957a6c1f21b54c8bdf"
+      },
+      "after": {
+        "bytes": 18623,
+        "sha256": "0f5ebe874a282fa3136458387785e11141abcaa1914edc54efc334ec173d1455"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\strategy_c.py",
+        "bytes": 18623,
+        "sha256": "0f5ebe874a282fa3136458387785e11141abcaa1914edc54efc334ec173d1455"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/strategy_c_next_decision.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\strategy_c_next_decision.py",
+        "bytes": 22545,
+        "sha256": "03efa780c56902b8b1a5590d745c7b35c84a9539418e7b8e2fe308d9eb476a12"
+      },
+      "after": {
+        "bytes": 22539,
+        "sha256": "7586e17da995fa96645244f8c3f552e82c0c6ce05de875d7d658689226861736"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\strategy_c_next_decision.py",
+        "bytes": 22539,
+        "sha256": "7586e17da995fa96645244f8c3f552e82c0c6ce05de875d7d658689226861736"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/phased_relay.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\phased_relay.py",
+        "bytes": 39191,
+        "sha256": "b8c53e9f6d81f2484c3139bf13eff09f2e0d664d91294c4fbe661ef16a7b76d4"
+      },
+      "after": {
+        "bytes": 39251,
+        "sha256": "e8c01d1392d9d730fe576bb55ae0d19df0fc07f49d3fc20fa8e5ec90793a487b"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\phased_relay.py",
+        "bytes": 39251,
+        "sha256": "e8c01d1392d9d730fe576bb55ae0d19df0fc07f49d3fc20fa8e5ec90793a487b"
+      },
+      "native_binary_changed": false
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/operation_root_relay.py",
+      "before": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\operation_root_relay.py",
+        "bytes": 18230,
+        "sha256": "92aab7bbf85adab8963737e0eb2d48d6f0b8f4b0a629c163849eea3cca4d7bc0"
+      },
+      "after": {
+        "bytes": 19704,
+        "sha256": "e8facc1d50248e0a1a7bbede98370cf0d732e0bcb5b3c44819e5d53f95eb771a"
+      },
+      "exact_candidate_source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\overlay\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\review02\\strategy_c\\operation_root_relay.py",
+        "bytes": 19704,
+        "sha256": "e8facc1d50248e0a1a7bbede98370cf0d732e0bcb5b3c44819e5d53f95eb771a"
+      },
+      "native_binary_changed": false
+    }
+  ],
+  "external_patch_order": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared\\SHARED-611.relative.patch",
+      "bytes": 7983,
+      "sha256": "360d6642b2a41a03338e33393fe1e2b4ca78f6cf252995960297001084899562"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-repository-intake-a01\\B-611-products-only.relative.patch",
+      "bytes": 34936,
+      "sha256": "0cdc3e5361f466f6c0c221b0c3269a30410502534754bd7cc317dc55ec3c2092"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\C-611.relative.patch",
+      "bytes": 10184,
+      "sha256": "df6b8a35c72347abe87021a710799f287916a0e419bf3b2a940802927542865a"
+    }
+  ],
+  "original_B_patch": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\B\\B-611-normal-hot.relative.patch",
+    "bytes": 47912,
+    "sha256": "301069ae02723100198e57b045592fe7026fce89265be5449a371b750fc9dc08"
+  },
+  "B_patch_derivation": "Remove only old external-layout test file section; three product postbytes unchanged.",
+  "support_files": [
+    {
+      "repository_relative_path": "docs/ck3-native-ai/episode04-r10-python-execution-12004.md",
+      "bytes": 9343,
+      "sha256": "bd342996b7e6e9c54bff7238af54d3781af5fb0ca71a0af6d3223c1fb64c1864"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_runtime_prepared_session.py",
+      "bytes": 5410,
+      "sha256": "c0c236ee194595848250920adac0fa3a435b5336cb99c090f0c461cc9544cc01"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_b_hot_overlay.py",
+      "bytes": 12253,
+      "sha256": "a51f602ffa811eff2dcce2b2c02bfb74fc08dd7bb5f03661b5c90e92bf652b1a"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/root_runtime_projection.py",
+      "bytes": 5395,
+      "sha256": "c4fbae0adfb1e9fd86c75b46f9a26697937bd751d990698faae6a3a55093798c"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/test_operation_hot_gaps.py",
+      "bytes": 13699,
+      "sha256": "fad02379561450ce180938e823b76cf2dc738f9bc21315555464d3fcf188b44b"
+    },
+    {
+      "repository_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/tests/test_root_runtime_projection.py",
+      "bytes": 3318,
+      "sha256": "00d766dbb7cab2102d3852552f2cb1d02a6edf5e4167d33ec490fa4605327924"
+    }
+  ],
+  "focused_test_lineage": [
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_strategy_b_hot_overlay.py",
+      "prior_unique_tests": 3,
+      "prior_actual": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\B\\TESTS.actual-a01.json",
+        "bytes": 1672,
+        "sha256": "aa49f27b4f372cc81a12714236c04b4039b567264f07b4d16c4338629165c053"
+      },
+      "port": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-repository-intake-a01\\B\\PORT.actual.json",
+        "bytes": 4649,
+        "sha256": "34ba21be45c581aff270c2f0b4905a1f59c55b0102b8af62f1108edc86bb1e1b"
+      }
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/strategy_c/test_operation_hot_gaps.py",
+      "prior_unique_tests": 4,
+      "prior_actual": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\C\\DELIVERY.actual.json",
+        "bytes": 11891,
+        "sha256": "a2617ded19d103f6056c3d5cf1bfb54581afa1c199f804a75d2f9458fb774b6b"
+      },
+      "port": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-repository-intake-a01\\C\\PORT.actual.json",
+        "bytes": 5733,
+        "sha256": "fd0a5751cefc49ae30cf6ea7af9193e73d10850dd3813e2b4b069e9669abff8e"
+      }
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison/test_runtime_prepared_session.py",
+      "prior_unique_tests": 4,
+      "prior_actual": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared\\VALIDATION.actual.json",
+        "bytes": 4028,
+        "sha256": "07d394d39bfeaa998fc2afa000bcb850e539c8549c4208406222b3c709f93209"
+      },
+      "port": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-repository-intake-a01\\SHARED-PORT.actual.json",
+        "bytes": 1363,
+        "sha256": "908c44acb8d597534abe44571ee4a35ab85fd0b24f6a94a27b92c54a87878f73"
+      }
+    },
+    {
+      "target": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/tests/test_root_runtime_projection.py",
+      "prior_unique_tests": 2,
+      "prior_actual": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared-audit\\CHECKS.actual.json",
+        "bytes": 1181,
+        "sha256": "1a800899d0b1239145f14c0995bd66111a0d878419ea3bde665927a16293f69d"
+      },
+      "port": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-repository-intake-a01\\shared-audit\\PORT.actual.json",
+        "bytes": 4334,
+        "sha256": "6725b673a6f68267962827f0b2ebef894c4dd45bbaed7826a00bea453ddd27d2"
+      }
+    }
+  ],
+  "prior_external_unique_focused_PASS": 13,
+  "ported_tests_executed": 0,
+  "ported_tests_status": "STATIC_BOOTSTRAP_PORT_ONLY_NOT_RERUN",
+  "helper_original": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r10-611-python-candidates-a01\\shared-audit\\root_runtime_projection.py",
+    "bytes": 5395,
+    "sha256": "c4fbae0adfb1e9fd86c75b46f9a26697937bd751d990698faae6a3a55093798c"
+  },
+  "formal_ABC_completed_arms": 0,
+  "fresh_common_T0_selected": false,
+  "future_runtime_values_prefilled": false,
+  "R194_equal_stock_100_100_supplies_distinct_clamp_or_fee_credit": false,
+  "native_source_dependencies": [
+    "docs/ck3-native-ai/episode04-r07-v2-boarding-control-12004.md",
+    "docs/ck3-native-ai/episode04-r08-rate-resource4-application-12004.md",
+    "docs/ck3-native-ai/episode04-r08-semantic-attribution-audit-12004.md",
+    "docs/ck3-native-ai/episode04-r09-selected93-micro-actual-12004.md",
+    "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+    "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json",
+    "docs/ck3-native-ai/episode04-r10-next-abc-t0-12004.md"
+  ],
+  "evidence_scope": "Original small metadata/source pins only. No new native semantic qualification or R195 runtime execution of these Python candidates."
+}

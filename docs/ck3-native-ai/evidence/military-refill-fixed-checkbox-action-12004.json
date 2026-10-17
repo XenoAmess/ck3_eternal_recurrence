@@ -1,0 +1,148 @@
+{
+  "schema": "ck3-military-reinforcement-fixed-source-construction-12004-v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:12:30.200609+00:00",
+  "base_commit": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_contract_pins": [
+    {
+      "repo_path": "docs/ck3-native-ai/military-refill-finaltarget-1303d40-12004.md",
+      "bytes": 2801,
+      "sha256": "f7da65fd325073b1a439aea6d4a62f2bf491176d58bfa8a9f7d67bb9125abec5"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/military-refill-toggle-command-12ff8d0-12004.md",
+      "bytes": 3840,
+      "sha256": "4270d08a09052d13fc12c4a276c9c8a6006c1907a15a030eff3ae4f8fcd7b492"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/military-refill-wrapper-slot8-copy-12004.md",
+      "bytes": 3329,
+      "sha256": "7c03c61618c8e3fd07b714a38cc7a4939f085505dba2a39e409ac59409ecb492"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/episode04-r06-type635-variable-origin-12004.md",
+      "bytes": 6779,
+      "sha256": "a843a77e1890deaab6dbc4c4b677d5983a46e20373ffdb051dcf493d59d2d21b"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/military-refill-expression-call-chain-12004.json",
+      "bytes": 9840,
+      "sha256": "b1a05e2d0b77eb96ee9dfc99a91f21f9ecc53ceb61a9694ea8f71723c54a5a74"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/src/zhongguo_scoreboard_action_v1.cpp",
+      "bytes": 42550,
+      "sha256": "5a7599c11d556ce0276f743fe25d3bb220e20ce3b57a7a7e34169b3981ba23d8"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/src/ingame_military_opener_12004.cpp",
+      "bytes": 13412,
+      "sha256": "940614310d806e61ae0e125bb803fb7fdd375ac034e65a64346ad27d2df7c049"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/zhongguo_scoreboard_state_v1.hpp",
+      "bytes": 19796,
+      "sha256": "c9467e7d9cd481449e193d70f083774176c7086fdd127351cb33ce714249c3d9"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_static_owner_switch_12004.hpp",
+      "bytes": 3776,
+      "sha256": "3051fe647f8696fb31be5cef27019e766727a055b25a6065ca09be975cf8e987"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 231342,
+      "sha256": "62693449f28c5d6b68e3286ef6b137a527cad3e88dc3783cd337d74744283c3d"
+    },
+    {
+      "repo_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 833064,
+      "sha256": "21fad3adbb08b3a2c4693c71e806917bd53a1904e280f084a054439ff5b19375"
+    }
+  ],
+  "existing_R195_slot13_proof": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "checked_at_utc": "2026-10-17T02:10:52.972444+00:00",
+    "scope": "existing-R195-only; source-profile and slot13 reachability, no new click/toggle",
+    "source_archive": "C:\\ck3-e04-resume-20261015-a01\\r195-r06-consumer-review-a44\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-17-r195-static-owner-switch\\OPENER-ENDPOINT.actual.json.gz",
+    "archive_sha256": "27150640881c1526040baae493ea99deac27289f00ab7bcdd8859bbcb47ed82b",
+    "endpoint_bytes": 239540,
+    "endpoint_sha256": "4327754594ed01fa69d74589cb7a49f23b0e425c2146548c687cdda010d9ecdf",
+    "pointer": "/body/later_military_tree/widgets",
+    "rows": [
+      {
+        "child_path": "0/0/0/2/3/0/0/0",
+        "runtime_name": "",
+        "vtable_rva": 76962064,
+        "effective_visible": true,
+        "enabled": true,
+        "button_base_slot13": true,
+        "group": "fallback",
+        "callback_count": 1,
+        "callback_slot2_rva": 61485280,
+        "native_target_8_rva": 61471072,
+        "final_target_38_rva": 19938624
+      },
+      {
+        "child_path": "0/0/0/3/5/0/0/0",
+        "runtime_name": "",
+        "vtable_rva": 76962064,
+        "effective_visible": false,
+        "enabled": true,
+        "button_base_slot13": true,
+        "group": "fallback",
+        "callback_count": 1,
+        "callback_slot2_rva": 61485280,
+        "native_target_8_rva": 61471072,
+        "final_target_38_rva": 19938624
+      }
+    ],
+    "new_Driver_reads": 0,
+    "new_EXE_reads": 0,
+    "new_SDK_requests": 0
+  },
+  "capability_state": "candidate-defaultOFF-not-built-not-executed",
+  "new_EXE_reads": 0,
+  "new_Driver_reads": 0,
+  "new_SDK_requests": 0,
+  "native_builds": 0,
+  "unknown": [
+    "actual native selected receiver",
+    "temporary variable table",
+    "original callback transitive helper/provider execution",
+    "37F06D0 execution timing/store",
+    "actual toggle postcondition",
+    "natural ADD"
+  ],
+  "candidate": {
+    "define": "XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004",
+    "default": "OFF",
+    "steps": [
+      "enable-military-reinforcement-v1",
+      "disable-military-reinforcement-v1"
+    ],
+    "native_fixture_target": "xar_test_military_reinforcement_action_12004",
+    "native_fixture_status": "NOTRUN",
+    "new_python_behavior_cases": 4,
+    "new_python_test_return_code": 0
+  },
+  "transport_followup": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_line": 12080,
+    "production_source_sha256": "9a995de4efcbe7967a5f4795e46975897e2e9d7a0faeec4339d194aef0e403c9",
+    "original_a45_four_cases_did_not_cover_real_projection": true,
+    "correction": "optional exact backend_id=native-headless; preserve original raw result",
+    "new_real_primitive_case_passed": 1,
+    "old_four_cases_rerun": 0,
+    "scope": "offline Native I/O fixture only, no new live toggle",
+    "actual_case_evidence_pin": {
+      "path": "TRANSPORT-TEST-EVIDENCE.actual.json",
+      "bytes": 1255,
+      "sha256": "223b275c554397d14755690183588b4d971edc9b19fd8cd1b3e391ca0e5e3e1b"
+    },
+    "public_revision": 110,
+    "actual_sent_native_revision": 109
+  }
+}

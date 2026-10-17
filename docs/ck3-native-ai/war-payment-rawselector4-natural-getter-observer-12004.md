@@ -57,3 +57,34 @@ a02曾新增三处mailbox callback TLS fence。该改动未获采用：当时只
 a01既有4项Python consumer行为结果继续引用，不重跑。a02已通过的2项生产NativeDriver→transport行为结果可作为Python模块未变时的旧wire/optional child/public/native revision兼容证据；这两项只fake Native I/O，没有native/game执行，也没有证明query能实际调用raw4 getter。相关exact测试源与结果仍可读于a02，不纳入本最小代码patch；不重跑原矩阵。
 
 未来a33最小CMake仍仅新增默认OFF的 `XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004`，ON依赖现有payment/natural flags并同给Bridge/Runtime；原authored raw4 native seam fixture保留为未来显式测试目标，本轮未构建。它验证本新增observer的原函数一次/参数返回/非4与OFF不留行/读失败/clear，不能给自然实机或资源命名/付款/周期资格。生产coherent build与正常冷载仍由Root另行执行；本候选不触当前现场。
+
+
+## 2026-10-17：R0195 两窗实际发布与零保留 raw4
+
+machine_id: `desktop-3fevhd2-1c74096080`。实际消费时间为 `2026-10-17T01:45:50Z`，cash ADD澄清为 `01:48:17Z`；来源是 `611bc985ae95f477dd7314df11f8602cd1e595f3 / a33` 的 R0195 冻结原件。此前“未构建未部署”属于候选阶段的历史状态；本补注只追加下列实际查询与离线消费资格，不改写旧记录。
+
+两段末 cash 都确实发布 `war_payment_observations_v1.raw_resource4_getter_v1`，`installed=true / install_failure_flags=0`。分别使用各自独立保存的 `cash-before` snapshot，执行生产 `consume_raw4_getter_observations`，完整 normalizer和strict raw4 consumer均通过，没有从journal伪造snapshot。
+
+| 冻结窗 | date_raw | public/native revision | window / payment epoch | natural pre/post | payment记录 | raw4 retained / qualified |
+|---|---:|---|---|---|---|---|
+|s1|53148768|84 / 83|1 / 1|24 / 24|11条transition、1条cash personal_add|0 / 0|
+|s2|53148960|110 / 109|3 / 3|8 / 8|2条transition|0 / 0|
+
+两窗的实际共同绑定是PID `29000`、creation time `134366728035105406`、connection generation `1`、受管玩家 CharacterFullID `31254`。raw4 child各自 `read_complete=true`，latest、oldest、overwritten与publication_failures均为0；查询时sampling enabled且idle。它们是**停用前**冻结末包，不能用其中enabled状态表示查询之后仍在采样。本补注不以这些旧包重新证明Root的后续OFF、exit0或完整R07验收。
+
+这证明本场的子日志发布和独立同帧strict消费通路；没有一条实际raw4记录，故尚未取得自然raw4 caller PC，也未取得实际逐记录的Character/context/out64人口值资格。不能把零保留行升级为全进程没有调用、资源值0、零费用、已付款维持费、币种名、费率或周期结论。这里的范围是本场两个受管玩家窗口；没有新caller可沿，不继续制造来源研究，也不重新引入a02未采纳的理论TLS fence。
+
+### 唯一 cash personal_add 的用词澄清
+
+s1唯一 `observer kind=2` 是cash观察器的 `personal_add` 记录，不是native resource enum，也不是Army/ArRg兵员ADD：journal_sequence `3`，`resource_kind_raw=-1`，实际caller-return RVA `0x28A6D7C`，entry/return共享clock事件 `19518349→19518350`、thread `31688`，原调用/返回均true。原始RAX `0xFFFFFFFF` 只按opaque返回位保存，不作amount或subject。
+
+此前已闭exact4来源将该PC对应到 `28A6D77 CALL285EE40` 的个人现金wrapper writer，源定义槽为 `wrapper+8`，调用源映射个人extension+100。**当前小literal没有保存本条receiver、second_pointer、amount或before/after余额**，所以不能把source映射当作这条记录实测的物理slot，也不能用window actor31254补作记录subject。具体subject、amount、receiver和实际slot在这份小投影中均不授资格。本补注未重读末cash恢复遗漏值。它不证明R06补员，也未转给R06 lane。
+
+### 可复用证据
+
+- [两窗结果与限定范围](evidence/rawselector4-r195-control-actual-20261017/outcome.actual.json)。
+- 生产消费者逐窗返回：[s1](evidence/rawselector4-r195-control-actual-20261017/s1-consumed.actual.json)、[s2](evidence/rawselector4-r195-control-actual-20261017/s2-consumed.actual.json)。
+- [cash personal_add澄清](evidence/rawselector4-r195-control-actual-20261017/cash-personal-add-clarification.actual.json)。
+- [四份原件pins、消费者SHA与原执行argv](evidence/rawselector4-r195-control-actual-20261017/provenance.actual.json)。末cash为456,600B / SHA `780b1242…de528e4` 与127,749B / SHA `4bd8d2cc…5f0ad`；独立snapshots的完整pins同表保存。Root/R07 portable统一无损归档原件，本专题不重复复制大cash/snapshot或day1ZIP。复算完整生产consumer仍需要这四件原文，小结果和选中literal不是其替代输入。
+
+这些记录属于上述来源机器与R0195时段；代码和知识可跨机器复用，不能外推其他机器的部署、权限、进程或实机通过。该次canonical追加只读已封小结果，未新query、构建、EXE读取、源码扩读、消费者重跑或主树现场操作。

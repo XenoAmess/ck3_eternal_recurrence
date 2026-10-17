@@ -1,0 +1,357 @@
+{
+  "schema": "xar.e04.r196.r07-cue-sentence-map.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:57:43.670722+00:00",
+  "source_head": "41846f4955391be89a719432a4010ed73d199b54",
+  "historical_case_source": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "primary": {
+    "id": "C04-10",
+    "role": "rough-context-only",
+    "continuous_clean": false,
+    "event_PTS": null,
+    "approval": "pending",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+      "bytes": 49062501,
+      "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+      "artifact_id": "rough-raw.R196"
+    },
+    "source_frames": [
+      1080,
+      1783
+    ],
+    "source_frame_count": 2369,
+    "selection_basis": "Authored36..59.4333s window, exact703sourceframes for existing C04-10 audio; reviewed38s camp and41s ships are relative2s/5s. No precise native/payment event PTS inferred."
+  },
+  "mutually_exclusive_alternative": {
+    "id": "C06-08",
+    "role": "rough-context-only",
+    "continuous_clean": false,
+    "event_PTS": null,
+    "approval": "pending",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+      "bytes": 49062501,
+      "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+      "artifact_id": "rough-raw.R196"
+    },
+    "source_frames": [
+      1230,
+      1967
+    ],
+    "source_frame_count": 2369,
+    "selection_basis": "Mutually exclusive737frame41..65.5667s already-ship context for existing C06-08; no maintenance amount or native event PTS claimed",
+    "activation": "Remove C04-10 override and restore its pending flag; remove C06-08 pending then add this override. Never use both for the same raw in this composer."
+  },
+  "cues": [
+    {
+      "id": "C01-02",
+      "original_timeline_frames": [
+        612,
+        1265
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-02.mp3",
+        "bytes": 127152,
+        "sha256": "3683cba9a4278a65404e894f57cc5c3d400b0582a9483931d463b9e8ddbf2028"
+      },
+      "original_audio_seconds": 21.766666666666666,
+      "frozen_zh_utf8_sha256": "4b88c6f144404eff63ec0061c26cd9d680274b33a55982eea0216c7855c5d287",
+      "old_source_refs": [
+        "story-a02:DIRECTOR",
+        "story-a02:R0173"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "这一轮跟着一点二零点零点四里的罗贝尔。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 42657895,
+          "r196_use": "版本与人物来源可保留；R196是同一.4罗贝尔的独立fresh treatment。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "先把军队面板的当前读数读清，再沿着真实行军看变化。",
+          "actual_provider_offset_100ns": 43157895,
+          "actual_provider_duration_100ns": 58289474,
+          "r196_use": "真实行军末段可作背景；此raw只拍绝对日30–32，不是全部32日。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "规则解释告诉我们游戏怎样计算，现场记录告诉我们这一次实际发生了什么；两层接起来，才能解释抵达时的状态。",
+          "actual_provider_offset_100ns": 101447369,
+          "actual_provider_duration_100ns": 109868422,
+          "r196_use": "机制／现场各自来源；这里只增加登船画面候选，不授全片抵达／ABC结论。"
+        }
+      ]
+    },
+    {
+      "id": "C04-09",
+      "original_timeline_frames": [
+        35041,
+        35936
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-09.mp3",
+        "bytes": 175680,
+        "sha256": "ba75242d39005951d96a08c63539a67b7189b7d2b863b3f3496a57f303fe3afc"
+      },
+      "original_audio_seconds": 29.833333333333332,
+      "frozen_zh_utf8_sha256": "bdd5a1caec5fcfc4dd4d953aca38cd87bd08de382b98decccbcf2c4ac7353f64",
+      "old_source_refs": [
+        "story-a05:PAYMENT",
+        "story-a05:COUNTY",
+        "story-a05:COMPARISON"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "路线提示“会支付登船费”，是下令前的警告；实际扣款要另看。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 63842106,
+          "r196_use": "原句是下令前警告机制；R196开录在Move之后，本片无source-bound quote或该提示展开，仍pending。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "这次军队进入海区后，独立现金查询和原生支付链对上了一笔三金币扣款，属于这个账户的这一次登船。",
+          "actual_provider_offset_100ns": 64342106,
+          "actual_provider_duration_100ns": 101710527,
+          "r196_use": "R196生产链给出personal31254 SUB3，回调余额260.10399→257.10399；可复用口播但标新run，不沿用R173钱包。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "它不自动成为所有军队的固定费率。",
+          "actual_provider_offset_100ns": 166052633,
+          "actual_provider_duration_100ns": 34605263,
+          "r196_use": "个案范围正确；不能推出固定费率、每百人收费或commander付款因果。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "县域损失预算也一样：提示的是特定条件下的计算，不能说每经过一个省就必定少同样多的兵。",
+          "actual_provider_offset_100ns": 200657897,
+          "actual_provider_duration_100ns": 91315790,
+          "r196_use": "县损失是另一个source机制；R196登船片不证明县损失正例。"
+        }
+      ]
+    },
+    {
+      "id": "C04-10",
+      "original_timeline_frames": [
+        35936,
+        36639
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C04-10.mp3",
+        "bytes": 137232,
+        "sha256": "b69cf506a4cf35d41a02c15d9bb65add6c880b3dbbdba4cce9a293e8691c4958"
+      },
+      "original_audio_seconds": 23.433333333333334,
+      "frozen_zh_utf8_sha256": "04a62bcc9a223a5cc84c704780dc01c3c2546df0c10ac2f4a12d044492ee756e",
+      "old_source_refs": [
+        "story-a02:R0173",
+        "story-a02:PAYMENT"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "这次罗贝尔的军队进入海区，实际状态变成已登船。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 54500000,
+          "r196_use": "优先整cue接R196；38s营地、41s船为有限视觉括界，native独立证已embarked@1032。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。",
+          "actual_provider_offset_100ns": 55000000,
+          "actual_provider_duration_100ns": 85000001,
+          "r196_use": "真实personal SUB300000/Q100000；同一回调入口26010399→返回25710399，不是全32日净余额差。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "这给出了本例登船的实际支付；以后别的军队和路线，仍要看当次费用，不能一律套三金币。",
+          "actual_provider_offset_100ns": 140000001,
+          "actual_provider_duration_100ns": 87894737,
+          "r196_use": "保留个案限制；费用仅本军／本路径／本次，不推广通式。"
+        }
+      ]
+    },
+    {
+      "id": "C05-13",
+      "original_timeline_frames": [
+        46572,
+        47279
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-13.mp3",
+        "bytes": 137952,
+        "sha256": "d05b1ed66e02c8030df2305c56645655eab6e11761998a9f147d10611f10be4c"
+      },
+      "original_audio_seconds": 23.566666666666666,
+      "frozen_zh_utf8_sha256": "343fe19c73e0e102b1153188e5bea3520b748f562b31490c71a7bae524411189",
+      "old_source_refs": [
+        "story-a02:COMPARE",
+        "story-a02:GENERIC",
+        "story-a02:PAYMENT",
+        "story-a02:CARDS"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "费用单独记账。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 19894737,
+          "r196_use": "记账方法可保留。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "登船支付、军事维护、期间收入和其他支出，放进相同账户、相同日期范围里核对。",
+          "actual_provider_offset_100ns": 20394737,
+          "actual_provider_duration_100ns": 90131580,
+          "r196_use": "R196只有登船实付闭包；军事维护等其他分量仍各自待证，不填0。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "钱包的净变化混合了这些来源；即使余额增加，也可能已经付过军费。",
+          "actual_provider_offset_100ns": 110526317,
+          "actual_provider_duration_100ns": 70526316,
+          "r196_use": "ordinary generic ADD205712不是军费归因，也不以两臂NET差给R07定价。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "完整支出里包含的军费，也不再额外扣第二次。",
+          "actual_provider_offset_100ns": 181052633,
+          "actual_provider_duration_100ns": 48289474,
+          "r196_use": "避免重复扣费的source规则；不是本片已付维护流水。"
+        }
+      ]
+    },
+    {
+      "id": "C06-08",
+      "original_timeline_frames": [
+        55877,
+        56614
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-08.mp3",
+        "bytes": 144000,
+        "sha256": "6a5532b8f92fdb7d8ee387475f65fef99be7dc23ac9dd0a502c850347faf3fa5"
+      },
+      "original_audio_seconds": 24.566666666666666,
+      "frozen_zh_utf8_sha256": "3f2c29b8d5c0ffaa2cbd4e5b52e98db61cdc3656645c83eacb56c3dd12371327",
+      "old_source_refs": [
+        "story-a02:R0173",
+        "story-a02:GENERIC",
+        "story-a02:COMPARE"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "支付再核一次：本例已经对上三金币登船扣款。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 50684211,
+          "r196_use": "备选可用本次R1963金币付款；与C04-10同raw单窗口互斥。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "军事维护的当前月率、总支出和钱包净变化，各自可以帮助读账；要说实际付了多少军事维护，还要把对应费用分量和那次真正结算接上。",
+          "actual_provider_offset_100ns": 51184211,
+          "actual_provider_duration_100ns": 134868422,
+          "r196_use": "当前月率／总支出／NET读账规则保留；R196不授实际维护费。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "缺这笔明细时，费用列保留未知，也不解释成免费。",
+          "actual_provider_offset_100ns": 186052633,
+          "actual_provider_duration_100ns": 53289474,
+          "r196_use": "实际维护明细unknown，不解释为免费。"
+        }
+      ]
+    },
+    {
+      "id": "C06-10",
+      "original_timeline_frames": [
+        57532,
+        58406
+      ],
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-10.mp3",
+        "bytes": 165168,
+        "sha256": "df5d7989a187f0a41a93e41da5c65e01b544778eecebe6ab2a1d9b9a2f8e7717"
+      },
+      "original_audio_seconds": 29.133333333333333,
+      "frozen_zh_utf8_sha256": "b8541c40061b57a3c72e534f36bc4a1f65d937603d50aeb5fe12f5aa23e23514",
+      "old_source_refs": [
+        "story-a02:DIRECTOR",
+        "story-a02:R0173",
+        "story-a02:COMPARE"
+      ],
+      "new_evidence_refs": [
+        "boarding-evidence-facts.actual-a01.json",
+        "docs/ck3-native-ai/episode04-r196-r07-boarding-pair-12004.md"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "出发前读人数、库存和路线，途中追踪实际变化，接战前确认真正到场的状态。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 85684211,
+          "r196_use": "可作行军检查方法的背景候选，但本轮不替换整cue。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。",
+          "actual_provider_offset_100ns": 86184211,
+          "actual_provider_duration_100ns": 94736843,
+          "r196_use": "本场没有Halt；空route来自真正抵海，不能冒充旧R173未锁停止。保留旧来源或另写新版本。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "把每个动作接到自己的后态，再按这次可见条件选择下一步，行军计划才跟得上军队真正走过的路。",
+          "actual_provider_offset_100ns": 180921054,
+          "actual_provider_duration_100ns": 93815790,
+          "r196_use": "方法总结可保持；不得把独立案例剪成连续Halt。"
+        }
+      ]
+    }
+  ],
+  "new_wording_candidates": [
+    {
+      "id": "C04-10",
+      "optional": true,
+      "old": "沿着原生付款记录，可以核到一笔三金币的个人账户扣款，账户前后恰好减少三金币。",
+      "candidate": "沿着原生付款记录，可以核到一笔三金币的个人账户扣款；这笔扣款从入口到返回，同一账户恰好减少三金币。",
+      "scope": "Optional clarity only. Existing voice may stay with an explicit transaction-bound data card; no new TTS made."
+    },
+    {
+      "id": "C06-10",
+      "conditional_required": true,
+      "old": "罗贝尔这次登船后的未锁定停止移动，已经核到路线清空，次日仍停在原地；这是这次操作的结果。",
+      "candidate": "这次实际入海以后，我们独立核到军队已经登船、停在海区，路线为空；这证明抵达后的状态，不代表本场又执行了停止移动。",
+      "scope": "Only if replacing old Halt case with R196. Retain original R173/174 story otherwise. New text/English/voice/timebase require a separate future version."
+    }
+  ],
+  "old_frozen_audio_or_text_modified": false,
+  "new_TTS_generated": false,
+  "new_voice_duration_seconds": null,
+  "render_ready": false
+}

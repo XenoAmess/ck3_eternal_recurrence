@@ -1,5 +1,23 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-17 02:51 UTC 最新信用：R07-v2研究核心已采纳，旧v1严格卡未过
+
+`machine_id: desktop-3fevhd2-1c74096080`。[Root R07-v2研究决策](evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json)原件2,371 B／SHA-256 `1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f`签出既有v2设计的研究核心；含此前已计入R01，当前研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，合格动态 **0/11**、正式ABC **0/3**。须并列保存原R07-v1严格卡仍false：七日单窗与避经济机会未满足；若按原卡不采纳v2，研究 **8/14（57.14%）**、业务 **5/11（45.5%）**。 R195/R196同正常S0／source611／a33双独立32日配对，R196在1032由payer31254个人账户出现一次实际SUB3金币，原生精确account write及生产pair replay已留证。此为一次付款，不证明普遍费率、source-bound quote、零费、维护归因或统帅因果；单窗consumer `full_v2_qualified=false`原结果保留，Root采纳的是v2研究核心而非把该字段改写为true。 [R196有限媒体实际原件](evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json)20,836 B／SHA-256 `26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403`：原片2,369帧／编码78.966秒、墙钟82.824864秒，可用流全解码exit0，PTS无缺失/回退；八张实际帧只见陆营38秒→船面板41秒，视觉转场界于(38,41]秒。这个区间不是native callback精确PTS，也不能由八帧推出连续clean、完整1×或人工签核；动态维持0/11。 下方02:44/01:54段保留各自历史时点。
+
+
+## 2026-10-17 02:44 UTC R196正常闭场后的增量：R01研究8/14，R07待主人签卡
+
+`machine_id: desktop-3fevhd2-1c74096080`，R195/R196同正常R191 S0、同源码 `611bc985ae95f477dd7314df11f8602cd1e595f3` 与a33 DLL。Root独立[R01研究决策](evidence/episode04-r196-r01-ready-t0-12004/root-research-decision.json)原件1,678 B／SHA-256 `a35db9b9920eee515304fc912c90d357c0a850e6a56cdd470eeb264d61377c4a`采纳research_core_closed：具名目标2644、陆路点2645、补给候选2619 eligible+20，故研究 **8/14（57.14%）**；2619路径穿过敌持点，不保证安全或已抵达、已涨库存，2645还非独立C策略，正式ABC **0/3**。业务 **5/11（45.5%）**、合格动态 **0/11**未变。
+
+R196独立处理臂现已32/32精确逐日、每tick1/overshoot0，day31在1032实际embarked且route empty；R195 control32与之同S0/source/DLL，双基线比较PASS。Root报告production pair replay原件16,094 B／SHA-256 `6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af`，观察到payer31254 personal SUB3金币；R196正常Save、bootstrap exit0、屏幕释放均已结算。[R195控制臂专题](episode04-r195-r07-control-12004.md)及R196处理臂后续便携需同读；正扣款不替Root或R07负责人预先签R07整卡、维护款因果或原v1。R196原片49,062,501 B／SHA-256 `7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9`、墙钟82.824864秒、Finish正常；解码/PTS/clean/1×/人工签核另待媒体实际回执，不授动态。下方01:54节是启动时历史快照，以上闭场事实为较新时点。
+
+## 2026-10-17 01:54 UTC 冻结期快照：R195对照闭场，R196独立处理臂加载中
+
+`machine_id: desktop-3fevhd2-1c74096080`；R195/R196冻结源码 `611bc985ae95f477dd7314df11f8602cd1e595f3`、同一a33 native资格。R195从R191正常S0完成32个逐日对照，clock均精确1日、overshoot0；日25 PAM弹窗的已知原动作经一次原生处理后只补读，未重发Arm/Resume。两终端窗分别保全natural48/payment12、natural16/payment2，0 overwrite；[R195控制臂便携实际交付](C:/ck3-e04-resume-20261015-a01/r195-r07-control-portable-a01/ROOT-DELIVERY.actual-a01.json)3,619 B／SHA-256 `661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9`，已正常保存、游戏exit0、屏幕释放。此包只授control32，处理臂及R07完整配对未完成；0 selected-army boarding debit不证明零费，maintenance/payer/cadence仍待独立归因。R195 recorder未Start。
+
+Root截至本快照报告：R195首海preview可用route `[1032]`、definitions 1→0，县边P=false是另一个问题；R06 a44新owner叶 military `4A9`／raw1、enabled=true，但未toggle、ADD或调用provider；raw4两窗child真实发布而callers=0，`cashpersonal_add`不等于R06补员或已付款。原件便携入库待统一接收。R196已独立从R191正常S0启动同源码／DLL，固定截止03:15:28 UTC、recorder最多180秒；截至本快照尚无map、baseline、Move或film结果，不预判成败。主树须冻结至R196正常闭场后由Root解除，不能为先行Python入库拆断同source配对。当前研究 **7/14（50.0%）**、业务 **5/11（45.5%）**、合格动态 **0/11**、ABC **0/3**；ABC canonical 22路径是候选，不是新共同T0或三臂。旧段落按原观察时点保留。
+
+
 ## 2026-10-17 00:19 UTC 本机最新入口：R09研究已闭，镜头待验
 
 `machine_id: desktop-3fevhd2-1c74096080`。[R191两日专题](episode04-r191-window-capture-12004.md)与[83份便携原件](evidence/episode04-r0191-20261017/README.md)为已闭R03再给同callback七笔真实围城物理扣兵合计11。[R192正向](episode04-r192-forward-split-merge-12004.md)和[R193独立同S0反向](episode04-r193-reverse-pair-12004.md)已保全双臂数值/角色例外；[R194完整正向及正常闭场](episode04-r194-forward-split-merge-12004.md)补齐同S0 F0/F1/F2、实际存续军typed/GUI和正常Save、游戏exit0、屏幕释放。[Root研究决策](evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)原件2,635 B／SHA-256 `e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c`明确 `R09_RESEARCH_AND_BUSINESS_CLOSED`：研究 **7/14（50.0%）**、业务 **5/11（45.5%）**；clean、完整1×、human signoff未通过，合格动态 **0/11**、正式ABC **0/3**。原strict false、同值库存非正clamp、birth PC与全roster边界保持，数值PASS不扩为这些因果。R194媒体审阅独立在后续实际回执结算；控制器Finish与UI可见不自动授动态。

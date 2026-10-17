@@ -263,6 +263,31 @@ def selected_query_ids(frame,army_ids=None,*,split_before_roster=None):
     return sorted(ids)
 
 
+def prepared_native_session(prepared, prepared_pin, proof, *, assets, machine, normal_save_sha256=None):
+    """Bind exact prepared metadata to this ordinary Root process source."""
+    assets=Path(assets).resolve()
+    need(prepared.get('machine_id')==machine
+         and type(prepared.get('assets_root')) is str
+         and Path(prepared['assets_root']).resolve()==assets,
+         'prepared metadata belongs to another machine/scene')
+    expected=Path(prepared_pin['path']).resolve()
+    def matches(row):
+        return (type(row) is dict and type(row.get('path')) is str
+            and Path(row['path']).resolve()==expected and row.get('bytes')==prepared_pin['bytes']
+            and row.get('sha256')==prepared_pin['sha256'])
+    need(any(matches(row) for layer in proof.get('proof_chain',[]) for row in layer.get('files',[])),
+         'runtime proof does not bind exact prepared metadata')
+    state=prepared.get('state_dir')
+    need(type(state) is str and Path(state).is_absolute(),'explicit prepared state_dir must be absolute')
+    state=Path(state).resolve();native=(state/'native-session').resolve()
+    need(state.is_relative_to(assets) and native.is_relative_to(assets) and state.is_dir(),
+         'prepared state/native-session escapes scene or is absent')
+    if normal_save_sha256 is not None:
+        save=(prepared.get('checkpoint') or {}).get('source',{}).get('save',{})
+        need(save.get('sha256')==normal_save_sha256,'prepared normal input differs from live operation S0')
+    return state,native
+
+
 class Relay:
     def __init__(self,args,*,transport=None,process_probe=process_time):
         self.a=args;self.repo=args.repo.resolve();self.process_probe=process_probe
@@ -304,6 +329,15 @@ class Relay:
         need(datetime.now(timezone.utc)<self.deadline,'operation deadline reached; no new live stage')
         self.binding=admission(self.c,proof,run_id=args.run_id,source=self.source,sequence=self.sequence,
             machine=self.machine,minimum_sequence=1 if self.live_operation_guard else 176)
+        prepared_path=getattr(args,'prepared',None);prepared_sha=getattr(args,'prepared_sha256',None)
+        need((prepared_path is None)==(prepared_sha is None),'prepared PATH and SHA must be supplied together')
+        self.prepared_pin=None
+        self.state_dir=(self.assets/'state-a01').resolve();self.native_session=self.state_dir/'native-session'
+        if prepared_path is not None:
+            prepared,self.prepared_pin=guard_module._read_pinned(prepared_path,prepared_sha)
+            self.state_dir,self.native_session=prepared_native_session(prepared,self.prepared_pin,proof,
+                assets=self.assets,machine=self.machine,
+                normal_save_sha256=self.live_operation_guard.binding['normal_save_sha256'] if self.live_operation_guard else None)
         if self.live_operation_guard:
             need(getattr(args,'resume_baseline_strength_response',None) is None,'historical R0176 baseline cannot resume in a new operation')
             self.runtime_total_budget_bytes=self.live_operation_guard.binding['max_runtime_total_bytes']
@@ -319,6 +353,7 @@ class Relay:
           'capture_started':False,'time_advanced':False,'unknown_action_retried':False,
           'merge_destination':getattr(args,'merge_destination','source'),
           'explicit_merge_source_army_id':getattr(args,'merge_source_army_id',None),'module_pins':pin(pins_path)}
+        if self.prepared_pin is not None:self.meta['prepared']=self.prepared_pin
         if self.live_operation_guard:
             capacity_path=Path(self.live_operation_guard.capacity_pin['path'])
             self.meta['live_operation_binding']=self.live_operation_guard.pin
@@ -331,6 +366,7 @@ class Relay:
         if fixed.exists():
             prior=load(fixed)
             need(prior.get('live_operation_binding')==self.meta.get('live_operation_binding'),'case operation binding changed')
+            need(prior.get('prepared')==self.meta.get('prepared'),'case exact prepared metadata changed')
             for key in ('source_head','run_id','context','runtime_proof','helper','request_helper','consumer','binding','deadline_utc','capacity_admission','merge_destination','explicit_merge_source_army_id','module_pins'):
                 need(prior[key]==self.meta[key],'case changed pinned identity/source/deadline: '+key)
         else:write_new(fixed,self.meta)
@@ -369,7 +405,7 @@ class Relay:
             # New bindings count complete Driver sidecars as well as packets.
             # Preserve the historical meter only for the old finite contract.
             seen=set();accounted=0
-            for directory in (self.run/'requests',self.run/'responses',self.case.parent,self.assets/'state-a01/native-session'):
+            for directory in (self.run,self.case.parent,self.native_session):
                 if not directory.exists():continue
                 for path in directory.rglob('*'):
                     if not path.is_file():continue
@@ -415,7 +451,7 @@ class Relay:
               'army_ids':ids,'expected_revision':s['revision'],'profile':'ordinary_core_v1'})
         ev=row.get('army_history_evidence') or {};raw=ev.get('raw_result_reference') or {}
         path=Path(raw.get('path',''))
-        need(path.is_absolute() and path.parent.resolve()==(self.assets/'state-a01/native-session/army-query-history-results').resolve()
+        need(path.is_absolute() and path.parent.resolve()==(self.native_session/'army-query-history-results').resolve()
              and raw.get('kind')=='complete-driver-army-query-result-json-v1' and raw.get('wire_bytes_preserved') is False,
              'response-local ordinary Driver reference missing; no latest/glob fallback')
         limit=MAX_DRIVER_RAW if raw_file_limit is None else raw_file_limit(path)
@@ -649,6 +685,8 @@ def main():
     p.add_argument('--run-sequence',type=int,default=176,help='Exact independently allocated actual run sequence')
     p.add_argument('--module-pins',type=Path);p.add_argument('--module-pins-sha256')
     p.add_argument('--live-binding',type=Path);p.add_argument('--live-binding-sha256')
+    p.add_argument('--prepared',type=Path)
+    p.add_argument('--prepared-sha256')
     p.add_argument('--max-runtime-total-bytes',type=int,default=512*1024*1024)
     p.add_argument('--merge-destination',choices=('source','sibling'),default='source')
     p.add_argument('--merge-source-army-id',type=int,help='pre-merge only: explicit existing pair for distinct-stock/cap observation, no split')

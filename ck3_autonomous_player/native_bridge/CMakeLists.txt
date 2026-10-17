@@ -9949,3 +9949,8 @@ include(cmake/military_preview_unavailable_reasons_fixture.cmake)
 include(cmake/gui_refill_frontier_continuation_off_fixture_12004.cmake)
 
 include(cmake/gui_refill_static_owner_switch_fixture_12004.cmake)
+
+# Optional current R04 P relation input observer; default OFF.
+include(cmake/county_relation_inputs_12004.cmake)
+
+include(cmake/military_reinforcement_action_12004.cmake)

@@ -1,0 +1,65 @@
+{
+  "schema": "xar.e04.r195-abs25-pam-portable-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:38:38.930205+00:00",
+  "files": [
+    {
+      "relative_path": "actual-outcome.json",
+      "bytes": 13134,
+      "sha256": "35597a8f28f2fc8741405942feb6f30238b124b5707900dd2f031deb892e1894"
+    },
+    {
+      "relative_path": "original-responses.zip",
+      "bytes": 26674,
+      "sha256": "e4a23a1f18fb52ae5a057bd8aaf1ab2d2de2b6664b3ecb40e850f4877775bec0"
+    },
+    {
+      "relative_path": "production-policy.actual.json",
+      "bytes": 10647,
+      "sha256": "0515ade94e12ab10057f3496f8bdc758e53411b6b437644d97a485f7347c475c"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 1779,
+      "sha256": "6fa0494e8129cb00d997a9504f08b33908f6cb5d44fa567e3dfcec887b5144ab"
+    }
+  ],
+  "original_JSON_pins": {
+    "context": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-event-context-a01-context.json",
+      "bytes": 47313,
+      "sha256": "14aa5213286861f601813750ecbf74edccecd68cf9c1788ee4d9e80fd47726a0"
+    },
+    "before": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-s2-day25-a01-d01-08-wait-02.json",
+      "bytes": 140503,
+      "sha256": "6536a2a750814b073829d510f1746d0421eb84e05e1be404b3d8b03a418659d3"
+    },
+    "selection": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-pam-select-a01-selection.json",
+      "bytes": 13867,
+      "sha256": "508b119f441e284402d329a25d4b61a4143479b832d25c83675681c7b19c296c"
+    },
+    "after": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-pam-select-a01-after.json",
+      "bytes": 138961,
+      "sha256": "8861b1e9840a72fca5f8143f09a3d6958517138e55de7bc60bd9152592e30bac"
+    }
+  },
+  "outcome": "knownPAM acknowledgement plus independent null event; finite unchangedstress/gold/prestige; no material reward qualification",
+  "copy_root_relative_path": "docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004",
+  "original_responses_exact_roundtrip": true,
+  "new_registry_or_reader_patch": false,
+  "policy_replay_count_in_this_seal": 0,
+  "SDK_calls": 0,
+  "Arm_Resume_actions": 0,
+  "retention": {
+    "policy_version": "1.0.0",
+    "category": "record",
+    "review_days": 180,
+    "owner": "/root/e04_event_1070_followup",
+    "purpose": "Root R195 known-event outcome archive and post-only same-day recovery reference",
+    "protection_review_at_utc": "2026-10-24T01:38:38.930205+00:00",
+    "automatic_renewal": false
+  }
+}

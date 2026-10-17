@@ -1,0 +1,329 @@
+{
+  "schema": "xar.e04.r195-abs25-pam-production-policy.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:35:50.452345+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "status": "PASS_RECOMMENDED_NATIVE0",
+  "context_original": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-event-context-a01-context.json",
+    "bytes": 47313,
+    "sha256": "14aa5213286861f601813750ecbf74edccecd68cf9c1788ee4d9e80fd47726a0"
+  },
+  "pre_snapshot_original": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-s2-day25-a01-d01-08-wait-02.json",
+    "bytes": 140503,
+    "sha256": "6536a2a750814b073829d510f1746d0421eb84e05e1be404b3d8b03a418659d3"
+  },
+  "knowledge_status": "available",
+  "source_SHA256": {
+    "events/dlc/pam/pam_bull_events.txt": "596A8F4CE0C9E64119B2E65917EC56F984C58882E5CCB0ADBD2E56893D89F937",
+    "common/scripted_effects/pam_effects.txt": "FC4C77974A7844C31C1271DCC2ACE24B17906620A832658919AA281E42A2B94F"
+  },
+  "retained_definition_node": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/episode04-pam-bull0004-r186-12004/pam_bull_events.0004.txt",
+    "bytes": 1105,
+    "sha256": "ebbdcde661d287de1ed8fe9e1cd8eb05343edf7ba3e84af883461e720f7eba5f"
+  },
+  "retained_whole_source_gzip": {
+    "path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/episode04-pam-bull0004-r186-12004/pam_bull_events.source.txt.gz",
+    "bytes": 1684,
+    "sha256": "6ea63e913c9e624f17cb9d11cfc5134692ad2d4a1caaa0e0d40ee2cbd2e2d795"
+  },
+  "context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 86,
+    "date_raw": 53148792,
+    "current_event_instance_id": 2,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pam_bull_events.0004",
+    "calculated_event_id": 4380004,
+    "runtime_stats_ordinal": 7778,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "puppeteer",
+        "name_identifier": 228,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "character_scope_is_null"
+          }
+        }
+      },
+      {
+        "name": "actor",
+        "name_identifier": 1,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "selected_item",
+        "name_identifier": 361,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "bull_issuer",
+        "name_identifier": 19772,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_issuer",
+        "name_identifier": 19788,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_permit",
+        "name_identifier": 19789,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_tenet",
+        "name_identifier": 19790,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "tenet_scope",
+        "name_identifier": 28354,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "就这样吧。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "snapshot_binding": {
+    "snapshot_id": "native:86",
+    "revision": 87,
+    "native_revision": 86,
+    "date_raw": 53148792,
+    "paused": true,
+    "episode_run_id": "native-31254-d5ea28d864bc",
+    "active_event": {
+      "source": "native",
+      "instance_id": 2,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    }
+  },
+  "choice": {
+    "schema": "xar.ck3.vanilla-event-registry-choice",
+    "schema_version": 1,
+    "status": "recommended",
+    "policy": "exact-build-vanilla-event-registry-direct-projection-v1",
+    "source": "shared_vanilla_event_registry",
+    "ck3_build": "1.20.0.4",
+    "ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "event_definition_key": "pam_bull_events.0004",
+    "recommendation_scope": "bounded_timeline_continuation",
+    "native_ai_equivalent": false,
+    "semantic_optimal": false,
+    "semantic_decision_ready": false,
+    "selected_option_number": 1,
+    "selected_native_option_index": 0,
+    "selected_rendered_index": 0,
+    "matched_option_variant_index": null,
+    "option_projection_source": "base_contract",
+    "choice_effect_profile": {
+      "schema": "xar.ck3.vanilla-event-choice-effect",
+      "schema_version": 1,
+      "selected_native_option_index": 0,
+      "completeness": "all-authored-options-and-common-after-source-reviewed",
+      "selected_option_effects": [],
+      "common_after_effects": [],
+      "observable_postcondition": null,
+      "source_anchors": [
+        "events/dlc/pam/pam_bull_events.txt:283-328"
+      ],
+      "source_sha256": "596A8F4CE0C9E64119B2E65917EC56F984C58882E5CCB0ADBD2E56893D89F937"
+    },
+    "campaign_utility_ready": false,
+    "campaign_utility_profile": null,
+    "checks": {
+      "context_schema": true,
+      "context_schema_version": true,
+      "context_available": true,
+      "unique_window": true,
+      "event_definition_key": true,
+      "root_character_id": true,
+      "saved_scope_rows_named_unique": true,
+      "saved_scope_names_exact": true,
+      "scope_types_cover_projection": true,
+      "saved_scope_count": true,
+      "scope:puppeteer:type": true,
+      "scope:actor:type": true,
+      "scope:selected_item:type": true,
+      "scope:bull_issuer:type": true,
+      "scope:pam_tenet_stance_issuer:type": true,
+      "scope:pam_tenet_stance_permit:type": true,
+      "scope:pam_tenet_stance_tenet:type": true,
+      "scope:tenet_scope:type": true,
+      "snapshot_option_count": true,
+      "rendered_option_count": true,
+      "native_option_indices_exact": true,
+      "disabled_option_contract": true,
+      "selected_option_mapping": true,
+      "option:0:projection": true,
+      "selected_native_option_unique": true,
+      "selected_native_option_enabled": true
+    },
+    "failed_checks": [],
+    "unavailable_reason": null
+  },
+  "reuse": "already registered exact.4 PAM; source/body strategy not re-researched; only current actual packet recognition",
+  "selected_choice_effect_profile": {
+    "schema": "xar.ck3.vanilla-event-choice-effect",
+    "schema_version": 1,
+    "selected_native_option_index": 0,
+    "completeness": "all-authored-options-and-common-after-source-reviewed",
+    "selected_option_effects": [],
+    "common_after_effects": [],
+    "observable_postcondition": null,
+    "source_anchors": [
+      "events/dlc/pam/pam_bull_events.txt:283-328"
+    ],
+    "source_sha256": "596A8F4CE0C9E64119B2E65917EC56F984C58882E5CCB0ADBD2E56893D89F937"
+  },
+  "SDK_calls": 0,
+  "gameplay_commands_submitted": 0,
+  "policy_invocations": 1,
+  "negative_matrix_invocations": 0,
+  "event_selection_or_post_disappearance_observed_by_this_call": false,
+  "arm_or_resume_submitted": false
+}

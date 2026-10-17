@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.r196-close-append-execution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:46:38.449597+00:00",
+  "actual_tool_result": {
+    "tool": "exec_command",
+    "chunk_id": "85a603",
+    "exit_code": 0,
+    "wall_time_seconds": 0.153271
+  },
+  "verifier": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\verify_close_append.py",
+    "bytes": 5348,
+    "sha256": "2f1d404fc141e71a9fddb50f152496c33f0459503f94f796431338744730e5dd"
+  },
+  "archive": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\R196-NORMAL-CLOSE.actual-a01.zip",
+    "bytes": 30939,
+    "sha256": "1730546ece15e9d821c7681128989c6feb1f8ade3141253bdabb4672d414edfb"
+  },
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\R196-NORMAL-CLOSE.manifest-a01.json",
+    "bytes": 11694,
+    "sha256": "7d58fa9e0f8dd6a50f9dab8135397f830df079379c5288becb75337a47095ef1"
+  },
+  "result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\CLOSED-PAIR-ASSESSMENT.actual-a01.json",
+    "bytes": 1815,
+    "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"
+  },
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "payment_consumer_rerun": false,
+  "old_control_consumer_rerun": false,
+  "Root_signature_fabricated": false
+}

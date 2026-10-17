@@ -1,0 +1,39 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:41:21.577215+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\R07-IDENTITY-SCOPE.actual.json",
+    "bytes": 8869,
+    "sha256": "7d35218bccaf72e6615af452e6afea2d8873e68fff86559ba147f6c22d43b39f"
+  },
+  "identity": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\runtime-actor-identity.actual-a01.json",
+    "bytes": 7898,
+    "sha256": "189db29e1eae235bf439b19c4816039f21a9c80675613e894d1721257a0289b6"
+  },
+  "controller_config": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\R07-ARM.binding.json",
+    "bytes": 7611,
+    "sha256": "c6b912b5930a9c5926545535615085fd121952ded157f85b28aff0e1962dff64"
+  },
+  "recording_scope": {
+    "status": "ACTUAL_OFF_READBACKS",
+    "recorder_status": "NOT_AUTHORIZED_CONTROL",
+    "actual_Start_or_Finish_claimed": false,
+    "payment": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\r07-v2-stages\\segment-02.payment-off-readback.actual.json",
+      "bytes": 8804,
+      "sha256": "4b9f9887332275c97ce07d4b5f74d1759671f0cda12f14312487badffa934e14"
+    },
+    "natural": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\r07-v2-stages\\segment-02.natural-off-readback.actual.json",
+      "bytes": 11516,
+      "sha256": "dc2b1265792350ce72a8c1a4fedebe24bb071d129b9de0eb8eef0db8a167d62e"
+    }
+  },
+  "output_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\r06-control-opener-a01",
+  "replay_forbidden": true,
+  "sequence": "fresh snapshot -> one opener -> snapshot fence"
+}

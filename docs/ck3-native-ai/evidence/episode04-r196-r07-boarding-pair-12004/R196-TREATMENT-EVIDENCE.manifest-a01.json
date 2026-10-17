@@ -1,0 +1,2554 @@
+{
+  "schema": "xar.e04.r196-treatment-portable-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:40:19.823624+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "status": "ACTUAL_TREATMENT32_TWO_OFF_WINDOWS_AWAIT_NORMAL_CLOSE_APPEND",
+  "archive": {
+    "file": "R196-TREATMENT-EVIDENCE.actual-a01.zip",
+    "bytes": 94991,
+    "sha256": "3d06e8cfe5495c759b5548b4b55f05a65eb1955ac6e34aa1b96fa84e9e8362e8",
+    "container_member": "originals.concatenated.bin",
+    "container_bytes": 10019766,
+    "container_sha256": "51673a3931c90fff32d9be6b5757bab98efc4f30ec040f2babce53d19dda7879"
+  },
+  "entries": [
+    {
+      "member": "originals/000-R07-ARM.binding.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-ARM.binding.json",
+      "bytes": 7642,
+      "sha256": "27da9e60946987f346a4f1f1e7dc371150c3166282219cb82888e1d4ee19c396",
+      "offset": 0
+    },
+    {
+      "member": "originals/001-segment-01.baseline.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.baseline.actual.json",
+      "bytes": 57499,
+      "sha256": "e2f4942b13694f3f41eed9cbdff11174bfe010b1de8a157e9273085dc124b4d4",
+      "offset": 7642
+    },
+    {
+      "member": "originals/002-r196-s1-baseline-a01-army.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-army.json",
+      "bytes": 5299,
+      "sha256": "e2f02954b1ffc8c628d8092491c6496b7e4d73d113b2240947dce96043e0ec6e",
+      "offset": 65141
+    },
+    {
+      "member": "originals/003-R07-PAIRED-BASELINES.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-PAIRED-BASELINES.actual-a01.json",
+      "bytes": 706,
+      "sha256": "5c204478e93d2da0ad96e3c303e3615caf2d84d2deeb15d348bb340ff0ca44e5",
+      "offset": 70440
+    },
+    {
+      "member": "originals/004-FILM.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-treatment-film-a01\\FILM.actual.json",
+      "bytes": 8224,
+      "sha256": "296f3ccd8c8366e3a092eb5c391da440eac0d6b0ba7c055327c6169683423c3f",
+      "offset": 71146
+    },
+    {
+      "member": "originals/005-prepared.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\prepared-a01\\prepared.json",
+      "bytes": 11728,
+      "sha256": "cccd9dcb6705cd68e89cc656e04b67332cd551ce74944243e62f71d3f23107ed",
+      "offset": 79370
+    },
+    {
+      "member": "originals/006-runtime-actor-identity.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7940,
+      "sha256": "3467b0a5b539077f4154c3bd88b871b25b0daec47e41618235a8a0a4b4749da4",
+      "offset": 91098
+    },
+    {
+      "member": "originals/007-allocated-context.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\allocated-context.actual-a01.json",
+      "bytes": 4090,
+      "sha256": "f10ae583d5a6e0663393bbe4b03470facdb9c58f92cae7d191f1401254f204a8",
+      "offset": 99038
+    },
+    {
+      "member": "originals/008-R07-TREATMENT-CAPACITY.actual-root-a01.json",
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r07-treatment-next-a01\\R07-TREATMENT-CAPACITY.actual-root-a01.json",
+      "bytes": 12630,
+      "sha256": "ea079c6e19170bf109199a2ec7fd8c9a3bf0fac04e35aaf2df8e729182c48b89",
+      "offset": 103128
+    },
+    {
+      "member": "originals/009-ROOT-PRODUCTION-QUALIFICATION.actual-a33.json",
+      "original_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a33\\ROOT-PRODUCTION-QUALIFICATION.actual-a33.json",
+      "bytes": 81640,
+      "sha256": "792b5aa155bfbe368368580eb56a53a9d715d82bdb702bc9887875972fbc11e9",
+      "offset": 115758
+    },
+    {
+      "member": "originals/010-segment-01.admission.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.admission.actual.json",
+      "bytes": 12903,
+      "sha256": "345ed9722c373bc455a5204620d9b03aedc5c145055e56f8cdfe2f433886bd21",
+      "offset": 197398
+    },
+    {
+      "member": "originals/011-r196-s1-admission-a01-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-admission-a01-families-before.json",
+      "bytes": 127279,
+      "sha256": "4901f6dac4700343eaa23aa0be992a3451b1652c66e1c969460558b6b4c9ac1a",
+      "offset": 210301
+    },
+    {
+      "member": "originals/012-r196-s1-admission-a01-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-admission-a01-families.json",
+      "bytes": 16379,
+      "sha256": "91e7444dae62f7904b194df8f8cd4acfaeed17118e06eca17ce1cdf5a43a15a8",
+      "offset": 337580
+    },
+    {
+      "member": "originals/013-r196-s1-admission-a01-independent-admission-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-admission-a01-independent-admission-before.json",
+      "bytes": 127305,
+      "sha256": "40d2a5d69043c30a243ffa05f9eaf0ecf3d0e0ece0ebcfa4305a0500bc6d628e",
+      "offset": 353959
+    },
+    {
+      "member": "originals/014-r196-s1-admission-a01-independent-admission.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-admission-a01-independent-admission.json",
+      "bytes": 28571,
+      "sha256": "2e6b1a6e899a53ea9c388146b47cf94bf2fc1dd5da6012e013fe6b978de8d56f",
+      "offset": 481264
+    },
+    {
+      "member": "originals/015-segment-01.journal-close.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.journal-close.actual.json",
+      "bytes": 11261,
+      "sha256": "a9167193c93a972c550b07f155bba7a1f6628c088bff7360fd3a47abe3e73c46",
+      "offset": 509835
+    },
+    {
+      "member": "originals/016-r196-s1-close-a01-journal-close-last-complete-cash-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-journal-close-last-complete-cash-before.json",
+      "bytes": 137155,
+      "sha256": "60cbb81854355186c49573e8b24461e53740916a387afb6b62b9f9734cab4aca",
+      "offset": 521096
+    },
+    {
+      "member": "originals/017-r196-s1-close-a01-journal-close-last-complete-cash.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-journal-close-last-complete-cash.json",
+      "bytes": 456570,
+      "sha256": "4a991668d05bdf4f48bbb2861e37314c759fc25f7e070202c6bf0642035c7cff",
+      "offset": 658251
+    },
+    {
+      "member": "originals/018-r196-s1-close-a01-journal-close-close-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-journal-close-close-families-before.json",
+      "bytes": 137147,
+      "sha256": "85decdf41127af43acb8b78c4b713c708c2a29fd4251b0ec4f8709e4d935fc4d",
+      "offset": 1114821
+    },
+    {
+      "member": "originals/019-r196-s1-close-a01-journal-close-close-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-journal-close-close-families.json",
+      "bytes": 16452,
+      "sha256": "60ca8ebce95641e8a4bc6de37637deb84f5f7bc3ee5b1f6589c519aa66d42a1f",
+      "offset": 1251968
+    },
+    {
+      "member": "originals/020-segment-01.natural-on-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-on-ACK.actual.json",
+      "bytes": 9264,
+      "sha256": "2ee3ada75aab9deb3b913c3617ba16719b752a3ca513f6c41c1082b03b91531f",
+      "offset": 1268420
+    },
+    {
+      "member": "originals/021-r196-s1-natural-on-a01-pre-on-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-a01-pre-on-families-before.json",
+      "bytes": 127295,
+      "sha256": "1014e410e29f44ea06cbc2a7a780cf046bc0a63557bf8a8651bc1bc92e70b066",
+      "offset": 1277684
+    },
+    {
+      "member": "originals/022-r196-s1-natural-on-a01-pre-on-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-a01-pre-on-families.json",
+      "bytes": 16351,
+      "sha256": "703c75a47db757fe5b8d9942c07cf2821cb7a9d6c0de32e774d9d57243021db7",
+      "offset": 1404979
+    },
+    {
+      "member": "originals/023-r196-s1-natural-on-a01-before-natural-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-a01-before-natural-on.json",
+      "bytes": 127285,
+      "sha256": "9080eacd107095594fd048e1ad54ee10e92f3b407c64287ad21f37940ca0b695",
+      "offset": 1421330
+    },
+    {
+      "member": "originals/024-r196-s1-natural-on-a01-natural-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-a01-natural-on.json",
+      "bytes": 4804,
+      "sha256": "4f3963baf84105d3782226274133a16c23ae51b8c3d15db536d7a1845544fdfb",
+      "offset": 1548615
+    },
+    {
+      "member": "originals/025-segment-01.natural-on.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-on.action-claim.json",
+      "bytes": 17346,
+      "sha256": "6df066a2d3015280f6708d27225ad334a28bb50333b728613018e8a773a11d4d",
+      "offset": 1553419
+    },
+    {
+      "member": "originals/026-segment-01.natural-on-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-on-readback.actual.json",
+      "bytes": 11536,
+      "sha256": "ea93a796456daa60513e9a4455c299faae4b004bbce6c7e80d1cc65aaefae32e",
+      "offset": 1570765
+    },
+    {
+      "member": "originals/027-r196-s1-natural-on-readback-a01-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-readback-a01-families-before.json",
+      "bytes": 127299,
+      "sha256": "6a79c545be02ce86b98a63b92d5bfb3e8f5e183cc7ee7e513f5ea3834708e4ef",
+      "offset": 1582301
+    },
+    {
+      "member": "originals/028-r196-s1-natural-on-readback-a01-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-natural-on-readback-a01-families.json",
+      "bytes": 16399,
+      "sha256": "acc3526109a50c94b3805be90dc6104478090962d4f887a4310cdb632706aa2d",
+      "offset": 1709600
+    },
+    {
+      "member": "originals/029-segment-01.payment-on-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.payment-on-ACK.actual.json",
+      "bytes": 8899,
+      "sha256": "6484633666db0835bac017d7bfb170f9e4c63237511444edcb0258fc4767e512",
+      "offset": 1725999
+    },
+    {
+      "member": "originals/030-r196-s1-payment-on-a01-before-payment-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-payment-on-a01-before-payment-on.json",
+      "bytes": 127285,
+      "sha256": "15f02a9c6c1c3c9fa5641f6a39024d3f0281e60cccf7deb9dedc7399acc964df",
+      "offset": 1734898
+    },
+    {
+      "member": "originals/031-r196-s1-payment-on-a01-payment-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-payment-on-a01-payment-on.json",
+      "bytes": 28622,
+      "sha256": "d8c52028e063ed5570b4e2e4a5014585857465a66c6c51b00ad97234348792d9",
+      "offset": 1862183
+    },
+    {
+      "member": "originals/032-segment-01.payment-on.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.payment-on.action-claim.json",
+      "bytes": 20759,
+      "sha256": "92888c7ae84ffa355c86ee495a6d5dd5f90430506ecfcf6ebe171e1d9c269a65",
+      "offset": 1890805
+    },
+    {
+      "member": "originals/033-segment-01.payment-off-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.payment-off-ACK.actual.json",
+      "bytes": 9321,
+      "sha256": "381ba7868ff0e937f077b234de23c7e43a359d72be93f42279096f86882e8aea",
+      "offset": 1911564
+    },
+    {
+      "member": "originals/034-r196-s1-close-a01-payment-off-archive-fence-revalidate-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-archive-fence-revalidate-before.json",
+      "bytes": 137163,
+      "sha256": "86df3a2c7ea5255e28fab60666075bdaeb49f44fb6b76ddc7c54e64ac594eabe",
+      "offset": 1920885
+    },
+    {
+      "member": "originals/035-r196-s1-close-a01-payment-off-archive-fence-revalidate.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-archive-fence-revalidate.json",
+      "bytes": 456578,
+      "sha256": "059c6c987fd6648ca4bcbe02dc05ccf4fb7dea29df40093fec765435b2c9fa4b",
+      "offset": 2058048
+    },
+    {
+      "member": "originals/036-r196-s1-close-a01-payment-off-before-payment-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-before-payment-off.json",
+      "bytes": 137137,
+      "sha256": "19b92f61dcfb012208e4522baa4c0d6b4188e006be240adc56af8deb8a9698a3",
+      "offset": 2514626
+    },
+    {
+      "member": "originals/037-r196-s1-close-a01-payment-off-payment-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-payment-off.json",
+      "bytes": 202754,
+      "sha256": "48bedcd96e27cb2cbcc8ecbb5e984f710bfb38a09a10b1f71c96b12f142870bc",
+      "offset": 2651763
+    },
+    {
+      "member": "originals/038-segment-01.payment-off.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.payment-off.action-claim.json",
+      "bytes": 20301,
+      "sha256": "d5548d1fbfb928b8017438b263622fab843476af17d4767ca2e2a98711e4d763",
+      "offset": 2854517
+    },
+    {
+      "member": "originals/039-segment-01.payment-off-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.payment-off-readback.actual.json",
+      "bytes": 8839,
+      "sha256": "cc7134ba70c1b3220a50d4b23052b34f97b4b6e5d96198df8118bced24d616bc",
+      "offset": 2874818
+    },
+    {
+      "member": "originals/040-r196-s1-close-a01-payment-off-readback-payment-off-query-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-readback-payment-off-query-before.json",
+      "bytes": 137167,
+      "sha256": "b006d633ba1a1637ffc2edb7db8b03df9a9b1f7da82cf9e20bbf63a8f11b09df",
+      "offset": 2883657
+    },
+    {
+      "member": "originals/041-r196-s1-close-a01-payment-off-readback-payment-off-query.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-payment-off-readback-payment-off-query.json",
+      "bytes": 202818,
+      "sha256": "53df065b91661ed0e76a97ab87911021938c9f7be231d33e906ee1aec0f4e7eb",
+      "offset": 3020824
+    },
+    {
+      "member": "originals/042-segment-01.natural-off-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-off-ACK.actual.json",
+      "bytes": 8924,
+      "sha256": "456f023f48b2383317c225e61658499e14bc6857cdc42a41f5a5888e3c2b3e32",
+      "offset": 3223642
+    },
+    {
+      "member": "originals/043-r196-s1-close-a01-natural-off-before-natural-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-natural-off-before-natural-off.json",
+      "bytes": 137137,
+      "sha256": "c44d3c732471ad4a813f103196a76c9ba7b703e6a7ccb660a9c02dff95fc044e",
+      "offset": 3232566
+    },
+    {
+      "member": "originals/044-r196-s1-close-a01-natural-off-natural-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-natural-off-natural-off.json",
+      "bytes": 4794,
+      "sha256": "6f50e6e43944691539b12cfaed3621416ca02041be733b891bf21d1efb8b01cb",
+      "offset": 3369703
+    },
+    {
+      "member": "originals/045-segment-01.natural-off.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-off.action-claim.json",
+      "bytes": 17821,
+      "sha256": "c6654edf1145d1a34df4e5afd89a96f72deacafa3b1872dc30013304a0ac5536",
+      "offset": 3374497
+    },
+    {
+      "member": "originals/046-segment-01.natural-off-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.natural-off-readback.actual.json",
+      "bytes": 11551,
+      "sha256": "e3ddb6de0edd6af9cf5698a840056d0423ffbb222527647160ef380b1b92ae77",
+      "offset": 3392318
+    },
+    {
+      "member": "originals/047-r196-s1-close-a01-natural-off-readback-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-natural-off-readback-families-before.json",
+      "bytes": 137149,
+      "sha256": "9f19ff76f990343f990a4ca0c4917344818efa3f40d18ab8e2765c34706a02ab",
+      "offset": 3403869
+    },
+    {
+      "member": "originals/048-r196-s1-close-a01-natural-off-readback-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-close-a01-natural-off-readback-families.json",
+      "bytes": 16382,
+      "sha256": "6e8bf9cfaef81fe2ba99575b0be8987cca17c1d7ce6c170049f29acac9e4cbec",
+      "offset": 3541018
+    },
+    {
+      "member": "originals/049-day-01.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-01.complete.json",
+      "bytes": 7405,
+      "sha256": "a59613741ad88b09d06cbbebd09ef280de26ff225faecac305a65048ffef0991",
+      "offset": 3557400
+    },
+    {
+      "member": "originals/050-day-01.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-01.clock-complete.json",
+      "bytes": 781,
+      "sha256": "5ee973ffc78b0e10596d56976342458397dcdf649cd59d36eb4559d61fea8c25",
+      "offset": 3564805
+    },
+    {
+      "member": "originals/051-r196-s1-day01-pilot-a01-d01-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-day01-pilot-a01-d01-05-arm.json",
+      "bytes": 4731,
+      "sha256": "6733cb684487e3e520645ac2e6220466e3faec22172a3c9fc71170b4a042e439",
+      "offset": 3565586
+    },
+    {
+      "member": "originals/052-r196-s1-day01-pilot-a01-d01-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-day01-pilot-a01-d01-09-clock-query-0.json",
+      "bytes": 4686,
+      "sha256": "782eecf8d06768f9ae3c9f23797d86b7c7a04c33a42631d9e29f0172fe4bdae0",
+      "offset": 3570317
+    },
+    {
+      "member": "originals/053-day-01.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-01.action-claim.json",
+      "bytes": 299,
+      "sha256": "692a13c13aa39ca05be39f2c03c8bd865bb96e2877171895846d9096ee7e9266",
+      "offset": 3575003
+    },
+    {
+      "member": "originals/054-day-02.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-02.complete.json",
+      "bytes": 5578,
+      "sha256": "c03d12487659b61447e69ce719cd6c2986e3f5b00a83ace7b513eef23771691f",
+      "offset": 3575302
+    },
+    {
+      "member": "originals/055-day-02.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-02.clock-complete.json",
+      "bytes": 779,
+      "sha256": "92ecb09d187751c005a2739a5baf5e5f0c26577faed6457f719299c86f0137ba",
+      "offset": 3580880
+    },
+    {
+      "member": "originals/056-r196-s1-days02-24-a01-d02-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d02-05-arm.json",
+      "bytes": 4727,
+      "sha256": "5b372af45aeb79fc7e8431cb7ebffd678148e12671d9241342b620608f7b77e1",
+      "offset": 3581659
+    },
+    {
+      "member": "originals/057-r196-s1-days02-24-a01-d02-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d02-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "96cfef21dd398320014f48c907bdcdfea4effa8484970719ca81954fe1ed8bdd",
+      "offset": 3586386
+    },
+    {
+      "member": "originals/058-day-02.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-02.action-claim.json",
+      "bytes": 297,
+      "sha256": "1eba3626684f5beac457a31d76c548bddd41e5db370bec49b4b39e20a8027148",
+      "offset": 3591069
+    },
+    {
+      "member": "originals/059-day-03.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-03.complete.json",
+      "bytes": 5015,
+      "sha256": "c29e03cccb064533949d62b8722c545a83565d9a3ba7626531d3d1f33c7a4da8",
+      "offset": 3591366
+    },
+    {
+      "member": "originals/060-day-03.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-03.clock-complete.json",
+      "bytes": 779,
+      "sha256": "d11e6d249e7e6397b049eeb3cea5654ce610fd93a3d4340c25ee719fa4ed5ae9",
+      "offset": 3596381
+    },
+    {
+      "member": "originals/061-r196-s1-days02-24-a01-d03-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d03-05-arm.json",
+      "bytes": 4728,
+      "sha256": "c89a70500483e68b9e6e74a88b1e5ba8ceda25a94f29f70c9a7f3ae4b9e4271b",
+      "offset": 3597160
+    },
+    {
+      "member": "originals/062-r196-s1-days02-24-a01-d03-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d03-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "82ba9e8fadeb20b6d44f5c5c7fc7d4bb17eef8b08b929bcb3ff7cd655e398705",
+      "offset": 3601888
+    },
+    {
+      "member": "originals/063-day-03.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-03.action-claim.json",
+      "bytes": 297,
+      "sha256": "b5a1c0988498dc204347dc41931f0776023b0a890b2630b62be829d4e572b61d",
+      "offset": 3606571
+    },
+    {
+      "member": "originals/064-day-04.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-04.complete.json",
+      "bytes": 5192,
+      "sha256": "60f97ed73439b4c6ee12c63a9a78896c906564e47ce4cee9aec26cc8a3d2d957",
+      "offset": 3606868
+    },
+    {
+      "member": "originals/065-day-04.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-04.clock-complete.json",
+      "bytes": 779,
+      "sha256": "d58220ee5c44ac27067984a307b997b1ea5db71b58cecbfc3d826fb1afccecc6",
+      "offset": 3612060
+    },
+    {
+      "member": "originals/066-r196-s1-days02-24-a01-d04-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d04-05-arm.json",
+      "bytes": 4728,
+      "sha256": "7df8c42f2e80bf162940d230dba2988229285bc56b4c095744fc59e67d152cc9",
+      "offset": 3612839
+    },
+    {
+      "member": "originals/067-r196-s1-days02-24-a01-d04-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d04-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "cbc689c95a180127bfde2b557ddbd700c851546f89c470d99973eab04c80d1f5",
+      "offset": 3617567
+    },
+    {
+      "member": "originals/068-day-04.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-04.action-claim.json",
+      "bytes": 297,
+      "sha256": "22a91eab65e9f0f1a97ddc1a8378081a82494d80b61be93072b8b33b4ab5386b",
+      "offset": 3622250
+    },
+    {
+      "member": "originals/069-day-05.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-05.complete.json",
+      "bytes": 5547,
+      "sha256": "d4bc72fcfa5bc0cf66cdeb028c1d43d6c27d7a59f62e439a8acab2dc9143bae0",
+      "offset": 3622547
+    },
+    {
+      "member": "originals/070-day-05.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-05.clock-complete.json",
+      "bytes": 779,
+      "sha256": "9878e5712cac268376ebda7e65238925d47d9f5d287058460fad1bc19220bcd5",
+      "offset": 3628094
+    },
+    {
+      "member": "originals/071-r196-s1-days02-24-a01-d05-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d05-05-arm.json",
+      "bytes": 4728,
+      "sha256": "aee6ffdc48218318be38c6d4fe465f2dd68bad099566db3a4656a87dff0cd54a",
+      "offset": 3628873
+    },
+    {
+      "member": "originals/072-r196-s1-days02-24-a01-d05-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d05-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "916ca3810299ab9f061994875f4acad571a4b1f46245de1b37a47fe8cfe0e7fc",
+      "offset": 3633601
+    },
+    {
+      "member": "originals/073-day-05.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-05.action-claim.json",
+      "bytes": 297,
+      "sha256": "dda40ae4128785ce3fa078c2a155d9fea1406173768dd7d4ddf54ceb9e4b492d",
+      "offset": 3638284
+    },
+    {
+      "member": "originals/074-day-06.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-06.complete.json",
+      "bytes": 5193,
+      "sha256": "f7140a182ce375e00af5df72be65f2995d64be052a92d62620cf8ae79a3f0289",
+      "offset": 3638581
+    },
+    {
+      "member": "originals/075-day-06.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-06.clock-complete.json",
+      "bytes": 779,
+      "sha256": "f54715751074bac6a9956facd3bdffbba8833bdf51b1a87a7722379ee86e3a47",
+      "offset": 3643774
+    },
+    {
+      "member": "originals/076-r196-s1-days02-24-a01-d06-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d06-05-arm.json",
+      "bytes": 4728,
+      "sha256": "3dd6b02b88594c5674d33518494bcafa0a5a950d1f53cf87dfaa6c5c68acbb0a",
+      "offset": 3644553
+    },
+    {
+      "member": "originals/077-r196-s1-days02-24-a01-d06-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d06-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "5a138003ec9d577f62870ae576ae8cb9fb50be5d0ef6c1b75586b92581666ad3",
+      "offset": 3649281
+    },
+    {
+      "member": "originals/078-day-06.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-06.action-claim.json",
+      "bytes": 297,
+      "sha256": "71254702de753940993f512d3cd7d92bf3ee6e3cb6119ade7f7732bd85a6110c",
+      "offset": 3653964
+    },
+    {
+      "member": "originals/079-day-07.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-07.complete.json",
+      "bytes": 5016,
+      "sha256": "7a76af0578ea3898cc49aea2b5c8a74b7bb2aaaefe119245e1c20cb3dedc537c",
+      "offset": 3654261
+    },
+    {
+      "member": "originals/080-day-07.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-07.clock-complete.json",
+      "bytes": 779,
+      "sha256": "8167cff656e51901bd52a0535903d3aff00d4d763e371023055afe307d1775bc",
+      "offset": 3659277
+    },
+    {
+      "member": "originals/081-r196-s1-days02-24-a01-d07-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d07-05-arm.json",
+      "bytes": 4728,
+      "sha256": "36e289b0b8a7b9950490c69e9ded9722e0aa4ec8ba681305848fd41d6b0d1602",
+      "offset": 3660056
+    },
+    {
+      "member": "originals/082-r196-s1-days02-24-a01-d07-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d07-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "31db08f8316d7957834af1a5dd93424e285d49196c6c9b1b59f64dac463e69e1",
+      "offset": 3664784
+    },
+    {
+      "member": "originals/083-day-07.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-07.action-claim.json",
+      "bytes": 297,
+      "sha256": "6115695f7b1b7c35e0d555bc2857d2758f5232026766db0f38afd3de9bc064a6",
+      "offset": 3669467
+    },
+    {
+      "member": "originals/084-day-08.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-08.complete.json",
+      "bytes": 5016,
+      "sha256": "10a2edba182f43d6d2ad0ccdcb399278ffec7b5291d1abcd92059a4ad2433b9a",
+      "offset": 3669764
+    },
+    {
+      "member": "originals/085-day-08.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-08.clock-complete.json",
+      "bytes": 779,
+      "sha256": "f0b19a2b575887d73d92b1a6945629209ba62e1e272bc3e7803a5bf27108c296",
+      "offset": 3674780
+    },
+    {
+      "member": "originals/086-r196-s1-days02-24-a01-d08-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d08-05-arm.json",
+      "bytes": 4728,
+      "sha256": "0a21b548b88ce05622ca8a4e6cc008fac3ef570d221ee8e273c0c8153c852081",
+      "offset": 3675559
+    },
+    {
+      "member": "originals/087-r196-s1-days02-24-a01-d08-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d08-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "3aa26c1925557d1a78c814259d13b8d7d785d32850b4d3076e9c9fc77b6254fb",
+      "offset": 3680287
+    },
+    {
+      "member": "originals/088-day-08.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-08.action-claim.json",
+      "bytes": 297,
+      "sha256": "c6f06b5557c18963d0b020eff4a437ddbd2a5f7e574525f5cc9e13d95824fbfa",
+      "offset": 3684970
+    },
+    {
+      "member": "originals/089-day-09.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-09.complete.json",
+      "bytes": 5193,
+      "sha256": "7874af644ca4bcdc4ebfddeb199f08b3c8881994c627d352cab86a05fbc44747",
+      "offset": 3685267
+    },
+    {
+      "member": "originals/090-day-09.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-09.clock-complete.json",
+      "bytes": 779,
+      "sha256": "0bbe7f2b37b2e3d63174292f776ade57dd78d3a4b1a05980ce62251db9045821",
+      "offset": 3690460
+    },
+    {
+      "member": "originals/091-r196-s1-days02-24-a01-d09-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d09-05-arm.json",
+      "bytes": 4728,
+      "sha256": "f3c56c38672377a8aa83109006a61e78d075c470a581adb9e7b962414af11d88",
+      "offset": 3691239
+    },
+    {
+      "member": "originals/092-r196-s1-days02-24-a01-d09-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d09-09-clock-query-0.json",
+      "bytes": 4683,
+      "sha256": "de832e07913bbd8170774d3c14867a4afed55158f5ab88fe6479118feb902d2d",
+      "offset": 3695967
+    },
+    {
+      "member": "originals/093-day-09.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-09.action-claim.json",
+      "bytes": 297,
+      "sha256": "4f05789b22036a438351f1bd6979e27586fb88897c892206f7ed497883dc10bf",
+      "offset": 3700650
+    },
+    {
+      "member": "originals/094-day-10.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-10.complete.json",
+      "bytes": 5019,
+      "sha256": "f1e7a0c0972988677d74049fca4a65bb2794d82ac22712b92380db8cf52af1b8",
+      "offset": 3700947
+    },
+    {
+      "member": "originals/095-day-10.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-10.clock-complete.json",
+      "bytes": 782,
+      "sha256": "bd7440acb74354213b9331cfe24e0c0cbfc04d93a0e22a92ca3a79080b5eab18",
+      "offset": 3705966
+    },
+    {
+      "member": "originals/096-r196-s1-days02-24-a01-d10-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d10-05-arm.json",
+      "bytes": 4732,
+      "sha256": "5b4020b7b5c43ee1ffa5a8d7edbc665fc2fe0575bdaacad9de3aad7c732d6566",
+      "offset": 3706748
+    },
+    {
+      "member": "originals/097-r196-s1-days02-24-a01-d10-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d10-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "4e01e62ca834d67ea57ec6b42ac00aacaad852ef003578c24f3b2cb4a18aa1ec",
+      "offset": 3711480
+    },
+    {
+      "member": "originals/098-day-10.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-10.action-claim.json",
+      "bytes": 298,
+      "sha256": "794c51e097c2ef5de032f8a817c6b635e1890d4dda0628505ebf76e350b03200",
+      "offset": 3716167
+    },
+    {
+      "member": "originals/099-day-11.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-11.complete.json",
+      "bytes": 5196,
+      "sha256": "b5970648d34ad49ab3b5b59ff174cd6176f313f8523ffa23a10dd305880a9dbb",
+      "offset": 3716465
+    },
+    {
+      "member": "originals/100-day-11.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-11.clock-complete.json",
+      "bytes": 782,
+      "sha256": "40354d95a394f37ecfc758aaafb6ec502402b3dc8e2e772ecffed6c8c90bdf2e",
+      "offset": 3721661
+    },
+    {
+      "member": "originals/101-r196-s1-days02-24-a01-d11-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d11-05-arm.json",
+      "bytes": 4732,
+      "sha256": "6e2da0f28d92ace853a34e10abca4cf8dcad397832a6a354756cfa2cf9acecad",
+      "offset": 3722443
+    },
+    {
+      "member": "originals/102-r196-s1-days02-24-a01-d11-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d11-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "70d7cd402290878bb8882608718313acf3293223ddfc6ad34e24aef8d7a0ecee",
+      "offset": 3727175
+    },
+    {
+      "member": "originals/103-day-11.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-11.action-claim.json",
+      "bytes": 298,
+      "sha256": "ad1abcdfc1057076ef97ce319c7b987e6e8edd1aacebf1d2b8a9f055a7442eca",
+      "offset": 3731862
+    },
+    {
+      "member": "originals/104-day-12.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-12.complete.json",
+      "bytes": 5198,
+      "sha256": "d9f599357ad7d82c4f2888ff4cc9026f387e16bf02ea5986eb4b2e5cbf8db242",
+      "offset": 3732160
+    },
+    {
+      "member": "originals/105-day-12.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-12.clock-complete.json",
+      "bytes": 782,
+      "sha256": "5492b6f6697a94547b0ff2621e08a3bc27b61546b29d57e728dbef5a684beefa",
+      "offset": 3737358
+    },
+    {
+      "member": "originals/106-r196-s1-days02-24-a01-d12-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d12-05-arm.json",
+      "bytes": 4732,
+      "sha256": "699c6d9c1e109e626b6861e1cb19f33cbf39b44911bcb97156c61f52fcfe5413",
+      "offset": 3738140
+    },
+    {
+      "member": "originals/107-r196-s1-days02-24-a01-d12-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d12-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "fec356434f23a4bc4fc5693b4fb4897663ba72cd45d7960d91d4ae48f723098c",
+      "offset": 3742872
+    },
+    {
+      "member": "originals/108-day-12.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-12.action-claim.json",
+      "bytes": 298,
+      "sha256": "2b86b0da3af28daaf293344fbe4667e19c538280d8743ad1174a4508ef18d2b8",
+      "offset": 3747559
+    },
+    {
+      "member": "originals/109-day-13.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-13.complete.json",
+      "bytes": 5022,
+      "sha256": "7f284f9999047b46b8aba564e60104e30eb9702479d584ba8246fc82fad81a68",
+      "offset": 3747857
+    },
+    {
+      "member": "originals/110-day-13.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-13.clock-complete.json",
+      "bytes": 782,
+      "sha256": "182d4b4a0226c24022d6df99c392f179664135ae21ea514dd5b8cb98e28ca534",
+      "offset": 3752879
+    },
+    {
+      "member": "originals/111-r196-s1-days02-24-a01-d13-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d13-05-arm.json",
+      "bytes": 4732,
+      "sha256": "ce0c13fc8b18d4a02742924aab14c87cfeb380cf0bf1d065f014395a70bcd6a4",
+      "offset": 3753661
+    },
+    {
+      "member": "originals/112-r196-s1-days02-24-a01-d13-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d13-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "f0aec31b6468d7d4976cbed24985ac001acc6f4398ddad17a5fe410cd7b2288c",
+      "offset": 3758393
+    },
+    {
+      "member": "originals/113-day-13.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-13.action-claim.json",
+      "bytes": 298,
+      "sha256": "51c34aa9a8de6ebb99db19e017cf8b80a74a7c96d499b36d30d12eb546063bc5",
+      "offset": 3763080
+    },
+    {
+      "member": "originals/114-day-14.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-14.complete.json",
+      "bytes": 5199,
+      "sha256": "8aee268f7ea1798c966e4f6752d40ba402b230bb4676e1ac962efc12d9432394",
+      "offset": 3763378
+    },
+    {
+      "member": "originals/115-day-14.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-14.clock-complete.json",
+      "bytes": 782,
+      "sha256": "bac633bb18b03632b4ad15f3b05ce5c47fc787324659835d732bb3d7bbe82053",
+      "offset": 3768577
+    },
+    {
+      "member": "originals/116-r196-s1-days02-24-a01-d14-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d14-05-arm.json",
+      "bytes": 4732,
+      "sha256": "5c83176f33029d33bcead1f4b9df719d0702182a36b4498a41fa6b2497964379",
+      "offset": 3769359
+    },
+    {
+      "member": "originals/117-r196-s1-days02-24-a01-d14-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d14-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "57f27ae0c02e10a447bd1333491f9c44113c58b2f6e3a9c7097fe2b702bf8ecb",
+      "offset": 3774091
+    },
+    {
+      "member": "originals/118-day-14.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-14.action-claim.json",
+      "bytes": 298,
+      "sha256": "f0bea91eb1faa3acf52a74572ece52231adb8b8ab36999545bcdb9f644402f94",
+      "offset": 3778778
+    },
+    {
+      "member": "originals/119-day-15.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-15.complete.json",
+      "bytes": 5199,
+      "sha256": "4106df7531c8b6376e2d3c255902ee285e20d86754fdbcfd6f76be4c5f18569b",
+      "offset": 3779076
+    },
+    {
+      "member": "originals/120-day-15.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-15.clock-complete.json",
+      "bytes": 782,
+      "sha256": "4d6098558d62c8063f574b92ecea6903d8c1290a9d3bc07d0903537d8d9d9d49",
+      "offset": 3784275
+    },
+    {
+      "member": "originals/121-r196-s1-days02-24-a01-d15-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d15-05-arm.json",
+      "bytes": 4732,
+      "sha256": "c28f9698f450db4b346a23f025780aa6eba601e0b3e0e9224f9672b887d7e3d0",
+      "offset": 3785057
+    },
+    {
+      "member": "originals/122-r196-s1-days02-24-a01-d15-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d15-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "374800293981634d4fb3f8136e54e8bf10bb066d23ca889c9e4e28a4cb2c3fcc",
+      "offset": 3789789
+    },
+    {
+      "member": "originals/123-day-15.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-15.action-claim.json",
+      "bytes": 298,
+      "sha256": "8ef2f9f9c0edb388501b498ccaaa334036165b837ebae68b14e71d849eb5c8c3",
+      "offset": 3794476
+    },
+    {
+      "member": "originals/124-day-16.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-16.complete.json",
+      "bytes": 5022,
+      "sha256": "e5bfbd2eedd3b998acd4b4787e1f399cceadf53392f35efd76fdc3d1598f4a77",
+      "offset": 3794774
+    },
+    {
+      "member": "originals/125-day-16.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-16.clock-complete.json",
+      "bytes": 782,
+      "sha256": "0797ae2f8afce206c1e76979d2f3d50207e165a81bc49d515e4fcef62c454317",
+      "offset": 3799796
+    },
+    {
+      "member": "originals/126-r196-s1-days02-24-a01-d16-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d16-05-arm.json",
+      "bytes": 4732,
+      "sha256": "dfd1527ac0074fdffe74fbbf23ae0fc24c8883f24e354811c68a997952885540",
+      "offset": 3800578
+    },
+    {
+      "member": "originals/127-r196-s1-days02-24-a01-d16-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d16-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "88f73d9ad8230ec268a33039b796a304953b692971d7265cc153578d89cdea25",
+      "offset": 3805310
+    },
+    {
+      "member": "originals/128-day-16.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-16.action-claim.json",
+      "bytes": 298,
+      "sha256": "353e34d3fce14f95d77ef177b49bdb29221564ebf10ea8be09f0b3a691954e87",
+      "offset": 3809997
+    },
+    {
+      "member": "originals/129-day-17.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-17.complete.json",
+      "bytes": 5199,
+      "sha256": "309a8ae34efd487bfa8f29be39b2c4faa7282c41876b052c820d14e36b1fa000",
+      "offset": 3810295
+    },
+    {
+      "member": "originals/130-day-17.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-17.clock-complete.json",
+      "bytes": 782,
+      "sha256": "ebdeb0e870c206d270b44e2b445201394aee8e36d743bc832f0207f38afd55e5",
+      "offset": 3815494
+    },
+    {
+      "member": "originals/131-r196-s1-days02-24-a01-d17-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d17-05-arm.json",
+      "bytes": 4732,
+      "sha256": "a23711502492846e7cb86570f00a27cf88a7a0e2a262aad520d84cb224b8372a",
+      "offset": 3816276
+    },
+    {
+      "member": "originals/132-r196-s1-days02-24-a01-d17-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d17-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "a7737b6f1174b9b095ebce07ccc82cb09c4c53d3fae637a60f0dbe3d9a445a3d",
+      "offset": 3821008
+    },
+    {
+      "member": "originals/133-day-17.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-17.action-claim.json",
+      "bytes": 298,
+      "sha256": "241ec17405da6d85c356d823546b2ef0a57a1b4cbfb2f15f01ff54e8d4cc9855",
+      "offset": 3825695
+    },
+    {
+      "member": "originals/134-day-18.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-18.complete.json",
+      "bytes": 5022,
+      "sha256": "5c86756f0a5252b36814889b2bdb267d210e1d1ad7275c1a4aa85068c47c05c0",
+      "offset": 3825993
+    },
+    {
+      "member": "originals/135-day-18.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-18.clock-complete.json",
+      "bytes": 782,
+      "sha256": "7167f2e47228ad2445fc859c484689b27977044462f130af3bad737cf53f75a5",
+      "offset": 3831015
+    },
+    {
+      "member": "originals/136-r196-s1-days02-24-a01-d18-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d18-05-arm.json",
+      "bytes": 4732,
+      "sha256": "54bcda4a138169a351145eed523dd5d55e28e259a6b71786be06809b7a573b5b",
+      "offset": 3831797
+    },
+    {
+      "member": "originals/137-r196-s1-days02-24-a01-d18-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d18-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "10ef709f418efa03f84266cea41b37cb49290c9f140e83e8f6e77e967bf5a572",
+      "offset": 3836529
+    },
+    {
+      "member": "originals/138-day-18.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-18.action-claim.json",
+      "bytes": 298,
+      "sha256": "d037873bc39aa55d5cf5763b5e0b1e6442f048b8a07d733732ec923bd2753405",
+      "offset": 3841216
+    },
+    {
+      "member": "originals/139-day-19.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-19.complete.json",
+      "bytes": 5022,
+      "sha256": "50bcc8f7fe52faf2e25df851115149944975b265b0b3e9565967567c4964c01d",
+      "offset": 3841514
+    },
+    {
+      "member": "originals/140-day-19.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-19.clock-complete.json",
+      "bytes": 782,
+      "sha256": "7cff4c89eedd99208e9bc9183395a227604777701e2e68f1d21671c3cc2d4c45",
+      "offset": 3846536
+    },
+    {
+      "member": "originals/141-r196-s1-days02-24-a01-d19-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d19-05-arm.json",
+      "bytes": 4732,
+      "sha256": "173c7035e7d05c09f9c0a1ff57ddb80e3431e7f96540d416335e21cdcd74a4a3",
+      "offset": 3847318
+    },
+    {
+      "member": "originals/142-r196-s1-days02-24-a01-d19-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d19-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "734a9a84abbc5b0b8dcbfdf3ded9964e3f86145a13eaaab12ae7da6c854edc4c",
+      "offset": 3852050
+    },
+    {
+      "member": "originals/143-day-19.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-19.action-claim.json",
+      "bytes": 298,
+      "sha256": "a957e1dbd7fee8fc3bdf4c99e79a9b53bc2a4e5a4974088fb4a6c386da85ec72",
+      "offset": 3856737
+    },
+    {
+      "member": "originals/144-day-20.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-20.complete.json",
+      "bytes": 5022,
+      "sha256": "442b9854b2868fecc7a8327357d0e17c64cfb7a8b37f644d7c27ff37025a50bc",
+      "offset": 3857035
+    },
+    {
+      "member": "originals/145-day-20.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-20.clock-complete.json",
+      "bytes": 782,
+      "sha256": "f15f51764132324667b2f0a348cf796a03df71db4ae44ce1fde757160c1414a6",
+      "offset": 3862057
+    },
+    {
+      "member": "originals/146-r196-s1-days02-24-a01-d20-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d20-05-arm.json",
+      "bytes": 4732,
+      "sha256": "cd0c4eb08e2d1781abe2ca27a0c4aa1745b417c3012cb332f7797c9cc8212065",
+      "offset": 3862839
+    },
+    {
+      "member": "originals/147-r196-s1-days02-24-a01-d20-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d20-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "e78b8912330fecdece6314dfa1dafb7dbf1e0e4ee5f24d06d0bbb84178757121",
+      "offset": 3867571
+    },
+    {
+      "member": "originals/148-day-20.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-20.action-claim.json",
+      "bytes": 298,
+      "sha256": "5d491fb6dc29d0fe0cb8d8370608559cf1d45a4abd950aa13eb7b91b3c1fafd2",
+      "offset": 3872258
+    },
+    {
+      "member": "originals/149-day-21.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-21.complete.json",
+      "bytes": 5022,
+      "sha256": "43b36542409320c1d44926d630eb3917a80f8afa44a935743d918e93245ce65a",
+      "offset": 3872556
+    },
+    {
+      "member": "originals/150-day-21.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-21.clock-complete.json",
+      "bytes": 782,
+      "sha256": "32e52406b83479675877f902002873da1a7821985f3661c077d3154972a326a9",
+      "offset": 3877578
+    },
+    {
+      "member": "originals/151-r196-s1-days02-24-a01-d21-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d21-05-arm.json",
+      "bytes": 4732,
+      "sha256": "9fc65d19e54d6dba8d32e909d0d3bb086914eadecdc08792a5637b734ebc21ed",
+      "offset": 3878360
+    },
+    {
+      "member": "originals/152-r196-s1-days02-24-a01-d21-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d21-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "57424a88b6a4fbd595d9b09673dd916c7ef1ec81ba076eac6e51de29a00a0ebf",
+      "offset": 3883092
+    },
+    {
+      "member": "originals/153-day-21.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-21.action-claim.json",
+      "bytes": 298,
+      "sha256": "284808720cf71b016b058a2aa626b709de2e0bd87d0b137f054d48e2d58a00be",
+      "offset": 3887779
+    },
+    {
+      "member": "originals/154-day-22.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-22.complete.json",
+      "bytes": 5022,
+      "sha256": "892f6667fc96756414baf8303acea71f63ae1164c19eb2f8cabaffa43f13b021",
+      "offset": 3888077
+    },
+    {
+      "member": "originals/155-day-22.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-22.clock-complete.json",
+      "bytes": 782,
+      "sha256": "a1f117409280b194602c31700e47c2927f1b72551595f8220b94893e4d18737b",
+      "offset": 3893099
+    },
+    {
+      "member": "originals/156-r196-s1-days02-24-a01-d22-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d22-05-arm.json",
+      "bytes": 4732,
+      "sha256": "033258cccb37681873eed73f1ffe4161db3b58ffaef23f00f5b59ba8a86020d7",
+      "offset": 3893881
+    },
+    {
+      "member": "originals/157-r196-s1-days02-24-a01-d22-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d22-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "81e04a4b2d7d32eb27a9a43a4591329437dc0c84943d324ed9f6b74cb412240e",
+      "offset": 3898613
+    },
+    {
+      "member": "originals/158-day-22.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-22.action-claim.json",
+      "bytes": 298,
+      "sha256": "798ff7c3c12b45c2f3f03a29f6a8a5ea92f0ad46460d1fab215bddf36f169c0b",
+      "offset": 3903300
+    },
+    {
+      "member": "originals/159-day-23.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-23.complete.json",
+      "bytes": 5022,
+      "sha256": "3188215e85d5734e69141dd2de4f759b742243f0c11ded889f809b6b15625e05",
+      "offset": 3903598
+    },
+    {
+      "member": "originals/160-day-23.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-23.clock-complete.json",
+      "bytes": 782,
+      "sha256": "b21a3de8ebe86e43487706d8a2129e6c038fd7b9f2f6c796ed2a147080b68cda",
+      "offset": 3908620
+    },
+    {
+      "member": "originals/161-r196-s1-days02-24-a01-d23-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d23-05-arm.json",
+      "bytes": 4732,
+      "sha256": "1eb4c562539c0726982638975f550c3dabc77cbf3d884bcac41194e4f2f597ee",
+      "offset": 3909402
+    },
+    {
+      "member": "originals/162-r196-s1-days02-24-a01-d23-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d23-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "3d067016f57660be5d90a32f7d7b172bad95656e7e7d60d03fba3646c034152d",
+      "offset": 3914134
+    },
+    {
+      "member": "originals/163-day-23.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-23.action-claim.json",
+      "bytes": 298,
+      "sha256": "db6802be5610f57e04bd4a9e7a531c620a575326f4b7329013c1123c4abe6d26",
+      "offset": 3918821
+    },
+    {
+      "member": "originals/164-day-24.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-24.complete.json",
+      "bytes": 6874,
+      "sha256": "1539e8c601432c8af5a82cbd62964acdeb9d95a8a1074fac038f2a2db0adc164",
+      "offset": 3919119
+    },
+    {
+      "member": "originals/165-day-24.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-24.clock-complete.json",
+      "bytes": 782,
+      "sha256": "44949389a4f932a37f1960de313a7b9e35ab02cc1f7c23f5606601c23bde68d9",
+      "offset": 3925993
+    },
+    {
+      "member": "originals/166-r196-s1-days02-24-a01-d24-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d24-05-arm.json",
+      "bytes": 4732,
+      "sha256": "3c3cbd5acd751e49c9d6b140023e3ac872dd06791f5efcf316860fd592caad61",
+      "offset": 3926775
+    },
+    {
+      "member": "originals/167-r196-s1-days02-24-a01-d24-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-days02-24-a01-d24-09-clock-query-0.json",
+      "bytes": 4687,
+      "sha256": "61ae5c0c0683acf5ecc88f6cd56be8743b442112e77253ed4c17ebea41d31830",
+      "offset": 3931507
+    },
+    {
+      "member": "originals/168-day-24.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-01\\day-24.action-claim.json",
+      "bytes": 298,
+      "sha256": "73c6926b0bebdfa751b7a8c4b054f92d6532ecceb3d6ca22fc0b35548844cc1c",
+      "offset": 3936194
+    },
+    {
+      "member": "originals/169-segment-02.admission.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.admission.actual.json",
+      "bytes": 12905,
+      "sha256": "f513fe42c2c240dd804c96cbb756f2c2bbb3fddb12b90a7d540e7fd334fdda0e",
+      "offset": 3936492
+    },
+    {
+      "member": "originals/170-r196-s2-admission-a01-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-admission-a01-families-before.json",
+      "bytes": 137127,
+      "sha256": "b53caf022a64867a5a30faa9e504e3d36448330e57fbbfbec6103600a3d6bab8",
+      "offset": 3949397
+    },
+    {
+      "member": "originals/171-r196-s2-admission-a01-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-admission-a01-families.json",
+      "bytes": 16392,
+      "sha256": "cdc715867a175d1a09028eda0e18da725debaa46158df03e4ff401e54c50083c",
+      "offset": 4086524
+    },
+    {
+      "member": "originals/172-r196-s2-admission-a01-independent-admission-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-admission-a01-independent-admission-before.json",
+      "bytes": 137157,
+      "sha256": "004354c732e000d76328c7b55b7c459dc5eff92013d47e8636f36006184b3957",
+      "offset": 4102916
+    },
+    {
+      "member": "originals/173-r196-s2-admission-a01-independent-admission.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-admission-a01-independent-admission.json",
+      "bytes": 28636,
+      "sha256": "fe3d31cbd1ee1b8554042994a5f35f5bf2b580338e51ef5b6433897f0acd4a0f",
+      "offset": 4240073
+    },
+    {
+      "member": "originals/174-segment-02.journal-close.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.journal-close.actual.json",
+      "bytes": 11260,
+      "sha256": "6a2fe0a506d9269fee54b241a581549f2c02b702c397b5be163e975b656ee1c3",
+      "offset": 4268709
+    },
+    {
+      "member": "originals/175-r196-s2-close-a01-journal-close-last-complete-cash-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-journal-close-last-complete-cash-before.json",
+      "bytes": 135875,
+      "sha256": "8f46a94aa62cde14fbe8e3d3babb81c0e30b98b9eaabe22adc9f777b7d375c7f",
+      "offset": 4279969
+    },
+    {
+      "member": "originals/176-r196-s2-close-a01-journal-close-last-complete-cash.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-journal-close-last-complete-cash.json",
+      "bytes": 191579,
+      "sha256": "577432221f5deb1a35c0c8e14cf3cda50709d3678c2b9ced6c0268e2184466aa",
+      "offset": 4415844
+    },
+    {
+      "member": "originals/177-r196-s2-close-a01-journal-close-close-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-journal-close-close-families-before.json",
+      "bytes": 135867,
+      "sha256": "19891c1db4fa943d9480b81828300d529f5d3ac7ae80c059a46475d06d7daf65",
+      "offset": 4607423
+    },
+    {
+      "member": "originals/178-r196-s2-close-a01-journal-close-close-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-journal-close-close-families.json",
+      "bytes": 16465,
+      "sha256": "5a3bf71c401ed0f211ce44e32f5520c15d189c4e9004d2b5d511a9fb25aa35f3",
+      "offset": 4743290
+    },
+    {
+      "member": "originals/179-segment-02.natural-on-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-on-ACK.actual.json",
+      "bytes": 9264,
+      "sha256": "a87184e8c1456db3314c553d3232e5d8eaffdb9abb97c734325206618bcc0b18",
+      "offset": 4759755
+    },
+    {
+      "member": "originals/180-r196-s2-natural-on-a01-pre-on-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-a01-pre-on-families-before.json",
+      "bytes": 137139,
+      "sha256": "a8c93fb650cb37bf7f8a9d40941a7ae6a768558a2917e34c9a9a9af256def6cc",
+      "offset": 4769019
+    },
+    {
+      "member": "originals/181-r196-s2-natural-on-a01-pre-on-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-a01-pre-on-families.json",
+      "bytes": 16364,
+      "sha256": "ebfc39e621f66d9604ab4323f8d8c8c621858c9aaee61148d4c77787fbe07b5a",
+      "offset": 4906158
+    },
+    {
+      "member": "originals/182-r196-s2-natural-on-a01-before-natural-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-a01-before-natural-on.json",
+      "bytes": 137129,
+      "sha256": "a2840de4b9a32ff0985b9c4091d7458b4b491286a076905162132498ce5f26a4",
+      "offset": 4922522
+    },
+    {
+      "member": "originals/183-r196-s2-natural-on-a01-natural-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-a01-natural-on.json",
+      "bytes": 4817,
+      "sha256": "d783d5dff5f26a70f3cfb01513d958cc027e80603a306df418c88ec14d33ced9",
+      "offset": 5059651
+    },
+    {
+      "member": "originals/184-segment-02.natural-on.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-on.action-claim.json",
+      "bytes": 20733,
+      "sha256": "dc7cf3a8dbd3abb4f490a921467410cdde0f3c48b7b02085f61a235da5d43108",
+      "offset": 5064468
+    },
+    {
+      "member": "originals/185-segment-02.natural-on-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-on-readback.actual.json",
+      "bytes": 11536,
+      "sha256": "63d5feb3a47aa7c268d5afb4e0a07f1abe47f4b48068a4832b5d7fec8e22c6ae",
+      "offset": 5085201
+    },
+    {
+      "member": "originals/186-r196-s2-natural-on-readback-a01-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-readback-a01-families-before.json",
+      "bytes": 137143,
+      "sha256": "85254b87fec78eb86dead476373c824a112a183b297f59b294c65dbe69ad6f54",
+      "offset": 5096737
+    },
+    {
+      "member": "originals/187-r196-s2-natural-on-readback-a01-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-natural-on-readback-a01-families.json",
+      "bytes": 16412,
+      "sha256": "dae2c3275d6356c80986ef2d43843fc38d774d69a0b280d2863432154ac3573e",
+      "offset": 5233880
+    },
+    {
+      "member": "originals/188-segment-02.payment-on-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.payment-on-ACK.actual.json",
+      "bytes": 8899,
+      "sha256": "4f2a700bdd9f4146a285c1dcd323949861be186e7776f9d9059059a71a3d308d",
+      "offset": 5250292
+    },
+    {
+      "member": "originals/189-r196-s2-payment-on-a01-before-payment-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-payment-on-a01-before-payment-on.json",
+      "bytes": 137129,
+      "sha256": "cec7b10176caed781231c5624b6358a374954a10d6bc89b0c72d5af2de8437ab",
+      "offset": 5259191
+    },
+    {
+      "member": "originals/190-r196-s2-payment-on-a01-payment-on.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-payment-on-a01-payment-on.json",
+      "bytes": 28687,
+      "sha256": "8a3d4f69de7c17641793fc859404a1972773ed870c39d1f97ec0071f72505a15",
+      "offset": 5396320
+    },
+    {
+      "member": "originals/191-segment-02.payment-on.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.payment-on.action-claim.json",
+      "bytes": 20760,
+      "sha256": "9054a6b23cefdb96896a84588d9e501f9cdfe1b56e83f1601d8e071d73f1d410",
+      "offset": 5425007
+    },
+    {
+      "member": "originals/192-segment-02.payment-off-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.payment-off-ACK.actual.json",
+      "bytes": 9321,
+      "sha256": "cce33f7b5e32c21c0fda2fd0631d5a812ab2d10fb4c8cdad6187a818709802f9",
+      "offset": 5445767
+    },
+    {
+      "member": "originals/193-r196-s2-close-a01-payment-off-archive-fence-revalidate-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-archive-fence-revalidate-before.json",
+      "bytes": 135883,
+      "sha256": "76ddd685a35d988cf704ebd12ba50d1a6761770521ee01dba5f4bd1477144188",
+      "offset": 5455088
+    },
+    {
+      "member": "originals/194-r196-s2-close-a01-payment-off-archive-fence-revalidate.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-archive-fence-revalidate.json",
+      "bytes": 191587,
+      "sha256": "252a43c5a9e1c442d18ae8714aa3f59dec31d2da158d21b87fadbfafc98dcce3",
+      "offset": 5590971
+    },
+    {
+      "member": "originals/195-r196-s2-close-a01-payment-off-before-payment-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-before-payment-off.json",
+      "bytes": 135861,
+      "sha256": "a5eff660ce2f2e8ad2e6ab814f9dcef01871a7b71930ca833d697df1bd4cbf55",
+      "offset": 5782558
+    },
+    {
+      "member": "originals/196-r196-s2-close-a01-payment-off-payment-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-payment-off.json",
+      "bytes": 86691,
+      "sha256": "db7fd72931fafa5d02c3f0c23d634f4814002210d6d4c4ffa2e4aa6f5ecc702f",
+      "offset": 5918419
+    },
+    {
+      "member": "originals/197-segment-02.payment-off.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.payment-off.action-claim.json",
+      "bytes": 20301,
+      "sha256": "847573fc547dfb8508865dd3cfbfa1e932267b8de64fb69cd75c634af4137a56",
+      "offset": 6005110
+    },
+    {
+      "member": "originals/198-segment-02.payment-off-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.payment-off-readback.actual.json",
+      "bytes": 8839,
+      "sha256": "2ff60751ebbb91de31f104649e921b24d18bbc9ea230f5c35cff437f8340493e",
+      "offset": 6025411
+    },
+    {
+      "member": "originals/199-r196-s2-close-a01-payment-off-readback-payment-off-query-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-readback-payment-off-query-before.json",
+      "bytes": 135887,
+      "sha256": "033c67ed1f6fc950b3a39cab457cb6f5e746786c122c991c5ede571dd4f4d02c",
+      "offset": 6034250
+    },
+    {
+      "member": "originals/200-r196-s2-close-a01-payment-off-readback-payment-off-query.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-payment-off-readback-payment-off-query.json",
+      "bytes": 86755,
+      "sha256": "31cc5dd20fd5a5106e2cbcb024e1e9699dac390374782ac9bf6038a3669f1a40",
+      "offset": 6170137
+    },
+    {
+      "member": "originals/201-segment-02.natural-off-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-off-ACK.actual.json",
+      "bytes": 8924,
+      "sha256": "0e994fd45c8de0ba5d0b5eecf491592a0bb46860a93aa3689689c3e12cdc713f",
+      "offset": 6256892
+    },
+    {
+      "member": "originals/202-r196-s2-close-a01-natural-off-before-natural-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-natural-off-before-natural-off.json",
+      "bytes": 135857,
+      "sha256": "ce1b8e071bceab09c099a5ef3d6342814a2887d99c2d91fefc6c31fd63e74bc7",
+      "offset": 6265816
+    },
+    {
+      "member": "originals/203-r196-s2-close-a01-natural-off-natural-off.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-natural-off-natural-off.json",
+      "bytes": 4807,
+      "sha256": "96e51b3c4e74266a4d1b0e2955373b1f43f02f5b3d5aa1ad9b0bce6d872a6c15",
+      "offset": 6401673
+    },
+    {
+      "member": "originals/204-segment-02.natural-off.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-off.action-claim.json",
+      "bytes": 17822,
+      "sha256": "d6d98da06a84130ead761091b893921cd873942aba14b76b5cbb63161925e7de",
+      "offset": 6406480
+    },
+    {
+      "member": "originals/205-segment-02.natural-off-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-02.natural-off-readback.actual.json",
+      "bytes": 11551,
+      "sha256": "e85d689f2fbf2043e51d77b9d493a5cd8b03baa626aeecfa698948aa1818c3e5",
+      "offset": 6424302
+    },
+    {
+      "member": "originals/206-r196-s2-close-a01-natural-off-readback-families-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-natural-off-readback-families-before.json",
+      "bytes": 135869,
+      "sha256": "89f611e00b3c010ee0f59e4096917e3f3413ac1457d45a1b5f6623f24966df84",
+      "offset": 6435853
+    },
+    {
+      "member": "originals/207-r196-s2-close-a01-natural-off-readback-families.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-close-a01-natural-off-readback-families.json",
+      "bytes": 16395,
+      "sha256": "9557c12a3a7dfc8cb3afac68c7b210824564840491448dc012f38fbf0674ec5d",
+      "offset": 6571722
+    },
+    {
+      "member": "originals/208-day-01.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-01.complete.json",
+      "bytes": 6136,
+      "sha256": "631f63e265a9c9e26d9a02db3c4a0ec276311014aaea031b1c729e40265d253e",
+      "offset": 6588117
+    },
+    {
+      "member": "originals/209-day-01.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-01.clock-complete.json",
+      "bytes": 875,
+      "sha256": "e1ad6686f7af016c64d2c9a5c60f0ec75d06a4917015f1e1a8ac81b44a39a0bc",
+      "offset": 6594253
+    },
+    {
+      "member": "originals/210-r196-s2-abs25-pilot-a01-d01-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs25-pilot-a01-d01-05-arm.json",
+      "bytes": 4736,
+      "sha256": "75b7117b490ad211a0a182a2d943308d40c0c151b646741b72eb9d35c6070c38",
+      "offset": 6595128
+    },
+    {
+      "member": "originals/211-r196-s2-abs25-post-a01-d01-02-original-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs25-post-a01-d01-02-original-clock-query-0.json",
+      "bytes": 4707,
+      "sha256": "69373621b20f7e55e7b3fa6830c699f28bbd21699c5eeac0986cd7ef56f069f9",
+      "offset": 6599864
+    },
+    {
+      "member": "originals/212-day-01.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-01.action-claim.json",
+      "bytes": 299,
+      "sha256": "1c72ea4157389fb5bace78a295b47d81a37ddfe9dd6ae5a88d76edfd048bc31b",
+      "offset": 6604571
+    },
+    {
+      "member": "originals/213-r196-s2-abs25-pilot-a01-d01-07-resume.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs25-pilot-a01-d01-07-resume.json",
+      "bytes": 1626,
+      "sha256": "8868b8065e46b2c63caf1e7bc5f1de2b386088b8fdfdbdb6c1d1cebeba3c6eb6",
+      "offset": 6604870
+    },
+    {
+      "member": "originals/214-r196-s2-abs25-pilot-a01-d01-08-wait-01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs25-pilot-a01-d01-08-wait-01.json",
+      "bytes": 138701,
+      "sha256": "80d7642b88fa1bbdf01a850fa8c0ed0199348b1b1aef938a5a15246ec50d1c60",
+      "offset": 6606496
+    },
+    {
+      "member": "originals/215-day-02.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-02.complete.json",
+      "bytes": 5739,
+      "sha256": "ca457a91f549a0314bf1e855df8581d7643fa53124bbd9da2e6b1336f25888d0",
+      "offset": 6745197
+    },
+    {
+      "member": "originals/216-day-02.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-02.clock-complete.json",
+      "bytes": 780,
+      "sha256": "6dbf9bef73081a96b7731d3291e3129caf82e2550afa501fb8476705bf7eadfb",
+      "offset": 6750936
+    },
+    {
+      "member": "originals/217-r196-s2-abs26-32-a01-d02-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d02-05-arm.json",
+      "bytes": 4730,
+      "sha256": "6fa726b21ca2e82df04cf9a9e136a47c85eef01d870172165d05ca09917263ac",
+      "offset": 6751716
+    },
+    {
+      "member": "originals/218-r196-s2-abs26-32-a01-d02-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d02-09-clock-query-0.json",
+      "bytes": 4685,
+      "sha256": "e01c36e49ed95e4d4e693414aa25dfb5450ffe992fd2f7f0a78647e625457cbf",
+      "offset": 6756446
+    },
+    {
+      "member": "originals/219-day-02.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-02.action-claim.json",
+      "bytes": 296,
+      "sha256": "e16a183263ea9096cf36d613e4c8bd8b5b995fc585d16d5b29439704333f50b7",
+      "offset": 6761131
+    },
+    {
+      "member": "originals/220-day-03.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-03.complete.json",
+      "bytes": 5355,
+      "sha256": "31934efa748d762ec1b2bc4922d2ea93ad6128eec787a886f32c7d8d1bc468c2",
+      "offset": 6761427
+    },
+    {
+      "member": "originals/221-day-03.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-03.clock-complete.json",
+      "bytes": 780,
+      "sha256": "018ecb76af93b562349392c4d179635274e7b878679a31508875853e7fa5d2aa",
+      "offset": 6766782
+    },
+    {
+      "member": "originals/222-r196-s2-abs26-32-a01-d03-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d03-05-arm.json",
+      "bytes": 4730,
+      "sha256": "90cd982609c1c138456ad8921321d7b7eb181a24d06eb8cb9877f6176e2d0836",
+      "offset": 6767562
+    },
+    {
+      "member": "originals/223-r196-s2-abs26-32-a01-d03-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d03-09-clock-query-0.json",
+      "bytes": 4685,
+      "sha256": "43decb8e63b33bd5202267d6bc03a11dd0ece86601597b8818a7d21bf1703d34",
+      "offset": 6772292
+    },
+    {
+      "member": "originals/224-day-03.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-03.action-claim.json",
+      "bytes": 296,
+      "sha256": "d8da78d3f979222586ec5989976856390834725284246c6bdc83702f2a2a9998",
+      "offset": 6776977
+    },
+    {
+      "member": "originals/225-day-04.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-04.complete.json",
+      "bytes": 5179,
+      "sha256": "5ae51a6f2e9bf6ff8544293576c5cf073e2dfc650ea2002c24f02702a2d7a671",
+      "offset": 6777273
+    },
+    {
+      "member": "originals/226-day-04.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-04.clock-complete.json",
+      "bytes": 780,
+      "sha256": "1f8b90a3cadb3af2a1586b781834897740bbbb62ad0d7ce78e843ccaa90c1f65",
+      "offset": 6782452
+    },
+    {
+      "member": "originals/227-r196-s2-abs26-32-a01-d04-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d04-05-arm.json",
+      "bytes": 4730,
+      "sha256": "7c49eb9414df1ad96971019e3bff7d60ff27b5023526961125e55610aa39642e",
+      "offset": 6783232
+    },
+    {
+      "member": "originals/228-r196-s2-abs26-32-a01-d04-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d04-09-clock-query-0.json",
+      "bytes": 4685,
+      "sha256": "c2419a033be73214b6a361deb113476cafb169afc1d8f1df4b1df62813841f03",
+      "offset": 6787962
+    },
+    {
+      "member": "originals/229-day-04.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-04.action-claim.json",
+      "bytes": 296,
+      "sha256": "17812f6fe5c2f9897f765977b4f276f727e1029b792b44fc3371f61ef2956cb5",
+      "offset": 6792647
+    },
+    {
+      "member": "originals/230-day-05.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-05.complete.json",
+      "bytes": 6856,
+      "sha256": "9506dcfabc62af4ed6ef12ea6279ef42e4584d09fe0830b0ba7dc5190364fd2e",
+      "offset": 6792943
+    },
+    {
+      "member": "originals/231-day-05.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-05.clock-complete.json",
+      "bytes": 780,
+      "sha256": "08a07ba69942f40257988cbb12cc2fc10d7b4cce73279557972d4f9e87bd267e",
+      "offset": 6799799
+    },
+    {
+      "member": "originals/232-r196-s2-abs26-32-a01-d05-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d05-05-arm.json",
+      "bytes": 4730,
+      "sha256": "796f93aec55de04077d1b4b87e0bcb554a2bfba1ed7a0f18171d1f7fd2892219",
+      "offset": 6800579
+    },
+    {
+      "member": "originals/233-r196-s2-abs26-32-a01-d05-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d05-09-clock-query-0.json",
+      "bytes": 4686,
+      "sha256": "ab74beba41c0aa27e44afe73023d9114f1eab80bc73e9e69604210922744fea6",
+      "offset": 6805309
+    },
+    {
+      "member": "originals/234-day-05.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-05.action-claim.json",
+      "bytes": 296,
+      "sha256": "f18716c7bff6be50e53893da444173522a1de42d2fa7091bfc5f183bc7c09313",
+      "offset": 6809995
+    },
+    {
+      "member": "originals/235-r196-s2-abs26-32-a01-d05-11-army-before-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d05-11-army-before-0.json",
+      "bytes": 137003,
+      "sha256": "c82b8ebb7a3c40853573950405672c457749377730c91d155960e44649cf004b",
+      "offset": 6810291
+    },
+    {
+      "member": "originals/236-r196-s2-abs26-32-a01-d05-11-army-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d05-11-army-query-0.json",
+      "bytes": 5362,
+      "sha256": "519ed9d078c3b0655078e85230eb4223b3fa521b529766cd0511e7d60d074bc2",
+      "offset": 6947294
+    },
+    {
+      "member": "originals/237-r196-s2-abs26-32-a01-d05-12-final.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-abs26-32-a01-d05-12-final.json",
+      "bytes": 136991,
+      "sha256": "204133300c37730d21e5fa7ded2a1f766bedd187ceed2ebbe449d1614b640a95",
+      "offset": 6952656
+    },
+    {
+      "member": "originals/238-day-06.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-06.complete.json",
+      "bytes": 7860,
+      "sha256": "5fe1e7c157f3853c52feef5faec13af18f28eb149c9401820fae477850c0b61e",
+      "offset": 7089647
+    },
+    {
+      "member": "originals/239-day-06.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-06.clock-complete.json",
+      "bytes": 785,
+      "sha256": "dd16fd0ceff6b8eb49827679d5a701995b9ac3eb64a934d171b0a2ddbc3c7cac",
+      "offset": 7097507
+    },
+    {
+      "member": "originals/240-r196-s2-film-abs30-32-a01-d06-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d06-05-arm.json",
+      "bytes": 4741,
+      "sha256": "a48e00f497987fee58638636413fa1e36e75dcf529c14327fdefa3e9f3d0be05",
+      "offset": 7098292
+    },
+    {
+      "member": "originals/241-r196-s2-film-abs30-32-a01-d06-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d06-09-clock-query-0.json",
+      "bytes": 4696,
+      "sha256": "b0aed25f45847f59c2f61c625533df905fb097da079a6ebda92413e2c1272dd4",
+      "offset": 7103033
+    },
+    {
+      "member": "originals/242-day-06.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-06.action-claim.json",
+      "bytes": 301,
+      "sha256": "7bc6998846d348944a7d3a408881885fc37cb7fbc8177b5f3c37dc277f897985",
+      "offset": 7107729
+    },
+    {
+      "member": "originals/243-r196-s2-film-abs30-32-a01-d06-11-army-before-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d06-11-army-before-0.json",
+      "bytes": 137081,
+      "sha256": "7908e903cf3e7d720848bc6acad9f00df7143bdf970cb529052d2de25a572f02",
+      "offset": 7108030
+    },
+    {
+      "member": "originals/244-r196-s2-film-abs30-32-a01-d06-11-army-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d06-11-army-query-0.json",
+      "bytes": 5387,
+      "sha256": "f858c036e77132a05a6bceaaa6cdcdd4e9aff034e90ec109e54b4b4c3ad543b0",
+      "offset": 7245111
+    },
+    {
+      "member": "originals/245-r196-s2-film-abs30-32-a01-d06-12-final.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d06-12-final.json",
+      "bytes": 137073,
+      "sha256": "da8e02ab67e5a345a6b47be6d40f5b654b38d91642721940ebb89864b9cd8cdd",
+      "offset": 7250498
+    },
+    {
+      "member": "originals/246-day-07.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-07.complete.json",
+      "bytes": 7296,
+      "sha256": "428ac5458fae6fe8c402603b906aa70fd4c5ce0e679bda8e415c4d39f5148e5c",
+      "offset": 7387571
+    },
+    {
+      "member": "originals/247-day-07.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-07.clock-complete.json",
+      "bytes": 785,
+      "sha256": "ca39f72727351182bbf15648cee8820cf7af31d43e4a78a7d2344cc4450fc41f",
+      "offset": 7394867
+    },
+    {
+      "member": "originals/248-r196-s2-film-abs30-32-a01-d07-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d07-05-arm.json",
+      "bytes": 4741,
+      "sha256": "4095db5c814e376b9c3132005994287b0b80e880acc09a35980a5f0e34c734e9",
+      "offset": 7395652
+    },
+    {
+      "member": "originals/249-r196-s2-film-abs30-32-a01-d07-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d07-09-clock-query-0.json",
+      "bytes": 4696,
+      "sha256": "e8f890f55bfeec145925898d11853f9dc6c070bb4849f41ba40ff8246380116b",
+      "offset": 7400393
+    },
+    {
+      "member": "originals/250-day-07.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-07.action-claim.json",
+      "bytes": 301,
+      "sha256": "a8c1eb6e9231b082a00cc32578bd1fee913758af56e5646100c984cac1206d83",
+      "offset": 7405089
+    },
+    {
+      "member": "originals/251-r196-s2-film-abs30-32-a01-d07-11-army-before-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d07-11-army-before-0.json",
+      "bytes": 135849,
+      "sha256": "49a7fce8e2b0f5e1fe09ef7662f17323da3ff66b7f0276a5f2e9187f1f74eb49",
+      "offset": 7405390
+    },
+    {
+      "member": "originals/252-r196-s2-film-abs30-32-a01-d07-11-army-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d07-11-army-query-0.json",
+      "bytes": 5375,
+      "sha256": "bff9a082fff59e0bffadd7b38c996aa7ddd5827d21f0f979672fa8303f865403",
+      "offset": 7541239
+    },
+    {
+      "member": "originals/253-r196-s2-film-abs30-32-a01-d07-12-final.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d07-12-final.json",
+      "bytes": 135833,
+      "sha256": "e956454bcd8f568746c469ee0825730b7118c2ab5ccc19a6c7ace3694bf809bd",
+      "offset": 7546614
+    },
+    {
+      "member": "originals/254-day-08.complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-08.complete.json",
+      "bytes": 6759,
+      "sha256": "c565a868575dc7e107740b708582d2267e4d4de9ea9dd5fa0dd73e1688fd12da",
+      "offset": 7682447
+    },
+    {
+      "member": "originals/255-day-08.clock-complete.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-08.clock-complete.json",
+      "bytes": 785,
+      "sha256": "017413b0bd7736e54e9c9743f63431bd91a5204b5a9a14c520a5fa4e91738285",
+      "offset": 7689206
+    },
+    {
+      "member": "originals/256-r196-s2-film-abs30-32-a01-d08-05-arm.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d08-05-arm.json",
+      "bytes": 4741,
+      "sha256": "8b1fa27c003761a7effda2da7f36e4fc1d0b62943daa59bf4350a574dd4eb6fd",
+      "offset": 7689991
+    },
+    {
+      "member": "originals/257-r196-s2-film-abs30-32-a01-d08-09-clock-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d08-09-clock-query-0.json",
+      "bytes": 4696,
+      "sha256": "1d7bbff3f8cddef6825495c102e16f18da49fd26ae68848ef27fa74ab3d487c8",
+      "offset": 7694732
+    },
+    {
+      "member": "originals/258-day-08.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-days-segment-02\\day-08.action-claim.json",
+      "bytes": 301,
+      "sha256": "8779381da7591540013834c89d5d8ca52a81d80f2caa3bc3c808e55ce0a547a0",
+      "offset": 7699428
+    },
+    {
+      "member": "originals/259-r196-s2-film-abs30-32-a01-d08-11-army-before-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d08-11-army-before-0.json",
+      "bytes": 135849,
+      "sha256": "b3f64a6cc4792a25c34db006daf42819641d308e392b7b254399eefa61e260ef",
+      "offset": 7699729
+    },
+    {
+      "member": "originals/260-r196-s2-film-abs30-32-a01-d08-11-army-query-0.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d08-11-army-query-0.json",
+      "bytes": 5375,
+      "sha256": "fa265f3a800f44254f7f6223d68bae478613a03e394834238f1988fdb5f00b1d",
+      "offset": 7835578
+    },
+    {
+      "member": "originals/261-r196-s2-film-abs30-32-a01-d08-12-final.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s2-film-abs30-32-a01-d08-12-final.json",
+      "bytes": 135833,
+      "sha256": "8366328025b3e95127bd1cc65b31ad19733073bd4e17850b67dd9e418ca33743",
+      "offset": 7840953
+    },
+    {
+      "member": "originals/262-r196-s1-baseline-a01-baseline-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-baseline-before.json",
+      "bytes": 126253,
+      "sha256": "a94e62aa10cba9c52d754f77e5c576aefd5a1573c548856af0b521118fc90e84",
+      "offset": 7976786
+    },
+    {
+      "member": "originals/263-r196-s1-baseline-a01-army-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-army-before.json",
+      "bytes": 126245,
+      "sha256": "6a3b426c2bfc713fe8024004925760bdce0235917ed5eb030193096bb6558f35",
+      "offset": 8103039
+    },
+    {
+      "member": "originals/264-r196-s1-baseline-a01-baseline-current-commander-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-baseline-current-commander-before.json",
+      "bytes": 126289,
+      "sha256": "84d5b6bfd9db935b570ec3bb28fe1c08a609f4ec9cd38adb7131585cd6288ea0",
+      "offset": 8229284
+    },
+    {
+      "member": "originals/265-r196-s1-baseline-a01-baseline-current-commander.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-baseline-current-commander.json",
+      "bytes": 92828,
+      "sha256": "9e62ceef2117bf3acc7df0bc1840a263743b56308ae87087a6ef492a469f7d3f",
+      "offset": 8355573
+    },
+    {
+      "member": "originals/266-r196-s1-baseline-cash-only-a01-recovery-cash-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-cash-only-a01-recovery-cash-before.json",
+      "bytes": 126283,
+      "sha256": "ea6fbcf5aff6a012d3c1211f4bb588f57a59223e39762f4afa6ddfe420a8849f",
+      "offset": 8448401
+    },
+    {
+      "member": "originals/267-r196-s1-baseline-cash-only-a01-recovery-cash.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-cash-only-a01-recovery-cash.json",
+      "bytes": 28229,
+      "sha256": "418e0ebd52b6e40f8eeb08fec0974c8797926f38b965b42193518a550a08afbc",
+      "offset": 8574684
+    },
+    {
+      "member": "originals/268-segment-01.preview-army-18-target-1032.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.preview-army-18-target-1032.actual.json",
+      "bytes": 13921,
+      "sha256": "0c6c21adf99cf58214bad58158a708207140fc2f28566a29ee9f6ed4be54d8b0",
+      "offset": 8602913
+    },
+    {
+      "member": "originals/269-r196-s1-preview1032-a01-preview-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-preview1032-a01-preview-before.json",
+      "bytes": 126233,
+      "sha256": "d54f65271f6e012949568327b582a5a7c844562e419cc69090ac2edb04685f8d",
+      "offset": 8616834
+    },
+    {
+      "member": "originals/270-r196-s1-preview1032-a01-preview.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-preview1032-a01-preview.json",
+      "bytes": 22963,
+      "sha256": "10afb5462b6eec3e5a7a7ffc1b1567e756614fb65762d18010f1dfe802d27fa0",
+      "offset": 8743067
+    },
+    {
+      "member": "originals/271-segment-01.scout-army-18.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.scout-army-18.actual.json",
+      "bytes": 46218,
+      "sha256": "63065b2bc5feddc6485bd8243363e052d442ce4dfe9e5788cb552175a9548609",
+      "offset": 8766030
+    },
+    {
+      "member": "originals/272-r196-s1-scout-a01-army-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-scout-a01-army-before.json",
+      "bytes": 125387,
+      "sha256": "1ec39723d88e55c10836d3788ac58f72b83c614c86397ed20612c44b8852c58f",
+      "offset": 8812248
+    },
+    {
+      "member": "originals/273-r196-s1-scout-a01-army.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-scout-a01-army.json",
+      "bytes": 5289,
+      "sha256": "2c18f7f57e04b980d2d1fbd38b08686f54b050e0ff1039c3f86da54ca0e94f4a",
+      "offset": 8937635
+    },
+    {
+      "member": "originals/274-segment-01.speed5-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.speed5-ACK.actual.json",
+      "bytes": 9044,
+      "sha256": "27107b3524aeb4f2fbdb7a820097c08a4a6796bb515887288b9eb690fbb395ad",
+      "offset": 8942924
+    },
+    {
+      "member": "originals/275-r196-s1-speed5-a01-speed-observe.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-speed5-a01-speed-observe.json",
+      "bytes": 126245,
+      "sha256": "44d17b25ae2f46a78b53d5edf614bfd29c7f8dd52eb6b6dc608305a772d3ef85",
+      "offset": 8951968
+    },
+    {
+      "member": "originals/276-r196-s1-speed5-a01-before-speed5.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-speed5-a01-before-speed5.json",
+      "bytes": 126245,
+      "sha256": "749d3a320b89364744f3df5db79ddb22e1084e59795d346b61c17ff99c6eabc6",
+      "offset": 9078213
+    },
+    {
+      "member": "originals/277-r196-s1-speed5-a01-speed5.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-speed5-a01-speed5.json",
+      "bytes": 1606,
+      "sha256": "b2a48e27529e9465efebdb2eb693a28fcdea561211e122d26a9e51948c2f7e6d",
+      "offset": 9204458
+    },
+    {
+      "member": "originals/278-segment-01.speed5.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.speed5.action-claim.json",
+      "bytes": 69034,
+      "sha256": "4c9d0ebe78e6bdceca2851f332fec715d1237b3f6d90a42f5334887a7887194c",
+      "offset": 9206064
+    },
+    {
+      "member": "originals/279-segment-01.speed5-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.speed5-readback.actual.json",
+      "bytes": 8405,
+      "sha256": "b55fcdc6eb549e4b7f9be60952ab458b03c8bcd46a4203e7e79a184d0ed2e5d5",
+      "offset": 9275098
+    },
+    {
+      "member": "originals/280-r196-s1-speed5-readback-a01-speed-independent.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-speed5-readback-a01-speed-independent.json",
+      "bytes": 127295,
+      "sha256": "4e3730fea99c0affa7fa78d8d41d8ac5682ec6554d1bd0d2140133289d5e216b",
+      "offset": 9283503
+    },
+    {
+      "member": "originals/281-segment-01.move-ACK.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.move-ACK.actual.json",
+      "bytes": 9036,
+      "sha256": "37d1a71355c534a6be062b236a97c78a9d361548207e7047a827f59026497162",
+      "offset": 9410798
+    },
+    {
+      "member": "originals/282-r196-s1-move-a01-stationary-before-move.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-a01-stationary-before-move.json",
+      "bytes": 127283,
+      "sha256": "9d48c366a66b8f6ed512524d864c4e4acfaa80c8c4b2ac716dbd1af602587b6a",
+      "offset": 9419834
+    },
+    {
+      "member": "originals/283-r196-s1-move-a01-before-move.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-a01-before-move.json",
+      "bytes": 127261,
+      "sha256": "ce4f0bbcb0e66d85c1565c762a11a44c5819ef2cd46b266faa7f5353d29a9cbd",
+      "offset": 9547117
+    },
+    {
+      "member": "originals/284-r196-s1-move-a01-move.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-a01-move.json",
+      "bytes": 6609,
+      "sha256": "f366e5a7bf0c80fc9be846a3a81f2fd135708816c288ecfa7045f28f71550fe1",
+      "offset": 9674378
+    },
+    {
+      "member": "originals/285-treatment-move.action-claim.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\treatment-move.action-claim.json",
+      "bytes": 22077,
+      "sha256": "5d322d42867f6938e7c1792543eac9539d64c7a7afb7bbbd662bbeb93fc6856f",
+      "offset": 9680987
+    },
+    {
+      "member": "originals/286-segment-01.move-readback.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-v2-stages\\segment-01.move-readback.actual.json",
+      "bytes": 11246,
+      "sha256": "4865306c534ad772fccf9332abdd40340e20659a12cc43187936deb66078b987",
+      "offset": 9703064
+    },
+    {
+      "member": "originals/287-r196-s1-move-readback-a01-move-post-ordinary-before.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-readback-a01-move-post-ordinary-before.json",
+      "bytes": 125451,
+      "sha256": "257e44b72b81c142ddd41217f5194ff6c06cb783d97e9ea35850c3669dafc8c4",
+      "offset": 9714310
+    },
+    {
+      "member": "originals/288-r196-s1-move-readback-a01-move-post-ordinary.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-readback-a01-move-post-ordinary.json",
+      "bytes": 5356,
+      "sha256": "edccf5c8f5b6886df330c368526d5a849281745cc51a15efaa2e3ac9faf10f27",
+      "offset": 9839761
+    },
+    {
+      "member": "originals/289-r196-s1-move-readback-a01-move-post-independent.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-move-readback-a01-move-post-independent.json",
+      "bytes": 125443,
+      "sha256": "8e92f334036dbc48909c49c93e6c1e5fc51fdfd4d282ba705e2e3d83f62f11fc",
+      "offset": 9845117
+    },
+    {
+      "member": "originals/290-R07-S1-BASELINE-CASH-RECOVERY.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-S1-BASELINE-CASH-RECOVERY.actual-a01.json",
+      "bytes": 31487,
+      "sha256": "5a2d47a000c21b55cf56ca458048b3b10ff6742f95a86f74fb550c554a9b132b",
+      "offset": 9970560
+    },
+    {
+      "member": "originals/291-r196-abs25-pam-select-a01-event-selection.claim.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r196-abs25-pam-select-a01-event-selection.claim.actual.json",
+      "bytes": 2436,
+      "sha256": "6cbdef2ac922caafe3f144f90587167c735ef592430a328525d844a0a69a5f2e",
+      "offset": 10002047
+    },
+    {
+      "member": "originals/292-r196-abs25-pam-select-a01-event-selection.outcome.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r196-abs25-pam-select-a01-event-selection.outcome.actual.json",
+      "bytes": 1577,
+      "sha256": "1f1511c124b870cb0a416f46d2819dc64dd13674d09d6bdd4469fa43784363ce",
+      "offset": 10004483
+    },
+    {
+      "member": "originals/293-R07-FRAME-REVIEW.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-FRAME-REVIEW.actual-a01.json",
+      "bytes": 2134,
+      "sha256": "0b49666ba29b94237e43e4bf0fa05db881cc4eea03399ddeab6672ad8635e525",
+      "offset": 10006060
+    },
+    {
+      "member": "originals/294-r07-treatment-a01-ready-record-finish-once.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r07-treatment-a01-ready-record-finish-once.json",
+      "bytes": 5275,
+      "sha256": "e694f5d29ef1ea23a870ba42c70aea34f6953b64e5dd5ee015e5df32ab5d26cb",
+      "offset": 10008194
+    },
+    {
+      "member": "originals/295-R07-TREATMENT-CAPTURE.actual-a01.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-TREATMENT-CAPTURE.actual-a01.json",
+      "bytes": 4440,
+      "sha256": "9333cc086ff38ed8a7194916a32945b43f729b82a4723074f71d2dbdde9a045a",
+      "offset": 10013469
+    },
+    {
+      "member": "originals/296-r196-s1-baseline-a01-baseline-cash.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r196-s1-baseline-a01-baseline-cash.json",
+      "bytes": 1857,
+      "sha256": "2aa986337eebc9992502a6f09994973b73d0bf5a8b77cc467378a545ab9d0546",
+      "offset": 10017909
+    }
+  ],
+  "roles": {
+    "binding": "originals/000-R07-ARM.binding.json",
+    "baseline": "originals/001-segment-01.baseline.actual.json",
+    "baseline_query": "originals/002-r196-s1-baseline-a01-army.json",
+    "days": [
+      {
+        "absolute_day": 1,
+        "complete": "originals/049-day-01.complete.json",
+        "clock": "originals/050-day-01.clock-complete.json",
+        "arm": "originals/051-r196-s1-day01-pilot-a01-d01-05-arm.json",
+        "clock_response": "originals/052-r196-s1-day01-pilot-a01-d01-09-clock-query-0.json",
+        "action_claim": "originals/053-day-01.action-claim.json"
+      },
+      {
+        "absolute_day": 2,
+        "complete": "originals/054-day-02.complete.json",
+        "clock": "originals/055-day-02.clock-complete.json",
+        "arm": "originals/056-r196-s1-days02-24-a01-d02-05-arm.json",
+        "clock_response": "originals/057-r196-s1-days02-24-a01-d02-09-clock-query-0.json",
+        "action_claim": "originals/058-day-02.action-claim.json"
+      },
+      {
+        "absolute_day": 3,
+        "complete": "originals/059-day-03.complete.json",
+        "clock": "originals/060-day-03.clock-complete.json",
+        "arm": "originals/061-r196-s1-days02-24-a01-d03-05-arm.json",
+        "clock_response": "originals/062-r196-s1-days02-24-a01-d03-09-clock-query-0.json",
+        "action_claim": "originals/063-day-03.action-claim.json"
+      },
+      {
+        "absolute_day": 4,
+        "complete": "originals/064-day-04.complete.json",
+        "clock": "originals/065-day-04.clock-complete.json",
+        "arm": "originals/066-r196-s1-days02-24-a01-d04-05-arm.json",
+        "clock_response": "originals/067-r196-s1-days02-24-a01-d04-09-clock-query-0.json",
+        "action_claim": "originals/068-day-04.action-claim.json"
+      },
+      {
+        "absolute_day": 5,
+        "complete": "originals/069-day-05.complete.json",
+        "clock": "originals/070-day-05.clock-complete.json",
+        "arm": "originals/071-r196-s1-days02-24-a01-d05-05-arm.json",
+        "clock_response": "originals/072-r196-s1-days02-24-a01-d05-09-clock-query-0.json",
+        "action_claim": "originals/073-day-05.action-claim.json"
+      },
+      {
+        "absolute_day": 6,
+        "complete": "originals/074-day-06.complete.json",
+        "clock": "originals/075-day-06.clock-complete.json",
+        "arm": "originals/076-r196-s1-days02-24-a01-d06-05-arm.json",
+        "clock_response": "originals/077-r196-s1-days02-24-a01-d06-09-clock-query-0.json",
+        "action_claim": "originals/078-day-06.action-claim.json"
+      },
+      {
+        "absolute_day": 7,
+        "complete": "originals/079-day-07.complete.json",
+        "clock": "originals/080-day-07.clock-complete.json",
+        "arm": "originals/081-r196-s1-days02-24-a01-d07-05-arm.json",
+        "clock_response": "originals/082-r196-s1-days02-24-a01-d07-09-clock-query-0.json",
+        "action_claim": "originals/083-day-07.action-claim.json"
+      },
+      {
+        "absolute_day": 8,
+        "complete": "originals/084-day-08.complete.json",
+        "clock": "originals/085-day-08.clock-complete.json",
+        "arm": "originals/086-r196-s1-days02-24-a01-d08-05-arm.json",
+        "clock_response": "originals/087-r196-s1-days02-24-a01-d08-09-clock-query-0.json",
+        "action_claim": "originals/088-day-08.action-claim.json"
+      },
+      {
+        "absolute_day": 9,
+        "complete": "originals/089-day-09.complete.json",
+        "clock": "originals/090-day-09.clock-complete.json",
+        "arm": "originals/091-r196-s1-days02-24-a01-d09-05-arm.json",
+        "clock_response": "originals/092-r196-s1-days02-24-a01-d09-09-clock-query-0.json",
+        "action_claim": "originals/093-day-09.action-claim.json"
+      },
+      {
+        "absolute_day": 10,
+        "complete": "originals/094-day-10.complete.json",
+        "clock": "originals/095-day-10.clock-complete.json",
+        "arm": "originals/096-r196-s1-days02-24-a01-d10-05-arm.json",
+        "clock_response": "originals/097-r196-s1-days02-24-a01-d10-09-clock-query-0.json",
+        "action_claim": "originals/098-day-10.action-claim.json"
+      },
+      {
+        "absolute_day": 11,
+        "complete": "originals/099-day-11.complete.json",
+        "clock": "originals/100-day-11.clock-complete.json",
+        "arm": "originals/101-r196-s1-days02-24-a01-d11-05-arm.json",
+        "clock_response": "originals/102-r196-s1-days02-24-a01-d11-09-clock-query-0.json",
+        "action_claim": "originals/103-day-11.action-claim.json"
+      },
+      {
+        "absolute_day": 12,
+        "complete": "originals/104-day-12.complete.json",
+        "clock": "originals/105-day-12.clock-complete.json",
+        "arm": "originals/106-r196-s1-days02-24-a01-d12-05-arm.json",
+        "clock_response": "originals/107-r196-s1-days02-24-a01-d12-09-clock-query-0.json",
+        "action_claim": "originals/108-day-12.action-claim.json"
+      },
+      {
+        "absolute_day": 13,
+        "complete": "originals/109-day-13.complete.json",
+        "clock": "originals/110-day-13.clock-complete.json",
+        "arm": "originals/111-r196-s1-days02-24-a01-d13-05-arm.json",
+        "clock_response": "originals/112-r196-s1-days02-24-a01-d13-09-clock-query-0.json",
+        "action_claim": "originals/113-day-13.action-claim.json"
+      },
+      {
+        "absolute_day": 14,
+        "complete": "originals/114-day-14.complete.json",
+        "clock": "originals/115-day-14.clock-complete.json",
+        "arm": "originals/116-r196-s1-days02-24-a01-d14-05-arm.json",
+        "clock_response": "originals/117-r196-s1-days02-24-a01-d14-09-clock-query-0.json",
+        "action_claim": "originals/118-day-14.action-claim.json"
+      },
+      {
+        "absolute_day": 15,
+        "complete": "originals/119-day-15.complete.json",
+        "clock": "originals/120-day-15.clock-complete.json",
+        "arm": "originals/121-r196-s1-days02-24-a01-d15-05-arm.json",
+        "clock_response": "originals/122-r196-s1-days02-24-a01-d15-09-clock-query-0.json",
+        "action_claim": "originals/123-day-15.action-claim.json"
+      },
+      {
+        "absolute_day": 16,
+        "complete": "originals/124-day-16.complete.json",
+        "clock": "originals/125-day-16.clock-complete.json",
+        "arm": "originals/126-r196-s1-days02-24-a01-d16-05-arm.json",
+        "clock_response": "originals/127-r196-s1-days02-24-a01-d16-09-clock-query-0.json",
+        "action_claim": "originals/128-day-16.action-claim.json"
+      },
+      {
+        "absolute_day": 17,
+        "complete": "originals/129-day-17.complete.json",
+        "clock": "originals/130-day-17.clock-complete.json",
+        "arm": "originals/131-r196-s1-days02-24-a01-d17-05-arm.json",
+        "clock_response": "originals/132-r196-s1-days02-24-a01-d17-09-clock-query-0.json",
+        "action_claim": "originals/133-day-17.action-claim.json"
+      },
+      {
+        "absolute_day": 18,
+        "complete": "originals/134-day-18.complete.json",
+        "clock": "originals/135-day-18.clock-complete.json",
+        "arm": "originals/136-r196-s1-days02-24-a01-d18-05-arm.json",
+        "clock_response": "originals/137-r196-s1-days02-24-a01-d18-09-clock-query-0.json",
+        "action_claim": "originals/138-day-18.action-claim.json"
+      },
+      {
+        "absolute_day": 19,
+        "complete": "originals/139-day-19.complete.json",
+        "clock": "originals/140-day-19.clock-complete.json",
+        "arm": "originals/141-r196-s1-days02-24-a01-d19-05-arm.json",
+        "clock_response": "originals/142-r196-s1-days02-24-a01-d19-09-clock-query-0.json",
+        "action_claim": "originals/143-day-19.action-claim.json"
+      },
+      {
+        "absolute_day": 20,
+        "complete": "originals/144-day-20.complete.json",
+        "clock": "originals/145-day-20.clock-complete.json",
+        "arm": "originals/146-r196-s1-days02-24-a01-d20-05-arm.json",
+        "clock_response": "originals/147-r196-s1-days02-24-a01-d20-09-clock-query-0.json",
+        "action_claim": "originals/148-day-20.action-claim.json"
+      },
+      {
+        "absolute_day": 21,
+        "complete": "originals/149-day-21.complete.json",
+        "clock": "originals/150-day-21.clock-complete.json",
+        "arm": "originals/151-r196-s1-days02-24-a01-d21-05-arm.json",
+        "clock_response": "originals/152-r196-s1-days02-24-a01-d21-09-clock-query-0.json",
+        "action_claim": "originals/153-day-21.action-claim.json"
+      },
+      {
+        "absolute_day": 22,
+        "complete": "originals/154-day-22.complete.json",
+        "clock": "originals/155-day-22.clock-complete.json",
+        "arm": "originals/156-r196-s1-days02-24-a01-d22-05-arm.json",
+        "clock_response": "originals/157-r196-s1-days02-24-a01-d22-09-clock-query-0.json",
+        "action_claim": "originals/158-day-22.action-claim.json"
+      },
+      {
+        "absolute_day": 23,
+        "complete": "originals/159-day-23.complete.json",
+        "clock": "originals/160-day-23.clock-complete.json",
+        "arm": "originals/161-r196-s1-days02-24-a01-d23-05-arm.json",
+        "clock_response": "originals/162-r196-s1-days02-24-a01-d23-09-clock-query-0.json",
+        "action_claim": "originals/163-day-23.action-claim.json"
+      },
+      {
+        "absolute_day": 24,
+        "complete": "originals/164-day-24.complete.json",
+        "clock": "originals/165-day-24.clock-complete.json",
+        "arm": "originals/166-r196-s1-days02-24-a01-d24-05-arm.json",
+        "clock_response": "originals/167-r196-s1-days02-24-a01-d24-09-clock-query-0.json",
+        "action_claim": "originals/168-day-24.action-claim.json"
+      },
+      {
+        "absolute_day": 25,
+        "complete": "originals/208-day-01.complete.json",
+        "clock": "originals/209-day-01.clock-complete.json",
+        "arm": "originals/210-r196-s2-abs25-pilot-a01-d01-05-arm.json",
+        "clock_response": "originals/211-r196-s2-abs25-post-a01-d01-02-original-clock-query-0.json",
+        "action_claim": "originals/212-day-01.action-claim.json"
+      },
+      {
+        "absolute_day": 26,
+        "complete": "originals/215-day-02.complete.json",
+        "clock": "originals/216-day-02.clock-complete.json",
+        "arm": "originals/217-r196-s2-abs26-32-a01-d02-05-arm.json",
+        "clock_response": "originals/218-r196-s2-abs26-32-a01-d02-09-clock-query-0.json",
+        "action_claim": "originals/219-day-02.action-claim.json"
+      },
+      {
+        "absolute_day": 27,
+        "complete": "originals/220-day-03.complete.json",
+        "clock": "originals/221-day-03.clock-complete.json",
+        "arm": "originals/222-r196-s2-abs26-32-a01-d03-05-arm.json",
+        "clock_response": "originals/223-r196-s2-abs26-32-a01-d03-09-clock-query-0.json",
+        "action_claim": "originals/224-day-03.action-claim.json"
+      },
+      {
+        "absolute_day": 28,
+        "complete": "originals/225-day-04.complete.json",
+        "clock": "originals/226-day-04.clock-complete.json",
+        "arm": "originals/227-r196-s2-abs26-32-a01-d04-05-arm.json",
+        "clock_response": "originals/228-r196-s2-abs26-32-a01-d04-09-clock-query-0.json",
+        "action_claim": "originals/229-day-04.action-claim.json"
+      },
+      {
+        "absolute_day": 29,
+        "complete": "originals/230-day-05.complete.json",
+        "clock": "originals/231-day-05.clock-complete.json",
+        "arm": "originals/232-r196-s2-abs26-32-a01-d05-05-arm.json",
+        "clock_response": "originals/233-r196-s2-abs26-32-a01-d05-09-clock-query-0.json",
+        "action_claim": "originals/234-day-05.action-claim.json"
+      },
+      {
+        "absolute_day": 30,
+        "complete": "originals/238-day-06.complete.json",
+        "clock": "originals/239-day-06.clock-complete.json",
+        "arm": "originals/240-r196-s2-film-abs30-32-a01-d06-05-arm.json",
+        "clock_response": "originals/241-r196-s2-film-abs30-32-a01-d06-09-clock-query-0.json",
+        "action_claim": "originals/242-day-06.action-claim.json"
+      },
+      {
+        "absolute_day": 31,
+        "complete": "originals/246-day-07.complete.json",
+        "clock": "originals/247-day-07.clock-complete.json",
+        "arm": "originals/248-r196-s2-film-abs30-32-a01-d07-05-arm.json",
+        "clock_response": "originals/249-r196-s2-film-abs30-32-a01-d07-09-clock-query-0.json",
+        "action_claim": "originals/250-day-07.action-claim.json"
+      },
+      {
+        "absolute_day": 32,
+        "complete": "originals/254-day-08.complete.json",
+        "clock": "originals/255-day-08.clock-complete.json",
+        "arm": "originals/256-r196-s2-film-abs30-32-a01-d08-05-arm.json",
+        "clock_response": "originals/257-r196-s2-film-abs30-32-a01-d08-09-clock-query-0.json",
+        "action_claim": "originals/258-day-08.action-claim.json"
+      }
+    ],
+    "segments": [
+      {
+        "segment_id": "R0196-treatment-segment-01",
+        "absolute_day_offset": 0,
+        "admission": "originals/010-segment-01.admission.actual.json",
+        "journal_close": "originals/015-segment-01.journal-close.actual.json",
+        "payment_off_readback": "originals/039-segment-01.payment-off-readback.actual.json",
+        "natural_off_readback": "originals/046-segment-01.natural-off-readback.actual.json",
+        "terminal_cash": "originals/017-r196-s1-close-a01-journal-close-last-complete-cash.json",
+        "terminal_before": "originals/016-r196-s1-close-a01-journal-close-last-complete-cash-before.json"
+      },
+      {
+        "segment_id": "R0196-treatment-segment-02",
+        "absolute_day_offset": 24,
+        "admission": "originals/169-segment-02.admission.actual.json",
+        "journal_close": "originals/174-segment-02.journal-close.actual.json",
+        "payment_off_readback": "originals/198-segment-02.payment-off-readback.actual.json",
+        "natural_off_readback": "originals/205-segment-02.natural-off-readback.actual.json",
+        "terminal_cash": "originals/176-r196-s2-close-a01-journal-close-last-complete-cash.json",
+        "terminal_before": "originals/175-r196-s2-close-a01-journal-close-last-complete-cash-before.json"
+      }
+    ],
+    "stage_chain": [
+      "originals/010-segment-01.admission.actual.json",
+      "originals/015-segment-01.journal-close.actual.json",
+      "originals/020-segment-01.natural-on-ACK.actual.json",
+      "originals/026-segment-01.natural-on-readback.actual.json",
+      "originals/029-segment-01.payment-on-ACK.actual.json",
+      "originals/033-segment-01.payment-off-ACK.actual.json",
+      "originals/039-segment-01.payment-off-readback.actual.json",
+      "originals/042-segment-01.natural-off-ACK.actual.json",
+      "originals/046-segment-01.natural-off-readback.actual.json",
+      "originals/169-segment-02.admission.actual.json",
+      "originals/174-segment-02.journal-close.actual.json",
+      "originals/179-segment-02.natural-on-ACK.actual.json",
+      "originals/185-segment-02.natural-on-readback.actual.json",
+      "originals/188-segment-02.payment-on-ACK.actual.json",
+      "originals/192-segment-02.payment-off-ACK.actual.json",
+      "originals/198-segment-02.payment-off-readback.actual.json",
+      "originals/201-segment-02.natural-off-ACK.actual.json",
+      "originals/205-segment-02.natural-off-readback.actual.json"
+    ],
+    "compare": "originals/003-R07-PAIRED-BASELINES.actual-a01.json",
+    "film": "originals/004-FILM.actual.json",
+    "preview_army_18_target_1032": "originals/268-segment-01.preview-army-18-target-1032.actual.json",
+    "scout_army_18": "originals/271-segment-01.scout-army-18.actual.json",
+    "speed5_ACK": "originals/274-segment-01.speed5-ACK.actual.json",
+    "move_claim": "originals/285-treatment-move.action-claim.json",
+    "speed5_readback": "originals/279-segment-01.speed5-readback.actual.json",
+    "move_ACK": "originals/281-segment-01.move-ACK.actual.json",
+    "move_readback": "originals/286-segment-01.move-readback.actual.json"
+  },
+  "production_consumer_sources": [
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1566054,
+      "sha256": "9a995de4efcbe7967a5f4795e46975897e2e9d7a0faeec4339d194aef0e403c9"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "bytes": 25385,
+      "sha256": "7effbb70b07d0ec1385e58747ff167263fd59e0acd14bf9ea615ee29bdf5cd7f"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_raw4_getter_v1.py",
+      "bytes": 6559,
+      "sha256": "46fca7fd5b65432acadb2063e196b12504d2dc897d6e802a6819b43d8cee9706"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/nonwar_private_build.py",
+      "bytes": 2663,
+      "sha256": "fe1a53ca0f01e60ae37231e3b1a566442454f3bb77afd33b616849b25f6d53e9"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/version_identity.py",
+      "bytes": 2114,
+      "sha256": "9f7665ed680238f6904bc3ef22e1d67ef9b4ccd047e699542d5dbaff24b01086"
+    },
+    {
+      "repository_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/r07_v2_contract.py",
+      "bytes": 12674,
+      "sha256": "0638b2e3c44f59524de731114099d1028aa490b0cf968949196b9d5312cdf138"
+    }
+  ],
+  "control_source_refs": {
+    "ROOT-DELIVERY.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\ROOT-DELIVERY.actual-a01.json",
+      "bytes": 3619,
+      "sha256": "661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9"
+    },
+    "R195-CONTROL-EVIDENCE.actual-a01.zip": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.actual-a01.zip",
+      "bytes": 90694,
+      "sha256": "a8d40c46cf79cd141abf1cad4045d51f28aa4a195e7fc3c88d40b97108e0974b"
+    },
+    "R195-CONTROL-EVIDENCE.manifest-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.manifest-a01.json",
+      "bytes": 131268,
+      "sha256": "19fda8634db6ac2c4bb946703c5cc1106cef5347a704da3b4d67a07f71de3fc5"
+    },
+    "PRODUCTION-REPLAY.actual-a01.json": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\PRODUCTION-REPLAY.actual-a01.json",
+      "bytes": 6294,
+      "sha256": "df354c2b373be9e1a3dc04c25d38bc6ab9949b875ee5dd61180e011e4de8da24"
+    }
+  },
+  "source_S0": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-17T00:15:32.210687+00:00",
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0191",
+    "save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73689246,
+      "sha256": "bc3d40861e908ba8b05d5c86094a0ff7a399216ef0e4d0c1a72f166559b40ca2"
+    },
+    "receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-02-save-once.json",
+      "bytes": 20444,
+      "sha256": "0a4e301c6e15a977b5fb200d542be178c7792099b1fcff6b0bd2180f367220aa"
+    },
+    "build_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\prepared-a01\\prepared.json",
+      "bytes": 11732,
+      "sha256": "8f735ec119efce13f472d1ac2fca68f7f76e7b91ccbac91f9dd45dcfb1d3e304"
+    },
+    "date_raw": 53148192,
+    "actor_id": 31254,
+    "normal_save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\r191-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 3998,
+      "sha256": "5b45675c7e16cb43128df2d5e887d46d73ac4b9a055d983ee29cd76f59162784"
+    },
+    "bootstrap": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\bootstrap-result.json",
+      "bytes": 15366,
+      "sha256": "c380c33474a10c9eedfa289e77c083436a1041081c2166b7bb078ea2581c2cd8"
+    },
+    "screen_release": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\r191-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4847,
+      "sha256": "2c4592332a7c188931e3877dc60b16d6f98a9bde3a6fff99440b336d113e5bc0"
+    },
+    "snapshot": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-03-after-snapshot.json",
+      "bytes": 127301,
+      "sha256": "b38b2eae5aa5f174a90010bd8cf437303c3660ce3d4c40803242885b67ce725f"
+    },
+    "native_candidates": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-04-capabilities.json",
+      "bytes": 120908,
+      "sha256": "1ce570e71867cae07d182fdd8d4d35cdf544fd3084b240297f173956ae66dfc5"
+    },
+    "candidate_steps": [
+      "preview-move-army-18-to-1032",
+      "preview-move-army-18-to-1036",
+      "preview-move-army-18-to-1038",
+      "preview-move-army-18-to-2619",
+      "preview-move-army-18-to-2624",
+      "preview-move-army-18-to-2645",
+      "preview-move-army-18-to-8645",
+      "preview-move-army-18-to-8651",
+      "preview-move-army-18-to-8653"
+    ],
+    "army_id": 18,
+    "start_province_id": 2635,
+    "source_state": "sieging",
+    "actual_fresh_route_legal": false,
+    "large_save_read_bytes": 0,
+    "large_save_sha_recomputed": false,
+    "required_before_new_load": "Stock prepare must copy/hash exact original bytes; no old runtime/epoch reuse"
+  },
+  "archive_uncompressed_bytes": 10019766,
+  "scope": {
+    "role": "treatment",
+    "actual_days": 32,
+    "R195_control_copied": false,
+    "full_v2_qualified": false,
+    "original_R07_v1_qualified": false,
+    "zero_fee_proved": false,
+    "normal_close_included": false,
+    "film_dynamic_qualified": false,
+    "maintenance_attribution": "unclosed",
+    "SDK_calls": 0,
+    "desktop_calls": 0,
+    "Driver_or_save_body_read_bytes": 0,
+    "archive_extracted_to_disk": false
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "review_due_utc": "2026-10-24T02:40:19.823624+00:00",
+    "protected_reason": "Current R07 paired-arm research source and actual boarding attribution frontier",
+    "shared_pool_bytes": 134217728,
+    "this_root_limit_bytes": 1048576,
+    "new_reservation": false
+  }
+}

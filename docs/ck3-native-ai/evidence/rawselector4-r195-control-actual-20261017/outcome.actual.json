@@ -1,0 +1,107 @@
+{
+  "schema": "xar.raw4-r195-two-terminal-outcome.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:45:50.413835+00:00",
+  "sessions": [
+    {
+      "session": "s1",
+      "date_raw": 53148768,
+      "public_revision": 84,
+      "native_revision": 83,
+      "pid": 29000,
+      "process_create_time_100ns": 134366728035105406,
+      "connection_generation": 1,
+      "character_full_id": 31254,
+      "window": 1,
+      "payment_epoch": 1,
+      "installed": true,
+      "install_failure_flags": 0,
+      "sampling_enabled_in_frozen_preOFF_packet": true,
+      "sampling_busy": false,
+      "payment_records": 12,
+      "natural_parent_returns": 48,
+      "payment_kind_counts": {
+        "0": 11,
+        "2": 1
+      },
+      "natural_phase_counts": {
+        "1": 24,
+        "2": 24
+      },
+      "raw4_child_present": true,
+      "raw4_read_complete": true,
+      "raw4_retained": 0,
+      "raw4_latest": 0,
+      "raw4_overwritten": 0,
+      "raw4_publication_failures": 0,
+      "qualified_raw4_reads": 0,
+      "production_consumer_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\S1-TERMINAL-CONSUMED.actual-a01.json",
+        "bytes": 3010,
+        "sha256": "6592f3910215840475f7ecbb8e3688d74a5057129e17928ec2a44e97a69d25f7"
+      }
+    },
+    {
+      "session": "s2",
+      "date_raw": 53148960,
+      "public_revision": 110,
+      "native_revision": 109,
+      "pid": 29000,
+      "process_create_time_100ns": 134366728035105406,
+      "connection_generation": 1,
+      "character_full_id": 31254,
+      "window": 3,
+      "payment_epoch": 3,
+      "installed": true,
+      "install_failure_flags": 0,
+      "sampling_enabled_in_frozen_preOFF_packet": true,
+      "sampling_busy": false,
+      "payment_records": 2,
+      "natural_parent_returns": 16,
+      "payment_kind_counts": {
+        "0": 2
+      },
+      "natural_phase_counts": {
+        "1": 8,
+        "2": 8
+      },
+      "raw4_child_present": true,
+      "raw4_read_complete": true,
+      "raw4_retained": 0,
+      "raw4_latest": 0,
+      "raw4_overwritten": 0,
+      "raw4_publication_failures": 0,
+      "qualified_raw4_reads": 0,
+      "production_consumer_result": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\S2-TERMINAL-CONSUMED.actual-a01.json",
+        "bytes": 3010,
+        "sha256": "8d9141ae9710f0fe7d08fc8699d11fa64ada82ba80476a6d7c5d12b9d1c3e777"
+      }
+    }
+  ],
+  "conclusion": "Both complete frozen preOFF windows published raw4 child and passed production consumer; zero retained selector4 entries in the owned-player scope.",
+  "owned_scope": "CharacterFullID31254; exact PID/create/generation/window/epoch and endpoint dates listed separately.",
+  "actual_raw4_natural_caller_observed": false,
+  "next_source_read_performed": false,
+  "next_source_reason": "No actual raw4 caller return PC exists in either retained journal to follow.",
+  "schema_publication_qualified": true,
+  "actual_per_record_field_population_qualified": false,
+  "current_normalizer_wiring_bug_observed": false,
+  "implementation_changed": false,
+  "frozen_packet_sampling_state_is_not_current_state": true,
+  "actual_OFF_and_exit0": "Reported byRoot and outside these preOFF cash originals; not requalified by this offline consumption.",
+  "not_claimed": [
+    "global function-call absence",
+    "zero fees or paid maintenance",
+    "a resource/currency name",
+    "a rate or cadence",
+    "entire runtime business qualification"
+  ],
+  "raw_original_archive": "Root/R07portable owner will archive all exact末cash/snapshots once; this root does not duplicate them.",
+  "replay_requirement": "Use exact four original pins from R07portable to rerun full production consumer; selected literal alone is insufficient.",
+  "new_sdk_game_desktop_calls": 0,
+  "new_native_builds": 0,
+  "new_exe_reads": 0,
+  "new_matrix_tests": 0,
+  "main_writes": 0
+}

@@ -1,0 +1,75 @@
+{
+  "schema": "xar.C-shader-BATCH02-canonical-small-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "prepared_at_utc": "2026-10-17T01:55:30.960295+00:00",
+  "source_execution_observed_at_utc": "2026-10-17T01:46:40.572625+00:00",
+  "source_independent_readback_observed_at_utc": "2026-10-17T01:47:24.889911+00:00",
+  "policy_version": "1.0.0",
+  "policy_repo_path": "docs/storage-retention-policy.json",
+  "policy_sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5",
+  "files": [
+    {
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-emergency-readonly-a01\\BATCH02.plan.readonly-a01.json.gz",
+      "bytes": 22128,
+      "sha256": "a9af63a804bd575cc4a7d63989dc41315f204becd49b791c8a0469a24b9be217",
+      "relative_target": "docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/BATCH02.plan.exact.json.gz",
+      "role": "exact-plan",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "preserve_original_bytes": true,
+      "copy_kind": "read_existing_small_source_only"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-shader-batch02-review-a01\\execution-a01\\ROOT-ADOPTION.actual.json",
+      "bytes": 2530,
+      "sha256": "953f13460d388e8b59a80b5c5fd177c88c1672ac21858c091971737b66da5ac6",
+      "relative_target": "docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/Root-adoption.actual.json",
+      "role": "Root-authorization",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "preserve_original_bytes": true,
+      "copy_kind": "read_existing_small_source_only"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-shader-batch02-review-a01\\execution-a01\\ROOT-DELIVERY.actual.json",
+      "bytes": 2222,
+      "sha256": "c59a2e13acdd99e88451fdf22b694a2b5d4e27a765f2d25c346305a080fa4c06",
+      "relative_target": "docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/result.actual.json",
+      "role": "actual-result",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "preserve_original_bytes": true,
+      "copy_kind": "read_existing_small_source_only"
+    },
+    {
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-shader-batch02-review-a01\\execution-a01\\INDEPENDENT-READBACK.actual.json",
+      "bytes": 2619,
+      "sha256": "f7f4c7c31e554caad33c1bbfc4402b3c4faef9fe17aa8d8b541f1fbef8e48719",
+      "relative_target": "docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/independent-readback.actual.json",
+      "role": "independent-availability",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "preserve_original_bytes": true,
+      "copy_kind": "read_existing_small_source_only"
+    }
+  ],
+  "original_absolute_references": "Source JSON bytes are unchanged. Resolve canonical copies using this index; internal absolute host references remain historical.",
+  "actual_this_batch": {
+    "deleted": 1000,
+    "C_singlelink_allocation_bytes": 90095616,
+    "C_logical_bytes": 88172068,
+    "D_allocation_bytes": 0,
+    "failed_or_retained": 0
+  },
+  "availability": "Only the exact1000 shader originals are deleted_unavailable, independently observed at the original readback time; no same-name replacement created.",
+  "remaining9498_unapproved_candidates_untouched": true,
+  "original_fixed_authorization_start_utc": "2026-10-17T01:45:31+00:00",
+  "original_fixed_authorization_cutoff_utc": "2026-10-17T02:15:31+00:00",
+  "source_receipts_only_no_fresh_cleanup_or_inventory_or_retest": true,
+  "prior669929472_or1397OBJ_cleanup_credit_repeated": 0,
+  "free_delta_not_attributed_to_cleanup": true,
+  "worker_registered_capacity_ledger_or_registry_credit": false,
+  "new_capacity_reservation": 0,
+  "automatic_gc": false,
+  "retention": {
+    "small_record_review_days": 180,
+    "detailed_plan_review_days": 30,
+    "auto_renew": false
+  }
+}

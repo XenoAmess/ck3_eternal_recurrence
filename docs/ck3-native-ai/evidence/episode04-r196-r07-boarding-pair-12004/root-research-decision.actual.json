@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.root-research-card-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-17T02:51:03+00:00",
+  "reviewer": "/root",
+  "historical_source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "card": "R07-v2",
+  "decision": "adopt_existing_v2_design_and_close_research_core",
+  "adopted_contract": "docs/ck3-native-ai/episode04-r07-v2-boarding-control-12004.md",
+  "assessment": {"path": "C:/ck3-e04-resume-20261015-a01/r196-r07-treatment-portable-a01/CLOSED-PAIR-ASSESSMENT.actual-a01.json", "bytes": 1815, "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"},
+  "production_replay": {"path": "C:/ck3-e04-resume-20261015-a01/r196-r07-treatment-portable-a01/PRODUCTION-PAIR-REPLAY.actual-a01.json", "bytes": 16094, "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"},
+  "original_card_comparison": {"path": "C:/ck3-e04-resume-20261015-a01/r196-r07-treatment-portable-a01/ORIGINAL-CARD-COMPARISON.actual-a01.json", "bytes": 3355, "sha256": "7c452dfebaa3c87f5d4793798a37e19e3ab70c3877e34d2b27756d8b98890c63"},
+  "basis": "Existing v2 bounded design: independent normal loads of the same S0, matched whole DATA/commander/supply/treasury, same source/DLL, 32 exact natural days per arm and source-qualified actual boarding SUB with independently identified payer and exact account write. Both arms normally closed.",
+  "observed_fee": {"amount_raw": 300000, "scale": 100000, "gold": 3, "payer_character_id": 31254, "public_army_id": 18, "native_army_id": 18, "province_id": 1032},
+  "original_R07_v1_qualified": false,
+  "original_v1_unmet": ["single window maximum 7 actual days", "avoid economic settlement opportunities"],
+  "limits": ["One actual payment, not a universal tariff", "No source-bound quote", "No zero-fee claim", "No maintenance attribution", "No commander causal comparison", "No clean dynamic or human video signoff credit"],
+  "progress_under_adopted_current_design": {"research_closed": 9, "research_total": 14, "business_closed": 6, "business_total": 11, "qualified_dynamic": 0, "dynamic_total": 11, "formal_abc_closed": 0, "formal_abc_total": 3},
+  "strict_original_v1_progress": {"research_closed": 8, "research_total": 14, "business_closed": 5, "business_total": 11},
+  "R01_prior_decision_already_counted": true,
+  "video_signoff": false
+}

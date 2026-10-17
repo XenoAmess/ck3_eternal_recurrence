@@ -1,0 +1,69 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "observed_at_utc": "2026-10-17T01:45:11.921654+00:00",
+  "files": [
+    {
+      "relative_path": "ACTUAL.json",
+      "bytes": 12295,
+      "sha256": "6f0e0cdc3de3148b5b7c8a6b37b4a0e509b6b7f6a898ffa9ff94d936a95005dc"
+    },
+    {
+      "relative_path": "BEFORE-FRAME.actual.json",
+      "bytes": 411,
+      "sha256": "873e6d42d6a1c255c7d47b76cf204654afcdd6cc5b20059b5c9a6077ba0abea6"
+    },
+    {
+      "relative_path": "CLAIM.actual.json",
+      "bytes": 1859,
+      "sha256": "8b54296889374986ddae10a6851a013a372b459b5d4b7151fa41233f45de22d7"
+    },
+    {
+      "relative_path": "consumer/gui_callback_binding_12004_contract.py",
+      "bytes": 8556,
+      "sha256": "399357ce80e15d61b6e317fe4e8e5e47cc99f54118ad7d9468421cf1383be6f9"
+    },
+    {
+      "relative_path": "consumer/gui_refill_receiver_candidates_12004_contract.py",
+      "bytes": 28845,
+      "sha256": "eb865e4db2e13531c241cec070c04fdf132cc3d52e676b71e5d96c2af1f4b2c2"
+    },
+    {
+      "relative_path": "FENCE-FRAME.actual.json",
+      "bytes": 410,
+      "sha256": "6ef38cb723dceb3fed0d1275164b367ee6482223d5766f6fdfbadbd000482f04"
+    },
+    {
+      "relative_path": "IDENTITY.actual.json",
+      "bytes": 7898,
+      "sha256": "189db29e1eae235bf439b19c4816039f21a9c80675613e894d1721257a0289b6"
+    },
+    {
+      "relative_path": "OPENER-ENDPOINT.actual.json.gz",
+      "bytes": 7960,
+      "sha256": "27150640881c1526040baae493ea99deac27289f00ab7bcdd8859bbcb47ed82b"
+    },
+    {
+      "relative_path": "PACKET.actual.json",
+      "bytes": 3439,
+      "sha256": "c4277470194f09a5cf6175cb0b770db3f9eb17a4d2a3ba5f4d7f612c52d2faa1"
+    },
+    {
+      "relative_path": "REQUEST.actual.json",
+      "bytes": 184,
+      "sha256": "7ecf8b56374c9c8e31bd7d4069622cec537ac473ec49a81d926682701558a6a5"
+    },
+    {
+      "relative_path": "RESULT.actual.json",
+      "bytes": 1566,
+      "sha256": "a6863011a3233e448fdaa01403bdc770d36d2b33cfecd8fae168d8d8bfdf89ac"
+    },
+    {
+      "relative_path": "verify_portable.py",
+      "bytes": 8698,
+      "sha256": "f7fc2672f1c0e1e8c2690604a816e9e1e7611c1fc6c773d849b7e3b7968f4d6c"
+    }
+  ],
+  "original_endpoint_not_duplicated": true,
+  "original_bytes_preserved_by": "lossless deterministic gzip, mtime0"
+}

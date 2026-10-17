@@ -1,0 +1,156 @@
+{
+  "schema": "xar.raw4-r195-canonical-provenance.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:55:56.985304+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "ck3_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "terminal_delivery": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\ROOT-TERMINAL-DELIVERY.actual-a01.json",
+    "bytes": 5409,
+    "sha256": "992f1f537eb188767086a2181af65ef73c7aeab2f2eca27461d1505f9695ffd8"
+  },
+  "terminal_literal_reference_only": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\TERMINAL-LITERAL.actual-a01.json",
+    "bytes": 86166,
+    "sha256": "c1808bc47bd178d57d567cf5ff4a473d6d2fa87ba92873139132a8b88e3b2eb4"
+  },
+  "exact_small_copies": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\S1-TERMINAL-CONSUMED.actual-a01.json",
+        "bytes": 3010,
+        "sha256": "6592f3910215840475f7ecbb8e3688d74a5057129e17928ec2a44e97a69d25f7"
+      },
+      "target": "docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/s1-consumed.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\S2-TERMINAL-CONSUMED.actual-a01.json",
+        "bytes": 3010,
+        "sha256": "8d9141ae9710f0fe7d08fc8699d11fa64ada82ba80476a6d7c5d12b9d1c3e777"
+      },
+      "target": "docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/s2-consumed.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\TERMINAL-OUTCOME.actual-a01.json",
+        "bytes": 3924,
+        "sha256": "ddd1c7ddf1eb4e8552e5472c94581248266415ecbd5755866e6028d8f9b9bc92"
+      },
+      "target": "docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/outcome.actual.json"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\CASH-PERSONAL-ADD-CLARIFICATION.actual-a01.json",
+        "bytes": 2401,
+        "sha256": "26f3d7360bb354868cbd398441c9be1ca474c87fdbf80442717eb838355989d7"
+      },
+      "target": "docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/cash-personal-add-clarification.actual.json"
+    }
+  ],
+  "source_originals_reference_only": [
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash.json",
+      "run_relative": "responses/r195-s1-close-a01-journal-close-last-complete-cash.json",
+      "bytes": 456600,
+      "sha256": "780b1242e3307b15e25dff4ec5396c746fbc7c28cb866e1aeec4a2978de528e4"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash-before.json",
+      "run_relative": "responses/r195-s1-close-a01-journal-close-last-complete-cash-before.json",
+      "bytes": 139013,
+      "sha256": "961e5c2d4429b4a45f0be57f818fca56f0125c24234eecea8828e11aa042d9f8"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s2-close-a01-journal-close-last-complete-cash.json",
+      "run_relative": "responses/r195-s2-close-a01-journal-close-last-complete-cash.json",
+      "bytes": 127749,
+      "sha256": "4bd8d2cc56aef19550ff3c358ec9a74967ff865c3a9496907b89a4f22ec5f0ad"
+    },
+    {
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s2-close-a01-journal-close-last-complete-cash-before.json",
+      "run_relative": "responses/r195-s2-close-a01-journal-close-last-complete-cash-before.json",
+      "bytes": 138965,
+      "sha256": "7a0f46bca563951b5dae13dc1515939696fc906a49d70e74c3df7e8e0e9662c9"
+    }
+  ],
+  "journal_pointer": "/body/war_payment_observations_v1",
+  "snapshot_pointer": "/body",
+  "production_consumer": "xar_autoplayer.bridge.war_payment_raw4_getter_v1.consume_raw4_getter_observations",
+  "production_consumer_sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "bytes": 25385,
+      "sha256": "7effbb70b07d0ec1385e58747ff167263fd59e0acd14bf9ea615ee29bdf5cd7f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_raw4_getter_v1.py",
+      "bytes": 6559,
+      "sha256": "46fca7fd5b65432acadb2063e196b12504d2dc897d6e802a6819b43d8cee9706"
+    }
+  ],
+  "original_consumer_helper": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\consume_actual.py",
+    "bytes": 4173,
+    "sha256": "1aebee3a5b20f7c78833ec500809a94dc7466cfad4eb51c41d7035dfdf40d33a"
+  },
+  "original_execution_argv": [
+    [
+      "py",
+      "-B",
+      "consume_actual.py",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--journal-packet",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash.json",
+      "--journal-pointer",
+      "/body/war_payment_observations_v1",
+      "--snapshot-packet",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash-before.json",
+      "--snapshot-pointer",
+      "/body",
+      "--machine-id",
+      "desktop-3fevhd2-1c74096080",
+      "--output",
+      "S1-TERMINAL-CONSUMED.actual-a01.json"
+    ],
+    [
+      "py",
+      "-B",
+      "consume_actual.py",
+      "--repo",
+      "D:\\workspace\\ck3_eternal_recurrence",
+      "--journal-packet",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s2-close-a01-journal-close-last-complete-cash.json",
+      "--journal-pointer",
+      "/body/war_payment_observations_v1",
+      "--snapshot-packet",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s2-close-a01-journal-close-last-complete-cash-before.json",
+      "--snapshot-pointer",
+      "/body",
+      "--machine-id",
+      "desktop-3fevhd2-1c74096080",
+      "--output",
+      "S2-TERMINAL-CONSUMED.actual-a01.json"
+    ]
+  ],
+  "original_execution_exit_codes": [
+    0,
+    0
+  ],
+  "independent_saved_snapshot_used": true,
+  "snapshot_synthesized": false,
+  "archive_policy": "Exact4 originals belong to Root/R07 portable archive; no duplicate largecash/snapshot or day1ZIP here.",
+  "replay_requirement": "Retrieve exact four original pins from the R07 portable archive and use the pinned productionconsumer; these selected small outputs alone do not replace complete journal input.",
+  "current_task_replayed_consumer": false,
+  "current_task_read_large_originals": false,
+  "current_task_new_source_research": false,
+  "qualification": "Actual published complete raw4 child + strict saved-packet consumer PASS in two owned-player windows; zero retainedraw4. No positive caller/per-record-population/currency/rate/payment or R06 qualification."
+}

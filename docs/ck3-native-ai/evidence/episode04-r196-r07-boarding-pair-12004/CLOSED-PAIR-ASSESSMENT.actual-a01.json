@@ -1,0 +1,50 @@
+{
+  "schema": "xar.e04.r195-r196-r07-v2-research-core-closure.v1",
+  "producer_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_ids": [
+    "desktop-3fevhd2-1c74096080--vanilla--R0195",
+    "desktop-3fevhd2-1c74096080--vanilla--R0196"
+  ],
+  "R07_v2_research_core_closed": true,
+  "two_fresh_arm_pair_complete": true,
+  "exact_days_each": 32,
+  "positive_sourcequalified_personal_SUB": [
+    {
+      "segment_id": "R0196-treatment-segment-02",
+      "payment_epoch": 3,
+      "controlled_window_id": 3,
+      "writer_sequence": 3,
+      "transition_sequence": 5,
+      "gateway_sequence": 4,
+      "account_kind": 0,
+      "payer_character_id": 31254,
+      "land_id": null,
+      "requested_amount_raw": 300000,
+      "entry_balance_bits": 26010399,
+      "returned_balance_bits": 25710399,
+      "returned_balance_matches_requested_sub": true,
+      "transition_army_full_id": 18,
+      "requested_public_unit_id": 18,
+      "transition_province_id": 1032
+    }
+  ],
+  "normal_checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74482297,
+    "sha256": "92237e6bee34b1cefac1b6ebe517d40055461c49fcba86cd1f4a2951d0e83f81"
+  },
+  "both_arms_normal_exit0": true,
+  "screen_released_and_resources_empty": true,
+  "old_control_replayed": false,
+  "payment_consumer_replayed_in_close_append": false,
+  "single_window_consumer_outputs_full_v2_qualified_remain_false": true,
+  "original_R07_v1_qualified": false,
+  "zero_fee_proved": false,
+  "maintenance_attribution": "unclosed",
+  "film_dynamic_qualified": false,
+  "film_PTS_coverage_qualified": false,
+  "film_human_signoff": false,
+  "SDK_calls": 0,
+  "archive_extracted_to_disk": false
+}

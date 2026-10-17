@@ -1,5 +1,23 @@
 # 第4期研究总账：行军、补给与损耗
 
+## 2026-10-17 02:51 UTC R07-v2采纳与原v1边界并列
+
+`machine_id: desktop-3fevhd2-1c74096080`。[Root R07-v2研究决策](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json)原件2,371 B／SHA-256 `1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f`签出既有v2设计的研究核心；含此前已计入R01，当前研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，合格动态 **0/11**、正式ABC **0/3**。须并列保存原R07-v1严格卡仍false：七日单窗与避经济机会未满足；若按原卡不采纳v2，研究 **8/14（57.14%）**、业务 **5/11（45.5%）**。 R195/R196同正常S0／source611／a33双独立32日配对，R196在1032由payer31254个人账户出现一次实际SUB3金币，原生精确account write及生产pair replay已留证。此为一次付款，不证明普遍费率、source-bound quote、零费、维护归因或统帅因果；单窗consumer `full_v2_qualified=false`原结果保留，Root采纳的是v2研究核心而非把该字段改写为true。 [R196有限媒体实际原件](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json)20,836 B／SHA-256 `26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403`：原片2,369帧／编码78.966秒、墙钟82.824864秒，可用流全解码exit0，PTS无缺失/回退；八张实际帧只见陆营38秒→船面板41秒，视觉转场界于(38,41]秒。这个区间不是native callback精确PTS，也不能由八帧推出连续clean、完整1×或人工签核；动态维持0/11。 本节只结实际新分子，不覆盖原卡失败、小样本或历史source时点。
+
+
+## 2026-10-17 02:44 UTC 新研究决定与R07双臂实际结果
+
+`machine_id: desktop-3fevhd2-1c74096080`、source `611bc985ae95f477dd7314df11f8602cd1e595f3`／a33。Root签署[R01原卡采纳](../../../docs/ck3-native-ai/episode04-r196-r01-ready-t0-12004.md)：目标2644、陆路2645、2619具名补给候选eligible+20；因敌持路径与未抵达/未涨库存，研究核 **8/14（57.14%）**、业务仍 **5/11（45.5%）**、动态 **0/11**、ABC **0/3**。原件Root decision 1,678 B／SHA-256 `a35db9b9920eee515304fc912c90d357c0a850e6a56cdd470eeb264d61377c4a`。
+
+R195 control32和R196独立treatment32同R191正常S0/source/DLL，双基线PASS；R196逐日clock1/overshoot0，第31日在1032 embarked/route empty。production pair replay 16,094 B／SHA-256 `6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af`，个人钱包实见payer31254 SUB3金币，正常Save/exit0/release。R07 owner仍要审原v2卡、费用归因及资格边界，本节不自行升R07或计数。R196 FILM正常Finish、wall82.824864秒，raw49,062,501 B/SHA `7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9`；媒体全解码、clean、1×和签核在实际回执前unknown。R04/R06新source候选31路径、a34两fixture仅准备，不是已构建/native live正例。
+
+## 2026-10-17 01:54 UTC 研究分层快照：R195控制臂32日
+
+`machine_id: desktop-3fevhd2-1c74096080`、source `611bc985ae95f477dd7314df11f8602cd1e595f3`／a33。R195从R191正常S0推进32个独立精确日，clock每日1、overshoot0；第25日PAM原处理后只补读，不重投Arm/Resume。终端窗natural48/payment12与natural16/payment2、0 overwrite，经[控制臂便携生产重放](C:/ck3-e04-resume-20261015-a01/r195-r07-control-portable-a01/ROOT-DELIVERY.actual-a01.json)（3,619 B，SHA-256 `661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9`）核验；正常Save/exit0/release。它只闭R07控制臂，未产生独立处理臂、登船费用因果或零费结论，maintenance归因未闭。R196同S0/同611a33独立处理臂已启动，截止03:15:28 UTC；map、baseline、Move、录像均在本快照未得，不能提前记合格配对。
+
+Root报告R06 a44 507 census新owner military `4A9`／raw1、enabled=true但无provider调用/toggle/ADD；raw4两窗口child真实发布且0 callers，cashpersonal_add不能替代付款证据。R195首海preview route `[1032]`可用、definitions 1→0，县边P=false另列。以上局部结果及ABC canonical22路径候选不增加卡数；研究 **7/14（50.0%）**、业务 **5/11（45.5%）**、合格动态 **0/11**、ABC **0/3**。控制与处理臂正常闭场前保持source611/a33冻结，后续便携和源码统一入库；本节不把Root现场汇报冒充本lane独立原生重放。
+
+
 ## 2026-10-17 00:19 UTC 最新研究卡与机器资格
 
 `machine_id: desktop-3fevhd2-1c74096080`。[R191原生7笔围城物理扣兵11](../../../docs/ck3-native-ai/episode04-r191-window-capture-12004.md)是R03独立补证；[R192正向](../../../docs/ck3-native-ai/episode04-r192-forward-split-merge-12004.md)和[R193同S0反向](../../../docs/ck3-native-ai/episode04-r193-reverse-pair-12004.md)完成双臂数值；[R194正向专题](../../../docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md)与[Root独立研究决策](../../../docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)（原件2,635 B／SHA-256 `e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c`）已闭R09研究和业务。当前研究 **7/14（50.0%）**、业务 **5/11（45.5%）**；clean、完整1×人审及最终影片未签，动态 **0/11**、ABC **0/3**。strict false保留具名零DATA角色例外、未宣称全roster兵力，distinct-stock/正clamp与birth PC仍未证，不把同值样本叫付款。

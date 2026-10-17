@@ -1,0 +1,35 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "claim": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\R06-CONTROL-OPENER.once.claim.json",
+    "bytes": 1859,
+    "sha256": "8b54296889374986ddae10a6851a013a372b459b5d4b7151fa41233f45de22d7"
+  },
+  "opener_call_entered": true,
+  "opener_verified": true,
+  "fence_verified": true,
+  "tree_query_submitted": false,
+  "Move_or_Resume_submitted": false,
+  "close_attempted": false,
+  "Driver_raw_read": false,
+  "endpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\r06-control-opener-a01\\OPENER-ENDPOINT.actual.json",
+    "bytes": 239540,
+    "sha256": "4327754594ed01fa69d74589cb7a49f23b0e425c2146548c687cdda010d9ecdf"
+  },
+  "family_consumption": "PRODUCTION_CALLBACK_FAMILY_STRICTLY_CONSUMED_SOURCE_ONLY",
+  "fence": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\r06-control-opener-a01\\FENCE-FRAME.actual.json",
+    "bytes": 410,
+    "sha256": "6ef38cb723dceb3fed0d1275164b367ee6482223d5766f6fdfbadbd000482f04"
+  },
+  "status": "OPENER_VERIFIED_AND_FENCED_SOURCE_ONLY",
+  "observed_at_utc": "2026-10-17T01:41:23.006882+00:00",
+  "SDK_relay_top_level_requests": 3,
+  "top_level_opener_calls": 1,
+  "native_receiver_selected": false,
+  "provider_execution": false,
+  "internal_opener_reads": "Existing bounded production coordinator only; no separate tree request here"
+}

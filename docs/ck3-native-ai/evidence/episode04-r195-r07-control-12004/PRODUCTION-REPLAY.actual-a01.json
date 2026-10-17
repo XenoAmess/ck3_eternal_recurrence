@@ -1,0 +1,173 @@
+{
+  "status": "HISTORICAL_CONTROL32_AND_TWO_TERMINAL_WINDOWS_REPLAYED",
+  "producer_machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "actual_distinct_completed_days": 32,
+  "segments": [
+    {
+      "segment_id": "R0195-control-segment-01",
+      "date_raw": 53148768,
+      "window": 1,
+      "payment_epoch": 1,
+      "natural_epoch": 1,
+      "natural_records": 48,
+      "payment_records": 12,
+      "production_consumer_result": {
+        "schema": "xar.e04.r07-v2-window-slice.v1",
+        "producer_machine_id": "desktop-3fevhd2-1c74096080",
+        "segment_identity": {
+          "segment_id": "R0195-control-segment-01",
+          "pid": 29000,
+          "create_filetime": 134366728035105406,
+          "generation": 1,
+          "episode": "native-31254-d5ea28d864bc",
+          "payment_epoch": 1,
+          "window_id": 1
+        },
+        "date_raw": 53148768,
+        "native_date_storage_u64_raw": 300336076536085600,
+        "native_date_i32_low32": 53148768,
+        "native_date_high32_is_not_a_date": true,
+        "latest_sequence": 12,
+        "natural_retained_records": 48,
+        "payment_retained_records": 12,
+        "renewal_review_required": true,
+        "selected_army_boarding_callbacks": [],
+        "other_army_boarding_callbacks": [],
+        "generic_wallet_callbacks_unattributed": [
+          {
+            "segment_id": "R0195-control-segment-01",
+            "journal_sequence": 3,
+            "amount_raw": 205712,
+            "resource_kind_raw": -1,
+            "component_raw": -1,
+            "caller_return_rva": 42626428,
+            "generic_wallet_context_v1": {
+              "schema_version": 1,
+              "source_entry_rva": 42626320,
+              "source_wallet_return_rva": 42626428,
+              "attribution_scope": "raw_source_context_and_unwind_parent_only",
+              "maintenance_attribution": "unclosed",
+              "before": {
+                "context_identity_before": 2566692855024,
+                "context_identity_after": 2566692855024,
+                "value_2c0": 423188,
+                "value_2c8": 0,
+                "value_28": 217476,
+                "value_30": 0,
+                "capture_complete": true,
+                "context_stable": true,
+                "failed_reads": 0
+              },
+              "after": {
+                "context_identity_before": 2566692855024,
+                "context_identity_after": 2566692855024,
+                "value_2c0": 423188,
+                "value_2c8": 0,
+                "value_28": 217476,
+                "value_30": 0,
+                "capture_complete": true,
+                "context_stable": true,
+                "failed_reads": 0
+              },
+              "parent_trace": {
+                "module_base": 140699899199488,
+                "module_image_size": 102518784,
+                "reported_frame_count": 18,
+                "capture_succeeded": true,
+                "truncated": false,
+                "caller_match_count": 1,
+                "frames_absolute": [
+                  140714893469431,
+                  140714893462232,
+                  140714893453720,
+                  140714893466371,
+                  140714893472548,
+                  140699941825916,
+                  140699942156601,
+                  140699959462904,
+                  140699959462988,
+                  140699942247750,
+                  140699965852274,
+                  140699965858255,
+                  140699965852490,
+                  140699966033665,
+                  140699966034138,
+                  140699968688016,
+                  140718715925380,
+                  140718722763921
+                ],
+                "parent_return_absolute": 140699942156601,
+                "parent_return_rva": 42957113,
+                "parent_in_same_image": true
+              },
+              "before_computed_add_raw": 205712,
+              "before_formula_matches_amount": true,
+              "context_values_stable": true
+            },
+            "maintenance_attribution": "unclosed"
+          }
+        ],
+        "current_treasury_observation": {
+          "raw": 26010399,
+          "scale": 100000
+        },
+        "net_treasury_difference_used": false,
+        "observed_empty_is_free_boarding": false,
+        "maintenance_attribution": "unclosed",
+        "full_v2_qualified": false,
+        "original_R07_v1_qualified": false
+      }
+    },
+    {
+      "segment_id": "R0195-control-segment-02",
+      "date_raw": 53148960,
+      "window": 3,
+      "payment_epoch": 3,
+      "natural_epoch": 3,
+      "natural_records": 16,
+      "payment_records": 2,
+      "production_consumer_result": {
+        "schema": "xar.e04.r07-v2-window-slice.v1",
+        "producer_machine_id": "desktop-3fevhd2-1c74096080",
+        "segment_identity": {
+          "segment_id": "R0195-control-segment-02",
+          "pid": 29000,
+          "create_filetime": 134366728035105406,
+          "generation": 1,
+          "episode": "native-31254-d5ea28d864bc",
+          "payment_epoch": 3,
+          "window_id": 3
+        },
+        "date_raw": 53148960,
+        "native_date_storage_u64_raw": 300336110895824160,
+        "native_date_i32_low32": 53148960,
+        "native_date_high32_is_not_a_date": true,
+        "latest_sequence": 2,
+        "natural_retained_records": 16,
+        "payment_retained_records": 2,
+        "renewal_review_required": false,
+        "selected_army_boarding_callbacks": [],
+        "other_army_boarding_callbacks": [],
+        "generic_wallet_callbacks_unattributed": [],
+        "current_treasury_observation": {
+          "raw": 26010399,
+          "scale": 100000
+        },
+        "net_treasury_difference_used": false,
+        "observed_empty_is_free_boarding": false,
+        "maintenance_attribution": "unclosed",
+        "full_v2_qualified": false,
+        "original_R07_v1_qualified": false
+      }
+    }
+  ],
+  "normal_exit0_and_screen_release": true,
+  "scope": "strict control only; no independent treatment or pair credit",
+  "full_v2_qualified": false,
+  "original_R07_v1_qualified": false,
+  "zero_fee_proved": false,
+  "SDK_calls": 0,
+  "archive_extracted_to_disk": false
+}

@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:45:12.140265+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-O",
+    "-B",
+    "C:\\ck3-e04-resume-20261015-a01\\r195-r06-consumer-review-a44\\candidate\\docs\\ck3-native-ai\\acceptance\\2026-10-17-r195-static-owner-switch\\verify_portable.py"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"status\": \"PASS_ACTUAL_FULL_CENSUS_STATIC_SOURCE_SWITCH\", \"machine_id\": \"desktop-3fevhd2-1c74096080\", \"census_rows\": 507, \"available_source_switches\": 2, \"raw_byte_4a9\": 1, \"enabled\": true, \"owner_full_id\": 31254, \"source_only\": true, \"provider_pointer_present_but_mode1_not_dispatched\": true, \"selected_receiver_qualified\": false, \"toggle_or_ADD_qualified\": false, \"Driver_reads\": 0, \"SDK_calls\": 0, \"assert_required\": false}\n",
+  "stderr": "",
+  "evidence": "Actual complete GUI source family plus independent snapshot fence; no toggle or ADD"
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "xar.r195-cash-personal-add-clarification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:48:17.572057+00:00",
+  "input": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\raw4-r195-consumer-a01\\TERMINAL-LITERAL.actual-a01.json",
+    "bytes": 86166,
+    "sha256": "c1808bc47bd178d57d567cf5ff4a473d6d2fa87ba92873139132a8b88e3b2eb4"
+  },
+  "session": "s1",
+  "original_literal": {
+    "journal_sequence": 3,
+    "kind": 2,
+    "resource_kind_raw": -1,
+    "caller_return_rva": 42626428,
+    "entry_event": {
+      "clock_identity": 140715002323688,
+      "sequence": 19518349,
+      "thread_id": 31688
+    },
+    "returned_event": {
+      "clock_identity": 140715002323688,
+      "sequence": 19518350,
+      "thread_id": 31688
+    },
+    "original_called": true,
+    "original_returned": true,
+    "raw_return_bits": 4294967295
+  },
+  "observer_kind_name": "cash personal_add (observer kind2, not native resource enum)",
+  "source_mapping_from_previously_closed_exact4": "28A6D77 CALL285EE40; caller return28A6D7C; personal cash wrapper writer",
+  "source_defined_field_slot": "wrapper+8; caller construction maps to personal extension+100",
+  "actual_subject": null,
+  "actual_amount_raw": null,
+  "actual_receiver_address": null,
+  "actual_physical_field_slot": null,
+  "actual_missing_reason": "The authorized sealed TERMINAL-LITERAL projection did not retain receiver/second_pointer/amount_raw/before/after. No omitted values recovered or invented.",
+  "session_actor_not_substituted_for_record_subject": true,
+  "opaque_rax_not_used_as_amount": true,
+  "resource_kind_raw_is_minus1_not_a_formal_resource_name": true,
+  "not_army_or_arrg_manpower_add": true,
+  "R06_replenishment_qualified": false,
+  "county_entry_not_notified": true,
+  "wording_correction": "One retained cash personal_add observer row; exact subject/amount and observed physical slot not qualified from this projection.",
+  "source_original_cash_reference_only": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash.json",
+    "bytes": 456600,
+    "sha256": "780b1242e3307b15e25dff4ec5396c746fbc7c28cb866e1aeec4a2978de528e4"
+  },
+  "large_cash_reread": false,
+  "new_query": false,
+  "new_source_research": false,
+  "main_write": false
+}

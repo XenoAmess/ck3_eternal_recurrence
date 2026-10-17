@@ -1,0 +1,77 @@
+{
+  "schema": "xar.raw4-r195-saved-packet-consumption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:44:46.101133+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "journal_input": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash.json",
+    "bytes": 456600,
+    "sha256": "780b1242e3307b15e25dff4ec5396c746fbc7c28cb866e1aeec4a2978de528e4",
+    "json_pointer": "/body/war_payment_observations_v1"
+  },
+  "snapshot_input": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r195-r07-control-a01\\desktop-3fevhd2-1c74096080--vanilla--R0195\\responses\\r195-s1-close-a01-journal-close-last-complete-cash-before.json",
+    "bytes": 139013,
+    "sha256": "961e5c2d4429b4a45f0be57f818fca56f0125c24234eecea8828e11aa042d9f8",
+    "json_pointer": "/body"
+  },
+  "production_consumers": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "bytes": 25385,
+      "sha256": "7effbb70b07d0ec1385e58747ff167263fd59e0acd14bf9ea615ee29bdf5cd7f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_raw4_getter_v1.py",
+      "bytes": 6559,
+      "sha256": "46fca7fd5b65432acadb2063e196b12504d2dc897d6e802a6819b43d8cee9706"
+    }
+  ],
+  "evidence_scope": "offline_recomputation_of_exact_saved_runtime_packets",
+  "new_game_queries": 0,
+  "journal_installed": true,
+  "install_failure_flags": 0,
+  "controlled_window_admitted": true,
+  "sampling": {
+    "available": true,
+    "capture_enabled": true,
+    "busy": false,
+    "clear_completed": false,
+    "epoch": 1,
+    "active_captures": 0,
+    "retained_records": 12,
+    "qualified_records": 0
+  },
+  "current_session": {
+    "pid": 29000,
+    "process_create_time_100ns": 134366728035105406,
+    "connection_generation": 1,
+    "loaded_game_epoch": null,
+    "controlled_window_id": 1,
+    "same_owned_process_no_load_window": true,
+    "game_state_identity_witness": 2564588853200,
+    "player_character_full_id": 31254,
+    "snapshot_revision": 83,
+    "native_date_raw": 300336076536085600,
+    "absolute_day_raw": 389532
+  },
+  "raw4_child_present": true,
+  "raw4_status": {
+    "schema_version": 1,
+    "source_entry_rva": 42701968,
+    "capture_origin": "native_entry_detour",
+    "resource_name": "unknown",
+    "payment_attribution": "unclosed",
+    "read_complete": true,
+    "latest_sequence": 0,
+    "oldest_sequence": 0,
+    "overwritten": 0,
+    "publication_failures": 0
+  },
+  "raw4_literal_projection": [],
+  "qualified_raw4_reads": [],
+  "resource_name": "unknown",
+  "payment_attribution": "unclosed",
+  "zero_rows_meaning": "No qualified retained observation in this exact packet/window; not absence of caller/resource.",
+  "natural_caller_claim": "Only actual retained entry records; no active getter, fixture, or future frame is synthesized."
+}

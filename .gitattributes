@@ -602,3 +602,72 @@ docs/ck3-native-ai/research/sdk32-defender-refuge/*.patch -text whitespace=-blan
 
 docs/ck3-native-ai/research/sdk34-refuge-and-readback/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/sdk34-refuge-and-readback/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+# Exact R195/R196 evidence originals; historical source and machine scope stay explicit.
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/ACTUAL.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/BEFORE-FRAME.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/CLAIM.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/FENCE-FRAME.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/IDENTITY.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/OPENER-ENDPOINT.actual.json.gz -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/PACKET.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/PORTABLE-PINS.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/REQUEST.actual.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/RESULT.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/VERIFIED.actual.json -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/consumer/gui_callback_binding_12004_contract.py -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/consumer/gui_refill_receiver_candidates_12004_contract.py -text
+/docs/ck3-native-ai/acceptance/2026-10-17-r195-static-owner-switch/verify_portable.py -text
+/docs/ck3-native-ai/evidence/episode04-r10-python-execution-12004/source-provenance.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004/README.md -text
+/docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004/actual-outcome.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004/manifest.actual.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004/original-responses.zip -text
+/docs/ck3-native-ai/evidence/episode04-r195-abs25-pam-notice-12004/production-policy.actual.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-baseline-import-12004/deployment-provenance.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/PRODUCTION-REPLAY.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/R195-CONTROL-EVIDENCE.actual-a01.zip -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/R195-CONTROL-EVIDENCE.manifest-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/README.md -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/REPLAY-EXECUTION.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/ROOT-DELIVERY.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/index.json -text
+/docs/ck3-native-ai/evidence/episode04-r195-r07-control-12004/verify_control.py -text
+/docs/ck3-native-ai/evidence/episode04-r196-r01-ready-t0-12004/VERIFY.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r01-ready-t0-12004/r196-r01-originals.solid.xz -text
+/docs/ck3-native-ai/evidence/episode04-r196-r01-ready-t0-12004/root-research-decision.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r01-ready-t0-12004/source-index.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r01-ready-t0-12004/verify_portable.py -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/CLOSE-APPEND-EXECUTION.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/CLOSED-PAIR-ASSESSMENT.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/ORIGINAL-CARD-COMPARISON.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/PRODUCTION-PAIR-REPLAY.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/R196-NORMAL-CLOSE.actual-a01.zip -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/R196-NORMAL-CLOSE.manifest-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/R196-TREATMENT-EVIDENCE.actual-a01.zip -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/R196-TREATMENT-EVIDENCE.manifest-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/REPLAY-EXECUTION.actual-a01.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/index.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/replay_treatment_pair.py -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json -text
+/docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/verify_close_append.py -text
+/docs/ck3-native-ai/evidence/military-refill-fixed-checkbox-action-12004.json -text
+/docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/cash-personal-add-clarification.actual.json -text
+/docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/outcome.actual.json -text
+/docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/provenance.actual.json -text
+/docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/s1-consumed.actual.json -text
+/docs/ck3-native-ai/evidence/rawselector4-r195-control-actual-20261017/s2-consumed.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/BATCH02.plan.exact.json.gz -text
+/docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/Root-adoption.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/independent-readback.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/index.json -text
+/docs/maintenance/evidence/2026-10-17-e04-c-shader-batch02/result.actual.json -text
+
+# R196 exact shot context bytes
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/rough-inputs.candidate-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/r07-cue-map.candidate-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/boarding-evidence-facts.actual-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/README.md -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/plan.actual-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/source-pins.actual-a01.json -text

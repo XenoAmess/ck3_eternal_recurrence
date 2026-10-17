@@ -101,7 +101,7 @@ def runtime_binding(bundle):
 
 def operation_guard(bundle, *, actual_machine=False):
     """A new live window is explicit; old bundle/source evidence stays frozen."""
-    guards = module(Path(__file__).resolve().parents[1]/'runtime_binding.py', 'C_explicit_runtime_guard')
+    guards = module(Path(bundle['repo'])/'promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py', 'C_explicit_runtime_guard')
     entry = bundle.get('live_binding')
     if entry is None:
         return guards, None
@@ -170,7 +170,7 @@ def prepare(bundle):
     gaps = []
     entrances = {
         'source_head': 'Root explicitly binds the reviewed source matching current context/proof/runtime/plan; historical dcda is not a new-run default.',
-        'modules': 'Pin the reviewed root_relay, dcda_coherent_reader and next_adapter Python sources by exact bytes/SHA.',
+        'modules': 'Pin the reviewed operation_root_relay and next_adapter Python sources by exact bytes/SHA.',
         'repo': 'Declare the exact reviewed checkout; existing Root Live verifies its HEAD before runtime use.',
         'plan': 'Freeze exact normal common-S0 plan, via sequence, source/DLL and arrival definition before independent cold arms.',
         'context': 'Root normal allocator emits allocated-context.actual.json for the new C process, never reuse R0176.',
@@ -195,7 +195,7 @@ def prepare(bundle):
     if 'live_binding' not in bundle:
         need(bundle['deadline_utc'] == DEADLINE, 'new C deadline requires an exact explicit live binding')
     need(type(bundle['modules']) is dict
-         and {'root_relay','dcda_coherent_reader','next_adapter'} <= set(bundle['modules']),
+         and {'root_relay','next_adapter'} <= set(bundle['modules']),
          'explicit reviewed C module pins are incomplete')
     for value in bundle['modules'].values():
         path = checked(value)
@@ -238,7 +238,7 @@ def provider(bundle, args):
          'NO_GO_LEGACY_LOCKED_CONSTRUCTOR: select the reviewed operation constructor')
     values = provider_arguments(bundle, args, binding)
     values.context_sha256 = bundle['context']['sha256']
-    values.runtime_guard = Path(__file__).resolve().parents[1]/'runtime_binding.py'
+    values.runtime_guard = Path(bundle['repo'])/'promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py'
     values.runtime_guard_sha256 = guard.document['guard_sha256']
     values.live_binding = Path(bundle['live_binding']['path'])
     values.live_binding_sha256 = bundle['live_binding']['sha256']
@@ -254,9 +254,8 @@ def provider(bundle, args):
     io.meta.update(C_explicit_source_binding=binding, C_module_pins=deepcopy(bundle['modules']),
                    C_context=bundle['context'])
     io._refs = {}
-    delta = module(checked(bundle['modules']['dcda_coherent_reader']), 'C_existing_coherent_reader')
-    io.strength_at = types.MethodType(delta.Live.strength_at, io)
-    io.coherent_stop_core = types.MethodType(delta.Live.coherent_stop_core, io)
+    need(callable(getattr(io,'strength_at',None)) and callable(getattr(io,'coherent_stop_core',None)),
+         'reviewed operation constructor must own coherent prepared-session readers')
     sys.path[:0] = [str(io.repo), str(io.repo/'ck3_autonomous_player/src')]
     from xar_autoplayer.bridge import native_driver
     return io, native_driver
@@ -302,7 +301,7 @@ class CStages:
         budget_options=bundle.get('runtime_total_budget_input',
             {'max_runtime_total_bytes': bundle['runtime_request_budget_bytes'], 'runtime_capacity_admission': None})
         if getattr(io,'live_operation_guard',None):
-            guards=module(Path(__file__).resolve().parents[1]/'runtime_binding.py','C_budget_runtime_guard')
+            guards=module(Path(bundle['repo'])/'promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/runtime_binding.py','C_budget_runtime_guard')
             budget_options=guards.runtime_options(budget_options,io.live_operation_guard)
         self.runtime_budget = self.reader.runtime_total_budget(budget_options,
             scene_root=io.assets, source_head=self.runtime['source_head'], machine_id=bundle['machine_id'],

@@ -1,0 +1,166 @@
+{
+  "schema": "xar.e04.r196-r07-boarding-pair-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:46:38.449597+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "status": "ACTUAL_TWO_FRESH_ARM32_PAIR_AND_POSITIVE_SUB_RESEARCH_CORE_CLOSED",
+  "evidence_files": [
+    {
+      "file": "R196-TREATMENT-EVIDENCE.actual-a01.zip",
+      "bytes": 94991,
+      "sha256": "3d06e8cfe5495c759b5548b4b55f05a65eb1955ac6e34aa1b96fa84e9e8362e8"
+    },
+    {
+      "file": "R196-TREATMENT-EVIDENCE.manifest-a01.json",
+      "bytes": 138521,
+      "sha256": "540152e31ba45c6df2729dfdd4776af7b93692cd8ad3fbd23ca7b7c97e08c880"
+    },
+    {
+      "file": "replay_treatment_pair.py",
+      "bytes": 18626,
+      "sha256": "4959c06a79cbfdc96b2bffd8de9f1fadfc56fee6b2a7ff5b08505415d2eacba8"
+    },
+    {
+      "file": "PRODUCTION-PAIR-REPLAY.actual-a01.json",
+      "bytes": 16094,
+      "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+    },
+    {
+      "file": "REPLAY-EXECUTION.actual-a01.json",
+      "bytes": 1648,
+      "sha256": "823770179589d87b963a77ca5743ecfec4d479de0b1f70ee3a2b2afd6e80f8b7"
+    },
+    {
+      "file": "R196-NORMAL-CLOSE.actual-a01.zip",
+      "bytes": 30939,
+      "sha256": "1730546ece15e9d821c7681128989c6feb1f8ade3141253bdabb4672d414edfb"
+    },
+    {
+      "file": "R196-NORMAL-CLOSE.manifest-a01.json",
+      "bytes": 11694,
+      "sha256": "7d58fa9e0f8dd6a50f9dab8135397f830df079379c5288becb75337a47095ef1"
+    },
+    {
+      "file": "verify_close_append.py",
+      "bytes": 5348,
+      "sha256": "2f1d404fc141e71a9fddb50f152496c33f0459503f94f796431338744730e5dd"
+    },
+    {
+      "file": "CLOSED-PAIR-ASSESSMENT.actual-a01.json",
+      "bytes": 1815,
+      "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"
+    },
+    {
+      "file": "CLOSE-APPEND-EXECUTION.actual-a01.json",
+      "bytes": 1389,
+      "sha256": "2c73844f1f0771c6eb212ac8029a7e88e509039a102e4e0984d2190900d0c26f"
+    },
+    {
+      "file": "ORIGINAL-CARD-COMPARISON.actual-a01.json",
+      "bytes": 3355,
+      "sha256": "7c452dfebaa3c87f5d4793798a37e19e3ab70c3877e34d2b27756d8b98890c63"
+    }
+  ],
+  "control_dependency": {
+    "repository_evidence_root": "../episode04-r195-r07-control-12004",
+    "original_exact_pins": {
+      "ROOT-DELIVERY.actual-a01.json": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\ROOT-DELIVERY.actual-a01.json",
+        "bytes": 3619,
+        "sha256": "661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9"
+      },
+      "R195-CONTROL-EVIDENCE.actual-a01.zip": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.actual-a01.zip",
+        "bytes": 90694,
+        "sha256": "a8d40c46cf79cd141abf1cad4045d51f28aa4a195e7fc3c88d40b97108e0974b"
+      },
+      "R195-CONTROL-EVIDENCE.manifest-a01.json": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.manifest-a01.json",
+        "bytes": 131268,
+        "sha256": "19fda8634db6ac2c4bb946703c5cc1106cef5347a704da3b4d67a07f71de3fc5"
+      },
+      "PRODUCTION-REPLAY.actual-a01.json": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\PRODUCTION-REPLAY.actual-a01.json",
+        "bytes": 6294,
+        "sha256": "df354c2b373be9e1a3dc04c25d38bc6ab9949b875ee5dd61180e011e4de8da24"
+      }
+    },
+    "copied_into_R196": false,
+    "old_control_consumer_rerun": false
+  },
+  "assessment": {
+    "R07_v2_research_core_closed": true,
+    "two_fresh_arm_pair_complete": true,
+    "personal_SUB_gold_raw": 300000,
+    "observed_gold_scale": 100000,
+    "payer_character_id": 31254,
+    "selected_army_public_native_ids": [
+      18,
+      18
+    ],
+    "day30_zeroETA_is_not_arrival": true,
+    "first_actual_embark_day": 31,
+    "original_R07_v1_qualified": false,
+    "zero_fee_proved": false,
+    "maintenance_attribution": "unclosed",
+    "film_dynamic_qualified": false,
+    "film_human_signoff": false,
+    "Root_total_score_decision_included": false
+  },
+  "reusable_code_index": {
+    "frozen_historical_pair_replay": {
+      "file": "replay_treatment_pair.py",
+      "actual_executed": true,
+      "scope": "R19632 treatment + two terminal windows + existing R195 replay/baseline; not a generic live/new-arm controller",
+      "required_flags": [
+        "--archive",
+        "--manifest",
+        "--repo",
+        "--control-root"
+      ]
+    },
+    "pure_metadata_close_append": {
+      "file": "verify_close_append.py",
+      "actual_executed": true,
+      "required_flags": [
+        "--archive",
+        "--manifest",
+        "--pair-result",
+        "--output"
+      ],
+      "payment_consumer_rerun": false
+    },
+    "production_consumers": "R196-TREATMENT-EVIDENCE.manifest-a01.json#production_consumer_sources",
+    "baseline_resolution_knowledge": "../../episode04-r07-baseline-resolution-12004.md",
+    "dynamic_adapter_import_knowledge": "../../episode04-r07-generated-adapter-import-12004.md"
+  },
+  "normal_checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74482297,
+    "sha256": "92237e6bee34b1cefac1b6ebe517d40055461c49fcba86cd1f4a2951d0e83f81"
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "review_due_utc": "2026-10-24T02:40:19.823624+00:00",
+    "protected_reason": "Current R07 paired-arm research source and actual boarding attribution frontier",
+    "shared_pool_bytes": 134217728,
+    "this_root_limit_bytes": 1048576,
+    "new_reservation": false
+  },
+  "authoring_scripts_not_canonical_tools": [
+    "build_pack.py",
+    "prepare_replay.py",
+    "append_close.py",
+    "seal_delivery.py",
+    "record_execution.py",
+    "inspect_actual.py",
+    "show_result.py",
+    "read_original_card.py"
+  ],
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "Driver_or_save_body_read_bytes": 0,
+  "raw_video_copied": false,
+  "archive_extracted_to_disk": false
+}

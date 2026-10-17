@@ -1,0 +1,110 @@
+{
+  "schema": "xar.e04.r195-control-canonical-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:04:31.462978+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "status": "HISTORICAL_CONTROL32_ONLY",
+  "actual_closed_control_source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\ROOT-DELIVERY.actual-a01.json",
+    "bytes": 3619,
+    "sha256": "661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9"
+  },
+  "scope": {
+    "role": "control",
+    "actual_days": 32,
+    "independent_treatment_included": false,
+    "full_v2_qualified": false,
+    "original_R07_v1_qualified": false,
+    "zero_fee_proved": false,
+    "maintenance_attribution": "unclosed",
+    "SDK_calls": 0,
+    "desktop_calls": 0,
+    "save_body_read_bytes": 0,
+    "archive_extracted_to_disk": false
+  },
+  "clock_originals_validated": 32,
+  "terminal_windows_validated": 2,
+  "normal_exit0_and_screen_release": true,
+  "evidence_files": [
+    {
+      "file": "R195-CONTROL-EVIDENCE.actual-a01.zip",
+      "bytes": 90694,
+      "sha256": "a8d40c46cf79cd141abf1cad4045d51f28aa4a195e7fc3c88d40b97108e0974b"
+    },
+    {
+      "file": "R195-CONTROL-EVIDENCE.manifest-a01.json",
+      "bytes": 131268,
+      "sha256": "19fda8634db6ac2c4bb946703c5cc1106cef5347a704da3b4d67a07f71de3fc5"
+    },
+    {
+      "file": "verify_control.py",
+      "bytes": 14745,
+      "sha256": "4a987c45f2304d30bd41ab8b3b8dfd6f4871e1701b792415c0751e173550cf27"
+    },
+    {
+      "file": "PRODUCTION-REPLAY.actual-a01.json",
+      "bytes": 6294,
+      "sha256": "df354c2b373be9e1a3dc04c25d38bc6ab9949b875ee5dd61180e011e4de8da24"
+    },
+    {
+      "file": "REPLAY-EXECUTION.actual-a01.json",
+      "bytes": 1575,
+      "sha256": "941f43804f9daa3335c79d1421e78a244e13ec93c38897c7f32261cdb288743d"
+    },
+    {
+      "file": "README.md",
+      "bytes": 4033,
+      "sha256": "cd1175b46e2a0f4cf65ac40c80862ce100ebff39d5d790d31412f311e23b77f3"
+    },
+    {
+      "file": "ROOT-DELIVERY.actual-a01.json",
+      "bytes": 3619,
+      "sha256": "661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9"
+    }
+  ],
+  "reusable_code_index": {
+    "frozen_historical_verifier": {
+      "file": "verify_control.py",
+      "actual_executed": true,
+      "scope": "R195 control32 and two segment replay only; no generic live/new-arm controller",
+      "CLI": [
+        "--archive",
+        "--manifest",
+        "--repo",
+        "--output(optional)"
+      ]
+    },
+    "production_consumers": "R195-CONTROL-EVIDENCE.manifest-a01.json#production_consumer_sources",
+    "reusable_baseline_knowledge": "../../episode04-r07-baseline-resolution-12004.md",
+    "generated_adapter_import_knowledge": "../../episode04-r07-generated-adapter-import-12004.md"
+  },
+  "authoring_scripts_not_copied": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\build_actual.py",
+      "bytes": 8344,
+      "sha256": "2ae160133ad95d375f86e54c7f1dd162d47389e4d94192f2cfc61c41437e2511"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\inspect_actual.py",
+      "bytes": 1433,
+      "sha256": "e0e59ff9f8b179c17ccb08dc0d8c9269a7daa152edfa965ceb369c4f9c5c6615"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\seal_actual.py",
+      "bytes": 2947,
+      "sha256": "4d38705be1ba2e998c2b0f0d90e0c59a88f1a1e052c0633b5ce0d57050951740"
+    }
+  ],
+  "source_package_total_bytes": 264952,
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "shared_pool_bytes": 134217728,
+    "this_root_limit_bytes": 1048576,
+    "protected_reason": "Active R07 paired-arm source; compact lossless replacement for repeated cash and closed-control metadata.",
+    "review_due_utc": "2026-10-24T01:46:54.557675+00:00",
+    "new_reservation": false
+  },
+  "cross_machine_limit": "Historical producer-machine facts only; no target-machine runtime/installation/Steam/Defender/capacity qualification.",
+  "new_consumer_test_SDK_or_Git_operations": 0
+}

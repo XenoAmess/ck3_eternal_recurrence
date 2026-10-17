@@ -1,0 +1,106 @@
+{
+  "schema": "xar.e04.r196.boarding-media-and-native-separated.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:57:43.670722+00:00",
+  "historical_source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "raw_inherited_not_rehashed": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+    "bytes": 49062501,
+    "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9"
+  },
+  "encoded_frames": 2369,
+  "encoded_end_seconds": 78.966,
+  "recorder_wall_seconds": 82.824864,
+  "geometry": [
+    1280,
+    720
+  ],
+  "fps": 30,
+  "audio_stream_count": 0,
+  "capture_kind": "guarded-client-region-not-direct-HWND",
+  "whole_raw_only_final_three_natural_days": [
+    30,
+    31,
+    32
+  ],
+  "sample_review_inherited": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\limited-eight-frame-review.actual-a01.json",
+    "bytes": 7390,
+    "sha256": "0e83d781100b825aa56640b72a16d3a023029d485ef8c913d40af23139c5b77e"
+  },
+  "visual_bracket": {
+    "last_camp_frame": 1140,
+    "last_camp_PTS": 38,
+    "first_ship_frame": 1230,
+    "first_ship_PTS": 41,
+    "interval": "(38,41]",
+    "exact_transition_frame": null,
+    "exact_payment_PTS": null
+  },
+  "observed_calendar_first_last": [
+    "1067-03-24",
+    "1067-03-27"
+  ],
+  "native_payment": {
+    "segment_id": "R0196-treatment-segment-02",
+    "payment_epoch": 3,
+    "controlled_window_id": 3,
+    "writer_sequence": 3,
+    "transition_sequence": 5,
+    "gateway_sequence": 4,
+    "account_kind": 0,
+    "payer_character_id": 31254,
+    "land_id": null,
+    "requested_amount_raw": 300000,
+    "entry_balance_bits": 26010399,
+    "returned_balance_bits": 25710399,
+    "returned_balance_matches_requested_sub": true,
+    "transition_army_full_id": 18,
+    "requested_public_unit_id": 18,
+    "transition_province_id": 1032
+  },
+  "gold_scale_from_Root_decision": 100000,
+  "payment_gold": 3,
+  "native_day_of_positive_callback": 31,
+  "same_S0_two_fresh_32_day_arms": true,
+  "control_has_no_selected_army_boarding_callback": true,
+  "control_no_callback_is_not_free_boarding": true,
+  "whole_32_day_NET_difference_used": false,
+  "native_to_encoded_clock_calibrated": false,
+  "original_production_replay_precedes_close": {
+    "normal_close_included": false,
+    "full_v2_qualified": false,
+    "original_R07_v1_qualified": false
+  },
+  "later_Root_adoption": {
+    "decision": "adopt_existing_v2_design_and_close_research_core",
+    "card": "R07-v2",
+    "original_R07_v1_qualified": false,
+    "progress_from_Root": {
+      "research_closed": 9,
+      "research_total": 14,
+      "business_closed": 6,
+      "business_total": 11,
+      "qualified_dynamic": 0,
+      "dynamic_total": 11,
+      "formal_abc_closed": 0,
+      "formal_abc_total": 3
+    },
+    "source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\root-research-decision.actual.json",
+      "bytes": 2371,
+      "sha256": "1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f"
+    }
+  },
+  "limits": [
+    "One observed personal payment, no quote or fee-rate formula",
+    "Payer equality with commander is not commander causality",
+    "Generic ADD and military maintenance attribution remain unclosed",
+    "Eight reviewed source frames and full media decode are not continuous clean or full1x/signoff",
+    "UI260→257 and camp→ship do not independently establish payer/payment semantics",
+    "Visible1173→1162 is not reclassified as county loss or a fee by this video package"
+  ],
+  "clean_span_certified": false,
+  "full_1x_human_review": false,
+  "human_signoff": false
+}

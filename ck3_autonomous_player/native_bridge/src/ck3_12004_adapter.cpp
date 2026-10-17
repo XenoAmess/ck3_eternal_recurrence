@@ -87,6 +87,10 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1)
       ck3_11906::kIngameMilitaryOpen12004Capability,
 #endif
+#if XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004
+      ck3_11906::kMilitaryReinforcementEnable12004Capability,
+      ck3_11906::kMilitaryReinforcementDisable12004Capability,
+#endif
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
       ck3_11906::kIngameDecisionsOpenV1Capability,
       ck3_11906::kIngameDecisionItemQueryV1Capability,

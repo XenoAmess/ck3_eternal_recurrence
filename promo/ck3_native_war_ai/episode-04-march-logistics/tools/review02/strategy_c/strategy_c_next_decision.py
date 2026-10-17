@@ -264,7 +264,7 @@ def next_decision(plan, state, observation, preview=None):
     target = destinations[state['target_index']]
     out['frozen_next_target'] = target
     if state['phase'] == 'marching':
-        if (unit['state'] == 'moving' and unit['route'] and unit['route'][-1] == target
+        if (c._in_transit(unit) and unit['route'] and unit['route'][-1] == target
                 and unit['target'] == target
                 and any(unit['route'] == state['pending_route'][i:] for i in range(len(state['pending_route'])))):
             if ep['day'] >= 90:

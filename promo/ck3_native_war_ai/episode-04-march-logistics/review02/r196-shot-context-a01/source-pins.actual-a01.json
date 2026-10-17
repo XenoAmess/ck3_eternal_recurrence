@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.r196.shot-context-source-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:57:43.670722+00:00",
+  "working_tree_HEAD_observed": "41846f4955391be89a719432a4010ed73d199b54",
+  "historical_case_source": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "small_actual_sources": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\portable-media-shot-facts.actual-a01.json",
+      "bytes": 20836,
+      "sha256": "26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+      "bytes": 16094,
+      "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r196-r07-boarding-pair-12004\\root-research-decision.actual.json",
+      "bytes": 2371,
+      "sha256": "1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r196-r07-boarding-pair-12004.md",
+      "bytes": 8969,
+      "sha256": "f944782800fc5dbb4824f2ea544e44491a3b0a71e780f17d9af00c8dfbf43bd3"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a02\\claim-shot-agent-map.json",
+      "bytes": 71886,
+      "sha256": "0748695fbfe2059b8a97d41d77e0635812931be405e5b78f1cba1071475982e1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\story-a05\\claim-shot-agent-map.json",
+      "bytes": 80422,
+      "sha256": "7ccf7e9072e808144741ae7ba26dca45c694d493752ec64994a4a6d23e3b9daa"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+      "bytes": 118194,
+      "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r194-shot-context-a01\\rough-inputs.candidate-a01.json",
+      "bytes": 4156,
+      "sha256": "a1fa09bffac66524c214b33d2866f3e669cd3f89f4f265a6de4de1f4e1170068"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\integration\\src\\war_ai_promo\\episode04_review02_mixed_rough.py",
+      "bytes": 6822,
+      "sha256": "a88f7601623d6a10acb36165d198dd52e8d1875938ee1dad2db00ed3c2ba1646"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-shot-context-candidate-a01\\FRESH-RELEASE.actual-a01.json",
+      "bytes": 897,
+      "sha256": "10cf4af188171d260b9913f5d9a7014198622fde87406077b9c807a03102a263"
+    }
+  ],
+  "canonical_first_five": [
+    {
+      "path": "rough-inputs.candidate-a01.json",
+      "bytes": 5169,
+      "sha256": "a8aef3d648ad9189b8214ff9bf9fa51c4506c182e091856bfb2f7398f5fbf759"
+    },
+    {
+      "path": "r07-cue-map.candidate-a01.json",
+      "bytes": 15703,
+      "sha256": "4e29e684f4be76b0dd84e7691ebbae69815ad73c3204b0ac19a3901bc54a9fae"
+    },
+    {
+      "path": "boarding-evidence-facts.actual-a01.json",
+      "bytes": 3764,
+      "sha256": "d3f62780ceae9913ce98562b9988a45843d7ba68dc93cafaf6b0a3bda2ba17f9"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4021,
+      "sha256": "51ea3a575b0a81f6ce7cc9c8359abc3c97f23548e4dda49f40acbdb631975e16"
+    },
+    {
+      "path": "plan.actual-a01.json",
+      "bytes": 2876,
+      "sha256": "fa06f753e5091be4f04ab3fce5bccc677ccac3bba7e25c5fb937fc7a98a08f1a"
+    }
+  ],
+  "raw_inherited_not_rehashed": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+    "bytes": 49062501,
+    "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9"
+  },
+  "limits": {
+    "source_PNG_or_raw_or_audio_body_reads_this_lane": 0,
+    "no_redecode_or_old_R194_reaudit": true,
+    "no_new_TTS_or_live_actions": true,
+    "no_new_run_or_render": true,
+    "main_tree_writes": 0,
+    "human_signoff": false,
+    "render_ready": false
+  },
+  "review_deadline_reference": "2026-10-17T03:15:28+00:00",
+  "deadline_extended": false
+}

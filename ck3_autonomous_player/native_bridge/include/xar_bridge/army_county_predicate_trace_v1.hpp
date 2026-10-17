@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/army_county_relation_inputs_v1.hpp"
 #include <array>
 #include <cstdint>
 #include <optional>
@@ -10,6 +11,7 @@ struct ArmyCountyPredicateStageV1 {
   std::optional<std::uint64_t> actual_caller_return_rva;
   std::optional<bool> argument_identity_matched;
   std::optional<bool> returned;
+  std::optional<ArmyCountyRelationInputsV1> relation_inputs_v1;
   friend bool operator==(const ArmyCountyPredicateStageV1 &,
                          const ArmyCountyPredicateStageV1 &) = default;
 };

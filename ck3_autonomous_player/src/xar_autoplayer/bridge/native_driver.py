@@ -9124,6 +9124,11 @@ class NativeHeadlessGameplayDriver:
         if step == "activate-ingame-military-v1":
             from .ingame_military_open_12004 import open_fixed_military_window_12004
             return open_fixed_military_window_12004(self, expected_revision=expected_revision)
+        if step in {"enable-military-reinforcement-v1", "disable-military-reinforcement-v1"}:
+            from .military_reinforcement_12004 import set_fixed_military_reinforcement_12004
+            return set_fixed_military_reinforcement_12004(
+                self, desired_enabled=step == "enable-military-reinforcement-v1",
+                expected_revision=expected_revision)
         if step in {QUERY_WAR_DECLARED_OVERVIEW_STEP, CLOSE_WAR_DECLARED_OVERVIEW_STEP}:
             return self._war_declared_overview_v1(
                 operation="query" if step == QUERY_WAR_DECLARED_OVERVIEW_STEP else "close",

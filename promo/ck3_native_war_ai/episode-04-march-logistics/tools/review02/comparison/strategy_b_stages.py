@@ -364,6 +364,24 @@ class BStages:
                           packet=current['packet'], route_handoff=dependency, move_command=None,
                           absolute_deadline_raw=self.plan['t0_raw'] + 90 * 24, fees=None, loss_or_refill_cause=None)
 
+    def normal_stage(self, operation):
+        a = self.live.a
+        need(a.normal_stages is not None and a.normal_stages_sha256, 'reviewed normal B helper required')
+        helper = reviewed_module(a.normal_stages, 'B_reviewed_normal_stages', a.normal_stages_sha256)
+        self.normal_stages_pin = self.r.pin(a.normal_stages)
+        previous = self.state.get('normal_stage_helper')
+        need(previous is None or previous == self.normal_stages_pin, 'normal B helper changed during continuation')
+        self.state['normal_stage_helper'] = self.normal_stages_pin
+        try:
+            if operation in ('move', 'move-post'):
+                need(type(a.move_army_id) is int, 'explicit actual B role Army ID required')
+                return helper.move(self, a.move_army_id, post=operation == 'move-post')
+            return helper.day(self, recovery=operation == 'recover-day')
+        except (ValueError, RuntimeError, KeyError, TypeError, OSError) as error:
+            return self.write('HOLD_NORMAL_STAGE_OR_ORIGINAL_PENDING', packet=self.pending_packet,
+                reason=str(error)[:2000], time_advanced=None if self.state.get('normal_pending_day') else False,
+                action_retry_allowed=False, instruction='Read original claims/responses; never replay Move/Arm/Resume.')
+
     def common_horizon_stage(self, *, recovery=False):
         a = self.live.a
         need(a.common_horizon is not None and a.common_horizon_sha256
@@ -379,6 +397,10 @@ class BStages:
     def run(self, stage):
         methods = {'baseline': self.baseline, 'split-once': self.split_once, 'post-split': self.post_split,
                    'rest': self.rest, 'merge-once': self.merge_once, 'post-merge': self.post_merge, 'route': self.route,
+                   'move-stage-once': lambda: self.normal_stage('move'),
+                   'move-stage-post': lambda: self.normal_stage('move-post'),
+                   'advance-stage-day': lambda: self.normal_stage('day'),
+                   'recover-stage-day': lambda: self.normal_stage('recover-day'),
                    'advance-common-horizon': self.common_horizon_stage,
                    'recover-common-horizon-day': lambda: self.common_horizon_stage(recovery=True)}
         try:
@@ -408,7 +430,7 @@ def relay_arguments(args):
 
 def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('stage', choices=('baseline', 'split-once', 'post-split', 'rest', 'merge-once', 'post-merge', 'route', 'advance-common-horizon', 'recover-common-horizon-day'))
+    p.add_argument('stage', choices=('baseline', 'split-once', 'post-split', 'rest', 'merge-once', 'post-merge', 'route', 'move-stage-once', 'move-stage-post', 'advance-stage-day', 'recover-stage-day', 'advance-common-horizon', 'recover-common-horizon-day'))
     for name in ('repo', 'context', 'runtime-proof', 'request-helper', 'root-relay', 'next-adapter', 'plan', 'evidence-root'):
         p.add_argument('--' + name, type=Path, required=True)
     for name in ('self-sha256', 'context-sha256', 'runtime-proof-sha256', 'request-helper-sha256',
@@ -427,10 +449,17 @@ def main(argv=None):
     p.add_argument('--module-pins-sha256', default=argparse.SUPPRESS)
     p.add_argument('--live-binding', type=Path)
     p.add_argument('--live-binding-sha256')
+    p.add_argument('--prepared', type=Path)
+    p.add_argument('--prepared-sha256')
+    p.add_argument('--comparison-core', type=Path)
+    p.add_argument('--comparison-core-sha256')
     p.add_argument('--max-evidence-file-bytes', type=int, default=16 * 1024 * 1024)
     p.add_argument('--max-runtime-total-bytes', type=int, default=512 * 1024 * 1024)
     p.add_argument('--runtime-capacity-admission', nargs=2, metavar=('PATH', 'SHA256'))
     p.add_argument('--evidence-capacity-admission', nargs=2, metavar=('PATH', 'SHA256'), action='append', default=[])
+    p.add_argument('--normal-stages', type=Path)
+    p.add_argument('--normal-stages-sha256')
+    p.add_argument('--move-army-id', type=int)
     p.add_argument('--common-horizon', type=Path)
     p.add_argument('--common-horizon-sha256')
     p.add_argument('--arrival-arm', type=Path)
@@ -438,13 +467,22 @@ def main(argv=None):
     p.add_argument('--days', type=int, default=1)
     p.add_argument('--day-start-raw', type=int)
     a = p.parse_args(argv)
+    need((a.prepared is None) == (a.prepared_sha256 is None), 'prepared PATH and SHA must be supplied together')
+    need(a.live_binding is None or a.prepared is not None, 'new B live binding requires actual prepared metadata')
+    need((a.comparison_core is None) == (a.comparison_core_sha256 is None), 'comparison-core PATH and SHA must be supplied together')
+    need(a.live_binding is None or a.comparison_core is not None, 'new B live binding requires reviewed comparison core')
     base_args = relay_arguments(a)
     root = reviewed_module(a.root_relay, 'reviewed_r09_root_relay_for_B', a.root_relay_sha256)
     need(root.pin(Path(__file__))['sha256'] == a.self_sha256, 'reviewed B composer SHA differs')
     for path, expected in ((a.root_relay, a.root_relay_sha256), (a.next_adapter, a.next_adapter_sha256), (a.plan, a.plan_sha256)):
         need(root.pin(path)['sha256'] == expected, 'reviewed B dependency SHA differs: ' + str(path))
     sys.path[:0] = [str(a.repo / 'ck3_autonomous_player/src'), str(a.repo / 'promo/ck3_native_war_ai/episode-04-march-logistics/tools/review02/comparison')]
+    core = None
+    if a.comparison_core is not None:
+        core = reviewed_module(a.comparison_core, 'r10_compare', a.comparison_core_sha256)
+        sys.modules['r10_compare'] = core
     next_adapter = reviewed_module(a.next_adapter, 'reviewed_B_next', a.next_adapter_sha256)
+    need(core is None or (next_adapter.c is core and next_adapter.b.c is core), 'B adapter imported another comparison core; use a fresh Python process')
     # Policy/schema/evidence checks happen before constructing a live Relay.
     plan = root.load(a.plan)
     intended_machine=(root.load(a.context).get('machine_id') if a.live_binding is not None else root.MACHINE)
@@ -462,7 +500,7 @@ def main(argv=None):
     live = root.Relay(base_args)
     options=vars(a)
     if getattr(live,'live_operation_guard',None):
-        guards=root.module(Path(__file__).resolve().parents[1]/'runtime_binding.py','B_explicit_runtime_guard')
+        guards=root.module(Path(root.__file__).resolve().parents[1]/'runtime_binding.py','B_explicit_runtime_guard')
         options=guards.runtime_options(options,live.live_operation_guard)
     budget = next_adapter.b.c.runtime_total_budget(options, scene_root=a.context.resolve().parent,
         source_head=plan['build']['source_head'], machine_id=live.machine, deadline_utc=live.deadline.isoformat())

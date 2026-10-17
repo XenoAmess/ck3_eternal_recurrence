@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_county_predicate_trace_v1.hpp"
+#include "xar_bridge/army_county_relation_inputs_v1_serializer.hpp"
 #include <string>
 namespace xar::game {
 template<class Number, class JsonString>
@@ -34,6 +35,10 @@ inline void AppendCountyPredicateTraceV1(std::string &out,
         ? (*stage.argument_identity_matched ? "true" : "false") : "null";
     out += ",\"returned\":";
     out += stage.returned.has_value() ? (*stage.returned ? "true" : "false") : "null";
+    if (stage.relation_inputs_v1.has_value()) {
+      out += ",\"relation_inputs_v1\":";
+      AppendCountyRelationInputsV1(out, *stage.relation_inputs_v1, number, quote);
+    }
     out += '}';
   }
   out += "],\"additional_native_predicate_calls\":0,\"neighbor_Q_observed\":false}";

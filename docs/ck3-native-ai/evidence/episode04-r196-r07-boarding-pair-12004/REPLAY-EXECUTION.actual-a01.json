@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.r196-production-pair-replay-execution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T02:43:18.415008+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "actual_tool_result": {
+    "tool": "exec_command",
+    "chunk_id": "6deba1",
+    "exit_code": 0,
+    "wall_time_seconds": 1.170219,
+    "stdout_bytes": 0
+  },
+  "verifier": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\replay_treatment_pair.py",
+    "bytes": 18626,
+    "sha256": "4959c06a79cbfdc96b2bffd8de9f1fadfc56fee6b2a7ff5b08505415d2eacba8"
+  },
+  "archive": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\R196-TREATMENT-EVIDENCE.actual-a01.zip",
+    "bytes": 94991,
+    "sha256": "3d06e8cfe5495c759b5548b4b55f05a65eb1955ac6e34aa1b96fa84e9e8362e8"
+  },
+  "manifest": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\R196-TREATMENT-EVIDENCE.manifest-a01.json",
+    "bytes": 138521,
+    "sha256": "540152e31ba45c6df2729dfdd4776af7b93692cd8ad3fbd23ca7b7c97e08c880"
+  },
+  "result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+    "bytes": 16094,
+    "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+  },
+  "producer_machine_historical_evidence": true,
+  "R196_production_replay_runs": 1,
+  "R195_production_replay_runs_in_this_task": 0,
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "Driver_or_save_body_read_bytes": 0,
+  "archive_extracted_to_disk": false,
+  "normal_close_evidence_not_yet_included": true
+}

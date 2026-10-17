@@ -1,0 +1,331 @@
+{
+  "schema": "xar.r195.r06.static-owner-switch.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_observed_at": "2026-10-17T01:41:23.006882+00:00",
+  "analyzed_at_utc": "2026-10-17T01:43:05.918077+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "status": "ACTUAL_COMPLETE_CENSUS_STRICTLY_CONSUMED",
+  "all_census_rows": 507,
+  "frame": {
+    "native_revision": 109,
+    "connection_generation": 1,
+    "pump_epoch": 96426,
+    "ticket_sequence": 65,
+    "game_pid": 29000,
+    "thread_id": 29904,
+    "played_character_full_id": 31254,
+    "date_raw": 53148960,
+    "owner_thread_verified": true,
+    "frame_stable": true,
+    "gui_owner_stable": true
+  },
+  "public_binding": {
+    "snapshot_id": "native:109",
+    "revision": 110,
+    "native_revision": 109,
+    "episode_run_id": "native-31254-d5ea28d864bc"
+  },
+  "process_creation_filetime_100ns": 134366728035105406,
+  "candidates": [
+    {
+      "widget_index": 220,
+      "child_path": "0/0/0/2/3/0/0/0",
+      "effective_visible": true,
+      "enabled": true,
+      "callback_index": 0,
+      "expression": {
+        "chain_count_24_raw": 0,
+        "final_kind_34_raw": 3,
+        "final_target_38_rva": 19938624,
+        "receiver_type_id_48": 635,
+        "receiver_flag_4c_raw": 0
+      },
+      "full_status": "unavailable",
+      "full_unavailable_reason": "candidate_parent_depth_exhausted",
+      "full_failure": {
+        "stage": "parent_walk",
+        "kind": "parent_depth_exhausted",
+        "capture_pass": 1,
+        "read_ordinal": 51,
+        "ancestor_depth": 8,
+        "raw_declaration_count": 1,
+        "raw_index_count": 1,
+        "raw_definition_entry_count": null,
+        "context_present": true,
+        "definition_present": null,
+        "local_definition_active_raw": 1
+      },
+      "continuation_status": "available",
+      "continuation": {
+        "source": "native_gui_type635_frontier_continuation_depth8_12_12004",
+        "scope": "definition_frontier_depth8_through11",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "start_depth": 8,
+        "depth_limit": 12,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "stop_depth": 8,
+        "stop_reason": "static_direct_terminal",
+        "next_context_present": null,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 8,
+            "definition_present": true,
+            "raw_definition_entry_count": 3,
+            "first_match_entry_index": 0,
+            "entries": [
+              {
+                "ancestor_depth": 8,
+                "entry_type_48": 635,
+                "entry_mode_40": 1,
+                "entry_flag_4c": 1,
+                "direct_value_present": true,
+                "provider_present": true,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": 31254,
+                "direct_owner_identity_verified": true
+              }
+            ],
+            "parent_edge": "not_read_native_static_stop",
+            "parent_present": null
+          }
+        ],
+        "static_direct_owner_switch_12004": {
+          "source": "native_gui_type635_static_direct_owner_switch_12004",
+          "scope": "static_direct_source_candidate",
+          "status": "available",
+          "unavailable_reason": null,
+          "current_variable_table_observed": false,
+          "native_receiver_selected": false,
+          "provider_invoked": false,
+          "ancestor_depth": 8,
+          "owner_full_id": 31254,
+          "military_component_present": true,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "value_basis": "raw_military_byte",
+          "stable_double_read": true
+        }
+      },
+      "new_switch_status": "available",
+      "new_switch": {
+        "source": "native_gui_type635_static_direct_owner_switch_12004",
+        "scope": "static_direct_source_candidate",
+        "status": "available",
+        "unavailable_reason": null,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "ancestor_depth": 8,
+        "owner_full_id": 31254,
+        "military_component_present": true,
+        "raw_byte_4a9": 1,
+        "enabled": true,
+        "value_basis": "raw_military_byte",
+        "stable_double_read": true
+      }
+    },
+    {
+      "widget_index": 238,
+      "child_path": "0/0/0/3/5/0/0/0",
+      "effective_visible": false,
+      "enabled": true,
+      "callback_index": 0,
+      "expression": {
+        "chain_count_24_raw": 0,
+        "final_kind_34_raw": 3,
+        "final_target_38_rva": 19938624,
+        "receiver_type_id_48": 635,
+        "receiver_flag_4c_raw": 0
+      },
+      "full_status": "unavailable",
+      "full_unavailable_reason": "candidate_parent_depth_exhausted",
+      "full_failure": {
+        "stage": "parent_walk",
+        "kind": "parent_depth_exhausted",
+        "capture_pass": 1,
+        "read_ordinal": 51,
+        "ancestor_depth": 8,
+        "raw_declaration_count": 1,
+        "raw_index_count": 1,
+        "raw_definition_entry_count": null,
+        "context_present": true,
+        "definition_present": null,
+        "local_definition_active_raw": 1
+      },
+      "continuation_status": "available",
+      "continuation": {
+        "source": "native_gui_type635_frontier_continuation_depth8_12_12004",
+        "scope": "definition_frontier_depth8_through11",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "start_depth": 8,
+        "depth_limit": 12,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "stop_depth": 8,
+        "stop_reason": "static_direct_terminal",
+        "next_context_present": null,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 8,
+            "definition_present": true,
+            "raw_definition_entry_count": 3,
+            "first_match_entry_index": 0,
+            "entries": [
+              {
+                "ancestor_depth": 8,
+                "entry_type_48": 635,
+                "entry_mode_40": 1,
+                "entry_flag_4c": 1,
+                "direct_value_present": true,
+                "provider_present": true,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": 31254,
+                "direct_owner_identity_verified": true
+              }
+            ],
+            "parent_edge": "not_read_native_static_stop",
+            "parent_present": null
+          }
+        ],
+        "static_direct_owner_switch_12004": {
+          "source": "native_gui_type635_static_direct_owner_switch_12004",
+          "scope": "static_direct_source_candidate",
+          "status": "available",
+          "unavailable_reason": null,
+          "current_variable_table_observed": false,
+          "native_receiver_selected": false,
+          "provider_invoked": false,
+          "ancestor_depth": 8,
+          "owner_full_id": 31254,
+          "military_component_present": true,
+          "raw_byte_4a9": 1,
+          "enabled": true,
+          "value_basis": "raw_military_byte",
+          "stable_double_read": true
+        }
+      },
+      "new_switch_status": "available",
+      "new_switch": {
+        "source": "native_gui_type635_static_direct_owner_switch_12004",
+        "scope": "static_direct_source_candidate",
+        "status": "available",
+        "unavailable_reason": null,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "ancestor_depth": 8,
+        "owner_full_id": 31254,
+        "military_component_present": true,
+        "raw_byte_4a9": 1,
+        "enabled": true,
+        "value_basis": "raw_military_byte",
+        "stable_double_read": true
+      }
+    }
+  ],
+  "new_leaf_count": 2,
+  "new_available_leaf_count": 2,
+  "provider_execution": false,
+  "current_variable_table_observed": false,
+  "native_receiver_selected": false,
+  "toggle_executed": false,
+  "actual_ADD_qualified": false,
+  "SDK_calls_by_consumer": 0,
+  "Driver_reads": 0,
+  "actual_budget_totals_exported": false,
+  "actual_total_reads": null,
+  "actual_total_bytes": null,
+  "actual_elapsed_ms": null,
+  "independent_snapshot_fence_verified": true,
+  "raw_endpoint_pin": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/OPENER-ENDPOINT.actual.json",
+    "bytes": 239540,
+    "sha256": "4327754594ed01fa69d74589cb7a49f23b0e425c2146548c687cdda010d9ecdf"
+  },
+  "input_reads": [
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/RESULT.actual.json",
+      "bytes": 1566,
+      "sha256": "a6863011a3233e448fdaa01403bdc770d36d2b33cfecd8fae168d8d8bfdf89ac",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/OPENER-ENDPOINT.actual.json",
+      "bytes": 239540,
+      "sha256": "4327754594ed01fa69d74589cb7a49f23b0e425c2146548c687cdda010d9ecdf",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/R06-CONTROL-OPENER.once.claim.json",
+      "bytes": 1859,
+      "sha256": "8b54296889374986ddae10a6851a013a372b459b5d4b7151fa41233f45de22d7",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/runtime-actor-identity.actual-a01.json",
+      "bytes": 7898,
+      "sha256": "189db29e1eae235bf439b19c4816039f21a9c80675613e894d1721257a0289b6",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/BEFORE-FRAME.actual.json",
+      "bytes": 411,
+      "sha256": "873e6d42d6a1c255c7d47b76cf204654afcdd6cc5b20059b5c9a6077ba0abea6",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/FENCE-FRAME.actual.json",
+      "bytes": 410,
+      "sha256": "6ef38cb723dceb3fed0d1275164b367ee6482223d5766f6fdfbadbd000482f04",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    },
+    {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/requests/r0195-r06-control-a01-open-once.json",
+      "bytes": 184,
+      "sha256": "7ecf8b56374c9c8e31bd7d4069622cec537ac473ec49a81d926682701558a6a5",
+      "body_reads": 1,
+      "same_bytes_hash_and_parse": true
+    }
+  ],
+  "source_consumers": [
+    {
+      "relative_path": "consumer/gui_callback_binding_12004_contract.py",
+      "source_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/gui_callback_binding_12004_contract.py",
+      "bytes": 8556,
+      "sha256": "399357ce80e15d61b6e317fe4e8e5e47cc99f54118ad7d9468421cf1383be6f9"
+    },
+    {
+      "relative_path": "consumer/gui_refill_receiver_candidates_12004_contract.py",
+      "source_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "bytes": 28845,
+      "sha256": "eb865e4db2e13531c241cec070c04fdf132cc3d52e676b71e5d96c2af1f4b2c2"
+    }
+  ],
+  "import_environment_boundary": {
+    "initial_direct_preflight": "Root reported exit1 ModuleNotFoundError qualification_contract before SDK",
+    "successful_runtime": "Root reported explicit adapter-root/runpy launcher; actual RESULT proves opener+fence",
+    "launcher_argv_independently_pinned": false,
+    "no_sealed_script_bytes_changed": true
+  }
+}

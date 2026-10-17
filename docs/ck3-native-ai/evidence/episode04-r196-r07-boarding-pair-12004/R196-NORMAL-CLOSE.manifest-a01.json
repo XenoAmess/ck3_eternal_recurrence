@@ -1,0 +1,234 @@
+{
+  "schema": "xar.e04.r196-normal-close-portable-append.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:44:35.762059+00:00",
+  "binding": {
+    "schema": "xar.e04.r07-v2-current-binding.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "assets_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01",
+    "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+    "prepared": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\prepared-a01\\prepared.json",
+      "bytes": 11728,
+      "sha256": "cccd9dcb6705cd68e89cc656e04b67332cd551ce74944243e62f71d3f23107ed"
+    },
+    "proof": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7940,
+      "sha256": "3467b0a5b539077f4154c3bd88b871b25b0daec47e41618235a8a0a4b4749da4"
+    },
+    "context": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\allocated-context.actual-a01.json",
+      "bytes": 4090,
+      "sha256": "f10ae583d5a6e0663393bbe4b03470facdb9c58f92cae7d191f1401254f204a8"
+    },
+    "request_helper": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-existing-request-helper.bound.py",
+      "bytes": 1890,
+      "sha256": "7c102f5e51994c4ad712a499a2f3f9ec64d74a56f0ca5200632877e68e700f90"
+    },
+    "native_qualification": {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a33/ROOT-PRODUCTION-QUALIFICATION.actual-a33.json",
+      "bytes": 81640,
+      "sha256": "792b5aa155bfbe368368580eb56a53a9d715d82bdb702bc9887875972fbc11e9"
+    },
+    "native_qualification_schema": "xar.e04.a33-production-bytes-focused-cold-qualification.v1",
+    "capacity": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-r07-treatment-next-a01/R07-TREATMENT-CAPACITY.actual-root-a01.json",
+      "bytes": 12630,
+      "sha256": "ea079c6e19170bf109199a2ec7fd8c9a3bf0fac04e35aaf2df8e729182c48b89"
+    },
+    "operation": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-ARM.binding.operation.json",
+      "bytes": 1121,
+      "sha256": "a28b444dac8f9cd447626575e7821bcc2653ad439c3c1e802336ab0559b1fbc4"
+    },
+    "operation_context": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-ARM.binding.context.json",
+      "bytes": 4348,
+      "sha256": "0fa26ae93c57ed1ea5272e8eb7e06a949871919b33253f26bc91219a8d398bc6"
+    },
+    "controller": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r07-a33-dynamic-control-prep-a01\\current_r07.py",
+      "bytes": 29507,
+      "sha256": "b6d036a141ef3b3ce432d6ed94c0c68f804c0cd684dfad29351d87d6671934fc"
+    },
+    "bridge_dll_sha256": "8d94dd05680a6b67dda73d074d508bc88f764732e61a59ba4e7d0acca8e1eba2",
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "S0": {
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "observed_at_utc": "2026-10-17T00:15:32.210687+00:00",
+      "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0191",
+      "save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+        "bytes": 73689246,
+        "sha256": "bc3d40861e908ba8b05d5c86094a0ff7a399216ef0e4d0c1a72f166559b40ca2"
+      },
+      "receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-02-save-once.json",
+        "bytes": 20444,
+        "sha256": "0a4e301c6e15a977b5fb200d542be178c7792099b1fcff6b0bd2180f367220aa"
+      },
+      "build_receipt": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\prepared-a01\\prepared.json",
+        "bytes": 11732,
+        "sha256": "8f735ec119efce13f472d1ac2fca68f7f76e7b91ccbac91f9dd45dcfb1d3e304"
+      },
+      "date_raw": 53148192,
+      "actor_id": 31254,
+      "normal_save": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\r191-film-a01-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 3998,
+        "sha256": "5b45675c7e16cb43128df2d5e887d46d73ac4b9a055d983ee29cd76f59162784"
+      },
+      "bootstrap": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\bootstrap-result.json",
+        "bytes": 15366,
+        "sha256": "c380c33474a10c9eedfa289e77c083436a1041081c2166b7bb078ea2581c2cd8"
+      },
+      "screen_release": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\r191-film-a01-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 4847,
+        "sha256": "2c4592332a7c188931e3877dc60b16d6f98a9bde3a6fff99440b336d113e5bc0"
+      },
+      "snapshot": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-03-after-snapshot.json",
+        "bytes": 127301,
+        "sha256": "b38b2eae5aa5f174a90010bd8cf437303c3660ce3d4c40803242885b67ce725f"
+      },
+      "native_candidates": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\desktop-3fevhd2-1c74096080--vanilla--R0191\\responses\\r191-film-a01-close-a01-04-capabilities.json",
+        "bytes": 120908,
+        "sha256": "1ce570e71867cae07d182fdd8d4d35cdf544fd3084b240297f173956ae66dfc5"
+      },
+      "candidate_steps": [
+        "preview-move-army-18-to-1032",
+        "preview-move-army-18-to-1036",
+        "preview-move-army-18-to-1038",
+        "preview-move-army-18-to-2619",
+        "preview-move-army-18-to-2624",
+        "preview-move-army-18-to-2645",
+        "preview-move-army-18-to-8645",
+        "preview-move-army-18-to-8651",
+        "preview-move-army-18-to-8653"
+      ],
+      "army_id": 18,
+      "start_province_id": 2635,
+      "source_state": "sieging",
+      "actual_fresh_route_legal": false,
+      "large_save_read_bytes": 0,
+      "large_save_sha_recomputed": false,
+      "required_before_new_load": "Stock prepare must copy/hash exact original bytes; no old runtime/epoch reuse"
+    },
+    "role": "treatment",
+    "army_id": 18,
+    "start_province_id": 2635,
+    "pid": 36072,
+    "create_filetime": 134366756638003884,
+    "generation": 1,
+    "episode": "native-31254-2bac783421ef",
+    "actor_id": 31254,
+    "driver_state_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\state-a01\\native-session\\driver-state.json",
+    "other_limit_bytes": 268435456,
+    "max_runtime_total_bytes": 1879048192,
+    "quota_review_at_utc": "2026-10-17T03:15:28+00:00",
+    "full_anchor_days": [
+      0,
+      24,
+      29,
+      30,
+      31,
+      32
+    ],
+    "native_driver_source": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1566054,
+      "sha256": "9a995de4efcbe7967a5f4795e46975897e2e9d7a0faeec4339d194aef0e403c9"
+    },
+    "original_R07_v1_qualified": false,
+    "full_v2_qualified": false,
+    "actual_fresh_route_legal": false,
+    "observation_plan": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-ARM.binding.plan.json",
+      "bytes": 6521,
+      "sha256": "8fc3bae93d25fd8bbc0779b210cfe26536d17af35846530ac45efad3bd99fdab"
+    },
+    "observation_check": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\R07-ARM.binding.plan.check.json",
+      "bytes": 925,
+      "sha256": "13df69c055256fa05db26fa868a3864d21a7b41d48df29c4611dfe4b1af979ff"
+    }
+  },
+  "control_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "archive": {
+    "file": "R196-NORMAL-CLOSE.actual-a01.zip",
+    "bytes": 30939,
+    "sha256": "1730546ece15e9d821c7681128989c6feb1f8ade3141253bdabb4672d414edfb"
+  },
+  "entries": [
+    {
+      "member": "00-NORMAL-SAVE.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-treatment-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 5438,
+      "sha256": "b36b6d0d3e4ad686cc317bfa0d209aed1e29dd7eeda9dc81fed125638f6d7ee6"
+    },
+    {
+      "member": "01-BOOTSTRAP-OBSERVED.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-treatment-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 931,
+      "sha256": "e568a66121084a5666f0173d11bfb74aec8eba2e016641127711f35467f7ee9d"
+    },
+    {
+      "member": "02-SCREEN-RELEASE.actual.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\r07-treatment-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4876,
+      "sha256": "bb35eeaa7b5c989a296120bd62bc6bf7fcb2c6e4bb5c2f118932604a42069862"
+    },
+    {
+      "member": "03-bootstrap-result.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\bootstrap-result.json",
+      "bytes": 15288,
+      "sha256": "af1d26b387652bffc7ed32e7a82768752bd6e9591f5e97298ec41ba145f80a98"
+    },
+    {
+      "member": "04-r07-treatment-a01-ready-close-a01-02-save-once.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r07-treatment-a01-ready-close-a01-02-save-once.json",
+      "bytes": 20364,
+      "sha256": "c3842041394fa785e708a82da2977db7edaa18fd7a8332937f07f16ca2e41a79"
+    },
+    {
+      "member": "05-r07-treatment-a01-ready-close-a01-03-after-snapshot.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\desktop-3fevhd2-1c74096080--vanilla--R0196\\responses\\r07-treatment-a01-ready-close-a01-03-after-snapshot.json",
+      "bytes": 135812,
+      "sha256": "6cfb7784b837c00f3e4bce4ef3226005ead226090b09010e75884bd996eec0a0"
+    }
+  ],
+  "roles": {
+    "normal_save": "00-NORMAL-SAVE.actual.json",
+    "bootstrap_observed": "01-BOOTSTRAP-OBSERVED.actual.json",
+    "screen_release": "02-SCREEN-RELEASE.actual.json",
+    "bootstrap": "03-bootstrap-result.json",
+    "native_save": "04-r07-treatment-a01-ready-close-a01-02-save-once.json",
+    "after_snapshot": "05-r07-treatment-a01-ready-close-a01-03-after-snapshot.json"
+  },
+  "production_pair_replay": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+    "bytes": 16094,
+    "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+  },
+  "checkpoint_hash_from_actual_receipt_only": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74482297,
+    "sha256": "92237e6bee34b1cefac1b6ebe517d40055461c49fcba86cd1f4a2951d0e83f81"
+  },
+  "actual_bootstrap_exit0_reported_by_Root": true,
+  "Root_signature_fabricated": false,
+  "payment_consumer_rerun": false,
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "Driver_or_save_body_read_bytes": 0,
+  "archive_extracted_to_disk": false
+}

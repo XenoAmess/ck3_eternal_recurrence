@@ -1,0 +1,83 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "raw_endpoint_pin": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/OPENER-ENDPOINT.actual.json",
+    "bytes": 239540,
+    "sha256": "4327754594ed01fa69d74589cb7a49f23b0e425c2146548c687cdda010d9ecdf"
+  },
+  "gzip_file": "OPENER-ENDPOINT.actual.json.gz",
+  "raw_decompression_limit_bytes": 1048576,
+  "consumer_files": [
+    {
+      "relative_path": "consumer/gui_callback_binding_12004_contract.py",
+      "source_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/gui_callback_binding_12004_contract.py",
+      "bytes": 8556,
+      "sha256": "399357ce80e15d61b6e317fe4e8e5e47cc99f54118ad7d9468421cf1383be6f9"
+    },
+    {
+      "relative_path": "consumer/gui_refill_receiver_candidates_12004_contract.py",
+      "source_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+      "bytes": 28845,
+      "sha256": "eb865e4db2e13531c241cec070c04fdf132cc3d52e676b71e5d96c2af1f4b2c2"
+    }
+  ],
+  "source_files": [
+    {
+      "role": "result",
+      "portable_file": "RESULT.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/RESULT.actual.json",
+        "bytes": 1566,
+        "sha256": "a6863011a3233e448fdaa01403bdc770d36d2b33cfecd8fae168d8d8bfdf89ac"
+      }
+    },
+    {
+      "role": "claim",
+      "portable_file": "CLAIM.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/R06-CONTROL-OPENER.once.claim.json",
+        "bytes": 1859,
+        "sha256": "8b54296889374986ddae10a6851a013a372b459b5d4b7151fa41233f45de22d7"
+      }
+    },
+    {
+      "role": "identity",
+      "portable_file": "IDENTITY.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/runtime-actor-identity.actual-a01.json",
+        "bytes": 7898,
+        "sha256": "189db29e1eae235bf439b19c4816039f21a9c80675613e894d1721257a0289b6"
+      }
+    },
+    {
+      "role": "before",
+      "portable_file": "BEFORE-FRAME.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/BEFORE-FRAME.actual.json",
+        "bytes": 411,
+        "sha256": "873e6d42d6a1c255c7d47b76cf204654afcdd6cc5b20059b5c9a6077ba0abea6"
+      }
+    },
+    {
+      "role": "fence",
+      "portable_file": "FENCE-FRAME.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/r06-control-opener-a01/FENCE-FRAME.actual.json",
+        "bytes": 410,
+        "sha256": "6ef38cb723dceb3fed0d1275164b367ee6482223d5766f6fdfbadbd000482f04"
+      }
+    },
+    {
+      "role": "request",
+      "portable_file": "REQUEST.actual.json",
+      "original_pin": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/requests/r0195-r06-control-a01-open-once.json",
+        "bytes": 184,
+        "sha256": "7ecf8b56374c9c8e31bd7d4069622cec537ac473ec49a81d926682701558a6a5"
+      }
+    }
+  ],
+  "uncompressed_endpoint_duplicated": false,
+  "Driver_reads": 0
+}

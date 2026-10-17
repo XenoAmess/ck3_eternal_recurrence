@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.r07-v1-versus-r195-r196-v2-comparison.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T02:46:38.449597+00:00",
+  "original_card_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-experiment-cards-a01\\EXPERIMENT-CARDS.md",
+    "bytes": 27122,
+    "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab"
+  },
+  "original_R07_verbatim_section": "## R07 真登船付款（当前明确缺能力，先补源）\n\n**输入前置**：`capability-lane/payment-plan/plan.json`为现成finite source计划，其for-observation当前正确RED；actual .4boarding producer→payer→金额→金币写入还未闭合，不能执行一个不存在的payment tool。现成cash private查询仅库存/费率，不是此卡付款observer。\n\n**源完成后最小窗口**：同新正常T0，一支合法军队真正陆→海，另一独立回放同T0无登船/驻地；避开实际经济结算机会。F＋cash＋付款journal fence→Move一次→逐exact日→真实海陆state/Army/route/owner/command sender/actual payer与钱包独立后读。报价、实际付款、钱包净变化三列。\n\n**验收**：已证明的.4actual caller/receiver/payment amount，原函数恰好一次，唯一payer同账户raw前后真实写入；所有其他收入/支出独立，不从−17净差推登船费。捕获失败/unknown caller/环覆盖不算免费。未有路径绑定quote就把quote留unknown，不用1.19图标getter地址。**上限**：预览可达近海转换，单窗≤7实际日；找不到就换合法短route，不操纵敌方。**镜头**：海路警告→实际登船→真正扣款，现阶段只可准备，不能填数字。\n",
+  "v2_contract_source": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r07-v2-boarding-control-12004.md",
+    "bytes": 12836,
+    "sha256": "cd9eed72ef017760af15df99747799c9abb40b05b1df8b2e8fd3f61cd48d6013"
+  },
+  "actual_pair": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\CLOSED-PAIR-ASSESSMENT.actual-a01.json",
+    "bytes": 1815,
+    "sha256": "244fa8729f92773e2abdf81d66a0e5da29a594a7eb9d88cb156ca0665245686b"
+  },
+  "original_R07_v1_qualified": false,
+  "original_v1_unmet": [
+    "single window maximum7 actual days; actual32 per arm",
+    "avoiding actual economic settlement opportunities was not source-qualified"
+  ],
+  "R07_v2_research_core_closed": true,
+  "scoring_recommendation": {
+    "research_increment_for_explicit_R07_v2_revision": 1,
+    "business_increment_for_explicit_R07_v2_revision": 1,
+    "prior_research": [
+      7,
+      14
+    ],
+    "prior_business": [
+      5,
+      11
+    ],
+    "proposed_revised_research": [
+      8,
+      14
+    ],
+    "proposed_revised_business": [
+      6,
+      11
+    ],
+    "research_percent_if_Root_adopts_revised_contract": 57.142857142857146,
+    "business_percent_if_Root_adopts_revised_contract": 54.54545454545455,
+    "strict_original_v1_increment": 0,
+    "dynamic_increment": 0,
+    "requires_explicit_Root_versioned_ledger_decision": true,
+    "Root_decision_or_signature_included": false
+  },
+  "fee_scope": "One actual Army18 personal account SUB300000 with payer31254; not net treasury difference, universal tariff, commander causation, maintenance attribution or v1 credit."
+}

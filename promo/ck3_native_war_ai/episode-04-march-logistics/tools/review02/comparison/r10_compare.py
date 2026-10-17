@@ -155,7 +155,12 @@ class RuntimeTotalBudget:
              and io.meta.get('source_head') == self.binding['source_head'], 'runtime IO differs from capacity binding')
         need(not getattr(io, '_runtime_total_bound', False), 'runtime IO budget already bound')
         ledger = getattr(io, 'ledger', None) or io.case.parent
-        roots = (io.run/'requests', io.run/'responses', self.scene_root/'state-a01', ledger)
+        state_dir = Path(getattr(io, 'state_dir', self.scene_root/'state-a01')).resolve()
+        native_session = Path(getattr(io, 'native_session', state_dir/'native-session')).resolve()
+        need(state_dir.is_relative_to(self.scene_root)
+             and native_session == (state_dir/'native-session').resolve(),
+             'runtime prepared state/native-session differs or escapes scene')
+        roots = (io.run, native_session, ledger)
         self.check_fresh()
         need(self.used_bytes(roots) + 65536 <= self.limit_bytes, 'runtime existing evidence exceeds total budget')
         p = io.case/'runtime-total-budget.binding.actual.json'

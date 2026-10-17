@@ -1,0 +1,359 @@
+{
+  "schema": "xar.e04.r196.r01.portable-source-index.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "packaged_at_utc": "2026-10-17T02:29:25.230684+00:00",
+  "source_observation_date_raw": 53148192,
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "native_build": "a33",
+  "source_runtime": {
+    "pid": 36072,
+    "process_creation_filetime_100ns": 134366756638003884,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-2bac783421ef",
+    "actor_id": 31254,
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "archive": {
+    "path": "r196-r01-originals.solid.xz",
+    "bytes": 210324,
+    "sha256": "1e342510208cd436a9c2170f37f35ee1bf089db6fd0506cb6de4ae2d83c23781"
+  },
+  "compression": "solid-XZ / LZMA2 preset7-extreme16MiB dictionary / Python standard library / lossless",
+  "members": [
+    {
+      "member": "responses/before.json",
+      "solid_offset": 0,
+      "bytes": 125370,
+      "sha256": "674b8edde40f8f51939496280f84156e2b75d3334147072f70d45d1b95aab51c",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r07-treatment-a01-ready-identity-07-save-after.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/01-full18.json",
+      "solid_offset": 125370,
+      "bytes": 5380,
+      "sha256": "d5d64d944aaa34002f7dcc06fecce838c750554dbc95b386eb47c10c7d8a1eae",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-01-full18.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/02-commander18.json",
+      "solid_offset": 130750,
+      "bytes": 92806,
+      "sha256": "0930493bc12cca4df3318d6bcd81349a6a7ec8beadd0baf60e4c823f8cdc7e1c",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-02-commander18.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/03-cash.json",
+      "solid_offset": 223556,
+      "bytes": 19188,
+      "sha256": "032baa54ef773c1095f76a97943de6335b45e37b3d212474ffa8616cdb5a5a71",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-03-cash.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/04-occupation4.json",
+      "solid_offset": 242744,
+      "bytes": 100162,
+      "sha256": "4c27d639e0f4efde772c60051bee1c071de4ba4ada67d37345ef3b516f086450",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-04-occupation4.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/05-preview2644.json",
+      "solid_offset": 342906,
+      "bytes": 23009,
+      "sha256": "3ff386c0a44df1781fa0c072c345050deba2e2b4127f7ce3fd968bd5a7305410",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-05-preview2644.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/06-preview2645.json",
+      "solid_offset": 365915,
+      "bytes": 22953,
+      "sha256": "6104f36cccc1e347ff91783df7f6565edc4e133c1006753ca9069e09f805ca39",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-06-preview2645.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/07-preview2619.json",
+      "solid_offset": 388868,
+      "bytes": 23481,
+      "sha256": "3644ef45ae7cdf5837f03ca6d1e870e32f88b43e33083e6c5ebd3ac21a77d59f",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-07-preview2619.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "responses/08-after.json",
+      "solid_offset": 412349,
+      "bytes": 126166,
+      "sha256": "134daa44697513d5174fb7b5cc5ac9f1134bd5e661a8cd5633d40e5a6ee68f25",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r196-r01-readonly-a01-08-after.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "full/complete-driver-army18.json",
+      "solid_offset": 538515,
+      "bytes": 11163208,
+      "sha256": "f4112efd6481162da25dfdd1171e85605ea21cd913578a14a1fa11de618e4897",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/state-a01/native-session/army-query-history-results/army-query-bd03665949c043c0acb7f9e517151330.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "single-complete-Driver-result-not-pipe-wire"
+    },
+    {
+      "member": "runtime/identity.json",
+      "solid_offset": 11701723,
+      "bytes": 7940,
+      "sha256": "3467b0a5b539077f4154c3bd88b871b25b0daec47e41618235a8a0a4b4749da4",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/runtime-actor-identity.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/identity-save.json",
+      "solid_offset": 11709663,
+      "bytes": 20336,
+      "sha256": "8869ef10fc45cb5ed43c54131b69de99dd3b9fb8e1a7ba45b26f26eb4eb81dda",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/desktop-3fevhd2-1c74096080--vanilla--R0196/responses/r07-treatment-a01-ready-identity-06-save-once.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/identity-scope.json",
+      "solid_offset": 11729999,
+      "bytes": 9175,
+      "sha256": "6978b56b6c37e3c368849ef3dc0d5b71733b7175dfa67c1fa814909308285d51",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/R07-IDENTITY-SCOPE.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/r07-binding.json",
+      "solid_offset": 11739174,
+      "bytes": 7642,
+      "sha256": "27da9e60946987f346a4f1f1e7dc371150c3166282219cb82888e1d4ee19c396",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/R07-ARM.binding.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/prepared.json",
+      "solid_offset": 11746816,
+      "bytes": 11728,
+      "sha256": "cccd9dcb6705cd68e89cc656e04b67332cd551ce74944243e62f71d3f23107ed",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/prepared-a01/prepared.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/environment-manifest.json",
+      "solid_offset": 11758544,
+      "bytes": 1694,
+      "sha256": "c474c5e34ee904e973963db721fe1b080ae18caf932943dd48e9ef65cc67e7ce",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/prepared-a01/environment-manifest.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/identity-guard.json",
+      "solid_offset": 11760238,
+      "bytes": 1737,
+      "sha256": "5d282b28b0ad81a7219e2538c86239f579c48220f1d7382b316f701b4ce2b038",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/r07-treatment-a01-ready-identity-guard.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/identity-observe.json",
+      "solid_offset": 11761975,
+      "bytes": 4100,
+      "sha256": "a52859e168174c3ed376b81ec86c1f37a0dd2ec9192817048a583afe3dcb2060",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/r07-treatment-a01-ready-identity-observe.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/identity-header-first2048.bin",
+      "solid_offset": 11766075,
+      "bytes": 2048,
+      "sha256": "64a846a95277862c5ed92038bc528edeb82d5129574961e28e35f2947ed228eb",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/r07-treatment-a01-ready-identity-header-first2048.actual.bin",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "exact-bounded-header-excerpt-not-a-save"
+    },
+    {
+      "member": "runtime/production-qualification.json",
+      "solid_offset": 11768123,
+      "bytes": 81640,
+      "sha256": "792b5aa155bfbe368368580eb56a53a9d715d82bdb702bc9887875972fbc11e9",
+      "historical_source_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a33/ROOT-PRODUCTION-QUALIFICATION.actual-a33.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/capacity-admission.json",
+      "solid_offset": 11849763,
+      "bytes": 12630,
+      "sha256": "ea079c6e19170bf109199a2ec7fd8c9a3bf0fac04e35aaf2df8e729182c48b89",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/capacity-r07-treatment-next-a01/R07-TREATMENT-CAPACITY.actual-root-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "runtime/operation-window.json",
+      "solid_offset": 11862393,
+      "bytes": 1121,
+      "sha256": "a28b444dac8f9cd447626575e7821bcc2653ad439c3c1e802336ab0559b1fbc4",
+      "historical_source_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r196-r07-treatment-a01/R07-ARM.binding.operation.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "source/normal-robert-origin-identity.json",
+      "solid_offset": 11863514,
+      "bytes": 6844,
+      "sha256": "2d6d3396cd316167a53fc3170276ecefb8d273970e794b1805d8d8166296aa23",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/robert-runtime-identity-a01/actor-identity.actual-a02.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "source/r01-source-chain-audit.json",
+      "solid_offset": 11870358,
+      "bytes": 18449,
+      "sha256": "77d01a76b5d52f492f0016adbda4d7546787dde5c64713e9cad55b1a2a4108ed",
+      "historical_source_path": "D:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/episode04-r01-source-chain-20261016/audit.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "source/original-experiment-cards.md",
+      "solid_offset": 11888807,
+      "bytes": 27122,
+      "sha256": "dc1f06132109032d9ddef9316faacdb04bd2c1759a96ea38ec99c2d5f27bddab",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/story-lane/review02-rewrite-map-a01/sources/EXPERIMENT-CARDS.original.md",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-historical-plan-not-current-installation-evidence"
+    },
+    {
+      "member": "policy/source-binding.json",
+      "solid_offset": 11915929,
+      "bytes": 1687,
+      "sha256": "f05e9de08adaedcd7a63a216302c51f3f7aeb6d9444c13e1b29c0c77c95bb6a0",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/source_binding.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "policy/ROOT-R01-RESEARCH-DECISION.actual-a01.json",
+      "solid_offset": 11917616,
+      "bytes": 1678,
+      "sha256": "a35db9b9920eee515304fc912c90d357c0a850e6a56cdd470eeb264d61377c4a",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/ROOT-R01-RESEARCH-DECISION.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "analysis/R01-ADMISSION.actual-a01.json",
+      "solid_offset": 11919294,
+      "bytes": 10923,
+      "sha256": "eb439ccc3c2fddb818eb1c992aa7505d379f18d2002de51943ef3beefec22f18",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/R01-ADMISSION.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "analysis/REST-AND-R01-DECISION.candidate-a01.json",
+      "solid_offset": 11930217,
+      "bytes": 9392,
+      "sha256": "449cd51bbb53c280c9338d7b05d9b2c5cac98b873508d8ad957706bc2b140f03",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/REST-AND-R01-DECISION.candidate-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "analysis/R01-ORIGINAL-CARD-REVIEW.recommendation-a01.json",
+      "solid_offset": 11939609,
+      "bytes": 22598,
+      "sha256": "87737a247ba883cf7e01d7907a9abdd5f4781a71895e519c4c2e36cdc379198a",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/R01-ORIGINAL-CARD-REVIEW.recommendation-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "analysis/PREVIEWS.actual-a01.json",
+      "solid_offset": 11962207,
+      "bytes": 17673,
+      "sha256": "551b6e8b70f8415a174047192e6b89ad23139ea933ef15dfd095ef9514b045f6",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/PREVIEWS.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "plan/research-plan.actual-r196-a01.json",
+      "solid_offset": 11979880,
+      "bytes": 5711,
+      "sha256": "55555670f98b46704401c7b0ca9e0a1a343c384c939e28153fa73eee8aa6d239",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/research-plan.actual-r196-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "plan/research-plan.actual-r196-a01.check.json",
+      "solid_offset": 11985591,
+      "bytes": 925,
+      "sha256": "66dcb5bee22b760f65eab7bb7acb8b10f3e8e6d0b20fb90f4b23f775d3c2fa14",
+      "historical_source_path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/research-plan.actual-r196-a01.check.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "original-recorded-json"
+    },
+    {
+      "member": "portable-inputs.json",
+      "solid_offset": 11986516,
+      "bytes": 53322,
+      "sha256": "1f6adb208d0f48a1d4b21cedbcaae239d0a1757d7311d098594b02e1da619b52",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "kind": "derived-portable-input-binding"
+    }
+  ],
+  "uncompressed_total_bytes": 12039838,
+  "no_save_or_EXE_included": true,
+  "complete_Driver_member_count": 1,
+  "normal_save_manifest_member": "portable-inputs.json#/normal_save_identity_manifest",
+  "environment_manifest_scope": "Prepared environment/enabled mods/lifecycle metadata; do not relabel it a separately queried loaded-feature manifest.",
+  "root_decision_member": "policy/ROOT-R01-RESEARCH-DECISION.actual-a01.json",
+  "progress": {
+    "research_closed": 8,
+    "research_total": 14,
+    "business_closed": 5,
+    "business_total": 11,
+    "qualified_dynamic": 0,
+    "dynamic_total": 11,
+    "formal_abc_closed": 0,
+    "formal_abc_total": 3
+  },
+  "video_signoff": false,
+  "cross_machine_boundary": "Offline replay of recorded source-machine facts. Does not qualify the verification machine installation, Steam, PID, native deployment, save availability, video or future gameplay.",
+  "storage": {
+    "policy_version": "1.0.0",
+    "lane_ceiling_bytes": 524288,
+    "shared_pool_bytes": 134217728,
+    "pool_reset": false,
+    "existing_lane_before_archive_bytes": 201184,
+    "C_free_bytes_at_write": 27878010880,
+    "D_free_bytes_at_write": 43467587584,
+    "retention": "small consolidated evidence record:180day review; derived packaging helpers:48hour review; no save protection renewed"
+  }
+}

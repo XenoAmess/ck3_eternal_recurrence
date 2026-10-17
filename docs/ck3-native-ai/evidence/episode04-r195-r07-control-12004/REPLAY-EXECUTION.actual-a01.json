@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.offline-production-replay-execution.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T01:48:01.247912+00:00",
+  "actual_tool_result": {
+    "tool": "exec_command",
+    "chunk_id": "eb3baa",
+    "exit_code": 0,
+    "wall_time_seconds": 1.0401534,
+    "stdout_bytes": 0
+  },
+  "command": [
+    "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\verify_control.py",
+    "--archive",
+    "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.actual-a01.zip",
+    "--manifest",
+    "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\R195-CONTROL-EVIDENCE.manifest-a01.json",
+    "--repo",
+    "D:/workspace/ck3_eternal_recurrence",
+    "--output",
+    "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\PRODUCTION-REPLAY.actual-a01.json"
+  ],
+  "verifier": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\verify_control.py",
+    "bytes": 14745,
+    "sha256": "4a987c45f2304d30bd41ab8b3b8dfd6f4871e1701b792415c0751e173550cf27"
+  },
+  "replay_result": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r195-r07-control-portable-a01\\PRODUCTION-REPLAY.actual-a01.json",
+    "bytes": 6294,
+    "sha256": "df354c2b373be9e1a3dc04c25d38bc6ab9949b875ee5dd61180e011e4de8da24"
+  },
+  "SDK_calls": 0,
+  "desktop_calls": 0,
+  "game_actions": 0,
+  "archive_extracted_to_disk": false,
+  "new_native_or_Python_matrix_runs": 0
+}

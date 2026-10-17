@@ -177,6 +177,9 @@
 #if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
 #include "xar_bridge/ck3_12004_county_predicate_trace_hook.hpp"
 #endif
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004)
+#include "xar_bridge/ck3_12004_county_relation_inputs_hook.hpp"
+#endif
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)
 #include "xar_bridge/ck3_12004_actual_army_late_event_journal.hpp"
@@ -18821,6 +18824,58 @@ void RunConnectedSession(
               connected = write_frame(pipe, response);
             }
 #endif
+#if XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004
+          } else if ((step == xar::ck3_11906::kMilitaryReinforcementEnable12004Step || step == xar::ck3_11906::kMilitaryReinforcementDisable12004Step)) {
+            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;
+            xar::game::Snapshot current{};
+            if (!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
+                !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
+                expected_revision==0 || expected_revision!=state_revision ||
+                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
+                !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
+                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
+                current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
+                (!IsLydPrivateBuild(game.descriptor()) || game.descriptor().game_version!=xar::ck3_12004::kGameVersion || game.descriptor().executable_sha256!=xar::ck3_12004::kExecutableSha256)) {
+              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_episode_binding_changed"));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox=&g_main_thread_query_mailbox_v1;
+              query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::set_military_reinforcement;
+              query.military_reinforcement.desired_enabled=step==xar::ck3_11906::kMilitaryReinforcementEnable12004Step;
+              query.military_reinforcement.game=&game;query.military_reinforcement.expected_snapshot=current;
+              query.military_reinforcement.native_revision=state_revision;query.military_reinforcement.connection_generation=connection_generation;
+              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);
+              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));
+              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);
+              std::string response;
+              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);
+                // Keep the original stack context until this one ticket finishes. Never resubmit.
+                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
+                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
+                  xar::game::Snapshot completion{};
+                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision) {
+                    query.military_reinforcement.result.frame_verified=false;
+                    query.military_reinforcement.result.gui_owner_binding_verified=false;
+                    query.military_reinforcement.result.status="unavailable";
+                    query.military_reinforcement.result.unavailable_reason="pipe_completion_binding_changed";
+                  }
+                  response="{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
+                  response+=request_id;response+="\",\"ok\":true,\"result\":";
+                  response+=xar::ck3_11906::SerializeMilitaryReinforcementAction12004(query.military_reinforcement.result);response+='}';
+                }
+                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();
+              }
+              if(response.empty())response=CommandResultFrame(request_id,step,false,"military_reinforcement_owner_submission_or_completion_failed_no_retry");
+              connected=write_frame(pipe,response);
+            }
+#endif
 #if defined(XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1)
           } else if (step == xar::ck3_11906::kIngameMilitaryOpen12004Step) {
             std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;
@@ -30107,6 +30162,10 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #endif
 #if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
     if (!xar::ck3_12004::InstallCountyPredicateTraceHook12004(base, sha, true))
+      return FALSE;
+#endif
+#if defined(XAR_ENABLE_COUNTY_PREVIEW_RELATION_INPUTS_12004)
+    if (!xar::ck3_12004::InstallCountyRelationInputsHook12004(base, sha, true))
       return FALSE;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1)

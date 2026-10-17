@@ -1,0 +1,406 @@
+{
+  "schema": "xar.e04.known-pam-notice-actual-outcome.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T01:38:38.930205+00:00",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0195",
+  "episode_run_id": "native-31254-d5ea28d864bc",
+  "status": "ACK_AND_INDEPENDENT_EVENT_CLEAR_VERIFIED",
+  "event_definition_key": "pam_bull_events.0004",
+  "event_instance_id": 2,
+  "date_raw": 53148792,
+  "root_character_id": 31254,
+  "actor_character_id": 30490,
+  "bull_issuer_character_id": 30490,
+  "original_pins": {
+    "context": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-event-context-a01-context.json",
+      "bytes": 47313,
+      "sha256": "14aa5213286861f601813750ecbf74edccecd68cf9c1788ee4d9e80fd47726a0"
+    },
+    "before": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-s2-day25-a01-d01-08-wait-02.json",
+      "bytes": 140503,
+      "sha256": "6536a2a750814b073829d510f1746d0421eb84e05e1be404b3d8b03a418659d3"
+    },
+    "selection": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-pam-select-a01-selection.json",
+      "bytes": 13867,
+      "sha256": "508b119f441e284402d329a25d4b61a4143479b832d25c83675681c7b19c296c"
+    },
+    "after": {
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r195-r07-control-a01/desktop-3fevhd2-1c74096080--vanilla--R0195/responses/r195-abs25-pam-select-a01-after.json",
+      "bytes": 138961,
+      "sha256": "8861b1e9840a72fca5f8143f09a3d6958517138e55de7bc60bd9152592e30bac"
+    }
+  },
+  "prior_production_policy": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r195-control-day25-event-offline-a01/R195-ABS25-PAM-POLICY.actual-a01.json",
+    "bytes": 10647,
+    "sha256": "0515ade94e12ab10057f3496f8bdc758e53411b6b437644d97a485f7347c475c"
+  },
+  "typed_context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 86,
+    "date_raw": 53148792,
+    "current_event_instance_id": 2,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "pam_bull_events.0004",
+    "calculated_event_id": 4380004,
+    "runtime_stats_ordinal": 7778,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "puppeteer",
+        "name_identifier": 228,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "character_scope_is_null"
+          }
+        }
+      },
+      {
+        "name": "actor",
+        "name_identifier": 1,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "selected_item",
+        "name_identifier": 361,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "bull_issuer",
+        "name_identifier": 19772,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_issuer",
+        "name_identifier": 19788,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_permit",
+        "name_identifier": 19789,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 30490
+          }
+        }
+      },
+      {
+        "name": "pam_tenet_stance_tenet",
+        "name_identifier": 19790,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "tenet_scope",
+        "name_identifier": 28354,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "就这样吧。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.4-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC418",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.4-native-event-window-v1"
+    }
+  },
+  "actual_request": {
+    "request_id": "r195-abs25-pam-select-a01-selection",
+    "tool": "ck3_select_event_option",
+    "arguments": {
+      "event_instance_id": 2,
+      "option_number": 1,
+      "expected_revision": 87
+    }
+  },
+  "ACK": {
+    "accepted": true,
+    "status": "submitted",
+    "observed_at_utc": "2026-10-17T01:36:03.269956+00:00"
+  },
+  "selection_postcondition": {
+    "status": "event_instance_advanced",
+    "postcondition_verified": true,
+    "old_event_instance_id": 2,
+    "new_event_instance_id": null,
+    "selected_option_number": 1,
+    "selected_native_option_index": 0,
+    "starting_snapshot_id": "native:86",
+    "starting_revision": 87,
+    "ending_snapshot_id": "native:87",
+    "ending_revision": 88,
+    "episode_run_id": "native-31254-d5ea28d864bc",
+    "connection_generation": 1,
+    "bridge_pid": 29000,
+    "starting_played_character_stress": {
+      "status": "available",
+      "character_id": 31254,
+      "stress_points": 0,
+      "unavailable_reason": null
+    },
+    "ending_played_character_stress": {
+      "status": "available",
+      "character_id": 31254,
+      "stress_points": 0,
+      "unavailable_reason": null
+    },
+    "starting_played_character_event_traits": {
+      "schema": "xar.ck3.player-event-trait-membership/v1",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status": "available",
+      "snapshot_revision": 86,
+      "date_raw": 53148792,
+      "played_character_id": 31254,
+      "traits": {
+        "lifestyle_poet": false,
+        "journaller": false
+      },
+      "unavailable_reason": null
+    },
+    "ending_played_character_event_traits": {
+      "schema": "xar.ck3.player-event-trait-membership/v1",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "status": "available",
+      "snapshot_revision": 87,
+      "date_raw": 53148792,
+      "played_character_id": 31254,
+      "traits": {
+        "lifestyle_poet": false,
+        "journaller": false
+      },
+      "unavailable_reason": null
+    },
+    "starting_played_character_gold": {
+      "status": "available",
+      "character_id": 31254,
+      "gold_raw": 26010399,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "ending_played_character_gold": {
+      "status": "available",
+      "character_id": 31254,
+      "gold_raw": 26010399,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "starting_played_character_prestige": {
+      "status": "available",
+      "character_id": 31254,
+      "prestige_raw": 221297860,
+      "scale": 100000,
+      "unavailable_reason": null
+    },
+    "ending_played_character_prestige": {
+      "status": "available",
+      "character_id": 31254,
+      "prestige_raw": 221297860,
+      "scale": 100000,
+      "unavailable_reason": null
+    }
+  },
+  "independent_after": {
+    "snapshot_id": "native:87",
+    "revision": 88,
+    "native_revision": 87,
+    "date_raw": 53148792,
+    "paused": true,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "one_life_terminal": false,
+    "episode_run_id": "native-31254-d5ea28d864bc"
+  },
+  "finite_resource_observations": {
+    "stress": {
+      "selection_start": 0,
+      "selection_end": 0,
+      "independent_after": 0,
+      "equal": true,
+      "scale": null
+    },
+    "gold": {
+      "selection_start": 26010399,
+      "selection_end": 26010399,
+      "independent_after": 26010399,
+      "equal": true,
+      "scale": 100000
+    },
+    "prestige": {
+      "selection_start": 221297860,
+      "selection_end": 221297860,
+      "independent_after": 221297860,
+      "equal": true,
+      "scale": 100000
+    }
+  },
+  "known_registry_outcome": {
+    "source_choice_effect_profile": {
+      "schema": "xar.ck3.vanilla-event-choice-effect",
+      "schema_version": 1,
+      "selected_native_option_index": 0,
+      "completeness": "all-authored-options-and-common-after-source-reviewed",
+      "selected_option_effects": [],
+      "common_after_effects": [],
+      "observable_postcondition": null,
+      "source_anchors": [
+        "events/dlc/pam/pam_bull_events.txt:283-328"
+      ],
+      "source_sha256": "596A8F4CE0C9E64119B2E65917EC56F984C58882E5CCB0ADBD2E56893D89F937"
+    },
+    "production_material_plan": null,
+    "material_evaluation": "not_evaluated_no_supported_material_postcondition",
+    "plan_function": "xar_autoplayer.vanilla_events.outcome.plan_registered_event_material_postcondition_v1",
+    "outcome_function_source": {
+      "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/vanilla_events/outcome.py",
+      "bytes": 16879,
+      "sha256": "1628d61ea0fe6f63632c8f5a63bb82e990f9c3153df3b7e2b852113dc9310691"
+    },
+    "plan_invocations": 1,
+    "policy_invocations_in_this_seal": 0,
+    "new_registry_query_or_source_analysis": false,
+    "boundary": "empty source acknowledgement; modal clear and finite unchanged fields do not establish tenet permission/stance/callback/trait/religion effects"
+  },
+  "source_SHA256": {
+    "events/dlc/pam/pam_bull_events.txt": "596A8F4CE0C9E64119B2E65917EC56F984C58882E5CCB0ADBD2E56893D89F937",
+    "common/scripted_effects/pam_effects.txt": "FC4C77974A7844C31C1271DCC2ACE24B17906620A832658919AA281E42A2B94F"
+  },
+  "source_reuse": "already registered exact.4 PAM source and R186 knowledge; original whole/node sources not reread from installed game",
+  "day25_recovery": {
+    "segment": 2,
+    "local_day": 1,
+    "absolute_day": 25,
+    "original_start_raw": 53148768,
+    "original_target_raw": 53148792,
+    "event_handling_did_not_advance_time": true,
+    "Arm_or_Resume_resubmitted_by_worker": false,
+    "day25_clock_cash_army_completion_granted_by_this_archive": false,
+    "owner": "Root existing post-only recovery; no new recovery implementation in this lane"
+  },
+  "SDK_calls": 0,
+  "screen_calls": 0,
+  "main_writes": 0,
+  "new_gameplay_actions": 0,
+  "new_full_card_or_video_credit": false
+}

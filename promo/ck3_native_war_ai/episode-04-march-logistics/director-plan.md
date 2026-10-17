@@ -1,5 +1,23 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-17 02:51 UTC 导演口径：一次实付与有限陆→船画面
+
+`machine_id: desktop-3fevhd2-1c74096080`。[Root R07-v2研究决策](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json)原件2,371 B／SHA-256 `1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f`签出既有v2设计的研究核心；含此前已计入R01，当前研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，合格动态 **0/11**、正式ABC **0/3**。须并列保存原R07-v1严格卡仍false：七日单窗与避经济机会未满足；若按原卡不采纳v2，研究 **8/14（57.14%）**、业务 **5/11（45.5%）**。 R195/R196同正常S0／source611／a33双独立32日配对，R196在1032由payer31254个人账户出现一次实际SUB3金币，原生精确account write及生产pair replay已留证。此为一次付款，不证明普遍费率、source-bound quote、零费、维护归因或统帅因果；单窗consumer `full_v2_qualified=false`原结果保留，Root采纳的是v2研究核心而非把该字段改写为true。 [R196有限媒体实际原件](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json)20,836 B／SHA-256 `26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403`：原片2,369帧／编码78.966秒、墙钟82.824864秒，可用流全解码exit0，PTS无缺失/回退；八张实际帧只见陆营38秒→船面板41秒，视觉转场界于(38,41]秒。这个区间不是native callback精确PTS，也不能由八帧推出连续clean、完整1×或人工签核；动态维持0/11。 配音只可说本场实付3金币并展示实际抽样转场；正式镜头clean、1×及人审仍待验。
+
+
+## 2026-10-17 02:44 UTC 导演更新：R196处理臂正常闭场，原片待审
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root的[R01研究签卡](../../../docs/ck3-native-ai/episode04-r196-r01-ready-t0-12004.md)使研究 **8/14（57.14%）**，业务 **5/11（45.5%）**、合格动态 **0/11**、ABC **0/3**；2619补给eligible+20只是候选，路径穿敌持点，镜头不可说已经安全抵达或库存增长。R195控制臂与R196处理臂同R191正常S0/source611/a33；R196 32日逐日精准，day31在1032已embarked/route空、personal SUB3金币payer31254，生产pair replay通过，正常Save/exit0/释放。R07整卡仍待独立owner对原卡/v2和费用归因签核。
+
+R196 Finish正常且原片49,062,501 B／SHA-256 `7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9`、wall82.824864秒；媒体解码/PTS尚在审，clean、完整1×及人审不得预填。R194 [rough候选](review02/r194-shot-context-a01/README.md)仍 `render_ready=false`，R196不因Start/Finish自动变为正式动态。片中若陈述登船付款，须绑定实际payer与消费来源，不能把任何自然个人款或0 caller raw4推成已证频率／维护归因。
+
+## 2026-10-17 01:54 UTC 导演接续候选：R07控制臂已存，处理臂正在加载
+
+`machine_id: desktop-3fevhd2-1c74096080`；source `611bc985ae95f477dd7314df11f8602cd1e595f3`／a33。R195已从R191正常S0逐日完成32/32静止对照、两段终端natural48+16及payment12+2、无覆盖，正常Save/游戏exit0/释放；[便携控制臂原件](C:/ck3-e04-resume-20261015-a01/r195-r07-control-portable-a01/ROOT-DELIVERY.actual-a01.json)3,619 B／SHA-256 `661fd258197952a239afe98aca3fbd8b3f0e21e6b00ea749ddc45dd9abf3c2d9`。R195录制未Start，不能作视频动态。首海preview route `[1032]`可用、definitions 1→0，县边P=false不等于路线失败。R196同源同DLL独立处理臂已经启动，但本快照没有map/baseline/Move/原片结果；180秒录制准入与03:15:28 UTC截止不是已拍镜头。
+
+R194 [rough候选](review02/r194-shot-context-a01/README.md)仅有一条来源，仍 `render_ready=false`；下一步要真实R196处理臂与媒体审阅。R06 a44 owner military `4A9`／raw1 以及raw4两终端child只给局部生产观察，未调用provider、toggle或ADD，未证明费用归因。R07整卡、动态、ABC均不因R195控制臂或并发准备涨分：研究 **7/14**、业务 **5/11**、合格动态 **0/11**、ABC **0/3**。同source配对闭场前主树冻结，后续入库按实际回执追加。
+
+
 ## 2026-10-17 00:19 UTC 导演当前接续：R09研究闭合，正式镜头仍待审
 
 `machine_id: desktop-3fevhd2-1c74096080`。[R191实际围城扣兵](../../../docs/ck3-native-ai/episode04-r191-window-capture-12004.md)七笔合计11只加强已闭R03。[R192正向](../../../docs/ck3-native-ai/episode04-r192-forward-split-merge-12004.md)与[R193同正常S0独立反向](../../../docs/ck3-native-ai/episode04-r193-reverse-pair-12004.md)双臂数值已入库；[R194正向专题](../../../docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md)取得完整动作端点链、存续军typed/GUI以及正常Save/游戏exit0/释放。Root的[研究决策原件](../../../docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)2,635 B／SHA-256 `e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c`授R09研究/业务闭合：**7/14（50.0%）**、**5/11（45.5%）**。原R192 strict false、同值stock非clamp、birth PC未知不剪成强因果。R194原片虽有Split→两军→Merge→存续军可见和Finish `NORMAL_TREE_EMPTY`，完整媒体/clean、实际1×观看与人工签核仍须独立结算；合格动态 **0/11**、ABC **0/3**。不以片后typed后态或控制器自报代替原片审片。

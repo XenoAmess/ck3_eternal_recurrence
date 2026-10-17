@@ -123,6 +123,11 @@ def _valid_observation(plan, obs):
     return ep, unit, binding
 
 
+def _in_transit(unit):
+    # Native embarked state may retain a complete route while sailing.
+    return unit.get('state') in ('moving', 'embarked') and bool(unit.get('route'))
+
+
 def _stationary_at(unit, target, arrival_states):
     return (unit['current_province_id'] == target and unit['state'] in arrival_states
             and unit['route'] == [] and unit['target'] is None)
@@ -260,7 +265,7 @@ def observe(plan, state, observation):
                  'same-revision Move consequence cannot be independent')
             return new
         need(unit['current_province_id'] == state['pending_origin']
-             and unit['state'] == 'moving' and unit['route'] == state['pending_route']
+             and _in_transit(unit) and unit['route'] == state['pending_route']
              and unit['target'] == state['pending_target'], 'actual applied route differs from submitted preview')
         new['phase'] = 'marching'
     elif state['phase'] == 'marching':
@@ -276,7 +281,7 @@ def observe(plan, state, observation):
             new['ready_province'] = target
             new['last_not_arrived_day'] = ep['day']
         else:
-            need(unit['state'] == 'moving' and unit['route'] and unit['route'][-1] == target
+            need(_in_transit(unit) and unit['route'] and unit['route'][-1] == target
                  and unit['target'] == target, 'unexpected route/state is a deviation, not arrival')
             route = state['pending_route']
             need(any(unit['route'] == route[i:] for i in range(len(route))),

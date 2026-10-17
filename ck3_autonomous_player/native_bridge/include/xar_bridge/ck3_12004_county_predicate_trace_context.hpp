@@ -18,6 +18,8 @@ struct CountyPredicateTraceFrame12004 {
   const void *actor = nullptr, *source_county = nullptr, *target_county = nullptr;
   std::uint32_t thread_id = 0, callback_depth = 0;
   std::size_t next_stage = 0;
+  std::optional<std::size_t> active_relation_stage;
+  std::uint32_t relation_callback_depth = 0;
   bool stopped = false;
   game::ArmyCountyPredicateTraceV1 trace{};
 };
@@ -119,6 +121,15 @@ inline bool InvokeCountyPredicateTrace12004(CountyPredicateOriginal12004 origina
   if (stage_index != frame->next_stage || frame->stopped ||
       stage.argument_identity_matched != true || stage.call_count != 1)
     frame->trace.order_valid = false;
+  // P tail-jumps to 2C09620. Its actual return is this bridge call site,
+  // not the original 24E22xx caller. Carry the known P stage through it.
+  const auto previous_relation_stage = frame->active_relation_stage;
+  frame->active_relation_stage = stage_index;
+  struct StageExit {
+    CountyPredicateTraceFrame12004 *frame;
+    std::optional<std::size_t> previous;
+    ~StageExit() { frame->active_relation_stage = previous; }
+  } stage_exit{frame, previous_relation_stage};
   const bool result = original(actor, county, opaque_r8, opaque_r9); // exactly one native call
   stage.returned = result;
   frame->next_stage = stage_index + 1;

@@ -57,6 +57,21 @@ def classify_regiment_observation(
             "birth_producer_observed": False, "player_troop_class": None}
 
 
+def read_bound_native_army_resolution(row, *, army_id):
+    def need(v,m):
+        if not v:raise ValueError(m)
+    need(isinstance(row,dict) and type(army_id) is int and type(row.get('army_id')) is int and row['army_id']==army_id,'normalized Army row belongs to another public CUnit')
+    need(row.get('status')=='available','normalized Army row unavailable')
+    native=row.get('native_carmy_id');need(type(native) is int and -(2**31)<=native<2**31 and native!=-1,'actual native CArmy FullID unavailable')
+    r=row.get('native_army_resolution_v1');keys={'status','ready','branch','raw_reference','reference_index','storage_capacity','entry_full_id'}
+    need(isinstance(r,dict) and set(r)==keys,'typed native resolution schema absent')
+    need(r['status']=='available' and r['ready'] is True and r['branch']=='resolved','typed native resolution not available/resolved')
+    need(all(type(r[k]) is int and -(2**31)<=r[k]<2**31 for k in ('raw_reference','reference_index','storage_capacity','entry_full_id')),'typed native resolution integer inputs unavailable')
+    need(r['raw_reference']==r['entry_full_id']==native,'typed CArmy reference/full generation does not match actual row')
+    need(0<=r['reference_index']<r['storage_capacity'],'typed native resolution entry outside current storage')
+    return {'army_id':army_id,'native_carmy_id':native,'native_army_resolution_v1':dict(r)}
+
+
 def _roster(frame: Mapping[str, object]) -> dict[int, Mapping[str, object]]:
     rows = frame.get("player_armies")
     _need(isinstance(rows, list), "complete player roster is required")

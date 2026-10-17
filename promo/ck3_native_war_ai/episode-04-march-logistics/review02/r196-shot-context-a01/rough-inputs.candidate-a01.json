@@ -1,0 +1,160 @@
+{
+  "schema": "xar.e04.rough-review-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "41846f4955391be89a719432a4010ed73d199b54",
+  "review_only": true,
+  "human_signoff": false,
+  "render_geometry": [
+    1920,
+    1080
+  ],
+  "repo_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "metadata": {
+    "measured": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50",
+      "artifact_id": "source-metadata.measured"
+    },
+    "method": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-composer-candidate-a01\\input-config.methodology.json",
+      "bytes": 42093,
+      "sha256": "a724e97b2ef701c514e1650a87cf989cfb7da5455f98c7dca7035895c9328c60",
+      "artifact_id": "reviewcut-input-config"
+    },
+    "raster": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-static-raster-production-a01\\raster-manifest.actual.json",
+      "bytes": 52756,
+      "sha256": "7d1e7afbfb9d1e5944a35242e9b9d19d2b90a707cded651a1e6e5f5b507922f0",
+      "artifact_id": "source-png-manifest"
+    }
+  },
+  "pending_cues": [
+    "C01-03",
+    "C01-04",
+    "C01-06",
+    "C01-07",
+    "C01-08",
+    "C02-01",
+    "C02-02",
+    "C02-03",
+    "C02-04",
+    "C02-06",
+    "C02-09",
+    "C02-10",
+    "C02-11",
+    "C02-12",
+    "C04-01",
+    "C04-02",
+    "C04-03",
+    "C04-04",
+    "C04-05",
+    "C04-06",
+    "C04-07",
+    "C04-08",
+    "C04-09",
+    "C04-11",
+    "C05-01",
+    "C05-02",
+    "C05-03",
+    "C05-04",
+    "C05-05",
+    "C05-07",
+    "C05-08",
+    "C05-09",
+    "C05-10",
+    "C05-11",
+    "C05-12",
+    "C05-13",
+    "C05-14",
+    "C05-15",
+    "C05-16",
+    "C06-03",
+    "C06-04",
+    "C06-05",
+    "C06-06",
+    "C06-07",
+    "C06-08",
+    "C06-10"
+  ],
+  "visual_overrides": {
+    "C03-01": {
+      "role": "rough-context-only",
+      "continuous_clean": false,
+      "event_PTS": null,
+      "approval": "pending",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "bytes": 66574010,
+        "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+        "artifact_id": "rough-raw.R191"
+      },
+      "source_frames": [
+        0,
+        972
+      ],
+      "source_frame_count": 3359,
+      "selection_basis": "Explicit source first972frames for context review only; not UTC-derived callback synchronization"
+    },
+    "C05-06": {
+      "role": "rough-context-only",
+      "continuous_clean": false,
+      "event_PTS": null,
+      "approval": "pending",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+        "bytes": 71202833,
+        "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+        "artifact_id": "rough-raw.R194"
+      },
+      "source_frames": [
+        0,
+        857
+      ],
+      "source_frame_count": 3467,
+      "selection_basis": "Explicit authored prefix for existing C05-06 measured duration; actual known sample0=250 and sample189=75; action cutpoints unlocated, no UTC-derived event synchronization"
+    },
+    "C04-10": {
+      "role": "rough-context-only",
+      "continuous_clean": false,
+      "event_PTS": null,
+      "approval": "pending",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-r07-treatment-a01\\raw-r07-treatment-a01\\raw.mkv",
+        "bytes": 49062501,
+        "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+        "artifact_id": "rough-raw.R196"
+      },
+      "source_frames": [
+        1080,
+        1783
+      ],
+      "source_frame_count": 2369,
+      "selection_basis": "Authored36..59.4333s window, exact703sourceframes for existing C04-10 audio; reviewed38s camp and41s ships are relative2s/5s. No precise native/payment event PTS inferred."
+    }
+  },
+  "observed_at_utc": "2026-10-17T02:57:43.670722+00:00",
+  "editorial_delta": {
+    "from_input": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\r194-shot-context-a01\\rough-inputs.candidate-a01.json",
+      "bytes": 4156,
+      "sha256": "a1fa09bffac66524c214b33d2866f3e669cd3f89f4f265a6de4de1f4e1170068"
+    },
+    "new_raw_fact_source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r196-media-audit-a01\\portable-media-shot-facts.actual-a01.json",
+      "bytes": 20836,
+      "sha256": "26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403"
+    },
+    "native_payment_source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r196-r07-treatment-portable-a01\\PRODUCTION-PAIR-REPLAY.actual-a01.json",
+      "bytes": 16094,
+      "sha256": "6852ee7616f08b3e847546f9d2e24e229e4e5191056e772b46552d0169f6b9af"
+    },
+    "one_raw_window_per_source_guard_retained": true,
+    "frozen_audio_or_text_changed": false,
+    "render_ready": false,
+    "rough_cues": 3,
+    "source_card_cues": 20,
+    "key_footage_pending_cues": 46
+  }
+}

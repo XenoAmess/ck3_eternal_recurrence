@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.root-research-card-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "reviewed_at_utc": "2026-10-17T02:22:35+00:00",
+  "reviewer": "/root",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "card": "R01",
+  "decision": "research_core_closed",
+  "admission": {"path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/R01-ADMISSION.actual-a01.json", "bytes": 10923, "sha256": "eb439ccc3c2fddb818eb1c992aa7505d379f18d2002de51943ef3beefec22f18"},
+  "original_card_review": {"path": "C:/ck3-e04-resume-20261015-a01/r01-after-r195-gap-a01/r196-live-prep-a01/R01-ORIGINAL-CARD-REVIEW.recommendation-a01.json", "bytes": 22598, "sha256": "87737a247ba883cf7e01d7907a9abdd5f4781a71895e519c4c2e36cdc379198a"},
+  "adopted_goal_province_id": 2644,
+  "observed_land_waypoint_province_id": 2645,
+  "observed_resupply_candidate_province_id": 2619,
+  "basis": "Current same-frame military identity, typed commander, actual war occupation target, available land preview, native eligible resupply point and normal save satisfy original R01 preparation card.",
+  "limits": ["2619 path crosses enemy-held current positions; no safe passage claim", "No actual arrival or stock growth at 2619", "2645 is not yet a distinct C strategy route", "No B two-stop growth or formal ABC credit", "Research acceptance is not video review or human signoff"],
+  "progress": {"research_closed": 8, "research_total": 14, "business_closed": 5, "business_total": 11, "qualified_dynamic": 0, "dynamic_total": 11, "formal_abc_closed": 0, "formal_abc_total": 3},
+  "video_signoff": false
+}

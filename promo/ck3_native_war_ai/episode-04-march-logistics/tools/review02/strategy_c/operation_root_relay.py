@@ -146,7 +146,7 @@ class Live:
         self.case.mkdir(parents=True,exist_ok=True)
         if not fixed.exists():write_new(fixed,fixed_value)
         self.attempt=self.case/args.attempt;self.attempt.mkdir(exist_ok=False)
-        self.pending=False;self.serial=0;self.last=None
+        self.pending=False;self.serial=0;self.last=None;self._refs={}
         self.runtime_total_budget_bytes=args.max_runtime_total_bytes
         self.meta={'machine_id':self.machine,'source_head':args.source_head,'at_utc':utc(),
             'run_id':args.run_id,'case':'C','case_id':args.case_id,'stage':args.stage,
@@ -196,7 +196,9 @@ class Live:
         self.last=s;return s,ref
     def frame(self,name):
         s,sref=self.snap(name+'-before')
-        row,_,_=self.request(name+'-army','ck3_query_army_strengths',{'army_ids':[self.binding['army_id']],
+        return self.strength_at(s,sref,name+'-army')
+    def strength_at(self,s,sref,name):
+        row,_,_=self.request(name,'ck3_query_army_strengths',{'army_ids':[self.binding['army_id']],
             'expected_revision':s['revision'],'profile':'ordinary_core_v1'})
         ev=row.get('army_history_evidence');need(type(ev) is dict,'response-local raw Driver reference missing; no glob/latest fallback')
         ref=ev['raw_result_reference'];path=Path(ref['path'])
@@ -214,7 +216,25 @@ class Live:
             self.binding['native_carmy_id']=full
             write_new(self.case/'binding.actual.json',{**self.meta,'binding':self.binding})
         observation=self.v.frame(s,q,self.binding)
-        return observation,{'snapshot':sref,'strength':actual}
+        refs={'snapshot':sref,'strength':actual}
+        self._refs[s['snapshot_id']]=refs
+        return observation,refs
+    def coherent_stop_core(self,stopped,name,stopped_ref=None):
+        # Status publication may change a revision. Read a fresh complete pair
+        # from the actual prepared session; never adopt an old state-a01 path.
+        need(stopped.get('paused') is True,'original stopped frame must be paused')
+        originals=[a for a in stopped.get('player_armies',[]) if a.get('army_id')==self.binding['army_id']]
+        need(len(originals)==1,'original stopped Army absent or ambiguous')
+        fresh,ref=(stopped,stopped_ref) if stopped_ref is not None else self.snap(name+'-fresh')
+        current=[a for a in fresh.get('player_armies',[]) if a.get('army_id')==self.binding['army_id']]
+        keys=('army_id','owner_character_id','controllable','current_province_id',
+              'army_state','army_state_code','route_province_ids','route_read_status',
+              'route_source_count','move_target_province_id','move_target_observable',
+              'in_combat','retreating')
+        need(fresh.get('paused') is True and fresh.get('date_raw')==stopped.get('date_raw')
+             and len(current)==1 and all(current[0].get(k)==originals[0].get(k) for k in keys),
+             'fresh post-status Army/date/state differs from original paused stop')
+        return self.strength_at(fresh,ref,name+'-core')
     def claim(self,kind,detail):
         path=self.case/(kind+'.once.claim.json')
         write_new(path,{**self.meta,'binding':self.binding,'kind':kind,'request_outcome':'not_yet_known',**detail})

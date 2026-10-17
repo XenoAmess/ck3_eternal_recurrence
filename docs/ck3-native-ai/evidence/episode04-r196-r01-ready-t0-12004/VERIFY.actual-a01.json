@@ -1,0 +1,48 @@
+{
+  "schema": "xar.e04.r196.r01.portable-verification.actual.v1",
+  "verified_at_utc": "2026-10-17T02:30:14.313072+00:00",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "verification_machine_id": "desktop-3fevhd2-1c74096080",
+  "verification_platform": "Windows-10-10.0.19045-SP0",
+  "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "accepted": true,
+  "archive": {
+    "path": "r196-r01-originals.solid.xz",
+    "bytes": 210324,
+    "sha256": "1e342510208cd436a9c2170f37f35ee1bf089db6fd0506cb6de4ae2d83c23781"
+  },
+  "index_sha256": "1523107347e3e9599a1a2892248bcb960c52f4a93e76c46a3196fb6e6b521fd2",
+  "members_verified": 34,
+  "uncompressed_bytes_verified": 12039838,
+  "pure_consumer_module_pins_verified": 225,
+  "military_t0_frame_ready": true,
+  "normal_t0_saved": true,
+  "recorded_Root_R01_decision": "research_core_closed",
+  "recorded_progress": {
+    "research_closed": 8,
+    "research_total": 14,
+    "business_closed": 5,
+    "business_total": 11,
+    "qualified_dynamic": 0,
+    "dynamic_total": 11,
+    "formal_abc_closed": 0,
+    "formal_abc_total": 3
+  },
+  "recorded_goal": 2644,
+  "recorded_land_node": 2645,
+  "recorded_conditional_rest": 2619,
+  "root_limits_preserved": [
+    "2619 path crosses enemy-held current positions; no safe passage claim",
+    "No actual arrival or stock growth at 2619",
+    "2645 is not yet a distinct C strategy route",
+    "No B two-stop growth or formal ABC credit",
+    "Research acceptance is not video review or human signoff"
+  ],
+  "video_signoff": false,
+  "source_machine_qualification_transferred_to_verification_host": false,
+  "proof_scope": "Exact archived original bytes and existing pure consumer consistency replay. Root decision remains a recorded source-machine fact. No independent attestation of original collection or current installation/runtime.",
+  "game_or_SDK_execution": false,
+  "save_load_or_save_body_access": false,
+  "archive_extracted": false
+}
