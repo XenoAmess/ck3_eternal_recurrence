@@ -19464,6 +19464,29 @@ def _primary_defender_siege_relief_assessment(
                 and enemy.get("retreating") is not True
                 and _defender_siege_is_relief_relevant(snapshot, war, enemy)
             ):
+                # CK3 may keep the old sieging stance after publishing a
+                # committed departure.  A complete route to a different
+                # Province is a moving hostile threat, not a stationary
+                # siege encounter whose target is still this Province.
+                # Leave it in the ordinary full-hostile scope below; only
+                # skip the dedicated stationary-siege relief forecast.
+                departure = _native_int(enemy.get("move_target_province_id"))
+                current = _native_int(enemy.get("current_province_id"))
+                route = enemy.get("route_province_ids")
+                if (
+                    enemy.get("move_target_observable") is True
+                    and departure is not None and departure > 0
+                    and current is not None and current > 0
+                    and departure != current
+                    and enemy.get("route_read_status") == "complete_nonempty"
+                    and isinstance(route, list) and bool(route)
+                    and all(_native_int(province) is not None and province > 0
+                            for province in route)
+                    and route[-1] == departure
+                    and enemy.get("in_combat") is False
+                    and enemy.get("retreating") is False
+                ):
+                    continue
                 siege_rows.append((war, enemy))
     if not siege_rows:
         return {"status": "not_applicable"}

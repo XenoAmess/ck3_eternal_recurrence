@@ -1,0 +1,99 @@
+{
+  "schema": "xar.routed-siege-public-transplant/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_delivery_sha256": "b7dcaadf8270f93761b17453f680f308f28e43da1a2722d6854be086ac0cc25a",
+  "source_patch_sha256": "9c653aa2b317f72cfe85ff93d5dc80081ca6d0f0e2510f346be7dd363667ade3",
+  "candidate_strategy_sha256": "b83bdceb0fe3c4ff5177f60296f43c484510f1710a43c603fd0f6ccfd3ab5119",
+  "public_transplant": {
+    "base_head": "a09e482d62252c23576e00a3264b58e6295e4e48",
+    "source_pins": {
+      "strategy.patch": "9c653aa2b317f72cfe85ff93d5dc80081ca6d0f0e2510f346be7dd363667ade3",
+      "test_portable_routed_siege.py": "71820c829f937e1d251140f47aa5ae0ecfed989c190fabbd3219e2828077f289",
+      "portable_actual_695.json.gz": "da619ee770f2a4c124e9e625a9acc6913b2af96b8b1ab2af90896a67bd5e2937",
+      "DELIVERY-FINAL.json": "b7dcaadf8270f93761b17453f680f308f28e43da1a2722d6854be086ac0cc25a"
+    },
+    "before_sha256": "cbfcb902f7ba649338290d0af6e61fedff58eb1c4b647d3c6abf35609537566b",
+    "after_sha256": "1868ea5559c8224df579b13b4c766162187074018cb09aeaa150c83f7c021c6f",
+    "before_links": 1,
+    "after_links": 1,
+    "changed_top_level_functions": [
+      "_primary_defender_siege_relief_assessment"
+    ],
+    "candidate_function_ast_identical": true
+  },
+  "fixture": {
+    "path": "../../../ck3_autonomous_player/tests/fixtures/portable_actual_695.json.gz",
+    "sha256": "da619ee770f2a4c124e9e625a9acc6913b2af96b8b1ab2af90896a67bd5e2937",
+    "source_receipt_sha256": {
+      "0002-1-result.json": "f8d53baf6415fbca135a2ef8624f2a91809e7cf84fa91460824bfa1cf25a34f1",
+      "0614-1-result.json": "7c10875e494897ec37f002957404811be89430d8a5dce6e795245de0cf2d469d",
+      "0616-1-result.json": "c716079fc12eb08304878505cda6c8b30aca24ef65262c14f4383625e1c7416b",
+      "0661-1-result.json": "37be905b2a9869593641555864eee1d7bf34a624b5663f6f56b9b52a81a29770",
+      "0663-1-result.json": "ee5efc1f4a66811d4491de1111cb67bc249eb88b4996b8475414d9e6940b9c10",
+      "0691-1-result.json": "17690088730234e242f0f761d991a9813d431c28a8ac39da6efed12b594c341e",
+      "0693-1-result.json": "4beb61a541b3dfa21bd306cf27bca6dfd49f364e942e5c642e5d067f6f70e956",
+      "0695-1-result.json": "81c0c387b5ba98c87ccae3bded4d509131ace081c63c0f5aeb10b887fbe1d236",
+      "0696-1-result.json": "271e96f716f8ed0d9e07f404cc9bb8a6f91b1d7caf35c58bf126576c61614737"
+    },
+    "scope": "Completed query and semantic projections, not complete Driver history"
+  },
+  "tests": {
+    "new_methods_passed": 3,
+    "new_negative_subtests_passed": 7,
+    "existing_unsafe_active_route_regression_passed": true,
+    "extra_old_assertions_failed_before_and_after": [
+      "GameplayBridgeTests.test_r0160_siege_relief_missing_strength_blocks_hold_advance",
+      "GameplayBridgeTests.test_r0176_siege_stance_with_active_route_keeps_typed_move",
+      "SiegeForecastIngressTests.test_any_strength_reads_exact_route_contact_and_v3_once"
+    ],
+    "baseline_method": "Restore only the changed function in memory from A09 Git blob; same three failures reproduced; no tracked leaf rewritten",
+    "full_old_suite_green_claimed": false
+  },
+  "p46_startup_failure": {
+    "failed_pair_exit_codes": {
+      "sdk_queue": 1,
+      "sdk_application": 2
+    },
+    "app_parser_rejected_old_argv": true,
+    "failure_stderr_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p46-queue\\sdk-stderr.log",
+      "sha256": "fc4dea5e714859f546debf708d0f0b77938a59ec5e3fa97b81454d6283101b42",
+      "bytes": 4551
+    },
+    "native_failure_claimed": false
+  },
+  "p47_retry": {
+    "ready_sha256": "e9d9ca9f1870e4366e320a82a64dd24e0b6bc3a53b1ed65bccd9fa9462bdd133",
+    "pre_rpc_admission_sha256": "b7dc6ffa4b1df0a88fc14cb8b5492741643b77292fc8ca283c3881ae35a4b33b",
+    "business_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p46-candidate01\\SOURCE-MANIFEST-FINAL.json",
+      "sha256": "ecdde940f23653be013b76ab8b84c8b3b1ba589c2424d20e0c5eafdd0366db27",
+      "bytes": 283472
+    },
+    "business_changes_since_p46_failed_launch": 0,
+    "parser_defaults": {
+      "route_contact_timeline_speed": 3,
+      "allow_route_contact_high_speed_ab": false
+    },
+    "actual_fixed_health_prefix": {
+      "source": "Root and fresh_harness_review handoff, 2026-10-17",
+      "owner_pid": 243016,
+      "queue_pid": 205404,
+      "application_pid": 227724,
+      "game_pid": 51028,
+      "health_days_advanced": 2,
+      "window": 14,
+      "not_a_realtime_pointer": true
+    }
+  },
+  "boundaries": {
+    "hostiles_removed_from_complete_scope": false,
+    "native_contact_free_inferred": false,
+    "new_native_build": false,
+    "live_driver_save_video_read": false,
+    "game_sdk_recording_operations": false,
+    "stable_30_years_claimed": false,
+    "speed_target_claimed": false,
+    "g2": "6/8"
+  }
+}

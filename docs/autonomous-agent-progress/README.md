@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17：695完整出发路线与围城姿态窄修
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。[695专题](../ck3-native-ai/routed-siege-stance-2026-10-17.md)修正敌军sieging姿态与完整已出发路线并存时的误阻塞：只跳过静止围城专用预测，四支敌军完整接触范围保留，仍须Native horizon。三项便携／七否例及unsafe-route回归通过；三项旧断言的既有RED在A09原函数上同样复现，不改断言或宣称全套绿。
+
+46因正式MCP不支持配方参数而construct前exit2；47同业务源以默认3／AB false独立重试，Root固定首批健康+2日并开窗口14，同Game／录像继续。原失败保留，不以当前进度预授30年／速度／G2信用。原03df Official RED与后继A09双CI SUCCESS分别记录；本695源码不操作现场。
+
 ### 2026-10-17：未知移动ACK的独立路线观察与SDK45源码
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。[移动观察专题](../ck3-native-ai/move-unknown-ack-observed-route-2026-10-17.md)保留SDK44窗口11失败143日、AUTO453原错误及后续461规划阻塞。独立新帧完整路线不改写原ACK；公共Driver只为同暂停owner的晚到快照等候最多2秒，Strategy消费实际路线意图，原命令不重放、业务／日期信用0。Root随后已实际确认SDK44双exit0、SDK45同Game首批10轮+6日，并由a7ea7033准入开窗口12；这只证明固定健康前缀，永久Move-error分支尚未复遇、旧453 ACK仍unknown，不预授稳定运行。
