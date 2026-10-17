@@ -1,0 +1,21 @@
+{
+  "schema": "relic-permissions-planned-native-packets-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_only": true,
+  "native_execution_claimed": false,
+  "expected_filenames": [
+    "normal.json",
+    "selected-different.json",
+    "nonowned-permission.json",
+    "window-unavailable.json",
+    "foreign-slot.json",
+    "stale-artifact.json",
+    "stale-site-generation.json",
+    "predicate-unavailable.json",
+    "no-artifact-request.json",
+    "empty-player-inventory.json",
+    "cache-unavailable.json",
+    "automatic-slot.json"
+  ],
+  "observed_at_utc": "2026-10-17T12:55:56.346026+00:00"
+}

@@ -11,6 +11,7 @@ from typing import Annotated, Callable, Literal, Mapping
 from pydantic import AfterValidator, Field
 
 from .confucian_challenger_graph_v1 import validate_faith_ids
+from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
@@ -2042,6 +2043,20 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
+    if getattr(driver, "allow_private_player_holy_site_relic_permissions_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_holy_site_relic_permissions_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] | None = None,
+        ) -> dict[str, object]:
+            """Read exact4 native relic candidates/permissions for the actual current window; no action."""
+            return service.query_player_holy_site_relic_permissions_v1(
+                expected_revision=expected_revision, holy_site_id=holy_site_id,
+                artifact_id=artifact_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_relic_permissions_v1")
+
     if getattr(driver, "allow_private_player_holy_site_relic_context_query", False) is True:
         @server.tool(annotations=ToolAnnotations(
             readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
@@ -2075,6 +2090,29 @@ def create_server(
             return driver.query_holy_site_adoption_detail_private_v1(
                 expected_revision=expected_revision,holy_site_id=holy_site_id)
         _forbid_unknown_tool_arguments_v1(server,"ck3_query_player_holy_site_adoption_detail_v1")
+
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_holy_site_decision_detail_v1(
+            action: HolySiteDecisionActionV1,
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+        ) -> dict[str, object]:
+            """Read original adopt/promote/demote/abandon detail and native terms; no confirmation."""
+            return service.query_player_holy_site_decision_detail_v1(
+                action=action, holy_site_id=holy_site_id, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_decision_detail_v1")
+
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_player_holy_site_decision_cooldown_v1(
+            action: HolySiteDecisionActionV1,
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+        ) -> dict[str, object]:
+            """Read one fixed decision's actual actor cooldown independently of the detail window."""
+            return service.query_player_holy_site_decision_cooldown_v1(
+                action=action, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_decision_cooldown_v1")
 
     if (getattr(driver, "allow_private_player_religion_context_query", False) is True
             or "ck3_query_player_religion_context_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
@@ -3608,6 +3646,28 @@ def create_server(
         return service.confirm_holy_site_adoption_decision_v1(holy_site_id,expected_revision=expected_revision)
     _forbid_unknown_tool_arguments_v1(server,"ck3_confirm_holy_site_adoption_decision_v1")
 
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                           idempotentHint=False, openWorldHint=False))
+    def ck3_open_holy_site_decision_v1(
+        action: HolySiteDecisionActionV1,
+        holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Open one original fixed HolySite decision with actual source parameters; no Confirm is sent."""
+        return service.open_holy_site_decision_v1(action, holy_site_id, expected_revision=expected_revision)
+    _forbid_unknown_tool_arguments_v1(server,"ck3_open_holy_site_decision_v1")
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True,
+                                           idempotentHint=False, openWorldHint=False))
+    def ck3_confirm_holy_site_decision_v1(
+        action: HolySiteDecisionActionV1,
+        holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Confirm once after fresh fixed definition/selected_item and ordinary native legality; read effects separately."""
+        return service.confirm_holy_site_decision_v1(action, holy_site_id, expected_revision=expected_revision)
+    _forbid_unknown_tool_arguments_v1(server,"ck3_confirm_holy_site_decision_v1")
+
     @server.tool()
     def ck3_select_army_ui_v1(subject_army_id: PublicCUnitId, expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Select a played army's public CUnitID through vanilla presentation routing."""
@@ -3644,7 +3704,12 @@ def create_server(
         return service.open_knights_window_v1(expected_revision=expected_revision)
 
     @server.tool()
-    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_open_faith_window_v1(faith_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+        """Open one exact4 full Faith ID through the opted-in original typed route; query independently."""
+        return service.open_faith_window_v1(faith_id, expected_revision=expected_revision)
+
+    @server.tool()
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 
@@ -5042,6 +5107,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable an explicit private ransom using the current native collection quote",
     )
     result.add_argument(
+        "--private-player-holy-site-relic-permissions-query", action="store_true",
+        help="enable independent exact4 relic candidates and current-window permissions reads only",
+    )
+    result.add_argument(
         "--private-player-holy-site-relic-context-query", action="store_true",
         help="enable independent exact4 holy-site Active/relic context reads only",
     )
@@ -5374,6 +5443,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    if args.private_player_holy_site_relic_permissions_query:
+        driver.allow_private_player_holy_site_relic_permissions_query = True
     if args.private_player_holy_site_relic_context_query:
         driver.allow_private_player_holy_site_relic_context_query = True
     if args.private_player_holy_site_query:

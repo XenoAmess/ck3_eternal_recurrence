@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/ck3_12004_holy_site_snapshot.hpp"
+#include "xar_bridge/holy_site_decision_action_v1.hpp"
 #include <array>
 namespace xar::ck3_12004::religion::holy_site {
 using NativeCanConfirm = bool(__fastcall *)(void *);
@@ -32,6 +33,8 @@ struct AdoptionDetailBindings {
   void **character_storage=nullptr,**decision_clock=nullptr;
 };
 struct AdoptionDetailSnapshot {
+  DecisionAction action=DecisionAction::adopt;
+  bool general_decision_contract=false;
   bool available=false;
   std::uint64_t capture_epoch=0;
   std::int32_t date_raw=0,played_character_id=-1;
@@ -64,8 +67,21 @@ struct AdoptionDetailSnapshot {
   const void *owner=nullptr,*detail=nullptr,*root=nullptr,*controller=nullptr,*context=nullptr;
   std::string unavailable_reason;
 };
+struct DecisionCooldownObservation {
+  bool present=false;
+  std::int32_t current_counter_raw=0,expiry_raw=0;
+  bool active=false;
+};
 inline constexpr std::string_view kAdoptionDetailQueryStep="query-player-holy-site-adoption-detail-v1";
+inline constexpr std::string_view kDecisionDetailQueryStep="query-player-holy-site-decision-detail-v1";
 AdoptionDetailBindings BindHolySiteAdoptionDetailImage12004(std::uintptr_t,std::string_view) noexcept;
+bool ReadHolySiteDecisionDetail12004(const AdoptionDetailBindings &,const void *jomini_owner,
+    const ck3_12002::religion::Context &,DecisionAction,std::uint32_t requested_id,AdoptionDetailSnapshot &) noexcept;
+// Provider-private definition pointer; fixed enum/key/type/full-player guards
+// remain mandatory. The public transport never accepts a memory address.
+bool ReadHolySiteDecisionCooldownByDefinition12004(const AdoptionDetailBindings &,
+    const ck3_12002::religion::Context &,DecisionAction,const void *actual_definition,
+    DecisionCooldownObservation &) noexcept;
 bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings &,const void *jomini_owner,
     const ck3_12002::religion::Context &,std::uint32_t requested_id,AdoptionDetailSnapshot &) noexcept;
 std::string SerializeHolySiteAdoptionDetail12004(const AdoptionDetailSnapshot &);

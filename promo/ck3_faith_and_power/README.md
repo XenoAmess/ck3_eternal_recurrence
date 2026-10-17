@@ -1,5 +1,7 @@
 # CK3：信仰与权力
 
+> 2026-10-17后继更正：下列初始记录保留建立时截点；当前结果与媒体见文末[后继状态](#2026-10-17-后继状态)。
+
 2026-10-17 建立。**这是覆盖 CK3 整个宗教系统的新系列；圣地是第一个专题。** 当前交付为导演提案、待拍镜头矩阵与拍摄交接，没有创建生产 run、启动游戏、录制、配音、渲染或上传影片。
 
 同日接手已开始共享原版研究、现有游玩智能体 MCP 知识接线和两条试拍的作者输入。实际进展、当前机器身份及容量阻点见 [执行记录](../../docs/ck3-native-ai/faith-and-power-execution-20261017.md)，机制知识见 [圣地专题](../../docs/ck3-native-ai/faith-and-power-holy-sites-12004.md)，工具链入口见 [integration](integration/README.md)。P01／P02 尚无合格原片，不把静态接口通过写成完成拍摄。
@@ -44,3 +46,16 @@
 原代码调查以固定来源与逐条差异核对为基础。`machine_id: xenoamess-full-tower-eb9d2c1186`、观察收据时间`2026-10-17T04:42:43.271301+00:00`：46个相关安装文件与同版本1.20.0.4镜像逐字节一致，不能因模块名称或跨patch差异推断本地改写。证据见 [来源调查](source-provenance-review-2026-10-17.md) 与 [来源锁](source-lock.json)。代码声明、引擎行为与新实机结果仍分别记录；1.20.1之后新建资格和放弃退还规则的变更不能倒写进旧版。导演案中的结论必须回链确切路径、行号和版本身份。
 
 本轮文档不授本机游戏版本、Steam 离线状态、部署、原生能力或任何业务验收信用。后续涉及机器事实时必须记录稳定 `machine_id`、观察时间与原始证据。媒体按全仓 [通用存储策略](../../docs/storage-retention-policy.md) 和 [版本化参数](../../docs/storage-retention-policy.json) 保护、到期复核和回收；不继承战争旧稿“全部永久保留”的历史表述。
+
+## 2026-10-17 后继状态
+
+machine_id: 4-8e1c2f1861；实际补注 2026-10-17T13:16:56.756078+00:00。开头“没有run/录制/渲染”及P01/P02待拍是建立时的历史截点，不能再作为当前零素材结论；原文保留。后继[R5采用专题](../../docs/ck3-native-ai/faith-and-power-episode01-r0005-adoption.md)已用一次原版Confirm与独立after确认：Faith50新增nadjaf32普通圣地、实际扣1000虔诚，原为空的三槽仍为空且未Active；实际受益、采用后冷却及非空库存保持仍unknown。R5正常闭场OS0、CAS11345已另证；公共verify实际exit2，只完成research holder，未取得case/product验收。
+
+用户在本会话2026-10-17明确选择“先提供本地文件，继续制作（推荐）”。本次依此交付当前机器本地文件；[本地入口](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/delivery/LOCAL-REVIEW-README.md)及[交付收口](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/delivery/LOCAL-DELIVERY-CLOSED-a01.json)记录13:08:17 UTC的实际输出，不声称已上传或完成OneDrive同步。
+
+| 本地实际文件 | 用途与边界 |
+| --- | --- |
+| [3:34.400 纳杰夫采用审阅段](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/adoption-review-build-a01/native-run/derived/direct/episode01-review.mp4) | [短段索引](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/adoption-review-build-a01/delivery/ADOPTION-REVIEW-DELIVERY.json)；R5有界采用结果，非完整一期。偏移修正字幕见[measured-PTS-text-a02](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/adoption-review-build-a01/delivery/measured-PTS-text-a02)。 |
+| [29:24.267 机制研究讲解审阅版](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/native-run/derived/direct/episode01-review.mp4) | [长版索引](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/delivery/FULL-RESEARCH-REVIEW-DELIVERY.json)；95.21%为机制图及原生读回静图，[逐帧分类](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-build-candidate/FULL-VISUAL-DISTRIBUTION-a01.json)，不能称正式第一期。 |
+
+以上机器解码/PTS/字幕/声轨检查与人工听审、完整1倍观看、clean-span及签核分列；后者未完成。[正式21分钟作者方案](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-build-candidate/formal-episode01-authoring-a01/formal-authoring.json)保持独立：R6/R7、Faith/Character导航及新声槽尚为null，不可渲染；等待有意义且不重复的真实raw，不能把静图高亮或暂停画面延长计作实机覆盖。

@@ -93,12 +93,12 @@ struct Pass{
  Header entries{},dictionary{};Scope selected{},parameter{};std::uint8_t selected_mark=0;
  std::vector<NamedScope>parameters;bool operator==(const Pass&)const=default;
 };
-bool ReadPass(const AdoptionDetailBindings&b,const void*owner,std::uint32_t requested,std::int32_t actor,Pass&p,std::string&why){
+bool ReadPass(const AdoptionDetailBindings&b,const void*owner,std::uint32_t requested,std::int32_t actor,DecisionAction action,Pass&p,std::string&why){
  const auto fail=[&](const char*r){why=r;return false;};const void*back=nullptr;
  if(!Read(b,owner,0x10,p.gfx)||!p.gfx||!Read(b,p.gfx,0x88,p.handler)||!p.handler||
   !Read(b,p.handler,0x1B8,p.detail)||!Typed(b,p.detail,0x455D4F8,0x5795050)||
   !Read(b,p.detail,0xA0,back)||back!=p.handler||!Read(b,p.detail,0x60,p.root))return fail("adoption_detail_window_or_owner_unavailable");
- if(!Read(b,p.detail,0xD0,p.definition)||!Key(b,p.definition,p.key)||p.key!="adopt_holy_site_decision")return fail("adoption_detail_definition_unavailable_or_different");
+ if(DecisionKey(action).empty()||!Read(b,p.detail,0xD0,p.definition)||!Key(b,p.definition,p.key)||p.key!=DecisionKey(action))return fail("adoption_detail_definition_unavailable_or_different");
  if(!Read(b,p.detail,0xD8,p.actor)||!Read(b,b.current_actor_reference,0,p.current_actor)||
   !Read(b,p.detail,0xDC,p.option)||p.actor!=static_cast<std::uint32_t>(actor)||p.current_actor!=p.actor||p.option!=-1)
   return fail("adoption_detail_current_player_binding_differs");
@@ -302,20 +302,20 @@ AdoptionDetailBindings BindHolySiteAdoptionDetailImage12004(std::uintptr_t base,
  b.cooldown_lookup=reinterpret_cast<NativeCooldownLookup>(base+0x1A74790);
  b.destroy_string=reinterpret_cast<NativeStringDestroy>(base+0x856050);return b;
 }
-bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*owner,
- const ck3_12002::religion::Context&context,std::uint32_t requested,AdoptionDetailSnapshot&out)noexcept{
- out={};out.owner=owner;out.capture_epoch=context.capture_epoch;out.date_raw=context.date_raw;
+bool ReadHolySiteDecisionDetail12004(const AdoptionDetailBindings&b,const void*owner,
+ const ck3_12002::religion::Context&context,DecisionAction action,std::uint32_t requested,AdoptionDetailSnapshot&out)noexcept{
+ out={};out.action=action;out.general_decision_contract=true;out.owner=owner;out.capture_epoch=context.capture_epoch;out.date_raw=context.date_raw;
  out.played_character_id=context.played_character_id;out.requested_holy_site_id=requested;
  try{
-  if(!b.enabled||!b.image_base||!b.read_memory||!context.available||!context.capture_epoch||context.played_character_id<=0||requested==absent){out.unavailable_reason="adoption_current_player_context_unavailable";return false;}
+  if(DecisionKey(action).empty()||!b.enabled||!b.image_base||!b.read_memory||!context.available||!context.capture_epoch||context.played_character_id<=0||requested==absent){out.unavailable_reason="adoption_current_player_context_unavailable";return false;}
   if(!Pins(b)){out.unavailable_reason="adoption_loaded_native_source_pins_changed";return false;}
   Pass first{},second{};bool before=false,after=false;std::uint8_t bypass_before=0,bypass_after=0;
-  if(!ReadPass(b,owner,requested,context.played_character_id,first,out.unavailable_reason))return false;
+  if(!ReadPass(b,owner,requested,context.played_character_id,action,first,out.unavailable_reason))return false;
   if(!CanConfirm(b,first.detail,before)){out.unavailable_reason="adoption_native_can_confirm_unavailable";return false;}
   const bool bypass_observed=Requirements(b,bypass_before);
   out.confirm_tooltip_available=Tooltip(b,first.detail,out.confirm_tooltip);
   Planning(b,first,requested,out);
-  if(!ReadPass(b,owner,requested,context.played_character_id,second,out.unavailable_reason))return false;
+  if(!ReadPass(b,owner,requested,context.played_character_id,action,second,out.unavailable_reason))return false;
   if(first!=second||!CanConfirm(b,second.detail,after)||before!=after){out.unavailable_reason="adoption_detail_or_native_legality_changed";return false;}
   const bool bypass_after_observed=Requirements(b,bypass_after);
   if(bypass_observed!=bypass_after_observed||(bypass_observed&&bypass_before!=bypass_after)){
@@ -330,13 +330,45 @@ bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*o
   out.controller=first.controller;out.context=first.context;out.available=true;return true;
  }catch(...){out.unavailable_reason="adoption_detail_capture_exception";return false;}
 }
+bool ReadHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,const void*owner,
+ const ck3_12002::religion::Context&context,std::uint32_t requested,AdoptionDetailSnapshot&out)noexcept{
+ const bool result=ReadHolySiteDecisionDetail12004(b,owner,context,DecisionAction::adopt,requested,out);
+ out.general_decision_contract=false;return result;
+}
+bool ReadHolySiteDecisionCooldownByDefinition12004(const AdoptionDetailBindings&b,
+ const ck3_12002::religion::Context&context,DecisionAction action,const void*definition,
+ DecisionCooldownObservation&out)noexcept{
+ out={};try{
+  if(!b.enabled||!b.image_base||!b.read_memory||!context.available||!context.capture_epoch||
+     context.played_character_id<=0||DecisionKey(action).empty())return false;
+  const auto actor=static_cast<std::uint32_t>(context.played_character_id);
+  const auto resolve_actor=[&](const void*&object){
+   const void*storage=nullptr,*slots=nullptr;std::int32_t count=0,actual=-1;std::uint32_t current=absent;
+   return Read(b,b.current_actor_reference,0,current)&&current==actor&&
+    Read(b,b.character_storage,0,storage)&&storage&&
+    Read(b,storage,ck3_12004::kCharacterStorageCapacityOffset,count)&&count>0&&
+    Read(b,storage,ck3_12004::kCharacterStorageSlotsOffset,slots)&&slots&&
+    (actor&0xFFFFFFU)<static_cast<std::uint32_t>(count)&&
+    Read(b,slots,static_cast<std::size_t>(actor&0xFFFFFFU)*ck3_12004::kCharacterStorageSlotStride+ck3_12004::kCharacterStorageObjectOffset,object)&&
+    Read(b,object,ck3_12004::kCharacterFullIdOffset,actual)&&actual==context.played_character_id;
+  };
+  Pass p{};p.definition=definition;p.actor=actor;PlanningIdentity identity{};const void*after_actor=nullptr;
+  std::string first_key,last_key;
+  if(!Key(b,definition,first_key)||first_key!=DecisionKey(action)||!resolve_actor(identity.actor_object))return false;
+  CooldownPass first{},second{};
+  if(!Cooldown(b,p,identity,first)||!Cooldown(b,p,identity,second)||first!=second||
+     !resolve_actor(after_actor)||after_actor!=identity.actor_object||!Key(b,definition,last_key)||last_key!=first_key)return false;
+  out.present=first.present;out.current_counter_raw=first.current;out.expiry_raw=first.expiry;
+  out.active=first.present&&first.current<first.expiry;return true;
+ }catch(...){return false;}
+}
 bool ConfirmHolySiteAdoptionDetail12004(const AdoptionDetailBindings&b,
  const AdoptionDetailSnapshot&prior,bool&attempted)noexcept{
- attempted=false;if(!prior.available||!prior.native_can_confirm||!prior.parameter_and_selection_match||!prior.native_detail_context_verified||
+ attempted=false;if(DecisionKey(prior.action).empty()||!prior.available||!prior.native_can_confirm||!prior.parameter_and_selection_match||!prior.native_detail_context_verified||
   !prior.bypass_requirements_observed||prior.bypass_requirements_raw!=0)return false;
  ck3_12002::religion::Context frame{};frame.available=true;frame.capture_epoch=prior.capture_epoch;
  frame.date_raw=prior.date_raw;frame.played_character_id=prior.played_character_id;AdoptionDetailSnapshot current{};
- if(!ReadHolySiteAdoptionDetail12004(b,prior.owner,frame,prior.requested_holy_site_id,current)||!current.native_can_confirm||!current.native_detail_context_verified||
+ if(!ReadHolySiteDecisionDetail12004(b,prior.owner,frame,prior.action,prior.requested_holy_site_id,current)||!current.native_can_confirm||!current.native_detail_context_verified||
   !current.bypass_requirements_observed||current.bypass_requirements_raw!=0||
   current.detail!=prior.detail||current.root!=prior.root||current.controller!=prior.controller||current.context!=prior.context)return false;
  return Confirm(b,current.detail,attempted);

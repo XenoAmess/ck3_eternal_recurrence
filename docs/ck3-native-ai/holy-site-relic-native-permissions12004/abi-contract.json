@@ -1,0 +1,234 @@
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T12:52:54.143276+00:00",
+  "status": "SOURCE_REVIEWED_STATIC",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "live_qualification": false,
+  "action_ready": false,
+  "new_exe_reads": 0,
+  "observer_contract": {
+    "abi": "Microsoft Windows x64",
+    "owner_thread": "existing paused application-main religion owner callback only; other threads not qualified",
+    "bindings_required": [
+      "snapshot player/full target IDs",
+      "actual window owner/type/root",
+      "window+C8 site ID",
+      "explicit artifact fullID/magic",
+      "PID/generation/date/revision before and after"
+    ],
+    "actor_source": {
+      "rva": "0x54DBC00",
+      "type": "uint32 current-player character full ID"
+    },
+    "window_fields": {
+      "site_full_id": "0xC8",
+      "selected_artifact_full_id": "0x108",
+      "selected_inventory_slot_pointer": "0x110"
+    },
+    "query_functions": [
+      {
+        "rva": "0x17D53F0",
+        "name": "CanEnshrineArtifact",
+        "signature": "bool(void* window, const void* artifact)",
+        "explicit_artifact": true,
+        "reads_selected_slot": true,
+        "validator_rva": "0x29AB4F0",
+        "tooltip_argument": null
+      },
+      {
+        "rva": "0x17D56F0",
+        "name": "CanRemoveEnshrinedArtifact",
+        "signature": "bool(void* window, const void* artifact)",
+        "explicit_artifact": true,
+        "reads_selected_slot": false,
+        "validator_rva": "0x29ABB20",
+        "tooltip_argument": null
+      },
+      {
+        "rva": "0x17D5970",
+        "name": "IsEnshrineButtonEnabled",
+        "signature": "bool(void* window)",
+        "artifact_source": "window+108 only",
+        "rejects_artifact_already_owned_by_current_site": true
+      },
+      {
+        "rva": "0x17D5E40",
+        "name": "IsRemoveButtonEnabled",
+        "signature": "bool(void* window)",
+        "artifact_source": "window+108 only",
+        "requires_artifact_owned_by_current_site": true
+      }
+    ],
+    "requested_and_selected_artifacts_must_remain_distinct": true,
+    "can_enshrine_true_proves_actor_artifact_ownership": false,
+    "no_selection_means_no_replacement": false,
+    "effective_slot_index_observed_by_bool_helpers": false,
+    "deep_script_side_effects_verified": false,
+    "script_rng_effects": "unknown",
+    "idempotency_proven": false,
+    "explicit_gameplay_submit_in_four_query_bodies": false,
+    "world_cache_refresh_in_four_query_bodies": false,
+    "failure_text_observed_with_null_tooltip": false
+  },
+  "validator_contract": {
+    "primary_command_bytes": 48,
+    "primary_command_fields": {
+      "0x20": "site full ID",
+      "0x24": "artifact full ID",
+      "0x28": "actor full ID",
+      "0x2C": "enshrine slot int32; -1 permits native picker"
+    },
+    "enshrine": {
+      "rva": "0x29AB4F0",
+      "signature": "bool(void* primary_command, void* native_string_or_null)",
+      "steps": [
+        "fullID/magic resolution",
+        "2531200 county-holder-faith recognition; false may be evaluated again with tooltip",
+        "requested compatible slot else 2C805E0 native picker",
+        "22E44A0 inventory/slot eligibility",
+        "1D64FD0 compiled enshrine rule with actual replacing artifact",
+        "if actual valid replacement: 1D651F0 compiled removal rule"
+      ],
+      "can_infer_effective_slot_from_selected_null": false
+    },
+    "remove": {
+      "rva": "0x29ABB20",
+      "signature": "bool(void* primary_command, void* native_string_or_null)",
+      "steps": [
+        "fullID/magic resolution",
+        "22E4420 actual site Inventory membership",
+        "1D651F0 compiled removal rule; replacing=FFFFFFFF"
+      ]
+    },
+    "tooltip_getters": [
+      {
+        "rva": "0x17D5A60",
+        "operation": "enshrine"
+      },
+      {
+        "rva": "0x17D5F60",
+        "operation": "remove"
+      }
+    ],
+    "tooltip_signature": "native_string* (window*, native_string* output)",
+    "tooltip_storage": "32-byte MSVC/native string; valid SSO/heap lifecycle required; not a Python buffer",
+    "tooltip_context": "current window selection; not another explicit request or full effects/cost preview"
+  },
+  "submission_boundary": {
+    "clone_only": [
+      {
+        "rva": "0x29AC540",
+        "primary_vtable": "0x4770930",
+        "secondary_vtable": "0x4770A90"
+      },
+      {
+        "rva": "0x29AC640",
+        "primary_vtable": "0x47707D0",
+        "secondary_vtable": "0x47706D8"
+      }
+    ],
+    "clone_signature": "command_holder* (const primary_command*, command_holder* out)",
+    "original_button_handlers": [
+      "0x17D5DD0",
+      "0x17D62F0"
+    ],
+    "submission_helpers": [
+      "0x17D7580",
+      "0x17D76C0"
+    ],
+    "submit_entry": "0x37F06D0",
+    "manager_rva": "0x5CC1240",
+    "flags_from_gui": 14,
+    "queue_append_callee": "0x880340",
+    "submit_true_is_business_postcondition": false,
+    "receivers": [
+      {
+        "rva": "0x29AADE0",
+        "end_exclusive": "0x29AB4EB",
+        "operation": "enshrine",
+        "secondary_vtable_slot": 8
+      },
+      {
+        "rva": "0x29AB8A0",
+        "end_exclusive": "0x29ABB12",
+        "operation": "remove",
+        "secondary_vtable_slot": 8
+      }
+    ],
+    "receiver_signature": "void(primary_command + 0x18 secondary_this)",
+    "receiver_fields_relative_to_secondary_this": {
+      "0x8": "site",
+      "0xC": "artifact",
+      "0x10": "actor",
+      "0x14": "enshrine slot"
+    },
+    "receiver_mutates_gameplay": true,
+    "readonly_helper_may_call_receiver": false,
+    "full_queue_consumer_guard_order_closed": false,
+    "business_postcondition_observed": false
+  },
+  "future_typed_ui_selection": {
+    "not_implemented": true,
+    "not_executed": true,
+    "select_artifact": {
+      "name_load_rva": "0x2D1AB9",
+      "callback_rva": "0x17D8860",
+      "leaf_rva": "0x17D52B0",
+      "signature": "void(window*, artifact_or_null*)",
+      "nonnull_effect": "writes artifact+10 fullID to window+108",
+      "null_effect": "writes FFFFFFFF",
+      "clears_slot": false,
+      "submits_gameplay": false
+    },
+    "toggle_slot": {
+      "name_load_rva": "0x2D0E93",
+      "callback_rva": "0x17D84A0",
+      "leaf_rva": "0x17D52F0",
+      "signature": "void(window*, InventorySlot*)",
+      "nonnull_effect": "same current pointer clears; other pointer selects",
+      "null_effect": "no-op",
+      "clears_artifact": false,
+      "idempotent": false,
+      "submits_gameplay": false
+    },
+    "slot_to_index": {
+      "rva": "0x22E42F0",
+      "end_exclusive": "0x22E433B",
+      "signature": "int32(site+28 Inventory*, InventorySlot*)",
+      "source_stride_bytes": 24,
+      "not_found": -1
+    },
+    "required_public_inputs": [
+      "holy_site_full_id",
+      "slot_index",
+      "desired_selected"
+    ],
+    "arbitrary_public_pointer_allowed": false,
+    "callback_ack_is_selected_postcondition": false,
+    "slot_clear_on_site_change_fully_proven": false
+  },
+  "diagnostics": {
+    "cached_pdata_queries_failed": 6,
+    "missing_pdata_record": "145134",
+    "fallback_to_exe_attempted": false,
+    "superseded_not_semantic_evidence": [
+      "toggle-slot-registration-tail",
+      "inventory-enshrine-guard-end"
+    ],
+    "bounded_only_not_complete_function": [
+      "command-common-dispatch-bounded",
+      "remove-command-slot88-bounded",
+      "select-artifact-native-callback",
+      "toggle-slot-native-callback",
+      "inventory-slot-pointer-index",
+      "inventory-enshrine-guard-bounded",
+      "enshrine-command-slot88-bounded"
+    ]
+  },
+  "retention": {
+    "review_due_utc": "2026-10-18T00:00:00+00:00",
+    "reason": "Active first-episode permission observer and subsequent typed UI entry source; re-evaluate after tracked integration or exact build change"
+  }
+}

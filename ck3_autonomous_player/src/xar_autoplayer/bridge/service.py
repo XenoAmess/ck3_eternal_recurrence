@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from .holy_site_decision_action_v1 import (
+    HolySiteDecisionActionV1, normalize_holy_site_decision_action_v1,
+)
+
 import copy
 import json
 import time
@@ -1021,6 +1025,17 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_holy_site_relic_permissions_v1(
+        self, *, expected_revision: int, holy_site_id: int,
+        artifact_id: int | None = None,
+    ) -> dict[str, object]:
+        """Observe explicit-artifact and current-button native permissions separately."""
+        query = getattr(self.driver, "query_player_holy_site_relic_permissions_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read holy-site relic permissions")
+        return query(expected_revision=expected_revision, holy_site_id=holy_site_id,
+                     artifact_id=artifact_id)
+
     def query_player_holy_site_relic_context_v1(
         self, *, expected_revision: int, holy_site_id: int,
     ) -> dict[str, object]:
@@ -1029,6 +1044,27 @@ class GameplayBridgeService:
         if not callable(query):
             raise UnsupportedStepError("selected backend cannot read holy-site relic context")
         return query(expected_revision=expected_revision, holy_site_id=holy_site_id)
+
+    def query_player_holy_site_decision_detail_v1(
+        self, *, expected_revision: int, action: HolySiteDecisionActionV1,
+        holy_site_id: int,
+    ) -> dict[str, object]:
+        """Forward one fixed-action read through the selected gameplay backend."""
+        selected_action = normalize_holy_site_decision_action_v1(action)
+        query = getattr(self.driver, "query_holy_site_decision_detail_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read HolySite decision detail")
+        return query(expected_revision=expected_revision, action=selected_action,
+                     holy_site_id=holy_site_id)
+
+    def query_player_holy_site_decision_cooldown_v1(
+        self, *, expected_revision: int, action: HolySiteDecisionActionV1,
+    ) -> dict[str, object]:
+        selected_action = normalize_holy_site_decision_action_v1(action)
+        query = getattr(self.driver, "query_holy_site_decision_cooldown_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read the fixed HolySite decision cooldown")
+        return query(expected_revision=expected_revision, action=selected_action)
 
     def query_player_seek_indulgences_terms_v1(
         self, *, expected_revision: int, recipient_character_id: int,
@@ -12831,11 +12867,12 @@ class GameplayBridgeService:
         }
 
     def _typed_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int,
-            *, army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None) -> dict[str, object]:
+            *, army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
+            holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (QUERY_CAPABILITY, NAVIGATE_CAPABILITY, validate_ui_request,
             ingame_ui_build_binding, validate_ui_build_scope)
         validate_ui_request(operation, kind, subject_id, expected_revision,
-            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
             raise BridgeUnavailableError("typed UI requires a paused map-ready snapshot")
@@ -12858,8 +12895,20 @@ class GameplayBridgeService:
             if operation == "hover_army_tooltip":
                 return method(subject_id, army_tooltip_kind, expected_revision=expected_revision)
             return method(subject_id, army_tooltip_kind, army_tooltip_receipt, expected_revision=expected_revision)
+        if holy_site_action is not None:
+            if capabilities.get("backend_id") != "native-headless":
+                raise UnsupportedStepError("finite HolySite decisions require the exact native backend")
+            validate_ui_build_scope(ingame_ui_build_binding(snapshot)[0], operation, kind)
+            selected_action = normalize_holy_site_decision_action_v1(holy_site_action)
+            method_name = "open_holy_site_decision_v1" if operation == "open_holy_site_adoption" else "confirm_holy_site_decision_v1"
+            method = getattr(self.driver, method_name, None)
+            if not callable(method):
+                raise UnsupportedStepError("selected backend lacks the finite HolySite decision method")
+            return method(selected_action, subject_id, expected_revision=expected_revision)
+        if kind == "faith" and capabilities.get("backend_id") != "native-headless":
+            raise UnsupportedStepError("Faith presentation requires the exact native backend")
         method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
-            "open_holy_site": "open_holy_site_window_v1",
+            "open_holy_site": "open_holy_site_window_v1", "open_faith": "open_faith_window_v1",
             "open_holy_site_adoption": "open_holy_site_adoption_decision_v1",
             "confirm_site_adoption": "confirm_holy_site_adoption_decision_v1",
             "select_army": "select_army_ui_v1", "open_combat": "open_combat_window_v1", "open_knights": "open_knights_window_v1",
@@ -12877,6 +12926,9 @@ class GameplayBridgeService:
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_character", "character", character_id, expected_revision)
 
+    def open_faith_window_v1(self, faith_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_faith", "faith", faith_id, expected_revision)
+
     def open_holy_site_window_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_holy_site", "holy_site", holy_site_id, expected_revision)
 
@@ -12885,6 +12937,14 @@ class GameplayBridgeService:
 
     def confirm_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id, expected_revision)
+
+    def open_holy_site_decision_v1(self, action: HolySiteDecisionActionV1, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_holy_site_adoption", "holy_site", holy_site_id, expected_revision,
+            holy_site_action=action)
+
+    def confirm_holy_site_decision_v1(self, action: HolySiteDecisionActionV1, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id, expected_revision,
+            holy_site_action=action)
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("select_army", "army", subject_army_id, expected_revision)

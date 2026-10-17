@@ -17,7 +17,9 @@
 #include "xar_bridge/ck3_12003_vow_of_poverty_terms.hpp"
 #include "xar_bridge/ck3_12004_holy_site_snapshot.hpp"
 #include "xar_bridge/ck3_12004_holy_site_adoption_detail.hpp"
+#include "xar_bridge/ck3_12004_holy_site_decision_cooldown.hpp"
 #include "xar_bridge/ck3_12004_holy_site_relic_context.hpp"
+#include "xar_bridge/ck3_12004_holy_site_relic_permissions.hpp"
 
 #include <vector>
 
@@ -61,6 +63,10 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::vow_of_poverty_terms12003::Terms vow_of_poverty_terms{};
   bool completed = false;
   std::string failure;
+  bool holy_site_relic_permissions_query = false;
+  std::optional<std::uint32_t> requested_relic_artifact_id;
+  ck3_12004::religion::relic_permissions::Bindings relic_permissions_bindings{};
+  ck3_12004::religion::relic_permissions::Snapshot relic_permissions_snapshot{};
   bool holy_site_relic_context_query = false;
   ck3_12004::religion::holy_site_relic::Bindings holy_site_relic_bindings{};
   ck3_12004::religion::holy_site_relic::Snapshot holy_site_relic_snapshot{};
@@ -69,6 +75,11 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12004::religion::holy_site::Bindings holy_site_bindings{};
   ck3_12004::religion::holy_site::Snapshot holy_site_snapshot{};
   bool holy_site_adoption_detail_query = false;
+  bool holy_site_decision_detail_query = false;
+  bool holy_site_decision_cooldown_query = false;
+  ck3_12004::religion::holy_site::DecisionAction holy_site_decision_action = ck3_12004::religion::holy_site::DecisionAction::adopt;
+  ck3_12004::religion::holy_site::DecisionCooldownBindings holy_site_decision_cooldown_bindings{};
+  ck3_12004::religion::holy_site::DecisionCooldownSnapshot holy_site_decision_cooldown_snapshot{};
   ck3_12004::religion::holy_site::AdoptionDetailBindings adoption_detail_bindings{};
   ck3_12004::religion::holy_site::AdoptionDetailSnapshot adoption_detail_snapshot{};
 };

@@ -3,6 +3,7 @@
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/appointment_window_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
+#include "xar_bridge/holy_site_decision_action_v1.hpp"
 #include <cstdint>
 #include <string>
 #include <string_view>
@@ -23,10 +24,10 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
-  hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12 };
+  hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {
@@ -44,6 +45,8 @@ struct IngameUiRequestV1 {
   IngameUiOperationV1 operation = IngameUiOperationV1::query;
   IngameUiWindowKindV1 window_kind = IngameUiWindowKindV1::character;
   std::uint32_t subject_id = 0;
+  bool holy_site_decision_explicit = false;
+  ck3_12004::religion::holy_site::DecisionAction holy_site_action = ck3_12004::religion::holy_site::DecisionAction::adopt;
   AppointmentWindowRequestV1 appointment{};
   // Fixed semantic fields only; complete child paths stay provider-private.
   std::string army_tooltip_kind;
@@ -128,6 +131,9 @@ struct IngameUiResultV1 {
   bool holy_site_adoption_can_confirm = false;
   std::uint32_t holy_site_adoption_parameter_id = 0xFFFFFFFFU;
   std::uint32_t holy_site_adoption_selected_id = 0xFFFFFFFFU;
+  bool holy_site_decision_parameters_verified = false;
+  std::string holy_site_decision_definition_key;
+  std::uint32_t holy_site_decision_parameter_id = 0xFFFFFFFFU;
   bool verification_pending = false;
   bool window_exists = false;
   bool effective_visible = false;

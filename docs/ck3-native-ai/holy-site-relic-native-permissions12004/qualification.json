@@ -1,0 +1,205 @@
+{
+  "schema": "xar.relic-permissions-native-source-fixture-qualification.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:06:04.040760+00:00",
+  "target_game_version": "1.20.0.4",
+  "target_steam_build": 25734779,
+  "target_executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "main_commit_at_qualification": "50dfea0612211a97250232b7b87674acc9fdfa0d",
+  "status": "NEW_SOURCE_FIXTURE_MCP_PASS_NOT_DEPLOYED_OR_LIVE",
+  "native_fixture_checks": 32,
+  "new_native_packets": 12,
+  "producer_executable": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/b02/xar_ck3_12004_holy_site_relic_permissions_test.exe",
+    "sha256": "ef800d87b10d4de6938da99d689356971d300d1b29f221ee474d0688838d4cac",
+    "bytes": 156672
+  },
+  "source_freeze": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a02/source-freeze.json",
+    "sha256": "6c3838a6fe19a89c48351472bf3d184bb4cc37b49de623b9d6c65f1a77afe9fd",
+    "bytes": 2956
+  },
+  "native_build": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a02/build.json",
+    "sha256": "bd170573946b322e5043a9094eb223a7e435b16f180599333817106407dca801",
+    "bytes": 1255
+  },
+  "native_stdout": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a02/native-fixture.stdout.log",
+    "sha256": "8f837ea25eb12f4146cb583dd8262e95a79482ecfaa8f75df70c3f2e72af6166",
+    "bytes": 172
+  },
+  "native_packet_manifest": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a02/native-packet-manifest.json",
+    "sha256": "a1d95697d7fa3ef9fba4186e403b4fbf8ad19105600849a4c9822db3e1ea4c14",
+    "bytes": 2573
+  },
+  "native_packet_hashes": [
+    {
+      "name": "automatic-slot.json",
+      "sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "bytes": 3706
+    },
+    {
+      "name": "cache-unavailable.json",
+      "sha256": "c8c7d23d9845c86160d018df5366a52261ee457e3713eb295a369f35bc347b06",
+      "bytes": 3745
+    },
+    {
+      "name": "empty-player-inventory.json",
+      "sha256": "f91712d20a78c287732b1a202ed43c4042b3a883ea679ecac46547cd66ab9ec9",
+      "bytes": 3241
+    },
+    {
+      "name": "foreign-slot.json",
+      "sha256": "c6d2a4221992b66479b75a339e1066171f3afa4f1a5aa5763e95c276fff54648",
+      "bytes": 3952
+    },
+    {
+      "name": "no-artifact-request.json",
+      "sha256": "22bb178ac76cfc205cfe3e6b3244280618d7aa296737b488784b7f1f813aa2dc",
+      "bytes": 3775
+    },
+    {
+      "name": "nonowned-permission.json",
+      "sha256": "acab45a6bdc41c0a2b6bd8e08aa1dabb41e90d882774f3b6ca37d4ea9e64fb87",
+      "bytes": 3710
+    },
+    {
+      "name": "normal.json",
+      "sha256": "56a081d5cbc8e7e4dadbf61cd58748fea86d4269a761db341ebee6f832d43c1e",
+      "bytes": 3710
+    },
+    {
+      "name": "predicate-unavailable.json",
+      "sha256": "87b0bdaf96478e3de675afff03e48c672864d574144a96bccb505b9301e03f45",
+      "bytes": 3766
+    },
+    {
+      "name": "selected-different.json",
+      "sha256": "fff932ac49da69eabdf34f348cfe0e89f3a69b95b22b388b9a677cfd6541de3d",
+      "bytes": 3712
+    },
+    {
+      "name": "stale-artifact.json",
+      "sha256": "7e64f2c9c8b95a89dabae9f59171bcf1c749a865d01d886e410148c849d5e781",
+      "bytes": 3809
+    },
+    {
+      "name": "stale-site-generation.json",
+      "sha256": "61c4d60c1f6fa88bf1962f1fa555997bcc11f7c4bdb2d0c6d67151b734562182",
+      "bytes": 3432
+    },
+    {
+      "name": "window-unavailable.json",
+      "sha256": "3d10ea1627dd8ce9244a34c0f8096424383259147bd58a36f8ae4e46dc758fcd",
+      "bytes": 3923
+    }
+  ],
+  "new_exe_defender_actual_readback": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/b02/defender-exe-exclusions/20261017T125828Z-8df7ae44/receipt.json",
+    "sha256": "36fe47cf89f22ffc9594321a00bde7abe170c84e50b170a18787c61708f81efc",
+    "bytes": 12862
+  },
+  "production_mailbox_branch_object_compile": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/mailbox-qualification-a01/result.json",
+    "sha256": "453533a3972ed1b10bebc4b50de8535ea27b3362fdfc558903a982c4488ff01c",
+    "bytes": 2219
+  },
+  "actual_real_driver_service_mcp": {
+    "proof": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/python-stage/tools/relic-permissions-mcp-qualified-a01.json",
+      "sha256": "184c4637ff6f5b0cc1b4273ff285299dcdefb7126b32a2c5701f292acb963e24",
+      "bytes": 309863
+    },
+    "tests_run": 4,
+    "tests_skipped": 0,
+    "new_unchanged_compiled_positive_packets": 12,
+    "explicitly_mutated_negative_packets": 11,
+    "tracked_consumer_summary": "../holy-site-relic-permissions-python12004/consumer-qualification.json",
+    "native_boundary_mocked": [
+      "endpoint I/O",
+      "hello",
+      "state_snapshot"
+    ],
+    "common_hook_loading": "SHA-bound real base module source with the same incremental patch applied in memory, not prebuilt positive DTOs"
+  },
+  "original_engine_getters_executed": false,
+  "game_deployed": false,
+  "full_runtime_dll_linked": false,
+  "live_game_qualification": false,
+  "action_ready": false,
+  "old_context_28_9_4_qualification_rerun": false,
+  "existing_new_packet_output_rejected": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/native-repeat-rejection-a01.json",
+    "sha256": "97f905f0d6fcf9bcf66c625fb34b281c6b54b1da1826990e0e30b4ad04f65db0",
+    "bytes": 519
+  },
+  "generated_prefix_include_reproduced": {
+    "generator": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/native-stage/ck3_autonomous_player/native_bridge/research/generate_holy_site_relic_permissions_pins.py",
+      "sha256": "c5757af295b691cfcd037ac20a42f696e87d0b570b44c28786f55bea74f75896",
+      "bytes": 1247
+    },
+    "include": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/native-stage/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_permissions_pins.inc",
+      "sha256": "7b74db7b68d2c17b0e48b9aeb277cd47c4f9e4e8a1c93c03aaa42a27b6fdd2f1",
+      "bytes": 799
+    },
+    "comparison": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/generated-pins-repro-check.inc",
+      "sha256": "7b74db7b68d2c17b0e48b9aeb277cd47c4f9e4e8a1c93c03aaa42a27b6fdd2f1",
+      "bytes": 799
+    }
+  },
+  "prior_new_native_build_failure": {
+    "receipt": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a01/build.json",
+      "sha256": "15a140c3694a8623cb9dec02a3399779af4a6853630002c504562d968ce4c7bb",
+      "bytes": 1276
+    },
+    "compiler_log": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a01/build/msvc-build.log",
+      "sha256": "e0b8fbe9f871b91508fd52120bb6865291afda4b28b0f0336ff0a3ddc063dd56",
+      "bytes": 6268
+    },
+    "cause": "MSVC object path exceeded supported length for serializer; /WX also rejected local owner shadow and uint32 optional comparison to signed literal",
+    "correction": "Fresh short own b02 build root; renamed local artifact_owner and used unsigned literal. Original failure preserved."
+  },
+  "active_storage_readback": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/storage-active-v2-readback-a01.json",
+    "sha256": "66d4e68eff24075f8a6e64bb240642a901b73103f11352b0eba5d5ee92815021",
+    "bytes": 1546
+  },
+  "prior_build_storage_admission": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/qualification-a02/storage-admission.json",
+    "sha256": "1a68a994374afd2557951898905dd39942ea025661dd6794831dc76d3a940c77",
+    "bytes": 1217
+  },
+  "r5_prior_live_inputs": {
+    "scope": "Read-only reuse of same-machine Root evidence; no new game operation by this lane",
+    "business_audit": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/native-candidate/r5-confirm-closure-readonly-a24.json",
+      "sha256": "655c8e4591832aae3d638c6b32109011273478b1f84ed540702c4fcfa2f516cd",
+      "bytes": 13181
+    },
+    "root_after_close": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/root-status-after-r5-20261017T123546Z.json",
+      "sha256": "06cec1f0d09f347becf162c01136fdca6562f5f48cd3d237065a8c89abbff6bf",
+      "bytes": 629
+    },
+    "screen_release_cas_sequence": 11345,
+    "adoption_success_observed": true,
+    "site32": "faith50 ordinary association; real empty inventory, inactive",
+    "site14": "artifact64 rarity2, active; target for future controlled relic pilot"
+  },
+  "retention_review_due_utc": "2026-10-24T00:00:00Z",
+  "main_modified": false,
+  "shared_source_or_build_modified": false,
+  "remaining": [
+    "Root integrates independent new files and merges small shared hooks with decision lane",
+    "Incremental full runtime link and frozen artifact identity",
+    "New cold-load actual read-only permission/candidate query before any future action",
+    "Then smallest typed selection and original button callback with separate before/after business evidence"
+  ]
+}

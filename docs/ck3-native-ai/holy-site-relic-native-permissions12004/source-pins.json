@@ -1,0 +1,2274 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:06:03.815421+00:00",
+  "source_manifest": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/source-pins.json",
+    "sha256": "f968ea8a9d423dc3ba20defc140b0d01e50068c4e79db87fc3719ae155c7539c",
+    "bytes": 40460
+  },
+  "manifest": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T12:52:54.143276+00:00",
+    "status": "SOURCE_REVIEWED_STATIC",
+    "game_version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+    "new_exe_reads": 0,
+    "native_or_game_code_executed": false,
+    "live_qualification": false,
+    "source_ranges": [
+      {
+        "path": "artifact-and-slot-selection-setters.json",
+        "begin_rva": 24990384,
+        "end_rva": 24990480,
+        "bytes_sha256": "653695f3e16992c4455db440c10a6b47959e5ce3ecfc36d73b7b5fe540cf01cb",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:51.798027+00:00"
+      },
+      {
+        "path": "command-common-dispatch-bounded.json",
+        "begin_rva": 58635696,
+        "end_rva": 58635984,
+        "bytes_sha256": "1e2566df395ed404592507a6e8a59820f25648c969c6d7f6bcb9bd7891657712",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:44:51.161509+00:00"
+      },
+      {
+        "path": "command-submit-entry-bounded.json",
+        "begin_rva": 58656464,
+        "end_rva": 58657232,
+        "bytes_sha256": "ac059af692854f3cd35c3265c1ac3d27a5d915b3cc2cd86733f201d411f9bf77",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:45:13.368791+00:00"
+      },
+      {
+        "path": "enshrine-button-tooltip-bounded.json",
+        "begin_rva": 24992352,
+        "end_rva": 24993232,
+        "bytes_sha256": "7fc9d03da5d32a4c0e3e7b2a142c6ad850edd490a1c9d4eb46830bab5ba93859",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:44:51.174545+00:00"
+      },
+      {
+        "path": "enshrine-command-execute-bounded.json",
+        "begin_rva": 43691488,
+        "end_rva": 43693296,
+        "bytes_sha256": "e3c2885bc89e8d5d8fadcb02b2d275d182952a634e032c6062c0e1b2316d5d79",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:44:51.161433+00:00"
+      },
+      {
+        "path": "enshrine-command-secondary-vtable.json",
+        "begin_rva": 74910352,
+        "end_rva": 74910448,
+        "bytes_sha256": "c55e2ce4a78ad7cd14b1b53618cef81c18d76f6c38ee6915b4879c9d91409d53",
+        "new_exe_reads": 0,
+        "source_kind": "qword-data",
+        "observed_at_utc": "2026-10-17T12:44:33.172592+00:00"
+      },
+      {
+        "path": "enshrine-command-slot48-bounded.json",
+        "begin_rva": 43697616,
+        "end_rva": 43697712,
+        "bytes_sha256": "9776e36dfa42c90bb1396f97349512763cd541711a8b4ee865b0ccc0c171d8b9",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.139877+00:00"
+      },
+      {
+        "path": "enshrine-command-slot80-bounded.json",
+        "begin_rva": 43693872,
+        "end_rva": 43694144,
+        "bytes_sha256": "de76a3ffc712a6d8ae7f6e761557540b4016a984bef8c5f57b9c843167c23ad9",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.093711+00:00"
+      },
+      {
+        "path": "enshrine-command-slot88-bounded.json",
+        "begin_rva": 43694144,
+        "end_rva": 43694880,
+        "bytes_sha256": "13e8f1cf9e4fc0031cefe5fa6545a91f37e46ee326a21d60982fe1a6136503d9",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.091838+00:00"
+      },
+      {
+        "path": "enshrine-command-vtable.json",
+        "begin_rva": 74910000,
+        "end_rva": 74910352,
+        "bytes_sha256": "6082666732a556e05968b57770bdb2640d6cbda4d5ce45781eb261ace39b1992",
+        "new_exe_reads": 0,
+        "source_kind": "qword-data",
+        "observed_at_utc": "2026-10-17T12:43:22.293035+00:00"
+      },
+      {
+        "path": "enshrine-receiver-complete.json",
+        "begin_rva": 43691488,
+        "end_rva": 43693291,
+        "bytes_sha256": "6c900e0c7f46a45a1c7dba6b4fe7e0304808cccc22512439e6d23bc4555e3673",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.051934+00:00"
+      },
+      {
+        "path": "enshrine-stack-command-constructor.json",
+        "begin_rva": 24990480,
+        "end_rva": 24990704,
+        "bytes_sha256": "ce607c1f96d60a027d6dac88f29b147b56ccfbbd8345b78c1cb8b6094d4b2c94",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:45:13.368798+00:00"
+      },
+      {
+        "path": "inventory-enshrine-guard-bounded.json",
+        "begin_rva": 36586656,
+        "end_rva": 36587424,
+        "bytes_sha256": "a2adf5b1ec812fee0832a7b28c2067aba6fb4016ae499c10408421aeb246ec30",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:46:55.756550+00:00"
+      },
+      {
+        "path": "inventory-enshrine-guard-complete.json",
+        "begin_rva": 36586656,
+        "end_rva": 36587466,
+        "bytes_sha256": "67a0073fcbd9d204c4e3b5f0050231222f3fcfcd90c755b8d864ff821a36c21d",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:51.753132+00:00"
+      },
+      {
+        "path": "inventory-enshrine-guard-end.json",
+        "begin_rva": 36587424,
+        "end_rva": 36587536,
+        "bytes_sha256": "3d26793573dd235bcecc170ee6a5dd4639f6dedf52118ea97cd0c7f2fea4d639",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:34.547298+00:00"
+      },
+      {
+        "path": "inventory-membership-leaf-bounded.json",
+        "begin_rva": 36586528,
+        "end_rva": 36586656,
+        "bytes_sha256": "db6b9f8a1debc4605f4853127945a6ada24536aee11cc6c20dd716ecdb508e82",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:46:55.738329+00:00"
+      },
+      {
+        "path": "inventory-slot-pointer-index-complete.json",
+        "begin_rva": 36586224,
+        "end_rva": 36586299,
+        "bytes_sha256": "cbe3f5ae2e37d27e5fb94f98524206818df986b3760b52521841550738ceb33d",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:51.757624+00:00"
+      },
+      {
+        "path": "inventory-slot-pointer-index.json",
+        "begin_rva": 36586224,
+        "end_rva": 36586528,
+        "bytes_sha256": "ec41c89a35a74e547e28f276c6dd323bc02c33451319b56ddbbc06434b5694b5",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:34.547298+00:00"
+      },
+      {
+        "path": "remove-button-tooltip-bounded.json",
+        "begin_rva": 24993632,
+        "end_rva": 24994544,
+        "bytes_sha256": "8b83424d0556c82d0344ea8000381dd9f039b9d57edae9ae07f95020730691cd",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:44:51.258296+00:00"
+      },
+      {
+        "path": "remove-command-secondary-vtable.json",
+        "begin_rva": 74909400,
+        "end_rva": 74909496,
+        "bytes_sha256": "bba06579d870daf341b8d6b0d3785bee73e862821a2d46e2d92c4a2cea4888c5",
+        "new_exe_reads": 0,
+        "source_kind": "qword-data",
+        "observed_at_utc": "2026-10-17T12:44:33.168597+00:00"
+      },
+      {
+        "path": "remove-command-slot48-bounded.json",
+        "begin_rva": 43697872,
+        "end_rva": 43697968,
+        "bytes_sha256": "ffb742a1a5db3414055189ec10fa93eb6fb3b5d421bbd1191a8a07dd7fc184f3",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.193348+00:00"
+      },
+      {
+        "path": "remove-command-slot80-bounded.json",
+        "begin_rva": 43695120,
+        "end_rva": 43695328,
+        "bytes_sha256": "68d4b2ff4e5d2ac461dc9717dba1330d277a7646c4d13455cf21fbcab9a5cf83",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.079691+00:00"
+      },
+      {
+        "path": "remove-command-slot88-bounded.json",
+        "begin_rva": 43695328,
+        "end_rva": 43696128,
+        "bytes_sha256": "aec94a49508f097c73d0e13086a40215260a19ac24c7d86b79c3aa090cfa6f28",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:43:53.111577+00:00"
+      },
+      {
+        "path": "remove-command-vtable.json",
+        "begin_rva": 74909648,
+        "end_rva": 74910000,
+        "bytes_sha256": "8eab5038c420bbaf2ffc38da02156f41ffaa73e89bb0604ed1c7d598e3324f7f",
+        "new_exe_reads": 0,
+        "source_kind": "qword-data",
+        "observed_at_utc": "2026-10-17T12:43:22.293025+00:00"
+      },
+      {
+        "path": "remove-receiver-complete.json",
+        "begin_rva": 43694240,
+        "end_rva": 43694866,
+        "bytes_sha256": "80cc3c7e4b63404ce1a78c5f192fd244137db1d3b8c5238116fd18f84e98a7eb",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.046718+00:00"
+      },
+      {
+        "path": "select-artifact-callback-complete.json",
+        "begin_rva": 25004128,
+        "end_rva": 25004277,
+        "bytes_sha256": "acd558c0f503945136976767188e5d82306f5f5f3034c580b285995eb9e3a71b",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.051946+00:00"
+      },
+      {
+        "path": "select-artifact-native-callback.json",
+        "begin_rva": 25004128,
+        "end_rva": 25004432,
+        "bytes_sha256": "db8cb85af9150159f213f8e06e2ab15d53f9bc569c6e8bddf91ea85d7982c872",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:34.504373+00:00"
+      },
+      {
+        "path": "select-artifact-registration-tail.json",
+        "begin_rva": 2955961,
+        "end_rva": 2956153,
+        "bytes_sha256": "d76f5441cf96568f0c7024b617fc6f4f160133a048c239de0030e1d595331211",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:46:55.739697+00:00"
+      },
+      {
+        "path": "selected-artifact-enshrined-helper.json",
+        "begin_rva": 24992000,
+        "end_rva": 24992112,
+        "bytes_sha256": "0beb2d0ee85444bf36e7451997e9519335c09b65b3fe48da23761758afb9d177",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:45:13.317762+00:00"
+      },
+      {
+        "path": "slot-rebind-on-window-refresh.json",
+        "begin_rva": 24999952,
+        "end_rva": 25000144,
+        "bytes_sha256": "666478a214fbd60088514b213d49cfe3b3cd9029025da9812c0b02847cea881f",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.061235+00:00"
+      },
+      {
+        "path": "submit-entry-complete.json",
+        "begin_rva": 58656464,
+        "end_rva": 58656714,
+        "bytes_sha256": "35be39318795009ef6176e9c135e9cd7ecdade099f895515f3dd664949e34d0c",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.046718+00:00"
+      },
+      {
+        "path": "toggle-slot-callback-complete.json",
+        "begin_rva": 25003168,
+        "end_rva": 25003317,
+        "bytes_sha256": "89c69fad4ae7f3a657b64cab468ab26749966af40937c353e345453002bfc6ae",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:49:40.042034+00:00"
+      },
+      {
+        "path": "toggle-slot-native-callback.json",
+        "begin_rva": 25003168,
+        "end_rva": 25003424,
+        "bytes_sha256": "45348ca93a63a968db3c7cb3d801c799b94d7bb086d1521ac0a08b1d10aaaf11",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:34.553281+00:00"
+      },
+      {
+        "path": "toggle-slot-registration-aligned-tail.json",
+        "begin_rva": 2952851,
+        "end_rva": 2953040,
+        "bytes_sha256": "2d89bb71716b702e8e0ca45b18068fa63476eadb87c561422f1a6a0785584065",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:47:34.505785+00:00"
+      },
+      {
+        "path": "toggle-slot-registration-tail.json",
+        "begin_rva": 2952849,
+        "end_rva": 2953041,
+        "bytes_sha256": "6860949ddaf29c30df033a0d1b2945bf88c03291592ea91b1210a92c7a109472",
+        "new_exe_reads": 0,
+        "source_kind": "disassembly",
+        "observed_at_utc": "2026-10-17T12:46:55.812118+00:00"
+      }
+    ],
+    "reused_sources": [
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ab4f0.json",
+        "bytes": 22263,
+        "sha256": "f26581e44422eeb1bcc0bde9df6b43b65f65562c8ec1d73b36c3ae50646742f3",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:21.600522+00:00",
+        "begin_rva": 43693296,
+        "end_rva": 43693869,
+        "bytes_sha256": "fc26280105134894cc86771afc831361a7207a7912183c1ada56ebebf374da17"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ab4f0.asm",
+        "bytes": 11153,
+        "sha256": "dc3695ed622c9d48f4a650c7bab4f71c97d52b02614aebd8ba9dab26e47ac708",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029abb20.json",
+        "bytes": 9673,
+        "sha256": "fc6b29620eacd48e11ff108242d2133324605e288640010c318174e8a8d17711",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:21.605944+00:00",
+        "begin_rva": 43694880,
+        "end_rva": 43695119,
+        "bytes_sha256": "2880241fe59a8b539952e97dc129813ae1ab8fa6aee9873bfc4b71b84c94a4a4"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029abb20.asm",
+        "bytes": 4707,
+        "sha256": "3079dd021b29a3ebba8946c182d5431777a3d8f39bbdca7fcd475d0b452305b1",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d53f0.json",
+        "bytes": 8865,
+        "sha256": "3089eb4977cd1d0c876d1de69766a8432404d5167632893d96e6eab341530cae",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:15:48.505597+00:00",
+        "begin_rva": 24990704,
+        "end_rva": 24990950,
+        "bytes_sha256": "b60bce4d1aaaa34da5b35d6b326657245a50873d9b752dd91efa6de254a3a10e"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d53f0.asm",
+        "bytes": 4228,
+        "sha256": "51abcfac28d29dc69316e87248edb609a4834c2d64c116276e822acf64f1e475",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d56f0.json",
+        "bytes": 4845,
+        "sha256": "252e6df8183d21038f931dbdd7bba7885b9b0408d76087ec86380dfe8ff1ed3d",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:15:48.508873+00:00",
+        "begin_rva": 24991472,
+        "end_rva": 24991591,
+        "bytes_sha256": "67fc4c38028cfcf72536ba51961648eaf2ecdeb6da928633cf6a39057a5d4df9"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d56f0.asm",
+        "bytes": 2194,
+        "sha256": "d83828cf18bf2377e3cf65c480259a1673efdf793a1e78f69f7b505caa32937c",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5970.json",
+        "bytes": 9144,
+        "sha256": "adcdb5853847580613c51b378bae650208a6148d2a1a414000a64d1401b490b8",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:01.450528+00:00",
+        "begin_rva": 24992112,
+        "end_rva": 24992341,
+        "bytes_sha256": "f289e12b6d655281a4cb6bbf9b040aaa5c2c55ba1cdd5c48a976779882485941"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5970.asm",
+        "bytes": 4373,
+        "sha256": "e60c8a74afb3f5426e00a8ddfbf58289500e51d4dc2eb95a4197dcc3f0458800",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5e40.json",
+        "bytes": 10285,
+        "sha256": "2110c04777d053e7e3709af7cd272252270b975acfce62960a8d1f303b58ded3",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:01.453775+00:00",
+        "begin_rva": 24993344,
+        "end_rva": 24993619,
+        "bytes_sha256": "3434ed37cb0e3577b51b14a5f7a34966ec2c8f1f10d8b8d3fb14e88b302ac501"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5e40.asm",
+        "bytes": 4973,
+        "sha256": "59c0212d5f4bda6fc0623c96ed788f5a2b613712fa3802e65ba7d4665777132d",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ac540.json",
+        "bytes": 5613,
+        "sha256": "fa984cbc1308147a9c96302e6a31e20d0eb7df5c5dca98b27ce965de997d2a11",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:21.611087+00:00",
+        "begin_rva": 43697472,
+        "end_rva": 43697609,
+        "bytes_sha256": "452ed7a7e292a51f6f4eda091df4871390ffe7abcf51d9453e64c0454f19bce3"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ac540.asm",
+        "bytes": 2631,
+        "sha256": "380ce69cd9dd742b74d63509dc15264586ad1b0b13b934739f0336076cd5ae90",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ac640.json",
+        "bytes": 5322,
+        "sha256": "35e1f88ab3824c64274e1489ae117e34a2454b39cb8a507fac0cc31d1f2aba63",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:21.615795+00:00",
+        "begin_rva": 43697728,
+        "end_rva": 43697858,
+        "bytes_sha256": "4bc11935ceb0818e2656675e597a0762a678f132757f78b424cf54bc27a2c883"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ac640.asm",
+        "bytes": 2470,
+        "sha256": "7b0217c57530aafb7a32dc3c2b500bb9b9f5aeb11e371be79109d694bbefca4a",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d7580.json",
+        "bytes": 10847,
+        "sha256": "c9e991a2d60a4923953094b404b35bd0b58f4b4362b78c39abf5d3fa34f7121e",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:01.443577+00:00",
+        "begin_rva": 24999296,
+        "end_rva": 24999613,
+        "bytes_sha256": "32cce9479f91edf091f6c5b78eddfd79a53c46ba39ea1ae7002ad54da849e621"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d7580.asm",
+        "bytes": 5206,
+        "sha256": "6e5b30b4b325412c00f5b9e75e9fbf597a40070f1126496a441a914705680f01",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d76c0.json",
+        "bytes": 8282,
+        "sha256": "40766aa7090be0aa59795787f7b20c0b099d7be089e0f7b630b7358d6bb2b939",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:01.446754+00:00",
+        "begin_rva": 24999616,
+        "end_rva": 24999840,
+        "bytes_sha256": "692810479999f3c0e877422ea0d5bb685a1c66064584663a8572366ade0280dc"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d76c0.asm",
+        "bytes": 3932,
+        "sha256": "c0c11809fece3ef85d3226435e7f508d4553e5bc61c27c8087e82fe1606edb81",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5dd0.json",
+        "bytes": 4350,
+        "sha256": "524a3c1431897d06b9c34992b7ccb1ac979c76ed95f3c6ee77603d07e98792e4",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:17:44.248293+00:00",
+        "begin_rva": 24993232,
+        "end_rva": 24993337,
+        "bytes_sha256": "80e438b7293ec8134b565240ece0f8224074c914345b6693084ef7121affd46f"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5dd0.asm",
+        "bytes": 1906,
+        "sha256": "732a2cd294cc58e35ab6f743d64828e993dc23c79dceffc3747651f0fbedb08f",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d62f0.json",
+        "bytes": 4350,
+        "sha256": "8e40a942303b20fe352bb3de8bfd2ac9179507fe0e7fd2f618e293dce4166957",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:17:44.251277+00:00",
+        "begin_rva": 24994544,
+        "end_rva": 24994649,
+        "bytes_sha256": "b6d4e97d9cfddcfdcb27995622e09b610c5b24652d02dc6ff25b69f0625d9cc0"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d62f0.asm",
+        "bytes": 1906,
+        "sha256": "4b85946828cc28b83e43b4b00eddecb33eea2952a2b65c0c2be63e3779adfa3c",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d64fd0.json",
+        "bytes": 17885,
+        "sha256": "5aa38029fbafa0744705d406e8197dd5a0280048686d4520867cf768581d0ca5",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:29.602066+00:00",
+        "begin_rva": 30822352,
+        "end_rva": 30822896,
+        "bytes_sha256": "bae18eeb7a8e5fae0b9bf83718b3ce8b0fede6571271950084f4aa03604f8b3d"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d64fd0.asm",
+        "bytes": 8711,
+        "sha256": "ad119f1c774992b47567379252147fd85f17198ceb7a0f352415b2d56834d12e",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d651f0.json",
+        "bytes": 17885,
+        "sha256": "47d5a58bc094cf226723df2b6c9cfc1697af054fe3f7e266f1b1a5ae8ad54204",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:18:29.608364+00:00",
+        "begin_rva": 30822896,
+        "end_rva": 30823440,
+        "bytes_sha256": "b7dc1048fdd91668cbd15fcf6005bbd4f8060900104d3f20871e458d874bfbd5"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d651f0.asm",
+        "bytes": 8711,
+        "sha256": "18e02b0816b49d48c53c8dc28da78f94a8cf50e4b01b21c64c8812acc9acfc67",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\holy-site-window-setter-complete-chunks.json",
+        "bytes": 33280,
+        "sha256": "930eb534a0b611160fe90bf5fce346b155ea06341209f281c93513749873c70c",
+        "scope": "reused previously frozen exact-build source",
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T09:17:43.306486+00:00",
+        "begin_rva": 25000144,
+        "end_rva": 25001166,
+        "bytes_sha256": "577373c3689af92310f4e09ca4be73f52941843468afe5a90015fd56a756ff28"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\holy-site-window-setter-complete-chunks.asm",
+        "bytes": 16603,
+        "sha256": "12537ba343508d95b2bafcbe37d24a21b6cc058a0b61b0e45bd6488f051248c5",
+        "scope": "reused previously frozen exact-build source"
+      },
+      {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-relic-native12004.md",
+        "bytes": 14555,
+        "sha256": "c5b8ba9be882d10c174cb5654905bb4f1e8131303a5101168045043f1ec38cbb",
+        "scope": "existing documentation/static identity or cache metadata; not reread EXE"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\script-sources\\sources.json",
+        "bytes": 12451,
+        "sha256": "bb34fa8174138473ed64ab0f8d9d612440b47402f6e8db3459a6229ed7f7ea16",
+        "scope": "existing documentation/static identity or cache metadata; not reread EXE"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\script-sources\\source-excerpts.md",
+        "bytes": 60666,
+        "sha256": "a8462fc9a2e90f4a519dcf0a23f1b8a573c53dfad9e97b0518de102a8f9e8df8",
+        "scope": "existing documentation/static identity or cache metadata; not reread EXE"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+        "bytes": 1719,
+        "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+        "scope": "existing documentation/static identity or cache metadata; not reread EXE"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pdata-binary-search-cache.json",
+        "bytes": 84790,
+        "sha256": "5acd71d6769284b271d083e35689e3a60077abce48579a8cdfd1f340c0489835",
+        "scope": "existing documentation/static identity or cache metadata; not reread EXE"
+      }
+    ],
+    "files": [
+      {
+        "path": "abi-contract.json",
+        "bytes": 8100,
+        "sha256": "4380b4e1ff8f501bba9c047635cf87ed2804052de23f1e675108d4978b4c5f18"
+      },
+      {
+        "path": "artifact-and-slot-selection-setters.asm",
+        "bytes": 2572,
+        "sha256": "3cd81074ea2d14c143427c7d2656b6514a042cff426c9a523e3589704392797c"
+      },
+      {
+        "path": "artifact-and-slot-selection-setters.json",
+        "bytes": 5970,
+        "sha256": "c2dbf94c48fb6e5115b0c8e30ddbfc3fa9eed3202f1be6818f72eac6bd8ed528"
+      },
+      {
+        "path": "command-common-dispatch-bounded.asm",
+        "bytes": 4636,
+        "sha256": "6d82ad37ffe859ef08a661b350d0b671a9d35bbf56a3e226a719480811f7c727"
+      },
+      {
+        "path": "command-common-dispatch-bounded.json",
+        "bytes": 10268,
+        "sha256": "0de88f478094023e2b54fd6166961b794c7a7b5742d8f54f5e93098af981e9c2"
+      },
+      {
+        "path": "command-rtti-cache-hits.json",
+        "bytes": 12958,
+        "sha256": "8071e9a3933f9ca758752e7053435bd71aed57467d85c493d54d511e0480ff78"
+      },
+      {
+        "path": "command-submit-entry-bounded.asm",
+        "bytes": 13240,
+        "sha256": "077a8fcf2dbd9d9545afbd956f631b1866b77b1afd83ae49c0b00e79f171d431"
+      },
+      {
+        "path": "command-submit-entry-bounded.json",
+        "bytes": 27218,
+        "sha256": "6da9fda5d0e58beaac5f0e0f1f16f36de805ebef0b08818f4038cbd64358d372"
+      },
+      {
+        "path": "enshrine-button-tooltip-bounded.asm",
+        "bytes": 14117,
+        "sha256": "8dd5fd88c72ed4d57eda8522528c838e6015ec60f9c17496d399b644577ebde1"
+      },
+      {
+        "path": "enshrine-button-tooltip-bounded.json",
+        "bytes": 28878,
+        "sha256": "512f72332a1784560f2dca621c972d72ba9a143de1e5b538a7091284bc85556a"
+      },
+      {
+        "path": "enshrine-command-execute-bounded.asm",
+        "bytes": 30342,
+        "sha256": "c74cfcd8df622e7842fe493e631b6fa1979734f0ea36fb63f9ae5ec39c912ca7"
+      },
+      {
+        "path": "enshrine-command-execute-bounded.json",
+        "bytes": 60347,
+        "sha256": "8ed999b0f493fbd4c3940756647a6bfd6be32a6f25b34885695d3ebecfce4053"
+      },
+      {
+        "path": "enshrine-command-secondary-vtable.json",
+        "bytes": 2200,
+        "sha256": "e99289097db6bd53863f85913d9fa24a2d425e334a459201690215f7f16d2f6b"
+      },
+      {
+        "path": "enshrine-command-slot48-bounded.asm",
+        "bytes": 3341,
+        "sha256": "4d3352378d63bc93d7d433b6f15e96f11a994b9be358c596df4c97acbffe9829"
+      },
+      {
+        "path": "enshrine-command-slot48-bounded.json",
+        "bytes": 7591,
+        "sha256": "c7185430331b83ec53f798b9031d925e61fa6e9ac61225e4eaf68e026872ea11"
+      },
+      {
+        "path": "enshrine-command-slot80-bounded.asm",
+        "bytes": 4855,
+        "sha256": "af1504f85869072cf98837b5b6b6e4c8e053be44fbfc5720e114665d791d7fc2"
+      },
+      {
+        "path": "enshrine-command-slot80-bounded.json",
+        "bytes": 10809,
+        "sha256": "d2258d0638edc3efbf9b4ca32b1179cc28c7264d90b2c9914499fe3d773e9bfc"
+      },
+      {
+        "path": "enshrine-command-slot88-bounded.asm",
+        "bytes": 12661,
+        "sha256": "6a016e63096f20c2c4dee0d1cdb7134310a81ddb6116ad5a70497b24cddc65b9"
+      },
+      {
+        "path": "enshrine-command-slot88-bounded.json",
+        "bytes": 26019,
+        "sha256": "1309ba7ed5621ee1231b220deff1c5120bafe87e59b68484c1cf20e5490dd36b"
+      },
+      {
+        "path": "enshrine-command-vtable.json",
+        "bytes": 5811,
+        "sha256": "7ee557623c3fa0e5199de957e9acd2d194dfbbb2ea219def23f857ed769eeeec"
+      },
+      {
+        "path": "enshrine-receiver-complete.asm",
+        "bytes": 30072,
+        "sha256": "def487c7dbf7e35e67410ca6777fa6729b5eda534b1eee24f0b670d209d314ef"
+      },
+      {
+        "path": "enshrine-receiver-complete.json",
+        "bytes": 59797,
+        "sha256": "75bfef0b1094973fc64e639108f749b770af0e742ebabcb6871e6482396c8681"
+      },
+      {
+        "path": "enshrine-stack-command-constructor.asm",
+        "bytes": 4880,
+        "sha256": "b62e6227292cbb217544b3c7228864978113d1d394289ba28be52fb1f4c839cb"
+      },
+      {
+        "path": "enshrine-stack-command-constructor.json",
+        "bytes": 10365,
+        "sha256": "26927dfd37e76a1bceeb78b1507223f1b9255460c1ce111fd884b9e559d5f272"
+      },
+      {
+        "path": "freeze_guard_sources.py",
+        "bytes": 10121,
+        "sha256": "09eb76e4b8c5459604f8831b67c674a63c47d39e9a937f72a12fa0fa0dc0680e"
+      },
+      {
+        "path": "guard-contract.md",
+        "bytes": 11450,
+        "sha256": "e881270ab552e84f57db9af0f9df3747d05c1824e9e24998ac81ae1f2cf5722c"
+      },
+      {
+        "path": "inspect_guard.py",
+        "bytes": 5625,
+        "sha256": "d30e51a36a1987d5c08b91296065f3163a01c02e00555f644f31435917c5950b"
+      },
+      {
+        "path": "inventory-enshrine-guard-bounded.asm",
+        "bytes": 14097,
+        "sha256": "54ad7d4b7cdf9b25dbd2e3a72fe19dc6538f5ae367b6710772522bbdca93d523"
+      },
+      {
+        "path": "inventory-enshrine-guard-bounded.json",
+        "bytes": 28350,
+        "sha256": "9abc472525e25e803985c27c1d4c70c64c086cd4294ff637eeb64ef71c85dca4"
+      },
+      {
+        "path": "inventory-enshrine-guard-complete.asm",
+        "bytes": 15127,
+        "sha256": "d85e67331d1537aec32042e8cbb0012d403243604224b6711cc885fc34528f9f"
+      },
+      {
+        "path": "inventory-enshrine-guard-complete.json",
+        "bytes": 30371,
+        "sha256": "70177be1f301a2b28c29db84b0f064850c6536aff675ec5e1c3485627e070df2"
+      },
+      {
+        "path": "inventory-enshrine-guard-end.asm",
+        "bytes": 2423,
+        "sha256": "4f766ea308537dfacbd93a758bc9912f348bd78fd6bfa91708c016324d157a3f"
+      },
+      {
+        "path": "inventory-enshrine-guard-end.json",
+        "bytes": 5622,
+        "sha256": "bc3dc121e25e06e3998042b61f7adfd3b3f25ee18af39a8b1a39965b87c4b645"
+      },
+      {
+        "path": "inventory-membership-leaf-bounded.asm",
+        "bytes": 2696,
+        "sha256": "6a6b5f667e8395024d85e90336da9646d3ea06eb2c13ee63d59f94681909c50e"
+      },
+      {
+        "path": "inventory-membership-leaf-bounded.json",
+        "bytes": 6052,
+        "sha256": "805331c37f9675f0ef395fc57523609e3c564be0c26a876c4a8345c2e45dde9b"
+      },
+      {
+        "path": "inventory-slot-pointer-index-complete.asm",
+        "bytes": 1415,
+        "sha256": "5e9c7b6029f57017af2be281af7113443e788056669ee1c763c8cdd147e23866"
+      },
+      {
+        "path": "inventory-slot-pointer-index-complete.json",
+        "bytes": 3696,
+        "sha256": "e08632a60914e16524191d5c83be3b7d2464efcdcd9a8d08aeed80abc5936513"
+      },
+      {
+        "path": "inventory-slot-pointer-index.asm",
+        "bytes": 6519,
+        "sha256": "101de203018a0863a223af8b7d8cf062509ccf25481174f5c4a815b0e7aab72c"
+      },
+      {
+        "path": "inventory-slot-pointer-index.json",
+        "bytes": 13652,
+        "sha256": "6ff855fa791befb670ade7376e1edae422b3e6a88eae905a933fd7611da080ff"
+      },
+      {
+        "path": "remove-button-tooltip-bounded.asm",
+        "bytes": 15127,
+        "sha256": "87db04592d39f3e4f2b203a9589bcd01d36d587314d34869f055d7d292d2cba7"
+      },
+      {
+        "path": "remove-button-tooltip-bounded.json",
+        "bytes": 30737,
+        "sha256": "011123185dd8bff9004e85156710912e2cd102adf749aaf2bc5f578055065224"
+      },
+      {
+        "path": "remove-command-secondary-vtable.json",
+        "bytes": 2200,
+        "sha256": "40b8c1e579de7cc2367b2ff58c1629f55841065428905f99972e8e4887e60ae3"
+      },
+      {
+        "path": "remove-command-slot48-bounded.asm",
+        "bytes": 3341,
+        "sha256": "71b0e6450b47a82290b4944ffe20a19b7838fbe9addd818c5f2916d411def971"
+      },
+      {
+        "path": "remove-command-slot48-bounded.json",
+        "bytes": 7591,
+        "sha256": "76b8e7010e8037678b4bda870dfa9b159eb20187b82ced6d855567e56a565eb5"
+      },
+      {
+        "path": "remove-command-slot80-bounded.asm",
+        "bytes": 3637,
+        "sha256": "d6ae52be3501108206446db02b6db0781470b00a0bb954fb6de4c9c7484a9df4"
+      },
+      {
+        "path": "remove-command-slot80-bounded.json",
+        "bytes": 8304,
+        "sha256": "bf0e34c1deaeb16acc7ebd03ad4b366604af787f8675d41f813731c0d411bd17"
+      },
+      {
+        "path": "remove-command-slot88-bounded.asm",
+        "bytes": 17738,
+        "sha256": "266370e9623260bf3d7693e65e8d0c31bfe0dd6bba68164cc8aaab719e7554c3"
+      },
+      {
+        "path": "remove-command-slot88-bounded.json",
+        "bytes": 36349,
+        "sha256": "e45697b400e9c0947fbdd0b098f4d20c72e86e1b0045c1edfd54fe1d0d16da8c"
+      },
+      {
+        "path": "remove-command-vtable.json",
+        "bytes": 5811,
+        "sha256": "cca094333080b57b6f1f9f2a88ca79bf6e43700addf085eeca51fec02ba9c359"
+      },
+      {
+        "path": "remove-receiver-complete.asm",
+        "bytes": 10368,
+        "sha256": "707032c803adc9401b169b84a4b4a6b973924a399778e4c4cb9b1abebfa8ad49"
+      },
+      {
+        "path": "remove-receiver-complete.json",
+        "bytes": 21337,
+        "sha256": "1d7e43c648b574a4a83f0776e7921d6cb82bedb13f8e1d8b2d75379baf436a09"
+      },
+      {
+        "path": "select-artifact-callback-complete.asm",
+        "bytes": 3126,
+        "sha256": "8f1075c7edc8d075592659d97efcdb23bb15a54d38328731a32c0db1226f5f6e"
+      },
+      {
+        "path": "select-artifact-callback-complete.json",
+        "bytes": 6926,
+        "sha256": "3cc4249feb6bfd24f7fdba6619804835e5c3d0ad339700d63c92af63387f69e9"
+      },
+      {
+        "path": "select-artifact-native-callback.asm",
+        "bytes": 6672,
+        "sha256": "ea774177d9d80d4da52cce1854f997323ee9d1a55437a57c92c5cb209c7c5b2c"
+      },
+      {
+        "path": "select-artifact-native-callback.json",
+        "bytes": 13859,
+        "sha256": "a67c9f45afc368839268544c7a9767ccc9e08e982e7949b449705a3b3a21e5c9"
+      },
+      {
+        "path": "select-artifact-registration-tail.asm",
+        "bytes": 3404,
+        "sha256": "980a6ce9555960e459a5ff859d1b142ee30d3aab91eac58b7061c9f611ab1caf"
+      },
+      {
+        "path": "select-artifact-registration-tail.json",
+        "bytes": 7388,
+        "sha256": "b933593481ff0f41ebca166d93a6b44c205ff341d613a3bb75891acd10d20064"
+      },
+      {
+        "path": "selected-artifact-enshrined-helper.asm",
+        "bytes": 2446,
+        "sha256": "f840f3143db267f7b04446397ff66a66b2fdde0ad919eeb66412fd317d660913"
+      },
+      {
+        "path": "selected-artifact-enshrined-helper.json",
+        "bytes": 5641,
+        "sha256": "2e7965058649dfc09efee5888c5b3c762a3505133c1ea9ba6e55048abc210d1e"
+      },
+      {
+        "path": "selection-name-cache-hits.json",
+        "bytes": 1345,
+        "sha256": "98204658f65ac68f9e6f33fa3375754da7aa8a998af4fda35b9576404a7c75a8"
+      },
+      {
+        "path": "selection-name-xref-cache-hits.json",
+        "bytes": 3611,
+        "sha256": "557bbf20ee775955bb64a5d14786fd19feadeb08bacfc4c2ec8bbf1da191f128"
+      },
+      {
+        "path": "slot-rebind-on-window-refresh.asm",
+        "bytes": 3704,
+        "sha256": "3de710877161581739e6891d8e0c59c02cd90cd7b4646b87209ed2dd28edf438"
+      },
+      {
+        "path": "slot-rebind-on-window-refresh.json",
+        "bytes": 8248,
+        "sha256": "bd57bee7b7f2f2b1b0ee52831cd849b15f1110f5dd56d96fe6bea9eb8ae57874"
+      },
+      {
+        "path": "submit-entry-complete.asm",
+        "bytes": 5180,
+        "sha256": "e6661ade9a0cc06974428efd10aae051bbfb6d72b30949212e3d5dfe50c80b4a"
+      },
+      {
+        "path": "submit-entry-complete.json",
+        "bytes": 11077,
+        "sha256": "54b18301cf6c4f2f34468a4b7a118439046e218b0e0314b003bb5cefd81ab648"
+      },
+      {
+        "path": "toggle-slot-callback-complete.asm",
+        "bytes": 3126,
+        "sha256": "9fe313fc1fbc8b108a4946edace5fdb151b7de53bf763c5fe0b032aaab99509f"
+      },
+      {
+        "path": "toggle-slot-callback-complete.json",
+        "bytes": 6926,
+        "sha256": "c11e1ff51754b1f675883ba27daf78528174d060f75f289bd1618e40dc185cf9"
+      },
+      {
+        "path": "toggle-slot-native-callback.asm",
+        "bytes": 6163,
+        "sha256": "39c0062c496f5be556fba719114caed310891bc88c25a5d73546e5e5382573b1"
+      },
+      {
+        "path": "toggle-slot-native-callback.json",
+        "bytes": 13070,
+        "sha256": "2a81f6c1ea7cc67a81d748a8b88e969e5897392e22e2cc313307a8da6c7380cc"
+      },
+      {
+        "path": "toggle-slot-registration-aligned-tail.asm",
+        "bytes": 3486,
+        "sha256": "6eb691553b03f0e62395cecd6c37deeffce394762c7fc632b72184dc4c599460"
+      },
+      {
+        "path": "toggle-slot-registration-aligned-tail.json",
+        "bytes": 7514,
+        "sha256": "160ce6a8f2a616de2d9f9e478c34eb7b0a551521851638d1cd0eb7fcb00b08ee"
+      },
+      {
+        "path": "toggle-slot-registration-tail.asm",
+        "bytes": 3550,
+        "sha256": "476f602a0d90b55e0e302d3197b6bc86072f592f3201b2372a96d450361914b7"
+      },
+      {
+        "path": "toggle-slot-registration-tail.json",
+        "bytes": 7635,
+        "sha256": "b3e1b7d93c5fafd6541f5c11b710d5ff1bb0d1333f876429013bcc792d474012"
+      }
+    ],
+    "total_output_bytes": 850900,
+    "budget_bytes": 5242880,
+    "capacity_read": {
+      "total": 511776722944,
+      "used": 380951789568,
+      "free": 130824933376
+    },
+    "retention": {
+      "review_due_utc": "2026-10-18T00:00:00+00:00",
+      "reason": "Active first-episode permission observer and subsequent typed UI entry source; re-evaluate after tracked integration or exact build change"
+    }
+  },
+  "packed_ranges": [
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/artifact-and-slot-selection-setters.json",
+        "sha256": "c2dbf94c48fb6e5115b0c8e30ddbfc3fa9eed3202f1be6818f72eac6bd8ed528",
+        "bytes": 5970
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:51.798027+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24990384,
+      "end_rva": 24990480,
+      "bytes_sha256": "653695f3e16992c4455db440c10a6b47959e5ce3ecfc36d73b7b5fe540cf01cb",
+      "bytes_hex": "4885d2740a8b4210898108010000c3c78108010000ffffffffc3cccccccccccc4885d274138b810801000083f8ff74083b42107503b001c332c0c3cccccccccc4885d2741433c048399110010000480f44d048899110010000c3cccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/command-common-dispatch-bounded.json",
+        "sha256": "0de88f478094023e2b54fd6166961b794c7a7b5742d8f54f5e93098af981e9c2",
+        "bytes": 10268
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:51.161509+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 58635696,
+      "end_rva": 58635984,
+      "bytes_sha256": "1e2566df395ed404592507a6e8a59820f25648c969c6d7f6bcb9bd7891657712",
+      "bytes_hex": "40555356574154488d6c24c94881ecb0000000488bf24c8be14183f8410f84ab0100004181f8f30100007415488bca4881c4b0000000415c5f5e5b5de9cf667900488d3dd80acb000f1f840000000000488b9ee000000080bbb4000000007520488bcbe8884976008883b500000084c07507c7434013000000c683b4000000018b434083f8040f848d03000083f8130f8484030000488bcee8537c79008b8ee800000081e9c60000000f840d01000083e9150f84f200000083e91d749381e9480100000f84cf00000081f95c040000740d488bcee837667900e972ffffff8b86dc01000085c075140fb686100200008845774188442408e954ffffff4c8b9ed0010000ffc84c63c84532d24d03cb32c0498bd34d3bd9743c0f1f840000000000"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/command-submit-entry-bounded.json",
+        "sha256": "6da9fda5d0e58beaac5f0e0f1f16f36de805ebef0b08818f4038cbd64358d372",
+        "bytes": 27218
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:45:13.368791+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 58656464,
+      "end_rva": 58657232,
+      "bytes_sha256": "ac059af692854f3cd35c3265c1ac3d27a5d915b3cc2cd86733f201d411f9bf77",
+      "bytes_hex": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803a8017407488b0280480820488b89d80300004885c97408488b12e8f18601000fb6c32401488b0f80be9a02000000743684c075320fb651080fb6c224063c067425f6c20875204885c9740a488b01ba01000000ff1048c7070000000032c04883c4205f5e5bc38b86ec03000089410c488bb6d0030000c1eb0280e301488b0748c7070000000048894424587423488d4e78ff15099fbe00488d542458488bcee8acfb08fd488d4e78ff153aa0be00eb0e488d542458488bcee893fb08fd90488b0f4885c9740a488b01ba01000000ff10b0014883c4205f5e5bc3cccccccccccc48895c2410488974241848897c2420554154415541564157488dac2420efffffb8e0110000e8b63fa300482be00f29b424d0110000488bf94533ed4489ad10110000488b05df7f4c02488b90b8010000488b7210458be5458bf58b412090ffc84c8d3d39dbf400488d1d8ac3120183f8050f87ee0f00004898488d1db0f780fc8b8483e41e7f034803c3ffe0664489a1f5030000488b0d9d7b4c02e8b0777600660f6e4f68f30fe6c9f20f5e0dd75e2001f20f58c8f20f114f704885f67413488b064c8d05c7eeffff488bd7488bceff5038488d9748020000488b8fc8030000e8fbc9000084c0741641bf02000000418bd7488bcfe846610000e95f0f000041bc06000000458d742401458bfd418bd5488bcfe828610000e9410f0000488b0d147b4c02e827777600660f6e4f68f30fe6c9f20f5e0d4e5e2001f20f58c8f20f114f704489aff8030000b201488bcfe85c6200004c896df04c896d0844896d106644896d144c896d184c896d2848c745300f0000004c8965f8448965004885f60f844e020000488b064c8d45f0488d9748020000488bceff905001000084c00f842f020000488d55f0488b8fc8030000e81bdb000084c00f8417020000488b06488d9748020000488bceff903801000041b903000100488d1503f11401488d8de005000084c00f84e800000041b89f030000e839af79004c897c242048894424"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-button-tooltip-bounded.json",
+        "sha256": "512f72332a1784560f2dca621c972d72ba9a143de1e5b538a7091284bc85556a",
+        "bytes": 28878
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:51.174545+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24992352,
+      "end_rva": 24993232,
+      "bytes_sha256": "7fc9d03da5d32a4c0e3e7b2a142c6ad850edd490a1c9d4eb46830bab5ba93859",
+      "bytes_hex": "48895c2410488974241848897c242055488dac24a0feffff4881ec60020000488bfa488bf18b910801000083faff755d488d0541c1db024889442430c744243827000000c644243c0033d241b8a8010000488d4d80e85614a502488d4d80e81d3f0bff9033db48895c2428488d458048894424204533c94533c0488d542430488bcfe8390b640290e9970200004c8b05748354044d85c074258bc225ffffff00413b402c73188bc84803c9498b4020488b5cc8084885db74053953107407488b1d0b835404817b14697472410f85fa010000837b10ff0f84f0010000488bcee8bcfdffffc644243c0084c07458488d0554c0db024889442430c74424382e00000033d241b8a8010000488d4d80e89e13a502488d4d80e8653e0bff9033db48895c2428488d458048894424204533c94533c0488d542430488bcfe8810a640290e9df01000048899d70010000488d05a5c0db024889442430c744243818000000488d85700100004889442420488d542430488d4c2460e87508e4ff904c8b8e100100004c8bc38b96c8000000488d8d28010000e818f7ffff9033db48895c244048895c245048c74424580f000000885c2440488d542440488d8d28010000e8cd581d0184c0754e48395c24507447488d059392c5024889442430c744243802000000885c243c488d542430488d4c2460e80b157802488d54244048837c245810480f435424404c8b442450488d4c2460e85b030bff0f104424600f11070f104c24700f114f10660f6f0552122203f30f7f442470c644246000488b5424584883fa10723248ffc2488b4c2440488bc14881fa0010000072194883c227488b49f8482bc14883c0f84883f81f0f87f9000000e86ee2a40248895c245048c74424580f000000c644244000488b5424784883fa100f82b000000048ffc2488b4c2460488bc14881fa0010000072194883c227488b49f8482bc14883c0f84883f81f0f879f000000e81ae2a402eb7c488d05a5bedb024889442430c744243827000000c644243c0033d241b8a8010000488d4d80e8ba11a502488d4d80e8813c0bff9033db48895c2428488d458048894424204533c94533c0488d542430488bcfe89d0864029048837d8000741d488d4d80e83c3d0bff488b4d90488b0141b808000000488b5580ff5010488bc74c8d9c2460020000498b5b18498b7320498b7b28498be35dc3e8a7cca50290e8a1cca50290"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-execute-bounded.json",
+        "sha256": "8ed999b0f493fbd4c3940756647a6bfd6be32a6f25b34885695d3ebecfce4053",
+        "bytes": 60347
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:51.161433+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43691488,
+      "end_rva": 43693296,
+      "bytes_sha256": "e3c2885bc89e8d5d8fadcb02b2d275d182952a634e032c6062c0e1b2316d5d79",
+      "bytes_hex": "48894c2408555356574154415541564157488dac2438ffffff4881ecc80100004c8bc9488b15763037034885d2742a448b4108418bc025ffffff003b422c73198bc84803c9488b4220488b74c8084885f67406443946107407488b35e02f3703817e1474536f480f858a060000837e10ff0f84800600004c8b3d0a3037034c8b25cb2f37034d85ff7429418b510c8bc225ffffff00413b472c73188bc84803c9498b4720488b7cc8084885ff74053957107403498bfc817f14697472410f8534060000837f10ff0f842a0600004d6371144585f67833443b76747d2d4b8d0c76488b4668488b54c808488b8fb800000080ba0902000000752f8b414039424475088b4144394240741f488bd7488d4e28e8eb562d00448bf083f8ff0f84d60500004c8b8d100100004963ce488d1449488d04d50000000048898528010000488b4e688b44011089852001000041b8ffffffff413bc0440f45c044898518010000418b5910418b410839477c741f8bd0488bcfe8a953b8ff4c8b3d0a2f37034c8b25cb2e3703448b851801000083bd20010000ff0f848b00000083fbff0f8482000000488b15dfc52b034885d274248bc325ffffff003b422c73188bc84803c9488b4220488b44c8084885c074053958187407488b05b7c52b0381781c726168437542837818ff743c4d85ff742d418bc025ffffff00413b472c73198bc84803c9498b4720488b54c8084885d27406443942107403498bd44c8be28bd3498bcce8cc4db8ff4585f6781d443b76747d17488b9528010000480356684c8bc7488d4e28e82a9b93ff41b911000000448bc3488bd6488bcfe8e6fcffff4889bd20010000488d9520010000488d4c2450e87ec9b8ff90c7442430e1010000c74424341e000000488d052656dc014889442438488d05ea5bdb014889442440488d542430e89b3df9008bf8488d050205f80185ff791d897c242848894424204c8d0d1ece380333d233c9448d4201e8c1fa5c01897c24604533e4c7442430170000004c8bbd10010000418b470848894424384c8d4424308b151b123a03488d4c2468e80df0d80083fbff7422c74424300400000048895c24384c8d4424308b154c0c3a03488d4c2468e8e6efd80041bd1f000000448bb5180100004183feff741f44896c24304c897424384c8d4424308b15420f3a03488d4c2468e8b4efd800e8bfd52afe488bf0488b4838488bb970060000488d0d1a4ad901e8f5f38eff4c8b0deeda2b034983c108488d050367c0ff4889442428488d059765c0ff48894424204c8d442450488bd7488bcee8a21ae20090488d4c2450e8472fedfd4183feff0f8434030000488b15be2c37034885d27426418bc625ffffff003b422c73198bc84803c9488b4220488b44c8084885c07406443970107407488b05542c3703817814697472410f85ee020000837810ff0f84e402000044896424504c89642458c7442460ffffffff488d4c2468e8c1e3edfd4c8965504c896558488d0d5230b30248894d60488d05cf1fae0148894568488d053420ae01488945704c8965784c89a580000000488d052e30b302488985880000004489a5900000004c89a5980000004c89a5a000000048898da8000000c785b0000000ffffffff664489a5b4000000c685b6000000006644896c24504c89742458c7442430f4010000c74424341e000000488d05e853dc014889442438488d05ac59db014889442440488d542430e85d3bf9008bf885c0792489442428488d05bc02f80148894424204c8d0de0cb380333d233c9448d4201e883f85c01897c2460c744243017000000418b470848894424384c8d4424308b15e70f3a03488d4c2468e8d9edd80083fbff7422c74424300400000048895c24384c8d4424308b15180a3a03488d4c2468e8b2edd800c74424301f000000418b470c48894424384c8d4424308b151a0d3a03488d4c2468e88cedd800e897d32afe488bf8488b5038488b9a78060000488d0df247d901e8cdf18eff4c8b0dc6d82b034983c108488d05db64c0ff4889442428488d056f63c0ff48894424204c8d442450488bd3488bcfe87a18e20090488b9d980000004885db74538bbda400000085ff7e1e0f1f00488b0333d2488bcbff10ffcf4883c34885ff7fec488b9d980000004489a5a4000000488b8da8000000488b0141b808000000488bd3ff50104c89a5980000004489a5a0000000488b5d784885db74518bbd8400000085ff7e1f0f1f8000000000488b0333d2488bcbff10ffcf4883c32085ff7fec488b5d784489a584000000488b8d88000000488b0141b808000000488bd3ff50104c8965784489a580000000488b5d504885db743e8b7d5c85ff7e18488b0333d2488bcbff10ffcf4883c34885ff7fec488b5d504489655c488b4d60488b0141b808000000488bd3ff50104c89655044896558488b5424684885d274164489642474488b4c2478488b0141b808000000ff50104881c4c8010000415f415e415d415c5f5e5b5dc3cccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-secondary-vtable.json",
+        "sha256": "e99289097db6bd53863f85913d9fa24a2d425e334a459201690215f7f16d2f6b",
+        "bytes": 2200
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:33.172592+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "qword-data",
+      "begin_rva": 74910352,
+      "end_rva": 74910448,
+      "bytes_sha256": "c55e2ce4a78ad7cd14b1b53618cef81c18d76f6c38ee6915b4879c9d91409d53",
+      "bytes_hex": "8077964201000000e0ad9a4201000000c022854001000000c022854001000000a05a8540010000009071e2440100000060159d4001000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c022854001000000",
+      "qwords": [
+        {
+          "rva": 74910352,
+          "value": 5412124544,
+          "target_rva": 43415424
+        },
+        {
+          "rva": 74910360,
+          "value": 5412400608,
+          "target_rva": 43691488
+        },
+        {
+          "rva": 74910368,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910376,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910384,
+          "value": 5377448608,
+          "target_rva": 8739488
+        },
+        {
+          "rva": 74910392,
+          "value": 5450658192,
+          "target_rva": 81949072
+        },
+        {
+          "rva": 74910400,
+          "value": 5379003744,
+          "target_rva": 10294624
+        },
+        {
+          "rva": 74910408,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74910416,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74910424,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74910432,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74910440,
+          "value": 5377434304,
+          "target_rva": 8725184
+        }
+      ]
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-slot48-bounded.json",
+        "sha256": "c7185430331b83ec53f798b9031d925e61fa6e9ac61225e4eaf68e026872ea11",
+        "bytes": 7591
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.139877+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43697616,
+      "end_rva": 43697712,
+      "bytes_sha256": "9776e36dfa42c90bb1396f97349512763cd541711a8b4ee865b0ccc0c171d8b9",
+      "bytes_hex": "b8ad430000c3cccccccccccccccccccc33c98bc1870526783a03870d24783a03c3cccccccccccccccccccccccccccccc8b050a783a0390c3ccccccccccccccccf0ff05f9773a03f0ff05de5a2f03c3cc8b05ee773a0390c3cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-slot80-bounded.json",
+        "sha256": "d2258d0638edc3efbf9b4ca32b1179cc28c7264d90b2c9914499fe3d773e9bfc",
+        "bytes": 10809
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.093711+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43693872,
+      "end_rva": 43694144,
+      "bytes_sha256": "de76a3ffc712a6d8ae7f6e761557540b4016a984bef8c5f57b9c843167c23ad9",
+      "bytes_hex": "48895c2408574883ec20488bd9488bfa488bcae838d45d01ba2e300000488bcfe86bd75d01ba01000000488bcfe85ed75d018b5320488bcfe893da5d01ba10000000488bcfe846d75d01488bcfe8fed35d01ba94350000488bcfe831d75d01ba01000000488bcfe824d75d018b5324488bcfe859da5d01ba10000000488bcfe80cd75d01488bcfe8c4d35d01baaa280000488bcfe8f7d65d01ba01000000488bcfe8ead65d018b5328488bcfe81fda5d01ba10000000488bcfe8d2d65d01488bcfe88ad35d01baa8380000488bcfe8bdd65d01ba01000000488bcfe8b0d65d018b532c488bcfe835d95d01ba10000000488bcf488b5c24304883c4205fe98ed65d01cccccccccccccccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-slot88-bounded.json",
+        "sha256": "1309ba7ed5621ee1231b220deff1c5120bafe87e59b68484c1cf20e5490dd36b",
+        "bytes": 26019
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.091838+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43694144,
+      "end_rva": 43694880,
+      "bytes_sha256": "13e8f1cf9e4fc0031cefe5fa6545a91f37e46ee326a21d60982fe1a6136503d9",
+      "bytes_hex": "488bc24181f8aa28000074474181f82e30000074324181f894350000741d4181f8a83800007408488bcae951645d01488d512c488bc8e9b5855d01488d5124488bc8e9b9a077fe488d5120488bc8e9ada077fe488d5128488bc8e9a1a077fecc48895c240848896c2418565741564881ecc0010000488bf9488b15c12537034885d2742a448b4108418bc025ffffff003b422c73198bc84803c9488b4220488b5cc8084885db7406443943107407488b1d2b253703817b1474536f480f85f8010000837b10ff0f84ee010000488b15552537034885d2742a448b470c418bc025ffffff003b422c73198bc84803c9488b4220488b74c8084885f67406443946107407488b35e7243703817e14697472410f85a4010000837e10ff0f849a010000488d6b28488bd6488bcde8b18a93ff84c00f84830100004c8d771041b912000000458b06488bd3488bcee891f3ffff4889b424e8010000488d9424e8010000488d4c2450e827c0b8ff90c744243088020000c74424341e000000488d05cf4cdc014889442438488d059352db014889442440488d542430e84434f9008bd885c0792489442428488d05a3fbf70148894424204c8d0dc7c4380333d233c9448d4201e86af15c01895c2460c7442430170000008b470848894424384c8d4424308b15cf083a03488d4c2468e8c1e6d800418b0683f8ff7422c74424300400000048894424384c8d4424308b15fd023a03488d4c2468e897e6d800e8a2cc2afe488bf8488b4838488b9978060000488d0dfd40d901e8d8ea8eff4c8b0dd1d12b034983c108488d05e65dc0ff4889442428488d057a5cc0ff48894424204c8d442450488bd3488bcfe88511e20090488d4c2450e82a26edfd41833eff7424498bcee8ccb3eefd81781c726168437513837818ff740d418b16488bcee8f242b8ffeb1a488bd6488bcde8358993ff84c0740b488bd6488bcde8169893ff4c8d9c24c0010000498b5b20498b6b30498be3415e5f5ec3cccccccccccccccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-command-vtable.json",
+        "sha256": "7ee557623c3fa0e5199de957e9acd2d194dfbbb2ea219def23f857ed769eeeec",
+        "bytes": 5811
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:22.293035+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "qword-data",
+      "begin_rva": 74910000,
+      "end_rva": 74910352,
+      "bytes_sha256": "6082666732a556e05968b57770bdb2640d6cbda4d5ce45781eb261ace39b1992",
+      "bytes_hex": "60159d4001000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c022854001000000f0b49a4201000000c0d586400100000040c59a4201000000d0c59a4201000000c022854001000000e0c59a420100000000c69a420100000010c69a420100000020c69a420100000030c69a420100000030b79a420100000040b89a4201000000e873e2440100000060159d4001000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c022854001000000f0a79a4201000000c0d586400100000040c39a4201000000d0c39a4201000000c022854001000000e0c39a420100000000c49a420100000010c49a420100000020c49a420100000030c49a420100000000a99a4201000000d0a99a42010000002073e24401000000807796420100000030a79a4201000000c022854001000000c022854001000000a05a8540010000007073e24401000000",
+      "qwords": [
+        {
+          "rva": 74910000,
+          "value": 5379003744,
+          "target_rva": 10294624
+        },
+        {
+          "rva": 74910008,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74910016,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74910024,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74910032,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74910040,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910048,
+          "value": 5412402416,
+          "target_rva": 43693296
+        },
+        {
+          "rva": 74910056,
+          "value": 5377545664,
+          "target_rva": 8836544
+        },
+        {
+          "rva": 74910064,
+          "value": 5412406592,
+          "target_rva": 43697472
+        },
+        {
+          "rva": 74910072,
+          "value": 5412406736,
+          "target_rva": 43697616
+        },
+        {
+          "rva": 74910080,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910088,
+          "value": 5412406752,
+          "target_rva": 43697632
+        },
+        {
+          "rva": 74910096,
+          "value": 5412406784,
+          "target_rva": 43697664
+        },
+        {
+          "rva": 74910104,
+          "value": 5412406800,
+          "target_rva": 43697680
+        },
+        {
+          "rva": 74910112,
+          "value": 5412406816,
+          "target_rva": 43697696
+        },
+        {
+          "rva": 74910120,
+          "value": 5412406832,
+          "target_rva": 43697712
+        },
+        {
+          "rva": 74910128,
+          "value": 5412402992,
+          "target_rva": 43693872
+        },
+        {
+          "rva": 74910136,
+          "value": 5412403264,
+          "target_rva": 43694144
+        },
+        {
+          "rva": 74910144,
+          "value": 5450658792,
+          "target_rva": 81949672
+        },
+        {
+          "rva": 74910152,
+          "value": 5379003744,
+          "target_rva": 10294624
+        },
+        {
+          "rva": 74910160,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74910168,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74910176,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74910184,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74910192,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910200,
+          "value": 5412399088,
+          "target_rva": 43689968
+        },
+        {
+          "rva": 74910208,
+          "value": 5377545664,
+          "target_rva": 8836544
+        },
+        {
+          "rva": 74910216,
+          "value": 5412406080,
+          "target_rva": 43696960
+        },
+        {
+          "rva": 74910224,
+          "value": 5412406224,
+          "target_rva": 43697104
+        },
+        {
+          "rva": 74910232,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910240,
+          "value": 5412406240,
+          "target_rva": 43697120
+        },
+        {
+          "rva": 74910248,
+          "value": 5412406272,
+          "target_rva": 43697152
+        },
+        {
+          "rva": 74910256,
+          "value": 5412406288,
+          "target_rva": 43697168
+        },
+        {
+          "rva": 74910264,
+          "value": 5412406304,
+          "target_rva": 43697184
+        },
+        {
+          "rva": 74910272,
+          "value": 5412406320,
+          "target_rva": 43697200
+        },
+        {
+          "rva": 74910280,
+          "value": 5412399360,
+          "target_rva": 43690240
+        },
+        {
+          "rva": 74910288,
+          "value": 5412399568,
+          "target_rva": 43690448
+        },
+        {
+          "rva": 74910296,
+          "value": 5450658592,
+          "target_rva": 81949472
+        },
+        {
+          "rva": 74910304,
+          "value": 5412124544,
+          "target_rva": 43415424
+        },
+        {
+          "rva": 74910312,
+          "value": 5412398896,
+          "target_rva": 43689776
+        },
+        {
+          "rva": 74910320,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910328,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74910336,
+          "value": 5377448608,
+          "target_rva": 8739488
+        },
+        {
+          "rva": 74910344,
+          "value": 5450658672,
+          "target_rva": 81949552
+        }
+      ]
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-receiver-complete.json",
+        "sha256": "75bfef0b1094973fc64e639108f749b770af0e742ebabcb6871e6482396c8681",
+        "bytes": 59797
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.051934+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43691488,
+      "end_rva": 43693291,
+      "bytes_sha256": "6c900e0c7f46a45a1c7dba6b4fe7e0304808cccc22512439e6d23bc4555e3673",
+      "bytes_hex": "48894c2408555356574154415541564157488dac2438ffffff4881ecc80100004c8bc9488b15763037034885d2742a448b4108418bc025ffffff003b422c73198bc84803c9488b4220488b74c8084885f67406443946107407488b35e02f3703817e1474536f480f858a060000837e10ff0f84800600004c8b3d0a3037034c8b25cb2f37034d85ff7429418b510c8bc225ffffff00413b472c73188bc84803c9498b4720488b7cc8084885ff74053957107403498bfc817f14697472410f8534060000837f10ff0f842a0600004d6371144585f67833443b76747d2d4b8d0c76488b4668488b54c808488b8fb800000080ba0902000000752f8b414039424475088b4144394240741f488bd7488d4e28e8eb562d00448bf083f8ff0f84d60500004c8b8d100100004963ce488d1449488d04d50000000048898528010000488b4e688b44011089852001000041b8ffffffff413bc0440f45c044898518010000418b5910418b410839477c741f8bd0488bcfe8a953b8ff4c8b3d0a2f37034c8b25cb2e3703448b851801000083bd20010000ff0f848b00000083fbff0f8482000000488b15dfc52b034885d274248bc325ffffff003b422c73188bc84803c9488b4220488b44c8084885c074053958187407488b05b7c52b0381781c726168437542837818ff743c4d85ff742d418bc025ffffff00413b472c73198bc84803c9498b4720488b54c8084885d27406443942107403498bd44c8be28bd3498bcce8cc4db8ff4585f6781d443b76747d17488b9528010000480356684c8bc7488d4e28e82a9b93ff41b911000000448bc3488bd6488bcfe8e6fcffff4889bd20010000488d9520010000488d4c2450e87ec9b8ff90c7442430e1010000c74424341e000000488d052656dc014889442438488d05ea5bdb014889442440488d542430e89b3df9008bf8488d050205f80185ff791d897c242848894424204c8d0d1ece380333d233c9448d4201e8c1fa5c01897c24604533e4c7442430170000004c8bbd10010000418b470848894424384c8d4424308b151b123a03488d4c2468e80df0d80083fbff7422c74424300400000048895c24384c8d4424308b154c0c3a03488d4c2468e8e6efd80041bd1f000000448bb5180100004183feff741f44896c24304c897424384c8d4424308b15420f3a03488d4c2468e8b4efd800e8bfd52afe488bf0488b4838488bb970060000488d0d1a4ad901e8f5f38eff4c8b0deeda2b034983c108488d050367c0ff4889442428488d059765c0ff48894424204c8d442450488bd7488bcee8a21ae20090488d4c2450e8472fedfd4183feff0f8434030000488b15be2c37034885d27426418bc625ffffff003b422c73198bc84803c9488b4220488b44c8084885c07406443970107407488b05542c3703817814697472410f85ee020000837810ff0f84e402000044896424504c89642458c7442460ffffffff488d4c2468e8c1e3edfd4c8965504c896558488d0d5230b30248894d60488d05cf1fae0148894568488d053420ae01488945704c8965784c89a580000000488d052e30b302488985880000004489a5900000004c89a5980000004c89a5a000000048898da8000000c785b0000000ffffffff664489a5b4000000c685b6000000006644896c24504c89742458c7442430f4010000c74424341e000000488d05e853dc014889442438488d05ac59db014889442440488d542430e85d3bf9008bf885c0792489442428488d05bc02f80148894424204c8d0de0cb380333d233c9448d4201e883f85c01897c2460c744243017000000418b470848894424384c8d4424308b15e70f3a03488d4c2468e8d9edd80083fbff7422c74424300400000048895c24384c8d4424308b15180a3a03488d4c2468e8b2edd800c74424301f000000418b470c48894424384c8d4424308b151a0d3a03488d4c2468e88cedd800e897d32afe488bf8488b5038488b9a78060000488d0df247d901e8cdf18eff4c8b0dc6d82b034983c108488d05db64c0ff4889442428488d056f63c0ff48894424204c8d442450488bd3488bcfe87a18e20090488b9d980000004885db74538bbda400000085ff7e1e0f1f00488b0333d2488bcbff10ffcf4883c34885ff7fec488b9d980000004489a5a4000000488b8da8000000488b0141b808000000488bd3ff50104c89a5980000004489a5a0000000488b5d784885db74518bbd8400000085ff7e1f0f1f8000000000488b0333d2488bcbff10ffcf4883c32085ff7fec488b5d784489a584000000488b8d88000000488b0141b808000000488bd3ff50104c8965784489a580000000488b5d504885db743e8b7d5c85ff7e18488b0333d2488bcbff10ffcf4883c34885ff7fec488b5d504489655c488b4d60488b0141b808000000488bd3ff50104c89655044896558488b5424684885d274164489642474488b4c2478488b0141b808000000ff50104881c4c8010000415f415e415d415c5f5e5b5dc3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/enshrine-stack-command-constructor.json",
+        "sha256": "26927dfd37e76a1bceeb78b1507223f1b9255460c1ce111fd884b9e559d5f272",
+        "bytes": 10365
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:45:13.368798+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24990480,
+      "end_rva": 24990704,
+      "bytes_sha256": "ce607c1f96d60a027d6dac88f29b147b56ccfbbd8345b78c1cb8b6094d4b2c94",
+      "bytes_hex": "48895c2408574883ec20498bf8448bd24c8bd9bbffffffff4d85c97453488b054c8b54044885c074238bca81e1ffffff003b482c7316488b40204803c9488b4cc8084885c974053951107407488b0dbd8a540481791474536f487514837910ff740e4883c128498bd1e872efb0008bd88b157a68d00333c08b4f1041c64308004989430c41894314488d0591b5f902498903488d05e7b6f90249894318498bc341895b2c488b5c24304589532041894b24418953284883c4205fc3cccccccccc488b81100100004885c07409837810ff7403b001c332c0c3cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-enshrine-guard-bounded.json",
+        "sha256": "9abc472525e25e803985c27c1d4c70c64c086cd4294ff637eeb64ef71c85dca4",
+        "bytes": 28350
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:46:55.756550+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36586656,
+      "end_rva": 36587424,
+      "bytes_sha256": "a2adf5b1ec812fee0832a7b28c2067aba6fb4016ae499c10408421aeb246ec30",
+      "bytes_hex": "48895c2410488974241848897c2420554154415541564157488bec4883ec704d8be1450fb6f8488bf24c8be9448b413c33d24183f8ff0f95c285d20f844101000083fa010f85bc020000488b158f99a3034885d27426418bc025ffffff003b422c73198bc84803c9488b4220488b7cc8084885ff7406443947107407488b3dfd98a303807d5001750c8b471039467c0f8571020000498b5d404963454c488d0c404c8d34cb493bde7451660f1f4400004584ff7506837b10ff7537488b4b08488b96b800000080b9090200000075108b4240394144751b8b424439414075134533c0488bd7e826a2e10084c00f85340200004883c318493bde75b54d85e40f8402020000488d058d8a1a02488945d0c745d801000000c645dc00488d55d0498bcce89a2bc7018b4610894530488d053dbd4202488945d0c745d81b000000c645dc00488d45304889442430498d453c4889442420488d55d0488d4de0e8cf3f000090488d55e048837df810480f4355e04c8b45f0498bcce8b4195afe90e97b010000488b153f2f98034885d2742a448b4138418bc025ffffff003b422c73198bc84803c9488b4220488b7cc8084885ff7406443947187407488b3d112f9803807d5001750c8b47183946780f8535010000488b86b8000000837844017526488b87c00100004885c0740a4883b858040000007510488bcfe82439750084c00f84020100004d8bc4488bd7488bcee8dec5240084c00f84ec000000498b5d404963454c488d0c404c8d34cb493bde744c904584ff7506837b10ff7537488b4b08488b96b800000080b9090200000075108b4240394144751b8b424439414075134533c0488bd7e8d69fe10084c00f85b40000004883c318493bde75b54d85e40f8482000000488d050d891a02488945d0c745d801000000c645dc00488d55d0498bcce81a2ac7018b4610894530488d05ddbb4202488945d0c745d81b000000c645dc00498d4538488d4d3048894c24304889442420488d55d0488d4de0e87f3b000090488d55e048837df810480f4355e04c8b45f0498bcce834185afe90488d4d"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-enshrine-guard-complete.json",
+        "sha256": "70177be1f301a2b28c29db84b0f064850c6536aff675ec5e1c3485627e070df2",
+        "bytes": 30371
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:51.753132+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36586656,
+      "end_rva": 36587466,
+      "bytes_sha256": "67a0073fcbd9d204c4e3b5f0050231222f3fcfcd90c755b8d864ff821a36c21d",
+      "bytes_hex": "48895c2410488974241848897c2420554154415541564157488bec4883ec704d8be1450fb6f8488bf24c8be9448b413c33d24183f8ff0f95c285d20f844101000083fa010f85bc020000488b158f99a3034885d27426418bc025ffffff003b422c73198bc84803c9488b4220488b7cc8084885ff7406443947107407488b3dfd98a303807d5001750c8b471039467c0f8571020000498b5d404963454c488d0c404c8d34cb493bde7451660f1f4400004584ff7506837b10ff7537488b4b08488b96b800000080b9090200000075108b4240394144751b8b424439414075134533c0488bd7e826a2e10084c00f85340200004883c318493bde75b54d85e40f8402020000488d058d8a1a02488945d0c745d801000000c645dc00488d55d0498bcce89a2bc7018b4610894530488d053dbd4202488945d0c745d81b000000c645dc00488d45304889442430498d453c4889442420488d55d0488d4de0e8cf3f000090488d55e048837df810480f4355e04c8b45f0498bcce8b4195afe90e97b010000488b153f2f98034885d2742a448b4138418bc025ffffff003b422c73198bc84803c9488b4220488b7cc8084885ff7406443947187407488b3d112f9803807d5001750c8b47183946780f8535010000488b86b8000000837844017526488b87c00100004885c0740a4883b858040000007510488bcfe82439750084c00f84020100004d8bc4488bd7488bcee8dec5240084c00f84ec000000498b5d404963454c488d0c404c8d34cb493bde744c904584ff7506837b10ff7537488b4b08488b96b800000080b9090200000075108b4240394144751b8b424439414075134533c0488bd7e8d69fe10084c00f85b40000004883c318493bde75b54d85e40f8482000000488d050d891a02488945d0c745d801000000c645dc00488d55d0498bcce81a2ac7018b4610894530488d05ddbb4202488945d0c745d81b000000c645dc00498d4538488d4d3048894c24304889442420488d55d0488d4de0e87f3b000090488d55e048837df810480f4355e04c8b45f0498bcce834185afe90488d4de0e8aa1857fe32c04c8d5c2470498b5b38498b7340498b7b48498be3415f415e415d415c5dc3b001ebde"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-enshrine-guard-end.json",
+        "sha256": "bc3dc121e25e06e3998042b61f7adfd3b3f25ee18af39a8b1a39965b87c4b645",
+        "bytes": 5622
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:34.547298+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36587424,
+      "end_rva": 36587536,
+      "bytes_sha256": "3d26793573dd235bcecc170ee6a5dd4639f6dedf52118ea97cd0c7f2fea4d639",
+      "bytes_hex": "e0e8aa1857fe32c04c8d5c2470498b5b38498b7340498b7b48498be3415f415e415d415c5dc3b001ebdecccccccccccc48895c2408488974241048897c24184c8974242055488dac24b0fdffff4881ec50030000498bf1498bf84c8bf24c8bc133db899d80020000817f384f6244470f"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-membership-leaf-bounded.json",
+        "sha256": "805331c37f9675f0ef395fc57523609e3c564be0c26a876c4a8345c2e45dde9b",
+        "bytes": 6052
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:46:55.738329+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36586528,
+      "end_rva": 36586656,
+      "bytes_sha256": "db6b9f8a1debc4605f4853127945a6ada24536aee11cc6c20dd716ecdb508e82",
+      "bytes_hex": "48895c24084c8b41404863414c488d0c404d8d1cc84d3bc374558b5a104c8b0d249aa3034c8b15e599a3030f1f4400004d85c97429418b50108bc225ffffff00413b412c73188bc8498b41204803c9488b44c8084885c074053950107403498bc239581074114983c0184d3bc375c132c0488b5c2408c3488b5c2408b001c3cc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-slot-pointer-index-complete.json",
+        "sha256": "e08632a60914e16524191d5c83be3b7d2464efcdcd9a8d08aeed80abc5936513",
+        "bytes": 3696
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:51.757624+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36586224,
+      "end_rva": 36586299,
+      "bytes_sha256": "cbe3f5ae2e37d27e5fb94f98524206818df986b3760b52521841550738ceb33d",
+      "bytes_hex": "4c8b49404863414c4d8bc1488d0c40498d04c94c3bc8740e493bd0740f4983c0184c3bc075f2b8ffffffffc34d2bc148b8abaaaaaaaaaaaa2a49f7e848c1fa02488bc248c1e83f4803c2c3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/inventory-slot-pointer-index.json",
+        "sha256": "6ff855fa791befb670ade7376e1edae422b3e6a88eae905a933fd7611da080ff",
+        "bytes": 13652
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:34.547298+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 36586224,
+      "end_rva": 36586528,
+      "bytes_sha256": "ec41c89a35a74e547e28f276c6dd323bc02c33451319b56ddbbc06434b5694b5",
+      "bytes_hex": "4c8b49404863414c4d8bc1488d0c40498d04c94c3bc8740e493bd0740f4983c0184c3bc075f2b8ffffffffc34d2bc148b8abaaaaaaaaaaaa2a49f7e848c1fa02488bc248c1e83f4803c2c3cccccccccc488b5158486341644c8d1c82493bd374574c8b0d109ba3034c8b15d19aa303904d85c9742a448b02418bc025ffffff00413b412c73198bc8498b41204803c9488b44c8084885c07406443940107403498bc2488b88b800000083794400740c4883c204493bd375b832c0c3b001c3cccc488b5158486341644c8d1c82493bd374574c8b0da09aa3034c8b15619aa303904d85c9742a448b02418bc025ffffff00413b412c73198bc8498b41204803c9488b44c8084885c07406443940107403498bc2488b88b800000083794401740c4883c204493bd375b832c0c3b001c3cccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-button-tooltip-bounded.json",
+        "sha256": "011123185dd8bff9004e85156710912e2cd102adf749aaf2bc5f578055065224",
+        "bytes": 30737
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:51.258296+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24993632,
+      "end_rva": 24994544,
+      "bytes_sha256": "8b83424d0556c82d0344ea8000381dd9f039b9d57edae9ae07f95020730691cd",
+      "bytes_hex": "48895c2410488974241848897c242055488dac24a0feffff4881ec60020000488bfa488bf18b910801000083faff755d488d0541bcdb024889442430c744243827000000c644243c0033d241b8a8010000488d4db0e8560fa502488d4db0e81d3a0bff9033db48895c2428488d45b048894424204533c94533c0488d542430488bcfe83906640290e9b00200004c8b05747e54044d85c074258bc225ffffff00413b402c73188bc84803c9498b4020488b5cc8084885db74053953107407488b1d0b7e5404817b14697472410f8513020000837b10ff0f8409020000488bcee8bcf8ffffc644243c0084c07558488d05b4badb024889442430c74424382800000033d241b8a8010000488d4db0e89e0ea502488d4db0e865390bff9033db48895c2428488d45b048894424204533c94533c0488d542430488bcfe88105640290e9f801000048899d70010000488d05d5badb024889442430c744243818000000488d85700100004889442420488d542430488d4c2460e87503e4ff908b4310c645880033db48895d8c895d94488d0ddda6f90248894d80488d0ddaa5f90248894d988b8ec8000000894da08945a48b05ec5ad0038945a848895c244048895c245048c74424580f000000885c2440488d542440488d4d80e8e4591d0184c0754e48395c24507447488d05ea6ecb024889442430c744243801000000885c243c488d542430488d4c2460e8f20f7802488d54244048837c245810480f435424404c8b442450488d4c2460e842fe0aff0f104424600f11070f104c24700f114f10660f6f05390d2203f30f7f442470c644246000488b5424584883fa10723248ffc2488b4c2440488bc14881fa0010000072194883c227488b49f8482bc14883c0f84883f81f0f87f9000000e855dda40248895c245048c74424580f000000c644244000488b5424784883fa100f82b000000048ffc2488b4c2460488bc14881fa0010000072194883c227488b49f8482bc14883c0f84883f81f0f879f000000e801dda402eb7c488d058cb9db024889442430c744243827000000c644243c0033d241b8a8010000488d4db0e8a10ca502488d4db0e868370bff9033db48895c2428488d45b048894424204533c94533c0488d542430488bcfe8840364029048837db000741d488d4db0e823380bff488b4dc0488b0141b808000000488b55b0ff5010488bc74c8d9c2460020000498b5b18498b7320498b7b28498be35dc3e88ec7a50290e888c7a50290cccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-command-secondary-vtable.json",
+        "sha256": "40b8c1e579de7cc2367b2ff58c1629f55841065428905f99972e8e4887e60ae3",
+        "bytes": 2200
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:44:33.168597+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "qword-data",
+      "begin_rva": 74909400,
+      "end_rva": 74909496,
+      "bytes_sha256": "bba06579d870daf341b8d6b0d3785bee73e862821a2d46e2d92c4a2cea4888c5",
+      "bytes_hex": "8077964201000000a0b89a4201000000c022854001000000c022854001000000a05a8540010000008072e2440100000030bd9a4201000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c022854001000000",
+      "qwords": [
+        {
+          "rva": 74909400,
+          "value": 5412124544,
+          "target_rva": 43415424
+        },
+        {
+          "rva": 74909408,
+          "value": 5412403360,
+          "target_rva": 43694240
+        },
+        {
+          "rva": 74909416,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909424,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909432,
+          "value": 5377448608,
+          "target_rva": 8739488
+        },
+        {
+          "rva": 74909440,
+          "value": 5450658432,
+          "target_rva": 81949312
+        },
+        {
+          "rva": 74909448,
+          "value": 5412404528,
+          "target_rva": 43695408
+        },
+        {
+          "rva": 74909456,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74909464,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74909472,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74909480,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74909488,
+          "value": 5377434304,
+          "target_rva": 8725184
+        }
+      ]
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-command-slot48-bounded.json",
+        "sha256": "76b8e7010e8037678b4bda870dfa9b159eb20187b82ced6d855567e56a565eb5",
+        "bytes": 7591
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.193348+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43697872,
+      "end_rva": 43697968,
+      "bytes_sha256": "ffb742a1a5db3414055189ec10fa93eb6fb3b5d421bbd1191a8a07dd7fc184f3",
+      "bytes_hex": "b8ae430000c3cccccccccccccccccccc33c98bc187052e773a03870d2c773a03c3cccccccccccccccccccccccccccccc8b0512773a0390c3ccccccccccccccccf0ff0501773a03f0ff05de592f03c3cc8b05f6763a0390c3cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-command-slot80-bounded.json",
+        "sha256": "bf0e34c1deaeb16acc7ebd03ad4b366604af787f8675d41f813731c0d411bd17",
+        "bytes": 8304
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.079691+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43695120,
+      "end_rva": 43695328,
+      "bytes_sha256": "68d4b2ff4e5d2ac461dc9717dba1330d277a7646c4d13455cf21fbcab9a5cf83",
+      "bytes_hex": "48895c2408574883ec20488bd9488bfa488bcae858cf5d01ba2e300000488bcfe88bd25d01ba01000000488bcfe87ed25d018b5320488bcfe8b3d55d01ba10000000488bcfe866d25d01488bcfe81ecf5d01ba94350000488bcfe851d25d01ba01000000488bcfe844d25d018b5324488bcfe879d55d01ba10000000488bcfe82cd25d01488bcfe8e4ce5d01baaa280000488bcfe817d25d01ba01000000488bcfe80ad25d018b5328488bcfe83fd55d01ba10000000488bcf488b5c24304883c4205fe9e8d15d01cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-command-slot88-bounded.json",
+        "sha256": "e45697b400e9c0947fbdd0b098f4d20c72e86e1b0045c1edfd54fe1d0d16da8c",
+        "bytes": 36349
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:53.111577+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43695328,
+      "end_rva": 43696128,
+      "bytes_sha256": "aec94a49508f097c73d0e13086a40215260a19ac24c7d86b79c3aa090cfa6f28",
+      "bytes_hex": "488bc24181f8aa28000074324181f82e300000741d4181f8943500007408488bcae9ba5f5d01488d5124488bc8e92e9c77fe488d5120488bc8e9229c77fe488d5128488bc8e9169c77fecccccccccccc48895c2408574883ec20488bf98bda4883c128e8c8fc58fe488d0559f3ad01488907f6c301740dba00010000488bcfe8e0818701488b5c2430488bc74883c4205fc3cccccccccccccccccccccccccccc48895c24084889742410574883ec20488b05bace2b03488bf1488b15c8b72b034c8b88a00000004885d2742a448b4108418bc025ffffff003b422c73198bc8488b42204803c9488b7cc8084885ff7406443947187407488b3d93b72b03488d56104c8bc7498d8910f60100e8807cb8ff488d561841b001488bc8488bd8e89e34b8ff488d5638488bcbe8a236b8ff488bcfe8fae9efff488bd3488bc8488b5c2430488b7424384883c4205fe9209693ff4883b99000000000740a48837970007403b001c332c0c3cccccccccccccccccc48895c2408574883ec20488bd9488bfa488bcae818cd5d01ba12280000488bcfe84bd05d01ba01000000488bcfe83ed05d018b5320488bcfe873d35d01ba10000000488bcfe826d05d01488bcfe8decc5d01baf0000000488bcfe811d05d01ba01000000488bcfe804d05d01488b4328488d4b28488bd7488b5c24304883c4205f48ff6008cccccccccccccccccccccc4c8bca4181f8f0000000741d4181f8122800007408488bcae9c35d5d01488d5120498bc9e9379a77fe488b41284883c12848ff6018cccccccccccccccccccccc48895c2408574883ec20488bd9488bfab930000000e85a7c87014c8bc8488d0564f1ad01498901488d05724bdc01440fb6430845884108448b430c4589410c448b4310458941108b5314498901488d05e44bdc0149894118418951148b4320418941208b4324418941248b4328488b5c243041894128488bc74c890f4883c4205fc3ccccccccccccccccccccccccccccb89c350000c3cccccccccccccccccccc33c98bc18705167e3a03870d147e3a03c3cccccccccccccccccccccccccccccc8b05fa7d3a0390c3ccccccccccccccccf0ff05e97d3a03f0ff05fe602f03c3cc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-command-vtable.json",
+        "sha256": "cca094333080b57b6f1f9f2a88ca79bf6e43700addf085eeca51fec02ba9c359",
+        "bytes": 5811
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:43:22.293025+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "qword-data",
+      "begin_rva": 74909648,
+      "end_rva": 74910000,
+      "bytes_sha256": "8eab5038c420bbaf2ffc38da02156f41ffaa73e89bb0604ed1c7d598e3324f7f",
+      "bytes_hex": "60159d4001000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c02285400100000020bb9a4201000000c0d586400100000040c69a4201000000d0c69a4201000000c022854001000000e0c69a420100000000c79a420100000010c79a420100000020c79a420100000030c79a420100000010bc9a4201000000e0bc9a4201000000d072e2440100000060159d4001000000b0e2f74301000000a0b37e430100000030e3f74301000000b0b57e4301000000c02285400100000000ab9a4201000000c0d586400100000040c49a4201000000d0c49a4201000000c022854001000000e0c49a420100000000c59a420100000010c59a420100000020c59a420100000030c59a4201000000f0ab9a4201000000d0ac9a4201000000f872e24401000000807796420100000020aa9a4201000000c022854001000000c022854001000000a05a8540010000004873e24401000000",
+      "qwords": [
+        {
+          "rva": 74909648,
+          "value": 5379003744,
+          "target_rva": 10294624
+        },
+        {
+          "rva": 74909656,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74909664,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74909672,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74909680,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74909688,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909696,
+          "value": 5412404000,
+          "target_rva": 43694880
+        },
+        {
+          "rva": 74909704,
+          "value": 5377545664,
+          "target_rva": 8836544
+        },
+        {
+          "rva": 74909712,
+          "value": 5412406848,
+          "target_rva": 43697728
+        },
+        {
+          "rva": 74909720,
+          "value": 5412406992,
+          "target_rva": 43697872
+        },
+        {
+          "rva": 74909728,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909736,
+          "value": 5412407008,
+          "target_rva": 43697888
+        },
+        {
+          "rva": 74909744,
+          "value": 5412407040,
+          "target_rva": 43697920
+        },
+        {
+          "rva": 74909752,
+          "value": 5412407056,
+          "target_rva": 43697936
+        },
+        {
+          "rva": 74909760,
+          "value": 5412407072,
+          "target_rva": 43697952
+        },
+        {
+          "rva": 74909768,
+          "value": 5412407088,
+          "target_rva": 43697968
+        },
+        {
+          "rva": 74909776,
+          "value": 5412404240,
+          "target_rva": 43695120
+        },
+        {
+          "rva": 74909784,
+          "value": 5412404448,
+          "target_rva": 43695328
+        },
+        {
+          "rva": 74909792,
+          "value": 5450658512,
+          "target_rva": 81949392
+        },
+        {
+          "rva": 74909800,
+          "value": 5379003744,
+          "target_rva": 10294624
+        },
+        {
+          "rva": 74909808,
+          "value": 5435286192,
+          "target_rva": 66577072
+        },
+        {
+          "rva": 74909816,
+          "value": 5427344288,
+          "target_rva": 58635168
+        },
+        {
+          "rva": 74909824,
+          "value": 5435286320,
+          "target_rva": 66577200
+        },
+        {
+          "rva": 74909832,
+          "value": 5427344816,
+          "target_rva": 58635696
+        },
+        {
+          "rva": 74909840,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909848,
+          "value": 5412399872,
+          "target_rva": 43690752
+        },
+        {
+          "rva": 74909856,
+          "value": 5377545664,
+          "target_rva": 8836544
+        },
+        {
+          "rva": 74909864,
+          "value": 5412406336,
+          "target_rva": 43697216
+        },
+        {
+          "rva": 74909872,
+          "value": 5412406480,
+          "target_rva": 43697360
+        },
+        {
+          "rva": 74909880,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909888,
+          "value": 5412406496,
+          "target_rva": 43697376
+        },
+        {
+          "rva": 74909896,
+          "value": 5412406528,
+          "target_rva": 43697408
+        },
+        {
+          "rva": 74909904,
+          "value": 5412406544,
+          "target_rva": 43697424
+        },
+        {
+          "rva": 74909912,
+          "value": 5412406560,
+          "target_rva": 43697440
+        },
+        {
+          "rva": 74909920,
+          "value": 5412406576,
+          "target_rva": 43697456
+        },
+        {
+          "rva": 74909928,
+          "value": 5412400112,
+          "target_rva": 43690992
+        },
+        {
+          "rva": 74909936,
+          "value": 5412400336,
+          "target_rva": 43691216
+        },
+        {
+          "rva": 74909944,
+          "value": 5450658552,
+          "target_rva": 81949432
+        },
+        {
+          "rva": 74909952,
+          "value": 5412124544,
+          "target_rva": 43415424
+        },
+        {
+          "rva": 74909960,
+          "value": 5412399648,
+          "target_rva": 43690528
+        },
+        {
+          "rva": 74909968,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909976,
+          "value": 5377434304,
+          "target_rva": 8725184
+        },
+        {
+          "rva": 74909984,
+          "value": 5377448608,
+          "target_rva": 8739488
+        },
+        {
+          "rva": 74909992,
+          "value": 5450658632,
+          "target_rva": 81949512
+        }
+      ]
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/remove-receiver-complete.json",
+        "sha256": "1d7e43c648b574a4a83f0776e7921d6cb82bedb13f8e1d8b2d75379baf436a09",
+        "bytes": 21337
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.046718+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 43694240,
+      "end_rva": 43694866,
+      "bytes_sha256": "80cc3c7e4b63404ce1a78c5f192fd244137db1d3b8c5238116fd18f84e98a7eb",
+      "bytes_hex": "48895c240848896c2418565741564881ecc0010000488bf9488b15c12537034885d2742a448b4108418bc025ffffff003b422c73198bc84803c9488b4220488b5cc8084885db7406443943107407488b1d2b253703817b1474536f480f85f8010000837b10ff0f84ee010000488b15552537034885d2742a448b470c418bc025ffffff003b422c73198bc84803c9488b4220488b74c8084885f67406443946107407488b35e7243703817e14697472410f85a4010000837e10ff0f849a010000488d6b28488bd6488bcde8b18a93ff84c00f84830100004c8d771041b912000000458b06488bd3488bcee891f3ffff4889b424e8010000488d9424e8010000488d4c2450e827c0b8ff90c744243088020000c74424341e000000488d05cf4cdc014889442438488d059352db014889442440488d542430e84434f9008bd885c0792489442428488d05a3fbf70148894424204c8d0dc7c4380333d233c9448d4201e86af15c01895c2460c7442430170000008b470848894424384c8d4424308b15cf083a03488d4c2468e8c1e6d800418b0683f8ff7422c74424300400000048894424384c8d4424308b15fd023a03488d4c2468e897e6d800e8a2cc2afe488bf8488b4838488b9978060000488d0dfd40d901e8d8ea8eff4c8b0dd1d12b034983c108488d05e65dc0ff4889442428488d057a5cc0ff48894424204c8d442450488bd3488bcfe88511e20090488d4c2450e82a26edfd41833eff7424498bcee8ccb3eefd81781c726168437513837818ff740d418b16488bcee8f242b8ffeb1a488bd6488bcde8358993ff84c0740b488bd6488bcde8169893ff4c8d9c24c0010000498b5b20498b6b30498be3415e5f5ec3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/select-artifact-callback-complete.json",
+        "sha256": "3cc4249feb6bfd24f7fdba6619804835e5c3d0ad339700d63c92af63387f69e9",
+        "bytes": 6926
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.051946+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 25004128,
+      "end_rva": 25004277,
+      "bytes_sha256": "acd558c0f503945136976767188e5d82306f5f5f3034c580b285995eb9e3a71b",
+      "bytes_hex": "48895c24084889742410574883ec20418b4008498bf0488bf94c8d0c80498b00488b104a8d1ccae8246b30ff48390375528b4608488d1480488b06488b08488b1cd1488d34d1e8056b30ff483bd8740433c0eb0d488b03488d5608488bcbff50284885ff741d488b10488bcfe8dfc9ffffb001488b5c2430488b7424384883c4205fc3488b5c243032c0488b7424384883c4205fc3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/select-artifact-native-callback.json",
+        "sha256": "a67c9f45afc368839268544c7a9767ccc9e08e982e7949b449705a3b3a21e5c9",
+        "bytes": 13859
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:34.504373+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 25004128,
+      "end_rva": 25004432,
+      "bytes_sha256": "db8cb85af9150159f213f8e06e2ab15d53f9bc569c6e8bddf91ea85d7982c872",
+      "bytes_hex": "48895c24084889742410574883ec20418b4008498bf0488bf94c8d0c80498b00488b104a8d1ccae8246b30ff48390375528b4608488d1480488b06488b08488b1cd1488d34d1e8056b30ff483bd8740433c0eb0d488b03488d5608488bcbff50284885ff741d488b10488bcfe8dfc9ffffb001488b5c2430488b7424384883c4205fc3488b5c243032c0488b7424384883c4205fc3cccccccccccccccccccccc48895c24084889742410574883ec20418b4008498bf0488bf94c8d0c80498b00488b104a8d1ccae8846a30ff48390375528b4608488d1480488b06488b08488b1cd1488d34d1e8656a30ff483bd8740433c0eb0d488b03488d5608488bcbff50284885ff741d488b10488bcfe80fecffffb001488b5c2430488b7424384883c4205fc3488b5c243032c0488b74243848"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/select-artifact-registration-tail.json",
+        "sha256": "b933593481ff0f41ebca166d93a6b44c205ff341d613a3bb75891acd10d20064",
+        "bytes": 7388
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:46:55.739697+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 2955961,
+      "end_rva": 2956153,
+      "bytes_sha256": "d76f5441cf96568f0c7024b617fc6f4f160133a048c239de0030e1d595331211",
+      "bytes_hex": "f20f100587022c04f20f1145ef8b0584022c048945f70fb7057e022c04668945fb40887dfd488d450f4889456f488d55b7488d4d0fe80d44580090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe8e7275a0090488d450f4889442430c74424280100000048897c24204533c94c8d05166d500133d2488d4defe85bbe50019048397dd77422488d4dd7e82b4b5800488b4de7488b01448d4708488b55d7ff50104889"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/selected-artifact-enshrined-helper.json",
+        "sha256": "2e7965058649dfc09efee5888c5b3c762a3505133c1ea9ba6e55048abc210d1e",
+        "bytes": 5641
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:45:13.317762+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24992000,
+      "end_rva": 24992112,
+      "bytes_sha256": "0beb2d0ee85444bf36e7451997e9519335c09b65b3fe48da23761758afb9d177",
+      "bytes_hex": "448b81080100004c8bc94183f8ff7455488b05518554044885c07425418bc881e1ffffff003b482c7317488b40204803c9488b54c8084885d27406443942107407488b15e8845404817a14697472417514837a10ff740e418b81c800000039427c0f94c0c332c0c3cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/slot-rebind-on-window-refresh.json",
+        "sha256": "bd57bee7b7f2f2b1b0ee52831cd849b15f1110f5dd56d96fe6bea9eb8ae57874",
+        "bytes": 8248
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.061235+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 24999952,
+      "end_rva": 25000144,
+      "bytes_sha256": "666478a214fbd60088514b213d49cfe3b3cd9029025da9812c0b02847cea881f",
+      "bytes_hex": "40534883ec20488b0563665404488bd94885c0742c448b81c8000000418bc881e1ffffff003b482c7317488b40204803c9488b54c8084885d27406443942107407488b15c8655404817a1474536f487550837a10ff744a4883ea80488d8b18010000e849e04aff4883bb7801000000488d8b60010000448b83180200007511488b93480100004883c4205be9b0b5e3ff488d93680100004883c4205be99fb5e3ffc78324010000000000004883c4205bc3cccccccccccccccccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/submit-entry-complete.json",
+        "sha256": "54b18301cf6c4f2f34468a4b7a118439046e218b0e0314b003bb5cefd81ab648",
+        "bytes": 11077
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.046718+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 58656464,
+      "end_rva": 58656714,
+      "bytes_sha256": "35be39318795009ef6176e9c135e9cd7ecdade099f895515f3dd664949e34d0c",
+      "bytes_hex": "4c894c242048895424105356574883ec20418bd8488bfa488bf1418bc0c1e803a8017407488b0280480820488b89d80300004885c97408488b12e8f18601000fb6c32401488b0f80be9a02000000743684c075320fb651080fb6c224063c067425f6c20875204885c9740a488b01ba01000000ff1048c7070000000032c04883c4205f5e5bc38b86ec03000089410c488bb6d0030000c1eb0280e301488b0748c7070000000048894424587423488d4e78ff15099fbe00488d542458488bcee8acfb08fd488d4e78ff153aa0be00eb0e488d542458488bcee893fb08fd90488b0f4885c9740a488b01ba01000000ff10b0014883c4205f5e5bc3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/toggle-slot-callback-complete.json",
+        "sha256": "c11e1ff51754b1f675883ba27daf78528174d060f75f289bd1618e40dc185cf9",
+        "bytes": 6926
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.042034+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 25003168,
+      "end_rva": 25003317,
+      "bytes_sha256": "89c69fad4ae7f3a657b64cab468ab26749966af40937c353e345453002bfc6ae",
+      "bytes_hex": "48895c24084889742410574883ec20418b4008498bf0488bf94c8d0c80498b00488b104a8d1ccae8446f30ff48390375528b4608488d1480488b06488b08488b1cd1488d34d1e8256f30ff483bd8740433c0eb0d488b03488d5608488bcbff50284885ff741d488b10488bcfe8dfcdffffb001488b5c2430488b7424384883c4205fc3488b5c243032c0488b7424384883c4205fc3"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/toggle-slot-native-callback.json",
+        "sha256": "2a81f6c1ea7cc67a81d748a8b88e969e5897392e22e2cc313307a8da6c7380cc",
+        "bytes": 13070
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:34.553281+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 25003168,
+      "end_rva": 25003424,
+      "bytes_sha256": "45348ca93a63a968db3c7cb3d801c799b94d7bb086d1521ac0a08b1d10aaaf11",
+      "bytes_hex": "48895c24084889742410574883ec20418b4008498bf0488bf94c8d0c80498b00488b104a8d1ccae8446f30ff48390375528b4608488d1480488b06488b08488b1cd1488d34d1e8256f30ff483bd8740433c0eb0d488b03488d5608488bcbff50284885ff741d488b10488bcfe8dfcdffffb001488b5c2430488b7424384883c4205fc3488b5c243032c0488b7424384883c4205fc3cccccccccccccccccccccc4883ec284885c9740ce8d2c7ffffb0014883c428c332c04883c428c3cccccccc4c89442418534883ec20488bda4885c9741ee859ceffff488d54244088442440488bcbe868150affb0014883c4205bc332c04883c4205bc3cccccccccccccccc"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/toggle-slot-registration-aligned-tail.json",
+        "sha256": "160ce6a8f2a616de2d9f9e478c34eb7b0a551521851638d1cd0eb7fcb00b08ee",
+        "bytes": 7514
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:34.505785+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 2952851,
+      "end_rva": 2953040,
+      "bytes_sha256": "2d89bb71716b702e8e0ca45b18068fa63476eadb87c561422f1a6a0785584065",
+      "bytes_hex": "0f1005f6532a040f11000fb70dfc532a046689481040887812488945ef488d450f48894567488d55b7488d4d0fe83b50580090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe815345a0090488d450f4889442430c74424280100000048897c24204533c94c8d058475500133d2488d4defe889ca50019048397dd77422488d4dd7e859575800488b4de7488b01448d4708488b55d7ff501048897dd7897ddf"
+    },
+    {
+      "source_packet": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/permission-candidate-a01/source-guard/toggle-slot-registration-tail.json",
+        "sha256": "b3e1b7d93c5fafd6541f5c11b710d5ff1bb0d1333f876429013bcc792d474012",
+        "bytes": 7635
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:46:55.812118+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "identity_evidence": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "metadata_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+      "new_exe_reads": 0,
+      "source_kind": "disassembly",
+      "begin_rva": 2952849,
+      "end_rva": 2953041,
+      "bytes_sha256": "6860949ddaf29c30df033a0d1b2945bf88c03291592ea91b1210a92c7a109472",
+      "bytes_hex": "45ff0f1005f6532a040f11000fb70dfc532a046689481040887812488945ef488d450f48894567488d55b7488d4d0fe83b50580090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe815345a0090488d450f4889442430c74424280100000048897c24204533c94c8d058475500133d2488d4defe889ca50019048397dd77422488d4dd7e859575800488b4de7488b01448d4708488b55d7ff501048897dd7897ddf48"
+    }
+  ],
+  "scope": "Compact original cache bytes and source hashes; disassembly can be regenerated. Superseded/unaligned explorations remain marked in original manifest and are not semantic inputs.",
+  "live_qualification": false
+}

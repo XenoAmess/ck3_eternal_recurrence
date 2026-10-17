@@ -1,0 +1,256 @@
+{
+  "schema": "relic-permissions-python-consumer-qualification-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:00:15.478589+00:00",
+  "consumer_started_at_utc": "2026-10-17T12:58:45.631273+00:00",
+  "status": "COMPILED_NATIVE_PERMISSIONS_PACKETS_THROUGH_REAL_MCP_PASS",
+  "tests_run": 4,
+  "tests_skipped": 0,
+  "positive_packets_consumed": 12,
+  "explicit_mutated_packets_rejected": 11,
+  "live_game_qualification": false,
+  "real_engine_getter_execution_proven": false,
+  "native_boundary_mocked": [
+    "endpoint I/O",
+    "hello",
+    "state_snapshot"
+  ],
+  "production_layers": [
+    "NativeHeadlessGameplayDriver",
+    "GameplayBridgeService",
+    "create_server",
+    "MCP ClientSession"
+  ],
+  "full_consumer_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\python-stage\\tools\\relic-permissions-mcp-qualified-a01.json",
+    "bytes": 309863,
+    "sha256": "184c4637ff6f5b0cc1b4273ff285299dcdefb7126b32a2c5701f292acb963e24"
+  },
+  "native_packet_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\qualification-a02\\native-packet-manifest.json",
+    "bytes": 2573,
+    "sha256": "a1d95697d7fa3ef9fba4186e403b4fbf8ad19105600849a4c9822db3e1ea4c14"
+  },
+  "source_prepared_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\python-stage\\tools\\relic-permissions-python-source-prepared-a01.json",
+    "bytes": 4096,
+    "sha256": "2c98499081e1ffc30e676f7964363a87f012e0b672b279035e59443232a302bc"
+  },
+  "compiled_packets": [
+    {
+      "filename": "automatic-slot.json",
+      "sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "cache-unavailable.json",
+      "sha256": "c8c7d23d9845c86160d018df5366a52261ee457e3713eb295a369f35bc347b06",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "empty-player-inventory.json",
+      "sha256": "f91712d20a78c287732b1a202ed43c4042b3a883ea679ecac46547cd66ab9ec9",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "foreign-slot.json",
+      "sha256": "c6d2a4221992b66479b75a339e1066171f3afa4f1a5aa5763e95c276fff54648",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "no-artifact-request.json",
+      "sha256": "22bb178ac76cfc205cfe3e6b3244280618d7aa296737b488784b7f1f813aa2dc",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "nonowned-permission.json",
+      "sha256": "acab45a6bdc41c0a2b6bd8e08aa1dabb41e90d882774f3b6ca37d4ea9e64fb87",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "normal.json",
+      "sha256": "56a081d5cbc8e7e4dadbf61cd58748fea86d4269a761db341ebee6f832d43c1e",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "predicate-unavailable.json",
+      "sha256": "87b0bdaf96478e3de675afff03e48c672864d574144a96bccb505b9301e03f45",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "selected-different.json",
+      "sha256": "fff932ac49da69eabdf34f348cfe0e89f3a69b95b22b388b9a677cfd6541de3d",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "stale-artifact.json",
+      "sha256": "7e64f2c9c8b95a89dabae9f59171bcf1c749a865d01d886e410148c849d5e781",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "stale-site-generation.json",
+      "sha256": "61c4d60c1f6fa88bf1962f1fa555997bcc11f7c4bdb2d0c6d67151b734562182",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    },
+    {
+      "filename": "window-unavailable.json",
+      "sha256": "3d10ea1627dd8ce9244a34c0f8096424383259147bd58a36f8ae4e46dc758fcd",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701
+    }
+  ],
+  "negative_cases": [
+    {
+      "name": "foreign-build",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-site",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "wrong-artifact-identity",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "missing-nullable-field",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "window-selection-written",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "window-candidate-cache-written",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "unverified-source-bound-getter",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "unknown-permission-promoted-to-false",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "partial-candidates-promoted-to-empty",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "invented-action-readiness",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "invented-beneficiaries",
+      "explicit_mutation_of_compiled_packet": true,
+      "source_compiled_packet": "automatic-slot.json",
+      "source_compiled_packet_sha256": "a15e2231ffafd66c6b367fac8fa8e9c6d6aa22d9317db0e860d7db8e7eaddf92",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    }
+  ],
+  "common_hook_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_sha256": "7c7f5428d77d62936649a901ceaa2a0d77c22a04ddb5cc3f2dd481319bf30a43",
+      "candidate_utf8_sha256": "cfad641b9185059c8b9f58b3121464e84bc7b2224d067ec9d4da110fe4004179"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "base_sha256": "20a8087818803c4464eed142319d29e8e8d53f7c763ba09651cfecf81ac2fbcd",
+      "candidate_utf8_sha256": "c60687a1c52d1e87026c8025929b82a125b16682df8db7f7ae03fa605452ea52"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "base_sha256": "e82fa6c544d716878da24b76e8cca5fd9c4e10028851cf63bda43987e02392f9",
+      "candidate_utf8_sha256": "e1da919c47c6af5534cdbce8a6b3ec6908e6eb3066df8c0d86c2890034405385"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "base_sha256": "37d2960db57f2c172a47abdb0f9c47f49be7797b7ce2e480fc121ad97b299806",
+      "candidate_utf8_sha256": "7a719010e331e958e16cace8998f485a03c3ab2c9a5b94b710f595566df6a616"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "base_sha256": "b7ac6235c131983e95e5c239e329bb7393c306a21d75099f3d35ff6f280c735d",
+      "candidate_utf8_sha256": "05457307cb33c9029d87caea8d4e34149f631eecc06c256ff186d8fa14a01dd1"
+    }
+  ],
+  "main_modified": false,
+  "public_common_files_copied": false
+}

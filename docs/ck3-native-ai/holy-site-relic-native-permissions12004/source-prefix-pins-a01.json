@@ -1,0 +1,75 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T12:52:57.889324+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pins": [
+    {
+      "entry_rva": 42641552,
+      "prefix_hex": "40534883ec2065488b042558000000488bd9b910000000488b108b0411390565",
+      "prefix_sha256": "8560ef5049a197621c77d6235a7c1a323fd40e986d89afc7486b521c29dbfdf7",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-ui\\function-028aa890.json",
+      "source_packet_sha256": "4ace3637bece9623e17f3efa9097478a1060150934b6fe7bdc667acdbc49cf09",
+      "source_body_sha256": "0019c9f89e3dd7ae117afc50a955379ec895ec2583fefc3aaafcc78ec95d0c40"
+    },
+    {
+      "entry_rva": 38998528,
+      "prefix_hex": "4889742408574c8b0debc87e03498bf8488bf14d85c9746b448b9ab000000041",
+      "prefix_sha256": "cfdb0a90f92794c80865f6d2fa9f7a543e3d7cb7323ebac50d5a6f8b61a675ea",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-02531200.json",
+      "source_packet_sha256": "20b4c7baa22d6ca502f19a3be6c32c0a7824ee821a68ed0eebc8d84e58d480eb",
+      "source_body_sha256": "27d0a094ae33557641b9d1684fb014eb11fb6603ae9e057e6f3446be16be6af1"
+    },
+    {
+      "entry_rva": 24990704,
+      "prefix_hex": "4883ec584885d20f84e2000000817a14697472410f85d5000000448b5a104183",
+      "prefix_sha256": "878c8d1d6222cacae878bbd5f2648d3ab6a9337d2ae8eb49c11f077629ba471a",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d53f0.json",
+      "source_packet_sha256": "3089eb4977cd1d0c876d1de69766a8432404d5167632893d96e6eab341530cae",
+      "source_body_sha256": "b60bce4d1aaaa34da5b35d6b326657245a50873d9b752dd91efa6de254a3a10e"
+    },
+    {
+      "entry_rva": 24991472,
+      "prefix_hex": "4883ec584885d27467817a1469747241755e8b421083f8ff7456c64424280033",
+      "prefix_sha256": "cb4caa6c12cc32fff77ad5b68582c467efbc5c99ee49f33861f1fe240e091d6b",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d56f0.json",
+      "source_packet_sha256": "252e6df8183d21038f931dbdd7bba7885b9b0408d76087ec86380dfe8ff1ed3d",
+      "source_body_sha256": "67fc4c38028cfcf72536ba51961648eaf2ecdeb6da928633cf6a39057a5d4df9"
+    },
+    {
+      "entry_rva": 24992112,
+      "prefix_hex": "4883ec584c8bd9448b91080100004183faff0f84c60000004c8b0dd984540448",
+      "prefix_sha256": "3b58cf9cbd55923b83cbef41df358d73a5e833c50d026b416f726b5a7befa215",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5970.json",
+      "source_packet_sha256": "adcdb5853847580613c51b378bae650208a6148d2a1a414000a64d1401b490b8",
+      "source_body_sha256": "f289e12b6d655281a4cb6bbf9b040aaa5c2c55ba1cdd5c48a976779882485941"
+    },
+    {
+      "entry_rva": 24993344,
+      "prefix_hex": "4883ec584c8bd9448b91080100004183faff0f84f40000004c8b0d098054044c",
+      "prefix_sha256": "9f534bc73e3c746b9934f60e7de07496739139dc94de22c85f4ff979bd9f91b7",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-017d5e40.json",
+      "source_packet_sha256": "2110c04777d053e7e3709af7cd272252270b975acfce62960a8d1f303b58ded3",
+      "source_body_sha256": "3434ed37cb0e3577b51b14a5f7a34966ec2c8f1f10d8b8d3fb14e88b302ac501"
+    },
+    {
+      "entry_rva": 43693296,
+      "prefix_hex": "40555641574883ec304c8b05802937034c8bfa488be94d85c074288b51208bc2",
+      "prefix_sha256": "912227eaec974c6ca5daee53daad6b10f03aa671a4a847e93aa6efa4abd5f1b6",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ab4f0.json",
+      "source_packet_sha256": "f26581e44422eeb1bcc0bde9df6b43b65f65562c8ec1d73b36c3ae50646742f3",
+      "source_body_sha256": "fc26280105134894cc86771afc831361a7207a7912183c1ada56ebebf374da17"
+    },
+    {
+      "entry_rva": 43694880,
+      "prefix_hex": "48896c24104889742418574883ec304c8b054a233703488bea488bf14d85c074",
+      "prefix_sha256": "aa668fda438a84671cad33949e993736585d4c7deefc70ba5d574196141d2628",
+      "source_packet": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029abb20.json",
+      "source_packet_sha256": "fc6b29620eacd48e11ff108242d2133324605e288640010c318174e8a8d17711",
+      "source_body_sha256": "2880241fe59a8b539952e97dc129813ae1ab8fa6aee9873bfc4b71b84c94a4a4"
+    }
+  ],
+  "generated_header": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_permissions_pins.inc",
+  "generated_header_sha256": "7b74db7b68d2c17b0e48b9aeb277cd47c4f9e4e8a1c93c03aaa42a27b6fdd2f1",
+  "loaded_pin_scope": "first32 entry bytes plus actual command vtable CanExecute slot; full EXE identity remains required",
+  "original_engine_code_executed": false
+}

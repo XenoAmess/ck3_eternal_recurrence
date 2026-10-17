@@ -5,6 +5,9 @@ target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_holy_site_snapshot_json.cpp
   src/ck3_12004_holy_site_adoption_detail.cpp
   src/ck3_12004_holy_site_adoption_detail_json.cpp
+  src/ck3_12004_holy_site_decision_cooldown.cpp
+  src/ck3_12004_holy_site_decision_cooldown_json.cpp
+  src/holy_site_decision_entry_parameters12004.cpp
   src/ck3_12004_religion_bindings.cpp)
 
 if(BUILD_TESTING AND WIN32)
@@ -19,6 +22,24 @@ if(BUILD_TESTING AND WIN32)
     target_compile_options(xar_ck3_12004_holy_site_adoption_detail_test PRIVATE /W4 /WX /permissive- /EHsc /utf-8)
   endif()
   add_test(NAME xar_ck3_12004_holy_site_adoption_detail_test COMMAND xar_ck3_12004_holy_site_adoption_detail_test "${CMAKE_CURRENT_BINARY_DIR}/holy-site-adoption-12004-wire")
+  add_test(NAME xar_ck3_12004_holy_site_management_detail_test COMMAND xar_ck3_12004_holy_site_adoption_detail_test "${CMAKE_CURRENT_BINARY_DIR}/holy-site-management-12004-wire" --management-only)
+  add_executable(xar_ck3_12004_holy_site_decision_cooldown_test
+    src/ck3_12004_holy_site_decision_cooldown_test.cpp
+    src/ck3_12004_holy_site_decision_cooldown.cpp
+    src/ck3_12004_holy_site_decision_cooldown_json.cpp
+    src/ck3_12004_holy_site_adoption_detail.cpp)
+  add_executable(xar_ck3_12004_holy_site_decision_entry_parameters_test
+    src/holy_site_decision_entry_parameters12004_test.cpp
+    src/holy_site_decision_entry_parameters12004.cpp
+    src/ck3_12004_holy_site_adoption_detail.cpp)
+  foreach(target xar_ck3_12004_holy_site_decision_cooldown_test xar_ck3_12004_holy_site_decision_entry_parameters_test)
+    target_include_directories(${target} PRIVATE include)
+    target_compile_features(${target} PRIVATE cxx_std_20)
+    target_compile_definitions(${target} PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    if(MSVC)
+      target_compile_options(${target} PRIVATE /UNDEBUG /W4 /WX /permissive- /EHsc /utf-8)
+    endif()
+  endforeach()
   add_executable(xar_ck3_12004_holy_site_snapshot_test
     src/ck3_12004_holy_site_snapshot_test.cpp
     src/ck3_12004_holy_site_snapshot.cpp

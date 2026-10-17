@@ -6,12 +6,17 @@ from .g2_private_query_transport import private_g2_query_metadata_v1,read_privat
 from .nonwar_private_build import private_native_build_identity,private_native_provenance
 from .version_identity import CK3_12004,require_exact_native_backend,require_exact_native_build
 from .player_holy_site_private_transport import _ref,_availability
+from .holy_site_decision_action_v1 import (
+    HolySiteDecisionActionV1, holy_site_decision_key_v1,
+    normalize_holy_site_decision_action_v1,
+)
 
 STEP="query-player-holy-site-adoption-detail-v1"
+DECISION_STEP="query-player-holy-site-decision-detail-v1"
 PERMISSION="allow_private_holy_site_adoption_detail_query"
 
 
-def _planning(value:dict[str,object])->None:
+def _planning(value:dict[str,object],*,decision_key:str="adopt_holy_site_decision")->None:
     """Optional additive native fields; preserve all six legacy packet shapes."""
     context=value.get("native_detail_context_verified",False)
     if type(context)is not bool or context and value["available"]is not True:
@@ -50,7 +55,7 @@ def _planning(value:dict[str,object])->None:
         if type(observed)is not bool:raise ValueError("native decision cooldown observation is malformed")
         if observed:
             if (not context or not isinstance(cooldown,dict)or set(cooldown)!={"decision_key","present","expiry_raw","current_counter_raw","active","counter_unit","calendar_conversion_observed"}
-                    or cooldown["decision_key"]!="adopt_holy_site_decision"
+                    or cooldown["decision_key"]!=decision_key
                     or cooldown["counter_unit"]!="native_decision_clock_counter"
                     or cooldown["calendar_conversion_observed"]is not False
                     or type(cooldown["present"])is not bool or type(cooldown["active"])is not bool
@@ -65,9 +70,10 @@ def _planning(value:dict[str,object])->None:
         elif cooldown is not None:raise ValueError("unobserved native decision cooldown must stay unknown")
 
 
-def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,object],holy_site_id:int)->dict[str,object]:
+def _normalize_holy_site_detail_v1(value:object,*,snapshot:Mapping[str,object],holy_site_id:int,
+                                  schema:str,decision_key:str)->dict[str,object]:
     result=_availability(value,"adoption detail")
-    if (result.get("schema")!="ck3_12004_holy_site_adoption_detail_v1"
+    if (result.get("schema")!=schema
             or require_exact_native_build(result.get("game_version"),result.get("executable_sha256"))!=CK3_12004
             or private_native_build_identity(snapshot)!=CK3_12004):
         raise ValueError("HolySite adoption detail requires exact 1.20.0.4")
@@ -85,12 +91,12 @@ def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,o
         if result.get(field)is not False:raise ValueError("adoption detail read claimed an unimplemented action/postcondition")
     if result.get("read_only")is not True:
         raise ValueError("adoption detail query lost readonly semantics")
-    _planning(result)
+    _planning(result,decision_key=decision_key)
     if not result["available"]:
         if result.get("native_can_confirm")is not None or result.get("normal_requirements_can_confirm")is not None:
             raise ValueError("unavailable adoption detail cannot invent observed false legality")
         return result
-    if (result.get("decision_key")!="adopt_holy_site_decision" or result.get("decision_option_id")!=-1
+    if (result.get("decision_key")!=decision_key or result.get("decision_option_id")!=-1
             or result.get("detail_actor_id")!=actor["character_id"]
             or result.get("current_actor_id")!=actor["character_id"]
             or result.get("parameter_and_selection_match")is not True):
@@ -129,6 +135,28 @@ def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,o
     return result
 
 
+def normalize_holy_site_adoption_detail_v1(value:object,*,snapshot:Mapping[str,object],holy_site_id:int)->dict[str,object]:
+    """Preserve the original adoption-only packet and availability contract."""
+    return _normalize_holy_site_detail_v1(value,snapshot=snapshot,holy_site_id=holy_site_id,
+        schema="ck3_12004_holy_site_adoption_detail_v1",decision_key="adopt_holy_site_decision")
+
+
+def normalize_holy_site_decision_detail_v1(value:object,*,snapshot:Mapping[str,object],
+                                          action:HolySiteDecisionActionV1,holy_site_id:int)->dict[str,object]:
+    """Bind the request independently; an unobserved actual definition stays unknown."""
+    selected_action=normalize_holy_site_decision_action_v1(action)
+    decision_key=holy_site_decision_key_v1(selected_action)
+    result=_availability(value,"HolySite decision detail")
+    if normalize_holy_site_decision_action_v1(result.get("action"))!=selected_action:
+        raise ValueError("HolySite decision detail crossed its requested action")
+    if result.get("requested_decision_key")!=decision_key:
+        raise ValueError("HolySite requested decision key differs from its fixed action")
+    if result.get("decision_key")is not None and result["decision_key"]!=decision_key:
+        raise ValueError("HolySite actual decision key differs from its fixed action")
+    return _normalize_holy_site_detail_v1(result,snapshot=snapshot,holy_site_id=holy_site_id,
+        schema="ck3_12004_holy_site_decision_detail_v1",decision_key=decision_key)
+
+
 def query_holy_site_adoption_detail_private_v1(driver:object,*,expected_revision:int,holy_site_id:int)->dict[str,object]:
     _ref(holy_site_id,"requested HolySite",nullable=False)
     before,envelope=read_private_g2_native_query_v1(driver,permission=PERMISSION,step=STEP,
@@ -143,6 +171,30 @@ def query_holy_site_adoption_detail_private_v1(driver:object,*,expected_revision
         value=normalize_holy_site_adoption_detail_v1(envelope.get("player_holy_site_adoption_detail"),snapshot=before,holy_site_id=holy_site_id)
         if envelope.get("status")!=("observed"if value["available"]else"unavailable"):
             raise ValueError("native adoption detail envelope loses source availability")
+    except ValueError as error:raise BridgeUnavailableError(str(error))from error
+    return {**value,**private_native_provenance(before),**private_g2_query_metadata_v1(before),
+            "snapshot_revision":envelope["snapshot_revision"],"backend_id":envelope["backend_id"],
+            "domain_key":envelope["domain_key"],"status":envelope["status"],"advertised":False}
+
+
+def query_holy_site_decision_detail_private_v1(driver:object,*,expected_revision:int,
+                                             action:HolySiteDecisionActionV1,holy_site_id:int)->dict[str,object]:
+    selected_action=normalize_holy_site_decision_action_v1(action)
+    _ref(holy_site_id,"requested HolySite",nullable=False)
+    before,envelope=read_private_g2_native_query_v1(driver,permission=PERMISSION,step=DECISION_STEP,
+        expected_revision=expected_revision,request_fields={"action":selected_action,"holy_site_id":holy_site_id},
+        include_native_command_history=False)
+    try:
+        if (require_exact_native_backend(envelope.get("game_version"),envelope.get("executable_sha256"),
+                envelope.get("backend_id"),suffix="player-holy-site-decision-detail-v1")!=CK3_12004
+                or envelope.get("domain_key")!="player_holy_site_decision_detail_v1"
+                or envelope.get("snapshot_revision")!=before.get("native_revision")
+                or envelope.get("date_raw")!=before.get("date_raw")):
+            raise ValueError("native HolySite decision detail envelope differs from exact frame")
+        value=normalize_holy_site_decision_detail_v1(envelope.get("player_holy_site_decision_detail"),
+            snapshot=before,action=selected_action,holy_site_id=holy_site_id)
+        if envelope.get("status")!=("observed"if value["available"]else"unavailable"):
+            raise ValueError("native HolySite decision detail envelope loses source availability")
     except ValueError as error:raise BridgeUnavailableError(str(error))from error
     return {**value,**private_native_provenance(before),**private_g2_query_metadata_v1(before),
             "snapshot_revision":envelope["snapshot_revision"],"backend_id":envelope["backend_id"],

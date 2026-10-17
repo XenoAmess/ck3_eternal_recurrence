@@ -7,6 +7,8 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
+from .holy_site_decision_action_v1 import HolySiteDecisionActionV1
+
 from .route_contact_window_contract import (
     ADVANCE_ROUTE_CONTACT_WINDOW_STEP_PREFIX,
     advance_route_contact_window_step,
@@ -3542,6 +3544,18 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_holy_site_relic_permissions_private_v1(
+        self, *, expected_revision: int, holy_site_id: int,
+        artifact_id: int | None = None,
+    ) -> dict[str, object]:
+        """Read native candidates and permissions without selecting or submitting."""
+        from .player_holy_site_relic_permissions_private_transport import (
+            query_player_holy_site_relic_permissions_private_v1,
+        )
+        return query_player_holy_site_relic_permissions_private_v1(
+            self, expected_revision=expected_revision, holy_site_id=holy_site_id,
+            artifact_id=artifact_id)
+
     def query_player_holy_site_relic_context_private_v1(
         self, *, expected_revision: int, holy_site_id: int,
     ) -> dict[str, object]:
@@ -3565,6 +3579,22 @@ class NativeHeadlessGameplayDriver:
         from .holy_site_adoption_detail_private_transport import query_holy_site_adoption_detail_private_v1
         return query_holy_site_adoption_detail_private_v1(
             self,expected_revision=expected_revision,holy_site_id=holy_site_id)
+
+    def query_holy_site_decision_detail_private_v1(
+        self, *, expected_revision: int, action: HolySiteDecisionActionV1,
+        holy_site_id: int,
+    ) -> dict[str, object]:
+        """Read one fixed original HolySite decision detail without confirming it."""
+        from .holy_site_adoption_detail_private_transport import query_holy_site_decision_detail_private_v1
+        return query_holy_site_decision_detail_private_v1(
+            self, expected_revision=expected_revision, action=action, holy_site_id=holy_site_id)
+
+    def query_holy_site_decision_cooldown_private_v1(
+        self, *, expected_revision: int, action: HolySiteDecisionActionV1,
+    ) -> dict[str, object]:
+        from .holy_site_decision_cooldown_private_transport import query_holy_site_decision_cooldown_private_v1
+        return query_holy_site_decision_cooldown_private_v1(
+            self, expected_revision=expected_revision, action=action)
 
     def query_player_religion_context_private_v1(
         self, *, expected_revision: int,
@@ -6213,12 +6243,13 @@ class NativeHeadlessGameplayDriver:
         self._persist_driver_state()
 
     def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int,
-            army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None) -> dict[str, object]:
+            army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
+            holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
             QUERY_CAPABILITY, validate_ui_request, normalize_ui_result,
             ingame_ui_build_binding, validate_ui_build_scope)
         validate_ui_request(operation, kind, subject_id, expected_revision,
-            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
         starting = self.take_snapshot()
         binding = _title_camera_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
@@ -6238,6 +6269,8 @@ class NativeHeadlessGameplayDriver:
             if capabilities.get("backend_id") != "native-headless" or capability not in capabilities.get("bridge_capabilities", []):
                 raise UnsupportedStepError("capability_not_available: Army tooltip requires the exact native backend")
         fields = {"window_kind": kind, "subject_id": subject_id}
+        if holy_site_action is not None:
+            fields["holy_site_action"] = holy_site_action
         if operation != "query":
             fields["operation"] = operation
         if army_tooltip_kind is not None:
@@ -6262,7 +6295,7 @@ class NativeHeadlessGameplayDriver:
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,
                 expected_build=source_binding[0], army_tooltip_kind=army_tooltip_kind,
-                army_tooltip_receipt=army_tooltip_receipt)
+                army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
         except Exception as error:
             self._record_command(step, ok=False,
                 result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
@@ -6277,6 +6310,9 @@ class NativeHeadlessGameplayDriver:
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_character", "character", character_id, expected_revision=expected_revision)
 
+    def open_faith_window_v1(self, faith_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_faith", "faith", faith_id, expected_revision=expected_revision)
+
     def open_holy_site_window_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_holy_site", "holy_site", holy_site_id, expected_revision=expected_revision)
 
@@ -6285,6 +6321,14 @@ class NativeHeadlessGameplayDriver:
 
     def confirm_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id, expected_revision=expected_revision)
+
+    def open_holy_site_decision_v1(self, action: HolySiteDecisionActionV1, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_holy_site_adoption", "holy_site", holy_site_id,
+            expected_revision=expected_revision, holy_site_action=action)
+
+    def confirm_holy_site_decision_v1(self, action: HolySiteDecisionActionV1, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id,
+            expected_revision=expected_revision, holy_site_action=action)
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("select_army", "army", subject_army_id, expected_revision=expected_revision)

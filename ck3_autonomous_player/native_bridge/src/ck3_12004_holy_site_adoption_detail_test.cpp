@@ -54,6 +54,7 @@ struct Fixture{
   const std::array<std::uint32_t,3>td{0x5795050,0x5586B90,0x5802AC0};
   for(std::size_t i=0;i<3;++i){Put(cols[i],0,std::uint32_t{1});Put(cols[i],12,td[i]);Put(cols[i],20,static_cast<std::uint32_t>(0x1000+i*0x100));}
  }
+ void Decision(h::DecisionAction action){key=std::string(h::DecisionKey(action));Put(definition,0x18,key.c_str());Put(definition,0x28,static_cast<std::uint64_t>(key.size()));}
  template<class B>static void Scope(B&b,std::size_t o,std::uint32_t id){Put(b,o,std::uint16_t{23});Put(b,o+2,std::uint16_t{0});Put(b,o+8,static_cast<std::uint64_t>(id));}
 };
 Fixture*f=nullptr;
@@ -124,9 +125,52 @@ h::AdoptionDetailBindings Bind(Fixture&v){f=&v;h::AdoptionDetailBindings b{};b.e
  b.decision_cost=&Cost;b.evaluate_cost=&Evaluate;b.affordable_cost=&Affordable;b.cooldown_lookup=&CooldownLookup;return b;}
 xar::ck3_12002::religion::Context Frame(){xar::ck3_12002::religion::Context c{};c.available=true;c.capture_epoch=17;c.date_raw=53175816;c.played_character_id=Fixture::actor;return c;}
 void Save(const std::filesystem::path&d,const char*name,const h::AdoptionDetailSnapshot&s){std::ofstream out(d/name);out<<h::SerializeHolySiteAdoptionDetailCommand12004(s,"g2-read-adoption-fixture",701,s.date_raw)<<'\n';Check(bool(out),"whole native command_result written");}
+void ManagementOnly(const std::filesystem::path&d){
+ h::DecisionAction parsed=h::DecisionAction::adopt;
+ Check(h::ParseDecisionAction("promote",parsed)&&parsed==h::DecisionAction::promote&&h::DecisionKey(parsed)=="elevate_holy_site_decision","public promote maps only to original elevate definition");
+ Check(!h::ParseDecisionAction("elevate",parsed)&&!h::ParseDecisionAction("arbitrary_decision",parsed),"public enum rejects raw or arbitrary decision keys");
+ const auto frame=Frame();
+ for(const auto action:{h::DecisionAction::promote,h::DecisionAction::demote,h::DecisionAction::abandon}){
+  Fixture v;v.Decision(action);auto b=Bind(v);h::AdoptionDetailSnapshot s{};
+  Check(h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,action,Fixture::site_id,s)&&s.available&&
+   s.general_decision_contract&&s.action==action&&s.decision_key==h::DecisionKey(action)&&!s.native_can_confirm,
+   "each actual definition produces independent observed false through the shared selected-item reader");
+  const auto prefix=std::string(h::DecisionActionName(action));Save(d,(prefix+"-native-false.json").c_str(),s);
+  bool attempted=true;Check(!h::ConfirmHolySiteAdoptionDetail12004(b,s,attempted)&&!attempted&&v.confirms==0,"disabled management action never invokes Confirm");
+  v.legal=true;
+  Check(h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,action,Fixture::site_id,s)&&s.native_can_confirm&&s.native_detail_context_verified&&
+   s.native_requirements_description_available&&s.native_cost_description_available&&s.native_resource_quote_available,"management quote and full text use actual E0 context");
+  Save(d,(prefix+"-native-true.json").c_str(),s);
+  attempted=false;Check(h::ConfirmHolySiteAdoptionDetail12004(b,s,attempted)&&attempted&&v.confirms==1,"each finite action invokes one original Confirm after fresh full binding");
+  v.settings[0x10]=std::byte{1};
+  Check(h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,action,Fixture::site_id,s)&&s.native_can_confirm,"management engine bypass true remains separately observed");
+  attempted=true;Check(!h::ConfirmHolySiteAdoptionDetail12004(b,s,attempted)&&!attempted&&v.confirms==1,"every management action retains normal bypass-zero guard");
+  v.settings[0x10]=std::byte{0};
+ }
+ Fixture v;auto b=Bind(v);h::AdoptionDetailSnapshot s{};v.Decision(h::DecisionAction::demote);
+ Check(!h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,h::DecisionAction::promote,Fixture::site_id,s)&&!s.available,"request promote never accepts actual demote definition");
+ Save(d,"cross-action-rejected.json",s);
+ const auto invalid=static_cast<h::DecisionAction>(99);
+ Check(!h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,invalid,Fixture::site_id,s)&&!s.available,"unsupported internal action enum is rejected before callbacks");
+ Save(d,"invalid-action-rejected.json",s);
+ v.Decision(h::DecisionAction::abandon);v.legal=true;
+ Check(h::ReadHolySiteDecisionDetail12004(b,v.owner.data(),frame,h::DecisionAction::abandon,Fixture::site_id,s),"abandon initial detail available before definition change");
+ v.Decision(h::DecisionAction::promote);bool attempted=true;
+ Check(!h::ConfirmHolySiteAdoptionDetail12004(b,s,attempted)&&!attempted&&v.confirms==0,"changed actual definition cannot reuse another action's prior permission");
+ // Independent cooldown uses the actual registry-owned definition, not a
+ // cleared UI detail or a cached cross-frame pointer supplied by a caller.
+ Put(v.handler,0x1B8,static_cast<void*>(nullptr));
+ h::DecisionCooldownObservation cooldown{};
+ Check(h::ReadHolySiteDecisionCooldownByDefinition12004(b,frame,h::DecisionAction::promote,v.definition.data(),cooldown)&&!cooldown.present&&!cooldown.active,"fixed-key cooldown remains readable after the original detail was cleared");
+ Check(!h::ReadHolySiteDecisionCooldownByDefinition12004(b,frame,h::DecisionAction::abandon,v.definition.data(),cooldown),"independent cooldown refuses another fixed definition");
+ v.actual_actor=Fixture::actor+1;
+ Check(!h::ReadHolySiteDecisionCooldownByDefinition12004(b,frame,h::DecisionAction::promote,v.definition.data(),cooldown),"independent cooldown cannot cross actual current player reference");
+ std::cout<<"PASS management_checks="<<checks<<" actual_reader=true actual_serializer=true synthetic_storage=true synthetic_callbacks=true legacy_cases_executed=false live=false\n";
+}
 }
 int main(int argc,char**argv){try{
- Check(argc==2,"output directory required");const std::filesystem::path d(argv[1]);std::filesystem::create_directories(d);
+ Check(argc==2||argc==3,"output directory required");const std::filesystem::path d(argv[1]);std::filesystem::create_directories(d);
+ if(argc==3){Check(std::string_view(argv[2])=="--management-only","unknown fixture mode");ManagementOnly(d);return 0;}
  Fixture v;auto b=Bind(v);const auto c=Frame();h::AdoptionDetailSnapshot s{};
  Check(h::ReadHolySiteAdoptionDetail12004(b,v.owner.data(),c,Fixture::site_id,s)&&s.available&&!s.native_can_confirm&&
   s.parameter_and_selection_match&&s.selected_index==1&&s.parameter_holy_site_id==Fixture::site_id,"native observed false, second actual entry and padding-independent parameter identity");

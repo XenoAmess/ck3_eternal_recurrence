@@ -1,9 +1,11 @@
 #include "xar_bridge/ck3_12004_holy_site_adoption_entry.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
+#include "xar_bridge/holy_site_decision_entry_parameters12004.hpp"
 #include <windows.h>
 #include <array>
 #include <charconv>
 #include <limits>
+#include <utility>
 
 namespace xar::ck3_11906 {
 namespace {
@@ -124,5 +126,67 @@ bool OpenHolySiteAdoptionEntry12004(const ZhongguoScoreboardNativeEnvironmentV1&
   out.native_dispatch_attempted=true;bool handled=false;
   return DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,target,vtable,handled);
  }catch(...){out.unavailable_reason="adoption_entry_provider_exception";return false;}
+}
+bool OpenHolySiteDecisionEntry12004(const ZhongguoScoreboardNativeEnvironmentV1&e,
+ void*handler,std::uint32_t id,void*context,
+ ck3_12004::religion::holy_site::DecisionAction action,IngameUiResultV1&out)noexcept{
+ namespace hs=ck3_12004::religion::holy_site;
+ try{
+  const auto fail=[&](std::string why){out.unavailable_reason=std::move(why);return false;};
+  if(hs::DecisionKey(action).empty())return fail("holy_site_decision_action_invalid");
+  void*window=nullptr,*root=nullptr;
+  if(!ResolveHolySiteUiSelection12004(e,handler,id,window,root)||!root||!out.effective_visible||
+     !out.subject_id_available||out.current_subject_id!=id)return fail("holy_site_decision_requires_visible_selected_site");
+  if(!Pins(e.module_base))return fail("holy_site_decision_entry_source_pins_changed");
+  bool adopt=false,regular=false,eminent=false;
+  const auto visible=[&](bool a,bool r,bool m){
+   if(action==hs::DecisionAction::adopt)return a&&!r&&!m;
+   if(action==hs::DecisionAction::demote)return !a&&!r&&m;
+   return !a&&r&&!m;
+  };
+  if(!Predicates(e.module_base,window,adopt,regular,eminent))return fail("holy_site_decision_visibility_unavailable");
+  out.holy_site_adopt_visibility_observed=true;out.holy_site_adopt_visible=adopt;
+  out.holy_site_regular_visible=regular;out.holy_site_eminent_visible=eminent;
+  if(!visible(adopt,regular,eminent))return fail("holy_site_decision_visibility_differs_from_requested_action");
+  const auto bindings=hs::BindHolySiteDecisionEntryParametersImage12004(e.module_base,e.executable_sha256);
+  struct Selection{const NamedGuiWidgetInspectionV1*row=nullptr;void*target=nullptr,*vtable=nullptr;hs::EntryParameterSnapshot parameters{};};
+  const auto select=[&](const NamedGuiTreeInspectionV1&tree,Selection&selection){
+   for(const auto&row:tree.widgets){
+    if(!row.effective_visible||!row.enabled||!Signature(row.standard_click_binding_12004))continue;
+    void*widget=nullptr,*vt=nullptr;
+    if(!Receiver(e,root,context,row,widget,vt)){out.unavailable_reason="holy_site_decision_receiver_owner_or_ancestry_changed";return false;}
+    hs::EntryParameterSnapshot parameters{};
+    if(!hs::ReadHolySiteDecisionEntryParameters12004(bindings,widget,action,id,parameters)){
+     bool other_fixed=false;
+     if(parameters.decision_key_verified)for(const auto other:{hs::DecisionAction::adopt,hs::DecisionAction::promote,hs::DecisionAction::demote,hs::DecisionAction::abandon})
+      if(other!=action&&parameters.decision_key==hs::DecisionKey(other))other_fixed=true;
+     if(other_fixed)continue;
+     out.unavailable_reason=parameters.unavailable_reason.empty()?"holy_site_decision_receiver_parameters_unknown":parameters.unavailable_reason;return false;
+    }
+    if(selection.row){out.unavailable_reason="holy_site_decision_receiver_not_unique";return false;}
+    selection={&row,widget,vt,std::move(parameters)};
+   }
+   if(!selection.row){out.unavailable_reason="holy_site_decision_exact_receiver_not_found";return false;}return true;
+  };
+  NamedGuiTreeInspectionV1 first{},second{};Selection before{},after{};
+  if(!Tree(e,root,first)||!select(first,before))return fail(out.unavailable_reason.empty()?"holy_site_decision_callback_census_incomplete":out.unavailable_reason);
+  auto dispatch=BindZhongguoScoreboardActionDispatchEnvironmentV1(e.module_base,true,e.gui_abi_revision);
+  if(!InspectFixedGuiWidgetDispatchAdmissionV1(dispatch,before.target,before.vtable))return fail("holy_site_decision_dispatch_admission_failed");
+  void*last_window=nullptr,*last_root=nullptr;bool last_a=false,last_r=false,last_e=false;
+  if(!ResolveHolySiteUiSelection12004(e,handler,id,last_window,last_root)||last_window!=window||last_root!=root||
+     !Predicates(e.module_base,window,last_a,last_r,last_e)||!visible(last_a,last_r,last_e)||!Tree(e,root,second)||!select(second,after))
+   return fail(out.unavailable_reason.empty()?"holy_site_decision_pre_dispatch_binding_changed":out.unavailable_reason);
+  if(before.target!=after.target||before.vtable!=after.vtable||before.row->child_path!=after.row->child_path||
+     !Same(before.row->standard_click_binding_12004,after.row->standard_click_binding_12004)||
+     before.parameters.params!=after.parameters.params||before.parameters.definition!=after.parameters.definition||
+     before.parameters.source_widget!=after.parameters.source_widget||before.parameters.decision_key!=after.parameters.decision_key||
+     before.parameters.holy_site_id!=after.parameters.holy_site_id||
+     before.parameters.self_return_type_raw!=after.parameters.self_return_type_raw)return fail("holy_site_decision_actual_parameters_changed");
+  out.holy_site_adopt_receiver_bound=true;out.holy_site_adopt_receiver_child_path=before.row->child_path;
+  out.holy_site_decision_parameters_verified=true;out.holy_site_decision_definition_key=before.parameters.decision_key;
+  out.holy_site_decision_parameter_id=before.parameters.holy_site_id;
+  out.native_dispatch_attempted=true;bool handled=false;
+  return DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,before.target,before.vtable,handled);
+ }catch(...){out.unavailable_reason="holy_site_decision_entry_exception";return false;}
 }
 }

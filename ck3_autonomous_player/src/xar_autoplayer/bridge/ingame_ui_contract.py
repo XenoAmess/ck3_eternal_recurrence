@@ -5,24 +5,30 @@ import hashlib
 import re
 from collections.abc import Mapping
 from .public_unit_contract import public_cunit_id
+from .holy_site_decision_action_v1 import HolySiteDecisionActionV1, normalize_holy_site_decision_action_v1, holy_site_decision_key_v1
 from .version_identity import CK3_11906, CK3_12003, CK3_12004, NativeBuildIdentity, require_exact_native_build
 
 NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
 NAVIGATE_CAPABILITY = "game.command.navigate-ingame-ui-v1"
 QUERY_CAPABILITY = "game.command.query-ingame-ui-window-v1"
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption"}
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
-              "open_holy_site_adoption":"holy_site", "confirm_site_adoption":"holy_site_adoption"}
+              "open_holy_site_adoption":"holy_site", "confirm_site_adoption":"holy_site_adoption", "open_faith":"faith"}
 ARMY_TOOLTIP_KINDS = {"supply_state", "attrition"}
 _CURRENT_ARMY_BUILDS = (CK3_12003, CK3_12004)
 
 
 def validate_ui_request(operation: str, kind: str, subject_id: int, revision: int, *,
                         army_tooltip_kind: str | None = None,
-                        army_tooltip_receipt: str | None = None) -> None:
+                        army_tooltip_receipt: str | None = None,
+                        holy_site_action: HolySiteDecisionActionV1 | None = None) -> None:
+    if holy_site_action is not None:
+        normalize_holy_site_decision_action_v1(holy_site_action)
+        if operation not in {"open_holy_site_adoption", "confirm_site_adoption"} or army_tooltip_kind is not None or army_tooltip_receipt is not None:
+            raise ValueError("finite HolySite action is valid only for its original detail routes")
     if kind not in KINDS or (operation != "query" and OPERATIONS.get(operation) != kind):
         raise ValueError("unsupported typed UI operation/window")
     if isinstance(revision, bool) or not isinstance(revision, int) or not 0 <= revision < 2**64:
@@ -47,9 +53,9 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
             raise ValueError("this operation has no caller-selected subject")
     elif operation == "select_army":
         public_cunit_id(subject_id, "subject public CUnitID")
-    elif operation in {"open_holy_site", "open_holy_site_adoption", "confirm_site_adoption"}:
+    elif operation in {"open_holy_site", "open_holy_site_adoption", "confirm_site_adoption", "open_faith"}:
         if not 0 <= subject_id < 2**32 - 1:
-            raise ValueError("HolySite ID must preserve its complete uint32 handle")
+            raise ValueError("selected reference must preserve its complete uint32 handle")
     elif not 0 < subject_id < 2**32 - 1:
         raise ValueError("subject ID must be positive and exclude the invalid handle")
 
@@ -90,12 +96,16 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
         if build!=CK3_12004 or operation!="confirm_site_adoption" or army_tooltip_kind is not None:
             raise ValueError("HolySite adoption confirmation requires exact 1.20.0.4")
         return
+    if kind == "faith":
+        if build != CK3_12004 or operation not in {"query", "open_faith"} or army_tooltip_kind is not None:
+            raise ValueError("Faith presentation requires exact 1.20.0.4")
+        return
     if army_tooltip_kind is not None:
         if build not in _CURRENT_ARMY_BUILDS or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}:
             raise ValueError("army tooltips require the exact current native Army route")
         return
-    if build == CK3_12004 and kind == "character" and operation == "query":
-        return  # Read only; no current4 Character click callback has been admitted.
+    if build == CK3_12004 and kind == "character" and operation in {"query", "open_character"}:
+        return  # Opening uses the separately opted-in exact4 typed Any producer.
     if build in _CURRENT_ARMY_BUILDS and (kind != "army" or operation not in {"query", "select_army"}):
         raise ValueError("current native UI supports army query and select only")
 
@@ -104,8 +114,13 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                          native_revision: int, date_raw: int, actor_id: int,
                          expected_build: NativeBuildIdentity = CK3_11906,
                          army_tooltip_kind: str | None = None,
-                         army_tooltip_receipt: str | None = None) -> dict[str, object]:
+                         army_tooltip_receipt: str | None = None,
+                         holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
     validate_ui_build_scope(expected_build, operation, kind, army_tooltip_kind=army_tooltip_kind)
+    if holy_site_action is not None:
+        normalize_holy_site_decision_action_v1(holy_site_action)
+        if expected_build != CK3_12004 or operation not in {"open_holy_site_adoption", "confirm_site_adoption"}:
+            raise ValueError("finite HolySite action requires the exact4 original detail routes")
     if army_tooltip_kind is not None:
         validate_ui_request(operation, kind, subject_id, native_revision,
             army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt)
@@ -158,7 +173,8 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             raise ValueError(f"native UI owner diagnostic missing: {key}")
     unopened_current_select_ack = (
         ((expected_build in _CURRENT_ARMY_BUILDS and operation == "select_army" and kind == "army")
-         or (expected_build == CK3_12004 and operation == "open_holy_site" and kind == "holy_site"))
+         or (expected_build == CK3_12004 and operation == "open_holy_site" and kind == "holy_site")
+         or (expected_build == CK3_12004 and (operation, kind) in {("open_character", "character"), ("open_faith", "faith")}))
         and value["available"] and not value["window_exists"]
         and value.get("status") == "acknowledged_verification_pending"
         and value["dispatch_invoked"] and value["verification_pending"]
@@ -192,17 +208,47 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     census_limit = 2048 if expected_build in _CURRENT_ARMY_BUILDS else 512
     if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count <= census_limit or not isinstance(widgets, list) or len(widgets) != count:
         raise ValueError("native census count/bound mismatch")
-    current4_character_query = expected_build == CK3_12004 and kind == "character" and operation == "query"
+    current4_character_query = expected_build == CK3_12004 and kind == "character"
+    current4_faith = expected_build == CK3_12004 and kind == "faith"
     current4_holy_site = expected_build == CK3_12004 and kind in {"holy_site", "holy_site_adoption"}
-    expected_window = "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "army_window"
+    expected_window = "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
     if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != expected_window:
         raise ValueError("current native UI window name differs from the admitted kind")
+    if current4_character_query or current4_faith:
+        if type(value.get("native_dispatch_attempted")) is not bool:
+            raise ValueError("typed presentation dispatch attempt is missing")
+        if operation == "query" and value["native_dispatch_attempted"]:
+            raise ValueError("typed presentation query cannot invoke original OpenViewData")
+        if value["dispatch_invoked"] and not value["native_dispatch_attempted"]:
+            raise ValueError("typed presentation original invocation lacks consumed attempt")
+        if value["native_army_id"] != 0 or value["owner_character_id_available"]:
+            raise ValueError("typed presentation cannot claim Army or selected Unit owner")
+    if current4_faith and value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
+        raise ValueError("current Faith window requires a complete Faith ID")
     if current4_character_query:
         if value["subject_id_available"] and not 0 < value["current_subject_id"] < 2**32 - 1:
             raise ValueError("current Character window requires a valid full CharacterID")
         if value["native_army_id"] != 0 or value["owner_character_id_available"]:
             raise ValueError("current Character query cannot claim Army or selected Unit owner")
     if current4_holy_site:
+        if holy_site_action is not None:
+            semantic = value.get("holy_site_decision")
+            expected_key = holy_site_decision_key_v1(holy_site_action)
+            if (not isinstance(semantic, dict) or set(semantic) != {
+                    "action", "requested_decision_key", "decision_key", "parameter_binding_verified",
+                    "parameter_holy_site_id", "business_outcome_observed"}
+                    or semantic.get("action") != holy_site_action or semantic.get("requested_decision_key") != expected_key
+                    or semantic.get("decision_key") not in (None, expected_key)
+                    or type(semantic.get("parameter_binding_verified")) is not bool
+                    or semantic.get("business_outcome_observed") is not False):
+                raise ValueError("finite HolySite action lost its original definition/parameter binding")
+            parameter = semantic.get("parameter_holy_site_id")
+            if parameter is not None and (type(parameter) is not int or parameter != subject_id):
+                raise ValueError("finite HolySite action crossed the selected full HolySite ID")
+            if semantic["parameter_binding_verified"] and (semantic["decision_key"] != expected_key or parameter != subject_id):
+                raise ValueError("verified HolySite parameters lack the actual fixed definition/target")
+            if value.get("native_dispatch_attempted") is True and not semantic["parameter_binding_verified"]:
+                raise ValueError("original HolySite dispatch lacked full native source parameters")
         if type(value.get("native_dispatch_attempted")) is not bool:
             raise ValueError("HolySite native dispatch attempt availability is missing")
         if value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
@@ -220,9 +266,12 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                 raise ValueError("HolySite adoption entry has no native visibility/receiver observation")
             if entry.get("native_adoption_legality_observed") is not False or entry.get("decision_confirm_invoked") is not False:
                 raise ValueError("opening a parameterized decision cannot claim legal adoption or confirmation")
-            if value["dispatch_invoked"] and (not entry["visibility_observed"] or not entry["adopt_visible"]
-                    or entry["regular_visible"] or entry["eminent_visible"] or not entry["receiver_bound"]):
-                raise ValueError("HolySite adoption entry lacks exclusive semantic binding")
+            if value["dispatch_invoked"]:
+                expected_visibility = ((True, False, False) if holy_site_action in (None, "adopt") else
+                                       (False, False, True) if holy_site_action == "demote" else (False, True, False))
+                if (not entry["visibility_observed"] or not entry["receiver_bound"] or
+                        (entry["adopt_visible"], entry["regular_visible"], entry["eminent_visible"]) != expected_visibility):
+                    raise ValueError("HolySite decision entry lacks the requested native visibility and receiver binding")
         if operation=="confirm_site_adoption":
             confirm=value.get("holy_site_adoption_confirmation")
             if not isinstance(confirm,dict)or any(type(confirm.get(k))is not bool for k in (

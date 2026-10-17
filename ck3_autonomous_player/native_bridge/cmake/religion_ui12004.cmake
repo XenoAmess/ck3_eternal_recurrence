@@ -1,0 +1,16 @@
+# Include once after xar_ck3_bridge is defined. No older build fallback.
+option(XAR_ENABLE_RELIGION_UI12004_PRESENTATION "Exact 1.20.0.4 typed Faith/Character presentation candidate" OFF)
+target_sources(xar_ck3_bridge PRIVATE
+  "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004.cpp"
+  "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004_navigation.cpp")
+if(XAR_ENABLE_RELIGION_UI12004_PRESENTATION)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_RELIGION_UI12004_PRESENTATION=1)
+endif()
+if(TARGET xar_ck3_ingame_ui_navigation_v1_test)
+  target_sources(xar_ck3_ingame_ui_navigation_v1_test PRIVATE
+    "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004.cpp"
+    "${CMAKE_CURRENT_LIST_DIR}/../src/religion_ui12004_navigation.cpp")
+  if(XAR_ENABLE_RELIGION_UI12004_PRESENTATION)
+    target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE XAR_ENABLE_RELIGION_UI12004_PRESENTATION=1)
+  endif()
+endif()
