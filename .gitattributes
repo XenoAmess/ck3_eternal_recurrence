@@ -688,3 +688,6 @@ docs/ck3-native-ai/research/sdk36-status-and-stall-edl/** -text whitespace=cr-at
 docs/ck3-native-ai/research/sdk36-status-and-stall-edl/family/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/research/sdk37-verified-vanilla-lifecycle/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/sdk37-verified-vanilla-lifecycle/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+docs/ck3-native-ai/research/sdk37-edl-incident-identity/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/research/sdk37-edl-incident-identity/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+tools/fixtures/edl_null_sequence_*.json -text

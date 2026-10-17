@@ -145,7 +145,7 @@ jobs:
       - name: Verify generated lifestyle catalogue and SDK resource agree
         run: python -B -X utf8 ck3_autonomous_player/native_bridge/tools/gen_lifestyle_all_catalogue_v3.py --check --python-output ck3_autonomous_player/src/xar_autoplayer/data/vanilla_lifestyle_catalog_12004.json
       - name: Test OBS delayed startup and owned close without processes or sockets
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_ck3_obs_startup.py tools/test_ck3_obs_capture.py tools/test_ck3_obs_capture_finalize.py tools/test_ck3_capture_closed_receipt.py tools/test_ck3_stall_edl.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_ck3_obs_startup.py tools/test_ck3_obs_capture.py tools/test_ck3_obs_capture_finalize.py tools/test_ck3_capture_closed_receipt.py tools/test_ck3_stall_edl.py tools/test_ck3_stall_edl_identity.py
       - name: Test repair status and resumed-progress evidence without CK3 or overlay
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_runtime_repair_status.py tools/test_runtime_repair_status_v2.py tools/test_repair_all_stops.py tools/test_runtime_repair_overlay_view.py tools/test_campaign_root_paused_boundary_readonly.py tools/test_repair_reason_v4.py tools/test_repair_v5.py tools/test_runtime_repair_sdk_transfer.py tools/test_runtime_repair_auto_applied.py tools/test_runtime_repair_current_fault_guard.py tests/test_shared_harness_reads.py
       - name: Test optional read recovery and family cadence without CK3

@@ -317,3 +317,9 @@ Root较新报告SDK36窗口32已383日，旧31仍失败12日；当前Game／SDK�
 ## 干净原版新局：继承binder小包
 
 SDK37 CLEAN03的无XAR ordinary-no-pact合同窄移植到公共binder，保持None与xar_off区别；实际profile空清单、固定日志审阅、环境SHA和Game代字段缺失／unknown／篡改均拒。公共M7两个旧off硬门共同识别精确新六字段合同，无SDK导入依赖或第二queue。31项／24子例在正式公共入口通过，public6／Native42、原回执不重放与同owner保留；fake传输不授自然死亡／SAVE实机信用。新局启动与录制仍由Root实际准入，不承接旧局成绩。[来源与边界](research/sdk37-verified-vanilla-lifecycle/README.md)。
+
+## 第十四小包：停顿身份与实际私有调用者
+
+第12 b25c96f2／Official39007487520、第13 be658a4e／Official39009194515及各Linear均success。旧EDL collector35452 exit1已证，不能称持续healthy；缺序号误用None为legacy AUTO身份。公共adapter仅两hunk，正int＋同已知SDK代才fallback，其他按incident ID，真歧义拒绝，13项／11子例通过。保原6区间及false标签的历史事实，不将其当最终有效等待；通用promo0.3未改、无编码或媒体正文读取。
+
+私有automatic_handoff的04f798窄delta已补存，normalize／Native／PID／actor／episode／分封／零重放守卫保留，实际不import公共M7。另附M6 host-death通知与M7 Tribal市场／authority的三份静态缺口，均无新API／实机信用、G2仍6/8。[有限来源索引](research/sdk37-edl-incident-identity/README.md)。新局从主菜单起录、旧成绩／状态零继承；稳定30年第一，速度后续<1再0.5，均未达。

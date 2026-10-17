@@ -1,0 +1,24 @@
+{
+  "status": "GREEN_OFFLINE_ONLY",
+  "formal_clean_queue": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\test_clean_frontend_contract.py",
+    "bytes": 13398,
+    "sha256": "4b02fd6b985cc6a8a3f09e9684002adea5bbbdaa7110523cbd52e4d45ca434c6"
+  },
+  "tests": 3,
+  "vanilla_binding_tests": 3,
+  "scope": [
+    "MainMenu actor/map absent allowed",
+    "ordered frontend and no Start replay",
+    "six-field actual queue SEM/CAP/SAVE/persist on fixtures",
+    "canonical actual AST loader",
+    "all new counters/cycles zero",
+    "missing map review rejects SAVE",
+    "clean window1/manualRepair0 exactly once",
+    "public6/native42 qualified natural frame",
+    "wrong Game/unknown pact rejected",
+    "exact CLI parsers"
+  ],
+  "fixtures_are_actual_runtime_acceptance": false,
+  "Game_SDK_MCP_OBS_or_live_Driver_calls": 0
+}

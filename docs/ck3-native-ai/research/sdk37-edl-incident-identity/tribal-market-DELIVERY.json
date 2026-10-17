@@ -1,0 +1,49 @@
+{
+  "schema": "xar.m7.tribal-market-inputs-delivery.v1",
+  "status": "ONE_STOCK_PROVIDER_GAP_AND_NATURAL_OPPORTUNITY_CONDITIONS_READY",
+  "at_utc": "2026-10-17T06:29:02.743127+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "artifacts": [
+    {
+      "relative": "REPORT.md",
+      "bytes": 3715,
+      "sha256": "0663f37c45bad4e0af7c1fcc69cd3aa993b5399d7764798cba1f8caee1c83f7c"
+    },
+    {
+      "relative": "PUBLIC-NOTE.md",
+      "bytes": 1254,
+      "sha256": "3d83e21206b6b430109ed2e93b68b4052e5c32c7511d61c29dcb53ea4f73e5d4"
+    },
+    {
+      "relative": "SOURCE-AUDIT.json",
+      "bytes": 6240,
+      "sha256": "7b81b60184a37969a526319890c40526fffa7b23680a4f9a65cfd296394176cf"
+    },
+    {
+      "relative": "audit_tribal_market_inputs.py",
+      "bytes": 8558,
+      "sha256": "98e453a28b7533c3cd5d369cd5bee10f47c941804e2975c2ab1170d4cf6b7e4b"
+    },
+    {
+      "relative": "research-plan.json",
+      "bytes": 1312,
+      "sha256": "1bb761d5bcfa11bd6fa161abe680782e859ce7596dcb3cc0624639291b4126ba"
+    }
+  ],
+  "building_key": "market_villages_01",
+  "stock_base_only": {
+    "gold": 75,
+    "prestige": 200,
+    "province_monthly_income": "0.40"
+  },
+  "existing_inputs": "Ten-slot native quote, typed current prestige and cash-v2 already exist; do not duplicate them.",
+  "missing_truth": "Actual Tribal scene/quote/resource-slot identity and budget; authored target coverage; non-gold typed submit/debit/material result qualification. Python and Native both deliberately gold-only.",
+  "G2": "6/8 unchanged; M7 incomplete",
+  "production_patch": null,
+  "Game_Native_MCP_SDKserver_OBS_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "EXE_reads": 0,
+  "old_tests_replayed": 0,
+  "finite_static_audit_actual_runs": 1,
+  "new_frontdoor_gate": false
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "xar.edl-identity-focused-verification/v1",
+  "status": "GREEN",
+  "at_utc": "2026-10-17T06:32:44.184522+00:00",
+  "command": [
+    "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "-B",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\test_focused.py"
+  ],
+  "actual_test_count": 8,
+  "actual_elapsed_seconds": 0.121,
+  "test_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\test_focused.py",
+    "sha256": "dc8eddce9256743fa386b75da60f6188f1afa34502c5e5f51e981c5af004f978",
+    "bytes": 7297
+  },
+  "actual_old_crash_reproduced": true,
+  "future_empty_seed_second_non_auto_silent_loss_reproduced_before_fix": true,
+  "actual_six_waits_preserved_in_new_collector_replay": true,
+  "withdrawal_never_creates_false_edit_interval": true,
+  "positive_same_namespace_legacy_matching_retained": true,
+  "ambiguous_true_positive_still_rejected": true,
+  "Game_MCP_OBS_Desktop_calls": 0,
+  "video_body_bytes_read": 0
+}

@@ -1,0 +1,77 @@
+{
+  "schema": "xar.m6.feast-host-death-stock-source-audit.v1",
+  "at_utc": "2026-10-17T06:15:18.679612+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "inputs": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\feast.txt",
+      "bytes": 136921,
+      "sha256": "fbc2e6e3f74bc8c2db1bb1eb01609aa7cf50e9546671a12617301f175be84598"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\activities\\feast_activity\\feast_events.txt",
+      "bytes": 66858,
+      "sha256": "f5820211444e7dbaf0a318adf65bebf4ca581d3a4e9f381add63d3bf02aaf77e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\activity_feast_stage5_start_formal_consumer.py",
+      "bytes": 31716,
+      "sha256": "a064d41add145418f6f72a09dbb007bd0efc9eee03a90b456bb49c69302f82c1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\activity_feast_terminal_outcome_v1.py",
+      "bytes": 5534,
+      "sha256": "b24bdd23bcbf0139605a7ce98f849ca850b471e33d2d661e9fa9709aef3fa692"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\interaction_offline_analysis.py",
+      "bytes": 9269,
+      "sha256": "a96fbbb20836a237126560e0901690e39f534061e1754ccdfc69b0bea1bcddfc"
+    }
+  ],
+  "stock_callback": {
+    "on_host_death_line": 60,
+    "block_sha256": "e70979b42fea37e7ee173fd78f2a0fbf8b41d084acf78953b4905edd785962ab",
+    "observed": "Alive attending characters notified through .5003; host_var player_heir notified through .0800; both delayed1day",
+    "does_not_prove": "Native terminal flags, actual callback execution, material reward, or engine-wide host inheritance"
+  },
+  "events": [
+    {
+      "event_key": "feast.5003",
+      "source_line": 1059,
+      "definition_sha256": "01310f12e336d53695a29c5bc17c6eb76d79b38aef90278ccdac2a7f24b7a400",
+      "source_character_type": true,
+      "authored_options": 1,
+      "direct_option_effects": "custom tooltip only in held source",
+      "native_option_identity_or_availability_proven": false
+    },
+    {
+      "event_key": "feast.0800",
+      "source_line": 3119,
+      "definition_sha256": "f224e05ad9c48894e37b0029a2bbda3a5175a76773754b6943fc779dcb747450",
+      "source_character_type": true,
+      "authored_options": 1,
+      "direct_option_effects": "custom tooltip only in held source",
+      "native_option_identity_or_availability_proven": false
+    }
+  ],
+  "existing_consumer": {
+    "function_lines": [
+      421,
+      469
+    ],
+    "actor_mismatch_result_line": 449,
+    "post_query_line": 459,
+    "status": "lifecycle_other_actor_or_frame",
+    "terminal_credit": false,
+    "property": "Resolved original host differs from current paused actor: returns an observation result before the native post read; does not synthesize terminal, reward, or new Start"
+  },
+  "remaining_gap": "No actual old-host terminal/material receipt across inheritance is supplied. Heir notification/actor change alone cannot close the original M6 activity lifecycle.",
+  "next_evidence": "Reuse existing matching full Activity ID+original actor+type native retained terminal and independent material if actually available; otherwise keep lifecycle unknown and let ordinary successor gameplay continue. No new provider is justified by this static slice.",
+  "runtime_or_M6_acceptance": false,
+  "source_changes": 0,
+  "old_tests_replayed": 0,
+  "Game_Native_MCP_OBS_Desktop_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "EXE_reads": 0
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "xar.m7.tribal-authority-boundary-delivery.v1",
+  "status": "FOLLOWUP_DEMAND_SOURCE_BOUNDARY_COMPLETE_NO_IMPLEMENTATION",
+  "at_utc": "2026-10-17T06:37:36.371598+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "artifacts": [
+    {
+      "relative": "REPORT.md",
+      "bytes": 2184,
+      "sha256": "6ddb7754d6376942dcff23cafbf99ed396801836770c2518311e752b33e491b4"
+    },
+    {
+      "relative": "SOURCE-BOUNDARY.json",
+      "bytes": 4054,
+      "sha256": "4dedb50c236e57b15b24d41843606f288ef8743f0069889c53dca4e9f1c1250e"
+    },
+    {
+      "relative": "audit_authority.py",
+      "bytes": 4800,
+      "sha256": "f1ff577aa8d8ecd45d14c9b8b3e0d1ca832cc61e321157dfda06dd87063a96e7"
+    }
+  ],
+  "conclusion": "Read and write Crown contracts exclude Tribal; separate Tribal cooldown has innovation-dependent bypass. Not a selector-only rename.",
+  "G2": "6/8 unchanged",
+  "production_patch": null,
+  "runtime_calls": 0,
+  "old_tests_replayed": 0,
+  "source_audit_actual_runs": 1
+}

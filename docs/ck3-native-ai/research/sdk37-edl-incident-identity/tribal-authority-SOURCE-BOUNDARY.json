@@ -1,0 +1,88 @@
+{
+  "schema": "xar.m7.tribal-authority-read-write-boundary.v1",
+  "at_utc": "2026-10-17T06:35:32.146115+00:00",
+  "inputs": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\laws\\00_realm_laws.txt",
+      "bytes": 78650,
+      "sha256": "e44c43fac8a2965f50b414863957339d3d86976560cb1f8eee659a7bf4057e29"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\realm_law_paused_private_transport.py",
+      "bytes": 17277,
+      "sha256": "dc20c3b8bc347702901de9bbfc9bf1f6d69b39fb1cc43c9650f28e2e226e5721"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\realm_law_formal_private_transport.py",
+      "bytes": 15534,
+      "sha256": "6f54b30fde3c068bbb5427bd1d9b36cda2326b5487cb42dbfa30d687c105e6a9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\crown_authority_policy_v1.py",
+      "bytes": 4599,
+      "sha256": "a0c157cb15c517bea94e08f106a6209cd5621dfc0651769f2f11067e5600721d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_action_mailbox.cpp",
+      "bytes": 20790,
+      "sha256": "c9a4a25aadc9aa88cba351e4e1ed5a37496df8edb976b5d002938335da6ba44f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\research\\ck3_12002_realm_law_final_terms_abi.json",
+      "bytes": 4173,
+      "sha256": "742fb21696e5851b490a69aaef3aeb21450a5e2fe98b95f53517c3840b1ededd"
+    }
+  ],
+  "stock": {
+    "target": "tribal_authority_0 -> tribal_authority_1",
+    "group": "tribal_authority",
+    "definition_line": 310,
+    "cooldown_variable": "tribal_authority_cooldown",
+    "authored_cooldown_years": 10,
+    "upgrade_trigger": "For0->1: NOT(cooldown present AND innovation_all_things absent). Native final legality remains required.",
+    "cost_symbol": "increase_tribal_authority_prestige_cost, conditional on current law0; no current numeric quote.",
+    "result_flags": [
+      "can_have_tributaries",
+      "can_change_succession_laws",
+      "imprisonment_toggle_on"
+    ],
+    "not_a_result": "No partition removal or material improvement is proved by these flags alone."
+  },
+  "current_routes": {
+    "readonly_group_keys": [
+      "crown_authority",
+      "succession_order_laws"
+    ],
+    "formal_python": "Requires crown_authority group and crown_authority_ candidate prefix",
+    "native_action_parser": "Rejects non-crown group/key; changing only policy target names cannot submit Tribal laws",
+    "cooldown": "Existing crown_authority_cooldown DTO/observer cannot be relabeled as Tribal cooldown"
+  },
+  "reuse_note": {
+    "old_12002_native_cost_slots": [
+      "gold",
+      "prestige",
+      "piety",
+      "renown",
+      "influence",
+      "herd",
+      "treasury",
+      "treasury_or_gold",
+      "merit",
+      "barter_goods"
+    ],
+    "qualification": "Historical law ABI names are a starting point, not automatic1.20.0.4 construction/Tribal live-slot proof. Typed prestige balance already exists; do not duplicate the raw getter."
+  },
+  "next_natural_opportunity": [
+    "Actual current Tribal actor/frame and active group/key; never substitute old crown rows",
+    "Applicable read-only Tribal candidate, native final can_enact/reason, complete native price and typed balances",
+    "Exact Tribal variable/cooldown and innovation condition, not Crown timer or wall-clock assumption",
+    "Original once-only independent law/resource/succession/title material, following and matching checkpoint/cold without replay"
+  ],
+  "scope": "Source/provider gap only; no Tribal call or implemented reader/action/provider. Current ordinary game/recording stay independent.",
+  "G2": "6/8 unchanged; M7 incomplete",
+  "Native_Game_MCP_SDKserver_OBS_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "EXE_reads": 0,
+  "old_tests_replayed": 0,
+  "production_patch": null
+}

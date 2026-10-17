@@ -1,0 +1,54 @@
+{
+  "schema": "xar.clean-campaign.edl-identity02-ready/v1",
+  "status": "FILE_ONLY_READY_NO_NEW_RUNTIME_FACTS",
+  "parent_source_pins": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\new-campaign-frontend-recording01\\SOURCE-PINS.json",
+    "sha256": "3b0d72d3698f9a06c63c484ae179dee4cd12e033758b54fc3e2a3413d473b382",
+    "bytes": 22456
+  },
+  "source_pins": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\new-campaign-frontend-recording02\\SOURCE-PINS.json",
+    "sha256": "f77f347bb9cac3a52dd5c427cc7a1255182913f231d4288ece504ab5e2d5fa2b",
+    "bytes": 22383
+  },
+  "start_entry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\new-campaign-frontend-recording02\\start_clean_presentation.py",
+    "sha256": "4bfbcf2753bf9aeda06d1acb2ce371f4252b89d6f911b4cbce87f6b63b00e983",
+    "bytes": 13668
+  },
+  "changed_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\new-campaign-frontend-recording02\\edl-adapter\\ck3_stall_edl.py",
+    "sha256": "2465be62f1dd527d7b821f4df8f6f53933b2148afc960592116449d6b31b4faa",
+    "bytes": 9714
+  },
+  "public_scoped_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\ck3-adapter-identity.patch",
+    "sha256": "6aca7d9fb12cf3a2e282e5b8c8b40c745a5869844ddd8b36326ff28717ab4d3c",
+    "bytes": 2114
+  },
+  "verification": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\FOCUSED-VERIFICATION.json",
+    "sha256": "650fbf7f1766197a505d0c93b278b9aa5d95258b8d7ea84ebb9993316d101826",
+    "bytes": 1074
+  },
+  "actual_projection": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\ACTUAL-TINY-PROJECTION.json",
+    "sha256": "6b93446bf2bcaaa8f3d19df4e01f67a9e3e1aee4e5502bba9e68d5899a890acd",
+    "bytes": 4640
+  },
+  "hardlinked_unchanged_source_count": 74,
+  "cow_source_count": 1,
+  "promo0_3_wheel_unchanged": true,
+  "existing_prepared_OBS_profile_reused": true,
+  "actual_new_Game": null,
+  "actual_new_recording": null,
+  "old_collector_exit": "actual exit1 observed by Root; not claimed healthy or normal",
+  "SDK_1319_source_unchanged": true,
+  "runtime_operations": 0,
+  "watchdog_new_unarmed_packet": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-recording-watchdog02",
+  "watchdog_changed_only_source_directory_paths": [
+    "launch_watchdog.py",
+    "root_recording_source_epoch_clean.py"
+  ],
+  "new_reservation_bytes": 0
+}

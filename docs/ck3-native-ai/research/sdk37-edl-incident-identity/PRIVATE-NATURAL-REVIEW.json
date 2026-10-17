@@ -1,0 +1,25 @@
+{
+  "status": "GREEN_OFFLINE_ONLY",
+  "base": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p37_automatic_natural_succession_handoff.py",
+    "bytes": 37652,
+    "sha256": "4d6b7864a6a6d47c0f282233c3c041763e8e946927b3329795e47a2a3c0dba74"
+  },
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\root_p37_automatic_natural_succession_handoff.py",
+    "bytes": 38656,
+    "sha256": "4c4da3f19f998b049bf1814533e03d8596e6b64ca2cb2502a30e2859bc835dfd"
+  },
+  "patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\private-natural-no-pact.patch",
+    "bytes": 2276,
+    "sha256": "04f7988a9117ed886e201caf69633a00ee5d234b0cf5f9a8904ad719e8d800f6"
+  },
+  "actual_caller": "formal full_loop imports this private automatic_handoff; public M7 is not imported",
+  "tests": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\test_clean_frontend_contract.py",
+    "bytes": 13398,
+    "sha256": "4b02fd6b985cc6a8a3f09e9684002adea5bbbdaa7110523cbd52e4d45ca434c6"
+  },
+  "SDK_schema_native_actor_episode_guards_unchanged": true
+}

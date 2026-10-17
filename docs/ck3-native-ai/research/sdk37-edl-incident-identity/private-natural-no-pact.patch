@@ -1,0 +1,43 @@
+--- a/root_p37_automatic_natural_succession_handoff.py
++++ b/root_p37_automatic_natural_succession_handoff.py
+@@ -18,6 +18,30 @@
+ def require(condition, message):
+     if not condition:
+         raise ValueError("ordinary succession handoff denied: " + message)
++
++def ordinary_no_pact_lifecycle(value):
++    """Consume a frozen lifecycle; do not infer mod absence from None.
++
++    The legacy xar_off branch keeps its original admission. A new vanilla
++    binding is produced only after the SDK verifies profile/startup evidence.
++    This queue consumer stays independent of SDK imports.
++    """
++    if not isinstance(value, dict) or value.get("lifecycle") != "ordinary_campaign_succession":
++        return False
++    if value.get("xar_enabled") == "xar_off":
++        return True
++    import re
++    absence = "absent_by_verified_xar_mod_not_loaded"
++    return (set(value) == {"schema", "lifecycle", "xar_enabled", "pact_contract",
++                           "source", "environment_sha256"}
++            and value.get("schema") == "xar.ck3.succession-lifecycle-binding/v1"
++            and value.get("xar_enabled") is None
++            and value.get("pact_contract") == absence
++            and value.get("source") == absence
++            and isinstance(value.get("environment_sha256"), str)
++            and re.fullmatch(r"[0-9a-f]{64}", value["environment_sha256"]) is not None)
++
++
+ 
+ def qualified_frame(body, queue, normalize, *, terminal, anchor=None):
+     require(isinstance(body, dict), "semantic object absent")
+@@ -30,8 +54,7 @@
+             and (not terminal or body.get("one_life_terminal_reason") == "played_character_changed")
+             and normalize(body.get("succession_lifecycle")) == queue.expected_lifecycle_binding,
+             "terminal/lifecycle differs")
+-    require(queue.expected_lifecycle_binding.get("lifecycle") == "ordinary_campaign_succession"
+-            and queue.expected_lifecycle_binding.get("xar_enabled") == "xar_off",
++    require(ordinary_no_pact_lifecycle(queue.expected_lifecycle_binding),
+             "ordinary no-pact campaign required")
+     require(isinstance(diagnostic, dict) and diagnostic.get("connected") is True,
+             "connected Native diagnostics absent")

@@ -1,0 +1,44 @@
+{
+  "schema": "xar.publication-official-CI-terminal.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T06:38:42.737002+00:00",
+  "Official": {
+    "conclusion": "success",
+    "createdAt": "2026-10-17T06:14:53Z",
+    "databaseId": 39009194515,
+    "headSha": "be658a4e209ebf44f604b5239ab2e0e2ca12edb1",
+    "name": "Official Runner CI",
+    "status": "completed",
+    "updatedAt": "2026-10-17T06:35:50Z",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39009194515"
+  },
+  "jobs": [
+    {
+      "databaseId": 117327841272,
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-17T06:14:55Z",
+      "completedAt": "2026-10-17T06:35:49Z",
+      "steps_success": 86,
+      "steps_skipped": 20,
+      "new_vanilla_step": [
+        {
+          "completedAt": "2026-10-17T06:20:13Z",
+          "conclusion": "success",
+          "name": "Test verified vanilla lifecycle and retained successor queue without CK3",
+          "number": 31,
+          "startedAt": "2026-10-17T06:20:08Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "Linear": {
+    "conclusion": "success",
+    "databaseId": 39009194700,
+    "headSha": "be658a4e209ebf44f604b5239ab2e0e2ca12edb1",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39009194700"
+  },
+  "Game_MCP_Native_SDK_OBS_calls": 0
+}

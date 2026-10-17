@@ -113,9 +113,15 @@ def sync_status(old, status_path):
     if not matches:
         # Older manually seeded waits carry their original AUTO sequence.
         sequence = state.get('original_request', {}).get('sequence')
-        matches = [i for i in config['intervals'] if i.get('original_auto_sequence') == sequence
-                   and i.get('game_pid') == binding['game_pid']
-                   and (not i.get('source_sdk_prefix') or i['source_sdk_prefix'] == binding.get('sdk_prefix'))]
+        namespace = binding.get('sdk_prefix')
+        # Missing sequences are not an AUTO identity. Only a positive integer
+        # in the same known SDK namespace can claim a legacy seeded wait.
+        if type(sequence) is int and sequence > 0 and isinstance(namespace, str) and namespace:
+            matches = [i for i in config['intervals']
+                       if type(i.get('original_auto_sequence')) is int
+                       and i['original_auto_sequence'] == sequence
+                       and i.get('game_pid') == binding['game_pid']
+                       and i.get('source_sdk_prefix') == namespace]
     if len(matches) > 1:
         raise ValueError('Incident ambiguously matches multiple waits')
     if state.get('withdrawn') is True or state.get('EDL_wait_interval_allowed') is False:
@@ -153,7 +159,8 @@ def sync_status(old, status_path):
         item = {'id': identity, 'incident_id': state['incident_id'],
             'game_pid': binding['game_pid'], 'start_at_utc': ended, 'end_at_utc': None,
             'start_basis': 'actual_failed_response_end' if response.get('ended_at_utc') else 'status_detection_time_only',
-            'halt_receipt': original, 'original_auto_sequence': state.get('original_request', {}).get('sequence')}
+            'halt_receipt': original, 'original_auto_sequence': state.get('original_request', {}).get('sequence'),
+            'source_sdk_prefix': binding.get('sdk_prefix')}
         config['intervals'].append(item)
     item.update(incident_id=state['incident_id'], brief_reason=state['pause_reason'])
     proof = state.get('recovery_proof') or {}

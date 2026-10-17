@@ -1,0 +1,151 @@
+{
+  "schema": "xar.sdk37-edl-identity-public.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "originals": [
+    {
+      "archive": "EDL-DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\DELIVERY.json",
+      "bytes": 2723,
+      "sha256": "c08fe9b09a8f30e3a6834259874da9a374b849479d444bfec77ae5b1bb024ec7"
+    },
+    {
+      "archive": "CK3-adapter-identity.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\ck3-adapter-identity.patch",
+      "bytes": 2114,
+      "sha256": "6aca7d9fb12cf3a2e282e5b8c8b40c745a5869844ddd8b36326ff28717ab4d3c"
+    },
+    {
+      "archive": "OWNER-FOCUSED-VERIFICATION.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\FOCUSED-VERIFICATION.json",
+      "bytes": 1074,
+      "sha256": "650fbf7f1766197a505d0c93b278b9aa5d95258b8d7ea84ebb9993316d101826"
+    },
+    {
+      "archive": "PUBLIC-EDL-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-fourteenth-prep01\\EDL-PORTABLE-FIRST.json",
+      "bytes": 525,
+      "sha256": "9759fb99c41ca3d94623851e9b005b7b09db2576f8177f70d8ecb48cdbda3b43"
+    },
+    {
+      "archive": "PRIVATE-NATURAL-REVIEW.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\PRIVATE-NATURAL-REVIEW.json",
+      "bytes": 1310,
+      "sha256": "393da5d5f0f590ab2d8f72bdb7ded853e5c3e972c992b219e3d3fca0944e0a3c"
+    },
+    {
+      "archive": "private-natural-no-pact.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\private-natural-no-pact.patch",
+      "bytes": 2276,
+      "sha256": "04f7988a9117ed886e201caf69633a00ee5d234b0cf5f9a8904ad719e8d800f6"
+    },
+    {
+      "archive": "PRIVATE-CLEAN-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\TESTS.json",
+      "bytes": 893,
+      "sha256": "8eb8278082668d7bde1ddbfceebaa16457a339a7d0eeed29a0042ed02c68c765"
+    },
+    {
+      "archive": "OFFICIAL-THIRTEENTH-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-thirteenth-prep01\\OFFICIAL-THIRTEENTH-CI-FINAL.json",
+      "bytes": 1467,
+      "sha256": "eaa65badd38c1e51f701faafa21a377e34d66aa48f9a9497a18dce12df3ef2a5"
+    },
+    {
+      "archive": "feast-host-death-REPORT.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m6-feast-host-death-static01\\REPORT.md",
+      "bytes": 2660,
+      "sha256": "e0fbee64b9c1d36fc7b35d068265cce1e082cfe22715e1db9e01c7b001f5d024"
+    },
+    {
+      "archive": "feast-host-death-SOURCE-AUDIT.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m6-feast-host-death-static01\\SOURCE-AUDIT.json",
+      "bytes": 3835,
+      "sha256": "95f95af0d9e83f89d2e0c933c740a78ce3f07bd502b6fe2238af2ce08e4c6bba"
+    },
+    {
+      "archive": "feast-host-death-DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m6-feast-host-death-static01\\DELIVERY.json",
+      "bytes": 1443,
+      "sha256": "d29d017f1432fcb2c8281e341011ebe0b643246682291c7fbc0b0e0965077c8c"
+    },
+    {
+      "archive": "tribal-market-REPORT.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\REPORT.md",
+      "bytes": 3715,
+      "sha256": "0663f37c45bad4e0af7c1fcc69cd3aa993b5399d7764798cba1f8caee1c83f7c"
+    },
+    {
+      "archive": "tribal-market-SOURCE-AUDIT.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\SOURCE-AUDIT.json",
+      "bytes": 6240,
+      "sha256": "7b81b60184a37969a526319890c40526fffa7b23680a4f9a65cfd296394176cf"
+    },
+    {
+      "archive": "tribal-market-DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\DELIVERY.json",
+      "bytes": 1831,
+      "sha256": "6f16c9e286d674b71794297a91045b8f0c297f7c4a41d3b73b15a3c94806c9ea"
+    },
+    {
+      "archive": "tribal-market-PUBLIC-NOTE.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\PUBLIC-NOTE.md",
+      "bytes": 1254,
+      "sha256": "3d83e21206b6b430109ed2e93b68b4052e5c32c7511d61c29dcb53ea4f73e5d4"
+    },
+    {
+      "archive": "tribal-authority-REPORT.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\authority-boundary\\REPORT.md",
+      "bytes": 2184,
+      "sha256": "6ddb7754d6376942dcff23cafbf99ed396801836770c2518311e752b33e491b4"
+    },
+    {
+      "archive": "tribal-authority-DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\authority-boundary\\DELIVERY.json",
+      "bytes": 1037,
+      "sha256": "859682c6378fd3d61c876b25391476af05604dec462bb7af1a64fcc396720350"
+    },
+    {
+      "archive": "tribal-authority-SOURCE-BOUNDARY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-g2-m7-tribal-market-inputs01\\authority-boundary\\SOURCE-BOUNDARY.json",
+      "bytes": 4054,
+      "sha256": "4dedb50c236e57b15b24d41843606f288ef8743f0069889c53dca4e9f1c1250e"
+    }
+  ],
+  "public": [
+    {
+      "path": "tools/ck3_stall_edl.py",
+      "normalized_sha256": "2465be62f1dd527d7b821f4df8f6f53933b2148afc960592116449d6b31b4faa"
+    },
+    {
+      "path": "tools/test_ck3_stall_edl_identity.py",
+      "normalized_sha256": "2781a67f9b1d5a0f6b1936090457b5e2068aff4f58b812b1a9fb4d8f34467ee1"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "normalized_sha256": "48be41cab2dd85622997190a87e47c643e986b8e120a4995d6365d89a552bc32"
+    }
+  ],
+  "public_raw": [
+    {
+      "path": "tools/fixtures/edl_null_sequence_projection.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\ACTUAL-TINY-PROJECTION.json",
+      "bytes": 4640,
+      "sha256": "6b93446bf2bcaaa8f3d19df4e01f67a9e3e1aee4e5502bba9e68d5899a890acd"
+    },
+    {
+      "path": "tools/fixtures/edl_null_sequence_previous.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-edl-null-sequence-repair01\\ACTUAL-PREVIOUS-EDL.json",
+      "bytes": 34783,
+      "sha256": "fca9fe2dd78088aebbd3df7d24146e0b36b0e480e17f3dc9da7558a85bfed94c"
+    }
+  ],
+  "generic_promo_0_3_changed": false,
+  "old_collector_35452": "actual exit1; never claimed current healthy by this package",
+  "old_EDL_false_labels": "exact historical metadata retained; not rendered or requalified",
+  "current_private_frontend_or_collector_modified": false,
+  "private_natural_patch": "archive only; actual new runtime use requires Root receipt",
+  "Game_Native_SDK_MCP_OBS_calls": 0,
+  "Driver_SAVE_media_body_bytes_read": 0,
+  "all_new_game_or_recording_runtime_facts_claimed": false,
+  "retention_review_at_utc": "2026-10-19T06:39:48.266647+00:00"
+}

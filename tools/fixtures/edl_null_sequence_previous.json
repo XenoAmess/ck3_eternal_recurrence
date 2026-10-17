@@ -1,0 +1,712 @@
+{
+  "schema": "xar.recording-stall-edit-decision-list/v1",
+  "created_at_utc": "2026-10-17T05:23:26.455308+00:00",
+  "status": "METADATA_EDIT_DECISIONS_ONLY",
+  "policy": {
+    "mode": "speedup",
+    "keep_error_head_seconds": 2.0,
+    "keep_recovery_tail_seconds": 2.0,
+    "max_recorded_middle_seconds": 4.0,
+    "speed_factor_upper_bound": null,
+    "wait_end": "first_actual_calendar_advancement"
+  },
+  "segments": [
+    {
+      "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+      "creator_sdk_prefix_preserved": "p27",
+      "video_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d.mkv",
+      "started_at_utc": "2026-10-16T16:24:12.542207+00:00",
+      "game_pid": 6068,
+      "game_creation_filetime": 134366412679616931,
+      "duration_seconds": 35329.033,
+      "state": "CLOSED_RETAINED_RECEIPTS",
+      "recording_limit_seconds": null,
+      "recording_limit_bytes": null,
+      "source_decision_overlay_retained": true,
+      "started_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\started.json",
+        "sha256": "633ba94338074c9c3551b3f27e4f0f038c5dd30b747297d8335948274aa4d12a"
+      },
+      "media_bytes_from_receipt": 21225495814,
+      "stored_media_sha256": "e6a71e45a2fafbafd99f4932fc4816cca364865bf4fde498703a7210d40554c3",
+      "stored_hash_not_recomputed": true,
+      "completed_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\completed.json",
+        "sha256": "466c317891d20a01f11bb2f20fe400ed64f2fafe9445d511650fabded986ca66"
+      },
+      "closed_probe_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\closed-file-probe.json",
+        "sha256": "042fefaf19610e119e8bb48c263b042f94f3bc1b7bfa1071468d42d152b82dbc"
+      },
+      "cleanup_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\cleanup.json",
+        "sha256": "e8e57095fe578a1e196d80ea817400d2bdabc4e5689c062b07cc8fde4ad9efe0"
+      },
+      "final_hash_receipt_ended_at_utc": "2026-10-17T02:16:43.512865+00:00",
+      "final_hash_ended_is_not_capture_stop": true,
+      "closed_probe_file_write_utc": "2026-10-17T02:13:05.278402+00:00",
+      "capture_end_estimate_basis": "started wallclock + retained media duration; not PTS-aligned",
+      "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+      "frame_exact": false
+    },
+    {
+      "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+      "creator_sdk_prefix_preserved": "p35",
+      "video_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7.mkv",
+      "started_at_utc": "2026-10-17T02:49:54.643445+00:00",
+      "game_pid": 263980,
+      "game_creation_filetime": 134366781612159835,
+      "duration_seconds": null,
+      "state": "ACTIVE_NOT_PROBED",
+      "recording_limit_seconds": null,
+      "recording_limit_bytes": null,
+      "source_decision_overlay_retained": true,
+      "started_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7\\started.json",
+        "sha256": "f91102da810289e0218ae94514a3d554de1ccc64a115cc7e09368260ca1adafd"
+      },
+      "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+      "frame_exact": false
+    }
+  ],
+  "source_gaps": [
+    {
+      "from_session": "f333b9bb-4ace-48eb-886a-959a1578607d",
+      "to_session": "42cd404e-1838-4d64-8493-12022d93e2e7",
+      "estimated_start_utc": "2026-10-17T02:13:01.575207+00:00",
+      "estimated_end_utc": "2026-10-17T02:49:54.643445+00:00",
+      "estimated_seconds": 2213.068238,
+      "classification": "NO_RECORDED_SOURCE_IN_SUPPLIED_SEGMENTS",
+      "boundary_precision": "unverified recording-start wallclock plus retained duration",
+      "synthetic_gap_footage_created": false
+    }
+  ],
+  "intervals": [
+    {
+      "id": "p34-full35",
+      "game_pid": 6068,
+      "start_at_utc": "2026-10-17T01:47:06.933906+00:00",
+      "end_at_utc": "2026-10-17T01:55:15.570204+00:00",
+      "stop_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0035-1-result.json",
+        "sha256": "10556af9c038179be7651abc00980f4ecbb08745dbd182c6d1740c8dc26bacbd"
+      },
+      "stop_basis": "actual_failed_FULL_ended_at_utc",
+      "first_progress_identified_by": "Root actual timeline; not merely repair ACK or badge",
+      "business_credit_changed_by_edit": 0,
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T01:55:15.570204+00:00",
+        "starting_date_raw": 53481648,
+        "ending_date_raw": 53481672,
+        "date_delta_raw": 24,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0069-1-result.json",
+        "sha256": "3bcbb161fef5856b84645939894413da6156e398e1251b76b64e0c6fba30ab34"
+      },
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "wallclock_wait_seconds": 488.636298,
+      "recorded_wait_seconds": 488.636298,
+      "recorded_middle_seconds": 484.636298,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 121.1590745,
+      "edit_actions": [
+        {
+          "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T01:47:06.933906+00:00",
+          "wallclock_end_utc": "2026-10-17T01:47:08.933906+00:00",
+          "estimated_source_start_seconds": 33774.391699,
+          "estimated_source_end_seconds": 33776.391699,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T01:47:08.933906+00:00",
+          "wallclock_end_utc": "2026-10-17T01:55:13.570204+00:00",
+          "estimated_source_start_seconds": 33776.391699,
+          "estimated_source_end_seconds": 34261.027997,
+          "raw_seconds": 484.636298,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 121.1590745,
+          "output_seconds": 4.0
+        },
+        {
+          "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T01:55:13.570204+00:00",
+          "wallclock_end_utc": "2026-10-17T01:55:15.570204+00:00",
+          "estimated_source_start_seconds": 34261.027997,
+          "estimated_source_end_seconds": 34263.027997,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "source_gap_seconds": 0.0,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "source_sdk_prefix": "p34"
+    },
+    {
+      "id": "p34-full592-cold-handoff",
+      "game_pid": 6068,
+      "start_at_utc": "2026-10-17T01:59:17.976082+00:00",
+      "end_at_utc": "2026-10-17T03:03:07.518344+00:00",
+      "stop_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0592-1-result.json",
+        "sha256": "49d7ddfc17afbe1c4b5746b3a384b6ec5c477b4b1635ba589d00d06300442da7"
+      },
+      "stop_basis": "actual_failed_FULL_ended_at_utc",
+      "first_progress_identified_by": "Root actual timeline; not merely repair ACK or badge",
+      "business_credit_changed_by_edit": 0,
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T03:03:07.518344+00:00",
+        "starting_date_raw": 53483040,
+        "ending_date_raw": 53483064,
+        "date_delta_raw": 24,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0022-1-result.json",
+        "sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df"
+      },
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "wallclock_wait_seconds": 3829.542262,
+      "recorded_wait_seconds": 1616.474024,
+      "recorded_middle_seconds": 1612.474024,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 403.118506,
+      "edit_actions": [
+        {
+          "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T01:59:17.976082+00:00",
+          "wallclock_end_utc": "2026-10-17T01:59:19.976082+00:00",
+          "estimated_source_start_seconds": 34505.433875,
+          "estimated_source_end_seconds": 34507.433875,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "f333b9bb-4ace-48eb-886a-959a1578607d",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T01:59:19.976082+00:00",
+          "wallclock_end_utc": "2026-10-17T02:13:01.575207+00:00",
+          "estimated_source_start_seconds": 34507.433875,
+          "estimated_source_end_seconds": 35329.033,
+          "raw_seconds": 821.599125,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 403.118506,
+          "output_seconds": 2.038108181022084
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T02:49:54.643445+00:00",
+          "wallclock_end_utc": "2026-10-17T03:03:05.518344+00:00",
+          "estimated_source_start_seconds": 0.0,
+          "estimated_source_end_seconds": 790.874899,
+          "raw_seconds": 790.874899,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 403.118506,
+          "output_seconds": 1.961891818977916
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T03:03:05.518344+00:00",
+          "wallclock_end_utc": "2026-10-17T03:03:07.518344+00:00",
+          "estimated_source_start_seconds": 790.874899,
+          "estimated_source_end_seconds": 792.874899,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "source_gap_seconds": 2213.068238,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "source_sdk_prefix": "p34"
+    },
+    {
+      "id": "p35-full21-classifier",
+      "game_pid": 263980,
+      "start_at_utc": "2026-10-17T03:03:07.527525+00:00",
+      "end_at_utc": "2026-10-17T03:15:53.916210+00:00",
+      "stop_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0021-1-result.json",
+        "sha256": "62f746edfa30b4a5114a85aa6d685c378b817be6de2e84f77e58ad4b3fa7dfc3"
+      },
+      "stop_basis": "actual_failed_FULL_ended_at_utc",
+      "first_progress_identified_by": "Root actual timeline; not merely repair ACK or badge",
+      "business_credit_changed_by_edit": 0,
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T03:15:53.916210+00:00",
+        "starting_date_raw": 53483064,
+        "ending_date_raw": 53483088,
+        "date_delta_raw": 24,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0038-1-result.json",
+        "sha256": "a7397fd058cad0d8c4b78824edd31cd16a08011c82cb79c1f528fb95e103831c"
+      },
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "wallclock_wait_seconds": 766.388685,
+      "recorded_wait_seconds": 766.388685,
+      "recorded_middle_seconds": 762.388685,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 190.59717125,
+      "edit_actions": [
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T03:03:07.527525+00:00",
+          "wallclock_end_utc": "2026-10-17T03:03:09.527525+00:00",
+          "estimated_source_start_seconds": 792.88408,
+          "estimated_source_end_seconds": 794.88408,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T03:03:09.527525+00:00",
+          "wallclock_end_utc": "2026-10-17T03:15:51.916210+00:00",
+          "estimated_source_start_seconds": 794.88408,
+          "estimated_source_end_seconds": 1557.272765,
+          "raw_seconds": 762.388685,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 190.59717125,
+          "output_seconds": 4.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T03:15:51.916210+00:00",
+          "wallclock_end_utc": "2026-10-17T03:15:53.916210+00:00",
+          "estimated_source_start_seconds": 1557.272765,
+          "estimated_source_end_seconds": 1559.272765,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "source_gap_seconds": 0.0,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "incident_id": "4bdec35c56524a4e9dbaccc5f8ef2b3f",
+      "brief_reason": "录制恢复期间自动推进暂停",
+      "source_sdk_prefix": "p35"
+    },
+    {
+      "id": "p35-full210-boundary",
+      "game_pid": 263980,
+      "start_at_utc": "2026-10-17T03:41:41.046238+00:00",
+      "end_at_utc": "2026-10-17T03:56:03.699725+00:00",
+      "stop_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0210-1-result.json",
+        "sha256": "11c9cf08dbd5097dcc630a6c287d0e3ad7a36110be1ed516c3f5d237193bb49f"
+      },
+      "stop_basis": "actual_failed_FULL_ended_at_utc",
+      "first_progress_identified_by": "Root actual timeline; not merely repair ACK or badge",
+      "business_credit_changed_by_edit": 0,
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T03:56:03.699725+00:00",
+        "starting_date_raw": 53483928,
+        "ending_date_raw": 53483952,
+        "date_delta_raw": 24,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0252-1-result.json",
+        "sha256": "8fbbdf48ac2d78b0115e38c452700d1f43b96f18c403b17220ae8ed0fc57e452"
+      },
+      "incident_id": "0070a907b1424c68990743abe5b7cf3d",
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "wallclock_wait_seconds": 862.653487,
+      "recorded_wait_seconds": 862.653487,
+      "recorded_middle_seconds": 858.653487,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 214.66337175,
+      "edit_actions": [
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T03:41:41.046238+00:00",
+          "wallclock_end_utc": "2026-10-17T03:41:43.046238+00:00",
+          "estimated_source_start_seconds": 3106.402793,
+          "estimated_source_end_seconds": 3108.402793,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T03:41:43.046238+00:00",
+          "wallclock_end_utc": "2026-10-17T03:56:01.699725+00:00",
+          "estimated_source_start_seconds": 3108.402793,
+          "estimated_source_end_seconds": 3967.05628,
+          "raw_seconds": 858.653487,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 214.66337175,
+          "output_seconds": 4.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T03:56:01.699725+00:00",
+          "wallclock_end_utc": "2026-10-17T03:56:03.699725+00:00",
+          "estimated_source_start_seconds": 3967.05628,
+          "estimated_source_end_seconds": 3969.05628,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "source_gap_seconds": 0.0,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "source_sdk_prefix": "p35",
+      "original_auto_sequence": 247
+    },
+    {
+      "id": "p35-full314-counterpolicy",
+      "game_pid": 263980,
+      "start_at_utc": "2026-10-17T04:04:17.006896+00:00",
+      "end_at_utc": "2026-10-17T04:33:02.129193+00:00",
+      "stop_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0314-1-result.json",
+        "sha256": "2f7e6950ac2b633eebd8b2dcda380dd4b00617525d3a0935ab4b83f77ff67265"
+      },
+      "stop_basis": "actual_failed_FULL_ended_at_utc",
+      "first_progress_identified_by": "Root actual timeline; not merely repair ACK or badge",
+      "business_credit_changed_by_edit": 0,
+      "brief_reason": "战后保护策略没有选出后续行动",
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "edit_actions": [
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T04:04:17.006896+00:00",
+          "wallclock_end_utc": "2026-10-17T04:04:19.006896+00:00",
+          "estimated_source_start_seconds": 4462.363451,
+          "estimated_source_end_seconds": 4464.363451,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T04:04:19.006896+00:00",
+          "wallclock_end_utc": "2026-10-17T04:33:00.129193+00:00",
+          "estimated_source_start_seconds": 4464.363451,
+          "estimated_source_end_seconds": 6185.485748,
+          "raw_seconds": 1721.122297,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 430.28057425,
+          "output_seconds": 4.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T04:33:00.129193+00:00",
+          "wallclock_end_utc": "2026-10-17T04:33:02.129193+00:00",
+          "estimated_source_start_seconds": 6185.485748,
+          "estimated_source_end_seconds": 6187.485748,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T04:33:02.129193+00:00",
+        "starting_date_raw": 53484768,
+        "ending_date_raw": 53484792,
+        "date_delta_raw": 24,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0019-1-result.json",
+        "sha256": "510371739511928f32394f5feb79a1e32bb8f04d1229e980fc7b34d08b008b60"
+      },
+      "wallclock_wait_seconds": 1725.122297,
+      "recorded_wait_seconds": 1725.122297,
+      "recorded_middle_seconds": 1721.122297,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 430.28057425,
+      "source_gap_seconds": 0.0,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "incident_id": "68b891df455f4960941513b894b8f267",
+      "source_sdk_prefix": "p35",
+      "original_auto_sequence": 349
+    },
+    {
+      "id": "repair-incident-931274e4050546a784a08d2e36bd538d",
+      "incident_id": "0c9cea99edba4bcab01f5436862f12fe",
+      "game_pid": 263980,
+      "start_at_utc": "2026-10-17T04:46:19.927091+00:00",
+      "end_at_utc": "2026-10-17T04:47:06.511988+00:00",
+      "start_basis": "actual_failed_response_end",
+      "halt_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-queue\\ROOT-REQUEST-HALTED-1836.json",
+        "sha256": "ff6b52074c0370a4d4106a4d0d2e7100907bb5a7fa9add6a7ef68d9d59c3d935"
+      },
+      "original_auto_sequence": 1875,
+      "brief_reason": "自动推进受阻：state_changed",
+      "status": "CLOSED_WAIT_ACTUAL_PROGRESS",
+      "edit_actions": [
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_error_head",
+          "wallclock_start_utc": "2026-10-17T04:46:19.927091+00:00",
+          "wallclock_end_utc": "2026-10-17T04:46:21.927091+00:00",
+          "estimated_source_start_seconds": 6985.283646,
+          "estimated_source_end_seconds": 6987.283646,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "waiting_middle",
+          "wallclock_start_utc": "2026-10-17T04:46:21.927091+00:00",
+          "wallclock_end_utc": "2026-10-17T04:47:04.511988+00:00",
+          "estimated_source_start_seconds": 6987.283646,
+          "estimated_source_end_seconds": 7029.868543,
+          "raw_seconds": 42.584897,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "speedup",
+          "speed_factor": 10.64622425,
+          "output_seconds": 4.0
+        },
+        {
+          "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+          "role": "keep_actual_recovery_tail",
+          "wallclock_start_utc": "2026-10-17T04:47:04.511988+00:00",
+          "wallclock_end_utc": "2026-10-17T04:47:06.511988+00:00",
+          "estimated_source_start_seconds": 7029.868543,
+          "estimated_source_end_seconds": 7031.868543,
+          "raw_seconds": 2.0,
+          "PTS_mapping": "UNVERIFIED_WALLCLOCK_ANCHOR_ESTIMATE",
+          "frame_exact": false,
+          "action": "keep",
+          "speed_factor": 1.0,
+          "output_seconds": 2.0
+        }
+      ],
+      "recovery_evidence": {
+        "at_utc": "2026-10-17T04:47:06.511988+00:00",
+        "starting_date_raw": 53491344,
+        "ending_date_raw": 53491560,
+        "date_delta_raw": 216,
+        "source": "actual_AUTO_calendar_advance_receipt",
+        "frame_exact": false
+      },
+      "recovery_receipt": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\1911-1-result.json",
+        "sha256": "83b5e744cb83e072fcd65e09d369900537d44ba20a7adfef8885dfc5332d82d6"
+      },
+      "wallclock_wait_seconds": 46.584897,
+      "recorded_wait_seconds": 46.584897,
+      "recorded_middle_seconds": 42.584897,
+      "edited_middle_seconds": 4.0,
+      "edited_wait_seconds": 8.0,
+      "speed_factor": 10.64622425,
+      "source_gap_seconds": 0.0,
+      "normal_gameplay_after_wait_end_compressed": false,
+      "source_sdk_prefix": "p36"
+    }
+  ],
+  "markers": [
+    {
+      "id": "0070a907b1424c68990743abe5b7cf3d-repair-notice",
+      "at_utc": "2026-10-17T04:02:07.857449+00:00",
+      "kind": "repair_notice_separate_from_first_progress",
+      "interval_id": "p35-full210-boundary",
+      "does_not_extend_wait_end": true,
+      "actual_calendar_resumed_at_utc": "2026-10-17T03:56:03.699725+00:00",
+      "lag_after_actual_resume_seconds": 364.157724
+    },
+    {
+      "id": "68b891df455f4960941513b894b8f267-repair-notice",
+      "at_utc": "2026-10-17T04:43:21.114521+00:00",
+      "kind": "repair_notice_separate_from_first_progress",
+      "interval_id": "p35-full314-counterpolicy",
+      "does_not_extend_wait_end": true
+    },
+    {
+      "id": "931274e4050546a784a08d2e36bd538d-repair-notice",
+      "at_utc": "2026-10-17T04:57:57.799127+00:00",
+      "kind": "repair_notice_separate_from_first_progress",
+      "interval_id": "repair-incident-931274e4050546a784a08d2e36bd538d",
+      "does_not_extend_wait_end": true
+    }
+  ],
+  "evidence_pins": {
+    "f333b9bb-4ace-48eb-886a-959a1578607d-started": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\started.json",
+      "sha256": "633ba94338074c9c3551b3f27e4f0f038c5dd30b747297d8335948274aa4d12a"
+    },
+    "f333b9bb-4ace-48eb-886a-959a1578607d-completed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\completed.json",
+      "sha256": "466c317891d20a01f11bb2f20fe400ed64f2fafe9445d511650fabded986ca66"
+    },
+    "f333b9bb-4ace-48eb-886a-959a1578607d-probe": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\closed-file-probe.json",
+      "sha256": "042fefaf19610e119e8bb48c263b042f94f3bc1b7bfa1071468d42d152b82dbc"
+    },
+    "f333b9bb-4ace-48eb-886a-959a1578607d-cleanup": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\cleanup.json",
+      "sha256": "e8e57095fe578a1e196d80ea817400d2bdabc4e5689c062b07cc8fde4ad9efe0"
+    },
+    "42cd404e-1838-4d64-8493-12022d93e2e7-started": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7\\started.json",
+      "sha256": "f91102da810289e0218ae94514a3d554de1ccc64a115cc7e09368260ca1adafd"
+    },
+    "p34-full35-halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0035-1-result.json",
+      "sha256": "10556af9c038179be7651abc00980f4ecbb08745dbd182c6d1740c8dc26bacbd"
+    },
+    "p34-full35-first-progress": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0069-1-result.json",
+      "sha256": "3bcbb161fef5856b84645939894413da6156e398e1251b76b64e0c6fba30ab34"
+    },
+    "p34-full592-cold-handoff-halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0592-1-result.json",
+      "sha256": "49d7ddfc17afbe1c4b5746b3a384b6ec5c477b4b1635ba589d00d06300442da7"
+    },
+    "p34-full592-cold-handoff-first-progress": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0022-1-result.json",
+      "sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df"
+    },
+    "p35-full21-classifier-halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0021-1-result.json",
+      "sha256": "62f746edfa30b4a5114a85aa6d685c378b817be6de2e84f77e58ad4b3fa7dfc3"
+    },
+    "p35-full21-classifier-first-progress": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0038-1-result.json",
+      "sha256": "a7397fd058cad0d8c4b78824edd31cd16a08011c82cb79c1f528fb95e103831c"
+    },
+    "p35-full210-boundary-halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0210-1-result.json",
+      "sha256": "11c9cf08dbd5097dcc630a6c287d0e3ad7a36110be1ed516c3f5d237193bb49f"
+    },
+    "p35-full210-boundary-first-progress": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0252-1-result.json",
+      "sha256": "8fbbdf48ac2d78b0115e38c452700d1f43b96f18c403b17220ae8ed0fc57e452"
+    },
+    "p35-full210-boundary-settled-turn": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-queue\\CUMULATIVE-TURN-012551.json",
+      "sha256": "b48a4499194b0ec9c983721b9f92432fbb937a45d2b2d108a8511fe3ab8551a9"
+    },
+    "p35-full210-boundary-paired-MET": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0253-1-result.json",
+      "sha256": "5be5ebc25fdb7f118f1b295d972d35530640265701a012ce6d05f84b8ddfb45b"
+    },
+    "p35-full314-counterpolicy-halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0314-1-result.json",
+      "sha256": "2f7e6950ac2b633eebd8b2dcda380dd4b00617525d3a0935ab4b83f77ff67265"
+    },
+    "p35-full314-counterpolicy-blocked-AUTO": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0349-1-result.json",
+      "sha256": "1bcdb585318d1958fbd313f010de1ee7eacd1ab8068eb6756701a22d8935b13d"
+    },
+    "p35-boundary-late-repair-notice": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\0070a907b1424c68990743abe5b7cf3d-RESOLVED.json",
+      "sha256": "91ce5cab587ecaa3a6c292a3b813a3db08c694d56e182c196ef23a8cc913a272"
+    },
+    "status-68b891df455f4960941513b894b8f267": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\CURRENT.json",
+      "sha256": "601f5fedbbb5f23defb94e0dcc55054d20a50fd4a391d31aaa843bb3cead6ad1"
+    },
+    "status-931274e4050546a784a08d2e36bd538d": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\CURRENT.json",
+      "sha256": "a39cf6c8f0ca8980a68ca5314452af5810d5471ddd504349bfd38e6967a5fb83"
+    },
+    "status-4bdec35c56524a4e9dbaccc5f8ef2b3f": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\collected\\20261017T051130349780Z-6e4efd59-STATUS-IMMUTABLE.json",
+      "sha256": "dd442d063eb98f4e1e7b7d0a95c5062e59eda4681f5c8d55979b0bcb3f5b1227"
+    },
+    "status-0c9cea99edba4bcab01f5436862f12fe": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\collected\\20261017T052326450610Z-8d3e5218-STATUS-IMMUTABLE.json",
+      "sha256": "5b3d76cc7d42a9ddf16bed05482b3c73b366c64fc2925a93a1c6a17af757527b"
+    }
+  },
+  "disclosures": [
+    "Only real waiting footage is compressed; subsequent normal gameplay stays at original speed.",
+    "Error head and actual recovery tail are retained; later repair notices are separate markers.",
+    "All normal footage after first calendar progress, including later repair-result notices, remains uncompressed.",
+    "Wallclock-to-PTS mapping is unverified and is not frame-exact.",
+    "Original recordings, real SDK/Game interruptions and source gaps remain disclosed.",
+    "Active media was not probed, hashed or read; rendering requires closed sources and fresh quota admission."
+  ],
+  "new_Game_MCP_OBS_Desktop_calls": 0,
+  "video_body_bytes_read": 0,
+  "persistent_policy": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\recording-edit-policy.json",
+    "sha256": "498bb97cd3978355adc2c09e668284b975b4c3a6866c0c4fd9432eef34a9d8c5"
+  },
+  "final_render_qualification": "ACTUAL_PTS_AND_ROOT_BOUNDARY_PIXEL_REVIEW_STILL_REQUIRED"
+}

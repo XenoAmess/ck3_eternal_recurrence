@@ -1,0 +1,121 @@
+{
+  "schema": "xar.m7.tribal-market-one-specimen-source.v1",
+  "at_utc": "2026-10-17T06:26:02.854632+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "building_key": "market_villages_01",
+  "inputs": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_tribal_buildings.txt",
+      "bytes": 37176,
+      "sha256": "a0ffdeef266fb995fbe51e29f022815eaab96a3adde33cffca89716e1c0621b5"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_building_values.txt",
+      "bytes": 103815,
+      "sha256": "f436f7d9d5ac5506b38d715f0ce02c4f4257eef3addf56597c18a526a6f66825"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\construction_economic_value_v1.py",
+      "bytes": 9074,
+      "sha256": "c735cc676756563db9a4e72d85c217f50d3e8b1fdaac33047d0a88f9b9b42a10"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\player_world_building_authored_income_v1.hpp",
+      "bytes": 7549,
+      "sha256": "9a2dee637a2ba02b67a0e12f98a8f9fb0ac64aee7dc00b3739f4ce261eb7ab69"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\domain_construction_private_transport_v1.py",
+      "bytes": 65276,
+      "sha256": "3e64570505d059e76927f04eed2feb1c571b48a26438e37583f88b21dd313913"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_construction_submit_binding.cpp",
+      "bytes": 11515,
+      "sha256": "3c8ab85ab166ca225099de84aebb23fa41fffc11379fea36e56960b87ea701d8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_actor_resources.cpp",
+      "bytes": 1401,
+      "sha256": "c3021c8e2cd68599320e6385b5b8c66e574f26ed5b5ec0c6f2bbf47052cc6788"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1571217,
+      "sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\construction_scene_scope_v1.py",
+      "bytes": 3871,
+      "sha256": "291061fe162835794b38baca35d8ccacc06f0b091d88a3a6268dcb80665cf1a0"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\construction_formal_consumer.py",
+      "bytes": 34500,
+      "sha256": "409fbe5a6827fa285ab3376b25fd8574e3edad176c397fea9a5983e5d04c8aac"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\construction_formal_consumer.py",
+      "bytes": 36602,
+      "sha256": "c1abbc5db8560dadb691b179ff7fbb7fbc0844016b4c9f8c7c319313550c3c11"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_cash_private_transport_v1.py",
+      "bytes": 11901,
+      "sha256": "e33f43c54fe4fa0960383065931a1b2179b8b40b706393f628a94dbb6b6d4249"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\construction_monthly_budget_v1.py",
+      "bytes": 9890,
+      "sha256": "8bc0573083d6ab1e69bb6a04e30ad84e5f2c394742213d5ec263f37b9b357753"
+    }
+  ],
+  "stock": {
+    "definition_line": 593,
+    "definition_sha256": "15b31e1396aa4efffd450a505f37b0e81aeacb564ff05e8681f227a2cc954b77",
+    "base_cost_gold": "75",
+    "base_cost_prestige": "200",
+    "authored_unconditional_province_monthly_income": "0.40",
+    "authored_income_hundredths": 40,
+    "scope": "tribe_01 or higher, building_requirement_tribal, holder must not have government_is_wanua",
+    "actual_quote_or_realized_income": false
+  },
+  "already_implemented": [
+    "Native ten-slot final cost quote",
+    "Typed played-character prestige observation",
+    "Cash-v2 actual gross/expenses/NET and existing monthly reserve budget",
+    "Once-only construction identity/receipt/completion consumers",
+    "Public Clan-only construction scene; not in frozen SDK37"
+  ],
+  "not_qualified": [
+    "Native non-gold cost-slot identity is not inferred from the stock resource name",
+    "No same-frame Tribal quote/balances or actual action/material supplied",
+    "Tribal scene not admitted; authored positive target mapping lacks market_villages_01",
+    "Python selector AND native submit binding explicitly reject non-gold vectors",
+    "Existing gold-only receipt must not be labeled a verified prestige debit"
+  ],
+  "next_natural_opportunity": {
+    "trigger": "An independently observed current Tribal ruler actually owns an eligible idle tribe holding; ordinary play continues if no such opportunity",
+    "read_only_inputs": [
+      "Exact current build/exe, actor, native revision/date, root government key/flags",
+      "Full barony/province/building/slot identity, existing occupant, native final CanConstruct",
+      "Entire native ten-slot cost vector including zero and unknown, plus typed resource-slot provenance",
+      "Same-frame typed current gold AND prestige; actual cash-v2 and existing reserve commitments",
+      "Native/effective province and personal income separately from authored0.40"
+    ],
+    "current_action_instruction": "Observation only. Do not try a non-gold Start through the current gold-only native binding.",
+    "future_result_truth": [
+      "Original once-only action/receipt and independent queued or completed slot identity",
+      "Both gold and prestige actual deltas matched to actual quoted typed costs, other resources preserved",
+      "Natural completion, useful material observed separately from authored return",
+      "Following normal consumption and matching checkpoint/cold state without replay"
+    ]
+  },
+  "production_patch": null,
+  "G2": "6/8 unchanged; M7 incomplete",
+  "new_native_provider_or_gate": false,
+  "Game_Native_MCP_SDKserver_OBS_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "EXE_reads": 0,
+  "old_tests_replayed": 0
+}

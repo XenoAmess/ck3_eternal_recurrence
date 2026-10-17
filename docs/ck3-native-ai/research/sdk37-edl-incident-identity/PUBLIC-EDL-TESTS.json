@@ -1,0 +1,20 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tools/test_ck3_stall_edl.py",
+    "tools/test_ck3_stall_edl_identity.py"
+  ],
+  "returncode": 0,
+  "stdout": ".............                                                 [100%]\n13 passed, 11 subtests passed in 0.78s\n",
+  "stderr": "",
+  "Game_OBS_or_media_calls": 0
+}

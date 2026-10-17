@@ -1,0 +1,35 @@
+{
+  "schema": "xar.m6.feast-host-death-static-delivery.v1",
+  "status": "FINITE_STATIC_GAP_CLARIFIED_NO_PRODUCTION_CHANGE",
+  "at_utc": "2026-10-17T06:16:55.429070+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "artifacts": [
+    {
+      "relative": "REPORT.md",
+      "bytes": 2660,
+      "sha256": "e0fbee64b9c1d36fc7b35d068265cce1e082cfe22715e1db9e01c7b001f5d024"
+    },
+    {
+      "relative": "SOURCE-AUDIT.json",
+      "bytes": 3835,
+      "sha256": "95f95af0d9e83f89d2e0c933c740a78ce3f07bd502b6fe2238af2ce08e4c6bba"
+    },
+    {
+      "relative": "audit_stock_host_death.py",
+      "bytes": 6109,
+      "sha256": "9185f4769ed04f80e8d15ca6e3259b72d987ca681900794ceb869e17c3bd6170"
+    },
+    {
+      "relative": "research-plan.json",
+      "bytes": 1490,
+      "sha256": "2ec735758c9b7d5953e885ccbd5e5dbc45abef637cc844edf8dffc46d544fd2c"
+    }
+  ],
+  "remaining": "Original resolved Feast terminal/material cannot be inferred from heir notification or new played actor; actual old-host receipt not supplied.",
+  "G2": "6/8 unchanged; M6 and M7 incomplete",
+  "Native_Game_MCP_OBS_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "new_tests_or_old_replays": 0,
+  "production_changes": 0,
+  "next_actual_dependency": "Use existing exact full Activity ID/original actor/type retained terminal/material only if actually available; successor gameplay and new recording remain independent."
+}
