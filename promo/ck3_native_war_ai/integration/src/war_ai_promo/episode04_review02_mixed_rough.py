@@ -37,9 +37,9 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
  pending=set(data['pending_cues']);overrides=data['visual_overrides'];need(not(pending&set(overrides)),'pending and selected overlap')
  need(pending<=set(by) and set(overrides)<=set(by),'unknown cue')
  if not validate_only:need(not pending,'key footage is pending; no static fallback allowed')
- cards={r['card_id']:r for r in raster['cards']};mapping={r['id']:r for r in method['cues']};segments=[];raw_windows={}
+ cards={r['card_id']:r for r in raster['cards']};mapping={r['id']:r for r in method['cues']};segments=[];raw_sources={}
  for row,cue in zip(rows,cues):
-  key=row['id'];need(row['zh']==cue.narration['zh-CN']and row['en']==cue.subtitles['en'],'frozen speech differs')
+  key=row['id'];start=0.0;need(row['zh']==cue.narration['zh-CN']and row['en']==cue.subtitles['en'],'frozen speech differs')
   audio=select_path({**row['audio'],'artifact_id':row['audio_artifact_id']},run,run_path)
   if key in pending:visual=VisualSource(key,VIDEO,Path('pending')/(key+'.mp4'),'pending-key-footage',requires_resolution=True,metadata={'pending':True})
   elif key in overrides:
@@ -47,12 +47,13 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
    first,stop=v['source_frames'];need(type(first)is int and type(stop)is int and 0<=first<stop<=v['source_frame_count'],'invalid actual frame interval')
    need(stop-first==round(row['duration_seconds']*30),'source interval must cover exact measured cue; no padding')
    media=select_path(v['source'],run,run_path);visual=VisualSource(key,VIDEO,media,'rough-context-pending-review',metadata={'actual_outcome_credit':False,'continuous_clean':False,'event_PTS':None})
-   need(str(media.resolve())not in raw_windows,'one raw window per source; preserve separate prepared clips for reuse')
-   raw_windows[str(media.resolve())]=(first/30,v['source_frame_count']);
+   source_key=str(media.resolve());pin=(v['source']['bytes'],v['source']['sha256'].lower(),v['source_frame_count'])
+   need(source_key not in raw_sources or raw_sources[source_key]==pin,'same raw path has conflicting source pins')
+   raw_sources[source_key]=pin;start=first/30
   else:
    card=cards[mapping[key]['card_id']];ref={**card['png'],'path':str(Path(data['metadata']['raster']['path']).parent/card['png']['path']),'artifact_id':'source-card-still.'+card['card_id']}
    visual=VisualSource(key,STILL,select_path(ref,run,run_path),'source-explanation-card',metadata={'actual_outcome_credit':False})
-  segments.append(SegmentDraft(key,visual,RenderOptions(1920,1080,30,row['duration_seconds'],preset='veryfast',crf=21),{'zh-CN':row['zh'],'en':row['en']},prepared_narration=audio))
+  segments.append(SegmentDraft(key,visual,RenderOptions(1920,1080,30,row['duration_seconds'],preset='veryfast',crf=21),{'zh-CN':row['zh'],'en':row['en']},prepared_narration=audio,start_seconds=start))
  def subtitles(segment,narration,*,workdir):
   del narration,workdir
   ref=mapping[segment.segment_id]['subtitle'];ref={**ref,'path':str(Path(data['repo_root'])/ref['path']),'artifact_id':'source-subtitle.'+segment.segment_id}
@@ -66,8 +67,8 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
   need((s.width,s.height)==(1280,720),'rough client geometry changed');return VisualProbeResult('video/mp4',s.width,s.height)
  def planner(**kwargs):
   key=str(Path(kwargs['video_input']).resolve())
-  if key not in raw_windows:return plan_render(**kwargs)
-  start,_=raw_windows[key];kwargs['start_seconds']=start;plan=plan_capture_render(**kwargs);commands=[]
+  if key not in raw_sources:return plan_render(**kwargs)
+  plan=plan_capture_render(**kwargs);commands=[]
   for command in plan.commands:
    argv=list(command.spec.argv);i=argv.index('-filter_complex')+1;old=argv[i]
    a='scale=1920:1080:force_original_aspect_ratio=decrease:flags=lanczos';b='pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black'

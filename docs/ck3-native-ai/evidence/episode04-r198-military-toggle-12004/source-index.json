@@ -1,0 +1,147 @@
+{
+  "schema": "xar.e04.r198-military-toggle-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T10:14:41.301716+00:00",
+  "packaged_at_utc": "2026-10-17T10:31:38.106397+00:00",
+  "source_head": "dc031358981450ae3f8e40c6234b7f27fd4662ef",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0198",
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 87581,
+    "sha256": "553bffadb24a554f4841e225126d5701408bf9e74021c950cd8db7cdd2381bcb"
+  },
+  "members": [
+    {
+      "member": "military-take.json",
+      "bytes": 10878,
+      "sha256": "c52f9ddec07775e95357a547814ebd47dcb44bca7860bb50aa9c3f2973e529a3",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/research-film-a01/MILITARY-TAKE.actual.json"
+    },
+    {
+      "member": "normal-save.json",
+      "bytes": 5264,
+      "sha256": "3fc07750458cac695677eab6d28db3bb9a47e36a808a82ead4b8253ea801aed5",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/r198-map-followup-a02-ready-close-a01/NORMAL-SAVE.actual.json"
+    },
+    {
+      "member": "screen-release.json",
+      "bytes": 4891,
+      "sha256": "9b17c3550df9559f583ed06bc7d331b391d1a6d5263b94f9bb33b4d89850f38a",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/r198-map-followup-a02-ready-close-a01/SCREEN-RELEASE.actual.json"
+    },
+    {
+      "member": "runtime-actor-identity.json",
+      "bytes": 8009,
+      "sha256": "e5f8dfcec024ac6c76b17d1db0d4a357d20e69e0e2e35d12c84771fcc578308e",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/runtime-actor-identity.actual-a01.json"
+    },
+    {
+      "member": "take-review.json",
+      "bytes": 2150,
+      "sha256": "bba2878cfd3c3d05b91d2c0e6d055afbf05b90a01fcb06dbf1069bfaa97b8a0c",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/TAKE-REVIEW.actual-a01.json"
+    },
+    {
+      "member": "take-original-frame.json",
+      "bytes": 2500,
+      "sha256": "e1ee5c06898cd6b466a7d67a28418ae05204c9c745a6b481cf9502094413d8dc",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/TAKE-ORIGINAL.actual-a01.json"
+    },
+    {
+      "member": "army18-ui.json",
+      "bytes": 3412,
+      "sha256": "54c658c1f6ba5eb9a085ec348d369884b468af2041bdbc67f4873f2ff2ce66e1",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/ARMY18-UI.actual-a02.json"
+    },
+    {
+      "member": "film-finish.json",
+      "bytes": 1412,
+      "sha256": "ebf217fbc40fe9cf762f0796d885a24c459d0babbd74cb2ee487f68474c4385f",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/research-film-a01/FINISH.actual-a01.json"
+    },
+    {
+      "member": "record-claim.json",
+      "bytes": 1556,
+      "sha256": "c1c1c22c6eacfcb180b3eebc06905433d86ca700365fc0ffaec660e79848675c",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/research-film-a01/RECORD-CLAIM.actual.json"
+    },
+    {
+      "member": "identity-scope.json",
+      "bytes": 8794,
+      "sha256": "47824977b62b390534f375924190daa1abe133d417d2ee3c1beeeb0466a3af77",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/R198-IDENTITY-SCOPE.actual.json"
+    },
+    {
+      "member": "bootstrap-observed.json",
+      "bytes": 925,
+      "sha256": "1de2285ed352210d2f49c6bedbcaa6cd6f13cea05ea1a7b810ed823144fdb4ca",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/r198-map-followup-a02-ready-close-a01/BOOTSTRAP-OBSERVED.actual.json"
+    },
+    {
+      "member": "02-open-once.json",
+      "bytes": 1098694,
+      "sha256": "75fef8e037cfd38dcc8d8e644592e9b37cd82e6b646d3099d7cefbe8528d047e",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/desktop-3fevhd2-1c74096080--vanilla--R0198/responses/r198-map-followup-a02-military-take-a01-02-open-once.json"
+    },
+    {
+      "member": "04-fresh-before-toggle.json",
+      "bytes": 125959,
+      "sha256": "9ed6c50b839d0f13f58a9b5111d76a718d552a9843ae10159ec809f326171f05",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/desktop-3fevhd2-1c74096080--vanilla--R0198/responses/r198-map-followup-a02-military-take-a01-04-fresh-before-toggle.json"
+    },
+    {
+      "member": "05-toggle-once.json",
+      "bytes": 33704,
+      "sha256": "945e4c462266eafbc1c22a0902c8eaddcfc80ae31813a8162be1729e8c762501",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/desktop-3fevhd2-1c74096080--vanilla--R0198/responses/r198-map-followup-a02-military-take-a01-05-toggle-once.json"
+    },
+    {
+      "member": "06-toggle-fence.json",
+      "bytes": 125945,
+      "sha256": "15c3957c95d2e6d98729f18ebf0d62ad8a3712c2604620c7444d6a99770908a0",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/desktop-3fevhd2-1c74096080--vanilla--R0198/responses/r198-map-followup-a02-military-take-a01-06-toggle-fence.json"
+    },
+    {
+      "member": "record-finish-response.json",
+      "bytes": 5288,
+      "sha256": "43a1a656b4ab89f1912b5bc3bc43cbc1a42a4b1a65a3f3a5eb2e7b20d3347a5e",
+      "origin_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-military-toggle-a01/desktop-3fevhd2-1c74096080--vanilla--R0198/responses/r198-map-followup-a02-ready-record-finish-once.json"
+    }
+  ],
+  "large_originals_not_copied": {
+    "raw_video": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r198-military-toggle-a01\\raw-r198-military-a01\\raw.mkv",
+      "bytes": 32908524,
+      "sha256": "73ba63f6a249addf7ced95d54001f7b338e4be091bd5bb90491cab627eb62472"
+    },
+    "checkpoint": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r198-military-toggle-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73689233,
+      "sha256": "09c5bf2f2aa3dad559a602c292ede45868d90c185bf491fb2e958f849f5bf9a0"
+    },
+    "full_desktop_png": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r198-military-toggle-a01\\TAKE-ORIGINAL.actual-a01.png",
+      "bytes": 1954083,
+      "sha256": "0629ff0bd4a664e8e3a341a1f3585ace48463958476ff555a8473751e56f2b09"
+    },
+    "other_native_response_pins": [
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r198-military-toggle-a01\\desktop-3fevhd2-1c74096080--vanilla--R0198\\responses\\r198-map-followup-a02-military-take-a01-01-fresh-before-open.json",
+        "bytes": 125955,
+        "sha256": "497d3b97b034b306f0e207bfc87288f206c8d45cb76319e10b5307c90449301b"
+      },
+      {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r198-military-toggle-a01\\desktop-3fevhd2-1c74096080--vanilla--R0198\\responses\\r198-map-followup-a02-military-take-a01-03-open-fence.json",
+        "bytes": 125941,
+        "sha256": "473ddcd8f0096fd0a6b9980ed9157afdff1f44d538eae205d07876143794f844"
+      }
+    ]
+  },
+  "qualified_scope": {
+    "toggle_desired_disabled": true,
+    "natural_ADD": false,
+    "payment": false,
+    "clean_span": false,
+    "human_signoff": false
+  }
+}

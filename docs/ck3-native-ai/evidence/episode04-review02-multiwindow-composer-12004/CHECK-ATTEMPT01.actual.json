@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "exit_code": 1,
+  "phase": "behavior-check assertion",
+  "error": "AssertionError: ('C05-06', [])",
+  "cause": "The check incorrectly required an explicit -ss even for the first window starting at zero. Existing xar_promo correctly omits a redundant zero seek.",
+  "correction": "Allow omitted -ss only for zero; require exactly one matching input seek for a nonzero window. Composer implementation unchanged.",
+  "raw_body_reads": 0,
+  "media_processes": 0,
+  "render_created": false,
+  "receipt_recorded_at_utc": "2026-10-17T09:52:53.451401+00:00"
+}

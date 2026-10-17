@@ -1,5 +1,11 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-17 10:28 UTC R198实机军务开关与正常闭场
+
+`machine_id: desktop-3fevhd2-1c74096080`；R0198使用源码/运行时 `dc031358981450ae3f8e40c6234b7f27fd4662ef`。先看[post-R197 native生产与focused cold资格](episode04-post-r197-native-admission-12004.md)：A03链接失败后sourcefix成功，旧D cold SYSTEM登记被拒；A04新C root实际构建并取得SYSTEM回执，admission执行exit0但wrapper自身RED；A05精确复用该admission并只新跑shared-v3 normal/strict cold，未重跑旧矩阵。这些是本机字节/冷测资格，不授实机开关。
+
+[R198实机开关专题与16份便携原件](episode04-r198-military-toggle-12004.md)另证一次军务打开、一次原生关闭补员：owner31254同路径raw `4A9` 在后续稳定读回从1变0，ticket7→9、pump90051→90065、同线程/日期raw53148192；动作包即时`native_after_switch`仍为1，不能伪写成瞬时变化。15/20秒hold期间暂停、无自然日；未调用provider、未选receiver、无ADD。Film Finish正常、Save回执绑定73,689,233 B checkpoint、游戏exit0及screen资源清空；原片未做完整解码、clean/1×或人工审片，动态仍0/11。现行v2研究 **9/14（64.29%）**、业务 **6/11（54.55%）**、ABC **0/3**；R07-v1严格口径仍8/14、5/11。R197 timeout/exit1历史保持独立，不追认其存档为正常S0。
+
 ## 2026-10-17 06:29 UTC R197局部P证据与异常闭场
 
 `machine_id: desktop-3fevhd2-1c74096080`、source `85eb547cca4fddaec4b8a89ec9dd203e6935299c`、run R0197。[县P真实relation输入](episode04-r197-county-relation-wire-12004.md)一次preview已接通source P与target P first：前者原生AL/P为true，后者AL/P为false，最终county condition=false；没有Move/自然抵达/物理扣兵，不给R04整卡。[军务disable准入缺口](episode04-r197-reinforcement-step-admission-12004.md)的唯一SDK请求返回`unsupported native gameplay step`，未发生开关、provider或ADD；source修复候选不能追认本场toggle。R05独立只读恢复观测成功，assign34232回`state_changed`结果未知，原动作不重投，没有Arm/Resume、自然日或cap100正例。地图研究录制Start→Finish `NORMAL_TREE_EMPTY`且无guard error/partial，但军务开关没有入镜；原片未哈希/解码，本轮不授clean/1×/人审或动态。

@@ -1,0 +1,116 @@
+{
+  "schema": "xar.e04.review02-multiwindow-history-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "intake_observed_at_utc": "2026-10-17T10:44:07.615986+00:00",
+  "source_package_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_root_provenance_only": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-multiwindow-composer-candidate-a01",
+  "canonical_files": [
+    {
+      "canonical_name": "history-verify-source.py",
+      "original_name": "verify_multiwindow_a01.py",
+      "raw": {
+        "bytes": 4378,
+        "sha256": "5e0b23400b7defc58f0897df2a50228babe24b126d6f10ad153b65a5ce9ecf1d"
+      }
+    },
+    {
+      "canonical_name": "BEHAVIOR-CHECK.actual-a01.json",
+      "original_name": "BEHAVIOR-CHECK.actual-a01.json",
+      "raw": {
+        "bytes": 1624,
+        "sha256": "09c3d7ca3264e0e74633ff4396b9f7c64fa7f7617d2765abf69e9ce3cc5692b8"
+      }
+    },
+    {
+      "canonical_name": "CHECK-ATTEMPT01.actual.json",
+      "original_name": "CHECK-ATTEMPT01.actual.json",
+      "raw": {
+        "bytes": 602,
+        "sha256": "d0dd234a63405b1d2e96399ac3e0be7a4d6396ffb03a8d596d103bf112b805d8"
+      }
+    },
+    {
+      "canonical_name": "ROUGH-INPUTS.candidate-a01.json",
+      "original_name": "ROUGH-INPUTS.candidate-a01.json",
+      "raw": {
+        "bytes": 5314,
+        "sha256": "0467ac12b31de1b9da15913ae7b8e118b36dd16b345c57196ebaf7a8cc2755d3"
+      }
+    },
+    {
+      "canonical_name": "AUTHOR-NOTES.original.md",
+      "original_name": "README.md",
+      "raw": {
+        "bytes": 2515,
+        "sha256": "0cdd2d38b030c61f73e4fc287345555448d41ad20f0d63f5b3ef6bf6ab2c0bb8"
+      }
+    },
+    {
+      "canonical_name": "FRESH-RELEASE.actual-a01.json",
+      "original_name": "FRESH-RELEASE.actual-a01.json",
+      "raw": {
+        "bytes": 677,
+        "sha256": "b1c1ee57580e19ed6c0d6716641d7cfa0ba111fb2cafc97ed788c5251b90d169"
+      }
+    },
+    {
+      "canonical_name": "SOURCE-DELIVERY.original.json",
+      "original_name": "ROOT-DELIVERY.actual-a01.json",
+      "raw": {
+        "bytes": 1889,
+        "sha256": "c892488bfd22f6d876daf42a1cd89b164ae7653c594d63a91ab00aa613a18749"
+      }
+    },
+    {
+      "canonical_name": "README.md",
+      "original_name": null,
+      "raw": {
+        "bytes": 2111,
+        "sha256": "87da82800c198e0b271184783aebf0595d6fd82f28e1ad9e1f2020b0eee879e1"
+      }
+    }
+  ],
+  "canonical_product": {
+    "path": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py",
+    "raw": {
+      "bytes": 6881,
+      "sha256": "fc60799190698379277b8f30051a52fa2e8487df1d6c6a89df3b5e9600e24f03"
+    },
+    "already_adopted": true
+  },
+  "original_baseline": {
+    "bytes": 6822,
+    "sha256": "a88f7601623d6a10acb36165d198dd52e8d1875938ee1dad2db00ed3c2ba1646"
+  },
+  "historical_check_source_head": "unknown; not recorded by original delivery",
+  "historical_interpreter": "xar-promo-toolchain0.3.0 per exact release/behavior records; not a fresh target-machine environment claim",
+  "verifier": {
+    "file": "history-verify-source.py",
+    "original_file": "verify_multiwindow_a01.py",
+    "purpose": "Exact historical process source only. Requires oldbaseline, hardcoded C-D sources and originalconfig; writes originalroot. Not a generic validator for new main. Do not execute as a current test."
+  },
+  "initial_failure": "Assertion wrongly required explicit zero -ss; corrected check permits omitted zero and demands nonzero seek. Composer unchanged between checks.",
+  "input_scope": "Machine-local authored candidate with externalpaths; rebind explicitly and requalify preserved artifacts for another machine. Not production-input approval.",
+  "qualification": {
+    "historical_behavior_PASS": true,
+    "intake_tests_rerun": false,
+    "media_processes": 0,
+    "new_frames": 0,
+    "new_runs": 0,
+    "SDK_calls": 0,
+    "render_ready": false,
+    "human_signoff": false,
+    "continuous_clean": false,
+    "new_research_business_dynamic_credit": 0
+  },
+  "canonical_counts": [
+    3,
+    20,
+    46
+  ],
+  "candidate_counts": [
+    4,
+    20,
+    45
+  ]
+}

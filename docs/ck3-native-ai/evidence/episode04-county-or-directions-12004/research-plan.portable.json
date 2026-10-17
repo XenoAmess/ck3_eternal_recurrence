@@ -1,0 +1,207 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "topic": "actual4-first-OR-directions-source-closed",
+  "question": "What do exact2C09280 and2C09410 do with A/B/F on all four known first-OR directional calls?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Static source only; no PID/run/runtime native owner",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Native Character full IDs/opaque F are per original invocation; frozen bytes exact-build only",
+    "producer_trigger": "not-applicable",
+    "producer": "Single reader uses cached PE mapping and named exact runtime entries; code<=2048B and metadata+unwind<=512B",
+    "caller": "2C09580 passes(A,B,F)/(B,A,F) to09280 then09410, explicitly reloads originalF before each CALL",
+    "consumer": "Original first OR AL consumed at2C096A8 by2C09620; this append observes no actual calls",
+    "cache_lifetime": "No live cache produced; future optional fields expire with their exact parent P TLS invocation",
+    "expected_signal": "Complete220B/360B bodies and exact native field/helper/AL contracts obtained; actual R197 observations remain absent",
+    "zero_sample_meaning": "Static bytes do not observe R197 OR values, natural calls or county writer positive; no samples is unknown not false/count0",
+    "stop_condition": "Only exact entries2C09280/2C09410; code<=2048B and metadata+unwind<=512B total. Stop before any over-budget read, missing exact runtime or chained/handler unwind; no CALL following/header/fullhash/installed/main/SDK/build/game",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "caller-source",
+      "layer": "source-contract",
+      "path": "../episode04-county-or-static-12004/contracts.json",
+      "sha256": "0f36e730becf7ece3b330a069da7365d9b5e46f756444713bfea760899e5139c",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "first_OR source-contract section of adopted exact contracts; source facts unchanged"
+    },
+    {
+      "id": "direction-one-source",
+      "layer": "source-contract",
+      "path": "FIRST-DIRECTION-CONTRACT.proposed-a01.json",
+      "sha256": "529359cb0c8bef1cfa56481d8ef056eba77403c1e8d2a9d64e7c2efe76e41570",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Complete exact-build native body, full ABI/field/AL contract manually cross-reviewed against original instructions"
+    },
+    {
+      "id": "direction-two-source",
+      "layer": "source-contract",
+      "path": "SECOND-DIRECTION-CONTRACT.proposed-a01.json",
+      "sha256": "6d688dd8e5bf9b965ee9d0734f0b3a63c08eb76f7d4ac1a0c66241de61f6a22e",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Complete exact-build native body, full ABI/field/AL contract manually cross-reviewed against original instructions"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "firstOR",
+      "label": "First OR original09580"
+    },
+    {
+      "id": "direction09280",
+      "label": "Directional alternative09280"
+    },
+    {
+      "id": "direction09410",
+      "label": "Directional alternative09410"
+    },
+    {
+      "id": "meaning",
+      "label": "Bounded source semantics"
+    },
+    {
+      "id": "runtime",
+      "label": "R197 actual OR unknown"
+    },
+    {
+      "id": "ctx-test",
+      "label": "2C09360 stack-context predicate unknown"
+    },
+    {
+      "id": "ctx-select",
+      "label": "2C0FEC0 stack-context selector unknown"
+    },
+    {
+      "id": "M",
+      "label": "2494B40 descriptor predicate remains unknown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "call09280",
+      "from": "firstOR",
+      "to": "direction09280",
+      "label": "A B F then B A F",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller-source"
+      ]
+    },
+    {
+      "id": "call09410",
+      "from": "firstOR",
+      "to": "direction09410",
+      "label": "After09280 false A B F then B A F",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller-source"
+      ]
+    },
+    {
+      "id": "body09280",
+      "from": "direction09280",
+      "to": "meaning",
+      "label": "Context selector then Character validity/difference then pair War gate",
+      "status": "static-confirmed",
+      "evidence": [
+        "direction-one-source"
+      ]
+    },
+    {
+      "id": "body09410",
+      "from": "direction09410",
+      "to": "meaning",
+      "label": "Priority descriptor ID -> Character resolver ->09280 C B null",
+      "status": "static-confirmed",
+      "evidence": [
+        "direction-two-source"
+      ]
+    },
+    {
+      "id": "ctx-test-unknown",
+      "from": "direction09280",
+      "to": "ctx-test",
+      "label": "RCX=&initial B F context RDX=A; AL chooses keepA",
+      "status": "unknown",
+      "evidence": [
+        "direction-one-source"
+      ],
+      "open_question": "Body not authorized/read; context side effects and semantics unknown"
+    },
+    {
+      "id": "ctx-select-unknown",
+      "from": "direction09280",
+      "to": "ctx-select",
+      "label": "If testfalse A and same context address; use returned pointer",
+      "status": "unknown",
+      "evidence": [
+        "direction-one-source"
+      ],
+      "open_question": "Body not authorized/read; cannot assert context still initial B F"
+    },
+    {
+      "id": "M-unknown",
+      "from": "direction09410",
+      "to": "M",
+      "label": "A membership-like test selects28C or288 field",
+      "status": "unknown",
+      "evidence": [
+        "direction-two-source"
+      ],
+      "open_question": "Prior2494B40 remains unexpanded; no attacker/defender labels"
+    },
+    {
+      "id": "nested-call-known",
+      "from": "direction09410",
+      "to": "direction09280",
+      "label": "Natural09280 C B null at caller09534",
+      "status": "static-confirmed",
+      "evidence": [
+        "direction-two-source"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "static-bodies",
+      "question": "Complete native directional bodies",
+      "status": "not-applicable",
+      "evidence": [
+        "direction-one-source",
+        "direction-two-source"
+      ],
+      "reason": "Static source facts are in confirmed edges; no runtime observation collected"
+    },
+    {
+      "id": "R197-inner",
+      "question": "Actual R197 OR or physical county-loss positive",
+      "status": "not-applicable",
+      "reason": "No runtime operation in this static source append",
+      "evidence": [
+        "caller-source"
+      ]
+    }
+  ],
+  "portable_adoption": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "adopted_at_utc": "2026-10-17T10:37:34.495955+00:00",
+    "original_closed_plan": {
+      "archive": "R04-DIRECTIONS-APPEND.exact-a01.zip",
+      "member": "RESEARCH-PLAN.static-closed-a03.json",
+      "bytes": 6983,
+      "sha256": "a7bffab28149e2e6640994313864c6e4395f00061559a91693f9e435e95111d0"
+    },
+    "changes": "Evidence relative paths/pin of containing first_OR source-contract file only",
+    "new_check_render_executed": false,
+    "original_check_render_member": "STATIC-CHECK-RENDER.actual-a03.json",
+    "for_observation_or_runtime_qualified": false
+  }
+}

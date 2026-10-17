@@ -1,0 +1,160 @@
+{
+  "schema": "xar.e04.post-r197-native-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T09:28:49.550677+00:00",
+  "packaged_at_utc": "2026-10-17T09:33:28.966881+00:00",
+  "source_head": "dc031358981450ae3f8e40c6234b7f27fd4662ef",
+  "qualification_status": "PRODUCTION_BYTES_ADMISSION_AND_SHARED_V3_COLD_VERIFIED",
+  "qualification_member": "production-qualification.json",
+  "build_completion_member": "build-completion.json",
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 59592,
+    "sha256": "bc3411ce9afe95e3461a1679f1af1a6600e35197e97b2cc503e88ed3a79032e8"
+  },
+  "members": [
+    {
+      "member": "production-qualification.json",
+      "bytes": 42012,
+      "sha256": "cdd9919fce057a6a96362dac80640a97616efde4455ac2d9dc6becddaaf15a86",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-POST-R197-PRODUCTION-QUALIFICATION.actual-a05.json"
+    },
+    {
+      "member": "build-completion.json",
+      "bytes": 39026,
+      "sha256": "3a499072d11c0303d013576b2f50144b5d7a77cf7d6de8b770193617efd4f81d",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-POST-R197-BUILD-COMPLETION.actual-a05.json"
+    },
+    {
+      "member": "a03-main-initial-failure.json",
+      "bytes": 2294,
+      "sha256": "062a15a9a23d4824fb393e76e78f109d6e0aa7965889e6a3dbe2b8f08dd23988",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-main-a01.actual.json"
+    },
+    {
+      "member": "a03-main-sourcefix-success.json",
+      "bytes": 2291,
+      "sha256": "b29b97347714af271d3deec4f01835bdc099acd50faf2cdea61a17c58d78ecb2",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-main-a03.actual.json"
+    },
+    {
+      "member": "a03-cold-system-rejection.json",
+      "bytes": 2642,
+      "sha256": "a47fbccef07a870eb6a890df7481ded9d41a054312c2a85a90d94cbc1898e95c",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-cold-a03.actual.json"
+    },
+    {
+      "member": "a03-system-protected-rejection.json",
+      "bytes": 1210,
+      "sha256": "60c731c46b1dfd8e7eacf478c19926a3cc7793fe053af51dad7f6d414d70b9e6",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/defender-exe-exclusions/20261017T085110Z-c9ac117d/broker-proof-0dec9580e564457ab91fa97185f9210e/protected-worker-receipt.json"
+    },
+    {
+      "member": "a04-cold-source-recovery.json",
+      "bytes": 2709,
+      "sha256": "76719f44ff4fff1b5e90bf1fbbfdb65561bca8daf6f75cd31af0368b6bdee632",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-cold-source-recovery-a04.actual.json"
+    },
+    {
+      "member": "a04-croot-source-snapshot.json",
+      "bytes": 11286,
+      "sha256": "f4f7c42c59627c7e73980515baab3179a62efffe7dff468f5f4d98e2a2307dd3",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/SYSTEM-SOURCE-RECOVERY-a04/SOURCE-SNAPSHOT.actual.json"
+    },
+    {
+      "member": "a04-admission-result.json",
+      "bytes": 1030,
+      "sha256": "301cec18bfa50e863d2951607eb1a3dc5d164243c2e183aec8147b47dbbcf300",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-focused-a04/admission/result.actual.json"
+    },
+    {
+      "member": "a04-build-completion.json",
+      "bytes": 38420,
+      "sha256": "8359102c9b3526f3ebbdf9ffcaa6b2b12f4908a7b30208a243bf4ba6d86841fc",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-POST-R197-BUILD-COMPLETION.actual-a04.json"
+    },
+    {
+      "member": "a05-shared-v3-runner.json",
+      "bytes": 1550,
+      "sha256": "6b69b290b91721e07e8b6590e962b7a1bfa384c25145c90a00081a66ad2f2fd8",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-focused-a05/shared-v3-runner/result.actual.json"
+    },
+    {
+      "member": "a05-shared-v3-normal.json",
+      "bytes": 2950,
+      "sha256": "105ec8f19c9e23609c69e74fc88437ee18f917a40aea3f93f641f560d4bbefb6",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-focused-a05/shared-v3-normal/normal/RESULT.actual.json"
+    },
+    {
+      "member": "a05-shared-v3-strict-consumer.json",
+      "bytes": 1479,
+      "sha256": "75904fdfbbb3f9faef0d1ea1d8490d593537243e0ff909153e80dab41b0c983a",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/ROOT-post-r197-focused-a05/shared-v3-consumer/result.actual.json"
+    },
+    {
+      "member": "main_production-producer_result.json",
+      "bytes": 1842,
+      "sha256": "271189567d464cb504c3e72930972eb84a7227f408781f40735fb1d431bc7bad",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/native-msvc-result.json"
+    },
+    {
+      "member": "main_production-Defender_manifest.json",
+      "bytes": 1996,
+      "sha256": "4554c6f69374a1a466b4b9ac5bfcbe971829fc9eb97794102aed760bc4e8f28c",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/defender-exe-exclusions/20261017T085001Z-5452d342/manifest.json"
+    },
+    {
+      "member": "cold_production-producer_result.json",
+      "bytes": 2175,
+      "sha256": "a611d31fcceba92b39553a4202500bd34d8b73770747c0c2772690f87f5eb13d",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/SYSTEM-SOURCE-RECOVERY-a04/native-msvc-result.json"
+    },
+    {
+      "member": "cold_production-Defender_manifest.json",
+      "bytes": 3318,
+      "sha256": "94e3d88134e19cf1dd674ca9fe97f816aae600b1840ddfc41e151e3a356957b7",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/SYSTEM-SOURCE-RECOVERY-a04/defender-exe-exclusions/20261017T091945Z-40c35eb2/manifest.json"
+    },
+    {
+      "member": "a03-rejected-producer_result.json",
+      "bytes": 2120,
+      "sha256": "440220fd72d8f1344654ecc83db1dc1bbb2091b205b48910b10ac7616297ff6c",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/native-msvc-result.json"
+    },
+    {
+      "member": "a03-rejected-manifest.json",
+      "bytes": 3101,
+      "sha256": "e675dad7b6243a8020e85ff2b18aa8db49de7daf98a74e5371bb64d463e2b68c",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/defender-exe-exclusions/20261017T085110Z-c9ac117d/manifest.json"
+    },
+    {
+      "member": "a04-cold-SYSTEM-receipt.json",
+      "bytes": 305563,
+      "sha256": "7121984e98b56204fa2833faababa9e9e64915a32b6b5bdd2122054c9b8e3ce3",
+      "origin_path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a34b/REFILL-V3-COLD-a01/SYSTEM-SOURCE-RECOVERY-a04/defender-exe-exclusions/20261017T091945Z-40c35eb2/receipt.json"
+    }
+  ],
+  "system_receipts": {
+    "main_not_included": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a34b\\defender-exe-exclusions\\20261017T085001Z-5452d342\\receipt.json",
+      "bytes": 269144,
+      "sha256": "d0aca4285b6fcbd17572e0ca64a1ce69f4ab49dc25a8c909f5655b99c30ba401"
+    },
+    "cold_compressed_member": "a04-cold-SYSTEM-receipt.json",
+    "cold_original": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a34b\\REFILL-V3-COLD-a01\\SYSTEM-SOURCE-RECOVERY-a04\\defender-exe-exclusions\\20261017T091945Z-40c35eb2\\receipt.json",
+      "bytes": 305563,
+      "sha256": "7121984e98b56204fa2833faababa9e9e64915a32b6b5bdd2122054c9b8e3ce3"
+    }
+  },
+  "scope": {
+    "a04_admission_reused_in_a05": true,
+    "a05_shared_v3_new_cold": true,
+    "old_matrices_reexecuted": false,
+    "live_runtime_qualified": false,
+    "gameplay_result_qualified": false,
+    "capture_qualified": false,
+    "actual_toggle_qualified": false,
+    "natural_refill_ADD_qualified": false
+  }
+}

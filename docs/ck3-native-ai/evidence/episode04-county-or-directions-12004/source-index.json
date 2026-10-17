@@ -1,0 +1,87 @@
+{
+  "schema": "xar.e04.r04.directions-canonical-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "adopted_at_utc": "2026-10-17T10:37:34.495998+00:00",
+  "exact_source_archive": {
+    "path": "R04-DIRECTIONS-APPEND.exact-a01.zip",
+    "bytes": 43061,
+    "sha256": "236a68e1be0ef46175bb056b8ebefe130fa32eb6f934f8183359f478519353b2"
+  },
+  "raw_sources": {
+    "2C09280": {
+      "body": {
+        "member": "source-2C09280.bin",
+        "bytes": 220,
+        "sha256": "a303ad6fefa856a9c93585380422b5255e597754f07b4551520c32266e10dd50"
+      },
+      "unwind": {
+        "member": "source-2C09280.unwind.bin",
+        "bytes": 16,
+        "sha256": "d95dec7a506aa265e67c8078b348991ba97d4271c5c73fa68982ef362b5dd60d"
+      }
+    },
+    "2C09410": {
+      "body": {
+        "member": "source-2C09410.bin",
+        "bytes": 360,
+        "sha256": "2d157dc7c1982c7079e2ccead5cb54e18f535a414f4968fd4bf094abab81290d"
+      },
+      "unwind": {
+        "member": "source-2C09410.unwind.bin",
+        "bytes": 28,
+        "sha256": "872b85ae0c15f041a6687302c17467b34498977ed80c873b769994a238055d91"
+      }
+    }
+  },
+  "runtime_extents": {
+    "2C09280": [
+      "2C09280",
+      "2C0935C",
+      "510A2E0"
+    ],
+    "2C09410": [
+      "2C09410",
+      "2C09578",
+      "52B1270"
+    ]
+  },
+  "read_accounting": {
+    "code_bytes": 580,
+    "metadata_including_unwind_bytes": 272,
+    "unwind_payload_bytes_already_in_metadata": 44,
+    "total_EXE_bytes": 852,
+    "read_count": 25
+  },
+  "original_source_index_member": "SOURCE-INDEX.actual-a01.json",
+  "detailed_source_members": [
+    "FIRST-DIRECTION-SEMANTICS.md",
+    "SECOND-DIRECTION-SEMANTICS.md",
+    "source-2C09280.asm",
+    "source-2C09410.asm",
+    "source-2C09280.function.json",
+    "source-2C09410.function.json"
+  ],
+  "original_checked_plan_member": {
+    "member": "RESEARCH-PLAN.static-closed-a03.json",
+    "bytes": 6983,
+    "sha256": "a7bffab28149e2e6640994313864c6e4395f00061559a91693f9e435e95111d0"
+  },
+  "portable_plan": "research-plan.portable.json",
+  "new_unread_helpers": [
+    "2C09360",
+    "2C0FEC0"
+  ],
+  "prior_unknown_helpers": [
+    "2494B40",
+    "2911DD0",
+    "29131C0",
+    "2C458C0",
+    "2C4BD20",
+    "2C10020"
+  ],
+  "R197_actual_OR": "unknown",
+  "R04_physical_positive": false,
+  "new_runtime_PID_run_qualification": null,
+  "archive_keeps_original_absolute_paths": "Historical source-machine provenance only; portable readers use relative members",
+  "new_check_render_run": false
+}

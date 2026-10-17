@@ -1,0 +1,227 @@
+{
+  "schema": "xar.e04.r04.OR-static-portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-17T09:20:48.872104+00:00",
+  "source_head_under_review": "dc031358981450ae3f8e40c6234b7f27fd4662ef",
+  "build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "native_archive": {
+    "path": "native-source.exact.zip",
+    "bytes": 6962,
+    "sha256": "67d624229ee915c83547eb28f5d3a6de997260f4c26081e694ea2b4a54385eaa",
+    "members": [
+      {
+        "member": "source/source-2C09580.bin",
+        "bytes": 149,
+        "sha256": "fd0a0853141ff6a35107e3ab65eef6851291d98662217dd15bacdf438edaf263",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09580.bin"
+      },
+      {
+        "member": "source/source-2C09580.unwind.bin",
+        "bytes": 16,
+        "sha256": "63cfd0d40a89a36756c950e5d7bd3fe1d0bdb088a5df99eef68233f889ff7d28",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09580.unwind.bin"
+      },
+      {
+        "member": "source/source-2C09580.asm",
+        "bytes": 3185,
+        "sha256": "49eae4fbc814eed9201d1c6b34a925c4fbbbc4b51fcdd457a5cc0431422be538",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09580.asm"
+      },
+      {
+        "member": "source/source-2C09780.bin",
+        "bytes": 107,
+        "sha256": "a11bce0eeacba0b0577f8e6007a9b9b5f5efbbd1f42b7513c0ff3c33327b7353",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09780.bin"
+      },
+      {
+        "member": "source/source-2C09780.unwind.bin",
+        "bytes": 16,
+        "sha256": "63cfd0d40a89a36756c950e5d7bd3fe1d0bdb088a5df99eef68233f889ff7d28",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09780.unwind.bin"
+      },
+      {
+        "member": "source/source-2C09780.asm",
+        "bytes": 2193,
+        "sha256": "e9853d1c05e1b440a24cc3e9efde79dc338d7e6d2c9b9620fb3b5784f9eed534",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\source-2C09780.asm"
+      },
+      {
+        "member": "source/source-2C090D0.bin",
+        "bytes": 298,
+        "sha256": "9bbd13e1fb56bab52af51dd2bbf66c39131e7a9d120c31d88603a260b5335167",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-2C090D0.bin"
+      },
+      {
+        "member": "source/source-2C090D0.asm",
+        "bytes": 5717,
+        "sha256": "2ba186549f05e23a6df1aac990ec624882ea520388acab1514ff8b316b726d31",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\completed-asm-and-attempt.exact-a05.zip!source-2C090D0.asm"
+      },
+      {
+        "member": "source/source-2C090D0.unwind.bin",
+        "bytes": 28,
+        "sha256": "e5b664ed91df0cf98563fd89fe0c507cebd972be9cf61c86620dc5cfe4cc841b",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-2C090D0.unwind.bin"
+      },
+      {
+        "member": "source/source-2C096E0.bin",
+        "bytes": 149,
+        "sha256": "ca8eceae6969c14174f854b3b10223e025fa5a49c2935d56d322a399eb6dcebc",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-2C096E0.bin"
+      },
+      {
+        "member": "source/source-2C096E0.asm",
+        "bytes": 3041,
+        "sha256": "e43df13a89d96f7173f5fa0393d375a1fc1f968508cdaf64b336a1956d97931f",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\completed-asm-and-attempt.exact-a05.zip!source-2C096E0.asm"
+      },
+      {
+        "member": "source/source-2C096E0.unwind.bin",
+        "bytes": 16,
+        "sha256": "9ad65c360c090e96cf36a81f20431d04195c6fe95da129e3e0b9c7af643ec8e3",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-2C096E0.unwind.bin"
+      },
+      {
+        "member": "source/source-28BFD80.bin",
+        "bytes": 152,
+        "sha256": "56861c45588787c1665a122d46a653d76a2f0aae211edc4c1067bbba34ed1565",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-28BFD80.bin"
+      },
+      {
+        "member": "source/source-28BFD80.asm",
+        "bytes": 2794,
+        "sha256": "b2c59cddf05435fe00fc9f538ae947459bd6af1410c80c0a5916369787ddd677",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\completed-asm-and-attempt.exact-a05.zip!source-28BFD80.asm"
+      },
+      {
+        "member": "source/source-28BFD80.prefix96.bin",
+        "bytes": 96,
+        "sha256": "555da24d2f87457618d9520b9ebf8c13c63424a3393519c442a41fdc72bb27c8",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-28BFD80.prefix96.bin"
+      },
+      {
+        "member": "source/source-28BFD80.tail64.bin",
+        "bytes": 64,
+        "sha256": "ee0be1f4e1059fa569174be8a3ad3f83482c27ef56e523d6b1bb5675f3ed76b0",
+        "original_source": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-28BFD80.tail64.bin"
+      }
+    ]
+  },
+  "provenance_archive": {
+    "path": "acquisition-provenance.exact.zip",
+    "bytes": 22251,
+    "sha256": "120ca838f5462645b0806575d8b564adb97199485fdc9aae12e98f39ebdd5484",
+    "member_names": [
+      "first/CURRENT-IDENTITY-METADATA.actual-a01.json",
+      "first/DTO-GUARD-CHECK.actual-a01.json",
+      "first/RAW-READ-LEDGER.actual-a01.json",
+      "first/READ-RECEIPT.actual-a01.json",
+      "first/RESEARCH-PLAN.proposed-a01.json",
+      "first/SOURCE-FIRST.actual-a01.json",
+      "first/STATIC-PLAN-CHECK.actual-a01.json",
+      "nested/CURRENT-IDENTITY-METADATA.actual-a01.json",
+      "nested/H-CFG-CLOSURE.actual-a01.json",
+      "nested/H-CFG-CLOSURE.actual-a02.json",
+      "nested/H-PREFIX-READ.actual-a01.json",
+      "nested/H-STATIC-CHECK.actual-a02.json",
+      "nested/H-TAIL-READ.actual-a02.json",
+      "nested/PARTIAL-READ-RECOVERY.actual-a01.json",
+      "nested/READER-DERIVATION.actual-a01.json",
+      "nested/RESEARCH-PLAN.H-leaf-a02.json",
+      "nested/RESEARCH-PLAN.static-closed-a03.json",
+      "nested/SOURCE-FIRST.actual-a01.json",
+      "nested/STATIC-CHECK-RENDER.actual-a03.json"
+    ]
+  },
+  "runtime_function_metadata": {
+    "2C09580": {
+      "original_derivative": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\process-sources.exact-a01.zip!source-2C09580.function.json",
+      "bytes": 7433,
+      "sha256": "3c719ba7df92b2986662173760bf5c85b088d1ad0c3cbad6a2e142b9b681ed11",
+      "metadata_projection": {
+        "entry": 46175616,
+        "end": 46175765,
+        "runtime_index": 152618,
+        "unwind_version": 1,
+        "unwind_flags": 0
+      }
+    },
+    "2C09780": {
+      "original_derivative": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\process-sources.exact-a01.zip!source-2C09780.function.json",
+      "bytes": 5067,
+      "sha256": "4822dda82f3790da64ba185ac0d67aba8f941e4a8661e2475c62d6b25c78479e",
+      "metadata_projection": {
+        "entry": 46176128,
+        "end": 46176235,
+        "runtime_index": 152621,
+        "unwind_version": 1,
+        "unwind_flags": 0
+      }
+    },
+    "2C090D0": {
+      "original_derivative": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\completed-derivations.exact-a01.zip!source-2C090D0.function.json",
+      "bytes": 10983,
+      "sha256": "4bf44c325d4d9b2d775a465a6897007e9e4f6610a63050652ea133658f0c782d",
+      "metadata_projection": {
+        "decoded_from_saved_raw_no_EXE_code_reread": true
+      }
+    },
+    "2C096E0": {
+      "original_derivative": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\completed-derivations.exact-a01.zip!source-2C096E0.function.json",
+      "bytes": 6475,
+      "sha256": "5dbce45716638b172fafdb222f7f3bba6a66577bf52a7a3f9b12797a329e8034",
+      "metadata_projection": {
+        "decoded_from_saved_raw_no_EXE_code_reread": true
+      }
+    }
+  },
+  "H_leaf_extent": {
+    "begin": "28BFD80",
+    "end_exclusive": "28BFE18",
+    "exact_pdata": false,
+    "raw_reads": [
+      "source-28BFD80.prefix96.bin",
+      "source-28BFD80.tail64.bin"
+    ],
+    "read_intervals": [
+      "[28BFD80,28BFDE0)",
+      "[28BFDE0,28BFE20)"
+    ],
+    "read_overlap_bytes": 0,
+    "tail_padding_bytes": 8
+  },
+  "source_adoption_crosschecks": [
+    {
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/dc031358981450ae3f8e40c6234b7f27fd4662ef/ck3_autonomous_player/native_bridge/src/ck3_12004_campaign.cpp#L1136",
+      "fact": "top_liege binding only; independent H body retained separately"
+    },
+    {
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/dc031358981450ae3f8e40c6234b7f27fd4662ef/ck3_autonomous_player/native_bridge/src/ck3_12004_title_holder.cpp#L10",
+      "fact": "top_liege and fallback names"
+    },
+    {
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/dc031358981450ae3f8e40c6234b7f27fd4662ef/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_war_cash_claim_terms.hpp#L17",
+      "fact": "R08 expense-context alias, not military-payer proof"
+    }
+  ],
+  "upstream_deliveries": [
+    {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r04-or-callees-source-a01\\ROOT-DELIVERY.actual-a03.json",
+      "bytes": 2934,
+      "sha256": "5f4813df577edffff903f8faf6f637c33e7fa808237aa86a5ad4a399200e9968"
+    },
+    {
+      "original_path": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\ROOT-DELIVERY.actual-a03.json",
+      "bytes": 1786,
+      "sha256": "663c342eafc871139c08cc342b19cc83b3b1331dbeed14a0e49d2d60482b3d19"
+    }
+  ],
+  "no_new_EXE_reads_or_runtime": true,
+  "R197_actual_OR": "unknown",
+  "R04_physical_positive": false,
+  "future_PID_run_qualification": null
+}

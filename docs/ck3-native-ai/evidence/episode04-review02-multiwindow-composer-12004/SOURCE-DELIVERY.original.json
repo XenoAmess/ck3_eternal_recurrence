@@ -1,0 +1,59 @@
+{
+  "schema": "episode04.multiwindow.delivery.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T09:52:53.451401+00:00",
+  "scope": "external candidate only; main frozen unchanged",
+  "files": [
+    {
+      "path": "BEHAVIOR-CHECK.actual-a01.json",
+      "bytes": 1624,
+      "sha256": "09c3d7ca3264e0e74633ff4396b9f7c64fa7f7617d2765abf69e9ce3cc5692b8"
+    },
+    {
+      "path": "CHECK-ATTEMPT01.actual.json",
+      "bytes": 602,
+      "sha256": "d0dd234a63405b1d2e96399ac3e0be7a4d6396ffb03a8d596d103bf112b805d8"
+    },
+    {
+      "path": "episode04_review02_multiwindow_rough.py",
+      "bytes": 6881,
+      "sha256": "fc60799190698379277b8f30051a52fa2e8487df1d6c6a89df3b5e9600e24f03"
+    },
+    {
+      "path": "FRESH-RELEASE.actual-a01.json",
+      "bytes": 677,
+      "sha256": "b1c1ee57580e19ed6c0d6716641d7cfa0ba111fb2cafc97ed788c5251b90d169"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2515,
+      "sha256": "0cdd2d38b030c61f73e4fc287345555448d41ad20f0d63f5b3ef6bf6ab2c0bb8"
+    },
+    {
+      "path": "ROUGH-INPUTS.candidate-a01.json",
+      "bytes": 5314,
+      "sha256": "0467ac12b31de1b9da15913ae7b8e118b36dd16b345c57196ebaf7a8cc2755d3"
+    },
+    {
+      "path": "verify_multiwindow_a01.py",
+      "bytes": 4378,
+      "sha256": "5e0b23400b7defc58f0897df2a50228babe24b126d6f10ad153b65a5ce9ecf1d"
+    }
+  ],
+  "owned_payload_bytes": 21991,
+  "behavior_check": "PASS, 1 behavior; zero media/SDK processes",
+  "canonical_counts": [
+    3,
+    20,
+    46
+  ],
+  "candidate_counts": [
+    4,
+    20,
+    45
+  ],
+  "render_ready": false,
+  "new_experiment_business_dynamic_credit": 0,
+  "main_target_if_Root_adopts": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py",
+  "one_raw_rule_origin": "implementation mapping; no such hard requirement found in current director/research documents"
+}

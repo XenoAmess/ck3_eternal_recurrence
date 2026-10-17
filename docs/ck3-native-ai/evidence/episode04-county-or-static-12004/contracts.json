@@ -1,0 +1,263 @@
+{
+  "schema": "xar.e04.r04.OR-static-contracts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "first_OR": {
+    "schema": "xar.e04.r04.first-or-callee.source.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-17T07:56:21Z",
+    "begin_rva": "0x2C09580",
+    "end_exclusive": "0x2C09615",
+    "bytes": 149,
+    "source_sha256": "fd0a0853141ff6a35107e3ab65eef6851291d98662217dd15bacdf438edaf263",
+    "asm_sha256": "49eae4fbc814eed9201d1c6b34a925c4fbbbc4b51fcdd457a5cc0431422be538",
+    "function_json_sha256": "3c719ba7df92b2986662173760bf5c85b088d1ad0c3cbad6a2e142b9b681ed11",
+    "inputs": {
+      "A": "entryRCX outer receiver -> RDI",
+      "B": "entryRDX outer actor -> RBX",
+      "F": "entryR8 opaque auxiliary identity -> RSI"
+    },
+    "initial_rejection": "uint32[A+0x18] == uint32[B+0x18]",
+    "negative_prefilter": {
+      "callsite": "0x2C095A0",
+      "callee": "0x2C090D0",
+      "return_rva": "0x2C095A5",
+      "arguments": [
+        "A",
+        "B",
+        "F"
+      ],
+      "nonzero_AL_means": "return_false_without_OR_alternatives"
+    },
+    "short_circuit_OR": [
+      {
+        "callsite": "0x2C095B2",
+        "callee": "0x2C09280",
+        "return_rva": "0x2C095B7",
+        "arguments": [
+          "A",
+          "B",
+          "F"
+        ]
+      },
+      {
+        "callsite": "0x2C095C4",
+        "callee": "0x2C09280",
+        "return_rva": "0x2C095C9",
+        "arguments": [
+          "B",
+          "A",
+          "F"
+        ]
+      },
+      {
+        "callsite": "0x2C095D6",
+        "callee": "0x2C09410",
+        "return_rva": "0x2C095DB",
+        "arguments": [
+          "A",
+          "B",
+          "F"
+        ]
+      },
+      {
+        "callsite": "0x2C095E8",
+        "callee": "0x2C09410",
+        "return_rva": "0x2C095ED",
+        "arguments": [
+          "B",
+          "A",
+          "F"
+        ]
+      }
+    ],
+    "OR_alternative_nonzero_AL_short_circuits_true": true,
+    "all_four_zero_AL_returns_false": true,
+    "own_return_AL_normalized": [
+      0,
+      1
+    ],
+    "true_assignment_rva": "0x2C095F1",
+    "false_assignment_rva": "0x2C09608",
+    "original_aux_explicitly_reloaded_for_each_OR_call": true,
+    "prefix15_hex": "48895c24084889742410574883ec20",
+    "unwind16_hex": "010f06000f6407000f3406000f320b70",
+    "native_outer_caller_return_filter": "0x2C096A8",
+    "explicit_R11_reads_or_writes": 0,
+    "nested_callee_bodies_read": 0,
+    "business_relation_names_closed": false,
+    "R197_inner_actual_results": "unknown",
+    "actual_OR_results_inferred_from_outer_AL": false,
+    "SDK_Driver_game_desktop_build_calls": 0,
+    "main_tree_modified": false,
+    "future_runtime_qualified": false,
+    "R04_positive_credit": false
+  },
+  "second_OR": {
+    "entry": "2C09780",
+    "end_exclusive": "2C097EB",
+    "source_sha256": "a11bce0eeacba0b0577f8e6007a9b9b5f5efbbd1f42b7513c0ff3c33327b7353",
+    "inputs": [
+      "A=RCX",
+      "B=RDX"
+    ],
+    "operation": "TA=H(A); TB=H(B); G(A,B,TB).AL || G(B,A,TA).AL",
+    "incoming_R8_semantic_proven": false,
+    "natural_outer_caller_return_rva": "2C096B7",
+    "actual_R197_values": "unknown"
+  },
+  "negative_D0": {
+    "schema": "xar.e04.r04.negative-filter-source.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-17T08:27:48Z",
+    "entry": "0x2C090D0",
+    "end_exclusive": "0x2C091FA",
+    "body_bytes": 298,
+    "body_sha256": "9bbd13e1fb56bab52af51dd2bbf66c39131e7a9d120c31d88603a260b5335167",
+    "asm_sha256": "2ba186549f05e23a6df1aac990ec624882ea520388acab1514ff8b316b726d31",
+    "unwind_rva": "0x5132970",
+    "unwind_bytes": 28,
+    "inputs": {
+      "A": "RCX->R13",
+      "B": "RDX->R12",
+      "F": "R8->R15 opaque identity"
+    },
+    "same_complete_id_result": false,
+    "context_pointer_offset": "0x1C0",
+    "context_descriptor_offset": "0x318",
+    "fallback_descriptor_rva": "0x5459D38",
+    "descriptor_data_offset": 0,
+    "descriptor_signed_count_offset": 12,
+    "occurrence_stride": 4,
+    "registry_slot": "0x5D1DE58",
+    "registry_fallback_slot": "0x5D1DE40",
+    "full_id_check_required_for_registry_row": true,
+    "nonzero_F_requires_selected_pointer_equality": true,
+    "descriptor_priority_offsets": [
+      32,
+      128
+    ],
+    "second_A_descriptor_test_only_after_first_false": true,
+    "B_test_uses_only_selected_A_descriptor": true,
+    "equivalent_to_symmetric_two_descriptor_OR": false,
+    "explicit_byte358_gate": false,
+    "explicit_id_minus1_gate": false,
+    "inner_predicate_unexpanded": "0x2494B40",
+    "inner_calls_and_returns": [
+      [
+        "0x2C09188",
+        "0x2C0918D"
+      ],
+      [
+        "0x2C0919D",
+        "0x2C091A2"
+      ],
+      [
+        "0x2C091B3",
+        "0x2C091B8"
+      ]
+    ],
+    "outer_negative_caller_return": "0x2C095A5",
+    "D0_true_rejects_09580": true,
+    "R197_actual_D0_result": "unknown",
+    "nested_callee_bodies_read": 0,
+    "runtime_actions": 0,
+    "future_runtime_qualified": false
+  },
+  "directional_G": {
+    "schema": "xar.e04.r04.directional-G.static-source.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-17T08:27:53Z",
+    "entry_rva": "0x2C096E0",
+    "end_exclusive": "0x2C09775",
+    "body_bytes": 149,
+    "body_sha256": "ca8eceae6969c14174f854b3b10223e025fa5a49c2935d56d322a399eb6dcebc",
+    "input_flow": {
+      "A": "RCX->RBX",
+      "B": "RDX->RDI",
+      "F": "R8->RSI; opaque"
+    },
+    "known_second_OR_natural_caller_returns": [
+      "0x2C097B3",
+      "0x2C097C5"
+    ],
+    "same_u32_ID_at_18_rejects": true,
+    "negative_prefilters": [
+      {
+        "call": "0x2C09700->0x2911DD0",
+        "setup": "RCX=A,RDX=B,R8=F unchanged from entry",
+        "nonzero_AL": "false"
+      },
+      {
+        "call": "0x2C0970F->0x29131C0",
+        "setup": "RCX=B,RDX=A; R8 not reloaded and unknown",
+        "nonzero_AL": "false"
+      }
+    ],
+    "positive_short_circuit": "2C458C0(RCX=A).AL && 2C4BD20(RCX=B).AL",
+    "fallback": "slot=F; R=2C10020(RCX=A,RDX=&slot); u32(R+1C)==43686172 && u32(R+18)!=FFFFFFFF",
+    "returned_ID_compared_to_A_or_B": false,
+    "returned_pointer_compared_to_F": false,
+    "slot_after_read_by_caller": false,
+    "RAX_null_guard_in_body": false,
+    "return_basis": "AL only; full RAX high bits not normalized",
+    "nested_entries_unexpanded": [
+      "0x2911DD0",
+      "0x29131C0",
+      "0x2C458C0",
+      "0x2C4BD20",
+      "0x2C10020"
+    ],
+    "upper_lower_business_roles_closed": false,
+    "R197_G_inputs_and_AL_observed": false,
+    "new_DTO_or_matrix": false,
+    "SDK_Driver_EXE_build_calls_by_this_agent": 0,
+    "production_or_live_qualification": false
+  },
+  "independent_H": {
+    "schema": "xar.e04.r04.H-independent-leaf-source.v1",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "entry": "28BFD80",
+    "end_exclusive": "28BFE18",
+    "body": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r04-or-nested-three-source-a01\\source-28BFD80.bin",
+      "bytes": 152,
+      "sha256": "56861c45588787c1665a122d46a653d76a2f0aae211edc4c1067bbba34ed1565"
+    },
+    "reachable_instructions": 40,
+    "exact_pdata_entry": false,
+    "calls": 0,
+    "memory_writes": 0,
+    "stack_nonvolatile_use": false,
+    "fallback_slot": "5C67570",
+    "storage_slot": "5C67568",
+    "context_parent_path": [
+      "C+1C0",
+      "context+1C0",
+      "object+28"
+    ],
+    "noncontext_parent_fullID_path": [
+      "C+1B8",
+      "object+C8"
+    ],
+    "fixedpoint_return": "current Character, not bool",
+    "adopted_name_crosscheck": "top_liege",
+    "R08_alias": "expense_context_character only; military payer unresolved",
+    "G_upper_lower_business_roles_closed": false,
+    "runtime_qualified": false
+  },
+  "new_nested_unexpanded_entries": [
+    "2494B40",
+    "2911DD0",
+    "29131C0",
+    "2C458C0",
+    "2C4BD20",
+    "2C10020"
+  ],
+  "first_OR_alternative_entries_also_unexpanded": [
+    "2C09280",
+    "2C09410"
+  ],
+  "R197_actual_OR": "unknown",
+  "R04_physical_positive": false,
+  "runtime_qualified": false
+}

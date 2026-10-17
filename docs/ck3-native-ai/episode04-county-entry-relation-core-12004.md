@@ -87,3 +87,69 @@ unknown_or_inputs=true及unknown_or_result=null继续保留，不由最终ALfals
 下一窄口优先2C09580/返回2C096A8，随后2C09780/返回2C096B7；后者R8没有
 在前一CALL后重装，不能沿用第一口aux合同。当前会话不热改、不重复扫路线。
 县physical positive、邻接Q、自然县caller和视频clean span均不因此取得资格。
+
+
+## 2026-10-17 OR 上下层的有限静态闭环
+
+两个静态批次新增完整2C09580/2C09780（149B/107B）、2C090D0/2C096E0
+（298B/149B）及H28BFD80（152B）源码。来源机器desktop-3fevhd2-1c74096080，
+exact1.20.0.4/Steam25734779与本页同SHA；可移机知识不等于目标机器实机资格。
+详见[统一源码与代码入口](evidence/episode04-county-or-static-12004/README.md)和
+[精确portable索引](evidence/episode04-county-or-static-12004/source-index.json)。
+
+2C09580(A,B,F)：完整ID相同false；D0=2C090D0(A,B,F)为true亦拒绝。否则顺序
+短路OR：2C09280(A,B,F)、2C09280(B,A,F)、2C09410(A,B,F)、2C09410(B,A,F)，
+每次明确重装原F。后两callee body仍未知。2C09780则先求H(A)、H(B)，再调用
+G=2C096E0(A,B,H(B))；false后G(B,A,H(A))，只消费AL，不补入口R8含义。
+
+D0沿A的context+318列表解析完整WarID（含registry/fallback和可空F对象过滤），
+先测M(W+20,A)，false才测M(W+80,A)，随后B只查已选descriptor。因此不是
+两descriptor对称OR；没有+358/ID-1显式门禁，M2494B40仍未知。
+
+G的2911DD0/29131C0返回true均拒绝，第二调用没有重装R8；正向短路为
+2C458C0(A)&&2C4BD20(B)。否则2C10020(A,&slot=F)只核返回Character magic和
+ID!=-1，没有返回ID==B、指针==F或null守卫，A/B业务上下级身份未闭。
+
+H独立原生body沿context父链接或+1B8→+C8完整ID注册表链接上行，返回终点
+Character；40条可达指令/零CALL，无exact pdata。96B+64B两读不重叠，160B含8B
+body后padding，不借邻函数unwind。其结构与当前Campaign/TitleHolder采用的
+top_liege绑定一致；R08同入口expense-context alias不能证明军事payer。
+
+六个新下层2494B40、2911DD0、29131C0、2C458C0、2C4BD20、2C10020继续unknown，
+此前2C09280/2C09410也未展开。原始失败、H96B未闭场和首批metadata账本事后
+重建事实均保留。原静态check/render不冒充新live资格；本次合包没有重跑检查。
+
+R197实际内层OR仍unknown，physical positive仍false；不从outer ALfalse倒填。
+可复用proposed Python DTO逐字归档，未接collector/publisher/Driver/生产consumer，
+也不授R198或视频资格。此知识可解释已观测负例，不能代替自然到达、物理writer
+正减、clean span和动态拍摄。下一观测只取P TLS内自然原调用，不额外调用谓词。
+
+
+## 2026-10-17 first OR 的四方向函数增量
+
+上节“2C09280/2C09410尚未展开”保留为当时边界；此后独立读取已完成两体
+220B/360B和各16B/28B unwind。机器desktop-3fevhd2-1c74096080，exact1.20.0.4
+与同EXE SHA；新code580B、metadata含unwind272B、25reads，无CALL追读。
+
+2C09280(A,B,F)把栈context初始两个qword写为{B,F}；实际2C09360调用是
+RCX=&context、RDX=A，不是直接把B当RCX。其ALtrue保留A，false才调用
+2C0FEC0(A,&同context)取返回Character；不假定opaque前callee没有改context。
+selected须magic正确、ID!=-1且不同于原B。随后28BC250(原B,selected)的pairWarID
+须!=-1，经完整ID registry/fallback，+358=0且原F为null或对象指针相等才true。
+两个新helper2C09360/2C0FEC0未读，不先命名层级/敌我。原B/F从非易失寄存器取，
+不受context是否改变的假设替代。返回只消费AL。
+
+2C09410(A,B,F)遍历A的context+318完整ID列表。非null F按record+8完整ID过滤，
+不是D0或09280尾gate的指针比较。M(record+20,A.ID)true优先取+28C；否则
+M(record+80,A.ID)true取+288，都false取-1。selectedID经Character registry/fallback
+后调用2C09280(C,原B,null)；没有独立-1 skip，也不透传原F。M2494B40仍未知。
+
+已闭合firstOR四方向的本体和字段链；不能把这句升级为所有helper或实际触发已闭。
+09280的自然return callers为095B7/095C9与09410内09534，后者F明确为null；
+09410的callers为095DB/095ED。深层09280出现次数随枚举变化，不借用外层单调用DTO。
+最小下一原生观测仍可只捕09580/09780原调用的AL及实际输入，分别过滤096A8/096B7，
+默认OFF且限定当前P TLS；不额外调用谓词。R197实际OR仍unknown、physical positive
+仍false，未授新runtime/视频资格。精确增量见共享evidence归档及Root交付索引。
+
+本轮可复用入口：[四方向函数增量](evidence/episode04-county-or-directions-12004/README.md)、
+[portable源索引](evidence/episode04-county-or-directions-12004/source-index.json)。

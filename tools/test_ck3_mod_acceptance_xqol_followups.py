@@ -28,7 +28,7 @@ from ck3_mod_acceptance_cases import xqol_pam_adapter as pam
 from test_ck3_mod_acceptance_xqol_pam_boundary import (
     restore_pre_boundary_sample, restore_pre_boundary_contract)
 from test_ck3_mod_acceptance_xqol_prepare_compatibility import (
-    ReviewedPrepareCompatibility, PREVIOUS_PREPARE, SUPPORT_KEY)
+    ReviewedPrepareCompatibility, PREVIOUS_PREPARE, SUPPORT_KEY, restore_prior_prepare_contract)
 
 def config(name):
     return json.loads((HERE/'ck3_mod_acceptance_cases'/('xqol_'+name+'.json')).read_bytes())
@@ -149,8 +149,7 @@ class OriginalCases(unittest.TestCase):
     def test_pam_positive_slot_diagnostic_pin_is_only_contract_change(self):
         ctx=context('pam_positive')
         common.validate_contract(ctx)
-        original=restore_pre_boundary_contract(ctx['case_contract'])
-        original['support_files'][SUPPORT_KEY] = copy.deepcopy(PREVIOUS_PREPARE)
+        original=restore_prior_prepare_contract(restore_pre_boundary_contract(ctx['case_contract']))
         key='xqol_followup_cases/pam_positive/fixture/common/scripted_effects/zqp_pam_sample_effects.txt'
         original['support_files'][key]={'bytes':18737,
             'sha256':'8d72393e24aafc71c9860fcb7c2b7ff431ef7e312f7af19a58930c1d7cd5ab3a'}
@@ -242,8 +241,7 @@ class RansomAtomicReceipt(unittest.TestCase):
         contract = ctx['case_contract']
         self.assertEqual(contract['support_files'][self.effect_key],
                          {'bytes':len(raw), 'sha256':hashlib.sha256(raw).hexdigest()})
-        old_contract = copy.deepcopy(contract)
-        old_contract['support_files'][SUPPORT_KEY] = copy.deepcopy(PREVIOUS_PREPARE)
+        old_contract = restore_prior_prepare_contract(contract)
         old_contract['support_files'][self.effect_key] = {
             'bytes':30264, 'sha256':'7f5014508c6e2d36b51f8b8966d9d8740178e17467d824f016fc1670bc63e861'}
         self.assertEqual(hashlib.sha256((json.dumps(old_contract,ensure_ascii=False,indent=2)+'\n').encode()).hexdigest(),

@@ -1,5 +1,11 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-17 10:28 UTC R198军务开关实机片段：可核口播，动态待审
+
+`machine_id: desktop-3fevhd2-1c74096080`、source/runtime `dc031358981450ae3f8e40c6234b7f27fd4662ef`。[native生产及冷测资格](../../../docs/ck3-native-ai/episode04-post-r197-native-admission-12004.md)与[R198原生开关实录](../../../docs/ck3-native-ai/episode04-r198-military-toggle-12004.md)分开取证：R198 Army18军务页打开后唯一关闭补员动作，owner31254 raw `4A9` 后续ticket9读回0，前ticket7为1；动作即时读回仍1，不能剪成当帧立刻变0。镜头与口播可描述“本场原生后验确认开关从开到关”，不得描述已发生自然补员、ADD、付款或围城伤亡。两次15/20秒hold均暂停，日期raw53148192不变。
+
+录制Start→Finish `NORMAL_TREE_EMPTY`、guard error null、partial false；正常Save、游戏exit0与screen释放已证。原片尚无完整解码、PTS、clean、1×观看或人工签核；正式动态 **0/11**、ABC **0/3**，研究 **9/14**、业务 **6/11** 不变。R197只有地图片且timeout/exit1，其失败原件仍独立有效，不被R198改写。下方旧时点按当时证据保留。
+
 ## 2026-10-17 06:29 UTC R197导演状态：地图研究片段，非合格战争动态
 
 `machine_id: desktop-3fevhd2-1c74096080`、source `85eb547cca4fddaec4b8a89ec9dd203e6935299c`。R197一次县P preview [真实relation输入](../../../docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md)使source P true、target P first false可说；不能剪成已跨县或军队扣兵。[军务disable](../../../docs/ck3-native-ai/episode04-r197-reinforcement-step-admission-12004.md)被SDK unsupported拒绝，没有切换画面或补员ADD；R05 assign34232仍为state_changed未知，不能说cap100/自然扣兵已到。录制Start→Finish `NORMAL_TREE_EMPTY`、无guard error/partial，仅地图取证，军务开关未入镜；本lane不读/哈希/解码原片，不授clean、完整1×或人工签核。

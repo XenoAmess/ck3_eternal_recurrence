@@ -1,0 +1,52 @@
+{
+  "schema": "episode04.multiwindow.behavior-check.actual.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T09:52:15.293652+00:00",
+  "status": "PASS",
+  "behavior_checks": 1,
+  "toolchain_version": "0.3.0",
+  "baseline_rejection": "one raw window per source; preserve separate prepared clips for reuse",
+  "candidate_draft_cues": 69,
+  "windows": [
+    {
+      "cue": "C05-06",
+      "source_frames": [
+        0,
+        857
+      ],
+      "start_seconds": 0.0,
+      "encoded_duration_seconds": 28.566666666666666,
+      "planned_input_seeks": [],
+      "graph_sha256": "dff652f06bc65071c91fe1767254f4820665c9c35eaf1158aaaa051a049be18a",
+      "raw_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv"
+    },
+    {
+      "cue": "C05-10",
+      "source_frames": [
+        1055,
+        1887
+      ],
+      "start_seconds": 35.166666666666664,
+      "encoded_duration_seconds": 27.733333333333334,
+      "planned_input_seeks": [
+        35.166667
+      ],
+      "graph_sha256": "d4c0539b2391efffa6bd86ca5121ad51488bf67be2611e95b5b44141bf2663e3",
+      "raw_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv"
+    }
+  ],
+  "main_composer_unchanged_sha256": "a88f7601623d6a10acb36165d198dd52e8d1875938ee1dad2db00ed3c2ba1646",
+  "raw_body_reads": 0,
+  "audio_payload_reads": 0,
+  "new_frames": 0,
+  "media_processes": 0,
+  "SDK_calls": 0,
+  "new_runs": 0,
+  "render_ready": false,
+  "candidate_counts": [
+    4,
+    20,
+    45
+  ],
+  "new_research_business_dynamic_credit": 0
+}

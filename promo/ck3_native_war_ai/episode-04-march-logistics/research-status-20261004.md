@@ -1,5 +1,11 @@
 # 第4期研究总账：行军、补给与损耗
 
+## 2026-10-17 10:28 UTC R198 R06局部开关正例，整卡与动态不涨
+
+`machine_id: desktop-3fevhd2-1c74096080`。源码 `dc031358981450ae3f8e40c6234b7f27fd4662ef` 的[生产/cold资格](../../../docs/ck3-native-ai/episode04-post-r197-native-admission-12004.md)在A05仅闭本机字节、复用A04 admission与新shared-v3 focused cold，不提供live/ADD资格。[R198一次原生军务开关](../../../docs/ck3-native-ai/episode04-r198-military-toggle-12004.md)绑定PID24728、gen1、owner31254、date53148192；开关raw `4A9` 前1、动作即时后验仍1、后续ticket9稳定为0，最终`verified_desired`。这新闭合的是R06子步骤“一次关闭并读回”，不是R06自然补员/receiver/provider/ADD整卡；现场始终暂停，未观察自然日或费用。
+
+R198正常Save回执5,264 B／SHA-256 `3fc07750458cac695677eab6d28db3bb9a47e36a808a82ead4b8253ea801aed5`，checkpoint仅作本场正常闭场来源，游戏exit0、screen空资源；Film正常Finish但媒体全解码、clean/1×、人工签核未做。本次分子不变：采纳R07-v2研究 **9/14（64.29%）**、业务 **6/11（54.55%）**、合格动态 **0/11**、ABC **0/3**；原R07-v1严格仍8/14、5/11。R197 timeout/exit1及其新checkpoint不可追认，旧段继续表示当时边界。
+
 ## 2026-10-17 06:29 UTC R197异常闭场：P局部入参阳性，整卡不涨
 
 `machine_id: desktop-3fevhd2-1c74096080`，source `85eb547cca4fddaec4b8a89ec9dd203e6935299c`，R0197从R191正常S0独立载入。[R04县P专题](../../../docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md)有一次实际preview，source relation receiver34960/actor31254原生P true，target first receiver34232/actor31254原生P false，最终county condition=false；未知OR输入保留，无Move/抵达/物理扣兵。[R06准入专题](../../../docs/ck3-native-ai/episode04-r197-reinforcement-step-admission-12004.md)解释唯一disable请求unsupported且未切换，未调用provider/ADD；R05只读观察恢复，assign34232 state_changed未知且未重投，0自然日/cap100。三者均不新增业务卡。
