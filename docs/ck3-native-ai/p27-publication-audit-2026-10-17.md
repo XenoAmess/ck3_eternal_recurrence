@@ -283,3 +283,11 @@ AUTO50实际一天＋event110的消费者只放宽合法暂停弹窗读回，完
 两个modal消费者公共4producer／48否例与CUnit0真producer通过，明确使用正式SDK验证器、无UI业务信用；旧runtime整canonical不搬。WAL报告已在第八入库，不重复实现；速度5报告保留default off／35不采用／未来2748重基边界。所有精确来源与测试见[第九有限归档](research/sdk35-zero-hop-and-capture-close/README.md)，无视频、Driver、SAVE正文读取或复制。
 
 提交前Root另交实际Native22零跳和clock一天成功原22，raw53483040→53483064／tick1／paused／overshoot0；地图＋overlay首帧和watchdog均已实际准入。旧55b随后因stationary phase遗漏拒绝结算，FULL21失败、同SDK纯分类修复中；不把物理一天推进写成新窗口31已开启或主流程已恢复，也不重发原时钟。
+
+## 第十批：stationary 消费与停止／恢复提示
+
+第九4f71b101的Official38997913853／Linear38997913841均已实际success。其后Root在同SDK安装25、仅重消费26，FULL27／MET28结算原22的一天；普通FULL37／AUTO38再真实推进到53483088，SEM40／MET41匹配Native7／public8和12457周期。旧FULL21误拒仍保留，修复未重启Game／SDK／OBS，也未重放原时钟。
+
+公共stationary分支严格要求原生完整空路线、同帧合法姿态／完整hostile与精确clock；50项实际投影／生产租约／旧moving popup回归通过。新停止原因／修复状态工具参数化入库：v1两态画面经Root亲审，v2增量读、SDK／feeder／summary等新增异常来源只作离线资格，25项／8子例通过。不把安装ACK或原失败动作日期的重消费当作“已恢复推进”，须另有真实新日历FULL和fresh匹配暂停SEM。[有限源包与边界](research/sdk35-stationary-and-repair-status/README.md)。
+
+本批截点窗口31未开，不将两次一天观察当作30年完成；稳定30年第一，随后<1秒／日、0.5秒／日，均未达。未来不可避speed1消费者与WAL／速度5研究分离，不因提示功能或stationary实证外推其生产验收。

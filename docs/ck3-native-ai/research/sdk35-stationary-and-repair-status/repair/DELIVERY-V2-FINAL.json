@@ -1,0 +1,86 @@
+{
+  "status": "FILE_ONLY_V2_FINAL_ROOT_SWITCH_REQUIRED",
+  "at_utc": "2026-10-17T03:29:52.188841+00:00",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status.py",
+      "sha256": "0b88d241d9d6976a1bc7f423f171f469527823a8dead96f3669b1af8c7fb0cd4",
+      "bytes": 20876
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v2.py",
+      "sha256": "d6f7eb026d254b8e4459405c0c192c14405b6bf994320fec876c382b97ca8005",
+      "bytes": 19362
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_overlay_view.py",
+      "sha256": "4603eefc3db062c0850b877c5c7b7a79c786bfdb13ede51388929871005ea04e",
+      "bytes": 1252
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_runtime_repair_status_v2.py",
+      "sha256": "2f981fbfb483abeceeb9427ee20463722fc5bc34f4b957dd16736dc88f3a8d91",
+      "bytes": 7550
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\ACTUAL-P35-37-40-PROJECTION.json",
+      "sha256": "63db49b86c70d451120860fdbcc170203da3be75053c92781c8099024bca695e",
+      "bytes": 2477
+    }
+  ],
+  "commands": {
+    "request_v1_stop": [
+      "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-c",
+      "from pathlib import Path; p=Path('D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\native22-cold-generation04\\\\runtime-repair-status\\\\STOP'); f=p.open(\"x\",encoding=\"utf-8\"); f.write(\"Root requests v1 watcher cooperative exit for v2 switch\\n\"); f.close()"
+    ],
+    "after_actual_v1_exit_only_archive_marker": [
+      "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-c",
+      "from pathlib import Path; p=Path('D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\native22-cold-generation04\\\\runtime-repair-status\\\\STOP'); p.rename(p.with_name(\"STOP-V1-SWITCH-TO-V2-PRESERVED\"))"
+    ],
+    "start_v2_after_v1_actual_exit": [
+      "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v2.py",
+      "--session",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+      "--sdk-prefix",
+      "p35",
+      "watch"
+    ]
+  },
+  "Root_must_observe_v1_exec29614_exit_before_newwatch": true,
+  "checks": {
+    "portable_v2_tests": 7,
+    "directory_glob_forbidden_test": "GREEN",
+    "no_repeat_JSON_reads_without_cursor_change": "GREEN",
+    "late_parentFULL_observed": "GREEN",
+    "monotonicTTL": "GREEN",
+    "exactSDKhandleexit_no_process_scan": "GREEN",
+    "capture_wait_alone_not_gameplay_halt": "GREEN",
+    "actual37plus1day40SEM": "GREEN"
+  },
+  "Root_reported_actual_UI_review": {
+    "repairing_scene_sha256": "62b6e1637533d1dfcce7db2c6605a82fa034c3c716a98f54d68cedc25ea6b2c1",
+    "resolved_scene_sha256": "403a75f4e662655aed2752458cbf144334d35ae0a155782970f7f94631fde548",
+    "Game_pid": 263980,
+    "overlay_pid": 227236,
+    "recording_session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+    "reviewed_by": "Root",
+    "our_image_capture_or_OBS_calls": 0
+  },
+  "source_model": "v1 remains byte-identical; v2 composed exact base+incremental index/extra stop sources",
+  "retainedSDKhandles_only_whenRoot_runs_v2_watch": true,
+  "Game_SDK_MCP_OBS_Desktop_control_calls_during_preparation": 0,
+  "new_storage_reservation_bytes": 0,
+  "review_at_utc": "2026-10-17T11:49:00.265518Z"
+}

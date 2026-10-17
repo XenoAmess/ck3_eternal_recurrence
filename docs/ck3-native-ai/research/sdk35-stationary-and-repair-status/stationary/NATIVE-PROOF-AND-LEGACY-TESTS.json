@@ -1,0 +1,14 @@
+{
+  "status": "SDK35_REAL_STATIONARY_PROOF_PRODUCER_AND_LEGACY_MOVING_PARITY_GREEN",
+  "producer": "_fresh_route_contact_advance_proofs actual frozen SDK35",
+  "actual_inputs": [
+    "P35 SEM1",
+    "P35 AUTO19 readonly horizon",
+    "P35 AUTO22"
+  ],
+  "actual_stationary_step_advertised_from_real_query_lease": true,
+  "wrong_public_native_connection_lease_rejected": true,
+  "unchanged_actual_P34_AUTO50_moving_popup_credit_equal": true,
+  "synthetic_known_stationary_regular_sieging_code_fallback_cases": 4,
+  "MCP_Native_Game_calls_or_live_Driver_reads": 0
+}

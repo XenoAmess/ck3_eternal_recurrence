@@ -1,4 +1,6 @@
-"""Exact Native route clock consumer; inject the reviewed gameplay binding validator."""
+"""Pure exact-day consumer: unchanged moving contract plus explicit stationary scope.
+No action, native read, queue or credit persistence is performed here.
+"""
 
 def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, initial_frame=None, game_pid=None):
     """Credit only the exact paused one-day clock with a complete same-frame hostile proof."""
@@ -26,10 +28,12 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and subject not in hostile_ids
             and step == prefix + f"{subject}-to-{target}-h-{count}-" + "-".join(map(str, hostile_ids)),
             "step IDs/order")
+    stationary = plan.get("phase") == "native_war_stationary_contact_horizon_progress"
     inner = body.get("result")
     require(isinstance(inner, dict) and body.get("status") == "executed"
             and plan.get("selected_step") == step
-            and plan.get("phase") == "native_war_moving_contact_before_strength_progress"
+            and plan.get("phase") in {"native_war_moving_contact_before_strength_progress",
+                                      "native_war_stationary_contact_horizon_progress"}
             and inner.get("step") == step and inner.get("backend_id") == "native-headless"
             and inner.get("source") == "native-composite"
             and inner.get("progress_status") == "postcondition"
@@ -67,9 +71,7 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             "same-game source and later readback")
     audit = plan.get("route_audit")
     horizon = audit.get("contact_horizon") if isinstance(audit, dict) else None
-    require(isinstance(audit, dict) and audit.get("army_id") == subject
-            and audit.get("target_province_id") == target
-            and audit.get("army_state") == "moving"
+    require(isinstance(audit, dict) and audit.get("target_province_id") == target
             and isinstance(horizon, dict)
             and horizon.get("status") == "available"
             and horizon.get("date_raw") == start
@@ -81,13 +83,20 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and horizon.get("horizon_start_date_raw") == start
             and horizon.get("horizon_end_date_raw") == end
             and horizon.get("conflicts") == [], "complete same-frame contact-free proof")
+    if stationary:
+        require(audit.get("status") == "safe_one_day_stationary_contact_horizon",
+                "exact stationary plan audit")
+        from xar_autoplayer.bridge.war_contract import normalize_route_contact_horizon
+        normalize_route_contact_horizon(horizon, expected_subject_army_id=subject,
+            expected_target_province_id=target, expected_hostile_army_ids=hostile_ids,
+            expected_date_raw=start, expected_snapshot_revision=binding["native_revision"])
+    else:
+        require(audit.get("army_id") == subject and audit.get("army_state") == "moving",
+                "original moving plan audit")
     route = horizon.get("subject_route")
     hostile_routes = horizon.get("hostile_routes")
     require(isinstance(route, dict) and route.get("army_id") == subject
             and route.get("timeline_observable") is True
-            and route.get("route_province_ids") == audit.get("route_province_ids")
-            and route.get("route_province_ids")
-            and route["route_province_ids"][-1] == target
             and isinstance(hostile_routes, list)
             and len(hostile_routes) == count
             and all(isinstance(row, dict) and type(row.get("army_id")) is int
@@ -98,6 +107,14 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
                     and isinstance(row.get("arrival_date_raws"), list)
                     and len(row["route_province_ids"]) == len(row["arrival_date_raws"])
                     for row in hostile_routes), "actual complete route catalogue")
+    if stationary:
+        require(route.get("current_province_id") == route.get("effective_origin_province_id") == target
+                and route.get("route_province_ids") == [] and route.get("arrival_date_raws") == [],
+                "native stationary complete empty timeline")
+    else:
+        require(route.get("route_province_ids") == audit.get("route_province_ids")
+                and route.get("route_province_ids") and route["route_province_ids"][-1] == target,
+                "original complete moving route")
     before, after = (inner.get(k) for k in ("war_progress_before", "war_progress_after"))
     def war_scope(progress, date):
         require(isinstance(progress, dict) and progress.get("date_raw") == date
@@ -123,13 +140,29 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
                     # The route-contact reader's full hostile scope excludes
                     # armies already retreating at the *starting* frame.  A
                     # missing retreat bit stays in scope; do not guess it away.
-                    if key != "enemy_armies" or row.get("retreating") is not True:
+                    if key != "enemy_armies" or (row.get("retreating") is not True
+                            and (not stationary or row.get("army_state") != "retreating"
+                                 and row.get("army_state_code") != 6)):
                         into.add(row["army_id"])
         if date == start:
             require(subject in player and set(hostile_ids) <= enemy,
                     "subject and full hostile watch")
         return seen, enemy
     old_wars, old_enemies = war_scope(before, start)
+    if stationary:
+        stationary_rows = [row for war in before.get("wars", [])
+                           for row in war.get("player_armies", [])
+                           if isinstance(row, dict) and row.get("army_id") == subject]
+        require(bool(stationary_rows), "observed stationary subject absent")
+        for row in stationary_rows:
+            state, code = row.get("army_state"), row.get("army_state_code")
+            known = (isinstance(state, str) and state.casefold() in {"regular", "sieging"}
+                     or not isinstance(state, str) and type(code) is int and code in {1, 3})
+            require(known and row.get("current_province_id") == target
+                    and "move_target_province_id" in row and row["move_target_province_id"] is None
+                    and row.get("route_province_ids") == [] and row.get("in_combat") is False
+                    and row.get("retreating") is not True and code not in {2, 6},
+                    "same-frame actual stationary subject/target")
     new_wars, _ = war_scope(after, end)
     require(isinstance(plan.get("active_wars"), list), "selected active wars absent")
     require(set(hostile_ids) == old_enemies

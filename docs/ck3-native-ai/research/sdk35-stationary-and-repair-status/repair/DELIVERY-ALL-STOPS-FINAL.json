@@ -1,0 +1,31 @@
+{
+  "status": "FILE_ONLY_ALL_STOP_SOURCES_FINAL_ROOT_RUNTIME_REQUIRED",
+  "at_utc": "2026-10-17T03:34:02.571011+00:00",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v2_all_stops.py",
+      "sha256": "ef3944da5fe25a30578b241b0b2a8a53a423c569f6baf3813f1a64c25291e446",
+      "bytes": 7631
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_repair_all_stops.py",
+      "sha256": "b88f2e37afa2ab65772b969d3f840d44db0182dd1b9daa0c440e99a589140e4c",
+      "bytes": 2522
+    }
+  ],
+  "exact_base_delivery": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\DELIVERY-V2-FINAL.json",
+    "sha256": "83a5ab3adef7b9e27558523a5cd7f534c0aea1d63454bfc164af020211b2f326"
+  },
+  "focused_portable_tests": 9,
+  "added_actual_receipt_cases": [
+    "summary exception after pending already cleared",
+    "feeder halted_review_required with typed blocked FULL result"
+  ],
+  "no_additional_Gameplay_gate_or_Game_call": true,
+  "source_mutation_of_v1_v2_R4_frozen_helpers": false,
+  "Root_switch_procedure": "STOP v1; observe actual exec29614 exit; archive STOP; run all_stops entry with identical session/prefix watch args",
+  "source_runtime_admission_claimed": false,
+  "new_reservation_bytes": 0,
+  "review_at_utc": "2026-10-17T11:49:00.265518Z"
+}

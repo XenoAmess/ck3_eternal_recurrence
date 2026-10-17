@@ -1,0 +1,164 @@
+{
+  "schema": "xar.sdk35-stationary-repair-publication-sources.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T03:43:53.971157+00:00",
+  "originals": [
+    {
+      "archive": "stationary/DELIVERY-PREFIX.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\DELIVERY-PREFIX.json",
+      "sha256": "3d24bc8ebb57a2cd9b9ff1b2d48929d23326f90896116fb35c6d8837dd0baca8",
+      "bytes": 4230
+    },
+    {
+      "archive": "stationary/CLASSIFIER.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\classifier.patch",
+      "sha256": "46447790e4dfa0dd7a3614a9700c6423a9271aa0a3da4dccb4c126fdf91b9101",
+      "bytes": 13961
+    },
+    {
+      "archive": "stationary/ACTUAL22-QUEUE-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\ACTUAL22-QUEUE-TESTS.json",
+      "sha256": "35552a18e7331eb71dedb746ded5a6a271e4cc0f76edeb5d4baf8575ccb51ae6",
+      "bytes": 2069
+    },
+    {
+      "archive": "stationary/NATIVE-PROOF-AND-LEGACY-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\NATIVE-PROOF-AND-LEGACY-TESTS.json",
+      "sha256": "821b42c27557f6a6b47ee59a770209e551169fe500e15a73607da023ce2c37e2",
+      "bytes": 576
+    },
+    {
+      "archive": "stationary/ACTUAL22-FORMAL-QUEUE.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\test_actual_queue.py",
+      "sha256": "11e505e1b2d1e0bcf5d2cb758bd3e50f608f6d581177f2c0427eff66115b9609",
+      "bytes": 11004
+    },
+    {
+      "archive": "stationary/ROOT-P35-CLASSIFIER-EPOCH02-PIN.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CLASSIFIER-EPOCH02-PIN.json",
+      "sha256": "718514a070d8f4e3dc82a9698d058f9903eeaf18057cc29b9f4f5858381a5cfc",
+      "bytes": 384
+    },
+    {
+      "archive": "repair/DELIVERY-V2-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\DELIVERY-V2-FINAL.json",
+      "sha256": "83a5ab3adef7b9e27558523a5cd7f534c0aea1d63454bfc164af020211b2f326",
+      "bytes": 4020
+    },
+    {
+      "archive": "repair/DELIVERY-ALL-STOPS-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\DELIVERY-ALL-STOPS-FINAL.json",
+      "sha256": "be92fd9df8927449aaf0109d16b867e78065302716166455c88cb835ecdd96b6",
+      "bytes": 1512
+    },
+    {
+      "archive": "repair/ROOT-REPAIR-STATUS-PIXEL-VERIFIED01.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-REPAIR-STATUS-PIXEL-VERIFIED01.json",
+      "sha256": "df365bc4fe772e421e5d55999e1a555c276651bbe394935ec29b481194d5450a",
+      "bytes": 2529
+    },
+    {
+      "archive": "repair/runtime_repair_status.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status.py",
+      "sha256": "0b88d241d9d6976a1bc7f423f171f469527823a8dead96f3669b1af8c7fb0cd4",
+      "bytes": 20876
+    },
+    {
+      "archive": "repair/runtime_repair_status_v2.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v2.py",
+      "sha256": "d6f7eb026d254b8e4459405c0c192c14405b6bf994320fec876c382b97ca8005",
+      "bytes": 19362
+    },
+    {
+      "archive": "repair/runtime_repair_status_v2_all_stops.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v2_all_stops.py",
+      "sha256": "ef3944da5fe25a30578b241b0b2a8a53a423c569f6baf3813f1a64c25291e446",
+      "bytes": 7631
+    },
+    {
+      "archive": "OFFICIAL-NINTH-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\OFFICIAL-NINTH-CI-FINAL.json",
+      "sha256": "dea14808ddc0be14886fe6bbe699f86a1691fee89475a1266fd94130c548c77b",
+      "bytes": 554
+    }
+  ],
+  "public": [
+    {
+      "path": "tools/g2_saved_campaign/route_contact_exact_day_outcome.py",
+      "normalized_sha256": "28dcb6807e308679316825b3734bfd3ba7f215cf3b96493acd172c59afa74496",
+      "bytes": 15161
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_route_stationary_outcome.py",
+      "normalized_sha256": "a76371bc7d0eec2365f52a58af495d2b62416f00f4c20a7fceee667d2f654ef4",
+      "bytes": 3558
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_stationary_actual22.json",
+      "normalized_sha256": "b1f29fcf39724795764e5687c295768287bfe128091aedacc2d59f698b059c58",
+      "bytes": 60418
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_stationary_mutations.py",
+      "normalized_sha256": "a4efa1c7c0b46f8b41cf44f8ca806262b8fe7b1cb89bda44fb0b2e446d265f9e",
+      "bytes": 2476
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_status.py",
+      "normalized_sha256": "5fd2fd03ed8febb949d70d77f4da24d80dc9f19b6f82f6e25a067a734a351705",
+      "bytes": 20920
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_status_v2.py",
+      "normalized_sha256": "381310610139d81e5e7c690af1c68914a1f7ef0604843031b6053b0c7d980b8b",
+      "bytes": 18804
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_status_v2_all_stops.py",
+      "normalized_sha256": "0e61cdaadd68549d7e970adca6b185b145ccf97e8ed21c41d078aabdfc3358cf",
+      "bytes": 7245
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_overlay_view.py",
+      "normalized_sha256": "4603eefc3db062c0850b877c5c7b7a79c786bfdb13ede51388929871005ea04e",
+      "bytes": 1252
+    },
+    {
+      "path": "tools/test_runtime_repair_status.py",
+      "normalized_sha256": "9ed511695f341b2f63dae4d11b38bb4134aa98c1513dea916c63b2a46535ca1a",
+      "bytes": 4731
+    },
+    {
+      "path": "tools/test_runtime_repair_status_v2.py",
+      "normalized_sha256": "d0c7813f3783c7e25eef48e0631566ad2593e0cfba5267c07b3b855739b7f580",
+      "bytes": 9936
+    },
+    {
+      "path": "tools/test_repair_all_stops.py",
+      "normalized_sha256": "eb6dbb2e369d670e13bdfa80f864169c519c10193b29bd019ea72a3ee813d34f",
+      "bytes": 3615
+    },
+    {
+      "path": "tools/test_runtime_repair_overlay_view.py",
+      "normalized_sha256": "027a99bdb3751ef8af0d03d37c8ecfebda3ed1b4f9f1ad364f6716b580e5cd6e",
+      "bytes": 1425
+    },
+    {
+      "path": "tools/fixtures/repair_status_actual37_40.json",
+      "normalized_sha256": "b691e718882fd4bbc39e2d037e7b5e64f59357e58fdbd919a4b3d706c266bea4",
+      "bytes": 2477
+    }
+  ],
+  "source_boundaries": {
+    "stationary": "actual AUTO22 clock; actual25/26/27 reconsume; new ordinary37/38 clock; no replay",
+    "repair_status_v1": "Root personally reviewed repairing/resolved pixels; watch29614; metadata only",
+    "incremental_v2_all_stops": "offline scoped tests only; not inferred live from v1 pixels",
+    "renderer": "portable dedicated-schema API only; current live overlay source unchanged",
+    "future_unavoidable_speed1": "not included; distinct preventive candidate"
+  },
+  "retention": {
+    "review_at_utc": "2026-10-19T03:43:53.971169+00:00",
+    "reason": "finite publication and immutable failure/correction provenance; large originals remain external",
+    "large_video_Driver_SAVE_or_trace_bodies_copied": false
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "status": "ACTUAL22_RECONSUME_SOURCE_FIXTURE_GREEN_NOT_INSTALLED",
+  "schema": "root.p35.stationary-exact-day-consumer/v1",
+  "base": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_modal_result_classifier.py",
+    "sha256": "55b11845238f800b3ce66eb8962e7e647dea7af55f3688cbd9b64274328efb3a",
+    "bytes": 262062
+  },
+  "canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_stationary_result_classifier.py",
+    "sha256": "05f1d598ae40f67fab01dba4fde2c05c8900c0c4829a546516bac9382a17ed1d",
+    "bytes": 250093
+  },
+  "exact_day_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_route_contact_exact_day_classifier_v2.py",
+    "sha256": "58369d480c5de092f2cc9bfc7a41f35b0f97332802fa0ee1676b11e092ece5e4",
+    "bytes": 15121
+  },
+  "unchanged_modal_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_battle_route_modal_classifier_v1.py",
+    "sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f",
+    "bytes": 16268
+  },
+  "formal_actual_queue_reconsume_test": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\ACTUAL22-QUEUE-TESTS.json",
+    "sha256": "35552a18e7331eb71dedb746ded5a6a271e4cc0f76edeb5d4baf8575ccb51ae6",
+    "bytes": 2069
+  },
+  "minimal_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-stationary-result-consumer01\\classifier.patch",
+    "sha256": "46447790e4dfa0dd7a3614a9700c6423a9271aa0a3da4dccb4c126fdf91b9101",
+    "bytes": 13961
+  },
+  "source_frozen_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-COLD-SOURCE-FROZEN.json",
+    "sha256": "2f1d0d6b18eed5bcf6410e54d91b2f34d3f8a0f49a97ef04d2b0c6f59fe9e014",
+    "bytes": 12483
+  },
+  "actual_AUTO22_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0022-1-result.json",
+    "sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df",
+    "bytes": 49601
+  },
+  "actual_SEM23": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0023-1-result.json",
+    "sha256": "060d49a1d3eec9affb3752617ceef8fc98232a07fc76a534f23b362174c4c597",
+    "bytes": 24109
+  },
+  "actual_METRICS24": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0024-1-result.json",
+    "sha256": "004e324cdb620e6432bfaef13dc7c94b43d6cab4ec9e3b8e26c84503a1a40254",
+    "bytes": 1579
+  },
+  "runtime_requests_published": 0,
+  "SDK_Game_OBS_Native_Driver_or_SAVE_operations": 0,
+  "NativeProducer_review": "SDK35 _fresh_route_contact_advance_proofs explicitly supports complete empty stationary timelines; actual22 is real production result",
+  "additional_offline_Driver_producer_fixture": "pending; not claimed by this prefix-qualified delivery",
+  "root_install_request": {
+    "sequence": 25,
+    "command": "install_result_classifier",
+    "arguments": {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_stationary_result_classifier.py",
+      "sha256": "05f1d598ae40f67fab01dba4fde2c05c8900c0c4829a546516bac9382a17ed1d"
+    }
+  },
+  "following_controls": [
+    {
+      "sequence": 26,
+      "command": "reconsume_original_response",
+      "arguments": {}
+    },
+    {
+      "sequence": 27,
+      "command": "full_loop",
+      "arguments": {
+        "max_turns": 1
+      }
+    }
+  ],
+  "limits": [
+    "not runtime installed",
+    "Source fixture calls no Game",
+    "Actual paired METRICS at settle remains Root operation",
+    "Actual 22 clock must never replay or be cleared as zeroaction"
+  ]
+}

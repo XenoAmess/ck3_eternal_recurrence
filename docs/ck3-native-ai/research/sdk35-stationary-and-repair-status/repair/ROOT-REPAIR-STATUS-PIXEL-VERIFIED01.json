@@ -1,0 +1,47 @@
+{
+  "schema": "root.ck3.repair-status-overlay-pixel-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewer": "/root",
+  "at_utc": "2026-10-17T03:28:15.975137+00:00",
+  "recording_session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+  "game_pid": 263980,
+  "game_creation_filetime": 134366781612159835,
+  "overlay_pid": 227236,
+  "overlay_creation_filetime": 134366783082037774,
+  "desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+  "repairing_scene": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-REPAIRING-OVERLAY-SCENE02.png",
+    "sha256": "62b6e1637533d1dfcce7db2c6605a82fa034c3c716a98f54d68cedc25ea6b2c1"
+  },
+  "resolved_scene": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-REPAIRED-OVERLAY-SCENE01.png",
+    "sha256": "403a75f4e662655aed2752458cbf144334d35ae0a155782970f7f94631fde548"
+  },
+  "Root_personally_reviewed_both_pixel_images": true,
+  "stop_reason_and_repairing_visible": true,
+  "repair_explanation_and_resumed_visible": true,
+  "normal_decision_context_visible": true,
+  "actual_repair_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0025-1-result.json",
+    "sha256": "609bd44fb718c7712fea4145286ad90184fc20f41579466c4e57cdaf4bfeca8d"
+  },
+  "actual_resumed_progress": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0037-1-result.json",
+    "sha256": "2e3f6e42473eddc4c82286ead7f64622f86295e69ca177654e4476009a901f4d"
+  },
+  "fresh_semantic_proof": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0040-1-result.json",
+    "sha256": "cb59eb45fbaddbb4be551fc9c6049174cfd2a8446b85c69f3133d4326fa8e410"
+  },
+  "publisher": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status.py",
+    "sha256": "0b88d241d9d6976a1bc7f423f171f469527823a8dead96f3669b1af8c7fb0cd4"
+  },
+  "watch_session": 29614,
+  "generic_watcher_v1_started": true,
+  "all_future_stop_sources_covered_claimed": false,
+  "incremental_v2_pending": true,
+  "new_Game_action_or_business_credit": 0,
+  "overlay_or_game_or_recording_restarted": false,
+  "Desktop2_capture_or_input": false
+}

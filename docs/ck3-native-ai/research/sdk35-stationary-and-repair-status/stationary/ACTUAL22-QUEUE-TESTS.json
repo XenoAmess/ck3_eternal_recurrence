@@ -1,0 +1,69 @@
+{
+  "status": "ACTUAL22_STATIONARY_FORMAL_QUEUE_RECONSUME_SETTLE_GREEN_NOT_RUNTIME",
+  "at_utc": "2026-10-17T03:10:27.052686+00:00",
+  "original_AUTO22_sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df",
+  "actual_SEM1_six_field_startup": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53483040,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "actual_METRICS20_before": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53483040,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "actual_METRICS24_after": {
+    "snapshot_id": "native:4",
+    "revision": 5,
+    "native_revision": 4,
+    "date_raw": 53483064,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "old_failure_reproduced": true,
+  "unchanged_original_AUTO22": true,
+  "negative_cases": [
+    "wrong_phase",
+    "wrong_audit_status",
+    "unknown_timeline",
+    "nonempty_stationary_route",
+    "wrong_origin",
+    "wrong_current",
+    "moving_subject",
+    "subject_in_combat",
+    "subject_retreating",
+    "subject_pending_target",
+    "subject_route_nonempty",
+    "subject_wrong_province",
+    "missing_hostile",
+    "missing_hostile_timeline",
+    "unobservable_hostile",
+    "unwatched_enemy",
+    "false_contact_free",
+    "wrong_native_revision",
+    "wrong_Game",
+    "wrong_episode",
+    "unpaused",
+    "two_days",
+    "clock_overshoot",
+    "cached_speed_other_source",
+    "UI_submit_extra"
+  ],
+  "same_original_response_reconsume_then_only_METRICS": true,
+  "date_credit_once_raw": 24,
+  "UI_business_or_replay_credit": 0,
+  "actual_P35_loader_check_after_reconsume_full_loop_persist_JSON": true,
+  "stationary_popup_contract_retained": true,
+  "sizes": {
+    "canonical": 250093,
+    "TURN": 2646
+  },
+  "new_MCP_Game_Native_or_Driver_calls": 0,
+  "live_source_or_ledger_writes": 0
+}

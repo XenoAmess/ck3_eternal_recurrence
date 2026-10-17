@@ -1,0 +1,80 @@
+{
+  "schema": "xar.actual-repair-progress-portable-projection/v1",
+  "projection_of_actual_receipts": true,
+  "state": {
+    "phase": "repair_applied_waiting_for_progress",
+    "repair_applied_sequence": 25,
+    "binding": {
+      "game_pid": 263980
+    },
+    "observed_frame": {
+      "date_raw": 53483064,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    }
+  },
+  "semantic": {
+    "request": {
+      "sequence": 40,
+      "tool": "ck3_take_semantic_snapshot_private_v1",
+      "arguments": {}
+    },
+    "ended_at_utc": "2026-10-17T03:16:22.523229+00:00",
+    "result": {
+      "is_error": false,
+      "structured_content": {
+        "date_raw": 53483088,
+        "paused": true,
+        "map_ready": true,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "played_character": {
+          "character_id": 39979,
+          "alive": true
+        },
+        "diagnostics": {
+          "bridge_pid": 263980
+        }
+      }
+    }
+  },
+  "batch": {
+    "request": {
+      "sequence": 37,
+      "command": "full_loop",
+      "arguments": {
+        "max_turns": 1
+      }
+    },
+    "result": {
+      "is_error": false,
+      "structured_content": {
+        "status": "bounded_loop_finished",
+        "actual_turns": 1,
+        "actual_end_date_raw": 53483088,
+        "cumulative_cycles": 12457,
+        "actual_end_frame": {
+          "snapshot_id": "native:7",
+          "revision": 8,
+          "native_revision": 7,
+          "date_raw": 53483088,
+          "actor_character_id": 39979,
+          "episode_run_id": "native-39979-5ee2d59fcb51"
+        }
+      }
+    }
+  },
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0025-1-result.json",
+      "sha256": "609bd44fb718c7712fea4145286ad90184fc20f41579466c4e57cdaf4bfeca8d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0037-1-result.json",
+      "sha256": "2e3f6e42473eddc4c82286ead7f64622f86295e69ca177654e4476009a901f4d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0040-1-result.json",
+      "sha256": "cb59eb45fbaddbb4be551fc9c6049174cfd2a8446b85c69f3133d4326fa8e410"
+    }
+  ]
+}
