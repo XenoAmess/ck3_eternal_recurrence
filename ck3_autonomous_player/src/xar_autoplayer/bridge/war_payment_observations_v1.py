@@ -292,11 +292,14 @@ def expected_debits(j):
 
 
 def normalize_journal(value, *, snapshot: Mapping[str,object], machine_id: str):
+    raw4_key = "raw_resource4_getter_v1"
+    has_raw4 = isinstance(value, dict) and raw4_key in value
     fields(value, u32='schema_version steam_build_id install_failure_flags',
            boolean='installed controlled_window_admitted read_complete',
            unsigned='latest_sequence oldest_sequence overwritten publication_failures',
            strings='machine_id executable_sha256 game_version session_basis balance_boundary maintenance_attribution',
-           nested='current_session sampling natural_journal_status records natural_parent_returns qualified_boarding_debits')
+           nested='current_session sampling natural_journal_status records natural_parent_returns qualified_boarding_debits'
+                  + (' '+raw4_key if has_raw4 else ''))
     need(value['schema_version']==1 and value['steam_build_id']==25734779
          and require_exact_native_build(value['game_version'],value['executable_sha256']) == CK3_12004
          and private_native_build_identity(snapshot)==CK3_12004,'journal lacks the exact .4 source')
@@ -344,6 +347,9 @@ def normalize_journal(value, *, snapshot: Mapping[str,object], machine_id: str):
              and value['machine_id']==machine_id and same_session(current,current),
              'admitted journal does not match this paused process/player/frame')
     need(claims==expected_debits(value),'qualified debit vector disagrees with complete raw parent/amount/return evidence')
+    if has_raw4:
+        from .war_payment_raw4_getter_v1 import validate_child
+        validate_child(value[raw4_key],value)
     return deepcopy(value)
 
 

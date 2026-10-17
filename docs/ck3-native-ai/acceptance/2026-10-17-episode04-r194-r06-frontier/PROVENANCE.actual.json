@@ -1,0 +1,67 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T00:11:12.515639+00:00",
+  "source_observed_at": "2026-10-17T00:09:44.102319+00:00",
+  "original_scene": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01",
+  "originals": [
+    {
+      "role": "identity",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/runtime-actor-identity.actual-a01.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/IDENTITY.actual.json",
+        "bytes": 7766,
+        "sha256": "c3fe10fe0171b17e00a6b29e9ae1b3e84fe38a143d466b7adcaf2a2bbf1a5035"
+      }
+    },
+    {
+      "role": "result",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/r06-postfilm-opener-a01/RESULT.actual.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-RESULT.actual.json",
+        "bytes": 1569,
+        "sha256": "3668e5616126d8cdd8591e561bf91af12dec4198f2f92aa73f93ca04d50aa8e4"
+      }
+    },
+    {
+      "role": "endpoint",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/r06-postfilm-opener-a01/OPENER-ENDPOINT.actual.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-ENDPOINT.actual.json",
+        "bytes": 292859,
+        "sha256": "dd3e8b84567b0af2d6b0171ebaf6893eae8e905973044e9d271939d009518f6d"
+      }
+    },
+    {
+      "role": "before",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/r06-postfilm-opener-a01/BEFORE-FRAME.actual.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/BEFORE-FRAME.actual.json",
+        "bytes": 406,
+        "sha256": "193071ecb4467ee26923cc5cf0bf1da4fc0de1f9630c8399dbec45bbd09f1b86"
+      }
+    },
+    {
+      "role": "fence",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/r06-postfilm-opener-a01/FENCE-FRAME.actual.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/FENCE-FRAME.actual.json",
+        "bytes": 405,
+        "sha256": "470fc35913e28d4b3a8a0f06d4bdcbc64aa13dbd5636af82b11465bf42148e8d"
+      }
+    },
+    {
+      "role": "request",
+      "original_path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r194-r09-forward-a01/desktop-3fevhd2-1c74096080--vanilla--R0194/requests/r0194-r06-postfilm-a01-open-once.json",
+      "portable_pin": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-REQUEST.actual.json",
+        "bytes": 156,
+        "sha256": "a34347632b85312021e2cddc5fabe8254ef954b3d3fb37c35f0867df913f3d5f"
+      }
+    }
+  ],
+  "Driver_body_reads": 0,
+  "SDK_calls": 0,
+  "EXE_reads": 0,
+  "main_writes": 0,
+  "note": "Portable small endpoint transferred byte for byte; sealed a38 consumes each transferred analysis input once using same bytes for SHA and parse."
+}

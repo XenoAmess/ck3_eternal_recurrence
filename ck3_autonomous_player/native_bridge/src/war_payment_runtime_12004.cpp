@@ -19,6 +19,10 @@ const std::array<WarPaymentHookDescription12004,kWarPaymentHookCount12004> kDesc
   {0x285EE40,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}},
   {0x285EED0,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}},
   {0x285EFF0,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}}
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+  // Whole 4+7+3 byte instructions; no RIP-relative operand in this prefix.
+  ,{0x28B9490,14,{0x48,0x83,0xEC,0x28,0x4C,0x8B,0x91,0xB0,0x01,0,0,0x4C,0x8B,0xCA}}
+#endif
 }};
 bool EqualSha(std::string_view value) noexcept {
   if(value.size()!=64)return false;
@@ -121,6 +125,20 @@ extern "C" __declspec(noinline) std::uintptr_t __fastcall PaymentLandSub(void *w
   if(!s||!original)return 0;
   return InvokeWarPaymentWriter12004(s->environment.bindings,original,WarPaymentKind12004::land_sub,w,amount,c,Rva(s,pc));
 }
+
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+extern "C" __declspec(noinline) std::uintptr_t __fastcall PaymentRaw4Getter(
+    void *character,void *out64,std::int32_t selector) noexcept {
+  // Capture before any helper call: this is the native caller's return PC.
+  const auto pc=reinterpret_cast<std::uintptr_t>(_ReturnAddress());
+  auto *s=g_owned.load(std::memory_order_acquire);ActiveCall active(s);
+  const auto original=reinterpret_cast<WarPaymentRaw4Original12004>(g_original[5].load(std::memory_order_acquire));
+  if(!original)return 0; // unreachable for a published, owned detour
+  if(!s)return original(character,out64,selector);
+  return InvokeWarPaymentRaw4Getter12004(s->environment.bindings,original,character,out64,selector,pc);
+}
+#endif
+
 bool FreeAll(WarPaymentDetourState12004 &state) noexcept {
   bool ok=true;auto &e=state.environment;
   for(std::size_t i=0;i<state.hooks.size();++i) {
@@ -168,6 +186,9 @@ std::uintptr_t WarPaymentEntryThunkAddress12004(WarPaymentHook12004 hook) noexce
     case WarPaymentHook12004::personal_add:return reinterpret_cast<std::uintptr_t>(&PaymentAdd);
     case WarPaymentHook12004::personal_sub:return reinterpret_cast<std::uintptr_t>(&PaymentSub);
     case WarPaymentHook12004::land_sub:return reinterpret_cast<std::uintptr_t>(&PaymentLandSub);
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+    case WarPaymentHook12004::raw4_getter:return reinterpret_cast<std::uintptr_t>(&PaymentRaw4Getter);
+#endif
   }
   return 0;
 }
@@ -192,6 +213,11 @@ bool InstallWarPaymentPassive12004(WarPaymentDetourState12004 &state,const WarPa
     e.bindings.generic_context_capture_enabled=false;
     e.bindings.generic_module_base=0;e.bindings.generic_module_image_size=0;
     e.bindings.capture_stack_frames=nullptr;e.bindings.capture_stack_context=nullptr;
+#endif
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+    e.bindings.raw4_getter_capture_enabled=true;e.bindings.raw4_module_base=e.module_base;
+#else
+    e.bindings.raw4_getter_capture_enabled=false;e.bindings.raw4_module_base=0;
 #endif
     e.write=e.write?e.write:&WriteDefault;e.allocate=e.allocate?e.allocate:&AllocateDefault;
     e.free=e.free?e.free:&FreeDefault;e.protect=e.protect?e.protect:&ProtectDefault;

@@ -1,0 +1,781 @@
+{
+  "schema": "xar.e04.a32-production-bytes-focused-cold-qualification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-16T23:42:22.078293+00:00",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "runtime_source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "native_build_source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "status": "PRODUCTION_BYTES_AND_AFFECTED_COLD_FIXTURES_VERIFIED",
+  "build_dir": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-post-r193-a32-a01\\A32-NATIVE-CAPACITY.actual-root-a01.json",
+    "bytes": 10464,
+    "sha256": "0a722a91c9ba6fd5c374af63e07dda4d14471f10f0c3e7ce6861afacb504a526"
+  },
+  "build_completion": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-BUILD-COMPLETION.actual-a01.json",
+    "bytes": 5728,
+    "sha256": "838e47ebf835a14e266bdfcdeb78202ab5b6b9de326dd18d219f9b93428abae9"
+  },
+  "producer_result": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\native-msvc-result.json",
+    "bytes": 2275,
+    "sha256": "483e8c1a68132770c412135607a51e59b01bdf63109609a3ef7df85a12c1c58a"
+  },
+  "SYSTEM_actual_receipt": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\defender-exe-exclusions\\20261016T234053Z-3c4e7c65\\receipt.json",
+    "bytes": 675810,
+    "sha256": "6700371b85914b373b59595d08a3c62a7859343ee1e9e938414911ac389eccdb"
+  },
+  "outputs": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_bridge.dll",
+      "bytes": 13081600,
+      "sha256": "17c75891241ed44fd8183380b8e2c28402d65c5cf090dae61c840968577f6e37"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_gui_refill_receiver_candidates_12004.exe",
+      "bytes": 64000,
+      "sha256": "a360c8cb7ca65807867e9318d77e66ec8af276d2044c56b5985c97448278d82d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "e8bca95e5760d2a1f1df5fa400b5e70b12243b3a81e79d1fc622dbde2f62bf90"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "a51ce7e86a6252c02262e00ff2c41036957cd697deb952e699c1ef09349ce123"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_county_predicate_trace_fixture.exe",
+      "bytes": 21504,
+      "sha256": "a52c1d7832651a89bfc75afae75bda797ddc63585c65cf2b851432d9f2a56497"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "bytes": 145920,
+      "sha256": "a74d2c6dadb4e120428a44e8bcc6e6afd9f21eb85c2a7c62b6f5ca99b2bcf19c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_gui_refill_local_prefix_12004.exe",
+      "bytes": 78336,
+      "sha256": "fedfc95ff1d6ded6b3e48fb3c41250a139870221ce92566504dd02e920f21bb9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_gui_refill_parent_prefix_12004.exe",
+      "bytes": 79872,
+      "sha256": "4e45329276d7d779281a2407a2d66fbf59e70d522826d1e29b52b4307b90e2a1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_military_preview_unavailable_reasons.exe",
+      "bytes": 86528,
+      "sha256": "962ccaa2766d997413a186327989d51b7ba0765b8821df87665985e2e8096eb5"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_gui_refill_frontier_continuation_12004.exe",
+      "bytes": 96256,
+      "sha256": "769e8f2c2d1c4d97e68dcc8a591cb1713bb560d1b1785e090cc56b20a0878524"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\xar_test_gui_refill_frontier_continuation_off_12004.exe",
+      "bytes": 77824,
+      "sha256": "df0198f7459d397097109f4e84e468f650a2bee1c1e1a575484cc764bad4148a"
+    }
+  ],
+  "Defender_manifest": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\defender-exe-exclusions\\20261016T234053Z-3c4e7c65\\manifest.json",
+    "bytes": 11257,
+    "sha256": "2d4756063f768fc27e61191f6ccca92ca5ffef0e97ed0c97e0026f25f0b61015"
+  },
+  "SYSTEM_summary": {
+    "status": "verified",
+    "system_token_sid": "S-1-5-18",
+    "exact_EXE_count": 10,
+    "current_SHA_size_match": true,
+    "prior_paths_preserved": true,
+    "extensions_and_processes_unchanged": true,
+    "retained_actual_settings_readback_not_new_WMI_call": true
+  },
+  "configuration": "Release",
+  "jobs": 16,
+  "all_feature_flags_checked": {
+    "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE": "ON",
+    "XAR_CK3_BUILD_H2743_STOCK_PREDICATE_FIXTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1": "ON",
+    "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON",
+    "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PREWAR_FORCE_COALITION_PRIVATE_QUERY12004_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+    "XAR_CK3_ENABLE_GRANT_TITLE_PICKER_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+    "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+    "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+    "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+    "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF",
+    "XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1": "ON",
+    "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": "ON",
+    "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": "ON",
+    "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004": "ON",
+    "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": "ON",
+    "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004": "ON",
+    "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004": "ON",
+    "XAR_ENABLE_NATIVE_MANDATORY_CHOICE_V1": "OFF",
+    "XAR_ENABLE_PREWAR_DECLARATION_NODE_IDENTITY_V1": "OFF",
+    "XAR_ENABLE_PREWAR_FORCE_COALITION_V2": "OFF",
+    "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": "ON",
+    "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": "ON",
+    "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON",
+    "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004": "ON",
+    "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004": "ON"
+  },
+  "actual_compile_contract": {
+    "ninja_rules": {
+      "bridge": {
+        "line_1based": 5901,
+        "header": "build CMakeFiles/xar_ck3_bridge.dir/src/bridge.cpp.obj: CXX_COMPILER__xar_ck3_bridge_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp || cmake_object_order_depends_target_xar_ck3_bridge",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_BRIDGE_VERSION=\\\"0.1.0\\\" -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1=0 -DXAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004=1 -DXAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004=1 -DXAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004=1 -DXAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1 -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1 -DXAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -DXAR_ENABLE_WAR_PAYMENT_PASSIVE_12004=1 -DXAR_NATIVE71_ARMY_NATURAL_PHASE_12004=1 -DXAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004=1 -D_UNICODE -Dxar_ck3_bridge_EXPORTS -DXAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1=1",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_ck3_bridge.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_ck3_bridge.dir\\src",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_bridge.dir\\",
+          "  TARGET_PDB = xar_ck3_bridge.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_bridge.dir"
+        ]
+      },
+      "adapter": {
+        "line_1based": 1685,
+        "header": "build CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_adapter.cpp.obj: CXX_COMPILER__xar_ck3_12002_runtime_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp || cmake_object_order_depends_target_xar_ck3_12002_runtime",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1 -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1 -DXAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -D_UNICODE -DXAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1=1",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge",
+          "  OBJECT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir\\src",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+          "  TARGET_PDB = xar_ck3_12002_runtime.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir"
+        ]
+      },
+      "supply": {
+        "line_1based": 3819,
+        "header": "build CMakeFiles/xar_ck3_12002_runtime.dir/src/ck3_12004_actual_supply_callback_journal.cpp.obj: CXX_COMPILER__xar_ck3_12002_runtime_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12004_actual_supply_callback_journal.cpp || cmake_object_order_depends_target_xar_ck3_12002_runtime",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DNOMINMAX -DUNICODE -DWIN32_LEAN_AND_MEAN -DXAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE=1 -DXAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1 -DXAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1=1 -DXAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1=1 -DXAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004=1 -DXAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004=1 -DXAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004=1 -DXAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1 -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1 -DXAR_ENABLE_WAR_DECLARED_OVERVIEW_V1=1 -DXAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1 -D_UNICODE",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /W4 /permissive- /EHsc",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge",
+          "  OBJECT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir\\src",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+          "  TARGET_PDB = xar_ck3_12002_runtime.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir"
+        ]
+      },
+      "receiver": {
+        "line_1based": 43970,
+        "header": "build CMakeFiles/xar_test_gui_refill_receiver_candidates_12004.dir/fixtures/gui_refill_receiver_candidates_12004_fixture.cpp.obj: CXX_COMPILER__xar_test_gui_refill_receiver_candidates_12004_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/fixtures/gui_refill_receiver_candidates_12004_fixture.cpp || cmake_object_order_depends_target_xar_test_gui_refill_receiver_candidates_12004",
+        "properties": [
+          "  CONFIG = Release",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /EHsc /W4 /UNDEBUG",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_receiver_candidates_12004.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_test_gui_refill_receiver_candidates_12004.dir\\fixtures",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_receiver_candidates_12004.dir\\",
+          "  TARGET_PDB = xar_test_gui_refill_receiver_candidates_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_receiver_candidates_12004.dir"
+        ]
+      },
+      "local-prefix": {
+        "line_1based": 44095,
+        "header": "build CMakeFiles/xar_test_gui_refill_local_prefix_12004.dir/fixtures/gui_refill_local_prefix_12004_fixture.cpp.obj: CXX_COMPILER__xar_test_gui_refill_local_prefix_12004_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/fixtures/gui_refill_local_prefix_12004_fixture.cpp || cmake_object_order_depends_target_xar_test_gui_refill_local_prefix_12004",
+        "properties": [
+          "  CONFIG = Release",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /EHsc /W4 /WX",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_local_prefix_12004.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_test_gui_refill_local_prefix_12004.dir\\fixtures",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_local_prefix_12004.dir\\",
+          "  TARGET_PDB = xar_test_gui_refill_local_prefix_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_local_prefix_12004.dir"
+        ]
+      },
+      "parent-prefix": {
+        "line_1based": 44053,
+        "header": "build CMakeFiles/xar_test_gui_refill_parent_prefix_12004.dir/fixtures/gui_refill_parent_prefix_12004_fixture.cpp.obj: CXX_COMPILER__xar_test_gui_refill_parent_prefix_12004_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/fixtures/gui_refill_parent_prefix_12004_fixture.cpp || cmake_object_order_depends_target_xar_test_gui_refill_parent_prefix_12004",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /EHsc /W4 /WX",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_parent_prefix_12004.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_test_gui_refill_parent_prefix_12004.dir\\fixtures",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_parent_prefix_12004.dir\\",
+          "  TARGET_PDB = xar_test_gui_refill_parent_prefix_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_parent_prefix_12004.dir"
+        ]
+      },
+      "DLL": {
+        "line_1based": 8494,
+        "properties": [
+          "  CONFIG = Release",
+          "  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+          "  LINK_FLAGS = /machine:x64 /INCREMENTAL:NO",
+          "  LINK_LIBRARIES = xar_bridge_protocol.lib  xar_ck3_12002_runtime.lib  bcrypt.lib  kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+          "  OBJECT_DIR = CMakeFiles\\xar_ck3_bridge.dir",
+          "  POST_BUILD = cd .",
+          "  PRE_LINK = cd .",
+          "  RESTAT = 1",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_bridge.dir\\",
+          "  TARGET_FILE = xar_ck3_bridge.dll",
+          "  TARGET_IMPLIB = xar_ck3_bridge.lib",
+          "  TARGET_PDB = xar_ck3_bridge.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_bridge.dir",
+          "  RSP_FILE = CMakeFiles\\xar_ck3_bridge.rsp"
+        ],
+        "header_bytes": 19487,
+        "header_sha256": "e7bfec1f6289b72ea418fd6552a77a8f72c853692ab33ce5c42097d6de854967",
+        "header_omitted_from_small_report": true
+      },
+      "runtime": {
+        "line_1based": 5125,
+        "properties": [
+          "  CONFIG = Release",
+          "  LANGUAGE_COMPILE_FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+          "  LINK_FLAGS = /machine:x64",
+          "  OBJECT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir",
+          "  POST_BUILD = cd .",
+          "  PRE_LINK = cd .",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_ck3_12002_runtime.dir\\xar_ck3_12002_runtime.pdb",
+          "  TARGET_FILE = xar_ck3_12002_runtime.lib",
+          "  TARGET_PDB = xar_ck3_12002_runtime.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_ck3_12002_runtime.dir",
+          "  RSP_FILE = CMakeFiles\\xar_ck3_12002_runtime.rsp"
+        ],
+        "header_bytes": 36009,
+        "header_sha256": "bfd500bec3b1f2780896cc1e66accf462744273c0f263071af78ffc528e31785",
+        "header_omitted_from_small_report": true
+      }
+    },
+    "runtime_archive_members": {
+      "ck3_12004_actual_supply_callback_journal.cpp.obj": true,
+      "ck3_12004_actual_loss_writer_journal.cpp.obj": true,
+      "ck3_12004_residual_parent_hook.cpp.obj": true,
+      "ck3_12004_adapter.cpp.obj": true
+    },
+    "all25_macro_guards": {
+      "XAR_BRIDGE_ENABLE_12004_PERSON_INSTALLED_TRANSFER_CAPTURE": true,
+      "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": true,
+      "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": true,
+      "XAR_CK3_ENABLE_G2_ARMY_COMPILED_EFFECT_OBSERVER_V1": true,
+      "XAR_CK3_ENABLE_G2_ARMY_LATE_EVENT_OBSERVER_V1": true,
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": true,
+      "XAR_CK3_ENABLE_INGAME_MILITARY_OPEN_PRIVATE_V1": true,
+      "XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1": true,
+      "XAR_ENABLE_ACTUAL_RESIDUAL_PARENT_12004": true,
+      "XAR_ENABLE_ACTUAL_SUPPLY_PARENT_JOIN_12004": true,
+      "XAR_ENABLE_ARMY_ASSAULT_GROUP_RELEASE_PASSIVE_12004": true,
+      "XAR_ENABLE_ARMY_ASSAULT_PLACEMENT_PASSIVE_12004": true,
+      "XAR_ENABLE_ARMY_GATHERING_DUE_PASSIVE_12004": true,
+      "XAR_ENABLE_ARMY_OBSERVED_PHASE_QUERY_12004": true,
+      "XAR_ENABLE_ARMY_PRE_DATE_PREFIX_PASSIVE_12004": true,
+      "XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004": true,
+      "XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004": true,
+      "XAR_ENABLE_ENTRY_FINAL_SIDE_CAPTURE_12004": true,
+      "XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004": true,
+      "XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1": true,
+      "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": true,
+      "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": true,
+      "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": true,
+      "XAR_NATIVE71_CONCEPTION_PAIR_PROVIDER_PASSIVE_12004": true,
+      "XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004": true
+    },
+    "frontier_ON": {
+      "target": "xar_test_gui_refill_frontier_continuation_12004",
+      "compile_rule": {
+        "line_1based": 44011,
+        "header": "build CMakeFiles/xar_test_gui_refill_frontier_continuation_12004.dir/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp.obj: CXX_COMPILER__xar_test_gui_refill_frontier_continuation_12004_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp || cmake_object_order_depends_target_xar_test_gui_refill_frontier_continuation_12004",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DXAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1 -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /EHsc /W4 /WX",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir\\fixtures",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir\\",
+          "  TARGET_PDB = xar_test_gui_refill_frontier_continuation_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir"
+        ]
+      },
+      "link_rule": {
+        "line_1based": 44030,
+        "header": "build xar_test_gui_refill_frontier_continuation_12004.exe: CXX_EXECUTABLE_LINKER__xar_test_gui_refill_frontier_continuation_12004_Release CMakeFiles/xar_test_gui_refill_frontier_continuation_12004.dir/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp.obj",
+        "properties": [
+          "  CONFIG = Release",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+          "  LINK_FLAGS = /machine:x64 /INCREMENTAL:NO /subsystem:console",
+          "  LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir",
+          "  POST_BUILD = cd .",
+          "  PRE_LINK = cd .",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir\\",
+          "  TARGET_FILE = xar_test_gui_refill_frontier_continuation_12004.exe",
+          "  TARGET_IMPLIB = xar_test_gui_refill_frontier_continuation_12004.lib",
+          "  TARGET_PDB = xar_test_gui_refill_frontier_continuation_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_12004.dir"
+        ]
+      },
+      "parent_define": 1,
+      "frontier_define": 1,
+      "standalone_no_runtime_library": true,
+      "asserts_not_used_require_throw_cases": true
+    },
+    "frontier_OFF": {
+      "target": "xar_test_gui_refill_frontier_continuation_off_12004",
+      "compile_rule": {
+        "line_1based": 44211,
+        "header": "build CMakeFiles/xar_test_gui_refill_frontier_continuation_off_12004.dir/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp.obj: CXX_COMPILER__xar_test_gui_refill_frontier_continuation_off_12004_unscanned_Release D$:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp || cmake_object_order_depends_target_xar_test_gui_refill_frontier_continuation_off_12004",
+        "properties": [
+          "  CONFIG = Release",
+          "  DEFINES = -DXAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=0 -DXAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004=1",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -std:c++20 -MD /EHsc /W4 /WX",
+          "  INCLUDES = -ID:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir",
+          "  OBJECT_FILE_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir\\fixtures",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir\\",
+          "  TARGET_PDB = xar_test_gui_refill_frontier_continuation_off_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir"
+        ]
+      },
+      "link_rule": {
+        "line_1based": 44230,
+        "header": "build xar_test_gui_refill_frontier_continuation_off_12004.exe: CXX_EXECUTABLE_LINKER__xar_test_gui_refill_frontier_continuation_off_12004_Release CMakeFiles/xar_test_gui_refill_frontier_continuation_off_12004.dir/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp.obj",
+        "properties": [
+          "  CONFIG = Release",
+          "  FLAGS = /DWIN32 /D_WINDOWS /EHsc /O2 /Ob2 /DNDEBUG -MD",
+          "  LINK_FLAGS = /machine:x64 /INCREMENTAL:NO /subsystem:console",
+          "  LINK_LIBRARIES = kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
+          "  OBJECT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir",
+          "  POST_BUILD = cd .",
+          "  PRE_LINK = cd .",
+          "  TARGET_COMPILE_PDB = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir\\",
+          "  TARGET_FILE = xar_test_gui_refill_frontier_continuation_off_12004.exe",
+          "  TARGET_IMPLIB = xar_test_gui_refill_frontier_continuation_off_12004.lib",
+          "  TARGET_PDB = xar_test_gui_refill_frontier_continuation_off_12004.pdb",
+          "  TARGET_SUPPORT_DIR = CMakeFiles\\xar_test_gui_refill_frontier_continuation_off_12004.dir"
+        ]
+      },
+      "parent_define": 1,
+      "frontier_define": 0,
+      "standalone_no_runtime_library": true,
+      "asserts_not_used_require_throw_cases": true
+    }
+  },
+  "fixture_results": [
+    {
+      "label": "frontier-on",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-on\\result.actual.json",
+        "bytes": 1827,
+        "sha256": "fe69e788dc327789b6b4a5ab7f59ceffed18a114095b8493db8b2348f7b189d8"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-on\\stdout.bin",
+        "bytes": 24732,
+        "sha256": "f2b790203a115562f792b7d04b14aa5fb838fb87b9506331429246c3b96a8952"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-on\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "frontier-off",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-off\\result.actual.json",
+        "bytes": 1841,
+        "sha256": "73689e52fe05c5a73f8d109dcf80cdaf0341e1e3c9a68a894464da5ab5293aa4"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-off\\stdout.bin",
+        "bytes": 3208,
+        "sha256": "880099ef5f4be822936f8ba58eda5148ce9ecc4209464b74c7cf083617f2c981"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\frontier-off\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "parent-prefix",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\parent-prefix\\result.actual.json",
+        "bytes": 1808,
+        "sha256": "2b56dac7cff4f9f50ba136b0805d01f71da49599d17da6f6f589cacbb7125060"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\parent-prefix\\stdout.bin",
+        "bytes": 3706,
+        "sha256": "0763bc7a496de74344f4e4b05767365b96d2521a505ddf970363cf76071f99d3"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\parent-prefix\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "prior_fixture_reuse": [],
+  "fixture_execution_count": 3,
+  "prior_fixture_reuse_count": 0,
+  "fixtures_once": true,
+  "qualification_scope": [
+    "new_frontier_ON_six_cases",
+    "new_frontier_OFF_one_case",
+    "old_parent_prefix_focused_regression"
+  ],
+  "production_callback_wire_consumer_results": [
+    {
+      "label": "production-wire-on",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-on\\result.actual.json",
+        "bytes": 2026,
+        "sha256": "aa33ec05d1ce43e2319b9a86ceb5165d01c827fffdcae841e4c72764a75236ad"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-on\\stdout.bin",
+        "bytes": 2579,
+        "sha256": "5d9c91551dd2014cfbcb7fbf6914b40fa1a3dcab7a4a6012c2a3a6bf5058f08e"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-on\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "production-wire-off",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-off\\result.actual.json",
+        "bytes": 2031,
+        "sha256": "4d830998f483a0d4ce3dc222ce6a7a6eb2a08d43648ff179693ac1d3ad520834"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-off\\stdout.bin",
+        "bytes": 2580,
+        "sha256": "6164680982788dadf2811b170bf1957fb7ed1790aad138e3fa06f19253c03523"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\production-wire-off\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "label": "new-python-cases",
+      "result": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\new-python-cases\\result.actual.json",
+        "bytes": 1850,
+        "sha256": "1093aa22b871a300dd1053dccb6b6ee18f18977d5847f40cbf0488643850ec71"
+      },
+      "passed": true,
+      "executed_under_current_source": true,
+      "exit_code": 0,
+      "stdout": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\new-python-cases\\stdout.bin",
+        "bytes": 2274,
+        "sha256": "16f4b4fc84d7ee3edac43e56c7d3e1ab3ec144cf860463d322ebfe6baabe7f13"
+      },
+      "stderr": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-focused-cold-qualification-a01\\new-python-cases\\stderr.bin",
+        "bytes": 911,
+        "sha256": "208011bbebad1945009174694383054a8b8c27a77d30d6f3650d38d1704e2586"
+      }
+    }
+  ],
+  "new_focused_Python_cases": 4,
+  "new_frontier_native_ON_cases": 6,
+  "new_frontier_native_OFF_cases": 1,
+  "prior_a31_qualification": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a31\\ROOT-PRODUCTION-QUALIFICATION.actual-a31.json",
+    "bytes": 207528,
+    "sha256": "6ba046259e3eaf7cd84ad03bf3904cdf0a7f0f0c7182a138909260b7cd879e8c"
+  },
+  "unrelated_old_matrices_reexecuted": false,
+  "old_results_not_silently_recertified": true,
+  "source_proof": {
+    "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+    "baseline_source_head": "60de49f61d23b9c3437af4544c3f12bb28445429",
+    "native_changed_paths": [
+      "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "ck3_autonomous_player/native_bridge/cmake/gui_refill_frontier_continuation_off_fixture_12004.cmake",
+      "ck3_autonomous_player/native_bridge/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_12004.hpp",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_serializer_12004.hpp"
+    ],
+    "reviewed_candidate_inputs_exact_under_Git_clean_filters": [
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\fixtures\\gui_refill_frontier_continuation_12004_fixture.cpp",
+        "bytes": 5496,
+        "sha256": "ec1f51ede3b802f48b73c27889ab74081a50448a750ce7950d25bc8e544733de",
+        "repo_relative_path": "ck3_autonomous_player/native_bridge/fixtures/gui_refill_frontier_continuation_12004_fixture.cpp",
+        "committed_blob_id": "2f3e4de10d2103eb67ca242c05433a36b594b5a8",
+        "git_clean_blob_id": "2f3e4de10d2103eb67ca242c05433a36b594b5a8",
+        "raw_git_blob_id": "2f3e4de10d2103eb67ca242c05433a36b594b5a8",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\gui_refill_receiver_candidates_12004.hpp",
+        "bytes": 29148,
+        "sha256": "158cca0378c92889955d0a405479bca712efbb79b6d265bff3afdc8eaeea7a6c",
+        "repo_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_12004.hpp",
+        "committed_blob_id": "dac923147246718f4046056d738528cca1f933ed",
+        "git_clean_blob_id": "dac923147246718f4046056d738528cca1f933ed",
+        "raw_git_blob_id": "dac923147246718f4046056d738528cca1f933ed",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\gui_refill_receiver_candidates_serializer_12004.hpp",
+        "bytes": 8981,
+        "sha256": "25073d9b275fe5d9475b98de8349aa9fe59398dd6d2bf33db31d8f230cce9d56",
+        "repo_relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/gui_refill_receiver_candidates_serializer_12004.hpp",
+        "committed_blob_id": "32aed18e9361b6259a6736ea1b51fbea38688c1b",
+        "git_clean_blob_id": "32aed18e9361b6259a6736ea1b51fbea38688c1b",
+        "raw_git_blob_id": "32aed18e9361b6259a6736ea1b51fbea38688c1b",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\gui_refill_receiver_candidates_12004_contract.py",
+        "bytes": 25780,
+        "sha256": "bb49be4507d780518e24f10bbc1da827d87fdd55fd8fcd315563572da79506be",
+        "repo_relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/gui_refill_receiver_candidates_12004_contract.py",
+        "committed_blob_id": "99dc80116994f56530c59048ac1c05904ec553c0",
+        "git_clean_blob_id": "99dc80116994f56530c59048ac1c05904ec553c0",
+        "raw_git_blob_id": "99dc80116994f56530c59048ac1c05904ec553c0",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_gui_refill_frontier_continuation_12004.py",
+        "bytes": 8642,
+        "sha256": "e7b1830a52b95807b69aa4197b3567c2cc18935c322907f0d024852f738aee52",
+        "repo_relative_path": "ck3_autonomous_player/tests/unit/test_gui_refill_frontier_continuation_12004.py",
+        "committed_blob_id": "1a014cedb7fd171a4016e91841860ea0fa32ee23",
+        "git_clean_blob_id": "1a014cedb7fd171a4016e91841860ea0fa32ee23",
+        "raw_git_blob_id": "1a014cedb7fd171a4016e91841860ea0fa32ee23",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      },
+      {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\cmake\\gui_refill_frontier_continuation_off_fixture_12004.cmake",
+        "bytes": 767,
+        "sha256": "c9b053639c569c21b5d4a2ec31664ec198198b48fa61902b18698ddde86fb710",
+        "repo_relative_path": "ck3_autonomous_player/native_bridge/cmake/gui_refill_frontier_continuation_off_fixture_12004.cmake",
+        "committed_blob_id": "97dd791c58ad6e8c344f5fddc849f135b017f53a",
+        "git_clean_blob_id": "97dd791c58ad6e8c344f5fddc849f135b017f53a",
+        "raw_git_blob_id": "97dd791c58ad6e8c344f5fddc849f135b017f53a",
+        "raw_equals_committed_blob": true,
+        "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+      }
+    ],
+    "CMake": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\CMakeLists.txt",
+      "bytes": 449855,
+      "sha256": "542f4f7c091cdcb072248840b253d5beb1a3510d203d0b7e7467bb0495c3ffae",
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "committed_blob_id": "73ffbc95e65e42366014ab530479ebf093efcd5c",
+      "git_clean_blob_id": "73ffbc95e65e42366014ab530479ebf093efcd5c",
+      "raw_git_blob_id": "73ffbc95e65e42366014ab530479ebf093efcd5c",
+      "raw_equals_committed_blob": true,
+      "source_equality_method": "Git actual clean filter, exact raw SHA recorded separately; no -w"
+    },
+    "option_count": 160,
+    "ON_count": 25,
+    "OFF_count": 135,
+    "old_selected_writer_retention_change_included": false
+  },
+  "production_bytes_qualified": true,
+  "live_runtime_qualified": false,
+  "gameplay_result_qualified": false,
+  "capture_qualified": false,
+  "current_variable_table_observed": false,
+  "native_receiver_selected": false,
+  "provider_invoked": false,
+  "capacity_final_observation": {
+    "at_utc": "2026-10-16T23:42:22.023040+00:00",
+    "build_apparent_bytes": 376345322,
+    "observed_peak_bytes": 376345322,
+    "sample_count": 148,
+    "volumes": {
+      "C:/": {
+        "free_bytes": 33569419264,
+        "required_free_bytes": 27774872985,
+        "new_build_spent_deducted_bytes": 0
+      },
+      "D:/": {
+        "free_bytes": 45999079424,
+        "required_free_bytes": 22038015254,
+        "new_build_spent_deducted_bytes": 376345322
+      }
+    },
+    "quota_review_at_utc": "2026-10-17T00:57:47+00:00"
+  },
+  "capacity_actual_settlement_required": true
+}

@@ -223,7 +223,8 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
   Publish(b,r,permit);
   return r.raw_return_bits;
 }
-void Clear(WarPaymentJournal12004 &j) noexcept {for(auto &r:j.records)r={};j.latest=j.publication_failures=0;}
+void Clear(WarPaymentJournal12004 &j) noexcept {for(auto &r:j.records)r={};j.latest=j.publication_failures=0;
+  for(auto &r:j.raw4_records)r={};j.raw4_latest=j.raw4_publication_failures=0;}
 ArmyObserverResearchSamplingState12004 Sampling(WarPaymentJournal12004 &j) noexcept {
   return j.policy.StateLocked(true,(std::min<std::uint64_t>)(j.latest,j.capacity),0);
 }
@@ -236,6 +237,9 @@ WarPaymentJournalSnapshot12004 WarPaymentJournal12004::Copy() noexcept {
   try {
     const std::lock_guard lock(mutex);
     WarPaymentJournalSnapshot12004 out{};out.sampling=Sampling(*this);
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+    out.raw4.compiled=true;
+#endif
     if (!policy.ReadableLocked()) return out;
     out.latest_sequence=latest;out.publication_failures=publication_failures;
     out.oldest_sequence=latest ? (latest>capacity?latest-capacity+1:1) : 0;
@@ -245,6 +249,18 @@ WarPaymentJournalSnapshot12004 WarPaymentJournal12004::Copy() noexcept {
       if(r.journal_sequence!=i)return out;
       out.records.push_back(r);
       if(i==(std::numeric_limits<std::uint64_t>::max)())break;
+    }
+    if(out.raw4.compiled) {
+      auto &q=out.raw4;q.latest_sequence=raw4_latest;q.publication_failures=raw4_publication_failures;
+      q.oldest_sequence=raw4_latest?(raw4_latest>raw4_capacity?raw4_latest-raw4_capacity+1:1):0;
+      q.overwritten=raw4_latest>raw4_capacity?raw4_latest-raw4_capacity:0;
+      for(auto i=q.oldest_sequence;i&&i<=raw4_latest;++i) {
+        const auto &r=raw4_records[(i-1)%raw4_capacity];
+        if(r.journal_sequence!=i){q.records.clear();return out;}
+        q.records.push_back(r);
+        if(i==(std::numeric_limits<std::uint64_t>::max)())break;
+      }
+      q.read_complete=true;
     }
     out.read_complete=true;return out;
   } catch (...) {return {};}
@@ -273,4 +289,67 @@ std::uintptr_t InvokeWarPaymentWriter12004(const WarPaymentBindings12004 &b,
   r.second_pointer=reinterpret_cast<std::uintptr_t>(character);r.amount_raw=amount;r.caller_return_rva=pc;
   return Invoke(b,r,[&]{return original(wrapper,amount,character);});
 }
+
+namespace {
+thread_local bool g_raw4_capture_active=false;
+struct Raw4Scope { Raw4Scope() noexcept {g_raw4_capture_active=true;} ~Raw4Scope(){g_raw4_capture_active=false;} };
+template<class T> std::optional<T> Raw4Read(const WarPaymentBindings12004 &b,
+    std::uint32_t &failed,std::uintptr_t p,std::size_t offset) noexcept {
+  T out{};
+  if(!p||offset>(std::numeric_limits<std::uintptr_t>::max)()-p||
+      !b.read(b.read_context,p+offset,&out,sizeof out)){++failed;return std::nullopt;}
+  return out;
+}
+WarPaymentRaw4Frame12004 Raw4Frame(const WarPaymentBindings12004 &b,std::uintptr_t p) noexcept {
+  WarPaymentRaw4Frame12004 f{};
+  f.character_full_id=Raw4Read<std::uint32_t>(b,f.failed_reads,p,0x18);
+  f.character_magic=Raw4Read<std::uint32_t>(b,f.failed_reads,p,0x1C);
+  f.extension=Raw4Read<std::uintptr_t>(b,f.failed_reads,p,0x1B0);
+  // The getter checks extension first. A known null extension skips context.
+  if(f.extension&&*f.extension) {
+    f.context=Raw4Read<std::uintptr_t>(b,f.failed_reads,p,0x1C0);
+    if(f.context&&*f.context)f.physical_4a0_bits=Raw4Read<std::uint64_t>(b,f.failed_reads,*f.context,0x4A0);
+  }
+  return f;
+}
+}
+std::uintptr_t InvokeWarPaymentRaw4Getter12004(const WarPaymentBindings12004 &b,
+    WarPaymentRaw4Original12004 original,void *character,void *out64,std::int32_t selector,
+    std::uintptr_t actual_caller_return_absolute) noexcept {
+  if(!original)return 0;
+  if(selector!=4||!b.raw4_getter_capture_enabled||!Ready(b)||g_raw4_capture_active)
+    return original(character,out64,selector);
+  Raw4Scope scope;
+  const auto actor=reinterpret_cast<std::uintptr_t>(character);
+  if(b.retain_actor&&!b.retain_actor(b.retain_actor_context,WarPaymentKind12004::gateway,actor,0))
+    return original(character,out64,selector);
+  army_observer_research_detail_12004::Permit permit(b.journal->mutex,b.journal->policy);
+  if(!permit.admitted())return original(character,out64,selector);
+  WarPaymentRaw4Record12004 r{};r.character=actor;r.out_pointer=reinterpret_cast<std::uintptr_t>(out64);
+  r.caller_return_absolute=actual_caller_return_absolute;r.module_base=b.raw4_module_base;
+  // Held exact4 .text section, not a new live PE/header scan.
+  if(r.module_base&&actual_caller_return_absolute>=r.module_base) {
+    const auto pc=actual_caller_return_absolute-r.module_base;
+    if(pc>=0x1000&&pc<0x43D9848)r.caller_return_rva=pc;
+  }
+  r.entry_event=b.next_event(b.event_context);r.session_entry=b.session(b.session_context);
+  r.natural_parent_metadata=Natural(b);r.before=Raw4Frame(b,actor);
+  // Never read the uninitialized caller output before the native getter.
+  r.original_called=true;
+  const auto returned=original(character,out64,selector); // exactly once
+  r.original_returned=true;r.raw_return_bits=returned;
+  r.out64_bits=Raw4Read<std::uint64_t>(b,r.output_failed_reads,r.out_pointer,0);
+  r.after=Raw4Frame(b,actor);r.natural_return_metadata=Natural(b);
+  r.session_return=b.session(b.session_context);r.returned_event=b.next_event(b.event_context);
+  try {
+    const std::lock_guard lock(b.journal->mutex);
+    if(permit.CanPublishLocked()) {
+      if(b.journal->raw4_latest==(std::numeric_limits<std::uint64_t>::max)())++b.journal->raw4_publication_failures;
+      else {r.journal_sequence=++b.journal->raw4_latest;
+        b.journal->raw4_records[(r.journal_sequence-1)%WarPaymentJournal12004::raw4_capacity]=r;}
+    }
+  }catch(...){}
+  return returned; // original pointer bits, including mismatches, are unchanged
+}
+
 } // namespace xar::ck3_12004

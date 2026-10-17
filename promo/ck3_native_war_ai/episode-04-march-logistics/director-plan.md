@@ -1,5 +1,12 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-17 00:19 UTC 导演当前接续：R09研究闭合，正式镜头仍待审
+
+`machine_id: desktop-3fevhd2-1c74096080`。[R191实际围城扣兵](../../../docs/ck3-native-ai/episode04-r191-window-capture-12004.md)七笔合计11只加强已闭R03。[R192正向](../../../docs/ck3-native-ai/episode04-r192-forward-split-merge-12004.md)与[R193同正常S0独立反向](../../../docs/ck3-native-ai/episode04-r193-reverse-pair-12004.md)双臂数值已入库；[R194正向专题](../../../docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md)取得完整动作端点链、存续军typed/GUI以及正常Save/游戏exit0/释放。Root的[研究决策原件](../../../docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)2,635 B／SHA-256 `e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c`授R09研究/业务闭合：**7/14（50.0%）**、**5/11（45.5%）**。原R192 strict false、同值stock非clamp、birth PC未知不剪成强因果。R194原片虽有Split→两军→Merge→存续军可见和Finish `NORMAL_TREE_EMPTY`，完整媒体/clean、实际1×观看与人工签核仍须独立结算；合格动态 **0/11**、ABC **0/3**。不以片后typed后态或控制器自报代替原片审片。
+
+源码`d7135ca3bf40c33c2d5416242ce844077f1e8cbe`和a32[实际生产冷资格](D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a32/ROOT-PRODUCTION-QUALIFICATION.actual-a32.json)已绑定；[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38981933966)及[Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38981933981)均success。[R194 R06局部前沿](../../../docs/ck3-native-ai/episode04-r194-r06-frontier-12004.md)在depth8直接见owner31254、provider候选仍空；非空receiver、非toggle或补员正例。下文a31未运行陈述只属历史时点，不覆盖a32实际资格。
+
+
 2026-10-17同批R09补注（machine_id `desktop-3fevhd2-1c74096080`）：[R0176库存/容量/权重恢复](../../../docs/ck3-native-ai/episode04-r0176-split-merge-recovered-supply-12004.md)从既有三原raw的69条exact byte-offset slices恢复旧场输入，当前production消费者复算30+70=100=poststock/postcap。等于cap不是clamp阳性，Army18空DATA角色转移导致的strictfalse保留；反方向same-normalS0与合格30–60秒动态仍缺，R09整卡false。此为本轮新离线恢复，不是R189/R190新实机、actor或source部署信用；所有分子保持不变。
 
 

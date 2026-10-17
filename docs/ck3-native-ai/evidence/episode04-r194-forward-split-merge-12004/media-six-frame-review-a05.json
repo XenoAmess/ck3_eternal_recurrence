@@ -1,0 +1,123 @@
+{
+  "schema": "xar.e04.r194.limited-six-original-frame-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "observed_at_utc": "2026-10-17T00:21:45.546912+00:00",
+  "reviewer": "Codex offline media worker /root/r183_raw_audit_now",
+  "source_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a05.json",
+    "bytes": 29476,
+    "sha256": "f6386b7e6de8178eb88dfac9383c48e0846d847e80b4b1e53ddf6feddbbd7a7f"
+  },
+  "actual_review_method": "Direct functions.view_image of each of six exact1280x720 PNGs, detail=original; lossless PNG extraction from decoded raw frames, no further scale or crop.",
+  "reviewed_samples": [
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-00.png",
+        "bytes": 1012855,
+        "sha256": "1d139b3aa0e8f4fed305cadac993f852a249e889a1008df791c4849503b355c6"
+      },
+      "frame_index": 0,
+      "PTS_seconds": 0.0,
+      "army_panel_visible": true,
+      "displayed_strength_label": 250,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-01.png",
+        "bytes": 1173473,
+        "sha256": "3b8fa8eb61d237448445bec26f1ae0d7a0417ee196238690f4b62bfa9831bb77"
+      },
+      "frame_index": 189,
+      "PTS_seconds": 6.3,
+      "army_panel_visible": true,
+      "displayed_strength_label": 75,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-02.png",
+        "bytes": 1246791,
+        "sha256": "b84ee3f508561895f1395ad2460a4606f20736b35c55a9be7904f4f362e28126"
+      },
+      "frame_index": 1055,
+      "PTS_seconds": 35.167,
+      "army_panel_visible": true,
+      "displayed_strength_label": 251,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-03.png",
+        "bytes": 1248227,
+        "sha256": "0a5cce4aec69dc28ffe5bc20e3b3d552e10e52492cc0f72bc47a43aa2b0a5235"
+      },
+      "frame_index": 1143,
+      "PTS_seconds": 38.1,
+      "army_panel_visible": true,
+      "displayed_strength_label": 251,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-04.png",
+        "bytes": 1240282,
+        "sha256": "496715653c45f0a8ee70e3a389d65e727ff5dbd3e5daee310fcb8703cab610fc"
+      },
+      "frame_index": 1999,
+      "PTS_seconds": 66.633,
+      "army_panel_visible": true,
+      "displayed_strength_label": 251,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    },
+    {
+      "image": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-05.png",
+        "bytes": 1247117,
+        "sha256": "d3b20e02d31cac0a17f9e9f7ec085831b090f80101857c16941cbce5961912c3"
+      },
+      "frame_index": 3466,
+      "PTS_seconds": 115.533,
+      "army_panel_visible": true,
+      "displayed_strength_label": 251,
+      "visible_paused_label": true,
+      "visible_calendar": "1066-12-20"
+    }
+  ],
+  "common_observations": [
+    "All six frames show only the CK3 client-area map and a visible lower-left army panel, without visible desktop/foreign application pixels, black frames, native hover tooltip or large modal.",
+    "The displayed strength changes250 to75 and later251. These are visible UI labels and do not independently prove native physical/formula accounting.",
+    "The panel remains visible in the four sampled frames at35.167,38.1,66.633 and115.533seconds. No claim is made that every intervening frame has been visually reviewed."
+  ],
+  "sample_target_correction": "The35.167second image already displays251. Although its request target came from native Merge-start elapsed minus0.5, that native clock is not proved synchronized to encoded PTS; it must not be labeled pre-Merge.",
+  "native_GUI_evidence_separate": {
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-split-merge-relay-a01\\r09-forward-a01\\SURVIVOR-UI.actual-a05.json",
+      "bytes": 11505,
+      "sha256": "768718e7a5dd9e250d09532b59b5b22141501b858c6b0b6d2f42f14a04130f6c"
+    },
+    "survivor_public_cunit_id": 93,
+    "survivor_native_carmy_id": 85,
+    "survivor_army_window_visible_verified_reported_by_exact_native_receipt": true,
+    "pixel_observation_scope": "Actual samples prove army panel pixels and displayed labels; public/native IDs come from the separate native receipt, not OCR."
+  },
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "limited_original_resolution_six_frame_direct_review": true,
+    "business_positive": false,
+    "clean_span_certified": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  },
+  "limitations": [
+    "Six extracted frames are not continuous1x viewing, every-frame visual inspection, clean-span certification or human signoff.",
+    "Controller stages use recorder monotonic elapsed seconds. The native stage boundaries have not been exactly synchronized to encoded PTS."
+  ]
+}

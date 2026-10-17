@@ -1,0 +1,532 @@
+{
+  "schema": "xar.e04.r194.bounded-portable-media-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "observed_at_utc": "2026-10-17T00:21:45.557377+00:00",
+  "audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a05.json",
+    "bytes": 29476,
+    "sha256": "f6386b7e6de8178eb88dfac9383c48e0846d847e80b4b1e53ddf6feddbbd7a7f"
+  },
+  "limited_sample_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\limited-six-frame-review.actual-a05.json",
+    "bytes": 5548,
+    "sha256": "3dda80441b541fab2dea3fc668707f5ec00998349e132ed289ad2c8ad6d7e7f8"
+  },
+  "sampled_frame_images": [
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-00.png",
+        "bytes": 1012855,
+        "sha256": "1d139b3aa0e8f4fed305cadac993f852a249e889a1008df791c4849503b355c6"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 0,
+      "PTS_seconds": 0.0,
+      "requested_encoded_seconds": 0,
+      "directly_reviewed_at_report_creation": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-01.png",
+        "bytes": 1173473,
+        "sha256": "3b8fa8eb61d237448445bec26f1ae0d7a0417ee196238690f4b62bfa9831bb77"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 189,
+      "PTS_seconds": 6.3,
+      "requested_encoded_seconds": 6.310707,
+      "directly_reviewed_at_report_creation": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-02.png",
+        "bytes": 1246791,
+        "sha256": "b84ee3f508561895f1395ad2460a4606f20736b35c55a9be7904f4f362e28126"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 1055,
+      "PTS_seconds": 35.167,
+      "requested_encoded_seconds": 35.1687426,
+      "directly_reviewed_at_report_creation": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-03.png",
+        "bytes": 1248227,
+        "sha256": "0a5cce4aec69dc28ffe5bc20e3b3d552e10e52492cc0f72bc47a43aa2b0a5235"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 1143,
+      "PTS_seconds": 38.1,
+      "requested_encoded_seconds": 38.0966727,
+      "directly_reviewed_at_report_creation": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-04.png",
+        "bytes": 1240282,
+        "sha256": "496715653c45f0a8ee70e3a389d65e727ff5dbd3e5daee310fcb8703cab610fc"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 1999,
+      "PTS_seconds": 66.633,
+      "requested_encoded_seconds": 66.6204953,
+      "directly_reviewed_at_report_creation": false
+    },
+    {
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\sample-05.png",
+        "bytes": 1247117,
+        "sha256": "d3b20e02d31cac0a17f9e9f7ec085831b090f80101857c16941cbce5961912c3"
+      },
+      "dimensions": [
+        1280,
+        720
+      ],
+      "frame_index": 3466,
+      "PTS_seconds": 115.533,
+      "requested_encoded_seconds": 115.533,
+      "directly_reviewed_at_report_creation": false
+    }
+  ],
+  "execution_pins": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\execution-pins.actual-a01.json",
+    "bytes": 2522,
+    "sha256": "5c56d400bd809da6d229b4c5f47a88ba452f073e55d6202ca85664df962ba5b6"
+  },
+  "canonical_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\result.json",
+    "bytes": 4377,
+    "sha256": "81647d9b04a56b0ccf454eec2c16f8afe904153587e0b1c9e29cd0a3eab6dc93"
+  },
+  "finish_response": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\responses\\r09-forward-a01-record-finish-once.json",
+    "bytes": 5204,
+    "sha256": "cb2d7657a68763d8467b95fe9dd408ce0914142141a18de46e01ac24533c64f8"
+  },
+  "film_controller": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-root-controller-a01\\FILM-CONTROLLER.actual.json",
+    "bytes": 8503,
+    "sha256": "4a3f33f5c7181fe7bd505d6a9af8a4add73b082264b79e7ec4f39e423afc29eb"
+  },
+  "controller_input": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-root-controller-a01\\controller-input.actual.json",
+    "bytes": 7358,
+    "sha256": "5ada1239005ad9fbe7874099ecb420d498757577dc9f3932eed961c5a47bbdbd"
+  },
+  "executed_audit_script": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit_split_merge_a05.py",
+    "bytes": 22062,
+    "sha256": "c77b8e844b6ecbb6c0245e323528e6950aeadc97cf34be9461fedc8d826615a0"
+  },
+  "native_qualification_binding_from_input": {
+    "path": "D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a32/ROOT-PRODUCTION-QUALIFICATION.actual-a32.json",
+    "bytes": 50666,
+    "sha256": "4b9b2487859ff78e1b75341bf2d5598cd5502dbb14a44b2c4deb01e295c77467"
+  },
+  "native_survivor_GUI_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-split-merge-relay-a01\\r09-forward-a01\\SURVIVOR-UI.actual-a05.json",
+    "bytes": 11505,
+    "sha256": "768718e7a5dd9e250d09532b59b5b22141501b858c6b0b6d2f42f14a04130f6c"
+  },
+  "native_survivor_public_cunit_id": 93,
+  "native_survivor_carmy_id": 85,
+  "native_GUI_already_selected_after_merge_reported": true,
+  "native_GUI_additional_UI_Select_count_reported": 0,
+  "Root_supplied_F1_F2_pins_not_reread": [
+    {
+      "label": "F1",
+      "bytes": 153686,
+      "sha256": "6ace46144792e78a932130a97390f0ef185a97feccb3b3340fc048ecfeddfea1"
+    },
+    {
+      "label": "F2",
+      "bytes": 151983,
+      "sha256": "10a9dc7615ea7e5bf78f1688bee245262360f148c37eafa90bc70f4e9a516daf"
+    }
+  ],
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4"
+  },
+  "raw_after": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4"
+  },
+  "raw_unchanged": true,
+  "finish_validated_before_any_raw_body_read_or_media_tool": true,
+  "recorder_job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 8816,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-17T00:04:57.756588+00:00"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 30444,
+    "owned_ck3_create_time": 1792194752.4856951,
+    "hwnd": 10029592,
+    "foreground_hwnd": 10029592,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-17T00:02:57.204347+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "capture_guard_error": null,
+  "video": {
+    "width": 1280,
+    "height": 720,
+    "fps": "30/1",
+    "timeline": {
+      "media_type": "video",
+      "frames": 3467,
+      "missing_timestamps": 0,
+      "first_frame_pts_seconds": 0.0,
+      "last_frame_pts_seconds": 115.533,
+      "last_frame_end_seconds": 115.566,
+      "pts_regressions": 0,
+      "max_positive_pts_gap_seconds": 0.034000000000006025
+    }
+  },
+  "audio_stream_count": 0,
+  "audio_note": "Raw contains no audio stream. Every available AV stream was decoded; this does not establish recorded audio.",
+  "full_available_AV_decode_exit": 0,
+  "full_available_AV_decode_stderr": "",
+  "all_media_commands_exit_zero": true,
+  "all_media_command_stderr_empty": true,
+  "encoded_seconds": 115.566,
+  "recorder_wall_seconds_through_finish": 119.914008,
+  "recorder_started_at_utc": "2026-10-17T00:02:58.345009+00:00",
+  "recorder_completed_at_utc": "2026-10-17T00:04:58.259017+00:00",
+  "configured_paused_recording_seconds": 120,
+  "wall120_seconds_met": false,
+  "encoded110_seconds_met": true,
+  "encoded120_seconds_met": false,
+  "nominal120_is_not_actual120": true,
+  "Root_film_exit_code": 0,
+  "primary_controller_error": null,
+  "controller_action_endpoint_chain_complete_reported": true,
+  "controller_survivor_GUI_verified_reported": true,
+  "actual_action_GUI_candidate_evaluation": {
+    "controller_stage_order_complete": true,
+    "controller_action_endpoint_chain_complete_reported": true,
+    "controller_survivor_GUI_verified_reported": true,
+    "controller_survivor_GUI_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-split-merge-relay-a01\\r09-forward-a01\\SURVIVOR-UI.actual-a05.json",
+      "bytes": 11505,
+      "sha256": "768718e7a5dd9e250d09532b59b5b22141501b858c6b0b6d2f42f14a04130f6c"
+    },
+    "actual_native_stage_elapsed_intervals": [
+      {
+        "stage": "split-once",
+        "from_start_seconds": [
+          3.7289654,
+          5.810707
+        ]
+      },
+      {
+        "stage": "post-split",
+        "from_start_seconds": [
+          5.814125,
+          35.6651845
+        ]
+      },
+      {
+        "stage": "merge-once",
+        "from_start_seconds": [
+          35.6687426,
+          37.5966727
+        ]
+      },
+      {
+        "stage": "post-merge",
+        "from_start_seconds": [
+          37.6005652,
+          65.014304
+        ]
+      },
+      {
+        "stage": "survivor-ui-initial-before",
+        "tool": "ck3_take_snapshot",
+        "from_start_seconds": [
+          65.018488,
+          65.3416909
+        ],
+        "request": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\requests\\r09-forward-a01-post-merge-009-survivor-ui-initial-before.json",
+          "bytes": 160,
+          "sha256": "e67350a3a6b2ef7c4e6229a6fa14cb313b5f78f1992cfb7101eebea6cdb6d677"
+        },
+        "response": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\responses\\r09-forward-a01-post-merge-009-survivor-ui-initial-before.json",
+          "bytes": 143553,
+          "sha256": "9692f8cac721e037d1b672c30a34f80161811c85da075090cba508f36fc8d177"
+        }
+      },
+      {
+        "stage": "survivor-ui-initial-window",
+        "tool": "ck3_query_ingame_ui_window_v1",
+        "from_start_seconds": [
+          65.3417332,
+          65.8652058
+        ],
+        "request": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\requests\\r09-forward-a01-post-merge-010-survivor-ui-initial-window.json",
+          "bytes": 178,
+          "sha256": "db5ba528697b81e737984a6c93ee4e37cbd94e8c743e8f61cba23e1da7721b5f"
+        },
+        "response": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\responses\\r09-forward-a01-post-merge-010-survivor-ui-initial-window.json",
+          "bytes": 361585,
+          "sha256": "54b4df03eacfb0997a909397a08a77bf3ff2936a55f1f53afe00a5fbb559c13c"
+        }
+      },
+      {
+        "stage": "survivor-ui-initial-after",
+        "tool": "ck3_take_snapshot",
+        "from_start_seconds": [
+          65.8653138,
+          66.1204953
+        ],
+        "request": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\requests\\r09-forward-a01-post-merge-011-survivor-ui-initial-after.json",
+          "bytes": 159,
+          "sha256": "0e92e21d3131a05cd30cc3c62f56469eba45940282ce51e93e5550ae229d8f0a"
+        },
+        "response": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\desktop-3fevhd2-1c74096080--vanilla--R0194\\responses\\r09-forward-a01-post-merge-011-survivor-ui-initial-after.json",
+          "bytes": 143551,
+          "sha256": "a4c69978bc87fe687167e6a96ee38b218bd11ff08ee24728df23070af5b58fdf"
+        }
+      }
+    ],
+    "whole_raw_candidate_encoded_interval_seconds": [
+      0,
+      115.566
+    ],
+    "whole_action_GUI_stage_candidate_monotonic_elapsed_seconds": [
+      3.7289654,
+      66.1204953
+    ],
+    "recording_wall_120_met": false,
+    "encoded_120_met": false,
+    "configured_target_seconds": 120,
+    "continuous_advancing_gameplay_claim": false,
+    "native_stage_time_equals_encoded_PTS_proven": false,
+    "clean_span_certified": false,
+    "full_1x_human_review": false,
+    "human_signoff": false,
+    "qualification": "Candidate provenance only. Selected-survivor GUI must be visible in actual reviewed frames; full1x/clean/signoff are separate absent qualifications."
+  },
+  "candidate_assessment": {
+    "whole_raw_encoded_interval_seconds": [
+      0,
+      115.566
+    ],
+    "native_action_GUI_monotonic_elapsed_interval_seconds": [
+      3.7289654,
+      66.1204953
+    ],
+    "contains_observed_visual_before_split_after_split_and_later_survivor_panel_samples": true,
+    "selected_survivor_GUI_pixels_visible_at_encoded_samples_seconds": [
+      35.167,
+      38.1,
+      66.633,
+      115.533
+    ],
+    "candidate_status": "ACTUAL_ACTION_GUI_CANDIDATE_WITH_LIMITED_FRAME_REVIEW_ONLY",
+    "native_to_encoded_exact_sync_proven": false,
+    "full_clean_span_or_human_signoff_granted": false,
+    "editing_note": "The35.167sample is visibly already post-merge. Use actual visible sample content rather than native elapsed timestamps to label frames."
+  },
+  "time_advanced_reported_by_frozen_controller": false,
+  "natural_days_advanced_counted": 0,
+  "F1_F2_large_payloads_opened": false,
+  "other_run_raw_opened": false,
+  "SDK_desktop_game_actions": false,
+  "main_repository_changed": false,
+  "independent_business_analysis_owner": "/root/e04_12004_capabilities; native/formula/cohort acceptance remains separate.",
+  "Root_limited_review_report_received": false,
+  "claims": {
+    "business_positive": false,
+    "natural_day_advance": false,
+    "dynamic_research_qualification": false,
+    "clean_span_certified": false,
+    "full_1x_human_review": false,
+    "human_signoff": false
+  },
+  "capacity_before": {
+    "observed_at_utc": "2026-10-17T00:19:50.430613+00:00",
+    "phase_kind": "closed-scene-D-only-offline-media",
+    "adopted_closed_phase": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-r194-offline-media-a01/R194-CLOSED-D-MEDIA-CAPACITY.actual-root-a01.json",
+      "bytes": 10884,
+      "sha256": "f9a34553419c8a8970a42dfb01a694d2d11a1656b61da4067afe048c4e00c1f6"
+    },
+    "original_live_capacity_reference_only": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-r194-a01/R194-CAPACITY.actual-root-a01.json",
+      "bytes": 11986,
+      "sha256": "d01928d20c762be55cebbc928cf6d9c4d14f8bc74dc27cf44ce8ceb8aaca2606"
+    },
+    "cutoff_utc": "2026-10-17T01:14:28+00:00",
+    "media_actual_used_bytes": 161974,
+    "media_remaining_future_bytes": 16615242,
+    "media_aggregate_ceiling_bytes": 16777216,
+    "fresh_volumes": {
+      "C:/": {
+        "free": 33268834304,
+        "required": 25946154182,
+        "margin": 7322680122
+      },
+      "D:/": {
+        "free": 45409927168,
+        "required": 21625669450,
+        "margin": 23784257718
+      }
+    },
+    "raw_metadata_identity": {
+      "id": [
+        882653518,
+        844424932777670
+      ],
+      "b": 71202833,
+      "ft": 134366690977006204,
+      "links": 1,
+      "allocation": 71204864
+    },
+    "raw_body_read_by_capacity_check": false,
+    "registry_adoption_evidence": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 47885,
+      "sha256": "caf88bafa434cafdcf7c1aa8314bef03eb30fd57f057b353960216c2487e32b2"
+    },
+    "original_closed_phase_guards_passed": true,
+    "new_C_write_peak_bytes": 0,
+    "old_live_scene_peak_recharged": false,
+    "recording_or_close_time_recharged": false,
+    "deadline_renewed": false,
+    "adoption_performed": false,
+    "reservation_released_by_worker": false,
+    "D_credit_applied_to_C": false
+  },
+  "capacity_close": {
+    "observed_at_utc": "2026-10-17T00:20:05.604010+00:00",
+    "phase_kind": "closed-scene-D-only-offline-media",
+    "adopted_closed_phase": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-r194-offline-media-a01/R194-CLOSED-D-MEDIA-CAPACITY.actual-root-a01.json",
+      "bytes": 10884,
+      "sha256": "f9a34553419c8a8970a42dfb01a694d2d11a1656b61da4067afe048c4e00c1f6"
+    },
+    "original_live_capacity_reference_only": {
+      "path": "C:/ck3-e04-resume-20261015-a01/capacity-r194-a01/R194-CAPACITY.actual-root-a01.json",
+      "bytes": 11986,
+      "sha256": "d01928d20c762be55cebbc928cf6d9c4d14f8bc74dc27cf44ce8ceb8aaca2606"
+    },
+    "cutoff_utc": "2026-10-17T01:14:28+00:00",
+    "media_actual_used_bytes": 7330719,
+    "media_remaining_future_bytes": 9446497,
+    "media_aggregate_ceiling_bytes": 16777216,
+    "fresh_volumes": {
+      "C:/": {
+        "free": 33254461440,
+        "required": 25946154182,
+        "margin": 7308307258
+      },
+      "D:/": {
+        "free": 45402746880,
+        "required": 21618500705,
+        "margin": 23784246175
+      }
+    },
+    "raw_metadata_identity": {
+      "id": [
+        882653518,
+        844424932777670
+      ],
+      "b": 71202833,
+      "ft": 134366690977006204,
+      "links": 1,
+      "allocation": 71204864
+    },
+    "raw_body_read_by_capacity_check": false,
+    "registry_adoption_evidence": {
+      "path": "D:\\workspace\\.codex-task-bus\\e04-capacity-reservations.json",
+      "bytes": 47885,
+      "sha256": "caf88bafa434cafdcf7c1aa8314bef03eb30fd57f057b353960216c2487e32b2"
+    },
+    "original_closed_phase_guards_passed": true,
+    "new_C_write_peak_bytes": 0,
+    "old_live_scene_peak_recharged": false,
+    "recording_or_close_time_recharged": false,
+    "deadline_renewed": false,
+    "adoption_performed": false,
+    "reservation_released_by_worker": false,
+    "D_credit_applied_to_C": false
+  },
+  "preserved_pre_media_refusals": {
+    "a01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a01.json",
+      "bytes": 6917,
+      "sha256": "865c9993499f75a4441117534aef01e854a69c62199caa0ba94aff9c517aa947"
+    },
+    "a02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a02.json",
+      "bytes": 7265,
+      "sha256": "ac33f1f8c2acd20874c184d55b95a13bb542484c44b7552081c818eb9cc4ac9b"
+    },
+    "a04": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a04.json",
+      "bytes": 7220,
+      "sha256": "bbd2f628f0f006234d897840d5c1804ac48ce1196c5f8f69cd9856324ee1c0aa"
+    }
+  },
+  "bounded_output_budget_bytes": 16777216,
+  "output_actual_bytes_before_facts": 7379345,
+  "source_audit_unchanged": true,
+  "limitations": [
+    "This paused recording measures UI split/merge filming duration, not natural calendar progression.",
+    "Capture source is a guarded physical desktop client-region crop, not independent direct-HWND capture.",
+    "Six original-resolution PNG selections cannot certify every frame, full1x viewing, clean span or human signoff.",
+    "F1/F2 and physical/formula business conclusions belong to the independent capabilities analysis; this media audit grants none.",
+    "Actual encoded115.566seconds and recorder wall119.914008seconds are each below120; nominal120 configuration is not an exact120second result.",
+    "All native time remained paused; no natural-day advancement or dynamic logistics qualification is granted by this media audit.",
+    "Six original-size samples support an editorial action/GUI candidate, not full1x review, all-frame clean qualification, business acceptance or human approval."
+  ]
+}

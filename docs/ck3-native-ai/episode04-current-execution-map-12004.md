@@ -1,5 +1,12 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-17 00:19 UTC 本机最新入口：R09研究已闭，镜头待验
+
+`machine_id: desktop-3fevhd2-1c74096080`。[R191两日专题](episode04-r191-window-capture-12004.md)与[83份便携原件](evidence/episode04-r0191-20261017/README.md)为已闭R03再给同callback七笔真实围城物理扣兵合计11。[R192正向](episode04-r192-forward-split-merge-12004.md)和[R193独立同S0反向](episode04-r193-reverse-pair-12004.md)已保全双臂数值/角色例外；[R194完整正向及正常闭场](episode04-r194-forward-split-merge-12004.md)补齐同S0 F0/F1/F2、实际存续军typed/GUI和正常Save、游戏exit0、屏幕释放。[Root研究决策](evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)原件2,635 B／SHA-256 `e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c`明确 `R09_RESEARCH_AND_BUSINESS_CLOSED`：研究 **7/14（50.0%）**、业务 **5/11（45.5%）**；clean、完整1×、human signoff未通过，合格动态 **0/11**、正式ABC **0/3**。原strict false、同值库存非正clamp、birth PC与全roster边界保持，数值PASS不扩为这些因果。R194媒体审阅独立在后续实际回执结算；控制器Finish与UI可见不自动授动态。
+
+实际源码`d7135ca3bf40c33c2d5416242ce844077f1e8cbe`已push；[Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38981933966)和[Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/38981933981)均completed/success。a32本机[生产冷资格](D:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/build-e04-a32/ROOT-PRODUCTION-QUALIFICATION.actual-a32.json)50,666 B／SHA-256 `4b9b2487859ff78e1b75341bf2d5598cd5502dbb14a44b2c4deb01e295c77467`，11 outputs/3受影响fixture；业务资格另由R194场内证据与Root决策授予。[R194 R06深度8局部前沿](episode04-r194-r06-frontier-12004.md)直接读到owner FullID31254但无eligible provider slot2；不是空receiver，depth9–11未读、未选receiver/调用provider/toggle/ADD，不增加R06、补员或付款资格。下文a31 `NOT RUN`等为其旧观察时点，不能覆盖a32和R194新事实。
+
+
 2026-10-17同批R09补注（machine_id `desktop-3fevhd2-1c74096080`）：[R0176库存/容量/权重恢复](episode04-r0176-split-merge-recovered-supply-12004.md)从既有三原raw的69条exact byte-offset slices恢复旧场输入，当前production消费者复算30+70=100=poststock/postcap。等于cap不是clamp阳性，Army18空DATA角色转移导致的strictfalse保留；反方向same-normalS0与合格30–60秒动态仍缺，R09整卡false。此为本轮新离线恢复，不是R189/R190新实机、actor或source部署信用；所有分子保持不变。
 
 

@@ -543,3 +543,55 @@ docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/r193-reverse-pair-
 docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/verify_portable.py -text
 docs/ck3-native-ai/evidence/episode04-r193-reverse-pair-12004/source-index.json -text
 ck3_autonomous_player/src/xar_autoplayer/bridge/army_split_unrelated_role_transfer_12004.py -text
+
+# R194 exact evidence and saved-source filenames only.
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/BEFORE-FRAME.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/FENCE-FRAME.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/FRONTIER.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/IDENTITY.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/MANIFEST.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-ENDPOINT.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-REQUEST.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-RESULT.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/PORTABLE-PINS.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/PROVENANCE.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/VERIFIED.actual.json -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/consumer/gui_callback_binding_12004_contract.py -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/consumer/gui_refill_receiver_candidates_12004_contract.py -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/extract_frontier.py -text
+docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/verify_portable.py -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/normal-close-append.json -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/r194-forward-evidence.zip -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/r194-normal-close-append.zip -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/source-index.json -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/verify_close_append.py -text
+docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/verify_portable.py -text
+
+# R194 Root media and historical a32 receipts: preserve original exact bytes.
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-facts-a05.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-audit-a05.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-six-frame-review-a05.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-output-budget-a05.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-capacity-actual.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/native-a32-production-qualification.json -text
+/docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-index.json -text
+
+# R194 completed derived reclaim: exact original receipts and compressed plans.
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.plan.exact.json.gz -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.Root-adoption.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.result.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.independent-readback.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.plan.exact.json.gz -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.Root-adoption.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.result.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.independent-readback.actual.json -text
+/docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/index.json -text
+
+# R194 shot-context candidates: preserve the sealed exact source text bytes.
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/cue-wording-map.candidate-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/plan.actual-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/README.md -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/rough-inputs.candidate-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/source-pins.actual-a01.json -text
+/promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/wording-clarification.candidate-a02.json -text

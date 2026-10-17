@@ -7,8 +7,16 @@
 #include <windows.h>
 
 namespace xar::ck3_12004 {
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+inline constexpr std::size_t kWarPaymentHookCount12004 = 6;
+#else
 inline constexpr std::size_t kWarPaymentHookCount12004 = 5;
-enum class WarPaymentHook12004 : std::size_t { transition, gateway, personal_add, personal_sub, land_sub };
+#endif
+enum class WarPaymentHook12004 : std::size_t { transition, gateway, personal_add, personal_sub, land_sub
+#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+  , raw4_getter
+#endif
+};
 struct WarPaymentHookDescription12004 {
   std::uintptr_t rva = 0;
   std::size_t prefix_bytes = 0;

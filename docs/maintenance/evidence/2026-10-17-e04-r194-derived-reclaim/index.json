@@ -1,0 +1,122 @@
+{
+  "schema": "xar.r194-derived-reclamation-portable-evidence-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "archived_at_utc": "2026-10-17T00:31:15.186051+00:00",
+  "archive_scope": "Only the two already completed exact reclamation batches; no new cleanup, inventory or business retest.",
+  "policy_version": "1.0.0",
+  "policy": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+    "bytes": 4022,
+    "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+  },
+  "files": [
+    {
+      "role": "D-exact-plan",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.plan.exact.json.gz",
+      "bytes": 20528,
+      "sha256": "a04045b821d5d8128e3caee20cd9d79bea01f509678e75af5bfa63ab5bc4c04b",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-profile-cache-review-a01\\BATCH01.plan.readonly-a01.json.gz",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-16T23:44:08.588363+00:00"
+    },
+    {
+      "role": "D-authorization",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.Root-adoption.actual.json",
+      "bytes": 2696,
+      "sha256": "8dc977eec7deeedd0d5897437ecf89f15db2a775f99c4b161f34c73bc10613aa",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-profile-cache-review-a01\\ROOT-ADOPTION.batch01.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": null
+    },
+    {
+      "role": "D-actual",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.result.actual.json",
+      "bytes": 1810,
+      "sha256": "96c8fee01a8e2f1d19462040ffcd49b316884f33238d5fa8b28f36a0a7786c1b",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-profile-cache-review-a01\\batch01-execution-a01\\ROOT-DELIVERY.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-16T23:59:56.453596+00:00"
+    },
+    {
+      "role": "D-readback",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/D-BATCH01.independent-readback.actual.json",
+      "bytes": 2621,
+      "sha256": "061b7a55fd2107bfeb0d0733777cd50beeb929d7241d0f90a531c67c71092a94",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-profile-cache-review-a01\\batch01-execution-a01\\INDEPENDENT-READBACK.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-17T00:01:09.812163+00:00"
+    },
+    {
+      "role": "C-exact-plan",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.plan.exact.json.gz",
+      "bytes": 20739,
+      "sha256": "3295de79c00aa8fc0079eeb1e0ee36b8b43066716749ff1fd938d2866303ba6e",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-emergency-readonly-a01\\BATCH01.plan.readonly-a01.json.gz",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-17T00:13:49.161813+00:00"
+    },
+    {
+      "role": "C-authorization",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.Root-adoption.actual.json",
+      "bytes": 3666,
+      "sha256": "ffa6536eafd5d15cce214aadfdd7034c865d9e8e7d5397ccd11fe0b0e8d32122",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-emergency-readonly-a01\\ROOT-ADOPTION.batch01.actual-a01.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-17T00:22:29.382344+00:00"
+    },
+    {
+      "role": "C-actual",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.result.actual.json",
+      "bytes": 2009,
+      "sha256": "00979274ab9905cbbb2e507c3031eac8d41228cb17c4637247113ff4bcb99ae6",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-emergency-readonly-a01\\batch01-execution-a01\\ROOT-DELIVERY.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-17T00:22:38.372000+00:00"
+    },
+    {
+      "role": "C-readback",
+      "path": "docs/maintenance/evidence/2026-10-17-e04-r194-derived-reclaim/C-BATCH01.independent-readback.actual.json",
+      "bytes": 3537,
+      "sha256": "e828254a40b6a4b7e6109c65de7ac08b783733a0e7a4bd0af587d6c7f35e7942",
+      "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-C-emergency-readonly-a01\\batch01-execution-a01\\INDEPENDENT-READBACK.actual.json",
+      "source_machine_id": "desktop-3fevhd2-1c74096080",
+      "byte_preserved": true,
+      "source_observed_at_utc": "2026-10-17T00:23:31.734115+00:00"
+    }
+  ],
+  "batch_totals": {
+    "D": {
+      "actual_deleted": 1000,
+      "allocation_bytes": 203939840,
+      "logical_bytes": 201633618,
+      "unapproved_remaining_candidates": 10592
+    },
+    "C": {
+      "actual_deleted": 1000,
+      "allocation_bytes": 465989632,
+      "logical_bytes": 463679750,
+      "unapproved_remaining_candidates": 10498
+    }
+  },
+  "availability_of_listed_derivative_originals": "deleted_unavailable, as independently observed at each archived readback timestamp; no same-name replacement created.",
+  "historical_receipt_absolute_references": "Original bytes retained. Resolve portable copies through this index; paths inside source JSON remain historical host paths and are not rewritten.",
+  "allocation_measured_before_same_handle_singlelink_delete": true,
+  "whole_volume_free_deltas_not_credited": true,
+  "previous1397OBJ_or_other_cleanup_credit_repeated": 0,
+  "capacity_ledger_registry_credit_registered_by_worker": false,
+  "other_files_or_directories_deleted_during_archiving": 0,
+  "scheduled04_readonly_inspection_is_automatic_GC": false,
+  "automatic_gc": false,
+  "retention": {
+    "small_record_review_days": 180,
+    "detailed_plan_review_days": 30,
+    "basis": "Shared policy1.0.0; record-review is consolidation, not permission to rewrite published history. No automatic renewal."
+  }
+}

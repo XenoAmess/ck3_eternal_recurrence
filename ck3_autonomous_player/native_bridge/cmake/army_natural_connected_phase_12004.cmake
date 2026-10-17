@@ -185,3 +185,28 @@ if(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1)
   target_compile_definitions(xar_ck3_12002_runtime PRIVATE XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004=1)
 endif()
+
+# Optional sixth entry in the existing payment installer; never a new producer.
+option(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004
+  "Observe only natural selector4 calls at exact4 28B9490" OFF)
+if(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)
+  if(NOT XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)
+    message(FATAL_ERROR "Raw selector4 getter needs the existing payment window/journal")
+  endif()
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004=1)
+  target_compile_definitions(xar_ck3_12002_runtime PRIVATE XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004=1)
+endif()
+
+# Deliberate synthetic ABI/retention fixture only. No default build/CTest run.
+if(BUILD_TESTING AND WIN32 AND MSVC)
+  add_executable(xar_test_war_payment_raw4_getter EXCLUDE_FROM_ALL
+    tests/war_payment_raw4_getter/raw4_fixture.cpp
+    src/war_payment_passive_12004.cpp src/war_payment_runtime_12004.cpp
+    src/war_payment_json_12004.cpp)
+  target_include_directories(xar_test_war_payment_raw4_getter PRIVATE include)
+  target_compile_features(xar_test_war_payment_raw4_getter PRIVATE cxx_std_20)
+  target_compile_definitions(xar_test_war_payment_raw4_getter PRIVATE
+    XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004=1 NOMINMAX WIN32_LEAN_AND_MEAN)
+  target_compile_options(xar_test_war_payment_raw4_getter PRIVATE /EHsc /W4 /WX /utf-8)
+  target_link_libraries(xar_test_war_payment_raw4_getter PRIVATE kernel32)
+endif()

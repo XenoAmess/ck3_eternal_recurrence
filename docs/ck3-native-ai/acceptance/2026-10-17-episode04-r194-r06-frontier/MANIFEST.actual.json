@@ -1,0 +1,74 @@
+{
+  "schema": "xar.r06.frontier.file-input.v1",
+  "evidence_kind": "existing-live-observation",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_observed_at": "2026-10-17T00:09:44.102319+00:00",
+  "runtime_identity": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/IDENTITY.actual.json",
+    "bytes": 7766,
+    "sha256": "c3fe10fe0171b17e00a6b29e9ae1b3e84fe38a143d466b7adcaf2a2bbf1a5035"
+  },
+  "identity_checks": {
+    "/machine_id": "desktop-3fevhd2-1c74096080",
+    "/source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+    "/native_build_source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+    "/run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194"
+  },
+  "identity_binding_pointers": {
+    "machine_id": "/machine_id",
+    "game_pid": "/pid",
+    "process_creation_filetime_100ns": "/process_creation_filetime_100ns",
+    "connection_generation": "/connection_generation",
+    "played_character_full_id": "/actual_runtime_character_full_id",
+    "episode_run_id": "/episode_run_id"
+  },
+  "expected_frame": {
+    "game_pid": 30444,
+    "connection_generation": 1,
+    "native_revision": 5,
+    "played_character_full_id": 31254,
+    "date_raw": 53146632
+  },
+  "expected_public_binding": {
+    "snapshot_id": "native:5",
+    "revision": 6,
+    "native_revision": 5,
+    "episode_run_id": "native-31254-1aff01c8cf5c"
+  },
+  "request": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-REQUEST.actual.json",
+    "bytes": 156,
+    "sha256": "a34347632b85312021e2cddc5fabe8254ef954b3d3fb37c35f0867df913f3d5f"
+  },
+  "endpoint": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-ENDPOINT.actual.json",
+    "bytes": 292859,
+    "sha256": "dd3e8b84567b0af2d6b0171ebaf6893eae8e905973044e9d271939d009518f6d"
+  },
+  "endpoint_payload_pointer": "/body/later_military_tree",
+  "opener_result_pointers": {
+    "endpoint": "/body"
+  },
+  "response_checks": {
+    "/machine_id": "desktop-3fevhd2-1c74096080",
+    "/is_error": false,
+    "/request_id": "r0194-r06-postfilm-a01-open-once"
+  },
+  "consumer_files": {
+    "gui_callback_binding_12004_contract.py": {
+      "bytes": 8556,
+      "sha256": "399357ce80e15d61b6e317fe4e8e5e47cc99f54118ad7d9468421cf1383be6f9"
+    },
+    "gui_refill_receiver_candidates_12004_contract.py": {
+      "bytes": 25780,
+      "sha256": "bb49be4507d780518e24f10bbc1da827d87fdd55fd8fcd315563572da79506be"
+    }
+  },
+  "scene_context": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+    "phase": "after R09 film NORMAL_TREE_EMPTY before save/stock exit",
+    "GUI_context": "actual later_military_tree returned by existing military opener; no R186/R189 transfer",
+    "Army18_position": "not observed by this GUI family",
+    "date_raw": 53146632
+  }
+}

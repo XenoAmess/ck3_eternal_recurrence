@@ -1,0 +1,138 @@
+{
+  "schema": "xar.e04.rough-review-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "review_only": true,
+  "human_signoff": false,
+  "render_geometry": [
+    1920,
+    1080
+  ],
+  "repo_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "metadata": {
+    "measured": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50",
+      "artifact_id": "source-metadata.measured"
+    },
+    "method": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-composer-candidate-a01\\input-config.methodology.json",
+      "bytes": 42093,
+      "sha256": "a724e97b2ef701c514e1650a87cf989cfb7da5455f98c7dca7035895c9328c60",
+      "artifact_id": "reviewcut-input-config"
+    },
+    "raster": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-static-raster-production-a01\\raster-manifest.actual.json",
+      "bytes": 52756,
+      "sha256": "7d1e7afbfb9d1e5944a35242e9b9d19d2b90a707cded651a1e6e5f5b507922f0",
+      "artifact_id": "source-png-manifest"
+    }
+  },
+  "pending_cues": [
+    "C01-03",
+    "C01-04",
+    "C01-06",
+    "C01-07",
+    "C01-08",
+    "C02-01",
+    "C02-02",
+    "C02-03",
+    "C02-04",
+    "C02-06",
+    "C02-09",
+    "C02-10",
+    "C02-11",
+    "C02-12",
+    "C04-01",
+    "C04-02",
+    "C04-03",
+    "C04-04",
+    "C04-05",
+    "C04-06",
+    "C04-07",
+    "C04-08",
+    "C04-09",
+    "C04-10",
+    "C04-11",
+    "C05-01",
+    "C05-02",
+    "C05-03",
+    "C05-04",
+    "C05-05",
+    "C05-07",
+    "C05-08",
+    "C05-09",
+    "C05-10",
+    "C05-11",
+    "C05-12",
+    "C05-13",
+    "C05-14",
+    "C05-15",
+    "C05-16",
+    "C06-03",
+    "C06-04",
+    "C06-05",
+    "C06-06",
+    "C06-07",
+    "C06-08",
+    "C06-10"
+  ],
+  "visual_overrides": {
+    "C03-01": {
+      "role": "rough-context-only",
+      "continuous_clean": false,
+      "event_PTS": null,
+      "approval": "pending",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r191-window-capture-a01\\raw-window-a01\\raw.mkv",
+        "bytes": 66574010,
+        "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+        "artifact_id": "rough-raw.R191"
+      },
+      "source_frames": [
+        0,
+        972
+      ],
+      "source_frame_count": 3359,
+      "selection_basis": "Explicit source first972frames for context review only; not UTC-derived callback synchronization"
+    },
+    "C05-06": {
+      "role": "rough-context-only",
+      "continuous_clean": false,
+      "event_PTS": null,
+      "approval": "pending",
+      "source": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+        "bytes": 71202833,
+        "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+        "artifact_id": "rough-raw.R194"
+      },
+      "source_frames": [
+        0,
+        857
+      ],
+      "source_frame_count": 3467,
+      "selection_basis": "Explicit authored prefix for existing C05-06 measured duration; actual known sample0=250 and sample189=75; action cutpoints unlocated, no UTC-derived event synchronization"
+    }
+  },
+  "observed_at_utc": "2026-10-17T00:28:58.450674+00:00",
+  "editorial_delta": {
+    "from_input": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-review02-shot-edl-r192-12004\\ROUGH-INPUTS.source-list-a03.json",
+      "bytes": 2005,
+      "sha256": "b1fbf38864752f704db5978ae385047737523b14a109d879fe56c341218ee70f"
+    },
+    "new_raw_fact_source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\portable-media-facts.actual-a05.json",
+      "bytes": 20521,
+      "sha256": "ad36f161835d6c45fa03177d6f8fca41f3cd46927156187bd2a2c417c2d6f2b7"
+    },
+    "one_raw_window_per_source_guard_retained": true,
+    "frozen_audio_or_text_changed": false,
+    "render_ready": false,
+    "rough_cues": 2,
+    "source_card_cues": 20,
+    "key_footage_pending_cues": 47
+  }
+}

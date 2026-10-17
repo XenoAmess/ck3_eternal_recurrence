@@ -133,6 +133,37 @@ std::string GenericContextJson(const WarPaymentGenericContext12004 &g) {
   o.Bool("context_values_stable",g.context_values_stable);return o.Done();
 }
 
+
+std::string Raw4FrameJson(const WarPaymentRaw4Frame12004 &f) {
+  Object o;o.Opt("character_full_id",f.character_full_id);o.Opt("character_magic",f.character_magic);
+  o.Opt("extension",f.extension);o.Opt("context",f.context);o.Opt("physical_4a0_bits",f.physical_4a0_bits);
+  o.Num("failed_reads",f.failed_reads);return o.Done();
+}
+std::string Raw4Json(const WarPaymentRaw4Snapshot12004 &s) {
+  Object o;o.Num("schema_version",1);o.Num("source_entry_rva",0x28B9490);
+  o.Str("capture_origin","native_entry_detour");o.Str("resource_name","unknown");
+  o.Str("payment_attribution","unclosed");o.Bool("read_complete",s.read_complete);
+  o.Num("latest_sequence",s.latest_sequence);o.Num("oldest_sequence",s.oldest_sequence);
+  o.Num("overwritten",s.overwritten);o.Num("publication_failures",s.publication_failures);
+  std::string rows="[";bool first=true;
+  for(const auto &r:s.records) {
+    if(!first)rows+=',';first=false;Object v;
+    v.Num("journal_sequence",r.journal_sequence);v.Num("raw_selector",r.raw_selector);
+    v.Num("character",r.character);v.Num("out_pointer",r.out_pointer);
+    v.Num("caller_return_absolute",r.caller_return_absolute);v.Num("module_base",r.module_base);
+    v.Opt("caller_return_rva",r.caller_return_rva);v.Raw("entry_event",EventJson(r.entry_event));
+    v.Raw("returned_event",EventJson(r.returned_event));v.Raw("session_entry",SessionJson(r.session_entry));
+    v.Raw("session_return",SessionJson(r.session_return));
+    v.Raw("natural_parent_metadata",NaturalJson(r.natural_parent_metadata));
+    v.Raw("natural_return_metadata",NaturalJson(r.natural_return_metadata));
+    v.Raw("before",Raw4FrameJson(r.before));v.Raw("after",Raw4FrameJson(r.after));
+    v.Opt("out64_bits",r.out64_bits);v.Num("output_failed_reads",r.output_failed_reads);
+    v.Bool("original_called",r.original_called);v.Bool("original_returned",r.original_returned);
+    v.Num("raw_return_bits",r.raw_return_bits);rows+=v.Done();
+  }
+  rows+=']';o.Raw("records",std::move(rows));return o.Done();
+}
+
 std::string RecordJson(const WarPaymentRecord12004 &r) {
   Object o;
 #define NUM(name) o.Num(#name,r.name)
@@ -216,7 +247,9 @@ std::string SerializeWarPaymentJournal12004(const WarPaymentJournalSnapshot12004
     v.Bool("original_called",p.original_called);v.Bool("original_returned",p.original_returned);v.Num("raw_return_bits",p.raw_return_bits);v.Raw("returned_event",EventJson(p.returned_event));
     v.Opt("returned_date_raw",p.returned_date_raw);v.Opt("returned_absolute_day_raw",p.returned_absolute_day_raw);parents+=v.Done();}parents+=']';o.Raw("natural_parent_returns",std::move(parents));
   const auto qualified=QualifyWarPaymentDebits12004(j,e,natural,ns);std::string debits="[";first=true;
-  for(const auto &q:qualified) {if(!first)debits+=',';first=false;Object v;v.Num("writer_sequence",q.writer_sequence);v.Num("transition_sequence",q.transition_sequence);v.Num("gateway_sequence",q.gateway_sequence);v.Num("account_kind",q.account_kind);v.Num("payer_character_id",q.payer_character_id);v.Opt("land_id",q.land_id);v.Num("requested_amount_raw",q.requested_amount_raw);v.Num("entry_balance_bits",q.entry_balance_bits);v.Num("returned_balance_bits",q.returned_balance_bits);v.Bool("returned_balance_matches_requested_sub",q.returned_balance_matches_requested_sub);debits+=v.Done();}debits+=']';o.Raw("qualified_boarding_debits",std::move(debits));return o.Done();
+  for(const auto &q:qualified) {if(!first)debits+=',';first=false;Object v;v.Num("writer_sequence",q.writer_sequence);v.Num("transition_sequence",q.transition_sequence);v.Num("gateway_sequence",q.gateway_sequence);v.Num("account_kind",q.account_kind);v.Num("payer_character_id",q.payer_character_id);v.Opt("land_id",q.land_id);v.Num("requested_amount_raw",q.requested_amount_raw);v.Num("entry_balance_bits",q.entry_balance_bits);v.Num("returned_balance_bits",q.returned_balance_bits);v.Bool("returned_balance_matches_requested_sub",q.returned_balance_matches_requested_sub);debits+=v.Done();}debits+=']';o.Raw("qualified_boarding_debits",std::move(debits));
+  if(j.raw4.compiled)o.Raw("raw_resource4_getter_v1",Raw4Json(j.raw4));
+  return o.Done();
 }
 std::string AppendWarPaymentJournal12004(std::string json,const WarPaymentJournalSnapshot12004 &j,const WarPaymentEnvelope12004 &e,
     const std::vector<ArmyNaturalPhaseRecord12004> &natural,const ArmyNaturalPhaseJournalStatus12004 &ns) {

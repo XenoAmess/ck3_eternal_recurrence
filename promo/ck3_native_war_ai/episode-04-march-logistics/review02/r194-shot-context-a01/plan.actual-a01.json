@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-17T00:29:02.862220+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "plan",
+    "C:\\ck3-e04-resume-20261015-a01\\review02-render-inputs-a03-materialized-a01\\project\\promo-project.json",
+    "--workdir",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\PROPOSED_PLAN_NO_CREATE",
+    "--composer",
+    "war_ai_promo.episode04_review02_mixed_rough:compose",
+    "--validate-only"
+  ],
+  "exit_code": 0,
+  "stdout": "{\"adapter\": \"ck3-native-war-ai-v1\", \"audit\": null, \"audit_report\": null, \"command\": \"plan\", \"config\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\review02-render-inputs-a03-materialized-a01\\\\project\\\\promo-project.json\", \"document\": \"C:\\\\ck3-e04-resume-20261015-a01\\\\review02-render-inputs-a03-materialized-a01\\\\project\\\\promo-project.json\", \"exit_status\": 0, \"failure\": null, \"pipeline\": {\"artifacts\": [], \"audit_record\": null, \"failure\": null, \"phases\": [{\"artifact_ids\": [], \"detail\": \"69 segment(s)\", \"phase\": \"draft\", \"sequence\": 1, \"status\": \"validated\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"visual\", \"sequence\": 2, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"narration\", \"sequence\": 3, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"subtitle\", \"sequence\": 4, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"segment-plan\", \"sequence\": 5, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"segment-render\", \"sequence\": 6, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"concat\", \"sequence\": 7, \"status\": \"skipped\"}, {\"artifact_ids\": [], \"detail\": \"validate-only\", \"phase\": \"audit-record-ready\", \"sequence\": 8, \"status\": \"skipped\"}], \"signoff_recorded\": false, \"status\": \"validated\", \"validate_only\": true, \"workdir\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r194-shot-edl-candidate-a01\\\\PROPOSED_PLAN_NO_CREATE\"}, \"preserved_artifacts\": [], \"preset\": \"ck3-native-war-ai-longform-zh-v2\", \"run\": null, \"status\": \"succeeded\", \"workdir\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r194-shot-edl-candidate-a01\\\\PROPOSED_PLAN_NO_CREATE\"}\r\n",
+  "stderr": "",
+  "new_run_created": false,
+  "workdir_created": false,
+  "render_ready": false,
+  "rough_cues": 2,
+  "source_card_cues": 20,
+  "pending_cues": 47,
+  "provider_media_SDK_desktop_calls": 0
+}

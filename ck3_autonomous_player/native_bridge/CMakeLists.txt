@@ -4,6 +4,7 @@ project(xar_ck3_native_bridge VERSION 0.1.0 LANGUAGES CXX)
 
 option(XAR_ENABLE_GUI_REFILL_PARENT_PREFIX_12004 "Observe stable visited depth8 refill definition prefix" OFF)
 option(XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004 "Observe only the stable depth8 through11 refill source continuation" OFF)
+option(XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004 "Read the verified static source owner military switch only" OFF)
 
 option(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004
   "Observe only natural P returns inside an exact4 readonly county preview" OFF)
@@ -1546,6 +1547,12 @@ if(XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004)
     message(FATAL_ERROR "Refill frontier continuation requires the stable depth8 prefix")
   endif()
   target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004=1)
+endif()
+if(XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004)
+  if(NOT XAR_ENABLE_GUI_REFILL_FRONTIER_CONTINUATION_12004)
+    message(FATAL_ERROR "Static owner switch requires frontier continuation")
+  endif()
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004=1)
 endif()
 if(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
   target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_county_predicate_trace_hook.cpp)
@@ -9940,3 +9947,5 @@ include(cmake/military_preview_unavailable_reasons_fixture.cmake)
 
 # Explicit ON/OFF cold source continuation coverage shares one production fixture.
 include(cmake/gui_refill_frontier_continuation_off_fixture_12004.cmake)
+
+include(cmake/gui_refill_static_owner_switch_fixture_12004.cmake)

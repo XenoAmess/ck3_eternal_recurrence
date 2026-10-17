@@ -1,0 +1,464 @@
+{
+  "schema": "xar.r06.a32.frontier.file-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "evidence_kind": "existing-live-observation",
+  "recorded_at_utc": "2026-10-17T00:11:12.779075+00:00",
+  "analysis_machine_id": "desktop-3fevhd2-1c74096080",
+  "source_observed_at": "2026-10-17T00:09:44.102319+00:00",
+  "source_machine_matches_analysis": true,
+  "used_family_source": "endpoint",
+  "input_reads": [
+    {
+      "role": "runtime_identity",
+      "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/IDENTITY.actual.json",
+      "bytes": 7766,
+      "sha256": "c3fe10fe0171b17e00a6b29e9ae1b3e84fe38a143d466b7adcaf2a2bbf1a5035",
+      "body_read_count": 1,
+      "hash_and_parse_use_same_bytes": true
+    },
+    {
+      "role": "request",
+      "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-REQUEST.actual.json",
+      "bytes": 156,
+      "sha256": "a34347632b85312021e2cddc5fabe8254ef954b3d3fb37c35f0867df913f3d5f",
+      "body_read_count": 1,
+      "hash_and_parse_use_same_bytes": true
+    },
+    {
+      "role": "endpoint",
+      "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/OPENER-ENDPOINT.actual.json",
+      "bytes": 292859,
+      "sha256": "dd3e8b84567b0af2d6b0171ebaf6893eae8e905973044e9d271939d009518f6d",
+      "body_read_count": 1,
+      "hash_and_parse_use_same_bytes": true
+    }
+  ],
+  "identity": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "game_pid": 30444,
+    "process_creation_filetime_100ns": 134366683524856952,
+    "connection_generation": 1,
+    "played_character_full_id": 31254,
+    "episode_run_id": "native-31254-1aff01c8cf5c"
+  },
+  "request": {
+    "tool": "ck3_execute_step",
+    "arguments": {
+      "step": "activate-ingame-military-v1",
+      "expected_revision": 6
+    }
+  },
+  "scene_context": {
+    "source_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+    "phase": "after R09 film NORMAL_TREE_EMPTY before save/stock exit",
+    "GUI_context": "actual later_military_tree returned by existing military opener; no R186/R189 transfer",
+    "Army18_position": "not observed by this GUI family",
+    "date_raw": 53146632
+  },
+  "scene_context_scope": "Root supplied context only; no R176/R186/R189 position transfer",
+  "SDK_calls": 0,
+  "EXE_or_DLL_reads": 0,
+  "builds": 0,
+  "new_live_observation": false,
+  "provider_execution": false,
+  "current_variable_table_observed": false,
+  "native_receiver_selected": false,
+  "native_policy_caps": {
+    "reads": 4096,
+    "bytes": 65536,
+    "cooperative_deadline_ms": 20,
+    "total_prefix_limit": 12
+  },
+  "actual_total_reads": null,
+  "actual_total_bytes": null,
+  "actual_elapsed_ms": null,
+  "actual_budget_totals_exported": false,
+  "independent_internal_after_snapshot_read": false,
+  "same_frame_enforcement": "Production GUI Driver/coordinator before/after native/public binding, independently compared here to Root supplied actual expected frame; no after snapshot reconstructed",
+  "opener_postcondition_verified": true,
+  "status": "GUI_FAMILY_STRICTLY_CONSUMED",
+  "frame": {
+    "native_revision": 5,
+    "connection_generation": 1,
+    "pump_epoch": 51212,
+    "ticket_sequence": 24,
+    "game_pid": 30444,
+    "thread_id": 27948,
+    "played_character_full_id": 31254,
+    "date_raw": 53146632,
+    "owner_thread_verified": true,
+    "frame_stable": true,
+    "gui_owner_stable": true
+  },
+  "public_binding": {
+    "snapshot_id": "native:5",
+    "revision": 6,
+    "native_revision": 5,
+    "episode_run_id": "native-31254-1aff01c8cf5c"
+  },
+  "root_available": true,
+  "truncated": false,
+  "candidates": [
+    {
+      "widget_index": 220,
+      "child_path": "0/0/0/2/3/0/0/0",
+      "effective_visible": true,
+      "enabled": true,
+      "callback_index": 0,
+      "full_status": "unavailable",
+      "full_unavailable_reason": "candidate_parent_depth_exhausted",
+      "original_failure": {
+        "stage": "parent_walk",
+        "kind": "parent_depth_exhausted",
+        "capture_pass": 1,
+        "read_ordinal": 51,
+        "ancestor_depth": 8,
+        "raw_declaration_count": 1,
+        "raw_index_count": 1,
+        "raw_definition_entry_count": null,
+        "context_present": true,
+        "definition_present": null,
+        "local_definition_active_raw": 1
+      },
+      "prefix": {
+        "source": "native_gui_type635_definition_chain_prefix_depth8_12004",
+        "scope": "visited_definition_prefix_depth8",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "depth_limit": 8,
+        "walk_complete": false,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "frontier_depth": 8,
+        "frontier_context_present": true,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 0,
+            "definition_present": true,
+            "raw_definition_entry_count": 1,
+            "entries": [
+              {
+                "ancestor_depth": 0,
+                "entry_type_48": 635,
+                "entry_mode_40": 0,
+                "entry_flag_4c": 0,
+                "direct_value_present": false,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": null,
+                "direct_owner_identity_verified": false
+              }
+            ],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 1,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 2,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 3,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 4,
+            "definition_present": true,
+            "raw_definition_entry_count": 1,
+            "entries": [
+              {
+                "ancestor_depth": 4,
+                "entry_type_48": 635,
+                "entry_mode_40": 0,
+                "entry_flag_4c": 0,
+                "direct_value_present": false,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": null,
+                "direct_owner_identity_verified": false
+              }
+            ],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 5,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 6,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 7,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          }
+        ]
+      },
+      "continuation_status": "available",
+      "continuation_absent_reason": null,
+      "continuation": {
+        "source": "native_gui_type635_frontier_continuation_depth8_12_12004",
+        "scope": "definition_frontier_depth8_through11",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "start_depth": 8,
+        "depth_limit": 12,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "stop_depth": 8,
+        "stop_reason": "static_direct_terminal",
+        "next_context_present": null,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 8,
+            "definition_present": true,
+            "raw_definition_entry_count": 3,
+            "first_match_entry_index": 0,
+            "entries": [
+              {
+                "ancestor_depth": 8,
+                "entry_type_48": 635,
+                "entry_mode_40": 1,
+                "entry_flag_4c": 1,
+                "direct_value_present": true,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": 31254,
+                "direct_owner_identity_verified": true
+              }
+            ],
+            "parent_edge": "not_read_native_static_stop",
+            "parent_present": null
+          }
+        ]
+      }
+    },
+    {
+      "widget_index": 238,
+      "child_path": "0/0/0/3/5/0/0/0",
+      "effective_visible": false,
+      "enabled": true,
+      "callback_index": 0,
+      "full_status": "unavailable",
+      "full_unavailable_reason": "candidate_parent_depth_exhausted",
+      "original_failure": {
+        "stage": "parent_walk",
+        "kind": "parent_depth_exhausted",
+        "capture_pass": 1,
+        "read_ordinal": 51,
+        "ancestor_depth": 8,
+        "raw_declaration_count": 1,
+        "raw_index_count": 1,
+        "raw_definition_entry_count": null,
+        "context_present": true,
+        "definition_present": null,
+        "local_definition_active_raw": 1
+      },
+      "prefix": {
+        "source": "native_gui_type635_definition_chain_prefix_depth8_12004",
+        "scope": "visited_definition_prefix_depth8",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "depth_limit": 8,
+        "walk_complete": false,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "frontier_depth": 8,
+        "frontier_context_present": true,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 0,
+            "definition_present": true,
+            "raw_definition_entry_count": 1,
+            "entries": [
+              {
+                "ancestor_depth": 0,
+                "entry_type_48": 635,
+                "entry_mode_40": 0,
+                "entry_flag_4c": 0,
+                "direct_value_present": false,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": null,
+                "direct_owner_identity_verified": false
+              }
+            ],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 1,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 2,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 3,
+            "definition_present": true,
+            "raw_definition_entry_count": 0,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 4,
+            "definition_present": true,
+            "raw_definition_entry_count": 1,
+            "entries": [
+              {
+                "ancestor_depth": 4,
+                "entry_type_48": 635,
+                "entry_mode_40": 0,
+                "entry_flag_4c": 0,
+                "direct_value_present": false,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": null,
+                "direct_owner_identity_verified": false
+              }
+            ],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 5,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 6,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          },
+          {
+            "ancestor_depth": 7,
+            "definition_present": false,
+            "raw_definition_entry_count": null,
+            "entries": [],
+            "parent_edge": "context_e8",
+            "parent_present": true
+          }
+        ]
+      },
+      "continuation_status": "available",
+      "continuation_absent_reason": null,
+      "continuation": {
+        "source": "native_gui_type635_frontier_continuation_depth8_12_12004",
+        "scope": "definition_frontier_depth8_through11",
+        "status": "available",
+        "unavailable_reason": null,
+        "receiver_type_id": 635,
+        "start_depth": 8,
+        "depth_limit": 12,
+        "current_variable_table_observed": false,
+        "native_receiver_selected": false,
+        "provider_invoked": false,
+        "receiver_variable_index": 0,
+        "declared_type_id": 635,
+        "stop_depth": 8,
+        "stop_reason": "static_direct_terminal",
+        "next_context_present": null,
+        "stable_double_read": true,
+        "rows": [
+          {
+            "ancestor_depth": 8,
+            "definition_present": true,
+            "raw_definition_entry_count": 3,
+            "first_match_entry_index": 0,
+            "entries": [
+              {
+                "ancestor_depth": 8,
+                "entry_type_48": 635,
+                "entry_mode_40": 1,
+                "entry_flag_4c": 1,
+                "direct_value_present": true,
+                "provider_present": false,
+                "provider_vtable_rva": null,
+                "provider_slot2_rva": null,
+                "direct_owner_full_id": 31254,
+                "direct_owner_identity_verified": true
+              }
+            ],
+            "parent_edge": "not_read_native_static_stop",
+            "parent_present": null
+          }
+        ]
+      }
+    }
+  ],
+  "new_continuation_leaf_count": 2,
+  "eligible_source_provider_slot2_rvas": [],
+  "eligible_source_provider_slot2_rvas_hex": [],
+  "meaning": "Only available bounded source segments are qualified. Provider RVA is a static research entry, not execution permission or a selected receiver.",
+  "manifest_pin": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/MANIFEST.actual.json",
+    "bytes": 3043,
+    "sha256": "35b0716c67050da9be0905c121c9ce037e7dacfe16b729c544b79446d06bbf8a"
+  },
+  "extractor_pin": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r194-r06-frontier-actual-a40/candidate/docs/ck3-native-ai/acceptance/2026-10-17-episode04-r194-r06-frontier/extract_frontier.py",
+    "sha256": "b33d13cd6a78dacfba9b86852eefe61dff2bcc98a19caa377be4cb6005432741"
+  }
+}

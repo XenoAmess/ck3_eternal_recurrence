@@ -1,0 +1,46 @@
+{
+  "schema": "xar.raw4-natural-getter-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-16T22:59:40.924267+00:00",
+  "source_base": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_entry_rva": 42701968,
+  "prefix_hex": "4883ec284c8b91b00100004c8bca",
+  "prefix_instruction_bytes": [
+    4,
+    7,
+    3
+  ],
+  "resume_rva": 42701982,
+  "text_begin_rva": 4096,
+  "text_end_rva": 71145544,
+  "held_getter": {
+    "relative_external": "payment-settlement-branch-b-a01/source-read-a04/resource_read.bin",
+    "bytes": 256,
+    "sha256": "a321c1283d0c8348674bb0fd9dca7598507d909fbba956c147917a67fe315557"
+  },
+  "held_pe_map": {
+    "relative_external": "maintenance-parent-r0174-a01/parent28F7939-source-a01/inputs/pe-layout-reused.json",
+    "bytes": 60633,
+    "sha256": "9f0f3da5fcaf809b8fad13c4310d6abdf3c5a06d98aad113e907ee64c15e7bb4"
+  },
+  "default_enabled": false,
+  "implemented_candidate": true,
+  "native_built": false,
+  "deployed": false,
+  "live_observation": false,
+  "new_exe_reads": 0,
+  "natural_rawselector4_caller": "not_yet_observed",
+  "resource_name": "unknown",
+  "payment_attribution": "unclosed",
+  "public_pure_consumer": "xar_autoplayer.bridge.war_payment_raw4_getter_v1.consume_raw4_getter_observations",
+  "candidate_revision": "a03-minimal-no-theory-fence",
+  "driver_fence_included": false,
+  "a02_fence_status": "NOT_ADOPTED_NO_ACTUAL_PRODUCTION_REACHABLE_CHAIN_OR_CONTAMINATION_REPRODUCTION",
+  "current_query_to_selector4_chain": "NOT_PROVEN_DO_NOT_INFER",
+  "agrees_with_agents_lines": [
+    476,
+    477,
+    478
+  ]
+}

@@ -71,12 +71,43 @@ struct WarPaymentRecord12004 {
   // Optional exact-caller raw inputs/parent frames; never military attribution.
   std::optional<WarPaymentGenericContext12004> generic_wallet_context;
 };
+
+// This child is raw getter telemetry, never a payment kind or debit claim.
+struct WarPaymentRaw4Frame12004 {
+  std::optional<std::uint32_t> character_full_id, character_magic;
+  std::optional<std::uintptr_t> extension, context;
+  std::optional<std::uint64_t> physical_4a0_bits;
+  std::uint32_t failed_reads = 0;
+};
+struct WarPaymentRaw4Record12004 {
+  std::uint64_t journal_sequence = 0;
+  std::int32_t raw_selector = 4;
+  std::uintptr_t character = 0, out_pointer = 0, caller_return_absolute = 0;
+  std::uintptr_t module_base = 0;
+  std::optional<std::uintptr_t> caller_return_rva;
+  ArmyNaturalPhaseEvent12004 entry_event, returned_event;
+  WarPaymentSession12004 session_entry, session_return;
+  WarPaymentNaturalParent12004 natural_parent_metadata, natural_return_metadata;
+  WarPaymentRaw4Frame12004 before, after;
+  std::optional<std::uint64_t> out64_bits;
+  std::uint32_t output_failed_reads = 0;
+  bool original_called = false, original_returned = false;
+  std::uintptr_t raw_return_bits = 0;
+};
+struct WarPaymentRaw4Snapshot12004 {
+  bool compiled = false, read_complete = false;
+  std::uint64_t latest_sequence = 0, oldest_sequence = 0, overwritten = 0;
+  std::uint64_t publication_failures = 0;
+  std::vector<WarPaymentRaw4Record12004> records;
+};
+
 struct WarPaymentJournalSnapshot12004 {
   bool read_complete = false;
   std::uint64_t latest_sequence = 0, oldest_sequence = 0, overwritten = 0;
   std::uint64_t publication_failures = 0;
   ArmyObserverResearchSamplingState12004 sampling;
   std::vector<WarPaymentRecord12004> records;
+  WarPaymentRaw4Snapshot12004 raw4;
 };
 struct WarPaymentJournal12004 {
   static constexpr std::size_t capacity = 512;
@@ -84,6 +115,9 @@ struct WarPaymentJournal12004 {
   army_observer_research_detail_12004::Policy policy;
   std::array<WarPaymentRecord12004, capacity> records{};
   std::uint64_t latest = 0, publication_failures = 0;
+  static constexpr std::size_t raw4_capacity = 128;
+  std::array<WarPaymentRaw4Record12004, raw4_capacity> raw4_records{};
+  std::uint64_t raw4_latest = 0, raw4_publication_failures = 0;
   ArmyObserverResearchSamplingState12004 SetEnabled(bool) noexcept;
   WarPaymentJournalSnapshot12004 Copy() noexcept;
 };
@@ -104,6 +138,8 @@ struct WarPaymentBindings12004 {
   bool (*retain_actor)(void *,WarPaymentKind12004,std::uintptr_t,std::uintptr_t) noexcept = nullptr;
   void *retain_actor_context = nullptr;
   // Runtime forces this false unless the separate default-OFF build flag is ON.
+  bool raw4_getter_capture_enabled = false;
+  std::uintptr_t raw4_module_base = 0;
   bool generic_context_capture_enabled = false;
   std::uintptr_t generic_module_base = 0;
   std::uint32_t generic_module_image_size = 0;
@@ -118,6 +154,7 @@ struct WarPaymentBindings12004 {
 using WarPaymentTransitionOriginal12004 = std::uintptr_t(XAR_PAYMENT_ABI12004 *)(void *, void *);
 using WarPaymentGatewayOriginal12004 = std::uintptr_t(XAR_PAYMENT_ABI12004 *)(void *, std::int32_t, std::int64_t, std::int32_t);
 using WarPaymentWriterOriginal12004 = std::uintptr_t(XAR_PAYMENT_ABI12004 *)(void *, std::int64_t, void *);
+using WarPaymentRaw4Original12004 = std::uintptr_t(XAR_PAYMENT_ABI12004 *)(void *, void *, std::int32_t);
 #undef XAR_PAYMENT_ABI12004
 // actual_caller_return_rva is captured by Root's entry thunk, never inside these helpers.
 std::uintptr_t InvokeWarPaymentTransition12004(const WarPaymentBindings12004 &,
@@ -128,4 +165,9 @@ std::uintptr_t InvokeWarPaymentGateway12004(const WarPaymentBindings12004 &,
 std::uintptr_t InvokeWarPaymentWriter12004(const WarPaymentBindings12004 &,
   WarPaymentWriterOriginal12004, WarPaymentKind12004, void *wrapper,
   std::int64_t amount, void *character, std::uintptr_t actual_caller_return_rva) noexcept;
+
+// Called exclusively by the native entry thunk. No query actively invokes it.
+std::uintptr_t InvokeWarPaymentRaw4Getter12004(const WarPaymentBindings12004 &,
+  WarPaymentRaw4Original12004, void *character, void *out64, std::int32_t selector,
+  std::uintptr_t actual_caller_return_absolute) noexcept;
 } // namespace xar::ck3_12004

@@ -1,0 +1,111 @@
+{
+  "schema": "xar.e04.r194.checked-in-shot-context-source-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T00:33:15.294324+00:00",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "exact_small_sources": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\ROOT-DELIVERY.final-a02.json",
+      "bytes": 3519,
+      "sha256": "177e428a893863e7c7b63fc6994e1db356f0a3f86ad52045a32cb9763420f24e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\ROUGH-INPUTS.r194-candidate-a01.json",
+      "bytes": 4156,
+      "sha256": "a1fa09bffac66524c214b33d2866f3e669cd3f89f4f265a6de4de1f4e1170068"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\R194-CUE-AND-WORDING.candidate-a01.json",
+      "bytes": 12365,
+      "sha256": "bcbc408428a9ad4aba04b6cd4c66327bbfcb6e2702d26248ab0cc08c0853fb10"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\WORDING-CLARIFICATION.candidate-a02.json",
+      "bytes": 1693,
+      "sha256": "d603f76383e99866a83eb9441e4f87444fec31ab803c95727290232c84f31203"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\ROUGH-PLAN.actual-a01.json",
+      "bytes": 2794,
+      "sha256": "d658437e21793abcab3dc7f2c339ffed5ae645120699a6c3370a9b2f695d78b1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\TOOLCHAIN.actual-a01.json",
+      "bytes": 2673,
+      "sha256": "4d8f5f0ae26834b7a351b622c95e2b23758ed5aa11506b1ba6abbc201b7f435e"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-shot-edl-candidate-a01\\SIX-SAMPLE-REVIEW.actual-a01.json",
+      "bytes": 3911,
+      "sha256": "bfff41c574565d0371d20575e02d68e95e44b6670f494a0831cb4e1017be5089"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\episode04-r194-forward-split-merge-12004.md",
+      "bytes": 6258,
+      "sha256": "97e1f989413535ce11018ea3a339a723830d05e49c20fd46dd29cc7c9c27f288"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\episode04-r194-forward-split-merge-12004\\root-research-decision.json",
+      "bytes": 2635,
+      "sha256": "e8368065dd5119a8906e04fbf4d3c80f55e43c2b15ecd479193aa09e462aa55c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\review02\\edit-decision-a01\\edit-decision69.json",
+      "bytes": 118194,
+      "sha256": "253ea01cce353df43c4a30c5038882b828cf5146cb3288561d51dd8af52e654c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-audio-rest68-edge731-a03\\production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "fe7d7d291805859a9ffac81bb48a25388b73004297f475da20aedd8404894e50"
+    }
+  ],
+  "retained_file_pins": [
+    {
+      "path": "rough-inputs.candidate-a01.json",
+      "bytes": 4156,
+      "sha256": "a1fa09bffac66524c214b33d2866f3e669cd3f89f4f265a6de4de1f4e1170068"
+    },
+    {
+      "path": "cue-wording-map.candidate-a01.json",
+      "bytes": 28194,
+      "sha256": "f374846d275153bd06cc1fe04eca318cb7c51ea3b6048d88caf5d55882962028"
+    },
+    {
+      "path": "wording-clarification.candidate-a02.json",
+      "bytes": 1693,
+      "sha256": "d603f76383e99866a83eb9441e4f87444fec31ab803c95727290232c84f31203"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3660,
+      "sha256": "2cc2c0c62d43360988335836a4b03537569908aec1efc4bf8c60d1fc13f6f09a"
+    },
+    {
+      "path": "plan.actual-a01.json",
+      "bytes": 2794,
+      "sha256": "d658437e21793abcab3dc7f2c339ffed5ae645120699a6c3370a9b2f695d78b1"
+    }
+  ],
+  "raw_inherited_not_rehashed": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4"
+  },
+  "new_main_tree_actions": "Only this new six-file directory; no attrs/index/HEAD mutation",
+  "legacy_a01_preserved": true,
+  "new_TTS_or_raw_reads_or_render_or_run_creation": false,
+  "finite_sample_count": 6,
+  "business_cards_from_independent_Root": [
+    7,
+    14
+  ],
+  "dynamic_cards": [
+    0,
+    11
+  ],
+  "continuous_clean": false,
+  "full_1x_human_review": false,
+  "human_signoff": false,
+  "render_ready": false
+}

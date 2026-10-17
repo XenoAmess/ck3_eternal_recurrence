@@ -1,0 +1,62 @@
+{
+  "schema": "xar.e04.root-reviewed-r09-research-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+  "at_utc": "2026-10-17T00:19:02.045504+00:00",
+  "reviewer": "Root",
+  "decision": "R09_RESEARCH_AND_BUSINESS_CLOSED",
+  "basis": [
+    "R192/R193 independent reverse pair shares the same ordinary normal S0 and full F0 observable.",
+    "R194 independently recomputes split and merge DATA conservation and typed actual commanders, source/destination supply inputs and native formula.",
+    "Finite split exception explains only the observed zero-DATA Character role transfer; original strict false remains unchanged.",
+    "R194 completes the action/endpoint chain and independently verifies the surviving army GUI, then normally saves and exits0.",
+    "Distinct-stock response, upper-clamp positivity and the birth-producer PC remain explicit limits, not added closure gates."
+  ],
+  "research_cards": {
+    "closed": 7,
+    "total": 14,
+    "percent": 50.0,
+    "added_card": "R09"
+  },
+  "business_cards": {
+    "closed": 5,
+    "total": 11,
+    "percent": 45.45454545454545
+  },
+  "qualified_dynamic_cards": {
+    "closed": 0,
+    "total": 11
+  },
+  "formal_ABC": {
+    "closed": 0,
+    "total": 3
+  },
+  "clean_spans_certified": false,
+  "complete_1x_review_performed": false,
+  "human_signoff": false,
+  "final_film_approved": false,
+  "media_review": "Separate pending offline audit; this research decision grants no dynamic or final-film approval.",
+  "inputs": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r194-r09-forward-analysis-a01\\NUMERIC-ANALYSIS.actual-a01.json",
+      "bytes": 37255,
+      "sha256": "ee47ee31685800bf78f111c2c9dd8f2baad08220c29b0ded0ccc12dbfd01f45c"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-forward-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 4738,
+      "sha256": "58093614fc19a39f67805d7566730cd6d8af40b5d410a6ee0cd78674bdb7eef9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-forward-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 916,
+      "sha256": "2b3aa36f3e9ffe492f044709fee2c47bad5ee3ce57e211b76c9480c91dd3aace"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\r09-forward-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4843,
+      "sha256": "67e9d043ffdc4891d785dd5dc56fd0fd5da7c1df159bcd5ecaabd53f59e43480"
+    }
+  ]
+}

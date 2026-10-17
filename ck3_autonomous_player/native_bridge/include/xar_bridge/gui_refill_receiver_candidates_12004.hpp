@@ -1,4 +1,5 @@
 #pragma once
+#include "xar_bridge/gui_refill_static_owner_switch_12004.hpp"
 #include <array>
 #include <chrono>
 #include <cstddef>
@@ -78,6 +79,7 @@ struct GuiRefillContinuationRow12004V1 {
   bool operator==(const GuiRefillContinuationRow12004V1 &) const=default;
 };
 struct GuiRefillDefinitionContinuation12004V1 {
+  std::optional<GuiRefillStaticOwnerSwitch12004V1> static_direct_owner_switch_12004;
   std::string status="unavailable",unavailable_reason="frontier_continuation_not_admitted",stop_reason;
   std::optional<std::int32_t> receiver_variable_index;
   std::optional<std::uint32_t> declared_type_id,stop_depth;
@@ -154,6 +156,9 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     game::GuiRefillDefinitionContinuation12004V1 continuation;
     std::vector<std::uintptr_t> continuation_identity;
     bool continuation_complete=false;
+#if XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004
+    GuiStaticOwnerSwitchCapture12004 owner_switch;
+#endif
   };
   const auto once=[&](Capture &out,bool local_only=false,bool prefix_only=false) {
     auto &v=out.result;auto &identity=out.private_identity;
@@ -413,6 +418,15 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
               load("continuation_character_full_id",character,0x18,id)&&load("continuation_character_magic",character,0x1C,magic)&&id==owner&&magic==0x43686172)
             e.direct_owner_identity_verified=true;
           identity.insert(identity.end(),{static_cast<std::uintptr_t>(static_cast<std::uint32_t>(owner)),storage,slots,character,static_cast<std::uintptr_t>(static_cast<std::uint32_t>(capacity)),static_cast<std::uintptr_t>(static_cast<std::uint32_t>(id)),magic});
+#if XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004
+          // Independent child: its read failure/changes do not erase the
+          // already captured direct source. Counts use the same load budget.
+          const auto saved_diagnostic=diagnostic;const char *saved_failure=failure;
+          if(e.direct_owner_identity_verified)
+            out.owner_switch=CaptureGuiStaticOwnerSwitch12004(load,character,owner,depth);
+          else out.owner_switch.value.unavailable_reason="static_owner_identity_unverified";
+          diagnostic=saved_diagnostic;failure=saved_failure;
+#endif
         }
         static_stop=e.entry_flag_4c!=0&&e.entry_mode_40>=0&&e.entry_mode_40<=1;
         row.entries.push_back(e);
@@ -443,6 +457,10 @@ inline game::GuiRefillReceiverCandidates12004V1 ReadGuiRefillReceiverCandidates1
     }else if(a.continuation_identity!=b.continuation_identity||a.continuation!=b.continuation)
       leaf.unavailable_reason="frontier_continuation_identity_or_rows_changed";
     else{leaf=a.continuation;leaf.status="available";leaf.unavailable_reason.clear();leaf.stable_double_read=true;}
+#if XAR_ENABLE_GUI_REFILL_STATIC_OWNER_SWITCH_12004
+    if(leaf.status=="available")
+      leaf.static_direct_owner_switch_12004=JoinGuiStaticOwnerSwitch12004(a.owner_switch,b.owner_switch);
+#endif
     destination.definition_frontier_continuation_depth8_12=std::move(leaf);
   };
 #endif

@@ -67,6 +67,7 @@ template<class Text> inline void AppendGuiRefillDefinitionContinuation12004(std:
     s+=",\"entries\":[";if(!row.entries.empty())AppendGuiRefillReceiverEntry12004(s,row.entries.front());s+=']';
     s+=",\"parent_edge\":";text(s,row.parent_edge);s+=",\"parent_present\":";s+=row.parent_present?(*row.parent_present?"true":"false"):"null";s+='}';
   }s+=']';
+  if(v.static_direct_owner_switch_12004){s+=",\"static_direct_owner_switch_12004\":";AppendGuiRefillStaticOwnerSwitch12004(s,*v.static_direct_owner_switch_12004,text);}
   if(v.failure_diagnostic){s+=",\"failure_diagnostic\":";AppendGuiRefillReceiverFailure12004(s,*v.failure_diagnostic,text);}s+='}';
 }
 template<class Text> inline void AppendGuiRefillReceiverCandidates12004(std::string &s,const GuiRefillReceiverCandidates12004V1 &v,Text text) {

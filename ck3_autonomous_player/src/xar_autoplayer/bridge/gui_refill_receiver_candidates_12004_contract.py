@@ -172,6 +172,7 @@ def normalize_definition_frontier_continuation_depth8_12(raw):
             'receiver_variable_index','declared_type_id','stop_depth','stop_reason','next_context_present',
             'stable_double_read','rows'}
     if type(raw) is dict and 'failure_diagnostic' in raw:fields=fields|{'failure_diagnostic'}
+    if type(raw) is dict and 'static_direct_owner_switch_12004' in raw:fields=fields|{'static_direct_owner_switch_12004'}
     if (type(raw) is not dict or raw.keys()!=fields
             or raw['source']!='native_gui_type635_frontier_continuation_depth8_12_12004'
             or raw['scope']!='definition_frontier_depth8_through11'
@@ -181,6 +182,8 @@ def normalize_definition_frontier_continuation_depth8_12(raw):
             or any(raw[k] is not False for k in ('current_variable_table_observed','native_receiver_selected','provider_invoked'))
             or type(raw['stable_double_read']) is not bool or type(raw['rows']) is not list or len(raw['rows'])>4):
         raise ValueError('frontier continuation schema/scope')
+    if 'static_direct_owner_switch_12004' in raw and raw['status']!='available':
+        raise ValueError('static owner switch requires an independently available source continuation')
     if 'failure_diagnostic' in raw:
         if raw['status']!='unavailable':raise ValueError('available continuation cannot contain a failed capture')
         normalize_receiver_failure(raw['failure_diagnostic'],max_depth=12)
@@ -258,7 +261,10 @@ def normalize_definition_frontier_continuation_depth8_12(raw):
     else:
         valid=count>=1 and raw['stop_depth']==7+count and raw['next_context_present'] is None and rows[-1]['parent_edge']=='not_read_native_static_stop'
     if not valid:raise ValueError('continuation stop reason contradicts rows/frontier')
-    return {**raw,'rows':rows}
+    extra={}
+    if 'static_direct_owner_switch_12004' in raw:
+        extra['static_direct_owner_switch_12004']=normalize_static_direct_owner_switch(raw['static_direct_owner_switch_12004'],rows)
+    return {**raw,'rows':rows,**extra}
 
 def normalize_local_definition_entry_only(raw):
     fields={"source","scope","status","unavailable_reason","receiver_type_id","ancestor_depth",
@@ -358,3 +364,37 @@ def bind_receiver_frame(raw,before,after):
     if any(before.get(k) is None or before.get(k)!=after.get(k) for k in keys) or not before.get('episode_run_id'):
         raise ValueError('receiver public frame/episode changed')
     return {k:before[k] for k in keys}
+
+def normalize_static_direct_owner_switch(raw,rows):
+    fields={'source','scope','status','unavailable_reason','current_variable_table_observed',
+            'native_receiver_selected','provider_invoked','ancestor_depth','owner_full_id',
+            'military_component_present','raw_byte_4a9','enabled','value_basis','stable_double_read'}
+    if (type(raw) is not dict or raw.keys()!=fields
+            or raw['source']!='native_gui_type635_static_direct_owner_switch_12004'
+            or raw['scope']!='static_direct_source_candidate'
+            or any(raw[k] is not False for k in ('current_variable_table_observed','native_receiver_selected','provider_invoked'))
+            or type(raw['stable_double_read']) is not bool):
+        raise ValueError('static owner switch source/scope')
+    observed=('ancestor_depth','owner_full_id','military_component_present','raw_byte_4a9','enabled','value_basis')
+    if raw['status']=='unavailable':
+        if (type(raw['unavailable_reason']) is not str or not raw['unavailable_reason']
+                or raw['stable_double_read'] or any(raw[k] is not None for k in observed)):
+            raise ValueError('unavailable static switch must preserve unknown')
+        return dict(raw)
+    if (raw['status']!='available' or raw['unavailable_reason'] is not None or not raw['stable_double_read']
+            or not integer(raw['ancestor_depth'],8,11)
+            or not integer(raw['owner_full_id'],-2**31,2**31-1) or raw['owner_full_id']==-1
+            or type(raw['military_component_present']) is not bool or type(raw['enabled']) is not bool):
+        raise ValueError('static switch availability/identity')
+    matching=[e for row in rows if row['ancestor_depth']==raw['ancestor_depth'] for e in row['entries']
+              if e['entry_mode_40']==1 and e['entry_flag_4c']!=0 and e['direct_value_present']
+              and e['direct_owner_identity_verified'] and e['direct_owner_full_id']==raw['owner_full_id']]
+    if len(matching)!=1:raise ValueError('static switch lacks its verified source owner')
+    if raw['military_component_present']:
+        if (not integer(raw['raw_byte_4a9'],0,255) or raw['value_basis']!='raw_military_byte'
+                or raw['enabled'] is not (raw['raw_byte_4a9']!=0)):
+            raise ValueError('static switch raw byte/derived value')
+    elif (raw['raw_byte_4a9'] is not None or raw['enabled'] is not False
+            or raw['value_basis']!='native_null_military_zero'):
+        raise ValueError('static switch native null component branch')
+    return dict(raw)

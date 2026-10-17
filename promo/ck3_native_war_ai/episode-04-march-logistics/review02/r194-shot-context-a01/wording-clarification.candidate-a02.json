@@ -1,0 +1,17 @@
+{
+  "schema": "xar.e04.r194.wording-clarification.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-17T00:29:34Z",
+  "prior_delivery_sha256": "583fbf412809a0b2f9432dbf8c9ff404c380b2ee0e70e934e195d8fdbb58276b",
+  "id": "C06-05",
+  "reason": "Distinguish the selected original75 from the new child175 before discussing the different actual commanders; no reader should identify the selected75 as the child commander36445.",
+  "candidate_zh": "分合军以后，先核对实体兵员，再看角色和统帅。这次独立复拍，拆军后选中的原队显示七十五，另拆出的新队有一百七十五名实体兵员。合回原队后，面板显示二百五十一，实体兵员仍是二百五十；多出来的一比一，是空兵员的角色记录。新队与合后的原队，实际统帅也不是同一个角色。不能把面板多出的一计作补了一名普通士兵。",
+  "candidate_en": "After splitting and merging, check physical troops separately from character records and commanders. In this independent repeat, the selected original army displayed75 after the split; the new child had175 physical soldiers. After merging back, the original army displayed251 while its physical troops still totaled250. The additional1/1 was a character record with no soldier DATA. The child and the merged original army had different actual commanders. The extra displayed entry is not one ordinary soldier reinforced.",
+  "old_TTS_modified": false,
+  "new_TTS_generated": false,
+  "actual_new_voice_duration_seconds": null,
+  "original_35_6_seconds_not_reused_as_new_duration": true,
+  "continuous_clean": false,
+  "event_PTS": null,
+  "human_signoff": false
+}

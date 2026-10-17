@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.r194-media-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head_of_scene": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0194",
+  "preserved_at_utc": "2026-10-17T00:28:08.537532+00:00",
+  "exact_small_receipts": [
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-facts-a05.json",
+      "bytes": 20521,
+      "sha256": "ad36f161835d6c45fa03177d6f8fca41f3cd46927156187bd2a2c417c2d6f2b7",
+      "original_local_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\portable-media-facts.actual-a05.json"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-audit-a05.json",
+      "bytes": 29476,
+      "sha256": "f6386b7e6de8178eb88dfac9383c48e0846d847e80b4b1e53ddf6feddbbd7a7f",
+      "original_local_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\audit.actual-a05.json"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-six-frame-review-a05.json",
+      "bytes": 5548,
+      "sha256": "3dda80441b541fab2dea3fc668707f5ec00998349e132ed289ad2c8ad6d7e7f8",
+      "original_local_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\limited-six-frame-review.actual-a05.json"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-output-budget-a05.json",
+      "bytes": 964,
+      "sha256": "d21f7e49c1851c2ea6211724e5ac5de2b785b2c669ced8a6848d1368af532f6e",
+      "original_local_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-media-audit-a01\\final-output-budget.actual-a05.json"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/media-capacity-actual.json",
+      "bytes": 10884,
+      "sha256": "f9a34553419c8a8970a42dfb01a694d2d11a1656b61da4067afe048c4e00c1f6",
+      "original_local_path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r194-offline-media-a01\\R194-CLOSED-D-MEDIA-CAPACITY.actual-root-a01.json"
+    },
+    {
+      "repo_path": "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/native-a32-production-qualification.json",
+      "bytes": 50666,
+      "sha256": "4b9b2487859ff78e1b75341bf2d5598cd5502dbb14a44b2c4deb01e295c77467",
+      "original_local_path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a32\\ROOT-PRODUCTION-QUALIFICATION.actual-a32.json"
+    }
+  ],
+  "raw": {
+    "bytes": 71202833,
+    "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+    "encoded_seconds": 115.566,
+    "frames": 3467,
+    "fps": "30/1",
+    "size": [
+      1280,
+      720
+    ]
+  },
+  "media_root_final_bytes": 7403793,
+  "pixel_availability": "The raw and six PNG originals remain machine-local, referenced by exact pins in the copied reports; their pixels are not included in this Git evidence package.",
+  "review_scope": "Full media decode and PTS checks, plus six directly reviewed samples. Root additionally inspected sample01 and sample04; no continuous 1x review or clean-span certification.",
+  "native_elapsed_is_exact_encoded_PTS": false,
+  "qualified_dynamic": false,
+  "human_signoff": false,
+  "native_a32_receipt_semantics": "Exact historical production qualification; its pre-live false flags are preserved. R194 live observations are separate evidence, not a rewrite of that receipt."
+}

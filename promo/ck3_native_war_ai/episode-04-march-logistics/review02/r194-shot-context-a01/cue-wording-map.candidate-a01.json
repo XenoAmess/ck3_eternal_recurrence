@@ -1,0 +1,643 @@
+{
+  "schema": "xar.e04.r194.cue-sentence-context-map.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T00:33:15.294324+00:00",
+  "source_head": "d7135ca3bf40c33c2d5416242ce844077f1e8cbe",
+  "scope": "11cue sentence mapping; source-only candidates, not new narration/voice/clean proof",
+  "cues": [
+    {
+      "id": "C01-04",
+      "disposition": "KEEP_FROZEN",
+      "original_timeline_frames": [
+        2127,
+        2983
+      ],
+      "original_audio_seconds": 28.533333333333335,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C01-04.mp3",
+        "bytes": 167760,
+        "sha256": "9920db84777586e3e40640cfaa253c88fec2ccc2ff32753681a35270e1ef4ecf"
+      },
+      "frozen_zh_utf8_sha256": "15b8a0eefa1bcbcf6c2fc520fb9bb83de33636a67dc88724ae94b33d0ba2ee87",
+      "original_source_refs": [
+        "story-a05:REFILL",
+        "story-a05:R09",
+        "story-a05:R12"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "先抓住三组容易混淆的数。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 30026316,
+          "r194_use": "开场引入；不声称新画面资格。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "补给库存是物资，实体兵员是人数；一条显示一比一的角色记录，也不自动等于补进了一名士兵。",
+          "actual_provider_offset_100ns": 30526316,
+          "actual_provider_duration_100ns": 91842106,
+          "r194_use": "角色1/1与物理兵分开；可配R194独立数据来源。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "另一组是移动锁定：按停止以后，军队可能还要走完眼前这一段。",
+          "actual_provider_offset_100ns": 122368422,
+          "actual_provider_duration_100ns": 62631579,
+          "r194_use": "这句仍属R12停止与锁定；R194拆合军不能覆盖。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "它们都会影响我们对“恢复了”“少人了”“停下了”的判断。",
+          "actual_provider_offset_100ns": 185000002,
+          "actual_provider_duration_100ns": 49605263,
+          "r194_use": "判断方法；三例各自标run。"
+        },
+        {
+          "index": 5,
+          "frozen_zh": "接下来分别看实际记录，再解释这些变化。",
+          "actual_provider_offset_100ns": 234605266,
+          "actual_provider_duration_100ns": 44342105,
+          "r194_use": "过渡；不新增结论。"
+        }
+      ]
+    },
+    {
+      "id": "C02-11",
+      "disposition": "KEEP_FROZEN_WITH_R194_LABEL",
+      "original_timeline_frames": [
+        15095,
+        16108
+      ],
+      "original_audio_seconds": 33.766666666666666,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-11.mp3",
+        "bytes": 199296,
+        "sha256": "42a481c02e4571ae45cfedaf9b267d77856ddf9d594bb2f5b39e609fa3aa3138"
+      },
+      "frozen_zh_utf8_sha256": "8b7aefcb7cd49f738d5831e45705f5282f308b7ca321ce194098e2fe09cb721f",
+      "original_source_refs": [
+        "story-a05:MERGE-SOURCE",
+        "story-a05:R09"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "拆军和合军，对补给不是同一种处理。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 38447368,
+          "r194_use": "拆／合不同处理的机制概述。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "拆出的新军先复制来源库存，不按人数除半；两军容量却要各自看当前统帅和条件。",
+          "actual_provider_offset_100ns": 38947368,
+          "actual_provider_duration_100ns": 87631580,
+          "r194_use": "复制库存与各自容量用既有source；本场100/100，不证明容量差。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "合军先保存两侧原库存和各自角色权重，选将、调整编成以后，再读取合后容量。",
+          "actual_provider_offset_100ns": 126578948,
+          "actual_provider_duration_100ns": 87631580,
+          "r194_use": "执行顺序与角色权重来自既有source；本场native权重75/175与实际后态另证。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "这次小军实体兵员二百五十人守恒，不代表库存也按同一种方式守恒。",
+          "actual_provider_offset_100ns": 214210529,
+          "actual_provider_duration_100ns": 72894737,
+          "r194_use": "本次R194实体250守恒；cache251另列，不能说库存和人数同口径守恒。"
+        },
+        {
+          "index": 5,
+          "frozen_zh": "合后库存、容量和统帅，都要分别读回。",
+          "actual_provider_offset_100ns": 287105266,
+          "actual_provider_duration_100ns": 44473684,
+          "r194_use": "读回方法；本场stock100/cap100/commander34232来自native。"
+        }
+      ]
+    },
+    {
+      "id": "C02-12",
+      "disposition": "KEEP_SOURCE_EXPLANATION",
+      "original_timeline_frames": [
+        16108,
+        17159
+      ],
+      "original_audio_seconds": 35.03333333333333,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C02-12.mp3",
+        "bytes": 200448,
+        "sha256": "c1871a706ec5d74f54f517878b4ab5f8ecbf397e887f9ad900cda4366aa5abe7"
+      },
+      "frozen_zh_utf8_sha256": "9590f0675b27c297170f08484ff69574a694472d7aa4586ec15c0b5de4b2939c",
+      "original_source_refs": [
+        "story-a05:MERGE-SOURCE"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "在已核的普通正权重路径里，合军先分别算两军的权重份额，各自取整；再各自乘原来的库存，再取整，最后相加。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 116236843,
+          "r194_use": "普通正权重fast路径source公式；本场75/175与30/70实际核对。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "两个份额合计可能略低于百分之一百，游戏不会把余数补回去。",
+          "actual_provider_offset_100ns": 117236843,
+          "actual_provider_duration_100ns": 62500000,
+          "r194_use": "这是源码允许的可能性；本场份额恰为30/70，没有观测份额缺口。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "合计库存还要按零和合后实际容量截断，所以不能化成一次普通平均。",
+          "actual_provider_offset_100ns": 179736844,
+          "actual_provider_duration_100ns": 75526316,
+          "r194_use": "clamp规则来自source；本场preclamp=cap，upper-clamp正例仍false。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "大值另有保护分支，不能套这条简式。",
+          "actual_provider_offset_100ns": 255263161,
+          "actual_provider_duration_100ns": 39210526,
+          "r194_use": "大值保护分支source；不是本场执行样本。"
+        },
+        {
+          "index": 5,
+          "frozen_zh": "真正合后库存，再用实际读数核对。",
+          "actual_provider_offset_100ns": 294473687,
+          "actual_provider_duration_100ns": 38815789,
+          "r194_use": "本场actual stock100；精确raw读回与UI100/100分开。"
+        }
+      ]
+    },
+    {
+      "id": "C05-06",
+      "disposition": "PRIMARY_ROUGH_OVERRIDE_NO_TEXT_CHANGE",
+      "original_timeline_frames": [
+        40814,
+        41671
+      ],
+      "original_audio_seconds": 28.566666666666666,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-06.mp3",
+        "bytes": 167904,
+        "sha256": "930fbb4dff9b4e343f3810e13949ebe4ba0b1aa8b14af548453633abc27aacfe"
+      },
+      "frozen_zh_utf8_sha256": "d858491c8a0a3697dc8ff92ddda3c2d8fd4a5015ccbabbb5191da4bdb1865d94",
+      "original_source_refs": [
+        "story-a03:SPLIT"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "平分的源码会先建新军队，再按不同类别的权重，把整条军队兵团记录搬过去。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 83184211,
+          "r194_use": "源码建军和整条ArRg搬移；R194实际source75/child175作独立后态。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "它没有在这条普通路径里，把每个持久兵槽直接切成两半，因此两边界面人数不保证严格各半。",
+          "actual_provider_offset_100ns": 83684211,
+          "actual_provider_duration_100ns": 95000001,
+          "r194_use": "两边不必各半；显示75的样本与物理175的native读回分别标来源。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "新军建立时还会复制原来的补给库存字段；是否碰到新容量，要继续按独立的补给更新和实际后态看。",
+          "actual_provider_offset_100ns": 178684212,
+          "actual_provider_duration_100ns": 100526317,
+          "r194_use": "库存复制source；本场未证明新容量截断正例。"
+        }
+      ]
+    },
+    {
+      "id": "C05-07",
+      "disposition": "KEEP_HYPOTHETICAL_CARD",
+      "original_timeline_frames": [
+        41671,
+        42535
+      ],
+      "original_audio_seconds": 28.8,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-07.mp3",
+        "bytes": 169344,
+        "sha256": "2d99b864b11e8013cad283b27efb263111b74bcbc6452942a1fcc4689680ad21"
+      },
+      "frozen_zh_utf8_sha256": "4addf5b04a8d01cc53cec552d88396248e6df100096f93ef0e7542925a647678",
+      "original_source_refs": [
+        "story-a03:PRESSURE",
+        "story-a03:SPLIT"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "把一百人拆成两支五十人，并不会让同一个地方只承担五十人的压力。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 66342106,
+          "r194_use": "假设100→50/50；不要覆盖成R194真实数。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "用一个假设场景：当地聚合用量六千，上限四千，其中选中的军队只有一百人。",
+          "actual_provider_offset_100ns": 66842106,
+          "actual_provider_duration_100ns": 82105264,
+          "r194_use": "假设用量6000／上限4000；R194未作该压力实验。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "两队还在同省，而且贡献兵团和资格都没变，用量仍是六千。",
+          "actual_provider_offset_100ns": 148947370,
+          "actual_provider_duration_100ns": 64078948,
+          "r194_use": "条件假设；不是R194同省聚合对照结果。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "分兵能否改善补给，要看实际占用怎样改变，以及各队真正去了哪里。",
+          "actual_provider_offset_100ns": 213026318,
+          "actual_provider_duration_100ns": 68552632,
+          "r194_use": "解释如何比较；R194无离省与恢复动态。"
+        }
+      ]
+    },
+    {
+      "id": "C05-08",
+      "disposition": "KEEP_TEXT_OTHER_VISUALS_PENDING",
+      "original_timeline_frames": [
+        42535,
+        43180
+      ],
+      "original_audio_seconds": 21.5,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-08.mp3",
+        "bytes": 125568,
+        "sha256": "4f7aca9c552317da257168aa350783a9b3444b9af1ef08a676d4dd07360100a4"
+      },
+      "frozen_zh_utf8_sha256": "66cd4f076f66747d642bd1d9dd791a69ab6868fb599727d2ec850eeec4c0e80c",
+      "original_source_refs": [
+        "story-a02:COMPARE",
+        "story-a02:SPECIAL",
+        "story-a02:B"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "分兵以后，把每队的库存和容量分别列出来。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 46210526,
+          "r194_use": "方法；原生两军stocks/caps可来源卡呈现，不能声称两面板已连续拍全。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "库存是各队实际带着多少，容量是这支军队当前能带多少。",
+          "actual_provider_offset_100ns": 46710526,
+          "actual_provider_duration_100ns": 63289474,
+          "r194_use": "库存与容量单位说明。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "比较时保留每支军队的真实值，不把两队库存相加，或者求个平均，就写成一支并不存在的整军补给。",
+          "actual_provider_offset_100ns": 110000001,
+          "actual_provider_duration_100ns": 98552632,
+          "r194_use": "比较规则；不造虚拟整军值。"
+        }
+      ]
+    },
+    {
+      "id": "C05-09",
+      "disposition": "OPTIONAL_PRECISION_REWRITE_NEW_VERSION",
+      "original_timeline_frames": [
+        43180,
+        43915
+      ],
+      "original_audio_seconds": 24.5,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-09.mp3",
+        "bytes": 143568,
+        "sha256": "a2965b5ccc543e74b53a9d962aa40a8589eca65b24a3bf5b595cc657a516d593"
+      },
+      "frozen_zh_utf8_sha256": "66e1f8d4f7be188e33031b44e0ef6d4e2d19b0e1c56feb305b9b54fd706368d3",
+      "original_source_refs": [
+        "story-a02:SPECIAL"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "合军后重新看统帅，也重新展开完整兵团。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 48447369,
+          "r194_use": "读统帅与完整队列；R194合后typed GUI及native队列有独立来源。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "一条一人满员一人的记录，首先只是这条记录的实际人数。",
+          "actual_provider_offset_100ns": 48947369,
+          "actual_provider_duration_100ns": 54605263,
+          "r194_use": "建议新版本把“实际人数”改“显示值”；旧TTS保持。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "它可能没有普通兵槽数据；只凭这个数字，还不能叫它骑士，也不能说这是刚补进来的一个普通士兵。",
+          "actual_provider_offset_100ns": 103552632,
+          "actual_provider_duration_100ns": 96578948,
+          "r194_use": "角色记录不等于普通兵槽或新补兵；本场cache251／physical250。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "具体类别要跟它自己的原生身份对应。",
+          "actual_provider_offset_100ns": 200131581,
+          "actual_provider_duration_100ns": 38552632,
+          "r194_use": "类别须按native身份，不从头像／图标推断骑士。"
+        }
+      ]
+    },
+    {
+      "id": "C05-10",
+      "disposition": "ALTERNATE_ROUGH_WINDOW_MUTUALLY_EXCLUSIVE",
+      "original_timeline_frames": [
+        43915,
+        44747
+      ],
+      "original_audio_seconds": 27.733333333333334,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-10.mp3",
+        "bytes": 163008,
+        "sha256": "259f99183775c7da8a593f1dc5f6f5d7f328989f4ce86c331296ac9d32914867"
+      },
+      "frozen_zh_utf8_sha256": "2279f054ff37acef57b7dd951fcfc49ed6ab6fc5e21ecdb0d594c2cf94c55188",
+      "original_source_refs": [
+        "story-a02:SPECIAL",
+        "story-a02:B",
+        "story-a02:COMPARE"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "会合是两队到了同一地点，合并以后才成为一支。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 52526316,
+          "r194_use": "会合的一般定义；本场暂停同地拆合不是行军会合实拍。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "合后要再读库存、容量、实际统帅和全部兵团。",
+          "actual_provider_offset_100ns": 53026316,
+          "actual_provider_duration_100ns": 55657895,
+          "r194_use": "R194合后stock/cap/commander／队列各自native读回；原片只作rough。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "原始兵团与后来新增的记录分开统计；如果合法合军改变了这些条件，就把变化作为这次安排的实际后果，不能删掉新增记录，或事后换将，把结果修成预想的样子。",
+          "actual_provider_offset_100ns": 108684211,
+          "actual_provider_duration_100ns": 162368423,
+          "r194_use": "保留组织变化；本场新空角色与physical守恒分列，不人为改将。"
+        }
+      ]
+    },
+    {
+      "id": "C05-14",
+      "disposition": "OPTIONAL_PRECISION_REWRITE_NEW_VERSION",
+      "original_timeline_frames": [
+        47279,
+        48024
+      ],
+      "original_audio_seconds": 24.833333333333332,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C05-14.mp3",
+        "bytes": 145584,
+        "sha256": "2583e7f5ddf753d25d45e43c18fbb839436d10669607668fd8abffe0daaed8cc"
+      },
+      "frozen_zh_utf8_sha256": "3699f7dc89b81538e2cdf645d4b3ad472db46d8d81197aad166214590b141371",
+      "original_source_refs": [
+        "story-a02:COMPARE",
+        "story-a02:SPECIAL",
+        "story-a02:B"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "兵力表分成两列：一列只追踪起点那批兵团，另一列保留这个方案实际拥有的全部相关军队。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 90052632,
+          "r194_use": "比较账方法；不授新的ABC回放结果。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。",
+          "actual_provider_offset_100ns": 91052632,
+          "actual_provider_duration_100ns": 89078948,
+          "r194_use": "建议“新增一人”改“一比一角色记录”；源军消失不代表实体军队死亡。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "人数、身份和组织变化一起看，才知道兵究竟去了哪里。",
+          "actual_provider_offset_100ns": 180131581,
+          "actual_provider_duration_100ns": 61710527,
+          "r194_use": "按身份解释人数变化；本场native与UI读数分别列。"
+        }
+      ]
+    },
+    {
+      "id": "C06-05",
+      "disposition": "REWRITE_REQUIRED_IF_NARRATING_R194_AS_THIS_CASE",
+      "original_timeline_frames": [
+        53040,
+        54108
+      ],
+      "original_audio_seconds": 35.6,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-05.mp3",
+        "bytes": 210240,
+        "sha256": "d5cf312525b5fe3fdcf1cfb4516566ec95273b425dd7fbc1fcb77c0341311333"
+      },
+      "frozen_zh_utf8_sha256": "7158be15efa2cd807c9be78e835487ef6ebf312ddd62e1b8c23cb7afcdc621d5",
+      "original_source_refs": [
+        "story-a04:R09-MICRO"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "分合军以后，先核对实体兵员，再看角色和统帅。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 53710526,
+          "r194_use": "核对方法可保留。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "这次选中小军拆出新队、再合回原队，四条实体兵员始终合计二百五十人；与此同时，另一军里一条显示一比一的空兵员角色记录消失，同一个角色成为新队、再成为合军后原队的统帅。",
+          "actual_provider_offset_100ns": 54210526,
+          "actual_provider_duration_100ns": 182763160,
+          "r194_use": "这句特定R176案例不授R194：R194 child36445与合后34232不同；若叙R194须采用a02新段候选。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "那一比一的显示变化不能记成补了一名或少了一名实体士兵。",
+          "actual_provider_offset_100ns": 236973687,
+          "actual_provider_duration_100ns": 58026316,
+          "r194_use": "1/1显示不计实体新增或死亡；R194同样有独立cache／physical证据。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "实体人数、角色关联和当前统帅，要分别核对。",
+          "actual_provider_offset_100ns": 295000003,
+          "actual_provider_duration_100ns": 54736842,
+          "r194_use": "三类读数分开核对。"
+        }
+      ]
+    },
+    {
+      "id": "C06-06",
+      "disposition": "KEEP_BOUNDED_SOURCE_EXPLANATION",
+      "original_timeline_frames": [
+        54108,
+        55040
+      ],
+      "original_audio_seconds": 31.066666666666666,
+      "original_audio_inherited": {
+        "path": "C:/ck3-e04-resume-20261015-a01/review02-audio-rest68-edge731-a03/C06-06.mp3",
+        "bytes": 183024,
+        "sha256": "bc011a06056634159158f798f58bd2bae03e2a1ede9cc18de4c0f63828f2a259"
+      },
+      "frozen_zh_utf8_sha256": "1668bc95486acd3c433acaefc95bc7397f2f6d47511a628399d2421deed54c97",
+      "original_source_refs": [
+        "story-a03:ROLE",
+        "story-a03:SPLIT"
+      ],
+      "r194_source_refs": [
+        "docs/ck3-native-ai/episode04-r194-forward-split-merge-12004.md",
+        "docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json"
+      ],
+      "sentences": [
+        {
+          "index": 1,
+          "frozen_zh": "合军后多出一条一人满员一人的记录，还有一种角色来源。",
+          "actual_provider_offset_100ns": 1000000,
+          "actual_provider_duration_100ns": 56736842,
+          "r194_use": "角色来源的可能性；可配R194合后空role背景。"
+        },
+        {
+          "index": 2,
+          "frozen_zh": "已查明的条件分支，会在处理旧统帅时创建新的军队兵团记录，关联这个角色，再刷新角色缓存。",
+          "actual_provider_offset_100ns": 57236842,
+          "actual_provider_duration_100ns": 100131580,
+          "r194_use": "条件分支创建记录来自source；本场birth执行PC未观测，不能写已捕获。"
+        },
+        {
+          "index": 3,
+          "frozen_zh": "构造时的数据列表是空的；后来出现一比一，也不能直接当作普通兵槽补了一个人。",
+          "actual_provider_offset_100ns": 157368423,
+          "actual_provider_duration_100ns": 79210527,
+          "r194_use": "构造时空DATA为source，R194新空role是后态；两者不能替代执行见证。"
+        },
+        {
+          "index": 4,
+          "frozen_zh": "它是否对应这次新增行、是不是现任统帅或骑士，都要分别读取。",
+          "actual_provider_offset_100ns": 236578950,
+          "actual_provider_duration_100ns": 67631579,
+          "r194_use": "保留身份／现任统帅／骑士分别查询的限制。"
+        }
+      ]
+    }
+  ],
+  "primary_rough_override": {
+    "id": "C05-06",
+    "role": "rough-context-only",
+    "continuous_clean": false,
+    "event_PTS": null,
+    "approval": "pending",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+      "bytes": 71202833,
+      "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+      "artifact_id": "rough-raw.R194"
+    },
+    "source_frames": [
+      0,
+      857
+    ],
+    "source_frame_count": 3467,
+    "selection_basis": "Explicit authored prefix for existing C05-06 measured duration; actual known sample0=250 and sample189=75; action cutpoints unlocated, no UTC-derived event synchronization"
+  },
+  "mutually_exclusive_alternative": {
+    "id": "C05-10",
+    "role": "rough-context-only",
+    "continuous_clean": false,
+    "event_PTS": null,
+    "approval": "pending",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r194-r09-forward-a01\\raw-r09-forward-a01\\raw.mkv",
+      "bytes": 71202833,
+      "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+      "artifact_id": "rough-raw.R194"
+    },
+    "source_frames": [
+      1055,
+      1887
+    ],
+    "source_frame_count": 3467,
+    "selection_basis": "Authored832frame postmerge context starting at known sample1055; not an event cutpoint"
+  },
+  "preferred_C06_05_wording": "wording-clarification.candidate-a02.json",
+  "other_optional_wording_proposals": [
+    {
+      "id": "C05-09",
+      "old_sentence": "一条一人满员一人的记录，首先只是这条记录的实际人数。",
+      "candidate_sentence": "一条显示一人、满员一人的记录，首先只是这条记录的显示值。",
+      "mandatory_for_R194": false
+    },
+    {
+      "id": "C05-14",
+      "old_sentence": "新增一人，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。",
+      "candidate_sentence": "新增一条一比一的角色记录，不能自动抹平原兵团的缺员；源军在合并后消失，也不能当作整支军队死亡。",
+      "mandatory_for_R194": false
+    }
+  ],
+  "old_audio_or_frozen_text_changed": false,
+  "new_TTS_generated": false,
+  "exact_action_PTS": null,
+  "continuous_clean": false,
+  "render_ready": false
+}
