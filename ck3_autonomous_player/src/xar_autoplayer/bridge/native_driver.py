@@ -3542,6 +3542,16 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_holy_site_relic_context_private_v1(
+        self, *, expected_revision: int, holy_site_id: int,
+    ) -> dict[str, object]:
+        """Read exact4 holy-site relic recognition and native Active context only."""
+        from .player_holy_site_relic_context_private_transport import (
+            query_player_holy_site_relic_context_private_v1,
+        )
+        return query_player_holy_site_relic_context_private_v1(
+            self, expected_revision=expected_revision, holy_site_id=holy_site_id)
+
     def query_player_holy_site_private_v1(
         self, *, expected_revision: int, holy_site_id: int | None = None,
     ) -> dict[str, object]:

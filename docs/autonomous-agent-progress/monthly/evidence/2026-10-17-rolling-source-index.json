@@ -1,0 +1,218 @@
+{
+  "schema": "xar.autonomous-agent-progress.monthly-rolling-source-index/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T10:11:17.435743+00:00",
+  "checkout_head": "e54c8c7456dc865f3d42af9cc92a115fbf631eb5",
+  "scope": "offline report synthesis from tracked source; no game/SDK/live ledger/media action; R3 excluded",
+  "formal_cutoff_local": "2026-10-27T00:00:00+08:00",
+  "previous_cutoff_local": "2026-09-27T00:00:00+08:00",
+  "report_status": "rolling_incomplete",
+  "source_freeze_commit": "e54c8c7456dc865f3d42af9cc92a115fbf631eb5",
+  "observed_latest_local_religion_close_utc": "2026-10-17T09:57:27.528005Z",
+  "source_pins": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 87483,
+      "sha256": "617a65a3efe2e31a48cce81612e568c29d179850e957f17dbd5df955fcbeb4b1",
+      "kind": "repository_policy",
+      "source_machine_id_or_scope": null
+    },
+    {
+      "path": "docs/autonomous-agent-progress/monthly/TEMPLATE.md",
+      "bytes": 2881,
+      "sha256": "ca722f79de9638db07b916d40341afbe1cb205a595561b6ef0019f6ebc295e61",
+      "kind": "report_template",
+      "source_machine_id_or_scope": null
+    },
+    {
+      "path": "docs/autonomous-agent-progress/monthly/README.md",
+      "bytes": 1825,
+      "sha256": "1f260e3e1852d7877250d3025f027ef7b6f06cbd2888e4fd121e1d798e6572a7",
+      "kind": "monthly_policy_before_this_candidate",
+      "source_machine_id_or_scope": null
+    },
+    {
+      "path": "docs/autonomous-agent-progress/monthly/2026-09.md",
+      "bytes": 8704,
+      "sha256": "267a3ca26c9d686b2f19a3ce4d9385b4249f4751429e3eed433d9e8cc5456f29",
+      "kind": "frozen_previous_cutoff",
+      "source_machine_id_or_scope": null
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W40.md",
+      "bytes": 925453,
+      "sha256": "b7079d4afaa1bf27b1bfd34e0157c62f808dbe80610f379f53e8d041e929a015",
+      "kind": "multi_machine_dated_report",
+      "source_machine_id_or_scope": "per-section; missing IDs remain unknown"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "bytes": 1037187,
+      "sha256": "1b5843ba1f5b9b2c2d17eb7d73f3fd4aec2f457856640eb860b9cc275df52ada",
+      "kind": "multi_machine_dated_report",
+      "source_machine_id_or_scope": "per-section; missing IDs remain unknown"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/weekly/2026-W42.md",
+      "bytes": 88408,
+      "sha256": "75b91a0307f6883f90c65175b56849b361ceb1e8723d3df6fea3a3f612b320fd",
+      "kind": "multi_machine_rolling_report",
+      "source_machine_id_or_scope": "per-section; missing IDs remain unknown"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-16.md",
+      "bytes": 72362,
+      "sha256": "aecadb0688dee092a93356d80b67108e729df29da5c13f279f21b5a25b6d6ed5",
+      "kind": "multi_machine_rolling_report",
+      "source_machine_id_or_scope": "per-section; missing IDs remain unknown"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/daily/2026-10-17.md",
+      "bytes": 43000,
+      "sha256": "8a37038d7dbba9394b476375b2dd8ce7651518b2ff3b6c0681734a3453b56111",
+      "kind": "multi_machine_rolling_report",
+      "source_machine_id_or_scope": "per-section; missing IDs remain unknown"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/g2-requirements-v1.json",
+      "bytes": 132408,
+      "sha256": "4af8d801b82867949a47cc6a06a42bc7a58777d59877e4f3c7159305bcf7624b",
+      "kind": "historical_selected_contract_ledger",
+      "source_machine_id_or_scope": "unknown unless the specific evidence identifies its source machine"
+    },
+    {
+      "path": "docs/ck3-native-ai/g2-runtime-readiness-correction-2026-10-13.md",
+      "bytes": 23004,
+      "sha256": "e4703dbe299eb57ea619556e8084b66f7ef3e7c96a024d5b4bf7532a2f146a23",
+      "kind": "readiness_correction",
+      "source_machine_id_or_scope": "unknown; this document does not identify the execution machine"
+    },
+    {
+      "path": "docs/autonomous-agent-progress/continuity-stability-window.md",
+      "bytes": 5359,
+      "sha256": "f6dbfab06d666b59bd8cea61a8e291bc29573bd2e5ead076ed7a4a9fa753401e",
+      "kind": "stability_policy_and_scoped_deployment",
+      "source_machine_id_or_scope": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "docs/ck3-native-ai/p20-optional-read-recovery-family-cadence-2026-10-16.md",
+      "bytes": 5142,
+      "sha256": "54832206838b776831e951274f08cb6f479a269166a7ce7fa34ce3e007d48794",
+      "kind": "source_and_offline_qualification",
+      "source_machine_id_or_scope": "xenoamess-full-tower-eb9d2c1186"
+    },
+    {
+      "path": "docs/ck3-native-ai/faith-and-power-episode01-planning.md",
+      "bytes": 29056,
+      "sha256": "a15a16653bb15ef24037747b7709f0c96b5eae208ffa048efa896a57e1bb114d",
+      "kind": "source_reviewed_static",
+      "source_machine_id_or_scope": "4-8e1c2f1861"
+    },
+    {
+      "path": "docs/ck3-native-ai/faith-and-power-episode01-r0001-observations.md",
+      "bytes": 9702,
+      "sha256": "b81d7699f60d607375c6663179610fba591f7f1d11d95113e6375ca3d808a5f8",
+      "kind": "scoped_native_observation_and_red",
+      "source_machine_id_or_scope": "4-8e1c2f1861"
+    },
+    {
+      "path": "docs/ck3-native-ai/faith-and-power-episode01-r0002-observations.md",
+      "bytes": 6887,
+      "sha256": "d44d9a66fce9b26755ed5fca329718f05b4c021ff9e9ad24226de6b44ec37544",
+      "kind": "scoped_native_observation_and_close",
+      "source_machine_id_or_scope": "4-8e1c2f1861"
+    },
+    {
+      "path": "docs/ck3-native-ai/holy-site-adoption-native12004.md",
+      "bytes": 14722,
+      "sha256": "97575a23b41c58bd4938392a613e0d7c61abe55112759a77e9c03593abbe9cc6",
+      "kind": "native_source_offline_and_entry_refusal",
+      "source_machine_id_or_scope": "4-8e1c2f1861"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/faith-and-power-episode01-r0002/observations.json",
+      "bytes": 17681,
+      "sha256": "4a689859a5d4e32f96ccbe42c7970ceaeae2ffcb90b6c959f93f7f3c96ca0ba4",
+      "kind": "exact_r2_receipt_pins",
+      "source_machine_id_or_scope": "4-8e1c2f1861"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json",
+      "bytes": 2371,
+      "sha256": "1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f",
+      "kind": "scoped_root_card_decision",
+      "source_machine_id_or_scope": "desktop-3fevhd2-1c74096080"
+    },
+    {
+      "path": "docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json",
+      "bytes": 20836,
+      "sha256": "26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403",
+      "kind": "limited_media_observation",
+      "source_machine_id_or_scope": "desktop-3fevhd2-1c74096080"
+    }
+  ],
+  "g2_ledger_metadata": {
+    "updated_at": "2026-10-08T13:39:26+08:00",
+    "completion_denominator": {
+      "kind": "visible_ooda_milestones",
+      "total": 8,
+      "complete": 6,
+      "progress_label": "6/8",
+      "percent_reporting_allowed": false
+    },
+    "milestones": [
+      {
+        "id": "G2-M0",
+        "name": "GEN-034 three-way war exit",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M1",
+        "name": "entity directory and core turn bundle",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M2",
+        "name": "natural event semantic loop",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M3",
+        "name": "succession and realm survival",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M4",
+        "name": "peace governance vertical slice",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M5",
+        "name": "family, diplomacy and complete war",
+        "status": "complete"
+      },
+      {
+        "id": "G2-M6",
+        "name": "schemes, institutions and activities",
+        "status": "in_progress"
+      },
+      {
+        "id": "G2-M7",
+        "name": "identity adapters and long campaign qualification",
+        "status": "in_progress"
+      }
+    ],
+    "interpretation": "Historical selected-contract counts; not a global readiness ratio and not a synchronized current-machine runtime snapshot."
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T10:11:17.435743+00:00",
+    "volume_total_bytes": 511776722944,
+    "volume_free_bytes": 127068282880,
+    "new_package_budget_bytes": 100000,
+    "large_file_copies": false,
+    "record_review_at_utc": "2027-04-15T10:11:17.435743+00:00",
+    "derived_review": "48h after owner application and verification; no automatic protection renewal"
+  }
+}

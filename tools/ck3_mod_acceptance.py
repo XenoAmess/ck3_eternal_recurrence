@@ -36,6 +36,7 @@ SAVED_FLAGS = {
 CASE_READ_ONLY_MCP_TOOLS = frozenset({
     "ck3_query_current_title_appointment_v1",
     "ck3_query_player_religion_context_v1",
+    "ck3_query_player_holy_site_relic_context_v1",
     "ck3_query_player_holy_site_v1",
     "ck3_query_player_holy_site_adoption_detail_v1",
     "ck3_query_player_religion_personal_parameters_v1",
@@ -458,18 +459,28 @@ class Selection:
         if '--saved-campaign-startup-case-contract' in self.argv:
             try:
                 hook_path=Path(self.argv[self.argv.index('--saved-campaign-startup-case-contract')+1]);hook=read_json(hook_path)
-                if set(hook)!={'schema','state_dir','handler','dependencies','expected'} or hook['schema']!='ck3-saved-campaign-startup-case-contract-v1':
+                dynamic_instance=hook.get('schema')=='ck3-saved-campaign-startup-case-contract-v2'
+                fields={'schema','state_dir','handler','dependencies','expected'}
+                if dynamic_instance:fields.add('profile_id')
+                if set(hook)!=fields or hook['schema'] not in ('ck3-saved-campaign-startup-case-contract-v1','ck3-saved-campaign-startup-case-contract-v2'):
                     raise ValueError('Unsupported saved startup-case contract')
-                if Path(hook['state_dir']).resolve()!=self.state_dir.resolve() or hook['handler']['function']!='admit_saved_startup_event':
+                function='qualify_prepare_event_from_save' if dynamic_instance else 'admit_saved_startup_event'
+                if Path(hook['state_dir']).resolve()!=self.state_dir.resolve() or hook['handler']['function']!=function:
                     raise ValueError('Saved startup-case handler crossed actual prepared state/function')
                 expected=hook['expected']
                 if set(expected)!={'event_definition_key','event_instance_id','root_character_id','actor_character_id','date_raw','native_option_indices'}:
                     raise ValueError('Saved startup-case requires exact event identity fields')
                 if not isinstance(expected['event_definition_key'],str) or not expected['event_definition_key']:
                     raise ValueError('Saved startup-case event definition is missing')
-                for key in ('event_instance_id','root_character_id','actor_character_id','date_raw'):
-                    if type(expected[key]) is not int or expected[key]<=0:
+                integer_keys=('root_character_id','actor_character_id','date_raw') if dynamic_instance else ('event_instance_id','root_character_id','actor_character_id','date_raw')
+                for key in integer_keys:
+                    if type(expected[key]) is not int or expected[key]<=0 or dynamic_instance and expected[key]>2**31-1:
                         raise ValueError('Saved startup-case positive integer required: '+key)
+                if dynamic_instance and (hook['profile_id']!='faith-and-power-e01-abbasid-867'
+                        or expected['event_instance_id'] is not None
+                        or expected['event_definition_key']!='xar_faith_h01_prepare.1'
+                        or expected['date_raw']!=51394920 or expected['native_option_indices']!=[0,1]):
+                    raise ValueError('Saved startup v2 requires the approved scenario and an unbound current-process event instance')
                 indices=expected['native_option_indices']
                 if not isinstance(indices,list) or not indices or any(type(i) is not int or i<0 for i in indices) or len(set(indices))!=len(indices):
                     raise ValueError('Saved startup-case native options must be unique nonnegative integers')

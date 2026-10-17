@@ -998,6 +998,15 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_holy_site_relic_context_v1(
+        self, *, expected_revision: int, holy_site_id: int,
+    ) -> dict[str, object]:
+        """Forward one explicitly scoped read; never submit a relic action."""
+        query = getattr(self.driver, "query_player_holy_site_relic_context_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read holy-site relic context")
+        return query(expected_revision=expected_revision, holy_site_id=holy_site_id)
+
     def query_player_seek_indulgences_terms_v1(
         self, *, expected_revision: int, recipient_character_id: int,
     ) -> dict[str, object]:

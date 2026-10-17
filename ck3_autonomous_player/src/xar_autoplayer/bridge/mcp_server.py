@@ -2042,6 +2042,18 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
+    if getattr(driver, "allow_private_player_holy_site_relic_context_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_holy_site_relic_context_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+        ) -> dict[str, object]:
+            """Read exact4 native Active/relic recognition context; no enshrine/remove/create action."""
+            return service.query_player_holy_site_relic_context_v1(
+                expected_revision=expected_revision, holy_site_id=holy_site_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_relic_context_v1")
+
     if getattr(driver, "allow_private_player_holy_site_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_holy_site_v1(
@@ -5030,6 +5042,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable an explicit private ransom using the current native collection quote",
     )
     result.add_argument(
+        "--private-player-holy-site-relic-context-query", action="store_true",
+        help="enable independent exact4 holy-site Active/relic context reads only",
+    )
+    result.add_argument(
         "--private-player-holy-site-query", action="store_true",
         help="enable exact4 HolySite identity, Faith relations and embedded inventory reads",
     )
@@ -5358,6 +5374,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    if args.private_player_holy_site_relic_context_query:
+        driver.allow_private_player_holy_site_relic_context_query = True
     if args.private_player_holy_site_query:
         driver.allow_private_player_holy_site_query = True
     if args.private_holy_site_adoption_detail_query:

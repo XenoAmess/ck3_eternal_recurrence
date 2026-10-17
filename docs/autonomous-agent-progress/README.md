@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17：十月滚动月报已建立
+
+[2026-10滚动月报](monthly/2026-10.md)于2026-10-17T10:11:17.435743+00:00（UTC）实际补录，按各机器原生专题汇总当前能力、RED与下一门槛；制度截止仍为10月27日00:00（Asia/Shanghai）。状态未完成，尚无本月完整能力成片/sidecar抽检；九月冻结快照保留。R3未纳入本稿，不以历史6/8、累计日数或准备实验替代稳定自动游玩验收。
+
 ### 2026-10-17 09:57 UTC：第一期A冷载与可见窗口已证，采用仍0
 
 `machine_id: 4-8e1c2f1861`。[R2独立观察](../ck3-native-ai/faith-and-power-episode01-r0002-observations.md)确认exact A在空mod profile冷载到新PID952/gen1、rite13/faith50，HolySite32独立后查可见。灰叉不是最终许可；采用入口旧fallback绑定失败在dispatch前拒绝，详情CanConfirm/报价仍unknown、未Confirm/未采用。R2正常GUI/HANDLE/native/public/keeper均0、CAS11251释放，不改R1退出RED；原片编码未审、合格素材0。下一门为修复后的新live入口与最终terms/一次动作独立后态。
