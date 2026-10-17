@@ -1,0 +1,35 @@
+{
+  "schema": "xar.initial-plan-fixture-source-initialization.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:45:17.380371+00:00",
+  "original_CI": {
+    "conclusion": "failure",
+    "headSha": "a05ab48a20faa07868f1da9f2e5e87511cff2875",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39021263881"
+  },
+  "expected_failure": "ValueError: result matches.1.line_count expected 0, received 2",
+  "fixture_error": "NameError: frontend_initial_plan was not initialized in the extracted AST subset",
+  "production_host_sha256": "2c00d8e5a50392ea8986e22eb88ed0e1d122a8f131ba3306091a2d52a5776f2a",
+  "production_host_modified": false,
+  "fixture_before_sha256": "6fa9d9a93b8ee65ec8a71d87ca27286f0480a85c66232b6f6e35971f076e1298",
+  "fixture_after_sha256": "2efa58835031f3dfc97a41835e8b693c3fcb9f11c60861a4e5054a035d350369",
+  "fix": "copy the unique actual frontend_initial_plan=None Assign node from run into the exercised production path if that path loads it; do not inject a computed plan/DTO",
+  "original_error_hold_exit_cleanup_assertions": "unchanged",
+  "local_result": "command19 in the shared acceptance step passed with the corrected production AST",
+  "whole_local_shared_step": "commands1-40 passed after Git-only sparse input materialization; command41 adapters hit120s local timeout, cause unknown; full58 not claimed GREEN",
+  "live_operations": 0,
+  "standalone_target_recheck": {
+    "exit_code": 0,
+    "command": [
+      "-B",
+      "-X",
+      "utf8",
+      "tools/test_ck3_mod_acceptance_initial_plan_failure_hold.py",
+      "--host-source",
+      "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+    ],
+    "stdout": "",
+    "stderr": "test_actual_initial_plan_exception_preserves_RED_and_uses_original_hold_then_failure_finish (__main__.InitialPlanFailureHoldTests.test_actual_initial_plan_exception_preserves_RED_and_uses_original_hold_then_failure_finish) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 0.103s\n\nOK\n"
+  }
+}

@@ -43,9 +43,18 @@ class InitialPlanFailureHoldTests(unittest.TestCase):
                      and any(isinstance(stmt, ast.Assign) and any(isinstance(target, ast.Subscript)
                          and isinstance(target.slice, ast.Constant) and target.slice.value == 'finished_at'
                          for target in stmt.targets) for stmt in node.finalbody))
+        initializers = []
+        if any(isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load)
+               and node.id == 'frontend_initial_plan' for node in ast.walk(selected)):
+            initializers = [copy.deepcopy(node) for node in run.body
+                if isinstance(node, ast.Assign) and isinstance(node.value, ast.Constant)
+                and node.value.value is None and any(isinstance(target, ast.Name)
+                    and target.id == 'frontend_initial_plan' for target in node.targets)]
+            self.assertEqual(len(initializers), 1,
+                             'Use the actual default-plan local initialization, never a substitute DTO')
         production_path = ast.AsyncFunctionDef(name='exercise_actual_initial_plan_path',
             args=ast.arguments(posonlyargs=[],args=[],kwonlyargs=[],kw_defaults=[],defaults=[]),
-            body=[selected,*copy.deepcopy(outer.finalbody)],decorator_list=[])
+            body=[*initializers,selected,*copy.deepcopy(outer.finalbody)],decorator_list=[])
         names = {'load_plan','lookup','resolve','finished_native_process_exit_zero_proof',
                  'finished_native_exit_zero_proof','finished_native_failure_shutdown_proof'}
         nodes = [copy.deepcopy(node) for node in tree.body if isinstance(node,ast.FunctionDef) and node.name in names]
