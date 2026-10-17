@@ -1,0 +1,201 @@
+{
+  "schema": "xar.g2.sway-quiet-observation-source/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-17T22:09:08.658556+00:00",
+  "status": "SOURCE_CANDIDATE_FOCUSED_SYNTHETIC_TESTS_PASSED_NOT_INSTALLED",
+  "base_commit": "410e1b3ff0c41d0893c72c096aa89421c3cc42b3",
+  "shared_HEAD_at_close": "0eb18ca13bf6213da779618355d6199cde6126bd",
+  "G2": {
+    "complete": 6,
+    "total": 8,
+    "M6": "in_progress",
+    "M7": "in_progress",
+    "new_business_credit": 0
+  },
+  "problem": "Ordinary Sway staging only accepts life-advance; war clocks/routes can starve the first and monthly reads of an already applied natural instance.",
+  "new_window": {
+    "original_phase": "native_war_army_strength_query",
+    "original_selected_step": "query-army-strengths-v1",
+    "original_result_status": [
+      "available",
+      "partial"
+    ],
+    "original_result_army_rows_required": true,
+    "order": [
+      "original full ordinary plan and army read",
+      "existing following consumers",
+      "eligible due original applied Sway readonly observations",
+      "return original result",
+      "later ordinary turn consumes any newly staged material/terminal"
+    ],
+    "selected_step_replaced": false,
+    "new_target_nomination_or_Start": false,
+    "pending_reconciliation_or_resubmit": false,
+    "Stop_or_game_clock": false,
+    "ordinary_sway_optional_compatible_with_d0a_audit": true
+  },
+  "admission": [
+    "Original native_war_army_strength_query completed with exact selected step and available/partial army result; existing optional Sway work is not repeated.",
+    "An original applied/postcondition-verified resolved instance exists, pending is absent and at least one existing lifecycle reader permission is enabled.",
+    "Existing scheduler permits only observe_applied for a new original identity or its actual persisted30game-day due time; no target frontier or Start job is possible in active_observation_only mode.",
+    "Fresh paused/map-ready frame, explicit false episode_identity_pending, same Game PID/connection, current actor/episode/date as original planning source.",
+    "No event, pending interaction or observed exclusive modal; every player army explicitly not in combat/retreat and not gathering.",
+    "Original reader still validates original fullID/generation and performs its original independent normalization/staging."
+  ],
+  "skip_no_extra_native_snapshot": [
+    "no reader permission",
+    "no applied resolved instance",
+    "pending original action",
+    "not due",
+    "already retained terminal",
+    "different applied actor",
+    "other war phases/actions",
+    "existing optional work"
+  ],
+  "failure_semantics": "Readonly/query failure uses existing cadence with no same-day retry; optional exceptions retain original already-completed query result and do not authorize replay.",
+  "remaining_boundaries": [
+    "Only one quiet ordinary army-query class is added. Long route/contact/hold-only periods and urgent branches can still defer observation; no universal fairness bound.",
+    "Initial Start starvation remains governed by original life-advance opportunities; no default wartime new-Sway expansion.",
+    "Reader availability, named gain, natural retained end, following consumption and whole M6 completion still need actual ordinary-campaign evidence.",
+    "No current R3/SDK/owner source epoch adopted this source; no frozen tree or live install was changed."
+  ],
+  "changed_function_AST": {
+    "service": [
+      "GameplayBridgeService.auto_turn"
+    ],
+    "scheduler": [
+      "plan_ordinary_sway_schedule_v1"
+    ]
+  },
+  "unchanged_from_base": {
+    "original_sway_observer": true,
+    "formal_consumer": true,
+    "material_consumer": true,
+    "lifecycle_consumer": true,
+    "strategy": true
+  },
+  "sources": {
+    "service": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 860001,
+      "sha256": "e2b9848b0a76572bc1d76037b3fbe62636ef679c6dc2ec98a58b6795dff78a09"
+    },
+    "scheduler": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py",
+      "bytes": 9667,
+      "sha256": "7962d271184b2ff35a614ca784b6070f708b3de78a65aec6a9494fa1fa38004e"
+    },
+    "quiet_observer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_quiet_observation_v1.py",
+      "bytes": 6377,
+      "sha256": "650a1eff8d789885c6b1a4158245e1e802857bb72bcafd002e2cce0255648544"
+    },
+    "test": {
+      "path": "ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py",
+      "bytes": 16037,
+      "sha256": "05314cef632f13b90353898da365e0ae41a00527e91c143f2aa2f584255864ee"
+    },
+    "CI": {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 49478,
+      "sha256": "a7b6112528117faf728f30a1491a42617291c0e1ba7a0214295a0dd8905b4b85"
+    },
+    "topic": {
+      "path": "docs/ck3-native-ai/p56-sway-quiet-observation-2026-10-18.md",
+      "bytes": 5497,
+      "sha256": "bd0dee6eee67b2160f8e07942664fcd35cdfeb380dc23be71443597d97062df1"
+    },
+    "original_sway_observer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py",
+      "bytes": 6043,
+      "sha256": "acd42963f529b680166d439d433e226ff213c5f5d4c07c04e1251923e2d168b4"
+    },
+    "formal_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 26102,
+      "sha256": "36011b8a5129805a654b9e8cd2d17450eb05cc410d6220b3e1c4a4fcba52dccd"
+    },
+    "material_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_material_consumer.py",
+      "bytes": 9721,
+      "sha256": "d45477655755adb783902abc44ecc322111803b8c36f27bb75f84efd7592168c"
+    },
+    "lifecycle_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py",
+      "bytes": 14887,
+      "sha256": "b9995b7197455e2aed677c3c2562abc4563eb1e5e63a883785ef830ce2a70e47"
+    },
+    "native_sway_source_contract": {
+      "path": "docs/ck3-native-ai/sway-beneficial-terminal-followup-12004.md",
+      "bytes": 18104,
+      "sha256": "56ba48338e036f543b536ffcf63f8348be0f7d709d5c72d00e3ed735a96ef83b"
+    },
+    "identified_cadence_gap": {
+      "path": "docs/ck3-native-ai/p55-g2-m6-m7-natural-coverage-2026-10-18.md",
+      "bytes": 8987,
+      "sha256": "43391a4a4c383277e8d63b5609fc60308ae401efbc051f9f6d6211743850b8ee"
+    },
+    "strategy": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1028760,
+      "sha256": "703f1ec0851e977303faed9e9e222196adb3069e573f0a758bc0c7985b64e649"
+    }
+  },
+  "validation": {
+    "initial_round": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "at_utc": "2026-10-17T22:04:32.314582+00:00",
+      "status": "PASS",
+      "testsRun": 20,
+      "failures": 0,
+      "errors": 0,
+      "Native_OS_game_inputs": "synthetic",
+      "M6_runtime_credit": 0,
+      "test_modules": [
+        "test_ordinary_sway_quiet_observation_v1.py",
+        "test_ordinary_sway_schedule_v1.py",
+        "test_ordinary_sway_service_v1.py"
+      ]
+    },
+    "final_new_file_after_status_gate_and_extra_negative": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "at_utc": "2026-10-17T22:06:28.434146+00:00",
+      "status": "PASS",
+      "testsRun": 6,
+      "failures": 0,
+      "errors": 0,
+      "Native_OS_game_inputs": "synthetic",
+      "M6_runtime_credit": 0,
+      "test_modules": [
+        "test_ordinary_sway_quiet_observation_v1.py"
+      ]
+    },
+    "final_direct_CI_command": {
+      "command": "tools/.venv/Scripts/python.exe -B -X utf8 ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py",
+      "exit_code": 0,
+      "tests": 6,
+      "unittest_body_seconds": 0.107,
+      "tool_wall_seconds": 2.1523534,
+      "source": "this agent exec_command completion; no separate direct-command UTC captured"
+    },
+    "effective_scope": "Production Service auto-turn ordering, actual Sway Service wrappers, normalizers, ledger and following consumers; ordinary plan/army execution and all Native/OS boundaries synthetic.",
+    "old68_matrix_repeated": false,
+    "real_game_qualification": false
+  },
+  "operations": {
+    "Game_Native_SDK_MCP_calls": 0,
+    "current_R3_Driver_SAVE_media_reads": 0,
+    "live_frozen_tree_writes": 0,
+    "commits_pushes": 0,
+    "new_runtime_business_credit": 0
+  },
+  "open_kaishek": "not-applicable: pure Python readonly cadence and existing API orchestration; no new Paradox or Native ABI semantics.",
+  "retention": {
+    "policy_version": "1.0.0",
+    "small_source_evidence_only": true,
+    "derived_logs_review_hours": 48,
+    "tracked_record_review_hours": 4320,
+    "heavy_writes": 0,
+    "deletions": 0
+  }
+}

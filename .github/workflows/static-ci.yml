@@ -103,6 +103,8 @@ jobs:
         run: python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_*route*unavailable*.py"
       - name: Test ordinary Sway complete planner integration without CK3
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_ordinary_sway_service_v1.py
+      - name: Test active Sway observation after an ordinary war query without CK3
+        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py
       - name: Test actual4 Sway receipt identity and independent instance without CK3
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_sway_actual4_start_observation.py
       - name: Test actual natural sentinel boundary contract without CK3

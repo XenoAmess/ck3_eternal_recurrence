@@ -4749,6 +4749,8 @@ class GameplayBridgeService:
             # optional Sway read/receipt remains in ordinary_sway_optional.
             planned = following_plan
         outcome = self._consume_feast_after_turn(self._consume_sway_after_turn(outcome))
+        from .ordinary_sway_quiet_observation_v1 import observe_sway_after_quiet_query_v1
+        outcome = observe_sway_after_quiet_query_v1(self, planned, outcome)
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
             outcome, planning_frame=planned)
         cooldown_receipt = self._observe_declaration_cooldown_after_turn_v1(

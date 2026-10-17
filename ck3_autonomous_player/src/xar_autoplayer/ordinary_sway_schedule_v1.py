@@ -49,10 +49,11 @@ def plan_ordinary_sway_schedule_v1(
     root: Mapping[str, object] | None = None,
     ledger: Mapping[str, object] | None = None,
     state: Mapping[str, object] | None = None,
+    active_observation_only: bool = False,
 ) -> dict[str, object]:
-    """Plan optional work; every none result leaves the ordinary turn runnable."""
+    """Plan optional work; a quiet post-query caller may only observe an applied instance."""
     unchanged = dict(state) if isinstance(state, Mapping) else {}
-    if selected_step != "life-advance":
+    if selected_step != "life-advance" and active_observation_only is not True:
         return {"job": None, "reason": "preserve_selected_step", "state": unchanged}
     played = snapshot.get("played_character")
     date = snapshot.get("date_raw")
@@ -71,6 +72,8 @@ def plan_ordinary_sway_schedule_v1(
     pending = ledger.get("pending") if isinstance(ledger, Mapping) else None
     resolved = ledger.get("resolved") if isinstance(ledger, Mapping) else None
     if isinstance(pending, Mapping):
+        if active_observation_only is True:
+            return {"job": None, "reason": "preserve_original_pending", "state": current}
         if pending.get("actor_character_id") != actor or not _id(pending.get("target_character_id")):
             return {"job": None, "reason": "unresolved_other_actor", "state": current}
         if current.get("last_job_kind") == "reconcile_pending" and not _due(current, date):
@@ -98,10 +101,14 @@ def plan_ordinary_sway_schedule_v1(
                 "action_id": resolved.get("action_id"), "submit_allowed": False,
                 "reason": "new_identity_or_monthly_observation", "state": current,
             }
+        if active_observation_only is True:
+            return {"job": None, "reason": "original_terminal_already_observed", "state": current}
         if current.get("last_terminal_action_id") != resolved.get("action_id"):
             # This is an existing observed terminal fact, not a new signal API.
             current.update(last_terminal_action_id=resolved.get("action_id"),
                            no_operation_count=0, next_check_date_raw=None)
+    if active_observation_only is True:
+        return {"job": None, "reason": "no_applied_instance_to_observe", "state": current}
     if (not isinstance(root, Mapping) or root.get("status") != "available"
             or root.get("player_character_id") != actor
             or root.get("player_character_alive") is not True
