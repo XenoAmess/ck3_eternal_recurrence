@@ -3250,6 +3250,86 @@ async def acknowledge_fixture_startup_case(client: PlanClient, snapshot: dict[st
         raise
 
 
+async def dispatch_fixture_scenario_startup_event(client: PlanClient, snapshot: dict[str, object],
+        submission: dict[str, object], policy: dict[str, object], *, state: dict[str, object],
+        write: object, deadline: float) -> dict[str, object]:
+    """Keep preparation unselected; consume earlier real events using shared policy."""
+    from xar_autoplayer.vanilla_events.policy import recommend_registered_vanilla_event_option_v1
+    from xar_autoplayer.vanilla_events.unhandled_fallback import plan_unhandled_event_fallback_v1
+    from xar_autoplayer.bridge.event_contract import event_option_step
+    event = snapshot.get("active_event") or {}
+    frame = fixture_whole_root_admission_frame(snapshot, submission, allow_active_event=True)
+    if frame is None or event.get("source") != "native" or type(event.get("instance_id")) is not int:
+        raise RuntimeError("scenario startup dispatch requires its actual native event frame")
+    if time.monotonic() >= deadline:
+        raise RuntimeError("scenario startup dispatch exceeded its original deadline")
+    packet = await client.call("ck3_query_current_event_window_context_v1", {
+        "event_instance_id":event["instance_id"], "expected_revision":snapshot["revision"]})
+    context = packet.get("current_event_window_context", {})
+    identity = (context.get("root_scope") or {}).get("typed_identity") or {}
+    ready = context.get("readiness") or {}
+    if (packet.get("status") != "available" or packet.get("current_event_window_context_ready") is not True
+            or context.get("schema") != "current-event-window-context-v1" or context.get("schema_version") != 1
+            or context.get("status") != "available" or context.get("window_match_count") != 1
+            or context.get("current_event_instance_id") != event["instance_id"]
+            or context.get("snapshot_revision") != snapshot["native_revision"] or context.get("date_raw") != frame["date_raw"]
+            or not isinstance(context.get("event_definition_key"), str) or not context["event_definition_key"]
+            or identity.get("status") != "available" or identity.get("kind") != "character"
+            or identity.get("character_id") != frame["actor_character_id"]
+            or any(ready.get(key) is not True for key in ("event_definition_identity_ready", "root_scope_ready", "option_presentation_ready"))
+            or any(packet.get(key) != snapshot.get(source) for key,source in {
+                "queried_snapshot_id":"snapshot_id", "queried_revision":"revision", "queried_native_revision":"native_revision"}.items())):
+        raise RuntimeError("scenario startup dispatch crossed its actual typed event/root/frame")
+    if context["event_definition_key"] == policy["startup_event_admission"]["event_definition_key"]:
+        return await observe_fixture_scenario_startup_event(client, snapshot, submission, policy,
+            state=state, write=write, deadline=deadline)
+    records = state.setdefault("startup_predecessor_events", [])
+    if any(row.get("event_instance_id") == event["instance_id"] and row.get("selection_attempted") is True for row in records):
+        raise RuntimeError("startup predecessor selection was already attempted; no replay")
+    count = event.get("option_count")
+    decision = recommend_registered_vanilla_event_option_v1(context,
+        played_character_id=frame["actor_character_id"], snapshot_option_count=count)
+    fallback = None
+    if decision.get("status") == "recommended":
+        option = decision["selected_option_number"]
+    else:
+        fallback = plan_unhandled_event_fallback_v1(snapshot=snapshot, event_context=context,
+            event_summary=dict(event), registry_decision=decision,
+            action_steps=tuple(event_option_step(index+1) for index in range(count)) if type(count) is int and 0 < count <= 256 else ())
+        if fallback is None or fallback.get("selected_step") is None:
+            raise RuntimeError("startup predecessor has no legal registered or first-shown choice")
+        option = fallback["event_decision"]["selected_option_number"]
+    record = {"event_instance_id":event["instance_id"], "event_definition_key":context["event_definition_key"],
+        "snapshot":snapshot, "event_context":packet, "registry_decision":decision, "fallback_plan":fallback,
+        "selected_option_number":option, "selection_attempted":False, "old_event_gone_observed":False,
+        "status":"DECISION_CAPTURED_BEFORE_SUBMISSION", "offline_followup_required":fallback is not None}
+    records.append(record)
+    write()
+    try:
+        if time.monotonic() >= deadline:
+            raise RuntimeError("startup predecessor exceeded its original deadline before selection")
+        record.update(selection_attempted=True, status="OPTION_REQUEST_WRITTEN_NO_RETRY")
+        write()
+        record["selection_result"] = await client.call("ck3_select_event_option", {
+            "option_number":option, "event_instance_id":event["instance_id"], "expected_revision":snapshot["revision"]})
+        after = await client.fresh()
+        record["after_snapshot"] = after
+        after_frame = fixture_whole_root_admission_frame(after, submission, allow_active_event=True)
+        successor = after.get("active_event")
+        if (after_frame is None or after_frame["actor_character_id"] != frame["actor_character_id"]
+                or after_frame["local_player_id"] != frame["local_player_id"]
+                or after_frame["native_revision"] <= frame["native_revision"]
+                or isinstance(successor, dict) and successor.get("instance_id") == event["instance_id"]):
+            raise RuntimeError("startup predecessor ACK did not independently prove the old instance advanced")
+        record.update(status="PREDECESSOR_OLD_INSTANCE_GONE_OBSERVED", old_event_gone_observed=True, finished_at=now())
+        write()
+        return after
+    except BaseException as error:
+        record.update(status="PREDECESSOR_SELECTION_FAILED_NO_RETRY", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
 async def observe_fixture_scenario_startup_event(client: PlanClient, snapshot: dict[str, object],
         submission: dict[str, object], policy: dict[str, object], *, state: dict[str, object],
         write: object, deadline: float) -> dict[str, object]:
@@ -3530,7 +3610,7 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                             "product_acceptance_proven": False}
                         write()
                         if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
-                            snapshot = await observe_fixture_scenario_startup_event(client, snapshot, submission,
+                            snapshot = await dispatch_fixture_scenario_startup_event(client, snapshot, submission,
                                 policy, state=state, write=write, deadline=deadline)
                         else:
                             snapshot = await acknowledge_fixture_startup_event(client, snapshot, submission,

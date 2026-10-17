@@ -339,11 +339,15 @@ def query_vanilla_event_knowledge_v1(
         from .records_pam_bull0004_12004 import (
             EVENT_KEY as PAM_EVENT_KEY, PAM_BULL0004_12004_RECORD,
         )
+        from .records_fp3_struggle_intro_12004 import (
+            EVENT_KEY as FP3_INTRO_EVENT_KEY, FP3_STRUGGLE_INTRO_12004_RECORD,
+        )
 
         current_records = {
             EVENT_KEY: FAITH_CREATION1021_12004_RECORD,
             HOF_EVENT_KEY: HEAD_OF_FAITH0100_12004_RECORD,
             PAM_EVENT_KEY: PAM_BULL0004_12004_RECORD,
+            FP3_INTRO_EVENT_KEY: FP3_STRUGGLE_INTRO_12004_RECORD,
         }
         if event_definition_key in current_records:
             record = current_records[event_definition_key]
