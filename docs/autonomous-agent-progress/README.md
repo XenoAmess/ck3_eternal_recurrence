@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17：SDK43窗口10失败与SDK44独立查询恢复
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。[SDK44专题](../ck3-native-ai/sdk44-overview-latch-and-family-cadence-2026-10-17.md)追加窗口10在1250日后被旧通知关闭闩锁阻塞的事实。关闭回调已返回不等于窗口已关；新源码由严格绑定的后续独立查询归档旧执行不确定性，不重放原617、不授关闭信用，并避免同帧关闭循环。Family同对两日否定后最多30日的查询延后保持当前原生合法性未知。41项公共定向／回归测试通过。
+
+SDK44首批实际20轮推进20日，首个正向AUTO16／MET17为7日；新AUTO6仍是verification_pending，不能称具体窗口已关或30年达成。Root随后开启窗口11（baseline53293896），同Game与录像继续；这是交付截点，不是实时指针。旧97日记录是历史截点，窗口10最终1250日失败如实保留。先稳定30年，再<1秒／日，最后0.5秒／日；G2仍6/8。前批40be6806官方与线性CI均成功，后续源码单独验收。
+
 ### 2026-10-17：Robert SDK43必要修复与实际让步边界
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。[本批专题](../ck3-native-ai/sdk43-defensive-observation-and-query-cadence-2026-10-17.md)记录SDK43同Game接续后AUTO16真实单日原地防御观察及后续四次进日；未知敌军ETA不当contact-free，不授主动攻击或战果。逐战2次无行动查询后最多30日的policy defer、镜头失败状态／冷却期及同源事件当前ID窄修均保持各自测试／实机边界，49项公共定向测试通过。

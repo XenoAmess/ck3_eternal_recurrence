@@ -1,0 +1,85 @@
+{
+  "schema": "xar.sdk-hot-repair.actual-bounded-projection/v1",
+  "status": "ACTUAL_ORDINARY_PROGRESS_OBSERVED",
+  "source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-FINAL-SDK-FREEZE-P44.json",
+    "bytes": 285002,
+    "sha256": "dc36d2cf6306e18902c786a6b8d123d7f2146d22b94438733ffff031e16390d8"
+  },
+  "actual_sdk_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P44.json",
+    "bytes": 604,
+    "sha256": "93fb75444de9486270153f38e5c1e4687c52285702b1c034a4bd1e5c76ee9d2e"
+  },
+  "original_block": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\1778-1-result.json",
+    "bytes": 74118,
+    "sha256": "defb9d17885ed0c28d9a8652407147f291a6748c87693d4a5be2f3b7a73352c4"
+  },
+  "actual_clear": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\1781-1-result.json",
+    "bytes": 1125,
+    "sha256": "a2de60cd6ffb61db9a3816ff17d2284e783ef7b9d8b20ca53d39e920779b9faf"
+  },
+  "closed_seal": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p44-hot-sdk-prep01\\CLOSED-DRIVER-SEAL.json",
+    "bytes": 3589,
+    "sha256": "38be40b343416d68d6729fe652f0ddfcadb5733ae4a43e2bab3b7bd06530f72e"
+  },
+  "new_close": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0006-1-result.json",
+      "bytes": 78332,
+      "sha256": "6f21501c9b56728a2a0d44734ba33cf1f16e9bdaf310f025c89864bb6ccfaf59"
+    },
+    "native_request_id": "war-overview-close-4f22a85d36b94fbe90905b149dab85f6",
+    "status": "verification_pending",
+    "close_stage": "callback_returned",
+    "closure_verified": false,
+    "close_action_credit": false
+  },
+  "first_positive_turn": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-queue\\CUMULATIVE-TURN-004154.json",
+      "bytes": 2667,
+      "sha256": "3cd90c40eac03e30e02c2b9339f2ed24a3c443a0930556abb8c8cf5875e4ea79"
+    },
+    "global_turn": 4154,
+    "AUTO": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0016-1-result.json",
+      "bytes": 159878,
+      "sha256": "3a5336d2d524c6b9b82ab35d56c1872abb8b651f3481db87622fc6d783375405"
+    },
+    "METRICS": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0017-1-result.json",
+      "bytes": 1655,
+      "sha256": "112f626dc4db72533702aa10cd26c84f624778952c0b33a83585da9875bbf657"
+    },
+    "before": {
+      "snapshot_id": "native:5984",
+      "revision": 2,
+      "native_revision": 5984,
+      "date_raw": 53293416,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30"
+    },
+    "after": {
+      "snapshot_id": "native:5994",
+      "revision": 12,
+      "native_revision": 5994,
+      "date_raw": 53293584,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30"
+    },
+    "date_delta_raw": 168,
+    "elapsed_days": 7
+  },
+  "successful_first_batch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0003-1-result.json",
+    "bytes": 1211,
+    "sha256": "42d0e570d09f952945b78274bb64320186e9c0f19ea8b7fb2b6abbcdd47cd72b"
+  },
+  "evidence_limit": "ordinary progression is proven; internal later GUI query audit not exported in AUTO body, no claim that a particular window instance was closed",
+  "Root_live_operator_only": true,
+  "recording_unchanged_by_this_agent": true
+}

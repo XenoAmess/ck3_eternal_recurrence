@@ -1,0 +1,119 @@
+{
+  "schema": "xar.sdk44-public-transplant/v1",
+  "at_utc": "2026-10-17T14:00:34.790105+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_base": "344bd8e5a2db19a2262485064fc19cde05f21516",
+  "sources": [
+    {
+      "path": "N/p44-hot-sdk-prep01/public-overview01/COPYTARGETS.json",
+      "sha256": "66a532dc2b4c7be45aa4aedb715c12109a820f78caf46f51e02e3c8aba536a4e"
+    },
+    {
+      "path": "N/p43-family-guardian-cadence-candidate01/DELIVERY.json",
+      "sha256": "a3fa8ed5c74ab232c8a61e12cbbe467c971afe986d78996764ad3728c2d87927"
+    },
+    {
+      "path": "N/p43-family-guardian-cadence-candidate01/PUBLIC-PORTABLE-DELIVERY.json",
+      "sha256": "8c51a0411dfdcbebb762d2048c1af702a90d16cd9b8d731a85bb0ba298493fd0"
+    },
+    {
+      "path": "N/p44-hot-sdk-prep01/P44-FIRST-ACTUAL-RECOVERY-PROJECTION.json",
+      "sha256": "5c6b3b007aecddd1b7e1fc72a9c962562aa5dd4a7d9b2b61c947bb5d12be8999"
+    }
+  ],
+  "public_files": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_declared_overview_transport.py",
+      "raw_sha256": "52183d4339e407bdbc29f9b222d28a7b80c5691a5b67e6ef158e9313a6f77b4c",
+      "git_blob": "c5a4b28764e0eb876e804f588c41f3fd498b8b73",
+      "bytes": 16323
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_war_declared_overview_v1.py",
+      "raw_sha256": "58b49ced34f588d295e44db4249814ec8de9f63131ffa91a01d648eb3c658941",
+      "git_blob": "6ec965c34d1338c94d3ed66d6c52c88bcc50cbdb",
+      "bytes": 7334
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "raw_sha256": "73a3b3f1bb65358b0ab08abfae7674f034681e4fbe8669fcc1238d5903039922",
+      "git_blob": "b0bb304ddb5670699e9c649e731ef5585ca7e66c",
+      "bytes": 851617
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/family_guardian_negative_cadence_v1.py",
+      "raw_sha256": "2becd9557b26620b661b33276970c82633e6461492033a99b53579850bc1041c",
+      "git_blob": "344773384dddcbc5c4bf8f382139803c79ee8f27",
+      "bytes": 11308
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_declared_overview_latch_reconciliation.py",
+      "raw_sha256": "aeca05529cbaacf53d67ec7422d3a6b4819a7baa7bac72eee463d5dd20a364d9",
+      "git_blob": "e51f0da779a621d1a9b15a4273dc7e6a6f04bb0b",
+      "bytes": 8271
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_family_guardian_negative_cadence_v1.py",
+      "raw_sha256": "419fa4afdae2f898a7dc9062d800cbc8ae2a05dfb7630d0a203ec1b1c8e4a205",
+      "git_blob": "c429b2ac6ea6fff329024ba2681f842d8b6919f8",
+      "bytes": 5401
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_service_family_guardian_negative_cadence_v1.py",
+      "raw_sha256": "b93702b0b7c8fa740d38868d0f9828bb9e2ed1bb5baab4b0f8c75005152b2163",
+      "git_blob": "bc6e917a5ca7a9dafcd197cc87d461062846a7cf",
+      "bytes": 5957
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/p43_close_later_query_projection.json",
+      "raw_sha256": "04fc72a9fde2a402c47d6792cb2d6b3ba44355d429c359e578d38bfc8dca3554",
+      "git_blob": "deec797f5babd9991d73379d399ad3f5b97e1c9b",
+      "bytes": 12451
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/family_guardian_p43_completed_projection_v1.json",
+      "raw_sha256": "148067ff3ed94151b1ec44acfeedee42e06e0e6bb5618d05074b1a2efc74305a",
+      "git_blob": "0c58fe12582a463c6844c921ba0033eab6f06a34",
+      "bytes": 152326
+    }
+  ],
+  "source_preservation": "Atomic COW on three existing production leaves and four documentation/CI leaves before edit; no SDK source overwrite",
+  "tests": {
+    "passed": 41,
+    "subtests_passed": 15,
+    "new_test_methods": 12,
+    "existing_regression_methods": 29,
+    "source": "public W modules; real transport/contract/planner and Service method; only Native I/O or explicit planning seams doubled",
+    "elapsed_seconds": 20.66,
+    "game_native_sdk_calls": 0
+  },
+  "actual": {
+    "window10_failed_days": 1250,
+    "old_close617_credit": false,
+    "current_window_identity_same_as617": "unobserved",
+    "sdk44_first_owner": "57800",
+    "new_close_auto6": "verification_pending",
+    "ordinary_query_auto8": true,
+    "first_positive_auto16_met17_days": 7,
+    "full3_days": 20,
+    "full3_turns": 20,
+    "inner_query_full_audit_exported": false,
+    "root_handoff_window11": {
+      "commonrunner": 19579,
+      "start_raw": 53293896,
+      "target_raw": 53556888,
+      "GamePID": 51028,
+      "same_recording": "5ebe",
+      "provenance": "Root handoff following pinned first actual recovery projection; startup checkpoint only"
+    }
+  },
+  "boundary": {
+    "family_defer": "policy only; current Native legality unknown; no measured live benefit",
+    "overview_resolution": "completed execution uncertainty only; no replay or close business credit",
+    "runtime_source_writes": 0,
+    "thirty_year_goal_complete": false,
+    "sub_one_second_goal_complete": false,
+    "half_second_goal_complete": false,
+    "G2": "6/8"
+  }
+}

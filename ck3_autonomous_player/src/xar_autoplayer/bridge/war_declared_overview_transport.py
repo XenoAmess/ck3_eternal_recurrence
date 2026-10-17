@@ -62,12 +62,68 @@ def _result(frame: object, request_id: str, operation: str, binding: Mapping[str
     }
 
 
+def _completed_close(result: Mapping[str, object]) -> bool:
+    top = result.get("native_command_result")
+    receipt = top.get(OWNER_RECEIPT_KEY) if isinstance(top, Mapping) else None
+    return (result.get("operation") == "close" and result.get("status") == "verification_pending"
+            and result.get("available") is False and result.get("accepted") is False
+            and result.get("close_stage") == "callback_returned"
+            and result.get("dispatch_invoked") is True and result.get("native_handled") is True
+            and result.get("scope_unchanged") is True and result.get("post_observed") is True
+            and isinstance(receipt, Mapping) and top.get("ok") is True
+            and receipt.get("request_id") == result.get("native_request_id"))
+
+
+def _resolve_completed_close_query(driver: object, result: dict[str, object]) -> None:
+    """A later owner read settles execution uncertainty, never close credit."""
+    pending = driver._war_declared_overview_close_pending
+    previous = pending.get("completed_response") if isinstance(pending, Mapping) else None
+    if (not isinstance(pending, Mapping) or pending.get("status") != "verification_pending" or pending.get("step") != CLOSE_STEP
+            or not isinstance(previous, Mapping) or not _completed_close(previous)
+            or pending.get("collectable") is not False or result.get("operation") != "query"
+            or result.get("available") is not True or result.get("post_observed") is not True
+            or result.get("scope_unchanged") is not True):
+        return
+    binding = pending["binding"]
+    if (pending["native_generation"] != result.get("connection_generation")
+            or any(previous.get(key) != result.get(key) for key in (
+                "queried_actor_character_id", "queried_connection_generation", "queried_episode_run_id"))
+            or result.get("queried_native_revision", 0) < binding["native_revision"]
+            or result.get("queried_date_raw", 0) < binding["date_raw"]):
+        return
+    old = previous["native_command_result"][OWNER_RECEIPT_KEY]
+    new = result["native_command_result"][OWNER_RECEIPT_KEY]
+    if (new["ticket_sequence"] <= old["ticket_sequence"]
+            or new["pump_epoch"] <= old["pump_epoch"]
+            or new["thread_id"] != old["thread_id"]):
+        return
+    present, visible = result.get("post_window_present"), result.get("post_effective_visible")
+    if (present, visible) not in ((False, False), (True, False), (True, True)):
+        return
+    result["prior_close_execution_observation"] = {
+        "native_request_id": pending["native_request_id"],
+        "status": "callback_completed_closure_unverified",
+        "original_owner_receipt": deepcopy(dict(old)),
+        "followup_query_request_id": result["native_request_id"],
+        "fresh_window_visible": visible, "original_action_replayed": False,
+        "close_action_credit": False,
+    }
+    # One close per Native frame: a still-visible result cannot make an
+    # endless close/query loop on the same paused day. Other ordinary work
+    # retains its own Native guards; a new frame schedules a fresh UI read.
+    result["close_retry_deferred_for_native_frame"] = (
+        visible is True and result["queried_native_revision"] == binding["native_revision"]
+        and result["queried_date_raw"] == binding["date_raw"])
+    driver._war_declared_overview_close_pending = None
+
+
 def _publish(driver: object, result: Mapping[str, object], token: int) -> bool:
-    entry = {"validation_schema": SOURCE_SCHEMA, "result": deepcopy(dict(result))}
     with driver._driver_state_lock:
         if driver._war_declared_overview_attempt != token:
             return False
-        driver._war_declared_overview_observation = entry
+        if isinstance(result, dict):
+            _resolve_completed_close_query(driver, result)
+        driver._war_declared_overview_observation = {"validation_schema": SOURCE_SCHEMA, "result": deepcopy(dict(result))}
         return True
 
 
@@ -99,6 +155,8 @@ def collect_pending_war_declared_overview_close(driver: object) -> None:
             driver._war_declared_overview_attempt += 1
         else:
             active.update(status=result["status"], error=result["unavailable_reason"], collectable=False)
+            if _completed_close(result):
+                active["completed_response"] = deepcopy(result)
     # This is the actual late response to the first command, not a retry.
     driver._record_command(CLOSE_STEP, ok=result["accepted"], result={**result, "late_original_response": True})
 
@@ -171,6 +229,8 @@ def execute_war_declared_overview_v1(
                         token = driver._war_declared_overview_attempt
                     else:
                         active.update(status=result["status"], error=result["unavailable_reason"])
+                        if _completed_close(result):
+                            active["completed_response"] = deepcopy(result)
         if operation == "close":
             _publish(driver, result, token)
         return result
@@ -206,7 +266,7 @@ def war_declared_overview_snapshot_fields(driver: object, snapshot: Mapping[str,
     with driver._driver_state_lock:
         pending = driver._war_declared_overview_close_pending
         public_pending = ({key: deepcopy(value) for key, value in pending.items()
-                           if key not in {"binding", "native_generation", "collectable"}}
+                           if key not in {"binding", "native_generation", "collectable", "completed_response"}}
                           if isinstance(pending, Mapping) else None)
     return {
         "war_declared_overview_v1_observation": _current(driver, snapshot, "_war_declared_overview_observation", SOURCE_SCHEMA),

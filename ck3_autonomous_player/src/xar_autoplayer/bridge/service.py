@@ -3263,14 +3263,45 @@ class GameplayBridgeService:
         from .request_guardian_skill_inputs_private_v1 import (
             project_request_guardian_focus_skills_v1,
         )
+        from . import family_guardian_negative_cadence_v1 as guardian_negative
+
+        guardian_records = getattr(self, "_family_guardian_negative_cadence_v1", None)
+        if not isinstance(guardian_records, dict):
+            guardian_records = {}
+            self._family_guardian_negative_cadence_v1 = guardian_records
+        guardian_frame = self._observed_planning_source_frame(snapshot)
+        heir_id = relationship.get("heir_character_id")
+        guardian_quiet_frame = (snapshot.get("paused") is True
+            and snapshot.get("map_ready") is True
+            and snapshot.get("active_wars") == []
+            and snapshot.get("active_event") is None
+            and snapshot.get("pending_character_interaction") is None
+            and snapshot.get("one_life_terminal_reason") is None)
 
         observations = []
+        guardian_scopes = {}
+        guardian_cadence = []
         seen = set()
         for child_needs in rows:
             child_id = child_needs["raw_character_id"]
             if child_id in seen:
                 continue
             seen.add(child_id)
+            guardian_scope = (guardian_negative.source_scope(
+                guardian_frame, child_needs, heir_id)
+                if guardian_quiet_frame else None)
+            guardian_scopes[child_id] = guardian_scope
+            guardian_defer = guardian_negative.deferred(
+                guardian_records, guardian_scope, guardian_frame)
+            if guardian_defer is not None:
+                guardian_cadence.append(guardian_defer)
+                observations.append({"child_full_id": child_id,
+                    "needs": copy.deepcopy(child_needs),
+                    "default_request_intent": None,
+                    "request_preference_pair": None,
+                    "request_attempts": [],
+                    "guardian_negative_cadence": guardian_defer})
+                continue
             query = self.query_character_interaction_ordinary_v1(
                 "educate_child_interaction", child_id,
                 expected_revision=int(planned["revision"]),
@@ -3366,6 +3397,8 @@ class GameplayBridgeService:
             if (final["ready_to_initiate"] is not True or final["can_send"] is not True
                     or review["status"] != "available"):
                 continue
+            # A real selectable intent invalidates every stale negative pair.
+            guardian_records.clear()
             return {**planned, "plan": {**plan,
                 "phase": "family_education_ordinary_submission",
                 "selected_step": "initiate-character-interaction-ordinary-v1",
@@ -3376,10 +3409,23 @@ class GameplayBridgeService:
                 "family_education_request_preference": preference,
                 "reason": "submit the preferred native-ready ward and guardian education intent",
             }}
+        for observation in observations:
+            child_id = observation["child_full_id"]
+            if observation.get("guardian_negative_cadence") is not None:
+                continue
+            observed = guardian_negative.observe(
+                guardian_records, guardian_scopes.get(child_id), guardian_frame,
+                observation.get("default_query"), observation.get("request_attempts"),
+                selected_step="life-advance")
+            if observed is None:
+                guardian_records.pop(child_id, None)
+            else:
+                guardian_cadence.append(observed)
         return {**planned, "plan": {**plan,
             "family_education_inputs": inputs,
             "family_education_observations": observations,
             "family_education_request_preference": preference,
+            "family_education_guardian_negative_cadence_v1": guardian_cadence,
         }}
 
     @staticmethod
