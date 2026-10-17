@@ -56,3 +56,23 @@
 初次构建及导航夹具的 RED 均保留：新增 Snapshot 命名空间错误、目标 UTF-8 选项、旧测试源依赖/投影函数签名与已合法 enum2 的过时负例均已修复。未删除断言；测试的无关 war binder 若被误调用会 assert/abort，不能返回假 owner。a03 的 `/UNDEBUG` 是显式编译约束，源码此前已有 `#undef NDEBUG`，不能据此声称此前断言全被关闭。生产 HolySite 业务源码在这些测试修复中未变。冻结原件与后续 delta 分开保存，详情原生/MCP 已通过部分未因无关修复重复重验。
 
 下一层只由实际游戏回执补齐：真实窗口可见且选中目标、原版详情参数与普通 CanConfirm、一次原版 Confirm，以及独立的 Faith 关联和资源后验。当前不能把工具注册、源码、夹具 true、ACK 或窗口消失写成采用成功。
+
+## R0002 实机入口缺口与修复候选
+
+`machine_id: 4-8e1c2f1861`；实际观察 `2026-10-17T09:35:51Z–09:36:07Z`，离线诊断 `09:37:26Z`。来源为同机 run `4-8e1c2f1861--faith-and-power--R0002` 的 `root-native-receipts/` 原包，生产源码 `201606305bfb2f8ec4f4730e20d751c8ce68e288`。以下是新增实机边界，不改变上文夹具的合成性质。
+
+- HolySite 窗口实际可见，当前完整 ID 为 `32`；actor `15893`、暂停、date_raw `51394920`。采用入口的原生可见判断为 true，Regular/Eminent 为 false。
+- 单次打开采用详情请求在 dispatch 前返回 `adoption_entry_receiver_not_unique`，`native_dispatch_attempted=false`。随后详情读取返回 `adoption_detail_definition_unavailable_or_different`，两个 CanConfirm 字段均为 null。未调用 Confirm，未观察到采用效果。
+- 563 个实际控件中，精确匹配 `OpenGameViewData→Close` 双回调的四行均位于原生标准点击选出的 `fallback` 组；其中仅 `1/3/1/3/4/0` 及其祖先实际可见且 enabled。旧 Signature 强制 `primary_group`，因此错误排除了唯一 receiver。此次错误不是 native 合法性拒绝，也不是控件禁用。
+- 原版 `0x3AA0D20→0x3A9FA30` 的 mode0 标准点击在 primary 无回调时执行 fallback；现有 producer/dispatcher 已支持该语义。候选修复 `002c9cfb93f0e299540eafcbfa9215a45c6dab6e` 只移除 primary 限制，仍保留完整有序双回调匹配、唯一性、可见/禁用/模态准入与两次读取的 group 稳定性，并增加对应断言。它尚未获得本轮原生增量及新实机资格，不能热换当前 DLL。
+
+原版 `window_decisions.gui:384–417` 用 `DecisionTypeWithParams.IsPossibleForPlayer` 控制灰图、灰标题及红叉；它没有把该条件绑定为按钮 enabled。灰色外观不应被智能体转换为已观测的 detail CanConfirm=false。修复入口后，优先继续原版 dispatcher，再由现有详情查询读取真实 `selected_item`、普通条件开关、CanConfirm 和完整原生 Confirm tooltip；未知结果不得重放动作。
+
+| 外置原件（上述 root-native-receipts） | SHA-256 |
+|---|---|
+| `r2-nadjaf-tree-a01.json` | `dccf0a6aa00b7b516ddce345430a65968b1959bf951f8a9f09f4f1a592c3a8ff` |
+| `r2-open-adoption-a01.json` | `652f1c38ea3f256dbaee282d4da4f726f4ae8d1ef3f5fb2b77416a17973a4420` |
+| `r2-adoption-detail-a01.json` | `731115d1ba3d4cc5cb76389ac2b1448ce55a869cdc6c3bf458612b096fa85af8` |
+| `r2-adoption-tree-a01.json` | `0bf0e74073cddf9502823efedc6d5e9ed8e7cc36e9593cd451b877b33b239ecf` |
+
+离线来源绑定位于上述 native-candidate 根的 `r2-adoption-entry-diagnostic-a01.json`、`gui-source/fallback-and-params-tooltip-source.json` 与 `adoption-fallback-fix-a11.json`。最后一份不可变两文件 freeze 的 SHA-256 为 `9fe755d757d7f6920549350d672cad01037ef1e37103fc37189c9bf4166cdfb3`。缓存中原版 `IsPossibleForPlayer` 与 `GetCommandDescForPlayer` 的只读 ABI 也已另行闭合；它们是候选预览，不替代实际详情的最终许可。
