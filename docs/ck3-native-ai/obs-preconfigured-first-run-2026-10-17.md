@@ -7,3 +7,5 @@
 实际首录 attempt `259e4d82-d03d-4c15-8978-eb8329310df7` 因前台从 `9708842` 变到归属本次 OBS 的 `25241084` 被守卫拒绝；该 OBS 为 `100200 / FT134366925031094503`，随后正常退出码0、输入解绑。`GetProfileList` 的207错误只是暂态，后续已连接，不将它写作最终失败原因。启动前 INI 没有保全，无法复原当时完整向导条件。[精简原件和来源](research/obs-preconfigured-first-run/README.md)保留原失败，不追改为成功。
 
 公共配置生成、不能覆盖已有配置、隐藏启动等待及前台归属共13项离线测试通过，仅 mock OS／OBS 边界，不启动任何进程或连接端口。新录制是否成功仍以其独立实际回执为准；连续30年稳定、低于1秒／日及0.5秒／日目标均未完成。
+
+2026-10-17版本补核：来源方确认本次实际 OBS 为30.0.2.0，前述30.0.0保留为同族源码旁证。现另核[30.0.2固定提交的向导条件](https://github.com/obsproject/obs-studio/blob/b45a73296f4f898e2ed455023020058075c30bab/UI/window-basic-main.cpp#L2256-L2268)与[隐藏条件](https://github.com/obsproject/obs-studio/blob/b45a73296f4f898e2ed455023020058075c30bab/UI/window-basic-main.cpp#L2139-L2141)，上述条件一致；[精确版本小回执](research/obs-preconfigured-first-run/OBS30.0.2-EXACT-SOURCE-REVIEW.json)不替换旧核对。具体失败窗口原因仍未知，代码与测试无变化。

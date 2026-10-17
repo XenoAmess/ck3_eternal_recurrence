@@ -48,6 +48,11 @@
       "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/OBS30-SOURCE-REVIEW.json",
       "bytes": 1148,
       "sha256": "33fe068724de917d85fc243195240922566ab181755474783a65aa2f94bb7b82"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/OBS30.0.2-EXACT-SOURCE-REVIEW.json",
+      "bytes": 1384,
+      "sha256": "b7291bd9e44aa826e3d143513dfe2094c4050055fd14dbf315b1832278fae0de"
     }
   ],
   "public_source_normalized": [

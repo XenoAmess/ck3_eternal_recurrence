@@ -1,0 +1,36 @@
+{
+  "schema": "xar.obs-preconfigured-profile-exact-version-review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T06:58:55.927959+00:00",
+  "actual_OBS_version_from_owner": "30.0.2.0",
+  "source": {
+    "url": "https://raw.githubusercontent.com/obsproject/obs-studio/b45a73296f4f898e2ed455023020058075c30bab/UI/window-basic-main.cpp",
+    "tag": "30.0.2",
+    "commit": "b45a73296f4f898e2ed455023020058075c30bab",
+    "bytes": 308452,
+    "sha256": "d382a8fcfbdae9aa341662a43d64fb3f2b0440611f1bc4fd1858ccbea81c771e",
+    "first_run_window": {
+      "lines": [
+        2256,
+        2268
+      ],
+      "sha256": "2dca3186c1c748cd814e92310a879d2ead37b481fa9a1e38dbd06575a6ff71fa"
+    },
+    "main_window_hide_window": {
+      "lines": [
+        2139,
+        2141
+      ],
+      "sha256": "cda379eff490a0ccafbecf50e294babc9d0ddc01425fd035f4d931afdd0f87e3"
+    }
+  },
+  "prior_30_0_0_review": "retained same-family source; not actual 30.0.2 exact-source",
+  "owner_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-recording-retry01\\OBS30-STARTUP-SOURCE-REVIEW.json",
+    "sha256": "3ca9041bf6bcdb91dee919dc0624994d54f4a70cbdf47ed3014c3f5db90e4126"
+  },
+  "exact_version_condition_confirmed": true,
+  "queued_wizard_causality": "UNKNOWN",
+  "code_or_tests_changed": false,
+  "runtime_calls": 0
+}
