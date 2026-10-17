@@ -39,3 +39,13 @@ SDK的 `pending_character_interaction_context_contract.normalize_pending_interac
 ## 后续实际部署与未闭根因
 
 上述“SDK42未启用”是当时准备截点。其后Root实际启用42，窗口9在302日后再次因完整敌军时间线不可用停止；43同Game接续及原地防御单日实际读回见[后续专题](sdk43-defensive-observation-and-query-cadence-2026-10-17.md)。这不证明zero-pause守卫已经解释或修复原1731／3219／4004具体子谓词。汇总external pause及managed_failure_cleanup ACK不能代替局部boundary动作数组证据；预防性SDK修复、partial控制实际恢复和普通日期信用继续分别结算。
+
+## 2026-10-18：AUTO869失败诊断保全
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；2026-10-17 20:09:53 UTC离线核对。AUTO869的原错误仍为“player-decision boundary did not stabilize on one fresh paused frame”。MET868 raw53347608之后，SEM871实际读到raw53347776、Native9572/public1039、同存活玩家40695/episode、Game51028/gen12及暂停，带合法signed交互实例`-1761607550`。这只证明已观察7日变化；871不能代替869缺失的原running/after-pause帧，也不证明原postcondition成功或其根因已修复。SDK48与公共7ccc的五个boundary核心函数AST相同；先前怀疑的running war-set分支被其paused前置条件排除，未据此改判定。
+
+公共[独立诊断模块](../../ck3_autonomous_player/src/xar_autoplayer/bridge/tactical_pause_boundary_diagnostics_v1.py)只由NativeDriver原失败分支lazy调用。frame/boundary/predicate均由当前Driver传入原函数callback，不复制validator算法；保存真实局部starting/before/after、身份、日期、paused、动作数、原predicate结果及有限事实比较。证据附在既有`StepPostconditionError.step_result`，并只失败时向既有SDK stderr写一条≤8KiB JSON；owner的`stdio_client(...,errlog=Q/sdk-stderr.log)`已有捕获。MCP原错误文本、动作序列、成功条件及partial恢复格式全部保持。诊断自身不可用不替换原错误；无新文件、Native查询、暂停、继续或重放。
+
+SDK缺少已验证机器身份输入时，日志明确写`machine_id:unknown`，由owner既有stderr/source-epoch回执绑定实际机器，不能硬编码本机身份供未来机器沿用。当前SDK48和恢复SDK02的冻结7ccc来源均**未部署此新增诊断**；公共源码不构成当前长局验收。
+
+[两项公共生产错误路径测试](../../ck3_autonomous_player/tests/unit/test_tactical_pause_boundary_diagnostics_v1.py)通过：`2 passed in 2.77s`。真实公共`Driver.execute_step`在合成endpoint上执行speed5/7日hold，分别构造日期变化、交互实例变化；对照诊断关闭/开启时原生命令、原错误全文与失败部分日历结果相同，并核实际callback、单条stderr及exception证据一致。没有把这些反事实归因为869。原869/868/871及公共接线的精确source pins保留于该机器外置`continuation42-cold-prep/p51-sentinel-pause-diagnostics01/PUBLIC-TRANSPLANT.json`，不读取活跃Driver/SAVE或媒体。

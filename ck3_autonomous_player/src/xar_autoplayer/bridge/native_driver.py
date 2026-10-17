@@ -24119,6 +24119,7 @@ class NativeHeadlessGameplayDriver:
         sentinel_status: dict[str, object] | None = None
         player_decision_boundary: dict[str, object] | None = None
         player_decision_boundary_cancel: dict[str, object] | None = None
+        boundary_pause_diagnostics: dict[str, object] | None = None
         cleanup_error: str | None = None
         try:
             speed_step = f"set-speed-{speed}"
@@ -24258,6 +24259,21 @@ class NativeHeadlessGameplayDriver:
                 if boundary_confirmed:
                     player_decision_boundary = inspected_boundary
                 elif running_boundary is not None:
+                    try:
+                        from .tactical_pause_boundary_diagnostics_v1 import record_failure_v1
+                        boundary_pause_diagnostics = record_failure_v1(
+                            step=step, starting=starting, before_pause=before_pause_inspection,
+                            after_pause=paused_inspection, pause_actions=boundary_pause_actions,
+                            inspected_boundary=inspected_boundary, expected_boundary=running_boundary,
+                            original_verified_boundary=boundary_confirmed,
+                            frame_binding=_battle_sentinel_frame_binding,
+                            boundary_of=_battle_sentinel_player_decision_boundary,
+                            same_boundary=_same_battle_sentinel_player_decision_boundary,
+                            fresh_boundary=_fresh_battle_sentinel_player_decision_boundary,
+                            decision_is_new=_battle_sentinel_player_decision_is_new,
+                        )
+                    except Exception:
+                        pass  # Preserve the original failure even if diagnostics cannot be captured.
                     raise BridgeUnavailableError(
                         "native tactical sentinel player-decision boundary "
                         "did not stabilize on one fresh paused frame"
@@ -24484,6 +24500,8 @@ class NativeHeadlessGameplayDriver:
                     player_decision_boundary_cancel
                 ),
             )
+            if boundary_pause_diagnostics is not None:
+                result["player_decision_pause_diagnostics_v1"] = boundary_pause_diagnostics
             message = f"native {step} postcondition failed: {error}"
             if cleanup_error is not None:
                 message += f"; managed cleanup failed: {cleanup_error}"
