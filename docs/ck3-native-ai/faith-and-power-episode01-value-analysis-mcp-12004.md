@@ -25,3 +25,12 @@
 原生观察增量沿用已有圣地圣物context与action-context，增加全关联Faith认可矩阵；context另加按类型固定PC真实键读取的玩家／派生县主聚合。实现说明见[观察专题](holy-site-effect-observation-12004.md)。当前已应用候选源码，尚未编译及实机资格；没有新工具、编译开关或更宽动作范围。属性名绑定未闭时为null，类型定义值与角色总聚合分列，不拼造单站净贡献；scaled净到账仍未覆盖。
 
 下一次独立实验补空主要固定项、非空槽直接更换、非空共享退出及最后关联退出。已有R7／R8不抵这些后态。新增中文稿按玩家目标讲解，音频、字幕和成片须随后重新制作；旧19:25审阅片尚未因此更新，也没有人工完整听审签核。
+
+
+## 2026-10-17T21:18:48.131714+00:00：a07资格与后继实证
+
+机器`4-8e1c2f1861`。a07保持e23冻结源码，35步增量构建、认可矩阵原生53 checks及实际Driver→Service→MCP的18响应完成；原件`episode01/runtime/religion-candidate-a07/qualification-a01.json` SHA579252ea0f8ce117e40eaeee2a7f756ad2461c60884e7bab05be6f0cc491d910，DLL SHA04b099ca052dd00acf1bad045bbbb25bf0d9d0fbfbb1f9990e2dee118b7062a1。既有双工具扩展已在新进程消费；这不覆盖后来其他机器或其他source的实机资格。
+
+[共享退出/直接替换](faith-and-power-episode01-r9-r0010-observations.md)与[最后Faith退出](faith-and-power-episode01-r0011-last-faith-exit.md)已加入历史知识。共享退出保留currentR0/cacheR2冲突；最后退出独立确认实际物主，不从空槽猜返还，也不误称对象销毁。数值观察仍无键名、单站归因或全部收件人净收益信用。奉献等级影响的资源语义见[主要等级补注](holy-site-major-grade-value12004.md)。
+
+本轮主树实际历史4/语义1/真实MCP1（9次ClientSession）方法通过，制作4+5方法通过。R0011正常游戏退出与host1/RED混合终态分列见其closure记录，不因此授whole-product PASS。新增105句讲解稿仅以实际已测语音组合，最后退出采用原生读回/实机静帧，完整影片与听审仍待后继交付。
