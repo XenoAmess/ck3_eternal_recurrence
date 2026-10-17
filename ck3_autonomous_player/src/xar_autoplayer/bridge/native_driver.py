@@ -9102,7 +9102,17 @@ class NativeHeadlessGameplayDriver:
                         result=(
                             error.step_result
                             if isinstance(error, StepPostconditionError)
-                            else None
+                            else ({
+                                "schema": "army-commander-native-rejection-v1",
+                                "native_request_id": error.native_request_id,
+                                "native_request_frame": error.native_request_frame,
+                                "native_command_result_frame": error.native_command_result_frame,
+                                "dispatch_status": "unknown-unless-native-diagnostic-proves-predispatch",
+                                "never_replay": True,
+                            } if isinstance(error, _NativeCommandRejectedError)
+                            and isinstance(error.native_request_frame, dict)
+                            and error.native_request_frame.get("step", "").startswith(
+                                "assign-army-commander-v1-army-") else None)
                         ),
                         error=f"{type(error).__name__}: {error}",
                     )

@@ -153,3 +153,34 @@ M(record+80,A.ID)true取+288，都false取-1。selectedID经Character registry/f
 
 本轮可复用入口：[四方向函数增量](evidence/episode04-county-or-directions-12004/README.md)、
 [portable源索引](evidence/episode04-county-or-directions-12004/source-index.json)。
+
+
+## 2026-10-17 context predicate 与候选 selector
+
+上述09360/0FEC0未持body是当时边界。本轮已补齐exact1.20.0.4的176B/347B
+完整体及独立12B/20B unwind；机器desktop-3fevhd2-1c74096080，EXE同本页SHA。
+元数据先定界后一次31reads：code523B、metadata含unwind332B，在2048B/512B限内；
+没有跟进新callee。原始片段、完整读账本、错误SHA准入拒绝与修正后check均保留于
+[新helper源码入口](evidence/episode04-county-or-context-12004/README.md)及
+[portable源索引](evidence/episode04-county-or-context-12004/source-index.json)。
+
+09360(ctx,A)的B/F来自ctx[0]/ctx[1]，不是入口R8。入口完整ID相同或
+D0(B,A,F)的ALtrue均返回true，供09280保留原A；D0false后重新读B，此时第二次
+sameID反而返回false，否则pair28BC250(B,A)经完整WarID/registry/fallback、raw358=0
+及当前ctx[1]为null或等resolvedWar指针才true。D0在这里用于接受candidate，不能
+照搬09580对D0true的负向使用，也不假设交换A/B对称。本体无context槽写入、
+不向下层传ctx地址，但不能把多次槽读取冻成初始化值或泛称所有callee pure。
+
+0FEC0(A,ctx)的seed来自28BFC50(A)原调用；seed==原A直接返回全局Character
+fallback。循环先算next再测试current；sameID或D0true接受current。D0false后
+重读ctx，第二次sameID走advance；否则用postD0保存的F做pair/358/指针门禁。
+失败仅在current!=next时继续；固定点失败返fallback，不返原A或最后candidate。
+返回完整RAX Character指针，不是AL bool；没有visited/maxloop界。parent来源是
+context父链接或+1B8/+C8完整ID解析。28BFC50本轮未读body，既有provider的
+immediate_liege采用名不冒充此入口的独立源码证明；2494B40等旧下层仍unknown。
+
+下一最窄数据口可在既有P/firstOR TLS内记录09360自然entry/return（caller092AF）
+的实际ctx两槽、candidate A和AL，以及0FEC0（caller092C0）的实际输入和返回
+Character ID/fallback身份。字段仍是proposed观测合同，不是当前capability或新API；
+defaultOFF、不额外调用谓词。原OR口09580/09780仍按096A8/096B7绑定。
+R197实际OR仍unknown，physical positive仍false；static不抵扣实机/视频/性能验收。

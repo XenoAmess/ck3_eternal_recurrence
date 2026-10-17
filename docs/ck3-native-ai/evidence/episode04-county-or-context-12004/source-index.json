@@ -1,0 +1,96 @@
+{
+  "schema": "xar.e04.r04.context-canonical-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "adopted_at_utc": "2026-10-17T11:16:47.817728+00:00",
+  "exact_source_archive": {
+    "path": "R04-CONTEXT-SOURCE.exact-a01.tar.gz",
+    "bytes": 23333,
+    "sha256": "eed54592ed7342ee779258507430c758e994edb21057f5fedcd498480fec98f7"
+  },
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "functions": {
+    "2C09360": {
+      "runtime_function": [
+        "0x2c09360",
+        "0x2c09410",
+        "0x5109d50"
+      ],
+      "instruction_count": 54,
+      "body": {
+        "member": "source-2C09360.bin",
+        "bytes": 176,
+        "sha256": "47b0419055f17db5503e57403ddddf43817cf3e04be129b7ce142dbf566e5634"
+      },
+      "unwind": {
+        "member": "source-2C09360.unwind.bin",
+        "bytes": 12,
+        "sha256": "39455c244cd3d4de53471a0adec96067c74300ddc0ba6db9733fe8f8e3a9ffc4"
+      },
+      "asm": {
+        "member": "source-2C09360.asm",
+        "bytes": 3682,
+        "sha256": "e8ba806c2c7a2cba7b518a041f4834b8e2d5d2986e07f4c44ff94afaa3c50046"
+      }
+    },
+    "2C0FEC0": {
+      "runtime_function": [
+        "0x2c0fec0",
+        "0x2c1001b",
+        "0x510aaf0"
+      ],
+      "instruction_count": 94,
+      "body": {
+        "member": "source-2C0FEC0.bin",
+        "bytes": 347,
+        "sha256": "b58769fda13d6f864c4a8d13f48468cb1ec212ea1020ce2b5121e46905748922"
+      },
+      "unwind": {
+        "member": "source-2C0FEC0.unwind.bin",
+        "bytes": 20,
+        "sha256": "35e41fcc6b8100dd284d13835e6d72cd48d074c71457aaf53548eb6627b5e251"
+      },
+      "asm": {
+        "member": "source-2C0FEC0.asm",
+        "bytes": 6467,
+        "sha256": "60e57ea8d088b5f2a51bf0d548bd8bc075d440eede47487460579c11962a6947"
+      }
+    }
+  },
+  "read_accounting": {
+    "code_bytes": 523,
+    "metadata_including32B_unwind": 332,
+    "total_EXE_bytes": 855,
+    "reads": 31,
+    "code_limit": 2048,
+    "metadata_limit": 512,
+    "functions_read": 2,
+    "callee_bodies_followed": 0
+  },
+  "ledger_member": "RAW-READ-LEDGER.actual-a01.json",
+  "identity_member": "CURRENT-IDENTITY-METADATA.actual-a01.json",
+  "detailed_tree_member": "NATIVE-TREE.generated-a03.md",
+  "original_checked_plan_member": {
+    "member": "RESEARCH-PLAN.static-closed-a03.json",
+    "bytes": 6358,
+    "sha256": "941ca636c93ab568a0dd9739eef1475093757319e2294e4f2a55c3caacd5a45c"
+  },
+  "portable_plan": "research-plan.portable.json",
+  "body_unknowns_closed_by_this_increment": [
+    "2C09360",
+    "2C0FEC0"
+  ],
+  "new_scope_unknown": "28BFC50 seed getter body not read; adopted immediate_liege name is not independent proof",
+  "prior_unknowns_unchanged": [
+    "2494B40",
+    "2911DD0",
+    "29131C0",
+    "2C458C0",
+    "2C4BD20",
+    "2C10020"
+  ],
+  "R197_actual_OR": "unknown",
+  "R04_physical_positive": false,
+  "new_runtime_PID_run_qualification": null,
+  "original_absolute_paths": "Historical source-machine provenance; portable access uses relative archive members",
+  "new_check_render_run": false
+}

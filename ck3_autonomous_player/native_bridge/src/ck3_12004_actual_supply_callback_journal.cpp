@@ -1,5 +1,7 @@
 #include "xar_bridge/ck3_12004_actual_supply_callback_journal.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12002_province.hpp"
 #include "xar_bridge/ck3_12004_supply_parent_join_context.hpp"
 
 #include <cstring>
@@ -26,6 +28,8 @@ std::mutex g_journal_mutex;
 std::uint64_t g_latest_sequence = 0;
 std::uint64_t g_unattributed_failures = 0;
 ActualSupplyCallbackJournalBindingsV1 g_bindings{};
+ck3_12002::ArmyBindings g_identity_bindings{};
+ck3_12002::ProvinceBindings g_province_bindings{};
 std::atomic<bool> g_available{false};
 std::atomic<ActualSupplyCallbackOriginalV1> g_original{nullptr};
 std::atomic<ActualSupplyCallbackJournalDetourStateV1 *> g_active_state{nullptr};
@@ -58,17 +62,33 @@ bool ReadAt(const void *object, std::size_t offset, Value &output) noexcept {
 struct ArmyIdentity {
   std::int32_t army_id = -1;
   std::int32_t native_carmy_id = -1;
+  const void *unit = nullptr;
 };
 
 bool CaptureIdentity(const void *army, ArmyIdentity &identity) noexcept {
   const bool native_read = ReadAt(army, 0x10, identity.native_carmy_id);
   const bool public_read = ReadAt(army, 0x124, identity.army_id);
-  return native_read && public_read && identity.native_carmy_id != -1 &&
-      identity.army_id != -1;
+  const bool complete = native_read && public_read &&
+      identity.native_carmy_id != -1 && identity.army_id != -1;
+  if (complete && g_identity_bindings.enabled) {
+    (void)FaultBoundary([&]() noexcept {
+      const auto *unit = ck3_12002::ResolveArmyUnit(
+          g_identity_bindings, identity.army_id);
+      if (unit == nullptr || ck3_12002::ResolveInternalArmy(
+              g_identity_bindings, identity.native_carmy_id) != army) return false;
+      std::int32_t native_id = -1;
+      if (!ReadAt(unit, 0x178, native_id) ||
+          native_id != identity.native_carmy_id) return false;
+      identity.unit = unit;
+      return true;
+    });
+  }
+  // Province resolution does not change the existing stock/identity contract.
+  return complete;
 }
 
 // Keep individually readable values even when another scalar cannot be read.
-bool CaptureValues(const void *army,
+bool CaptureValues(const void *army, const ArmyIdentity &identity,
                    game::ArmyActualSupplyCallbackValuesV1 &values) noexcept {
   std::int64_t stock = 0;
   std::uint64_t date = 0;
@@ -79,6 +99,18 @@ bool CaptureValues(const void *army,
   if (stock_read) values.supply_raw = stock;
   if (date_read) values.last_supply_update_date_raw64 = date;
   if (updated_read) values.supply_updated_byte_raw = updated;
+  if (identity.unit != nullptr && g_province_bindings.enabled) {
+    (void)FaultBoundary([&]() noexcept {
+      const void *province = nullptr;
+      std::int32_t province_id = -1;
+      if (!ReadAt(identity.unit, 0x20, province) ||
+          !ReadAt(province, 0x10, province_id) || province_id <= 0 ||
+          ck3_12002::ResolveObjectiveProvince(g_province_bindings, province_id) !=
+              province) return false;
+      values.province_id = province_id;
+      return true;
+    });
+  }
   return stock_read && date_read && updated_read;
 }
 
@@ -89,6 +121,14 @@ bool InitializeRuntime(const ActualSupplyCallbackJournalBindingsV1 &bindings,
   {
     const std::lock_guard lock(g_journal_mutex);
     g_bindings = bindings;
+    g_identity_bindings = {};
+    g_identity_bindings.enabled = bindings.unit_storage_slot != nullptr &&
+        bindings.internal_army_storage_slot != nullptr;
+    g_identity_bindings.unit_storage_slot = bindings.unit_storage_slot;
+    g_identity_bindings.internal_army_storage_slot = bindings.internal_army_storage_slot;
+    g_province_bindings = {};
+    g_province_bindings.enabled = bindings.game_state_slot != nullptr;
+    g_province_bindings.game_state_slot = bindings.game_state_slot;
     g_latest_sequence = 0;
     g_unattributed_failures = 0;
     for (auto &slot : g_slots) slot = {};
@@ -187,6 +227,10 @@ ActualSupplyCallbackJournalBindingsV1 BindActualSupplyCallbackJournalImage12004(
   if (image_base == 0 || executable_sha256 != kExecutableSha256) return result;
   result.enabled = true;
   result.image_base = image_base;
+  // Same exact-.4 slots already bound by ck3_12004_army.cpp.
+  result.game_state_slot = reinterpret_cast<void **>(image_base + kGameStateSlotRva);
+  result.unit_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1E380);
+  result.internal_army_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1DE48);
   return result;
 }
 
@@ -345,7 +389,7 @@ extern "C" void __fastcall XarActualSupplyCallbackHook12004V1(
   const bool before_identity_complete = CaptureIdentity(army, before);
   event.army_id = before.army_id;
   event.native_carmy_id = before.native_carmy_id;
-  const bool before_values_complete = CaptureValues(army, event.before);
+  const bool before_values_complete = CaptureValues(army, before, event.before);
   if (!before_identity_complete || !before_values_complete)
     event.capture_failure_flags |= actual_supply_callback_capture_before;
 
@@ -364,7 +408,7 @@ extern "C" void __fastcall XarActualSupplyCallbackHook12004V1(
 
   ArmyIdentity after{};
   const bool after_identity_complete = CaptureIdentity(army, after);
-  const bool after_values_complete = CaptureValues(army, event.after);
+  const bool after_values_complete = CaptureValues(army, after, event.after);
   event.same_instance_after = before_identity_complete && after_identity_complete &&
       before.army_id == after.army_id &&
       before.native_carmy_id == after.native_carmy_id;

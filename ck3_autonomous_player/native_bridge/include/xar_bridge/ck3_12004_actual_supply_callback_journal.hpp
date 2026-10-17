@@ -33,7 +33,11 @@ using ActualSupplyCallbackFlushV1 = bool (*)(void *context, const void *address,
 struct ActualSupplyCallbackJournalBindingsV1 {
   bool enabled = false;
   std::uintptr_t image_base = 0;
-  // Fixture readers only read a declared local Army/date object, never a world.
+  // Optional read-only identity slots. Null keeps event Province unknown.
+  void **game_state_slot = nullptr;
+  void **unit_storage_slot = nullptr;
+  void **internal_army_storage_slot = nullptr;
+  // Fixture readers only read declared owned fixture objects.
   void *read_context = nullptr;
   ActualSupplyCallbackReadMemoryV1 read_memory = nullptr;
 };

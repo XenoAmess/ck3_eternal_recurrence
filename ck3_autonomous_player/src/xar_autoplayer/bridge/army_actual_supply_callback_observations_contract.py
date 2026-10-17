@@ -44,8 +44,9 @@ def _boolean(value: object, name: str) -> bool:
 
 
 def _values(value: object, name: str) -> dict[str, int | None]:
-    row = _object(value, _VALUE_KEYS, name)
-    return {
+    keys = _VALUE_KEYS | ({"province_id"} if isinstance(value, dict) and "province_id" in value else set())
+    row = _object(value, keys, name)
+    result = {
         "supply_raw": _integer(row["supply_raw"], name + ".supply_raw",
                                bits=64, optional=True),
         "last_supply_update_date_raw64": _integer(
@@ -56,6 +57,9 @@ def _values(value: object, name: str) -> dict[str, int | None]:
             row["supply_updated_byte_raw"], name + ".supply_updated_byte_raw",
             bits=8, unsigned=True, optional=True),
     }
+    if "province_id" in row:
+        result["province_id"] = _integer(row["province_id"], name + ".province_id", optional=True)
+    return result
 
 
 def normalize_actual_supply_callback_observations_v1(

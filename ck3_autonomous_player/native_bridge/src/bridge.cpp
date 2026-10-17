@@ -13930,11 +13930,33 @@ std::string RunArmyCommanderAssignment12003(
     return CommandResultFrame(request_id, step, false,
         "army-commander assignment is malformed or unsupported");
   }
-  if (action.envelope.expected_snapshot_revision != state.state_revision ||
-      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
-      !xar::game::ReadSnapshot(game, action.envelope.expected_snapshot) ||
-      action.envelope.expected_snapshot != *state.previous_snapshot) {
-    return CommandResultFrame(request_id, step, false, "state_changed");
+  // Diagnostic only: preserve the original one-read, short-circuit guard.
+  const bool revision_matches = action.envelope.expected_snapshot_revision == state.state_revision;
+  const bool worker_ready = state.state_revision != 0;
+  const bool previous_present = state.previous_snapshot.has_value();
+  const bool observed_read = revision_matches && worker_ready && previous_present &&
+      xar::game::ReadSnapshot(game, action.envelope.expected_snapshot);
+  const bool observed_equal = observed_read && action.envelope.expected_snapshot == *state.previous_snapshot;
+  if (!observed_equal) {
+    auto response = CommandResultFrame(request_id, step, false, "state_changed");
+    const auto failed = !revision_matches ? "revision_matches"
+        : !worker_ready ? "worker_ready" : !previous_present ? "previous_present"
+        : !observed_read ? "observed_read" : "observed_equal";
+    std::string diagnostic = ",\"army_commander_predispatch_failure_v1\":{\"dispatch_submitted\":false,\"first_failed\":";
+    AppendJsonString(diagnostic, failed);
+    diagnostic += ",\"request_native_revision\":" + Number(action.envelope.expected_snapshot_revision);
+    diagnostic += ",\"worker_native_revision\":" + Number(state.state_revision);
+    diagnostic += ",\"read_attempted\":";
+    diagnostic += revision_matches && worker_ready && previous_present ? "true" : "false";
+    diagnostic += ",\"observed_read\":";
+    diagnostic += observed_read ? "true" : "false";
+    diagnostic += ",\"observed_equal\":";
+    diagnostic += observed_equal ? "true" : "false";
+    diagnostic += '}';
+    if (response.size() + diagnostic.size() <= 4096) {
+      response.pop_back(); response += diagnostic; response += '}';
+    }
+    return response;
   }
   const auto &snapshot = action.envelope.expected_snapshot;
   if (!snapshot.paused) {

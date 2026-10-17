@@ -43,6 +43,8 @@ def summarize_actual_supply_callback_observations_v1(
             "passed_date_raw64": event["passed_date_raw64"],
             "caller_return_rva": event["caller_return_rva"],
             "supply_before_raw": stock_before, "supply_after_raw": stock_after,
+            **({"province_before_id": before["province_id"]} if "province_id" in before else {}),
+            **({"province_after_id": after["province_id"]} if "province_id" in after else {}),
             "supply_delta_raw": delta,
             "supply_drain_raw": max(-delta, 0) if measured else None,
             "last_supply_update_date_before_raw64": before["last_supply_update_date_raw64"],

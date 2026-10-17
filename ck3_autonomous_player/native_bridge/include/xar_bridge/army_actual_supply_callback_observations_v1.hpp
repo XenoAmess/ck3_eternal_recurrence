@@ -17,6 +17,7 @@ struct ArmyActualSupplyCallbackValuesV1 {
   std::optional<std::int64_t> supply_raw;
   std::optional<std::uint64_t> last_supply_update_date_raw64;
   std::optional<std::uint8_t> supply_updated_byte_raw;
+  std::optional<std::int32_t> province_id;
 };
 
 struct ArmyActualSupplyCallbackObservationV1 {
@@ -62,6 +63,8 @@ inline void Values(std::string &output,
   OptionalNumber(output, value.last_supply_update_date_raw64);
   output += ",\"supply_updated_byte_raw\":";
   OptionalNumber(output, value.supply_updated_byte_raw);
+  output += ",\"province_id\":";
+  OptionalNumber(output, value.province_id);
   output += '}';
 }
 } // namespace army_actual_supply_callback_json_v1

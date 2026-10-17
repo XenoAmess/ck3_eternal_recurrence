@@ -1,0 +1,177 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "topic": "actual4-context-predicate-and-selector-source-closed",
+  "question": "How do09360(context,A) and0FEC0(A,context) derive/filter/return the candidate used by09280?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Static exact-build source only; no PID/run/native owner or game use",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Original A/B/F identities belong to their natural call/P TLS; frozen bytes persist only for this exact build",
+    "producer_trigger": "not-applicable",
+    "producer": "Metadata-bound read of named09360 and0FEC0 only, same frozen file/cached PE mapping; no new callee follows",
+    "caller": "09280 initializes context qwords B,F then09360(RCX=&ctx,RDX=A); false calls0FEC0(RCX=A,RDX=&samectx), R8 not reloaded",
+    "consumer": "09280 selects originalA or returnedCharacter then validates Character and pair gate; downstream firstOR AL still unobserved",
+    "cache_lifetime": "No live cache produced; future data must expire with actual original parent invocation",
+    "expected_signal": "Actual full176B and347B bodies held, no context stores in either; exact native field reads and return forms are confirmed, lower side effects not generalized as pure",
+    "zero_sample_meaning": "No runtime samples collected; neither no candidates nor R197 ORfalse nor physical county-loss positive follows",
+    "stop_condition": "Metadata first. At most09360 and0FEC0; code<=2048B, metadata+unwind<=512B total. If combined spans exceed code budget read only09360; any next unknown callee stays unexpanded. No fullhash/header/installed/main/SDK/desktop/build",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "caller",
+      "layer": "source-contract",
+      "path": "../episode04-county-or-directions-12004/FIRST-DIRECTION-CONTRACT.proposed-a01.json",
+      "sha256": "529359cb0c8bef1cfa56481d8ef056eba77403c1e8d2a9d64e7c2efe76e41570",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Complete09280 caller contract pins stack context initialization, original input ABI and candidate return consumption"
+    },
+    {
+      "id": "predicate-source",
+      "layer": "source-contract",
+      "path": "CONTEXT-PREDICATE-CONTRACT.proposed-a01.json",
+      "sha256": "d4bb5c672e0c8318ae7d357cd0d51bb1f5d6631f26bbb9033bcbfabd5c7423be",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Complete newly held exact body and ABI/field/branch/return contract independently reviewed without following callees"
+    },
+    {
+      "id": "selector-source",
+      "layer": "source-contract",
+      "path": "CONTEXT-SELECTOR-CONTRACT.proposed-a01.json",
+      "sha256": "00a900509b64692d57da06076f231044777ef47761586ab0010832c9c327bb06",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Complete newly held exact body and ABI/field/branch/return contract independently reviewed without following callees"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "caller",
+      "label": "09280 initializes stack context"
+    },
+    {
+      "id": "predicate",
+      "label": "09360 context predicate unknown"
+    },
+    {
+      "id": "selector",
+      "label": "0FEC0 candidate selector unknown"
+    },
+    {
+      "id": "candidate",
+      "label": "Selected native Character consumed by09280"
+    },
+    {
+      "id": "seed",
+      "label": "28BFC50 seed getter body not read"
+    },
+    {
+      "id": "lowerM",
+      "label": "2494B40 remains opaque inside heldD0"
+    }
+  ],
+  "edges": [
+    {
+      "id": "pred-call",
+      "from": "caller",
+      "to": "predicate",
+      "label": "context address and A; original AL",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "select-call",
+      "from": "caller",
+      "to": "selector",
+      "label": "A and same context address; returnedRAX",
+      "status": "static-confirmed",
+      "evidence": [
+        "caller"
+      ]
+    },
+    {
+      "id": "pred-body",
+      "from": "predicate",
+      "to": "candidate",
+      "label": "Context B/F rereads, sameID orD0 true, otherwise pair gate AL",
+      "status": "static-confirmed",
+      "evidence": [
+        "predicate-source"
+      ]
+    },
+    {
+      "id": "select-body",
+      "from": "selector",
+      "to": "candidate",
+      "label": "Seed then upward candidates, test current after next computed, full pointer return or fallback",
+      "status": "static-confirmed",
+      "evidence": [
+        "selector-source"
+      ]
+    },
+    {
+      "id": "seed-body-unknown",
+      "from": "selector",
+      "to": "seed",
+      "label": "First candidate is original28BFC50(A) return",
+      "status": "unknown",
+      "evidence": [
+        "selector-source"
+      ],
+      "open_question": "Current round does not read seed getter body; adopted immediate_liege name alone is not independent source proof"
+    },
+    {
+      "id": "M-still-unknown",
+      "from": "predicate",
+      "to": "lowerM",
+      "label": "HeldD0 uses2494B40 descriptor predicate",
+      "status": "unknown",
+      "evidence": [
+        "predicate-source"
+      ],
+      "open_question": "This prior lower helper remains unexpanded; do not invent enemy/attacker/defender labels"
+    }
+  ],
+  "cases": [
+    {
+      "id": "static-source",
+      "question": "Native candidate/filters/return source",
+      "status": "not-applicable",
+      "evidence": [
+        "predicate-source",
+        "selector-source"
+      ],
+      "reason": "Source-confirmed graph only; no natural calls or live values observed"
+    },
+    {
+      "id": "R197-actual",
+      "question": "R197 actual OR / physical positive",
+      "status": "not-applicable",
+      "reason": "Offline source only, no actual call or writer observation",
+      "evidence": [
+        "caller"
+      ]
+    }
+  ],
+  "portable_adoption": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "adopted_at_utc": "2026-10-17T11:16:47.817684+00:00",
+    "original_checked_plan": {
+      "archive": "R04-CONTEXT-SOURCE.exact-a01.tar.gz",
+      "member": "RESEARCH-PLAN.static-closed-a03.json",
+      "bytes": 6358,
+      "sha256": "941ca636c93ab568a0dd9739eef1475093757319e2294e4f2a55c3caacd5a45c"
+    },
+    "changes": "Evidence source locations/pin only; original complete plan/check/render retained exact in archive",
+    "new_check_render_executed": false,
+    "for_observation_or_runtime_qualification": false
+  }
+}
