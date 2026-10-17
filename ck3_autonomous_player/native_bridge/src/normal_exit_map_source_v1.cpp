@@ -131,6 +131,65 @@ bool FileRecord(const Node &node, const fs::path &expected, std::string *content
   if(content) *content=std::move(bytes);
   return true;
 }
+bool AllocatedRunningSettingsRecord(const Node &settings, const fs::path &userdir,
+    std::string_view profile_sha) {
+  // Preserve the legacy/prelaunch exact-byte path. A changed output is admitted
+  // only through this allocation's authenticated original immutable snapshot.
+  if(FileRecord(settings,userdir/L"pdx_settings.txt")) return true;
+  const auto *settings_path=Field(settings,"path",Node::string);
+  const auto *settings_size=Field(settings,"bytes",Node::number);
+  const auto *settings_hash=Field(settings,"sha256",Node::string);
+  if(!settings_path || !settings_size || !settings_hash || !Hex(settings_hash->text) ||
+      !SamePath(Path(*settings_path),userdir/L"pdx_settings.txt")) return false;
+  std::string projection_bytes,actual;
+  if(!ReadFile(userdir/L"normal-exit-profile-binding-projection-v1.json",projection_bytes,1048576) ||
+      !NormalExitMapSha256V1(projection_bytes,actual) || actual!=profile_sha) return false;
+  Node projection;
+  if(!InventoryParser(projection_bytes).Parse(projection)) return false;
+  const auto *declared_userdir=Field(projection,"userdir",Node::string);
+  const auto *state=Field(projection,"state_directory",Node::string);
+  const auto *evidence=Field(projection,"evidence_directory",Node::string);
+  if(!declared_userdir || !state || !evidence || !SamePath(Path(*declared_userdir),userdir) ||
+      !SamePath(Path(*state)/L"profile",userdir)) return false;
+  const auto live=Path(*evidence);
+  if(live.empty() || !live.is_absolute() || !Plain(live)) return false;
+  std::string ready_bytes,frozen_bytes;
+  if(!ReadFile(live/L"ready-context.json",ready_bytes,1048576)) return false;
+  Node ready,frozen;
+  if(!InventoryParser(ready_bytes).Parse(ready)) return false;
+  const auto *frozen_ref=Field(ready,"frozen_argv",Node::object);
+  const auto *ready_run=Field(ready,"run_id",Node::string);
+  const auto *ready_directory=Field(ready,"run_dir",Node::string);
+  if(!frozen_ref || !ready_run || !ready_directory || !SamePath(Path(*ready_directory),live) ||
+      !FileRecord(*frozen_ref,live/L"frozen-argv.json",&frozen_bytes) ||
+      !InventoryParser(frozen_bytes).Parse(frozen)) return false;
+  const auto *run=Field(frozen,"run_id",Node::string);
+  const auto *frozen_state=Field(frozen,"state_dir",Node::string);
+  const auto *files=Field(frozen,"files",Node::object);
+  if(!run || !frozen_state || !files || run->text!=ready_run->text ||
+      Wide(run->text)!=live.filename().native() || !SamePath(Path(*frozen_state),Path(*state))) return false;
+  const auto snapshot=live/L"input-snapshots"/L"profile"/L"pdx_settings.txt";
+  const Node *original=nullptr,*saved=nullptr;
+  for(const auto &[name,row]:files->fields) {
+    Node key; key.kind=Node::string; key.text=name;
+    if(SamePath(Path(key),userdir/L"pdx_settings.txt")) {
+      if(original) return false; original=&row;
+    }
+    if(SamePath(Path(key),snapshot)) {
+      if(saved) return false; saved=&row;
+    }
+  }
+  if(!original || !saved) return false;
+  for(const auto *row:{original,saved}) {
+    const auto *size=Field(*row,"bytes",Node::number),*hash=Field(*row,"sha256",Node::string);
+    if(!size || !hash || size->integer!=settings_size->integer || hash->text!=settings_hash->text) return false;
+  }
+  std::string original_bytes,current_output;
+  return ReadFile(snapshot,original_bytes,128U*1024U*1024U) &&
+      original_bytes.size()==settings_size->integer && NormalExitMapSha256V1(original_bytes,actual) &&
+      actual==settings_hash->text && ReadFile(userdir/L"pdx_settings.txt",current_output,128U*1024U*1024U);
+}
+
 bool Relative(std::string_view text, fs::path &path) {
   path=fs::path(Wide(text));
   if(path.empty() || path.is_absolute() || path.has_root_name() || path.has_root_directory()) return false;
@@ -389,7 +448,7 @@ bool VerifyNormalExitMapInventoryForContextV1(std::string_view expected_sha,
         !NormalExitMapSourceExecutableAdmittedV1(descriptor,image_hash->text))
       return reject("source_inventory_executable_binding_changed");
     std::string dlc_bytes;
-    if(!FileRecord(*settings,userdir/L"pdx_settings.txt") || !FileRecord(*dlc,userdir/L"dlc_load.json",&dlc_bytes))
+    if(!AllocatedRunningSettingsRecord(*settings,userdir,profile->text) || !FileRecord(*dlc,userdir/L"dlc_load.json",&dlc_bytes))
       return reject("actual_launch_settings_or_dlc_load_changed");
     Node actual_dlc;
     if(!InventoryParser(dlc_bytes).Parse(actual_dlc)) return reject("actual_dlc_load_invalid");
@@ -456,7 +515,7 @@ bool VerifyNormalExitMapInventoryForContextV1(std::string_view expected_sha,
     // Re-read the manifest and launch configuration after the full census.
     std::string final_bytes;
     if(!ReadFile(manifest_path,final_bytes,16U*1024U*1024U) || final_bytes!=bytes ||
-        !FileRecord(*settings,userdir/L"pdx_settings.txt") || !FileRecord(*dlc,userdir/L"dlc_load.json"))
+        !AllocatedRunningSettingsRecord(*settings,userdir,profile->text) || !FileRecord(*dlc,userdir/L"dlc_load.json"))
       return reject("source_inventory_changed_during_validation");
     stock_verified=true; reason.clear(); return true;
   } catch(...) { try { reason="source_inventory_validation_exception"; } catch(...) {} return false; }

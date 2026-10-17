@@ -14,7 +14,7 @@ python -B -X utf8 tests/test_mod_acceptance_running_inputs.py
 
 统一实现位于 `xar_autoplayer.bridge.runtime_input_contract_v1`，public helper 是显式 pin 后加载的薄入口。normal-exit inventory verifier 默认仍为 `input_phase="launch"`；实际 driver 仅在 managed profile 的 evidence directory 已有 allocated ready/frozen context 时使用 running，否则保留历史专用 profile 的严格验证。running 分支先核 ready 的原 frozen SHA/run ID/state/userdir，核 inventory.settings_file 与原冻结设置 pin 相同，再共用全部不可变输入与快照检查；当前设置仅作输出观察。inventory schema、原 inventory SHA 与 native wire 不变。
 
-这份 Python 修复不代替 native verifier 的对应修复与新 DLL 实机验收。原 native `normal_exit_map_source_v1.cpp` 也会重核当前设置字节，必须按同一 allocated snapshot 合同更新；旧进程的失败/Jobkill/exit1 保持 RED。
+native verifier 的 `normal_exit_map_source_v1.cpp` 两处设置复验也已采用同一分类。当前文件仍与原 pin 一致时沿用既有严格路径；发生变化时，只接受当前 profile 的既有 projection SHA、ready/frozen 原始 pin、同 run/state/userdir 及精确设置快照共同证明的运行期输出。它不改 inventory/wire，不豁免 DLC、mod 或原快照，当前设置仍须实际可读。该源码修复与新 DLL 的离线及实机资格分别记录；源码存在不能代替正常退出结果，旧进程的失败/Jobkill/exit1 保持 RED。
 
 ```text
 python -B -X utf8 tests/test_normal_exit_running_inputs.py
