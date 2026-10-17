@@ -1,0 +1,64 @@
+{
+  "scope": "P44 completed FULL109 through FULL355; cumulative turns 4198 through 4347; no active batch, Driver, SAVE, or media body read",
+  "measurement": {
+    "source": "P44-SETTLED-4198-4347.json",
+    "first_metrics_start_utc": "2026-10-17T13:56:44.829752+00:00",
+    "first_auto_start_utc": "2026-10-17T13:56:47.595925+00:00",
+    "last_metrics_end_utc": "2026-10-17T14:05:03.594129+00:00",
+    "game_days": 77,
+    "turns": 150,
+    "zero_date_turns": 121,
+    "met_to_met_wall_seconds": 498.764377,
+    "met_to_met_seconds_per_day": 6.477459441558442,
+    "first_auto_to_last_met_wall_seconds": 495.998204,
+    "first_auto_to_last_met_seconds_per_day": 6.4415351168831165,
+    "rpc_count": 308,
+    "timed_rpc_count": 303,
+    "untimed_full_controls": 5,
+    "auto_elapsed_seconds": 404.7018890006002,
+    "save_elapsed_seconds": 28.184745599981397,
+    "metrics_elapsed_seconds": 5.192598700290546,
+    "unattributed_gap_seconds": 60.677251,
+    "checkpoint_save_rpcs": 1,
+    "categories": {
+      "army_strength_query": {"turns": 37, "game_days": 0, "auto_seconds": 65.58546020020731},
+      "war_termination_query": {"turns": 18, "game_days": 0, "auto_seconds": 22.699400200042874},
+      "route_contact_advance": {"turns": 21, "game_days": 56, "auto_seconds": 160.00179730006494},
+      "war_objective_hold": {"turns": 3, "game_days": 16, "auto_seconds": 15.16367830010131},
+      "move_army": {"turns": 7, "game_days": 0, "auto_seconds": 98.22983400011435}
+    }
+  },
+  "war_termination_cadence": {
+    "wars": [100663323, 134217793],
+    "actual_negative_queries": "AUTO10/12 date53293416; AUTO20/22 date53293584; event query/select AUTO30/32 resets the safety streak; AUTO34/36 date53293728 and AUTO47/49 date53293896 establish a new two-date streak",
+    "actual_defer": "AUTO59 plan carries policy_deferred_after_two_no_action_queries for both WarIDs, expiry53294616, fresh_native_result=false, native_legality=null, business_action_credit=0",
+    "actual_expiry": "AUTO81/83 both requery at date53294616",
+    "conclusion": "The per-war policy defer works; early repeated queries are explained by the event priority barrier, not a missing cooldown."
+  },
+  "sampled_stage_timing": {
+    "source": "ordinary-stage-timings.jsonl fixed 12MiB tail read at file size36007990; scalar rows filtered to already completed AUTO intervals; nested stages are not additive",
+    "AUTO276_move_8755": {"auto_seconds": 18.489972099894658, "plan_commander_quality_seconds": 7.6096439, "full_state_temp_write_seconds": 1.61468, "commander_proposal": "keep_current"},
+    "AUTO347_move_8755": {"auto_seconds": 19.258530700113624, "plan_commander_quality_seconds": 7.6582695, "full_state_temp_write_seconds": 4.1719, "commander_proposal": "keep_current"},
+    "AUTO213_route_plus3days": {"auto_seconds": 16.276767199859023, "life_advance_postcondition_wait_seconds": 3.368397, "full_state_temp_write_seconds": 12.6399087},
+    "AUTO404_route_plus2days": {"auto_seconds": 10.031626300187781, "life_advance_postcondition_wait_seconds": 1.989686, "full_state_temp_write_seconds": 7.7350165}
+  },
+  "army_private_scalar_ab": {
+    "native25_capability_advertised": true,
+    "p44_set_or_compare_request_seen": false,
+    "default_mode": "off",
+    "actual_army_profile": "ordinary_core_v1; MET query_sequence628–631; 18.3–18.4MB raw native write each",
+    "required_before_use": "current paused-map source, same PID/connection/actor/episode, set(compare), same-frame rich/private exact equality of full army_strengths/status/snapshot/public/native/date/connection/episode, then explicit set(use) with fresh expected revision",
+    "older_game_certificate_transferable": false
+  },
+  "commander_optional_negative_defer": {
+    "actual": "AUTO207/276/347 Native proposals keep_current for army167772577, current commander31254, best candidate35598 quality23 versus current27; each later query around7.6s",
+    "not_currently_qualified": "Neither semantic player_armies nor ArmyStrengthSnapshot/ordinary scalar serializes current commander ID. Current commander changes cannot be detected promptly by a pure SDK cooldown without another native query.",
+    "safe_next_implementation": "Native cold addition of a current-commander scalar to the same-frame army scope, then a per-army two-date keep_current policy defer expiring after30days and invalidated by actor/episode/connection/army/current commander or tactical priority changes. Until then retain current query behavior."
+  },
+  "limits": [
+    "Only 77 complete game days after the first FULL46 were available before the later P44 incident; this is a wartime segment, not a campaign mean.",
+    "AUTO category seconds, nested stage timing, RPC busy union, SAVE time, and wall time must not be added together.",
+    "A policy defer is not a fresh native result, native legality decision, or business action credit.",
+    "P44 live source, Game, OBS, Driver state, and SAVE were not modified or read."
+  ]
+}

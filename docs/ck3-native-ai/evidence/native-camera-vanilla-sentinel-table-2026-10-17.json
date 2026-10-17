@@ -1,0 +1,37 @@
+{
+  "source": {
+    "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\graphic\\00_graphics.txt",
+    "sha256": "be6151329a44e4c59242f432cd759146aaa6103a1f38368876e2e2749c60d526",
+    "bytes": 62470
+  },
+  "arrays": {
+    "TITLE_ZOOM_LEVEL_EXTENTS": {
+      "values": [
+        1000,
+        800,
+        600,
+        400,
+        300,
+        200,
+        100,
+        -1
+      ],
+      "source_line": 189
+    },
+    "TITLE_ZOOM_LEVEL_BY_EXTENT": {
+      "values": [
+        20,
+        15,
+        13,
+        11,
+        9,
+        7,
+        5,
+        4,
+        3
+      ],
+      "source_line": 188
+    }
+  },
+  "catalogue_is_not_a_live_memory_read": true
+}

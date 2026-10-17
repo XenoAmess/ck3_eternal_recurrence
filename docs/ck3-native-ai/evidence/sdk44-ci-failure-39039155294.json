@@ -1,0 +1,62 @@
+{
+  "schema": "xar.sdk44-original-ci-red/v1",
+  "source_receipt": "N/p44-publication01/CI-FINAL.json",
+  "source_sha256": "b9ce1e57a8eb75ad4224f0e435bcdda1bfcd853be47ae82147e9e9747fc8b479",
+  "commit": "44ffae7ceb736f8af289c595d57b2a12d858a2eb",
+  "ci": [
+    {
+      "name": "Official",
+      "run_id": "39039155294",
+      "status": "completed",
+      "conclusion": "failure",
+      "headSha": "44ffae7ceb736f8af289c595d57b2a12d858a2eb",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39039155294",
+      "createdAt": "2026-10-17T14:03:52Z",
+      "updatedAt": "2026-10-17T14:20:13Z",
+      "raw_query_sha256": "88d5b7dd4b25e84c9d444b0e4e5b1255244431eb844b1d2ea3574b7ecc90a3cf",
+      "jobs": [
+        {
+          "name": "static",
+          "conclusion": "failure",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39039155294/job/117414924915",
+          "steps_success": 56,
+          "steps_skipped": 51,
+          "failed_steps": [
+            "Test shared CK3 acceptance without installed CK3"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Linear",
+      "run_id": "39039155312",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "44ffae7ceb736f8af289c595d57b2a12d858a2eb",
+      "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39039155312",
+      "createdAt": "2026-10-17T14:03:52Z",
+      "updatedAt": "2026-10-17T14:04:37Z",
+      "raw_query_sha256": "82821a887ef986c12a1081f6f11f51d91d282dff0ee0a73dbe44ebe1ca1ad21b",
+      "jobs": [
+        {
+          "name": "No new merge commits",
+          "conclusion": "success",
+          "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39039155312/job/117414924983",
+          "steps_success": 5,
+          "steps_skipped": 0,
+          "failed_steps": []
+        }
+      ]
+    }
+  ],
+  "failure": {
+    "module": "tools/test_ingame_ui_managed_binding.py",
+    "test": "test_current_character_scope_remains_rejected_without_send",
+    "expected": "army query and select only",
+    "actual": "native UI binding mismatch: window_kind",
+    "production_contract_loosened_for_CI": false,
+    "external_corrective_commit": "441938d9600988784ad739343d88a7ea30fc77d8",
+    "local_corrected_tests_passed": 6
+  },
+  "original_failure_preserved": true
+}

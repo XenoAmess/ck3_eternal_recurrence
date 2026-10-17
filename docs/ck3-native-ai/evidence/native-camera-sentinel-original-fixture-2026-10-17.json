@@ -1,0 +1,150 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "GREEN",
+  "production_header_executed": true,
+  "checks": 24,
+  "baseline_red_reproductions": 18,
+  "fixed_native_equivalent_extents": [
+    {
+      "extent": 0,
+      "baseline_bucket": -1,
+      "fixed_bucket": 7,
+      "reviewed_native_bucket": 7,
+      "fixed_zoom_index": 4
+    },
+    {
+      "extent": 1,
+      "baseline_bucket": -1,
+      "fixed_bucket": 7,
+      "reviewed_native_bucket": 7,
+      "fixed_zoom_index": 4
+    },
+    {
+      "extent": 50,
+      "baseline_bucket": -1,
+      "fixed_bucket": 7,
+      "reviewed_native_bucket": 7,
+      "fixed_zoom_index": 4
+    },
+    {
+      "extent": 100,
+      "baseline_bucket": -1,
+      "fixed_bucket": 7,
+      "reviewed_native_bucket": 7,
+      "fixed_zoom_index": 4
+    },
+    {
+      "extent": 101,
+      "baseline_bucket": -1,
+      "fixed_bucket": 6,
+      "reviewed_native_bucket": 6,
+      "fixed_zoom_index": 5
+    },
+    {
+      "extent": 200,
+      "baseline_bucket": -1,
+      "fixed_bucket": 6,
+      "reviewed_native_bucket": 6,
+      "fixed_zoom_index": 5
+    },
+    {
+      "extent": 201,
+      "baseline_bucket": -1,
+      "fixed_bucket": 5,
+      "reviewed_native_bucket": 5,
+      "fixed_zoom_index": 7
+    },
+    {
+      "extent": 300,
+      "baseline_bucket": -1,
+      "fixed_bucket": 5,
+      "reviewed_native_bucket": 5,
+      "fixed_zoom_index": 7
+    },
+    {
+      "extent": 301,
+      "baseline_bucket": -1,
+      "fixed_bucket": 4,
+      "reviewed_native_bucket": 4,
+      "fixed_zoom_index": 9
+    },
+    {
+      "extent": 400,
+      "baseline_bucket": -1,
+      "fixed_bucket": 4,
+      "reviewed_native_bucket": 4,
+      "fixed_zoom_index": 9
+    },
+    {
+      "extent": 401,
+      "baseline_bucket": -1,
+      "fixed_bucket": 3,
+      "reviewed_native_bucket": 3,
+      "fixed_zoom_index": 11
+    },
+    {
+      "extent": 600,
+      "baseline_bucket": -1,
+      "fixed_bucket": 3,
+      "reviewed_native_bucket": 3,
+      "fixed_zoom_index": 11
+    },
+    {
+      "extent": 601,
+      "baseline_bucket": -1,
+      "fixed_bucket": 2,
+      "reviewed_native_bucket": 2,
+      "fixed_zoom_index": 13
+    },
+    {
+      "extent": 800,
+      "baseline_bucket": -1,
+      "fixed_bucket": 2,
+      "reviewed_native_bucket": 2,
+      "fixed_zoom_index": 13
+    },
+    {
+      "extent": 801,
+      "baseline_bucket": -1,
+      "fixed_bucket": 1,
+      "reviewed_native_bucket": 1,
+      "fixed_zoom_index": 15
+    },
+    {
+      "extent": 1000,
+      "baseline_bucket": -1,
+      "fixed_bucket": 1,
+      "reviewed_native_bucket": 1,
+      "fixed_zoom_index": 15
+    },
+    {
+      "extent": 1001,
+      "baseline_bucket": -1,
+      "fixed_bucket": 0,
+      "reviewed_native_bucket": 0,
+      "fixed_zoom_index": 20
+    },
+    {
+      "extent": 100000,
+      "baseline_bucket": -1,
+      "fixed_bucket": 0,
+      "reviewed_native_bucket": 0,
+      "fixed_zoom_index": 20
+    }
+  ],
+  "guard_results": [
+    0,
+    0,
+    0,
+    0,
+    1,
+    1
+  ],
+  "compile": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p44-camera-native-sentinel01\\MSVC-COMPILE.json",
+    "sha256": "48b6da0def33a278a2d4ef97ea13c718e8bd630f4a36ba6c1b624da86d986186",
+    "bytes": 2008
+  },
+  "Game_or_Native25_DLL_loaded_or_called": false,
+  "exact_original_failure_member_observed_live": false
+}

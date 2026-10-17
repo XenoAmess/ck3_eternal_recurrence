@@ -40,7 +40,7 @@ inline bool NativeBucket(std::int32_t extent,
   if (extent < 0 || thresholds.empty() || thresholds.size() > 4096) return false;
   bucket = 0;
   for (std::size_t i = 0; i < thresholds.size(); ++i)
-    if (thresholds[i] < 0 || (i && thresholds[i] > thresholds[i - 1])) return false;
+    if (thresholds[i] < -1 || (i && thresholds[i] > thresholds[i - 1])) return false;
   for (std::size_t i = 0; i < thresholds.size(); ++i)
     if (extent > thresholds[i]) { bucket = i; break; }
   return true;

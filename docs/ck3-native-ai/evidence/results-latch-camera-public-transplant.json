@@ -1,0 +1,89 @@
+{
+  "schema": "xar.results-camera-public-source/v1",
+  "at_utc": "2026-10-17T14:36:23.291822+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_parent": "441938d9600988784ad739343d88a7ea30fc77d8",
+  "initial_transplant_base": "44ffae7ceb736f8af289c595d57b2a12d858a2eb",
+  "source_manifests": [
+    {
+      "path": "N/p44-war-results-close-latch-candidate01/portable/COPYTARGETS.json",
+      "sha256": "bf70da9c4adb7aef107cd46252376460f6b6a5f53ce978feb50ea064b7388282"
+    },
+    {
+      "path": "N/p44-camera-native-sentinel01/DELIVERY.json",
+      "sha256": "8195d903635084a0e3efba8ca46f92c3252edba89e0a68dfc2b0f72a3ec630b9"
+    }
+  ],
+  "public_files": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/realm_camera_geometry_v1.hpp",
+      "bytes": 2180,
+      "raw_sha256": "bf38c223793d44d2904a62fe2903078f37079c9c5562abf9d8bc679536ecc80a",
+      "git_blob": "2d8135a84198806ee632a7f2dfeb7be1f2dec032"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/realm_camera_geometry_v1_test.cpp",
+      "bytes": 2861,
+      "raw_sha256": "261756b40a81282873f5400dec41cb20c199d5bcb631091e0d305c3bd5815228",
+      "git_blob": "0c0aff6a2b5f6a7fc89be5b4e1be321403675678"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_results_window_transport.py",
+      "bytes": 22320,
+      "raw_sha256": "e1a3d7d5ae36ccf2a17055d166742f3fd49b11529bdbd383c7b2b9d5640fd86e",
+      "git_blob": "3d2bde5ea97bc68619db870e95354955ddb85dd5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_war_results_window_v1.py",
+      "bytes": 7485,
+      "raw_sha256": "11a01ea04c09eccbcc0db1b65db1f22bc12c9c08cb525c2ccb09b307bfa8e92e",
+      "git_blob": "7ca226dc9f726d8432a22a81eab491c056cce845"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_results_close_latch_reconciliation.py",
+      "bytes": 10452,
+      "raw_sha256": "7f55068125d67da0a0ee52b95e324776f5fa939df131e9c3af8f1a4d6fd46116",
+      "git_blob": "b86c714b4cc4499f8c94c68220aa5591cd73bae6"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/p41_results_close_query_projection.json",
+      "bytes": 9072,
+      "raw_sha256": "dd9e3a5fa08757454d48647d41f8fd4c775037c87cacc3a3933edf750ba47e72",
+      "git_blob": "bb4e19d2404228bef756f368e5554f86f34626e9"
+    }
+  ],
+  "source_equivalence": {
+    "results_normalized_text_matches_peer": true,
+    "original_callback_pending_predicate_unchanged": true,
+    "Native_header_raw_matches_peer": true,
+    "new_EXE_targets": 0,
+    "existing_target": "xar_ck3_realm_camera_geometry_v1_test"
+  },
+  "tests": {
+    "results_Python_passed": 38,
+    "results_subtests_passed": 6,
+    "new_public_results_methods": 10,
+    "external_UI_correction_passed": 6,
+    "Native_sentinel_new_checks": 24,
+    "public_CPP_old_header_main_return": 8,
+    "public_CPP_fixed_header_main_return": 0,
+    "CMake_or_Game_bridge_not_rebuilt": true
+  },
+  "runtime": {
+    "results_fix_deployed_by_this_packet": false,
+    "camera_fix_deployed": false,
+    "live_Driver_SAVE_media_reads": 0,
+    "Game_SDK_OBS_calls": 0,
+    "old_planned45": "file-only withdrawn never executed",
+    "Window11": "failed143days; Root14:15 handoff, not an ongoing running claim",
+    "move453_replayed": false
+  },
+  "scope": {
+    "first_failure_CI_preserved": true,
+    "G2": "6/8",
+    "stable_thirty_years": false,
+    "sub_one_second": false,
+    "half_second": false,
+    "per_war_policydefer_is_not_Native_legality_or_speedup_proof": true
+  }
+}

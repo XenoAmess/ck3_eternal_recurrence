@@ -86,6 +86,11 @@ def plan_ordinary_war_results_window_v1(
     # A fresh read can remove the UI blocker while an older close remains unconfirmed.
     if presence in ("absent", "hidden"):
         return None
+    if (presence == "visible" and not isinstance(pending, Mapping)
+            and observation.get("close_retry_deferred_for_native_frame") is True):
+        # A fully returned close did not hide it on the next GUI pump.
+        # Keep ordinary work, and do not repeat UI closes on this Native frame.
+        return None
     if (presence == "unknown" and current_attempt
             and attempt.get("status") == "failed"
             and not isinstance(pending, Mapping)):

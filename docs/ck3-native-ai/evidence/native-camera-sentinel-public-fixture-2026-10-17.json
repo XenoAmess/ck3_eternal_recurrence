@@ -1,0 +1,108 @@
+{
+  "schema": "xar.public-camera-native-sentinel-fixture/v1",
+  "at_utc": "2026-10-17T14:30:22.256815+00:00",
+  "status": "PASS",
+  "public_cpp": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\src\\realm_camera_geometry_v1_test.cpp",
+    "sha256": "261756b40a81282873f5400dec41cb20c199d5bcb631091e0d305c3bd5815228",
+    "bytes": 2861
+  },
+  "production_header": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\realm_camera_geometry_v1.hpp",
+    "sha256": "bf38c223793d44d2904a62fe2903078f37079c9c5562abf9d8bc679536ecc80a",
+    "bytes": 2180
+  },
+  "historical_header_from_git": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\baseline-include\\xar_bridge\\realm_camera_geometry_v1.hpp",
+    "sha256": "50bd950871c4fef4b9b9366910684eab43fb8cee1cb15e8e6853a82c394ba20c",
+    "bytes": 2179
+  },
+  "wrapper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\public_camera_fixture.cpp",
+    "sha256": "32919db40f95bcce906936dfc3fe5f592fce6f4bafa995a1f3c914ca067e6592",
+    "bytes": 280
+  },
+  "new_sentinel_checks": 24,
+  "existing_geometry_wire_main_executed": true,
+  "records": [
+    {
+      "variant": "old",
+      "argv": [
+        "C:\\PROGRA~1\\MICROS~2\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MT",
+        "/LD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DUNICODE",
+        "/D_UNICODE",
+        "/ID:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\baseline-include",
+        "/ID:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old.obj",
+        "/FeD:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old-public-camera-fixture.dll",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\public_camera_fixture.cpp",
+        "/link",
+        "/INCREMENTAL:NO",
+        "/IMPLIB:D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old.lib"
+      ],
+      "compile_returncode": 0,
+      "elapsed_seconds": 4.044112799922004,
+      "stdout": "public_camera_fixture.cpp\r\n  \ufffd\ufffd\ufffd\u06b4\ufffd\ufffd\ufffd\ufffd\ufffd D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old.lib \ufffd\u0376\ufffd\ufffd\ufffd D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old.exp\r\n",
+      "stderr": "",
+      "test_returncode": 8,
+      "expected_returncode": 8,
+      "dll": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\old-public-camera-fixture.dll",
+        "sha256": "792e5daee2cd8fef6e4847df444e05aaabb396fc0a1dd5cf66feeaac8b0ba7d3",
+        "bytes": 212992
+      }
+    },
+    {
+      "variant": "fixed",
+      "argv": [
+        "C:\\PROGRA~1\\MICROS~2\\18\\COMMUN~1\\VC\\Tools\\MSVC\\1451~1.362\\bin\\HostX64\\x64\\cl.exe",
+        "/nologo",
+        "/std:c++20",
+        "/EHsc",
+        "/W4",
+        "/WX",
+        "/O2",
+        "/MT",
+        "/LD",
+        "/DNOMINMAX",
+        "/DWIN32_LEAN_AND_MEAN",
+        "/DUNICODE",
+        "/D_UNICODE",
+        "/ID:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\include",
+        "/ID:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\include",
+        "/FoD:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed.obj",
+        "/FeD:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed-public-camera-fixture.dll",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\public_camera_fixture.cpp",
+        "/link",
+        "/INCREMENTAL:NO",
+        "/IMPLIB:D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed.lib"
+      ],
+      "compile_returncode": 0,
+      "elapsed_seconds": 3.4927106997929513,
+      "stdout": "public_camera_fixture.cpp\r\n  \ufffd\ufffd\ufffd\u06b4\ufffd\ufffd\ufffd\ufffd\ufffd D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed.lib \ufffd\u0376\ufffd\ufffd\ufffd D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed.exp\r\n",
+      "stderr": "",
+      "test_returncode": 0,
+      "expected_returncode": 0,
+      "dll": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p45-publication01\\fixed-public-camera-fixture.dll",
+        "sha256": "9f28cdb9a06ebc5c419e9e3b6b0d90468c261d5109ba3cf2606b9f2af079a3f5",
+        "bytes": 212992
+      }
+    }
+  ],
+  "existing_cmake_target": "xar_ck3_realm_camera_geometry_v1_test",
+  "CMake_target_or_bridge_DLL_not_built": true,
+  "new_EXE_targets": 0,
+  "game_or_native25_calls": 0,
+  "live_Driver_SAVE_video_reads": 0
+}
