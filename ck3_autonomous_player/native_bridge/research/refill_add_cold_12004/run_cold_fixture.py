@@ -6,7 +6,10 @@ parser=argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--repo',type=Path,required=True)
 parser.add_argument('--build-dir',type=Path,required=True)
 parser.add_argument('--output-root',type=Path,required=True)
+parser.add_argument('--case',action='append',choices=['normal','zero','wrap','negative','other-thread','finite-hit','timeout','exit-before-add'])
+parser.add_argument('--shared-v3',action='store_true',help='Require the new shared-production Probe synthetic schema and q seam')
 args=parser.parse_args()
+if args.shared_v3 and not args.case:parser.error('--shared-v3 requires explicit --case; no implicit old matrix')
 REPO=args.repo.resolve();BUILD=args.build_dir.resolve();OUT=args.output_root.resolve()
 PYTHON=REPO/'tools/.venv/Scripts/python.exe'
 MACHINE=subprocess.check_output([str(PYTHON),'-B',str(REPO/'tools/ck3_live_run_id.py'),'machine'],text=True).strip()
@@ -127,10 +130,19 @@ def run(mode):
             with (case/'observer.stdout').open('wb') as oso,(case/'observer.stderr').open('wb') as ose:
                 observer=subprocess.Popen(observer_args,stdout=oso,stderr=ose,creationflags=0x08000000)
                 ready_json=read_json(ready,observer)
+                if args.shared_v3:assert ready_json['schema']=='xar.ck3.refill_ADD_12004.shared_probe_cold_ready.v1'
                 if mode!='timeout':signal(meta['go_event'])
                 observer_code=observer.wait(timeout=12)
             rows=[json.loads(x) for x in raw.read_text().splitlines()]
             terminal=next(x for x in rows if x.get('kind')=='terminal')
+            if args.shared_v3:
+                start=next(x for x in rows if x.get('kind')=='start')
+                assert start['schema']=='xar.ck3.refill_ADD_12004.shared_probe_cold.v1' and start['fixture'] is True
+                for hit in (x for x in rows if x.get('kind')=='raw_ADD_boundary'):
+                    assert 'synthetic_site_address' in hit and 'site_rva' not in hit
+                    assert hit['stack_q_source_complete'] is True
+                pair=next((x for x in rows if x.get('kind')=='physical_ADD_pair'),None)
+                if pair:assert pair['CK3_actual_ADD_observed'] is False and pair['fixture'] is True
             assert terminal['debug_registers_cleared'] and terminal['detached'],terminal
             if mode=='exit-before-add':
                 target_code=target.wait(timeout=5);assert target_code==0
@@ -159,7 +171,7 @@ def run(mode):
                 assert guard['derived_from_actual_owned_hits'] and guard['cross_tid_q_pointer_current_all_refused']
             else:assert len(boundary)==0
             record={'machine_id':MACHINE,'observed_at_utc':started,'mode':mode,'status':'PASS',
-              'synthetic':True,'CK3_actual_ADD_observed':False,'target_argv':target_args,'observer_argv':observer_args,
+              'synthetic':True,'CK3_actual_ADD_observed':False,'shared_production_probe_v3':args.shared_v3,'target_argv':target_args,'observer_argv':observer_args,
               'target_exit_code':target_code,'observer_exit_code':observer_code,'ready':ready_json,'target_result':result,
               'debug_register_audit':audit,'terminal':terminal,'raw_sha256':sha(raw),'raw_bytes':raw.stat().st_size,
               'raw_boundary_count':len(boundary)}
@@ -185,7 +197,7 @@ def run(mode):
 if __name__=='__main__':
     OUT.mkdir(exist_ok=False)
     write(OUT/'EXECUTION-GATE.actual.json',gate())
-    modes=['normal','zero','wrap','negative','other-thread','finite-hit','timeout','exit-before-add']
+    modes=args.case or ['normal','zero','wrap','negative','other-thread','finite-hit','timeout','exit-before-add']
     results=[]
     for mode in modes:results.append(run(mode))
     write(OUT/'COLD-SUITE.actual.json',{'machine_id':MACHINE,

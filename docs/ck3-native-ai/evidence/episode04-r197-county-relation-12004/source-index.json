@@ -1,0 +1,171 @@
+{
+  "schema": "xar.e04.r197-county-relation-live-portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T05:33:29.204228+00:00",
+  "source_head": "85eb547cca4fddaec4b8a89ec9dd203e6935299c",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0197",
+  "date_raw": 53148192,
+  "actor_full_id": 31254,
+  "actual_identity": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0197",
+    "source_head": "85eb547cca4fddaec4b8a89ec9dd203e6935299c",
+    "native_build_source_head": "85eb547cca4fddaec4b8a89ec9dd203e6935299c",
+    "pid": 37596,
+    "process_creation_filetime_100ns": 134366861170573998,
+    "connection_generation": 1,
+    "episode_run_id": "native-31254-534b7fc4f2ab",
+    "actual_runtime_character_full_id": 31254,
+    "initial_date_raw": 53148192
+  },
+  "response_does_not_independently_contain_PID_FT_or_source_head": true,
+  "identity_bridge_metadata_match": true,
+  "Root_live_focus_or_identity_guard_reexecuted_here": false,
+  "archives": {
+    "exact_originals": {
+      "file": "originals.exact-a01.zip",
+      "bytes": 9460,
+      "sha256": "c7897b31fd9d0c9577c1ef37ad56edb0bf6343480d076254111c49b2e7291bdf",
+      "entries": [
+        {
+          "member": "response/r197-p-preview-once-a01.json",
+          "source": {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\responses\\r197-p-preview-once-a01.json",
+            "bytes": 32815,
+            "sha256": "522f42fccef31657eb07016d43d58259adbe93beda18ea0678af4e7421615263"
+          },
+          "exact_bytes_preserved": true,
+          "derived": false
+        },
+        {
+          "member": "identity/allocated-context.actual-a01.json",
+          "source": {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\allocated-context.actual-a01.json",
+            "bytes": 4126,
+            "sha256": "8c5e37473b87c6564a24066815ece9994f35808360db3cda5813cb1d4363ca9f"
+          },
+          "exact_bytes_preserved": true,
+          "derived": false
+        },
+        {
+          "member": "identity/runtime-actor-identity.actual-a01.json",
+          "source": {
+            "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\runtime-actor-identity.actual-a01.json",
+            "bytes": 8077,
+            "sha256": "17172902c6c4eef551f1316348fb6a28f8fc2802a2b81bce9aef6b21ed401b0c"
+          },
+          "exact_bytes_preserved": true,
+          "derived": false
+        },
+        {
+          "member": "derived/P-READING.actual-a01.json",
+          "source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\r197-r04-live-reading.actual-a01.json",
+            "bytes": 4342,
+            "sha256": "69b62d894634573976c27fc605310e0ab0a45572697978688ab02ae13d6a5c6d"
+          },
+          "exact_bytes_preserved": true,
+          "derived": true
+        }
+      ]
+    },
+    "held_relation_source": {
+      "file": "held-relation-source.exact-a01.zip",
+      "bytes": 2576,
+      "sha256": "64cb34ba31957d37a2fee728251f5791359290b9d994c9e9d4f4a04b11a34a1f",
+      "entries": [
+        {
+          "member": "held-relation/actual-function.bin",
+          "source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\actual-function.bin",
+            "bytes": 191,
+            "sha256": "701c63b6a5f7ed78ce75d6a591fcc4dc0ae2464267a05a23f5b5feb3a3cd8edb"
+          },
+          "exact_bytes_preserved": true
+        },
+        {
+          "member": "held-relation/actual-function.asm",
+          "source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\actual-function.asm",
+            "bytes": 3953,
+            "sha256": "e16e66f9028b9cd5a607f898a5deb6fcb36c5acbd7371c38cf6aa87c4e4164c9"
+          },
+          "exact_bytes_preserved": true
+        },
+        {
+          "member": "held-relation/RAW-READ-LEDGER.actual-a01.json",
+          "source": {
+            "path": "C:\\ck3-e04-resume-20261015-a01\\county-relation2C09620-source-a03\\RAW-READ-LEDGER.actual-a01.json",
+            "bytes": 4167,
+            "sha256": "bea6c5637e42f296aee72054d6ecea4591bd7cc992b42157fc0793864fcf1a3f"
+          },
+          "exact_bytes_preserved": true
+        }
+      ]
+    }
+  },
+  "qualification_external_metadata_only": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a34b\\ROOT-PRODUCTION-QUALIFICATION.actual-a34.json",
+    "bytes": 90132,
+    "sha256": "643ccc1b4425dbd2893a6b37870ced99572b8c0e59753362255fc3347b8e689d"
+  },
+  "qualification_complete_original_copied": false,
+  "native_payload_or_save_or_video_copied": false,
+  "actual_result": {
+    "first_remaining_edge": [
+      2635,
+      2634
+    ],
+    "subject_army_id": 18,
+    "native_condition_passes": false,
+    "P_reason": "target_P_first_returned_false",
+    "source_P": {
+      "receiver_full_id": 34960,
+      "actor_full_id": 31254,
+      "pair_full_war_id": 4,
+      "selected_war_byte358_u8": 0,
+      "direct_war_gate": true,
+      "actual_AL": true
+    },
+    "target_P_first": {
+      "receiver_full_id": 34232,
+      "actor_full_id": 31254,
+      "pair_full_war_id": -1,
+      "direct_war_gate": false,
+      "actual_AL": false
+    },
+    "target_P_second_called": false
+  },
+  "scope_credit": {
+    "actual_relation_hook_native_to_Python_wire_observed": true,
+    "new_OR_inputs_observed": false,
+    "new_OR_results_observed": false,
+    "neighbor_Q_observed": false,
+    "actual_county_physical_loss_positive": false,
+    "county_loss_event_count": null,
+    "new_recording_or_clean_span_qualified": false
+  },
+  "portable_knowledge_reusable": true,
+  "source_machine_runtime_facts_not_portable_qualification": true,
+  "analysis_notes": [
+    {
+      "file": "OR-NATIVE-NEXT.md",
+      "bytes": 5430,
+      "sha256": "64b78bf31e1e13c625c2849d664737426aea9ba253f13f28f639586b2c699a77"
+    },
+    {
+      "file": "OR-PYTHON-BOUNDARY.md",
+      "bytes": 2947,
+      "sha256": "f6ea152d5b15551c963ec0b85729f3d9d50f66c6d658bbd4953f58693837f0f0"
+    }
+  ],
+  "canonical_topic": "docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md",
+  "actual_interpreter_execution_count_this_lane": 1,
+  "actual_interpreter_source": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r197-r04-reading-a01/interpret_after_preview.py",
+    "production_contracts": {
+      "army_county_predicate_trace_contract.py": "214ceb69ca699ee6d2777f8c16cbbbaa0d2fc899ff8471ed33917781c1be6e19",
+      "army_county_entry_preview_condition_contract.py": "db8b6d2eb39a6ea1bedcd7c3dd0bec6ad6804c339c208a87ef628a6b903f3dff"
+    }
+  }
+}

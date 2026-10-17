@@ -1,0 +1,59 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T05:55:37.728099+00:00",
+  "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\responses\\r197-disable-reinforcement-once-a01.json",
+  "bytes": 1358,
+  "sha256": "24e4bd31d51ed2c1b3106bcb15707c4c622eb0a3719dffd6f206a51693143369",
+  "sdk_envelope": {
+    "at": "2026-10-17T05:36:23.699736+00:00",
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "request": {
+      "request_id": "r197-disable-reinforcement-once-a01",
+      "tool": "ck3_execute_step",
+      "arguments": {
+        "step": "disable-military-reinforcement-v1",
+        "expected_revision": 4
+      }
+    },
+    "request_identity": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\requests\\r197-disable-reinforcement-once-a01.json",
+      "bytes": 186,
+      "sha256": "13c08cb77c75b77e9c7936727062aa6b6bd478840c4a172b12e45f55d60a83fa"
+    },
+    "is_error": true,
+    "body": null,
+    "sdk_result": {
+      "meta": {
+        "io.modelcontextprotocol/serverInfo": {
+          "name": "Xar CK3 Gameplay Bridge",
+          "version": "0.1.0"
+        }
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool ck3_execute_step: native gameplay step failed: unsupported native gameplay step",
+          "annotations": null,
+          "meta": null
+        }
+      ],
+      "structured_content": null,
+      "is_error": true,
+      "result_type": "complete"
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_execute_step: native gameplay step failed: unsupported native gameplay step",
+        "annotations": null,
+        "meta": null
+      }
+    ]
+  },
+  "native_packet_recovered": false,
+  "actual_native_revision": null,
+  "dynamic_cpp_return_site_observed": false,
+  "handler_invocation_positive_evidence": false,
+  "source_inference": "85eb exact action missing production supports_step; ordinary execute_step outer unsupported gate precedes fixed handler",
+  "not_replayed": "Root reports exactly one request; no SDK call from this lane"
+}

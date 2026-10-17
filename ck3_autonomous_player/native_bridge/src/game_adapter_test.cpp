@@ -1,6 +1,9 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ingame_military_opener_12004.hpp"
+#include "xar_bridge/military_reinforcement_action_12004.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ingame_decision_item_v1.hpp"
@@ -448,7 +451,74 @@ int TestDecisionOutcomeProductionAdmission() {
   return 0;
 }
 
+int TestMilitaryReinforcementProductionAdmission() {
+  using namespace xar::ck3_11906;
+  const auto &actual = xar::game::Ck3_12004AdapterDescriptor();
+#if XAR_ENABLE_FIXED_MILITARY_REINFORCEMENT_ACTION_12004
+  constexpr bool enabled = true;
+#else
+  constexpr bool enabled = false;
+#endif
+  StubAdapter current(actual, true);
+  std::size_t checks = 0;
+  for (const auto &pair : {
+      std::pair{kMilitaryReinforcementEnable12004Step, kMilitaryReinforcementEnable12004Capability},
+      std::pair{kMilitaryReinforcementDisable12004Step, kMilitaryReinforcementDisable12004Capability}}) {
+    if (Contains(actual.capabilities, pair.second) != enabled ||
+        current.supports_step(pair.first) != enabled)
+      return Fail("military reinforcement advertised capability rejected by production supports_step");
+    checks += 2;
+  }
+  auto identity = actual;
+  constexpr std::array<std::string_view, 1> enable_only{kMilitaryReinforcementEnable12004Capability};
+  identity.capabilities = enable_only;
+  StubAdapter enable(identity, true);
+  if (!enable.supports_step(kMilitaryReinforcementEnable12004Step) ||
+      enable.supports_step(kMilitaryReinforcementDisable12004Step))
+    return Fail("military enable-only capability map is wrong");
+  checks += 2;
+  constexpr std::array<std::string_view, 1> disable_only{kMilitaryReinforcementDisable12004Capability};
+  identity.capabilities = disable_only;
+  StubAdapter disable(identity, true);
+  if (disable.supports_step(kMilitaryReinforcementEnable12004Step) ||
+      !disable.supports_step(kMilitaryReinforcementDisable12004Step))
+    return Fail("military disable-only capability map is wrong");
+  checks += 2;
+  StubAdapter disabled(identity, false);
+  if (disabled.supports_step(kMilitaryReinforcementDisable12004Step))
+    return Fail("disabled adapter admitted military reinforcement");
+  ++checks;
+  constexpr std::array<std::string_view, 1> opener_only{kIngameMilitaryOpen12004Capability};
+  identity.capabilities = opener_only;
+  StubAdapter opener(identity, true);
+  if (!opener.supports_step(kIngameMilitaryOpen12004Step) ||
+      opener.supports_step(kMilitaryReinforcementEnable12004Step) ||
+      opener.supports_step(kMilitaryReinforcementDisable12004Step))
+    return Fail("military opener capability grants a reinforcement action");
+  checks += 3;
+  for (const auto invalid : {"enable-military-reinforcement-v1-extra",
+      "disable-military-reinforcement-v1-extra", "disable-military-reinforcement-v2",
+      "disable-military-reinforcement-v1 ", "prefix-disable-military-reinforcement-v1", ""}) {
+    if (current.supports_step(invalid)) return Fail("military action admission widened");
+    ++checks;
+  }
+  for (const auto *prior : {&xar::game::Ck3_12003AdapterDescriptor(),
+                           &xar::game::Ck3_12002AdapterDescriptor(),
+                           &xar::game::Ck3_11906AdapterDescriptor()}) {
+    StubAdapter old(*prior, true);
+    if (old.supports_step(kMilitaryReinforcementEnable12004Step) ||
+        old.supports_step(kMilitaryReinforcementDisable12004Step))
+      return Fail("military action leaked into an older actual descriptor");
+    checks += 2;
+  }
+  std::cout << "PASS: military reinforcement production admission checks=" << checks
+            << " feature=" << enabled << "; no GUI dispatch or toggle claimed\n";
+  return 0;
+}
+
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--military-reinforcement-admission-only")
+    return TestMilitaryReinforcementProductionAdmission();
   if (argc == 2 && std::string_view(argv[1]) == "--ordinary-interaction-capabilities-only")
     return TestOrdinaryInteractionProductionAdmission();
   if (argc == 2 && std::string_view(argv[1]) == "--decision-outcome-admission-only") {

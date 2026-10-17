@@ -69,3 +69,21 @@ R0180 source2635→target2645的双definition1B1、B100、mode1/false保留为�
 同名evidence目录保留完整原件及stdlib verifier。验证只核191B拼接、全部11
 分支、三CALL和aux-null/相等原始字节；不执行CK3、不制造实机/clean/动态/人工
 签核信用。code/knowledge可移机，历史机器与当前运行资格分别保留。
+
+
+## 2026-10-17 R197 后续实证：relation original entry/return 已发布
+
+上述 public DTO 尚未观察的描述保留为当时边界。本次后续实证见
+[R197 relation wire](episode04-r197-county-relation-wire-12004.md) 与其中精确原件索引。
+机器 desktop-3fevhd2-1c74096080、场次R0197/source85eb547c、date53148192，
+唯一2635→2634只读preview中：source receiver34960/actor31254、pairWar4、
+selected+358=0、direct gate=true、actual ALtrue；target-first receiver34232/
+actor31254、pairWar-1、direct gate=false、actual ALfalse。两个 relation leaf
+均available且same-thread/FullID稳定，production typed consumer已接收。
+
+这补上了实际receiver/pair/War与原生AL的wire证据。目标War=-1后的selected
+War/+358 null是合法跳过；仍未观察2C09580和2C09780各自的自然entry/return。
+unknown_or_inputs=true及unknown_or_result=null继续保留，不由最终ALfalse填值。
+下一窄口优先2C09580/返回2C096A8，随后2C09780/返回2C096B7；后者R8没有
+在前一CALL后重装，不能沿用第一口aux合同。当前会话不热改、不重复扫路线。
+县physical positive、邻接Q、自然县caller和视频clean span均不因此取得资格。

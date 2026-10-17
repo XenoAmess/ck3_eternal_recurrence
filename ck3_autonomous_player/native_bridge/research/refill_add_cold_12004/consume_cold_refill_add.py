@@ -26,6 +26,9 @@ def consume(case: Path) -> dict:
         require(len(found)==1,'exactly one '+kind)
         return found[0]
     start=one('start');pair=one('physical_ADD_pair');terminal=one('terminal')
+    shared_v3=start.get('schema')=='xar.ck3.refill_ADD_12004.shared_probe_cold.v1'
+    if result.get('shared_production_probe_v3') is True:
+        require(shared_v3,'shared production Probe source schema')
     guard=one('fixture_mismatch_guard');budget=one('fixture_debug_budget')
     require(result['status']=='PASS' and result['synthetic'] is True,'actual cold run result')
     require(hashlib.sha256(raw).hexdigest()==result['raw_sha256'],'immutable native raw bytes')
@@ -64,6 +67,18 @@ def consume(case: Path) -> dict:
         require([r['stored_index'] for r in h['DATA']]==[0,1],'stored DATA order')
         require(all(r['persistent_full_id_u32']==h['regi_full_id_u32'] and
           r['physical_ordinal_u32']==h['physical_slot'] for r in h['DATA']),'alias identity')
+    stack_q_source=None
+    if shared_v3:
+        windows=[]
+        for h in hit:
+            require('site_rva' not in h and h.get('stack_q_source_complete') is True,'cold-only site and actual q source')
+            window=h.get('stack_q_window_28_hex')
+            require(type(window) is str and len(window)==56 and all(c in '0123456789abcdef' for c in window),'exact28B q window')
+            require(type(h['q_index']) is int and 0<=h['q_index']<7,'bounded q-index')
+            require(struct.unpack_from('<I',bytes.fromhex(window),4*h['q_index'])[0]==h['q_u32'],'q slot equals EDX')
+            windows.append(window)
+        require(windows[0]==windows[1],'unchanged stack q pair')
+        stack_q_source={'status':'available','q_index':a['q_index'],'before_hex':windows[0],'after_hex':windows[1]}
     require(a['qpc']<b['qpc'],'strict native QPC ordering')
     before=bytes.fromhex(a['physical_seven_hex']);after=bytes.fromhex(b['physical_seven_hex'])
     require(len(before)==len(after)==7*0x24,'complete seven physical slots')
@@ -102,7 +117,7 @@ def consume(case: Path) -> dict:
       'DWORD_wrap_matches':True,'DATA_alias_count':2,'synthetic_instruction_ADD_observed':True,
       'original_ADD_execution_count':1,'clean_detach_and_register_restore':True,
       'CK3_actual_ADD_observed':False,'natural_parent_token':None,'full_window_coverage_ready':False,
-      'refill_business_qualification_granted':False}
+      'refill_business_qualification_granted':False,'shared_production_probe_v3':shared_v3,'stack_q_source_v3':stack_q_source}
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser()

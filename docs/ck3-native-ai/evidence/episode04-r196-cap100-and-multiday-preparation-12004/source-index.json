@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.r196.cap100-and-multiday-preparation.sources.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "compiled_at_utc": "2026-10-17T04:03:27Z",
+  "observation_run_id": "desktop-3fevhd2-1c74096080--vanilla--R0196",
+  "observation_source_head": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "observation_date_raw": 53148192,
+  "canonical_parent_index": "../episode04-r196-r01-ready-t0-12004/source-index.json",
+  "canonical_parent_archive": {
+    "path": "../episode04-r196-r01-ready-t0-12004/r196-r01-originals.solid.xz",
+    "bytes": 210324,
+    "sha256": "1e342510208cd436a9c2170f37f35ee1bf089db6fd0506cb6de4ae2d83c23781"
+  },
+  "existing_original_members": [
+    {"member": "responses/02-commander18.json", "solid_offset": 130750, "bytes": 92806, "sha256": "0930493bc12cca4df3318d6bcd81349a6a7ec8beadd0baf60e4c823f8cdc7e1c", "semantic_pointer": "/body/army_commander_candidates"},
+    {"member": "responses/01-full18.json", "solid_offset": 125370, "bytes": 5380, "sha256": "d5d64d944aaa34002f7dcc06fecce838c750554dbc95b386eb47c10c7d8a1eae", "scope": "compact stock/strength and existing complete-Driver reference; not capacity/rate source"},
+    {"member": "full/complete-driver-army18.json", "solid_offset":538515,"bytes":11163208,"sha256":"f4112efd6481162da25dfdd1171e85605ea21cd913578a14a1fa11de618e4897","scope":"R01 actual cap300 provenance; metadata reused, no reread or copy"}
+  ],
+  "legal_cap100_ids": [32236,34975,37244,37702,35899,34232,36445,33946,45458,45464],
+  "preferred_within_legal_cap100": {"character_id":34232,"native_ai_base_quality":27,"generic_advantage_points":27,"siege_phase_time_modifier_raw":-10000},
+  "capacity_fields_all_legal_cap100": {"status":"available","loaded_full_raw":"10000000","additive_modifier_raw":"0","multiplicative_modifier_raw":"0","conditional_capacity_raw":"10000000","scale":100000,"assignment_applied":false},
+  "missing_candidate_rate_modifier": "M1A9: no supplied field; do not substitute capacity or quality",
+  "held_source_machine_audit_only": {
+    "parser_isolated_function_sha256": "87850e4da12587823e9c94d3fca9c7d4f059bf7f045b3c067270a7a55884d92e",
+    "python_canonical_parser_cases_days": [1,21,28],
+    "non_multiple_of_24_rejected": true,
+    "native_or_live_arm_qualification": false,
+    "external_receipt_locator": "r05-multiday-window-offline-a01/isolated-parser-check.actual-a01.json",
+    "external_receipt_bytes":1195,
+    "external_receipt_sha256":"5984a53fdd3a5d94e499db6c06e7c6266be3970ae0f93de6db49dd0c98a8f382",
+    "locator_portable": false,
+    "canonical_source": "../../../../ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py#L28471"
+  },
+  "new_large_original_reads_or_copies": 0,
+  "old_parser_tests_repeated": 0,
+  "new_game_days_or_assignments": 0,
+  "R05_positive": false,
+  "cross_machine_boundary": "Reusable observed source-machine data and source contracts; no reader-machine installation/deployment/runtime/stock qualification. Local wrappers are not cross-machine libraries."
+}

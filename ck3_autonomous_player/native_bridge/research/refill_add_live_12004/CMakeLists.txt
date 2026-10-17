@@ -11,3 +11,40 @@ if(MSVC)
   target_compile_options(refill_add_hwprobe_12004 PRIVATE /EHsc /W4)
   target_link_options(refill_add_hwprobe_12004 PRIVATE /INCREMENTAL:NO)
 endif()
+
+# Explicitly requested self-memory cold target; absent from a normal ALL build.
+option(XAR_ENABLE_REFILL_STACK_Q_COLD_12004 "Enable only local stack-q RPM cold fixture" OFF)
+add_executable(refill_stack_q_cold_12004 EXCLUDE_FROM_ALL refill_stack_q_cold_fixture_12004.cpp)
+target_compile_features(refill_stack_q_cold_12004 PRIVATE cxx_std_20)
+file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/refill_stack_q_source_12004.hpp" XAR_Q_HEADER_SHA)
+file(SHA256 "${CMAKE_CURRENT_SOURCE_DIR}/refill_stack_q_cold_fixture_12004.cpp" XAR_Q_FIXTURE_SHA)
+target_compile_definitions(refill_stack_q_cold_12004 PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  XAR_ENABLE_REFILL_STACK_Q_COLD_12004=$<BOOL:${XAR_ENABLE_REFILL_STACK_Q_COLD_12004}>
+  XAR_REFILL_STACK_Q_HEADER_SHA256="${XAR_Q_HEADER_SHA}"
+  XAR_REFILL_STACK_Q_FIXTURE_SHA256="${XAR_Q_FIXTURE_SHA}")
+if(MSVC)
+  target_compile_options(refill_stack_q_cold_12004 PRIVATE /EHsc /W4)
+  target_link_options(refill_stack_q_cold_12004 PRIVATE /INCREMENTAL:NO)
+endif()
+
+# Same production Probe in an isolated default-OFF cold translation unit.
+option(XAR_ENABLE_REFILL_V3_COLD_PROBE_12004 "Enable the owned-sibling production-Probe cold adapter" OFF)
+add_executable(refill_v3_cold_observer_12004 EXCLUDE_FROM_ALL refill_v3_cold_entry_12004.cpp)
+set_target_properties(refill_v3_cold_observer_12004 PROPERTIES OUTPUT_NAME refill_cold_observer)
+target_compile_features(refill_v3_cold_observer_12004 PRIVATE cxx_std_20)
+target_compile_definitions(refill_v3_cold_observer_12004 PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+  XAR_ENABLE_REFILL_V3_COLD_PROBE_12004=$<BOOL:${XAR_ENABLE_REFILL_V3_COLD_PROBE_12004}>)
+if(XAR_ENABLE_REFILL_V3_COLD_PROBE_12004)
+  enable_language(ASM_MASM)
+  add_executable(refill_cold_target EXCLUDE_FROM_ALL ../refill_add_cold_12004/cold_target.cpp ../refill_add_cold_12004/synthetic_add.asm)
+  target_compile_features(refill_cold_target PRIVATE cxx_std_20)
+  target_compile_definitions(refill_cold_target PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(refill_cold_target PRIVATE $<$<COMPILE_LANGUAGE:CXX>:/EHsc> $<$<COMPILE_LANGUAGE:CXX>:/W4>)
+    target_link_options(refill_cold_target PRIVATE /INCREMENTAL:NO)
+  endif()
+endif()
+if(MSVC)
+  target_compile_options(refill_v3_cold_observer_12004 PRIVATE /EHsc /W4)
+  target_link_options(refill_v3_cold_observer_12004 PRIVATE /INCREMENTAL:NO)
+endif()

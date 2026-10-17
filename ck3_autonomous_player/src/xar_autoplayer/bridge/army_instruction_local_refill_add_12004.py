@@ -35,7 +35,7 @@ def _i32(x: int) -> int:
     return struct.unpack('<i', struct.pack('<I', x))[0]
 
 
-def normalize_instruction_local_refill_add_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
+def _normalize_instruction_local_refill_add_v2_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
     """Normalize exactly one selected native ADD after the owner verified admission.
 
     Binding contains actual owner evidence hashes, not self-asserted success flags.
@@ -148,6 +148,62 @@ def normalize_instruction_local_refill_add_12004(raw: bytes, binding: Mapping[st
             'natural_parent_token':None,'native_core_token':None,'native_event_date_raw':None,
             'same_core_NET_cause_proven':False,'natural_attribution_ready':False,'full_window_coverage_ready':False,
             'toggle_effect_proven':False,'refill_business_qualification_granted':False}
+
+
+def _normalize_stack_q_source_v3_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
+    """Validate extra actual B84 load evidence, then reuse every v2 ADD guard.
+
+    The 28-byte window is an independently read native stack copy. Its selected
+    DWORD is the already capped instruction operand, not an uncapped request or
+    a per-Army sum. Physical slot and q-index are separate domains.
+    """
+    _need(type(raw) is bytes and 0 < len(raw) <= 131072, 'bounded v3 wire')
+    rows = [json.loads(line) for line in raw.decode('utf-8').splitlines()]
+    _need(len(rows) == 6 and all(type(row) is dict for row in rows), 'v3 six native rows')
+    _need(rows[0].get('schema') == 'xar.ck3.refill_ADD_12004.hwprobe_raw.v3', 'exact v3 source')
+    windows = []
+    for hit in rows[1:3]:
+        _need(hit.get('stack_q_source_complete') is True, 'actual bounded stack q capture')
+        window = hit.get('stack_q_window_28_hex')
+        _need(type(window) is str and re.fullmatch(r'[0-9a-f]{56}', window) is not None,
+              'exact 28-byte stack q window')
+        _need(_int(hit.get('q_index'), 0, 6), 'collected q-index inside stack window')
+        selected = struct.unpack_from('<I', bytes.fromhex(window), 4*hit['q_index'])[0]
+        _need(type(hit.get('q_u32')) is int and selected == hit['q_u32'], 'B84 stack slot equals actual EDX')
+        windows.append(window)
+    _need(windows[0] == windows[1], 'independent stack q windows unchanged across one ADD')
+    # Strip only the two newly verified fields. Unknown/synthetic fields still
+    # reach v2's exact-key check and fail; this is no fallback from a bad v3 row.
+    rows[0]['schema'] = RAW_SCHEMA
+    for hit in rows[1:3]:
+        del hit['stack_q_source_complete']; del hit['stack_q_window_28_hex']
+    projection = ('\n'.join(json.dumps(row, separators=(',', ':')) for row in rows)+'\n').encode()
+    item = _normalize_instruction_local_refill_add_v2_12004(projection, binding)
+    item['raw_sha256'] = hashlib.sha256(raw).hexdigest()
+    item['raw_schema'] = 'xar.ck3.refill_ADD_12004.hwprobe_raw.v3'
+    item['instruction_stack_q_source_v1'] = {
+        'status': 'available', 'load_rva': '0x2A98B84', 'ADD_rva': '0x2A98B88',
+        'q_index': rows[1]['q_index'], 'stack_window_before_hex': windows[0],
+        'stack_window_after_hex': windows[1], 'stack_selected_u32': rows[1]['q_u32'],
+        'source_path': 'request_return_nonzero_then_physical_seven_loop',
+        'source_path_basis': 'exact4_PC_control_flow_inference',
+        'request_call_rva': '0x2A98B53', 'request_target_rva': '0x262C9B0',
+        'request_gate_rva': '0x2A98B5F', 'physical_slot_equals_q_index_required': False,
+        'uncapped_request_observed': False, 'individual_permission_branches_observed': False,
+    }
+    return item
+
+
+def normalize_instruction_local_refill_add_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
+    """Accept exact native v2 or v3; no schema relabeling or bad-v3 fallback."""
+    _need(type(raw) is bytes and 0 < len(raw) <= 131072, 'bounded immutable native NDJSON')
+    first = raw.decode('utf-8').splitlines()
+    _need(bool(first), 'native start row')
+    start = json.loads(first[0])
+    _need(type(start) is dict, 'native start object')
+    if start.get('schema') == 'xar.ck3.refill_ADD_12004.hwprobe_raw.v3':
+        return _normalize_stack_q_source_v3_12004(raw, binding)
+    return _normalize_instruction_local_refill_add_v2_12004(raw, binding)
 
 
 def attach_instruction_local_refill_add_12004(net_qualification: Mapping[str, object], raw: bytes,

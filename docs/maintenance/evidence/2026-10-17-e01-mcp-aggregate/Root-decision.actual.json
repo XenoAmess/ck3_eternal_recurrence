@@ -1,0 +1,43 @@
+{
+  "schema": "xar.root.one-old-e01-aggregate-retirement-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "owner": "/root",
+  "observed_at_utc": "2026-10-17T04:27:04.626693+00:00",
+  "plan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-e01-mcp-retirement-readonly-a01\\ONE-OLD-MCP-LOG.plan.readonly-a01.json.gz",
+    "bytes": 4067,
+    "sha256": "33cf619d4ac7ebec5eedfd5ed354ca1259897734c45d9c9bb95b572bc876bcfa"
+  },
+  "independent_root_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-e01-mcp-retirement-readonly-a01\\root-review-a01\\REVIEW.actual.json",
+    "bytes": 2513,
+    "sha256": "a4578a12e629357bd828d37acf1424090225927b95bbcbfe16c55c5cff05cfbb"
+  },
+  "decision": "adopt_early_retirement_of_exact_one_closed_transport_aggregate",
+  "target_scope": "Only the exact mcp-calls.jsonl and NTFS identity/size/FILETIME/link/allocation in the pinned plan; no parent directory or other file",
+  "purpose_termination": "This historical Episode01 aggregate stream is not a current or planned Episode04 input, recovery baseline or representative unresolved-issue input owned by Root. Retire only this leaf from blanket old-run protection.",
+  "early_expiry_reason": "User authorized cleanup of completed-video source assets. The closed obsolete transport aggregate has no active consumer; retained independent daily responses, summaries, code, source knowledge and closure evidence supply the continuing historical use.",
+  "irreversible_detail_loss_accepted": true,
+  "detail_loss_boundary": "The 5GB aggregate cannot be reconstructed byte-for-byte; unextracted transport detail may be lost. It is not declared a verified duplicate or rebuildable cache. No fresh target-body SHA is claimed.",
+  "retained_objects": "All 18 independent v3 response objects,17-row daily-v3 summary,initial/final snapshots,query/comparison/source scripts,small closure/provenance and shared knowledge objects listed in the pinned plan; the separate23-day synthesis remains separate",
+  "keeper_protection": {
+    "owner": "/root",
+    "purpose": "Preserve minimum historical Episode01 knowledge, independent raw daily evidence and recovery provenance after retiring the obsolete aggregate",
+    "next_use": "Independent after-delete identity/proof verification and historical recovery review",
+    "review_by_utc": "2026-10-24T04:27:04.626693+00:00",
+    "automatic_renewal": false,
+    "renewal_count": 0
+  },
+  "historical_limits": "Legacy producer machine_id unknown; cleanup/treegone true but CK3 exit1. Join11/21 unknown and plannerfalse remain; no 1.20 qualification is granted.",
+  "execution_window_end_utc": "2026-10-17T05:12:04.626693+00:00",
+  "conditions": [
+    "Fresh exact same-handle path/reparse/id/size/FILETIME/link/allocation and liveness/Restart Manager checks before delete",
+    "Preserve all named keeper objects; retain on changed,busy or unknown state",
+    "Existing native exact-leaf delete guard only; independent absence and keeper verification afterward",
+    "Append availability=deleted_unavailable with explicit irreversible-detail boundary; keep old reports unchanged"
+  ],
+  "new_metadata_ceiling_bytes": 65536,
+  "metadata_pool": "existing128MiB,no new pool",
+  "actual_deleted": 0,
+  "new_reservation_or_cleanup_credit": 0
+}

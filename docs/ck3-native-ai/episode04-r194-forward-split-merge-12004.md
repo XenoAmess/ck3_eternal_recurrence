@@ -30,3 +30,11 @@ Root has reviewed the two-direction numerical evidence and this scene’s typed 
 ## Root独立研究与业务决策（2026-10-17 UTC）
 
 Root已审阅并作出[独立R09研究/业务闭合决策](evidence/episode04-r194-forward-split-merge-12004/root-research-decision.json)：machine_id `desktop-3fevhd2-1c74096080`，本场source `d7135ca3bf40c33c2d5416242ce844077f1e8cbe`/a32。研究为7/14，业务为5/11；动态0/11、ABC0/3，clean、完整1×、human signoff及最终成片批准均未授予。此前候选阶段正文、来源索引和原ZIP保持当时事实；本段是Root后来独立决策，不回写旧自动资格字段。媒体验收与清理资料另行入库。
+
+## Existing media audit and remaining clean-shot gap (2026-10-17)
+
+A metadata-only reconciliation at2026-10-17T04:00:09.896620Z, `machine_id: desktop-3fevhd2-1c74096080`, confirms that the actual R194 audit is already retained in the [media index](evidence/episode04-r194-forward-split-merge-12004/media-index.json), [strict audit](evidence/episode04-r194-forward-split-merge-12004/media-audit-a05.json) and [six-frame review](evidence/episode04-r194-forward-split-merge-12004/media-six-frame-review-a05.json). The older normal-close paragraph records that lane's earlier scope; it is preserved. This reconciliation did not read/hash the raw, decode, extract frames or review pixels again.
+
+The historical raw is115.566 encoded seconds/3467frames at1280x720 and30fps, versus119.914008 wall seconds; neither reaches120seconds. Full count, strict available-stream decode and decoded PTS checks exited0, with no missing timestamps or regressions. There are0audio streams: this is not proof of an audio track. The six isolated samples show250 ->75 ->251 at0/6.3/35.167seconds;35.167seconds is already merged. They bound the visible split change to(0,6.3] and merge change to(6.3,35.167], but do not attest simultaneous readable75/175 armies. Controller/native times remain separate from encoded PTS until calibrated.
+
+The remaining gap is a specified in/out interval and actual full1x review of every intervening frame, readable two-army/action transitions and unobstructed presentation. Strict decode, PTS continuity, finite samples and the independent native business chain do not establish that visual review. Continuous clean, full1x human review and human signoff remain false; no dynamic qualification or additional research/business credit is added here.

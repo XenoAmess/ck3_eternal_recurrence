@@ -1,0 +1,41 @@
+{
+  "schema": "xar.root.exact-two-old-cas-retirement-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "root_owner": "/root",
+  "observed_at_utc": "2026-10-17T03:49:03.601630+00:00",
+  "source_head": "2da6e883ad1cbf612d56038c17fa1341b78bbb44",
+  "plan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-large-cache-r197-readonly-a01\\E02-TWO-CAS.plan.readonly-a01.json.gz",
+    "bytes": 3092,
+    "sha256": "e035dec8dc16ab09734d5a14fc3dff08fc0b4ee02580044d115bda0ec0c943df"
+  },
+  "independent_root_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\storage-large-cache-r197-readonly-a01\\root-review-a01\\REVIEW.actual.json",
+    "bytes": 2405,
+    "sha256": "2c8250bf5c12cfd09a0d2e997b12c8e3828295837ca42b5b4dac08293c786202"
+  },
+  "decision": "adopt_exact_two_replicas_for_retirement",
+  "scope": "Only the two target paths, exact file IDs, size, FILETIME, single-link and allocation in the pinned plan; no directory deletion",
+  "semantic_owner_decision": "These old Episode02 native CAS replicas are not current or planned inputs for Episode04 or any active task owned by Root. Retire these two paths from any blanket old-run protection. Preserve historical native manifests and mark the replicas deleted/unavailable after actual deletion.",
+  "accepted_evidence_level": "Original producer recorder-final and native-preserve full SHA declarations agree; current same-handle identity/size/FILETIME/link/allocation, source proof pins, current configuration checks, process and Restart Manager guards passed. This is explicitly historical production SHA plus fresh metadata, not a fresh media-body hash.",
+  "early_retirement_reason": "Surplus preservation replicas; independent original recordings, recorder-final and complete PTS remain locally readable, with no actual current consumer for these CAS paths.",
+  "keeper_protection": {
+    "owner": "/root",
+    "purpose": "Retain the two original recordings, recorder-final, full PTS and original source metadata while retiring surplus replicas and retaining Episode02 recovery inputs",
+    "object_scope": "The two retained_original/producer_recorder_final/retained_full_PTS_metadata objects and original small provenance in the pinned plan only",
+    "next_use": "Verify originals unchanged after deletion and retain for Episode02 recovery review",
+    "review_by_utc": "2026-10-24T03:49:03.601630+00:00",
+    "automatic_renewal": false,
+    "renewal_count": 0
+  },
+  "execution_window_end_utc": "2026-10-17T04:34:03.601630+00:00",
+  "execution_conditions": [
+    "Fresh same-handle exact identity and scope/reparse validation before each deletion",
+    "Fresh liveness/Restart Manager and source proof pins, retain on any changed/busy/unknown state",
+    "Use the existing exact native deletion guard; only two allowlisted target leaves",
+    "Keep original files and all full PTS untouched; verify absence and retained original identity afterward",
+    "Preserve small per-replica availability/deletion results and actual physical allocation; do not attribute all concurrent volume free-space changes"
+  ],
+  "actual_deleted": 0,
+  "new_reservation_or_cleanup_credit": 0
+}

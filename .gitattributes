@@ -694,3 +694,32 @@ tools/fixtures/edl_null_sequence_*.json -text
 
 # Preserve the small OBS failure receipts exactly as pinned.
 docs/ck3-native-ai/research/obs-preconfigured-first-run/** -text whitespace=cr-at-eol
+# Exact R197 next-intake evidence originals.
+/docs/ck3-native-ai/evidence/episode04-r195-r196-r08-personal-wallet-12004/PAIR-CALLBACKS.actual-a03.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r195-r196-r08-personal-wallet-12004/source-index.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/exact-plan.json.gz -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/Root-decision.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/result.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/independent-readback.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/availability.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/Root-decision-seal.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/leaf-0.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/leaf-1.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e02-cas-replicas/index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r196-cap100-and-multiday-preparation-12004/source-index.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/exact-plan.json.gz -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/Root-decision.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/result.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/independent-readback.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/availability.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/Root-decision-seal.actual.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/retained-knowledge.readonly.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/legacy-session-result.json -text whitespace=cr-at-eol
+/docs/maintenance/evidence/2026-10-17-e01-mcp-aggregate/index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-17-r08-expense-context-top-liege/ROLE-BINDINGS.actual.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-county-relation-12004/source-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-county-relation-12004/originals.exact-a01.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-county-relation-12004/held-relation-source.exact-a01.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-county-relation-12004/OR-NATIVE-NEXT.md -text whitespace=-blank-at-eol,cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-county-relation-12004/OR-PYTHON-BOUNDARY.md -text whitespace=-blank-at-eol,cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r197-reinforcement-step-admission-12004/actual-sdk-rejection.json -text whitespace=cr-at-eol

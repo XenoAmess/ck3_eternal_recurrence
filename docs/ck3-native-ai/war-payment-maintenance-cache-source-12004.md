@@ -161,3 +161,16 @@ before_formula_matches_amount = (before_computed_add_raw == record.amount_raw)
 ## 2026-10-16：R0178 两个 raw store 来源增量
 
 [R0178 真实 writer 与完整函数](war-payment-r0178-writer-source-12004.md)已补齐 `+18→+2C0`、`+20→+2C8` 的两个真实物理写入与完整695B赋值函数；历史本轮未知回执保持原样。入口 `R9=*(entryRCX+1C0)` 后、任何 callee 前无条件复制两项。它们的上游业务含义、另外两字段、caller/date cadence 与已付军事费仍未知，`maintenance_attribution=unclosed`。Agent 可保留两个 raw store 已知，不得将生产输出 `known_producer=false` 升成军事归因；精确原件和普通clone复放见新专题。
+
+
+## 2026-10-17：ExpenseContextCharacter 与 TopLiege 的实际4绑定同址
+
+新跨专题 source 连接已闭：actual4 cash header 的 `kWarCashExpenseContextCharacterRva=28BFD80`，与 actual4 TitleHolder factory 的 `kTopLiegeRva=28BFD80` 完全相同；两个 factory 都以 actual4 `kExecutableSha256` 准入。TitleHolder 的共享 reader 把该返回对象读为 `holder_top_liege_character_id`，独立于 immediate-liege28BFC50。因而现有 cash 中这个参数可明确记录为 **同一已采用 top-liege native entry 的返回 Character**，不必继续将28BFD80当成角色类型全未知的孤立 getter。
+
+`MonthlyFlow` 的实参链是 `L=expense_context_character(A)`，随后 `monthly_total_expenses(&out,A,L,secondary_income,false,nullptr)`；current/all-raised military getter仍接原始A。该 source-level 角色连接不能把L命名为实际payer，也不能把L的Character指针当成A的 `*(A+1C0)` secondary context。现有reader只核返回L非null，未将L的完整身份写入cash wire；此前任何场次都不能按此新连接补写未采集的top-liege ID。
+
+精确Git blob、整文件SHA及必要原行收于[薄角色合同](acceptance/2026-10-17-r08-expense-context-top-liege/ROLE-BINDINGS.actual.json)。此处闭合的是仓库两个actual4绑定的地址相等及既有采用角色；本轮没有重新取得28BFD80的native body语义证明、调用getter或新增实机事实。下一最窄身份字段是同帧的原actor与该返回Character的pointer/fullID；即使取到，也还须另证军事分量→实际payer钱包的因果链。
+
+同轮另核到realm-law adapter有十项currency键序：gold/prestige/piety/renown/influence/herd/treasury/treasury_or_gold/merit/barter_goods。这是该cost表示的已采用source域；未证明它与28B9950六selector网关同域，不能把其ordinal4=influence或ordinal9=barter_goods直接填给raw selector4或军事向量slot9。权威selector dispatch桥、c/d producer与失效、实际payer及calendar trigger仍unknown，`maintenance_attribution=unclosed`；不增加R08整卡信用。
+
+机器 `desktop-3fevhd2-1c74096080`，本轮只读小source原件；未读旧cash日志、EXE、SDK、桌面或构建，旧9例与旧矩阵未重跑。上述身份与源码可跨机复用，部署/安装/现场资格仍须在目标机另验。

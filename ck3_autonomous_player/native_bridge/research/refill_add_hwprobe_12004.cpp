@@ -16,6 +16,7 @@
 #include <atomic>
 #include <chrono>
 #include <cstdint>
+#include "refill_add_live_12004/refill_stack_q_source_12004.hpp"
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -26,6 +27,9 @@
 #include <string>
 #include <vector>
 
+#if defined(XAR_REFILL_V3_COLD_BUILD) && XAR_ENABLE_REFILL_ADD_HWPROBE_12004
+#error The cold adapter cannot enable the production CLI
+#endif
 namespace {
 
 constexpr std::array<DWORD64, 2> kSiteRvas{0x2A98B88, 0x2A98B8B};
@@ -40,6 +44,24 @@ std::string g_machine;
 std::uint64_t g_debug_hits=0;
 constexpr std::array<std::uint8_t, 3> kSetupBytes{0x01,0x50,0xF4};
 constexpr std::array<std::uint8_t, 6> kResolveBytes{0x8B,0x48,0xF4,0x3B,0x48,0xF0};
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+DWORD64 g_fixture_base=0,g_fixture_arrg_slot=0,g_fixture_army_slot=0;
+std::array<DWORD64,2> g_fixture_sites{};
+std::uint64_t g_fixture_hit_limit=100000;
+constexpr const char *kRawSchema="xar.ck3.refill_ADD_12004.shared_probe_cold.v1";
+constexpr const char *kReadySchema="xar.ck3.refill_ADD_12004.shared_probe_cold_ready.v1";
+constexpr const char *kSiteKey="synthetic_site_address";
+constexpr const char *kBudgetKind="fixture_debug_budget";
+std::uint64_t DebugHitLimit12004(){return g_fixture_hit_limit;}
+DWORD64 HitSite12004(int site){return g_fixture_sites[site];}
+#else
+constexpr const char *kRawSchema="xar.ck3.refill_ADD_12004.hwprobe_raw.v3";
+constexpr const char *kReadySchema="xar.ck3.refill_ADD_12004.hwprobe_ready.v2";
+constexpr const char *kSiteKey="site_rva";
+constexpr const char *kBudgetKind="debug_hit_budget";
+constexpr std::uint64_t DebugHitLimit12004(){return 100000;}
+DWORD64 HitSite12004(int site){return kSiteRvas[site];}
+#endif
 constexpr DWORD kResumeFlag = 0x10000;
 constexpr DWORD kWaitSliceMs = 100;
 constexpr DWORD kBreakCleanupWaitMs = 5000;
@@ -198,6 +220,9 @@ struct Hit {
   std::uint32_t full_id=0,q_bits=0,current=0,maximum=0;
   std::int32_t q_index=0; unsigned slot=7;
   std::array<std::uint8_t,252> seven{};
+  // Fixed stack window passed as [rsp+20,rsp+3C) at 2A98B3A/B3F.
+  std::array<std::uint8_t,28> stack_q_window{};
+  bool stack_q_source_complete=false;
   std::int32_t arrg_raw=-1,arrg_resolved=-1,army_raw=-1,army_resolved=-1;
   DWORD64 arrg_pointer=0,army_pointer=0;
   bool physical_complete=false,data_complete=false;
@@ -208,13 +233,22 @@ template<class T> bool Read(HANDLE p,DWORD64 a,T &v) {return ReadExact(p,a,&v,si
 DWORD64 Resolve(HANDLE p,DWORD64 base,DWORD64 registry_rva,DWORD64 fallback_rva,
                 std::int32_t full,std::int32_t &resolved) {
   DWORD64 registry=0,table=0,object=0;std::uint32_t count=0,id=0;
-  if(!Read(p,base+registry_rva,registry))return 0;
+  DWORD64 registry_slot=base+registry_rva;
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+  if(registry_rva==0x5D1F340)registry_slot=g_fixture_arrg_slot;
+  else if(registry_rva==0x5D1DE48)registry_slot=g_fixture_army_slot;
+  else return 0;
+#endif
+  if(!Read(p,registry_slot,registry))return 0;
   const auto index=std::uint32_t(full)&0xFFFFFF;
   if(registry && Read(p,registry+0x2C,count) && index<count && count<=1000000 &&
       Read(p,registry+0x20,table) && table && Read(p,table+16ULL*index+8,object) &&
       object && Read(p,object+0x10,id) && id==std::uint32_t(full)) {
     resolved=static_cast<std::int32_t>(id);return object;
   }
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+  return 0; // Synthetic registries do not fall through to game-shaped slots.
+#endif
   // Keep actual fallback identity separately; it never becomes exact DATA credit.
   if(!Read(p,base+fallback_rva,object)||!object||!Read(p,object+0x10,id))return 0;
   resolved=static_cast<std::int32_t>(id);return object;
@@ -238,6 +272,10 @@ Hit ReadHit(HANDLE process,DWORD64 base,int site,DWORD tid,const CONTEXT &c) {
   // Existing regular-core entry detour can make this an opaque wrapper return.
   // Preserve it as raw context; it is never a substitute for native parent TLS.
   h.physical_complete=true;
+  const auto stack_q=xar::research::refill_stack_q_12004::ReadRefillStackQ12004(
+      process,h.rsp,h.q_index,h.q_bits);
+  h.stack_q_window=stack_q.bytes;
+  h.stack_q_source_complete=stack_q.complete();
   if(!Read(process,h.pointer,h.arrg_raw))return h;
   if(h.arrg_raw==-1){h.data_count=0;h.data_complete=true;return h;}
   h.arrg_pointer=Resolve(process,base,0x5D1F340,0x5D1F338,h.arrg_raw,h.arrg_resolved);
@@ -271,8 +309,8 @@ bool PairIsUnique(const std::vector<Hit> &hits) {
     std::uint32_t(a.current+a.q_bits)==b.current;
 }
 void LogHit(std::ofstream &o,const Hit &h,DWORD pid,std::uint64_t ordinal) {
-  o<<"{\"kind\":\"raw_ADD_boundary\",\"machine_id\":\""<<g_machine<<"\",\"site_rva\":\""
-   <<Hex(kSiteRvas[h.site])<<"\",\"pid\":"<<pid<<",\"thread_id\":"<<h.tid
+  o<<"{\"kind\":\"raw_ADD_boundary\",\"machine_id\":\""<<g_machine<<"\",\""<<kSiteKey<<"\":\""
+   <<Hex(HitSite12004(h.site))<<"\",\"pid\":"<<pid<<",\"thread_id\":"<<h.tid
    <<",\"event_ordinal\":"<<ordinal<<",\"debug_event_ordinal\":"<<g_debug_hits<<",\"qpc\":"<<h.qpc<<",\"regi_pointer\":\""<<Hex(h.regi)
    <<"\",\"regi_full_id_u32\":"<<h.full_id<<",\"physical_slot\":"<<h.slot
    <<",\"rax_anchor\":\""<<Hex(h.pointer)<<"\",\"rsp\":\""<<Hex(h.rsp)<<"\",\"core_caller_raw\":\""<<Hex(h.core_caller)
@@ -280,7 +318,11 @@ void LogHit(std::ofstream &o,const Hit &h,DWORD pid,std::uint64_t ordinal) {
    <<",\"q_u32\":"<<h.q_bits<<",\"q_i32\":"<<static_cast<std::int32_t>(h.q_bits)
    <<",\"current_u32\":"<<h.current<<",\"maximum_u32\":"<<h.maximum
    <<",\"physical_complete\":"<<(h.physical_complete?"true":"false")
-   <<",\"native_core_token\":null,\"natural_parent_token\":null,\"natural_attribution_ready\":false"
+   <<",\"stack_q_source_complete\":"<<(h.stack_q_source_complete?"true":"false")
+   <<",\"stack_q_window_28_hex\":\"";
+  constexpr char q_digits[]="0123456789abcdef";
+  for(auto b:h.stack_q_window)o<<q_digits[b>>4]<<q_digits[b&15];
+  o<<"\",\"native_core_token\":null,\"natural_parent_token\":null,\"natural_attribution_ready\":false"
    <<",\"arrg_raw\":"<<h.arrg_raw<<",\"arrg_resolved\":"<<h.arrg_resolved
    <<",\"arrg_pointer\":\""<<Hex(h.arrg_pointer)<<"\",\"army_raw\":"<<h.army_raw
    <<",\"army_resolved\":"<<h.army_resolved<<",\"data_count\":"<<h.data_count
@@ -296,10 +338,10 @@ bool WriteReady(const std::filesystem::path &path, DWORD pid, DWORD64 base) {
   if (std::filesystem::exists(path)) return false;
   std::ofstream ready(path, std::ios::binary | std::ios::out);
   if (!ready) return false;
-  ready << "{\"schema\":\"xar.ck3.refill_ADD_12004.hwprobe_ready.v2\","
+  ready << "{\"schema\":\""<<kReadySchema<<"\","
         << "\"pid\":" << pid << ",\"module_base\":\"" << Hex(base)
-        << "\",\"site_0\":\"" << Hex(kSiteRvas[0])
-        << "\",\"site_1\":\"" << Hex(kSiteRvas[1])
+        << "\",\"site_0\":\"" << Hex(HitSite12004(0))
+        << "\",\"site_1\":\"" << Hex(HitSite12004(1))
         << "\",\"machine_id\":\"" << g_machine << "\",\"process_created_filetime\":" << g_expected_created
         << ",\"thread_id\":" << g_expected_tid << ",\"regi_full_id_u32\":" << g_expected_regiment
         << ",\"physical_slot\":" << g_expected_slot << "}\n";
@@ -326,10 +368,43 @@ bool HasExpectedImageAndAnchors(HANDLE process, DWORD pid, DWORD64 &base) {
                                 {base + kSiteRvas[0], base + kSiteRvas[1]});
 }
 
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+bool ColdSiblingImage12004(HANDLE process,DWORD pid){
+  std::array<wchar_t,32768> path{},own{};DWORD n=DWORD(path.size());
+  if(!QueryFullProcessImageNameW(process,0,path.data(),&n)||!n||n>=path.size())return false;
+  const DWORD own_n=GetModuleFileNameW(nullptr,own.data(),DWORD(own.size()));
+  if(!own_n||own_n>=own.size())return false;
+  std::error_code error;
+  const auto actual=std::filesystem::weakly_canonical(std::filesystem::path(std::wstring(path.data(),n)),error);
+  if(error)return false;
+  const auto expected=std::filesystem::weakly_canonical(
+      std::filesystem::path(std::wstring(own.data(),own_n)).parent_path()/L"refill_cold_target.exe",error);
+  if(error||_wcsicmp(actual.c_str(),expected.c_str())!=0)return false;
+  HANDLE snapshot=CreateToolhelp32Snapshot(TH32CS_SNAPMODULE|TH32CS_SNAPMODULE32,pid);
+  if(snapshot==INVALID_HANDLE_VALUE)return false;
+  MODULEENTRY32W entry{};entry.dwSize=sizeof entry;DWORD64 base=0,size=0;
+  if(Module32FirstW(snapshot,&entry))do{
+    if(_wcsicmp(entry.szExePath,actual.c_str())==0){base=reinterpret_cast<DWORD64>(entry.modBaseAddr);size=entry.modBaseSize;break;}
+  }while(Module32NextW(snapshot,&entry));
+  CloseHandle(snapshot);
+  if(!base||!size||base!=g_fixture_base||base>UINT64_MAX-size)return false;
+  auto inside=[&](DWORD64 a,DWORD64 count){return a>=base&&count<=size&&a-base<=size-count;};
+  return g_fixture_sites[0]<=UINT64_MAX-3&&g_fixture_sites[1]==g_fixture_sites[0]+3&&
+      inside(g_fixture_sites[0],3)&&inside(g_fixture_sites[1],6)&&
+      g_fixture_arrg_slot!=g_fixture_army_slot&&inside(g_fixture_arrg_slot,8)&&inside(g_fixture_army_slot,8);
+}
+#endif
+
 bool AttachedIdentityMatches(HANDLE process,DWORD pid,DWORD64 base,bool fixture,
                              const std::array<DWORD64,2>&sites){
   if(ProcessCreationTime(process)!=g_expected_created)return false;
-  if(fixture)return ExactAnchorsAt(process,sites);
+  if(fixture){
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+    return base==g_fixture_base&&ColdSiblingImage12004(process,pid)&&ExactAnchorsAt(process,sites);
+#else
+    return false;
+#endif
+  }
   DWORD64 actual_base=0;
   return HasExpectedImageAndAnchors(process,pid,actual_base)&&actual_base==base;
 }
@@ -353,15 +428,21 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
   DWORD64 base = 0;
   const std::uint64_t process_created = ProcessCreationTime(process);
   const bool fixture = fixture_sites[0] != 0 || fixture_sites[1] != 0;
-#if !defined(XAR_WAR31_HWPROBE_FIXTURE)
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
   if (fixture) {
     CloseHandle(process);
     std::cerr << "fixture sites are unavailable in the production sampler\n";
     return 2;
   }
 #endif
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+  if(fixture)base=g_fixture_base;
+#endif
   const bool image_ok = fixture ?
       (fixture_sites[0] != 0 && fixture_sites[1] != 0 &&
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+        ColdSiblingImage12004(process,pid) &&
+#endif
        ExactAnchorsAt(process, fixture_sites)) :
       HasExpectedImageAndAnchors(process, pid, base);
   if (!process_created || process_created!=g_expected_created || !image_ok) {
@@ -378,7 +459,7 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
     return 2;
   }
   output << "{\"machine_id\":\"" << g_machine << "\",\"exact_exe_sha256_basis\":\"external-frozen-runtime-admission\",\"kind\":\"start\",\"schema\":"
-         << "\"xar.ck3.refill_ADD_12004.hwprobe_raw.v2\",\"pid\":" << pid
+         << "\""<<kRawSchema<<"\",\"pid\":" << pid
          << ",\"process_created_filetime\":" << process_created
          << ",\"module_base\":\"" << Hex(base)
          << "\",\"fixture\":" << (fixture ? "true" : "false")
@@ -458,6 +539,9 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
         break;
       case EXIT_THREAD_DEBUG_EVENT:
         RetireDebugThread(event.dwThreadId,threads,armed_tids);
+        // A reused numerical TID is a different thread generation. Never arm it
+        // under the old owner binding after the selected thread has exited.
+        if(event.dwThreadId==g_expected_tid)reason="selected_thread_exited_during_probe";
         break;
       case LOAD_DLL_DEBUG_EVENT:
         if (event.u.LoadDll.hFile) CloseHandle(event.u.LoadDll.hFile);
@@ -495,7 +579,7 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
           reason = "unrelated_single_step_exception";
           break;
         }
-        if(++g_debug_hits>100000){reason="debug_hit_budget_exhausted";break;}
+        if(++g_debug_hits>DebugHitLimit12004()){reason="debug_hit_budget_exhausted";break;}
         std::uint32_t candidate_id=0;
         const bool candidate=event.dwThreadId==g_expected_tid && context.Rsi &&
             Read(process,context.Rsi+0x10,candidate_id) && candidate_id==g_expected_regiment &&
@@ -555,8 +639,10 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
         if(event.dwDebugEventCode==CREATE_THREAD_DEBUG_EVENT &&
             !OwnDebugThread(event.dwThreadId,event.u.CreateThread.hThread,threads,armed_tids))
           reason="cleanup_cannot_own_new_thread";
-        if(event.dwDebugEventCode==EXIT_THREAD_DEBUG_EVENT)
+        if(event.dwDebugEventCode==EXIT_THREAD_DEBUG_EVENT){
           RetireDebugThread(event.dwThreadId,threads,armed_tids);
+          if(event.dwThreadId==g_expected_tid)reason="selected_thread_exited_during_probe";
+        }
         if (event.dwDebugEventCode == LOAD_DLL_DEBUG_EVENT && event.u.LoadDll.hFile)
           CloseHandle(event.u.LoadDll.hFile);
         if (event.dwDebugEventCode == EXIT_PROCESS_DEBUG_EVENT) process_exited = true;
@@ -597,7 +683,13 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
     reason = "cleanup_not_proven";
   if(PairIsUnique(hits)) {
     output<<"{\"kind\":\"physical_ADD_pair\",\"machine_id\":\""<<g_machine
-      <<"\",\"actual_ADD_observed\":true,\"native_instruction_replayed_by_probe\":false,\"q_i32\":"
+      <<"\","
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+      <<"\"fixture\":true,\"CK3_actual_ADD_observed\":false,\"synthetic_instruction_ADD_observed\":true,"
+#else
+      <<"\"actual_ADD_observed\":true,"
+#endif
+      <<"\"native_instruction_replayed_by_probe\":false,\"q_i32\":"
       <<static_cast<std::int32_t>(hits[0].q_bits)<<",\"before_current_u32\":"<<hits[0].current
       <<",\"after_current_u32\":"<<hits[1].current<<",\"DWORD_wrap_matches\":true"
       <<",\"associated_DATA_pair_complete\":"<<((hits[0].data_complete&&hits[1].data_complete&&
@@ -605,7 +697,18 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
       <<",\"natural_parent_token\":null,\"natural_attribution_ready\":false,\"full_window_coverage_ready\":false}\n";
     output.flush();
   }
-  output << "{\"kind\":\"debug_hit_budget\",\"debug_hits\":" << g_debug_hits << ",\"limit\":100000}\n";
+#if defined(XAR_REFILL_V3_COLD_BUILD)
+  if(PairIsUnique(hits)){
+    auto bad=hits;bool refused=true;bad[1].tid+=1;refused&=!PairIsUnique(bad);
+    bad=hits;bad[1].q_bits^=1;refused&=!PairIsUnique(bad);
+    bad=hits;bad[1].pointer+=0x24;refused&=!PairIsUnique(bad);
+    bad=hits;bad[1].current^=1;refused&=!PairIsUnique(bad);
+    output<<"{\"kind\":\"fixture_mismatch_guard\",\"derived_from_actual_owned_hits\":true,"
+      <<"\"cross_tid_q_pointer_current_all_refused\":"<<(refused?"true":"false")<<"}\n";
+    if(!refused)reason="mismatch_guard_failed";
+  }
+#endif
+  output << "{\"kind\":\""<<kBudgetKind<<"\",\"debug_hits\":" << g_debug_hits << ",\"limit\":"<<DebugHitLimit12004()<<"}\n";
   LogTerminal(output, reason == "paired" ? "paired" : "red", reason,
               cleared || process_exited, detached, hits.size());
   CloseHandle(process);

@@ -70,13 +70,29 @@ def set_fixed_military_reinforcement_12004(driver, *, desired_enabled, expected_
                               "status": "claimed_result_unknown_no_retry"})
         except FileExistsError as error:
             raise BridgeUnavailableError("reinforcement action already claimed at this frame; no retry") from error
-        raw = driver._execute_primitive_step(
-            step, expected_revision=revision, required_capability=capability,
-            protocol_request_id=request_id,
-            request_fields={"expected_player_character_id": binding["played_character_id"],
-                            "expected_game_pid": binding["game_pid"],
-                            "expected_connection_generation": binding["connection_generation"]},
-        )
+        try:
+            raw = driver._execute_primitive_step(
+                step, expected_revision=revision, required_capability=capability,
+                protocol_request_id=request_id,
+                request_fields={"expected_player_character_id": binding["played_character_id"],
+                                "expected_game_pid": binding["game_pid"],
+                                "expected_connection_generation": binding["connection_generation"]},
+            )
+        except Exception as error:
+            # Rejection and timeout are evidence, never permission to toggle
+            # again. Preserve the primitive's actual packet/result if present;
+            # absent frames remain unknown rather than reconstructed as sent.
+            _preserve(claim.with_suffix(".failure.json"), {
+                "schema": "ck3-military-reinforcement-native-failure-v1",
+                "request_id": request_id, "action_claim_path": str(claim),
+                "error_type": type(error).__name__, "error": str(error),
+                "native_error": getattr(error, "native_error", None),
+                "native_request_id": getattr(error, "native_request_id", None),
+                "native_request_frame": getattr(error, "native_request_frame", None),
+                "native_command_result_frame": getattr(error, "native_command_result_frame", None),
+                "result_state": "unknown_no_retry", "native_handler_execution_status": "unknown",
+            })
+            raise
         _preserve(claim.with_suffix(".result.json"), {"request_id": request_id, "raw": raw})
         result = normalize_reinforcement_ack(raw, binding, desired_enabled, before)
         deadline = time.monotonic() + VERIFICATION_TIMEOUT_SECONDS
