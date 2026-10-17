@@ -170,6 +170,15 @@ def materialize_product_profile(context,product_dir,plain_configuration,*,worksh
     require(set(plain_configuration)==set(CONFIG_NAMES),'Exactly four plain configurations required')
     profile.mkdir(parents=True)
     for relative,row in plain_configuration.items():checked_copy(row,profile/relative)
+    if product_dir is None:
+        require(workshop_cache_files is None,'A vanilla saved campaign cannot declare Workshop product files')
+        write_json(profile/'dlc_load.json',{'enabled_mods':[],'disabled_dlcs':[]})
+        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),
+                   'enabled_mods':[],'product_files':[]}
+        path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)
+        rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}
+        return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,
+                'product_file_count':0,'runtime_status':'NOT_RUN','fixture_mounted':False,'vanilla_profile':True}
     product_dir=Path(product_dir).resolve();target=profile/'mod-content/product'
     require((product_dir/'descriptor.mod').is_file(),'Exact formal product descriptor required')
     if workshop_cache_files is None:
