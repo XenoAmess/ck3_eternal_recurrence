@@ -15,9 +15,9 @@ if str(TOOLS_DIRECTORY) not in sys.path:
 import promo_toolchain_loader as loader  # noqa: E402
 
 
-EXPECTED_VERSION = "0.2.1"
+EXPECTED_VERSION = "0.3.0"
 EXPECTED_SHA256 = (
-    "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+    "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
 )
 
 

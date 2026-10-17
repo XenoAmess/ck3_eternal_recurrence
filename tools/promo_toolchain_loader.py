@@ -21,7 +21,7 @@ from pathlib import Path
 
 
 PROMO_TOOLCHAIN_REPOSITORY = "https://github.com/XenoAmess/xar_promo_toolchain"
-PROMO_TOOLCHAIN_VERSION = "0.2.1"
+PROMO_TOOLCHAIN_VERSION = "0.3.0"
 PROMO_TOOLCHAIN_RELEASE_TAG = f"v{PROMO_TOOLCHAIN_VERSION}"
 PROMO_TOOLCHAIN_WHEEL_URL = (
     f"{PROMO_TOOLCHAIN_REPOSITORY}/releases/download/"
