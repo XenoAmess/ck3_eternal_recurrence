@@ -511,7 +511,7 @@ def validate_saved_campaign_options(args: argparse.Namespace) -> None:
                 or args.frontend_rules_diagnostic_new_game or args.frontend_diagnostic_only
                 or args.allow_verified_direct_bookmarks or args.cold_start_checkpoint or args.turns
                 or args.native_fixture_inbox or args.print_default_plan):
-            raise SystemExit("saved campaign requires explicit product-only profile/input/tail plan and excludes cold fixture, New Game/Start, rules, SDK, checkpoint, fixture inbox and auto turns")
+            raise SystemExit("saved campaign requires an explicit product-only or vanilla profile/input/tail plan and excludes cold fixture, New Game/Start, rules, SDK, checkpoint, fixture inbox and auto turns")
         saved_campaign_expected(args)
         for step in load_plan(args.plan):
             kind = step.get("kind", "tool")
@@ -555,19 +555,26 @@ def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, 
     if (spec.state_dir / "runtime.json").exists() or (spec.state_dir / "native-session").exists():
         raise ValueError("saved campaign state has a prior managed launch or lifecycle queue")
     dlc = json.loads((profile / "dlc_load.json").read_text(encoding="utf-8-sig"))
-    if not isinstance(dlc, dict) or not isinstance(dlc.get("enabled_mods"), list) or not dlc["enabled_mods"]:
-        raise ValueError("saved campaign requires an explicitly prepared product-only profile")
-    # An explicit product-only inventory is mandatory. The consumer must freeze
-    # its formal release projection; a cold fixture registrar is never reused.
+    if not isinstance(dlc, dict) or not isinstance(dlc.get("enabled_mods"), list):
+        raise ValueError("saved campaign requires an explicitly prepared profile")
+    # An explicit inventory is mandatory, including an exactly empty vanilla
+    # profile. Product projections may never reuse a cold fixture registrar.
     inventory_path = args.saved_campaign_product_inventory.expanduser().resolve()
     inventory_bytes = inventory_path.read_bytes()
     inventory = json.loads(inventory_bytes)
     if (not isinstance(inventory, dict) or set(inventory) != {"schema", "profile_path", "enabled_mods", "product_files"}
-            or inventory["schema"] != "ck3-saved-campaign-product-only-profile-v1"
+            or inventory["schema"] not in {"ck3-saved-campaign-product-only-profile-v1",
+                "ck3-saved-campaign-vanilla-profile-v1"}
             or Path(inventory["profile_path"]).resolve() != profile
             or inventory["enabled_mods"] != dlc["enabled_mods"]
-            or not isinstance(inventory["product_files"], list) or not inventory["product_files"]):
-        raise ValueError("saved campaign product-only inventory does not bind the prepared profile")
+            or not isinstance(inventory["product_files"], list)):
+        raise ValueError("saved campaign inventory does not bind the prepared profile")
+    vanilla = inventory["schema"] == "ck3-saved-campaign-vanilla-profile-v1"
+    if vanilla:
+        if inventory["enabled_mods"] != [] or inventory["product_files"] != []:
+            raise ValueError("saved campaign vanilla inventory must have exactly empty enabled_mods and product_files")
+    elif not inventory["enabled_mods"] or not inventory["product_files"]:
+        raise ValueError("saved campaign product-only inventory requires nonempty enabled_mods and product_files")
     seen = set()
     for row in inventory["product_files"]:
         if not isinstance(row, dict) or set(row) != {"path", "bytes", "sha256"}:
@@ -619,7 +626,8 @@ def prepare_saved_campaign(args: argparse.Namespace, spec: object) -> dict[str, 
     return {**expected, "profile_path": str(profile), "copied_save_path": str(target),
         "load_save_name": target.stem, "product_inventory_path": str(inventory_path),
         "product_inventory_sha256": hashlib.sha256(inventory_bytes).hexdigest(),
-        "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
+        "profile_inventory_schema": inventory["schema"],
+        "status": "IMMUTABLE_SAVE_COPIED_TO_FRESH_VANILLA_PROFILE" if vanilla else "IMMUTABLE_SAVE_COPIED_TO_FRESH_PRODUCT_ONLY_PROFILE",
         "source_game_state_claimed": False, "product_acceptance_proven": False}
 
 
