@@ -1,0 +1,657 @@
+{
+  "schema": "xar.public-readonly-status-newer-fixture-provenance/v1",
+  "status": "FIVE_ACTUAL_IMMUTABLE_PROJECTIONS_VERIFIED",
+  "rows": [
+    {
+      "fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status\\actual-auto21-newer.json",
+        "sha256": "8bd76432bbe83394de7ec056418fc3388d90038c7bd0552f7a8f8cca9e9693f5",
+        "bytes": 566
+      },
+      "actual_immutable_source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\p38-responses\\0021-1-result.json",
+        "sha256": "8bd76432bbe83394de7ec056418fc3388d90038c7bd0552f7a8f8cca9e9693f5",
+        "bytes": 566
+      },
+      "preserved_json_pointers": [
+        [
+          "started_at_utc"
+        ],
+        [
+          "ended_at_utc"
+        ],
+        [
+          "elapsed_seconds"
+        ],
+        [
+          "request",
+          "sequence"
+        ],
+        [
+          "request",
+          "tool"
+        ],
+        [
+          "request",
+          "arguments"
+        ],
+        [
+          "request",
+          "source"
+        ],
+        [
+          "result",
+          "meta"
+        ],
+        [
+          "result",
+          "content",
+          0,
+          "type"
+        ],
+        [
+          "result",
+          "content",
+          0,
+          "text"
+        ],
+        [
+          "result",
+          "content",
+          0,
+          "annotations"
+        ],
+        [
+          "result",
+          "content",
+          0,
+          "meta"
+        ],
+        [
+          "result",
+          "structured_content"
+        ],
+        [
+          "result",
+          "is_error"
+        ],
+        [
+          "result",
+          "result_type"
+        ]
+      ],
+      "derived_parser_metadata": {
+        "mcp_result_projection_json_utf8_bytes": {
+          "value": 251,
+          "meaning": "UTF8 byte count of compact projected result only; not an original Native field"
+        }
+      },
+      "all_preserved_values_equal_actual": true,
+      "business_facts_added": false
+    },
+    {
+      "fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status\\actual-control22-newer.json",
+        "sha256": "34ef97e4058282cc3040aaec3342a22ec1e263ce1fcd3a4559ef0df9bba1c674",
+        "bytes": 1009
+      },
+      "actual_immutable_source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\p38-responses\\0022-1-result.json",
+        "sha256": "34ef97e4058282cc3040aaec3342a22ec1e263ce1fcd3a4559ef0df9bba1c674",
+        "bytes": 1009
+      },
+      "preserved_json_pointers": [
+        [
+          "request",
+          "sequence"
+        ],
+        [
+          "request",
+          "command"
+        ],
+        [
+          "request",
+          "arguments",
+          "recovery_kind"
+        ],
+        [
+          "request",
+          "arguments",
+          "recovery_mode"
+        ],
+        [
+          "result",
+          "is_error"
+        ],
+        [
+          "result",
+          "structured_content",
+          "schema"
+        ],
+        [
+          "result",
+          "structured_content",
+          "status"
+        ],
+        [
+          "result",
+          "structured_content",
+          "audit"
+        ],
+        [
+          "result",
+          "structured_content",
+          "fresh_semantic_response"
+        ],
+        [
+          "result",
+          "structured_content",
+          "actual_paused"
+        ],
+        [
+          "result",
+          "structured_content",
+          "observed_date_raw"
+        ],
+        [
+          "result",
+          "structured_content",
+          "observed_actor_character_id"
+        ],
+        [
+          "result",
+          "structured_content",
+          "completed_cycles"
+        ],
+        [
+          "result",
+          "structured_content",
+          "failed_pending_business_credit"
+        ],
+        [
+          "result",
+          "structured_content",
+          "original_auto_replayed"
+        ],
+        [
+          "result",
+          "structured_content",
+          "new_auto_admitted"
+        ],
+        [
+          "result",
+          "structured_content",
+          "succession_performed"
+        ],
+        [
+          "result",
+          "structured_content",
+          "gameplay_actions_submitted"
+        ],
+        [
+          "result",
+          "structured_content",
+          "fresh_readonly_calls"
+        ]
+      ],
+      "derived_parser_metadata": {},
+      "all_preserved_values_equal_actual": true,
+      "business_facts_added": false
+    },
+    {
+      "fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status\\actual-recovery22-newer.json",
+        "sha256": "f6b7ff255936d1a8a7a8eb8566e35fa1ebf34abbf019d497933ba5af5bbeff47",
+        "bytes": 2869
+      },
+      "actual_immutable_source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\p38-queue\\READONLY-PRECONDITION-RECOVERY-0022.json",
+        "sha256": "f6b7ff255936d1a8a7a8eb8566e35fa1ebf34abbf019d497933ba5af5bbeff47",
+        "bytes": 2869
+      },
+      "preserved_json_pointers": [
+        [
+          "schema"
+        ],
+        [
+          "qualification",
+          "classification"
+        ],
+        [
+          "qualification",
+          "read_only_precondition"
+        ],
+        [
+          "qualification",
+          "business_submission"
+        ],
+        [
+          "qualification",
+          "native_stage"
+        ],
+        [
+          "qualification",
+          "current_auto_new_business_submission"
+        ],
+        [
+          "qualification",
+          "prior_faction_business_may_be_pending"
+        ],
+        [
+          "qualification",
+          "faction_pending_ledger_must_be_preserved"
+        ],
+        [
+          "qualification",
+          "prior_gift_result_verified"
+        ],
+        [
+          "qualification",
+          "receipt_query_submitted_by_failed_auto"
+        ],
+        [
+          "qualification",
+          "original_action_replay_allowed"
+        ],
+        [
+          "qualification",
+          "handler_source"
+        ],
+        [
+          "qualification",
+          "handler_sha256"
+        ],
+        [
+          "original_response"
+        ],
+        [
+          "original_response_sha256"
+        ],
+        [
+          "original_request",
+          "sequence"
+        ],
+        [
+          "original_request",
+          "tool"
+        ],
+        [
+          "original_request",
+          "arguments"
+        ],
+        [
+          "original_request",
+          "source"
+        ],
+        [
+          "failed_pending_cycle",
+          "global_turn"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "snapshot_id"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "revision"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "native_revision"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "date_raw"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "actor_character_id"
+        ],
+        [
+          "failed_pending_cycle",
+          "before",
+          "episode_run_id"
+        ],
+        [
+          "failed_pending_cycle",
+          "before_metrics_response"
+        ],
+        [
+          "failed_pending_cycle",
+          "auto_sequence"
+        ],
+        [
+          "failed_pending_cycle",
+          "stage"
+        ],
+        [
+          "fresh_semantic_response"
+        ],
+        [
+          "fresh_semantic_sha256"
+        ],
+        [
+          "same_game",
+          "pid"
+        ],
+        [
+          "same_game",
+          "creation_filetime"
+        ],
+        [
+          "observed",
+          "actor_character_id"
+        ],
+        [
+          "observed",
+          "actor_alive"
+        ],
+        [
+          "observed",
+          "date_raw"
+        ],
+        [
+          "observed",
+          "snapshot_id"
+        ],
+        [
+          "observed",
+          "revision"
+        ],
+        [
+          "observed",
+          "native_revision"
+        ],
+        [
+          "observed",
+          "episode_run_id"
+        ],
+        [
+          "observed",
+          "map_ready"
+        ],
+        [
+          "observed",
+          "paused"
+        ],
+        [
+          "observed",
+          "one_life_terminal"
+        ],
+        [
+          "observed",
+          "event_instance_id"
+        ],
+        [
+          "observed",
+          "pending_interaction_present"
+        ],
+        [
+          "same_actor_paused_recovery_verified"
+        ],
+        [
+          "successor_preflight_verified"
+        ],
+        [
+          "completed_cycles_before_after"
+        ],
+        [
+          "failed_pending_business_credit"
+        ],
+        [
+          "original_auto_replayed"
+        ],
+        [
+          "succession_performed"
+        ],
+        [
+          "gameplay_actions_submitted"
+        ],
+        [
+          "fresh_readonly_calls"
+        ],
+        [
+          "classifier_preserved",
+          "source"
+        ],
+        [
+          "classifier_preserved",
+          "sha256"
+        ]
+      ],
+      "derived_parser_metadata": {},
+      "all_preserved_values_equal_actual": true,
+      "business_facts_added": false
+    },
+    {
+      "fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status\\actual-sem23-newer.json",
+        "sha256": "0e940fbb7b8be352ffecb5b0d3d7da36680fbe7b2b4e838484cd4e41ef737756",
+        "bytes": 815
+      },
+      "actual_immutable_source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\p38-responses\\0023-1-result.json",
+        "sha256": "4a571bc0180d441ce888beaaa6041565cdb27c094292c63f430c782495825136",
+        "bytes": 22057
+      },
+      "preserved_json_pointers": [
+        [
+          "request",
+          "sequence"
+        ],
+        [
+          "request",
+          "tool"
+        ],
+        [
+          "request",
+          "arguments"
+        ],
+        [
+          "request",
+          "source"
+        ],
+        [
+          "started_at_utc"
+        ],
+        [
+          "ended_at_utc"
+        ],
+        [
+          "result",
+          "is_error"
+        ],
+        [
+          "result",
+          "structured_content",
+          "date_raw"
+        ],
+        [
+          "result",
+          "structured_content",
+          "paused"
+        ],
+        [
+          "result",
+          "structured_content",
+          "map_ready"
+        ],
+        [
+          "result",
+          "structured_content",
+          "episode_run_id"
+        ],
+        [
+          "result",
+          "structured_content",
+          "snapshot_id"
+        ],
+        [
+          "result",
+          "structured_content",
+          "revision"
+        ],
+        [
+          "result",
+          "structured_content",
+          "native_revision"
+        ],
+        [
+          "result",
+          "structured_content",
+          "played_character",
+          "character_id"
+        ],
+        [
+          "result",
+          "structured_content",
+          "played_character",
+          "alive"
+        ],
+        [
+          "result",
+          "structured_content",
+          "diagnostics",
+          "bridge_pid"
+        ],
+        [
+          "result",
+          "structured_content",
+          "diagnostics",
+          "connection_generation"
+        ]
+      ],
+      "derived_parser_metadata": {},
+      "all_preserved_values_equal_actual": true,
+      "business_facts_added": false
+    },
+    {
+      "fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status\\actual-opened21-newer.json",
+        "sha256": "3954c3f2aae07554350ce5248d570f4ab7913f118535f6daeab91ae60068377d",
+        "bytes": 1543
+      },
+      "actual_immutable_source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\runtime-repair-status\\a48e0b624ddb48f79b9aab06556cfb31-OPENED.json",
+        "sha256": "3954c3f2aae07554350ce5248d570f4ab7913f118535f6daeab91ae60068377d",
+        "bytes": 1543
+      },
+      "preserved_json_pointers": [
+        [
+          "schema"
+        ],
+        [
+          "binding",
+          "session"
+        ],
+        [
+          "binding",
+          "sdk_prefix"
+        ],
+        [
+          "binding",
+          "game_pid"
+        ],
+        [
+          "binding",
+          "game_creation_filetime"
+        ],
+        [
+          "binding",
+          "game_creation_date"
+        ],
+        [
+          "incident_id"
+        ],
+        [
+          "phase"
+        ],
+        [
+          "pause_reason"
+        ],
+        [
+          "halt_receipt",
+          "path"
+        ],
+        [
+          "halt_receipt",
+          "sha256"
+        ],
+        [
+          "original_request",
+          "sequence"
+        ],
+        [
+          "original_request",
+          "tool"
+        ],
+        [
+          "original_request",
+          "arguments"
+        ],
+        [
+          "original_request",
+          "source"
+        ],
+        [
+          "raw_pause_reason"
+        ],
+        [
+          "repair_message"
+        ],
+        [
+          "observed_frame",
+          "snapshot_id"
+        ],
+        [
+          "observed_frame",
+          "revision"
+        ],
+        [
+          "observed_frame",
+          "native_revision"
+        ],
+        [
+          "observed_frame",
+          "date_raw"
+        ],
+        [
+          "observed_frame",
+          "actor_character_id"
+        ],
+        [
+          "observed_frame",
+          "episode_run_id"
+        ],
+        [
+          "opened_at_utc"
+        ],
+        [
+          "expires_at_utc"
+        ],
+        [
+          "resolving_requires"
+        ],
+        [
+          "Game_action_submitted"
+        ],
+        [
+          "business_credit"
+        ]
+      ],
+      "derived_parser_metadata": {},
+      "all_preserved_values_equal_actual": true,
+      "business_facts_added": false
+    }
+  ],
+  "original_full_sources_not_vendored": true,
+  "mutable_CURRENT_or_loop_read": false,
+  "live_Driver_SAVE_video_body_reads": 0,
+  "Game_OBS_MCP_Desktop_calls": 0,
+  "source_5865_and_existing_tiny_bytes_changed": false
+}

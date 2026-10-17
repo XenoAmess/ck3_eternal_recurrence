@@ -1,0 +1,118 @@
+{
+  "schema": "xar.runtime-repair-status/v1",
+  "binding": {
+    "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime",
+    "sdk_prefix": "p37",
+    "game_pid": 230672,
+    "game_creation_filetime": 134366924532682885,
+    "game_creation_date": "20261017063413.268288+000"
+  },
+  "incident_id": "7ed5bf6ecb0146fabf88d6702f422f8a",
+  "phase": "repair_applied_waiting_for_progress",
+  "pause_reason": "继承人关系查询的只读快照已变化",
+  "halt_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-queue\\ROOT-REQUEST-HALTED-0189.json",
+    "sha256": "a7b3b60620b98989b66bff579ad11d7cd5fe352cdffcfcb2130de7b391ca21b0"
+  },
+  "original_request": {
+    "sequence": 196,
+    "tool": "ck3_auto_turn",
+    "arguments": {},
+    "source": "Root's bounded full_loop; unique new request"
+  },
+  "raw_pause_reason": "SDK error; original result retained; no automatic retry",
+  "repair_message": "已刷新继承人关系只读快照",
+  "observed_frame": {
+    "game_pid": 230672,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30",
+    "date_raw": 53145120,
+    "revision": 63,
+    "native_revision": 62
+  },
+  "opened_at_utc": "2026-10-17T07:14:21.666777+00:00",
+  "expires_at_utc": null,
+  "resolving_requires": "actual post-repair semantic receipt and successful progressing FULL",
+  "Game_action_submitted": false,
+  "business_credit": 0,
+  "last_decision": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\responses\\p37-responses-0194-1-result.json",
+      "sha256": "2ec9e9581e5db4f02d9dc3fc95cd7d7c4549d1eb8e8ddfc839ebb13f614fed57"
+    },
+    "summary": "enact-realm-law-crown-v1-private"
+  },
+  "updated_at_utc": "2026-10-17T07:20:18.206974+00:00",
+  "last_overlay_relay": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\responses\\zz-runtime-repair-20261017T072018207000Z-2eefb477.json",
+    "sha256": "0c4c15ecbe529d4861d9eebaf569d29d8e6c620a0b736da5dd788af2f1bb0a13"
+  },
+  "reason_evidence": {
+    "mapping": "heir_relationship_snapshot_changed",
+    "json_pointer": [
+      "result",
+      "content",
+      0,
+      "text"
+    ],
+    "error_excerpt": "Error executing tool ck3_auto_turn: current heir relationship query RED: current first-heir relationship frame changed; pre_read_guard=snapshot_not_equal; snapshot_read_completed=true; differing_fields=played_character_prestige; cached=date_raw:53145120,speed:5,paused:1,player_id:1,map_ready:1,has_played_character:1,pl",
+    "Native_business_result_or_failure_cause_beyond_text_inferred": false,
+    "original_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0196-1-result.json",
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6"
+    }
+  },
+  "reason_refinement_version": "construction-v1",
+  "reason_refinement": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\runtime-repair-status\\7ed5bf6ecb0146fabf88d6702f422f8a-REASON-REFINED-fe2d7587c12c.json",
+    "sha256": "46d3b9d17aaa45fac3cbb497d8db80ea76463522bc54cea096966a92c72770ce"
+  },
+  "repair_applied_sequence": 197,
+  "repair_applied_namespace": "p37",
+  "repair_applied_at_utc": "2026-10-17T07:24:32.219135+00:00",
+  "repair_evidence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+    "sha256": "2fb4adcee38f0c2334687f8efea0fa0272b176de212335461397fee0ac75db15"
+  },
+  "readonly_applied_proof": {
+    "repair_sequence": 197,
+    "progress_search_start_turn": 85,
+    "actual_stop_frame": {
+      "game_pid": 230672,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "date_raw": 53145120,
+      "revision": 63,
+      "native_revision": 62
+    },
+    "recovery_claimed": false,
+    "business_credit": 0,
+    "original_auto_replayed": false,
+    "original_halt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-queue\\ROOT-REQUEST-HALTED-0189.json",
+      "sha256": "a7b3b60620b98989b66bff579ad11d7cd5fe352cdffcfcb2130de7b391ca21b0"
+    },
+    "original_AUTO": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0196-1-result.json",
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6"
+    },
+    "recovery_marker": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-queue\\READONLY-PRECONDITION-RECOVERY-0197.json",
+      "sha256": "adfa07747c614cf4d98c37ae97c2f8b27ba9ce18a98afc76996aa8f224c3b9b8"
+    },
+    "actual_control": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0197-1-result.json",
+      "sha256": "2fb4adcee38f0c2334687f8efea0fa0272b176de212335461397fee0ac75db15"
+    },
+    "fresh_SEM": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0198-1-result.json",
+      "sha256": "bf3498a24224589a93eafa0c8985ca31f70dbec0914213f912e69a8fba10c2c5"
+    },
+    "handler_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\root_p37_first_heir_preread_readonly_v1.py",
+      "sha256": "65cbf697ef9678cbb48055badddcd289a68df560e86615dd6d7809176c6ebaaa"
+    }
+  },
+  "resume_baseline_confirmed": true,
+  "progress_search_start_turn": 85
+}

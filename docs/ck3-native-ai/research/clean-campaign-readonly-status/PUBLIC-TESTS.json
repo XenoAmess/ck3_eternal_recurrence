@@ -1,0 +1,23 @@
+{
+  "schema": "xar.public-readonly-progress-tests.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "methods": 9,
+  "subtests": 12,
+  "seconds": 0.56,
+  "result": "GREEN",
+  "command": [
+    "python",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tools/g2_saved_campaign/tests/readonly_progress"
+  ],
+  "fake_boundary": "SDK retained OS process-handle observation; temporary metadata paths and minimal loop explicitly synthetic",
+  "original_turn_mutation": false,
+  "runtime_calls": 0
+}

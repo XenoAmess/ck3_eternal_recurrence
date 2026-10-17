@@ -1,0 +1,109 @@
+{
+  "schema": "xar.public-readonly-status-progress-candidate/v1",
+  "status": "FINAL_NORMAL_IMPORTS_PORTABLE_GREEN",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\g2_saved_campaign\\runtime_repair_readonly_progress.py",
+    "sha256": "5865bf58fe43d239783b85154bc33afb143f0116d0c2ba407d8f5bde86a35307",
+    "bytes": 21012
+  },
+  "tests": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\test_progress.py",
+      "sha256": "ef61b511632ea413e2c088b3eb8b1957902c9e5fb7a0c7e59a4721434aa060b6",
+      "bytes": 7223
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\test_readonly_progress.py",
+      "sha256": "ca58d48c361cda3c55a27df533bea8db94cf383c3eb7e6b14e14da25fdfe8d85",
+      "bytes": 6378
+    }
+  ],
+  "fixture_directory": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\fixtures\\clean_repair_status",
+  "fixture_files": 28,
+  "fixture_bytes": 45840,
+  "verification": {
+    "progress_methods": 5,
+    "readonly_reason_apply_and_archive_methods": 4,
+    "result": "GREEN",
+    "scope": "normal candidate namespace imports against current public Z/tools; only exact SDK kernel observation mocked in progress tests"
+  },
+  "behavior": [
+    "same-incident source diagnosis, readonly applied and actual date progression are distinct",
+    "exact original halted request/actual handler source pins/audit/SEM; no new action or replay",
+    "earliest named small TURN scan from actual applied boundary; no last64 skip; zero-day avoids AUTO body",
+    "same-date planning source monotonic refresh still exact current Game/episode/public/native/paired MET/retained pair",
+    "historical resolution archives without overwriting newer CURRENT",
+    "terminal dedup pin points at the old immutable resolution rather than newer CURRENT",
+    "Registry13 newer same-date frame exact literal and classification included"
+  ],
+  "exports": [
+    "ReadonlyProgressPublisher",
+    "qualify_readonly_recovery",
+    "progress_proof",
+    "diagnostic_reason",
+    "MESSAGES"
+  ],
+  "base_helpers": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_status.py",
+      "sha256": "5fd2fd03ed8febb949d70d77f4da24d80dc9f19b6f82f6e25a067a734a351705",
+      "bytes": 20920
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_status_v4.py",
+      "sha256": "a4dac7933e50bdb972c28000a3cbf8dacdbae121f4542f1d42faa399a95f0837",
+      "bytes": 6320
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_status_v5.py",
+      "sha256": "71494155993ebd620038165d29ae0b8b5a6420459db2d9f39ae9f2000ae420e2",
+      "bytes": 10143
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_sdk_transfer.py",
+      "sha256": "31fd30208874d7527bbe855ce5921442ab2af34beb97c6a75abc808318858966",
+      "bytes": 16397
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_auto_applied.py",
+      "sha256": "20f00f02305c32955ac23a6964875cfa8e276474f6439a235ec69b495fbb3a88",
+      "bytes": 12788
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_current_fault_guard.py",
+      "sha256": "9d77e1794c402db0e5193f2c77411729f717afd0d509c98369de5319a20a331d",
+      "bytes": 12427
+    }
+  ],
+  "private_source_bodies_used": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\refine_current.py",
+      "sha256": "eae51fc7f6a5c600061cd4757e616783136224776f56133a18b016798d2493aa",
+      "bytes": 7125
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\repair_state.py",
+      "sha256": "8ee9151f1c88e0049fa20426a2eac11e566535f8ebcd200845a576a8a716053a",
+      "bytes": 9852
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\resolve_v2.py",
+      "sha256": "bc2d21d556027077f07844a5c2ad0abad7495b12716eccaad93353ed48bfb334",
+      "bytes": 9760
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\watch_v2.py",
+      "sha256": "9f82f446f23f79b8c9a2fbfa66bb05b08e65ee7ec47d74d8dede55d30a53ee84",
+      "bytes": 7587
+    }
+  ],
+  "private_F_or_source_loader_vendored": false,
+  "global_read_or_proof_monkeypatch": false,
+  "W_or_Git_writes": 0,
+  "runtime_calls": 0,
+  "actor_business_credit_created": 0,
+  "new_reservation_bytes": 0,
+  "retention_review_hours": 48,
+  "cold_cross_Game_status_recipe_excluded": true,
+  "test_path_adaptation_for_public_writer": "tests currently use candidate+Z/tools sys.path only for the external namespace overlay; after installation remove those two lines and use normal g2_saved_campaign imports. Fixture path is adjacent fixtures/clean_repair_status."
+}

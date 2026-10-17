@@ -1,0 +1,92 @@
+{
+  "request": {
+    "sequence": 204,
+    "tool": "ck3_auto_turn",
+    "arguments": {},
+    "source": "Root's bounded full_loop; unique new request"
+  },
+  "started_at_utc": "2026-10-17T07:25:17.861666+00:00",
+  "ended_at_utc": "2026-10-17T07:25:19.295257+00:00",
+  "result": {
+    "is_error": false,
+    "structured_content": {
+      "status": "executed",
+      "selected_step": "life-advance",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:63",
+        "revision": 64,
+        "native_revision": 63,
+        "date_raw": 53145120,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 1,
+        "bridge_pid": 230672
+      },
+      "result": {
+        "step": "life-advance",
+        "backend_id": "native-headless",
+        "source": "native-composite",
+        "starting_date": {
+          "date_raw": 53145120
+        },
+        "ending_date": {
+          "date_raw": 53145312
+        },
+        "starting_date_raw": 53145120,
+        "ending_date_raw": 53145312,
+        "elapsed_days": 8,
+        "requested_horizon_days": 8,
+        "timeline_speed": 5,
+        "timeline_policy": "bounded_non_tactical",
+        "progress_status": "postcondition",
+        "war_progress_before": {
+          "date_raw": 53145120,
+          "wars": []
+        },
+        "war_progress_after": {
+          "date_raw": 53145312,
+          "wars": []
+        },
+        "ordinary_events": [],
+        "event_resolution": "none",
+        "actions": [
+          {
+            "step": "set-speed-5",
+            "result": {
+              "step": "set-speed-5",
+              "accepted": true,
+              "status": "submitted",
+              "backend_id": "native-headless"
+            }
+          },
+          {
+            "step": "resume-map",
+            "result": {
+              "step": "resume-map",
+              "accepted": true,
+              "status": "submitted",
+              "backend_id": "native-headless"
+            }
+          },
+          {
+            "step": "pause-map",
+            "result": {
+              "step": "pause-map",
+              "accepted": true,
+              "status": "submitted",
+              "backend_id": "native-headless"
+            }
+          }
+        ],
+        "paused": true,
+        "active_event": null,
+        "pending_character_interaction": null,
+        "final_screen": "map_hud",
+        "snapshot_id": "native:73",
+        "revision": 74
+      }
+    }
+  }
+}

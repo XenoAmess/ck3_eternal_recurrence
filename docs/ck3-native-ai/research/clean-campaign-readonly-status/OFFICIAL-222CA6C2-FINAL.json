@@ -1,0 +1,46 @@
+{
+  "status": "completed",
+  "conclusion": "failure",
+  "headSha": "222ca6c238148084e88513bf94fc671087d02517",
+  "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39020279850",
+  "startedAt": "2026-10-17T09:13:06Z",
+  "updatedAt": "2026-10-17T09:19:52Z",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "runner_facts_from": "GitHub Actions API",
+  "jobs": [
+    {
+      "name": "static",
+      "status": "completed",
+      "conclusion": "failure",
+      "steps_total": 108,
+      "failed_steps": [
+        {
+          "completedAt": "2026-10-17T09:19:46Z",
+          "conclusion": "failure",
+          "name": "Test shared CK3 acceptance without installed CK3",
+          "number": 55,
+          "startedAt": "2026-10-17T09:19:31Z",
+          "status": "completed"
+        }
+      ],
+      "new_scope_steps": [
+        {
+          "completedAt": "2026-10-17T09:18:47Z",
+          "conclusion": "success",
+          "name": "Test material publication and observed faction danger without CK3",
+          "number": 31,
+          "startedAt": "2026-10-17T09:18:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T09:18:48Z",
+          "conclusion": "success",
+          "name": "Test exact recovery boundaries and campaign ledger binding without CK3",
+          "number": 32,
+          "startedAt": "2026-10-17T09:18:47Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ]
+}

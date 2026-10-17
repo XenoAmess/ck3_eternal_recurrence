@@ -1,0 +1,138 @@
+{
+  "status": "SOURCE_AND_CLOSED_DTO_REVIEW_ONLY",
+  "at_utc": "2026-10-17T08:58:46.504678+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "sdk38_manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\SOURCE-MANIFEST-P38-FINAL03.json",
+    "bytes": 288730,
+    "sha256": "2c0e9d673591abf4003a4242d20188bb18136e8a49d6897c7001fa03969f85f5"
+  },
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src",
+  "source_file_count": 1320,
+  "sdk_sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\crown_authority_policy_v1.py",
+      "bytes": 4599,
+      "sha256": "a0c157cb15c517bea94e08f106a6209cd5621dfc0651769f2f11067e5600721d",
+      "relative": "xar_autoplayer/crown_authority_policy_v1.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\crown_authority_formal_consumer_v1.py",
+      "bytes": 14198,
+      "sha256": "3b2afd8a93a4f82a20e3fd86396ac8bf83987303f3296a28e0b9578cd1420181",
+      "relative": "xar_autoplayer/crown_authority_formal_consumer_v1.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\bridge\\realm_law_formal_private_transport.py",
+      "bytes": 15534,
+      "sha256": "6f54b30fde3c068bbb5427bd1d9b36cda2326b5487cb42dbfa30d687c105e6a9",
+      "relative": "xar_autoplayer/bridge/realm_law_formal_private_transport.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 232058,
+      "sha256": "e9f3d86e59c230cb17e4ef46ee1e0d8f70ecae8eb347a27ba3ff8e946b90639a",
+      "relative": "xar_autoplayer/bridge/mcp_server.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\faction_gift_policy_v1.py",
+      "bytes": 9308,
+      "sha256": "569526b7dea244704ae946da2892475058a3c5b2b8f310b75d0e3e2c88159f15",
+      "relative": "xar_autoplayer/faction_gift_policy_v1.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 21086,
+      "sha256": "e41460937b327b039f8211f88218850b8a5f02ecf7dfe7d60f879bdd9493b517",
+      "relative": "xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "unchanged_from_SDK37": false
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\faction_threat_response_inputs_v1.py",
+      "bytes": 5103,
+      "sha256": "bf5d1bab01c6d8b98ee8578f81acdac7516299cbcf32a925f629aa275b6f8a6d",
+      "relative": "xar_autoplayer/faction_threat_response_inputs_v1.py",
+      "unchanged_from_SDK37": true
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1044603,
+      "sha256": "274149f6566abc488c3379947474a1bcfd767c48aa6e47cc529fa3d7c7d3adbb",
+      "relative": "xar_autoplayer/strategy.py",
+      "unchanged_from_SDK37": true
+    }
+  ],
+  "stock_text_sources": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\laws\\00_realm_laws.txt",
+      "bytes": 78650,
+      "sha256": "e44c43fac8a2965f50b414863957339d3d86976560cb1f8eee659a7bf4057e29"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\laws\\_laws.info",
+      "bytes": 11522,
+      "sha256": "d0a29edd76869dfc4c1d8196710109131770b211619b611106a15c6ba4622d27"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\factions\\00_factions.txt",
+      "bytes": 34351,
+      "sha256": "c604b3fcf3fe315516483a9da45fe8c0e38db2031dc683ba6edd569c120b377b"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_faction_triggers.txt",
+      "bytes": 9625,
+      "sha256": "dd7b3a650b559b26959ed1708fc7cacd009d1cbb6735fa9d27905fb40570c517"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_modifiers\\00_faction_modifiers.txt",
+      "bytes": 122596,
+      "sha256": "f0bd9d7aa6493823448f1a2d90eb8c435a7bb4315d046e6a5848a6020f6e7bbb"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\character_interactions\\00_gift.txt",
+      "bytes": 22244,
+      "sha256": "d62a80dd8ed0f666a1223ba5ba68ea4362a8259e54c795c4d215c5eb7d0df0f2"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+      "bytes": 102190,
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+    }
+  ],
+  "native_adapter_reference": {
+    "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_realm_law_source_adapter.cpp",
+    "bytes": 18794,
+    "sha256": "43d86b3f8783946c6f43b7158a112b8defb18890ec8a0ca0e0256a1ace7a3a43",
+    "scope": "Existing public generic Crown target source; this audit does not byte-qualify loaded Native24 or execute lowering"
+  },
+  "actual_projection": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-crown-liberty-policy-audit01\\ACTUAL-AUTO19-PROJECTION.json",
+    "bytes": 6141,
+    "sha256": "d31051987aff9b683da4a66927da3dc29f63542ed4d5e03376ebac044f9d7956"
+  },
+  "runtime_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "SDK_W_ledger_mutations": 0,
+  "tests_run": 0,
+  "old_tests_repeated": 0,
+  "config_findings": {
+    "current_CA2_requires_no_intervention_to_avoid_raise3": true,
+    "existing_object_flag": "allow_private_realm_law_action",
+    "flag_false_also_blocks": [
+      "Crown quote",
+      "enact",
+      "receipt"
+    ],
+    "existing_auto_only_max_level_parameter": null,
+    "existing_typed_lower_route_available_in_source": true,
+    "current_lower_legality_or_result_observed": false,
+    "new_action_or_configuration_route_added": false
+  },
+  "source_stage_not_actual_qualification": true,
+  "open_kaishek": "Not applicable: existing authored text/source review only; no new parser or finite-runtime semantics"
+}

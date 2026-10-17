@@ -1,0 +1,289 @@
+{
+  "schema": "xar.clean-readonly-status-publication.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:19:01.264314+00:00",
+  "public_base_commit": "222ca6c238148084e88513bf94fc671087d02517",
+  "owner_delivery_sha256": "c1519e4997288186041083ae24c89754a719ddb1ac288d5ec89e78cd663f3417",
+  "public_files": [
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_readonly_progress.py",
+      "bytes": 21012,
+      "sha256": "5865bf58fe43d239783b85154bc33afb143f0116d0c2ba407d8f5bde86a35307",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/test_clean_repair_progress.py",
+      "bytes": 7256,
+      "sha256": "c3ef4aaa55a4b4093a15259273d47acc286a77a5d89803896d046f9ba2c58519",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/test_clean_repair_readonly_progress.py",
+      "bytes": 6332,
+      "sha256": "f9da1186c229eda3c9d7308f6b4f1815e4dacd1515a6e8c2be346e377fea3c3a",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-applied196-v2.json",
+      "bytes": 6041,
+      "sha256": "00991312da932be9589df12db56554077e4568f7c89f34de6547b1117040f4d8",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-auto185.json",
+      "bytes": 1835,
+      "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-auto196.json",
+      "bytes": 2411,
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-auto204.json",
+      "bytes": 2671,
+      "sha256": "ba42d8b3da07062cd308f19d36018ba03b22d4c2d7fb4dd43d66197ec621337b",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-auto21-newer.json",
+      "bytes": 566,
+      "sha256": "8bd76432bbe83394de7ec056418fc3388d90038c7bd0552f7a8f8cca9e9693f5",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-auto517.json",
+      "bytes": 565,
+      "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-control187.json",
+      "bytes": 971,
+      "sha256": "c7b7118e10784db99efe89811345b6f098ea9d5dddccd12a7605560fa98cd025",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-control22-newer.json",
+      "bytes": 1009,
+      "sha256": "34ef97e4058282cc3040aaec3342a22ec1e263ce1fcd3a4559ef0df9bba1c674",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-generations37.json",
+      "bytes": 465,
+      "sha256": "55e655c1a893428c1672a8e79ffa1d4d9ded70cf6e42ecb44ee289390afc33a8",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-halt142.json",
+      "bytes": 698,
+      "sha256": "6b455239fe10b3ad827a332883289542e02d6ed91fc701f820842f3c5f2780e8",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-loop-after86.json",
+      "bytes": 251,
+      "sha256": "77bff99c4f26c7d067db5928d5b4efa65035085faf425ce1ee9a531a0b501687",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-met201.json",
+      "bytes": 1342,
+      "sha256": "1ac7568a174e57eedd63e5106b8ec82dcc6046ae1e8ecd32759e7eee0450180d",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-met205.json",
+      "bytes": 1343,
+      "sha256": "52ac20f93dc1e6aa4fd724b3d30e3ea79620a2f48dad17ff6b2685358e9c7dbf",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-opened21-newer.json",
+      "bytes": 1543,
+      "sha256": "3954c3f2aae07554350ce5248d570f4ab7913f118535f6daeab91ae60068377d",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-pinned37.json",
+      "bytes": 498,
+      "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-recovery187.json",
+      "bytes": 2757,
+      "sha256": "039d4452536ee8d16655fb8f8287ced97f232422814ced3be0e5b08923bb79ee",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-recovery22-newer.json",
+      "bytes": 2869,
+      "sha256": "f6b7ff255936d1a8a7a8eb8566e35fa1ebf34abbf019d497933ba5af5bbeff47",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-sem188.json",
+      "bytes": 821,
+      "sha256": "19be932085e908946fbb955c5023f2aa0167bf55ba9d02cf88e684a2acc0060c",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-sem23-newer.json",
+      "bytes": 815,
+      "sha256": "0e940fbb7b8be352ffecb5b0d3d7da36680fbe7b2b4e838484cd4e41ef737756",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-turn85.json",
+      "bytes": 2582,
+      "sha256": "05eab32bd737c754cc7053ae56d1268c35f81efeff064d8cb0f2a373ae581ad7",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/readonly_progress/fixtures/clean_repair_status/actual-turn86.json",
+      "bytes": 2418,
+      "sha256": "9c0bb68cd20760eaa3ff168c07fd154142f6e6bec79cbbe255afdb86530d2e1f",
+      "git_text_normalization": false
+    },
+    {
+      "path": "docs/ck3-native-ai/g2-feudal-feast-inheritance-closure-12004.md",
+      "bytes": 9329,
+      "sha256": "0e1ff0c73819a619360dee6115f1f37236558e1cd111673e539e9c832f8b1e68",
+      "git_text_normalization": false
+    },
+    {
+      "path": "docs/ck3-native-ai/research/feudal-feast-inheritance-12004/SOURCE-AUDIT.json",
+      "bytes": 11073,
+      "sha256": "f819232e020006382de197dbb3ae3f8cbd51abc02000cf26b997f6dfe5808337",
+      "git_text_normalization": false
+    },
+    {
+      "path": "docs/ck3-native-ai/crown-liberty-first-war-policy-12004.md",
+      "bytes": 9502,
+      "sha256": "4910e48727f1cf97eb86e4958543609a52b5d59e5b881bb0ae5cb8d91b89a370",
+      "git_text_normalization": false
+    },
+    {
+      "path": "docs/ck3-native-ai/research/crown-liberty-policy-12004/SOURCE-AUDIT.json",
+      "bytes": 6862,
+      "sha256": "ba1cdcac826cd448883a4b88682568d958ddfc20990769563a1466473b8e64e4",
+      "git_text_normalization": false
+    },
+    {
+      "path": "docs/ck3-native-ai/research/crown-liberty-policy-12004/ACTUAL-AUTO19-PROJECTION.json",
+      "bytes": 6141,
+      "sha256": "d31051987aff9b683da4a66927da3dc29f63542ed4d5e03376ebac044f9d7956",
+      "git_text_normalization": false
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_prepare_compatibility_review_v2.json",
+      "bytes": 3648,
+      "sha256": "3a1b0c623db8ea7eba2d74e7020ccf7de9fd8d2500692aa7f2979e84dff4e564",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_xqol_prepare_compatibility.py",
+      "bytes": 8378,
+      "sha256": "3435f26070f0b2007bff1818f88873f98e6c6c16fc8695582df901ffd6b8826d",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_xqol_followups.py",
+      "bytes": 22801,
+      "sha256": "c4ffe3f0ebd37e4675232167d9194865c2192976d258ffba6a8d469c4b5b1d0b",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/test_ck3_mod_acceptance_xqol_pam_boundary.py",
+      "bytes": 11166,
+      "sha256": "45122cfdcdab97bbc632b453787ccee98375d53d41dd68189b8c33b6d14ddfa4",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_administrative_appointments.json",
+      "bytes": 2823,
+      "sha256": "7c73e9213d2182574ffbcef48daf9dd7a0d4ea3f4579a1947782593758b6f100",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_meritocratic_appointments.json",
+      "bytes": 6348,
+      "sha256": "c899cdaa7e8509d03ae11b0d82d129df297d2705c0e46257a8b74e15ad4c4bd9",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_prison_payment.json",
+      "bytes": 4553,
+      "sha256": "08c2296cec300913ce28d3fc17cd166c436218e600fbe2a5f629d16e660c920c",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_selfpaid_ransom.json",
+      "bytes": 3883,
+      "sha256": "812643e104e0e65dfd14d695d5715cb20b02a16a0122fbbed4f014bf936f40cb",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_pam_positive.json",
+      "bytes": 5128,
+      "sha256": "c921519d3991737b2a989f9e61ad437eb6d860f7888cf9c6d28913d6a6c105f3",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_pam_negative.json",
+      "bytes": 4995,
+      "sha256": "f13fdba63674e0f484ea637b3c94e0659949333b6c68b116c2cdae44436f8f87",
+      "git_text_normalization": true
+    },
+    {
+      "path": "tools/ck3_mod_acceptance_cases/xqol_liege_shared_ransom.json",
+      "bytes": 6620,
+      "sha256": "d873865ada031e1fcc156d7f4738ac4263fc48f97a211409b2b79e7695764e10",
+      "git_text_normalization": true
+    }
+  ],
+  "unneeded_new_derived_projection_copies_removed": [
+    "actual-audience-binding.json",
+    "actual-control518.json",
+    "actual-halt508.json",
+    "actual-opened517.json",
+    "actual-recovery197.json",
+    "actual-recovery518.json",
+    "actual-sem519.json"
+  ],
+  "original_external_projection_packet_remains_available": true,
+  "test_adaptations": [
+    "normal tools.g2_saved_campaign imports, no candidate or fixed Z sys.path",
+    "only temporary fixture path basename handles Windows separators on any host"
+  ],
+  "runtime_calls": 0,
+  "live_Driver_SAVE_video_body_read": false,
+  "deployment_status": "public library and offline tests; not automatically installed into current watcher",
+  "evidence_provenance": [
+    {
+      "path": "docs/ck3-native-ai/research/clean-campaign-readonly-status/PROGRESS-DELIVERY-ORIGINAL.json",
+      "sha256": "c1519e4997288186041083ae24c89754a719ddb1ac288d5ec89e78cd663f3417",
+      "bytes": 5295
+    },
+    {
+      "path": "docs/ck3-native-ai/research/clean-campaign-readonly-status/FIXTURE-PROVENANCE-ORIGINAL.json",
+      "sha256": "0967f78071d79128acbe90ee61028305ae338bfd56ae2a527ffa8412c2826669",
+      "bytes": 18446
+    },
+    {
+      "path": "docs/ck3-native-ai/research/clean-campaign-readonly-status/PROGRESS-NEWER-FIXTURE-PROVENANCE.json",
+      "sha256": "4675fef1075383fc4f7bcb296d1cfafcbd689d1d92fd6f0267532552e6be321f",
+      "bytes": 15646
+    }
+  ],
+  "unchanged_runtime_prepare": {
+    "path": "tools/ck3_mod_acceptance_prepare.py",
+    "bytes": 14430,
+    "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b",
+    "edited_by_this_batch": false
+  }
+}

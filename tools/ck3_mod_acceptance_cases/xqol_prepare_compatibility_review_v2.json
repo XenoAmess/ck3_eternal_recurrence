@@ -1,0 +1,42 @@
+{
+  "schema": "ck3-xqol-reviewed-prepare-compatibility-v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "reviewed_at_utc": "2026-10-17T09:22:44.374882+00:00",
+  "before": {
+    "commit": "109e771d1fc9395f874b12f03a7cf5fcd430ec39",
+    "bytes": 12881,
+    "sha256": "4221d9bab91706ba0e6ba07a21b1944adf71f71e9cc4c1a54ce8c9117b3dbbab"
+  },
+  "after": {
+    "bytes": 14430,
+    "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b"
+  },
+  "source_changes": [
+    "78966591e4f680b04665c2bc34aab47c98961ad2",
+    "044c7b28309c720199d7e40e01495bf4cc87bd1e"
+  ],
+  "review": "Optional explicit frontend scenario, standalone fixture without product, and vanilla saved profile only. Original seven QOL cells supply the product and have no frontend_scenario. Existing guards, cases, budgets, fixture bytes and original source-prefix proof remain strict. This does not approve a business run.",
+  "inverse_fragments": [
+    {
+      "old": "",
+      "reviewed_current": "    scenario=contract.get('frontend_scenario')\n    if scenario is not None:\n        require(isinstance(scenario,dict) and set(scenario)=={\n            'profile_id','frontend_target','startup_event_admission'},\n            'Explicit fixture scenario requires its exact declared target and startup event admission')\n        policy.update(schema='ck3-frontend-fixture-start-policy-v2',schema_version=2,**scenario)\n"
+    },
+    {
+      "old": "    for name,directory in (('fixture',Path(fixture_dir)),('product',Path(product_dir))):\n",
+      "reviewed_current": "    directories=[('fixture',Path(fixture_dir))]\n    if product_dir is not None:\n        directories.append(('product',Path(product_dir)))\n    for name,directory in directories:\n"
+    },
+    {
+      "old": "    write_json(profile/'dlc_load.json',{'enabled_mods':['mod/product.mod','mod/fixture.mod'],'disabled_dlcs':[]})\n    return _finish(context,profile,{'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)})\n",
+      "reviewed_current": "    enabled_mods=(['mod/product.mod','mod/fixture.mod'] if product_dir is not None else ['mod/fixture.mod'])\n    write_json(profile/'dlc_load.json',{'enabled_mods':enabled_mods,'disabled_dlcs':[]})\n    provenance=({'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)}\n                if product_dir is not None else {'kind':'standalone-mechanism-fixture','fixture':str(fixture_dir),'product':None})\n    return _finish(context,profile,provenance)\n"
+    },
+    {
+      "old": "",
+      "reviewed_current": "    if product_dir is None:\n        require(workshop_cache_files is None,'A vanilla saved campaign cannot declare Workshop product files')\n        write_json(profile/'dlc_load.json',{'enabled_mods':[],'disabled_dlcs':[]})\n        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),\n                   'enabled_mods':[],'product_files':[]}\n        path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)\n        rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}\n        return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,\n                'product_file_count':0,'runtime_status':'NOT_RUN','fixture_mounted':False,'vanilla_profile':True}\n"
+    }
+  ],
+  "failed_ci": {
+    "head": "222ca6c238148084e88513bf94fc671087d02517",
+    "run": 39020279850,
+    "step": "Test shared CK3 acceptance without installed CK3"
+  }
+}

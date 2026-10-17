@@ -1,0 +1,11 @@
+{
+  "completed_cycles": 236,
+  "before": {
+    "snapshot_id": "native:506",
+    "revision": 507,
+    "native_revision": 506,
+    "date_raw": 53153304,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30"
+  }
+}

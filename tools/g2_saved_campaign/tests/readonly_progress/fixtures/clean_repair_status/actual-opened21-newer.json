@@ -1,0 +1,38 @@
+{
+  "schema": "xar.runtime-repair-status/v1",
+  "binding": {
+    "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01",
+    "sdk_prefix": "p38",
+    "game_pid": 246608,
+    "game_creation_filetime": 134366991912785136,
+    "game_creation_date": "20261017082631.278513+000"
+  },
+  "incident_id": "a48e0b624ddb48f79b9aab06556cfb31",
+  "phase": "repairing",
+  "pause_reason": "自动推进受阻：SDK error; original result retained; no automatic retry",
+  "halt_receipt": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native23-cold-generation01\\p38-queue\\ROOT-REQUEST-HALTED-0006.json",
+    "sha256": "77c3458849a63e4ddf53a4f825faabe1974633a2d788bbe5178eed0e4d4640da"
+  },
+  "original_request": {
+    "sequence": 21,
+    "tool": "ck3_auto_turn",
+    "arguments": {},
+    "source": "Root's bounded full_loop; unique new request"
+  },
+  "raw_pause_reason": "SDK error; original result retained; no automatic retry",
+  "repair_message": null,
+  "observed_frame": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53160000,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30"
+  },
+  "opened_at_utc": "2026-10-17T08:48:31.852954+00:00",
+  "expires_at_utc": null,
+  "resolving_requires": "actual post-repair semantic receipt and successful progressing FULL",
+  "Game_action_submitted": false,
+  "business_credit": 0
+}

@@ -1,0 +1,44 @@
+{
+  "schema": "xar.reviewed-prepare-compatibility-tests.v2",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:26:40.916418+00:00",
+  "results": [
+    {
+      "args": [
+        "tools/test_ck3_mod_acceptance_xqol_followups.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".....................\n----------------------------------------------------------------------\nRan 21 tests in 0.185s\n\nOK\n"
+    },
+    {
+      "args": [
+        "tools/test_ck3_mod_acceptance_vanilla_profile.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.183s\n\nOK\n"
+    },
+    {
+      "args": [
+        "tools/test_ck3_mod_acceptance_xqol_pam_boundary.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.007s\n\nOK\n"
+    }
+  ],
+  "review": "four unique inverse fragments restore byte-pinned12881 helper and original10984 prefix; all7 contracts change only helper support pin; historical assertions restore previous pin, retaining expected hashes",
+  "broader_suite_preexisting_failure": {
+    "test": "test_contract_inverse_preserves_original_markers_budgets_nine_supports_and_plan",
+    "preexisting_at": "222ca6c238148084e88513bf94fc671087d02517",
+    "old_contract_inverse_bytes": 4382,
+    "test_expected_bytes": 3888,
+    "old_contract_inverse_sha256": "cd57b0e38ab0205a7560cc78480c678b9b7acaee28732ca0dfbd8f23e0a719e7",
+    "test_expected_sha256": "207c7b0082adc7aef2ae0d98f496ab194387604e4b389d6019fd15574b93c981",
+    "scope": "broader optional suite exposed preexisting mismatch before helper-pin change; not loosened or marked GREEN"
+  },
+  "sparse_missing_test_inputs": "two existing HEAD Git blobs materialized only; no content changed",
+  "live_calls": 0,
+  "original_failed_CI": 39020279850
+}

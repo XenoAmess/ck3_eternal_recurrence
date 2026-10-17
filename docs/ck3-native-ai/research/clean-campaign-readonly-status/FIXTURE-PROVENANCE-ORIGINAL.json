@@ -1,0 +1,411 @@
+{
+  "schema": "xar.runtime-repair-public-fixture-provenance/v1",
+  "fixtures": [
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-auto185.json",
+        "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284",
+        "bytes": 1835
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-auto185.json",
+        "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284",
+        "bytes": 1835
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-auto196.json",
+        "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6",
+        "bytes": 2411
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-auto196.json",
+        "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6",
+        "bytes": 2411
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-auto517.json",
+        "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff",
+        "bytes": 565
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-auto517.json",
+        "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff",
+        "bytes": 565
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-control187.json",
+        "sha256": "c7b7118e10784db99efe89811345b6f098ea9d5dddccd12a7605560fa98cd025",
+        "bytes": 971
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-control187.json",
+        "sha256": "c7b7118e10784db99efe89811345b6f098ea9d5dddccd12a7605560fa98cd025",
+        "bytes": 971
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-control518.json",
+        "sha256": "b2af0f9d0edc31e021e6243d65e38f421e5df6b4ee59d2d6343597b352fc2d76",
+        "bytes": 972
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-control518.json",
+        "sha256": "b2af0f9d0edc31e021e6243d65e38f421e5df6b4ee59d2d6343597b352fc2d76",
+        "bytes": 972
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-halt142.json",
+        "sha256": "6b455239fe10b3ad827a332883289542e02d6ed91fc701f820842f3c5f2780e8",
+        "bytes": 698
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-halt142.json",
+        "sha256": "6b455239fe10b3ad827a332883289542e02d6ed91fc701f820842f3c5f2780e8",
+        "bytes": 698
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-halt508.json",
+        "sha256": "90711c56882097a2f286275ad4466125ae9f5b773007bca900ae4605eeadcb92",
+        "bytes": 698
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-halt508.json",
+        "sha256": "90711c56882097a2f286275ad4466125ae9f5b773007bca900ae4605eeadcb92",
+        "bytes": 698
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-recovery187.json",
+        "sha256": "039d4452536ee8d16655fb8f8287ced97f232422814ced3be0e5b08923bb79ee",
+        "bytes": 2757
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-recovery187.json",
+        "sha256": "039d4452536ee8d16655fb8f8287ced97f232422814ced3be0e5b08923bb79ee",
+        "bytes": 2757
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-recovery197.json",
+        "sha256": "adfa07747c614cf4d98c37ae97c2f8b27ba9ce18a98afc76996aa8f224c3b9b8",
+        "bytes": 2747
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-recovery197.json",
+        "sha256": "adfa07747c614cf4d98c37ae97c2f8b27ba9ce18a98afc76996aa8f224c3b9b8",
+        "bytes": 2747
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-recovery518.json",
+        "sha256": "99943408f2ecb4ed023da5b53e4b20772f2b4ae2d51986e8c7bc5e8303a7a476",
+        "bytes": 2782
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-recovery518.json",
+        "sha256": "99943408f2ecb4ed023da5b53e4b20772f2b4ae2d51986e8c7bc5e8303a7a476",
+        "bytes": 2782
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-applied196-v2.json",
+        "sha256": "00991312da932be9589df12db56554077e4568f7c89f34de6547b1117040f4d8",
+        "bytes": 6041
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-applied196-v2.json",
+        "sha256": "00991312da932be9589df12db56554077e4568f7c89f34de6547b1117040f4d8",
+        "bytes": 6041
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-opened517.json",
+        "sha256": "39d17573c80e46cb170aea120b888f2cba925b446c63012a33472e0ab7dde600",
+        "bytes": 1512
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-opened517.json",
+        "sha256": "39d17573c80e46cb170aea120b888f2cba925b446c63012a33472e0ab7dde600",
+        "bytes": 1512
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-turn85.json",
+        "sha256": "05eab32bd737c754cc7053ae56d1268c35f81efeff064d8cb0f2a373ae581ad7",
+        "bytes": 2582
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-turn85.json",
+        "sha256": "05eab32bd737c754cc7053ae56d1268c35f81efeff064d8cb0f2a373ae581ad7",
+        "bytes": 2582
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-turn86.json",
+        "sha256": "9c0bb68cd20760eaa3ff168c07fd154142f6e6bec79cbbe255afdb86530d2e1f",
+        "bytes": 2418
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-turn86.json",
+        "sha256": "9c0bb68cd20760eaa3ff168c07fd154142f6e6bec79cbbe255afdb86530d2e1f",
+        "bytes": 2418
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-met201.json",
+        "sha256": "1ac7568a174e57eedd63e5106b8ec82dcc6046ae1e8ecd32759e7eee0450180d",
+        "bytes": 1342
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-met201.json",
+        "sha256": "1ac7568a174e57eedd63e5106b8ec82dcc6046ae1e8ecd32759e7eee0450180d",
+        "bytes": 1342
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-met205.json",
+        "sha256": "52ac20f93dc1e6aa4fd724b3d30e3ea79620a2f48dad17ff6b2685358e9c7dbf",
+        "bytes": 1343
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-met205.json",
+        "sha256": "52ac20f93dc1e6aa4fd724b3d30e3ea79620a2f48dad17ff6b2685358e9c7dbf",
+        "bytes": 1343
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-generations37.json",
+        "sha256": "55e655c1a893428c1672a8e79ffa1d4d9ded70cf6e42ecb44ee289390afc33a8",
+        "bytes": 465
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-generations37.json",
+        "sha256": "55e655c1a893428c1672a8e79ffa1d4d9ded70cf6e42ecb44ee289390afc33a8",
+        "bytes": 465
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-pinned37.json",
+        "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465",
+        "bytes": 498
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-pinned37.json",
+        "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465",
+        "bytes": 498
+      },
+      "projection": "exact metadata bytes"
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-auto204.json",
+        "sha256": "48f493a43104c617dd32b0b19f8b457d4d917a01844cf81ca582a4319baf7f5f",
+        "bytes": 135472
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-auto204.json",
+        "sha256": "ba42d8b3da07062cd308f19d36018ba03b22d4c2d7fb4dd43d66197ec621337b",
+        "bytes": 2671
+      },
+      "projection": {
+        "envelope_fields": [
+          "request",
+          "started_at_utc",
+          "ended_at_utc"
+        ],
+        "result_fields": [
+          "is_error",
+          "structured_content"
+        ],
+        "body_fields": [
+          "status",
+          "selected_step",
+          "planning_source_frame",
+          "result"
+        ],
+        "semantic_only_fields": null
+      },
+      "native_or_business_values_modified": false
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-sem188.json",
+        "sha256": "f4a842151acb51e954f92f305337ab496ddf11e26b0ab17c687a30a49ea0ba65",
+        "bytes": 22053
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-sem188.json",
+        "sha256": "19be932085e908946fbb955c5023f2aa0167bf55ba9d02cf88e684a2acc0060c",
+        "bytes": 821
+      },
+      "projection": {
+        "envelope_fields": [
+          "request",
+          "started_at_utc",
+          "ended_at_utc"
+        ],
+        "result_fields": [
+          "is_error",
+          "structured_content"
+        ],
+        "body_fields": [
+          "date_raw",
+          "paused",
+          "map_ready",
+          "revision",
+          "native_revision",
+          "snapshot_id",
+          "episode_run_id"
+        ],
+        "semantic_only_fields": {
+          "played_character": [
+            "character_id",
+            "alive"
+          ],
+          "diagnostics": [
+            "bridge_pid",
+            "connection_generation"
+          ]
+        }
+      },
+      "native_or_business_values_modified": false
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-sem519.json",
+        "sha256": "d90df19e0c9c7438515291d6a93ff8037c67bf07718ccd1513ae192970e33e28",
+        "bytes": 22281
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-sem519.json",
+        "sha256": "0454ca46ae91d5a126ca86230a7f7adbff12c4e4c5ec59dc944bde91fe55b15f",
+        "bytes": 824
+      },
+      "projection": {
+        "envelope_fields": [
+          "request",
+          "started_at_utc",
+          "ended_at_utc"
+        ],
+        "result_fields": [
+          "is_error",
+          "structured_content"
+        ],
+        "body_fields": [
+          "date_raw",
+          "paused",
+          "map_ready",
+          "revision",
+          "native_revision",
+          "snapshot_id",
+          "episode_run_id"
+        ],
+        "semantic_only_fields": {
+          "played_character": [
+            "character_id",
+            "alive"
+          ],
+          "diagnostics": [
+            "bridge_pid",
+            "connection_generation"
+          ]
+        }
+      },
+      "native_or_business_values_modified": false
+    },
+    {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-loop-after86.json",
+        "sha256": "77e3bc9d1134924250a0dda1c5ec1c71256225096a56a538f7dd10da9f4f0483",
+        "bytes": 3649
+      },
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-loop-after86.json",
+        "sha256": "77bff99c4f26c7d067db5928d5b4efa65035085faf425ce1ee9a531a0b501687",
+        "bytes": 251
+      },
+      "projection": [
+        "completed_cycles",
+        "before"
+      ],
+      "count_semantics": "verification-time count, not turn86 credit"
+    },
+    {
+      "sources": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-audience-binding-fix01\\ROOT-AUDIENCE-ACTIVE-SDK-BEFORE.actual.json",
+          "sha256": "ce832017812531f3e773265fa7c036d798cffc2d65042931ecfa997682543c89",
+          "bytes": 425
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-ACTUAL-GAME-LAUNCH.json",
+          "sha256": "a6c54344264f8d10f00f7500d5d88fdd1d1807cdd0142294ccd35b5effeb536d",
+          "bytes": 5874
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-OBS-RECORDING-REQUESTED.json",
+          "sha256": "1c98ab564e6548c24872b1909dc88dfdc47cb40e8923a2edc5c3067070b36fc7",
+          "bytes": 1430
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37.json",
+          "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465",
+          "bytes": 498
+        }
+      ],
+      "public_fixture": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-handoff01\\fixtures\\actual-audience-binding.json",
+        "sha256": "76638bf5958f87c222070f9c4b379149d26cd42cfdfbbfa681a295058eeb416b",
+        "bytes": 1834
+      },
+      "projection": "only fields consumed by the pure audience correction; no profile/secrets included"
+    }
+  ],
+  "source_kind": "immutable finalized small metadata and closed-generation inputs",
+  "no_Driver_SAVE_or_video_body_read": true,
+  "excluded_misnamed_snapshot": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-reason-refine01\\actual-applied196.json",
+    "reason": "mutable CURRENT was already a newer fault when captured; use immutable actual-applied196-v2 only"
+  },
+  "new_reservation_bytes": 0,
+  "retention_review_hours": 48
+}

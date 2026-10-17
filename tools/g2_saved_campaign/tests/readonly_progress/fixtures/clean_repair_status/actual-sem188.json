@@ -1,0 +1,30 @@
+{
+  "request": {
+    "sequence": 188,
+    "tool": "ck3_take_semantic_snapshot_private_v1",
+    "arguments": {},
+    "source": "unique read-only precondition observation; original AUTO never replayed"
+  },
+  "started_at_utc": "2026-10-17T07:13:27.354318+00:00",
+  "ended_at_utc": "2026-10-17T07:13:27.361839+00:00",
+  "result": {
+    "is_error": false,
+    "structured_content": {
+      "date_raw": 53145120,
+      "paused": true,
+      "map_ready": true,
+      "revision": 61,
+      "native_revision": 60,
+      "snapshot_id": "native:60",
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "played_character": {
+        "character_id": 31254,
+        "alive": true
+      },
+      "diagnostics": {
+        "bridge_pid": 230672,
+        "connection_generation": 1
+      }
+    }
+  }
+}

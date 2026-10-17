@@ -1,0 +1,319 @@
+{
+  "status": "SOURCE_ONLY_PIN_AND_AST_CHECKED",
+  "at_utc": "2026-10-17T07:10:45.259212+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "sdk37_manifest": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\SOURCE-MANIFEST-CLEAN03.json",
+  "sdk37_manifest_sha256": "ef5a2dac99fa2a518c9c5218c33094117002b8c7d2be0dff69474fc631fb45b7",
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src",
+  "source_file_count": 1319,
+  "exact_stock_build": "1.20.0.4",
+  "stock_build_basis": "Retained migration/source qualification; no new EXE access or process observation",
+  "game_identity_basis": "Root relayed new Game230672; not independently queried by this packet",
+  "sources": [
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\activity_feast_ordinary_v1.py",
+      "relative": "xar_autoplayer/activity_feast_ordinary_v1.py",
+      "bytes": 3146,
+      "sha256": "1364ee6ba3a5d5d335f2b65974fd7f0a6a87648e210e4b10aa728487122dbb7a",
+      "reviewed_line_ranges": [
+        [
+          8,
+          54
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\activity_feast_stage5_budget_v1.py",
+      "relative": "xar_autoplayer/activity_feast_stage5_budget_v1.py",
+      "bytes": 5744,
+      "sha256": "c90a5523b592a59453286d780604873d272473eec6e88ebfc124f086084c7e01",
+      "reviewed_line_ranges": [
+        [
+          21,
+          114
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\activity_feast_stage5_value_policy.py",
+      "relative": "xar_autoplayer/activity_feast_stage5_value_policy.py",
+      "bytes": 7096,
+      "sha256": "833d2503ef944d8a46516a94fbf3342379c50a32bfef769e9e27463094b2ba0e",
+      "reviewed_line_ranges": [
+        [
+          17,
+          132
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\activity_feast_stage5_start_formal_consumer.py",
+      "relative": "xar_autoplayer/activity_feast_stage5_start_formal_consumer.py",
+      "bytes": 31716,
+      "sha256": "a064d41add145418f6f72a09dbb007bd0efc9eee03a90b456bb49c69302f82c1",
+      "reviewed_line_ranges": [
+        [
+          56,
+          179
+        ],
+        [
+          181,
+          348
+        ],
+        [
+          421,
+          469
+        ],
+        [
+          525,
+          604
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\activity_feast_stage5_start_private_transport.py",
+      "relative": "xar_autoplayer/bridge/activity_feast_stage5_start_private_transport.py",
+      "bytes": 43343,
+      "sha256": "656b02666880395c1bc1e0e3de4d9ff9d1a0d30e1393fc69e1d930aef43b8f3f",
+      "reviewed_line_ranges": [
+        [
+          403,
+          490
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\activity_feast_terminal_outcome_v1.py",
+      "relative": "xar_autoplayer/bridge/activity_feast_terminal_outcome_v1.py",
+      "bytes": 5534,
+      "sha256": "b24bdd23bcbf0139605a7ce98f849ca850b471e33d2d661e9fa9709aef3fa692",
+      "reviewed_line_ranges": [
+        [
+          21,
+          118
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\activity_feast_guest_opinion_private_transport.py",
+      "relative": "xar_autoplayer/bridge/activity_feast_guest_opinion_private_transport.py",
+      "bytes": 12493,
+      "sha256": "2dc8219a916de5c5d3332ab945302f97ae2b4238238dabfc52382d08122806b7",
+      "reviewed_line_ranges": [
+        [
+          20,
+          32
+        ],
+        [
+          105,
+          165
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\service.py",
+      "relative": "xar_autoplayer/bridge/service.py",
+      "bytes": 859113,
+      "sha256": "742ccd73a0883fe958f61a04467fb00379ddda55b8c19c86b5ef093e45f98399",
+      "reviewed_line_ranges": [
+        [
+          1393,
+          1455
+        ],
+        [
+          2005,
+          2022
+        ],
+        [
+          2766,
+          2871
+        ],
+        [
+          4680,
+          4700
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "relative": "xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1571217,
+      "sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+      "reviewed_line_ranges": [
+        [
+          22820,
+          22938
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\bridge\\succession_transition_contract.py",
+      "relative": "xar_autoplayer/bridge/succession_transition_contract.py",
+      "bytes": 29702,
+      "sha256": "e99ab19e0a8e35a4587ae5228d02712476ac7cd2b8c237a899f666c0744e037a",
+      "reviewed_line_ranges": [
+        [
+          140,
+          228
+        ],
+        [
+          581,
+          704
+        ]
+      ]
+    },
+    {
+      "kind": "frozen_sdk_source",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p37-candidate\\src\\xar_autoplayer\\strategy.py",
+      "relative": "xar_autoplayer/strategy.py",
+      "bytes": 1044603,
+      "sha256": "274149f6566abc488c3379947474a1bcfd767c48aa6e47cc529fa3d7c7d3adbb",
+      "reviewed_line_ranges": [
+        [
+          6236,
+          6333
+        ]
+      ]
+    },
+    {
+      "kind": "installed_stock_text",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\activities\\activity_types\\feast.txt",
+      "relative": "common/activities/activity_types/feast.txt",
+      "bytes": 136921,
+      "sha256": "fbc2e6e3f74bc8c2db1bb1eb01609aa7cf50e9546671a12617301f175be84598",
+      "reviewed_line_ranges": [
+        [
+          46,
+          161
+        ],
+        [
+          746,
+          759
+        ],
+        [
+          2929,
+          2965
+        ],
+        [
+          4992,
+          5015
+        ],
+        [
+          5113,
+          5130
+        ]
+      ]
+    },
+    {
+      "kind": "installed_stock_text",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_activity_effects.txt",
+      "relative": "common/scripted_effects/00_activity_effects.txt",
+      "bytes": 116295,
+      "sha256": "d5c594f8746b923d34b13a67db881821e12f08ce1ab4e6e3f83933419c9e2d38",
+      "reviewed_line_ranges": [
+        [
+          3052,
+          3111
+        ],
+        [
+          3746,
+          3751
+        ],
+        [
+          4169,
+          4239
+        ]
+      ]
+    },
+    {
+      "kind": "installed_stock_text",
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\pam_effects.txt",
+      "relative": "common/scripted_effects/pam_effects.txt",
+      "bytes": 369911,
+      "sha256": "fc4c77974a7844c31c1271dcc2ace24b17906620a832658919aa281e42a2b94f",
+      "reviewed_line_ranges": [
+        [
+          1536,
+          1580
+        ]
+      ]
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\m7_ordinary_successor_queue.py",
+      "relative": "tools/g2_saved_campaign/m7_ordinary_successor_queue.py",
+      "bytes": 29912,
+      "sha256": "307757300555b397c676d9106fb7a20288b34e6c74230f1dae7c6aa94eb0e0b2"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\m7_ordinary_successor_async_queue.py",
+      "relative": "tools/g2_saved_campaign/m7_ordinary_successor_async_queue.py",
+      "bytes": 7765,
+      "sha256": "ebfa9a2416e05db6cc7fd6f5b58848bf36734173d369be05def1ebb90df28a54"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\tools\\extract_g2_goal_continuity.py",
+      "relative": "tools/extract_g2_goal_continuity.py",
+      "bytes": 7044,
+      "sha256": "fdac135bdc7ccea1b32ed6e88f179e2ad1a5e71980f27b74851daadbce287c24"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\tools\\extract_g2_owner_cold_evidence.py",
+      "relative": "tools/extract_g2_owner_cold_evidence.py",
+      "bytes": 9769,
+      "sha256": "58e201919231600cee770d021d06033acb9a3a4655f7b95ea5d917e33ad3cc9c"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\g2-remaining-evidence-2026-10-16\\README.md",
+      "relative": "docs/ck3-native-ai/g2-remaining-evidence-2026-10-16/README.md",
+      "bytes": 4767,
+      "sha256": "ab8720cca85611d4a418f54c767c0f20afad2ba08d01ff1215b261940aab5fa1"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\research\\sdk37-verified-vanilla-lifecycle\\README.md",
+      "relative": "docs/ck3-native-ai/research/sdk37-verified-vanilla-lifecycle/README.md",
+      "bytes": 4060,
+      "sha256": "f49d30dad79779882fa04295a93921d06dece62e17f10ab32a369f24ab52fdf3"
+    },
+    {
+      "kind": "public_source_or_prior_evidence",
+      "path": "Z:\\ck3_mod_rewrite\\docs\\autonomous-agent-progress\\g2-requirements-v1.json",
+      "relative": "docs/autonomous-agent-progress/g2-requirements-v1.json",
+      "bytes": 132408,
+      "sha256": "4af8d801b82867949a47cc6a06a42bc7a58777d59877e4f3c7159305bcf7624b"
+    }
+  ],
+  "g2_status": {
+    "G2-M0": "complete",
+    "G2-M1": "complete",
+    "G2-M2": "complete",
+    "G2-M3": "complete",
+    "G2-M4": "complete",
+    "G2-M5": "complete",
+    "G2-M6": "in_progress",
+    "G2-M7": "in_progress"
+  },
+  "behavioral_tests_run": 0,
+  "old_tests_repeated": 0,
+  "runtime_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "source_mutations": 0,
+  "new_interface_or_admission_added": false,
+  "actual_new_campaign_business_qualification": false,
+  "open_kaishek": "Not applicable: finite existing authored text/pin review; no parser/IR/runtime semantics change"
+}

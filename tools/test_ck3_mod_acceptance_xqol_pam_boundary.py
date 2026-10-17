@@ -11,6 +11,7 @@ import re
 import unittest
 from test_ck3_mod_acceptance_xqol_minimal_scope import (
     restore_minimal_sample, restore_minimal_plan, restore_minimal_pam_contract)
+from test_ck3_mod_acceptance_xqol_prepare_compatibility import PREVIOUS_PREPARE, SUPPORT_KEY
 
 HERE = Path(__file__).resolve().parent
 CASES = HERE / 'ck3_mod_acceptance_cases'
@@ -160,7 +161,9 @@ class TwoPhaseCandidate(unittest.TestCase):
 
     def test_contract_inverse_preserves_all_original_gates_budgets_and_plan(self):
         contract = json.loads((CASES / 'xqol_pam_positive.json').read_bytes())
-        restored = (json.dumps(restore_pre_boundary_contract(contract), ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+        historical = restore_pre_boundary_contract(contract)
+        historical['support_files'][SUPPORT_KEY] = copy.deepcopy(PREVIOUS_PREPARE)
+        restored = (json.dumps(historical, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
         self.check_pin(restored, OLD_CONTRACT)
         for key in (SAMPLE_KEY, EVENTS_KEY, HOOK_KEY):
             self.check_pin((CASES / key).read_bytes(), contract['support_files'][key])

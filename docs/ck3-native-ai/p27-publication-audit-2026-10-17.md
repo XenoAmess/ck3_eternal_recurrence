@@ -333,3 +333,5 @@ SDK37 CLEAN03的无XAR ordinary-no-pact合同窄移植到公共binder，保持No
 `machine_id: xenoamess-full-tower-eb9d2c1186`。SDK38 相关 Service／gift 窄差分保留公共 HolySite 与现有普通规划入口，新增 pending publication 对账和等待中新 UI／战争重算；赠礼新支出必须同帧 stock danger，旧 pending／独立 receipt 不取消。Native24 既有 prewar V2 纳正式构建，终态 receipt 序列化成功才清锁，丢回复仅重读同一证据。公共32项／6子例与4类纯资格＋ledger binding 13项／56子例通过；audience／prebaseline 5项／4子例通过。Native 原闭包45 checks 与公共构建状态分别记录，不作 live 业务外推。
 
 四类 handler 不含 CAS／现场控制；788 原 submit 不是只读查询。账本 API 仅先验首 FULL 后设置新 feeder 的路径，原 bad-ledger 事件／勘误保留。audience session 与 recording SID 分开，合法 prebaseline 缺文件不造零基线，后续 progress 模块不阻本批。Root 已报告 Native24 新 Game246608，SDK38 分支实机验收另证；连续30年／<1／0.5目标均未达，旧局不计新局。第15、OBS30.0.2 勘误、73775b5c 的三个 Official 已实际 success，见[有限专题](sdk38-publication-fence-and-faction-admission.md)。
+
+后续补交只读提示 progress 公共类及必要字段投影，9项／12子例正常 import 生产方法回放通过。原185／196及后续21的技术 applied 不计进日；196的最早204真实结束、同日规划刷新、精确前后 MET／SDK pair 与旧 archive 去重各自验证。未复刻场次 boot、跨 Game cold recipe 或电影 renderer，没有公开类持续实机部署声明。[来源索引](research/clean-campaign-readonly-status/README.md)同时链接两份有限原版研究，不新增 gameplay 门禁、不把Crown2的自然上限或已有调低执行接口夸成自动政治策略完成。

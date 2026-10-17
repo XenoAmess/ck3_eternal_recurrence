@@ -161,7 +161,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_material_publication_portable.py ck3_autonomous_player/tests/unit/test_window_priority_portable.py ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py
       - name: Test exact recovery boundaries and campaign ledger binding without CK3
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/tests/harness_boundaries
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/tests/harness_boundaries tools/g2_saved_campaign/tests/readonly_progress
       - name: Test verified vanilla lifecycle and retained successor queue without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
