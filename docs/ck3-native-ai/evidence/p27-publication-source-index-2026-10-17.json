@@ -445,7 +445,9 @@
     "shared_ci_focused_subtests": 36,
     "python_only_validation": "GREEN",
     "deployed_in_SDK32": false,
-    "deployed_in_SDK33": true
+    "deployed_in_SDK33": true,
+    "independent_formal_baseline_fixture_corrected_in": "sdk34_refuge_and_readback",
+    "prior_formal_review_is_valid_startup_shape_proof": false
   },
   "sixth_public_ci": {
     "commit": "7e1cf70fcfe192809c9c3181872a44d8049ef4cb",
@@ -493,5 +495,59 @@
     "lifecycle_stationary_or_repeat_withdrawal_verified": false,
     "SDK34_launched_claimed": false,
     "Game_OBS_restarted": false
+  },
+  "seventh_public_ci": {
+    "commit": "d173f601d587a6c74d02fa8bf438a212c6b80bad",
+    "official_run": 38990144747,
+    "linear_run": 38990144789,
+    "conclusion": "success"
+  },
+  "sdk34_refuge_and_readback": {
+    "public_archive": "docs/ck3-native-ai/research/sdk34-refuge-and-readback/SOURCE-PINS.json",
+    "lifecycle_FINAL02_sha256": "33b73d8f6a6faf61263a50796d1dc7b576e22342a91cbfde72c474aeaf3a22b3",
+    "baseline_legacy_formal_review_superseded": true,
+    "baseline_legacy_fixture_error": "current eight-field frame substituted for real six-field startup baseline",
+    "current_source_raw_lease_Game_guards_preserved": true,
+    "lifecycle_public_tests": 8,
+    "baseline_public_tests": 12,
+    "popup_public_tests": 23,
+    "popup_public_subtests": 10,
+    "modified_CI_commands_passed": {
+      "tactical": {
+        "tests": 61,
+        "subtests": 9
+      },
+      "route_UI": {
+        "tests": 99,
+        "subtests": 46
+      }
+    },
+    "actual_AUTO50_replayed": false,
+    "actual_UI_business_credit_from_clock": 0,
+    "offline_event110_source_known": true,
+    "offline_event110_semantic_optimum_verified": false,
+    "new_Native_DLL_deployed_by_publication": false
+  },
+  "sdk34_actual_windows": {
+    "window29": {
+      "status": "repair_required",
+      "days": 3,
+      "cause": "exact day paused event readback classification"
+    },
+    "window30": {
+      "status": "repair_required",
+      "days": 58,
+      "AUTO": 625,
+      "phase": "native_war_no_safe_exact_route",
+      "date_raw": 53483040,
+      "native_revision": 6038,
+      "public_revision": 208,
+      "completed_cycles": 12448,
+      "clear627_MCP_calls": 0,
+      "clear627_business_credit": 0
+    },
+    "Game_OBS_restarted": false,
+    "Native22_deployed_claimed": false,
+    "machine_id": "xenoamess-full-tower-eb9d2c1186"
   }
 }

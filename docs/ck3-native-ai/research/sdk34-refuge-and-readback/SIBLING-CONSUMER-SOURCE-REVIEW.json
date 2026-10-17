@@ -1,0 +1,89 @@
+{
+  "status": "SCOPED_SOURCE_REVIEW_COMPLETE_TWO_DISTINCT_BOUNDARY_GAPS_NOT_RUNTIME_REPRODUCED",
+  "canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p34_canonical_result_classifier.py",
+    "sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b"
+  },
+  "SDK_NativeDriver": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p34-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+    "sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c"
+  },
+  "fixed_consumer": "classify_route_contact_horizon_one_day_v1 / actual50 exact-day event_resolution typed_query_required",
+  "covered_or_different": [
+    {
+      "consumer": "classify_hold_finite_return_v2",
+      "lines": [
+        3016,
+        3130
+      ],
+      "evidence": "v2 precedes obsolete hold-v1; calls classify_hold_boundary_v2 for event/interaction/war-set, strict cancel/readback."
+    },
+    {
+      "consumer": "classify_route_contact_window_advance_v1",
+      "lines": [
+        723,
+        876
+      ],
+      "evidence": "classify_route_contact_player_decision_interrupt_v1 (1866-2027) precedes generic path, supports bound event/interaction + canceled or triggered sentinel."
+    },
+    {
+      "consumer": "classify_clock_advance_v1",
+      "lines": [
+        596,
+        668
+      ],
+      "evidence": "Generic life exact-day has no active_eventNone/final_screen puremap requirement."
+    },
+    {
+      "consumer": "classify_generic_modal_life_advance_interrupt_v1",
+      "lines": [
+        1596,
+        1715
+      ],
+      "evidence": "Unknown GUI-hint channel. Producer _life_advance_new_modal_hint 29142-29179 deliberately excludes active event/interaction; different contract."
+    }
+  ],
+  "distinct_potential_future_gaps": [
+    {
+      "consumer": "classify_committed_contact_advance_v1",
+      "lines": [
+        1003,
+        1191
+      ],
+      "rejects": "stop_kind player_decision / final_screenNone",
+      "scope": "committed_route"
+    },
+    {
+      "consumer": "classify_active_battle_epoch_v1",
+      "lines": [
+        878,
+        1001
+      ],
+      "rejects": "stop_kind player_decision / final_screenNone / nonnull boundary",
+      "scope": "active_battle"
+    }
+  ],
+  "common_producer": {
+    "method": "_execute_battle_sentinel_advance",
+    "lines": [
+      23614,
+      24278
+    ],
+    "new_boundary_assignment_lines": [
+      23984,
+      24010
+    ],
+    "builder": "_battle_sentinel_step_result",
+    "builder_lines": [
+      28902,
+      29091
+    ],
+    "fields": "stop_kind player_decision, native-bound player_decision_boundary and possible cancel; final_screenNone for popup."
+  },
+  "limits": [
+    "The two distinct gaps are source-confirmed potential consumer mismatches, not observed live failures.",
+    "Boundary/cancel DTO differs from AUTO50; frozen2748 unchanged.",
+    "Future fix needs independent native-boundary/clock exact-scope proof, not event_resolution guard alone."
+  ],
+  "Game_MCP_Driver_or_ledger_calls_or_writes": 0
+}

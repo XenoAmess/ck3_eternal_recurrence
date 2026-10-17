@@ -70,15 +70,17 @@ def direct_vassal_capital_province_ids(root: object) -> list[int] | None:
     return sorted(provinces)
 
 
-def same_frame_direct_vassal_refuge_scope(
-    snapshot: object, cached_query: object,
+def direct_vassal_refuge_lifecycle_scope(
+    snapshot: object, root: object,
 ) -> dict[str, object] | None:
-    """Authorize only bounded capability advertisement from an exact cache."""
-    if not isinstance(snapshot, dict) or not isinstance(cached_query, dict):
+    """Identify the observed current own/vassal capital and bounded refuge seeds.
+
+    The caller must obtain *root* from a same-frame verified campaign-root
+    reader. This only identifies locations; Native preview/contact still gate
+    every move and every day of stationary observation.
+    """
+    if not isinstance(snapshot, dict) or not isinstance(root, dict):
         return None
-    diagnostics = snapshot.get("diagnostics")
-    binding = cached_query.get("cache_binding")
-    root = cached_query.get("campaign_root_context")
     actor = snapshot.get("actor_character_id")
     if actor is None and isinstance(snapshot.get("played_character"), dict):
         actor = snapshot["played_character"].get("character_id")
@@ -87,15 +89,6 @@ def same_frame_direct_vassal_refuge_scope(
         and snapshot.get("map_ready") is True
         and snapshot.get("active_event") is None
         and snapshot.get("pending_character_interaction") is None
-        and isinstance(diagnostics, dict)
-        and isinstance(binding, dict)
-        and all(binding.get(name) == snapshot.get(name) for name in (
-            "snapshot_id", "revision", "native_revision", "date_raw"
-        ))
-        and binding.get("actor_character_id") == actor
-        and binding.get("bridge_pid") == diagnostics.get("bridge_pid")
-        and binding.get("connection_generation") == diagnostics.get("connection_generation")
-        and isinstance(root, dict)
         and root.get("status") == "available"
         and root.get("snapshot_revision") == snapshot.get("native_revision")
         and root.get("date_raw") == snapshot.get("date_raw")
@@ -128,9 +121,11 @@ def same_frame_direct_vassal_refuge_scope(
         and isinstance(row.get("title"), dict)
         and row["title"].get("tier_raw") == 2
     ] if isinstance(partition, list) else []
+    own_capital = _id(direct_counties[0]) if len(direct_counties) == 1 else None
     if not (
         army_id is not None and current is not None
-        and direct_counties == [current]
+        and own_capital is not None
+        and current in {own_capital, *candidates}
         and army.get("owner_character_id") == actor
         and army.get("army_state") == "regular"
         and army.get("in_combat") is False
@@ -153,6 +148,40 @@ def same_frame_direct_vassal_refuge_scope(
     return {
         "army_id": army_id,
         "current_province_id": current,
-        "candidate_province_ids": [value for value in candidates if value != current],
+        "own_capital_province_id": own_capital,
+        "current_kind": (
+            "directly_held_capital" if current == own_capital
+            else "direct_vassal_capital"
+        ),
+        "candidate_province_ids": (
+            [value for value in candidates if value != current]
+            + ([own_capital] if current != own_capital else [])
+        ),
         "hostile_army_ids": sorted(hostile_ids),
     }
+
+
+def same_frame_direct_vassal_refuge_scope(
+    snapshot: object, cached_query: object,
+) -> dict[str, object] | None:
+    """Authorize only bounded capability advertisement from an exact cache."""
+    if not isinstance(snapshot, dict) or not isinstance(cached_query, dict):
+        return None
+    diagnostics = snapshot.get("diagnostics")
+    binding = cached_query.get("cache_binding")
+    root = cached_query.get("campaign_root_context")
+    actor = snapshot.get("actor_character_id")
+    if actor is None and isinstance(snapshot.get("played_character"), dict):
+        actor = snapshot["played_character"].get("character_id")
+    if not (
+        isinstance(diagnostics, dict)
+        and isinstance(binding, dict)
+        and all(binding.get(name) == snapshot.get(name) for name in (
+            "snapshot_id", "revision", "native_revision", "date_raw"
+        ))
+        and binding.get("actor_character_id") == actor
+        and binding.get("bridge_pid") == diagnostics.get("bridge_pid")
+        and binding.get("connection_generation") == diagnostics.get("connection_generation")
+    ):
+        return None
+    return direct_vassal_refuge_lifecycle_scope(snapshot, root)

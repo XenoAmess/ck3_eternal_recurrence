@@ -1,0 +1,131 @@
+--- a/xar_autoplayer/strategy.py
++++ b/xar_autoplayer/strategy.py
+@@ -15,7 +15,10 @@
+     plan_ordinary_war_declared_overview_v1,
+ )
+ from .ordinary_war_results_window_v1 import plan_ordinary_war_results_window_v1
+-from .defender_refuge_candidates_v1 import direct_vassal_capital_province_ids
++from .defender_refuge_candidates_v1 import (
++    direct_vassal_capital_province_ids,
++    direct_vassal_refuge_lifecycle_scope,
++)
+ 
+ from .current_native_war_end_conditions_v1 import (
+     assess_current_native_war_end_conditions_v1,
+@@ -12795,6 +12798,47 @@
+             if stationary_threats and not route_exact_candidates
+             else None
+         )
++        # The previous native move may have brought the one-county defender
++        # into a directly held vassal capital. Re-read the complete root on
++        # this frame before treating that position as a refuge; its former
++        # own-capital rally receipt is deliberately not reused here.
++        refuge_hold_input = None
++        refuge_lifecycle_scope = None
++        refuge_campaign_root = None
++        if not route_exact_candidates:
++            refuge_hold_input = defender_safe_objective_input or _primary_defender_capital_hold_input(
++                snapshot if isinstance(snapshot, dict) else {},
++                active_wars=active_wars,
++                controlled_armies=controlled_armies,
++                tactical_war=(tactical_war if isinstance(tactical_war, dict) else None),
++                pursuit_army=(pursuit_army if isinstance(pursuit_army, dict) else None),
++                exact_objective_province_ids=exact_objective_province_ids,
++                termination_by_war_id=termination_by_war_id,
++                war_summary=war_summary,
++                unsafe_armies=unsafe_armies,
++                active_assaults=active_assaults,
++                allow_observable_enemy_routes=True,
++                allow_defeat_score_contact=True,
++            )
++            if refuge_hold_input is not None:
++                refuge_campaign_root = _same_frame_campaign_root_context(
++                    rows, snapshot if isinstance(snapshot, dict) else None
++                )
++                if refuge_campaign_root is None:
++                    root_step = "query-campaign-root-context-v1"
++                    if root_step in available_steps:
++                        return {
++                            "policy": "one-life-turn-v1",
++                            "phase": "native_war_refuge_lifecycle_context",
++                            "selected_step": root_step,
++                            "reason": "read the current complete realm and direct-vassal capitals before a stationary defender chooses another native route or day",
++                            "defensive_hold": refuge_hold_input,
++                            "active_wars": war_summary,
++                        }
++                else:
++                    refuge_lifecycle_scope = direct_vassal_refuge_lifecycle_scope(
++                        snapshot, refuge_campaign_root
++                    )
+         safe_objective_rally_binding = (
+             _primary_defender_native_rally_hold_binding(
+                 rows,
+@@ -12818,6 +12862,7 @@
+             if defender_safe_objective_input is not None
+             else None
+         )
++        refuge_lifecycle_active = False
+         if (
+             defender_safe_objective_input is not None
+             and safe_objective_rally_binding is not None
+@@ -12892,6 +12937,26 @@
+                     "route_rejections": stationary_threats,
+                     "active_wars": war_summary,
+                 }
++        elif (
++            isinstance(refuge_lifecycle_scope, dict)
++            and refuge_lifecycle_scope.get("current_kind")
++            in {"direct_vassal_capital", "directly_held_capital"}
++            and refuge_hold_input is not None
++        ):
++            refuge_lifecycle_active = True
++            campaign_root = refuge_campaign_root
++            route_exact_candidates = [
++                current_province_id,
++                *refuge_lifecycle_scope["candidate_province_ids"],
++            ]
++            fallback_candidate_sources = {
++                province_id: "same_realm_vassal_capital"
++                for province_id in refuge_lifecycle_scope["candidate_province_ids"]
++            }
++            fallback_candidate_sources[current_province_id] = (
++                "stationary_same_realm_vassal_capital"
++            )
++            route_candidate_source = "same_realm_vassal_capital"
+         if (
+             route_preview_required
+             and isinstance(army_id, int)
+@@ -12907,7 +12972,10 @@
+             for objective_rank, province_id in enumerate(route_exact_candidates):
+                 candidate_source = fallback_candidate_sources.get(
+                     province_id, route_candidate_source
+-                ) if defender_safe_objective_input is not None else route_candidate_source
++                ) if (
++                    defender_safe_objective_input is not None
++                    or refuge_lifecycle_active
++                ) else route_candidate_source
+                 if province_id == current_province_id:
+                     if isinstance(exact_siege_rejection, dict):
+                         route_rejections.append(
+@@ -12928,7 +12996,7 @@
+                             }
+                         )
+                         continue
+-                    if stationary_threats:
++                    if stationary_threats or refuge_lifecycle_active:
+                         if route_contact_scope_supported:
+                             stationary_contact_horizon = (
+                                 _fresh_route_contact_horizon(
+@@ -13101,7 +13169,11 @@
+                             }
+                         )
+                         continue
+-                    if stationary_threats or ghost_threat_on_alt_subject:
++                    if (
++                        stationary_threats
++                        or ghost_threat_on_alt_subject
++                        or refuge_lifecycle_active
++                    ):
+                         route_rejections.append(
+                             {
+                                 "target_province_id": province_id,

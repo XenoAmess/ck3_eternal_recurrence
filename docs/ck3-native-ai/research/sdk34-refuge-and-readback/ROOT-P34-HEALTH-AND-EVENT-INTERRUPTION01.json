@@ -1,0 +1,124 @@
+{
+  "schema": "root.ck3.p34-health-and-modal-interruption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T01:50:53.201413+00:00",
+  "actual_game_pid": 6068,
+  "actual_game_creation_filetime": 134366412679616931,
+  "sdk_generation": "p34",
+  "reviewer": "/root",
+  "evidence": {
+    "response_0016": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0016-1-result.json",
+      "bytes": 44818,
+      "sha256": "79b175d2347d8019da823bad1953699bb4e379e2ffdb9ee9cf9ca791a7b603dd"
+    },
+    "response_0019": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0019-1-result.json",
+      "bytes": 44196,
+      "sha256": "d55d1b145ef9d62cd46c2914324a98dece18a34176e02c77f4f15d9416bb1784"
+    },
+    "response_0022": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0022-1-result.json",
+      "bytes": 46706,
+      "sha256": "5adaa6c9bfa05dc279e7e5551f12f1c437784bad6fc7a4adfc4861081818c70e"
+    },
+    "response_0025": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0025-1-result.json",
+      "bytes": 47284,
+      "sha256": "811f9c6217a3b00cd6598f2499b3c4fd99550651a885be12435ef8d8c9605aef"
+    },
+    "response_0028": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0028-1-result.json",
+      "bytes": 27153,
+      "sha256": "9e8b2284f6d71b49bec65ed23f6b212ebb7487bae8df10352e361dc6a84f0aab"
+    },
+    "response_0031": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0031-1-result.json",
+      "bytes": 40723,
+      "sha256": "c4158ecc4ed570c8375845140ea6d6472206e95f6b95c9475b5bc4126dd2c6d0"
+    },
+    "response_0033": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0033-1-result.json",
+      "bytes": 24491,
+      "sha256": "0d38777a3c522728589d1a425cdf2e63016281ad9e9a780b439db07aac2cf391"
+    },
+    "response_0034": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0034-1-result.json",
+      "bytes": 1595,
+      "sha256": "5908a34b6e37a6fdf1ff27d9c6696b35cdcd6972e04d9003532b120466ca9d63"
+    },
+    "response_0035": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0035-1-result.json",
+      "bytes": 383,
+      "sha256": "10556af9c038179be7651abc00980f4ecbb08745dbd182c6d1740c8dc26bacbd"
+    },
+    "response_0050": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0050-1-result.json",
+      "bytes": 41560,
+      "sha256": "ff7c9c3849e3254113a8f11e276c75a55b75888e3e49e1363b44b994f71930f0"
+    },
+    "response_0051": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0051-1-result.json",
+      "bytes": 24743,
+      "sha256": "2651c106c45d352f83f820718bd6b3660c658427dad819c3c50506d15d6a54a2"
+    },
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-CONTINUITY-RESUME01-ADMITTED.json",
+      "bytes": 3208,
+      "sha256": "dde507e33fb6f08a45852334e392f50376b518d5251945cfdedab00aefae5edc"
+    },
+    "watchdog": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-recording-watchdog01\\ROOT-P34-WATCHDOG-STARTED-VERIFIED.json",
+      "bytes": 15660,
+      "sha256": "d3842db579759e10e4f0a011282e5a6ddb2c547c1560a3c0eb8277a65ae409d7"
+    },
+    "sdk_pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P34.json",
+      "bytes": 465,
+      "sha256": "1929962f00639bd640ceb1360c74971266c0ee413fcd6286233f7ea2c33b24d5"
+    },
+    "storage": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+      "bytes": 2650,
+      "sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09"
+    }
+  },
+  "actual_successful_chain": [
+    "same-position contact query typed unavailable",
+    "automatically select next refuge preview",
+    "full hostile same-frame one-day contact-free proof",
+    "Native Move accepted",
+    "moving route Native contact-free proof",
+    "Native exact one-day stop verified"
+  ],
+  "actual_interruption": {
+    "window_id": 29,
+    "status": "repair_required",
+    "last_settled_date_raw": 53481624,
+    "pending_auto_sequence": 50,
+    "clock_receipt_end_date_raw": 53481648,
+    "fresh_SEM51_confirms_end": true,
+    "active_native_event_instance_id": 110,
+    "enabled_option_indices": [
+      0,
+      1,
+      2
+    ],
+    "root_cause": "outer classifier rejected exact-day result with active mandatory event",
+    "gameplay_action_replayed": false,
+    "event_chosen": false,
+    "pending_turn_credited": false
+  },
+  "capacity_check": {
+    "free_bytes": 1049111023616,
+    "required_free_bytes": 965242405868,
+    "admission_current": true,
+    "additional_global_reservation_bytes": 0,
+    "large_input_body_reads": 0
+  },
+  "video_includes_D1_game_and_decision_overlay": true,
+  "video_creator_generation": "p27",
+  "recording_ongoing": true,
+  "goal_30_years_completed": false,
+  "goal_subsecond_average_completed": false
+}

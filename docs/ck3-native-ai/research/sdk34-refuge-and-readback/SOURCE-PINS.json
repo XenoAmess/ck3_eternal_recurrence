@@ -1,0 +1,269 @@
+{
+  "schema": "xar.sdk34-public-refuge-readback.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T02:13:29.721222+00:00",
+  "public_base_commit": "d173f601d587a6c74d02fa8bf438a212c6b80bad",
+  "sources": [
+    {
+      "archive": "LIFECYCLE-FINAL02.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\FINAL.json",
+      "sha256": "33b73d8f6a6faf61263a50796d1dc7b576e22342a91cbfde72c474aeaf3a22b3",
+      "bytes": 3063
+    },
+    {
+      "archive": "SDK33-TO-SDK34-STRATEGY.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\strategy.py.patch",
+      "sha256": "708465fcab2f5c137c02d6ef020f7787466771454e9bf961c6a2c17f705c2789",
+      "bytes": 6263
+    },
+    {
+      "archive": "SDK33-TO-SDK34-REFUGE-HELPER.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\defender_refuge_candidates_v1.py.patch",
+      "sha256": "1b3f4c2bf5a50126dc950243ae642023736dcb7e0e6bb605e8ab6ba35c825d12",
+      "bytes": 4539
+    },
+    {
+      "archive": "PUBLIC-LIFECYCLE.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-publication-prep01\\PUBLIC-LIFECYCLE.patch",
+      "sha256": "12871e3132f5352671643f47817f16be28c9ffb5b7839e44077c514c3da684b6",
+      "bytes": 10819
+    },
+    {
+      "archive": "INDEPENDENT-LIFECYCLE-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\INDEPENDENT-LIFECYCLE-REVIEW-FINAL02.json",
+      "sha256": "6ed4bda6b248e0dca9b2282c3810b6d2eb1ba84639bcbe041deae52e31436405",
+      "bytes": 2953
+    },
+    {
+      "archive": "STARTUP-BASELINE-FORMAL-QUEUE-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\CLASSIFIER-BASELINE-FORMAL-QUEUE-REVIEW.json",
+      "sha256": "6279bdfebfe5319a4378144d2d21bb842bbc6e47f88c39cdd592619a8c6f4b51",
+      "bytes": 1948
+    },
+    {
+      "archive": "startup_baseline_formal_queue.original.py",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\test_classifier_startup_baseline.py",
+      "sha256": "00014e99cf28a298f595ad0814c82986d82c372e5f2a1a8ea2e23d43fde8b6fe",
+      "bytes": 10809
+    },
+    {
+      "archive": "war_results_first_failure_baseline_v2.original.py",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\war_results_first_failure_classifier_extension_baseline_v2.py",
+      "sha256": "f6d053d97f0622dab59e0f944fad4d74dc73bd2e150574129ed63bf38e217957",
+      "bytes": 6810
+    },
+    {
+      "archive": "NATURAL-BASELINE-ASSIGNMENT-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\NATURAL-BASELINE-ASSIGNMENT-REVIEW.json",
+      "sha256": "fe8d32aebd55d19c4e8d28dbd92f7827bfe8f7b6bb481b94a153ea09d20a2849",
+      "bytes": 913
+    },
+    {
+      "archive": "natural_baseline_assignment.original.py",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\test_natural_baseline_update.py",
+      "sha256": "864ecca8aa22e990c5a89040ca32af9f5b69d3cf2ac69e1a14862b7eb936cea5",
+      "bytes": 4101
+    },
+    {
+      "archive": "POPUP-CLASSIFIER-DELIVERY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\DELIVERY.json",
+      "sha256": "ab49657278496f0a42ffb7afc498d94c81891e86eca3c3fbc5ca0e33aeb2484b",
+      "bytes": 8103
+    },
+    {
+      "archive": "EXACT-DAY-POPUP.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\classifier.patch",
+      "sha256": "0fa22efbcfe827e092947ad1de2fb0da2950ac5491a15868d9850d4c80f0b187",
+      "bytes": 1834
+    },
+    {
+      "archive": "route_contact_exact_day_v2.original.py",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\pure_route_contact_exact_day_v2.py",
+      "sha256": "da926ac61cd594f77f6d634a24f7221baa84415e93c2fdc5264aea385bb261c1",
+      "bytes": 12751
+    },
+    {
+      "archive": "POPUP-FORMAL-QUEUE-TESTS.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\FORMAL-QUEUE-TESTS.json",
+      "sha256": "e0f17509604693bb5d53c3a9722a58e895ffcb6dcbdf182412034fb68192cda5",
+      "bytes": 1753
+    },
+    {
+      "archive": "popup_formal_queue.original.py",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\test_actual_queue.py",
+      "sha256": "091b62f0e9909ee8007502446c994383fee919b7a8f57038e955272c3802ba57",
+      "bytes": 10487
+    },
+    {
+      "archive": "SIBLING-CONSUMER-SOURCE-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\SIBLING-CONSUMER-SOURCE-REVIEW.json",
+      "sha256": "a271bf2e5db2d372720a532574dc08735991afe177b0d4aee4d5f2a0799b6055",
+      "bytes": 3127
+    },
+    {
+      "archive": "ROOT-P34-HEALTH-AND-EVENT-INTERRUPTION01.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-HEALTH-AND-EVENT-INTERRUPTION01.json",
+      "sha256": "a314490d80d35f7e683465c6d1a2bcb9a66bdeb10d44ff192d980772d18f4557",
+      "bytes": 6020
+    },
+    {
+      "archive": "ROOT-P34-CLASSIFIER-EPOCH02-PIN.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-CLASSIFIER-EPOCH02-PIN.json",
+      "sha256": "f2497a3e7413e1a8acaeefdc121a8cf9800daa86bfd559c1f93810341bf639ff",
+      "bytes": 820
+    },
+    {
+      "archive": "ROOT-P34-CONTINUITY-RESUME02-ADMITTED.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-CONTINUITY-RESUME02-ADMITTED.json",
+      "sha256": "0c2a38ab708ddf5a868a107992ee2d9663df49e197027bdb85379ad3b400af80",
+      "bytes": 3216
+    },
+    {
+      "archive": "EVENT110-SOURCE-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\offline-vanilla-event-analysis\\p34-offline-batches-0064-bf14489f5008\\EVENT-SOURCE-REVIEW.json",
+      "sha256": "df48ab81a1a141a36fa67e71f525c3c57afa61cd52bf213cf3802465cc25d1af",
+      "bytes": 2130
+    },
+    {
+      "archive": "EVENT110-PUBLISHED-SOURCE-REGISTRY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\state\\evidence\\event-source-registry\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+      "sha256": "7a7247b53bfedfe3e86571917c882505b36ef966e033a73a31b4896c9b02fced",
+      "bytes": 1252
+    },
+    {
+      "archive": "ZERO-HOP-NATIVE-FINDINGS.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-research01\\FINDINGS.json",
+      "sha256": "e3aa88f87ed060245e140bd5ff3a926d57b0676e06f18624d388e6dbb7b84f62",
+      "bytes": 5368
+    },
+    {
+      "archive": "DRIVER-PERSIST-FINDINGS.md",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-driver-persist-opt01\\FINDINGS.md",
+      "sha256": "171e89331200a513f6de3b40ef10b636e3ee14a02718f87eeec0074dc63b3ba4",
+      "bytes": 4972
+    },
+    {
+      "archive": "DRIVER-PERSIST-DELIVERY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-driver-persist-opt01\\DELIVERY.json",
+      "sha256": "6686593e70fe240c6a63b90706a3e5dc7f6924d0c49436bcb18488f758e6d9b4",
+      "bytes": 2471
+    }
+  ],
+  "public_sources_and_tests": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "sha256": "9b59522b81093dee64720d8c574432ee764227435ae40da7a867a768a472c9f1",
+      "normalized_lf_sha256": "9b59522b81093dee64720d8c574432ee764227435ae40da7a867a768a472c9f1",
+      "bytes": 1002125
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/defender_refuge_candidates_v1.py",
+      "sha256": "972841812e30f9f5b5aca0f6f67210eb48c8e2165d3e244925d623cc4e64a220",
+      "normalized_lf_sha256": "972841812e30f9f5b5aca0f6f67210eb48c8e2165d3e244925d623cc4e64a220",
+      "bytes": 7682
+    },
+    {
+      "path": "tools/g2_saved_campaign/war_results_first_read_outcome.py",
+      "sha256": "bf0fa37e171111a4b327c2f7477af83de9fab53283ab99fa12416758bff3533e",
+      "normalized_lf_sha256": "30bffc6533140dff3ff35d55e62f225f0cb52b61100d1eeaa042a45fe470d360",
+      "bytes": 6969
+    },
+    {
+      "path": "tools/g2_saved_campaign/route_contact_exact_day_outcome.py",
+      "sha256": "3dc1de63884752c683160b0bb8d66174ad632fffb8e958e7197ab6e2f949413d",
+      "normalized_lf_sha256": "8cf73e876de27e5df911dfb32c7ec0cc040396354fef599de7b3fa0a51a38183",
+      "bytes": 13059
+    },
+    {
+      "path": "tools/g2_saved_campaign/paused_clock_popup_readback_v1.py",
+      "sha256": "b8009c046f326ccbb32805fd8f88f48ab1d9c21d919653a73656d684e3bc7f7b",
+      "normalized_lf_sha256": "b8009c046f326ccbb32805fd8f88f48ab1d9c21d919653a73656d684e3bc7f7b",
+      "bytes": 1159
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_arrived_refuge_lifecycle.py",
+      "sha256": "965f20ee8d308db355f4ce573c6f66de4b27bad5b2c2f80d0ab47adea6ad3b93",
+      "normalized_lf_sha256": "965f20ee8d308db355f4ce573c6f66de4b27bad5b2c2f80d0ab47adea6ad3b93",
+      "bytes": 11777
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/arrived_refuge_actual_projection.json",
+      "sha256": "6a7c880b15cf3ea389b700627b032b776fa9d18c85df81bd93896f2df187f19a",
+      "normalized_lf_sha256": "f1d5fb3ddd27cddd10512f7d180ae9ec8aeceeea74573efaa8a5bb1ff8afe048",
+      "bytes": 149969
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_results_startup_baseline.py",
+      "sha256": "558edfd8cf70ea71fb6e1256746ace7e14c3c0b30b735cd7f8399bd25a56ee0d",
+      "normalized_lf_sha256": "558edfd8cf70ea71fb6e1256746ace7e14c3c0b30b735cd7f8399bd25a56ee0d",
+      "bytes": 4193
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/queue_startup_frame_contract.py",
+      "sha256": "a919e7e23313b7b42914c9408b702ab566fe59e6dfa33ff617227d4002182e54",
+      "normalized_lf_sha256": "d627999fd7f153580bf001951d0983e88521420585ee5ecadb6de008464daae1",
+      "bytes": 1674
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_route_clock_popup_outcome.py",
+      "sha256": "0398e52cb1a462aac6265214dc22af0138f8059538758f6d9c709db640799bad",
+      "normalized_lf_sha256": "0398e52cb1a462aac6265214dc22af0138f8059538758f6d9c709db640799bad",
+      "bytes": 3019
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_clock_popup_actual50.json",
+      "sha256": "0934a0d4f9379ce7da5a8274f9147ffe974cfc1c47fc191e9702cc9dce1d4184",
+      "normalized_lf_sha256": "dd75581694a35220ab30d3754ee4322bbc08585548d10c91aed5dc83eec9e723",
+      "bytes": 26668
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/reviewed_gameplay_start_binding_v1.py",
+      "sha256": "11a7acf3ae76f379742a11776656a68a5e3c76f3e0d77b3333e3a78c897b1b3d",
+      "normalized_lf_sha256": "11a7acf3ae76f379742a11776656a68a5e3c76f3e0d77b3333e3a78c897b1b3d",
+      "bytes": 3056
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_clock_popup_mutations.py",
+      "sha256": "22511be75307b7d7d16082452b12e170124f0f48551b585c2181748888a82f14",
+      "normalized_lf_sha256": "77572e902833ac150d9df45da481720695f41ad9fbfd22201c2a72b67dedd92e",
+      "bytes": 1532
+    },
+    {
+      "path": "tests/unit/test_paused_clock_popup_readback_v1.py",
+      "sha256": "5b9a54f74e0aaa1a1c883bc5c1720f041ad0e09acdd8ad94c270ca6f682ede78",
+      "normalized_lf_sha256": "5b9a54f74e0aaa1a1c883bc5c1720f041ad0e09acdd8ad94c270ca6f682ede78",
+      "bytes": 2402
+    }
+  ],
+  "original_formal_tests_require_external_frozen_inputs": true,
+  "portable_tests_require_external_inputs": false,
+  "old_sixth_formal_baseline_review": "superseded: fixture supplied current eight fields instead of actual six-field startup baseline",
+  "runtime_source_replaced_by_publication": false,
+  "new_native_DLL_deployed_by_this_package": false,
+  "large_Driver_SAVE_video_or_history_copied": false,
+  "latest_root_observation": {
+    "window": 30,
+    "status": "repair_required",
+    "days": 58,
+    "blocked_AUTO": 625,
+    "phase": "native_war_no_safe_exact_route",
+    "date_raw": 53483040,
+    "native_revision": 6038,
+    "public_revision": 208,
+    "completed_cycles": 12448,
+    "clear627_MCP_calls": 0,
+    "clear627_business_credit": 0
+  },
+  "goal_status": {
+    "continuous_30_years": "not_met",
+    "below_1_second_per_day": "not_met",
+    "0_5_seconds_per_day": "not_met"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "new_global_reservation": 0,
+    "parent_reservation": "n42-native-ui-camera-profile-64gib",
+    "archive_review_at_utc": "2026-10-19T02:13:29.721250+00:00",
+    "reason": "Finite Git-delivered reusable source and representative evidence; no large runtime inputs"
+  }
+}

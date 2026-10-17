@@ -1,0 +1,55 @@
+{
+  "status": "ACTUAL50_POPUP_EXACT_DAY_FORMAL_QUEUE_REPLAY_GREEN_NOT_LIVE",
+  "at_utc": "2026-10-17T01:51:50.389902+00:00",
+  "canonical_sha256": "2748a29bde90221a8d2a7851df1e7c011611bc4ad4a0845df88639dde8664f87",
+  "original_rejection_reproduced": true,
+  "actual_AUTO50_unchanged": true,
+  "actual_SEM1_six_field_startup_baseline": {
+    "snapshot_id": "native:5832",
+    "revision": 2,
+    "native_revision": 5832,
+    "date_raw": 53481528,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "actual_METRICS49_before_frame": {
+    "snapshot_id": "native:5846",
+    "revision": 16,
+    "native_revision": 5846,
+    "date_raw": 53481624,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "after_metrics_fixture": "explicit synthetic projection of actual SEM51; real paired METRICS still required",
+  "full_AST_loader_check_after_full_loop_persist_atomic_JSON_roundtrip": true,
+  "date_credit_once_raw": 24,
+  "UI_business_credit": 0,
+  "legacy_no_popup_credit_unchanged": true,
+  "synthetic_pending_interaction_readback": true,
+  "negative_checks": [
+    "unpaused",
+    "event_bool_id",
+    "event_zero_options",
+    "popup_with_map_screen",
+    "event_already_selected",
+    "hidden_event_resolution_none",
+    "empty_interaction",
+    "UI_action_appended",
+    "ordinary_event_consumed",
+    "elapsed_two_days",
+    "clock_overshoot",
+    "clock_extra_tick",
+    "cached_speed_wrong_frame",
+    "incomplete_hostile_scope",
+    "source_native_public_swap",
+    "wrong_Game"
+  ],
+  "sizes": {
+    "canonical": 261198,
+    "TURN": 2448,
+    "state": 1460
+  },
+  "temporary_fixture_reclaimed": true,
+  "MCP_or_process_calls": 0,
+  "loaded_source_Driver_ledger_writes": 0
+}

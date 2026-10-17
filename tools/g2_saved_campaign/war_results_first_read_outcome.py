@@ -26,16 +26,23 @@ def classify_war_results_first_read_state_changed_v1(body, *, initial_frame=None
     keys = ("snapshot_id", "revision", "native_revision", "date_raw",
             "actor_character_id", "episode_run_id", "connection_generation", "bridge_pid")
     if (source.get("status") is not None or binding.get("status") != "complete"
-            or initial_frame.get("status") != "complete"
             or any(key not in source or source[key] != binding.get(key)
-                   or source[key] != initial_frame.get(key)
-                   or type(source[key]) is not type(binding.get(key))
-                   or type(source[key]) is not type(initial_frame.get(key)) for key in keys)
+                   or type(source[key]) is not type(binding.get(key)) for key in keys)
             or any(type(source[key]) is not int or source[key] <= 0 for key in
                    ("revision", "native_revision", "actor_character_id", "bridge_pid"))
             or type(source["connection_generation"]) is not int
             or source["connection_generation"] < 0
             or type(source["date_raw"]) is not int
+            # The queue supplies its real six-key startup baseline, which is
+            # also replaced after an actual natural succession handoff.
+            # Current snapshot/public/native counters belong to binding/raw
+            # and the query lease, not to that earlier baseline.
+            or type(initial_frame.get("actor_character_id")) is not int
+            or initial_frame["actor_character_id"] != source["actor_character_id"]
+            or not isinstance(initial_frame.get("episode_run_id"), str)
+            or initial_frame["episode_run_id"] != source["episode_run_id"]
+            or type(initial_frame.get("date_raw")) is not int
+            or source["date_raw"] < initial_frame["date_raw"]
             or not isinstance(source["snapshot_id"], str) or not source["snapshot_id"]
             or not isinstance(source["episode_run_id"], str) or not source["episode_run_id"]
             or game_pid is not None and source["bridge_pid"] != game_pid):

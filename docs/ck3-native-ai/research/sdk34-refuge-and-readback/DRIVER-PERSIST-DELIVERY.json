@@ -1,0 +1,32 @@
+{
+  "status": "offline_candidate_default_off_not_runtime_admitted",
+  "source_base_manifest_sha256": "acdbd25d0ece6bbcf01416ecf128584fa0798feefe2f8eb0e9cfebf962d5d611",
+  "leaves": {
+    "bridge/native_driver.py": {
+      "base_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p34-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "base_sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+      "candidate_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-driver-persist-opt01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "candidate_sha256": "dad332029e48ff69dc08beb8e8a99e364446c7d952b7211b443cacc3ffda0115"
+    },
+    "native_session.py": {
+      "base_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p34-candidate\\src\\xar_autoplayer\\native_session.py",
+      "base_sha256": "d41880fbaec6f7648822237cefae7db02d06fc86d790622742ea86631ddb94f8",
+      "candidate_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-driver-persist-opt01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\native_session.py",
+      "candidate_sha256": "0d0f1f8ff5f00505930b0427efe183c3d3a624bf2f72665c8c49123f51d38ce3"
+    }
+  },
+  "helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-driver-persist-opt01\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\driver_state_wal_v1.py",
+    "sha256": "e60f70c36a16b92589979bb842b8064788de1c7839785bc474058875a0d1ab32"
+  },
+  "patch_sha256": {
+    "bridge-native_driver.py.patch": "4141eff7aa42c1e5f8c57f3a45ab6c411bc596cf9e73f138d57eddab5a1f02e6",
+    "native_session.py.patch": "553029dd5acbc1f641cef3e409738b188e67abb9dab0571fc6ceba170bf54e29"
+  },
+  "frozen_history_fixture_sha256": "c37b7f60398f18901a1b01a3c11494d9b0da4ebfc34d33b03656b6cefa05c189",
+  "actual_p32_receipt_sha256": "5ae671e4a6988266a5f492324ec19c0d3f735eb421067f7123b942b877f4287b",
+  "bench_sha256": "8488dcae2399163b50ada6a963c2014544ab3c37c4701223a007a63f761a148e",
+  "test_file_sha256": "78948376add65401c592b270e4a6e283361327b0b9c684a5ea942c7dcb1cdbf3",
+  "focused_tests": "python -B -m unittest -v test_p34_wal_candidate; 7 GREEN",
+  "limits": "No live SDK/Game/Driver use; WAL disabled unless a future owner explicitly opts in after review."
+}

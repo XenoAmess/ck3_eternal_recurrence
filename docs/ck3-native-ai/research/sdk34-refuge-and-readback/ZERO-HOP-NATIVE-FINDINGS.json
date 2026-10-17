@@ -1,0 +1,79 @@
+{
+  "schema": "root.ck3.zero-hop-native-static-audit/v1",
+  "status": "BOUNDED_SOURCE_INFERENCE_NO_NATIVE_CHANGE",
+  "actual": {
+    "response_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0016-1-result.json",
+    "response_sha256": "79b175d2347d8019da823bad1953699bb4e379e2ffdb9ee9cf9ca791a7b603dd",
+    "game_pid": 6068,
+    "date_raw": 53481528,
+    "native_revision": 5832,
+    "public_revision": 2,
+    "subject_army_id": 1023410456,
+    "target_province_id": 2604,
+    "hostile_army_ids": [
+      369099275
+    ],
+    "native_request_id": "step-6-b30e6d35d3c5",
+    "result_schema": "xar.route-contact-readonly-unavailable.v1",
+    "unavailable_reason": "native_complete_contact_route_unavailable",
+    "native_error": "CK3 could not build a complete contact route",
+    "typed_failure": {
+      "stage": "typed_result",
+      "wait_completed": true,
+      "frame_stable": true,
+      "executor_enter": true,
+      "executor_finish": true,
+      "executor_typed_result": false,
+      "exception_code": 0
+    },
+    "gameplay_action_or_date_credit": 0,
+    "observed_fallback": "ordinary AUTO19 preview2610 then available horizon, Move, exact-day; zero-hop failure did not halt"
+  },
+  "loaded_native": {
+    "dll_sha256": "c0208ee8d7be6d974b536ed7c88547f01a24d06838556d9b59d0738cf633de0e",
+    "binding_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-NATIVE21-METADATA-BINDING.json",
+    "build_delivery_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\DELIVERY.json",
+    "provenance_limit": "Current W source is statically analyzed; the compiled retained route translation unit has not been separately byte-pinned to the loaded DLL in this note."
+  },
+  "source": {
+    "route_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_routes.cpp",
+    "route_sha256": "0f5fa7518466c2ad25800067bcd838b7ee4c4d79ab4f370b720d250fa63080ad",
+    "mailbox_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\native_bridge\\src\\route_contact_horizon_v1_mailbox.cpp",
+    "mailbox_sha256": "0dc33014220adfc8d2b08bc904b7fd48d7c4565cd9d5c0195d8afb9c30e94c1d",
+    "spans": [
+      {
+        "line": "ck3_12002_routes.cpp:662-784",
+        "fact": "BuildSubjectRouteTimeline checks current CUnit pointer and target, then get_army_move_mode and ResolveRouteOrigin; route_unavailable may return before current==target early return. If it reaches early return, empty route is publishable without A*."
+      },
+      {
+        "line": "ck3_12002_routes.cpp:620-649",
+        "fact": "BuildActiveRouteTimeline for empty snapshot route independently reads native stored MovePath header and requires count==0 plus same CUnit current Province pointer."
+      },
+      {
+        "line": "ck3_12002_routes.cpp:1921-1950",
+        "fact": "ReadCommittedRouteTimeline also accepts native stored header count==0 only with paused ClockMatches and resolvable native CUnit/current Province."
+      },
+      {
+        "line": "ck3_12002_routes.cpp:935-1017,2000-2020",
+        "fact": "ReadRouteContactHorizonSample verifies complete hostile scope, runs subject first, builds all hostile active timelines and one-day conflicts; wrapper double-samples and rejects differing states."
+      },
+      {
+        "line": "route_contact_horizon_v1_mailbox.cpp:235-379",
+        "fact": "typed executor maps route_unavailable to exact observed error, but retains no substage diagnostic for which subject predicate failed."
+      }
+    ]
+  },
+  "conclusion": {
+    "proven": "Observed route_unavailable is a subject route-construction failure category, not evidence of unsafe enemy contact. SDK34 correctly did not turn it into contact-free/date credit and fell back to native preview of another refuge.",
+    "not_proven": "The exact failing native predicate (move_mode==2, origin null/mismatch, or later path construction) is not observable from AUTO16 wire; no loaded-DLL patch or current2604 safety is claimed.",
+    "candidate_for_later_controlled_native_upgrade": "For request.target==selected.current, only after verifying paused same-frame CUnit/Province identity, selected stationary and native stored MovePath header count==0, reuse BuildActiveRouteTimeline to publish a zero-entry subject timeline before hypothetical MoveMode/ResolveRouteOrigin. Keep full hostile-scope, double-sample, ClockMatches and one-day conflict checks unchanged. Do not synthesize an empty route from Python player_armies.route_province_ids alone.",
+    "minimum_offline_cases": [
+      "same-current native path count0 + complete hostile timelines: result available with exact zero-hop subject",
+      "same-current public route empty but native path nonempty/header invalid: unavailable",
+      "CUnit/province pointer drift or clock drift: state_changed/unavailable",
+      "hostile route missing or scope changed: never contact-free",
+      "different-target route still uses existing MoveMode/ResolveRouteOrigin/A* path"
+    ]
+  },
+  "runtime_decision": "No Native rebuild or live SDK change requested; observed fallback already advances. Keep current game/recording running."
+}

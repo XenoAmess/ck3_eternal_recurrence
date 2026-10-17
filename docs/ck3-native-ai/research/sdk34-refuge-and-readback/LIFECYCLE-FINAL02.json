@@ -1,0 +1,36 @@
+{
+  "schema": "root.ck3.refuge-lifecycle-offline-final/v2",
+  "status": "OFFLINE_PREFIX_QUALIFIED_CURRENT_NATIVE_RESULT_PENDING",
+  "source_changes": [
+    {
+      "relative": "xar_autoplayer/strategy.py",
+      "base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p33-candidate\\src\\xar_autoplayer\\strategy.py",
+      "base_sha256": "104a4371c2a671fcf55b9691306ac4fb1a70d294765555aef0994349ac3e4588",
+      "target": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\strategy.py",
+      "target_sha256": "f05fe3aa1298d4ed3bb72bfc9dc20081ba3849a7930f84a0fd4c07d0c5cbcc91",
+      "patch": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\strategy.py.patch",
+      "patch_sha256": "708465fcab2f5c137c02d6ef020f7787466771454e9bf961c6a2c17f705c2789"
+    },
+    {
+      "relative": "xar_autoplayer/defender_refuge_candidates_v1.py",
+      "base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p33-candidate\\src\\xar_autoplayer\\defender_refuge_candidates_v1.py",
+      "base_sha256": "91ba54cd708002b6e514f84c0172c774967f8c89e6b11098f25e16eca55c77a8",
+      "target": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\defender_refuge_candidates_v1.py",
+      "target_sha256": "972841812e30f9f5b5aca0f6f67210eb48c8e2165d3e244925d623cc4e64a220",
+      "patch": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\defender_refuge_candidates_v1.py.patch",
+      "patch_sha256": "1b3f4c2bf5a50126dc950243ae642023736dcb7e0e6bb605e8ab6ba35c825d12"
+    }
+  ],
+  "driver_change": false,
+  "test": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\test_actual_replay.py",
+  "test_sha256": "3c18f7d45b2fe9a326d88ddadd1572953056f4b749cc62413acee5e4b5c017fe",
+  "focused_result": "8 passed in 4.55s",
+  "actual_inputs": [
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0191-1-result.json",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0192-1-result.json",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\TACTICAL-FULL-HISTORY.json"
+  ],
+  "original_history_prefix_max_index": 550,
+  "coverage": "actual arrival2604 blocked->current Native0hop; repeated owncounty/vassal capital positions use actual NativeDriver capabilities and same Strategy; only synthetic Native contactfree gives existing exactday, next date invalidates; unsafe leads next Native preview",
+  "boundary": "No claim actual current2604 Native contactfree, actual future move/war result, or future multiwar/multiple-army support. Synthetic position/proof tests are labeled in source."
+}

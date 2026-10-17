@@ -1,0 +1,15 @@
+{
+  "status": "ACTUAL_NATURAL_HANDOFF_BASELINE_ASSIGNMENT_AND_CLASSIFIER_GREEN_NOT_LIVE",
+  "at_utc": "2026-10-17T01:33:34.484325+00:00",
+  "canonical_sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b",
+  "natural_handoff_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p33_automatic_natural_succession_handoff.py",
+  "natural_handoff_source_sha256": "3c968da6ae3ad43261e9f6e6c4d556341b3d223c2ab4b3cc276f7778d46b5ba4",
+  "actual_assignment_line": 574,
+  "actual_queue_frame_six_fields": true,
+  "synthetic_new_actor_updated_baseline_accepted": true,
+  "synthetic_old_actor_stale_baseline_rejected": true,
+  "RPC_or_lifecycle_calls": 0,
+  "SDK_or_ledger_writes": 0,
+  "temporary_fixture_reclaimed": true,
+  "limit": "Only the existing production assignment and classifier were replayed; no actual succession occurred."
+}

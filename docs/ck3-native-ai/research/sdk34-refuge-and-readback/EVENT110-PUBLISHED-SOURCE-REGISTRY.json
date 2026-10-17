@@ -1,0 +1,22 @@
+{
+  "binding": {
+    "calculated_event_id": 5242001,
+    "ck3_build": "1.20.0.4",
+    "event_definition_key": "health.2001",
+    "native_backend_id": "ck3-1.20.0.4-native-event-window-v1",
+    "native_option_count": 3,
+    "option_catalogue_sha256": "303149b5b0338805412f80052ad4c1f315037f67c4b9f645344394627fb97258",
+    "required_ck3_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "source_sha256": "74073e049a416c744b36a2a996fa467610705e38d53c836b050f1ac6f66e1212"
+  },
+  "classification": "offline-source-reviewed-user-first-rendered-policy",
+  "fingerprint": "eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca",
+  "material_effects_verified": false,
+  "registry_contract_accepted": false,
+  "schema": "xar.vanilla-event-offline-source-known/v1",
+  "source_facts": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\state\\evidence\\event-source-registry\\facts\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+    "sha256": "cb5c9d248a8b19ca01da2f983e45276ddd0c38ccce66c1485c512c065cfae7da"
+  },
+  "source_path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\health_events.txt"
+}

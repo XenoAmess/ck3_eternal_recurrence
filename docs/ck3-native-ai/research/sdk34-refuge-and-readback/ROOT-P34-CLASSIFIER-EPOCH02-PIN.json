@@ -1,0 +1,18 @@
+{
+  "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p34_route_exactday_popup_result_classifier.py",
+  "sha256": "2748a29bde90221a8d2a7851df1e7c011611bc4ad4a0845df88639dde8664f87",
+  "schema": "root.p34.actual-classifier-epoch/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T01:54:46.539717+00:00",
+  "actual_install_sequence": 52,
+  "actual_reconsume_sequence": 53,
+  "original_auto_sequence": 50,
+  "actual_settlement_control": 54,
+  "actual_settlement_metrics": 55,
+  "original_action_replayed": false,
+  "new_MCP_or_native_calls_for_reconsume": 0,
+  "original_source_pin_preserved": true,
+  "Root_independent_diff_review": true,
+  "clock_date_credit_days": 1,
+  "UI_business_credit_for_advance": 0
+}

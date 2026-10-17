@@ -136,7 +136,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py ck3_autonomous_player/tests/unit/test_native_negative_route_regroup.py ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_unsafe_committed_route_halt.py ck3_autonomous_player/tests/unit/test_unsafe_embarked_route_halt.py ck3_autonomous_player/tests/unit/test_army_auto_scalar_projection_v1.py ck3_autonomous_player/tests/unit/test_army_private_auto_scalar_ab_v1.py ck3_autonomous_player/tests/unit/test_native_negative_route_regroup.py ck3_autonomous_player/tests/unit/test_clock_observation_timing_v1.py ck3_autonomous_player/tests/unit/test_battle_reader_exact_speed.py ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py ck3_autonomous_player/tests/unit/test_arrived_refuge_lifecycle.py
       - name: Test native legal stewardship selection and receipt guards without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
@@ -166,7 +166,7 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_land_route_timeline_unavailable_v1.py tests/unit/test_land_route_halt_outcome.py ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py ck3_autonomous_player/tests/unit/test_route_window_advance_outcome.py ck3_autonomous_player/tests/unit/test_optional_war_ui_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_first_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_window_priority.py ck3_autonomous_player/tests/unit/test_war_declared_overview_priority.py
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_land_route_timeline_unavailable_v1.py tests/unit/test_land_route_halt_outcome.py ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py ck3_autonomous_player/tests/unit/test_route_window_advance_outcome.py ck3_autonomous_player/tests/unit/test_optional_war_ui_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_first_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_window_priority.py ck3_autonomous_player/tests/unit/test_war_declared_overview_priority.py ck3_autonomous_player/tests/unit/test_war_results_startup_baseline.py ck3_autonomous_player/tests/unit/test_route_clock_popup_outcome.py tests/unit/test_paused_clock_popup_readback_v1.py
       - name: Verify recorded SDK28 source reconstruction without runtime inputs
         run: python -B -X utf8 docs/ck3-native-ai/research/sdk28-public-source-delta-20261017/source_delta_recipe.py verify --repo . --git-only --public-commit 79055bb2fc2559f4fe270ec3971591c78b59e0c8
       - name: Preserve decision history growth evidence

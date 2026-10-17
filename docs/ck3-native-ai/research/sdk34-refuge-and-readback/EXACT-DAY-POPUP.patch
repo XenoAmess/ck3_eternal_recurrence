@@ -1,0 +1,27 @@
+--- a/root_p34_canonical_result_classifier.py
++++ b/root_p34_route_exactday_popup_result_classifier.py
+@@ -3299,11 +3299,20 @@
+             and inner.get("requested_horizon_days") == 1
+             and inner.get("timeline_policy") == "exact_one_day_contact_free_speed_3"
+             and inner.get("timeline_speed") == 3
+-            and inner.get("paused") is True and inner.get("final_screen") == "map_hud"
+-            and inner.get("active_event") is None
+-            and inner.get("pending_character_interaction") is None
+-            and inner.get("event_resolution") == "none"
++            and inner.get("paused") is True
+             and inner.get("ordinary_events") == [], "exact one-day composite")
++    # Native retains an exclusive popup for the next ordinary typed query.
++    # It changes screen projection, never the exact clock or UI action credit.
++    event, pending = inner.get("active_event"), inner.get("pending_character_interaction")
++    event_valid = (isinstance(event, dict)
++                   and type(event.get("instance_id")) is int and event["instance_id"] > 0
++                   and type(event.get("option_count")) is int and event["option_count"] > 0)
++    pending_valid = isinstance(pending, dict) and bool(pending)
++    popup = event_valid or pending_valid
++    require((event is None or event_valid) and (pending is None or pending_valid)
++            and inner.get("final_screen") == (None if popup else "map_hud")
++            and inner.get("event_resolution") == ("typed_query_required" if event_valid else "none"),
++            "paused popup retained for ordinary typed query")
+     start, end, elapsed = (inner.get(k) for k in
+                            ("starting_date_raw", "ending_date_raw", "elapsed_days"))
+     require(type(start) is int and type(end) is int and type(elapsed) is int

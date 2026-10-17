@@ -1,0 +1,57 @@
+{
+  "status": "INDEPENDENT_ACTUAL0191_LIFECYCLE_REPLAY_GREEN_NOT_LIVE",
+  "at_utc": "2026-10-17T01:34:19.012743+00:00",
+  "producer_final": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\FINAL.json",
+    "sha256": "33b73d8f6a6faf61263a50796d1dc7b576e22342a91cbfde72c474aeaf3a22b3",
+    "bytes": 3063
+  },
+  "strategy_sha256": "f05fe3aa1298d4ed3bb72bfc9dc20081ba3849a7930f84a0fd4c07d0c5cbcc91",
+  "refuge_helper_sha256": "972841812e30f9f5b5aca0f6f67210eb48c8e2165d3e244925d623cc4e64a220",
+  "driver_sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+  "independent_test": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-arrived-refuge-lifecycle-repair01\\final02\\test_actual_replay.py",
+    "sha256": "3c18f7d45b2fe9a326d88ddadd1572953056f4b749cc62413acee5e4b5c017fe",
+    "bytes": 12758
+  },
+  "independent_test_result": "8 passed in 4.46s",
+  "actual_inputs": {
+    "AUTO191": "native_war_counterpolicy_hold",
+    "SEM192": "same paused date53481528/native5831/public103",
+    "closed_history": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\TACTICAL-FULL-HISTORY.json",
+      "sha256": "c37b7f60398f18901a1b01a3c11494d9b0da4ebfc34d33b03656b6cefa05c189",
+      "bytes": 7108891
+    },
+    "history_rows": 550
+  },
+  "static_review": {
+    "root_and_complete_direct_vassal_scope": true,
+    "actual_NativeDriver_capabilities_calls_shared_helper": true,
+    "full_current_hostiles_excludes_retired_ID": true,
+    "own_county_return_and_vassal_arrival_use_same_lifecycle": true,
+    "current0hop_existing_Native_advertisement": true,
+    "advance_proof_current_frame_full_scope_contactfree_and_daily_isolation_required": true,
+    "following_day_requires_new_proof": true,
+    "unsafe_current_turns_to_readonly_preview": true
+  },
+  "canonical_queue_baseline_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\CLASSIFIER-BASELINE-FORMAL-QUEUE-REVIEW.json",
+    "sha256": "6279bdfebfe5319a4378144d2d21bb842bbc6e47f88c39cdd592619a8c6f4b51",
+    "bytes": 1948
+  },
+  "natural_baseline_assignment_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\NATURAL-BASELINE-ASSIGNMENT-REVIEW.json",
+    "sha256": "fe8d32aebd55d19c4e8d28dbd92f7827bfe8f7b6bb481b94a153ea09d20a2849",
+    "bytes": 913
+  },
+  "final01_status": "historical superseded before source freeze",
+  "boundary": [
+    "No actual current2604 contactfree result or clock execution claimed.",
+    "Synthetic contactfree/movement/return cases are offline only.",
+    "Actual Root SEM/CAP followed by FULL max1 required for current gameplay qualification."
+  ],
+  "RPC_or_process_runtime_calls": 0,
+  "live_Driver_reads": 0,
+  "W_Git_writes": 0
+}

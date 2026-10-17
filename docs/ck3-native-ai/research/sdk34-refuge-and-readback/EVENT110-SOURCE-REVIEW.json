@@ -1,0 +1,34 @@
+{
+  "Game_MCP_OBS_calls": 0,
+  "already_known": [],
+  "completed_control_sequence": 64,
+  "entries": [
+    {
+      "candidate": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\offline-vanilla-event-analysis\\p34-offline-batches-0064-bf14489f5008\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.registry-entry.json",
+        "sha256": "7a7247b53bfedfe3e86571917c882505b36ef966e033a73a31b4896c9b02fced"
+      },
+      "canonical_source_facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\state\\evidence\\event-source-registry\\facts\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+        "sha256": "cb5c9d248a8b19ca01da2f983e45276ddd0c38ccce66c1485c512c065cfae7da"
+      },
+      "event_definition_key": "health.2001",
+      "fingerprint": "eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca",
+      "incident_id": "cc456842f4644b1a91db6a32cdc6e3e5",
+      "published": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\state\\evidence\\event-source-registry\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.json",
+        "sha256": "7a7247b53bfedfe3e86571917c882505b36ef966e033a73a31b4896c9b02fced"
+      },
+      "source_facts": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\offline-vanilla-event-analysis\\p34-offline-batches-0064-bf14489f5008\\eea59077c3f74968a36cca8be6cddb3d79a20f9fdfc67a6876643b12a39f80ca.source-facts.json",
+        "sha256": "cb5c9d248a8b19ca01da2f983e45276ddd0c38ccce66c1485c512c065cfae7da"
+      }
+    }
+  ],
+  "manifest": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-offline-batches\\0064.json",
+    "sha256": "bf14489f5008796ce752eed43084aa2dac6737761054ceace6b23e46b2d0d5be"
+  },
+  "schema": "xar.vanilla-event-offline-source-batch/v1",
+  "unresolved": []
+}

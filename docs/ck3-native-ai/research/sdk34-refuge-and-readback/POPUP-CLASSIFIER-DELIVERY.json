@@ -1,0 +1,167 @@
+{
+  "status": "CLASSIFIER_ONLY_ACTUAL50_POPUP_EXACT_DAY_REPAIR_VERIFIED_AND_ROOT_ADOPTED",
+  "at_utc": "2026-10-17T01:59:43.295551+00:00",
+  "original_canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p34_canonical_result_classifier.py",
+    "sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b",
+    "bytes": 260516
+  },
+  "new_classifier": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p34_route_exactday_popup_result_classifier.py",
+    "sha256": "2748a29bde90221a8d2a7851df1e7c011611bc4ad4a0845df88639dde8664f87",
+    "bytes": 261198
+  },
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\classifier.patch",
+      "sha256": "0fa22efbcfe827e092947ad1de2fb0da2950ac5491a15868d9850d4c80f0b187",
+      "bytes": 1834
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\pure_route_contact_exact_day_v2.py",
+      "sha256": "da926ac61cd594f77f6d634a24f7221baa84415e93c2fdc5264aea385bb261c1",
+      "bytes": 12751
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\test_actual_queue.py",
+      "sha256": "091b62f0e9909ee8007502446c994383fee919b7a8f57038e955272c3802ba57",
+      "bytes": 10487
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\FORMAL-QUEUE-TESTS.json",
+      "sha256": "e0f17509604693bb5d53c3a9722a58e895ffcb6dcbdf182412034fb68192cda5",
+      "bytes": 1753
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\health_controls.py",
+      "sha256": "0f605720232b650ce45a099d2c94ceb62e4153ad3f52b4dacdc76de8606ad6fb",
+      "bytes": 9555
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\portable\\paused_clock_popup_readback_v1.py",
+      "sha256": "b8009c046f326ccbb32805fd8f88f48ab1d9c21d919653a73656d684e3bc7f7b",
+      "bytes": 1159
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\portable\\test_paused_clock_popup_readback_v1.py",
+      "sha256": "3a8f4023dddd234e9e83ae146419a43eaf227a43f4bfa8dff090ae6bf717b33b",
+      "bytes": 2378
+    }
+  ],
+  "sibling_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-exactday-classifier-repair01\\SIBLING-CONSUMER-SOURCE-REVIEW.json",
+    "sha256": "a271bf2e5db2d372720a532574dc08735991afe177b0d4aee4d5f2a0799b6055",
+    "bytes": 3127
+  },
+  "actual_readonly_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0001-1-result.json",
+      "sha256": "5d95bfb0d608779c1f5698f5510e0b6e8f0c6557ead871030f5335309697050f",
+      "bytes": 24468
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0049-1-result.json",
+      "sha256": "94f09507fd5de72036fab3b2a33015cdf6fb9812bbd688289a5bb74c1b64849a",
+      "bytes": 1653
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0050-1-result.json",
+      "sha256": "ff7c9c3849e3254113a8f11e276c75a55b75888e3e49e1363b44b994f71930f0",
+      "bytes": 41560
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0051-1-result.json",
+      "sha256": "2651c106c45d352f83f820718bd6b3660c658427dad819c3c50506d15d6a54a2",
+      "bytes": 24743
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0052-1-result.json",
+      "sha256": "717c9325d77dd61622c0594ad806db9712f61619274e0eabb069f74861a3f52f",
+      "bytes": 820
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0053-1-result.json",
+      "sha256": "7bbbdf8ef7ee32d0761eebdde27e3584ebaf9f5257b75ab6d2fcce20b9aee7cd",
+      "bytes": 419
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0054-1-result.json",
+      "sha256": "2662ecf62b6d5d8a7e97c704fddfb9ef4c4b8040cb7fd262e2cf4548b57d9e14",
+      "bytes": 1264
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0055-1-result.json",
+      "sha256": "ab85e4f0081f11e76728207cef6adbfb795d2376f96245b61dfc383d8aae25d6",
+      "bytes": 1653
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0057-1-result.json",
+      "sha256": "2a7e3e08bd00b6101393f69ff514ebc7a24e5ed20448611c4965899c50e981d6",
+      "bytes": 517039
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0060-1-result.json",
+      "sha256": "b4f1b5ed997ef7199d4dd7c52ba9346c592e9d55ef5a8268ff7b3c87803654a6",
+      "bytes": 39641
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0062-1-result.json",
+      "sha256": "2b1584ff596954ee7cd17a91d983aa11d7242e0113228ad56a0de303535028af",
+      "bytes": 24495
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0063-1-result.json",
+      "sha256": "312f2de102d02cd1d8833aae8fb1748735198c6bbe2e37b2b2eb41c86154cf40",
+      "bytes": 1597
+    }
+  ],
+  "Root_actual_runtime_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-CLASSIFIER-EPOCH02-PIN.json",
+    "sha256": "f2497a3e7413e1a8acaeefdc121a8cf9800daa86bfd559c1f93810341bf639ff",
+    "bytes": 820
+  },
+  "Root_actual_resume_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-CONTINUITY-RESUME02-ADMITTED.json",
+    "sha256": "0c2a38ab708ddf5a868a107992ee2d9663df49e197027bdb85379ad3b400af80",
+    "bytes": 3216
+  },
+  "original_clock": {
+    "AUTO": 50,
+    "start": 53481624,
+    "end": 53481648,
+    "elapsed_days": 1,
+    "replayed": false,
+    "UI_business_credit": 0
+  },
+  "Root_actual_recovery_controls": [
+    52,
+    53,
+    54,
+    55
+  ],
+  "independent_event_controls": [
+    57,
+    60
+  ],
+  "window29_failure_preserved": true,
+  "Root_window30_running_reported": true,
+  "change": "Only paused popup readback guard. All clock, source, full-hostile scope, four-action guards retained.",
+  "tests": "Production AST loader/check_after/full_loop/persist/JSON replay +16 negatives; portable4tests/10subcases GREEN.",
+  "storage": {
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+      "sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+      "bytes": 2650
+    },
+    "shared64GiB": true,
+    "new_reservation_bytes": 0,
+    "package_bytes_before_delivery": 309321,
+    "limit_bytes": 16777216,
+    "actual_D_free_bytes": 1048737337344,
+    "review": "Derived package within48h; referenced active classifier protected."
+  },
+  "preparer_runtime_calls": 0,
+  "live_source_overwrites": 0,
+  "Driver_or_liveSAVE_reads": 0,
+  "ledger_writes": 0
+}

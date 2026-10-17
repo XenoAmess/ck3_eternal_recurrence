@@ -21,3 +21,5 @@
 后续现场补记：第六 `7e1cf70f` 的 Official38972872688／Linear38972872670均success。SDK32窗口27随后在AUTO2086候选不足阻塞，实际1824日失败；17日00:37Z前后SDK32已正常0/0退出，Game／OBS保留。上述“持续运行”描述仅代表本包收口当时，不代表当前仍运行，也不把本候选写成已部署。SDK33此时仅准备，详见[最新交接](../../../handover/2026-10-17-p27-native21-continuation.md)。
 
 再次追加：SDK33实际源freeze已包含本包Service `38f71545…` 与transport `f9c25d96…`，随后已实际运行。**源码已部署与首次state_changed分支实机复现是两件事**；后者仍无新增证明。SDK33出发链成功后窗口28又在31日因驻守counterpolicy阻塞，见最新交接，不将本次安装写成全面稳定。
+
+2026-10-17 第八批更正：上文正式队列 GREEN 的旧夹具误把八字段当前帧赋给 `initial_frame`，实际正式队列为六字段启动基线，且后续日期／修订会变化。旧原件不改，相关“真实基线形状已通过”结论由[新的正式回放与纠正](../sdk34-refuge-and-readback/README.md)取代。公共分类函数已窄修启动 actor／episode 与日期边界；当前规划源、raw request／reply、lease／Game 的完整绑定保持严格。新 10 个否例、后日帧和自然继承基线更新资格通过；无新的首次 state_changed 分支实机复现信用。

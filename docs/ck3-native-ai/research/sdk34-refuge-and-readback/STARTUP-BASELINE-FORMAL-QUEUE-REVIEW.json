@@ -1,0 +1,52 @@
+{
+  "status": "CLASSIFIER_REAL_QUEUE_STARTUP_BASELINE_CORRECTION_GREEN_NOT_LIVE",
+  "at_utc": "2026-10-17T01:27:07.015758+00:00",
+  "canonical": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-hot-sdk-prep01\\root_p34_canonical_result_classifier.py",
+  "sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b",
+  "original_036ea2_failure_reproduced": true,
+  "startup_frame_producer": "actual queue.frame(metrics) six fields",
+  "startup_public_native_date": [
+    1,
+    39,
+    53171376
+  ],
+  "current_public_native_date": [
+    2,
+    40,
+    53171400
+  ],
+  "actual_AST_loader_check_after_full_loop_persist_atomic_roundtrip": true,
+  "negative_checks": [
+    "wire_public_not_native",
+    "raw_request_id",
+    "current_source_public_native_swap",
+    "current_query_lease",
+    "wrong_Game",
+    "false_acceptance",
+    "false_window_close",
+    "initial_actor_character_id",
+    "initial_episode_run_id",
+    "initial_date_raw"
+  ],
+  "identity_state_focus_preserved": true,
+  "zero_date_business_close_credit": true,
+  "settled_nonmaterial_observation_once": true,
+  "sizes": {
+    "canonical": 260516,
+    "TURN": 2325,
+    "state": 1446
+  },
+  "natural_handoff_updates_initial_frame": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p33_automatic_natural_succession_handoff.py",
+    "sha256": "3c968da6ae3ad43261e9f6e6c4d556341b3d223c2ab4b3cc276f7778d46b5ba4",
+    "assignment_line": 574
+  },
+  "original_review_correction": "old formal fixture supplied eight current fields; old evidence retained and corrected here",
+  "limits": [
+    "Native state_changed is synthetic; actual Service DTO retained",
+    "process/UI admission and actual Game branch not exercised"
+  ],
+  "temporary_fixture_reclaimed": true,
+  "SDK33_or_live_writes": 0,
+  "ledger_writes": 0
+}

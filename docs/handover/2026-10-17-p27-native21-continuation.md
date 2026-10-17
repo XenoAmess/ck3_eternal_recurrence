@@ -182,3 +182,13 @@ SHA `64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc`绑定完�
 后续到达vassal2604，但FULL178／AUTO191再次blocked：`native_war_counterpolicy_hold`，窗口28失败31日，
 raw53481528／Native5831／public103／12157cycles。原单县／rally-hold helper只修出发，抵达后驻守及再撤离待SDK34生命周期修复。
 不把两次失败窗口拼接或将成功移动升级为全面稳定；Game／OBS未停，SDK34由现场owner准备，公共包不阻塞其修复。
+
+## SDK34：生命周期实证、事件热修与新的零跳阻塞
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。SDK34 实际 AUTO16零跳unavailable→19预览2610→22完整敌军horizon→25移动→28moving horizon→31推进一日，SEM33／MET34配对5836／raw53481552。出发后驻守／再次撤离的源链已扩充，但不宣称全部局面稳定。
+
+窗口29又在3日后因AUTO50一天推进伴随event110被旧pure-map分类守卫误拒；Root同SDK52安装、53仅重消费、FULL54／MET55结算原一天，无时钟重放。AUTO57读health.2001、AUTO60选实际最上显示项（rendered0／native1，option2），原生后验110→None；异步离线分析已发布来源注册且unresolved为空。来源已知不等于语义最优。相关精确小原件、完整公共消费函数、正式队列和便携测试见[第八收口](../ck3-native-ai/research/sdk34-refuge-and-readback/README.md)。
+
+修复后窗口30实际又在58日失败：FULL592／AUTO625为`native_war_no_safe_exact_route`，raw53483040／Native6038／public208／12448cycles。SEM626与本地clear627保持零MCP／零业务信用，未重发动作；敌军2605→2604，所有替代路径不安全，当前原生零跳不可用。SDK35／Native22正在独立准备，当前不写已部署。此前21日running只是历史截面；稳定30年、低于1秒／日、0.5秒／日仍依次未达，失败窗口不能拼接。
+
+第七d173f601的Official38990144747和Linear38990144789均success。第六results首次失败旧正式回放的八字段当前基线夹具误验已在第八明确纠正：正式启动基线仅六字段，当前raw／lease／Game完整绑定保持。原错误和旧GREEN保留，不能继续引用为真实启动形状验收。

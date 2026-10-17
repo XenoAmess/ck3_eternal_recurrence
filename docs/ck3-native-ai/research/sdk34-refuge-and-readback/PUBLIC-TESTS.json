@@ -1,0 +1,26 @@
+{
+  "schema": "xar.sdk34-public-focused-tests.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:16:54.144142+00:00",
+  "public_source_CI_commands": [
+    {
+      "selector": "Test halt readback and Army scalar comparison without CK3",
+      "tests": 61,
+      "subtests": 9,
+      "status": "GREEN"
+    },
+    {
+      "selector": "Test route clocks, uncertain move ACK and optional war UI reads without CK3",
+      "tests": 99,
+      "subtests": 46,
+      "status": "GREEN"
+    }
+  ],
+  "new_route_popup_16_negative_mutations": true,
+  "Native_or_Game_called": false,
+  "original_formal_queue_receipts_retained": true,
+  "runtime_source_modified": false,
+  "failed_local_setup": "sparse test not materialized; exact tracked Git blob materialized before executing second command",
+  "failed_new_test_assertion": "test field spelling corrected to paired_after_metrics_still_required; no production change",
+  "python_only": "GREEN"
+}

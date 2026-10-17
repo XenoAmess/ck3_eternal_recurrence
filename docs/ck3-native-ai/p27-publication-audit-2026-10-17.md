@@ -263,3 +263,13 @@ CTRL2088保持12076cycles，0MCP／0业务信用／无原动作重放。SDK32随
 [精确小原件](research/sdk32-defender-refuge/ROOT-P33-ACTUAL-DEPARTURE-CHAIN.json) SHA64228d8e…保全。同Game／OBS保持。
 但FULL178／AUTO191在`native_war_counterpolicy_hold`再阻塞，窗口28失败31日／raw53481528／12157cycles；
 出发修复已实机，抵达后驻守／再次撤离仍待SDK34，不能宣称全面稳定或拼接旧1824日达标。
+
+## 第八批：抵达生命周期、真实启动基线与事件中断
+
+公共两叶窄合SDK34 FINAL02，新增抵达直辖封臣首都／返回己方首都后的原生零跳和下一预览生命周期；8项便携回放直接使用公共Driver能力与实际精简历史，安全／不安全后续原生输出明确合成。实际移动仍需完整原版资格，未把空路线当安全证明。
+
+第六首次results读错分类的旧独立正式夹具误给八字段当前frame，已复现真实六字段startup后的拒绝并纠正；当前规划源／raw Native包／lease／Game八字段仍严格，启动只绑定actor／episode及日期下界。新12项连同旧12项通过，正式queue AST／持久化另保10否例。旧GREEN原件保留并标superseded，不再冒充真实baseline验收。
+
+AUTO50实际一天＋event110的消费者只放宽合法暂停弹窗读回，完整clock、敌军、四动作与METRICS后验不变。公共函数、真实完成包投影、16否例和UI形状测试23项／10子例通过；不会给事件选择或战争信用。Root同SDK52/53/54只安装／重消费／结算原一天，随后真实选择event110并完成异步原版离线分析，来源注册已发布。精确出处及未知边界见[有限归档](research/sdk34-refuge-and-readback/README.md)。
+
+最新Root截点窗口29失败3日，修复后的30又失败58日／12448cycles／raw53483040，根因当前原生零跳不可用与替代路径危险；不再写仍running30。新Native22未部署，本批不混入新DLL或WAL。连续30年稳定优先，再<1秒／日、0.5秒／日，均未达。第七d173f601 Official38990144747／Linear38990144789均success。
