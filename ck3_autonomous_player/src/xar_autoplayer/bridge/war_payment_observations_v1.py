@@ -69,6 +69,7 @@ def natural(value):
     event(value['entry_event'])
 
 
+RESOURCE4_WALLET_KEY = 'resource4_wallet_context_v1'
 GENERIC_CONTEXT_KEY = 'generic_wallet_context_v1'
 GENERIC_CONTEXT_ENTRY_RVA = 0x28a6d10
 GENERIC_CONTEXT_WALLET_RETURN_RVA = 0x28a6d7c
@@ -147,12 +148,14 @@ def generic_wallet_context(value, payment_record):
 
 def record(value):
     has_generic_context = isinstance(value, dict) and GENERIC_CONTEXT_KEY in value
+    has_resource4_wallet = isinstance(value, dict) and RESOURCE4_WALLET_KEY in value
     fields(value, unsigned='journal_sequence receiver second_pointer caller_return_rva parent_transition_army parent_gateway_character parent_transition_caller parent_gateway_caller raw_return_bits',
            u8='kind', signed='amount_raw parent_gateway_amount',
            i32='resource_kind_raw component_raw parent_gateway_resource parent_gateway_component',
            boolean='original_called original_returned clock_thread_order_matches session_matches natural_parent_matches same_character_after same_wrapper_after personal_wrapper_matches_character source_boarding_call_chain_matches tls_depth_exceeded',
            nested='entry_event returned_event parent_transition_entry parent_gateway_entry natural_parent_metadata natural_return_metadata session_entry session_return before after'
-                  + (' '+GENERIC_CONTEXT_KEY if has_generic_context else ''))
+                  + (' '+GENERIC_CONTEXT_KEY if has_generic_context else '')
+                  + (' '+RESOURCE4_WALLET_KEY if has_resource4_wallet else ''))
     need(value['kind'] in range(5), 'record kind is malformed')
     for key in ('entry_event','returned_event','parent_transition_entry','parent_gateway_entry'):
         event(value[key])
@@ -164,6 +167,9 @@ def record(value):
         frame(value[key])
     if has_generic_context:
         generic_wallet_context(value[GENERIC_CONTEXT_KEY], value)
+    if has_resource4_wallet:
+        from .war_payment_resource4_wallet_v1 import validate_context
+        validate_context(value[RESOURCE4_WALLET_KEY], value)
 
 
 def valid_event(e):

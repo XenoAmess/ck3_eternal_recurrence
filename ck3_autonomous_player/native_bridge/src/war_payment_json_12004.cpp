@@ -178,6 +178,14 @@ std::string RecordJson(const WarPaymentRecord12004 &r) {
 #undef NUM
 #undef BOOL
   if(r.generic_wallet_context)o.Raw("generic_wallet_context_v1",GenericContextJson(*r.generic_wallet_context));
+  if(r.resource4_wallet_context) {
+    const auto &w=*r.resource4_wallet_context;Object v;
+    v.Num("schema_version",1);v.Num("source_entry_rva",0x28B9950);
+    v.Str("resource_name","unknown");v.Str("maintenance_attribution","unclosed");
+    v.Str("balance_boundary","whole_original_callback_entry_return");
+    v.Raw("before",Raw4FrameJson(w.before));v.Raw("after",Raw4FrameJson(w.after));
+    o.Raw("resource4_wallet_context_v1",v.Done());
+  }
   return o.Done();
 }
 } // namespace

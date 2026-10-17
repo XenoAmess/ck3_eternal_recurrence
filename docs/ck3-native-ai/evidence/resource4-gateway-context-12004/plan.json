@@ -1,0 +1,137 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "resource4-gateway-context",
+  "question": "Can the existing resource4 gateway callback retain its own physical context and4A0 endpoints without inferring currency, military paid, payer or settlement?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Offline source/producer-shaped wire only; future Root-owned callback needs independent cold-load admission",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Actual PID/create/generation/window/CharacterFullID and before/after context; no cross-load reuse",
+    "producer_trigger": "not-applicable",
+    "producer": "Existing kind1/resource4 original callback with qualified bindings, owner filter and Permit",
+    "caller": "Existing InvokeWarPaymentGateway12004; true caller stays in the same record, no active getter",
+    "consumer": "RecordJson -> normalize_journal -> consume_resource4_wallet_contexts",
+    "cache_lifetime": "Existing bounded journal512; same sampling/window epoch, clear invalidates evidence",
+    "expected_signal": "Same callback context+4A0 raw endpoints with complete same-owner/session/context reads",
+    "zero_sample_meaning": "No qualified boundary in the retained window, not zero balance or absence of payment",
+    "stop_condition": "Offline source and five focused full-envelope tests only; no SDK/game/native build/live sampling",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "capture",
+      "layer": "source-contract",
+      "path": "../../../../ck3_autonomous_player/native_bridge/src/war_payment_passive_12004.cpp",
+      "sha256": "2cac759bebdd8b58638c8bf558bf5290cb444b47a4e5b1b32461c6bffdd8af46",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "capture implementation boundary only; coherent native build and live remain pending"
+    },
+    {
+      "id": "wire",
+      "layer": "source-contract",
+      "path": "../../../../ck3_autonomous_player/native_bridge/src/war_payment_json_12004.cpp",
+      "sha256": "caa087fd123bdbb2cb9a12a052b05f7d7dc550c1b741fb8de2137f24b7ce7191",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "wire implementation boundary only; coherent native build and live remain pending"
+    },
+    {
+      "id": "consumer",
+      "layer": "source-contract",
+      "path": "../../../../ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_resource4_wallet_v1.py",
+      "sha256": "48be37aa5bd9621502f5879b3906f4058f52c6a88967d13401c19815807c37f8",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "consumer implementation boundary only; coherent native build and live remain pending"
+    },
+    {
+      "id": "focus",
+      "layer": "offline-fixture",
+      "path": "../../../../ck3_autonomous_player/tests/unit/test_war_payment_resource4_wallet.py",
+      "sha256": "2bfc215f1525cfc18cb7b18fe9428431b414cd352d97e35d9a1944a8054cdbbb",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "focus implementation boundary only; coherent native build and live remain pending"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "cd",
+      "label": "Unknown c/d producer"
+    },
+    {
+      "id": "gateway",
+      "label": "Existing28B9950 gateway callback"
+    },
+    {
+      "id": "pair",
+      "label": "Optional actual context/4A0 before/after"
+    },
+    {
+      "id": "wire",
+      "label": "Same original record and event/session"
+    },
+    {
+      "id": "consumer",
+      "label": "Raw boundary consumer"
+    },
+    {
+      "id": "paid",
+      "label": "Military paid/payer/currency/cadence unknown"
+    }
+  ],
+  "edges": [
+    {
+      "id": "capture",
+      "from": "gateway",
+      "to": "pair",
+      "label": "Guarded kind1/resource4; original once",
+      "status": "static-confirmed",
+      "evidence": [
+        "capture"
+      ]
+    },
+    {
+      "id": "wire",
+      "from": "pair",
+      "to": "wire",
+      "label": "Existing serializer optional child",
+      "status": "static-confirmed",
+      "evidence": [
+        "wire"
+      ]
+    },
+    {
+      "id": "consumer",
+      "from": "wire",
+      "to": "consumer",
+      "label": "Full normalizer and raw endpoint qualification",
+      "status": "static-confirmed",
+      "evidence": [
+        "consumer"
+      ]
+    },
+    {
+      "id": "cd",
+      "from": "cd",
+      "to": "gateway",
+      "label": "Unclosed military producer/account connection",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Need actual c/d writer source and same payment/account binding"
+    },
+    {
+      "id": "paid",
+      "from": "consumer",
+      "to": "paid",
+      "label": "Physical boundaries do not establish business attribution",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Formal resource name, military component, payer and cadence remain unknown"
+    }
+  ],
+  "cases": []
+}

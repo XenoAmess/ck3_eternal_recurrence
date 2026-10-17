@@ -65,3 +65,9 @@
 这是本页上文“后续getter不能作为同次先前SETTLEMENT直接producer”的进一步来源，不改变历史实际NET/copy事实，也不证明传递副作用或跨轮刷新不存在。raw4/4A0未获金币或军事账户业务名，c/d军费来源→同次付款→payer/cadence仍未闭合，paid保持null；本次零实机/SDK/EXE读取，不增加R08或动态分子。来源与整合机器 `desktop-3fevhd2-1c74096080`，精确图像和各原始时间见链接；来源机器文件身份不可外推为目标机器运行资格。
 
 2026-10-16来源现状补注：[SubC关联角色的单项贡献链](episode04-r08-contract-contributions-12004.md)已补齐递归scalar、0..100000 bounded raw、fixed-point贡献及两种输出写法；[独立审查](episode04-r08-semantic-attribution-audit-12004.md)区分了registry类型、实际CALL、人工数据流语义与业务推断。未知项继续具体列为业务名/单位、record初值/分配、并行等价及军事c/d→同次付款→payer/周期；不再把已持有body作为待重复读取任务。
+
+## 2026-10-17：补齐 selector4 原 callback 的物理余额观察
+
+[resource4 wallet context](war-payment-resource4-wallet-context-12004.md)将已证缺口落实为可复用代码：旧 gateway 的 `personal_gold_bits` 来自个人 extension+100，不能作为 context+4A0。新增可选 child 仅在既有 kind1/resource4 原回调内读取实际 context 与4A0前后端点；同 record 的 source/caller、sequence、event、session 与 owner 保持原关系。没有主动 getter、新 hook、付款动作或假 settlement token。
+
+完整 producer-shaped wire 的生产 normalizer/consumer 焦点验证覆盖跨 owner、context变化、读取失败，以及个人金币不能替代4A0；源码已可复用，首次 coherent native build／正常冷载／实机仍 pending。物理端点不代表军事分类、正式币名、payer或cadence，paid继续null；下一实际c/d writer与同次付款连接仍按原计划取得，不把本次源码交付计入R08实付闭环。

@@ -68,6 +68,8 @@ bool SameGenericValues(const WarPaymentGenericValues12004 &a,
     a.value_28==b.value_28&&a.value_30==b.value_30;
 }
 
+WarPaymentRaw4Frame12004 Raw4Frame(const WarPaymentBindings12004 &,std::uintptr_t) noexcept;
+
 WarPaymentFrame12004 Capture(const WarPaymentBindings12004 &b, const WarPaymentRecord12004 &r) noexcept {
   WarPaymentFrame12004 f{};
   if (r.kind == WarPaymentKind12004::transition) {
@@ -155,6 +157,8 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
   r.session_entry = b.session(b.session_context);
   r.natural_parent_metadata = Natural(b);
   r.before = Capture(b,r);
+  if(r.kind==WarPaymentKind12004::gateway&&r.resource_kind_raw==4)
+    r.resource4_wallet_context.emplace().before=Raw4Frame(b,r.before.character);
   if(b.generic_context_capture_enabled&&r.kind==WarPaymentKind12004::personal_add&&
       r.caller_return_rva==kWarPaymentGenericReturn12004) {
     auto &g=r.generic_wallet_context.emplace();
@@ -174,6 +178,8 @@ template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,
     r.original_returned = true;
   }
   r.after = Capture(b,r);
+  if(r.resource4_wallet_context)
+    r.resource4_wallet_context->after=Raw4Frame(b,r.after.character);
   if(r.generic_wallet_context) {
     auto &g=*r.generic_wallet_context;
     g.after=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.after.character);

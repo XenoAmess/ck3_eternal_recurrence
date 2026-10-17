@@ -43,6 +43,16 @@ struct WarPaymentNaturalParent12004 {
   std::optional<std::uint64_t> date_raw;
   std::optional<std::uint32_t> absolute_day_raw;
 };
+// Shared bounded raw frame; neither getter nor gateway assigns a currency name.
+struct WarPaymentRaw4Frame12004 {
+  std::optional<std::uint32_t> character_full_id, character_magic;
+  std::optional<std::uintptr_t> extension, context;
+  std::optional<std::uint64_t> physical_4a0_bits;
+  std::uint32_t failed_reads = 0;
+};
+struct WarPaymentResource4WalletContext12004 {
+  WarPaymentRaw4Frame12004 before, after;
+};
 struct WarPaymentRecord12004 {
   // Retention ordinal only. Every cross-family join uses the shared event clock.
   std::uint64_t journal_sequence = 0;
@@ -70,15 +80,11 @@ struct WarPaymentRecord12004 {
   bool tls_depth_exceeded = false;
   // Optional exact-caller raw inputs/parent frames; never military attribution.
   std::optional<WarPaymentGenericContext12004> generic_wallet_context;
+  // Present only inside the existing gateway resource4 callback.
+  std::optional<WarPaymentResource4WalletContext12004> resource4_wallet_context;
 };
 
 // This child is raw getter telemetry, never a payment kind or debit claim.
-struct WarPaymentRaw4Frame12004 {
-  std::optional<std::uint32_t> character_full_id, character_magic;
-  std::optional<std::uintptr_t> extension, context;
-  std::optional<std::uint64_t> physical_4a0_bits;
-  std::uint32_t failed_reads = 0;
-};
 struct WarPaymentRaw4Record12004 {
   std::uint64_t journal_sequence = 0;
   std::int32_t raw_selector = 4;
