@@ -1,0 +1,900 @@
+{
+  "schema": "xar.g2.m6-m7.natural-coverage-portable/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_at_utc": "2026-10-17T21:24:27.620262+00:00",
+  "source_head_observed": "cf75d38a5055e2dc0f1fb40a7159c041dd61e525",
+  "scope": "Offline documentation of existing source and compact completed evidence; no new runtime acceptance.",
+  "portability": {
+    "repository_paths_relative_to_root": true,
+    "requires_local_archive_for_core_conclusions": false,
+    "archive_references_optional": true,
+    "historical_source_machine_not_inferred_from_path": true,
+    "runtime_scripts_copied_into_repository": false
+  },
+  "g2": {
+    "complete": 6,
+    "total": 8,
+    "M6": "in_progress",
+    "M7": "in_progress",
+    "new_score_credit": 0,
+    "percent_reporting_allowed": false
+  },
+  "authoritative_milestones": [
+    {
+      "id": "G2-M0",
+      "name": "GEN-034 three-way war exit",
+      "status": "complete",
+      "planner_consumer": "three-way exit recommendation and one semantic exit action",
+      "visible_outcome": "compare continue, white peace and surrender on one paused frame, submit once, then verify postwar state and cold restore"
+    },
+    {
+      "id": "G2-M1",
+      "name": "entity directory and core turn bundle",
+      "status": "complete",
+      "planner_consumer": "candidate generation and per-turn objective selection",
+      "visible_outcome": "one query identifies the ruler, primary title, capital, liege, direct vassals, one neighbor and the minimum ruler/realm/succession alerts"
+    },
+    {
+      "id": "G2-M2",
+      "name": "natural event semantic loop",
+      "status": "complete",
+      "planner_consumer": "event option utility policy",
+      "visible_outcome": "resolve three natural events, including two multi-option events, and verify material state deltas"
+    },
+    {
+      "id": "G2-M3",
+      "name": "succession and realm survival",
+      "status": "complete",
+      "planner_consumer": "survival, inheritance and post-succession goal selection",
+      "visible_outcome": "predict title distribution before a natural death, reconcile actual inheritance and continue as the real successor"
+    },
+    {
+      "id": "G2-M4",
+      "name": "peace governance vertical slice",
+      "status": "complete",
+      "planner_consumer": "budgeted construction, council and faction response",
+      "visible_outcome": "within two game years perform and verify one construction, one useful legal council adjustment and one real vassal or faction intervention"
+    },
+    {
+      "id": "G2-M5",
+      "name": "family, diplomacy and complete war",
+      "status": "complete",
+      "planner_consumer": "joint marriage, diplomacy and war opportunity-cost policy",
+      "visible_outcome": "choose among at least five legal diplomatic or war candidates and complete the selected path through verified postconditions"
+    },
+    {
+      "id": "G2-M6",
+      "name": "schemes, institutions and activities",
+      "status": "in_progress",
+      "planner_consumer": "long-horizon objective scheduler",
+      "visible_outcome": "complete one scheme, one prisoner or institutional action, one non-religious decision or law project, and one activity lifecycle"
+    },
+    {
+      "id": "G2-M7",
+      "name": "identity adapters and long campaign qualification",
+      "status": "in_progress",
+      "planner_consumer": "runtime identity adapter selection and cross-inheritance goal memory",
+      "visible_outcome": "qualify multiple rulers, seeds and governments while restoring the same high-level intent after checkpoints and inheritance"
+    }
+  ],
+  "historical_index_warning": "Requirements historical natural0/current-machine or execution state does not supersede later actual P50R1 receipts. Milestone definitions remain authoritative.",
+  "repository_sources": {
+    "requirements": {
+      "path": "docs/autonomous-agent-progress/g2-requirements-v1.json",
+      "bytes": 132408,
+      "sha256": "4af8d801b82867949a47cc6a06a42bc7a58777d59877e4f3c7159305bcf7624b"
+    },
+    "whole_campaign_delivery_plan": {
+      "path": "docs/autonomous-agent-progress/g2-whole-campaign-critical-path-delivery-plan-2026-09-15.md",
+      "bytes": 11119,
+      "sha256": "9a1b1078db8baba5794701537a6a58df9750bd88aeb4d1b5fd30eddcaa86090c"
+    },
+    "current_natural_handoff": {
+      "path": "docs/ck3-native-ai/evidence/p50r1-natural-successor-actual-2026-10-18.json",
+      "bytes": 24706,
+      "sha256": "6f3b40b066f10074e639ba7285602478bc43592bae8cc666650d7b0d188b93bb"
+    },
+    "historical_successor_goal": {
+      "path": "docs/ck3-native-ai/g2-successor-goal-observation-2026-10-16.json",
+      "bytes": 4291,
+      "sha256": "b9650bbc5d84ea9294599cf2ea3027f4e290cf280b68399cfedf67ba02f5ed38"
+    },
+    "historical_successor_normal_plan": {
+      "path": "docs/ck3-native-ai/g2-successor-normal-plan-observation-2026-10-16.json",
+      "bytes": 2232,
+      "sha256": "adbe7f6bdc729b9f9850c303c71a2c95107f07197057a848857d5a737de6cd13"
+    },
+    "sway_native_followup_contract": {
+      "path": "docs/ck3-native-ai/sway-beneficial-terminal-followup-12004.md",
+      "bytes": 18104,
+      "sha256": "56ba48338e036f543b536ffcf63f8348be0f7d709d5c72d00e3ed735a96ef83b"
+    },
+    "sway_actual4_start_contract": {
+      "path": "docs/ck3-native-ai/g2-remaining-natural-outcomes-2026-10-18.md",
+      "bytes": 11943,
+      "sha256": "283660bf09ed9ba7d7dae9d6bc7e536cd7eba78fa5cf0456bc2138d5de5bb001"
+    },
+    "sway_start_classifier": {
+      "path": "tools/g2_saved_campaign/sway_start_typed_classifier_v1.py",
+      "bytes": 8597,
+      "sha256": "98463e8d62dbec1df8b4a7d2f1e6210430e6823f6b2a6767f7ee42ab26b60c75"
+    },
+    "sway_schedule": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_schedule_v1.py",
+      "bytes": 9165,
+      "sha256": "05c1ae66b0e0250801fda12a8e6ddaa36df98467a166e3c3d4d7a3dad20d99a7"
+    },
+    "sway_service_adapter": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_service_v1.py",
+      "bytes": 9219,
+      "sha256": "3f45b4c07dd79a8279605c438a57fa7cdc819a7900a642953f9c3e0fd93d8321"
+    },
+    "sway_lifecycle_observer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_sway_lifecycle_observation_v1.py",
+      "bytes": 6043,
+      "sha256": "acd42963f529b680166d439d433e226ff213c5f5d4c07c04e1251923e2d168b4"
+    },
+    "sway_formal_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py",
+      "bytes": 26102,
+      "sha256": "36011b8a5129805a654b9e8cd2d17450eb05cc410d6220b3e1c4a4fcba52dccd"
+    },
+    "sway_material_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_material_consumer.py",
+      "bytes": 9721,
+      "sha256": "d45477655755adb783902abc44ecc322111803b8c36f27bb75f84efd7592168c"
+    },
+    "sway_lifecycle_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py",
+      "bytes": 14887,
+      "sha256": "b9995b7197455e2aed677c3c2562abc4563eb1e5e63a883785ef830ce2a70e47"
+    },
+    "sway_terminal_source": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/sway_terminal_source_producer_12004.py",
+      "bytes": 18205,
+      "sha256": "1570cd2424b81927aa14649437375bb1b0acecea87a28d8d7d8ab54ab5371af4"
+    },
+    "succession_contract": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+      "bytes": 29634,
+      "sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+    },
+    "government_qualification_contract": {
+      "path": "docs/ck3-native-ai/g2-government-seed-qualification-12004.md",
+      "bytes": 17543,
+      "sha256": "9d02301239b78892d59741f55ab481c17ea410eaedba5f9137c91726eaa9e014"
+    },
+    "government_native_adapter_table": {
+      "path": "ck3_autonomous_player/native_bridge/src/government_runtime_adapter_observer_v1.cpp",
+      "bytes": 39952,
+      "sha256": "ee6bff956b6d1918623a6cb5960618e5460f76e7e894716a1e9a8b74476b6fb4"
+    },
+    "government_context_consumer": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ordinary_campaign_government_context_v1.py",
+      "bytes": 4376,
+      "sha256": "2460766f87c30380b20519fcce011994499224b763ea4989ab58043b126617f7"
+    },
+    "government_transport": {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/government_runtime_adapter_private_transport.py",
+      "bytes": 7322,
+      "sha256": "21274a932729a8d97628f57ad97ccc1e2184e15c06a3c78f875d3ce08f60008d"
+    },
+    "existing_m7_recipe": {
+      "path": "docs/ck3-native-ai/g2-m7-continuation-12004.recipe.json",
+      "bytes": 7236,
+      "sha256": "a73ab6cf4ad3c8a259c9c83c89ec038a9debf90edbbe4d135eb8ad297c0975ff"
+    },
+    "existing_goal_extractor": {
+      "path": "tools/extract_g2_goal_continuity.py",
+      "bytes": 7044,
+      "sha256": "fdac135bdc7ccea1b32ed6e88f179e2ad1a5e71980f27b74851daadbce287c24"
+    },
+    "existing_cold_extractor": {
+      "path": "tools/extract_g2_owner_cold_evidence.py",
+      "bytes": 9769,
+      "sha256": "58e201919231600cee770d021d06033acb9a3a4655f7b95ea5d917e33ad3cc9c"
+    },
+    "shared_storage_policy": {
+      "path": "docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  },
+  "M6": {
+    "focus": "Remaining ordinary Sway natural useful terminal; this packet does not qualify the whole schemes/institutions/activities milestone.",
+    "preparation": {
+      "delivery_sha256": "d0a772a53999c1a2579db756793ca8e8b440eab1f378bc7324261a015f1e16d5",
+      "original_recorded_at_utc": "2026-10-17T20:42:23.576886+00:00",
+      "status": "READY_OFFLINE_CLOSED_AUTO_AUDIT_NOT_INSTALLED_NOT_A_RUNTIME_M6_PASS",
+      "host02_six_consumer_review_sha256": "dacb044c4a7fe325d55b083b513fa80b81d715a510bb0433d5ec3120887b5d9b",
+      "seven_flags_are_not_runtime_proof": true,
+      "SDK02_small_source_comparison": {
+        "ordinary_sway_schedule_v1.py": {
+          "SDK02_sha256": "05c1ae66b0e0250801fda12a8e6ddaa36df98467a166e3c3d4d7a3dad20d99a7",
+          "repository_source": "sway_schedule",
+          "same_bytes_as_SDK02": true
+        },
+        "bridge/ordinary_sway_service_v1.py": {
+          "SDK02_sha256": "3f45b4c07dd79a8279605c438a57fa7cdc819a7900a642953f9c3e0fd93d8321",
+          "repository_source": "sway_service_adapter",
+          "same_bytes_as_SDK02": true
+        },
+        "ordinary_sway_lifecycle_observation_v1.py": {
+          "SDK02_sha256": "acd42963f529b680166d439d433e226ff213c5f5d4c07c04e1251923e2d168b4",
+          "repository_source": "sway_lifecycle_observer",
+          "same_bytes_as_SDK02": true
+        },
+        "sway_formal_consumer.py": {
+          "SDK02_sha256": "36011b8a5129805a654b9e8cd2d17450eb05cc410d6220b3e1c4a4fcba52dccd",
+          "repository_source": "sway_formal_consumer",
+          "same_bytes_as_SDK02": true
+        },
+        "sway_material_consumer.py": {
+          "SDK02_sha256": "d45477655755adb783902abc44ecc322111803b8c36f27bb75f84efd7592168c",
+          "repository_source": "sway_material_consumer",
+          "same_bytes_as_SDK02": true
+        },
+        "sway_lifecycle_consumer.py": {
+          "SDK02_sha256": "b9995b7197455e2aed677c3c2562abc4563eb1e5e63a883785ef830ce2a70e47",
+          "repository_source": "sway_lifecycle_consumer",
+          "same_bytes_as_SDK02": true
+        },
+        "bridge/sway_terminal_source_producer_12004.py": {
+          "SDK02_sha256": "1570cd2424b81927aa14649437375bb1b0acecea87a28d8d7d8ab54ab5371af4",
+          "repository_source": "sway_terminal_source",
+          "same_bytes_as_SDK02": true
+        }
+      }
+    },
+    "target_selection": {
+      "source": "sway_schedule",
+      "candidate_frontier": "current direct landed vassals in observed native order",
+      "rotation": "after completed no-op/applied checks",
+      "membership_sort_is_not_priority": true,
+      "new_start_opinion_ceiling": 50,
+      "native_legality_and_empty_slot_required": true,
+      "highest_native_AI_or_faction_rank_claimed": false,
+      "named_usefulness": "Actual selected-vassal Sway opinion improvement; faction/tax/war benefit requires separate actual evidence."
+    },
+    "useful_natural_terminal_packet_requires": [
+      "strict actual4 Start+independent matching instance",
+      "earlier active comparable named baseline",
+      "new positive scheme_sway_opinion increment on same action/fullID/generation",
+      "later natural retained terminal with no recorded typedStop",
+      "actual later ordinary AUTO consumption of material and terminal"
+    ],
+    "identity_join": [
+      "action_id",
+      "actor_character_id",
+      "target_character_id",
+      "scheme_instance_id_full32",
+      "scheme_instance_generation",
+      "episode_run_id",
+      "actual Game admission"
+    ],
+    "named_gain_rules": {
+      "modifier": "scheme_sway_opinion",
+      "baseline_must_be_earlier_and_active": true,
+      "new_positive_increment_required": true,
+      "first_positive_read_is_not_a_gain": true,
+      "keep_earlier_gain_after_latest_same_value_refresh": true,
+      "same_action_fullID_generation_dedup": true
+    },
+    "terminal_rules": {
+      "retained_status0": "continuing",
+      "retained_status1": "terminated_unattributed",
+      "phase_gain_may_continue_same_instance": true,
+      "missing_or_reused_storage_not_terminal": true,
+      "typed_Stop_excludes_this_natural_terminal_packet": true,
+      "terminal_cause_unknown_preserved": true,
+      "Start_ACK_or_generic_opinion_not_success": true
+    },
+    "normal_war_hold_starvation": {
+      "status": "observed source restriction; current runtime duration not measured here",
+      "scheduler_source": "sway_schedule",
+      "scheduler_function": "plan_ordinary_sway_schedule_v1",
+      "scheduler_condition": "selected_step == life-advance",
+      "adapter_source": "sway_service_adapter",
+      "adapter_function": "stage_ordinary_sway_v1",
+      "adapter_condition": "plan.selected_step == life-advance",
+      "ordinary_lifecycle_caller": "execute_ordinary_sway_v1 observe_applied branch",
+      "war_sentinel_or_route_contact_is_eligible": false,
+      "may_starve": [
+        "initial Start opportunity",
+        "first active named baseline after Start",
+        "monthly lifecycle/termination/opinion reads"
+      ],
+      "flags_do_not_guarantee_lifecycle_reads": true,
+      "runtime_fix_or_fairness_bound_delivered": false,
+      "preserve_full_war_priorities": true,
+      "pause_or_manual_Start_to_manufacture_evidence": false
+    },
+    "closed_auto_fields": [
+      "ordinary_sway_optional",
+      "planning_source_frame",
+      "result",
+      "sway_following_turn",
+      "previous_interventions"
+    ],
+    "batch_statistics": [
+      "closed_AUTO_count",
+      "eligible_plain_life_advance_count",
+      "war_sentinel_or_route_advance_count",
+      "ordinary_sway_job_kind_and_outcome",
+      "checked_target_ids",
+      "frontier_absent",
+      "legal_no_op_or_cooldown",
+      "original_action_pending",
+      "strict_verified_Start",
+      "active_baseline",
+      "new_named_gain",
+      "natural_retained_terminal",
+      "later_ordinary_consumption",
+      "oversized_or_missing_source"
+    ],
+    "manifest_template": {
+      "schema": "g2.m6.closed-auto-manifest/v1",
+      "machine_id": "ACTUAL_COLLECTOR_MACHINE_ID",
+      "admitted_frames": [
+        {
+          "actor_character_id": "ACTUAL_ACTOR",
+          "episode_run_id": "ACTUAL_EPISODE",
+          "game_pid": "ACTUAL_GAME_PID"
+        }
+      ],
+      "entries": [
+        {
+          "sequence": "INCREASING_COMPLETED_AUTO_SEQUENCE",
+          "source": {
+            "path": "EXPLICIT_CLOSED_SMALL_JSON",
+            "bytes": "ACTUAL_BYTES_AT_MOST262144",
+            "sha256": "ACTUAL_SHA256"
+          }
+        }
+      ]
+    },
+    "audit_result_semantics": {
+      "evidence_packet_ready": "sources ready for Root review; not new runtime acceptance",
+      "G2_M6_credit_awarded": false
+    },
+    "existing_offline_qualification": {
+      "compound": 1,
+      "negative_subcases": 9,
+      "CLI_pin_bound_and_create_only_check": true,
+      "data_are_synthetic": true,
+      "business_credit": 0,
+      "old68_tests_rerun": false,
+      "qualification_not_rerun_for_this_doc": true
+    },
+    "future_owner_readonly_routes_if_needed": [
+      {
+        "tool": "ck3_query_active_scheme_sway_completion_private_v1",
+        "arguments": {
+          "expected_revision": "fresh public revision",
+          "target_character_id": "full32 original target",
+          "scheme_instance_id": "full32 original instance"
+        }
+      },
+      {
+        "tool": "ck3_query_active_scheme_sway_completion_termination_private_v1",
+        "arguments": {
+          "expected_revision": "fresh public revision",
+          "target_character_id": "full32 original target",
+          "scheme_instance_id": "full32 original instance",
+          "after_sequence": 0
+        }
+      },
+      {
+        "tool": "ck3_query_active_scheme_sway_outcome_opinion_private_v1",
+        "arguments": {
+          "expected_revision": "fresh public revision",
+          "target_character_id": "full32 original target"
+        }
+      }
+    ],
+    "owner_route_limits": "Frozen host02 ALLOWED lacks these routes. Ordinary AUTO internal Service is primary. A future separately reviewed owner COW can add exact readonly routing before startup; never recover-command bypass, manual Start or current stop-gate.",
+    "natural_completion_guaranteed": false
+  },
+  "M7": {
+    "current_clean_campaign": {
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "source": "current_natural_handoff",
+      "observed_at_utc": "2026-10-17T19:30:18.810450+00:00",
+      "actual_handoff_utc": {
+        "started": "2026-10-17T19:27:31.655608+00:00",
+        "finished": "2026-10-17T19:27:47.153554+00:00"
+      },
+      "natural_reconciliations": 1,
+      "consecutive_depth": 1,
+      "same_Game_PID": 51028,
+      "same_Game_creation_filetime": 134367033244212072,
+      "game_identity_evidence": "current adopted g2-remaining-natural-outcomes topic19:27Z; current actual packet same_Game_and_birth check",
+      "game_pid_is_not_current_liveness_claim": true,
+      "reconciliation": {
+        "schema": "xar.ck3.succession-reconciliation/v1",
+        "status": "available",
+        "predecessor_binding": {
+          "snapshot_id": "native:4191",
+          "revision": 90,
+          "native_revision": 4191,
+          "date_raw": 53263944,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "episode_character_id": 31254
+        },
+        "successor_binding": {
+          "snapshot_id": "native:9042",
+          "revision": 509,
+          "native_revision": 9042,
+          "date_raw": 53338848
+        },
+        "predecessor_character_id": 31254,
+        "expected_successor_character_id": 40695,
+        "actual_successor_character_id": 40695,
+        "successor_match": true,
+        "expected_inherited_title_ids": [
+          2230,
+          2231,
+          2262
+        ],
+        "matched_inherited_title_ids": [
+          2230,
+          2231,
+          2262
+        ],
+        "missing_expected_inherited_title_ids": [],
+        "unexpected_retained_predecessor_title_ids": [],
+        "expected_other_heir_title_ids": [],
+        "expected_without_heir_title_ids": [],
+        "observed_additional_successor_title_ids": [],
+        "title_distribution_match": true,
+        "verdict": "matched",
+        "unavailable_reason": null
+      },
+      "goal": {
+        "format_version": 1,
+        "goal_key": "dynasty_continuity",
+        "campaign_id": "native-31254-8d3a8440eb30",
+        "origin_character_id": 31254,
+        "current_character_id": 40695,
+        "progress": {
+          "reconciled_successions": 1,
+          "last_succession": {
+            "predecessor_character_id": 31254,
+            "actual_successor_character_id": 40695,
+            "matched_inherited_title_ids": [
+              2230,
+              2231,
+              2262
+            ],
+            "expected_other_heir_title_ids": [],
+            "expected_without_heir_title_ids": []
+          }
+        }
+      },
+      "logical_Continue": {
+        "sequence": 368,
+        "old_episode": "native-31254-8d3a8440eb30",
+        "new_episode": "native-40695-9cf747ffe1ee",
+        "native_CK3_command_submitted": false
+      },
+      "modal_Close": {
+        "sequence": 372,
+        "actual_close_invocations": 1,
+        "submission_ack_material_false": true,
+        "material_verified": true,
+        "action_observation_revision": 2493291,
+        "independent_post_query_sequence": 3,
+        "independent_post_observation_revision": 2493295,
+        "independent_identity": "none",
+        "blocks_simulation": false,
+        "has_open_succession": false,
+        "post_failure": null
+      },
+      "calendar_accounting": {
+        "original_start_raw": 53338680,
+        "original361_boundary_raw": 53338848,
+        "original361_actual_days": 7,
+        "Close372_life_advance_start_raw": 53338848,
+        "Close372_life_advance_end_raw": 53339016,
+        "Close372_actual_days": 7,
+        "actual_total_since_original_start_days": 14,
+        "Close372_additional_ordinary_cycle_credit": 0
+      },
+      "expectation_sources": {
+        "persistent_expectation_age_days": 3121,
+        "newer_all_title_read_days_before_death": 322,
+        "newer_primary_heir_read_days_before_death": 7,
+        "fresh_all_title_at_death_claimed": false
+      },
+      "checkpoint": {
+        "status": "saved",
+        "name": "xar_checkpoint.ck3",
+        "size": 130823434,
+        "sha256": "cc405fe04302c56eef0a7b7c6c71299ca8b96472d8254e152c6f09709ab12b7b",
+        "date_raw": 53339016,
+        "history_index": 3,
+        "episode_character_id": 40695,
+        "episode_run_id": "native-40695-9cf747ffe1ee",
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "ordinary_campaign_succession",
+          "xar_enabled": null,
+          "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+          "source": "absent_by_verified_xar_mod_not_loaded",
+          "environment_sha256": "aa2850ed92704c1e03bff13aaed2e7d2e197070c89da833bb51efd605edd3191"
+        }
+      },
+      "driver_replace_scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "fsync_or_cold_restore_proven": false,
+      "later_ordinary_goal_consumption": {
+        "source": "current_natural_handoff",
+        "json_pointer": "/following_ordinary_FULL376",
+        "ordinary_turn_count": 10,
+        "new_game_days": 0,
+        "goal_plan_actually_used": {
+          "policy": "ordinary-campaign-goal-v1",
+          "goal_key": "dynasty_continuity",
+          "campaign_id": "native-31254-8d3a8440eb30",
+          "current_character_id": 40695,
+          "progress": {
+            "reconciled_successions": 1,
+            "last_succession": {
+              "predecessor_character_id": 31254,
+              "actual_successor_character_id": 40695,
+              "matched_inherited_title_ids": [
+                2230,
+                2231,
+                2262
+              ],
+              "expected_other_heir_title_ids": [],
+              "expected_without_heir_title_ids": []
+            }
+          },
+          "focus": "marriage",
+          "priorities": [
+            {
+              "priority": 100,
+              "action": "seek_current_ruler_marriage_and_family_continuity",
+              "reason": "retain the campaign's family intent with fresh ruler candidates"
+            },
+            {
+              "priority": 60,
+              "action": "review_current_ruler_succession_and_partition",
+              "reason": "reuse the current native heir and estate observations"
+            }
+          ]
+        },
+        "actual_commander_assignment": {
+          "cycle": 5541,
+          "AUTO": 389,
+          "army_id": 167772577,
+          "commander_id": 35598,
+          "status": "commander_assigned_verified"
+        },
+        "marriage_proposal": {
+          "AUTO": 379,
+          "status": "receipt_pending",
+          "later393": "pending",
+          "accepted_marriage_claimed": false
+        },
+        "army_move": {
+          "AUTO": 391,
+          "target_province_id": 2619,
+          "status": "submitted",
+          "arrival_or_battle_win_claimed": false
+        }
+      },
+      "government_DTO_in_this_packet": false,
+      "government_inferred_from_name_or_old_goal": false
+    },
+    "historical_partition_evidence": {
+      "source_machine_id": "unknown",
+      "current_machine_or_campaign_effect_claimed": false,
+      "sources": [
+        "historical_successor_goal",
+        "historical_successor_normal_plan"
+      ],
+      "campaign_id": "native-31254-96253c58fd68",
+      "goal": {
+        "format_version": 1,
+        "goal_key": "dynasty_continuity",
+        "campaign_id": "native-31254-96253c58fd68",
+        "origin_character_id": 31254,
+        "current_character_id": 40526,
+        "progress": {
+          "reconciled_successions": 1,
+          "last_succession": {
+            "predecessor_character_id": 31254,
+            "actual_successor_character_id": 40526,
+            "matched_inherited_title_ids": [
+              2191,
+              2204,
+              2230,
+              2231
+            ],
+            "expected_other_heir_title_ids": [
+              2262
+            ],
+            "expected_without_heir_title_ids": []
+          }
+        }
+      },
+      "comparison": {
+        "goal_equal": true,
+        "goal_status": "observed_equal",
+        "different_game_pid_observed": true,
+        "same_saved_date": true,
+        "same_successor_episode": true,
+        "physical_cold_checkpoint_anchor": "not established by these two receipts alone"
+      },
+      "later_plan_goal_fields_match": {
+        "goal_key": true,
+        "campaign_id": true,
+        "current_character_id": true,
+        "progress": true
+      },
+      "physical_cold_anchor_claimed": false,
+      "limit": "Historical31254->40526 goal retains expected_other_heir2262. It is not current clean31254->40695; other-heir absence alone does not prove its actual holder. Missing source machine_id stays unknown."
+    },
+    "variant_scope": {
+      "current_observed": "three title IDs all matched same successor; other-heir/without-heir/additional empty",
+      "existing_risk_states": [
+        "single_successor",
+        "split_successors",
+        "no_primary_heir"
+      ],
+      "existing_verdicts": [
+        "matched",
+        "unexpected_successor",
+        "title_distribution_mismatch"
+      ],
+      "current_not_observed": [
+        "no_primary_heir",
+        "unexpected_successor",
+        "title_distribution_mismatch",
+        "multiple consecutive natural generations"
+      ],
+      "not_new_mandatory_success_variants": [
+        "grant independence",
+        "liege change",
+        "forced Game Over",
+        "all18 government keys playable"
+      ],
+      "true_game_over": "Without a living new played actor it does not satisfy successor reconciliation; retain actual terminal evidence.",
+      "legitimate_partition_is_not_automatic_defeat_loss": true,
+      "AUTO193_independence_is_natural_inheritance_credit": false
+    },
+    "remaining_broad_axes": [
+      "Actual successor paired-checkpoint -> old Game exit -> new Game birth/load -> same episode/high-level goal -> later ordinary plan, when a normal needed cold restore occurs.",
+      "Multiple independent initial lineages with actual ordinary outcomes; a new title/SDK/PID or same-save reload is not seed proof.",
+      "Multiple government mechanisms with actual current-frame adapter and useful normal policy results; old Robert/Murchad core_landed and Clan/Tribal failed bootstraps do not close .4 breadth.",
+      "Further naturally observed long-horizon cross-inheritance goal memory; no invented fixed count automatically awards M7."
+    ],
+    "government_source_capability": {
+      "core_landed": [
+        "feudal_government",
+        "clan_government"
+      ],
+      "core_tribal": [
+        "tribal_government"
+      ],
+      "unsupported_nonplayer_identity": [
+        "republic_government",
+        "mercenary_government"
+      ],
+      "religious_adapter_implementation_pending": [
+        "holy_order_government",
+        "monastic_holy_order_government"
+      ],
+      "adapter_spec_ready_not_implemented": [
+        "wanua_government",
+        "administrative_government",
+        "landless_adventurer_government",
+        "nomad_government",
+        "herder_government",
+        "celestial_government",
+        "mandala_government",
+        "steppe_admin_government",
+        "meritocratic_government",
+        "japan_administrative_government",
+        "japan_feudal_government"
+      ],
+      "unknown_key": "unadapted_runtime_government",
+      "government_keys_are_not_qualified_gameplay_count": true
+    },
+    "normalizer_template": {
+      "schema": "g2.m7.closed-evidence-manifest/v1",
+      "machine_id": "ACTUAL_COLLECTOR_MACHINE_ID",
+      "sources": {
+        "closed_handoff": {
+          "path": "EXPLICIT_COMPLETED_COMPACT_HANDOFF_JSON",
+          "bytes": "AT_MOST262144",
+          "sha256": "ACTUAL_SHA256",
+          "closed": true
+        }
+      },
+      "observations": [
+        {
+          "kind": "natural_handoff",
+          "source": "closed_handoff",
+          "fields": {
+            "source_machine_id": "/machine_id",
+            "reconciliation": "/reconciliation",
+            "goal": "/goal",
+            "modal_close": "/modal_Close",
+            "calendar": "/calendar_accounting",
+            "checkpoint": "/checkpoint"
+          }
+        }
+      ],
+      "field_paths_are_current_adopted_packet_examples_not_future_DTO_guarantees": true
+    },
+    "normalizer_rules": {
+      "explicit_pins_only": true,
+      "whole_document_selectors_forbidden": true,
+      "missing_field_state": "not_observed",
+      "explicit_null_remains_null": true,
+      "output_create_only": true,
+      "automatic_M7_score": false,
+      "actual_current_packet_runs": 1,
+      "actual_projection_observations": 2,
+      "synthetic_business_acceptance_runs": 0
+    }
+  },
+  "next1066_collection_plan": {
+    "start_only_after_current_film_complete": true,
+    "requested_ruler_and_bookmark": "1066 Robert",
+    "repeat_feudal_Robert_not_new_government_family": true,
+    "batch_integration": "Source-only proposal: passive offline consumer of the existing completed batch manifest. No current owner hook installed.",
+    "identity_fields": [
+      "source_machine_id",
+      "observed_at_utc",
+      "Game_pid",
+      "Game_creation_filetime",
+      "exact_build_exe_sdk_environment",
+      "campaign_id",
+      "origin_character_id",
+      "current_character_id",
+      "episode_run_id",
+      "snapshot_id",
+      "public_revision",
+      "native_revision",
+      "date_raw",
+      "initial_state_lineage_source"
+    ],
+    "natural_identity_dedup": [
+      "machine_id",
+      "campaign_id",
+      "old_episode_run_id",
+      "new_episode_run_id"
+    ],
+    "steps": [
+      "Reuse existing initial environment/checkpoint/owner identity receipts, record independent lineage evidence or unknown.",
+      "After batch closure, supply explicit completed source pins and only new/changed goal/episode/expectation/action outcome facts to the offline consumer while next batch continues.",
+      "On natural boundary reuse original once-executed AUTO settle and existing full reconciliation; never replay unknown/applied actions.",
+      "Retain logical Continue separately from necessary typed modal Close and independent timeline clear, with per-operation actual calendar deltas.",
+      "Reuse normal successor SAVE and later ordinary goal consumer; preserve write guarantee scope.",
+      "At a later normally needed real Game cold maintenance use existing goal/owner-cold extractors and actual paired evidence.",
+      "Archive government context only when existing normal policy produced/needed it, plus actual policy result; missing fields remain not_observed."
+    ],
+    "per_source_max_bytes": 262144,
+    "oversized_source_policy": "Keep reference and oversized_source/not_observed unless an existing compact projection is available; no huge history or active Driver/SAVE/media reads.",
+    "new_stop_gates": 0,
+    "forced_deaths_or_heirs": 0,
+    "manual_Sway_Start_Stop": 0,
+    "new_game_or_cold_restore_started_by_this_packet": 0
+  },
+  "optional_archive_source_refs": {
+    "M6_d0a_delivery": {
+      "archive_relative_path": "continuation42-cold-prep/p51-m6-natural-observation01/DELIVERY.json",
+      "bytes": 8261,
+      "sha256": "d0a772a53999c1a2579db756793ca8e8b440eab1f378bc7324261a015f1e16d5",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M6_closed_AUTO_audit": {
+      "archive_relative_path": "continuation42-cold-prep/p51-m6-natural-observation01/m6_closed_auto_audit.py",
+      "bytes": 11400,
+      "sha256": "5bc950419febbd2889850c42fd579118d14e492e1a88feb5560808b813058884",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M6_runbook": {
+      "archive_relative_path": "continuation42-cold-prep/p51-m6-natural-observation01/RUNBOOK.md",
+      "bytes": 9239,
+      "sha256": "266db5ef644476c676fa5c441339aec041d93c7b1a08cb3d40c75db552d5c7d2",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M6_synthetic_qualification": {
+      "archive_relative_path": "continuation42-cold-prep/p51-m6-natural-observation01/TEST-RESULT02.json",
+      "bytes": 1174,
+      "sha256": "372db8b3d1263b0816666cf2d85d81f82b4c311c21c3b7bd082061912c12fcff",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M6_cli_qualification": {
+      "archive_relative_path": "continuation42-cold-prep/p51-m6-natural-observation01/CLI-QUALIFIED.json",
+      "bytes": 947,
+      "sha256": "003d8a19886a9ae34332d33a6f16cce37dadffe021a2b79f6c570d13c8c651ee",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "host02_source_review": {
+      "archive_relative_path": "continuation42-cold-prep/p51-fresh1066-v20261018-prepare01/host-compatibility02/ROOT-NATIVE25-CONSUMER-CLOSURE-REVIEWED01.json",
+      "bytes": 47842,
+      "sha256": "dacb044c4a7fe325d55b083b513fa80b81d715a510bb0433d5ec3120887b5d9b",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M7_source_only_delivery": {
+      "archive_relative_path": "g2-m-gap-research-20261016/m7-natural-coverage-20261018/DELIVERY.json",
+      "bytes": 5613,
+      "sha256": "03e4d9685f3e230bb01958d5742153d166d854275f77a315fa2b9893bf9b583f",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M7_source_only_packet": {
+      "archive_relative_path": "g2-m-gap-research-20261016/m7-natural-coverage-20261018/SOURCE-ONLY-PACKET.json",
+      "bytes": 15391,
+      "sha256": "73081b5bfbf023da9c801000f8e58016d71a1c507a7b83e56b14ce0e275427a5",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M7_normalizer": {
+      "archive_relative_path": "g2-m-gap-research-20261016/m7-natural-coverage-20261018/m7_closed_evidence_normalizer.py",
+      "bytes": 6266,
+      "sha256": "c5e13a0ff308939d284442f39428d486ab5f7f186b454df9c088cd452963f382",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M7_manifest_template": {
+      "archive_relative_path": "g2-m-gap-research-20261016/m7-natural-coverage-20261018/next1066-manifest.template.json",
+      "bytes": 3256,
+      "sha256": "b848b41fc3b68a02d9600caeac05c40521bb30c0c0d957bfa72e42af10b3945d",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    },
+    "M7_actual_closed_projection": {
+      "archive_relative_path": "g2-m-gap-research-20261016/m7-natural-coverage-20261018/CURRENT-CLOSED-PROJECTION.json",
+      "bytes": 10364,
+      "sha256": "4852d02e763ecfcd96ef538bf950088a754fd801e26cb1d78f6666675858f70f",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "verified_at_utc": "2026-10-17T21:24:27.620262+00:00",
+      "role": "source reference only; not a portable runtime dependency or live-install proof"
+    }
+  },
+  "this_documentation_work": {
+    "new_native_mcp_game_sdk_calls": 0,
+    "active_driver_save_media_reads": 0,
+    "runtime_or_route_install": 0,
+    "new_tools_or_tests_copied_into_repo": 0,
+    "test_reruns": 0,
+    "new_runtime_business_credit": 0,
+    "open_kaishek": "not-applicable: no new Paradox semantics or CK3 acceptance; existing closed JSON/source documentation only"
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "category": "tracked documentation and compact reusable evidence",
+    "review_at_utc": "2027-04-15T21:24:27.620262+00:00",
+    "new_heavy_writes": 0,
+    "deletions": 0,
+    "scope": "Only two approved repository records and small external preparation receipt; no full-project inventory or capacity reservation claimed.",
+    "external_raw_and_runtime_sources_follow_own_actual_retention": true
+  },
+  "topic_pin": {
+    "path": "docs/ck3-native-ai/p55-g2-m6-m7-natural-coverage-2026-10-18.md",
+    "bytes": 8987,
+    "sha256": "43391a4a4c383277e8d63b5609fc60308ae401efbc051f9f6d6211743850b8ee"
+  }
+}

@@ -1,0 +1,156 @@
+{
+  "schema": "xar.ck3.p55-siege-route-public/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T21:45:16.621558+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine actual result 5dde02",
+  "base_commit": "cf75d38a5055e2dc0f1fb40a7159c041dd61e525",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1028760,
+      "sha256": "703f1ec0851e977303faed9e9e222196adb3069e573f0a758bc0c7985b64e649"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/siege_research_continuation_v2.py",
+      "bytes": 8891,
+      "sha256": "c6cd6a5a92d90c6dba8857dbb847a898f9a47338ee2edd4345757dc27d266b9d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "bytes": 16333,
+      "sha256": "5996b8de3998c14c71a8dd389f1d4a6f850868fa143eb9f0ee8498bcea2d54ad"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+      "bytes": 16860,
+      "sha256": "9a9003990a5bb7840e0d8e7701476816abe083d5218c83bd0295e361818237ae"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py",
+      "bytes": 14357,
+      "sha256": "a87d96191403d4d73a1aef09bf38ba23371d99cbca73bc3618a2570273665af8"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/fixtures/p55_actual265_route_projection.json",
+      "bytes": 75736,
+      "sha256": "0359ed7d1f3da95ec959099f1864dc7aae5d8ca972f30cc0989c7fdb41013805"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 48675,
+      "sha256": "bc4ed080bcfe1d65125d465525f578271e7f8cc47c3533f283723a7fde12fb9c"
+    },
+    {
+      "path": "docs/ck3-native-ai/p55-siege-route-and-passive-defense-2026-10-18.md",
+      "bytes": 4555,
+      "sha256": "4b736febba4c4d3c8cba1a43b9cf4b6733938bc512db57b8bb5acfc8fe71e478"
+    }
+  ],
+  "actual_sources": {
+    "sem": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r2-responses\\0266-1-result.json",
+    "sem_bytes": 47432514,
+    "prefix_bytes": 262144,
+    "prefix_sha256": "9126e3e6801236296d4be4f0de830a16ea5850cd56103d746e7ba01d433569d4",
+    "first_incomplete_key": "combat_simulation_inputs",
+    "full_sem_not_read": true,
+    "auto": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r2-responses\\0265-1-result.json",
+    "auto_sha256": "0c0449395e8dd16069c13ad6f692b08d1c770b36d3183dcb862a0604c1cca9e2",
+    "257": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r2-responses\\0257-1-result.json",
+      "bytes": 4544,
+      "sha256": "46becce3128c00a9e00e89cb0d476b0ed8a2c6eaa17cf4578593157b16a4551f"
+    },
+    "259": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r2-responses\\0259-1-result.json",
+      "bytes": 22875,
+      "sha256": "58a22a0f384b9df68eb46e90f40f76b0a15c5e85248b866356ef721e94196c62"
+    },
+    "261": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r2-responses\\0261-1-result.json",
+      "bytes": 63439,
+      "sha256": "a1d2efe3cf1c28563a54e8584821e95a65a5103f7c025c0353e80e5e008ccf89"
+    }
+  },
+  "actual_r3_reason_source": {
+    "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r3-responses\\0029-1-result.json",
+    "bytes": 34538,
+    "sha256": "cdecfd90263c7f885ce2812137d23745fa6841fb6325d1bcf748239c609d7b34",
+    "source_started_at_utc": "2026-10-17T21:37:31.672440+00:00",
+    "source_ended_at_utc": "2026-10-17T21:37:32.718609+00:00",
+    "source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:10293",
+      "revision": 2,
+      "native_revision": 10293,
+      "date_raw": 53358576,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee",
+      "connection_generation": 14,
+      "bridge_pid": 51028
+    }
+  },
+  "tests": [
+    {
+      "scope": "public war/finance/profile/P52/P55",
+      "result": "43 passed, 35 subtests passed in 6.22s",
+      "chunk": "23c244"
+    },
+    {
+      "scope": "existing Native stationary hold regressions",
+      "result": "3 passed, 8 subtests passed, 229 deselected in 2.67s",
+      "chunk": "c4bfee"
+    },
+    {
+      "scope": "git diff --check",
+      "result": "pass",
+      "chunk": "db2a81"
+    }
+  ],
+  "production_boundary": [
+    "actual original siege ingress → unchanged general waypoint review",
+    "Native derived action steps",
+    "whole choose postprocessing → real Service selected-step admission",
+    "Native seven-day hold matched → combat transition one-day stop → normal invalidated after-stop"
+  ],
+  "changed_runtime": false,
+  "live_calls": 0,
+  "Native_or_frozen_SDK_changed": false,
+  "unsupported": [
+    "first-hop H1 does not guarantee full four-day hop",
+    "no new contact admission",
+    "no calibrated battle win probability",
+    "no achieved siege rescue or war safety",
+    "public local CArmy guard does not import all SDK48 guards",
+    "no M6/M7 credit"
+  ],
+  "r3_finance_findings": {
+    "observed_own": 1357,
+    "cash_priority_war_enemy": 555,
+    "second_primary_war_enemy": 4228,
+    "unique_primary_war_enemies": 4783,
+    "union_was_already_correct": true,
+    "old_private_reason_scope_incomplete": true,
+    "concrete_war_queries_and_move_are_not_quiet_procurement_opportunities": true,
+    "stale_market400_quote_reused": false
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "write_class": "small source/portable derived evidence",
+    "estimated_total_new_bytes_below": 300000,
+    "capacity_observed": {
+      "Z:\\ck3_mod_rewrite": {
+        "total": 4096787476480,
+        "free": 178665598976
+      },
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p55-route-prefix-policy01": {
+        "total": 14000483987456,
+        "free": 1003298996224
+      }
+    },
+    "deletions": [],
+    "active_sources_preserved": true,
+    "derived_package_review_at_utc": "2026-10-19T21:45:16.621558+00:00"
+  }
+}

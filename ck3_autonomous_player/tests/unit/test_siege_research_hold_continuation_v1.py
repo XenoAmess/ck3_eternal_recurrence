@@ -82,9 +82,9 @@ class SiegeResearchHoldTests(unittest.TestCase):
         self.assertEqual(raw['required_observation'], 'fresh-v2-query-after-state-change')
         self.assertIsNone(raw['selected_step'])
         self.assertEqual(parse_war_objective_hold_sentinel_advance_step(result['selected_step']),
-            (100663323, 167772577, 8755, 53358000))
-        self.assertTrue(result['siege_research_hold_continuation_v1']['old_query_attempt_preserved'])
-        self.assertFalse(result['siege_research_hold_continuation_v1']['new_query_suppressed'])
+            (100663323, 167772577, 8755, frame['date_raw'] + 7 * 24))
+        self.assertTrue(result['siege_research_continuation_v2']['old_query_attempt_preserved'])
+        self.assertFalse(result['siege_research_continuation_v2']['new_query_suppressed'])
         self.assertFalse(result['active_attack_allowed'])
         baseline = {'phase': observed['baseline_phase'], 'selected_step': observed['baseline_selected_step']}
         for key, wrong in (('reason', 'different unresolved observation'), ('required_observation', 'fresh-v2-cache-readback')):
@@ -92,7 +92,7 @@ class SiegeResearchHoldTests(unittest.TestCase):
             changed[key] = wrong
             self.assertIs(retain(baseline, changed, frame), changed)
 
-    def test_full_ordinary_core_guards_and_service_admit_one_day_prefix_without_query(self):
+    def test_full_ordinary_core_guards_and_service_admit_original_passive_hold_without_query(self):
         baseline, observed, frame = material()
         steps = (WAR_OBJECTIVE_HOLD_SENTINEL_ADVANCE_STEP, 'life-advance', strategy.QUERY_ARMY_STRENGTHS_STEP)
         driver = CallbackGameplayDriver(backend_id='native-headless',
@@ -113,12 +113,12 @@ class SiegeResearchHoldTests(unittest.TestCase):
             planned = service.plan_turn()
         step = planned['plan']['selected_step']
         self.assertEqual(parse_war_objective_hold_sentinel_advance_step(step),
-                         (100663323, 167772577, 8755, frame['date_raw'] + 24))
+                         (100663323, 167772577, 8755, frame['date_raw'] + 7 * 24))
         self.assertGreater(core.call_count, 0)  # Actual core executes, not a canned baseline.
         self.assertGreater(general.call_count, 0)
         self.assertGreater(hold_control.call_count, 0)
         self.assertNotIn(step, steps)  # Service's real typed-prefix admission is required.
-        proof = planned['plan']['siege_research_hold_continuation_v1']
+        proof = planned['plan']['siege_research_continuation_v2']
         self.assertTrue(proof['new_query_suppressed'])
         self.assertEqual(proof['original_phase'], 'native_war_siege_forecast_inputs_query')
         self.assertIsNone(proof['overall_war_safe'])

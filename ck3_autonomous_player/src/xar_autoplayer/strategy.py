@@ -7927,6 +7927,14 @@ def choose_one_life_turn(
         "native_war_siege_forecast_inputs_observed",
         "native_war_siege_forecast_observation_blocked",
     }:
+        from .siege_research_continuation_v2 import continue_siege_research_v2
+
+        plan = continue_siege_research_v2(
+            ordinary_siege_baseline, plan, commands=_expanded_command_rows(commands),
+            snapshot=snapshot, action_steps=set(steps),
+            bridge_capabilities=set(capabilities),
+            review_general=_general_battle_forecast_ingress,
+        )
         from .siege_research_hold_continuation_v1 import retain_stationary_siege_research_hold_v1
 
         plan = retain_stationary_siege_research_hold_v1(

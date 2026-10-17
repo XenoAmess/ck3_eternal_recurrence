@@ -62,7 +62,7 @@ def _context(history: list[dict[str, object]], snapshot: Mapping[str, object]):
     return None
 
 
-def plan_war_mercenary_turn_v1(
+def _plan_war_mercenary_turn_v1(
     driver: object, plan: dict[str, object], *, snapshot: Mapping[str, object],
     history: list[dict[str, object]], bridge_capabilities: set[str],
 ) -> dict[str, object]:
@@ -173,6 +173,71 @@ def plan_war_mercenary_turn_v1(
             "war_mercenary_source_frame": frame, "war_mercenary_pre_capture_epoch": context["capture_epoch"],
             "war_mercenary_deferred_step": step,
             "reason": "hire the cheapest affordable company that reverses the observed local headcount deficit at friendly staging"}
+
+
+def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object]:
+    """Show the selected cash-risk war separately from all shared-force enemies.
+
+    A concrete war order keeps priority over procurement. The priority union
+    still matters on those turns; the nearby siege defenders are not the whole
+    hostile force, and neither current headcount nor H1 is a win forecast.
+    """
+    priority = plan.get("war_spending_priority_v1")
+    if not isinstance(priority, Mapping) or not priority.get("wars"):
+        return plan
+    wars = priority["wars"]
+    ordered = priority.get("cash_protection_priority_war_ids", [])
+    war = next((row for row in wars if ordered and row.get("war_id") == ordered[0]), wars[0])
+    union = priority.get("primary_war_hostile_union_v1", {})
+    number = lambda value: str(value) if type(value) is int else "未知"
+    money = lambda value: f"{value / 100_000:.1f}" if type(value) is int else "未知"
+    targets = ",".join(map(str, war.get("possible_defensive_target_title_ids", []))) or "未核实"
+    text = (f"战分{number(war.get('player_relative_war_score'))}；保地目标{targets}；"
+            f"我军{number(union.get('shared_player_raised_soldiers'))}，"
+            f"优先保地战敌{number(war.get('observed_enemy_raised_soldiers'))}；"
+            f"全部主导战争敌军{number(union.get('observed_current_soldiers'))}（去重）。")
+    decision = plan.get("war_mercenary_decision_v1")
+    chosen = decision.get("selected_candidate") if isinstance(decision, Mapping) else None
+    status = plan.get("war_mercenary_status")
+    if isinstance(chosen, Mapping):
+        finance = chosen.get("finance", {})
+        text += (f"雇佣合同{money(chosen.get('gold_cost_raw'))}金，"
+                 f"余款{money(chosen.get('gold_after_hire_raw'))}金，"
+                 f"军费预留{money(finance.get('required_gold_reserve_raw'))}金；"
+                 "出生地与当地集结相符仅为推断，抵达未保证。")
+    elif status == "headcount_model_has_no_current_deficit_keep_war_action":
+        text += "现有头数无采购缺口，保留战争行动；未来增援与抵达仍未知。"
+    elif plan.get("selected_step") == QUERY_STEP:
+        text += "先查询当帧雇佣报价与集结地点。"
+    elif plan.get("selected_step") == ROOT_STEP:
+        text += "先核当帧收入与最大军费；总收入不作净收入。"
+    elif status and ("pending" in status or "employment" in status):
+        text += "先核上一份雇佣回执，不重复购买。"
+    elif isinstance(decision, Mapping):
+        text += "当帧报价未同时满足增兵改善、当地集结及军费预留，继续原行动。"
+    else:
+        text += "具体战争行动优先；雇佣报价与抵达未核实。"
+    text += "头数不代表胜率。"
+    original = plan.get("war_decision_original_reason_v1", plan.get("reason"))
+    return {**plan, "reason": text + (" " + original if isinstance(original, str) else ""),
+            "war_decision_original_reason_v1": original,
+            "war_decision_reason_scope_v1": {
+                "cash_priority_war_id": war.get("war_id"),
+                "current_cash_priority_war_enemy_soldiers": war.get("observed_enemy_raised_soldiers"),
+                "unique_primary_war_enemy_soldiers": union.get("observed_current_soldiers"),
+                "primary_war_ids": union.get("war_ids"),
+                "future_or_unraised_reinforcements_bounded": False,
+                "battle_win_probability": None,
+            }}
+
+
+def plan_war_mercenary_turn_v1(
+    driver: object, plan: dict[str, object], *, snapshot: Mapping[str, object],
+    history: list[dict[str, object]], bridge_capabilities: set[str],
+) -> dict[str, object]:
+    return annotate_war_decision_reason_v1(_plan_war_mercenary_turn_v1(
+        driver, plan, snapshot=snapshot, history=history,
+        bridge_capabilities=bridge_capabilities))
 
 
 def submit_war_mercenary_v1(driver: object, *, plan: Mapping[str, object], expected_revision: int):
