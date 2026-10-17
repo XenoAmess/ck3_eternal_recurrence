@@ -1,6 +1,6 @@
 # HolySite 原版采用详情与一次确认
 
-这是[圣地只读专题](holy-site-native12004.md)的后续候选实现。研究机器为 `machine_id: 4-8e1c2f1861`，函数来源缓存观察于 `2026-10-17T08:31:53Z`，集成记录更新于 `2026-10-17T08:51:02Z`；来源为 exact4 EXE 的有限函数缓存与独立审查回执。目标 EXE SHA-256 为 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。native 编译、fixture 和 live 资格分别记录，不能由源码成立推断实机已执行。
+这是[圣地只读专题](holy-site-native12004.md)的后续实现，当前资格为 **生产源码编译、原生离线夹具与实际 MCP 消费通过；live pending**。研究机器为 `machine_id: 4-8e1c2f1861`，函数来源缓存观察于 `2026-10-17T08:31:53Z`，资格汇总更新于 `2026-10-17T09:23:06Z`；来源为 exact4 EXE 的有限函数缓存、独立审查与下列实际回执。目标 EXE SHA-256 为 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。离线通过不能推断实机已执行。
 
 生产路线仍使用同一游玩智能体：`ck3_open_holy_site_window_v1` → 独立 `ck3_query_ingame_ui_window_v1(window_kind="holy_site")` → `ck3_open_holy_site_adoption_decision_v1` → `ck3_query_player_holy_site_adoption_detail_v1` → 符合普通原生条件时 `ck3_confirm_holy_site_adoption_decision_v1` → 独立查询 Faith、资源与站点后验。每一步绑定新鲜 revision；最终确认不可重试结果未知的调用。
 
@@ -25,4 +25,34 @@
 
 确认专口使用现有 UI owner/TLS、paused map、snapshot、modal 和 GUI context 守卫，再要求实际 `decisiondetail_view` 可见启用且 root/handler 与详情一致。调用前设置 `native_dispatch_attempted`，异常或 ACK 不能抵消已消耗的尝试。原版确认可能清除 `+0xD0/+0x248` 并关闭窗口；窗口消失只证明界面变化，必须另查 Faith 关联、资源及同一站点 ID 才能记录采用后验。
 
-外置证据根为 `C:/workspace/ck3-faith-and-power-20261017/episode01/native-candidate/`。来源原包：`gui-source/adopt-decision-detail-native-source.json`、`gui-source/decision-detail-safety-boundaries.json`、`gui-source/ADOPTION-DETAIL-INDEPENDENT-REVIEW.json`；reader 校验其中九个 loaded-code pins。独立审查未执行 EXE 或游戏。Python 聚焦测试目前通过 2 项真实 MCP schema/严格入参测试、1 项公共四 permission 独立 optin 测试及既有 70 项 UI 回归；native fixture、编译与 live 仍待单独回执。
+外置证据根为 `C:/workspace/ck3-faith-and-power-20261017/episode01/native-candidate/`。来源原包：`gui-source/adopt-decision-detail-native-source.json`、`gui-source/decision-detail-safety-boundaries.json`、`gui-source/ADOPTION-DETAIL-INDEPENDENT-REVIEW.json`、`gui-source/CONFIRM-INTEGRATION-REVIEW.json`；reader 校验其中九个 loaded-code pins。两项独立审查均无阻塞发现，未执行 EXE 或游戏。
+
+## 实际离线资格与边界
+
+以下均为机器 `4-8e1c2f1861` 的本轮回执，精确观察时间位于各原包。Python 使用主树 `tools/.venv/Scripts/python.exe`，没有连接游戏或桌面。
+
+- 原生 detail fixture 实际 36 checks PASS；生产 reader 和完整 `command_result` serializer 生成六份回包。覆盖原生 true、false、bypass 开启、bypass 不可读、参数高位错配、默认第一项与目标不同，以及拒绝后不调用 Confirm、合法时一次回调、字符串复制与析构配对。
+- 生产 `create_server`、NativeDriver、normalizer 与真实 MCP ClientSession `list_tools/call_tool` 两项测试 PASS，保存六个原包调用与一个 foreign-build 负例，共七份返回。严格输入拒绝发生在 native I/O 前；未把测试包的错误 build 改成有效包。
+- 主树合入并行 service 变更后，在 `ad3dcbe7b2a897720777e8791cfcff4f6e9c1891` 重新消费同六份回包，两项测试、七份返回再次 PASS。记录了实际加载模块的主树路径和七个相关文件的前后 SHA；没有重复执行原生夹具。
+- 最终导航 fixture 在 a08 实际 exit0，保留全部断言；生成生产 serializer 的拒绝结果体。随后主树 `201606305bfb2f8ec4f4730e20d751c8ce68e288` 经真实 Service → Driver → MCP 开窗工具消费该结果体，保持 `available=false`、`native_dispatch_attempted=false` 与原拒绝原因。
+- Python 另有两项新工具 schema/严格入参检查、一项公共四 permission 独立 optin、既有 70 项 UI 回归及一项原生树 root 合同通过。
+
+**这些输入是显式合成的。** C++ fixture 使用自有内存布局、模拟 code/RTTI 读取以及测试 CanConfirm、Confirm、settings、tooltip、析构回调；没有调用原版游戏函数。详情包由实际编译的生产 reader/serializer 产生，Python 未预计算业务 DTO。Python endpoint、hello 和 paused snapshot 也是合成输入：actor `0x03000004`、HolySite `0x81000002`、native revision `701`、capture epoch `17`、date_raw `53175816`。这些数值不能用作任何真实存档的身份或帧。
+
+导航拒绝结果体的 actor `29829`、native revision `3`、epoch `14`、date_raw `53146848` 同样是夹具帧。该消费单独使用显式合成的外层 `command_result`，其原生结果体不改写；它证明拒绝诊断可被现有动作通道消费，不能证明原版 Open 已调用、窗口已显示或采用已完成。
+
+| 外置原件（相对于上述证据根） | SHA-256 |
+|---|---|
+| `adoption-native-mcp-qualification-a05.json`，隔离源码首次实际消费 | `5ac96cce1ea8b9550bc878c11f734461b18a5f7d297ae0ae9d69347df975e0d7` |
+| `adoption-main-mcp-qualification-a07.json`，最新主树七份返回 | `0ff2be9e5c4c367d817e5ad40bcf35496d6de25b57b743b9d2adbbf5b13a1295` |
+| `nav-denied-main-mcp-qualification-a09.json`，主树真实动作通道拒绝消费 | `1cdb06bf71763bdb60b607af1817ba0a98ec83071e80fe0a8b4e5fa52d605e01` |
+| detail fixture EXE，位于 `../runtime/adoption-candidate-a03/build/` | `fadbbde9f2aa2e83d4226ee932e217173582fbebfdd908b79572d48befcabc46` |
+| navigation fixture EXE，同一 build 根 | `4b532e6bfae952c0fb3abcfd39eee6c998b9083658c6cf06348d8c5a0e1c595c` |
+| `../runtime/adoption-candidate-a03/a08/navigation-wire/holy-site-denied.json` | `50230cb628eddcef2ff67aa26bb83312c1ac4c8b45997ced4038c9299bbe7383` |
+| `research-plan-adoption-a09.json`，十个证据文件检查通过 | `fe1ae126a623374fc8f92ea3f3610bf0bb53df5859a0422b47ae2bdecce886f7` |
+
+六份 detail 原件位于 `../runtime/adoption-candidate-a03/normal-exit-increment/adoption-detail-wire/`，逐文件 SHA 在两份 MCP 回执中。研究计划的 `check --for-observation` 只证明记录结构与文件完整性：五条静态边、一条业务后验未知边、零条 live-confirmed，采用 live case 仍 pending。
+
+初次构建及导航夹具的 RED 均保留：新增 Snapshot 命名空间错误、目标 UTF-8 选项、旧测试源依赖/投影函数签名与已合法 enum2 的过时负例均已修复。未删除断言；测试的无关 war binder 若被误调用会 assert/abort，不能返回假 owner。a03 的 `/UNDEBUG` 是显式编译约束，源码此前已有 `#undef NDEBUG`，不能据此声称此前断言全被关闭。生产 HolySite 业务源码在这些测试修复中未变。冻结原件与后续 delta 分开保存，详情原生/MCP 已通过部分未因无关修复重复重验。
+
+下一层只由实际游戏回执补齐：真实窗口可见且选中目标、原版详情参数与普通 CanConfirm、一次原版 Confirm，以及独立的 Faith 关联和资源后验。当前不能把工具注册、源码、夹具 true、ACK 或窗口消失写成采用成功。
