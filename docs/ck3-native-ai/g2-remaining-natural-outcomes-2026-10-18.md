@@ -100,3 +100,45 @@ Root稍后取得fresh SEM362，实际同日paused/map-ready、alive40695；这�
 只授`natural_succession_boundary_observed`、7日实际差量，要求fresh after-metrics，
 primitive/business/M7完成信用仍为0。Root负责单次新control恢复并进入原继承reconciliation／Close／SAVE通道；
 本包不执行恢复，也不把这次sourceerror标成继承已验收。
+
+## 19:27Z：当前干净局自然继承与后继普通游玩已发生
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。原AUTO361经新control364零MCP重消费后，
+FULL365从fresh MET366结算原7日；同Game51028／出生FILETIME134367033244212072，
+没有重发原361、重启或手选统治者。恢复control363曾因实际env缺`N`而元数据失败，
+0MCP、0重放，原pending361与cycles5533保留；随后使用新control364，不重发363。[实际小证据](evidence/p50r1-natural-successor-actual-2026-10-18.json)
+逐项绑定原回执；本次仅离线读取封定JSON，没有读活跃Driver、SAVE或媒体正文。
+
+19:27:31Z的AUTO368为逻辑`continue-as-reconciled-successor`：31254→40695，
+旧episode `native-31254-8d3a8440eb30` → `native-40695-9cf747ffe1ee`。
+expected/actual successor一致，逐title2230（公国）、2231和2262（伯爵领）全部matched，
+缺失／意外保留／额外后继title均为空。该逻辑Continue自身`ck3_command_submitted=false`、
+`heir_gameplay_actions=0`；不能把这一回包当成已经操作后继。
+
+reconciliation使用的持久expectation仍是Native4191/raw53263944，距死亡边界3121日。
+另有更近的独立实证：Root3在19:07:18Z、Native8535/raw53331120返回同三title、first heir均40695，
+距边界322日；紧前普通AUTO357在19:14:53Z、Native9033/raw53338680通过当前first-heir relationship
+读回available／heir40695／root_query_sequence1269，同请求before/after来源保留PID／连接／日期，
+距边界7日。后者证明当时首继承人，未包含完整逐title分配，三层来源不能合写成死亡前fresh全title。
+
+CAP370确认`active_natural_successor`且无transition错误。timeline371观察到death modal；
+typed Continue372只调用一次Close，原ACK的material仍false，随后独立query3／observation2493295
+实际读回identity none、blocks=false、has_open=false，才得到`materially_verified`。
+该方法随后明示执行`life_advance_result`，raw53338848→53339016，实际再推进7日、speed5／
+`bounded_non_tactical`。因此原361的7日与372内置advance的7日分别计量，总14日；
+handoff仍为cycle5534，后一个7日不另造普通cycle，也不是无法解释的日期漂移。
+
+SAVE374实际物化130823434 B／SHA `cc405fe04302c56eef0a7b7c6c71299ca8b96472d8254e152c6f09709ab12b7b`，
+date53339016／新episode40695，Driver替换回执`save_binding_verified=true`，其范围明确为
+`WRITE_REPLACE_RETURNED_NOT_FSYNC`。SEM375独立保留原campaign／origin31254、current40695、
+reconciled_successions1，paused/map-ready。这里没有读取或重新hash大SAVE，也没有CK3冷载证明。
+
+随后FULL376确实完成10轮普通规划，cycles5535–5544、同date53339016。
+正常plan已消费原dynasty_continuity goal与progress1；AUTO379提交后继首继承人婚配，结果仍pending，
+不称结婚成功；AUTO389实际任命35598统领Army167772577，独立结果为`commander_assigned_verified`；
+AUTO391提交至2619的移动，不称已到达或获胜。这些是后继普通玩法与goal消费，10轮没有新增游戏日。
+
+当前自然继承子链已有一次真实reconciliation、typed modal独立清除、物化SAVE及后继普通玩法。
+叙事在SEM375为8112日，首次30年原目标raw53407320不变，距目标2846日；
+不能把新episode再起一个30年分母。后续独立cold及更广政府／种子业务仍未由本包验证，
+G2保持6/8，M7保持in_progress，不为此打断当前自动游玩或录制。

@@ -1,0 +1,584 @@
+{
+  "schema": "xar.g2.m7.actual-natural-successor-subgate.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:30:18.810450+00:00",
+  "actual_handoff_utc": {
+    "started": "2026-10-17T19:27:31.655608+00:00",
+    "finished": "2026-10-17T19:27:47.153554+00:00"
+  },
+  "status": "CURRENT_CLEAN_CAMPAIGN_NATURAL_SUCCESSOR_RECONCILED_MODAL_CLEARED_SAVE_MATERIALIZED",
+  "checks": {
+    "same_Game_and_birth": true,
+    "audit_verified_no_restart_or_replay": true,
+    "original361_not_replayed": true,
+    "Continue368_once_logical_no_CK3_command": true,
+    "three_titles_reconciled": true,
+    "Close372_once_and_material": true,
+    "independent_clear": true,
+    "Close_internal_real7days": true,
+    "SAVE374_materialized_and_bound": true,
+    "finalSEM375_goal_preserved": true
+  },
+  "reconciliation": {
+    "schema": "xar.ck3.succession-reconciliation/v1",
+    "status": "available",
+    "predecessor_binding": {
+      "snapshot_id": "native:4191",
+      "revision": 90,
+      "native_revision": 4191,
+      "date_raw": 53263944,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "episode_character_id": 31254
+    },
+    "successor_binding": {
+      "snapshot_id": "native:9042",
+      "revision": 509,
+      "native_revision": 9042,
+      "date_raw": 53338848
+    },
+    "predecessor_character_id": 31254,
+    "expected_successor_character_id": 40695,
+    "actual_successor_character_id": 40695,
+    "successor_match": true,
+    "expected_inherited_title_ids": [
+      2230,
+      2231,
+      2262
+    ],
+    "matched_inherited_title_ids": [
+      2230,
+      2231,
+      2262
+    ],
+    "missing_expected_inherited_title_ids": [],
+    "unexpected_retained_predecessor_title_ids": [],
+    "expected_other_heir_title_ids": [],
+    "expected_without_heir_title_ids": [],
+    "observed_additional_successor_title_ids": [],
+    "title_distribution_match": true,
+    "verdict": "matched",
+    "unavailable_reason": null
+  },
+  "expectation_age_days_at_boundary": 3121,
+  "expectation_fresh_immediately_before_death_claimed": false,
+  "logical_Continue": {
+    "sequence": 368,
+    "old_episode": "native-31254-8d3a8440eb30",
+    "new_episode": "native-40695-9cf747ffe1ee",
+    "native_CK3_command_submitted": false
+  },
+  "modal_Close": {
+    "sequence": 372,
+    "actual_close_invocations": 1,
+    "submission_ack_material_false": true,
+    "material_verified": true,
+    "action_observation_revision": 2493291,
+    "independent_post_query_sequence": 3,
+    "independent_post_observation_revision": 2493295,
+    "independent_identity": "none",
+    "blocks_simulation": false,
+    "has_open_succession": false,
+    "post_failure": null
+  },
+  "calendar_accounting": {
+    "original_start_raw": 53338680,
+    "original361_boundary_raw": 53338848,
+    "original361_actual_days": 7,
+    "Close372_life_advance_start_raw": 53338848,
+    "Close372_life_advance_end_raw": 53339016,
+    "Close372_actual_days": 7,
+    "Close372_timeline_policy": "bounded_non_tactical",
+    "Close372_timeline_speed": 5,
+    "actual_total_since_original_start_days": 14,
+    "completed_cycles_before_after_handoff": 5534,
+    "Close372_additional_ordinary_cycle_credit": 0,
+    "original_narrative_start_raw": 53144328,
+    "narrative_actual_days_at375": 8112,
+    "first30_target_raw_unchanged": 53407320,
+    "remaining_days_to_first30_at375": 2846,
+    "continuous_stable_window_days_inferred": false
+  },
+  "checkpoint": {
+    "status": "saved",
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 130823434,
+    "sha256": "cc405fe04302c56eef0a7b7c6c71299ca8b96472d8254e152c6f09709ab12b7b",
+    "date_raw": 53339016,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "aa2850ed92704c1e03bff13aaed2e7d2e197070c89da833bb51efd605edd3191"
+    },
+    "history_index": 3,
+    "episode_character_id": 40695,
+    "episode_run_id": "native-40695-9cf747ffe1ee"
+  },
+  "driver_replace_receipt_scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+  "fsync_or_cold_restore_proven": false,
+  "goal": {
+    "format_version": 1,
+    "goal_key": "dynasty_continuity",
+    "campaign_id": "native-31254-8d3a8440eb30",
+    "origin_character_id": 31254,
+    "current_character_id": 40695,
+    "progress": {
+      "reconciled_successions": 1,
+      "last_succession": {
+        "predecessor_character_id": 31254,
+        "actual_successor_character_id": 40695,
+        "matched_inherited_title_ids": [
+          2230,
+          2231,
+          2262
+        ],
+        "expected_other_heir_title_ids": [],
+        "expected_without_heir_title_ids": []
+      }
+    }
+  },
+  "final_frame": {
+    "snapshot_id": "native:9054",
+    "revision": 521,
+    "native_revision": 9054,
+    "date_raw": 53339016,
+    "actor_character_id": 40695,
+    "episode_run_id": "native-40695-9cf747ffe1ee"
+  },
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0361-1-result.json",
+      "bytes": 245545,
+      "sha256": "a26e8572f2eb8ae878e0fc662fbb51cc6bf33754a59be10fd91fa1fc37f36da1"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0364-1-result.json",
+      "bytes": 1206,
+      "sha256": "9e6d6049e20310c229cd861f0dc672d420bb2c0cc8b195407aad2dae45d1ece3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0365-1-result.json",
+      "bytes": 1216,
+      "sha256": "2b2d5acc079346a71bb14e5a955104821dc7f16a5ef9d5daf21ed7ac6dbee17e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0366-1-result.json",
+      "bytes": 1660,
+      "sha256": "c0b37b41f11a29c0a5f54fcbcf1a61aa8204db6e5354552f2fec7337d4058fd3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0367-1-result.json",
+      "bytes": 27400,
+      "sha256": "3be60f674b00b5e7e7ba846c020b0c4b031a6d25b3c7968d2630a5ec6e254246"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0368-1-result.json",
+      "bytes": 79956,
+      "sha256": "b8e5a28e1e4b9e1a4b7f250418708c9bc3059d8f68c9346baea58a690f8b8058"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0369-1-result.json",
+      "bytes": 26817,
+      "sha256": "bd9b8e9416cd39d33a770d39da44650f6d14bf1d72345173062fa50c48c3a9c0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0370-1-result.json",
+      "bytes": 62866,
+      "sha256": "ddf198b4a3dd8e34d98579d5ad24ce2d58a1cf1aefffa11a00bd9aae254afe67"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0371-1-result.json",
+      "bytes": 3783,
+      "sha256": "9d8f6b5cf29a91ae62882874596a76524a378c6cf1cd5402f8ebfc4e465ecd9a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0372-1-result.json",
+      "bytes": 25893,
+      "sha256": "afc51009c01e8217e98107a5c961bd3a734f729273b7b1ad9068e88021303c01"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0373-1-result.json",
+      "bytes": 27023,
+      "sha256": "5095fef0abf1d5b9dc927fb098c9a1f302dec4899aadffc13f3a46d7bf8527dc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0374-1-result.json",
+      "bytes": 10134,
+      "sha256": "6343102aaa65d2ac686e77d5282b6d21e00a3569214e23806b52c86c4b9fdcfe"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0375-1-result.json",
+      "bytes": 27018,
+      "sha256": "e96248502f8bef3fa84721221b2955ef08afbb8810689f5885b7c92b55537348"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-queue\\AUTOMATIC-SUCCESSION-HANDOFF-005534.json",
+      "bytes": 4692,
+      "sha256": "806a72fa371c2033135cc3475d0263a7049274c4d7575104bade569cdcb0b8d8"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-queue\\CUMULATIVE-TURN-005534.json",
+      "bytes": 2484,
+      "sha256": "a58cea5e5e9d55aca8d13b3a4a7182c00026f5868e683ba351b450eacde4b70e"
+    }
+  ],
+  "followup": {
+    "separate_later_ordinary_formal_turn_after_SAVE374": "observed in FULL376 with goal consumption and verified commander assignment",
+    "additional_saved_pair_after_FULL376": "not claimed; no SAVE in this batch",
+    "future_independent_cold_restore_with_same_goal": "not observed here",
+    "broader_government_seed_qualification": "still incomplete"
+  },
+  "G2": {
+    "complete": 6,
+    "total": 8,
+    "M6": "in_progress",
+    "M7": "in_progress",
+    "current_clean_campaign_natural_reconciliations": 1
+  },
+  "operations": {
+    "Game_Native_MCP_SDK_calls": 0,
+    "live_Driver_SAVE_media_reads": 0,
+    "SAVE_body_rehashed": false,
+    "original_receipts_modified": false,
+    "new_tests_or_builds": 0
+  },
+  "final_assessed_at_utc": "2026-10-17T19:32:53.454241+00:00",
+  "current_status": "ACTUAL_NATURAL_SUCCESSOR_RECONCILED_CLOSE_CLEAR_SAVE_AND_LATER_ORDINARY_GOAL_GAMEPLAY_OBSERVED",
+  "supplemental_living_heir_evidence": {
+    "preserved_expectation_age_days": 3121,
+    "manual_Root3": {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0003-1-result.json",
+        "bytes": 55098,
+        "sha256": "487170affae6e2144f85a6c1785cc7b893430b4dcb25200c5d889e16fe48da72"
+      },
+      "ended_at_utc": "2026-10-17T19:07:18.908800+00:00",
+      "snapshot_revision": 8535,
+      "date_raw": 53331120,
+      "days_before_boundary": 322,
+      "held_title_partition": [
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "first_heir_character_id": 40695,
+          "capital_province_id": null,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 2231,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "capital_province_id": 2619,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2262,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "capital_province_id": 2629,
+          "primary": false
+        }
+      ],
+      "same_frame_ready": true
+    },
+    "normal_AUTO357": {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0357-1-result.json",
+        "bytes": 753132,
+        "sha256": "816d9ce0374993bd3c8c16fe3bd85f961378baf7b6f5a0576863af2310d954a9"
+      },
+      "ended_at_utc": "2026-10-17T19:14:53.303476+00:00",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:9033",
+        "revision": 500,
+        "native_revision": 9033,
+        "date_raw": 53338680,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 12,
+        "bridge_pid": 51028
+      },
+      "days_before_boundary": 7,
+      "relationship_scalars": {
+        "schema": "xar.ck3.current-first-heir-relationship.v1",
+        "schema_version": 1,
+        "exact_ck3_build": "1.20.0.4",
+        "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "read_only": true,
+        "advertised": false,
+        "native_revision": 9033,
+        "root_query_sequence": 1269,
+        "heir_character_id": 40695,
+        "status": "available",
+        "unavailable_reason": null,
+        "bilateral_verified": true,
+        "betrothed_character_id": null,
+        "primary_spouse_character_id": 40692
+      },
+      "query_before_after_source": {
+        "request_id": "family-relation-c037cc5539434e2f895f25c437f72085",
+        "binding_scope": "query_before_after",
+        "bridge_pid": 51028,
+        "connection_generation": 12,
+        "native_revision": 9033,
+        "date_raw": 53338680,
+        "played_character_id": 31254,
+        "heir_character_id": 40695,
+        "sidecar_bytes": 11336,
+        "sidecar_sha256": "6cd5f8103ca5efb6642e622dfa6a9c73d01d0edb8d449ba399f0f8edab155bec",
+        "same_request_export_completed": true
+      },
+      "all_title_partition_in_this_response": false
+    },
+    "closer_complete_title_reconstruction_claimed": false,
+    "bounded_prior_normal_AUTO_responses_inspected": [
+      353,
+      355,
+      357,
+      359
+    ]
+  },
+  "following_ordinary_FULL376": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0376-1-result.json",
+      "bytes": 1218,
+      "sha256": "126d8d8c8a48a0d7423c9af78621214216662a846e20dadd81829a5a1b8a8401"
+    },
+    "status": "bounded_loop_finished",
+    "ordinary_turn_count": 10,
+    "new_game_days": 0,
+    "end_frame": {
+      "snapshot_id": "native:9055",
+      "revision": 522,
+      "native_revision": 9055,
+      "date_raw": 53339016,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee"
+    },
+    "goal_plan_actually_used": {
+      "policy": "ordinary-campaign-goal-v1",
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-8d3a8440eb30",
+      "current_character_id": 40695,
+      "progress": {
+        "reconciled_successions": 1,
+        "last_succession": {
+          "predecessor_character_id": 31254,
+          "actual_successor_character_id": 40695,
+          "matched_inherited_title_ids": [
+            2230,
+            2231,
+            2262
+          ],
+          "expected_other_heir_title_ids": [],
+          "expected_without_heir_title_ids": []
+        }
+      },
+      "focus": "marriage",
+      "priorities": [
+        {
+          "priority": 100,
+          "action": "seek_current_ruler_marriage_and_family_continuity",
+          "reason": "retain the campaign's family intent with fresh ruler candidates"
+        },
+        {
+          "priority": 60,
+          "action": "review_current_ruler_succession_and_partition",
+          "reason": "reuse the current native heir and estate observations"
+        }
+      ]
+    },
+    "turns": [
+      {
+        "cycle": 5535,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0377-1-result.json",
+          "bytes": 17082,
+          "sha256": "02c0e876a1dc0b883dab7177fbd4f865b8634d6eb846b2746072af5c7b29f284"
+        },
+        "selected_step": "query-war-results-window-v1",
+        "phase": "war_results_window",
+        "result_status": "hidden",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5536,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0379-1-result.json",
+          "bytes": 1090598,
+          "sha256": "bbcbfa0367651f388b6e31dd94894ae2e1ac5ddfffc308866b096024ec0ae2c1"
+        },
+        "selected_step": "submit-observed-first-heir-marriage-v1-private",
+        "phase": "first_heir_marriage_typed_submit",
+        "result_status": "receipt_pending",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5537,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0381-1-result.json",
+          "bytes": 44168,
+          "sha256": "7e30c6d121339669f8f13eb675350aab1c7f6cb79eb382b0e1a03381386fa2d4"
+        },
+        "selected_step": "query-war-termination-options-100663323",
+        "phase": "native_war_termination_query",
+        "result_status": "available",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5538,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0383-1-result.json",
+          "bytes": 4540,
+          "sha256": "a3c1520b5a01e8cd7639451c268225714f84c8b1b3b7baf1fed445e9b103ac34"
+        },
+        "selected_step": "query-army-strengths-v1",
+        "phase": "native_war_army_strength_query",
+        "result_status": "available",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5539,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0385-1-result.json",
+          "bytes": 37692,
+          "sha256": "bbae5f10939f3033b020b3e4a99135fe37b67188745fc9418a61a15c3c40ca34"
+        },
+        "selected_step": "preview-move-army-167772577-to-2619",
+        "phase": "native_war_route_preview",
+        "result_status": "available",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5540,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0387-1-result.json",
+          "bytes": 56079,
+          "sha256": "ace1358573374f8bc67a76fae7c665e3542172eea2cb257829a5dd95a695e7c5"
+        },
+        "selected_step": "query-route-contact-horizon-v1-167772577-to-2619-h-3-218104265-402653372-436207707",
+        "phase": "native_war_candidate_contact_horizon",
+        "result_status": "available",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5541,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0389-1-result.json",
+          "bytes": 88911,
+          "sha256": "2606bf38ce7be9c72329740b3dc855e9443044d69377c411ee9fdf81816b727e"
+        },
+        "selected_step": "assign-army-commander-v1-army-167772577-to-character-35598",
+        "phase": "native_commander_quality_assignment",
+        "result_status": "commander_assigned_verified",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5542,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0391-1-result.json",
+          "bytes": 41632,
+          "sha256": "3457f2484ecb067f845d4269722c7a98adac46aaa069159d1e12fe617656cae7"
+        },
+        "selected_step": "move-army-167772577-to-2619",
+        "phase": "native_war_pursuit",
+        "result_status": "submitted",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5543,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0393-1-result.json",
+          "bytes": 38365,
+          "sha256": "85e63f9a5837fe053f31ccb6801bff066b0845c2cd1ae0cc6b0b34467c67bace"
+        },
+        "selected_step": "query-observed-first-heir-marriage-result-v1-private",
+        "phase": "first_heir_marriage_result_read",
+        "result_status": "pending",
+        "date_delta_raw": 0
+      },
+      {
+        "cycle": 5544,
+        "auto_source": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0395-1-result.json",
+          "bytes": 38687,
+          "sha256": "6ff2f74fe9d7dbd0a37e704138368ab5558205f7e0e1928dc232993cf59c5c53"
+        },
+        "selected_step": "query-route-contact-horizon-v1-167772577-to-2619-h-3-218104265-402653372-436207707",
+        "phase": "native_war_moving_contact_before_strength_query",
+        "result_status": "available",
+        "date_delta_raw": 0
+      }
+    ],
+    "actual_commander_assignment": {
+      "cycle": 5541,
+      "AUTO": 389,
+      "army_id": 167772577,
+      "commander_id": 35598,
+      "status": "commander_assigned_verified"
+    },
+    "marriage_proposal": {
+      "AUTO": 379,
+      "status": "receipt_pending",
+      "later393": "pending",
+      "accepted_marriage_claimed": false
+    },
+    "army_move": {
+      "AUTO": 391,
+      "target_province_id": 2619,
+      "status": "submitted",
+      "arrival_or_battle_win_claimed": false
+    }
+  },
+  "read_boundary_note": "Only immutable receipt JSON/audits. SAVE hash transcribed from real MCP374; no active Driver/SAVE/media body read or rehash.",
+  "recovery_metadata_attempts": {
+    "363": {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0363-1-result.json",
+        "bytes": 572,
+        "sha256": "1475c6eaf73560d2de275ee7944627aec60c5c885f02a8f71a64bf51c1c41b74"
+      },
+      "actual_receipt": {
+        "ended_at_utc": "2026-10-17T19:22:52.374158+00:00",
+        "request": {
+          "sequence": 363,
+          "command": "recover_partial_life_advance",
+          "arguments": {
+            "recovery_kind": "settled_summary_metadata"
+          },
+          "recovery_mode": "executed_sentinel_natural_boundary_reconsume",
+          "source": "exact executed AUTO361 narrow contract reconsume; no original action replay; source epoch01"
+        },
+        "client_error": "'N'",
+        "replay_allowed": false,
+        "original_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0361-1-result.json"
+      },
+      "new_MCP_calls": 0,
+      "basis_for_zero_calls": "Root actual observation and metadata-only adapter source; original AUTO361 untouched",
+      "status": "failed_actual_env_N_missing_before_metadata_settle"
+    },
+    "364": {
+      "status": "verified_original_executed_boundary_metadata_reconsumed",
+      "new_MCP_calls": 0,
+      "original_AUTO_replayed": false
+    },
+    "original_FULL326_and_control363_failures_retained": true
+  },
+  "public_adopted_at_utc": "2026-10-17T19:42:09.457404+00:00"
+}
