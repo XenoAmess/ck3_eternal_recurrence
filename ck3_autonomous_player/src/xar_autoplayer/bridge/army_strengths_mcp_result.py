@@ -5,6 +5,8 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING, cast
 
+from .army_native_timing_summary_v1 import retained_native_timing
+
 if TYPE_CHECKING:
     from mcp.types import CallToolResult
 
@@ -57,6 +59,7 @@ def _army_strengths_summary(payload: dict[str, object]) -> dict[str, object]:
             for row in rows
         ],
         "result_location": "compact_mcp_summary",
+        **retained_native_timing(payload),
     }
 
 

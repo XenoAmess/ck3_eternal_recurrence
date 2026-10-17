@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from copy import deepcopy
+import hashlib
 import json
 from pathlib import Path
 from unittest.mock import patch
@@ -401,3 +402,77 @@ def test_real_native_driver_records_the_query_frame_for_the_normal_consumer():
         assert consumed is not None and consumed["rows"][0]["company_id"] == 0
     finally:
         driver.close()
+
+
+@pytest.mark.parametrize("can_stage", [True, False])
+def test_full_market_selection_has_bounded_plan_and_durable_observer(tmp_path, can_stage):
+    driver = WarDriver(tmp_path)
+    rows = [company(identity, 15_000_000 + identity, 1200, 2623 if can_stage else 99)
+            for identity in range(584)]
+    market = context(driver.snapshot, rows)
+    driver.execute_step(QUERY_STEP, expected_revision=driver.snapshot["revision"])
+    driver.recorded[-1][1]["player_mercenary_context"] = market
+    history = driver.take_snapshot()["native_command_history"]
+    before = deepcopy((driver.snapshot, history))
+    full = assess_mercenary_reinforcement_v1(
+        driver.snapshot, market, campaign_root=driver.snapshot["campaign_root_context"],
+    )
+    assert len(full["candidates"]) == 584  # direct policy API remains complete
+    from xar_autoplayer.war_mercenary_observer_v1 import project_mercenary_observer_v1
+
+    assert project_mercenary_observer_v1(full)["selected_candidate"] is full["selected_candidate"]
+    plan = plan_war_mercenary_turn_v1(
+        driver, {"selected_step": "life-advance", "reason": "ordinary machine reason"},
+        snapshot=driver.snapshot, history=history,
+        bridge_capabilities={QUERY_CAPABILITY, HIRE_CAPABILITY},
+    )
+    decision = plan["war_mercenary_decision_v1"]
+    assert {key: value for key, value in decision.items() if key != "candidate_observer_v1"} == {
+        key: value for key, value in full.items() if key != "candidates"
+    }
+    assert (driver.snapshot, history) == before
+    observer = decision["candidate_observer_v1"]
+    assert observer["candidate_count"] == 584
+    assert observer["eligible_count"] == (584 if can_stage else 0)
+    assert observer["candidate_digest_sha256"] == hashlib.sha256(json.dumps(
+        full["candidates"], ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
+    ).encode("utf-8")).hexdigest()
+    assert observer["non_selected_counterfactual_details_retained"] is False
+    assert observer["full_diagnostic_reconstruction_available"] is False
+    assert observer["input_query_reference"]["query_sequence"] == 1
+    assert observer["input_query_reference"]["immutable_archive"] is False
+    assert len(json.dumps(decision)) < 16 * 1024
+    assert len(json.dumps(decision)) < len(json.dumps(full)) / 20
+    if not can_stage:
+        assert plan["selected_step"] == "life-advance"
+        assert plan["reason"] == "ordinary machine reason"
+        assert observer["rejection_reason_counts"]["spawn_is_not_a_current_stationary_friendly_staging_province"] == 584
+        return
+    assert decision["selected_company_id"] == 0
+    assert plan["selected_step"] == HIRE_STEP
+    with pytest.raises(ValueError, match="source frame is stale"):
+        submit_war_mercenary_v1(driver, plan=plan, expected_revision=driver.snapshot["revision"] + 1)
+    assert driver.hire_count == 0
+    submitted = submit_war_mercenary_v1(driver, plan=plan, expected_revision=driver.snapshot["revision"])
+    assert driver.hire_count == 1
+    assert submitted["mercenary_hire"]["company_id"] == 0
+    ledger = json.loads((tmp_path / "war-mercenary-pending-v1.json").read_text(encoding="utf-8"))
+    assert ledger["pending"]["decision"]["selected_candidate"] == full["selected_candidate"]
+    assert "candidates" not in ledger["pending"]["decision"]
+    assert len(json.dumps(ledger)) < 32 * 1024
+
+
+def test_legacy_full_decision_submit_stores_only_selected_observer(tmp_path):
+    driver = WarDriver(tmp_path)
+    full = assess_mercenary_reinforcement_v1(
+        driver.snapshot, context(driver.snapshot), campaign_root=driver.snapshot["campaign_root_context"],
+    )
+    before = deepcopy(full)
+    plan = {"war_mercenary_source_frame": observed_frame(driver.snapshot),
+            "war_mercenary_decision_v1": full, "war_mercenary_pre_capture_epoch": 1}
+    submitted = submit_war_mercenary_v1(driver, plan=plan, expected_revision=driver.snapshot["revision"])
+    assert full == before
+    assert "candidates" in full
+    stored = submitted["war_mercenary_pending"]["decision"]
+    assert "candidates" not in stored
+    assert stored["selected_candidate"] == full["selected_candidate"]

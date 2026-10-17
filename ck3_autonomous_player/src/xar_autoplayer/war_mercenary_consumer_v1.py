@@ -22,6 +22,7 @@ from .bridge.war_contract import (
 )
 from .environment import write_json_atomic
 from .m5_observed_opportunity_selector import observed_frame
+from .war_mercenary_observer_v1 import project_mercenary_observer_v1
 from .war_reinforcement_tradeoff_v1 import (
     _count as observed_army_count,
     assess_mercenary_reinforcement_v1, observe_war_spending_priority_v1,
@@ -42,7 +43,7 @@ def _ledger(directory: Path) -> dict[str, object]:
     return value
 
 
-def _context(history: list[dict[str, object]], snapshot: Mapping[str, object]):
+def _context_with_reference(history: list[dict[str, object]], snapshot: Mapping[str, object]):
     frame = observed_frame(snapshot)
     for row in reversed(history):
         result = row.get("result")
@@ -55,11 +56,21 @@ def _context(history: list[dict[str, object]], snapshot: Mapping[str, object]):
                 or result.get("status") != "completed"):
             continue
         try:
-            return normalize_player_mercenary_context_v1(
+            context = normalize_player_mercenary_context_v1(
                 result.get("player_mercenary_context"), snapshot=snapshot)
+            return context, {
+                "kind": "validated-current-frame-market-query",
+                "history_index": row.get("index"), "command": QUERY_STEP,
+                "query_sequence": result["query_sequence"], "source_frame": frame,
+                "immutable_archive": False,
+            }
         except ValueError:
             continue
-    return None
+    return None, None
+
+
+def _context(history: list[dict[str, object]], snapshot: Mapping[str, object]):
+    return _context_with_reference(history, snapshot)[0]
 
 
 def _plan_war_mercenary_turn_v1(
@@ -123,7 +134,7 @@ def _plan_war_mercenary_turn_v1(
             return {**plan, "war_mercenary_status": "headcount_model_has_no_current_deficit_keep_war_action"}
     if QUERY_CAPABILITY not in bridge_capabilities:
         return {**plan, "war_mercenary_status": "native_query_capability_unavailable"}
-    context = _context(history, snapshot)
+    context, context_reference = _context_with_reference(history, snapshot)
     if pending is not None and (context is None or context.get("capture_epoch", 0) <= pending["pre_capture_epoch"]):
         context = None
     if context is None:
@@ -164,6 +175,16 @@ def _plan_war_mercenary_turn_v1(
         return {**plan, "war_mercenary_status": "existing_spending_intent_or_frame_unavailable",
                 "war_mercenary_spending_observation": spending}
     decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root)
+    decision = project_mercenary_observer_v1(
+        decision,
+        assessment_source_sha256=getattr(driver, "war_mercenary_assessment_source_sha256", None),
+        input_observation_binding={
+            key: context.get(key) for key in (
+                "schema", "game_version", "executable_sha256", "actor_character_id", "date_raw", "capture_epoch",
+            )
+        },
+        input_query_reference=context_reference,
+    )
     plan = {**plan, "war_mercenary_decision_v1": decision}
     if decision["selected_company_id"] is None or HIRE_CAPABILITY not in bridge_capabilities:
         return plan
@@ -255,6 +276,10 @@ def submit_war_mercenary_v1(driver: object, *, plan: Mapping[str, object], expec
     company = decision.get("selected_company_id") if isinstance(decision, Mapping) else None
     if type(company) is not int or decision.get("recommendation") != "hire_local_reinforcement":
         raise ValueError("mercenary hire lacks its selected reinforcement decision")
+    decision = project_mercenary_observer_v1(
+        decision,
+        assessment_source_sha256=getattr(driver, "war_mercenary_assessment_source_sha256", None),
+    )
     ledger = _ledger(directory)
     if ledger["pending"] is not None:
         raise ValueError("unresolved mercenary hire must never be resubmitted")

@@ -105,6 +105,10 @@ def _synthetic_complete_service_result() -> dict[str, object]:
         "ordered_refill_entry_mode": "observed_prepared",
         "ordered_besieging_entry_mode": "fixed_chunk0_prepare",
         "army_strengths": rows,
+        "army_native_timing_v1": {
+            "read_total_ns": 100, "owner_query_ns": 80,
+            "baseline_read_ns": 60, "rich_attach_ns": 5, "serialize_ns": 10,
+        },
         "same_input_conditional_projection": [
             {
                 "army_id": row["army_id"],
@@ -151,6 +155,7 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             "queried_snapshot_id": "synthetic-execute-army-7001",
             "queried_revision": 4,
             "queried_native_revision": 3,
+            "army_native_timing_v1": copy.deepcopy(direct_payload["army_native_timing_v1"]),
         }
         execute_expected = copy.deepcopy(execute_payload)
         other_payload = {
@@ -289,6 +294,7 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             "backend_id", "queried_snapshot_id", "queried_revision",
             "queried_native_revision",
             "army_strengths_profile", "army_observed_phase_coverage",
+            "army_native_timing_v1",
         })
         self.assertNotIn("source", execute_payload)
         self.assertNotIn("army_ids", execute_payload)
@@ -318,10 +324,12 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
                 "accepted", "status", "query_sequence", "source",
                 "army_ids", "armies", "result_location",
                 "army_strengths_profile", "army_observed_phase_coverage",
+                "army_native_timing_v1",
             })
             self.assertEqual(summary["result_location"], "compact_mcp_summary")
             self.assertEqual(summary["army_strengths_profile"], "ordinary_core_v1")
             self.assertEqual(summary["army_observed_phase_coverage"], "not_requested")
+            self.assertEqual(summary["army_native_timing_v1"], expected["army_native_timing_v1"])
             self.assertEqual(summary["source"], {"revision": 4, "native_revision": 3})
             self.assertEqual(summary["army_ids"], summary_ids)
             self.assertEqual([row["army_id"] for row in summary["armies"]], summary_ids)
@@ -398,6 +406,37 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             with destination.open("x", encoding="utf-8", newline="\n") as stream:
                 json.dump(metrics, stream, ensure_ascii=False, indent=2)
                 stream.write("\n")
+
+    async def test_registered_auto_preserves_existing_timing_without_changing_internal_result(self):
+        result = _synthetic_complete_service_result()
+        result["step"] = "query-army-strengths-v1"
+        payload = {"status": "executed", "selected_step": result["step"],
+                   "plan": {"selected_step": result["step"], "phase": "native_war_army_strength_query"},
+                   "result": result}
+        before = copy.deepcopy(payload)
+        with patch.object(GameplayBridgeService, "auto_turn", autospec=True, return_value=payload) as auto:
+            server = create_server(object())
+            observed = await server.call_tool("ck3_auto_turn", {})
+        auto.assert_called_once()
+        self.assertFalse(observed.is_error)
+        summary = observed.structured_content["result"]
+        self.assertEqual(summary["army_native_timing_v1"], result["army_native_timing_v1"])
+        self.assertEqual(summary["query_sequence"], result["query_sequence"])
+        self.assertEqual(json.loads(observed.content[0].text), observed.structured_content)
+        self.assertEqual(payload, before)
+        self.assertNotIn("synthetic_observed_roster", observed.content[0].text)
+
+    def test_missing_or_invalid_timing_does_not_replace_a_successful_business_result(self):
+        from xar_autoplayer.bridge.army_strengths_mcp_result import build_army_strengths_mcp_result
+
+        payload = {"accepted": True, "status": "available", "query_sequence": 7, "army_strengths": []}
+        valid = {"read_total_ns": 100, "owner_query_ns": 80,
+                 "baseline_read_ns": 60, "rich_attach_ns": 5, "serialize_ns": 10}
+        for value in (None, {}, {**valid, "owner_query_ns": -1}, {**valid, "baseline_read_ns": True}):
+            observed = build_army_strengths_mcp_result({**payload, "army_native_timing_v1": value})
+            self.assertNotIn("army_native_timing_v1", observed.structured_content)
+            self.assertEqual(observed.structured_content["status"], "available")
+            self.assertEqual(observed.structured_content["query_sequence"], 7)
 
 
 if __name__ == "__main__":
