@@ -1,0 +1,180 @@
+{
+  "schema": "g2.p42-signed-interaction-learning-audit/v1",
+  "status": "ACTUAL_CAPTURE_REPLY_BATCH_WORKER_AND_DURABLE_KNOWN_CLOSED_NO_FIX_NEEDED",
+  "at_utc": "2026-10-17T12:23:43.708360+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "instance_id": -1392508926,
+  "sender_character_id": 32887,
+  "recipient_character_id": 31254,
+  "canonical_interaction": "pam_ai_evangelize_personal_tenet_interaction",
+  "deterministic_key_hash": 36532572,
+  "runtime_ordinal_at_capture": 527,
+  "stock_definition": {
+    "source_relative": "common/character_interactions/pam_interactions.txt",
+    "source_sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+    "category": [
+      "interaction_category_religion"
+    ],
+    "description": "AI clergy requests that the recipient accept a selected personal tenet; on_send selects a tenet, on_accept/on_decline invoke their corresponding original scripted effects.",
+    "on_accept_source": "\ton_accept = {\r\n\t\tscope:actor = {\r\n\t\t\tsend_interface_toast = {\r\n\t\t\t\ttype = event_toast_effect_good\r\n\t\t\t\ttitle = pam_evangelize_personal_tenet_interaction_toast\r\n\t\t\t\tleft_icon = scope:actor\r\n\t\t\t\tright_icon = scope:recipient\r\n\t\t\t\tpam_evangelize_personal_tenet_effect = yes\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+    "on_decline_source": "\ton_decline = {\r\n\t\tscope:actor = {\r\n\t\t\tshow_as_tooltip = {\r\n\t\t\t\tpam_evangelize_personal_tenet_decline_effect = yes\r\n\t\t\t}\r\n\t\t\tsend_interface_toast = {\r\n\t\t\t\ttype = event_toast_effect_bad\r\n\t\t\t\ttitle = pam_evangelize_personal_tenet_interaction_toast_declined\r\n\t\t\t\tleft_icon = scope:actor\r\n\t\t\t\tright_icon = scope:recipient\r\n\t\t\t\tpam_evangelize_personal_tenet_decline_effect = yes\r\n\t\t\t}\r\n\t\t}\r\n\t}",
+    "stock_PAM_not_inferred_mod": true
+  },
+  "actual_AUTO": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p42-responses\\0010-1-result.json",
+      "bytes": 123699,
+      "sha256": "494676bdf05dfc4a2cb58b682fd7201e5e6cc170bb22d230e0b154161bce7dce"
+    },
+    "started_at_utc": "2026-10-17T12:09:33.892592+00:00",
+    "ended_at_utc": "2026-10-17T12:09:40.189824+00:00",
+    "selected_step": "reject-pending-character-interaction",
+    "phase": "pending_character_interaction_left_fallback",
+    "capture_binding": {
+      "snapshot_id": "native:3619",
+      "revision": 2,
+      "native_revision": 3619,
+      "date_raw": 53255880,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "paused": true,
+      "map_ready": true,
+      "actor_character_id": 31254,
+      "connection_generation": 4,
+      "bridge_pid": 51028
+    },
+    "selection": {
+      "position": "left",
+      "rendered_index": 0,
+      "button": "reject_button",
+      "action": "reject",
+      "onclick": "CharacterInteractionNotificationWindow.Reject",
+      "enabled": "CharacterInteractionNotificationWindow.CanReject",
+      "step": "reject-pending-character-interaction",
+      "native_legal": true,
+      "action_reachable": true
+    },
+    "result": {
+      "step": "reject-pending-character-interaction",
+      "accepted": true,
+      "status": "submitted",
+      "backend_id": "native-headless",
+      "interaction_result": {
+        "status": "rejected",
+        "instance_id": -1392508926,
+        "sender_character_id": 32887
+      },
+      "remaining_pending_character_interaction": null,
+      "paused": true,
+      "snapshot_id": "native:3620",
+      "revision": 3
+    },
+    "registry_known_at_first_encounter": false
+  },
+  "before": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2591d1c2efac4c31aa26e0426395a2d4.before.json",
+    "bytes": 24097,
+    "sha256": "428fd4a00a77ab2b09bde07c2a6aa1a8db3f94a133ca257f731a8385f7e4f6ad"
+  },
+  "after": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2591d1c2efac4c31aa26e0426395a2d4.after.json",
+    "bytes": 1175,
+    "sha256": "567b3af31e67d3a94a070525c075a111b0deada9d019d94e5792b4eaa0c38eb1"
+  },
+  "after_verified": {
+    "original_pending_advanced_verified": true,
+    "remaining_pending_character_interaction": null,
+    "material_effects_verified": false,
+    "replay_allowed": false
+  },
+  "batch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p42-offline-batches\\0022.json",
+    "bytes": 1634,
+    "sha256": "c28b34c465bdfa5a169f5c4e24377ba903b4412f94e228e27fd5fc8e2899119c"
+  },
+  "incident": {
+    "incident_id": "2591d1c2efac4c31aa26e0426395a2d4",
+    "kind": "pending_character_interaction",
+    "interaction_definition_key": "pam_ai_evangelize_personal_tenet_interaction",
+    "pending_interaction_id": -1392508926,
+    "selection": {
+      "position": "left",
+      "rendered_index": 0,
+      "button": "reject_button",
+      "action": "reject",
+      "onclick": "CharacterInteractionNotificationWindow.Reject",
+      "enabled": "CharacterInteractionNotificationWindow.CanReject",
+      "step": "reject-pending-character-interaction",
+      "native_legal": true,
+      "action_reachable": true
+    },
+    "registry_known": false,
+    "offline_followup_required": true,
+    "original_pending_advanced_verified": true,
+    "before": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2591d1c2efac4c31aa26e0426395a2d4.before.json",
+    "before_sha256": "428fd4a00a77ab2b09bde07c2a6aa1a8db3f94a133ca257f731a8385f7e4f6ad",
+    "after": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2591d1c2efac4c31aa26e0426395a2d4.after.json",
+    "after_sha256": "567b3af31e67d3a94a070525c075a111b0deada9d019d94e5792b4eaa0c38eb1"
+  },
+  "source_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p39\\character-interactions\\p42-offline-batches-0022-c28b34c465bd\\SOURCE-REVIEW.json",
+    "bytes": 2266,
+    "sha256": "c9f83906a5630860c064e6af5bc22c3c49fb7e85437d5454d2efedf5ecfa5acb"
+  },
+  "worker_completion_log_row": {
+    "at_utc": "2026-10-17T12:12:02.081924+00:00",
+    "batch": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p42-offline-batches\\0022.json",
+    "reviewed": 1,
+    "unknown": 0,
+    "source_review": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p39\\character-interactions\\p42-offline-batches-0022-c28b34c465bd\\SOURCE-REVIEW.json"
+  },
+  "worker_role": "existing P39 character-interaction worker273936",
+  "Root_exec_session_27897_is_not_worker_PID": true,
+  "worker_process_liveness_inspected_here": false,
+  "timing_seconds": {
+    "reply_verified_to_batch_closed": 139.683076,
+    "batch_closed_to_worker_published_by": 2.309852,
+    "reply_verified_to_worker_published_by": 141.992928
+  },
+  "published_entry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\interaction-source-registry\\f73d2c78905d4c3017c477f0780d05832e6ffc71bf2c42680fd198085bbbd749.json",
+    "bytes": 1462,
+    "sha256": "ce4c93a5ed08a38a5063328ce99a1a13d5906381cce1d007731dea487657ecb9"
+  },
+  "published_source_facts": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\interaction-source-registry\\facts\\f73d2c78905d4c3017c477f0780d05832e6ffc71bf2c42680fd198085bbbd749.json",
+    "bytes": 13565,
+    "sha256": "144a6278aa95706f95962f76ed468e23e4f58d2de2c51062b3af13e8c09811a0"
+  },
+  "fingerprint": "f73d2c78905d4c3017c477f0780d05832e6ffc71bf2c42680fd198085bbbd749",
+  "current_SDK_source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p42-standby-candidate01\\src",
+  "current_readonly_production_loader_acceptance": {
+    "status": "offline-source-reviewed",
+    "fingerprint": "f73d2c78905d4c3017c477f0780d05832e6ffc71bf2c42680fd198085bbbd749",
+    "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\interaction-source-registry\\f73d2c78905d4c3017c477f0780d05832e6ffc71bf2c42680fd198085bbbd749.json",
+    "entry_sha256": "ce4c93a5ed08a38a5063328ce99a1a13d5906381cce1d007731dea487657ecb9",
+    "source_sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+    "gui_sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0",
+    "material_effects_verified": false
+  },
+  "next_same_source_scope_behavior_from_existing_hook": {
+    "phase": "pending_character_interaction_reviewed_left_reply",
+    "registry_known": true,
+    "offline_followup_required": false,
+    "source": "pending_interaction_fallback.py:100-103,140-149,156",
+    "current_native_legality_and_reachable_choice_still_required": true,
+    "old_instance_ID_not_reused_as_current_identity": true,
+    "same_source_live_reencounter_observed_in_this_audit": false
+  },
+  "scope_limits": [
+    "First encounter and its known publication are actual; no second live encounter is invented",
+    "Entry means exact source-reviewed authored-left policy, not optimal/native-AI policy or verified religious material outcome",
+    "Captured50piety cost is actor-side on_send/already_applied; no recipient debit or refund is inferred",
+    "Prior P41 learned clerical_chastity/alliance keys are different; this PAM AI key was newly learned here"
+  ],
+  "worker_rotation_required": false,
+  "candidate_fix_required": false,
+  "Game_MCP_OBS_calls": 0,
+  "raw_Driver_SAVE_media_reads": 0,
+  "worker_or_runtime_source_edits": 0,
+  "G2": "6/8 unchanged"
+}

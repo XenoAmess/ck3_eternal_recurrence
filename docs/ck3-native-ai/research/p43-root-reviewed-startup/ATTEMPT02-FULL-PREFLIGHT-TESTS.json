@@ -1,0 +1,17 @@
+{
+  "status": "FULL_PRODUCTION_COLD_PREFLIGHT_ACTUAL_METADATA_AND_THREE_NEGATIVES_GREEN",
+  "production_queue_sha256": "74e23c3c45172d1c8317014806b3471e4da6d2e9db2622da8246564923c1e82c",
+  "actual_Root_review": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-RECOVERED-MAP-ADMITTED01.json",
+  "negative_cases": [
+    "recording_session_id",
+    "game_pid",
+    "Game_map_visible"
+  ],
+  "Driver_original_body_reads": 0,
+  "Driver_hash_calls": 0,
+  "Game_MCP_or_process_calls": 0,
+  "explicit_test_boundaries": [
+    "cold Driver validation substituted by actual closed seal identity",
+    "current live guard left for Root actual startup"
+  ]
+}

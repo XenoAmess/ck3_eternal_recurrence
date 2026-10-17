@@ -1,0 +1,97 @@
+{
+  "schema": "xar.public-recording-recovery-facts-projection/v1",
+  "source_scope": "exact immutable actual metadata projection only; not a replacement receipt",
+  "old_capture": {
+    "session_id": "7c2df029-2374-4eff-b0db-a331d6adcbb4",
+    "error": "[WinError 5] 拒绝访问。: 'D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-clean-campaign01\\\\native25-cold-generation01\\\\recordings\\\\7c2df029-2374-4eff-b0db-a331d6adcbb4\\\\recording-latest-scene.png.tmp' -> 'D:\\\\codex-ck3-demos\\\\2026-10-14-robert-30year\\\\continuation42-cold-prep\\\\robert30-clean-campaign01\\\\native25-cold-generation01\\\\recordings\\\\7c2df029-2374-4eff-b0db-a331d6adcbb4\\\\recording-latest-scene.png'",
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\7c2df029-2374-4eff-b0db-a331d6adcbb4\\failed.json",
+      "sha256": "872699b1717d771bfacf27a308967ca93559028a143943d51efba1ca7e99ab0e",
+      "bytes": 17807
+    },
+    "cleanup_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\7c2df029-2374-4eff-b0db-a331d6adcbb4\\cleanup.json",
+      "sha256": "08d53687a45e34716912f4b3173fd89e317a6b3e6f4db021114e93a6e23c929e",
+      "bytes": 18613
+    },
+    "inputs_unbound": true,
+    "engine_close": {
+      "requested": true,
+      "actual_exit_code": 0,
+      "normal_exit_proven": true,
+      "forced_process_calls": 0
+    },
+    "unknown_or_global_stop_calls": 0,
+    "recording_normal_completion_claimed": false,
+    "worker_or_recording_owner_exit_claimed": false
+  },
+  "recovered_capture": {
+    "session_id": "5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+    "started": {
+      "state": "recording",
+      "at_utc": "2026-10-17T12:28:00.763964+00:00",
+      "game_pid": 51028,
+      "game_creation_filetime": 134367033244212072,
+      "capture_mode": "game_decision",
+      "decision_source": true,
+      "continuous": true,
+      "duration_seconds": null,
+      "max_output_bytes": null,
+      "deadline_utc": null
+    },
+    "started_source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\started.json",
+      "sha256": "360246b5bf3a9095d18d150f2ffd9709b54c6e63c9011e79ee63621913a1091f",
+      "bytes": 1268
+    }
+  },
+  "failed_local_SDK_attachment": {
+    "request": {
+      "sequence": 563,
+      "command": "attach_recording_segment",
+      "arguments": {
+        "recording_job_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+        "first_frame_admission": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\automatic-recording-recovery-p42\\5fd50badb7d5847ff42494faea649709\\automatic-admission-b3ef29d67c90f98b4ec7.json",
+        "recording_request_receipt": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\automatic-recording-recovery-p42\\5fd50badb7d5847ff42494faea649709\\recording-request.json"
+      }
+    },
+    "client_error": "No module named 'automatic_continuity'",
+    "original_response": null,
+    "replay_allowed": false,
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p42-responses\\0563-1-result.json",
+      "sha256": "735986ad09aa312e39cfb38065bb9ce9da2185163be871a9c6e1835850f727b1",
+      "bytes": 950
+    }
+  },
+  "Root_savedmap_admission": {
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-RECOVERED-MAP-ADMITTED01.json",
+      "sha256": "f57d843c5775438658ad947dc8d984f927aa277217662ab693c534ac77c2684b",
+      "bytes": 2618
+    },
+    "fields": {
+      "schema": "xar.clean-campaign.saved-map-recording-admission/v1",
+      "status": "GREEN",
+      "reviewer": "/root",
+      "stage": "saved_campaign_map",
+      "at_utc": "2026-10-17T12:44:19.486933+00:00",
+      "game_pid": 51028,
+      "game_creation_date": "20261017093524.421207+000",
+      "game_creation_filetime": 134367033244212072,
+      "recording_session_id": "5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+      "recording_job_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+      "Game_map_visible": true,
+      "decision_overlay_visible": true
+    }
+  },
+  "actual_capture_gap_evidence": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p43-edl-segment-handoff01\\ACTUAL-CAPTURE-BOUNDARY.json",
+    "sha256": "c9c6ec84cdf07ec6c9c7e5a65f5f8b3d1ef7fba58ea1048010d050259fd6eee1",
+    "bytes": 3400
+  },
+  "preview_failure_trigger_claim": "WinError5 mutable preview publication proven; view_image reader causality not proven",
+  "preview_fix_boundary": "Capture03 selects preview-safe provider for future necessary recovery only; current5ebe worker was not restarted or hot-patched",
+  "runtime_actions_performed_by_projection_producer": 0,
+  "media_body_bytes_read": 0
+}

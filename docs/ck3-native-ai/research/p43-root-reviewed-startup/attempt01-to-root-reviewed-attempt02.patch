@@ -1,0 +1,16 @@
+--- a/launch_sdk_p43_owner.py
++++ b/launch_sdk_p43_owner_attempt02.py
+@@ -40 +40 @@
+-    if (N/'ROOT-P43-OWNER-STARTED.json').exists(): raise FileExistsError('P43 owner launch is create-only')
++    if (N/'ROOT-P43-OWNER-ATTEMPT02-STARTED.json').exists(): raise FileExistsError('P43 owner launch is create-only')
+@@ -43,0 +44,4 @@
++    review=N/'ROOT-P43-RECOVERED-MAP-ADMITTED01.json'
++    epoch=read(N/'ROOT-P43-ATTEMPT02-SOURCE-EPOCH.json')
++    if sha(review)!=epoch['actual_Root_review']['sha256']:raise ValueError('reviewed recovered admission changed')
++    recording['first_frame_admission']={'path':str(review),'sha256':sha(review)}
+@@ -49 +53 @@
+-    write(N/'ROOT-P43-OWNER-STARTED.json',{'owner_pid':os.getpid(),'argv':argv,'old_actual_exit_codes':{x['role']:x['exit_code'] for x in closed['processes']},
++    write(N/'ROOT-P43-OWNER-ATTEMPT02-STARTED.json',{'owner_pid':os.getpid(),'argv':argv,'old_actual_exit_codes':{x['role']:x['exit_code'] for x in closed['processes']},
+@@ -51 +55 @@
+-    with (N/'P43-OWNER-CHILD-ATTEMPT01.stdout.log').open('xb') as stdout, (N/'P43-OWNER-CHILD-ATTEMPT01.stderr.log').open('xb') as stderr:
++    with (N/'P43-OWNER-CHILD-ATTEMPT02.stdout.log').open('xb') as stdout, (N/'P43-OWNER-CHILD-ATTEMPT02.stderr.log').open('xb') as stderr:

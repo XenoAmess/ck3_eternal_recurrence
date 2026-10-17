@@ -1,0 +1,141 @@
+{
+  "schema": "xar.sdk43.public-transplant/v1",
+  "at_utc": "2026-10-17T13:25:37.871066+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_base": "50dfea0612211a97250232b7b87674acc9fdfa0d",
+  "source_deliveries_relative_to_N": {
+    "p42-stationary-defensive-risk-candidate01/DELIVERY.json": {
+      "sha256": "c7c73a33201b15f95418cac90cb31795217197a9877901187deca081cd51b70e",
+      "bytes": 3326
+    },
+    "p42-stationary-defensive-risk-candidate01/portable/DELIVERY-PORTABLE.json": {
+      "sha256": "5a9fc0cd3d0ca7894c3b026c66496c331ed926b287707b898ba0882da2beb6dd",
+      "bytes": 1284
+    },
+    "p41-war-termination-cadence-candidate01/DELIVERY.json": {
+      "sha256": "e7f65ff945c1596dd8993c8af011b44263eb4f808bfa8536cb139637daa44407",
+      "bytes": 2368
+    },
+    "p43-camera-status-candidate01/DELIVERY.json": {
+      "sha256": "8d03be6b454e2907e18f2c63bdf225bb24f487bcb2fb11e3242723be342cd672",
+      "bytes": 3856
+    },
+    "p43-hot-sdk-prep01/READY-ATTEMPT02.json": {
+      "sha256": "93da24db54b50a06ad5a4b8580047f4d0eea2772bb176bdfcb09492bd092279f",
+      "bytes": 3090
+    },
+    "p42-signed-interaction-learning-audit01/DELIVERY.json": {
+      "sha256": "600f6e5f39c87916233833cd9d37fbf106a1aa45555bf392a69c2d99b0475f22",
+      "bytes": 1585
+    },
+    "p43-populist-known-source-dynamic-policy01/DELIVERY.json": {
+      "sha256": "4cd2c2c376844e09fd0195b846e3abbb60f672effc1d0bc242881a2b99e4c9cc",
+      "bytes": 4011
+    },
+    "p43-recording-facts-public01/DELIVERY.json": {
+      "sha256": "8f30ef335481d9eb55ad7e1f130b3d9c27ce381f61e61f94c06634247449ebf1",
+      "bytes": 1372
+    },
+    "p41-first-war-and-learning-evidence01/DELIVERY.json": {
+      "sha256": "e19ee0d244adbf1ee2b0200bdeacba404f208052460306e6d42828d569a7b1cf",
+      "bytes": 2433
+    }
+  },
+  "published_pins_basis": "Git staged blob; source raw-byte pins remain separate; CRLF may normalize in Git",
+  "public_code_tests_and_fixtures": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/auto_camera_follow.py",
+      "git_blob_sha256": "8b1a2ef99f73ccd5a31696173cc9e9544530f8bdd83507559fcc882ebec3b9b1",
+      "bytes": 9245
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "git_blob_sha256": "b44377f9e8f57e8aa2f0d4501c90aeb874e295f484c898ec05791c9e960e4a17",
+      "bytes": 845235
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "git_blob_sha256": "afc2c02f007a0bd2bfbf8b7c2dceb7eb70f762796c92a3884b0b8a99a0f013c9",
+      "bytes": 1015257
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/vanilla_events/populist1001_known_refusal_v1.py",
+      "git_blob_sha256": "6e8a57777c042bdc77ecac12a31cd526993470ecdd94fcbe507c7598c7abb66c",
+      "bytes": 14717
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_termination_query_cadence_v1.py",
+      "git_blob_sha256": "0020a1a2187b7d2e394d888d811b20fcb87820790377609973b1cb65b89570fa",
+      "bytes": 9560
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/p42_stationary_unavailable_actual.json.gz",
+      "git_blob_sha256": "0c8eec1132408e082ee44da94986c15af44534bc13a75c27cf69d5de29dd54e8",
+      "bytes": 11924
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/p43_populist_actual193_projection.json",
+      "git_blob_sha256": "96f1e075797c4d1ff76c815b44d48715a663e4900523e50f1cb4dfb779bae3e9",
+      "bytes": 15220
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/termination_six_query_projection.json",
+      "git_blob_sha256": "e0f7090cf6fae3d2c37e2f7c091830d694c8b42e2ad3e878bad27b6ac6921241",
+      "bytes": 25915
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_async.py",
+      "git_blob_sha256": "867c1d132c73e8404b45bf2b5d61c7daca320d8c0ead77cd774d21e7eb455154",
+      "bytes": 6620
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_auto_camera_receipt_status.py",
+      "git_blob_sha256": "d18a36c44e0b4f1d18a0763728d0f05dcf7ffab28d3faa6c9d6fc8b99480ca35",
+      "bytes": 7413
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_populist1001_current_source_binding.py",
+      "git_blob_sha256": "7347973a6dbb20607d4c20ccd7fed4ee03323d6a18c32f4635ca03d94cc83f75",
+      "bytes": 7507
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_stationary_defensive_risk_v1.py",
+      "git_blob_sha256": "12ca062772bef5681a2b9fd9296265a9e22e20917a2fa358170c8a01a610b4e2",
+      "bytes": 4887
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_termination_query_cadence_v1.py",
+      "git_blob_sha256": "6c3a10257a04ea95be81e5482794f917065eb0e8e2a3c0623b550b4686cb5129",
+      "bytes": 8588
+    }
+  ],
+  "verification": {
+    "focused_tests_passed": 49,
+    "pytest_reported_subtests_passed": 11,
+    "stationary_rejection_mutations": 17,
+    "public_ordinary_choose": true,
+    "stationary_history_wrapper_reconstructed": true,
+    "camera_public_Service_and_worker_only_Native_presentation_IO_fake": true,
+    "populist_new_and_prior_compatibility": 29,
+    "Native_rebuild": false,
+    "complete_new_Gameplay_native_business_verification_claimed": false
+  },
+  "runtime_boundaries": {
+    "publisher_Game_MCP_SDK_OBS_actions": 0,
+    "publisher_live_Driver_SAVE_video_body_reads": 0,
+    "SDK43_frozen_source_changed_by_publisher": false,
+    "public_populist_candidate_deployed_to_current_SDK43": false,
+    "no_contact_free_or_offensive_permission_from_stationary_unknown": true,
+    "Root_manually_reviewed_startup_not_automatic_admission": true,
+    "preview_safe_promo_candidate_not_current_worker_hotfix": true,
+    "counterfactual_query_savings_not_live_measurement": true,
+    "defensive_wars_disappeared_not_victories": true,
+    "historical_2200_gain_not_current_holding": true
+  },
+  "goals": {
+    "G2": "6/8 unchanged",
+    "stable_30_years_complete": false,
+    "one_second_per_day_complete": false,
+    "half_second_per_day_complete": false
+  }
+}

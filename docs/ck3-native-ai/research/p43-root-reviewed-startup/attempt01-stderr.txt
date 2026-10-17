@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "D:\codex-ck3-demos\2026-10-14-robert-30year\continuation42-cold-prep\robert30-clean-campaign01\native25-cold-generation01\root_p43_sdk_queue.py", line 6947, in <module>
+    raise SystemExit(asyncio.run(main(args)))
+                     ~~~~~~~~~~~^^^^^^^^^^^^
+  File "C:\Users\xenoa\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\xenoa\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\xenoa\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "D:\codex-ck3-demos\2026-10-14-robert-30year\continuation42-cold-prep\robert30-clean-campaign01\native25-cold-generation01\root_p43_sdk_queue.py", line 6586, in main
+    queue = FreshQueue(args)
+  File "D:\codex-ck3-demos\2026-10-14-robert-30year\continuation42-cold-prep\robert30-clean-campaign01\native25-cold-generation01\root_p43_sdk_queue.py", line 2742, in __init__
+    self.preflight()
+    ~~~~~~~~~~~~~~^^
+  File "D:\codex-ck3-demos\2026-10-14-robert-30year\continuation42-cold-prep\robert30-clean-campaign01\native25-cold-generation01\root_p43_sdk_queue.py", line 6844, in preflight
+    ColdQueue.preflight(self)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "D:\codex-ck3-demos\2026-10-14-robert-30year\continuation42-cold-prep\robert30-clean-campaign01\native25-cold-generation01\root_p43_sdk_queue.py", line 2912, in preflight
+    raise ValueError("actual dedicated Game+decision before-selection review mismatch")
+ValueError: actual dedicated Game+decision before-selection review mismatch

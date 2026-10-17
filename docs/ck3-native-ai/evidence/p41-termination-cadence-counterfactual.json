@@ -1,0 +1,65 @@
+{
+  "schema": "bounded-p41-war-query-counterfactual/v1",
+  "fixed_response_sequence_range": [
+    1827,
+    2628
+  ],
+  "actual_query_counts": {
+    "33554458": 78,
+    "50331679": 77
+  },
+  "observed_query_date_count": {
+    "33554458": 78,
+    "50331679": 77
+  },
+  "conditional_same_frame_model_queries": {
+    "33554458": 18,
+    "50331679": 18
+  },
+  "conditional_same_frame_model_deferred_count": 119,
+  "actual_rpc_seconds_of_conditionally_deferred_queries": 59.472124,
+  "first_deferred": [
+    [
+      1847,
+      33554458,
+      53222184
+    ],
+    [
+      1849,
+      50331679,
+      53222184
+    ],
+    [
+      1857,
+      33554458,
+      53222352
+    ],
+    [
+      1859,
+      50331679,
+      53222352
+    ],
+    [
+      1867,
+      33554458,
+      53222520
+    ],
+    [
+      1869,
+      50331679,
+      53222520
+    ],
+    [
+      1877,
+      33554458,
+      53222688
+    ],
+    [
+      1879,
+      50331679,
+      53222688
+    ]
+  ],
+  "oversized_response_sequences_not_read": [],
+  "limitation": "The model preserves observed future frames even when it hypothetically skips a query. It is an offline scheduling replay, not a measured runtime speedup or verified future game behavior."
+}

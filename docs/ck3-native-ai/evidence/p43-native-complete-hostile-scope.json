@@ -1,0 +1,22 @@
+{
+  "schema": "xar.p42.native-complete-hostile-scope-evidence.v1",
+  "files": {
+    "native25_source_freeze": {
+      "relative_to_N": "p38-prewar-v2-mailbox-native25-01/final01/SOURCE-FREEZE.json",
+      "sha256": "ce118d1a02aac19133daaf880e0570230dcf2111637c60b97763473cd4239c3e"
+    },
+    "native22_route_source_freeze": {
+      "relative_to_N": "p34-zero-hop-native-repair01/final03/SOURCE-FREEZE.json",
+      "sha256": "c877a07df4790288dfd87a0c4b2d51e35bd5af448354fd98e4686cbc875a4812"
+    },
+    "retained_route_source": {
+      "relative_to_N": "p34-zero-hop-native-repair01/final02/ck3_12002_routes.cpp",
+      "sha256": "8486de95f1f4a320222783f1efd7c2a829d979ed83104bd99505478ef750976a"
+    }
+  },
+  "line_evidence": {
+    "retained_route_source": "591-620 CollectCompleteHostileScope and SameCanonicalIdSet; 705-724 stationary same-current subject; 995-1025 exact hostile set before subject and hostile timeline reads"
+  },
+  "actual_557": "Native returned timeline_unavailable on exact 9-hostile same-frame query; error omitted role/army, so the failing timeline cannot be attributed to the stationary subject or a specific hostile.",
+  "interpretation": "A subset request is rejected as hostile_scope_mismatch and cannot yield a complete contact-free proof. The exact terminal daily sentinel used by life-advance-one-day bounds +24 and pause, but watch_army_ids=() does not prove no in-day battle."
+}

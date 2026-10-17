@@ -158,7 +158,8 @@ def test_auto_turn_business_first_and_source_binding() -> None:
     release.set()
     wait_for(lambda: obj._auto_camera_worker.latest_actual() is not None)
     actual = obj._auto_camera_worker.latest_actual()
-    assert actual["status"] == "completed"
+    assert actual["status"] == "pending"
+    assert actual["available"] is False
     assert actual["receipt"]["native_command_submitted"] is False
     assert actual["receipt"]["hotspot"]["province_id"] == 2640
     assert actual["receipt"]["source_frame"] == observed

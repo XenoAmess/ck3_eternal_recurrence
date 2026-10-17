@@ -1,0 +1,44 @@
+{
+  "schema": "xar.p43.historical-startup-recipe/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "Historical owner metadata patch and Root manual-review producer, not a portable launcher or automatic admission. Current runtime unchanged.",
+  "sources": {
+    "launch_sdk_p43_owner.py": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\launch_sdk_p43_owner.py",
+      "sha256": "9f6b1f7e1c96fd14a544ee12b88275665c5c63cdcf609b1779335c2184bb38c0",
+      "bytes": 5994
+    },
+    "launch_sdk_p43_owner_attempt02.py": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\launch_sdk_p43_owner_attempt02.py",
+      "sha256": "f8708dae9cc0f785a470009d1e312d4eff7b8854232831865a68f74324ebeebd",
+      "bytes": 6321
+    },
+    "ROOT-P43-RECOVERED-MAP-ADMITTED01.json": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-RECOVERED-MAP-ADMITTED01.json",
+      "sha256": "f57d843c5775438658ad947dc8d984f927aa277217662ab693c534ac77c2684b",
+      "bytes": 2618
+    },
+    "ROOT-P43-ATTEMPT02-SOURCE-EPOCH.json": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-ATTEMPT02-SOURCE-EPOCH.json",
+      "sha256": "27770a4c121fd133397bd4662dbcc4831134ff7e02d6b5828eda0de6afcfa5bb",
+      "bytes": 2453
+    },
+    "P43-OWNER-CHILD-ATTEMPT01.stderr.log": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\P43-OWNER-CHILD-ATTEMPT01.stderr.log",
+      "sha256": "251147c23c07cb0d6dc9ce8b8e4c57e784817c46db6b1a83d73aa6050335722e",
+      "bytes": 1866
+    },
+    "p43-hot-sdk-prep01/admit_recovered_map.py": {
+      "relative_to_N": "p43-hot-sdk-prep01/admit_recovered_map.py",
+      "sha256": "4202ddfe9c8ce7585ea5a50afcc94455e002b1614c29b8c1a545df0fc0a537d3",
+      "bytes": 2761
+    },
+    "p43-hot-sdk-prep01/ATTEMPT02-FULL-PREFLIGHT-TESTS.json": {
+      "relative_to_N": "p43-hot-sdk-prep01/ATTEMPT02-FULL-PREFLIGHT-TESTS.json",
+      "sha256": "c885295805797e3a564f29b474a6749954b5ff0d0a3296ecfd268775dcc328c6",
+      "bytes": 752
+    }
+  },
+  "withdrawn_120second_automatic_wrapper_deployed": false,
+  "original_Driver_body_read": false
+}

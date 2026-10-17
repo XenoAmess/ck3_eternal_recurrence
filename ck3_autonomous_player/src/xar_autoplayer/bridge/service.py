@@ -662,6 +662,7 @@ class GameplayBridgeService:
         self._camera_presentation_client = None
         self._camera_presentation_retry_after_raw = None
         self._camera_presentation_requested_sequence = None
+        self._camera_presentation_failure_sequence = None
         self._auto_camera_worker = LatestCameraFollowWorker(
             self._select_auto_camera_hotspot,
             on_complete=self._record_auto_camera_actual,
@@ -760,6 +761,7 @@ class GameplayBridgeService:
     def _select_auto_camera_hotspot(self, payload: object) -> dict[str, object]:
         """Publish latest presentation intent through its independent mailbox."""
         from .war_hotspot_camera import LandedProvinceIndex, select_war_hotspot
+        from .auto_camera_follow import camera_receipt_outcome
 
         camera_timing = start_army_timing("service.auto_turn_camera")
         try:
@@ -790,22 +792,42 @@ class GameplayBridgeService:
                 {"active_wars": payload.get("active_wars")},
                 self._war_hotspot_camera_index,
             )
+            frame = payload.get("source_frame") or {}
+            date = frame.get("date_raw")
+            actual = None
+            client = self._camera_presentation_client
+            if client is not None:
+                observed = client.latest()
+                if isinstance(observed, dict) and (
+                        observed.get("request_sequence") == self._camera_presentation_requested_sequence):
+                    actual = observed
+            if (actual is not None and
+                    camera_receipt_outcome({"native_actual": actual})[0] == "failed" and
+                    actual.get("request_sequence") != self._camera_presentation_failure_sequence):
+                self._camera_presentation_failure_sequence = actual.get("request_sequence")
+                self._peace_realm_camera_policy.retry_after_failure()
+                if type(date) is int:
+                    self._camera_presentation_retry_after_raw = date + 30 * 24
+            retry = self._camera_presentation_retry_after_raw
+            if type(date) is int and type(retry) is int and date < retry:
+                # Do not observe/remember a new followed intent while no request is sent.
+                return {"status": "unavailable", "available": False,
+                        "reason": "camera_retry_cooldown", "retry_after_raw": retry,
+                        "native_actual": actual, "hotspot": hotspot,
+                        "display_mode": self._peace_realm_camera_policy.mode,
+                        "native_command_submitted": False,
+                        "same_frame_with_gameplay_claim": False}
+            if retry is not None:
+                self._camera_presentation_retry_after_raw = None
+                self._peace_realm_camera_policy.retry_after_failure()
             intent = self._peace_realm_camera_policy.observe(payload, hotspot)
             receipt = {"status": intent["reason"], "intent": intent, "hotspot": hotspot,
                        "display_mode": self._peace_realm_camera_policy.mode,
                        "source_frame": payload.get("source_frame"),
+                       "native_actual": actual, "available": False,
                        "native_command_submitted": False,
                        "same_frame_with_gameplay_claim": False}
-            client = self._camera_presentation_client
-            if client is not None:
-                actual = client.latest()
-                receipt["native_actual"] = actual if isinstance(actual, dict) and (
-                    actual.get("request_sequence") == self._camera_presentation_requested_sequence) else None
-            frame = payload.get("source_frame") or {}
-            date = frame.get("date_raw")
-            retry = self._camera_presentation_retry_after_raw
-            if intent["mode"] != "hold" and not (
-                    type(date) is int and type(retry) is int and date < retry):
+            if intent["mode"] != "hold":
                 try:
                     receipt.update(self._publish_camera_presentation_v1(intent, payload))
                     receipt["native_actual"] = None
@@ -814,6 +836,7 @@ class GameplayBridgeService:
                     if type(date) is int:
                         self._camera_presentation_retry_after_raw = date + 30 * 24
                     receipt.update(status="unavailable", reason=f"{type(error).__name__}: {error}")
+            receipt["available"] = camera_receipt_outcome(receipt)[1]
             return receipt
         finally:
             finish_army_timing(camera_timing, step="auto-turn-camera")

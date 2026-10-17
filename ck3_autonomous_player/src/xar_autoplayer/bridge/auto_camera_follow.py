@@ -11,6 +11,28 @@ from collections.abc import Callable
 _LOG = logging.getLogger(__name__)
 
 
+def camera_receipt_outcome(receipt: dict[str, object]) -> tuple[str, bool, object]:
+    """Separate queued presentation from an observed Native camera postcondition."""
+    if receipt.get("status") in {"unavailable", "failed"}:
+        return "failed", False, receipt.get("reason")
+    native = receipt.get("native_actual")
+    if isinstance(native, dict):
+        status = native.get("status")
+        if status == "settled" and native.get("camera_postcondition_verified") is True:
+            return "completed", True, receipt.get("reason")
+        if status in {"idle", "submitted"}:
+            return "pending", False, "native_camera_pending"
+        if status == "cancelled":
+            return "skipped", False, "native_camera_cancelled"
+        return "failed", False, f"native_camera_{status or 'unknown'}"
+    if receipt.get("status") == "queued_native_presentation":
+        return "pending", False, receipt.get("reason")
+    # An observation/hold without an actual Native result is not camera success.
+    if "intent" in receipt or "native_actual" in receipt:
+        return "skipped", False, receipt.get("reason")
+    return "completed", True, receipt.get("reason")
+
+
 class LatestCameraFollowWorker:
     """Run presentation after auto_turn; never grant its receipt gameplay credit."""
 
@@ -32,6 +54,7 @@ class LatestCameraFollowWorker:
         self._pending: dict[str, object] | None = None
         self._last: dict[str, object] | None = None
         self._recent_failures: deque[dict[str, object]] = deque(maxlen=16)
+        self._last_failure_key: tuple | None = None
 
     @staticmethod
     def _reference(actual: dict[str, object] | None) -> dict[str, object] | None:
@@ -50,6 +73,7 @@ class LatestCameraFollowWorker:
         return {
             "request_id": actual["request_id"],
             "status": actual["status"],
+            "available": actual.get("available", False),
             "work_status": actual.get("work_status"),
             "reason": actual.get("reason"),
             "receipt": summary,
@@ -135,17 +159,17 @@ class LatestCameraFollowWorker:
             try:
                 receipt = self._work(request["payload"])
                 if receipt is None:
-                    status, work_status, reason = "skipped", None, None
+                    status, available, work_status, reason = "skipped", False, None, None
                 elif isinstance(receipt, dict):
                     work_status = receipt.get("status")
-                    status = "failed" if work_status == "unavailable" else "completed"
-                    reason = receipt.get("reason")
+                    status, available, reason = camera_receipt_outcome(receipt)
                 else:
                     raise TypeError("camera work returned a non-dict receipt")
                 actual = {
                     "schema": "xar.ck3.auto-camera-actual/v1",
                     "request_id": request["request_id"],
                     "status": status,
+                    "available": available,
                     "work_status": work_status,
                     "reason": reason,
                     "receipt": receipt,
@@ -157,15 +181,23 @@ class LatestCameraFollowWorker:
                     "schema": "xar.ck3.auto-camera-actual/v1",
                     "request_id": request["request_id"],
                     "status": "failed",
+                    "available": False,
                     "reason": f"{type(error).__name__}: {error}",
                     "elapsed_seconds": time.monotonic() - started,
                     "same_frame_with_gameplay_claim": False,
                 }
+            receipt = actual.get("receipt")
+            native = receipt.get("native_actual") if isinstance(receipt, dict) else None
+            failure_key = ((native.get("request_sequence"), native.get("status"))
+                           if isinstance(native, dict) else (actual.get("reason"),))
             with self._condition:
                 self._last = actual
-                if actual["status"] == "failed":
+                new_failure = (actual["status"] == "failed" and
+                               failure_key != self._last_failure_key)
+                if new_failure:
                     self._recent_failures.append(actual)
-            if actual["status"] == "failed":
+                    self._last_failure_key = failure_key
+            if new_failure:
                 _LOG.warning(
                     "ordinary camera failed request_id=%s reason=%s",
                     actual["request_id"], actual.get("reason"),

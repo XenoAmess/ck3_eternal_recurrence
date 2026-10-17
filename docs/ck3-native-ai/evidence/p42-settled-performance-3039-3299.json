@@ -1,0 +1,163 @@
+{
+  "first_turn": 3039,
+  "last_turn": 3299,
+  "first_date_raw": 53256048,
+  "last_date_raw": 53263296,
+  "game_days": 302,
+  "turns": 261,
+  "zero_date_turns": 205,
+  "rpc_count": 540,
+  "timed_rpc_count": 531,
+  "untimed_control_count": 9,
+  "untimed_controls_by_command": {
+    "control:full_loop": 8,
+    "control:full_loop_unconfirmed": 1
+  },
+  "failed_full_loop_control_count": 1,
+  "first_response_sequence": 19,
+  "last_response_sequence": 558,
+  "wall_seconds": 454.52353,
+  "seconds_per_game_day": 1.5050448013245032,
+  "rpc_busy_union_seconds": 341.467681,
+  "unattributed_gap_seconds": 113.05584899999997,
+  "long_gap_threshold_seconds": 3.0,
+  "long_gap_count": 2,
+  "long_gap_seconds": 89.766033,
+  "max_gap_seconds": 74.039779,
+  "rpc_elapsed_by_tool_seconds": {
+    "ck3_auto_turn": 326.9603897999041,
+    "ck3_save_checkpoint": 12.02878289995715,
+    "ck3_take_semantic_snapshot_private_v1": 0.029329500161111355,
+    "root_current_runtime_metrics": 2.450043296907097
+  },
+  "checkpoint_saved_delta_after_first_turn": 3,
+  "checkpoint_save_rpc_count": 3,
+  "limits": [
+    "RPC busy and tool elapsed can overlap; do not sum categories into wall time.",
+    "Gaps are unattributed; a long gap is not automatically human repair.",
+    "Window excludes recording startup and all work outside first/last response timestamps."
+  ],
+  "selected_step_categories": {
+    "army_strength_query": 57,
+    "other_query": 44,
+    "route_contact_advance": 15,
+    "route_contact_query": 16,
+    "stationary_objective_hold_advance": 41,
+    "war_termination_query": 88
+  },
+  "source_queue": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p42-queue\\CUMULATIVE-TURN-003039.json through CUMULATIVE-TURN-003299.json",
+  "source_response_sequences": [
+    19,
+    558
+  ],
+  "control_516": "exact completed failed FULL envelope, untimed; underlying AUTO 559 is outside settled endpoint",
+  "last_settled_rpc_ended_at_utc": "2026-10-17T12:17:21.155089+00:00",
+  "failed_full_516_ended_at_utc": "2026-10-17T12:17:21.635773+00:00",
+  "failed_full_516_after_settled_endpoint": true,
+  "in_endpoint_rpc_count": 539,
+  "in_endpoint_untimed_control_count": 8,
+  "gaps_at_least_3s": [
+    {
+      "after_sequence": 19,
+      "before_sequence": 20,
+      "seconds": 74.039779,
+      "after_end": "2026-10-17T12:09:46.721194+00:00",
+      "before_start": "2026-10-17T12:11:00.760973+00:00"
+    },
+    {
+      "after_sequence": 21,
+      "before_sequence": 23,
+      "seconds": 15.726254,
+      "after_end": "2026-10-17T12:11:01.310546+00:00",
+      "before_start": "2026-10-17T12:11:17.036800+00:00"
+    }
+  ],
+  "auto_elapsed_by_selected_category_seconds": {
+    "army_strength_query": 40.17865299922414,
+    "other_query": 10.951726800529286,
+    "route_contact_advance": 26.919132600305602,
+    "route_contact_query": 4.28878609999083,
+    "stationary_objective_hold_advance": 204.07816639961675,
+    "war_termination_query": 40.54392490023747
+  },
+  "auto_count_by_selected_category": {
+    "army_strength_query": 57,
+    "other_query": 44,
+    "route_contact_advance": 15,
+    "route_contact_query": 16,
+    "stationary_objective_hold_advance": 41,
+    "war_termination_query": 88
+  },
+  "game_days_by_selected_category": {
+    "army_strength_query": 0,
+    "other_query": 0,
+    "route_contact_advance": 15,
+    "route_contact_query": 0,
+    "stationary_objective_hold_advance": 287,
+    "war_termination_query": 0
+  },
+  "top_selected_step_literals": [
+    [
+      "query-army-strengths-v1",
+      57
+    ],
+    [
+      "query-war-results-window-v1",
+      44
+    ],
+    [
+      "query-war-termination-options-33554458",
+      44
+    ],
+    [
+      "query-war-termination-options-50331679",
+      44
+    ],
+    [
+      "advance-route-contact-horizon-v1-428-to-2638-h-8-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395",
+      15
+    ],
+    [
+      "query-route-contact-horizon-v1-428-to-2638-h-8-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395",
+      15
+    ],
+    [
+      "query-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+      1
+    ],
+    [
+      "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256216-speed-5",
+      1
+    ],
+    [
+      "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256384-speed-5",
+      1
+    ],
+    [
+      "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256552-speed-5",
+      1
+    ],
+    [
+      "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256720-speed-5",
+      1
+    ],
+    [
+      "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256888-speed-5",
+      1
+    ]
+  ],
+  "first_stationary_hold_refs": [
+    {
+      "turn": 3043,
+      "auto_sequence": 31,
+      "selected_step": "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256216-speed-5"
+    },
+    {
+      "turn": 3048,
+      "auto_sequence": 41,
+      "selected_step": "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53256384-speed-5"
+    }
+  ],
+  "first_auto_to_last_metrics_wall_seconds": 364.118289,
+  "first_auto_to_last_metrics_seconds_per_day": 1.2056896986754968
+}

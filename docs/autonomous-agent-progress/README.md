@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17：Robert SDK43必要修复与实际让步边界
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。[本批专题](../ck3-native-ai/sdk43-defensive-observation-and-query-cadence-2026-10-17.md)记录SDK43同Game接续后AUTO16真实单日原地防御观察及后续四次进日；未知敌军ETA不当contact-free，不授主动攻击或战果。逐战2次无行动查询后最多30日的policy defer、镜头失败状态／冷却期及同源事件当前ID窄修均保持各自测试／实机边界，49项公共定向测试通过。
+
+本局AUTO193实际授独立后，战争数2→0、held集合5→3，去2196／2200，不能算两场防御胜利；历史首次进攻当时取得2200仍真，当前不能外推仍持有。事件ID窄修未改当前SDK43。Root交付截点窗口10曾推进97日，非实时指针或30年达标；G2仍6/8，稳定30年、<1秒／日、0.5秒／日均未达。录制7c2d→5ebe、首owner失败／第二次Root人工审图准入和独立promo候选分开留证。本公共收口不操作现场。
+
 ### 2026-10-17 11:11 UTC：R4 B准备与采用许可的窄观察
 
 `machine_id: 4-8e1c2f1861`。[R4规划观察](../ck3-native-ai/faith-and-power-episode01-r0004-branch-planning.md)确认一次B选择后rite13→15、faith50/mainrite13不变，个人190参数相等，当前核心adaptive为core、Faith main核心不变。原生Requirements、1000piety报价/affordable及无采用冷却已读，bypass0下CanConfirm=true；截至11:11:33Z未Confirm/未采用。B保存冻结但driver绑定仍unconfirmed、冷载待验；11:28:49Z本场正常GUI/原HANDLE/native/public/keeper0、CAS11323空资源闭场；媒体QA另计。

@@ -15,6 +15,7 @@ from .ordinary_war_declared_overview_v1 import (
     plan_ordinary_war_declared_overview_v1,
 )
 from .ordinary_war_results_window_v1 import plan_ordinary_war_results_window_v1
+from .war_termination_query_cadence_v1 import war_termination_query_policy_defer_v1
 from .defender_refuge_candidates_v1 import (
     direct_vassal_capital_province_ids,
     direct_vassal_refuge_lifecycle_scope,
@@ -9934,6 +9935,31 @@ def _choose_one_life_turn_core(
                             negative_reuse
                         )
                     continue
+                # A scheduling defer is distinct from a fresh or reused
+                # native-negative assessment.  Full military planning below
+                # still runs, while terminal thresholds and new war identities
+                # always force another native query.
+                policy_defer = war_termination_query_policy_defer_v1(
+                    snapshot,
+                    active_wars,
+                    war,
+                    (
+                        {
+                            "step": _effective_command(row),
+                            "ok": row.get("ok"),
+                            "result": _effective_command_result(row),
+                        }
+                        for row in reversed(rows)
+                    ),
+                )
+                if isinstance(policy_defer, dict):
+                    summary = next(
+                        (item for item in war_summary if item.get("war_id") == war_id),
+                        None,
+                    )
+                    if isinstance(summary, dict):
+                        summary["war_termination_query_policy_defer"] = policy_defer
+                    continue
                 query_step = query_war_termination_options_step(war_id)
                 if query_step in available_steps:
                     return {
@@ -13603,6 +13629,20 @@ def _choose_one_life_turn_core(
                     )
                     if retained_edge_watch is not None:
                         return retained_edge_watch
+                    defensive_risk_day = _stationary_timeline_unavailable_defensive_one_day_plan(
+                        rows, snapshot, pursuit_army,
+                        current_province_id=current_province_id,
+                        hostile_army_ids=route_threat_enemy_ids,
+                        stationary_threats=stationary_threats,
+                        route_rejections=route_rejections,
+                        active_assaults=active_assaults,
+                        unsafe_armies=unsafe_armies,
+                        available_steps=available_steps,
+                        available_capabilities=available_capabilities,
+                        war_summary=war_summary,
+                    )
+                    if defensive_risk_day is not None:
+                        return defensive_risk_day
                     return {
                         "policy": "one-life-turn-v1",
                         "phase": "native_war_no_safe_exact_route",
@@ -19928,13 +19968,16 @@ def _stationary_objective_hold_target_date_raw(
     """Bound a hold by both its seven-day lease and reused query leases."""
     target = starting_date_raw + 7 * 24
     for war in war_summary:
-        reuse = war.get("war_termination_negative_reuse")
-        if not isinstance(reuse, dict):
-            continue
-        expires = _native_int(reuse.get("expires_date_raw"))
-        if expires is None:
-            continue
-        target = min(target, expires)
+        for key in (
+            "war_termination_negative_reuse",
+            "war_termination_query_policy_defer",
+        ):
+            lease = war.get(key)
+            if not isinstance(lease, dict):
+                continue
+            expires = _native_int(lease.get("expires_date_raw"))
+            if expires is not None:
+                target = min(target, expires)
     return target if target > starting_date_raw else None
 
 
@@ -21440,6 +21483,114 @@ def _retained_unsafe_edge_one_day_watch_plan(
             "contact_status": "unsafe", "movement_resubmitted": False,
             "offensive_combat_permission": False, "war_or_material_credit": False,
         },
+        "route_rejections": route_rejections,
+        "active_wars": war_summary,
+    }
+
+
+def _stationary_timeline_unavailable_defensive_one_day_plan(
+    commands: list[dict[str, object]], snapshot: dict[str, object],
+    army: dict[str, object], *, current_province_id: int,
+    hostile_army_ids: tuple[int, ...], stationary_threats: list[dict[str, object]],
+    route_rejections: list[dict[str, object]], active_assaults: list[dict[str, object]],
+    unsafe_armies: list[dict[str, object]], available_steps: set[str],
+    available_capabilities: set[str], war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe one native-stopped defensive day; contact and outcome stay unknown."""
+    if not isinstance(snapshot, dict) or not isinstance(army, dict):
+        return None
+    player = snapshot.get("played_character")
+    hint = snapshot.get("top_exclusive_modal_choice_hint")
+    armies = snapshot.get("player_armies")
+    wars = snapshot.get("active_wars")
+    required_caps = {
+        "game.command.research-arm-tactical-daily-sentinel-v1-N",
+        "game.command.research-query-tactical-daily-sentinel-v1",
+        "game.command.research-cancel-tactical-daily-sentinel-v1-generation-N",
+    }
+    if not (
+        snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and snapshot.get("one_life_terminal") is not True
+        and snapshot.get("episode_identity_pending") is not True
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and isinstance(armies, list) and len(armies) == 1 and armies[0] is army
+        and isinstance(wars, list) and bool(wars)
+        and army.get("controllable") is True
+        and army.get("owner_character_id") == player.get("character_id")
+        and _public_cunit_int(army.get("army_id")) is not None
+        and type(current_province_id) is int and current_province_id > 0
+        and army.get("current_province_id") == current_province_id
+        and army.get("army_state") == "regular" and army.get("army_state_code") == 1
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("move_target_province_id") is None
+        and army.get("route_province_ids") == []
+        and not active_assaults and not unsafe_armies
+        and isinstance(stationary_threats, list) and bool(stationary_threats)
+        and required_caps <= available_capabilities
+        and {"life-advance-one-day", "set-speed-1", "resume-map", "pause-map"} <= available_steps
+        and isinstance(hostile_army_ids, tuple) and 0 < len(hostile_army_ids) <= MAX_ROUTE_CONTACT_HOSTILE_IDS
+        and isinstance(route_rejections, list) and bool(route_rejections)
+    ):
+        return None
+    observed_ids: set[int] = set()
+    for war in wars:
+        if not isinstance(war, dict) or not isinstance(war.get("enemy_armies"), list):
+            return None
+        for enemy in war["enemy_armies"]:
+            if not isinstance(enemy, dict):
+                return None
+            if enemy.get("retreating") is True:
+                continue
+            enemy_id = _public_cunit_int(enemy.get("army_id"))
+            if enemy_id is None:
+                return None
+            observed_ids.add(enemy_id)
+    if tuple(sorted(observed_ids)) != hostile_army_ids:
+        return None
+    if not any(isinstance(threat, dict)
+               and threat.get("province_id") == current_province_id
+               and _public_cunit_int(threat.get("enemy_army_id")) in observed_ids
+               for threat in stationary_threats):
+        return None
+    query_step = query_route_contact_horizon_step(army["army_id"], current_province_id, hostile_army_ids)
+    attempt = _current_frame_route_contact_query_failure(commands, snapshot, query_step)
+    if not (isinstance(attempt, dict) and attempt.get("scope_status") == "current_frame"
+            and attempt.get("status") == "unavailable" and attempt.get("ok") is False):
+        return None
+    matching = [row for row in reversed(_history_after_latest_restore(commands))
+                if _effective_command(row) == query_step]
+    result = _effective_command_result(matching[0]) if matching else None
+    evidence = result.get("readonly_unavailable_evidence") if isinstance(result, dict) else None
+    raw = evidence.get("native_command_result") if isinstance(evidence, dict) else None
+    if not (isinstance(raw, dict) and raw.get("ok") is False
+            and raw.get("error") == "CK3 route arrival timeline is unavailable"):
+        return None
+    if not any(isinstance(rejection, dict)
+               and rejection.get("target_province_id") == current_province_id
+               and rejection.get("status") == "contact_timeline_unavailable"
+               and rejection.get("contact_query_attempt") == attempt
+               for rejection in route_rejections):
+        return None
+    return {
+        "policy": "one-life-turn-v1",
+        "phase": "native_war_stationary_timeline_unavailable_defensive_one_day_observation",
+        "selected_step": "life-advance-one-day",
+        "reason": "all exact exits were rejected and the complete hostile arrival timeline is unavailable; defend the current province for one native-stopped day, accepting possible in-day contact or defeat, then re-read the war",
+        "defensive_risk_watch": {
+            "army_id": army["army_id"], "current_province_id": current_province_id,
+            "hostile_army_ids": list(hostile_army_ids), "stationary_threats": list(stationary_threats),
+            "query_step": query_step, "native_request_id": evidence.get("native_request_id"),
+            "native_error": raw["error"], "source_date_raw": snapshot.get("date_raw"),
+            "source_native_revision": snapshot.get("native_revision"),
+            "contact_free_proven": False, "contact_status": "unknown",
+            "in_day_contact_or_defeat_possible": True, "movement_resubmitted": False,
+            "offensive_combat_permission": False, "war_or_material_credit": False,
+            "maximum_observation_days": 1, "native_terminal_daily_sentinel_required": True,
+        },
+        "contact_query_attempt": attempt,
         "route_rejections": route_rejections,
         "active_wars": war_summary,
     }

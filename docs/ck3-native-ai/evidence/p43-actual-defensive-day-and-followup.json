@@ -1,0 +1,475 @@
+{
+  "schema": "xar.p43.actual-day-clock-projection/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "boundary": "Selected immutable response fields, not full Native DTO or new execution; date observations confer no contact-free or material credit.",
+  "auto_rows": [
+    {
+      "source": {
+        "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0016-1-result.json",
+        "sha256": "d1b86f1372146c4633d706ce0fa67fb3b9ed22e47e0521f8028e63eb5007325a",
+        "bytes": 274782
+      },
+      "started_at_utc": "2026-10-17T12:47:01.883151+00:00",
+      "ended_at_utc": "2026-10-17T12:47:03.701076+00:00",
+      "status": "executed",
+      "selected_step": "life-advance-one-day",
+      "phase": "native_war_stationary_timeline_unavailable_defensive_one_day_observation",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:4103",
+        "revision": 2,
+        "native_revision": 4103,
+        "date_raw": 53263296,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 5,
+        "bridge_pid": 51028
+      },
+      "result": {
+        "starting_date_raw": 53263296,
+        "ending_date_raw": 53263320,
+        "elapsed_days": 1,
+        "timeline_speed": 5,
+        "paused": true,
+        "final_screen": "map_hud",
+        "exact_day_native_clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 538,
+            "starting_date_raw": 53263296,
+            "target_date_raw": 53263320,
+            "last_observed_date_raw": 53263296,
+            "trigger_date_raw": 0,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 538,
+            "starting_date_raw": 53263296,
+            "target_date_raw": 53263320,
+            "last_observed_date_raw": 53263320,
+            "trigger_date_raw": 53263320,
+            "speed": 5,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          }
+        }
+      },
+      "defensive_risk_watch": {
+        "army_id": 428,
+        "current_province_id": 2638,
+        "hostile_army_ids": [
+          16777681,
+          50331655,
+          167772440,
+          201326900,
+          268435817,
+          285212881,
+          285212935,
+          318767395,
+          486539420
+        ],
+        "stationary_threats": [
+          {
+            "kind": "enemy_targeting_stationary_province",
+            "enemy_army_id": 167772440,
+            "province_id": 2638
+          }
+        ],
+        "query_step": "query-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+        "native_request_id": "step-7-f804ba84287d",
+        "native_error": "CK3 route arrival timeline is unavailable",
+        "source_date_raw": 53263296,
+        "source_native_revision": 4103,
+        "contact_free_proven": false,
+        "contact_status": "unknown",
+        "in_day_contact_or_defeat_possible": true,
+        "movement_resubmitted": false,
+        "offensive_combat_permission": false,
+        "war_or_material_credit": false,
+        "maximum_observation_days": 1,
+        "native_terminal_daily_sentinel_required": true
+      }
+    },
+    {
+      "source": {
+        "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0022-1-result.json",
+        "sha256": "d8035d02ab30c19ee5cd862babcab1aa367b631039113b78afc93c565c992870",
+        "bytes": 252180
+      },
+      "started_at_utc": "2026-10-17T12:47:05.402682+00:00",
+      "ended_at_utc": "2026-10-17T12:47:07.332044+00:00",
+      "status": "executed",
+      "selected_step": "advance-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+      "phase": "native_war_stationary_contact_horizon_progress",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:4107",
+        "revision": 6,
+        "native_revision": 4107,
+        "date_raw": 53263320,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 5,
+        "bridge_pid": 51028
+      },
+      "result": {
+        "starting_date_raw": 53263320,
+        "ending_date_raw": 53263344,
+        "elapsed_days": 1,
+        "timeline_speed": 3,
+        "paused": true,
+        "final_screen": "map_hud",
+        "exact_day_native_clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 539,
+            "starting_date_raw": 53263320,
+            "target_date_raw": 53263344,
+            "last_observed_date_raw": 53263320,
+            "trigger_date_raw": 0,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 539,
+            "starting_date_raw": 53263320,
+            "target_date_raw": 53263344,
+            "last_observed_date_raw": 53263344,
+            "trigger_date_raw": 53263344,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          }
+        }
+      }
+    },
+    {
+      "source": {
+        "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0028-1-result.json",
+        "sha256": "52d0b6c1f2b1a0ca5076108a42bfad5fc469e5e1127387f664a78e6ef62ec13d",
+        "bytes": 252351
+      },
+      "started_at_utc": "2026-10-17T12:47:09.146399+00:00",
+      "ended_at_utc": "2026-10-17T12:47:10.758918+00:00",
+      "status": "executed",
+      "selected_step": "advance-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+      "phase": "native_war_stationary_contact_horizon_progress",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:4111",
+        "revision": 10,
+        "native_revision": 4111,
+        "date_raw": 53263344,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 5,
+        "bridge_pid": 51028
+      },
+      "result": {
+        "starting_date_raw": 53263344,
+        "ending_date_raw": 53263368,
+        "elapsed_days": 1,
+        "timeline_speed": 3,
+        "paused": true,
+        "final_screen": "map_hud",
+        "exact_day_native_clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 540,
+            "starting_date_raw": 53263344,
+            "target_date_raw": 53263368,
+            "last_observed_date_raw": 53263344,
+            "trigger_date_raw": 0,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 540,
+            "starting_date_raw": 53263344,
+            "target_date_raw": 53263368,
+            "last_observed_date_raw": 53263368,
+            "trigger_date_raw": 53263368,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          }
+        }
+      }
+    },
+    {
+      "source": {
+        "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0034-1-result.json",
+        "sha256": "f78a6141282d34fec3b691a24c241678562582b7c2f2ab62c8a5c725de50d3cf",
+        "bytes": 252731
+      },
+      "started_at_utc": "2026-10-17T12:47:12.210519+00:00",
+      "ended_at_utc": "2026-10-17T12:47:13.705351+00:00",
+      "status": "executed",
+      "selected_step": "advance-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+      "phase": "native_war_stationary_contact_horizon_progress",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:4114",
+        "revision": 13,
+        "native_revision": 4114,
+        "date_raw": 53263368,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 5,
+        "bridge_pid": 51028
+      },
+      "result": {
+        "starting_date_raw": 53263368,
+        "ending_date_raw": 53263392,
+        "elapsed_days": 1,
+        "timeline_speed": 3,
+        "paused": true,
+        "final_screen": "map_hud",
+        "exact_day_native_clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 541,
+            "starting_date_raw": 53263368,
+            "target_date_raw": 53263392,
+            "last_observed_date_raw": 53263368,
+            "trigger_date_raw": 0,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 541,
+            "starting_date_raw": 53263368,
+            "target_date_raw": 53263392,
+            "last_observed_date_raw": 53263392,
+            "trigger_date_raw": 53263392,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          }
+        }
+      }
+    },
+    {
+      "source": {
+        "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0040-1-result.json",
+        "sha256": "f68476d65db191da490a7e9c936908aa6d07fdaee404f909768dbb00968a4db5",
+        "bytes": 252701
+      },
+      "started_at_utc": "2026-10-17T12:47:15.168078+00:00",
+      "ended_at_utc": "2026-10-17T12:47:16.656322+00:00",
+      "status": "executed",
+      "selected_step": "advance-route-contact-horizon-v1-428-to-2638-h-9-16777681-50331655-167772440-201326900-268435817-285212881-285212935-318767395-486539420",
+      "phase": "native_war_stationary_contact_horizon_progress",
+      "planning_source_frame": {
+        "schema": "xar.ck3.planning-source-frame/v1",
+        "status": "complete",
+        "snapshot_id": "native:4117",
+        "revision": 16,
+        "native_revision": 4117,
+        "date_raw": 53263392,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 5,
+        "bridge_pid": 51028
+      },
+      "result": {
+        "starting_date_raw": 53263392,
+        "ending_date_raw": 53263416,
+        "elapsed_days": 1,
+        "timeline_speed": 3,
+        "paused": true,
+        "final_screen": "map_hud",
+        "exact_day_native_clock": {
+          "armed": {
+            "state": "armed",
+            "generation": 542,
+            "starting_date_raw": 53263392,
+            "target_date_raw": 53263416,
+            "last_observed_date_raw": 53263392,
+            "trigger_date_raw": 0,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 0,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 0,
+            "trigger_reasons": [],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": -1,
+            "pause_wrapper_called": false,
+            "pause_observed": false,
+            "terminal_observed": false,
+            "abnormal": false
+          },
+          "stopped": {
+            "state": "triggered",
+            "generation": 542,
+            "starting_date_raw": 53263392,
+            "target_date_raw": 53263416,
+            "last_observed_date_raw": 53263416,
+            "trigger_date_raw": 53263416,
+            "speed": 3,
+            "mode": "terminal_or_sentinel",
+            "army_count": 0,
+            "combat_count": 0,
+            "completed_daily_ticks": 1,
+            "intermediate_pause_count": 0,
+            "trigger_flags": 1,
+            "trigger_reasons": [
+              "date_deadline"
+            ],
+            "signed_date_delta_from_target_raw": 0,
+            "overshoot_days": 0,
+            "pause_wrapper_called": true,
+            "pause_observed": true,
+            "terminal_observed": false,
+            "abnormal": false
+          }
+        }
+      }
+    }
+  ],
+  "paired_met17": {
+    "source": {
+      "relative_to_N": "robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0017-1-result.json",
+      "sha256": "b6a7466c9a688b9282bc5c3e9e3d3d36d9242d0d335e72b7fb4185f4edcd6d3e",
+      "bytes": 1653
+    },
+    "body": {
+      "snapshot_id": "native:4107",
+      "revision": 6,
+      "native_revision": 4107,
+      "date_raw": 53263320,
+      "paused": true,
+      "map_ready": true,
+      "actor_character_id": 31254,
+      "actor_alive": true,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "connection_generation": 5,
+      "war_count": 2,
+      "driver_state_bytes": 47758401,
+      "army_strengths_profile": null,
+      "army_strengths_query_sequence": null,
+      "army_strength_result_write_v1": {
+        "query_sequence": 453,
+        "payload_bytes": 23125740,
+        "limit_bytes": 67108864,
+        "stage": "complete",
+        "success": true,
+        "windows_error": null
+      }
+    }
+  },
+  "runtime_calls": 0,
+  "Driver_SAVE_media_body_reads": 0
+}

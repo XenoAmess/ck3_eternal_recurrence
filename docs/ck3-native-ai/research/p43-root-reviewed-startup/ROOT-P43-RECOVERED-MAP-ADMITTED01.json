@@ -1,0 +1,46 @@
+{
+  "schema": "xar.clean-campaign.saved-map-recording-admission/v1",
+  "status": "GREEN",
+  "stage": "saved_campaign_map",
+  "reviewer": "/root",
+  "at_utc": "2026-10-17T12:44:19.486933+00:00",
+  "game_pid": 51028,
+  "game_creation_filetime": 134367033244212072,
+  "game_creation_date": "20261017093524.421207+000",
+  "recording_session_id": "5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+  "recording_job_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0",
+  "Game_map_visible": true,
+  "decision_overlay_visible": true,
+  "saved_campaign_continuation": true,
+  "new_1066_bookmark_started": false,
+  "source_automatic_admission": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\automatic-recording-recovery-p42\\5fd50badb7d5847ff42494faea649709\\automatic-admission-b3ef29d67c90f98b4ec7.json",
+    "sha256": "b1feb5b5d5da813585bdb554f79b9853399942104b02946280ce0cafc0121c4f",
+    "bytes": 2281
+  },
+  "game_frame": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\continuity-5fd50badb7d5847ff42494faea649709-76fa12f37ec8d2a85548732ca8d4bed079572e7ca43a66de5a99dcfb8dc658e3-game.png",
+    "bytes": 1652115,
+    "sha256": "76fa12f37ec8d2a85548732ca8d4bed079572e7ca43a66de5a99dcfb8dc658e3",
+    "width": 1280,
+    "height": 720,
+    "mean_rgb": 92.14,
+    "color_span": 247
+  },
+  "scene_frame": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\continuity-5fd50badb7d5847ff42494faea649709-dab49e3a260eaea820993834a15d1dec05c59029224bfecbf5f25a888152ca20-scene.png",
+    "bytes": 1514714,
+    "sha256": "dab49e3a260eaea820993834a15d1dec05c59029224bfecbf5f25a888152ca20",
+    "width": 1280,
+    "height": 720,
+    "mean_rgb": 80.55,
+    "color_span": 243
+  },
+  "recording_started": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\started.json",
+    "sha256": "360246b5bf3a9095d18d150f2ffd9709b54c6e63c9011e79ee63621913a1091f",
+    "bytes": 1268
+  },
+  "actual_Root_pixel_review": true,
+  "gameplay_or_date_credit": 0
+}

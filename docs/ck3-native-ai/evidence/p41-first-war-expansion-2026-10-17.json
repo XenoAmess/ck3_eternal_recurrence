@@ -1,0 +1,353 @@
+{
+  "schema": "g2.p41-first-offensive-war-material-result/v1",
+  "at_utc": "2026-10-17T10:54:15.861892+00:00",
+  "status": "ACTUAL_VICTORY_ENFORCED_AND_TARGET_ADDED_TO_PLAYER_HELD_ESTATE",
+  "actor_character_id": 31254,
+  "war_id": 33554541,
+  "target_title_id": 2200,
+  "prewar": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0509-1-result.json",
+      "bytes": 29612,
+      "sha256": "42f22dfafe7d969fad1e6bad203d83059e9c3d980695a32a042315ffe9eabc8f"
+    },
+    "observed_at_utc": "2026-10-17T10:38:04.484312+00:00",
+    "outer_frame": {
+      "snapshot_id": "native:394",
+      "revision": 377,
+      "native_revision": 394,
+      "date_raw": 53204952
+    },
+    "succession_expectation": {
+      "schema": "xar.ck3.succession-expectation/v1",
+      "status": "available",
+      "binding": {
+        "snapshot_id": "native:1",
+        "revision": 2,
+        "native_revision": 1,
+        "date_raw": 53201640,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "episode_character_id": 31254
+      },
+      "expectation_state": "successor_expected",
+      "predecessor_character_id": 31254,
+      "expected_successor_character_id": 40695,
+      "title_expectations": [
+        {
+          "title": {
+            "title_id": 2196,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "first_heir_character_id": 40695,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 2231,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2262,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        }
+      ],
+      "risk_state": "single_successor",
+      "unavailable_reason": null
+    }
+  },
+  "enforce_demands": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0810-1-result.json",
+      "bytes": 85963,
+      "sha256": "61ceebd544240e86ac68650929bb8a9acd4229e968c68b52f9d8863fa6b545d9"
+    },
+    "observed_at_utc": "2026-10-17T10:40:14.291064+00:00",
+    "selected_step": "enforce-demands-33554541",
+    "war_action": {
+      "status": "victory_enforced",
+      "war_id": 33554541
+    },
+    "war_victory": {
+      "status": "victory_enforced",
+      "war_id": 33554541
+    },
+    "original_exit_observation": {
+      "schema": "xar.ck3.ordinary-war-exit-observation.v1",
+      "status": "war_absent",
+      "war_id": 33554541,
+      "requested_outcome": "player_victory",
+      "requested_native_outcome": "attacker_victory",
+      "command_acknowledged": true,
+      "war_absence_observed": true,
+      "observed_result_identity": null,
+      "result_identity_reason": "no_independent_result_observer",
+      "before_frame": {
+        "snapshot_id": "native:585",
+        "revision": 568,
+        "native_revision": 585,
+        "date_raw": 53206464,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "actor_character_id": 31254,
+        "bridge_pid": 51028,
+        "connection_generation": 3
+      },
+      "post_frame": {
+        "snapshot_id": "native:586",
+        "revision": 569,
+        "native_revision": 586,
+        "date_raw": 53206464,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "actor_character_id": 31254,
+        "bridge_pid": 51028,
+        "connection_generation": 3
+      },
+      "resources": {
+        "gold": {
+          "status": "observed",
+          "before": {
+            "raw": 30895229,
+            "scale": 100000
+          },
+          "after": {
+            "raw": 30895229,
+            "scale": 100000
+          },
+          "delta_raw": 0,
+          "same_date": true,
+          "action_attribution": "unproven"
+        },
+        "prestige": {
+          "status": "observed",
+          "before": {
+            "raw": 92292199,
+            "scale": 100000
+          },
+          "after": {
+            "raw": 92292199,
+            "scale": 100000
+          },
+          "delta_raw": 0,
+          "same_date": true,
+          "action_attribution": "unproven"
+        },
+        "piety": {
+          "status": "observed",
+          "before": {
+            "raw": 35360000,
+            "scale": 100000
+          },
+          "after": {
+            "raw": 35360000,
+            "scale": 100000
+          },
+          "delta_raw": 0,
+          "same_date": true,
+          "action_attribution": "unproven"
+        }
+      },
+      "claims": {
+        "status": "not_observed",
+        "rows": null
+      },
+      "titles": {
+        "status": "not_observed",
+        "rows": []
+      },
+      "truce": {
+        "status": "not_observed",
+        "expiry_date_raw": null
+      },
+      "issues": [],
+      "player_side": "attacker",
+      "opponent_character_id": 65599,
+      "target_title_ids": [
+        2200
+      ],
+      "target_title_count": 1,
+      "target_titles_omitted": 0
+    }
+  },
+  "postwar": {
+    "receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0869-1-result.json",
+      "bytes": 28243,
+      "sha256": "0ee2d4c73ebe17b6e3a0a0e05430c85e58bedb4ba4e0e37a3d4e7197fd01626d"
+    },
+    "observed_at_utc": "2026-10-17T10:40:43.128495+00:00",
+    "outer_frame": {
+      "snapshot_id": "native:623",
+      "revision": 606,
+      "native_revision": 623,
+      "date_raw": 53207112
+    },
+    "succession_expectation": {
+      "schema": "xar.ck3.succession-expectation/v1",
+      "status": "available",
+      "binding": {
+        "snapshot_id": "native:586",
+        "revision": 569,
+        "native_revision": 586,
+        "date_raw": 53206464,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "episode_character_id": 31254
+      },
+      "expectation_state": "successor_expected",
+      "predecessor_character_id": 31254,
+      "expected_successor_character_id": 40695,
+      "title_expectations": [
+        {
+          "title": {
+            "title_id": 2196,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2200,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "first_heir_character_id": 40695,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 2231,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2262,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        }
+      ],
+      "risk_state": "single_successor",
+      "unavailable_reason": null
+    },
+    "later_corroborating_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0932-1-result.json",
+      "bytes": 32913,
+      "sha256": "93c06965509cb9ab512e160dc8263612ba039ce35abffd1da6094147931e116a"
+    }
+  },
+  "observed_estate_delta": {
+    "added_title_ids": [
+      2200
+    ],
+    "removed_title_ids": [],
+    "held_county_or_above_before": 4,
+    "held_county_or_above_after": 5,
+    "holder_character_id_derived_from_native_held_title_contract": 31254,
+    "holder_scalar_in_response": false
+  },
+  "source_chain": {
+    "realm_source": {
+      "path": "D:\\codex-ck3-background-spill\\ck3-sdk91\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_nonwar_realm.cpp",
+      "bytes": 43639,
+      "sha256": "c876dfbc3aee6cb69bf46f061a17841a860983197178dd2bae239240c4f7ddd6"
+    },
+    "compiler_verified": {
+      "path": "D:\\codex-ck3-background-spill\\g2-native89-production01\\jobs\\c0413\\stage.verified.json",
+      "bytes": 69626,
+      "sha256": "f3aba1cdf19c1ded0008749c20d44503fe67f13f2aae41b4a2964946d924482f"
+    },
+    "compiler_object_sha256": "b42a107565336ba906a1e8418c54ea0a7bb16ecea9ea74fbdf282c050077a342",
+    "archive_recipe": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\cb-candidates-native18-01\\archive.rsp",
+      "bytes": 53155,
+      "sha256": "7aef1bc98bb5edbcfa184339c3cbe9a3b67bef803d6b0bbff6c7377396c33faa"
+    },
+    "Native25_link_recipe": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-prewar-v2-mailbox-native25-01\\build\\native25.rsp",
+      "bytes": 33256,
+      "sha256": "73d19afdc127d7f9172b3904480232932654a8a9146f3f8da60933bc89813101"
+    },
+    "actual_game_launch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "bytes": 6231,
+      "sha256": "c20e4bd8ef7804f2e76614a53b20f88f05a938c050ea971cf756ea9a2e3aa69a"
+    },
+    "turn_bundle_contract": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p40-candidate\\src\\xar_autoplayer\\bridge\\turn_bundle_contract.py",
+      "bytes": 24180,
+      "sha256": "972d15086dd61e3c8440ff018930f078f0638bcf9da076adc44065de297ab8c4"
+    },
+    "succession_transition_contract": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p40-candidate\\src\\xar_autoplayer\\bridge\\succession_transition_contract.py",
+      "bytes": 29702,
+      "sha256": "e99ab19e0a8e35a4587ae5228d02712476ac7cd2b8c237a899f666c0744e037a"
+    },
+    "driver_retention": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p40-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1571217,
+      "sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c"
+    }
+  },
+  "source_lines": {
+    "native_holder_read_and_equality_guard": [
+      351,
+      353
+    ],
+    "turn_bundle_partition_copy": [
+      475,
+      540
+    ],
+    "expectation_episode_and_rows": [
+      439,
+      450
+    ],
+    "unchanged_estate_reuse_and_changed_estate_refresh": [
+      4715,
+      4747
+    ]
+  },
+  "interpretation": "title_expectations enumerate titles the current player holds, with a future first-heir attached to each; this is not a prediction that a currently foreign title will be acquired",
+  "limits": [
+    "Original AUTO810 direct title observer still reports not_observed; never rewrite that receipt",
+    "No standalone holder_character_id scalar was emitted; ownership is the guarded current held-estate contract",
+    "Remaining defender wars are corroboration only, not ownership proof",
+    "Claims, truce and monetary attribution remain unobserved/unproven",
+    "No natural succession, 30-year stability or M6/M7 completion is credited"
+  ],
+  "Game_MCP_OBS_calls": 0,
+  "Driver_SAVE_video_reads": 0
+}

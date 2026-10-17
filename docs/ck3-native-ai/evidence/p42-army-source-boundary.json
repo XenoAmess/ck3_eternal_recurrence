@@ -1,0 +1,21 @@
+{
+  "status": "frozen_source_read_only_explanation_not_payload_size_attribution",
+  "observed_small_metrics": {
+    "response": "robert30-clean-campaign01/native25-cold-generation01/p42-responses/0561-1-result.json",
+    "query_sequence": 452,
+    "profile": "ordinary_core_v1",
+    "payload_bytes": 23125744,
+    "limit_bytes": 67108864
+  },
+  "native25_lineage": "SOURCE-FREEZE.json reports Native25 changed only the mailbox object from Native24; Army query implementation is retained.",
+  "frozen_producer_source": "D:/codex-ck3-demos/2026-10-14-robert-30year/cb-candidates-native18-02/patched",
+  "source_chain": [
+    "src/ck3_12002_army.cpp:1590-1608 builds full scope from player armies plus every active-war allied and enemy army; two owned armies do not prove two query rows.",
+    "src/bridge.cpp:26602-26619 selects private scalar only for its explicit profile; ordinary_core_v1 follows the full ReadArmyStrengths branch.",
+    "src/ck3_12002_adapter.cpp:387-440 reads a full snapshot/baseline, then attaches committed route timelines, owner recall per row, MAA recruitment and owned regiment inputs.",
+    "src/bridge.cpp:9471-9515 skips observed phase history when not requested but serializes all full rich army rows for ordinary_core_v1.",
+    "include/xar_bridge/army_strength_v1_serializer.hpp:891-944 adds actual loss-writer, battle-casualty and supply callback observations to available rows; row serializer continues with many other rich fields.",
+    "army_strengths_manager_shared_wire_v1.hpp:41-64 and 164-180 share only manager fields equal across all rows; they do not make the rest of each rich row scalar."
+  ],
+  "scope_limits": "No 23 MB result body was opened, so the largest actual member or number of global war army rows is unmeasured. Current private scalar is an explicit AB profile; changing Native producer/serializer requires a future cold Native build unless the already available private profile passes same-frame full/private comparison."
+}

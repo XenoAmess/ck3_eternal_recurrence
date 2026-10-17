@@ -1,0 +1,11 @@
+# P42 负数交互实例：未知到持久已知的实际闭环
+
+AUTO10的实例-1392508926、发送者32887，原版定义是pam_ai_evangelize_personal_tenet_interaction，位于当前Steam游戏common/character_interactions/pam_interactions.txt，宗教类个人教义宣讲请求。pam前缀在这里属于已安装原版内容，不能据名称认定mod。当前原生上下文给出reject/accept均合法；自动流程通过MCP选择左侧reject，原生回执确认rejected且原pending消失。未以ACK替代推进结果，也未声称宗教物料变化。
+
+采集incident2591d1c2efac4c31aa26e0426395a2d4已保留负数ID、来源、完整可选项和前后SHA。P42批次0022包含该记录。原P39 character-interaction worker273936使用p*-offline-batches通配，已在12:12:02.081924 UTC写出1条已分析/0未知的SOURCE-REVIEW，并把fingerprintf73d2c78…的源码facts和known条目发布到同R39/state。批次12:11:59.772072闭场后约2.31秒完成；此前等待的是完整轮次结束，采集与实际选择已在12:09:40独立完成。
+
+用当前SDK42生产loader对该次真实捕获context和GUI执行只读核验，返回offline-source-reviewed/known，源文件、facts、GUI、build、key及hash严格匹配。现有hook会把下一次同源合法交互标为reviewed_left_reply、registry_known=true、offline_followup_required=false；新实例仍用其实际原生身份和合法选项，不复用旧负数ID。此次未伪造第二次实机遭遇。离线known表示源码和用户左侧策略已覆盖，不表示最优决策或实际教义效果已独立验证。
+
+本次无漏采、漏批次或worker消费故障，无需补丁或重启三个worker。旧P41学到的是守贞请求及联盟交互，和本次AI个人教义key不同，并非已知条目因负数ID被遗失。没有游戏/MCP/OBS调用、活Driver、原始存档或媒体读取，也未更改任何运行端。G2保持6/8。
+
+[本仓库小型审计投影](evidence/p42-signed-interaction-learning-audit-2026-10-17.json)保留原件身份及学习／发布／生产loader边界。

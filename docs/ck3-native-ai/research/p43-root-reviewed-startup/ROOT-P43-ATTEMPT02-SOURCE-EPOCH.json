@@ -1,0 +1,43 @@
+{
+  "status": "P43_CREATE_ONLY_SECOND_OWNER_ACTUAL_ROOT_REVIEW",
+  "at_utc": "2026-10-17T12:44:40.521166+00:00",
+  "source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-FINAL-SDK-FREEZE-P43.json",
+    "sha256": "acde94155ef45d3183a7efa49eb971c65bfe5bb4b5e37e188fd0a6b4b7a1519a",
+    "bytes": 284802
+  },
+  "old_owner_inputs": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-OWNER-INPUT-PINS.json",
+    "sha256": "80b4a4fd1347aaab19676f6a2bdc6d238abb0eae8cf8a42362ebf07c031e084c",
+    "bytes": 7791
+  },
+  "old_owner": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\launch_sdk_p43_owner.py",
+    "sha256": "9f6b1f7e1c96fd14a544ee12b88275665c5c63cdcf609b1779335c2184bb38c0",
+    "bytes": 5994
+  },
+  "first_attempt_started": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-OWNER-STARTED.json",
+    "sha256": "012f099887ddb6e7a524a6453aeebcfb5ccde08094473195992f43358773917b",
+    "bytes": 1284
+  },
+  "first_attempt_stderr": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\P43-OWNER-CHILD-ATTEMPT01.stderr.log",
+    "sha256": "251147c23c07cb0d6dc9ce8b8e4c57e784817c46db6b1a83d73aa6050335722e",
+    "bytes": 1866
+  },
+  "second_owner": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\launch_sdk_p43_owner_attempt02.py",
+    "sha256": "f8708dae9cc0f785a470009d1e312d4eff7b8854232831865a68f74324ebeebd",
+    "bytes": 6321
+  },
+  "actual_Root_review": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P43-RECOVERED-MAP-ADMITTED01.json",
+    "sha256": "f57d843c5775438658ad947dc8d984f927aa277217662ab693c534ac77c2684b",
+    "bytes": 2618
+  },
+  "queue_and_all_business_sources_unchanged": true,
+  "previous_import_fix_preserved": true,
+  "original_automatic_admission_preserved": true,
+  "SDK_or_Game_calls": 0
+}

@@ -1,0 +1,45 @@
+"""Root records actual review of the retained5ebe Game/overlay PNG pair."""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+from pathlib import Path
+
+P=Path(__file__).resolve().parent
+R=P.parent/'robert30-clean-campaign01/native25-cold-generation01'
+
+def pin(p):
+    b=Path(p).read_bytes();return {'path':str(Path(p).resolve()),'sha256':hashlib.sha256(b).hexdigest(),'bytes':len(b)}
+
+def main():
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--reviewed-map',action='store_true',required=True)
+    parser.add_argument('--reviewed-overlay',action='store_true',required=True)
+    parser.parse_args()
+    recording=json.loads((R/'ROOT-P43-RECORDING-BOOTSTRAP.json').read_bytes())
+    source=Path(recording['first_frame_admission']['path'])
+    if pin(source)['sha256']!=recording['first_frame_admission']['sha256']:raise ValueError('original automatic admission changed')
+    a=json.loads(source.read_bytes());jobroot=Path(a['recording_job_root'])
+    job=json.loads((jobroot/'job.json').read_bytes());started=json.loads((jobroot/'started.json').read_bytes())
+    launch=json.loads((R/'ROOT-ACTUAL-GAME-LAUNCH.json').read_bytes())
+    if (job['session_id']!='5ebe8c91-d388-4a66-91c4-60d9692c33e0' or job['pid']!=launch['pid']
+        or a['game_creation_filetime']!=launch['creation_filetime'] or started['state']!='recording'
+        or any((jobroot/x).exists() for x in ('failed.json','completed.json','closed-file-probe.json'))):
+        raise ValueError('same live recorder source identity differs')
+    for key in ('game_png','scene_png'):
+        actual=pin(a[key]['path'])
+        if any(actual[k]!=a[key][k] for k in ('sha256','bytes')):raise ValueError('reviewed immutable PNG changed')
+    proof={'schema':'xar.clean-campaign.saved-map-recording-admission/v1','status':'GREEN',
+        'stage':'saved_campaign_map','reviewer':'/root','at_utc':datetime.now(timezone.utc).isoformat(),
+        'game_pid':launch['pid'],'game_creation_filetime':launch['creation_filetime'],
+        'game_creation_date':launch['creation_date'],'recording_session_id':job['session_id'],
+        'recording_job_root':str(jobroot),'Game_map_visible':True,'decision_overlay_visible':True,
+        'saved_campaign_continuation':True,'new_1066_bookmark_started':False,
+        'source_automatic_admission':pin(source),'game_frame':a['game_png'],'scene_frame':a['scene_png'],
+        'recording_started':pin(jobroot/'started.json'),'actual_Root_pixel_review':True,
+        'gameplay_or_date_credit':0}
+    output=R/'ROOT-P43-RECOVERED-MAP-ADMITTED01.json'
+    with output.open('x',encoding='utf-8') as f:json.dump(proof,f,indent=2);f.write('\n')
+    print(json.dumps(pin(output)))
+
+if __name__=='__main__':main()

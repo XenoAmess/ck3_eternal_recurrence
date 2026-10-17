@@ -1,0 +1,370 @@
+{
+  "schema": "g2.p41-existing-offline-workers-audit/v1",
+  "at_utc": "2026-10-17T10:54:15.861892+00:00",
+  "status": "EXISTING_P39_WORKERS_CONSUME_P41_WITHOUT_RESTART_OR_CONFIG_CHANGE",
+  "prepared": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-offline-learning-prep01\\ROOT-P39-OFFLINE-WORKERS-PREPARED.json",
+    "bytes": 8992,
+    "sha256": "58c265b907d8e0774a56c6169f936f3517a9db681d7dc830704e88e74d771d95"
+  },
+  "actual_started": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p39\\ROOT-P39-OFFLINE-WORKERS-OWNER-STARTED.json",
+    "bytes": 4074,
+    "sha256": "4396026da8a6f620450ad46f934d4c52b69a2441c867956facccb28b7272dc14"
+  },
+  "runtime_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01",
+  "worker_sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-offline-learning-prep01\\offline_vanilla_event_worker.py",
+      "bytes": 4205,
+      "sha256": "1b5f137dc64228b670e6fe512e1dff59dedc02ef30d8ea3ecf5ea9b1a5285dfd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-offline-learning-prep01\\root_offline_popup_worker.py",
+      "bytes": 7056,
+      "sha256": "24dc812a0bdebc83cb39baf53b4d6d9313e543fc0bab4c0156bb4610499c7336"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-offline-learning-prep01\\offline_mandatory_choice_worker.py",
+      "bytes": 5900,
+      "sha256": "6a3ce2b9dc13e2ebc6e729d84f355a7190820881871a1c4c06758a4c05e9bf54"
+    }
+  ],
+  "identical_analysis_sources": [
+    {
+      "relative_path": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "sha256": "c752420a6973a49faca81deb76d6aac605e9e0456dbcd3d3f11b474d5b0b7376",
+      "bytes": 23884
+    },
+    {
+      "relative_path": "xar_autoplayer/interaction_offline_analysis.py",
+      "sha256": "a96fbbb20836a237126560e0901690e39f534061e1754ccdfc69b0bea1bcddfc",
+      "bytes": 9269
+    },
+    {
+      "relative_path": "xar_autoplayer/mandatory_choice_evidence_v1.py",
+      "sha256": "51ba7b81e21412dc47d21e85c1dc721d213d8a2b036c0cbd28456d25d58a2e20",
+      "bytes": 7834
+    },
+    {
+      "relative_path": "xar_autoplayer/mandatory_choice_offline_analysis_v1.py",
+      "sha256": "166c57b696adb6a8e4167f9163517ab598be86fef3cd513da12fbb8f0e788b4e",
+      "bytes": 14220
+    }
+  ],
+  "batch_selector": "R39/p*-offline-batches/*.json",
+  "mandatory_incidents": "R39/state/evidence/unknown-mandatory-choices/*.before.json + completed after",
+  "mandatory_later_progress_selector": "R39/p*-responses/*-result.json",
+  "publisher_state_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state",
+  "owner_pid": 57044,
+  "worker_pids_from_retained_handles": [
+    275532,
+    273936,
+    29012
+  ],
+  "Root_exec_session_id_not_owner_pid": 27897,
+  "OS_liveness_queried_here": false,
+  "audited_completed_events": [
+    {
+      "batch": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-offline-batches\\0820.json",
+        "bytes": 1726,
+        "sha256": "8d057d7b12f192772a13d3450aa6efa65dad4a973e2756292694f2e4f07657ef"
+      },
+      "incident": {
+        "incident_id": "e357c200ffbf4e24a97d762da0805e78",
+        "event_definition_key": "global_culture.3011",
+        "current_event_instance_id": 33,
+        "binding": {
+          "snapshot_id": "native:595",
+          "revision": 578,
+          "native_revision": 595,
+          "date_raw": 53206608,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "connection_generation": 3,
+          "bridge_pid": 51028,
+          "paused": true,
+          "map_ready": true,
+          "actor_character_id": 31254
+        },
+        "selection": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "option_number": 1,
+          "resolved_name": "有趣的进展……",
+          "enabled": true,
+          "selected_step": "select-event-option-1",
+          "selection_order": "native_rendered_index_after_shown_enabled_filter",
+          "excluded_disabled_rendered_indices": []
+        },
+        "registry_known": true,
+        "offline_followup_required": false,
+        "before": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\e357c200ffbf4e24a97d762da0805e78.before.json",
+        "before_sha256": "c285aa4bf0aa63e6caab9706ebf51c96d347cb85830e0cbf3b03f12f21b09f3b",
+        "after": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\e357c200ffbf4e24a97d762da0805e78.after.json",
+        "after_sha256": "58130260f0203964dcf53f23bc4c11487214760d01930337a6f27a4981d400ac"
+      },
+      "after": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false
+      },
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 33,
+        "new_event_instance_id": null,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_snapshot_id": "native:595",
+        "starting_revision": 578,
+        "ending_snapshot_id": "native:596",
+        "ending_revision": 579,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 3,
+        "bridge_pid": 51028,
+        "starting_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 84,
+          "unavailable_reason": null
+        },
+        "ending_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 84,
+          "unavailable_reason": null
+        },
+        "starting_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 595,
+          "date_raw": 53206608,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "ending_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 596,
+          "date_raw": 53206608,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "starting_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 30895229,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 30895229,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "starting_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 92292199,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 92292199,
+          "scale": 100000,
+          "unavailable_reason": null
+        }
+      },
+      "review": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p39\\vanilla-events\\p41-offline-batches-0820-8d057d7b12f1\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 756,
+        "sha256": "59ccc20d9057fc703f14e3b6138371d7589fc374c33cc0e4ff4c5bbea62d2abf"
+      },
+      "review_counts": {
+        "entries": 0,
+        "already_known": 1,
+        "unresolved": 0
+      }
+    },
+    {
+      "batch": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-offline-batches\\0883.json",
+        "bytes": 1736,
+        "sha256": "65ffc43f4bcd5b12d8acfd4a5ed1954e8e6275efac538bef03bccbc3ccbaa2f6"
+      },
+      "incident": {
+        "incident_id": "bb6dbb4e16a04106a027bf71c3112b90",
+        "event_definition_key": "martial_strategy.3010",
+        "current_event_instance_id": 34,
+        "binding": {
+          "snapshot_id": "native:633",
+          "revision": 616,
+          "native_revision": 633,
+          "date_raw": 53207256,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "connection_generation": 3,
+          "bridge_pid": 51028,
+          "paused": true,
+          "map_ready": true,
+          "actor_character_id": 31254
+        },
+        "selection": {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "option_number": 1,
+          "resolved_name": "我知道如何双策并驱！",
+          "enabled": true,
+          "selected_step": "select-event-option-1",
+          "selection_order": "native_rendered_index_after_shown_enabled_filter",
+          "excluded_disabled_rendered_indices": []
+        },
+        "registry_known": false,
+        "offline_followup_required": true,
+        "before": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\bb6dbb4e16a04106a027bf71c3112b90.before.json",
+        "before_sha256": "5d021133b975b5c0dbc5b1458d2779f0ffaef91b0295f8615109e8867bb1cf89",
+        "after": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\bb6dbb4e16a04106a027bf71c3112b90.after.json",
+        "after_sha256": "5abd01f188cf1e38b90232603f5bb9afe7c2f66dcc094fc7763cf75287c01850"
+      },
+      "after": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false
+      },
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 34,
+        "new_event_instance_id": null,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_snapshot_id": "native:633",
+        "starting_revision": 616,
+        "ending_snapshot_id": "native:634",
+        "ending_revision": 617,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "connection_generation": 3,
+        "bridge_pid": 51028,
+        "starting_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 84,
+          "unavailable_reason": null
+        },
+        "ending_played_character_stress": {
+          "status": "available",
+          "character_id": 31254,
+          "stress_points": 84,
+          "unavailable_reason": null
+        },
+        "starting_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 633,
+          "date_raw": 53207256,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "ending_played_character_event_traits": {
+          "schema": "xar.ck3.player-event-trait-membership/v1",
+          "game_version": "1.20.0.4",
+          "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+          "status": "available",
+          "snapshot_revision": 634,
+          "date_raw": 53207256,
+          "played_character_id": 31254,
+          "traits": {
+            "lifestyle_poet": false,
+            "journaller": false
+          },
+          "unavailable_reason": null
+        },
+        "starting_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 31252437,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_gold": {
+          "status": "available",
+          "character_id": 31254,
+          "gold_raw": 31252437,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "starting_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 92514919,
+          "scale": 100000,
+          "unavailable_reason": null
+        },
+        "ending_played_character_prestige": {
+          "status": "available",
+          "character_id": 31254,
+          "prestige_raw": 92514919,
+          "scale": 100000,
+          "unavailable_reason": null
+        }
+      },
+      "review": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p39\\vanilla-events\\p41-offline-batches-0883-65ffc43f4bcd\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 2234,
+        "sha256": "4ad0d511808d68492097f7a5e25a21f8150b6f7e7b2157bca4cb31352d63d1ed"
+      },
+      "review_counts": {
+        "entries": 1,
+        "already_known": 0,
+        "unresolved": 0
+      },
+      "published_entry": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\2af8b639a59e837e0a9d34ad592ad2bf82a7ebd599e7f3b6de5a2b6f4800e787.json",
+        "bytes": 1330,
+        "sha256": "3c2a564704fdc1167fdc02fef599498221d070f56ee7668ab4e70cc504f02a58"
+      },
+      "fingerprint": "2af8b639a59e837e0a9d34ad592ad2bf82a7ebd599e7f3b6de5a2b6f4800e787",
+      "source_validation": "production _validated accepted source/facts/options/fingerprint hashes",
+      "material_effects_verified": false,
+      "registry_contract_accepted": false
+    }
+  ],
+  "rotation_required": false,
+  "configuration_changed": false,
+  "workers_started_or_stopped_here": 0,
+  "limits": [
+    "Two explicit completed P41 event batches are checked; future unobserved incidents are not preclaimed",
+    "No P41 mandatory or character-interaction completed pair existed at the original bounded 10:42Z observation; empty review does not demonstrate namespace failure",
+    "Published source-known entry is not verified optimal policy or material effect",
+    "Next real encounter still must pass existing exact-build/source/options/fresh-scope rebound guards; no repeat encounter is invented",
+    "Current Root confirms retained workers alive; this audit made no process liveness calls"
+  ],
+  "Game_MCP_OBS_calls": 0,
+  "Driver_SAVE_video_reads": 0
+}

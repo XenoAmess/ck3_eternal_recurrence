@@ -35,3 +35,7 @@ Root 随后实际执行控制1734，只读取新 SEM1735／1736，两帧一致�
 SDK的 `pending_character_interaction_context_contract.normalize_pending_interaction_id` 原本已接受完整signed int32，只有 `-1` 是无效sentinel；0及高位为1的原始signed表示都不能被改写。普通query／reply链没有因此缺少业务源修复，SDK42继续使用原已验证Driver备用叶，不为这个辅助校验错误增加SDK叶。原4005失败保持，不追认为成功。
 
 公共纯API曾原样提取同一错误正数守卫，现改为调用者必须注入对应canonical normalizer；不复制一份range判断、不取abs／转unsigned／重新编号。测试真实导入公共SDK的该函数，保留实际SEM4006小投影，并明确在旧稳定帧中替换句柄的测试是合成变形；实际负数、INT32_MIN、0、INT32_MAX通过，-1、越界、bool拒绝，事件0与角色0仍依各自原合同拒绝。8项／26子用例通过，不把它称为完整SDK42实机链。原公共源hash／六项正数范围测试保留为历史，不能据此宣称覆盖了高位opaque handle。
+
+## 后续实际部署与未闭根因
+
+上述“SDK42未启用”是当时准备截点。其后Root实际启用42，窗口9在302日后再次因完整敌军时间线不可用停止；43同Game接续及原地防御单日实际读回见[后续专题](sdk43-defensive-observation-and-query-cadence-2026-10-17.md)。这不证明zero-pause守卫已经解释或修复原1731／3219／4004具体子谓词。汇总external pause及managed_failure_cleanup ACK不能代替局部boundary动作数组证据；预防性SDK修复、partial控制实际恢复和普通日期信用继续分别结算。

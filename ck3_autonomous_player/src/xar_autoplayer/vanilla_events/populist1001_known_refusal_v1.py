@@ -7,13 +7,38 @@ from __future__ import annotations
 from copy import deepcopy
 
 from .faction_demand1001_context import recognize_faction_demand1001_projection_v1
+from .event_offline_analysis import _fingerprint, _native_binding
 
 EVENT_KEY = "faction_demand.1001"
-EVENT_ID = 3551001
-FINGERPRINT = "f41794487b9ed31454e9687052b9b84b761104f61db412ae76c5c0518ecdf96c"
+SOURCE_SHA256 = "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+OPTION_CATALOGUE_SHA256 = "5c76ae1a7cc44883f5d4af07e6f5c2e59986b9b0c6d6ca9cb379ac7ce298bace"
 BACKEND = "ck3-1.20.0.4-native-event-window-v1"
 REFUSE_STEP = "select-event-option-4"
 
+
+
+def _source_known_exact(capture, audit):
+    """Reuse the validated source while binding its current native definition ID.
+
+    Generic letter-event source rebinding remains outside this policy. The
+    ordinary loader must already have validated this exact registry entry.
+    """
+    if (not isinstance(capture, dict) or not isinstance(audit, dict)
+            or audit.get("status") != "offline-source-reviewed"
+            or audit.get("binding_mode") != "exact"):
+        return False
+    try:
+        binding = _native_binding(capture)
+    except (ValueError, TypeError, KeyError):
+        return False
+    if (binding["ck3_build"] != "1.20.0.4"
+            or binding["event_definition_key"] != EVENT_KEY
+            or binding["native_backend_id"] != BACKEND
+            or binding["native_option_count"] != 4):
+        return False
+    binding.update(source_sha256=SOURCE_SHA256,
+                   option_catalogue_sha256=OPTION_CATALOGUE_SHA256)
+    return audit.get("fingerprint") == _fingerprint(binding)
 
 def _positive(value):
     return type(value) is int and value > 0
@@ -46,7 +71,6 @@ def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
             and isinstance(binding, dict) and isinstance(decision, dict)
             and capture.get("event_definition_key") == EVENT_KEY
             and context.get("event_definition_key") == EVENT_KEY
-            and context.get("calculated_event_id") == EVENT_ID
             and isinstance(context.get("provenance"), dict)
             and context["provenance"].get("backend_id") == BACKEND
             and context.get("status") == "available"
@@ -54,7 +78,7 @@ def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
             and capture.get("snapshot_option_count") == 4
             and audit.get("status") == "offline-source-reviewed"
             and audit.get("binding_mode") == "exact"
-            and audit.get("fingerprint") == FINGERPRINT
+            and _source_known_exact(capture, audit)
             # The registry entry is validated by annotate_source_reviewed_event_plan_v1.
             # Its bytes may change when republished under a new evidence root.
             and isinstance(audit.get("entry_sha256"), str)
@@ -116,7 +140,13 @@ def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
             "saved_faction_id": faction, "saved_target_title_id": target_title,
             "saved_peasant_leader_character_id": leader,
             "expected_effect": "faction_start_war", "war_started_verified": False,
-            "victory_verified": False, "title_retention_verified": False})
+            "victory_verified": False, "title_retention_verified": False,
+            "decision_basis": "existing_preserve_realm_policy_accepts_faction_war_risk",
+            "same_frame_faction_strength": "not_available_in_bound_event_context",
+            "counterfactual_optimality_verified": False,
+            "visible_alternatives": [
+                {"native_option_index": 2, "expected_effect": "grant_populist_independence", "selected": False},
+                {"native_option_index": 3, "expected_effect": "start_faction_war", "selected": True}]})
     summary = result.get("active_event")
     if not isinstance(summary, dict):
         return plan
@@ -170,7 +200,7 @@ def verify_source_reviewed_populist_refusal_result_v1(body):
             and capture.get("event_definition_key") == EVENT_KEY
             and knowledge.get("status") == "offline-source-reviewed"
             and knowledge.get("binding_mode") == "exact"
-            and knowledge.get("fingerprint") == FINGERPRINT
+            and _source_known_exact(capture, knowledge)
             and capture.get("registry_known") is True
             and selection.get("selected_step") == REFUSE_STEP
             and selection.get("native_option_index") == 3
