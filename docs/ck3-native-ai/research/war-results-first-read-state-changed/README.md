@@ -17,3 +17,7 @@
 - 公共复用函数：`tools/g2_saved_campaign/war_results_first_read_outcome.py`；普通产品源不会自动加载场次分类器。
 
 第五批 `18393cce` 的 Official 38967170365 与 Linear 38967169970 均已 success。SDK32 的既有连续进展与本候选验证分开记录；稳定 30 年、低于 1 秒／日、0.5 秒／日目标均未完成，优先级保持这个顺序。没有 Native 新构建、WAL 或其他性能实验混入本包。
+
+后续现场补记：第六 `7e1cf70f` 的 Official38972872688／Linear38972872670均success。SDK32窗口27随后在AUTO2086候选不足阻塞，实际1824日失败；17日00:37Z前后SDK32已正常0/0退出，Game／OBS保留。上述“持续运行”描述仅代表本包收口当时，不代表当前仍运行，也不把本候选写成已部署。SDK33此时仅准备，详见[最新交接](../../../handover/2026-10-17-p27-native21-continuation.md)。
+
+再次追加：SDK33实际源freeze已包含本包Service `38f71545…` 与transport `f9c25d96…`，随后已实际运行。**源码已部署与首次state_changed分支实机复现是两件事**；后者仍无新增证明。SDK33出发链成功后窗口28又在31日因驻守counterpolicy阻塞，见最新交接，不将本次安装写成全面稳定。

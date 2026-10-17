@@ -1,0 +1,145 @@
+{
+  "schema": "xar.cb-actor-precondition.research-close/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "closed_at_utc": "2026-10-16T21:30:57.951524+00:00",
+  "owner_task": "/root/declarable_query_performance",
+  "policy_version": "1.0.0",
+  "budget_bytes": 16777216,
+  "disk": {
+    "total": 14000483987456,
+    "used": 12941882310656,
+    "free": 1058601676800
+  },
+  "parent_capacity_binding": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\ROOT-STORAGE-PARENT-BINDING.json",
+    "bytes": 1198,
+    "sha256": "e54b23845fb3f21034c2f099e4636f391a9ea7a467bc8c73e0161bfc4a828ad5"
+  },
+  "artifacts": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-actor-field.json",
+      "bytes": 13680,
+      "sha256": "031a3771500a631fd934b50700daa051d833946f1d2ac73080936f0b91a32a08"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-allowed-for-case.json",
+      "bytes": 2271,
+      "sha256": "ddf4ec1e0591b2e165495682261574c8bafff37d8c22989b1cf67bb175d091de"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-display-field.json",
+      "bytes": 2804,
+      "sha256": "17017e45cc68701b32c66e5127b9a2d9aefdc79c4b1498d822421ce19f692a70"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-entry-and-field.json",
+      "bytes": 7159,
+      "sha256": "35ddfd07f96d2ee0035bccec3e4b29be3cacb7f0e1c4852ed1cf3cd61cf5f298"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-minimum-actor-branch.json",
+      "bytes": 2500,
+      "sha256": "7a5b981ef2882deaaa2e479257c1760999c64d11e073d20c67849d259720f53d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\cb-parser-true-entry.json",
+      "bytes": 803,
+      "sha256": "0c78d53e0392b0921a754e442b693b0389ea3639a339633e15e91224747df4ab"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\finish_research.py",
+      "bytes": 21239,
+      "sha256": "4189e4577016d20f3881beb46419c117a46c600289ae1e87e0750cbc14e83c80"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\RENDER-RESULT.json",
+      "bytes": 612,
+      "sha256": "9e874d190473164f55a02bee80f593ef6fa46c356d14e4f2678fdfcbc327ce23"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\REPORT.md",
+      "bytes": 11183,
+      "sha256": "30fd3436b077e3c2d23863adbc00d8e29eaf61401b9e5bdfd536a58d59ba8851"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\RESEARCH-CHECK.json",
+      "bytes": 1599,
+      "sha256": "ebeb1179aeb78afd444f8f9aa98b2533f5da508a2014cbe9bb5de45f4b4aa683"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\RESEARCH-GRAPH.md",
+      "bytes": 3813,
+      "sha256": "b8aeaaa7d3870150e382aebefc2c9a5abc56e35f2e05015975cc8a4879d560b2"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\RESEARCH-PLAN.json",
+      "bytes": 3821,
+      "sha256": "4e93393afc5d90f8c0406f16a54abb5d6f6cdedeaff2da903f55c7470ed6747a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\REVIEWED-ACTOR-DEPENDENCIES.json",
+      "bytes": 86130,
+      "sha256": "3098f5748f89e43580acf2244b00d10ac523db75e86aeb30fb08000bfbd5a583"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\ROOT-STORAGE-PARENT-BINDING.json",
+      "bytes": 1198,
+      "sha256": "e54b23845fb3f21034c2f099e4636f391a9ea7a467bc8c73e0161bfc4a828ad5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\scope-default-constructor.json",
+      "bytes": 3175,
+      "sha256": "235b73334f283ff147b1d321495d044b9428db485e8279bdee8c44050f6c71ea"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\STORAGE-PREP.json",
+      "bytes": 851,
+      "sha256": "efb7af77217894209c5ee2170b513b019b363f23079d3a331243bc43b4447f14"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\symbol-name-getter.json",
+      "bytes": 2277,
+      "sha256": "3d5549564fd16908d27dffc1ad118da04d16ba95abe195659af85f2858cc48b6"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\trigger-diagnostic-wrapper.json",
+      "bytes": 4011,
+      "sha256": "a91a267f805c83e6dea6d4f4b3bbf2dc0ee220b15eb35c9fac26996734f637de"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\trigger-fast-evaluator.json",
+      "bytes": 4604,
+      "sha256": "cac771f03bb1decb225718922f96a990947c6fa0f6fd7a734484cb10b98b25c3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\TYPE-FIELD-LOCATOR.json",
+      "bytes": 702,
+      "sha256": "cdf9665342071bacfbb36c729cd5ffb3465f532192e7d126b05b44cdc2e784f7"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\TYPE-FIELD-SYMBOL-LOCATOR.json",
+      "bytes": 772,
+      "sha256": "f307504b61919d8b6b54118efa9d856c31928c479a441993fb2a4cf0be9b6dda"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\TYPE-FIELD-TABLE-LOCATOR.json",
+      "bytes": 3162,
+      "sha256": "78381d0912c008a6042c817e2daba7a68c86f3b7c625f12dae9d47e855b7e3a3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-cb-actor-precondition-research01\\WIDE-ACTOR-INVENTORY.json",
+      "bytes": 250176,
+      "sha256": "38609a889ee038d924e0f58d9446e655639405b9f871ab11e0dd69a6ca729c96"
+    }
+  ],
+  "live_calls": 0,
+  "runtime_source_mutations": 0,
+  "game_or_sdk_interruption": false,
+  "raw_evidence_review_at_utc": "2026-10-23T21:30:57.951524+00:00",
+  "derived_report_review_at_utc": "2026-10-18T21:30:57.951524+00:00",
+  "automatic_renewal": false,
+  "source_semantic_binding": "partial",
+  "performance_acceptance": "not-run",
+  "remaining_entry": "31F20F0 parser caller-adjusted RCX / runtime token registration and3F4F8E0 pool, then future shadow",
+  "logical_bytes_before_manifest": 428542
+}

@@ -1,0 +1,176 @@
+{
+  "schema": "xar.cb-actor-precondition.loader02-bounded-static-result/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "result": "PASS",
+  "scope": "Current raw data/branch/member/RTTI join identity; manually reviewed semantic dataflow separately declared in LOADER02-REPORT",
+  "whole_exe_rehashed": false,
+  "exe_sha256_reused": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "checks": [
+    {
+      "label": "allowed_for_character: literal and preceding ID",
+      "passed": true,
+      "actual": {
+        "row": "0x46eb910",
+        "token": "0x2b0f",
+        "padding": 0,
+        "pointer": "0x14470d640",
+        "row_hex": "0f2b00000000000040d6704401000000"
+      }
+    },
+    {
+      "label": "allowed_for_character: actual switch case",
+      "passed": true,
+      "actual": {
+        "byte_index": 1,
+        "target": "0x31f25fb",
+        "jump_rva_bytes": "fb251f03"
+      }
+    },
+    {
+      "label": "allowed_for_character: member handoff",
+      "passed": true,
+      "actual": {
+        "handoff": "0x31f268f",
+        "bytes": "488d8f80e7ffff",
+        "member": "0x48"
+      }
+    },
+    {
+      "label": "allowed_against_character: literal and preceding ID",
+      "passed": true,
+      "actual": {
+        "row": "0x46eb970",
+        "token": "0x2b15",
+        "padding": 0,
+        "pointer": "0x14470d750",
+        "row_hex": "152b00000000000050d7704401000000"
+      }
+    },
+    {
+      "label": "allowed_against_character: actual switch case",
+      "passed": true,
+      "actual": {
+        "byte_index": 5,
+        "target": "0x31f26aa",
+        "jump_rva_bytes": "aa261f03"
+      }
+    },
+    {
+      "label": "allowed_against_character: member handoff",
+      "passed": true,
+      "actual": {
+        "handoff": "0x31f2718",
+        "bytes": "488d8f20e9ffff",
+        "member": "0x1e8"
+      }
+    },
+    {
+      "label": "allowed_for_character_display_regardless: literal and preceding ID",
+      "passed": true,
+      "actual": {
+        "row": "0x46efda0",
+        "token": "0x3114",
+        "padding": 0,
+        "pointer": "0x1446c8708",
+        "row_hex": "143100000000000008876c4401000000"
+      }
+    },
+    {
+      "label": "allowed_for_character_display_regardless: actual switch case",
+      "passed": true,
+      "actual": {
+        "byte_index": 25,
+        "target": "0x31f2fc5",
+        "jump_rva_bytes": "c52f1f03"
+      }
+    },
+    {
+      "label": "allowed_for_character_display_regardless: member handoff",
+      "passed": true,
+      "actual": {
+        "handoff": "0x31f300c",
+        "bytes": "488d8f50e8ffff",
+        "member": "0x118"
+      }
+    },
+    {
+      "label": "initializer uses preceding ID",
+      "passed": true,
+      "actual": {
+        "rva": "0x3f4f017",
+        "actual_hex": "418b47f8",
+        "expected_hex": "418b47f8"
+      }
+    },
+    {
+      "label": "initializer uses current name pointer",
+      "passed": true,
+      "actual": {
+        "rva": "0x3f4f01e",
+        "actual_hex": "498b17",
+        "expected_hex": "498b17"
+      }
+    },
+    {
+      "label": "initializer increments one record",
+      "passed": true,
+      "actual": {
+        "rva": "0x3f4f246",
+        "actual_hex": "4983c710",
+        "expected_hex": "4983c710"
+      }
+    },
+    {
+      "label": "initializer writes pool at original ID index",
+      "passed": true,
+      "actual": {
+        "rva": "0x3f4f1d4",
+        "actual_hex": "488d04d1",
+        "expected_hex": "488d04d1"
+      }
+    },
+    {
+      "label": "current exact type/virtual-base coordinates",
+      "passed": true,
+      "actual": {
+        "vbtable": [
+          -8,
+          6336
+        ],
+        "COL": [
+          1,
+          6344,
+          4,
+          89941560,
+          82907784,
+          83414856
+        ],
+        "name": ".?AVCCasusBelliType@@"
+      }
+    }
+  ],
+  "joins": [
+    {
+      "name": "allowed_for_character",
+      "row_sha256": "a63450692c63fc0b5f5713985e2b1cfd40faf89f54cd4976659d3e078989c949",
+      "case": "0x31f25fb",
+      "member": "0x48"
+    },
+    {
+      "name": "allowed_against_character",
+      "row_sha256": "a874759c79026fc3fbf34153d2cc0a1504e44c96a781d799ec92b1514790a717",
+      "case": "0x31f26aa",
+      "member": "0x1e8"
+    },
+    {
+      "name": "allowed_for_character_display_regardless",
+      "row_sha256": "4573159c69507767bb29523d707e0683909c8de7a2f686612aeb6ca6484e30e1",
+      "case": "0x31f2fc5",
+      "member": "0x118"
+    }
+  ],
+  "live_calls": 0,
+  "native_functions_executed": 0,
+  "production_changes": 0,
+  "runtime_acceptance": "not-run"
+}

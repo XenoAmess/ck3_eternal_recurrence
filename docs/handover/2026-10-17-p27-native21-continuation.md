@@ -148,3 +148,37 @@ Root随后在21:02:10Z报告同窗口累计302日，11323cycles/raw53444232，�
 其输出仅为技术延后／可见性unknown，零日期、业务、关闭信用，不重发查询；close／timeout／owner失败继续严格。
 [精确原件与边界](../ck3-native-ai/research/war-results-first-read-state-changed/README.md)。
 本候选未部署、没有实机首次失败复现验收，不切换正在运行的SDK32或重启Game／OBS。30年稳定、<1秒／日、0.5秒／日仍未达。
+
+## 2026-10-17 00:37Z 后续现场：窗口27失败1824日
+
+以上SDK32连续运行叙述是当时截点。实际FULL2069于2026-10-16T21:30:34Z在AUTO2086停止：
+`status=blocked`、`selected_step=null`、phase=`native_war_no_alternate_player_held_county`。
+规划只枚举到省份2619，该省已被敌军520094015指向；不能将候选不足当作已知没有合法退路。
+窗口27由raw53436984到53480760共1824游戏日，约5年，**失败保留，不算连续30年达标**。
+
+Root于17日00:33Z取得SEM2087：同Game6068、paused/map-ready，public2464／Native5729，当前actor39979。
+CTRL2088只本地清理已证无动作阻塞，0MCP、0业务信用、原动作未重放，保持12076cycles。
+SDK32随后queue/app均实际正常退出0/0；`ROOT-P32-OWNER-CLOSED.json` SHA
+`e76a9aa4148af4294dfd1c353ba104a1ed541d42eefc09efd91dc44094f04911`明确Game与录像均未停止。
+SDK33此时仅离线准备，以SDK32闭包为母保留所有既有修复；新撤离策略完成审核前不进入公开产品，未获launch。
+
+第六提交7e1cf70f的Official38972872688／Linear38972872670均已success。
+W和Z安全快进至外部E04提交611bc985；这些源码同步不改变D盘冻结SDK或游戏现场。
+稳定30年优先，其后<1秒／日、再0.5秒／日，均未完成。
+
+后续公共源码补齐单县防守撤离候选：只从同帧完整直辖封臣记录取首都种子，依旧先做Native预览与完整敌军接触查询，
+不把候选当安全路线。真实公共Service／NativeDriver／ProtocolState public2464/native5729五项回放及相关回归共26项、2子用例通过，
+包括旧租约不公开新能力、全部preview deferred转当前省零跳查询；AUTO wire和实际安全撤离仍未验。
+[最小hunk、164KB实际投影及边界](../ck3-native-ai/research/sdk32-defender-refuge/README.md)保留原失败和举兵后独立读回，
+不复制5.95MB history，不混入事后mercenary查询。SDK33源构造与launch仍由现场owner负责，公共CI不阻塞现场。
+[和平段与CB小报告](../ck3-native-ai/research/sdk32-peace-and-cb-offline/README.md)同时保全：1.041361秒／日含3SAVE是具名和平段，
+不是整场达标；CB loader02的14项静态检查已纠正旧定位缺口，未作Native bool shadow／部署或提速信用。
+
+## SDK33实际出发成功；窗口28失败31日
+
+现场随后已经启动SDK33：原生preview16／horizon19／move22／独立SEM24／clock29／fresh31和32真实成功，
+原Game6068和OBS／D盘录像保持；[实际链原件](../ck3-native-ai/research/sdk32-defender-refuge/ROOT-P33-ACTUAL-DEPARTURE-CHAIN.json)
+SHA `64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc`绑定完整出处。
+后续到达vassal2604，但FULL178／AUTO191再次blocked：`native_war_counterpolicy_hold`，窗口28失败31日，
+raw53481528／Native5831／public103／12157cycles。原单县／rally-hold helper只修出发，抵达后驻守及再撤离待SDK34生命周期修复。
+不把两次失败窗口拼接或将成功移动升级为全面稳定；Game／OBS未停，SDK34由现场owner准备，公共包不阻塞其修复。

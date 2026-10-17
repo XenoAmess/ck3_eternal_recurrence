@@ -1,0 +1,165 @@
+{
+  "schema": "xar.defender-refuge-real-chain.v1",
+  "at_utc": "2026-10-17T01:09:42.188261+00:00",
+  "status": "ACTUAL_ORDINARY_SERVICE_NATIVE_PREVIEW_HORIZON_MOVE_AND_EXACT_DAY_VERIFIED",
+  "game_pid": 6068,
+  "game_creation_filetime": 134366412679616931,
+  "Game_OBS_restarted": false,
+  "original_failure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p32-responses\\2086-1-result.json",
+    "sha256": "20de2235dfd4bc80d2c70724144664df1b808ecf3948b0d748fc419b94e9a01c"
+  },
+  "old_zero_RPC_clear": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p32-responses\\2088-1-result.json",
+    "sha256": "0495dce80a744721ee6ddeb0a6937c9c11df0b4087f7835bd34af627d8176136"
+  },
+  "old_actual_dual_exit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P32-OWNER-CLOSED.json",
+    "sha256": "e76a9aa4148af4294dfd1c353ba104a1ed541d42eefc09efd91dc44094f04911"
+  },
+  "SDK33_source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-FINAL-SDK-FREEZE-P33.json",
+    "sha256": "1ae44a5afd734a48dcaeb56dd9e996ea16cfee736383d2b3b0ad3d06ac24a492"
+  },
+  "SDK33_actual_pair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P33.json",
+    "sha256": "ea958e08a45fee0ffde385255af8eded2fa28900d368eaf55e7e857c4cba11c8"
+  },
+  "actual_responses": {
+    "1": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0001-1-result.json",
+      "sha256": "b892fc46d3f3db9751a5a30f5e60071ece0414d79738dd4d8493bff712eb93ce"
+    },
+    "2": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0002-1-result.json",
+      "sha256": "d1b497d36f7d54b7e727d7427965a3611ddcc2de246071bf967c98986dc348bb"
+    },
+    "3": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0003-1-result.json",
+      "sha256": "41ade946e4f907522956c78fef0ab83dbab1ec2ace3d7d9767524106914755f6"
+    },
+    "4": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0004-1-result.json",
+      "sha256": "e2d0dd633e46ebad4e32f2a997ee807519e9f33495d3bc5f830620b91d255834"
+    },
+    "6": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0006-1-result.json",
+      "sha256": "5db6ac8a6547e075d560f4841ac00e35e8f5aaf24d10fc07ec1ce5193a09fc6b"
+    },
+    "7": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0007-1-result.json",
+      "sha256": "8903014a25a2359662b3aca3947ff80d2b377f88eb8277ed59353e16bca11ccd"
+    },
+    "9": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0009-1-result.json",
+      "sha256": "7db0bb64d59e3ddb7a1bf2804d4e420e548a2174fdae2b645e13d81ec73df30b"
+    },
+    "10": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0010-1-result.json",
+      "sha256": "14a016bf11a50a42cf0f35064a9728bcf0a538a84f8fc3aae541bb27ac4bca4e"
+    },
+    "12": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0012-1-result.json",
+      "sha256": "b08f2cabba2a74f1b4042dc2e80618aaeca26e306359a932a691a40ce2e0440c"
+    },
+    "13": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0013-1-result.json",
+      "sha256": "d2e429b530623340ef3f46bde0aabffe7750364d1beff68c7b7622c140e2122d"
+    },
+    "15": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0015-1-result.json",
+      "sha256": "c143672aeb2d7ef43e992a6e0e9f3b81b03033961f844b0c6e62f7b6a039a0d8"
+    },
+    "16": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0016-1-result.json",
+      "sha256": "c00f0037f25a71aed2f44c20e6e5e7daedd071d5d31f06f06e449a355fd74da2"
+    },
+    "18": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0018-1-result.json",
+      "sha256": "9f25a795429a3504dd0545e56a30597989cd341059f3af6aa9558175e0e8392e"
+    },
+    "19": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0019-1-result.json",
+      "sha256": "c4f9d8f3fe3f575aacb67f720022c86ddbf2125c60f6ab99f51a813bc110d31f"
+    },
+    "21": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0021-1-result.json",
+      "sha256": "33d52aae3c36d051b08842e3c5cd6a49ea9b40c4c10c4b19c1b31f650a5177c3"
+    },
+    "22": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0022-1-result.json",
+      "sha256": "1358d3d7a4626666c0f391797582014ab727be39cbdcbac80ba3a0f5b3c85ca6"
+    },
+    "24": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0024-1-result.json",
+      "sha256": "c8e87868e913bd15ede77cead5b070e07d081e638012cc73fc65fa2fb8d3e16f"
+    },
+    "25": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0025-1-result.json",
+      "sha256": "befb3b0e350a9a7cdb4a299ad1824682bb79fab6decf34efd355520d75e99f99"
+    },
+    "26": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0026-1-result.json",
+      "sha256": "77f5fb447639e99331fdb76fddaf216d37d2d1fd29c1fb8b5ed4b859bc45d7b0"
+    },
+    "28": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0028-1-result.json",
+      "sha256": "6fb51d9fea1b030aaeb3892acde14bc6ea8ea82a7dcad2a76c87f77381e059e2"
+    },
+    "29": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0029-1-result.json",
+      "sha256": "44517929714cd4964a1f40f6685b8c97b3fb7e4d181122cbc08262abf9df6a27"
+    },
+    "31": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0031-1-result.json",
+      "sha256": "11bece1af92bbc493a98d66ce10603189b73d862441a175e00ca8ae0664213b0"
+    },
+    "32": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-responses\\0032-1-result.json",
+      "sha256": "45cd0eeaa964ed8b5d1b4882588ec14cc7545d2701e6858eaa710ca64feae5dd"
+    }
+  },
+  "route": [
+    2619,
+    2614,
+    8757,
+    2605,
+    2604
+  ],
+  "preview_binding": {
+    "public_revision": 2,
+    "native_revision": 5730,
+    "date_raw": 53480760,
+    "connection_generation": 7
+  },
+  "actual_move_readback_binding": {
+    "public_revision": 3,
+    "native_revision": 5731,
+    "date_raw": 53480760
+  },
+  "actual_exact_day": {
+    "from": 53480760,
+    "to": 53480784,
+    "days": 1,
+    "timeline_speed": 3
+  },
+  "settled_health": {
+    "snapshot_id": "native:5735",
+    "revision": 7,
+    "native_revision": 5735,
+    "date_raw": 53480784,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "continuity_resume": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P33-CONTINUITY-RESUME01-ADMITTED.json",
+    "sha256": "17dfded958fc225ba7165c10859e8c3e6ded050a83b2f13bb5ccae7879c09456"
+  },
+  "recording_watchdog_actual": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p33-recording-watchdog01\\ROOT-P33-WATCHDOG-STARTED-VERIFIED.json",
+    "sha256": "d66b7d93a7a912d8367e6569a3a2520515c2849cd09e1bb8983ba90ca6a722b4"
+  },
+  "original_action_replayed": false,
+  "war_won_claimed": false,
+  "target30years_claimed": false,
+  "extra_business_or_date_credit": 0
+}

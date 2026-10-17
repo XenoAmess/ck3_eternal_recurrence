@@ -1,0 +1,2397 @@
+{
+  "scope": "completed P32 responses ending at last complete result; five-minute bounded window",
+  "from_seq": 738,
+  "to_seq": 1017,
+  "from_utc": "2026-10-16T21:05:52.516662+00:00",
+  "to_utc": "2026-10-16T21:10:52.428643+00:00",
+  "wall_seconds": 299.911981,
+  "mcp_sum_seconds": 284.107856,
+  "gap_seconds": 15.804125,
+  "results_count": 275,
+  "game_days": 288,
+  "status_counts": {
+    "None": 138,
+    "executed": 131,
+    "submitted": 3,
+    "readonly_rejected": 3
+  },
+  "max_inter_result_gap_seconds": 1.389362,
+  "wall_per_day": 1.041361,
+  "timing_closed_prefix_bytes": 38266882,
+  "timing_closed_prefix_sha256": "b69652584fc63bb9ba7d5584330ee898467dc8dfcbc88135d616c31107a95d47",
+  "matched_stage_rows": 6827,
+  "steps": {
+    "root_current_runtime_metrics": {
+      "rpc": {
+        "count": 135,
+        "sum_seconds": 1.494595,
+        "median_seconds": 0.0092
+      },
+      "days": 0,
+      "by_days": {
+        "None": 135
+      },
+      "by_horizon": {
+        "None": 135
+      },
+      "by_war_before_count": {
+        "None": 135
+      },
+      "phases": {
+        "null": 135
+      },
+      "speed": {
+        "None": 135
+      },
+      "war_count": {
+        "None": 135
+      }
+    },
+    "query-current-event-window-context-v1": {
+      "rpc": {
+        "count": 3,
+        "sum_seconds": 1.623559,
+        "median_seconds": 0.383026
+      },
+      "days": 0,
+      "by_days": {
+        "None": 3
+      },
+      "by_horizon": {
+        "None": 3
+      },
+      "by_war_before_count": {
+        "None": 3
+      },
+      "phases": {
+        "active_event_window_query": 3
+      },
+      "speed": {
+        "None": 3
+      },
+      "war_count": {
+        "None": 3
+      }
+    },
+    "select-event-option-3": {
+      "rpc": {
+        "count": 2,
+        "sum_seconds": 2.429389,
+        "median_seconds": 1.214695
+      },
+      "days": 0,
+      "by_days": {
+        "None": 2
+      },
+      "by_horizon": {
+        "None": 2
+      },
+      "by_war_before_count": {
+        "None": 2
+      },
+      "phases": {
+        "active_event_source_reviewed_first_rendered_option": 1,
+        "active_event_registry_choice": 1
+      },
+      "speed": {
+        "None": 2
+      },
+      "war_count": {
+        "None": 2
+      }
+    },
+    "query-war-results-window-v1": {
+      "rpc": {
+        "count": 40,
+        "sum_seconds": 10.907956,
+        "median_seconds": 0.243173
+      },
+      "days": 0,
+      "by_days": {
+        "None": 40
+      },
+      "by_horizon": {
+        "None": 40
+      },
+      "by_war_before_count": {
+        "None": 40
+      },
+      "phases": {
+        "war_results_window": 40
+      },
+      "speed": {
+        "None": 40
+      },
+      "war_count": {
+        "None": 40
+      }
+    },
+    "life-advance": {
+      "rpc": {
+        "count": 37,
+        "sum_seconds": 173.812445,
+        "median_seconds": 4.660127
+      },
+      "days": 288,
+      "by_days": {
+        "8": 35,
+        "7": 1,
+        "1": 1
+      },
+      "by_horizon": {
+        "8": 37
+      },
+      "by_war_before_count": {
+        "0": 37
+      },
+      "phases": {
+        "native_war_discovery_cooldown": 30,
+        "native_war_entry_forecast_required": 7
+      },
+      "speed": {
+        "5": 37
+      },
+      "war_count": {
+        "None": 37
+      }
+    },
+    "query-declarable-wars": {
+      "rpc": {
+        "count": 8,
+        "sum_seconds": 47.245715,
+        "median_seconds": 5.879385
+      },
+      "days": 0,
+      "by_days": {
+        "None": 8
+      },
+      "by_horizon": {
+        "None": 8
+      },
+      "by_war_before_count": {
+        "None": 8
+      },
+      "phases": {
+        "native_war_discovery": 8
+      },
+      "speed": {
+        "None": 8
+      },
+      "war_count": {
+        "None": 8
+      }
+    },
+    "query-war-entry-assessments-v1-1-40118": {
+      "rpc": {
+        "count": 8,
+        "sum_seconds": 2.947717,
+        "median_seconds": 0.302226
+      },
+      "days": 0,
+      "by_days": {
+        "None": 8
+      },
+      "by_horizon": {
+        "None": 8
+      },
+      "by_war_before_count": {
+        "None": 8
+      },
+      "phases": {
+        "native_war_entry_assessment": 8
+      },
+      "speed": {
+        "None": 8
+      },
+      "war_count": {
+        "None": 8
+      }
+    },
+    "query-war-entry-assessments-v1-1-33621827": {
+      "rpc": {
+        "count": 8,
+        "sum_seconds": 2.759141,
+        "median_seconds": 0.29424
+      },
+      "days": 0,
+      "by_days": {
+        "None": 8
+      },
+      "by_horizon": {
+        "None": 8
+      },
+      "by_war_before_count": {
+        "None": 8
+      },
+      "phases": {
+        "native_war_entry_assessment_alternative": 8
+      },
+      "speed": {
+        "None": 8
+      },
+      "war_count": {
+        "None": 8
+      }
+    },
+    "query-war-entry-assessments-v1-1-36723": {
+      "rpc": {
+        "count": 2,
+        "sum_seconds": 1.631005,
+        "median_seconds": 0.815503
+      },
+      "days": 0,
+      "by_days": {
+        "None": 2
+      },
+      "by_horizon": {
+        "None": 2
+      },
+      "by_war_before_count": {
+        "None": 2
+      },
+      "phases": {
+        "native_war_entry_assessment_alternative": 2
+      },
+      "speed": {
+        "None": 2
+      },
+      "war_count": {
+        "None": 2
+      }
+    },
+    "query-war-entry-assessments-v1-1-38920": {
+      "rpc": {
+        "count": 8,
+        "sum_seconds": 3.164571,
+        "median_seconds": 0.324599
+      },
+      "days": 0,
+      "by_days": {
+        "None": 8
+      },
+      "by_horizon": {
+        "None": 8
+      },
+      "by_war_before_count": {
+        "None": 8
+      },
+      "phases": {
+        "native_war_entry_assessment_alternative": 8
+      },
+      "speed": {
+        "None": 8
+      },
+      "war_count": {
+        "None": 8
+      }
+    },
+    "query-war-entry-assessments-v1-1-40357": {
+      "rpc": {
+        "count": 8,
+        "sum_seconds": 3.366184,
+        "median_seconds": 0.33369
+      },
+      "days": 0,
+      "by_days": {
+        "None": 8
+      },
+      "by_horizon": {
+        "None": 8
+      },
+      "by_war_before_count": {
+        "None": 8
+      },
+      "phases": {
+        "native_war_entry_assessment_alternative": 8
+      },
+      "speed": {
+        "None": 8
+      },
+      "war_count": {
+        "None": 8
+      }
+    },
+    "private-query-player-construction-receipt-v1": {
+      "rpc": {
+        "count": 6,
+        "sum_seconds": 9.875112,
+        "median_seconds": 1.515042
+      },
+      "days": 0,
+      "by_days": {
+        "None": 6
+      },
+      "by_horizon": {
+        "None": 6
+      },
+      "by_war_before_count": {
+        "None": 6
+      },
+      "phases": {
+        "construction_completion_watch": 6
+      },
+      "speed": {
+        "None": 6
+      },
+      "war_count": {
+        "None": 6
+      }
+    },
+    "ck3_take_semantic_snapshot_private_v1": {
+      "rpc": {
+        "count": 3,
+        "sum_seconds": 0.026188,
+        "median_seconds": 0.008783
+      },
+      "days": 0,
+      "by_days": {
+        "None": 3
+      },
+      "by_horizon": {
+        "None": 3
+      },
+      "by_war_before_count": {
+        "None": 3
+      },
+      "phases": {
+        "null": 3
+      },
+      "speed": {
+        "None": 3
+      },
+      "war_count": {
+        "None": 3
+      }
+    },
+    "ck3_save_checkpoint": {
+      "rpc": {
+        "count": 3,
+        "sum_seconds": 16.474773,
+        "median_seconds": 5.356178
+      },
+      "days": 0,
+      "by_days": {
+        "None": 3
+      },
+      "by_horizon": {
+        "None": 3
+      },
+      "by_war_before_count": {
+        "None": 3
+      },
+      "phases": {
+        "null": 3
+      },
+      "speed": {
+        "None": 3
+      },
+      "war_count": {
+        "None": 3
+      }
+    },
+    "select-event-option-1": {
+      "rpc": {
+        "count": 1,
+        "sum_seconds": 2.13937,
+        "median_seconds": 2.13937
+      },
+      "days": 0,
+      "by_days": {
+        "None": 1
+      },
+      "by_horizon": {
+        "None": 1
+      },
+      "by_war_before_count": {
+        "None": 1
+      },
+      "phases": {
+        "active_event_source_reviewed_first_rendered_option": 1
+      },
+      "speed": {
+        "None": 1
+      },
+      "war_count": {
+        "None": 1
+      }
+    },
+    "query-war-entry-assessments-v1-1-65031": {
+      "rpc": {
+        "count": 3,
+        "sum_seconds": 4.210135,
+        "median_seconds": 1.451292
+      },
+      "days": 0,
+      "by_days": {
+        "None": 3
+      },
+      "by_horizon": {
+        "None": 3
+      },
+      "by_war_before_count": {
+        "None": 3
+      },
+      "phases": {
+        "native_war_entry_assessment_alternative": 3
+      },
+      "speed": {
+        "None": 3
+      },
+      "war_count": {
+        "None": 3
+      }
+    }
+  },
+  "stage_groups": [
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_total",
+      "count": 37,
+      "sum_seconds": 131.177054,
+      "median_seconds": 3.562665
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_public_change_wait",
+      "count": 365,
+      "sum_seconds": 99.402704,
+      "median_seconds": 0.306077
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_progress_wait",
+      "count": 37,
+      "sum_seconds": 97.354787,
+      "median_seconds": 2.681516
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_turn_internal",
+      "count": 62,
+      "sum_seconds": 64.070659,
+      "median_seconds": 1.035278
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.normal_plan_turn",
+      "count": 37,
+      "sum_seconds": 39.115562,
+      "median_seconds": 1.073821
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.native_command_result_wait",
+      "count": 16,
+      "sum_seconds": 33.820706,
+      "median_seconds": 2.047975
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_persistence",
+      "count": 37,
+      "sum_seconds": 27.063434,
+      "median_seconds": 0.647397
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_atomic_write",
+      "count": 37,
+      "sum_seconds": 26.155302,
+      "median_seconds": 0.623376
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 37,
+      "sum_seconds": 25.723738,
+      "median_seconds": 0.611789
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_turn_internal",
+      "count": 15,
+      "sum_seconds": 22.845165,
+      "median_seconds": 1.452048
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.normal_plan_turn",
+      "count": 8,
+      "sum_seconds": 12.676714,
+      "median_seconds": 1.480991
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.semantic_snapshot",
+      "count": 1858,
+      "sum_seconds": 9.563298,
+      "median_seconds": 0.005265
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._plan_turn_internal",
+      "count": 12,
+      "sum_seconds": 9.004097,
+      "median_seconds": 0.737083
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_private_family_opportunity_v1",
+      "count": 37,
+      "sum_seconds": 7.598795,
+      "median_seconds": 0.054383
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_private_family_opportunity_v1",
+      "count": 8,
+      "sum_seconds": 7.139412,
+      "median_seconds": 0.891559
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "service.normal_plan_turn",
+      "count": 40,
+      "sum_seconds": 6.483348,
+      "median_seconds": 0.137796
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "service._plan_turn_internal",
+      "count": 40,
+      "sum_seconds": 6.44729,
+      "median_seconds": 0.137038
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.normal_plan_turn",
+      "count": 6,
+      "sum_seconds": 5.012606,
+      "median_seconds": 0.831599
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_persistence",
+      "count": 6,
+      "sum_seconds": 4.453757,
+      "median_seconds": 0.708707
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_atomic_write",
+      "count": 6,
+      "sum_seconds": 4.325055,
+      "median_seconds": 0.688429
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 6,
+      "sum_seconds": 4.253181,
+      "median_seconds": 0.676366
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 40,
+      "sum_seconds": 3.71225,
+      "median_seconds": 0.093986
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 16,
+      "sum_seconds": 3.205049,
+      "median_seconds": 0.180441
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_pause",
+      "count": 37,
+      "sum_seconds": 2.676433,
+      "median_seconds": 0.0742
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_persistence",
+      "count": 3,
+      "sum_seconds": 2.634664,
+      "median_seconds": 0.760247
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_persistence",
+      "count": 3,
+      "sum_seconds": 2.622004,
+      "median_seconds": 0.70865
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_atomic_write",
+      "count": 3,
+      "sum_seconds": 2.543878,
+      "median_seconds": 0.685071
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_atomic_write",
+      "count": 3,
+      "sum_seconds": 2.543051,
+      "median_seconds": 0.732149
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 3,
+      "sum_seconds": 2.509605,
+      "median_seconds": 0.720907
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 3,
+      "sum_seconds": 2.508337,
+      "median_seconds": 0.674479
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.normal_plan_turn",
+      "count": 8,
+      "sum_seconds": 2.3999,
+      "median_seconds": 0.229563
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_turn_internal",
+      "count": 8,
+      "sum_seconds": 2.385765,
+      "median_seconds": 0.226691
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.normal_plan_turn",
+      "count": 8,
+      "sum_seconds": 2.358861,
+      "median_seconds": 0.225395
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_turn_internal",
+      "count": 8,
+      "sum_seconds": 2.350951,
+      "median_seconds": 0.224262
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_postcondition_wait",
+      "count": 111,
+      "sum_seconds": 2.165149,
+      "median_seconds": 0.01644
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.normal_plan_turn",
+      "count": 8,
+      "sum_seconds": 2.126866,
+      "median_seconds": 0.208795
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_turn_internal",
+      "count": 8,
+      "sum_seconds": 2.119154,
+      "median_seconds": 0.207757
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.normal_plan_turn",
+      "count": 8,
+      "sum_seconds": 1.999795,
+      "median_seconds": 0.193005
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_turn_internal",
+      "count": 8,
+      "sum_seconds": 1.991495,
+      "median_seconds": 0.191979
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service._plan_turn_internal",
+      "count": 6,
+      "sum_seconds": 1.954919,
+      "median_seconds": 0.271978
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_resume",
+      "count": 37,
+      "sum_seconds": 1.841343,
+      "median_seconds": 0.049948
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "driver.native_command_result_wait",
+      "count": 38,
+      "sum_seconds": 1.743927,
+      "median_seconds": 0.044737
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "driver.semantic_snapshot",
+      "count": 424,
+      "sum_seconds": 1.705925,
+      "median_seconds": 0.004486
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 62,
+      "sum_seconds": 1.662227,
+      "median_seconds": 0.022075
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.native_command_result_wait",
+      "count": 118,
+      "sum_seconds": 1.657409,
+      "median_seconds": 0.011399
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.history_free_snapshot",
+      "count": 321,
+      "sum_seconds": 1.532397,
+      "median_seconds": 0.004631
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service.normal_plan_turn",
+      "count": 2,
+      "sum_seconds": 1.435521,
+      "median_seconds": 0.71776
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service._plan_turn_internal",
+      "count": 2,
+      "sum_seconds": 1.433245,
+      "median_seconds": 0.716623
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service.normal_plan_turn",
+      "count": 3,
+      "sum_seconds": 1.428082,
+      "median_seconds": 0.324628
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.plan_construction_private",
+      "count": 17,
+      "sum_seconds": 1.375212,
+      "median_seconds": 0.077705
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.normal_plan_turn",
+      "count": 3,
+      "sum_seconds": 1.264792,
+      "median_seconds": 0.303204
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._plan_turn_internal",
+      "count": 3,
+      "sum_seconds": 1.261146,
+      "median_seconds": 0.301712
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_persistence",
+      "count": 2,
+      "sum_seconds": 1.126778,
+      "median_seconds": 0.563389
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_atomic_write",
+      "count": 2,
+      "sum_seconds": 1.082918,
+      "median_seconds": 0.541459
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.semantic_snapshot",
+      "count": 252,
+      "sum_seconds": 1.076938,
+      "median_seconds": 0.004735
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 2,
+      "sum_seconds": 1.058559,
+      "median_seconds": 0.529279
+    },
+    {
+      "step": "root_current_runtime_metrics",
+      "stage": "driver.semantic_snapshot",
+      "count": 135,
+      "sum_seconds": 0.985425,
+      "median_seconds": 0.005726
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 18,
+      "sum_seconds": 0.955359,
+      "median_seconds": 0.05083
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.life_advance_speed_setup",
+      "count": 37,
+      "sum_seconds": 0.881026,
+      "median_seconds": 0.024386
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 37,
+      "sum_seconds": 0.846692,
+      "median_seconds": 0.022526
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 17,
+      "sum_seconds": 0.834707,
+      "median_seconds": 0.049634
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 17,
+      "sum_seconds": 0.830615,
+      "median_seconds": 0.049463
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_persistence",
+      "count": 1,
+      "sum_seconds": 0.825761,
+      "median_seconds": 0.825761
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_atomic_write",
+      "count": 1,
+      "sum_seconds": 0.798352,
+      "median_seconds": 0.798352
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 1,
+      "sum_seconds": 0.784467,
+      "median_seconds": 0.784467
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "driver.semantic_snapshot",
+      "count": 72,
+      "sum_seconds": 0.707183,
+      "median_seconds": 0.01009
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service.normal_plan_turn",
+      "count": 1,
+      "sum_seconds": 0.700735,
+      "median_seconds": 0.700735
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service._plan_turn_internal",
+      "count": 1,
+      "sum_seconds": 0.699353,
+      "median_seconds": 0.699353
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "driver.semantic_snapshot",
+      "count": 72,
+      "sum_seconds": 0.687111,
+      "median_seconds": 0.009803
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.plan_ransom_private",
+      "count": 17,
+      "sum_seconds": 0.649883,
+      "median_seconds": 0.03611
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.prisoner_ransom_plan",
+      "count": 17,
+      "sum_seconds": 0.64601,
+      "median_seconds": 0.035913
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.composite_primitive",
+      "count": 37,
+      "sum_seconds": 0.633372,
+      "median_seconds": 0.018376
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "driver.semantic_snapshot",
+      "count": 72,
+      "sum_seconds": 0.628161,
+      "median_seconds": 0.009257
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.life_advance_postcondition_wait",
+      "count": 2,
+      "sum_seconds": 0.623434,
+      "median_seconds": 0.311717
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.life_advance_public_change_wait",
+      "count": 2,
+      "sum_seconds": 0.623023,
+      "median_seconds": 0.311512
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.history_free_snapshot",
+      "count": 129,
+      "sum_seconds": 0.61901,
+      "median_seconds": 0.004848
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "driver.semantic_snapshot",
+      "count": 72,
+      "sum_seconds": 0.609889,
+      "median_seconds": 0.008677
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 8,
+      "sum_seconds": 0.553942,
+      "median_seconds": 0.07188
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "driver.history_free_snapshot",
+      "count": 152,
+      "sum_seconds": 0.551394,
+      "median_seconds": 0.003638
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 8,
+      "sum_seconds": 0.527909,
+      "median_seconds": 0.066974
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "driver.history_free_snapshot",
+      "count": 48,
+      "sum_seconds": 0.490432,
+      "median_seconds": 0.010575
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 8,
+      "sum_seconds": 0.478467,
+      "median_seconds": 0.060142
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "driver.history_free_snapshot",
+      "count": 48,
+      "sum_seconds": 0.476694,
+      "median_seconds": 0.010213
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.semantic_snapshot",
+      "count": 117,
+      "sum_seconds": 0.476077,
+      "median_seconds": 0.004735
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 8,
+      "sum_seconds": 0.462146,
+      "median_seconds": 0.056293
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "driver.history_free_snapshot",
+      "count": 48,
+      "sum_seconds": 0.4423,
+      "median_seconds": 0.009672
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "driver.history_free_snapshot",
+      "count": 48,
+      "sum_seconds": 0.432422,
+      "median_seconds": 0.008994
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_replace",
+      "count": 37,
+      "sum_seconds": 0.39826,
+      "median_seconds": 0.010677
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.life_advance_postcondition_wait",
+      "count": 1,
+      "sum_seconds": 0.344929,
+      "median_seconds": 0.344929
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.life_advance_public_change_wait",
+      "count": 1,
+      "sum_seconds": 0.344652,
+      "median_seconds": 0.344652
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 15,
+      "sum_seconds": 0.333676,
+      "median_seconds": 0.022673
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.semantic_snapshot",
+      "count": 27,
+      "sum_seconds": 0.283508,
+      "median_seconds": 0.010853
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service.normal_plan_turn",
+      "count": 2,
+      "sum_seconds": 0.2745,
+      "median_seconds": 0.13725
+    },
+    {
+      "step": "life-advance",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 17,
+      "sum_seconds": 0.273901,
+      "median_seconds": 0.016326
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service._plan_turn_internal",
+      "count": 2,
+      "sum_seconds": 0.272102,
+      "median_seconds": 0.136051
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.plan_release_formal",
+      "count": 37,
+      "sum_seconds": 0.269477,
+      "median_seconds": 0.007088
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.plan_construction_private",
+      "count": 3,
+      "sum_seconds": 0.263916,
+      "median_seconds": 0.07398
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.prisoner_release_plan",
+      "count": 37,
+      "sum_seconds": 0.255752,
+      "median_seconds": 0.006651
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 12,
+      "sum_seconds": 0.25005,
+      "median_seconds": 0.017531
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.history_free_snapshot",
+      "count": 59,
+      "sum_seconds": 0.249479,
+      "median_seconds": 0.004474
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 6,
+      "sum_seconds": 0.248876,
+      "median_seconds": 0.048658
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 3,
+      "sum_seconds": 0.223716,
+      "median_seconds": 0.074074
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "driver.semantic_snapshot",
+      "count": 18,
+      "sum_seconds": 0.166591,
+      "median_seconds": 0.009135
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.history_free_snapshot",
+      "count": 15,
+      "sum_seconds": 0.160686,
+      "median_seconds": 0.010834
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.auto_turn_camera",
+      "count": 34,
+      "sum_seconds": 0.155522,
+      "median_seconds": 3.7e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 2,
+      "sum_seconds": 0.124642,
+      "median_seconds": 0.062321
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.plan_release_formal",
+      "count": 16,
+      "sum_seconds": 0.122162,
+      "median_seconds": 0.007439
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 6,
+      "sum_seconds": 0.116815,
+      "median_seconds": 0.019878
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.prisoner_release_plan",
+      "count": 16,
+      "sum_seconds": 0.115811,
+      "median_seconds": 0.007069
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "driver.history_free_snapshot",
+      "count": 12,
+      "sum_seconds": 0.112034,
+      "median_seconds": 0.009422
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "driver.semantic_snapshot",
+      "count": 24,
+      "sum_seconds": 0.110193,
+      "median_seconds": 0.004741
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service.auto_turn_camera",
+      "count": 3,
+      "sum_seconds": 0.102419,
+      "median_seconds": 0.024636
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.declarable_publish",
+      "count": 8,
+      "sum_seconds": 0.092957,
+      "median_seconds": 0.011689
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 3,
+      "sum_seconds": 0.081324,
+      "median_seconds": 0.024713
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.auto_turn_camera",
+      "count": 6,
+      "sum_seconds": 0.07667,
+      "median_seconds": 4e-05
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 3,
+      "sum_seconds": 0.073605,
+      "median_seconds": 0.02446
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_replace",
+      "count": 6,
+      "sum_seconds": 0.06584,
+      "median_seconds": 0.011035
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.auto_turn_camera",
+      "count": 7,
+      "sum_seconds": 0.060574,
+      "median_seconds": 3.7e-05
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.semantic_snapshot",
+      "count": 12,
+      "sum_seconds": 0.051547,
+      "median_seconds": 0.005512
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "driver.history_free_snapshot",
+      "count": 12,
+      "sum_seconds": 0.045705,
+      "median_seconds": 0.003851
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 2,
+      "sum_seconds": 0.041027,
+      "median_seconds": 0.020513
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_replace",
+      "count": 3,
+      "sum_seconds": 0.032812,
+      "median_seconds": 0.010357
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.declarable_starting_snapshot",
+      "count": 8,
+      "sum_seconds": 0.032482,
+      "median_seconds": 0.003973
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.semantic_snapshot",
+      "count": 6,
+      "sum_seconds": 0.031912,
+      "median_seconds": 0.005993
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_replace",
+      "count": 3,
+      "sum_seconds": 0.031043,
+      "median_seconds": 0.010366
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 1,
+      "sum_seconds": 0.025874,
+      "median_seconds": 0.025874
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_replace",
+      "count": 2,
+      "sum_seconds": 0.022432,
+      "median_seconds": 0.011216
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.history_free_snapshot",
+      "count": 6,
+      "sum_seconds": 0.01999,
+      "median_seconds": 0.002065
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_json_serialization",
+      "count": 37,
+      "sum_seconds": 0.017573,
+      "median_seconds": 0.000318
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.history_free_snapshot",
+      "count": 3,
+      "sum_seconds": 0.017245,
+      "median_seconds": 0.006629
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.native_endpoint_send",
+      "count": 118,
+      "sum_seconds": 0.016526,
+      "median_seconds": 0.000121
+    },
+    {
+      "step": "ck3_take_semantic_snapshot_private_v1",
+      "stage": "driver.semantic_snapshot",
+      "count": 3,
+      "sum_seconds": 0.016012,
+      "median_seconds": 0.005312
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_replace",
+      "count": 1,
+      "sum_seconds": 0.012986,
+      "median_seconds": 0.012986
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.plan_construction_private",
+      "count": 6,
+      "sum_seconds": 0.011576,
+      "median_seconds": 0.001898
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.declarable_normalize",
+      "count": 8,
+      "sum_seconds": 0.010486,
+      "median_seconds": 0.001329
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.plan_release_formal",
+      "count": 7,
+      "sum_seconds": 0.009915,
+      "median_seconds": 0.000488
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.history_free_snapshot",
+      "count": 3,
+      "sum_seconds": 0.009841,
+      "median_seconds": 0.002779
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.semantic_snapshot",
+      "count": 3,
+      "sum_seconds": 0.008641,
+      "median_seconds": 0.00242
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.prisoner_release_plan",
+      "count": 7,
+      "sum_seconds": 0.007325,
+      "median_seconds": 7e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_json_serialization",
+      "count": 3,
+      "sum_seconds": 0.005557,
+      "median_seconds": 0.00188
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "driver.native_endpoint_send",
+      "count": 38,
+      "sum_seconds": 0.005104,
+      "median_seconds": 0.000126
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.plan_construction_private",
+      "count": 2,
+      "sum_seconds": 0.003534,
+      "median_seconds": 0.001767
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.plan_construction_private",
+      "count": 2,
+      "sum_seconds": 0.002854,
+      "median_seconds": 0.001427
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.plan_construction_private",
+      "count": 2,
+      "sum_seconds": 0.00274,
+      "median_seconds": 0.00137
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._plan_private_family_opportunity_v1",
+      "count": 6,
+      "sum_seconds": 0.002728,
+      "median_seconds": 0.000454
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.plan_construction_private",
+      "count": 2,
+      "sum_seconds": 0.002661,
+      "median_seconds": 0.00133
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_json_serialization",
+      "count": 6,
+      "sum_seconds": 0.002657,
+      "median_seconds": 0.000418
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "driver.native_endpoint_send",
+      "count": 16,
+      "sum_seconds": 0.002077,
+      "median_seconds": 0.000113
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 6,
+      "sum_seconds": 0.001805,
+      "median_seconds": 0.000261
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.plan_ransom_private",
+      "count": 6,
+      "sum_seconds": 0.0017,
+      "median_seconds": 0.000266
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.plan_release_formal",
+      "count": 8,
+      "sum_seconds": 0.001526,
+      "median_seconds": 0.000175
+    },
+    {
+      "step": "query-war-results-window-v1",
+      "stage": "service.auto_turn_camera",
+      "count": 34,
+      "sum_seconds": 0.001374,
+      "median_seconds": 3.8e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.plan_release_formal",
+      "count": 8,
+      "sum_seconds": 0.001365,
+      "median_seconds": 0.000144
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.plan_release_formal",
+      "count": 8,
+      "sum_seconds": 0.001331,
+      "median_seconds": 0.000156
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.plan_release_formal",
+      "count": 8,
+      "sum_seconds": 0.001274,
+      "median_seconds": 0.000151
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 6,
+      "sum_seconds": 0.00098,
+      "median_seconds": 0.000148
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.plan_ransom_private",
+      "count": 3,
+      "sum_seconds": 0.000853,
+      "median_seconds": 0.000316
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 3,
+      "sum_seconds": 0.000694,
+      "median_seconds": 0.000224
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service.plan_release_formal",
+      "count": 3,
+      "sum_seconds": 0.000649,
+      "median_seconds": 0.000206
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.plan_release_formal",
+      "count": 3,
+      "sum_seconds": 0.000549,
+      "median_seconds": 0.000185
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 2,
+      "sum_seconds": 0.000434,
+      "median_seconds": 0.000217
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_json_serialization",
+      "count": 2,
+      "sum_seconds": 0.000412,
+      "median_seconds": 0.000206
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.prisoner_ransom_plan",
+      "count": 6,
+      "sum_seconds": 0.000408,
+      "median_seconds": 6.5e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 2,
+      "sum_seconds": 0.000402,
+      "median_seconds": 0.000201
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 2,
+      "sum_seconds": 0.000392,
+      "median_seconds": 0.000196
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service.plan_release_formal",
+      "count": 2,
+      "sum_seconds": 0.000391,
+      "median_seconds": 0.000195
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.auto_turn_camera",
+      "count": 8,
+      "sum_seconds": 0.000345,
+      "median_seconds": 3.6e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.auto_turn_camera",
+      "count": 8,
+      "sum_seconds": 0.000337,
+      "median_seconds": 3.5e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service.plan_release_formal",
+      "count": 2,
+      "sum_seconds": 0.00033,
+      "median_seconds": 0.000165
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 2,
+      "sum_seconds": 0.000305,
+      "median_seconds": 0.000153
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.auto_turn_camera",
+      "count": 8,
+      "sum_seconds": 0.000302,
+      "median_seconds": 3.6e-05
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 3,
+      "sum_seconds": 0.0003,
+      "median_seconds": 0.000116
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.prisoner_ransom_plan",
+      "count": 3,
+      "sum_seconds": 0.000258,
+      "median_seconds": 9.6e-05
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "service.auto_turn_camera",
+      "count": 3,
+      "sum_seconds": 0.000248,
+      "median_seconds": 5.4e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.auto_turn_camera",
+      "count": 8,
+      "sum_seconds": 0.00024,
+      "median_seconds": 3e-05
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_json_serialization",
+      "count": 1,
+      "sum_seconds": 0.00024,
+      "median_seconds": 0.00024
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_json_serialization",
+      "count": 3,
+      "sum_seconds": 0.000221,
+      "median_seconds": 7.7e-05
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service.plan_release_formal",
+      "count": 1,
+      "sum_seconds": 0.000184,
+      "median_seconds": 0.000184
+    },
+    {
+      "step": "life-advance",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 37,
+      "sum_seconds": 0.000152,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 1,
+      "sum_seconds": 0.000147,
+      "median_seconds": 0.000147
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service.auto_turn_camera",
+      "count": 2,
+      "sum_seconds": 0.000144,
+      "median_seconds": 7.2e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 2,
+      "sum_seconds": 0.000111,
+      "median_seconds": 5.5e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 2,
+      "sum_seconds": 8.9e-05,
+      "median_seconds": 4.4e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 2,
+      "sum_seconds": 8.8e-05,
+      "median_seconds": 4.4e-05
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service.auto_turn_camera",
+      "count": 1,
+      "sum_seconds": 8.6e-05,
+      "median_seconds": 8.6e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 2,
+      "sum_seconds": 8.6e-05,
+      "median_seconds": 4.3e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.auto_turn_camera",
+      "count": 2,
+      "sum_seconds": 8.4e-05,
+      "median_seconds": 4.2e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service.auto_turn_camera",
+      "count": 2,
+      "sum_seconds": 7.8e-05,
+      "median_seconds": 3.9e-05
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 1,
+      "sum_seconds": 4.8e-05,
+      "median_seconds": 4.8e-05
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 6,
+      "sum_seconds": 4.2e-05,
+      "median_seconds": 6e-06
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 37,
+      "sum_seconds": 4.1e-05,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 8,
+      "sum_seconds": 3.7e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 8,
+      "sum_seconds": 3.6e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 8,
+      "sum_seconds": 3.5e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 8,
+      "sum_seconds": 3.4e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 8,
+      "sum_seconds": 3.4e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "life-advance",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 37,
+      "sum_seconds": 3.3e-05,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 8,
+      "sum_seconds": 3.2e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.prisoner_release_plan",
+      "count": 8,
+      "sum_seconds": 3.1e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 8,
+      "sum_seconds": 2.9e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.prisoner_release_plan",
+      "count": 8,
+      "sum_seconds": 2.9e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 8,
+      "sum_seconds": 2.7e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 8,
+      "sum_seconds": 2.7e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.prisoner_release_plan",
+      "count": 8,
+      "sum_seconds": 2.6e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 3,
+      "sum_seconds": 2.4e-05,
+      "median_seconds": 6e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.prisoner_release_plan",
+      "count": 8,
+      "sum_seconds": 2.3e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 6,
+      "sum_seconds": 2.3e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 3,
+      "sum_seconds": 1.9e-05,
+      "median_seconds": 6e-06
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 6,
+      "sum_seconds": 1.8e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 3,
+      "sum_seconds": 1.7e-05,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 3,
+      "sum_seconds": 1.6e-05,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 3,
+      "sum_seconds": 1.6e-05,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 4,
+      "sum_seconds": 1.4e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 3,
+      "sum_seconds": 1.4e-05,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 2,
+      "sum_seconds": 1.3e-05,
+      "median_seconds": 7e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 3,
+      "sum_seconds": 1.3e-05,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 3,
+      "sum_seconds": 1.2e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 3,
+      "sum_seconds": 1.2e-05,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service.prisoner_release_plan",
+      "count": 3,
+      "sum_seconds": 1e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 2,
+      "sum_seconds": 1e-05,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 3,
+      "sum_seconds": 1e-05,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 6,
+      "sum_seconds": 9e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.prisoner_release_plan",
+      "count": 3,
+      "sum_seconds": 9e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-current-event-window-context-v1",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 3,
+      "sum_seconds": 8e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 2,
+      "sum_seconds": 8e-06,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 2,
+      "sum_seconds": 8e-06,
+      "median_seconds": 4e-06
+    },
+    {
+      "step": "private-query-player-construction-receipt-v1",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 6,
+      "sum_seconds": 8e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 3,
+      "sum_seconds": 8e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 1,
+      "sum_seconds": 8e-06,
+      "median_seconds": 8e-06
+    },
+    {
+      "step": "query-declarable-wars",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 3,
+      "sum_seconds": 8e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service.prisoner_release_plan",
+      "count": 2,
+      "sum_seconds": 7e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 2,
+      "sum_seconds": 7e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 2,
+      "sum_seconds": 6e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service.prisoner_release_plan",
+      "count": 2,
+      "sum_seconds": 6e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service.plan_commander_quality_formal_v1",
+      "count": 1,
+      "sum_seconds": 6e-06,
+      "median_seconds": 6e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 2,
+      "sum_seconds": 6e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "ck3_save_checkpoint",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 3,
+      "sum_seconds": 5e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 2,
+      "sum_seconds": 5e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 2,
+      "sum_seconds": 5e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service.prisoner_release_plan",
+      "count": 1,
+      "sum_seconds": 5e-06,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-40118",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 2,
+      "sum_seconds": 5e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 1,
+      "sum_seconds": 5e-06,
+      "median_seconds": 5e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 2,
+      "sum_seconds": 4e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-38920",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 2,
+      "sum_seconds": 4e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 3,
+      "sum_seconds": 4e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-33621827",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 2,
+      "sum_seconds": 3e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 1,
+      "sum_seconds": 3e-06,
+      "median_seconds": 3e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 1,
+      "sum_seconds": 2e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 2,
+      "sum_seconds": 2e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "select-event-option-3",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 2,
+      "sum_seconds": 2e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-36723",
+      "stage": "service._plan_private_council_normal_v1",
+      "count": 1,
+      "sum_seconds": 2e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "stage": "service.plan_crown_authority_private_v1",
+      "count": 1,
+      "sum_seconds": 2e-06,
+      "median_seconds": 2e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_write_lock_wait",
+      "count": 1,
+      "sum_seconds": 1e-06,
+      "median_seconds": 1e-06
+    },
+    {
+      "step": "select-event-option-1",
+      "stage": "driver.full_state_state_lock_wait",
+      "count": 1,
+      "sum_seconds": 1e-06,
+      "median_seconds": 1e-06
+    }
+  ],
+  "first_row": {
+    "seq": 738,
+    "tool": "root_current_runtime_metrics",
+    "elapsed": 0.008154400158673525,
+    "phase": null,
+    "step": null,
+    "days": null,
+    "start_raw": null,
+    "end_raw": null,
+    "requested_horizon_days": null,
+    "paused": null,
+    "war_before_count": null,
+    "speed": null,
+    "policy": null,
+    "status": null,
+    "active_war_count": null
+  },
+  "last_row": {
+    "seq": 1017,
+    "tool": "root_current_runtime_metrics",
+    "elapsed": 0.014177799923345447,
+    "phase": null,
+    "step": null,
+    "days": null,
+    "start_raw": null,
+    "end_raw": null,
+    "requested_horizon_days": null,
+    "paused": null,
+    "war_before_count": null,
+    "speed": null,
+    "policy": null,
+    "status": null,
+    "active_war_count": null
+  },
+  "sample_rows": [
+    {
+      "seq": 738,
+      "tool": "root_current_runtime_metrics",
+      "elapsed": 0.008154400158673525,
+      "phase": null,
+      "step": null,
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": null,
+      "active_war_count": null
+    },
+    {
+      "seq": 739,
+      "tool": "ck3_auto_turn",
+      "elapsed": 0.37159840017557144,
+      "phase": "active_event_window_query",
+      "step": "query-current-event-window-context-v1",
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": "executed",
+      "active_war_count": null
+    },
+    {
+      "seq": 740,
+      "tool": "root_current_runtime_metrics",
+      "elapsed": 0.008050200063735247,
+      "phase": null,
+      "step": null,
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": null,
+      "active_war_count": null
+    },
+    {
+      "seq": 741,
+      "tool": "ck3_auto_turn",
+      "elapsed": 1.302578000118956,
+      "phase": "active_event_source_reviewed_first_rendered_option",
+      "step": "select-event-option-3",
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": true,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": "executed",
+      "active_war_count": null
+    },
+    {
+      "seq": 1014,
+      "tool": "ck3_auto_turn",
+      "elapsed": 0.3239767998456955,
+      "phase": "native_war_entry_assessment_alternative",
+      "step": "query-war-entry-assessments-v1-1-40357",
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": "executed",
+      "active_war_count": null
+    },
+    {
+      "seq": 1015,
+      "tool": "root_current_runtime_metrics",
+      "elapsed": 0.016107399947941303,
+      "phase": null,
+      "step": null,
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": null,
+      "active_war_count": null
+    },
+    {
+      "seq": 1016,
+      "tool": "ck3_auto_turn",
+      "elapsed": 1.451292100129649,
+      "phase": "native_war_entry_assessment_alternative",
+      "step": "query-war-entry-assessments-v1-1-65031",
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": "readonly_rejected",
+      "active_war_count": null
+    },
+    {
+      "seq": 1017,
+      "tool": "root_current_runtime_metrics",
+      "elapsed": 0.014177799923345447,
+      "phase": null,
+      "step": null,
+      "days": null,
+      "start_raw": null,
+      "end_raw": null,
+      "requested_horizon_days": null,
+      "paused": null,
+      "war_before_count": null,
+      "speed": null,
+      "policy": null,
+      "status": null,
+      "active_war_count": null
+    }
+  ]
+}

@@ -176,6 +176,54 @@
       "relative_path": "p32-war-results-independent-review01/REVIEW-FINAL.json",
       "sha256": "375a40c7dc3b018c2a370f8b7207d9586879eda5dca64c1c1f5c90e26ac48fcb",
       "bytes": 5051
+    },
+    {
+      "name": "sdk32-window27-original-blocked-auto",
+      "relative_path": "native21-cold-generation03/p32-responses/2086-1-result.json",
+      "sha256": "20de2235dfd4bc80d2c70724144664df1b808ecf3948b0d748fc419b94e9a01c",
+      "bytes": 35557
+    },
+    {
+      "name": "sdk32-window27-independent-paused-frame",
+      "relative_path": "native21-cold-generation03/p32-responses/2087-1-result.json",
+      "sha256": "2f6c1012d276e2f439213cd4bc1aea45261922107a44b65ee4975e7c49e9d984",
+      "bytes": 33584
+    },
+    {
+      "name": "sdk32-zero-rpc-no-action-clear",
+      "relative_path": "native21-cold-generation03/p32-responses/2088-1-result.json",
+      "sha256": "0495dce80a744721ee6ddeb0a6937c9c11df0b4087f7835bd34af627d8176136",
+      "bytes": 1176
+    },
+    {
+      "name": "sdk32-actual-normal-owner-close",
+      "relative_path": "native21-cold-generation03/ROOT-P32-OWNER-CLOSED.json",
+      "sha256": "e76a9aa4148af4294dfd1c353ba104a1ed541d42eefc09efd91dc44094f04911",
+      "bytes": 814
+    },
+    {
+      "name": "sdk32-peace-fixed-five-minute-prefix",
+      "relative_path": "p32-peace-performance-audit01/P32-PEACE-5MIN.json",
+      "sha256": "0d7fad4d313762c0f0fa49285dfe97ecac67f936af4bd642aef767f1abee2a60",
+      "bytes": 64301
+    },
+    {
+      "name": "cb-actor-precondition-unclosed-research",
+      "relative_path": "p32-cb-actor-precondition-research01/MANIFEST.json",
+      "sha256": "c7a5fee92e9cc82c55e07c567b4e48fdbf2101a642ff82a2187a20bf7ea6bf6b",
+      "bytes": 7430
+    },
+    {
+      "name": "SDK33-actual-refuge-departure-chain",
+      "relative_path": "native21-cold-generation03/ROOT-P33-DEFENDER-REFUGE-REAL-CHAIN.json",
+      "sha256": "64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc",
+      "bytes": 8956
+    },
+    {
+      "name": "SDK33-window28-counterpolicy-block",
+      "relative_path": "native21-cold-generation03/p33-responses/0191-1-result.json",
+      "sha256": "2128ceb5e7c99f9f19e6b646746a8aa7246dd385c8ff94bc36200b06e1259221",
+      "bytes": 27756
     }
   ],
   "large_inputs_in_git": false,
@@ -235,7 +283,7 @@
     "sdk28_rev2_attempt02_same_game": true,
     "window24_failed_days": 0,
     "window25_failed_days": 76,
-    "latest_status_source": "Original P30 AUTO417 unavailable move error plus independent SEM418 existing route; SDK30 owner closed1/0; SDK31 preparation not accepted here",
+    "latest_status_source": "ROOT-P33-DEFENDER-REFUGE-REAL-CHAIN.json and originalP33AUTO191, plus Root reported arrived2604/window28failed31days",
     "continuous_thirty_years_met": false,
     "wal_sdk29_deployed": false,
     "sdk30_same_game": true,
@@ -243,13 +291,14 @@
     "window26_baseline_date_raw": 53434464,
     "window26_failed_days": 72,
     "window26_last_date_raw": 53436192,
-    "latest_status": "Root observed SDK32 window27 +302days at 2026-10-16T21:02:10Z: raw53444232/cycles11323; no new blocker; Game/OBS retained; sample192days/217.404957seconds=1.132318sec/day, not campaign average",
+    "latest_status": "SDK33 actual preview/horizon/move/exact-day chain succeeded and arrivedvassal2604; window28 then failed31days at AUTO191/native_war_counterpolicy_hold, raw53481528/native5831/public103/cycles12157; Game/OBS retained; lifecycle followupSDK34 preparing",
     "sdk31_normal_close": {
       "queue_exit": 0,
       "app_exit": 0,
       "watchdog_stop_not_normal_exit_claim": true,
       "resume01_never_attached": true
-    }
+    },
+    "prior_latest_status_source": "Original P30 AUTO417 unavailable move error plus independent SEM418 existing route; SDK30 owner closed1/0; SDK31 preparation not accepted here"
   },
   "source_delta": {
     "public_commit": "79055bb2fc2559f4fe270ec3971591c78b59e0c8",
@@ -355,6 +404,22 @@
       "wall_seconds": 217.404957,
       "seconds_per_day": 1.132317484375,
       "scope": "Root completed-queue samples; includes this prefix queue/plan time; excludes earlier war/manual repairs; not full campaign average"
+    },
+    "final_outcome": {
+      "status": "repair_required",
+      "failed_at_utc": "2026-10-16T21:30:34.441249+00:00",
+      "end_date_raw": 53480760,
+      "elapsed_game_days": 1824,
+      "completed_cycles": 12076,
+      "phase": "native_war_no_alternate_player_held_county",
+      "actor_character_id": 39979,
+      "original_action_replayed": false,
+      "clear_new_MCP_or_native_calls": 0,
+      "clear_business_credit": 0,
+      "SDK_queue_exit": 0,
+      "SDK_app_exit": 0,
+      "Game_stopped": false,
+      "OBS_stopped": false
     }
   },
   "fifth_public_ci": {
@@ -370,7 +435,7 @@
     "related_tests": 25,
     "independent_formal_queue_review": true,
     "TURN_bytes": 2454,
-    "deployed": false,
+    "deployed": true,
     "live_recurrence_verified": false,
     "date_credit": 0,
     "business_credit": 0,
@@ -378,6 +443,55 @@
     "original_query_replayed": false,
     "shared_ci_focused_cases": 64,
     "shared_ci_focused_subtests": 36,
-    "python_only_validation": "GREEN"
+    "python_only_validation": "GREEN",
+    "deployed_in_SDK32": false,
+    "deployed_in_SDK33": true
+  },
+  "sixth_public_ci": {
+    "commit": "7e1cf70fcfe192809c9c3181872a44d8049ef4cb",
+    "official_run": 38972872688,
+    "linear_run": 38972872670,
+    "conclusion": "success"
+  },
+  "sdk32_offline_reports": {
+    "public_archive": "docs/ck3-native-ai/research/sdk32-peace-and-cb-offline/SOURCE-PINS.json",
+    "peace": {
+      "days": 288,
+      "wall_seconds": 299.911981,
+      "seconds_per_day": 1.041361045138889,
+      "includes_real_SAVE_calls": 3,
+      "full_campaign_average": false
+    },
+    "CB_actor_loader_mapping_closed": true,
+    "CB_actor_pruning_deployed": false,
+    "large_Driver_history_video_copied": false,
+    "CB_original_report_loader_mapping_closed": false,
+    "CB_loader02_static_checks": 14
+  },
+  "sdk33_defender_refuge_source": {
+    "public_source_pins": "docs/ck3-native-ai/research/sdk32-defender-refuge/SOURCE-PINS.json",
+    "public_production_tests": 5,
+    "public_related_tests": 26,
+    "public_related_subtests": 2,
+    "original_window27_days": 1824,
+    "new_destination_seeds": 7,
+    "new_native_step_kinds": 0,
+    "true_Service_plan_first_step": "readonly preview2604",
+    "frozen_SDK_source_changed_by_publication": false,
+    "offline_tests_alone_verify_AUTO_wire_or_safe_move": false
+  },
+  "sdk33_actual_window28": {
+    "departure_chain_sha256": "64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc",
+    "arrived_vassal_province": 2604,
+    "status": "repair_required",
+    "failed_days": 31,
+    "end_date_raw": 53481528,
+    "end_native_revision": 5831,
+    "end_public_revision": 103,
+    "completed_cycles": 12157,
+    "blocked_phase": "native_war_counterpolicy_hold",
+    "lifecycle_stationary_or_repeat_withdrawal_verified": false,
+    "SDK34_launched_claimed": false,
+    "Game_OBS_restarted": false
   }
 }

@@ -241,3 +241,25 @@ Root在2026-10-16T20:55:46Z报告SDK32已实际热接：FULL3成功12日，SEM64
 
 本候选未部署，当前 SDK32 连续运行未被打断；不以离线回放宣称实机首次失败分支已验收。
 稳定30年优先，其后<1秒／日、再0.5秒／日，均未达；已有302日具名样本与1.132318秒／日段仍按历史范围保留。
+
+## 第六批 CI 完成后的真实失败边界
+
+第六 `7e1cf70f` Official38972872688及Linear38972872670均已success。后续SDK32窗口27在AUTO2086
+`native_war_no_alternate_player_held_county`无动作阻塞：raw53436984→53480760，共1824游戏日；
+该窗口失败，不能将此前具名正常段续算成30年达标。SEM2087独立确认paused、public2464／Native5729／actor39979；
+CTRL2088保持12076cycles，0MCP／0业务信用／无原动作重放。SDK32随后真实正常0/0退出，Game／OBS保留。
+原失败包、fresh帧、零RPC清理和owner退出的精确出处纳入source-index；SDK33及撤离候选此时仅准备、未launch。
+
+## 单县防守候选的公共收口
+
+三源叶只增加同帧完整直辖封臣首都的Native预览种子及现有能力路由，保持实际移动的原版exact／full-hostile守卫。
+五项无外置盘依赖的公共生产链回放及相关回归共26项、2子用例GREEN，原public2464与Native5729分别绑定。
+164KB实际投影保留必要举兵和第一次独立读回，不复制完整history；synthetic deferred记录只证明规划退路，不当作实际移动。
+[最小源包与验收限制](research/sdk32-defender-refuge/README.md)。本次公开不改D盘冻结源，AUTO wire／安全撤离／后续稳定待现场证明。
+[两份有限报告](research/sdk32-peace-and-cb-offline/README.md)只保存小原件与pins；CB loader02旧失败与新静态闭合并列，
+和平1.041361秒／日含3SAVE不当作整场均速，不将研究上限计为实际提速。
+
+提交前Root另交SDK33实机链：preview16→horizon19→move22→SEM24→clock29/fresh31/32真实成功并后来到达2604，
+[精确小原件](research/sdk32-defender-refuge/ROOT-P33-ACTUAL-DEPARTURE-CHAIN.json) SHA64228d8e…保全。同Game／OBS保持。
+但FULL178／AUTO191在`native_war_counterpolicy_hold`再阻塞，窗口28失败31日／raw53481528／12157cycles；
+出发修复已实机，抵达后驻守／再次撤离仍待SDK34，不能宣称全面稳定或拼接旧1824日达标。

@@ -1,0 +1,79 @@
+{
+  "status": "PUBLIC_OFFLINE_AND_ACTUAL_DEPARTURE_VERIFIED_LIFECYCLE_OPEN",
+  "original_FINAL_sha256": "7a643027672b5a30a3017d3cc55dbed4acd78201a794586c9c4648b3aaaae2c2",
+  "production_hunks_only": true,
+  "real_public_Service_NativeDriver_ProtocolState": true,
+  "public_revision": 2464,
+  "native_revision": 5729,
+  "new_tests": 5,
+  "related_tests": 26,
+  "related_subtests": 2,
+  "original_full_history_bytes_in_Git": 0,
+  "projection_has_postfailure_mercenary": false,
+  "files": [
+    {
+      "public_path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "normalized_LF_sha256": "5e48486502e20f14ae1ccc455a8a31b14080cb682dd6a485c93db94dfdebdaf1"
+    },
+    {
+      "public_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "normalized_LF_sha256": "7394c6b11a121e12339368980d2da817a688a87480e976563408847254721a5f"
+    },
+    {
+      "public_path": "ck3_autonomous_player/src/xar_autoplayer/defender_refuge_candidates_v1.py",
+      "normalized_LF_sha256": "91ba54cd708002b6e514f84c0172c774967f8c89e6b11098f25e16eca55c77a8"
+    },
+    {
+      "public_path": "ck3_autonomous_player/tests/unit/test_defender_refuge_candidates.py",
+      "normalized_LF_sha256": "c4774aef369e20fce8b4e2f4edf703d6338cfa62789ff8dbc0c82f052fc12618"
+    },
+    {
+      "public_path": "ck3_autonomous_player/tests/unit/fixtures/defender_refuge_actual_projection.json",
+      "normalized_LF_sha256": "c5b13c1de75e8c34751e36d5c1ad4f82ba01186d10c2c5b3939a5d8e20691bf3"
+    }
+  ],
+  "public_base_commit": "611bc985ae95f477dd7314df11f8602cd1e595f3",
+  "archive_files": [
+    {
+      "path": "FINAL.json",
+      "bytes": 2759,
+      "sha256": "7a643027672b5a30a3017d3cc55dbed4acd78201a794586c9c4648b3aaaae2c2"
+    },
+    {
+      "path": "strategy.py.patch",
+      "bytes": 7357,
+      "sha256": "d523c78669d01fa78186a2346106758f43a2e2aa455291b3c36786d7c2e8ac7c"
+    },
+    {
+      "path": "bridge-native_driver.py.patch",
+      "bytes": 1964,
+      "sha256": "b9dc3831d3a33c83cad84ee49a1963d2a62d43793f14511dce862fb287d5aafb"
+    },
+    {
+      "path": "PUBLIC-REFUGE.patch",
+      "bytes": 9485,
+      "sha256": "babd8917bb2b95ef49e21d7417ef0e437b76547f9c5ba2df9e2a77ada4c75b60"
+    },
+    {
+      "path": "ROOT-P33-ACTUAL-DEPARTURE-CHAIN.json",
+      "sha256": "64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc",
+      "bytes": 8956
+    }
+  ],
+  "offline_tests_alone_verify_AUTO_wire_or_safe_move": false,
+  "root_actual_departure_chain": {
+    "path": "ROOT-P33-ACTUAL-DEPARTURE-CHAIN.json",
+    "sha256": "64228d8e1f0766acac3eddea995825b598db733f838ee83b17f4657d640c7cbc",
+    "preview_AUTO": 16,
+    "horizon_AUTO": 19,
+    "move_AUTO": 22,
+    "independent_SEM": 24,
+    "exact_day_AUTO": 29,
+    "later_arrival_province": 2604,
+    "window28_failed_days": 31,
+    "end_date_raw": 53481528,
+    "end_cycles": 12157,
+    "later_block_phase": "native_war_counterpolicy_hold",
+    "stationary_or_repeated_withdrawal_verified": false
+  }
+}

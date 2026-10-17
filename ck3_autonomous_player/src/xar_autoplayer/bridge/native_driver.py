@@ -78,6 +78,7 @@ from .driver_state_history_json import (
     DriverStateHistoryJsonCache, driver_state_json_parts,
 )
 from ..siege_subject_contribution_v1 import observe_siege_subject_contribution
+from ..defender_refuge_candidates_v1 import same_frame_direct_vassal_refuge_scope
 from .driver import (
     BridgeUnavailableError,
     GameplayBridgeDriver,
@@ -2321,6 +2322,28 @@ class NativeHeadlessGameplayDriver:
                         hostile_army_ids,
                     )
                 )
+        # Direct-vassal capitals only enlarge the native preview seed set
+        # for a complete same-frame one-county primary-defender position.
+        # Native route/hostile contact checks still decide every selected move.
+        refuge_scope = same_frame_direct_vassal_refuge_scope(
+            current_snapshot, campaign_root_context_query
+        )
+        if refuge_scope is not None:
+            refuge_army = int(refuge_scope["army_id"])
+            refuge_hostiles = tuple(refuge_scope["hostile_army_ids"])
+            for refuge_province in refuge_scope["candidate_province_ids"]:
+                if PREVIEW_MOVE_ARMY_CAPABILITY in bridge_capabilities:
+                    action_steps.add(preview_move_army_step(
+                        refuge_army, refuge_province
+                    ))
+                if MOVE_ARMY_CAPABILITY in bridge_capabilities:
+                    action_steps.add(move_army_step(
+                        refuge_army, refuge_province
+                    ))
+                if QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities:
+                    action_steps.add(query_route_contact_horizon_step(
+                        refuge_army, refuge_province, refuge_hostiles
+                    ))
         if QUERY_ROUTE_CONTACT_HORIZON_CAPABILITY in bridge_capabilities:
             allied_capital_hold = _allied_capital_hold_contact_scope(
                 current_snapshot, campaign_root_context_query

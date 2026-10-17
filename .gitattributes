@@ -595,3 +595,7 @@ docs/ck3-native-ai/evidence/episode04-r194-forward-split-merge-12004/verify_port
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/rough-inputs.candidate-a01.json -text
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/source-pins.actual-a01.json -text
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r194-shot-context-a01/wording-clarification.candidate-a02.json -text
+
+docs/ck3-native-ai/research/sdk32-peace-and-cb-offline/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/research/sdk32-defender-refuge/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/research/sdk32-defender-refuge/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

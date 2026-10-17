@@ -15,6 +15,7 @@ from .ordinary_war_declared_overview_v1 import (
     plan_ordinary_war_declared_overview_v1,
 )
 from .ordinary_war_results_window_v1 import plan_ordinary_war_results_window_v1
+from .defender_refuge_candidates_v1 import direct_vassal_capital_province_ids
 
 from .current_native_war_end_conditions_v1 import (
     assess_current_native_war_end_conditions_v1,
@@ -12188,25 +12189,37 @@ def _choose_one_life_turn_core(
                     "route_rejections": stationary_threats,
                     "active_wars": war_summary,
                 }
-            route_exact_candidates = [
-                province_id
-                for province_id in county_capitals
+            # The direct domain may have only the occupied capital.  Its
+            # complete, same-frame direct-vassal primary capitals are factual
+            # refuge seeds, not inferred neighbors or safe move orders.
+            direct_alternates = [
+                province_id for province_id in county_capitals
                 if province_id != current_province_id
             ]
+            vassal_capitals = direct_vassal_capital_province_ids(campaign_root)
+            vassal_alternates = [
+                province_id for province_id in (vassal_capitals or [])
+                if province_id != current_province_id
+                and province_id not in direct_alternates
+                and preview_move_army_step(army_id, province_id)
+                in available_steps
+            ]
+            route_exact_candidates = (
+                direct_alternates + vassal_alternates
+                + [current_province_id]
+            )
+            fallback_candidate_sources = {
+                province_id: "player_held_county_capital"
+                for province_id in direct_alternates
+            }
+            fallback_candidate_sources.update({
+                province_id: "same_realm_vassal_capital"
+                for province_id in vassal_alternates
+            })
+            fallback_candidate_sources[current_province_id] = (
+                "stationary_player_held_capital"
+            )
             route_candidate_source = "player_held_county_capital"
-            if not route_exact_candidates:
-                return {
-                    "policy": "one-life-turn-v1",
-                    "phase": "native_war_no_alternate_player_held_county",
-                    "selected_step": None,
-                    "required_observation": "broader-safe-war-objective-candidates",
-                    "reason": "the complete directly-held county-capital set contains no alternate Province; broader native objective candidates remain unobserved",
-                    "candidate_province_ids": county_capitals,
-                    "defensive_hold": defender_safe_objective_input,
-                    "native_rally_hold_binding": safe_objective_rally_binding,
-                    "route_rejections": stationary_threats,
-                    "active_wars": war_summary,
-                }
             if not route_preview_required:
                 return {
                     "policy": "one-life-turn-v1",
@@ -12233,6 +12246,9 @@ def _choose_one_life_turn_core(
             # every objective for the shortest path.  This is not a fixed cap:
             # rejected candidates still fall through to the rest of the set.
             for objective_rank, province_id in enumerate(route_exact_candidates):
+                candidate_source = fallback_candidate_sources.get(
+                    province_id, route_candidate_source
+                ) if defender_safe_objective_input is not None else route_candidate_source
                 if province_id == current_province_id:
                     if isinstance(exact_siege_rejection, dict):
                         route_rejections.append(
@@ -12435,6 +12451,15 @@ def _choose_one_life_turn_core(
                                 ),
                             }
                         )
+                        if candidate_source in {
+                            "player_held_county_capital",
+                            "same_realm_vassal_capital",
+                        }:
+                            # A rejected move preview cannot veto the
+                            # independent stationary Native contact reader.
+                            # Reject this destination, then inspect the next
+                            # refuge or the current-province one-day horizon.
+                            continue
                         return {
                             "policy": "one-life-turn-v1",
                             "phase": (
@@ -12609,8 +12634,10 @@ def _choose_one_life_turn_core(
                             )
                             is True
                             and (
-                                route_candidate_source
-                                == "player_held_county_capital"
+                                candidate_source in {
+                                    "player_held_county_capital",
+                                    "same_realm_vassal_capital",
+                                }
                                 or enemy_current_on_route
                             )
                         ):
@@ -12620,8 +12647,10 @@ def _choose_one_life_turn_core(
                                 "one_day_contact_horizon_rejected": (
                                     "hostile_operational_overmatch_"
                                     "player_held_county_fallback"
-                                    if route_candidate_source
-                                    == "player_held_county_capital"
+                                    if candidate_source in {
+                                        "player_held_county_capital",
+                                        "same_realm_vassal_capital",
+                                    }
                                     else "hostile_operational_overmatch_"
                                     "enemy_current_on_exact_route"
                                 ),
@@ -12665,13 +12694,16 @@ def _choose_one_life_turn_core(
                     blocked_province_ids.add(province_id)
                     continue
                 preview_selected_target = province_id
+                route_candidate_source = candidate_source
                 selected_route_audit = {
                     **audit,
                     "selection": {
                         "policy": (
                             "first_safe_player_held_county_capital"
-                            if route_candidate_source
+                            if candidate_source
                             == "player_held_county_capital"
+                            else "first_safe_same_realm_vassal_capital"
+                            if candidate_source == "same_realm_vassal_capital"
                             else "first_safe_ranked_exact_objective"
                         ),
                         "route_hops": len(
@@ -13595,7 +13627,10 @@ def _choose_one_life_turn_core(
             objective_kind = (
                 "regroup"
                 if preview_selected_target == capital_regroup_target
-                or route_candidate_source == "player_held_county_capital"
+                or route_candidate_source in {
+                    "player_held_county_capital",
+                    "same_realm_vassal_capital",
+                }
                 else "relief"
                 if route_candidate_source == "enemy_siege_relief"
                 else "siege"

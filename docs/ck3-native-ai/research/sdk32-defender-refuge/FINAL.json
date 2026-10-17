@@ -1,0 +1,36 @@
+{
+  "status": "FROZEN_OFFLINE_CANDIDATE_NOT_LIVE_VERIFIED",
+  "sdk32_base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p32-candidate\\src\\xar_autoplayer",
+  "actual_history_projection": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p33-hot-sdk-prep01\\TACTICAL-FULL-HISTORY.json",
+  "actual_history_projection_sha256": "e883612d512d0a0267b0835a5e74c817e13e306ab0c87fcc19c0304c0730c713",
+  "source": {
+    "strategy.py": {
+      "base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p32-candidate\\src\\xar_autoplayer\\strategy.py",
+      "base_sha256": "460528fbd0c1a6d5f9386b4ca99cf34524628f68cb697ad59d02bf5e29587315",
+      "candidate": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-no-alternate-retreat-repair01\\candidate\\xar_autoplayer\\strategy.py",
+      "candidate_sha256": "104a4371c2a671fcf55b9691306ac4fb1a70d294765555aef0994349ac3e4588",
+      "patch": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-no-alternate-retreat-repair01\\strategy.py.patch",
+      "patch_sha256": "d523c78669d01fa78186a2346106758f43a2e2aa455291b3c36786d7c2e8ac7c"
+    },
+    "bridge/native_driver.py": {
+      "base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p32-candidate\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "base_sha256": "57c32b319d7312913b18d93f8068deb793163080ce7bf8706adbd79aecb4198b",
+      "candidate": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-no-alternate-retreat-repair01\\candidate\\xar_autoplayer\\bridge\\native_driver.py",
+      "candidate_sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+      "patch": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-no-alternate-retreat-repair01\\bridge-native_driver.py.patch",
+      "patch_sha256": "b9dc3831d3a33c83cad84ee49a1963d2a62d43793f14511dce862fb287d5aafb"
+    },
+    "defender_refuge_candidates_v1.py": {
+      "candidate": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p32-no-alternate-retreat-repair01\\candidate\\xar_autoplayer\\defender_refuge_candidates_v1.py",
+      "candidate_sha256": "91ba54cd708002b6e514f84c0172c774967f8c89e6b11098f25e16eca55c77a8"
+    }
+  },
+  "validation": {
+    "actual_2086_before_after_planner": "GREEN",
+    "real_native_capabilities_advertisement_7_capitals_21_steps": "GREEN",
+    "stale_actor_date_native_revision_connection_negatives": "GREEN",
+    "seven_preview_deferred_to_zero_hop_native_query": "GREEN",
+    "real_service_chain": "PENDING_ORDINARY_READONLY_PREFLIGHT",
+    "real_game_route_or_combat_outcome": "PENDING"
+  }
+}

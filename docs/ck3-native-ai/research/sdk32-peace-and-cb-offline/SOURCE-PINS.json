@@ -1,0 +1,52 @@
+{
+  "status": "OFFLINE_REPORTS_ONLY_NOT_DEPLOYED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "raw_original_bytes_preserved": true,
+  "full_original_Driver_history_video_in_Git": false,
+  "CB_manifest_inputs": "external; only REPORT and manifest copied, not a complete raw research package",
+  "files": [
+    {
+      "path": "peace/FINDINGS.md",
+      "original_external_relative": "p32-peace-performance-audit01/FINDINGS.md",
+      "sha256": "744476309430566efb46cee3a40365113a9a3528cd8f7ac5e4287a2eb7de62ea",
+      "bytes": 4023
+    },
+    {
+      "path": "peace/P32-PEACE-5MIN.json",
+      "original_external_relative": "p32-peace-performance-audit01/P32-PEACE-5MIN.json",
+      "sha256": "0d7fad4d313762c0f0fa49285dfe97ecac67f936af4bd642aef767f1abee2a60",
+      "bytes": 64301
+    },
+    {
+      "path": "cb/REPORT.md",
+      "original_external_relative": "p32-cb-actor-precondition-research01/REPORT.md",
+      "sha256": "30fd3436b077e3c2d23863adbc00d8e29eaf61401b9e5bdfd536a58d59ba8851",
+      "bytes": 11183
+    },
+    {
+      "path": "cb/MANIFEST.json",
+      "original_external_relative": "p32-cb-actor-precondition-research01/MANIFEST.json",
+      "sha256": "c7a5fee92e9cc82c55e07c567b4e48fdbf2101a642ff82a2187a20bf7ea6bf6b",
+      "bytes": 7430
+    },
+    {
+      "path": "cb/LOADER02-REPORT.md",
+      "original_external_relative": "p32-cb-actor-precondition-research01/LOADER02-REPORT.md",
+      "sha256": "3efcdcfef212850d8a7d9fa1d34778980396baedc826853f66ef93fe6d7d1607",
+      "bytes": 7234
+    },
+    {
+      "path": "cb/LOADER02-MANIFEST.json",
+      "original_external_relative": "p32-cb-actor-precondition-research01/LOADER02-MANIFEST.json",
+      "sha256": "cb8649f0ff1e91a9b110bbeb2bf7530cc6eba36b743f833578d9e64d9525ed25",
+      "bytes": 5959
+    },
+    {
+      "path": "cb/LOADER02-STATIC-RESULT.json",
+      "original_external_relative": "p32-cb-actor-precondition-research01/LOADER02-STATIC-RESULT.json",
+      "sha256": "dbe73bafdb3c452b1ef78dbfaab8f28f221bb4daa9c9b630c0a1e09705cbcc85",
+      "bytes": 4749
+    }
+  ],
+  "CB_loader02": "static field semantics now closed by same-build table/parser/RTTI bytes; no Native bool/shadow/runtime deployment"
+}
