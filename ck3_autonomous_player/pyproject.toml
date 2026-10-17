@@ -42,7 +42,7 @@ xar-ck3-mcp = "xar_autoplayer.bridge.mcp_server:main"
 xar-throughput-report = "xar_autoplayer.throughput_report:main"
 
 [project.optional-dependencies]
-mcp = ["mcp==2.0.0"]
+mcp = ["mcp==2.2.0"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}
