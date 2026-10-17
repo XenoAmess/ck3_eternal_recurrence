@@ -74,12 +74,22 @@
     "at most two worker tasks; sequential subprocess.run per task and executor join; actual 0.3.0 partial promotion only after subprocess success",
     "unbound required result/visual gaps reject before build output; used inputs require path/bytes/SHA; raw interval upper bound and no overlap retained",
     "final CFR frame count/cadence and stream geometry precede mapping; actual measured frame PTS drives cue/part boundaries and sidecar subtitles",
-    "argv lists and supplied font/tool paths; no PowerShell or desktop/game operations introduced"
+    "argv lists and supplied font/tool paths; Windows automation remains Python-only; no desktop/game operations introduced"
   ],
   "scope_limit": "light source/interface review of this exact patch; no new runtime/business/human signoff or media acceptance credit",
   "tests_rerun": false,
   "media_encoding_performed": false,
   "media_decode_repeated": false,
   "main_checkout_modified": false,
-  "steam_or_desktop_operations": false
+  "steam_or_desktop_operations": false,
+  "repository_copy_annotation": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T13:03:22.267861+00:00",
+    "source": "Root applies the exact single-line prose correction after the CI text-policy finding; producer source bytes and review findings are unchanged",
+    "original_external_report_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime-audit\\full-source-review-a01\\independent-code-review.json",
+    "original_external_report_sha256": "3a1505de90a0421715ae0f1ffa1e86aab170bd4eae12f34a0266366ff34b617c",
+    "original_external_report_unchanged": true,
+    "repository_copy_is_annotated": true,
+    "original_ci_failure_preserved": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\ci-50dfea06\\failed-step-original.log"
+  }
 }
