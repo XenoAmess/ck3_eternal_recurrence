@@ -1,0 +1,284 @@
+{
+  "turn": {
+    "global_turn": 12551,
+    "before": {
+      "snapshot_id": "native:117",
+      "revision": 118,
+      "native_revision": 117,
+      "date_raw": 53483928,
+      "episode_run_id": "native-39979-5ee2d59fcb51",
+      "actor_character_id": 39979
+    },
+    "before_metrics_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0250-1-result.json",
+    "auto_sequence": 252,
+    "stage": "auto_verified",
+    "auto_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0252-1-result.json",
+    "observation": {
+      "schema": "g2.queue.ordinary-result-credit/v1",
+      "selected_step": "life-advance",
+      "service_status": "executed",
+      "result_status": "postcondition",
+      "category": "existing_clock_advance_observed",
+      "typed_nonmaterial_observation": true,
+      "submitted_pending": false,
+      "primitive_accepted": false,
+      "actual_date_delta_raw": 24,
+      "actual_elapsed_days": 1,
+      "paired_after_metrics_still_required": true,
+      "business_success_inferred": false,
+      "replay_allowed": false
+    },
+    "phase": "native_war_global_combat_retreat_progress",
+    "selected_step": "life-advance",
+    "checkpoint_context": {
+      "schema": "g2.queue.calendar-checkpoint-context/v1",
+      "before": {
+        "date_raw": 53483928,
+        "actor_character_id": 39979,
+        "episode_run_id": "native-39979-5ee2d59fcb51"
+      },
+      "after": {
+        "date_raw": 53483952,
+        "actor_character_id": 39979,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "snapshot_id": "native:120",
+        "revision": 121
+      },
+      "war_ids": [
+        369098861
+      ],
+      "war_ended": false
+    },
+    "after": {
+      "snapshot_id": "native:120",
+      "revision": 121,
+      "native_revision": 120,
+      "date_raw": 53483952,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    },
+    "after_metrics_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0253-1-result.json",
+    "date_delta_raw": 24,
+    "business_success_inferred": false,
+    "cumulative_observation_counts": {
+      "submitted_pending_turns": 67,
+      "lifestyle_material_verified_turns": 10,
+      "existing_focus_verified_turns": 84,
+      "primitive_accepted_turns": 6518,
+      "council_material_verified_turns": 13,
+      "construction_material_verified_turns": 248,
+      "construction_start_verified_turns": 21,
+      "construction_completion_verified_turns": 17,
+      "crown_material_verified_turns": 2,
+      "crown_receipt_nonmaterial_turns": 0,
+      "existing_typed_material_verified_turns": 8,
+      "typed_nonmaterial_observation_turns": 4877,
+      "date_advanced_turns": 3295,
+      "checkpoint_saved": 732,
+      "checkpoint_deferred": 21,
+      "checkpoint_readonly_skipped": 286,
+      "checkpoint_siege_interval_deferred": 100,
+      "checkpoint_calendar_deferred": 1566
+    }
+  },
+  "loop": {
+    "completed_cycles": 12551,
+    "before": {
+      "snapshot_id": "native:120",
+      "revision": 121,
+      "native_revision": 120,
+      "date_raw": 53483952,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    }
+  },
+  "pair": {
+    "at_utc": "2026-10-17T03:00:03.630580+00:00",
+    "status": "SDK_PAIR_HANDLES_RETAINED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 243932,
+        "creation_filetime": 134366796000699187,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 237856,
+        "creation_filetime": 134366796028033296,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "observer": "owned_Game_supervisor_retained_handles",
+    "rpc_started": false
+  },
+  "published": {
+    "at_utc": "2026-10-17T03:00:02.813917+00:00",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 243932,
+        "creation_filetime": 134366796000699187,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 237856,
+        "creation_filetime": 134366796028033296,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "application_creator": "actual_mcp_stdio_factory_return",
+    "rpc_started": false
+  },
+  "observed_pair": [
+    {
+      "role": "sdk_queue",
+      "pid": 243932,
+      "creation_filetime": 134366796000699187,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": false
+    },
+    {
+      "role": "sdk_application",
+      "pid": 237856,
+      "creation_filetime": 134366796028033296,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": false
+    }
+  ],
+  "source_pins": {
+    "state": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\0070a907b1424c68990743abe5b7cf3d-RESOLVED.json",
+      "sha256": "91ce5cab587ecaa3a6c292a3b813a3db08c694d56e182c196ef23a8cc913a272"
+    },
+    "turn": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-queue\\CUMULATIVE-TURN-012551.json",
+      "sha256": "b48a4499194b0ec9c983721b9f92432fbb937a45d2b2d108a8511fe3ab8551a9"
+    },
+    "auto": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0252-1-result.json",
+      "sha256": "8fbbdf48ac2d78b0115e38c452700d1f43b96f18c403b17220ae8ed0fc57e452"
+    },
+    "metrics": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0253-1-result.json",
+      "sha256": "5be5ebc25fdb7f118f1b295d972d35530640265701a012ce6d05f84b8ddfb45b"
+    },
+    "pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P35.json",
+      "sha256": "433a6709672c07fca835cb046a37432198be64c3d7c77e9790cfe912b2f7513a"
+    },
+    "published": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P35.json",
+      "sha256": "ff73b28f70fb9c39115e1b567e7033ef1d3ba3bb79aefc14e704c4c15e532235"
+    },
+    "blocked": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0349-1-result.json",
+      "sha256": "1bcdb585318d1958fbd313f010de1ee7eacd1ab8068eb6756701a22d8935b13d"
+    }
+  },
+  "state": {
+    "phase": "repair_applied_waiting_for_progress",
+    "binding": {
+      "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+      "sdk_prefix": "p35",
+      "game_pid": 263980,
+      "game_creation_filetime": 134366781612159835,
+      "game_creation_date": "20261017023601.215983+000"
+    },
+    "observed_frame": {
+      "game_pid": 263980,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51",
+      "date_raw": 53483928,
+      "revision": 118,
+      "native_revision": 117
+    },
+    "repair_applied_sequence": 249
+  },
+  "auto": {
+    "request": {
+      "sequence": 252,
+      "tool": "ck3_auto_turn",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "ended_at_utc": "2026-10-17T03:56:03.699725+00:00",
+    "result": {
+      "structured_content": {
+        "status": "executed",
+        "selected_step": "life-advance",
+        "planning_source_frame": {
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "status": "complete",
+          "snapshot_id": "native:117",
+          "revision": 118,
+          "native_revision": 117,
+          "date_raw": 53483928,
+          "actor_character_id": 39979,
+          "episode_run_id": "native-39979-5ee2d59fcb51",
+          "connection_generation": 1,
+          "bridge_pid": 263980
+        },
+        "result": {
+          "starting_date_raw": 53483928,
+          "ending_date_raw": 53483952
+        }
+      }
+    }
+  },
+  "metrics": {
+    "request": {
+      "sequence": 253,
+      "tool": "root_current_runtime_metrics",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "ended_at_utc": "2026-10-17T03:56:03.737781+00:00",
+    "result": {
+      "structured_content": {
+        "snapshot_id": "native:120",
+        "revision": 121,
+        "native_revision": 120,
+        "date_raw": 53483952,
+        "actor_character_id": 39979,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "paused": true,
+        "map_ready": true,
+        "actor_alive": true,
+        "connection_generation": 1
+      }
+    }
+  },
+  "blocked": {
+    "request": {
+      "sequence": 349,
+      "tool": "ck3_auto_turn",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "ended_at_utc": "2026-10-17T04:04:16.998016+00:00",
+    "result": {
+      "structured_content": {
+        "status": "blocked",
+        "plan": {
+          "phase": "native_war_counterpolicy_hold",
+          "selected_step": null,
+          "reason": "no safe exact objective is available and the adapter publishes no exact combat prediction; do not infer native power from soldiers or chase a visible enemy province"
+        }
+      }
+    }
+  },
+  "projection_disclosure": {
+    "actual_values_preserved": true,
+    "raw_original_SHA256_in_source_pins": true,
+    "wrapper_normalized_after_production_decoder": true,
+    "omitted": "Unrelated full world snapshots, DTO payloads and UI catalogues",
+    "synthetic": [
+      "state.phase (resolved projected back to waiting)",
+      "loop minimal settled projection",
+      "observed_pair.kernel_exit_observed=False (fake retained handle boundary)"
+    ],
+    "live_process_Game_MCP_OBS_Desktop_calls": 0
+  }
+}

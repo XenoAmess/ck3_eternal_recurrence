@@ -1,0 +1,20 @@
+{
+  "status": "READONLY_GOVERNANCE_REGISTRY_EPOCH_INSTALLED_NOT_RECOVERY_PERFORMED",
+  "previous_registry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-READONLY-ALLOWLIST-BEFORE-PAUSED-BOUNDARY-EPOCH01.json",
+    "sha256": "2c6f2364b24deeb6b92be0a0b1a5223d465325229e0d4e3f46bf28a79bbb15eb"
+  },
+  "current_registry": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-READONLY-RECOVERY-ALLOWLIST.json",
+    "sha256": "f5338b65ac9f111c9e3344b5e3b3506f2a068f63abc414c0f20e50c05d8f45ca"
+  },
+  "new_handler": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_campaign_root_paused_boundary_readonly.py",
+    "sha256": "0b1cb6943922ab301082e7c162e0a4d5ee6bea8142ad13e7a2ebd3c92fa2ee09"
+  },
+  "old_handler_count": 7,
+  "new_handler_count": 8,
+  "SDK_source_or_owner_pins_changed": false,
+  "MCP_or_Native_calls": 0,
+  "runtime_recovery_performed": false
+}

@@ -1,0 +1,51 @@
+{
+  "status": "P35_UNAVOIDABLE_REAL_DRIVER_TO_FORMAL_QUEUE_FULL_LOOP_PERSIST_GREEN_NOT_LIVE",
+  "settlements": [
+    {
+      "postcondition": "active_combat_observed",
+      "TURN_bytes": 2651
+    },
+    {
+      "postcondition": "hostile_entered_contact_province",
+      "TURN_bytes": 2727
+    },
+    {
+      "postcondition": "hostile_intent_changed",
+      "TURN_bytes": 2690
+    },
+    {
+      "postcondition": "predicted_contact_boundary_reached",
+      "TURN_bytes": 2804
+    },
+    {
+      "postcondition": "active_combat_observed",
+      "TURN_bytes": 2651
+    }
+  ],
+  "negative_cases": [
+    "false_contact_free",
+    "wrong_overlap",
+    "wrong_conflict_province",
+    "wrong_speed",
+    "wrong_policy",
+    "predicted_contact_claimed",
+    "predicted_wrong_episode",
+    "predicted_wrong_scope",
+    "missing_refresh",
+    "refresh_stale_native",
+    "refresh_wrong_public",
+    "false_observed_battle",
+    "strict_failed",
+    "clock_overshoot",
+    "extra_date",
+    "unpaused",
+    "wrong_Game",
+    "wrong_native_query_frame"
+  ],
+  "strict_success_producer_removes_contact_followup": true,
+  "known_defender_capital_and_rally_phase_source_aliases_checked": true,
+  "actual_clock_IO_only_fake": true,
+  "actual_future_Game_contact_not_claimed": true,
+  "zero_UI_business_victory_replay_credit": true,
+  "MCP_Game_or_live_Driver_reads": 0
+}

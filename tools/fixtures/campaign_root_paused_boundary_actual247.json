@@ -1,0 +1,43 @@
+{
+  "schema": "xar.completed-readonly-boundary-fixture.v1",
+  "evidence_kind": "unchanged_completed_error_not_new_submission",
+  "original_sha256": "dc7b3877eba3f8a93f41993c37d397138f9ad0896b51db9ad44020961e3bd94b",
+  "original_bytes": 869,
+  "row": {
+    "started_at_utc": "2026-10-17T03:41:41.008570+00:00",
+    "ended_at_utc": "2026-10-17T03:41:41.040434+00:00",
+    "elapsed_seconds": 0.031862800009548664,
+    "request": {
+      "sequence": 247,
+      "tool": "ck3_auto_turn",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "result": {
+      "meta": null,
+      "content": [
+        {
+          "type": "text",
+          "text": "Error executing tool ck3_auto_turn: native gameplay step failed: paused application-main boundary is not ready",
+          "annotations": null,
+          "meta": null
+        }
+      ],
+      "structured_content": {
+        "error_type": "_NativeCommandRejectedError",
+        "diagnostics": {
+          "native_command_rejection": {
+            "diagnostic_only": true,
+            "native_request_id": "step-215-552bc2c51358",
+            "native_step": "query-campaign-root-context-v1",
+            "expected_native_revision": 117,
+            "native_error": "paused application-main boundary is not ready"
+          }
+        }
+      },
+      "is_error": true,
+      "result_type": "complete"
+    },
+    "mcp_result_projection_json_utf8_bytes": 552
+  }
+}

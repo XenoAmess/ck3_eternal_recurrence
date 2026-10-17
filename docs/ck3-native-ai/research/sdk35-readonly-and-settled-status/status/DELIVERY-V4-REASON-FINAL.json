@@ -1,0 +1,33 @@
+{
+  "status": "V4_REASON_REFINEMENT_FILE_ONLY_FINAL",
+  "at_utc": "2026-10-17T03:50:39.021114+00:00",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v4.py",
+      "sha256": "8340dcad0a53d77e40da4b3489f3fad9e2085ea7b476d00bb6ce326a1ad58089",
+      "bytes": 6649
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_repair_reason_v4.py",
+      "sha256": "195c818875c99bbfc6b409e1f4fae5c73e036a756bbf99ee2fc625362e0c292e",
+      "bytes": 3561
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\ACTUAL-AUTO247-REJECTION.json",
+      "sha256": "f2ddc8a43ed72aa86d8a6481e11eac424c61c98e742b54acb790557f5dc6ad78",
+      "bytes": 1533
+    }
+  ],
+  "actual_failure_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0247-1-result.json",
+    "sha256": "dc7b3877eba3f8a93f41993c37d397138f9ad0896b51db9ad44020961e3bd94b"
+  },
+  "reason_mapping": "query-campaign-root-context-v1 / paused application-main boundary is not ready",
+  "same_incident_refinement": true,
+  "new_incident_or_business_credit": false,
+  "focused_portable_tests": 4,
+  "runtime_refinement_or_watch_started_by_preparer": false,
+  "frozen_v1_v2_v3_unchanged": true,
+  "review_at_utc": "2026-10-17T11:49:00.265518Z",
+  "new_storage_reservation_bytes": 0
+}

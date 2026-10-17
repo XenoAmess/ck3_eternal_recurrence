@@ -1,0 +1,10 @@
+{
+  "status": "GREEN",
+  "command": "python -B -X utf8 test_portable_qualifier.py",
+  "test_methods": 5,
+  "subtests": 23,
+  "negative_cases": 21,
+  "formal_registry_AST_subset": true,
+  "runtime_calls": 0,
+  "test_fixture": "synthetic, no actual identity or runtime path"
+}

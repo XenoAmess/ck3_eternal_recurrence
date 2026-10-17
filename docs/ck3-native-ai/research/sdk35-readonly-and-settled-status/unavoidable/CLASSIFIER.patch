@@ -1,0 +1,17 @@
+--- deployed05f1.py
++++ root_p35_unavoidable_result_classifier_final02.py
+@@ -3270,7 +3270,7 @@
+ def classify_route_contact_horizon_one_day_v1(body, *, initial_frame=None, game_pid=None):
+     step=body.get("selected_step") if isinstance(body,dict) else None
+     if not isinstance(step,str) or not step.startswith("advance-route-contact-horizon-v1-"):return None
+-    path=Path(classify_route_contact_horizon_one_day_v1.__code__.co_filename).with_name("root_route_contact_exact_day_classifier_v2.py")
++    path=Path(classify_route_contact_horizon_one_day_v1.__code__.co_filename).with_name("root_route_contact_exact_day_classifier_v3_final02.py")
+     raw=path.read_bytes()
+     if hashlib.sha256(raw).hexdigest()!=ROUTE35_SHA:raise ValueError("route35 helper changed")
+     env={};exec(compile(raw,str(path),"exec"),env)
+@@ -3714,4 +3714,4 @@
+     n={};exec(compile(r,str(h),"exec"),n)
+     return n["classify"](b,i,p,f,s)
+ 
+-ROUTE35_SHA="58369d480c5de092f2cc9bfc7a41f35b0f97332802fa0ee1676b11e092ece5e4"
++ROUTE35_SHA="053648cbb0c1b78d8b1c088d629991975cfcbf1667b2eeb75d604e6db79dac5c"

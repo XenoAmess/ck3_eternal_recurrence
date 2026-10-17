@@ -1,0 +1,37 @@
+{
+  "schema": "root.ck3.army-private-auto-scalar-adoption/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T03:42:29.981911+00:00",
+  "status": "ACTUAL_SAME_FRAME_EQUAL_AND_USE_CONFIGURED",
+  "same_frame_comparison": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0146-1-result.json",
+    "sha256": "3b59b045aaa0636475ba3cc971745a4689671c11ba1fc6009c20d7d5fcb7d316"
+  },
+  "use_control": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0148-1-result.json",
+    "sha256": "3ab7b2bd11ffc810a011a6c7586d1e2aae6916a16f20b483a7ed29be1b0232f2"
+  },
+  "fresh_semantic": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0147-1-result.json",
+    "sha256": "96586ae8c1d60e2788301e787fe3aa88ceaf24fd04617627d2d5c5e69c008a90"
+  },
+  "control": {
+    "status": "configured",
+    "mode": "use",
+    "comparison_verified_for_current_identity": true,
+    "native_capability_advertised": true,
+    "source_revision": 34,
+    "source_snapshot_id": "native:33",
+    "source_native_revision": 33,
+    "source_date_raw": 53483280,
+    "game_pid": 263980,
+    "connection_generation": 1,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51",
+    "business_actions_submitted": 0
+  },
+  "actual_future_AUTO_private_query_confirmed": false,
+  "whole_campaign_speed_improvement_claimed": false,
+  "Game_or_SDK_restarted": false,
+  "business_actions_submitted": 0
+}

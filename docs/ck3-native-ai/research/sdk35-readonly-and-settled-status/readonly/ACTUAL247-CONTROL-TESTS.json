@@ -1,0 +1,42 @@
+{
+  "status": "ACTUAL247_HANDLER_DYNAMIC_REGISTRY_AND_EXISTING_KNOWN_PAUSE_CONTROL_CHAIN_GREEN_NOT_LIVE",
+  "actual_original247_sha256": "dc7b3877eba3f8a93f41993c37d397138f9ad0896b51db9ad44020961e3bd94b",
+  "negative_cases": [
+    "move_command",
+    "pause_command",
+    "broad_query_not_reviewed",
+    "timeout",
+    "owner_busy",
+    "unknown_error_type",
+    "diagnostic_false",
+    "request_id_missing",
+    "request_id_wrong_shape",
+    "native_revision_zero",
+    "native_revision_bool",
+    "native_revision_overflow",
+    "unknown_rejection_fields",
+    "client_unknown",
+    "MCP_not_complete",
+    "MCP_not_error",
+    "AUTO_wrong_arguments",
+    "non_AUTO",
+    "wrong_text",
+    "missing_native_packet",
+    "malformed_diagnostics"
+  ],
+  "actual_queue_method_minimal11key_env": true,
+  "existing_dispatcher_and_readonly_recovery_body": true,
+  "unchanged_original_247": true,
+  "old7_no_match_then_dynamic8_match": true,
+  "old7_handler_sources_unchanged": true,
+  "source_fixture_reply": "actual SEM248 reused only as synthetic new child250 reply",
+  "fake_session_calls": [
+    "ck3_take_semantic_snapshot_private_v1"
+  ],
+  "runtime_calls": 0,
+  "birth_reader_only_injected_in_offline_test_no_Windows_calls": true,
+  "counts_date_business_credit_unchanged": true,
+  "exact_control249_next251": true,
+  "feeder_completed_recovery_accepted": true,
+  "SDK_Game_live_Driver_SAVE_OBS_video_or_ledger_operations": 0
+}

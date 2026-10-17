@@ -1,0 +1,1260 @@
+{
+  "schema": "xar.completed-unavoidable-contact-fixture.v1",
+  "evidence_kind": "completed_actual_AUTO_not_synthetic_or_FULL_summary",
+  "sequence": 170,
+  "original_sha256": "3c34482377861dd40e166ea741d899441ee294b9b451d0c6d179df7391047355",
+  "original_bytes": 68705,
+  "initial_frame": {
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53483040,
+    "episode_run_id": "native-39979-5ee2d59fcb51",
+    "actor_character_id": 39979
+  },
+  "game_pid": 263980,
+  "body": {
+    "status": "executed",
+    "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+    "plan": {
+      "policy": "one-life-turn-v1",
+      "phase": "native_war_unavoidable_contact_transition",
+      "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+      "reason": "every alternate exact objective route was rejected; hold the occupied objective for one proof-bound day and require an observed contact transition",
+      "route_audit": {
+        "status": "stationary_current_province_contact",
+        "target_province_id": 2604,
+        "contact_horizon": {
+          "status": "available",
+          "date_raw": 53483280,
+          "snapshot_revision": 33,
+          "subject_army_id": 1023410456,
+          "target_province_id": 2604,
+          "hostile_army_ids": [
+            369099275
+          ],
+          "subject_route": {
+            "timeline_observable": true,
+            "army_id": 1023410456,
+            "current_province_id": 2604,
+            "effective_origin_province_id": 2604,
+            "route_province_ids": [],
+            "arrival_date_raws": []
+          },
+          "hostile_routes": [
+            {
+              "timeline_observable": true,
+              "army_id": 369099275,
+              "current_province_id": 2605,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2604
+              ],
+              "arrival_date_raws": [
+                53483280
+              ]
+            }
+          ],
+          "horizon_start_date_raw": 53483280,
+          "horizon_end_date_raw": 53483304,
+          "one_day_contact_free": false,
+          "conflicts": [
+            {
+              "kind": "same_province",
+              "hostile_army_id": 369099275,
+              "province_id": 2604,
+              "overlap_start_date_raw": 53483280,
+              "overlap_end_date_raw": 53483304
+            }
+          ]
+        }
+      },
+      "route_rejections": [
+        {
+          "target_province_id": 2604,
+          "status": "unsafe",
+          "conflicts": [
+            {
+              "kind": "enemy_targeting_stationary_province",
+              "enemy_army_id": 369099275,
+              "province_id": 2604
+            }
+          ],
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2604,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [],
+              "arrival_date_raws": []
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2610,
+          "route_province_ids": [
+            2605,
+            2610
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2610,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                2610
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2614,
+          "route_province_ids": [
+            2605,
+            8757,
+            2614
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2614,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2614
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2623,
+          "route_province_ids": [
+            2605,
+            8757,
+            2614,
+            2619,
+            2623
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2623,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2614,
+                2619,
+                2623
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808,
+                53484024,
+                53484216
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2628,
+          "route_province_ids": [
+            2605,
+            8757,
+            2615,
+            2616,
+            8754,
+            2613,
+            8752,
+            2628
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2628,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2615,
+                2616,
+                8754,
+                2613,
+                8752,
+                2628
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808,
+                53483952,
+                53484144,
+                53484288,
+                53484504,
+                53484696
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2631,
+          "route_province_ids": [
+            2605,
+            8757,
+            2615,
+            2616,
+            2632,
+            2631
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2631,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2615,
+                2616,
+                2632,
+                2631
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808,
+                53483952,
+                53484144,
+                53484312
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 8755,
+          "route_province_ids": [
+            2605,
+            8757,
+            2614,
+            2619,
+            2623,
+            2622,
+            8755
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 8755,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2614,
+                2619,
+                2623,
+                2622,
+                8755
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808,
+                53484024,
+                53484216,
+                53484480,
+                53484576
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        },
+        {
+          "status": "unsafe",
+          "target_province_id": 2619,
+          "route_province_ids": [
+            2605,
+            8757,
+            2614,
+            2619
+          ],
+          "conflicts": [
+            {
+              "kind": "enemy_current_on_route",
+              "enemy_army_id": 369099275,
+              "province_id": 2605
+            }
+          ],
+          "native_contact_veto": "one_day_contact_not_free",
+          "contact_horizon": {
+            "status": "available",
+            "date_raw": 53483280,
+            "snapshot_revision": 33,
+            "subject_army_id": 1023410456,
+            "target_province_id": 2619,
+            "hostile_army_ids": [
+              369099275
+            ],
+            "subject_route": {
+              "timeline_observable": true,
+              "army_id": 1023410456,
+              "current_province_id": 2604,
+              "effective_origin_province_id": 2604,
+              "route_province_ids": [
+                2605,
+                8757,
+                2614,
+                2619
+              ],
+              "arrival_date_raws": [
+                53483448,
+                53483616,
+                53483808,
+                53484024
+              ]
+            },
+            "hostile_routes": [
+              {
+                "timeline_observable": true,
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "effective_origin_province_id": 2604,
+                "route_province_ids": [
+                  2604
+                ],
+                "arrival_date_raws": [
+                  53483280
+                ]
+              }
+            ],
+            "horizon_start_date_raw": 53483280,
+            "horizon_end_date_raw": 53483304,
+            "one_day_contact_free": false,
+            "conflicts": [
+              {
+                "kind": "same_province",
+                "hostile_army_id": 369099275,
+                "province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483304
+              },
+              {
+                "kind": "opposing_edge",
+                "hostile_army_id": 369099275,
+                "subject_from_province_id": 2604,
+                "subject_to_province_id": 2605,
+                "hostile_from_province_id": 2605,
+                "hostile_to_province_id": 2604,
+                "overlap_start_date_raw": 53483280,
+                "overlap_end_date_raw": 53483280
+              }
+            ]
+          }
+        }
+      ],
+      "active_wars": [
+        {
+          "war_id": 369098861,
+          "player_side": "defender",
+          "primary_opponent_character_id": 35065,
+          "player_is_primary_war_leader": true,
+          "enemy_primary_default_raise_province_id": 2575,
+          "player_relative_war_score": 0,
+          "war_termination_negative_reuse": {
+            "status": "negative_assessment_reused",
+            "war_id": 369098861,
+            "queried_date_raw": 53483208,
+            "age_raw": 72,
+            "age_game_days": 3,
+            "expires_date_raw": 53483376,
+            "query_sequence": 2
+          },
+          "native_end_conditions": {
+            "schema_version": 1,
+            "war_id": 369098861,
+            "player_side": "defender",
+            "player_relative_war_score": 0,
+            "status": "current_options_not_published",
+            "native_options": null,
+            "native_nonloss_exit_available": null,
+            "ordinary_war_input": null,
+            "existing_score_victory_candidate": false,
+            "required_native_input": null
+          },
+          "war_exit_assessment": {
+            "status": "unavailable",
+            "reason": "the bridge does not yet publish complete termination terms, opponent acceptance, or a campaign outcome forecast; do not infer surrender value from war score",
+            "required_capabilities": [
+              "game.command.query-war-termination-options-N",
+              "game.forecast.campaign-outcomes-v1"
+            ]
+          },
+          "enemy_endpoint_epochs": [
+            {
+              "war_id": 369098861,
+              "enemy_army_id": 369099275,
+              "date_raw": 53483280,
+              "current_province_id": 2605,
+              "move_target_province_id": 2604,
+              "next_hop_province_id": 2604,
+              "endpoint_province_id": 2604,
+              "route_province_ids": [
+                2604
+              ],
+              "intent_state": "moving",
+              "epoch_sequence": 1,
+              "first_observed_date_raw": 53483040,
+              "last_observed_date_raw": 53483280,
+              "observed_span_days": 10,
+              "sample_count": 11,
+              "milestones_crossed_days": [
+                7
+              ],
+              "active": true,
+              "closed_date_raw": null,
+              "closed_reason": null
+            }
+          ],
+          "army_strength_balance": {
+            "status": "available",
+            "war_id": 369098861,
+            "friendly_army_ids": [
+              1023410456
+            ],
+            "enemy_army_ids": [
+              369099275
+            ],
+            "friendly_current_soldiers": 1166,
+            "enemy_current_soldiers": 4968,
+            "friendly_maximum_soldiers": 1175,
+            "enemy_maximum_soldiers": 5002,
+            "friendly_ai_base_power_raw": 4223500000,
+            "enemy_ai_base_power_raw": 14200000000,
+            "hostile_operational_overmatch": true,
+            "interpretation": "operational_routing_risk_not_battle_win_odds"
+          }
+        }
+      ],
+      "lifestyle_receipt_consumed": {
+        "action_request_id": "life-focus-1a4a9ebee901419d87c62f4dea4e2dee",
+        "target_key": "stewardship_wealth_focus",
+        "post_snapshot_id": "native:5177",
+        "post_public_revision": 5177,
+        "post_date_raw": 53470680,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "post_target_perk_owned": false,
+        "postcondition_verified": true,
+        "kind": "focus",
+        "post_has_current_focus": true,
+        "post_current_focus_key": "stewardship_wealth_focus"
+      },
+      "campaign_goal_plan_used": {
+        "policy": "ordinary-campaign-goal-v1",
+        "goal_key": "dynasty_continuity",
+        "campaign_id": "native-31254-96253c58fd68",
+        "current_character_id": 39979,
+        "progress": {
+          "reconciled_successions": 2,
+          "last_succession": {
+            "predecessor_character_id": 40526,
+            "actual_successor_character_id": 39979,
+            "matched_inherited_title_ids": [
+              2230,
+              2231,
+              2253
+            ],
+            "expected_other_heir_title_ids": [],
+            "expected_without_heir_title_ids": []
+          }
+        },
+        "focus": "marriage",
+        "priorities": [
+          {
+            "priority": 100,
+            "action": "seek_current_ruler_marriage_and_family_continuity",
+            "reason": "retain the campaign's family intent with fresh ruler candidates"
+          },
+          {
+            "priority": 60,
+            "action": "review_current_ruler_succession_and_partition",
+            "reason": "reuse the current native heir and estate observations"
+          }
+        ]
+      },
+      "activity_feast_lifecycle_observation": {
+        "status": "no_tracking",
+        "lifecycle_terminal_observed": false
+      },
+      "player_risk_context": {
+        "schema": "xar.ck3.ordinary-player-risk-context/v1",
+        "status": "partial",
+        "binding": {
+          "snapshot_id": "native:33",
+          "revision": 34,
+          "native_revision": 33,
+          "date_raw": 53483280,
+          "character_id": 39979
+        },
+        "source": {
+          "capability": "game.command.query-campaign-root-context-v1",
+          "query_sequence": 12,
+          "backend_id": "native-headless"
+        },
+        "current_scope": {
+          "connection_generation": 1,
+          "source": "current_snapshot_diagnostics",
+          "response_connection_generation_observed": false
+        },
+        "health": {
+          "status": "available",
+          "value": {
+            "raw": 418866,
+            "scale": 100000,
+            "band": "fine_or_better",
+            "below_fine": false,
+            "at_or_below_death_chance_dying": false
+          },
+          "unavailable_reason": null
+        },
+        "stress": {
+          "status": "available",
+          "value": {
+            "points": 77,
+            "at_or_above_first_break_threshold": false
+          },
+          "unavailable_reason": null
+        },
+        "alerts": {
+          "ruler_health_below_fine": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "ruler_stress_at_or_above_100": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "no_primary_title_heir": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "succession_partition_split": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          }
+        },
+        "planner_signals": {
+          "succession_preparation_priority": {
+            "status": "available",
+            "value": "normal",
+            "unavailable_reason": null
+          },
+          "avoid_discretionary_stress_gain": {
+            "status": "available",
+            "value": false,
+            "unavailable_reason": null
+          },
+          "protect_legitimacy_floor": {
+            "status": "unavailable",
+            "value": null,
+            "unavailable_reason": "player_legitimacy_state_unavailable"
+          }
+        },
+        "readiness": {
+          "health_ready": true,
+          "stress_ready": true,
+          "succession_priority_ready": true,
+          "legitimacy_protection_ready": false
+        },
+        "unavailable_reason": null
+      },
+      "construction_wartime_observation": {
+        "status": "observed",
+        "native_source_status": "no_legal_budgeted_building",
+        "read_only": true,
+        "advertised": false,
+        "formal_action_ready": false,
+        "candidate": null,
+        "native_budgeted_positive_income_candidate": false,
+        "observed_player_gold_raw": 135856480,
+        "observed_active_war_count": 1,
+        "observed_player_army_count": 1,
+        "existing_shared_gold_commitment_raw": null,
+        "war_future_gold_cost_raw": null,
+        "joint_budget_affordability": "unassessed",
+        "positive_income_coverage_complete": true,
+        "source_frame": {
+          "snapshot_id": "native:33",
+          "revision": 34,
+          "native_revision": 33,
+          "date_raw": 53483280,
+          "episode_run_id": "native-39979-5ee2d59fcb51",
+          "actor_character_id": 39979
+        },
+        "native_query_request_id": "construction-read-e9b869f9f93b44bfae401da367b1fc2f",
+        "native_proof_epoch": 283033,
+        "reason": null
+      },
+      "council_periodic_review": {
+        "status": "cooldown_after_three_no_action_checks",
+        "consecutive_no_action": 0,
+        "next_due_date_raw": 53483880,
+        "remaining_game_days": 25
+      },
+      "crown_periodic_review": {
+        "status": "cooldown_after_three_no_action_checks",
+        "consecutive_no_action": 0,
+        "next_due_date_raw": 53483616,
+        "remaining_game_days": 14
+      },
+      "activity_feast_periodic_review": {
+        "status": "cooldown_after_three_no_action_checks",
+        "consecutive_no_action": 0,
+        "next_due_date_raw": 53483616,
+        "remaining_game_days": 14
+      }
+    },
+    "result": {
+      "step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+      "backend_id": "native-headless",
+      "source": "native-composite",
+      "starting_date": {
+        "date_raw": 53483280
+      },
+      "ending_date": {
+        "date_raw": 53483304
+      },
+      "starting_date_raw": 53483280,
+      "ending_date_raw": 53483304,
+      "elapsed_days": 1,
+      "requested_horizon_days": 1,
+      "timeline_speed": 1,
+      "timeline_policy": "exact_one_day_unavoidable_contact",
+      "progress_status": "postcondition",
+      "war_progress_before": {
+        "date_raw": 53483280,
+        "wars": [
+          {
+            "war_id": 369098861,
+            "player_relative_war_score": 0,
+            "war_objective_province_ids": [],
+            "objective_province_states": [],
+            "enemy_primary_default_raise_province_id": 2575,
+            "player_armies": [
+              {
+                "army_id": 1023410456,
+                "current_province_id": 2604,
+                "soldiers": null,
+                "move_target_province_id": null,
+                "in_combat": false,
+                "retreating": false,
+                "army_state": "regular",
+                "army_state_code": 1,
+                "siege_days_left": null,
+                "siege_province_holder_character_id": null,
+                "siege_province_in_player_subrealm": null,
+                "route_province_ids": []
+              }
+            ],
+            "enemy_armies": [
+              {
+                "army_id": 369099275,
+                "current_province_id": 2605,
+                "soldiers": null,
+                "move_target_province_id": 2604,
+                "in_combat": false,
+                "retreating": false,
+                "army_state": "moving",
+                "army_state_code": 7,
+                "siege_days_left": null,
+                "siege_province_holder_character_id": null,
+                "siege_province_in_player_subrealm": null,
+                "route_province_ids": [
+                  2604
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "war_progress_after": {
+        "date_raw": 53483304,
+        "wars": [
+          {
+            "war_id": 369098861,
+            "player_relative_war_score": 0,
+            "war_objective_province_ids": [],
+            "objective_province_states": [],
+            "enemy_primary_default_raise_province_id": 2575,
+            "player_armies": [
+              {
+                "army_id": 1023410456,
+                "current_province_id": 2604,
+                "soldiers": null,
+                "move_target_province_id": null,
+                "in_combat": true,
+                "retreating": false,
+                "army_state": "combat",
+                "army_state_code": 2,
+                "siege_days_left": null,
+                "siege_province_holder_character_id": null,
+                "siege_province_in_player_subrealm": null,
+                "route_province_ids": []
+              }
+            ],
+            "enemy_armies": [
+              {
+                "army_id": 369099275,
+                "current_province_id": 2604,
+                "soldiers": null,
+                "move_target_province_id": null,
+                "in_combat": true,
+                "retreating": false,
+                "army_state": "combat",
+                "army_state_code": 2,
+                "siege_days_left": null,
+                "siege_province_holder_character_id": null,
+                "siege_province_in_player_subrealm": null,
+                "route_province_ids": []
+              }
+            ]
+          }
+        ]
+      },
+      "ordinary_events": [],
+      "event_resolution": "none",
+      "actions": [
+        {
+          "step": "set-speed-1",
+          "result": {
+            "status": "already_observed",
+            "submitted": false,
+            "source_snapshot_id": "native:33",
+            "source_native_revision": 33,
+            "source_date_raw": 53483280,
+            "observed_speed": 1
+          }
+        },
+        {
+          "step": "research-arm-tactical-daily-sentinel-v1-53483280-to-53483304-speed-1-mode-terminal-a-0",
+          "result": {
+            "step": "research-arm-tactical-daily-sentinel-v1-53483280-to-53483304-speed-1-mode-terminal-a-0",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "armed",
+              "generation": 11,
+              "starting_date_raw": 53483280,
+              "target_date_raw": 53483304,
+              "last_observed_date_raw": 53483280,
+              "trigger_date_raw": 0,
+              "speed": 1,
+              "mode": "terminal_or_sentinel",
+              "army_count": 0,
+              "combat_count": 0,
+              "completed_daily_ticks": 0,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 0,
+              "trigger_reasons": [],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": -1,
+              "pause_wrapper_called": false,
+              "pause_observed": false,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "resume-map",
+          "result": {
+            "step": "resume-map",
+            "accepted": true,
+            "status": "submitted",
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "research-query-tactical-daily-sentinel-v1",
+          "result": {
+            "step": "research-query-tactical-daily-sentinel-v1",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "triggered",
+              "generation": 11,
+              "starting_date_raw": 53483280,
+              "target_date_raw": 53483304,
+              "last_observed_date_raw": 53483304,
+              "trigger_date_raw": 53483304,
+              "speed": 1,
+              "mode": "terminal_or_sentinel",
+              "army_count": 0,
+              "combat_count": 0,
+              "completed_daily_ticks": 1,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 1,
+              "trigger_reasons": [
+                "date_deadline"
+              ],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": 0,
+              "pause_wrapper_called": true,
+              "pause_observed": true,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        }
+      ],
+      "paused": true,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "final_screen": "map_hud",
+      "snapshot_id": "native:37",
+      "revision": 38,
+      "exact_day_native_clock": {
+        "armed": {
+          "state": "armed",
+          "generation": 11,
+          "starting_date_raw": 53483280,
+          "target_date_raw": 53483304,
+          "last_observed_date_raw": 53483280,
+          "trigger_date_raw": 0,
+          "speed": 1,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 0,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 0,
+          "trigger_reasons": [],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": -1,
+          "pause_wrapper_called": false,
+          "pause_observed": false,
+          "terminal_observed": false,
+          "abnormal": false
+        },
+        "stopped": {
+          "state": "triggered",
+          "generation": 11,
+          "starting_date_raw": 53483280,
+          "target_date_raw": 53483304,
+          "last_observed_date_raw": 53483304,
+          "trigger_date_raw": 53483304,
+          "speed": 1,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 1,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 1,
+          "trigger_reasons": [
+            "date_deadline"
+          ],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": 0,
+          "pause_wrapper_called": true,
+          "pause_observed": true,
+          "terminal_observed": false,
+          "abnormal": false
+        }
+      },
+      "contact_transition": {
+        "status": "observed",
+        "proof_kind": "unavoidable_current_province_contact",
+        "subject_army_id": 1023410456,
+        "starting_date_raw": 53483280,
+        "ending_date_raw": 53483304,
+        "postcondition": "active_combat_observed"
+      }
+    },
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:33",
+      "revision": 34,
+      "native_revision": 33,
+      "date_raw": 53483280,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51",
+      "connection_generation": 1,
+      "bridge_pid": 263980
+    }
+  }
+}

@@ -678,3 +678,6 @@ docs/ck3-native-ai/research/sdk35-zero-hop-and-capture-close/*.patch -text white
 docs/ck3-native-ai/research/sdk35-stationary-and-repair-status/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/sdk35-stationary-and-repair-status/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 docs/ck3-native-ai/research/sdk35-stationary-and-repair-status/stationary/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
+docs/ck3-native-ai/research/sdk35-readonly-and-settled-status/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/research/sdk35-readonly-and-settled-status/unavoidable/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

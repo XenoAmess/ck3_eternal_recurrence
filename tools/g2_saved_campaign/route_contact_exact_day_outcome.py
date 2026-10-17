@@ -28,18 +28,26 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and subject not in hostile_ids
             and step == prefix + f"{subject}-to-{target}-h-{count}-" + "-".join(map(str, hostile_ids)),
             "step IDs/order")
-    stationary = plan.get("phase") == "native_war_stationary_contact_horizon_progress"
+    phase = plan.get("phase")
+    safe_stationary = {"native_war_stationary_contact_horizon_progress",
+        "native_war_defender_capital_contact_horizon_progress",
+        "native_war_defender_native_rally_contact_horizon_progress"}
+    unavoidable_phases = {"native_war_unavoidable_contact_transition",
+        "native_war_defender_capital_contact_transition",
+        "native_war_defender_native_rally_contact_transition"}
+    unavoidable = phase in unavoidable_phases
+    stationary = phase in safe_stationary or unavoidable
+    speed_value = 1 if unavoidable else 3
     inner = body.get("result")
     require(isinstance(inner, dict) and body.get("status") == "executed"
             and plan.get("selected_step") == step
-            and plan.get("phase") in {"native_war_moving_contact_before_strength_progress",
-                                      "native_war_stationary_contact_horizon_progress"}
+            and (stationary or phase in {"native_war_moving_contact_before_strength_progress", "native_war_route_contact_horizon_progress"})
             and inner.get("step") == step and inner.get("backend_id") == "native-headless"
             and inner.get("source") == "native-composite"
             and inner.get("progress_status") == "postcondition"
             and inner.get("requested_horizon_days") == 1
-            and inner.get("timeline_policy") == "exact_one_day_contact_free_speed_3"
-            and inner.get("timeline_speed") == 3
+            and inner.get("timeline_policy") == ("exact_one_day_unavoidable_contact" if unavoidable else "exact_one_day_contact_free_speed_3")
+            and inner.get("timeline_speed") == speed_value
             and inner.get("paused") is True
             and inner.get("ordinary_events") == [], "exact one-day composite")
     # Native retains an exclusive popup for the next ordinary typed query.
@@ -51,8 +59,8 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
     pending_valid = isinstance(pending, dict) and bool(pending)
     popup = event_valid or pending_valid
     require((event is None or event_valid) and (pending is None or pending_valid)
-            and inner.get("final_screen") == (None if popup else "map_hud")
-            and inner.get("event_resolution") == ("typed_query_required" if event_valid else "none"),
+            and inner.get("final_screen") == ("map_hud" if unavoidable and isinstance(inner.get("contact_refresh"), dict) else None if popup else "map_hud")
+            and (inner.get("event_resolution") in {"none", "typed_query_required"} if unavoidable and isinstance(inner.get("contact_refresh"), dict) and event_valid else inner.get("event_resolution") == ("typed_query_required" if event_valid else "none")),
             "paused popup retained for ordinary typed query")
     start, end, elapsed = (inner.get(k) for k in
                            ("starting_date_raw", "ending_date_raw", "elapsed_days"))
@@ -69,7 +77,19 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and inner["revision"] > binding["revision"]
             and inner.get("snapshot_id") != binding.get("snapshot_id"),
             "same-game source and later readback")
+    if phase == "native_war_route_contact_horizon_progress":
+        require(plan.get("route_contact_window_days") == 1, "one-day route-window fallback source")
     audit = plan.get("route_audit")
+    if phase in {"native_war_defender_capital_contact_horizon_progress",
+                 "native_war_defender_native_rally_contact_horizon_progress",
+                 "native_war_defender_capital_contact_transition",
+                 "native_war_defender_native_rally_contact_transition"}:
+        hold = plan.get("defensive_hold")
+        require(isinstance(hold, dict) and hold.get("army_id") == subject,
+                "exact defensive hold subject")
+        audit = {"status": "stationary_current_province_contact" if unavoidable
+                 else "safe_one_day_stationary_contact_horizon",
+                 "target_province_id": target, "contact_horizon": plan.get("contact_horizon")}
     horizon = audit.get("contact_horizon") if isinstance(audit, dict) else None
     require(isinstance(audit, dict) and audit.get("target_province_id") == target
             and isinstance(horizon, dict)
@@ -79,17 +99,21 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and horizon.get("subject_army_id") == subject
             and horizon.get("target_province_id") == target
             and horizon.get("hostile_army_ids") == list(hostile_ids)
-            and horizon.get("one_day_contact_free") is True
+            and horizon.get("one_day_contact_free") is (not unavoidable)
             and horizon.get("horizon_start_date_raw") == start
             and horizon.get("horizon_end_date_raw") == end
-            and horizon.get("conflicts") == [], "complete same-frame contact-free proof")
+            and (bool(horizon.get("conflicts")) if unavoidable else horizon.get("conflicts") == []), "complete same-frame native horizon proof")
     if stationary:
-        require(audit.get("status") == "safe_one_day_stationary_contact_horizon",
+        require(audit.get("status") == ("stationary_current_province_contact" if unavoidable else "safe_one_day_stationary_contact_horizon"),
                 "exact stationary plan audit")
         from xar_autoplayer.bridge.war_contract import normalize_route_contact_horizon
         normalize_route_contact_horizon(horizon, expected_subject_army_id=subject,
             expected_target_province_id=target, expected_hostile_army_ids=hostile_ids,
             expected_date_raw=start, expected_snapshot_revision=binding["native_revision"])
+        if unavoidable:
+            from xar_autoplayer.bridge.war_contract import unavoidable_current_province_contact_in_horizon
+            require(unavoidable_current_province_contact_in_horizon(horizon),
+                    "native unavoidable current province conflict")
     else:
         require(audit.get("army_id") == subject and audit.get("army_state") == "moving",
                 "original moving plan audit")
@@ -177,10 +201,13 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
     armed = clock.get("armed") if isinstance(clock, dict) else None
     stopped = clock.get("stopped") if isinstance(clock, dict) else None
     arm_step = (f"research-arm-tactical-daily-sentinel-v1-{start}-to-{end}"
-                "-speed-3-mode-terminal-a-0")
-    steps = ["set-speed-3", arm_step, "resume-map",
+                f"-speed-{speed_value}-mode-terminal-a-0")
+    steps = [f"set-speed-{speed_value}", arm_step, "resume-map",
              "research-query-tactical-daily-sentinel-v1"]
-    require(isinstance(actions, list) and len(actions) == 4
+    refresh = inner.get("contact_refresh")
+    if unavoidable and isinstance(refresh, dict):
+        steps.append("pause-map")
+    require(isinstance(actions, list) and len(actions) == len(steps)
             and [row.get("step") if isinstance(row, dict) else None
                  for row in actions] == steps
             and all(isinstance(row.get("result"), dict)
@@ -193,10 +220,10 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             "native arm/resume/query receipts")
     speed = actions[0].get("result")
     require(isinstance(speed, dict) and (
-        (speed.get("accepted") is True and speed.get("step") == "set-speed-3")
+        (speed.get("accepted") is True and speed.get("step") == f"set-speed-{speed_value}")
         or (speed.get("status") == "already_observed" and speed.get("submitted") is False
             and speed.get("accepted") is None and type(speed.get("observed_speed")) is int
-            and speed["observed_speed"] == 3
+            and speed["observed_speed"] == speed_value
             and speed.get("source_snapshot_id") == binding["snapshot_id"]
             and speed.get("source_native_revision") == binding["native_revision"]
             and speed.get("source_date_raw") == start)),
@@ -208,7 +235,7 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and stopped.get("generation") == generation
             and all(row.get("starting_date_raw") == start
                     and row.get("target_date_raw") == end
-                    and row.get("speed") == 3
+                    and row.get("speed") == speed_value
                     and row.get("mode") == "terminal_or_sentinel"
                     and row.get("army_count") == 0
                     and row.get("combat_count") == 0
@@ -229,7 +256,9 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             and stopped.get("pause_observed") is True
             and stopped.get("terminal_observed") is False,
             "native exact-day deadline/paused stop")
-    return {"schema": "g2.queue.ordinary-result-credit/v1", "selected_step": step,
+    if unavoidable:
+        verify_unavoidable(inner, before, after, horizon, binding, subject, target, start, end)
+    credit = {"schema": "g2.queue.ordinary-result-credit/v1", "selected_step": step,
             "service_status": "executed", "result_status": "postcondition",
             "category": "route_contact_horizon_exact_one_day_observed",
             "actual_date_delta_raw": 24, "actual_elapsed_days": 1,
@@ -243,3 +272,109 @@ def classify_route_contact_horizon_one_day_v1(body, *, bind_gameplay_frame, init
             "construction_start_verified": False, "construction_completion_verified": False,
             "crown_material_verified": False, "existing_typed_material_verified": False,
             "business_success_inferred": False, "replay_allowed": False}
+
+    if unavoidable:
+        credit["category"] = "unavoidable_contact_exact_one_day_observed"
+        credit["unavoidable_contact_transition"] = dict(inner["contact_transition"])
+        credit["contact_free_claimed"] = False
+    return credit
+
+def verify_unavoidable(inner, before, after, horizon, binding, subject, target, start, end):
+    """Check the existing producer's nonmaterial contact transition evidence."""
+    def need(ok, reason):
+        if not ok:
+            raise ValueError("unavoidable exact day rejected: " + reason)
+    def army_map(progress, key):
+        out = {}
+        for war in progress["wars"]:
+            for row in war[key]:
+                ident = row["army_id"]
+                if ident in out:
+                    need(out[ident] == row, "inconsistent cross-war army row")
+                out[ident] = row
+        return out
+    def combat(row):
+        return isinstance(row, dict) and (row.get("in_combat") is True
+            or row.get("army_state") == "combat" or row.get("army_state_code") == 2)
+    def retreat(row):
+        return isinstance(row, dict) and (row.get("retreating") is True
+            or row.get("army_state") == "retreating" or row.get("army_state_code") == 6)
+    def native(snapshot):
+        if not isinstance(snapshot, str) or not snapshot.startswith("native:"):
+            return None
+        token = snapshot[7:]
+        return int(token) if token.isdecimal() and str(int(token)) == token else None
+    transition = inner.get("contact_transition")
+    need(isinstance(transition, dict) and transition.get("proof_kind") == "unavoidable_current_province_contact"
+         and transition.get("subject_army_id") == subject
+         and transition.get("starting_date_raw") == start and transition.get("ending_date_raw") == end
+         and inner.get("contact_followup") is None, "retained completed transition and no failed strict followup")
+    final_native = native(inner.get("snapshot_id"))
+    need(type(final_native) is int and final_native > binding["native_revision"]
+         and ("native_revision" not in inner or inner["native_revision"] == final_native), "later Native frame")
+    refresh = inner.get("contact_refresh")
+    if refresh is not None:
+        need(isinstance(refresh, dict) and refresh.get("attempted") is True
+             and refresh.get("ack_status") == "already_paused" and refresh.get("date_raw") == end
+             and all(type(refresh.get(k)) is int for k in ("from_revision","to_revision","from_native_revision","to_native_revision"))
+             and refresh["from_revision"] > binding["revision"]
+             and refresh["to_revision"] > refresh["from_revision"]
+             and refresh["from_native_revision"] > binding["native_revision"]
+             and refresh["to_native_revision"] > refresh["from_native_revision"]
+             and refresh["from_snapshot_id"] == "native:" + str(refresh["from_native_revision"])
+             and refresh["to_snapshot_id"] == inner["snapshot_id"]
+             and refresh["to_revision"] == inner["revision"] and refresh["to_native_revision"] == final_native,
+             "one same-date independent paused refresh")
+        pause = inner["actions"][-1]
+        need(pause["step"] == "pause-map" and pause["result"].get("status") == "already_paused",
+             "refresh actual already-paused ACK")
+    old_players,new_players = army_map(before,"player_armies"),army_map(after,"player_armies")
+    old_enemies,new_enemies = army_map(before,"enemy_armies"),army_map(after,"enemy_armies")
+    old_subject,new_subject = old_players.get(subject),new_players.get(subject)
+    conflicts = horizon["conflicts"]
+    conflict_ids = sorted({row["hostile_army_id"] for row in conflicts})
+    status, post = transition.get("status"),transition.get("postcondition")
+    if status == "predicted_only":
+        need(post == "predicted_contact_boundary_reached" and transition.get("contact_observed") is False
+             and transition.get("episode_run_id") == binding["episode_run_id"]
+             and transition.get("contact_province_id") == target
+             and transition.get("conflict_hostile_army_ids") == conflict_ids
+             and isinstance(refresh, dict)
+             and all(c.get("kind") == "same_province" and c.get("province_id") == target
+                     and c.get("overlap_start_date_raw") == end and c.get("overlap_end_date_raw") == end for c in conflicts)
+             and {w["war_id"] for w in before["wars"]} == {w["war_id"] for w in after["wars"]}
+             and isinstance(new_subject, dict) and new_subject.get("current_province_id") == target
+             and new_subject.get("move_target_province_id") is None and new_subject.get("route_province_ids") == []
+             and not combat(new_subject) and not retreat(new_subject), "prediction only at exact closed endpoint")
+        return
+    need(status == "observed" and post in {"active_war_set_changed","subject_army_removed",
+         "active_combat_observed","retreat_observed","hostile_entered_contact_province","hostile_intent_changed"},
+         "source-supported observed transition")
+    old_wars,new_wars = sorted(w["war_id"] for w in before["wars"]),sorted(w["war_id"] for w in after["wars"])
+    if post == "active_war_set_changed":
+        need(old_wars != new_wars and transition.get("starting_war_ids") == old_wars
+             and transition.get("ending_war_ids") == new_wars, "actual changed war set without victory credit")
+    elif post == "subject_army_removed":
+        need(subject not in new_players, "actual subject absence")
+    elif post == "active_combat_observed":
+        need(combat(new_subject), "actual active combat row")
+    elif post == "retreat_observed":
+        need(retreat(new_subject), "actual retreat row")
+    elif post == "hostile_entered_contact_province":
+        changed = [ident for ident in conflict_ids if isinstance(old_enemies.get(ident),dict)
+                   and isinstance(new_enemies.get(ident),dict)
+                   and old_enemies[ident].get("current_province_id") != target
+                   and new_enemies[ident].get("current_province_id") == target]
+        need(isinstance(old_subject,dict) and isinstance(new_subject,dict)
+             and old_subject.get("current_province_id") == new_subject.get("current_province_id") == target
+             and transition.get("contact_province_id") == target
+             and bool(changed) and transition.get("changed_hostile_army_ids") == changed,
+             "actual hostile province entry without battle inference")
+    else:
+        def intent(row):
+            if not isinstance(row,dict):return None
+            return (row.get("move_target_province_id"),row.get("route_province_ids"),row.get("army_state"),
+                    row.get("army_state_code"),row.get("in_combat"),row.get("retreating"))
+        changed = [ident for ident in conflict_ids if intent(old_enemies.get(ident)) != intent(new_enemies.get(ident))]
+        need(bool(changed) and transition.get("changed_hostile_army_ids") == changed,
+             "actual hostile intent change without contact inference")

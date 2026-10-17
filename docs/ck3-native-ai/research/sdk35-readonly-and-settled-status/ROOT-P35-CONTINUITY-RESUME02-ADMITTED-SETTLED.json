@@ -1,0 +1,20 @@
+{
+  "completed_cycles": 12580,
+  "before": {
+    "snapshot_id": "native:186",
+    "revision": 187,
+    "native_revision": 186,
+    "date_raw": 53484480,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "pending_cycle": null,
+  "pending_checkpoint": null,
+  "terminal": null,
+  "schema": "root.continuity-resolved-state-projection/v1",
+  "actual_source_state": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+    "sha256": "8ddbe235ef9b944f2532efe8afc53d28ff544eb6135189b08f20b9be46c9a362"
+  },
+  "exact_fields_copied": true
+}

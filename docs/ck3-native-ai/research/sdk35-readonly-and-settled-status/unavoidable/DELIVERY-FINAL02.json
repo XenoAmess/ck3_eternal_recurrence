@@ -1,0 +1,85 @@
+{
+  "schema": "root.p35.unavoidable-exact-day-consumer/v1",
+  "status": "PRODUCTION_DRIVER_AND_FORMAL_QUEUE_FIXTURE_GREEN_NOT_RUNTIME_INSTALLED",
+  "at_utc": "2026-10-17T03:30:39.777382+00:00",
+  "canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_unavoidable_result_classifier_final02.py",
+    "sha256": "053cf1c1fa25f2c68f3a2b1c75be961591627310118439cc804cd0dd760ab06e",
+    "bytes": 250101
+  },
+  "helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_route_contact_exact_day_classifier_v3_final02.py",
+    "sha256": "053648cbb0c1b78d8b1c088d629991975cfcbf1667b2eeb75d604e6db79dac5c",
+    "bytes": 24552
+  },
+  "candidate_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CLASSIFIER-UNAVOIDABLE-CANDIDATE02-PIN.json",
+    "sha256": "7726fb5c1b95110cfed5bbd25398e32be2d8d2e18e384de2b74cf3fb7d47b002"
+  },
+  "unchanged_modal_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_battle_route_modal_classifier_v1.py",
+    "sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f"
+  },
+  "base05f1_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_stationary_result_classifier.py",
+    "sha256": "05f1d598ae40f67fab01dba4fde2c05c8900c0c4829a546516bac9382a17ed1d"
+  },
+  "base5836_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_route_contact_exact_day_classifier_v2.py",
+    "sha256": "58369d480c5de092f2cc9bfc7a41f35b0f97332802fa0ee1676b11e092ece5e4"
+  },
+  "changed_canonical_functions": [
+    "classify_route_contact_horizon_one_day_v1"
+  ],
+  "minimal_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\classifier-final02.patch",
+    "sha256": "f60c8a561d6802180a226baf2887a6a2bef4f0884349cdde688e43def2101b2a"
+  },
+  "tests": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\PRODUCER-QUEUE-FINAL02-TESTS.json",
+      "sha256": "933e93eaf1f6fa1274a3d87ce91e7f2f5d3a3edce64bdeb1255df7c592cecb09"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\FULL-LOOP-AND-GUARDS-FINAL02-TESTS.json",
+      "sha256": "7bffef47b645f9908b0c55fa3cdedd249fb79738f7ad893e5e8cdfec50478e2c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\NATIVE-PROOF-AND-LEGACY-FINAL02-TESTS.json",
+      "sha256": "821b42c27557f6a6b47ee59a770209e551169fe500e15a73607da023ce2c37e2"
+    }
+  ],
+  "proof_producer": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\prepare_clean_proof.py",
+    "sha256": "b607aa84465815e30c3ee12dd5c98e62fab524e1127cd1923cbc1093ed36e448"
+  },
+  "reused_original_producer": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-native22-adoption-prep01\\prepare_clean_classifier_epoch.py",
+    "sha256": "5244e994c59e09eee7ee71286546e9cdf8e8919cdf402e1396c3212cbcf54679"
+  },
+  "covered_source_phases": [
+    "native_war_moving_contact_before_strength_progress",
+    "native_war_route_contact_horizon_progress one-day only",
+    "native_war_stationary_contact_horizon_progress",
+    "native_war_defender_capital_contact_horizon_progress",
+    "native_war_defender_native_rally_contact_horizon_progress",
+    "native_war_unavoidable_contact_transition",
+    "native_war_defender_capital_contact_transition",
+    "native_war_defender_native_rally_contact_transition"
+  ],
+  "synthetic_future_contacts": true,
+  "real_Driver_execute_step_and_exact_native_clock_producer_with_only_endpoint_IO_fake": true,
+  "real_queue_AST_loader_check_after_full_loop_persist": true,
+  "strict_success_removes_followup_actual_source_fixture": true,
+  "strict_error_not_credited": true,
+  "one_date_credit_raw24_only": true,
+  "UI_business_victory_replay_credit": 0,
+  "SDK_Source_Game_Native_MCP_OBS_live_Driver_or_SAVE_operations": 0,
+  "requests_published": 0,
+  "limits": [
+    "No actual future speed1 contact has occurred in these tests",
+    "strict StepPostconditionError remains an error",
+    "No future default-off Driver date-only patch included",
+    "episode-terminal uses existing lifecycle path; not represented by new postcondition fixtures"
+  ]
+}

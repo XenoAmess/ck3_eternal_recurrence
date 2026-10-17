@@ -1,0 +1,58 @@
+{
+  "schema": "root.ck3.continuity-resume/v1",
+  "status": "GREEN",
+  "reviewer": "/root",
+  "window_id_before_repair": 30,
+  "original_action_replayed": false,
+  "first_control_sequence": 314,
+  "semantic_sequence": 312,
+  "metrics_sequence": 313,
+  "sdk_generation": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P35.json",
+    "sha256": "ff73b28f70fb9c39115e1b567e7033ef1d3ba3bb79aefc14e704c4c15e532235"
+  },
+  "semantic_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0312-1-result.json",
+    "sha256": "be0c084afcf9e6588d9ec4134d433594d6217799eb966baa5def815ef4072fc6"
+  },
+  "metrics_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0313-1-result.json",
+    "sha256": "9b5d8919422cca04e853a8fb5d4f5db26b53a2b4e2e5b744468934cf41919198"
+  },
+  "settled_state": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CONTINUITY-RESUME02-ADMITTED-SETTLED.json",
+    "sha256": "27c2ae83579d7030c1c97be8cff9b3909ac5f817c645ce49496954f17b70fd28"
+  },
+  "resolved_batch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0251-1-result.json",
+    "sha256": "4e6ab195995f2616e145a467f8d12d949d17b3f62a4e22070dfc3d0fdf436cd5"
+  },
+  "cold_capability_marker": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-queue\\ROOT-COLD-CAMPAIGN-VERIFIED.json",
+    "sha256": "0712d15fdd0d8e19a9904d1fa20eca93ac70a4ec16e96dff7bff57e9a4e9c39d"
+  },
+  "actual_cold_inputs": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-COLD-INPUTS.json",
+    "sha256": "9745ab99ea6cd020364e5808954dc0ac9c063dd83ceae548a314ca77922ff449"
+  },
+  "initial_successful_batch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0027-1-result.json",
+    "sha256": "e2c3b4c0b7d64a91dd1ee9c8e2df9c7ee07798f66e099e4eb75ea9e9c4c99ae1"
+  },
+  "sdk_source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-FINAL-SDK-FREEZE-P35.json",
+    "sha256": "3be654deb94dbb8d940c8e2eb3d2c07a28f3dc9d1d89c7969845c216fd3ae945"
+  },
+  "current_classifier_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CLASSIFIER-UNAVOIDABLE-CANDIDATE02-PIN.json",
+    "sha256": "7726fb5c1b95110cfed5bbd25398e32be2d8d2e18e384de2b74cf3fb7d47b002"
+  },
+  "source_closure": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-COLD-SOURCE-FROZEN.json",
+    "sha256": "2f1d0d6b18eed5bcf6410e54d91b2f34d3f8a0f49a97ef04d2b0c6f59fe9e014"
+  },
+  "first_control_request": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-requests\\0314-1-result.json",
+    "sha256": "2d5271f3253bda0503ac317b9176e5685b1717f7b297d852a178929106385b52"
+  }
+}

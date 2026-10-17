@@ -1,0 +1,42 @@
+{
+  "schema": "xar.completed-P35-window31-failure-projection.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0349-1-result.json",
+    "sha256": "1bcdb585318d1958fbd313f010de1ee7eacd1ab8068eb6756701a22d8935b13d"
+  },
+  "ended_at_utc": "2026-10-17T04:04:16.998016+00:00",
+  "status": "blocked",
+  "phase": "native_war_counterpolicy_hold",
+  "selected_step": null,
+  "selected_step_field_present": false,
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:222",
+    "revision": 223,
+    "native_revision": 222,
+    "date_raw": 53484768,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51",
+    "connection_generation": 1,
+    "bridge_pid": 263980
+  },
+  "admitted_baseline": {
+    "snapshot_id": "native:186",
+    "revision": 187,
+    "native_revision": 186,
+    "date_raw": 53484480,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51"
+  },
+  "actual_frame_date_difference_days": 12.0,
+  "runtime_ledger_failure_count_not_reconstructed_here": true,
+  "Root_reported_actual_failed_window": {
+    "window_id": 31,
+    "days": 12,
+    "completed_cycles": 12597,
+    "provenance": "Root live-owner task message; no mutable ledger reconstructed by public writer"
+  },
+  "new_Game_calls_or_credit": 0
+}

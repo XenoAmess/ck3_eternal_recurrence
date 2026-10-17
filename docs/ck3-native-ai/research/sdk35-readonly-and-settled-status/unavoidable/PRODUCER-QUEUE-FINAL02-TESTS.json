@@ -1,0 +1,226 @@
+{
+  "status": "REAL_SDK35_DRIVER_EXACT_CLOCK_TO_ACTUAL_AST_CLASSIFIER_FIXTURE_GREEN_NOT_LIVE",
+  "cases": [
+    {
+      "kind": "combat",
+      "postcondition": {
+        "status": "observed",
+        "proof_kind": "unavoidable_current_province_contact",
+        "subject_army_id": 1023410456,
+        "starting_date_raw": 53483256,
+        "ending_date_raw": 53483280,
+        "postcondition": "active_combat_observed"
+      },
+      "credit": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "unavoidable_contact_exact_one_day_observed",
+        "actual_date_delta_raw": 24,
+        "actual_elapsed_days": 1,
+        "date_advance_observed": true,
+        "paired_after_metrics_still_required": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "typed_nonmaterial_observation": false,
+        "material_verified": false,
+        "ui_action_credit": false,
+        "action_credit": false,
+        "lifestyle_material_verified": false,
+        "council_material_verified": false,
+        "construction_material_verified": false,
+        "construction_start_verified": false,
+        "construction_completion_verified": false,
+        "crown_material_verified": false,
+        "existing_typed_material_verified": false,
+        "business_success_inferred": false,
+        "replay_allowed": false,
+        "unavoidable_contact_transition": {
+          "status": "observed",
+          "proof_kind": "unavoidable_current_province_contact",
+          "subject_army_id": 1023410456,
+          "starting_date_raw": 53483256,
+          "ending_date_raw": 53483280,
+          "postcondition": "active_combat_observed"
+        },
+        "contact_free_claimed": false
+      },
+      "fixture_sha256": "73b5b3582ed3e8507e5c94e2c68d7f9f3d26cfce234425b7d9dfa19850f0a8ab"
+    },
+    {
+      "kind": "entered",
+      "postcondition": {
+        "status": "observed",
+        "proof_kind": "unavoidable_current_province_contact",
+        "subject_army_id": 1023410456,
+        "starting_date_raw": 53483256,
+        "ending_date_raw": 53483280,
+        "postcondition": "hostile_entered_contact_province",
+        "contact_province_id": 2604,
+        "changed_hostile_army_ids": [
+          369099275
+        ]
+      },
+      "credit": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "unavoidable_contact_exact_one_day_observed",
+        "actual_date_delta_raw": 24,
+        "actual_elapsed_days": 1,
+        "date_advance_observed": true,
+        "paired_after_metrics_still_required": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "typed_nonmaterial_observation": false,
+        "material_verified": false,
+        "ui_action_credit": false,
+        "action_credit": false,
+        "lifestyle_material_verified": false,
+        "council_material_verified": false,
+        "construction_material_verified": false,
+        "construction_start_verified": false,
+        "construction_completion_verified": false,
+        "crown_material_verified": false,
+        "existing_typed_material_verified": false,
+        "business_success_inferred": false,
+        "replay_allowed": false,
+        "unavoidable_contact_transition": {
+          "status": "observed",
+          "proof_kind": "unavoidable_current_province_contact",
+          "subject_army_id": 1023410456,
+          "starting_date_raw": 53483256,
+          "ending_date_raw": 53483280,
+          "postcondition": "hostile_entered_contact_province",
+          "contact_province_id": 2604,
+          "changed_hostile_army_ids": [
+            369099275
+          ]
+        },
+        "contact_free_claimed": false
+      },
+      "fixture_sha256": "349acab1aa4f256326f4f0b33614dee7cd57cd33524b4cce27582ff18e79b8e5"
+    },
+    {
+      "kind": "intent",
+      "postcondition": {
+        "status": "observed",
+        "proof_kind": "unavoidable_current_province_contact",
+        "subject_army_id": 1023410456,
+        "starting_date_raw": 53483256,
+        "ending_date_raw": 53483280,
+        "postcondition": "hostile_intent_changed",
+        "changed_hostile_army_ids": [
+          369099275
+        ]
+      },
+      "credit": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "unavoidable_contact_exact_one_day_observed",
+        "actual_date_delta_raw": 24,
+        "actual_elapsed_days": 1,
+        "date_advance_observed": true,
+        "paired_after_metrics_still_required": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "typed_nonmaterial_observation": false,
+        "material_verified": false,
+        "ui_action_credit": false,
+        "action_credit": false,
+        "lifestyle_material_verified": false,
+        "council_material_verified": false,
+        "construction_material_verified": false,
+        "construction_start_verified": false,
+        "construction_completion_verified": false,
+        "crown_material_verified": false,
+        "existing_typed_material_verified": false,
+        "business_success_inferred": false,
+        "replay_allowed": false,
+        "unavoidable_contact_transition": {
+          "status": "observed",
+          "proof_kind": "unavoidable_current_province_contact",
+          "subject_army_id": 1023410456,
+          "starting_date_raw": 53483256,
+          "ending_date_raw": 53483280,
+          "postcondition": "hostile_intent_changed",
+          "changed_hostile_army_ids": [
+            369099275
+          ]
+        },
+        "contact_free_claimed": false
+      },
+      "fixture_sha256": "08f8e1579554cc520804b72e72cea8ea1f91faa3fa286dfd63d5986f9e23753b"
+    },
+    {
+      "kind": "predicted",
+      "postcondition": {
+        "status": "predicted_only",
+        "proof_kind": "unavoidable_current_province_contact",
+        "postcondition": "predicted_contact_boundary_reached",
+        "contact_observed": false,
+        "episode_run_id": "native-707-2dc54af9738f",
+        "subject_army_id": 1023410456,
+        "contact_province_id": 2604,
+        "conflict_hostile_army_ids": [
+          369099275
+        ],
+        "starting_date_raw": 53483256,
+        "ending_date_raw": 53483280
+      },
+      "credit": {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+        "service_status": "executed",
+        "result_status": "postcondition",
+        "category": "unavoidable_contact_exact_one_day_observed",
+        "actual_date_delta_raw": 24,
+        "actual_elapsed_days": 1,
+        "date_advance_observed": true,
+        "paired_after_metrics_still_required": true,
+        "submitted_pending": false,
+        "primitive_accepted": false,
+        "typed_nonmaterial_observation": false,
+        "material_verified": false,
+        "ui_action_credit": false,
+        "action_credit": false,
+        "lifestyle_material_verified": false,
+        "council_material_verified": false,
+        "construction_material_verified": false,
+        "construction_start_verified": false,
+        "construction_completion_verified": false,
+        "crown_material_verified": false,
+        "existing_typed_material_verified": false,
+        "business_success_inferred": false,
+        "replay_allowed": false,
+        "unavoidable_contact_transition": {
+          "status": "predicted_only",
+          "proof_kind": "unavoidable_current_province_contact",
+          "postcondition": "predicted_contact_boundary_reached",
+          "contact_observed": false,
+          "episode_run_id": "native-707-2dc54af9738f",
+          "subject_army_id": 1023410456,
+          "contact_province_id": 2604,
+          "conflict_hostile_army_ids": [
+            369099275
+          ],
+          "starting_date_raw": 53483256,
+          "ending_date_raw": 53483280
+        },
+        "contact_free_claimed": false
+      },
+      "fixture_sha256": "50a2f09d41f75b72ac2805cea0530cb06bd94d1b8f1832f30ef2b23aba9bfc7f"
+    }
+  ],
+  "negative_cases": [
+    "actual_Driver_strict_followup_error_not_credited"
+  ],
+  "only_Native_endpoint_IO_fake": true,
+  "Service_planner_not_exercised": true,
+  "source_Driver_sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+  "MCP_Game_or_live_Driver_reads": 0
+}

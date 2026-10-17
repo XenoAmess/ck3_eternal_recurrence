@@ -1,0 +1,209 @@
+{
+  "schema": "xar.public-eleventh-source-index.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "originals": [
+    {
+      "archive": "readonly/DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\DELIVERY.json",
+      "sha256": "89380e62e7cee69413df71a3d8be175165d951df9a9fab04b47ac50dadc152a0",
+      "bytes": 4414
+    },
+    {
+      "archive": "readonly/NATIVE-SOURCE-REVIEW.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\NATIVE-SOURCE-REVIEW.md",
+      "sha256": "99959aff1ee56629eddc1f5e7ef8705512ad19e119b41220fb416e6e3b2f10de",
+      "bytes": 3360
+    },
+    {
+      "archive": "readonly/ACTUAL247-CONTROL-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\ACTUAL247-CONTROL-TESTS.json",
+      "sha256": "0bcabc234174cec303a48be5305e80ee118cb0d8eacefe7faabfd8fd1427d290",
+      "bytes": 1469
+    },
+    {
+      "archive": "readonly/PORTABLE-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\PORTABLE-TESTS.json",
+      "sha256": "91c7a5c7d199832520f337c887505334c84804dddda6d7f2c87190c16be12ce3",
+      "bytes": 275
+    },
+    {
+      "archive": "readonly/handler.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\root_p35_campaign_root_paused_boundary_readonly.py",
+      "sha256": "0b1cb6943922ab301082e7c162e0a4d5ee6bea8142ad13e7a2ebd3c92fa2ee09",
+      "bytes": 2825
+    },
+    {
+      "archive": "readonly/ACTUAL247.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0247-1-result.json",
+      "sha256": "dc7b3877eba3f8a93f41993c37d397138f9ad0896b51db9ad44020961e3bd94b",
+      "bytes": 869
+    },
+    {
+      "archive": "readonly/ACTUAL249.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0249-1-result.json",
+      "sha256": "9a3f404c9dc394cb77f8bd86cbb2238eb8e93cd8fa563a463943471441cd340b",
+      "bytes": 958
+    },
+    {
+      "archive": "readonly/REGISTRY-INSTALLED.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-PAUSED-BOUNDARY-READONLY-REGISTRY-INSTALLED.json",
+      "sha256": "48a09421bc1d801af60f51926bad57a1e26b2451b0751edc6647a7ad798a748c",
+      "bytes": 1081
+    },
+    {
+      "archive": "unavoidable/DELIVERY-FINAL02.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\DELIVERY-FINAL02.json",
+      "sha256": "cf807f67bef80a478c59c6648265bd61fe14ec1afb0c6f1e7a0d8eb43ccb034c",
+      "bytes": 4882
+    },
+    {
+      "archive": "unavoidable/PRODUCER-QUEUE-FINAL02-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\PRODUCER-QUEUE-FINAL02-TESTS.json",
+      "sha256": "933e93eaf1f6fa1274a3d87ce91e7f2f5d3a3edce64bdeb1255df7c592cecb09",
+      "bytes": 9046
+    },
+    {
+      "archive": "unavoidable/FULL-LOOP-AND-GUARDS-FINAL02-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\FULL-LOOP-AND-GUARDS-FINAL02-TESTS.json",
+      "sha256": "7bffef47b645f9908b0c55fa3cdedd249fb79738f7ad893e5e8cdfec50478e2c",
+      "bytes": 1404
+    },
+    {
+      "archive": "unavoidable/CLASSIFIER.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\classifier-final02.patch",
+      "sha256": "f60c8a561d6802180a226baf2887a6a2bef4f0884349cdde688e43def2101b2a",
+      "bytes": 1104
+    },
+    {
+      "archive": "unavoidable/consumer.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-unavoidable-result-consumer01\\root_route_contact_exact_day_classifier_v3_final02.py",
+      "sha256": "053648cbb0c1b78d8b1c088d629991975cfcbf1667b2eeb75d604e6db79dac5c",
+      "bytes": 24552
+    },
+    {
+      "archive": "unavoidable/ACTUAL-FULL149.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0149-1-result.json",
+      "sha256": "22a813d1c5e1d26238bc7ae61558b066350a432a1770fd66c2609eebeb4482ff",
+      "bytes": 1264
+    },
+    {
+      "archive": "status/DELIVERY-V4-REASON-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\DELIVERY-V4-REASON-FINAL.json",
+      "sha256": "9bbfded7ffccb2a1c1e9f2cfdc8eaae05332fa14a4cc81571af22fb1a8f5dc7d",
+      "bytes": 1593
+    },
+    {
+      "archive": "status/DELIVERY-V5-SETTLED-PAIR-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\DELIVERY-V5-SETTLED-PAIR-FINAL.json",
+      "sha256": "f2d322f23396f59a9ad7bbe3a39a1261a64cf680f37c21e43e4e6cfa0d60ae35",
+      "bytes": 1597
+    },
+    {
+      "archive": "status/reason_v4.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v4.py",
+      "sha256": "8340dcad0a53d77e40da4b3489f3fad9e2085ea7b476d00bb6ce326a1ad58089",
+      "bytes": 6649
+    },
+    {
+      "archive": "status/settled_v5.original.py",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v5.py",
+      "sha256": "84c71065330b809b95db59986e9473a2ea4724f897ddeb56c031daca2454b4f7",
+      "bytes": 10530
+    },
+    {
+      "archive": "ROOT-P35-ARMY-SCALAR-ACTUAL-ADMITTED01.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-ARMY-SCALAR-ACTUAL-ADMITTED01.json",
+      "sha256": "feabc6126f8df5c66f632662d0609b0b5d64f3b79cd33a13fd10af27aece7dd9",
+      "bytes": 1683
+    },
+    {
+      "archive": "ROOT-P35-CONTINUITY-RESUME02-ADMITTED.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CONTINUITY-RESUME02-ADMITTED.json",
+      "sha256": "43d77bd8da9be421a11a1ff972c3d8fa850abe994ac7e8c27e70885e03364efc",
+      "bytes": 3486
+    },
+    {
+      "archive": "ROOT-P35-CONTINUITY-RESUME02-ADMITTED-SETTLED.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-CONTINUITY-RESUME02-ADMITTED-SETTLED.json",
+      "sha256": "27c2ae83579d7030c1c97be8cff9b3909ac5f817c645ce49496954f17b70fd28",
+      "bytes": 698
+    },
+    {
+      "archive": "ROOT-P36-CONTINUITY-RESUME01-ADMITTED.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P36-CONTINUITY-RESUME01-ADMITTED.json",
+      "sha256": "83745eddab498d4bfda563df7e5a99c7f56d8c9e9b8d947b6c992eb9751646a6",
+      "bytes": 3208
+    },
+    {
+      "archive": "OFFICIAL-TENTH-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-public-tenth-prep01\\OFFICIAL-TENTH-CI-FINAL.json",
+      "sha256": "59b807e46dd8de76346379cf3b2ceca7350b02690adb2e353e923a7dfff1616e",
+      "bytes": 30738
+    }
+  ],
+  "public": [
+    {
+      "path": "tools/g2_saved_campaign/campaign_root_paused_boundary_readonly.py",
+      "normalized_sha256": "0b1cb6943922ab301082e7c162e0a4d5ee6bea8142ad13e7a2ebd3c92fa2ee09"
+    },
+    {
+      "path": "tools/test_campaign_root_paused_boundary_readonly.py",
+      "normalized_sha256": "537752c4070594d0a2967a22c603a5eb9666d746c4a416e08ec1e3de27775ca6"
+    },
+    {
+      "path": "tools/fixtures/campaign_root_paused_boundary_actual247.json",
+      "normalized_sha256": "ec4ec945999c5dc538a0dc9b4af9b6979c565ce64c401a4e192f992e75454375"
+    },
+    {
+      "path": "tools/g2_saved_campaign/route_contact_exact_day_outcome.py",
+      "normalized_sha256": "b287dcbf0753bf63a4e7e50e348d0462ada9e03e1fce81adf3453f0eabc03252"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_route_unavoidable_outcome.py",
+      "normalized_sha256": "7d01a2da53c10d5ff805248b32baf7617ed79f5ab5d1141956cd75f90ec36bb0"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_unavoidable_actual130.json",
+      "normalized_sha256": "ca61f9d4ee2b2fdaa6f3d6d120e3e3b38b8b46b3f82116131fa09f50247b5241"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/fixtures/route_unavoidable_actual170.json",
+      "normalized_sha256": "e7597e4022fa23d94c12557c4c0e2fc894c89d525b3820a03924c48c0bcda1e1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_status_v4.py",
+      "normalized_sha256": "a4dac7933e50bdb972c28000a3cbf8dacdbae121f4542f1d42faa399a95f0837"
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_status_v5.py",
+      "normalized_sha256": "71494155993ebd620038165d29ae0b8b5a6420459db2d9f39ae9f2000ae420e2"
+    },
+    {
+      "path": "tools/test_repair_reason_v4.py",
+      "normalized_sha256": "0e8581df3608b7b0ed8e551b48bdd1a8fd0262533f68d56e323f211589612a86"
+    },
+    {
+      "path": "tools/test_repair_v5.py",
+      "normalized_sha256": "d9060f047e3def5689c5c1e3cb4f6977d5b8864b7c8aeb609004f5de282df43f"
+    },
+    {
+      "path": "tools/fixtures/repair_status_settled_actual252_253.json",
+      "normalized_sha256": "489d85b2195938dc397ab6e8923c93181178c1d9b9c179ab78952b0b58abafa3"
+    }
+  ],
+  "actual_boundaries": {
+    "readonly": "actual247 rejected before read admission; 249 recovery oneSEM250/zeroBusiness/noReplay",
+    "contact": "actual130 predicted_only; actual170 active_combat_observed; FULL149 is15day summary",
+    "status": "v1 two-state pixels already verified; v4/v5 new code and settled reconstruction offline only",
+    "settled_fixture": "real252/253/12551 values; reconstructed waiting state and alive handles synthetic",
+    "Army": "146 same-frame equal; 148 use configured; futureAUTO producer/performance not established",
+    "window31": "admitted02 historical6day prefix; actual349 blocked after12days/count12597; Root confirms repair_required and SDK35 normal0/0 closed"
+  },
+  "large_media_Driver_SAVE_or_4MB_fixture_copied": false,
+  "runtime_recipes_not_promoted_to_public_API": [
+    "amend_registry.py",
+    "test_actual_control.py",
+    "250KB canonical"
+  ],
+  "retention_review_at_utc": "2026-10-19T04:44:43.704957+00:00"
+}

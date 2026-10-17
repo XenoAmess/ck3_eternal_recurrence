@@ -291,3 +291,15 @@ AUTO50实际一天＋event110的消费者只放宽合法暂停弹窗读回，完
 公共stationary分支严格要求原生完整空路线、同帧合法姿态／完整hostile与精确clock；50项实际投影／生产租约／旧moving popup回归通过。新停止原因／修复状态工具参数化入库：v1两态画面经Root亲审，v2增量读、SDK／feeder／summary等新增异常来源只作离线资格，25项／8子例通过。不把安装ACK或原失败动作日期的重消费当作“已恢复推进”，须另有真实新日历FULL和fresh匹配暂停SEM。[有限源包与边界](research/sdk35-stationary-and-repair-status/README.md)。
 
 本批截点窗口31未开，不将两次一天观察当作30年完成；稳定30年第一，随后<1秒／日、0.5秒／日，均未达。未来不可避speed1消费者与WAL／速度5研究分离，不因提示功能或stationary实证外推其生产验收。
+
+## 第十一批：暂停读取、不可避接敌与已结算恢复提示
+
+第十 `20ae0155` Official39000024458／Linear39000024440均已success；之后外部 `4f3b6c4f` 的Official39001084726亦独立success。其晚到录制暂停证据刷新守卫保留。公共新增精确 campaign-root 暂停边界纯资格函数与实际247小原件；Native分支在读准入／TrySubmit之前，业务、超时或未知错误不匹配。Root实际249只生成SEM250，12550周期／原日期不变，0业务／不重放，后续FULL251成功23日。
+
+不可避接敌消费者保留完整敌军、同帧租约及速度1／+24／tick1／overshoot0／paused，未把未知路线改成contact-free。实际130为predicted_only；实际170才是active_combat_observed，FULL149只是成功15日批汇总。原件与18否例及旧moving／stationary回归经过公共消费函数；日期以外业务／UI／战果信用皆零，不绕过1.5主动攻击门槛。
+
+修复提示v4细化真实Native错误，v5从已结算TURN、成功AUTO、配对MET及精确存活SDK双进程身份证明恢复，不等待整批FULL。10.7KB投影保留实际252／253／12551的必要字段与原SHA，waiting-state／最小loop／活句柄边界明确合成。公共导入改用实例方法，不修改v4模块全局函数；v1两态像素实证不外推为v4／v5全来源实机验收。[完整有限归档与源链](research/sdk35-readonly-and-settled-status/README.md)不含250KB canonical、4MB原夹具、媒体、Driver或SAVE正文。
+
+窗口31随后在AUTO349 counterpolicy_hold失败，raw53484480→53484768仅12日／12597周期，SDK35正常0/0退出；不把先前6日前缀写成持续running。Root随后以83745edd准入窗口32／SDK36，基线53484792／12603周期；04:36:34Z报告63日／12813周期／53486304、runner76027及采集健康，同Game263980／OBS56104／原42cd录像不变。近期45秒小样本约2.58秒／日，非整场均速。失败窗口不拼接；连续30年稳定第一，再<1秒／日、0.5秒／日，均未达。
+
+Army146／148只证明同帧比较和use配置，未来AUTO选用及收益仍需指标。等待段默认头尾各2秒、中段快进最多4秒；通用EDL归独立promo仓，CK3绑定／正式启动metadata收集另批接入，不复制通用engine进主仓。render-plan目前仅估算，真实PTS映射与像素复验后才可授最终编码资格，本批未读取或编码活动媒体。

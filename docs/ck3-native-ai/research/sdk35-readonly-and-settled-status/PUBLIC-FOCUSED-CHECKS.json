@@ -1,0 +1,22 @@
+{
+  "schema": "xar.public-eleventh-focused-checks.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T04:43:00.051334+00:00",
+  "tests": [
+    {
+      "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_runtime_repair_status.py tools/test_runtime_repair_status_v2.py tools/test_repair_all_stops.py tools/test_runtime_repair_overlay_view.py tools/test_campaign_root_paused_boundary_readonly.py tools/test_repair_reason_v4.py tools/test_repair_v5.py tests/test_shared_harness_reads.py",
+      "returncode": 0,
+      "stdout": "...................................... [ 88%]\n.....                                                                 [100%]\n43 passed, 37 subtests passed in 8.50s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_land_route_timeline_unavailable_v1.py tests/unit/test_land_route_halt_outcome.py ck3_autonomous_player/tests/unit/test_move_unknown_ack_recovery.py ck3_autonomous_player/tests/unit/test_route_window_advance_outcome.py ck3_autonomous_player/tests/unit/test_optional_war_ui_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_first_read_defer.py ck3_autonomous_player/tests/unit/test_war_results_window_priority.py ck3_autonomous_player/tests/unit/test_war_declared_overview_priority.py ck3_autonomous_player/tests/unit/test_war_results_startup_baseline.py ck3_autonomous_player/tests/unit/test_route_clock_popup_outcome.py ck3_autonomous_player/tests/unit/test_route_stationary_outcome.py ck3_autonomous_player/tests/unit/test_route_unavoidable_outcome.py ck3_autonomous_player/tests/unit/test_battle_route_modal_classifier_v1.py tests/unit/test_paused_clock_popup_readback_v1.py",
+      "returncode": 0,
+      "stdout": ".................................... [ 23%]\n........................................................................ [ 70%]\n.............................................                                      [100%]\n153 passed, 98 subtests passed in 15.96s\n",
+      "stderr": ""
+    }
+  ],
+  "Game_MCP_Native_OBS_Desktop_operations": 0,
+  "current_frozen_sources_changed": false,
+  "actual_native_IO_in_tests": "fake boundary only; public consumer and proof producer are real"
+}

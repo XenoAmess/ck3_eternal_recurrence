@@ -1,0 +1,94 @@
+{
+  "status": "ACTUAL_ROOT_RECOVERY_ADOPTED_AND_PORTABLE_PUBLIC_HANDOFF_READY",
+  "created_utc": "2026-10-17T04:02:24.876220+00:00",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\ACTUAL247-CONTROL-TESTS.json",
+      "bytes": 1469,
+      "sha256": "0bcabc234174cec303a48be5305e80ee118cb0d8eacefe7faabfd8fd1427d290"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\amend_registry.py",
+      "bytes": 3548,
+      "sha256": "260d74b3a2fac5e680ea92e4a4334af9f24363530f99ef0b0c19ed0e602574c0"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\NATIVE-SOURCE-REVIEW.md",
+      "bytes": 3360,
+      "sha256": "99959aff1ee56629eddc1f5e7ef8705512ad19e119b41220fb416e6e3b2f10de"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\PORTABLE-TESTS.json",
+      "bytes": 275,
+      "sha256": "91c7a5c7d199832520f337c887505334c84804dddda6d7f2c87190c16be12ce3"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\READONLY-RECOVERY-ALLOWLIST-EPOCH01.json",
+      "bytes": 3529,
+      "sha256": "f5338b65ac9f111c9e3344b5e3b3506f2a068f63abc414c0f20e50c05d8f45ca"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\root_p35_campaign_root_paused_boundary_readonly.py",
+      "bytes": 2825,
+      "sha256": "0b1cb6943922ab301082e7c162e0a4d5ee6bea8142ad13e7a2ebd3c92fa2ee09"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\test_actual_control.py",
+      "bytes": 9270,
+      "sha256": "cc211cd230373f393a6ff5c9168c64f302f18bc7182563a788c30d6f874f7980"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-paused-boundary-readonly01\\test_portable_qualifier.py",
+      "bytes": 5584,
+      "sha256": "688264acb19abbf59aef991806efadd1c88a344fc5874e80f27ecb2e28289f79"
+    }
+  ],
+  "package_bytes_before_delivery": 29860,
+  "actual_root_adoption": {
+    "control": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0249-1-result.json",
+      "bytes": 958,
+      "sha256": "9a3f404c9dc394cb77f8bd86cbb2238eb8e93cd8fa563a463943471441cd340b"
+    },
+    "fresh_semantic": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0250-1-result.json",
+      "bytes": 24338,
+      "sha256": "e310cbd87a322509e9e744a57b740a0598d4b4d361eb56acfbd7580d294dc639"
+    },
+    "registry_install": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-PAUSED-BOUNDARY-READONLY-REGISTRY-INSTALLED.json",
+      "bytes": 1081,
+      "sha256": "48a09421bc1d801af60f51926bad57a1e26b2451b0751edc6647a7ad798a748c"
+    },
+    "cycles": 12550,
+    "same_date_raw": 53483928,
+    "new_semantic_calls": 1,
+    "business_submissions": 0,
+    "original_AUTO_replayed": false
+  },
+  "public_payload": [
+    "root_p35_campaign_root_paused_boundary_readonly.py",
+    "test_portable_qualifier.py",
+    "NATIVE-SOURCE-REVIEW.md"
+  ],
+  "runtime_recipe_only": [
+    "amend_registry.py",
+    "READONLY-RECOVERY-ALLOWLIST-EPOCH01.json",
+    "test_actual_control.py"
+  ],
+  "runtime_recipe_has_generation_paths_not_public_API": true,
+  "storage": {
+    "shared_parent_capacity_GiB": 64,
+    "new_reservation_bytes": 0,
+    "package_limit_bytes": 16777216,
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+      "bytes": 2650,
+      "sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09"
+    },
+    "review_due_utc": "2026-10-19T04:02:24.876220+00:00",
+    "retain_reason": "current transient readonly recovery and pending public source handoff; review after publication",
+    "deletions": 0
+  },
+  "SDK_Game_Driver_SAVE_OBS_video_ledger_or_W_index_mutations_by_agent": 0
+}

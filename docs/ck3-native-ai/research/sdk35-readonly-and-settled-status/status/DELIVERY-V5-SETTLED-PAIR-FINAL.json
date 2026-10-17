@@ -1,0 +1,31 @@
+{
+  "schema": "xar.runtime-repair-status-v5-delivery/v1",
+  "status": "FILE_ONLY_FINAL",
+  "at_utc": "2026-10-17T04:13:20.649664+00:00",
+  "files": {
+    "runtime_repair_status_v5.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_v5.py",
+      "sha256": "84c71065330b809b95db59986e9473a2ea4724f897ddeb56c031daca2454b4f7",
+      "bytes": 10530
+    },
+    "test_repair_v5.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_repair_v5.py",
+      "sha256": "db2d285cd8eaffaaac731f6d178b07c63ac14e4a16de6066886843c68cfea05a",
+      "bytes": 3325
+    },
+    "ACTUAL-SETTLED-12551-252-253.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\ACTUAL-SETTLED-12551-252-253.json",
+      "sha256": "784dbf88c33a68e6e8453f5ba1fb7d71113051191d70feec62f9663d1b00708d",
+      "bytes": 4053742
+    }
+  },
+  "tests": {
+    "command": "python -B test_repair_v5.py",
+    "passed": 6
+  },
+  "actual_offline_evidence": "settled12551/AUTO252/MET253: true +24 date; reconstructed waiting state and alive handle boundary explicitly synthetic",
+  "deployment": "Root only; stop old single watcher via existing STOP marker, preserve STOP after actual exit, then one v5 watch; no overlay/Game/OBS/SDK restart",
+  "reason_mapper": "actual AUTO349 blocked counterpolicy, not Native error",
+  "new_Game_MCP_OBS_Desktop_calls": 0,
+  "frozen_v4_unchanged": true
+}
