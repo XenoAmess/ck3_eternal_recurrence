@@ -245,9 +245,7 @@ Fixture MakeCrozierFixture(FrontendBookmarkSeedTargetV1 target) {
   fixture.Put(0x8000 + 0x60, std::uintptr_t{0x2000});
   fixture.Put(0x8000 + 0x68, std::uintptr_t{0x4000});
   fixture.Put(0x8000 + 0xD8, std::uintptr_t{0xD000});
-  PutLongKey(fixture, 0xD000, 0x18, 0x11000,
-             target == FrontendBookmarkSeedTargetV1::rurik_867
-                 ? "bm_group_867" : "bm_group_1066");
+  PutLongKey(fixture, 0xD000, 0x18, 0x11000, profile.bookmark_group_key);
   fixture.Put(0x8000 + 0x120, std::uintptr_t{0x9000});
   fixture.Put(0x8000 + 0x128, std::int32_t{-1});
   fixture.Put(0x8000 + 0x12C, std::int32_t{-1});
@@ -326,7 +324,8 @@ bool CrozierCases() {
   using xar::ck3_11906::FrontendBookmarkSelectionV1;
   for (const auto target : {FrontendBookmarkSeedTargetV1::configured_1066,
                             FrontendBookmarkSeedTargetV1::yahya_1066,
-                            FrontendBookmarkSeedTargetV1::rurik_867}) {
+                            FrontendBookmarkSeedTargetV1::rurik_867,
+                            FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867}) {
     auto fixture = MakeCrozierFixture(target);
     FrontendBookmarkModelProbeV1 result{};
     const auto &profile = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(target);
@@ -337,9 +336,7 @@ bool CrozierCases() {
         result.government_type_keys[0] != profile.government_key ||
         result.selected_date_low_raw != profile.date_low_raw ||
         !result.selected_bookmark_group_key_available ||
-        result.selected_bookmark_group_key !=
-            (target == FrontendBookmarkSeedTargetV1::rurik_867
-                 ? "bm_group_867" : "bm_group_1066") ||
+        result.selected_bookmark_group_key != profile.bookmark_group_key ||
         result.supported_1066_candidate_feudal !=
             (target == FrontendBookmarkSeedTargetV1::configured_1066)) {
       std::fprintf(stderr, "Crozier target profile failed: %s\n",
@@ -377,7 +374,7 @@ bool CrozierCases() {
   return true;
 }
 
-bool CrozierBookmarkDbSwitchCase() {
+bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
   using xar::ck3_11906::FrontendBookmarkModelProbeV1;
   using xar::ck3_11906::FrontendBookmarkChangeV1;
   // SetupView+0xC0 contains Group pointers, not Bookmark pointers. The
@@ -388,7 +385,7 @@ bool CrozierBookmarkDbSwitchCase() {
     fixture.Add(base, 512);
   }
   const auto &rurik = xar::ck3_11906::GetFrontendBookmarkTargetProfileV1(
-      FrontendBookmarkSeedTargetV1::rurik_867);
+      target);
   PutLongKey(fixture, 0x14000, 0x18, 0x16000, rurik.bookmark_key);
   fixture.Put(0x9000 + 0x150, std::uintptr_t{0xD000});
   fixture.Put(0x14000 + 0x150, std::uintptr_t{0x1B000});
@@ -435,7 +432,7 @@ bool CrozierBookmarkDbSwitchCase() {
   access.read_memory = &ReadFixture;
   FrontendBookmarkChangeV1 change{};
   FrontendBookmarkModelProbeV1 result{};
-  if (!ProbeCrozier(fixture, result, FrontendBookmarkSeedTargetV1::rurik_867) ||
+  if (!ProbeCrozier(fixture, result, target) ||
       result.selected_bookmark_group_key != "bm_group_1066" ||
       result.selected_bookmark_key != "bm_1066_rags_to_riches" ||
       result.selected_date_low_raw != 0x032AEB08 ||
@@ -446,13 +443,13 @@ bool CrozierBookmarkDbSwitchCase() {
   }
   if (!xar::ck3_11906::SelectSupportedBookmarkV1(
           environment, access, reinterpret_cast<void *>(0x2000), change,
-          FrontendBookmarkSeedTargetV1::rurik_867, &FakeBookmarkSetter,
+          target, &FakeBookmarkSetter,
           &FakeBookmarkGroupSetter) ||
       !change.owner_resolved || !change.target_resolved ||
       !change.group_setter_invoked || !change.setter_invoked ||
       !change.same_frame_bookmark_matches ||
       fixture.group_setter_calls != 1 || fixture.bookmark_setter_calls != 1 ||
-      !ProbeCrozier(fixture, result, FrontendBookmarkSeedTargetV1::rurik_867) ||
+      !ProbeCrozier(fixture, result, target) ||
       !result.candidate_identity_ready || result.selected_character_index != -1 ||
       result.selected_bookmark_group_key != rurik.bookmark_group_key ||
       result.selected_bookmark_key != rurik.bookmark_key ||
@@ -467,7 +464,7 @@ bool CrozierBookmarkDbSwitchCase() {
   }
   if (!xar::ck3_11906::SelectSupportedBookmarkV1(
           environment, access, reinterpret_cast<void *>(0x2000), change,
-          FrontendBookmarkSeedTargetV1::rurik_867, &FakeBookmarkSetter,
+          target, &FakeBookmarkSetter,
           &FakeBookmarkGroupSetter) ||
       !change.already_selected || change.group_setter_invoked ||
       change.setter_invoked || fixture.group_setter_calls != 1 ||
@@ -705,5 +702,7 @@ int main(int argc, char **argv) {
     std::fprintf(stderr, "unmatched bookmark root must fail closed\n");
     return 1;
   }
-  return CrozierCases() && CrozierBookmarkDbSwitchCase() ? 0 : 1;
+  return CrozierCases() &&
+      CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::rurik_867) &&
+      CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867) ? 0 : 1;
 }

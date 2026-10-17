@@ -964,6 +964,35 @@ async def wait_for_saved_campaign(client: PlanClient, expected: dict[str, object
 
 
 
+def fixture_start_policy_binding(policy: dict[str, object], policy_bytes: bytes) -> dict[str, object]:
+    """Carry the frozen fixture scenario to the typed tool without changing Robert."""
+    binding = {"policy_sha256": hashlib.sha256(policy_bytes).hexdigest(),
+               "preparation_sha256": policy["preparation"]["sha256"]}
+    if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_frontend_target
+        binding.update(profile_id=policy["profile_id"], frontend_target=fixture_frontend_target(policy))
+    return binding
+
+
+def fixture_start_tool(policy: dict[str, object]) -> str:
+    """Choose only the explicitly approved policy's typed Start surface."""
+    if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+        from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_frontend_target
+        fixture_frontend_target(policy)
+        return "ck3_submit_frontend_fixture_scenario_start_v1"
+    if policy.get("schema") != "ck3-frontend-fixture-start-policy-v1":
+        raise ValueError("unsupported closed fixture startup policy")
+    return "ck3_submit_frontend_fixture_robert_start_v1"
+
+
+def require_fixture_policy_submission(value: object, policy: dict[str, object]) -> dict[str, object]:
+    if fixture_start_tool(policy) == "ck3_submit_frontend_fixture_scenario_start_v1":
+        from xar_autoplayer.bridge.frontend_fixture_scenario_start_v1 import require_scenario_start_submission
+        return require_scenario_start_submission(value)
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import require_fixture_start_submission
+    return require_fixture_start_submission(value)
+
+
 def native_server(args: argparse.Namespace) -> None:
     clean_imports(args.agent_source_root)
     from xar_autoplayer.bridge.native_driver import (
@@ -1024,8 +1053,7 @@ def native_server(args: argparse.Namespace) -> None:
         from xar_autoplayer.bridge.driver import PreSubmissionRevisionMismatchError
         install_campaign_speed_presubmission_transmission(driver, PreSubmissionRevisionMismatchError)
     if fixture_policy is not None:
-        driver.frontend_fixture_start_policy_binding = {"policy_sha256": hashlib.sha256(fixture_policy_bytes).hexdigest(),
-            "preparation_sha256": fixture_policy["preparation"]["sha256"]}
+        driver.frontend_fixture_start_policy_binding = fixture_start_policy_binding(fixture_policy, fixture_policy_bytes)
         server = create_server(driver, profile_dir=args.state_dir / "profile")
     else:
         server = (create_server(driver, profile_dir=args.state_dir / "profile")
@@ -3310,9 +3338,8 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
         timeout: float, managed_done: threading.Event | None = None,
         poll_interval: float = 0.05,
         poll_reporting: StartupPollReporting | None = None) -> dict[str, object]:
-    from xar_autoplayer.bridge.frontend_fixture_start_contract import (
-        fixture_business_context_binding, require_fixture_start_submission)
-    submission = require_fixture_start_submission(submission)
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_business_context_binding
+    submission = require_fixture_policy_submission(submission, policy)
     state = {"status": "WAITING_FOR_ACTUAL_BUSINESS_CONTEXT", "observations": [],
         "fixture_target_identity_proven": False, "product_acceptance_proven": False,
         "start_resubmitted": False, "episode_projection": "native_campaign"}
@@ -3443,9 +3470,11 @@ def fixture_qualification_counts(value: object, policy: dict[str, object]) -> di
 
 async def submit_fixture_robert_once(client: PlanClient, policy: dict[str, object], *,
         report: dict[str, object], write: object) -> dict[str, object]:
+    """Keep the v1 Robert route, dispatching v2 only to its approved scenario tool."""
     if "frontend_fixture_start_submission" in report:
         raise RuntimeError("fixture Start already attempted; no request may be replayed")
-    required = {"ck3_submit_frontend_fixture_robert_start_v1", "ck3_take_snapshot",
+    start_tool = fixture_start_tool(policy)
+    required = {start_tool, "ck3_take_snapshot",
                 "ck3_query_campaign_root_context_v1", "ck3_query_engine_log_literals_v1"}
     if not required <= set(client.tools):
         raise RuntimeError("fixture startup requires its actual typed submission and read-only query surface")
@@ -3460,9 +3489,8 @@ async def submit_fixture_robert_once(client: PlanClient, policy: dict[str, objec
             raise RuntimeError("fixture qualification was already present before Start")
         state.update(status="REQUEST_WRITTEN_BEFORE_SUBMISSION", requested_at=now())
         write()
-        submission = await client.call("ck3_submit_frontend_fixture_robert_start_v1")
-        from xar_autoplayer.bridge.frontend_fixture_start_contract import require_fixture_start_submission
-        submission = require_fixture_start_submission(submission)
+        submission = await client.call(start_tool)
+        submission = require_fixture_policy_submission(submission, policy)
         state.update(status="SINGLE_START_ACKNOWLEDGED_POST_STATE_PENDING", acknowledged=True, result=submission)
         write()
         return submission
@@ -3475,7 +3503,7 @@ async def submit_fixture_robert_once(client: PlanClient, policy: dict[str, objec
 def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
     """Admit only a complete native tree rooted at the ordinary bookmark picker.
 
-    Selection/date/government/Robert identity remain independently guarded by
+    Selection/date/government and the declared actor identity remain guarded by
     the existing typed start method; tree presence is not selection proof.
     """
     if not isinstance(tree, dict) or not (
@@ -3500,7 +3528,7 @@ def require_verified_bookmarks_picker(tree: object) -> dict[str, object]:
     if any_character.get("effective_visible") is not True or any_character.get("enabled") is not True:
         raise RuntimeError("native ordinary character picker control is not active")
     return {"status": "ORDINARY_BOOKMARKS_TREE_VERIFIED", "widgets": proof,
-            "selection_identity": "Existing typed start must independently prove exact stock Robert model before mutation"}
+            "selection_identity": "Existing typed start must independently prove its exact declared model before mutation"}
 
 
 def require_consistent_frontend_observation(
@@ -4195,7 +4223,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",
-                        help="Use existing typed native stock Robert start before map readiness; no desktop input")
+                        help="Use typed stock Robert or an explicitly bound fixture policy before map readiness; no desktop input")
     result.add_argument("--frontend-fixture-start-policy", type=Path,
                         help="Bound external cold fixture inputs; separate once-only Robert Start and actual native_campaign business context")
     result.add_argument("--frontend-fixture-startup-case-contract", type=Path,

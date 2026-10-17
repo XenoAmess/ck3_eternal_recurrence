@@ -14497,6 +14497,14 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend has no typed fixture Start submission")
         return require_fixture_start_submission(submit())
 
+    def submit_frontend_fixture_scenario_start_v1(self) -> dict[str, object]:
+        """Submit the allowlisted mechanism fixture once; actual map proof remains separate."""
+        from .frontend_fixture_scenario_start_v1 import require_scenario_start_submission
+        submit = getattr(self.driver, "submit_frontend_fixture_scenario_start_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend has no typed scenario fixture Start")
+        return require_scenario_start_submission(submit())
+
     def activate_frontend_start_1066_bookmark_character_v1(
         self,
         character_name_key: str,

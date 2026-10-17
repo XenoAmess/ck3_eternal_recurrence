@@ -9,8 +9,11 @@
 
 namespace xar::ck3_11906 {
 
+bool IsFaithE01FrontendScenarioEnabledV1() noexcept;
+
 enum class FrontendBookmarkSeedTargetV1 : std::uint32_t {
-  configured_1066 = 0, yahya_1066 = 1, rurik_867 = 2
+  configured_1066 = 0, yahya_1066 = 1, rurik_867 = 2,
+  faith_e01_abbasid_867 = 3
 };
 
 struct FrontendBookmarkTargetProfileV1 {

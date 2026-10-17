@@ -197,6 +197,11 @@ class FixtureSubmissionTests(unittest.TestCase):
     def test_native_campaign_projection_keeps_actual_changed_actor_without_one_life_binding(self):
         driver = object.__new__(NativeHeadlessGameplayDriver)
         driver.episode_projection = "native_campaign"
+        # This test isolates projection; the current production wrapper also
+        # emits unrelated coalition diagnostics through an initialized lock.
+        driver._prewar_force_coalition_v2_snapshot_fields = lambda snapshot: {}
+        driver._war_declared_overview_snapshot_fields = lambda snapshot: {}
+        driver._war_results_window_snapshot_fields = lambda snapshot: {}
         driver._bind_episode_from_playable_snapshot = lambda *a, **k: (_ for _ in ()).throw(AssertionError("stock identity must not bind"))
         for actor in (311, 922):
             projected = driver._with_one_life_episode({"played_character": {"character_id": actor}, "map_ready": True})
@@ -367,16 +372,26 @@ class FixtureHarnessTests(unittest.IsolatedAsyncioTestCase):
 
     async def test_actual_actor_switch_waits_for_two_qualified_later_pump_observations(self):
         harness, report = load_harness(), {}
+        def observed_current(actor, epoch):
+            snapshot, root = current(actor, epoch)
+            snapshot["local_player_id"] = 1
+            snapshot["played_character"].update(alive=True, source="native")
+            heartbeat = snapshot["diagnostics"]["last_heartbeat"]
+            heartbeat["pid"] = 71
+            heartbeat["main_thread_query_mailbox_v1"].update(
+                ready=True, stamp_read_success=True, owner_verified_pump_epochs=epoch,
+                owner_tid=81, current_tid=81)
+            return snapshot, root
         class Client:
             index = 0
             starts = 0
             async def fresh(self):
                 actor = 311 if self.index < 2 else 922
-                return current(actor, 7 + self.index // 2)[0]
+                return observed_current(actor, 7 + self.index // 2)[0]
             async def call(self, tool, args=None):
                 if tool == "ck3_query_campaign_root_context_v1":
                     actor = 311 if self.index < 2 else 922
-                    root = current(actor, 7 + self.index // 2)[1]
+                    root = observed_current(actor, 7 + self.index // 2)[1]
                     if actor == 311: root["government"]["key"] = "feudal_government"
                     self.index += 1
                     return root

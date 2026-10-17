@@ -13,6 +13,23 @@ from .campaign_root_context_contract import _TIER_KEYS
 ROBERT_KEY = "bookmark_rags_to_riches_duke_robert"
 EXE_SHA256 = "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 EXE_SHA256_12004 = CK3_12004.executable_sha256
+FAITH_E01_PROFILE_ID = "faith-and-power-e01-abbasid-867"
+FAITH_E01_FRONTEND_TARGET = {
+    "bookmark_key": "bm_xar_faith_h01_867",
+    "character_name_key": "bookmark_xar_faith_h01_abbasid",
+    "government_key": "clan_government", "start_date_raw": 51394920,
+    "bookmark_group_key": "bm_group_867",
+}
+
+
+def fixture_frontend_target(value: object) -> dict[str, object]:
+    """Closed episode allowlist; neither arbitrary actors nor runtime fullrefs."""
+    if not isinstance(value, dict) or value.get("profile_id") != FAITH_E01_PROFILE_ID or (
+            value.get("frontend_target") != FAITH_E01_FRONTEND_TARGET) or any(
+            type(value["frontend_target"].get(key)) is not type(wanted)
+            for key, wanted in FAITH_E01_FRONTEND_TARGET.items()):
+        raise ValueError("fixture scenario is not the approved episode01 frontend profile")
+    return dict(FAITH_E01_FRONTEND_TARGET)
 
 
 def require_fixture_native_build(game_version: object, executable_sha256: object):
@@ -87,8 +104,13 @@ def require_fixture_start_submission(value: object) -> dict[str, object]:
 def validate_fixture_start_policy(value: object) -> dict[str, object]:
     fields = {"schema", "schema_version", "preparation", "profile_input_sha256", "post_start",
               "required_log_markers", "forbidden_log_markers"}
-    if not isinstance(value, dict) or set(value) != fields or value["schema"] != "ck3-frontend-fixture-start-policy-v1" or (
-            type(value["schema_version"]) is not int or value["schema_version"] != 1):
+    scenario = isinstance(value, dict) and value.get("schema") == "ck3-frontend-fixture-start-policy-v2"
+    if scenario:
+        fields |= {"profile_id", "frontend_target"}
+        fixture_frontend_target(value)
+    if not isinstance(value, dict) or set(value) != fields or value["schema"] != (
+            "ck3-frontend-fixture-start-policy-v2" if scenario else "ck3-frontend-fixture-start-policy-v1") or (
+            type(value["schema_version"]) is not int or value["schema_version"] != (2 if scenario else 1)):
         raise ValueError("unsupported closed fixture startup policy")
     preparation = value["preparation"]
     if not isinstance(preparation, dict) or set(preparation) != {"path", "sha256"} or (
@@ -103,9 +125,14 @@ def validate_fixture_start_policy(value: object) -> dict[str, object]:
         if key != "preparation" and (Path(key).is_absolute() or ".." in Path(key).parts or "\\" in key or ":" in key):
             raise ValueError("fixture profile input must stay below the bound profile")
     post = value["post_start"]
+    governments = {"feudal_government", "celestial_government", "administrative_government",
+                   "meritocratic_government", "steppe_admin_government"}
+    if scenario:
+        governments = {"clan_government"}
+        if post != {"government_key": "clan_government", "primary_title_tier_key": "empire", "independent": True}:
+            raise ValueError("episode01 fixture must bind its declared independent clan empire")
     if not isinstance(post, dict) or set(post) != {"government_key", "primary_title_tier_key", "independent"} or (
-            post["government_key"] not in {"feudal_government", "celestial_government",
-                                                  "administrative_government", "meritocratic_government", "steppe_admin_government"}) or (
+            post["government_key"] not in governments) or (
             post["primary_title_tier_key"] not in _TIER_KEYS.values()) or type(post["independent"]) is not bool:
         raise ValueError("fixture policy requires explicit delivered government/tier/independence predicates")
     markers = []

@@ -11,6 +11,14 @@
 #include <string_view>
 
 namespace xar::ck3_11906 {
+
+bool IsFaithE01FrontendScenarioEnabledV1() noexcept {
+#if defined(XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1)
+  return true;
+#else
+  return false;
+#endif
+}
 namespace {
 
 constexpr FrontendModelAbiV1 kLegacyAbi{
@@ -56,6 +64,11 @@ constexpr FrontendBookmarkTargetProfileV1 kYahyaTarget{
 constexpr FrontendBookmarkTargetProfileV1 kRurikTarget{
     "bm_867_adventurers", "bookmark_adventurers_rurik_rurikid",
     "tribal_government", 51394920, "bm_group_867"};
+// Explicitly approved mechanism experiment. Historical 34014 belongs only in
+// the bookmark input; this profile never treats it as a live character fullref.
+constexpr FrontendBookmarkTargetProfileV1 kFaithE01Target{
+    "bm_xar_faith_h01_867", "bookmark_xar_faith_h01_abbasid",
+    "clan_government", 51394920, "bm_group_867"};
 
 bool IsScriptKeyByte(char value) noexcept {
   return (value >= 'a' && value <= 'z') ||
@@ -370,6 +383,7 @@ const FrontendBookmarkTargetProfileV1 &GetFrontendBookmarkTargetProfileV1(
   switch (seed_target) {
   case FrontendBookmarkSeedTargetV1::yahya_1066: return kYahyaTarget;
   case FrontendBookmarkSeedTargetV1::rurik_867: return kRurikTarget;
+  case FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867: return kFaithE01Target;
   default: return kConfiguredTarget;
   }
 }

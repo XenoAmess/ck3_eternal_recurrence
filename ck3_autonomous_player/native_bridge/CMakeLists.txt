@@ -427,6 +427,14 @@ option(
   OFF
 )
 
+option(XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1
+  "Admit only the approved faith episode01 Abbasid 867 bookmark profile" OFF)
+if(XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1 AND
+   (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+    NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Faith episode01 scenario requires existing typed frontend model and Start")
+endif()
+
 option(
   XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
   "Admit exact .3 frontend current game-rule selection observation"
@@ -2266,6 +2274,10 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1)
+  set_property(SOURCE src/frontend_bookmark_model_probe_v1.cpp APPEND PROPERTY COMPILE_DEFINITIONS
+    XAR_CK3_ENABLE_FAITH_E01_FRONTEND_SCENARIO_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
   target_sources(xar_ck3_bridge PRIVATE

@@ -7017,6 +7017,8 @@ class NativeHeadlessGameplayDriver:
             ROBERT_KEY, require_fixture_frontend_build, require_fixture_selected_robert,
             require_fixture_start_submission)
         policy_binding = getattr(self, "frontend_fixture_start_policy_binding", None)
+        if isinstance(policy_binding, dict) and policy_binding.get("profile_id") is not None:
+            raise BridgeUnavailableError("scenario fixture must use its separately admitted typed Start")
         if self.episode_projection != "native_campaign" or not isinstance(policy_binding, dict) or (
                 not policy_binding.get("policy_sha256")) or self.state_dir is None:
             raise BridgeUnavailableError("fixture Start requires a bound explicit policy and native_campaign projection")
@@ -7128,6 +7130,11 @@ class NativeHeadlessGameplayDriver:
             "acknowledgement": acknowledgement, "uses_ocr": False, "uses_keyboard": False, "uses_mouse": False})
         journal("native-start-acknowledged-post-state-pending", {"acknowledgement": acknowledgement})
         return result
+
+    def submit_frontend_fixture_scenario_start_v1(self) -> dict[str, object]:
+        """Start only the explicitly approved episode profile; ordinary Robert is unchanged."""
+        from .frontend_fixture_scenario_start_v1 import submit_scenario_start
+        return submit_scenario_start(self)
 
     def activate_frontend_start_1066_bookmark_character_v1(
         self,

@@ -87,6 +87,16 @@ enum class FrontendBookmarkPrivateStepKindV1 : std::uint32_t {
 
 inline FrontendBookmarkPrivateStepKindV1
 FrontendBookmarkPrivateStepKindForV1(std::string_view step) noexcept {
+  if (IsFaithE01FrontendScenarioEnabledV1()) {
+  if (step == "probe-frontend-bookmark-model-faith-e01-v1")
+    return FrontendBookmarkPrivateStepKindV1::probe;
+  if (step == "select-frontend-bookmark-character-faith-e01-v1")
+    return FrontendBookmarkPrivateStepKindV1::select_character;
+  if (step == "activate-frontend-start-selected-bookmark-faith-e01-v1")
+    return FrontendBookmarkPrivateStepKindV1::start_bookmark;
+  if (step == "activate-frontend-select-bookmark-faith-e01-v1")
+    return FrontendBookmarkPrivateStepKindV1::select_bookmark;
+  }
   if (step == "probe-frontend-bookmark-model-yahya-v1" ||
       step == "probe-frontend-bookmark-model-rurik-v1") {
     return FrontendBookmarkPrivateStepKindV1::probe;
@@ -115,6 +125,13 @@ inline bool IsFrontendBookmarkPrivateActionStepV1(
 
 inline FrontendBookmarkSeedTargetV1
 FrontendBookmarkPrivateTargetForV1(std::string_view step) noexcept {
+  if (IsFaithE01FrontendScenarioEnabledV1() &&
+     (step == "probe-frontend-bookmark-model-faith-e01-v1" ||
+      step == "select-frontend-bookmark-character-faith-e01-v1" ||
+      step == "activate-frontend-start-selected-bookmark-faith-e01-v1" ||
+      step == "activate-frontend-select-bookmark-faith-e01-v1")) {
+    return FrontendBookmarkSeedTargetV1::faith_e01_abbasid_867;
+  }
   if (step == "probe-frontend-bookmark-model-yahya-v1" ||
       step == "select-frontend-bookmark-character-yahya-v1" ||
       step == "activate-frontend-start-selected-bookmark-yahya-v1") {

@@ -4010,7 +4010,17 @@ def create_server(
         """Semantically open ruler selection and independently verify it."""
         return _ck3_activate_frontend_pick_any_character_v1(service)
 
-    if getattr(driver, "frontend_fixture_start_policy_binding", None) is not None:
+    fixture_binding = getattr(driver, "frontend_fixture_start_policy_binding", None)
+    if isinstance(fixture_binding, dict) and fixture_binding.get("profile_id") is not None:
+        from .frontend_fixture_start_contract import fixture_frontend_target
+        fixture_frontend_target(fixture_binding)
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_submit_frontend_fixture_scenario_start_v1() -> dict[str, object]:
+            """Submit the approved mechanism scenario once; post-map qualification is separate."""
+            return service.submit_frontend_fixture_scenario_start_v1()
+        _forbid_unknown_tool_arguments_v1(server, "ck3_submit_frontend_fixture_scenario_start_v1")
+    elif fixture_binding is not None:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
                                                idempotentHint=False, openWorldHint=False))
         def ck3_submit_frontend_fixture_robert_start_v1() -> dict[str, object]:
