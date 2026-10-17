@@ -765,3 +765,7 @@ docs/ck3-native-ai/research/obs-preconfigured-first-run/** -text whitespace=cr-a
 /docs/ck3-native-ai/evidence/episode04-r200-r201-movement-12004/source-index.json -text
 /docs/ck3-native-ai/evidence/episode04-r200-r201-movement-12004/continuation-decision.json -text
 /docs/ck3-native-ai/evidence/episode04-r200-r201-movement-12004/README.md -text
+docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/small-originals.zip -text
+docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/literal-observations.json -text
+docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/source-index.json -text
+docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-decision.json -text

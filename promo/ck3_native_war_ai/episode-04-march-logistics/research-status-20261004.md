@@ -376,3 +376,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ## 2026-10-17 R04/R05可复用来源补记（无新整卡）
 
 `machine_id: desktop-3fevhd2-1c74096080`。[R04一次parent seed源码](../../../docs/ck3-native-ai/episode04-county-entry-relation-core-12004.md)新持28BFC50可达118B/31指令、0CALL/0写，不把原始240B窗口的122B余量解释为另一个函数；它是单步，不是H固定点遍历。实际OR、getter返回值和physical positive仍未证。[R05合法cap100准备](../../../docs/ck3-native-ai/episode04-r05-cap100-natural-preparation-12004.md)复用已闭源码：成功自然供给callback会先ADD再按当时实际cap裁剪；不证明普通任命立即clamp，也不证明绝不立即clamp。只建议新鲜合法低cap与一次真实机会后的100库存正常checkpoint，不能盲耗53成功机会/1560日作本场归零。未读新EXE/存档/Driver，无新runtime、R08wire或媒体资格。研究9/14、业务6/11、合格动态0/11、ABC0/3保持。
+
+## 2026-10-18 R202正常闭场：2633遭遇战S0，非返home
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际source26449/a34b。[R202专题](../../../docs/ck3-native-ai/episode04-r202-movement-combat-checkpoint-12004.md)记录第一actor23日到2633后保存但继续运行；public82/native81 preview首边2627 Pfalse，relationfalse/war-1/ORunknown。后继同PID只换case/prefix，guard前26闭环，独立第27日53148864在2633与enemyArmy32/owner33732交战，非抵达2629。最终正常Save74,351,284B/SHA5b629e2b…5835755f，CK3/process/outer0与screen6267空资源；R203可从battle正常S0独立继续/拍摄，未预授结果。没有录像或R06 ADD，研究9/14、业务6/11、动态0/11、ABC0/3不涨。

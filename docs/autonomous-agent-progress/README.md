@@ -1250,3 +1250,7 @@ genuine v3 c519e2c3…原game/helper退出0与CAS空资源闭合；R3B3 saved-G2
 ## 圣地采用首次独立后验与知识接入（实际追加2026-10-17T12:16:53.948627+00:00）
 
 machine_id: 4-8e1c2f1861，CK3 1.20.0.4。[R5专题](../ck3-native-ai/faith-and-power-episode01-r0005-adoption.md)确认一次原版Confirm后Faith50新增nadjaf32普通圣地、实际扣1000虔诚；空库存仍未Active，真实受益与采用后冷却未知。C已保存冻结，冷载/完整Driver绑定未验；本场正常GUI退出、原等待/keeper exit0，CAS11345 done/resources[]。既有MCP采用知识口可检索带机器/场次/SHA的单场历史，新测试1项/4次真实MCP调用通过，当前许可守卫仍false/null。公共verify为research holder exit2，非case/product PASS。独立宗教机制实验不计普通罗贝尔战役成绩；媒体审阅另计，R1-R4历史保留。
+
+## 2026-10-18 R202正常闭场：2633遭遇战S0，非返home
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际source26449/a34b。[R202专题](../ck3-native-ai/episode04-r202-movement-combat-checkpoint-12004.md)记录第一actor23日到2633后保存但继续运行；public82/native81 preview首边2627 Pfalse，relationfalse/war-1/ORunknown。后继同PID只换case/prefix，guard前26闭环，独立第27日53148864在2633与enemyArmy32/owner33732交战，非抵达2629。最终正常Save74,351,284B/SHA5b629e2b…5835755f，CK3/process/outer0与screen6267空资源；R203可从battle正常S0独立继续/拍摄，未预授结果。没有录像或R06 ADD，研究9/14、业务6/11、动态0/11、ABC0/3不涨。

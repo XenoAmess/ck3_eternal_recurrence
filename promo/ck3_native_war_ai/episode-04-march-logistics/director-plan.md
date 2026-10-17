@@ -335,3 +335,7 @@ R0181已拍45秒首边地图过渡原片，完成5个自然日推进并到达264
 下一场按[R182唯一录像镜头表](r182-capture-plan-2026-10-16.md)先构图、核真实首边和业务门禁，再开始一次连续录像；180秒/512MiB只是待准入候选。现有23张静态卡、69段约32分27秒配音可用于方法审阅版，不能抵扣关键动态、人工1×完整观看、签核或最终交付。截至此更新，研究核心6/14＝42.9%、业务4/11＝36.4%、新版合格动态0/11。
 
 R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../../docs/ck3-native-ai/episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。
+
+## 2026-10-18 R202正常闭场：2633遭遇战S0，非返home
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际source26449/a34b。[R202专题](../../../docs/ck3-native-ai/episode04-r202-movement-combat-checkpoint-12004.md)记录第一actor23日到2633后保存但继续运行；public82/native81 preview首边2627 Pfalse，relationfalse/war-1/ORunknown。后继同PID只换case/prefix，guard前26闭环，独立第27日53148864在2633与enemyArmy32/owner33732交战，非抵达2629。最终正常Save74,351,284B/SHA5b629e2b…5835755f，CK3/process/outer0与screen6267空资源；R203可从battle正常S0独立继续/拍摄，未预授结果。没有录像或R06 ADD，研究9/14、业务6/11、动态0/11、ABC0/3不涨。

@@ -115,3 +115,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-17 11:44 UTC R198媒体候选边界（待下次正常闭场采纳）
 
 `machine_id: desktop-3fevhd2-1c74096080`。[R198媒体索引](evidence/episode04-r198-military-toggle-12004/media-index.json)固定原片57.266秒／1718帧全解码与递增PTS，checkbox转场n1088勾选、n1089中间、n1090未勾选；`[780,1675)`为895帧／29.833333秒候选。连续clean、完整人工1×、signoff尚未通过；它是玩家owner31254演示，不能外推封臣AI。动态0/11，研究9/14、业务6/11、ABC0/3均不涨。
+
+## 2026-10-18 R202正常闭场：2633遭遇战S0，非返home
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际source26449/a34b。[R202专题](episode04-r202-movement-combat-checkpoint-12004.md)记录第一actor23日到2633后保存但继续运行；public82/native81 preview首边2627 Pfalse，relationfalse/war-1/ORunknown。后继同PID只换case/prefix，guard前26闭环，独立第27日53148864在2633与enemyArmy32/owner33732交战，非抵达2629。最终正常Save74,351,284B/SHA5b629e2b…5835755f，CK3/process/outer0与screen6267空资源；R203可从battle正常S0独立继续/拍摄，未预授结果。没有录像或R06 ADD，研究9/14、业务6/11、动态0/11、ABC0/3不涨。
