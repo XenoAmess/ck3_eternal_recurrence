@@ -463,6 +463,8 @@ def load_driver(
     userdir: str | os.PathLike[str] | None = None,
     state_dir: str | os.PathLike[str] | None = None,
     pipe_name: str | None = None,
+    route_contact_timeline_speed: int = 3,
+    allow_route_contact_high_speed_ab: bool = False,
     war31_one_shot_surrender_gate: War31OneShotSurrenderGate | None = None,
     succession_lifecycle_binding: dict[str, object] | None = None,
     allow_private_death_succession_modal_continue: bool = False,
@@ -475,6 +477,10 @@ def load_driver(
     if (require_initial_lifestyle_focus_before_date_advance
             and not allow_private_lifestyle_formal_trial):
         raise ValueError("initial lifestyle focus requires the private lifestyle formal trial")
+    if factory != "native-headless" and (
+        route_contact_timeline_speed != 3 or allow_route_contact_high_speed_ab
+    ):
+        raise ValueError("route-contact speed A/B requires the native-headless driver")
 
     def selected_state_dir() -> Path:
         return Path(state_dir) if state_dir else _default_state_dir()
@@ -498,6 +504,8 @@ def load_driver(
             selected_pipe_name(pipe_name),
             state_dir=selected_state_dir(),
             save_dir=selected_save_dir(),
+            route_contact_timeline_speed=route_contact_timeline_speed,
+            allow_route_contact_high_speed_ab=allow_route_contact_high_speed_ab,
             war31_one_shot_surrender_gate=war31_one_shot_surrender_gate,
             succession_lifecycle_binding=succession_lifecycle_binding,
             allow_private_faction_gift_formal_trial=(
@@ -5080,6 +5088,14 @@ def parser() -> argparse.ArgumentParser:
         ),
     )
     result.add_argument(
+        "--route-contact-speed", type=int, choices=(1, 2, 3, 4, 5), default=3,
+        help="timeline speed for proof-bound route/contact steps (default: 3)",
+    )
+    result.add_argument(
+        "--allow-route-contact-high-speed-ab", action="store_true",
+        help="explicitly admit route/contact speed 4..5 research arms",
+    )
+    result.add_argument(
         "--transport", choices=("stdio", "streamable-http"), default="stdio"
     )
     result.add_argument("--host", default="127.0.0.1")
@@ -5495,6 +5511,8 @@ def main(argv: list[str] | None = None) -> int:
         userdir=args.userdir,
         state_dir=selected_state_dir,
         pipe_name=args.pipe_name,
+        route_contact_timeline_speed=args.route_contact_speed,
+        allow_route_contact_high_speed_ab=args.allow_route_contact_high_speed_ab,
         war31_one_shot_surrender_gate=war31_gate,
         succession_lifecycle_binding=succession_lifecycle_binding,
         allow_private_faction_gift_formal_trial=(

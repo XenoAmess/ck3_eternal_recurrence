@@ -17,3 +17,11 @@
 ## 前批CI的准确终态
 
 原03dfde06的[Official39045432676](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39045432676)失败保留：旧shared acceptance测试绕过构造器后缺少HolySite opt-in字段。外部A09e482d只更正测试夹具、未改生产守卫；其[Official39046231975](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39046231975)和[Linear39046231990](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39046231990)均SUCCESS。后继成功不改写原失败，本695提交CI另行计量。
+
+## 后继公共MCP参数接线（尚未部署）
+
+正式MCP现将 `--route-contact-speed`（1–5，默认3）和 `--allow-route-contact-high-speed-ab`（默认false）从parser经main／load_driver传到既有NativeDriver。非native-headless驱动携带非默认参数会明确拒绝；NativeDriver原有4／5显式AB与contact-free／精确时钟守卫均未修改。此为一叶参数接线，不是新Native能力、全局提速或当前SDK47的配置变更。
+
+新增三项测试通过真实 `main → load_driver → NativeDriver` 构造器及正常Service／MCP注册，检查默认3与显式4／5、AB开关、parser越界及非Native拒绝；仅管道I/O与服务器run为替身，Service工厂包装仍创建真实Service，不发送Native命令。连同既有LIFE配置回归共4项／13子例通过。没有实际4／5 route运行、接敌安全或速度收益信用，当前47稳定游玩与录像不受本公共源码操作影响。
+
+源候选patch SHA `39c6424e905a712f40e64cc39f4bc30934fa33d4215726004c82c1690fe4cfe1`；原候选MCP基 `e9f3d86e…`、目标 `be09564c…`。公共窄移植保留后续HolySite入口；作者的Fake factory／forwarding检查与本地真实构造链测试分别计量。46旧argv exit2与47默认参数成功仍是原来的历史事实，不能用后来公共接线改写。
