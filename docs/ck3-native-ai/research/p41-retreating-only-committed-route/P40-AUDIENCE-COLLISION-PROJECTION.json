@@ -1,0 +1,46 @@
+{
+  "schema": "xar.p40.audience-pointer-startup-failure-projection.v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_pins": {
+    "first_queue_exception": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-FIRST-QUEUE-EXCEPTION-P40.json",
+      "bytes": 4987,
+      "sha256": "8645c6dd9824c9da248102cf7da1a7bc8b6a421054085f8fd2d7fbf4dbc6ceaf"
+    },
+    "owner_closed": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P40-OWNER-CLOSED.json",
+      "bytes": 815,
+      "sha256": "c072991450b3cf17f964f01b057315a0e88808ec4acc78de7a36f3d55dacc4dd"
+    }
+  },
+  "actual": {
+    "at_utc": "2026-10-17T10:19:07.299568+00:00",
+    "stage": "sdk_context_exit",
+    "replay_allowed": false,
+    "error_type": "FileExistsError",
+    "error": "WinError183 replacing pre-existing ROOT-AUDIENCE-ACTIVE-SDK.json via pending.rename",
+    "source_boundary": "queue main audience pointer publication -> atomic -> pending.rename; pre-request metadata",
+    "next_sequence": 1,
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "exit_code": 1,
+        "kernel_exit_observed": true
+      },
+      {
+        "role": "sdk_application",
+        "exit_code": 0,
+        "kernel_exit_observed": true
+      }
+    ],
+    "normal": false,
+    "launcher_exit_code": 1,
+    "Game_stopped": false,
+    "recording_stopped": false
+  },
+  "root_report": {
+    "new_rpc_calls": 0,
+    "business_credit": 0
+  },
+  "boundary": "A failed metadata startup is retained separately; queue1/app0 is not both normal exit, and is not evidence of a failed or replayed game command"
+}

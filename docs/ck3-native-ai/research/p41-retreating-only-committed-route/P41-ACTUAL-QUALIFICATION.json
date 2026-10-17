@@ -1,0 +1,157 @@
+{
+  "schema": "xar.p41.retreating-only-one-day-actual-projection.v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "collected_at_utc": "2026-10-17T10:42:49.754598+00:00",
+  "source_pins": {
+    "auto13": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0013-1-result.json",
+      "bytes": 54748,
+      "sha256": "493961e1a310e371deb94bac2abfe828c8b3ea00d57a5063e367ad5d59c6ad50"
+    },
+    "metrics14": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\0014-1-result.json",
+      "bytes": 1343,
+      "sha256": "2a79ef3d70ac57faedc5e6b739c16be896227e0c71a74c9ac32156a9cf482c01"
+    },
+    "admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P41-CONTINUITY-RESUME01-ADMITTED.json",
+      "bytes": 3504,
+      "sha256": "d0ef55eb8802b762b52d244d4597f12c06c6dc004f1909ef06b63b70ce2f83c4"
+    },
+    "settled": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P41-CONTINUITY-RESUME01-ADMITTED-SETTLED.json",
+      "bytes": 720,
+      "sha256": "5ad62e1dc0465421f8985934b3850361b344c8c5531d4136ce9168f5be507c8a"
+    }
+  },
+  "projection": {
+    "auto_started_at_utc": "2026-10-17T10:32:57.618876+00:00",
+    "auto_ended_at_utc": "2026-10-17T10:32:58.544323+00:00",
+    "phase": "native_war_retreating_only_committed_route_one_day_observation",
+    "selected_step": "life-advance-one-day",
+    "planning_source_frame": {
+      "schema": "xar.ck3.planning-source-frame/v1",
+      "status": "complete",
+      "snapshot_id": "native:19",
+      "revision": 2,
+      "native_revision": 19,
+      "date_raw": 53201808,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "connection_generation": 3,
+      "bridge_pid": 51028
+    },
+    "plan_claims": {
+      "max_observation_days": 1,
+      "contact_free_proven": false,
+      "movement_resubmitted": false,
+      "offensive_combat_permission": false,
+      "war_or_material_credit": false
+    },
+    "result": {
+      "step": "life-advance-one-day",
+      "backend_id": "native-headless",
+      "source": "native-composite",
+      "starting_date_raw": 53201808,
+      "ending_date_raw": 53201832,
+      "elapsed_days": 1,
+      "requested_horizon_days": 1,
+      "timeline_speed": 5,
+      "timeline_policy": "exact_one_day_noncombat_native_speed_5",
+      "progress_status": "postcondition",
+      "paused": true,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "final_screen": "map_hud",
+      "snapshot_id": "native:22",
+      "revision": 5,
+      "exact_day_native_clock": {
+        "armed": {
+          "state": "armed",
+          "generation": 1,
+          "starting_date_raw": 53201808,
+          "target_date_raw": 53201832,
+          "last_observed_date_raw": 53201808,
+          "trigger_date_raw": 0,
+          "speed": 5,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 0,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 0,
+          "trigger_reasons": [],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": -1,
+          "pause_wrapper_called": false,
+          "pause_observed": false,
+          "terminal_observed": false,
+          "abnormal": false
+        },
+        "stopped": {
+          "state": "triggered",
+          "generation": 1,
+          "starting_date_raw": 53201808,
+          "target_date_raw": 53201832,
+          "last_observed_date_raw": 53201832,
+          "trigger_date_raw": 53201832,
+          "speed": 5,
+          "mode": "terminal_or_sentinel",
+          "army_count": 0,
+          "combat_count": 0,
+          "completed_daily_ticks": 1,
+          "intermediate_pause_count": 0,
+          "trigger_flags": 1,
+          "trigger_reasons": [
+            "date_deadline"
+          ],
+          "signed_date_delta_from_target_raw": 0,
+          "overshoot_days": 0,
+          "pause_wrapper_called": true,
+          "pause_observed": true,
+          "terminal_observed": false,
+          "abnormal": false
+        }
+      }
+    },
+    "paired_metrics": {
+      "snapshot_id": "native:22",
+      "revision": 5,
+      "native_revision": 22,
+      "date_raw": 53201832,
+      "paused": true,
+      "map_ready": true,
+      "actor_character_id": 31254,
+      "actor_alive": true,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "connection_generation": 3,
+      "war_count": 1,
+      "driver_state_bytes": 23177634,
+      "army_strengths_profile": null,
+      "army_strengths_query_sequence": null,
+      "army_strength_result_write_v1": null
+    },
+    "settled": {
+      "completed_cycles": 1108,
+      "before": {
+        "snapshot_id": "native:22",
+        "revision": 5,
+        "native_revision": 22,
+        "date_raw": 53201832,
+        "actor_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30"
+      },
+      "pending_cycle": null,
+      "pending_checkpoint": null,
+      "terminal": null
+    },
+    "admission": {
+      "status": "GREEN",
+      "original_action_replayed": false,
+      "first_control_sequence": 17
+    }
+  },
+  "field_boundary": "Exact selected fields from completed AUTO13/MET14 and immutable settled/admission metadata; no world history, Driver, SAVE or media body copied",
+  "claim_limit": "One existing exact-one-day operation and independent paused readback; no Native contact-free proof, move, combat, war victory, material credit, continuous30year or throughput claim",
+  "public_helper_live_deployment_claimed": false
+}

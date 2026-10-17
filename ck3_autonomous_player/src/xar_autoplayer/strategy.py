@@ -11675,6 +11675,14 @@ def _choose_one_life_turn_core(
                     }
                 if passive_route_audit["status"] in {"safe", "unsafe"}:
                     if not route_contact_scope_supported:
+                        retreating_only_watch = _retreating_only_committed_route_one_day_plan(
+                            snapshot, pursuit_army,
+                            audit=passive_route_audit, move_intent=observed_intent,
+                            hostile_army_ids=route_threat_enemy_ids,
+                            available_steps=available_steps, war_summary=war_summary,
+                        )
+                        if retreating_only_watch is not None:
+                            return retreating_only_watch
                         return {
                             "policy": "one-life-turn-v1",
                             "phase": (
@@ -20897,6 +20905,85 @@ def _same_frame_readonly_result_lease(
         ("queried_connection_generation", generation),
         ("queried_episode_run_id", episode),
     ))
+
+
+def _retreating_only_committed_route_one_day_plan(
+    snapshot: dict[str, object], army: dict[str, object],
+    *, audit: dict[str, object], move_intent: dict[str, object] | None,
+    hostile_army_ids: tuple[int, ...], available_steps: set[str],
+    war_summary: list[dict[str, object]],
+) -> dict[str, object] | None:
+    """Observe one exact day when every published enemy is explicitly retreating.
+
+    The zero-hostile Native horizon is not an API value. This grants no
+    contact-free, move, combat, or victory conclusion; the committed route is
+    re-read after the bounded clock stop.
+    """
+    if not isinstance(snapshot, dict) or not isinstance(army, dict) or not isinstance(audit, dict):
+        return None
+    player=snapshot.get("played_character")
+    hint=snapshot.get("top_exclusive_modal_choice_hint")
+    route=army.get("route_province_ids")
+    armies=snapshot.get("player_armies")
+    wars=snapshot.get("active_wars")
+    army_id=_public_cunit_int(army.get("army_id"))
+    current=_native_int(army.get("current_province_id"))
+    target=_native_int(army.get("move_target_province_id"))
+    if not (
+        snapshot.get("paused") is True and snapshot.get("map_ready") is True
+        and snapshot.get("route_contact_horizon_supported") is True
+        and snapshot.get("active_event") is None
+        and snapshot.get("pending_character_interaction") is None
+        and not (isinstance(hint, dict) and hint.get("status") == "present")
+        and isinstance(player, dict) and player.get("alive") is True
+        and isinstance(armies, list) and len(armies) == 1
+        and isinstance(armies[0], dict) and armies[0] == army
+        and army_id is not None and current is not None and target is not None
+        and army.get("owner_character_id") == player.get("character_id")
+        and army.get("controllable") is True
+        and army.get("in_combat") is False and army.get("retreating") is False
+        and army.get("army_state") == "moving" and army.get("army_state_code") == 7
+        and army.get("move_target_observable") is True
+        and army.get("route_read_status") == "complete_nonempty"
+        and isinstance(route, list) and bool(route)
+        and all(type(province) is int and province > 0 for province in route)
+        and route[-1] == target
+        and audit.get("status") == "safe" and audit.get("army_id") == army_id
+        and audit.get("target_province_id") == target
+        and isinstance(move_intent, dict) and move_intent.get("status") == "active"
+        and move_intent.get("army_id") == army_id
+        and move_intent.get("target_province_id") == target
+        and not hostile_army_ids and "life-advance-one-day" in available_steps
+        and isinstance(wars, list) and bool(wars)
+    ):
+        return None
+    retreating_ids: set[int] = set()
+    for war in wars:
+        if not isinstance(war, dict) or not isinstance(war.get("enemy_armies"), list):
+            return None
+        for enemy in war["enemy_armies"]:
+            if not isinstance(enemy, dict) or enemy.get("retreating") is not True or enemy.get("in_combat") is not False:
+                return None
+            enemy_id=_public_cunit_int(enemy.get("army_id"))
+            if enemy_id is None: return None
+            retreating_ids.add(enemy_id)
+    if not retreating_ids:
+        return None
+    return {
+        "policy":"one-life-turn-v1",
+        "phase":"native_war_retreating_only_committed_route_one_day_observation",
+        "selected_step":"life-advance-one-day",
+        "reason":"all published enemies are explicitly retreating; observe one exact Native day of the already committed route, then re-read battle and hostile state without claiming contact safety",
+        "route_audit":audit,
+        "move_intent":move_intent,
+        "retreating_enemy_army_ids":sorted(retreating_ids),
+        "contact_free_proven":False,
+        "movement_resubmitted":False,
+        "offensive_combat_permission":False,
+        "war_or_material_credit":False,
+        "max_observation_days":1,
+        "active_wars":war_summary,
+    }
 
 
 def _sole_committed_moving_contact_first(

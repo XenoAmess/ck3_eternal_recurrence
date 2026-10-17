@@ -1,0 +1,46 @@
+{
+  "schema": "xar.p39.retreating-only-public-portable-delivery/v1",
+  "status": "OFFLINE_PORTABLE_CANDIDATE_GREEN_PUBLIC_W_TEST_PENDING",
+  "files": {
+    "base_strategy": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\strategy.py",
+      "sha256": "274149f6566abc488c3379947474a1bcfd767c48aa6e47cc529fa3d7c7d3adbb",
+      "bytes": 1044603
+    },
+    "candidate_strategy": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\candidate\\xar_autoplayer\\strategy.py",
+      "sha256": "adf6b07176db6bc3cc08c62a46eca447a043c4874bc63a37c2571f1ad45ea976",
+      "bytes": 1073202
+    },
+    "strategy_patch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\strategy.patch",
+      "sha256": "bd33f7d67e5cdf158a72d4811edbefdc813f1be662c936ab796228f073d5e509",
+      "bytes": 5324
+    },
+    "portable_test": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\portable\\test_retreating_only_committed_route.py",
+      "sha256": "dd3b58622eefcc83f7d3c46d3cd579f35b5ab7c5114155e2e2f2d2c43c255cf0",
+      "bytes": 5628
+    },
+    "portable_fixture": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\portable\\fixtures\\portable_actual56_ordinary_projection.json.gz",
+      "sha256": "2bdfd12e18882edc058cbc069213f7fcad55c8a41a5e90d66a0ec0c73aef7cf4",
+      "bytes": 22044
+    },
+    "focused_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\FOCUSED-RESULT.json",
+      "sha256": "5bf421cd8e2b6c3c8656a8c63fcfe7f6bbc67d346f11aee4965f8e5957613e99",
+      "bytes": 1479
+    },
+    "classifier_phase_only_result": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\P41-RETREATING-ONLY-ONE-DAY-CLASSIFIER-OFFLINE.json",
+      "sha256": "242ba2c5e7c68119feb87a3d90fe45fc57b2a11b61bc78b969801c25828f1cf5",
+      "bytes": 2164
+    }
+  },
+  "source_scope": "one Strategy file; two small hunks: guarded fallback in active-route horizon unsupported branch and one guarded helper; no Native or SDK Service changes",
+  "fixture_scope": "Actual SEM56, CAP2, AUTO55 blocked plan, and the result payloads of 17 completed AUTO response rows projected without abbreviation; not complete original Driver history or a Native clock execution",
+  "test": "2 unittest methods, 21 negative subtests; candidate source GREEN with Python 3.13 -B",
+  "public_boundary": "Public W source already being COW integrated by sole writer; this manifest does not claim its tests or deployment completed",
+  "classifier_boundary": "P41 final queue classifier AST accepts synthetic phase-only replacement on a prior real exact-one-day receipt; this does not grant actual date credit"
+}

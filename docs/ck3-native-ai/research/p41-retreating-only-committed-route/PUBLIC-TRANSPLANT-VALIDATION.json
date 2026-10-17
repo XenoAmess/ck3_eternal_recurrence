@@ -1,0 +1,37 @@
+{
+  "schema": "xar.p41.retreating-route-public-transplant.v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_strategy_before_sha256": "9b59522b81093dee64720d8c574432ee764227435ae40da7a867a768a472c9f1",
+  "public_strategy_after_sha256": "84ca5c63642fbafb6ff8308c5b237d8f45ad1555d0477ae4c81d51e5d9c9ee87",
+  "existing_functions_changed": [
+    "_choose_one_life_turn_core"
+  ],
+  "new_helper_ast_equals_reviewed_sdk_candidate": true,
+  "other_existing_function_asts_unchanged": true,
+  "local_tests": {
+    "methods_passed": 4,
+    "subtests_passed": 35,
+    "files": [
+      "test_retreating_only_committed_route.py",
+      "test_enemy_already_combat_one_day_watch.py"
+    ],
+    "source": "actual public W package on PYTHONPATH; no private candidate loader"
+  },
+  "native_build_or_game_calls": 0,
+  "frozen_runtime_source_modified": false,
+  "newline_normalization": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "source_copy_raw_sha256": "091a0da5e3d47b5351e7546e8811e13999236ea69c223c6fa528ce353cf8b85d",
+      "public_lf_sha256": "84ca5c63642fbafb6ff8308c5b237d8f45ad1555d0477ae4c81d51e5d9c9ee87",
+      "eol_only": true
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_retreating_only_committed_route.py",
+      "source_copy_raw_sha256": "dd3b58622eefcc83f7d3c46d3cd579f35b5ab7c5114155e2e2f2d2c43c255cf0",
+      "public_lf_sha256": "dd3b58622eefcc83f7d3c46d3cd579f35b5ab7c5114155e2e2f2d2c43c255cf0",
+      "eol_only": false
+    }
+  ],
+  "public_source_capture_commit": "8d4dfd571d5b51237dad540f93d0083c1d57a6ad"
+}

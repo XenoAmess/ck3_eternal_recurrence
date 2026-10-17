@@ -1,0 +1,10 @@
+{
+  "schema": "xar.p39.retreating-only-committed-route-candidate/v1",
+  "base": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\strategy.py",
+  "base_sha256": "274149f6566abc488c3379947474a1bcfd767c48aa6e47cc529fa3d7c7d3adbb",
+  "candidate": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p39-zero-active-hostile-committed-route01\\candidate\\xar_autoplayer\\strategy.py",
+  "candidate_sha256": "adf6b07176db6bc3cc08c62a46eca447a043c4874bc63a37c2571f1ad45ea976",
+  "patch_sha256": "bd33f7d67e5cdf158a72d4811edbefdc813f1be662c936ab796228f073d5e509",
+  "native_changes": false,
+  "game_or_pipe_calls": 0
+}
