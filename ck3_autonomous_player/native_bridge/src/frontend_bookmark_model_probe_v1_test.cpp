@@ -476,7 +476,7 @@ bool CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1 target) {
 
 int main(int argc, char **argv) {
   if (argc == 2 && std::string_view(argv[1]) == "--rurik-bookmark-db-only") {
-    if (!CrozierBookmarkDbSwitchCase()) return 1;
+    if (!CrozierBookmarkDbSwitchCase(FrontendBookmarkSeedTargetV1::rurik_867)) return 1;
     std::puts("PASS: production SelectSupportedBookmark resolves Rurik from actual BookmarkDB while SetupView+0xC0 contains Group pointers; fixture setter once, independent 867 date/key/tribal model read; no native setter or CK3 contact");
     return 0;
   }

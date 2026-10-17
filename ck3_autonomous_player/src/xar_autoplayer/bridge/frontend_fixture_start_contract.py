@@ -20,6 +20,9 @@ FAITH_E01_FRONTEND_TARGET = {
     "government_key": "clan_government", "start_date_raw": 51394920,
     "bookmark_group_key": "bm_group_867",
 }
+FAITH_E01_STARTUP_EVENT_ADMISSION = {
+    "mode": "observe_only", "event_definition_key": "xar_faith_h01_prepare.1", "option_count": 2,
+}
 
 
 def fixture_frontend_target(value: object) -> dict[str, object]:
@@ -106,8 +109,13 @@ def validate_fixture_start_policy(value: object) -> dict[str, object]:
               "required_log_markers", "forbidden_log_markers"}
     scenario = isinstance(value, dict) and value.get("schema") == "ck3-frontend-fixture-start-policy-v2"
     if scenario:
-        fields |= {"profile_id", "frontend_target"}
+        fields |= {"profile_id", "frontend_target", "startup_event_admission"}
         fixture_frontend_target(value)
+        admission = value.get("startup_event_admission")
+        if admission != FAITH_E01_STARTUP_EVENT_ADMISSION or any(
+                type(admission.get(key)) is not type(wanted)
+                for key, wanted in FAITH_E01_STARTUP_EVENT_ADMISSION.items()):
+            raise ValueError("episode01 bootstrap requires the declared two-option event in observe-only mode")
     if not isinstance(value, dict) or set(value) != fields or value["schema"] != (
             "ck3-frontend-fixture-start-policy-v2" if scenario else "ck3-frontend-fixture-start-policy-v1") or (
             type(value["schema_version"]) is not int or value["schema_version"] != (2 if scenario else 1)):

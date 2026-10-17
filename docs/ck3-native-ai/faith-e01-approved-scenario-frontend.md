@@ -36,9 +36,14 @@ Robert 的默认 target 与原有工具不变。
 | bookmark_group_key | `bm_group_867` |
 | post_start | 独立、clan、empire；实际活角色与同帧 campaign root 一致 |
 
-v2 在既有 preparation、profile 全输入 SHA 和日志 marker 字段之外，只加入 `profile_id`
-和 `frontend_target`。这两个字段只能等于上表闭合 allowlist；v1 不因此接收 clan 或任意目标。
+v2 在既有 preparation、profile 全输入 SHA 和日志 marker 字段之外，加入 `profile_id`、
+`frontend_target` 和必填 `startup_event_admission`。前两个字段只能等于上表闭合 allowlist；
+后者必须精确为 `{"mode":"observe_only","event_definition_key":"xar_faith_h01_prepare.1","option_count":2}`。
+首次 bootstrap 只读保留此双选项准备事件，母档 F 形成后由后续明确的 A/B 分支操作选择；
+不调用自动第一项或 sole-option selector。v1 不因此接收 clan 或任意目标。
 公共 preparation 生成器应从明确 case 数据投影 v2，不能用手写回执冒充公共 prepare。
+该母档准备的 initial plan 默认空，只接收明确只读工具；不接收 turns 或初始选择、推进、
+保存、退出动作。观察后的 hold controls 仍由主操作者为具体 A/B 分支显式提交。
 
 ## 一次提交及独立后验
 
@@ -79,13 +84,22 @@ claim 与每个 mutation 的具体 step 都在执行前落同一 `frontend-fixtu
 第一次误用无 MCP 的全局 Python 时 SDK 项报缺依赖，6 个非 SDK 项通过；改用明确依赖环境后
 新 7 项全部通过。旧 fixture 回归的结果与整合后的 native 编译、实际开局证据由主执行包追加。
 
-同机 2026-10-17 08:03 UTC 的整合回归为 **36/36 PASS**，包括新增 scenario host 7 项、
+同机 2026-10-17 08:01:31 UTC 的整合回归为 **36/36 PASS**，包括新增 scenario host 7 项、
 scenario driver/MCP 7 项与既有 Robert/fixture 22 项。之前两项旧测试因未同步既有生产 wrapper
 所需的诊断/owner-frame 测试输入而失败；只补测试输入，未放宽生产守卫。
 完整最终输出保存在本机外置 `episode01/frontend-fixture-tests-final.log`，
 此前失败输出 `episode01/frontend-fixture-tests.log` 保留。CLI 为
 `tools/.venv/Scripts/python.exe -m unittest discover -s ck3_autonomous_player/tests/unit
 -p test_frontend_fixture*.py -v`，隔离候选 checkout 为 `C:/fef1`；该路径仅定位本次证据。
+
+observe-only 追加包同机聚焦验证为新 host **9/9 PASS**（2026-10-17 08:05:54 UTC）与
+policy/driver/MCP **7/7 PASS**（08:03:41 UTC）；没有重新运行无变化的旧 22 项。
+记录在 `episode01/frontend-startup-host-tests.log` 和 `frontend-startup-policy-tests.log`，
+同目录 `frontend-source-receipt.json` 保存精确 SHA、machine ID 与实际文件观察时间。
+共享 native 首次增量的测试编译报 C2660：旧 `--rurik-bookmark-db-only` 分支漏传新增函数参数；
+只补该 Rurik 参数，保留 `runtime/increment-01/build.log` 的原 RED。
+修后测试文件 SHA 为 `bfec987b784518574f26b9e8d399d1351253c903a20fa24c2b0f43f7cf4b9829`；
+它是测试调用错误，不被写成 native ABI 或游戏业务失败；native 后续真实结果仍待共享执行者记录。
 
 新增 native fixture 在现有 producer 测试中覆盖本期 profile、跨 1066→867 group/bookmark
 选择与独立查询；编译及运行归共享 native build 执行者，不建立第二份全量 build。

@@ -10,6 +10,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 from xar_autoplayer.bridge.driver import BridgeUnavailableError, DevelopmentReportDriver
 from xar_autoplayer.bridge.frontend_fixture_start_contract import (
     FAITH_E01_FRONTEND_TARGET, FAITH_E01_PROFILE_ID, EXE_SHA256_12004,
+    FAITH_E01_STARTUP_EVENT_ADMISSION,
     fixture_business_context_binding, validate_fixture_start_policy,
 )
 from xar_autoplayer.bridge.frontend_fixture_scenario_start_v1 import (
@@ -22,6 +23,7 @@ def scenario_policy():
     value = policy()
     value.update(schema="ck3-frontend-fixture-start-policy-v2", schema_version=2,
         profile_id=FAITH_E01_PROFILE_ID, frontend_target=dict(FAITH_E01_FRONTEND_TARGET),
+        startup_event_admission=dict(FAITH_E01_STARTUP_EVENT_ADMISSION),
         post_start={"government_key": "clan_government", "primary_title_tier_key": "empire", "independent": True})
     return value
 
@@ -73,7 +75,9 @@ class ScenarioPolicyTests(unittest.TestCase):
     def test_exact_episode_profile_is_closed_and_old_policy_does_not_admit_clan(self):
         self.assertEqual(validate_fixture_start_policy(scenario_policy()), scenario_policy())
         for field, bad in (("profile_id", "other"), ("frontend_target", {**FAITH_E01_FRONTEND_TARGET, "native_actor_id": 34014}),
-                ("frontend_target", {**FAITH_E01_FRONTEND_TARGET, "start_date_raw": True})):
+                ("frontend_target", {**FAITH_E01_FRONTEND_TARGET, "start_date_raw": True}),
+                ("startup_event_admission", {**FAITH_E01_STARTUP_EVENT_ADMISSION, "mode": "choose_first"}),
+                ("startup_event_admission", {**FAITH_E01_STARTUP_EVENT_ADMISSION, "option_count": True})):
             value = scenario_policy()
             value[field] = bad
             with self.subTest(field=field), self.assertRaises(ValueError):

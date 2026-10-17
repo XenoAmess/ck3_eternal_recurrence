@@ -372,6 +372,13 @@ def paused_map_readiness_admitted(snapshot: dict[str, object], report: dict[str,
         return False
     if str(hello.get("expected_ck3_sha256")).upper() != build.executable_sha256:
         return False
+    startup = state.get("startup_case", {})
+    if policy_input["policy"].get("startup_event_admission") is not None and (
+            startup.get("status") != "OBSERVED_UNCHANGED_STARTUP_EVENT"):
+        return False
+    if startup.get("status") == "OBSERVED_UNCHANGED_STARTUP_EVENT" and (
+            snapshot.get("active_event") != startup.get("preserved_active_event")):
+        return False
     return True
 
 
@@ -991,6 +998,26 @@ def require_fixture_policy_submission(value: object, policy: dict[str, object]) 
         return require_scenario_start_submission(value)
     from xar_autoplayer.bridge.frontend_fixture_start_contract import require_fixture_start_submission
     return require_fixture_start_submission(value)
+
+
+def observe_only_fixture_initial_plan(args: argparse.Namespace) -> list[dict[str, object]]:
+    """The approved scenario initially observes and holds; later controls are explicit."""
+    if args.turns:
+        raise ValueError("observe-only scenario startup forbids initial auto turns")
+    plan = load_plan(args.plan) if args.plan else []
+    allowed = {
+        "ck3_take_snapshot", "ck3_get_capabilities", "ck3_get_bridge_diagnostics", "ck3_migration_pipe_diagnostics",
+        "ck3_query_campaign_root_context_v1", "ck3_query_loaded_feature_manifest_v1",
+        "ck3_query_current_event_window_context_v1", "ck3_query_engine_log_literals_v1",
+        "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1",
+        "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_tenets_v1",
+        "ck3_query_player_rite_governance_v1", "ck3_query_player_rite_members_v1",
+        "ck3_query_holy_site_planning_knowledge_v1", "ck3_inspect_gui_window_tree_v1",
+        "ck3_inspect_frontend_gui_tree_v1",
+    }
+    if any(row.get("kind", "tool") != "tool" or row.get("tool") not in allowed for row in plan):
+        raise ValueError("observe-only scenario initial plan requires explicit read-only tools")
+    return plan
 
 
 def native_server(args: argparse.Namespace) -> None:
@@ -3222,6 +3249,117 @@ async def acknowledge_fixture_startup_case(client: PlanClient, snapshot: dict[st
         raise
 
 
+async def observe_fixture_scenario_startup_event(client: PlanClient, snapshot: dict[str, object],
+        submission: dict[str, object], policy: dict[str, object], *, state: dict[str, object],
+        write: object, deadline: float) -> dict[str, object]:
+    """Admit only the approved two-choice preparation event, without selecting it."""
+    from xar_autoplayer.bridge.frontend_fixture_start_contract import fixture_frontend_target
+    fixture_frontend_target(policy)
+    wanted = {"mode": "observe_only", "event_definition_key": "xar_faith_h01_prepare.1", "option_count": 2}
+    if policy.get("schema") != "ck3-frontend-fixture-start-policy-v2" or policy.get("startup_event_admission") != wanted:
+        raise ValueError("scenario startup requires its explicit observe-only event admission")
+    if "startup_case" in state:
+        raise RuntimeError("scenario startup event was already observed; no startup action is permitted")
+    managed_done = getattr(client, "managed_done", None)
+    def within_session():
+        if time.monotonic() >= deadline or (managed_done is not None and managed_done.is_set()):
+            raise RuntimeError("scenario startup observation exceeded its original deadline or session")
+    def event_frame(value):
+        frame = fixture_whole_root_admission_frame(value, submission, allow_active_event=True)
+        event = value.get("active_event") or {}
+        heartbeat = value.get("diagnostics", {}).get("last_heartbeat", {})
+        observer = heartbeat.get("snapshot_observer_12002", {})
+        started, completed = observer.get("started_ms"), observer.get("completed_ms")
+        if (frame is None or type(event.get("instance_id")) is not int or event["instance_id"] < 1
+                or event.get("source") != "native" or observer.get("read_in_progress") is not False
+                or type(started) is not int or type(completed) is not int or completed < started):
+            raise RuntimeError("scenario startup lacks its completed actual owner event frame")
+        return {**frame, "event_instance_id": event["instance_id"],
+            "owner_tid": heartbeat["main_thread_query_mailbox_v1"]["owner_tid"]}
+    within_session()
+    frame = event_frame(snapshot)
+    admission = state.get("first_startup_query_admission", {})
+    previous, current = admission.get("previous_frame", {}), admission.get("current_frame", {})
+    if (current != frame or type(previous.get("pump_epoch")) is not int
+            or previous["pump_epoch"] >= frame["pump_epoch"]
+            or {k:v for k,v in previous.items() if k != "pump_epoch"} != {k:v for k,v in frame.items() if k != "pump_epoch"}):
+        raise RuntimeError("scenario startup observation requires two stable owner frames")
+    diagnostics = snapshot.get("diagnostics", {})
+    hello = diagnostics.get("hello", {})
+    build = frontend_native_build_pair(hello.get("expected_ck3_version"), hello.get("expected_ck3_sha256"))
+    if (build.game_version != "1.20.0.4" or diagnostics.get("connected") is not True
+            or any(hello.get(key) != expected for key,expected in {
+                "pid": frame["bridge_pid"], "connection_generation": frame["connection_generation"],
+                "game_adapter_id": f"ck3-{build.game_version}-msvc-x64", "ck3_build_match": True}.items())):
+        raise RuntimeError("scenario startup requires the actual current4 native build")
+    record = {"status": "OBSERVING_TYPED_SCENARIO_STARTUP_EVENT", "selection_attempted": False,
+        "retry_allowed": False, "product_acceptance_proven": False, "snapshot": snapshot,
+        "admission": wanted, "original_deadline": deadline}
+    state["startup_case"] = record
+    write()
+    try:
+        packet = await asyncio.wait_for(client.call("ck3_query_current_event_window_context_v1", {
+            "event_instance_id": frame["event_instance_id"], "expected_revision": snapshot["revision"]}),
+            timeout=max(0, deadline-time.monotonic()))
+        record["event_context"] = packet
+        context = packet.get("current_event_window_context", {}) if isinstance(packet, dict) else {}
+        root_scope = context.get("root_scope", {})
+        identity = root_scope.get("typed_identity", {})
+        readiness = context.get("readiness", {})
+        options, public = context.get("options"), snapshot["active_event"].get("options")
+        if (packet.get("status") != "available" or packet.get("current_event_window_context_ready") is not True
+                or context.get("schema") != "current-event-window-context-v1" or type(context.get("schema_version")) is not int
+                or context["schema_version"] != 1 or context.get("status") != "available"
+                or type(context.get("window_match_count")) is not int or context["window_match_count"] != 1
+                or context.get("current_event_instance_id") != frame["event_instance_id"]
+                or context.get("event_definition_key") != wanted["event_definition_key"]
+                or context.get("snapshot_revision") != snapshot["native_revision"] or context.get("date_raw") != frame["date_raw"]
+                or context.get("provenance", {}).get("backend_id") != build.backend_id("event-window-v1")
+                or any(packet.get(key) != snapshot.get(source) for key,source in {
+                    "queried_snapshot_id":"snapshot_id", "queried_revision":"revision", "queried_native_revision":"native_revision"}.items())
+                or any(readiness.get(key) is not True for key in (
+                    "event_definition_identity_ready", "root_scope_ready", "option_presentation_ready"))
+                or root_scope.get("status") != "available" or root_scope.get("type_key") != "character"
+                or identity.get("status") != "available" or identity.get("kind") != "character"
+                or type(identity.get("character_id")) is not int or identity["character_id"] != frame["actor_character_id"]
+                or not isinstance(options, list) or len(options) != wanted["option_count"]
+                or not isinstance(public, list) or len(public) != len(options)):
+            raise RuntimeError("scenario startup crossed its typed definition/root/player/frame contract")
+        indices = []
+        for rendered, (option, visible) in enumerate(zip(options, public)):
+            if (not isinstance(option, dict) or not isinstance(visible, dict)
+                    or type(option.get("rendered_index")) is not int or option["rendered_index"] != rendered
+                    or type(option.get("native_option_index")) is not int or option["native_option_index"] < 0
+                    or any(option.get(key) is not value for key,value in {
+                        "shown":True, "enabled":True, "fallback":False, "cancel":False}.items())
+                    or type(visible.get("option_number")) is not int or visible["option_number"] != rendered+1
+                    or visible.get("enabled") is not True):
+                raise RuntimeError("scenario startup requires its two actual shown enabled options")
+            indices.append(option["native_option_index"])
+        if len(set(indices)) != wanted["option_count"]:
+            raise RuntimeError("scenario startup option identities are not distinct")
+        within_session()
+        after = await client.fresh()
+        record["after_snapshot"] = after
+        after_frame = event_frame(after)
+        within_session()
+        if ({k:v for k,v in after_frame.items() if k != "pump_epoch"} !=
+                {k:v for k,v in frame.items() if k != "pump_epoch"}
+                or after_frame["pump_epoch"] < frame["pump_epoch"]
+                or after.get("active_event") != snapshot["active_event"]
+                or after.get("diagnostics", {}).get("hello") != hello
+                or after.get("diagnostics", {}).get("connected") is not True):
+            raise RuntimeError("scenario startup event changed during independent read-only observation")
+        record.update(status="OBSERVED_UNCHANGED_STARTUP_EVENT", preserved_active_event=copy.deepcopy(after["active_event"]),
+            native_option_indices=indices, finished_at=now())
+        write()
+        return after
+    except BaseException as error:
+        record.update(status="READ_ONLY_STARTUP_OBSERVATION_FAILED", error=f"{type(error).__name__}: {error}", finished_at=now())
+        write()
+        raise
+
+
 async def acknowledge_fixture_startup_event(client: PlanClient, snapshot: dict[str, object],
         submission: dict[str, object], *, state: dict[str, object], write: object,
         deadline: float) -> dict[str, object]:
@@ -3363,7 +3501,8 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
             if any(counts[key] > 1 for key in policy["required_log_markers"]):
                 raise RuntimeError("fixture initialization was observed more than once")
             startup_admission = None
-            if qualified and snapshot.get("map_ready") is True and snapshot.get("paused") is True and snapshot.get("active_event") is not None:
+            observed_startup = state.get("startup_case", {}).get("status") == "OBSERVED_UNCHANGED_STARTUP_EVENT"
+            if qualified and not observed_startup and snapshot.get("map_ready") is True and snapshot.get("paused") is True and snapshot.get("active_event") is not None:
                 # R6 published map_ready while the GUI still loaded. Reuse the
                 # owner gate, retaining the actual active event for this query.
                 startup_frame = fixture_whole_root_admission_frame(snapshot, submission, allow_active_event=True)
@@ -3389,8 +3528,12 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                             "current_frame": startup_frame, "qualification": logs,
                             "product_acceptance_proven": False}
                         write()
-                        snapshot = await acknowledge_fixture_startup_event(client, snapshot, submission,
-                            state=state, write=write, deadline=deadline)
+                        if policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+                            snapshot = await observe_fixture_scenario_startup_event(client, snapshot, submission,
+                                policy, state=state, write=write, deadline=deadline)
+                        else:
+                            snapshot = await acknowledge_fixture_startup_event(client, snapshot, submission,
+                                state=state, write=write, deadline=deadline)
                         startup_baseline = None
                     else:
                         startup_baseline = (stable_startup, startup_frame["pump_epoch"])
@@ -3402,7 +3545,13 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
                 # Log queries and startup acknowledgement can outlive the earlier snapshot.
                 # Recheck the original owner/date/paused/event-free gate on this fresh frame.
                 snapshot = await client.fresh()
-            admission_frame = fixture_whole_root_admission_frame(snapshot, submission) if qualified else None
+            observed_startup = state.get("startup_case", {}).get("status") == "OBSERVED_UNCHANGED_STARTUP_EVENT"
+            if observed_startup and snapshot.get("active_event") != state["startup_case"]["preserved_active_event"]:
+                raise RuntimeError("observed scenario startup event changed before business binding")
+            admission_frame = fixture_whole_root_admission_frame(snapshot, submission,
+                allow_active_event=observed_startup) if qualified else None
+            if policy.get("startup_event_admission") is not None and not observed_startup:
+                admission_frame = None
             admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
                 "frame": admission_frame, "product_acceptance_proven": False}
             if admission_frame is not None:
@@ -3779,11 +3928,14 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         write()
 
     frontend_fixture_policy = None
+    frontend_initial_plan = None
     if args.frontend_fixture_start_policy is not None:
         clean_imports(args.agent_source_root)
         from xar_autoplayer.bridge.frontend_fixture_start_contract import load_bound_fixture_start_policy
         frontend_fixture_policy, policy_bytes = load_bound_fixture_start_policy(
             args.frontend_fixture_start_policy, args.state_dir / "profile")
+        if frontend_fixture_policy.get("schema") == "ck3-frontend-fixture-start-policy-v2":
+            frontend_initial_plan = observe_only_fixture_initial_plan(args)
         policy_snapshot = args.output.with_suffix(".frontend-fixture-start-policy.json")
         with policy_snapshot.open("xb") as stream:
             stream.write(policy_bytes)
@@ -4069,7 +4221,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                         report["pipe_diagnostics"] = await client.call("ck3_migration_pipe_diagnostics")
                         report["phase"] = "executing-plan"
                         write()
-                        plan = ([{"id": "expected-sdk-tool-error", "tool": "ck3_migration_fixture_error"}]
+                        plan = (frontend_initial_plan if frontend_initial_plan is not None else
+                                [{"id": "expected-sdk-tool-error", "tool": "ck3_migration_fixture_error"}]
                                 if args.sdk_error_smoke_test else load_plan(args.plan) if args.plan else
                                 [] if getattr(args, "frontend_mod_load_observation", False) else default_plan())
                         await client.execute(plan)
