@@ -109,3 +109,38 @@ policy/driver/MCP **7/7 PASS**（08:03:41 UTC）；没有重新运行无变化�
 本工作包没有启动 CK3/Steam、没有输入桌面、没有宣称 `.4` 实机通过。
 实际开局需再次核 machine ID、当前离线画面、加载的 EXE/DLL/profile，
 并另行核当前玩家的原生 live fullref、faith、rite 和圣地状态后才能用于本期结论。
+
+## R1 实际事件顺序与同 PID 恢复，2026-10-17
+
+`machine_id: 4-8e1c2f1861`，2026-10-17 08:30:54 UTC 从 R1 的原始
+`episode01/live/4-8e1c2f1861--faith-and-power--R0001/native-report.json` 只读提取：
+CK3 PID `18236`、connection generation `1`、实际玩家 fullref `15893`、日期 raw `51394920`，
+游戏已在声明日期进入地图；先显示的是原版 **`fp3_struggle.0051` / instance `2`**。
+它有一个真实显示且启用的选项，rendered/native index 均为 `0`、公开 option number `1`，
+实际文本为“必须消除这些愚蠢的野心！”。typed root 角色同为 `15893`；event context 的
+schema、readiness、snapshot/public/native revision 与日期均匹配当前帧。
+
+原 host 把第一个开局事件直接送入准备事件观察器，这是错误的顺序假设。
+因此 exact `xar_faith_h01_prepare.1` / 双选项守卫拒绝了原版 intro；不是角色映射或 native
+event ABI 失败。准备 on_action 日志已出现一次、A/B 日志均零次，不能据此推断准备事件
+已经显示或不存在。初次离线测试只安排准备事件直接显示，没有覆盖前面的原版 intro。
+旧 `RuntimeError: scenario startup crossed its typed definition/root/player/frame contract`
+和当时的 RED 必须保留。
+
+智能体应按当前真实事件身份分发：准备事件精确匹配时保持两选项；前置原版事件按已有
+专用策略或用户规定的“采集后选择第一显示项”续行，再重新观察。不能把第一个窗口一概
+认作本项目事件，也不能把 preparation 日志当作可见事件身份。选择后要独立读回原事件是否
+消失、下一个事件的定义与实际选项；结果未知的动作不得重发。整个过程保留原 PID，无需
+重启或重复 Start。
+
+同 PID 的新查询由原操作者经现有公共 control queue 执行；原 host 不热改、不清 error。
+新增文件消费者
+`ck3_autonomous_player/native_bridge/research/revalidate_faith_e01_startup_packets.py`
+只读该报告中的明确成功行：两个独立 before snapshot、准备 event context、after snapshot，
+以及可选的同帧 campaign root。它复用冻结 host 的原严格观察器，核实际机 ID、原 PID 和
+connection、owner pump、定义/root/日期、两个显示选项与事件保持，输出新的小回执。
+它不连 MCP、不选项、不启动/保存游戏，也不把原 host 改写为 GREEN；离线回执只证明所绑定
+实际包通过验证，不能代替操作者当前现场状态。
+
+此消费者的 3 项聚焦检查通过：准备包可验证且原 report 不变，R1 的单选 intro 形状被拒绝，
+不同 PID/错误行序/重复行被拒绝。真实恢复后的新准备包尚待原操作者采集；本节不追认其通过。
