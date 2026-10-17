@@ -274,20 +274,59 @@ def bounded(plan, seconds, *, audio):
     return replace(plan,commands=tuple(commands))
 
 
+def subtitle_groups(row):
+    """One timing contract for burned ASS and final-PTS companion SRT."""
+    speech=float(row['speech_duration_seconds'])
+    onset=float(row.get('subtitle_start_seconds',0))
+    if not math.isfinite(speech) or not 0<=onset<speech:
+        raise ValueError('Subtitle onset must precede the unchanged measured speech end')
+    groups=row.get('subtitle_groups')
+    if groups is None:
+        return [{'start_seconds':onset,'end_seconds':speech,'zh':row['zh'],'en':row['en']}]
+    if not isinstance(groups,list) or not groups:
+        raise ValueError('Explicit subtitle groups must be nonempty')
+    previous=onset
+    for group in groups:
+        start,end=float(group['start_seconds']),float(group['end_seconds'])
+        if (not math.isfinite(start) or not math.isfinite(end)
+            or not previous<=start<end<=speech):
+            raise ValueError('Subtitle groups need positive ordered intervals within measured speech')
+        if any(not isinstance(group.get(lang),str) or not group[lang].strip() for lang in ('zh','en')):
+            raise ValueError('Every subtitle group needs both unchanged text fragments')
+        previous=end
+    if any(''.join(group[lang] for group in groups)!=row[lang] for lang in ('zh','en')):
+        raise ValueError('Subtitle groups must exactly concatenate to the original zh/en text')
+    return groups
+
+
+def explicit_project_config(config, rows):
+    """Validate real native project cues without result-independent authoring flags."""
+    from xar_promo.model import ProjectConfig
+    ProjectConfig.from_mapping(config)
+    cues=[cue for chapter in config['chapters'] for cue in chapter['cues']]
+    if [cue['id'] for cue in cues]!=[row['id'] for row in rows]:
+        raise ValueError('ProjectConfig must contain the exact selected cue sequence')
+    for cue,row in zip(cues,rows):
+        if (cue['narration'].get('zh-CN')!=row['zh']
+            or cue['subtitles'].get('zh-CN')!=row['zh'] or cue['subtitles'].get('en')!=row['en']):
+            raise ValueError('ProjectConfig narration/subtitles differ from measured selected voices')
+    return config
+
+
 def subtitle(row,font_path,font_name):
     tracks=[]; cues=[]
-    subtitle_start=float(row.get('subtitle_start_seconds',0))
-    if not 0<=subtitle_start<row['speech_duration_seconds']:
-        raise ValueError('Subtitle onset must precede the unchanged measured speech end')
+    groups=subtitle_groups(row)
     for language,size,margin,height,top in (('zh',49,178,60,1120),('en',31,65,38,1280)):
         face=ImageFont.truetype(str(font_path),size)
-        layout=wrap_text(row[language],font=FontSpec(language,font_name,size),
-            measure=lambda text,chosen:face.getlength(text),max_width=2270,max_lines=2,policy=WrapPolicy())
-        if 1440-margin-height*len(layout.lines)<top:raise ValueError('Subtitle safety rectangle exceeded')
         style=AssStyleConfig(language,font_name,size,primary_colour='&H00CFE5F0',outline_colour='&H00131821',
             outline=2,shadow=1,bold=True,margin_left=145,margin_right=145,margin_vertical=margin)
         tracks.append(SubtitleTrackConfig(language,'zh-CN' if language=='zh' else 'en',2 if language=='zh' else 1,style))
-        cues.append(AssCue(row['id']+'.'+language,language,subtitle_start,row['speech_duration_seconds'],'\n'.join(layout.lines)))
+        for index,group in enumerate(groups):
+            layout=wrap_text(group[language],font=FontSpec(language,font_name,size),
+                measure=lambda text,chosen:face.getlength(text),max_width=2270,max_lines=2,policy=WrapPolicy())
+            if 1440-margin-height*len(layout.lines)<top:raise ValueError('Subtitle safety rectangle exceeded')
+            identifier=row['id']+'.'+language+('.g'+str(index) if row.get('subtitle_groups') is not None else '')
+            cues.append(AssCue(identifier,language,float(group['start_seconds']),float(group['end_seconds']),'\n'.join(layout.lines)))
     style=AssStyleConfig('source',font_name,28,primary_colour='&H006AA5CB',outline=2,alignment=8,
         margin_left=100,margin_right=100,margin_vertical=30)
     tracks.append(SubtitleTrackConfig('source','zh-CN',3,style)); cursor=0
@@ -378,11 +417,13 @@ def companion_text(rows,mapping,directory):
         return f'{value//3600000:02}:{value//60000%60:02}:{value//1000%60:02},{value%1000:03}'
     paths=[]
     for language in ('zh','en','bilingual'):
-        lines=[]
-        for number,(row,item) in enumerate(zip(rows,mapping),1):
+        lines=[];number=0
+        for row,item in zip(rows,mapping):
             start=item['actual_final_first_pts']
-            body=row['zh']+'\n'+row['en'] if language=='bilingual' else row[language]
-            lines.extend([str(number),stamp(start+float(row.get('subtitle_start_seconds',0)))+' --> '+stamp(start+row['speech_duration_seconds']),body,''])
+            for group in subtitle_groups(row):
+                number+=1
+                body=group['zh']+'\n'+group['en'] if language=='bilingual' else group[language]
+                lines.extend([str(number),stamp(start+float(group['start_seconds']))+' --> '+stamp(start+float(group['end_seconds'])),body,''])
         paths.append(write_text(directory/('episode01.'+language+'.srt'),'\n'.join(lines)))
     lines=['# Faith and Power: review narration','','Source and live result disclosures are preserved in the input catalog and burned-in source labels.','']
     for row,item in zip(rows,mapping):
@@ -400,8 +441,11 @@ def build(args,doc,inspection,inputs,admission):
     ffmpeg=inputs.bound(runtime['ffmpeg']); ffprobe=inputs.bound(runtime['ffprobe'])
     font=inputs.bound(runtime['subtitle_font']['file']); family=runtime['subtitle_font']['family']
     if ImageFont.truetype(str(font),49).getname()[0]!=family:raise ValueError('Actual subtitle font family differs')
-    assembly=read(inputs.bound(doc['assembly_plan']))
-    config=project(read(inputs.bound(assembly['inputs']['script'])))
+    if doc.get('project_config') is not None:
+        config=explicit_project_config(read(inputs.bound(doc['project_config'])),inspection['rows'])
+    else:
+        assembly=read(inputs.bound(doc['assembly_plan']))
+        config=project(read(inputs.bound(assembly['inputs']['script'])))
     cfg=write(out/'promo-project.json',config)
     run=start_run(cfg,run_id=out.name,run_directory=out/'native-run')
     preserve_artifact(run,Path(args.input),artifact_id='full-edit-input',collection='raw',role='explicit-external-SHA-input-catalog',label=None,media_type='application/json')
@@ -447,6 +491,7 @@ def build(args,doc,inspection,inputs,admission):
             segment_paths.append(target)
             mapping.append({'id':key,'claim_ids':row['claim_ids'],'shot_ids':row['shot_ids'],
                 'audio':row['audio'],'raw_or_diagram_parts':row['visual_parts'],
+                'subtitle_groups':subtitle_groups(row),'editor_annotations':row.get('editor_annotations'),
                 'actual_final_frame_indices_exclusive':[round(cursor*30),round((cursor+d)*30)],
                 'authored_final_interval_seconds':[cursor,cursor+d],'human_1x_review_performed':False})
             cursor+=d

@@ -1,0 +1,1085 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-episode01-value-v3",
+    "title": "Faith and Power: value analysis v3"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-episode01-media-v1",
+    "preset": "faith-episode01-opening-zh-v1"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": 1860
+  },
+  "chapters": [
+    {
+      "id": "value-v3",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "信仰与权力：玩家决策"
+      },
+      "cues": [
+        {
+          "id": "V3-N001",
+          "narration": {
+            "zh-CN": "花一千虔诚，采用纳杰夫。结果它只是普通圣地，圣物槽还是空的。"
+          },
+          "subtitles": {
+            "zh-CN": "花一千虔诚，采用纳杰夫。结果它只是普通圣地，圣物槽还是空的。",
+            "en": "We spend 1,000 piety to adopt Najaf. It is only an ordinary holy site for us, and the relic slots are still empty."
+          }
+        },
+        {
+          "id": "V3-N002",
+          "narration": {
+            "zh-CN": "这一千究竟买到了什么？如果本来就管着这块地，为什么还要再付钱？要是采用之后没有立刻多出一大排属性，这笔钱是不是白花了？"
+          },
+          "subtitles": {
+            "zh-CN": "这一千究竟买到了什么？如果本来就管着这块地，为什么还要再付钱？要是采用之后没有立刻多出一大排属性，这笔钱是不是白花了？",
+            "en": "What did that 1,000 actually buy? If we already rule this land, why pay again? If adoption does not immediately add a long list of bonuses, was the money wasted?"
+          }
+        },
+        {
+          "id": "V3-N003",
+          "narration": {
+            "zh-CN": "先看最直接的变化：自己的信仰，现在承认纳杰夫是圣地了。它进入了我们的名单。但土地没有因此换主人，圣地没有自动升成主要，空槽没有自动长出圣物，旁边的特殊建筑也没有替我们建好。"
+          },
+          "subtitles": {
+            "zh-CN": "先看最直接的变化：自己的信仰，现在承认纳杰夫是圣地了。它进入了我们的名单。但土地没有因此换主人，圣地没有自动升成主要，空槽没有自动长出圣物，旁边的特殊建筑也没有替我们建好。",
+            "en": "Start with the clearest change: our faith now recognizes Najaf as a holy site. It joins our list. But the land has not changed hands, the site has not become major, the empty slots have not filled themselves, and the nearby special building has not been built for us."
+          }
+        },
+        {
+          "id": "V3-N004",
+          "narration": {
+            "zh-CN": "所以，这一千买来的是一个位置，和接下来经营这个位置的可能。这个可能值不值钱，得看你准备拿它做什么。为了自己的学识，为了封臣的地方发展，为了全信仰的政治影响，或者为了某座建筑，答案可能完全不同。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，这一千买来的是一个位置，和接下来经营这个位置的可能。这个可能值不值钱，得看你准备拿它做什么。为了自己的学识，为了封臣的地方发展，为了全信仰的政治影响，或者为了某座建筑，答案可能完全不同。",
+            "en": "That 1,000 buys Najaf a place in our faith's network, and the option to develop it further. Its value depends on what we want: personal Learning, development in a vassal's county, political influence across the faith, or access to a particular building. Those goals can lead to very different answers."
+          }
+        },
+        {
+          "id": "V3-N005",
+          "narration": {
+            "zh-CN": "今天我们就沿着这个问题玩下去。先弄清一处圣地的好处给谁，再比较主要名额该给纳杰夫、麦加，还是智慧之地。最后把圣物当成真正有归属、有替代用途的东西，看看供奉、替换、取出和放弃，分别在搬动谁的资产。"
+          },
+          "subtitles": {
+            "zh-CN": "今天我们就沿着这个问题玩下去。先弄清一处圣地的好处给谁，再比较主要名额该给纳杰夫、麦加，还是智慧之地。最后把圣物当成真正有归属、有替代用途的东西，看看供奉、替换、取出和放弃，分别在搬动谁的资产。",
+            "en": "That is the question we will play through today. First, who receives a holy site's benefits? Then, should a major slot go to Najaf, Mecca, or a Site of Wisdom? Finally, we will treat relics as assets with real owners and alternative uses, and ask whose property enshrinement, replacement, retrieval and withdrawal actually move."
+          }
+        },
+        {
+          "id": "V3-N006",
+          "narration": {
+            "zh-CN": "这里使用独立的机制实验存档。人物准备成马立克派礼仪，最初采用的分支额外补了两千虔诚；演示更多操作的分支，累计额外准备了五千。补充虔诚时，奉献等级也提高了。这些不是自然游玩的积累。"
+          },
+          "subtitles": {
+            "zh-CN": "这里使用独立的机制实验存档。人物准备成马立克派礼仪，最初采用的分支额外补了两千虔诚；演示更多操作的分支，累计额外准备了五千。补充虔诚时，奉献等级也提高了。这些不是自然游玩的积累。",
+            "en": "We use separate saves prepared for these mechanism tests. The character is given the Maliki rite. The initial adoption branch receives 2,000 extra piety; the branch demonstrating more actions receives 5,000 extra in total. Adding piety also raised the Level of Devotion. None of this was earned through ordinary play."
+          }
+        },
+        {
+          "id": "V3-N007",
+          "narration": {
+            "zh-CN": "章节之间会重新载入分支，镜头前后的余额，只有在同一段里才是一条连续的账。"
+          },
+          "subtitles": {
+            "zh-CN": "章节之间会重新载入分支，镜头前后的余额，只有在同一段里才是一条连续的账。",
+            "en": "We reload different branches between chapters. Balances form one continuous account only within the same sequence."
+          }
+        },
+        {
+          "id": "V3-N008",
+          "narration": {
+            "zh-CN": "这一期最想解决的，其实就是点按钮之前的那一步：我为什么要点？"
+          },
+          "subtitles": {
+            "zh-CN": "这一期最想解决的，其实就是点按钮之前的那一步：我为什么要点？",
+            "en": "What this episode really wants to answer is the question before clicking: why should I do this?"
+          }
+        },
+        {
+          "id": "V3-N009",
+          "narration": {
+            "zh-CN": "我们容易把普通、主要理解成低级、高级，然后觉得越高级，所有效果就越多。但圣地的效果是分层的。"
+          },
+          "subtitles": {
+            "zh-CN": "我们容易把普通、主要理解成低级、高级，然后觉得越高级，所有效果就越多。但圣地的效果是分层的。",
+            "en": "It is easy to read ordinary and major as lower and higher tiers, and assume the higher tier gives more of everything. But holy site effects come in layers."
+          }
+        },
+        {
+          "id": "V3-N010",
+          "narration": {
+            "zh-CN": "先看地方层。有些效果作用在当地的人，有些作用在所在伯爵领。它们可能在普通等级就有。再看主要等级所增加的全信仰层：那是另一组效果，也有另一组领取条件。把普通升成主要，并不是把地方层再发一遍。"
+          },
+          "subtitles": {
+            "zh-CN": "先看地方层。有些效果作用在当地的人，有些作用在所在伯爵领。它们可能在普通等级就有。再看主要等级所增加的全信仰层：那是另一组效果，也有另一组领取条件。把普通升成主要，并不是把地方层再发一遍。",
+            "en": "First, the local layer: some effects benefit a local character, others the county itself. These may already exist at ordinary status. Major status adds another set of effects across the faith, with another set of eligibility conditions. Promotion does not award the local layer a second time."
+          }
+        },
+        {
+          "id": "V3-N011",
+          "narration": {
+            "zh-CN": "拿纳杰夫来说，它的地方固定项是教士好感加三；所在县还有按有效圣物稀有度变化的发展增长倍率和民众好感。这里的县主，是我们的封臣。不能因为采用按钮是皇帝点的，就把这份地方好处全记成皇帝自己的属性。"
+          },
+          "subtitles": {
+            "zh-CN": "拿纳杰夫来说，它的地方固定项是教士好感加三；所在县还有按有效圣物稀有度变化的发展增长倍率和民众好感。这里的县主，是我们的封臣。不能因为采用按钮是皇帝点的，就把这份地方好处全记成皇帝自己的属性。",
+            "en": "Take Najaf. Its fixed local effect is +3 Clergy Opinion. The county also receives a development growth multiplier and Popular Opinion that scale with effective relic rarity. Here, the county holder is our vassal. The emperor clicking Adopt does not make all those local benefits the emperor's personal stats."
+          }
+        },
+        {
+          "id": "V3-N012",
+          "narration": {
+            "zh-CN": "封臣的领地发展，当然也可能间接帮到皇帝。但中间还有谁持有地产、怎样缴税、契约怎么写。不能看到县里增加一点收益，就把同样的数直接加到皇帝的钱包里。一个适合养封臣的项目，未必是眼下最适合养自己的项目。"
+          },
+          "subtitles": {
+            "zh-CN": "封臣的领地发展，当然也可能间接帮到皇帝。但中间还有谁持有地产、怎样缴税、契约怎么写。不能看到县里增加一点收益，就把同样的数直接加到皇帝的钱包里。一个适合养封臣的项目，未必是眼下最适合养自己的项目。",
+            "en": "Development in a vassal's land can indirectly help the emperor. But that depends on who holds the holdings, how taxes are paid and what the contract says. Extra income in a county does not add the same amount directly to the imperial purse. A good investment in a vassal may not be the best investment in ourselves right now."
+          }
+        },
+        {
+          "id": "V3-N013",
+          "narration": {
+            "zh-CN": "再看我们在萨迈拉新建的智慧之地。它仍然是普通圣地，县主是玩家本人。这就比封臣的纳杰夫，更贴近经营自己地方和个人成长的目标。智慧的地方层有县主学识加二，县里的金币、威望、虔诚三类建造费，都能随有效稀有度降低；发展还有一个加法项。"
+          },
+          "subtitles": {
+            "zh-CN": "再看我们在萨迈拉新建的智慧之地。它仍然是普通圣地，县主是玩家本人。这就比封臣的纳杰夫，更贴近经营自己地方和个人成长的目标。智慧的地方层有县主学识加二，县里的金币、威望、虔诚三类建造费，都能随有效稀有度降低；发展还有一个加法项。",
+            "en": "Now consider the Site of Wisdom we created in Samarra. It is still ordinary, but the player holds the county. That better matches personal growth and developing our own land than Najaf under a vassal. Wisdom's local layer gives the county holder +2 Learning. County construction costs in gold, prestige and piety can all fall with effective rarity, and development growth also has an additive term."
+          }
+        },
+        {
+          "id": "V3-N014",
+          "narration": {
+            "zh-CN": "这里先把圣地当前有效稀有度的总和，简称为有效总量。它不是有几件圣物，也不是看到一件四档，就永远按四算。"
+          },
+          "subtitles": {
+            "zh-CN": "这里先把圣地当前有效稀有度的总和，简称为有效总量。它不是有几件圣物，也不是看到一件四档，就永远按四算。",
+            "en": "From here on, I will call the sum of the site's currently effective relic rarity its effective total. This is not the number of relics. Nor does seeing one rarity-four item mean the total will always be four."
+          }
+        },
+        {
+          "id": "V3-N015",
+          "narration": {
+            "zh-CN": "每一点有效总量，智慧的三种建造费各减百分之一，发展增长则加零点零一。假设有效总量是四，三种建造费就各对应负百分之四；发展那项是加零点零四。注意，是发展增长的加法项，不是发展增长倍率再加百分之四。"
+          },
+          "subtitles": {
+            "zh-CN": "每一点有效总量，智慧的三种建造费各减百分之一，发展增长则加零点零一。假设有效总量是四，三种建造费就各对应负百分之四；发展那项是加零点零四。注意，是发展增长的加法项，不是发展增长倍率再加百分之四。",
+            "en": "Each point of effective total reduces Wisdom's three construction costs by 1% each and adds 0.01 to development growth. At a hypothetical total of four, that means -4% to each cost and +0.04 development growth. That last term is additive development growth, not another +4% development growth multiplier."
+          }
+        },
+        {
+          "id": "V3-N016",
+          "narration": {
+            "zh-CN": "纳杰夫、麦加的相应发展项用的是倍率，不能因为都与发展有关，就把两种数字读成一回事。"
+          },
+          "subtitles": {
+            "zh-CN": "纳杰夫、麦加的相应发展项用的是倍率，不能因为都与发展有关，就把两种数字读成一回事。",
+            "en": "The corresponding development effects at Najaf and Mecca use multipliers. Both concern development, but the numbers do not mean the same thing."
+          }
+        },
+        {
+          "id": "V3-N017",
+          "narration": {
+            "zh-CN": "最容易重复花钱的地方也在这里：如果你只想要智慧的地方学识加二，不能把升为主要，当成购买这两点学识的必要步骤。它本来就在地方层里。升格之后新增什么，应该另外看。"
+          },
+          "subtitles": {
+            "zh-CN": "最容易重复花钱的地方也在这里：如果你只想要智慧的地方学识加二，不能把升为主要，当成购买这两点学识的必要步骤。它本来就在地方层里。升格之后新增什么，应该另外看。",
+            "en": "This is also an easy place to pay twice for the wrong reason. If all you want is Wisdom's local +2 Learning, promotion to major is not a necessary purchase. Those two points are already in the local layer. Check separately what promotion adds."
+          }
+        },
+        {
+          "id": "V3-N018",
+          "narration": {
+            "zh-CN": "这些是类型规则告诉我们的分工。真正落到当前人物和县里，还得满足各自条件；我们也不能只看说明文字，就宣布人物已经净增了多少。"
+          },
+          "subtitles": {
+            "zh-CN": "这些是类型规则告诉我们的分工。真正落到当前人物和县里，还得满足各自条件；我们也不能只看说明文字，就宣布人物已经净增了多少。",
+            "en": "These are the roles defined by the holy site types. Applying them to the current character and county still requires their respective conditions. A description alone does not prove a net increase in the character's stats."
+          }
+        },
+        {
+          "id": "V3-L018-01",
+          "narration": {
+            "zh-CN": "纳杰夫升为主要以后，三个槽位还是空的，圣地也仍未激活。升等级和放圣物，解决的是两件事。"
+          },
+          "subtitles": {
+            "zh-CN": "纳杰夫升为主要以后，三个槽位还是空的，圣地也仍未激活。升等级和放圣物，解决的是两件事。",
+            "en": "After Najaf becomes a major holy site, all three slots are still empty and the site remains inactive. Raising its status and enshrining a relic solve different problems."
+          }
+        },
+        {
+          "id": "V3-L018-02",
+          "narration": {
+            "zh-CN": "接着供奉四级斗篷，有效圣物总量从零到了四，虔诚没有再扣。这时能确认供奉成功，还不能把所有属性变化都算成它的功劳。"
+          },
+          "subtitles": {
+            "zh-CN": "接着供奉四级斗篷，有效圣物总量从零到了四，虔诚没有再扣。这时能确认供奉成功，还不能把所有属性变化都算成它的功劳。",
+            "en": "Next, we enshrine the rarity-four cloak. The effective relic total rises from zero to four, with no further piety deducted. We can confirm the enshrinement succeeded, but cannot credit it with every stat change."
+          }
+        },
+        {
+          "id": "V3-L018-03",
+          "narration": {
+            "zh-CN": "所以，空槽不等于绝对没有收益，亮起来也不等于所有人都吃到了加成。先看当地领主信仰和主要关系，再看你真正需要的那项收益。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，空槽不等于绝对没有收益，亮起来也不等于所有人都吃到了加成。先看当地领主信仰和主要关系，再看你真正需要的那项收益。",
+            "en": "Empty slots do not necessarily mean no benefits at all, and an active site does not mean everyone receives every bonus. First check the county holder's faith and whether the site is major for the relevant faith, then the benefit you actually need."
+          }
+        },
+        {
+          "id": "V3-N019",
+          "narration": {
+            "zh-CN": "现在来看主要等级。纳杰夫主要层的方向很明确：每个符合条件的受益角色，按自己的奉献等级，每级得到一点外交；另有教士好感加五，以及按有效总量计算的月虔诚倍率。"
+          },
+          "subtitles": {
+            "zh-CN": "现在来看主要等级。纳杰夫主要层的方向很明确：每个符合条件的受益角色，按自己的奉献等级，每级得到一点外交；另有教士好感加五，以及按有效总量计算的月虔诚倍率。",
+            "en": "Now consider major status. Najaf's major layer has a clear focus: each eligible recipient gains one Diplomacy per level of their own Devotion. It also provides +5 Clergy Opinion and a monthly piety multiplier based on the effective total."
+          }
+        },
+        {
+          "id": "V3-N020",
+          "narration": {
+            "zh-CN": "有效总量每一点，对应百分之一月虔诚。如果总量是四，原始倍率项就是百分之四。这里的外交则看那位角色自己的奉献等级。某个角色奉献等级为四，对应的原始外交项是四；不能拿皇帝的等级，替整个信仰的所有角色计算。"
+          },
+          "subtitles": {
+            "zh-CN": "有效总量每一点，对应百分之一月虔诚。如果总量是四，原始倍率项就是百分之四。这里的外交则看那位角色自己的奉献等级。某个角色奉献等级为四，对应的原始外交项是四；不能拿皇帝的等级，替整个信仰的所有角色计算。",
+            "en": "Each point of effective total contributes +1% monthly piety. At four, the underlying multiplier term is +4%. Diplomacy instead uses that recipient's own Level of Devotion. For a character at level four, the underlying Diplomacy contribution is +4. We cannot use the emperor's level for every character in the faith."
+          }
+        },
+        {
+          "id": "V3-N021",
+          "narration": {
+            "zh-CN": "所以，想改善外交、教士关系和虔诚收入，纳杰夫有清楚的用途。只是这组主要收益，不会因为采用成普通就全部送到手里。需要主要关系的部分，要把主要名额也安排进去。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，想改善外交、教士关系和虔诚收入，纳杰夫有清楚的用途。只是这组主要收益，不会因为采用成普通就全部送到手里。需要主要关系的部分，要把主要名额也安排进去。",
+            "en": "Najaf therefore has a clear use when you want Diplomacy, better clergy relations and piety income. But adopting it as ordinary does not deliver that entire major package. Benefits requiring major status also need a major slot in the plan."
+          }
+        },
+        {
+          "id": "V3-N022",
+          "narration": {
+            "zh-CN": "智慧之地升主要，提供的是每奉献等级一点外交，以及学识、外交两类生活方式经验倍率，各随有效总量每点增加百分之一。总量四时，两类经验各是百分之四。地方学识加二仍是原来的地方项，主要等级没有再送一份。"
+          },
+          "subtitles": {
+            "zh-CN": "智慧之地升主要，提供的是每奉献等级一点外交，以及学识、外交两类生活方式经验倍率，各随有效总量每点增加百分之一。总量四时，两类经验各是百分之四。地方学识加二仍是原来的地方项，主要等级没有再送一份。",
+            "en": "A major Site of Wisdom offers one Diplomacy per Level of Devotion, plus Learning and Diplomacy lifestyle experience multipliers. Each experience multiplier gains 1% per point of effective total, or +4% each at four. The local +2 Learning remains the original local effect; major status does not give it again."
+          }
+        },
+        {
+          "id": "V3-N023",
+          "narration": {
+            "zh-CN": "现在做一个具体比较：假设我们只能保留其中一个主要名额，把纳杰夫的名额换给智慧。前后都有每奉献等级一点外交，这一项的原始系数净变化是零。"
+          },
+          "subtitles": {
+            "zh-CN": "现在做一个具体比较：假设我们只能保留其中一个主要名额，把纳杰夫的名额换给智慧。前后都有每奉献等级一点外交，这一项的原始系数净变化是零。",
+            "en": "Here is a concrete comparison. Suppose we can keep only one of these sites major, and move the slot from Najaf to Wisdom. Both provide one Diplomacy per Level of Devotion. The net change in that underlying coefficient is zero."
+          }
+        },
+        {
+          "id": "V3-N024",
+          "narration": {
+            "zh-CN": "不能看到智慧面板写着增加外交，就把它整份当成额外收益，同时忘了纳杰夫那一份已经失去。这个换位真正交换的，是纳杰夫的教士好感和月虔诚，换成智慧的两类生活方式经验。两处的有效总量还可能不同，要分别算。"
+          },
+          "subtitles": {
+            "zh-CN": "不能看到智慧面板写着增加外交，就把它整份当成额外收益，同时忘了纳杰夫那一份已经失去。这个换位真正交换的，是纳杰夫的教士好感和月虔诚，换成智慧的两类生活方式经验。两处的有效总量还可能不同，要分别算。",
+            "en": "We cannot count Wisdom's entire Diplomacy entry as a new gain while forgetting the Najaf contribution we lose. The real exchange is Najaf's Clergy Opinion and monthly piety for Wisdom's two lifestyle experience bonuses. Their effective totals may also differ, so calculate each site separately."
+          }
+        },
+        {
+          "id": "V3-N025",
+          "narration": {
+            "zh-CN": "如果正准备走学识或外交生活方式，而且统治者还有很长的学习时间，经验倍率可能值得考虑。如果正靠教士关系稳住局势，或者虔诚收入紧张，失去纳杰夫这一边就有代价。哪一种更好，要看人物接下来准备做什么，以及能受益多久。"
+          },
+          "subtitles": {
+            "zh-CN": "如果正准备走学识或外交生活方式，而且统治者还有很长的学习时间，经验倍率可能值得考虑。如果正靠教士关系稳住局势，或者虔诚收入紧张，失去纳杰夫这一边就有代价。哪一种更好，要看人物接下来准备做什么，以及能受益多久。",
+            "en": "If you plan to pursue a Learning or Diplomacy lifestyle and the ruler has many years left to learn, the experience bonuses may be worth considering. If clergy relations are holding the realm together, or piety income is tight, losing Najaf has a cost. The better choice depends on the character's next goals and how long they can benefit."
+          }
+        },
+        {
+          "id": "V3-N026",
+          "narration": {
+            "zh-CN": "麦加也不能只是因为方便演示，就被当作默认牺牲位。它的主要层，每名骑士带来百分之二的月虔诚倍率；骑士效能与奉献等级影响，则各按每点有效总量增加百分之一。奉献等级影响，可以理解为放大你当前奉献等级已经提供的修正。要看当前等级实际列出的效果，不能把它当成直接增加虔诚、经验，或把等级升上去。"
+          },
+          "subtitles": {
+            "zh-CN": "麦加也不能只是因为方便演示，就被当作默认牺牲位。它的主要层，每名骑士带来百分之二的月虔诚倍率；骑士效能与奉献等级影响，则各按每点有效总量增加百分之一。奉献等级影响，可以理解为放大你当前奉献等级已经提供的修正。要看当前等级实际列出的效果，不能把它当成直接增加虔诚、经验，或把等级升上去。",
+            "en": "Mecca should not become our default sacrifice simply because it is convenient to demonstrate. Its major effects provide a 2% monthly piety multiplier per knight. Knight effectiveness and piety level impact each gain 1% per point of the site's effective rarity total. Piety level impact amplifies the modifiers already provided by your current level of devotion. Check the effects listed for that level: this does not directly award piety or devotion experience, or raise the level itself."
+          }
+        },
+        {
+          "id": "V3-N027",
+          "narration": {
+            "zh-CN": "我们只做一个算例：假设某个受益角色有十名骑士，每名百分之二，这个原始月虔诚倍率项就是百分之二十。这不是说片中的人物恰好有十名骑士，也不是说最终月虔诚面板一定净增百分之二十。"
+          },
+          "subtitles": {
+            "zh-CN": "我们只做一个算例：假设某个受益角色有十名骑士，每名百分之二，这个原始月虔诚倍率项就是百分之二十。这不是说片中的人物恰好有十名骑士，也不是说最终月虔诚面板一定净增百分之二十。",
+            "en": "Let us use a hypothetical example. An eligible character has ten knights, contributing 2% each: that gives an underlying monthly piety multiplier of +20%. This does not mean our filmed character has ten knights, or that the final monthly piety panel must show a net 20% increase."
+          }
+        },
+        {
+          "id": "V3-N028",
+          "narration": {
+            "zh-CN": "另外两项，要用麦加自己的有效总量来算，不能顺手借纳杰夫的四点代进去。准备靠骑士打仗、又有较多骑士的人，降掉麦加可能会失去一组很合身的东西。"
+          },
+          "subtitles": {
+            "zh-CN": "另外两项，要用麦加自己的有效总量来算，不能顺手借纳杰夫的四点代进去。准备靠骑士打仗、又有较多骑士的人，降掉麦加可能会失去一组很合身的东西。",
+            "en": "The other two effects use Mecca's own effective total. Do not simply borrow Najaf's four points. For someone planning knight-led warfare with many knights, demoting Mecca may give up a particularly useful package."
+          }
+        },
+        {
+          "id": "V3-N029",
+          "narration": {
+            "zh-CN": "比较主要名额时，先问旧站点正在替谁做什么，再问新站点能替谁做什么。名额够不够，只决定这件事做不做得成，不决定它值不值得做。"
+          },
+          "subtitles": {
+            "zh-CN": "比较主要名额时，先问旧站点正在替谁做什么，再问新站点能替谁做什么。名额够不够，只决定这件事做不做得成，不决定它值不值得做。",
+            "en": "When comparing major slots, first ask what the old site does and for whom, then ask the same of the new site. Having enough capacity is a question of feasibility, not whether the change is worthwhile."
+          }
+        },
+        {
+          "id": "V3-N029A",
+          "narration": {
+            "zh-CN": "至于圣地会不会多出新能力，本期比较的麦加、纳杰夫和智慧之地，类型里都没有额外的特殊能力参数。升为主要，增加的是刚才讲的各自主要层修正。其他类型要分别查看，不能把这三处的情况推广到所有圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "至于圣地会不会多出新能力，本期比较的麦加、纳杰夫和智慧之地，类型里都没有额外的特殊能力参数。升为主要，增加的是刚才讲的各自主要层修正。其他类型要分别查看，不能把这三处的情况推广到所有圣地。",
+            "en": "As for additional abilities, the three types compared here—Mecca, Najaf, and the Site of Wisdom—declare no extra special-ability parameters. Promoting them to major adds the respective major modifiers we have just discussed. Check other types individually; do not generalize these three examples to every holy site."
+          }
+        },
+        {
+          "id": "V3-N030",
+          "narration": {
+            "zh-CN": "还有一个会改变整个比较的问题：同一处圣地，可能同时被几个信仰承认。各自是不是主要，是分别保存的；但不能据此想象，每个信仰都有一套互不相干的激活状态。"
+          },
+          "subtitles": {
+            "zh-CN": "还有一个会改变整个比较的问题：同一处圣地，可能同时被几个信仰承认。各自是不是主要，是分别保存的；但不能据此想象，每个信仰都有一套互不相干的激活状态。",
+            "en": "One more issue can change the whole comparison: several faiths may recognize the same holy site. Each faith's major status is stored separately. That does not mean each faith has an entirely separate activation state for the site."
+          }
+        },
+        {
+          "id": "V3-N031",
+          "narration": {
+            "zh-CN": "圣地本身只有一组全局的激活和有效稀有度。圣物被哪个信仰认可，则是另一个问题。再往下，某一组效果实际给谁，还要看它自己的条件。"
+          },
+          "subtitles": {
+            "zh-CN": "圣地本身只有一组全局的激活和有效稀有度。圣物被哪个信仰认可，则是另一个问题。再往下，某一组效果实际给谁，还要看它自己的条件。",
+            "en": "The holy site itself has one global active state and effective rarity total. Which faith recognizes a relic is a separate question. Who actually receives a particular set of effects depends on that set's own conditions."
+          }
+        },
+        {
+          "id": "V3-N032",
+          "narration": {
+            "zh-CN": "全信仰那一层有一个很关键的门：当地县主当前的信仰，要与准备领取这组收益的信仰一致，同时该信仰还得把这里列为主要圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "全信仰那一层有一个很关键的门：当地县主当前的信仰，要与准备领取这组收益的信仰一致，同时该信仰还得把这里列为主要圣地。",
+            "en": "The faith-wide layer has a crucial gate. The local county holder's current faith must match the faith receiving those benefits, and that faith must also treat the site as major."
+          }
+        },
+        {
+          "id": "V3-N033",
+          "narration": {
+            "zh-CN": "认的是县主本人当下的信仰。不是地图上大帝国的颜色，不是最高领主的信仰，也不能拿县里百姓信什么来代替。"
+          },
+          "subtitles": {
+            "zh-CN": "认的是县主本人当下的信仰。不是地图上大帝国的颜色，不是最高领主的信仰，也不能拿县里百姓信什么来代替。",
+            "en": "It checks the county holder's personal faith right now. Not the color of the great empire on the map, not the top liege's faith, and not the faith of the county's population."
+          }
+        },
+        {
+          "id": "V3-N034",
+          "narration": {
+            "zh-CN": "因此，两个信仰共享一处圣地，哪怕双方都列为主要，也不能自动让双方各拿一整份全信仰收益。县主属于其中一方时，另一方仅仅认可里面的圣物，也跳不过这个条件。将来县主改宗，判断还可能跟着改变。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，两个信仰共享一处圣地，哪怕双方都列为主要，也不能自动让双方各拿一整份全信仰收益。县主属于其中一方时，另一方仅仅认可里面的圣物，也跳不过这个条件。将来县主改宗，判断还可能跟着改变。",
+            "en": "Two faiths sharing a holy site do not automatically receive a full faith-wide package each, even if both consider it major. When the county holder belongs to one, the other cannot bypass that gate merely by recognizing the relics. A later conversion by the holder may change the calculation."
+          }
+        },
+        {
+          "id": "V3-N035",
+          "narration": {
+            "zh-CN": "激活也不是所有效果共用的总开关。地方固定项和县里的缩放项，有它们的激活要求；全信仰固定项，没有照搬同一个开关。它要检查主要关系与县主信仰等条件。按稀有度缩放的项，又要另外看有效总量。"
+          },
+          "subtitles": {
+            "zh-CN": "激活也不是所有效果共用的总开关。地方固定项和县里的缩放项，有它们的激活要求；全信仰固定项，没有照搬同一个开关。它要检查主要关系与县主信仰等条件。按稀有度缩放的项，又要另外看有效总量。",
+            "en": "Active status is not one master switch for every effect. Local fixed effects and county scaling effects have their own activation requirements. Faith-wide fixed effects do not simply reuse that same switch: they check major status, the county holder's faith and other conditions. Rarity-scaled effects must also consider the effective total."
+          }
+        },
+        {
+          "id": "V3-N036",
+          "narration": {
+            "zh-CN": "所以，未激活不能直接翻译成所有固定好处都归零；激活了，也不能直接翻译成每个关联信仰的所有角色都领到了全部加成。界面把一段说明隐藏起来，和一项属性实际怎样计算，也不是完全相同的事情。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，未激活不能直接翻译成所有固定好处都归零；激活了，也不能直接翻译成每个关联信仰的所有角色都领到了全部加成。界面把一段说明隐藏起来，和一项属性实际怎样计算，也不是完全相同的事情。",
+            "en": "Inactive does not automatically mean every fixed benefit becomes zero. Active does not mean every character in every associated faith receives every bonus, either. The interface hiding part of a description is not exactly the same as how a stat is calculated."
+          }
+        },
+        {
+          "id": "V3-N037",
+          "narration": {
+            "zh-CN": "对玩家来说，不必背下每一项细节。记住一个简单的问法就够了：我在看哪一层，这一层要什么条件，收益给谁？这样才不会在比较主要名额时，把本来拿不到的东西算进去，或把仍可能存在的固定项直接当成零。"
+          },
+          "subtitles": {
+            "zh-CN": "对玩家来说，不必背下每一项细节。记住一个简单的问法就够了：我在看哪一层，这一层要什么条件，收益给谁？这样才不会在比较主要名额时，把本来拿不到的东西算进去，或把仍可能存在的固定项直接当成零。",
+            "en": "You do not need to memorize every detail. Ask three simple questions: which layer am I looking at, what conditions does it require, and who benefits? That keeps you from counting benefits you cannot receive, or treating potentially remaining fixed effects as zero when comparing major slots."
+          }
+        },
+        {
+          "id": "V3-N038",
+          "narration": {
+            "zh-CN": "回到本期的等级调整。我们换到一条已经采用纳杰夫、手上还有四千二百五十虔诚的实验分支。主要名额满了，于是先把麦加降成普通，花一千；再把纳杰夫升成主要，再花一千。余额剩两千二百五十。"
+          },
+          "subtitles": {
+            "zh-CN": "回到本期的等级调整。我们换到一条已经采用纳杰夫、手上还有四千二百五十虔诚的实验分支。主要名额满了，于是先把麦加降成普通，花一千；再把纳杰夫升成主要，再花一千。余额剩两千二百五十。",
+            "en": "Back to the rank changes we demonstrated. We switch to a test branch where Najaf has already been adopted and 4,250 piety remains. With all major slots occupied, we first demote Mecca to ordinary for 1,000, then promote Najaf for another 1,000. The balance is 2,250."
+          }
+        },
+        {
+          "id": "V3-N039",
+          "narration": {
+            "zh-CN": "这条分支实际花了两千。麦加还在圣地名单里，只是让出一个主要名额；圣地总数没有减少。主要总数先少一个，再被纳杰夫补回来。数量恢复，不等于麦加的主要效果也恢复，更不等于这两千退回来了。"
+          },
+          "subtitles": {
+            "zh-CN": "这条分支实际花了两千。麦加还在圣地名单里，只是让出一个主要名额；圣地总数没有减少。主要总数先少一个，再被纳杰夫补回来。数量恢复，不等于麦加的主要效果也恢复，更不等于这两千退回来了。",
+            "en": "This branch actually spent 2,000. Mecca remains on the holy site list; it only yields a major slot. The total number of holy sites does not fall. The major count drops by one, then Najaf fills the slot. Restoring the count does not restore Mecca's major effects, or refund the 2,000 piety."
+          }
+        },
+        {
+          "id": "V3-N040",
+          "narration": {
+            "zh-CN": "如果从尚未采用纳杰夫的起点规划，名额又已经满了，而且采用、降格、升格的当场报价都还是一千，也没有免费次数，那么完整预算就是三千。这是有前提的计划：采用一千，降旧一千，升新一千。它不是把几个存档拼起来，凑成一条已经发生的三千账单。"
+          },
+          "subtitles": {
+            "zh-CN": "如果从尚未采用纳杰夫的起点规划，名额又已经满了，而且采用、降格、升格的当场报价都还是一千，也没有免费次数，那么完整预算就是三千。这是有前提的计划：采用一千，降旧一千，升新一千。它不是把几个存档拼起来，凑成一条已经发生的三千账单。",
+            "en": "If planning from before Najaf's adoption, with major slots already full, all three current quotes still at 1,000 and no free actions, the complete budget is 3,000: adopt for 1,000, demote the old site for 1,000, then promote the new one for 1,000. This is a conditional plan, not a 3,000-piety bill manufactured by joining different saves."
+          }
+        },
+        {
+          "id": "V3-N041",
+          "narration": {
+            "zh-CN": "已经付过采用费的人，接下来比较方案时，看的则是追加投入。采用费已经花掉，不能因为舍不得这一千，就不管后面两千到底值不值。还没付的人，也不能只准备一千，就以为主要收益已经买齐。"
+          },
+          "subtitles": {
+            "zh-CN": "已经付过采用费的人，接下来比较方案时，看的则是追加投入。采用费已经花掉，不能因为舍不得这一千，就不管后面两千到底值不值。还没付的人，也不能只准备一千，就以为主要收益已经买齐。",
+            "en": "If you already paid for adoption, compare the additional investment from here. That fee is spent. Regretting the first 1,000 is no reason to ignore whether the next 2,000 is worthwhile. If you have not paid yet, preparing just 1,000 does not buy the whole major package."
+          }
+        },
+        {
+          "id": "V3-N042",
+          "narration": {
+            "zh-CN": "免费行动会改变这笔账。这一版建立新信仰时给的三次额度，是信仰共用的有限池。换了统治者不会再领一份。前一步用掉最后一次，后一步就可能重新收费；免费次数本身也有机会成本。"
+          },
+          "subtitles": {
+            "zh-CN": "免费行动会改变这笔账。这一版建立新信仰时给的三次额度，是信仰共用的有限池。换了统治者不会再领一份。前一步用掉最后一次，后一步就可能重新收费；免费次数本身也有机会成本。",
+            "en": "Free actions change that calculation. In this version, creating a new faith grants a limited pool of three actions shared by the faith. A new ruler does not receive another set. Using the last free action may make the next step charge again. The free allowance has an opportunity cost too."
+          }
+        },
+        {
+          "id": "V3-N043",
+          "narration": {
+            "zh-CN": "采用、升格、降格、放弃，各自还有要看的决议冷却，新建另有创建限制。它们写着相同的时长，不代表所有按钮共用一把锁。我们演示里，降格后还能首次升格；这不表示马上又能连续降另一处。规划一整串动作时，每一步都要问，做完之后下一步还走不走得通。"
+          },
+          "subtitles": {
+            "zh-CN": "采用、升格、降格、放弃，各自还有要看的决议冷却，新建另有创建限制。它们写着相同的时长，不代表所有按钮共用一把锁。我们演示里，降格后还能首次升格；这不表示马上又能连续降另一处。规划一整串动作时，每一步都要问，做完之后下一步还走不走得通。",
+            "en": "Adoption, promotion, demotion and withdrawal each have their own decision cooldowns; creation has a separate restriction. Equal durations do not mean one shared lock for every button. Our demonstration allowed a first promotion after demotion, but that does not mean we could immediately demote another site. For a chain of actions, check whether each completed step leaves the next one possible."
+          }
+        },
+        {
+          "id": "V3-N044",
+          "narration": {
+            "zh-CN": "宗教政治也得算。按这一版规则，县主不是行动者时，升格会给这位县主一项正五十的好感修正，降格则是负五十，持续十年并衰减。还有与封臣立场有关的人物修正：升格对同信仰的宗教狂热立场封臣列出正三十；降格对宗教狂热和本乡本土立场各列出负二十。"
+          },
+          "subtitles": {
+            "zh-CN": "宗教政治也得算。按这一版规则，县主不是行动者时，升格会给这位县主一项正五十的好感修正，降格则是负五十，持续十年并衰减。还有与封臣立场有关的人物修正：升格对同信仰的宗教狂热立场封臣列出正三十；降格对宗教狂热和本乡本土立场各列出负二十。",
+            "en": "Religious politics also belongs in the budget. Under this version's rules, if the county holder is not the actor, promotion gives that holder +50 opinion of the actor, while demotion gives -50. These modifiers last ten years and decay. There are also modifiers tied to vassal stances: promotion lists +30 for same-faith Zealot vassals; demotion lists -20 each for Zealot and Parochial vassals."
+          }
+        },
+        {
+          "id": "V3-N045",
+          "narration": {
+            "zh-CN": "这些还要与其他关系项一起看。这里讲的是封臣立场，不是看见一个同名特质就把所有人都圈进去。"
+          },
+          "subtitles": {
+            "zh-CN": "这些还要与其他关系项一起看。这里讲的是封臣立场，不是看见一个同名特质就把所有人都圈进去。",
+            "en": "Consider those alongside other relationship effects. These are vassal stances, not a reason to include everyone with a similarly named trait."
+          }
+        },
+        {
+          "id": "V3-N046",
+          "narration": {
+            "zh-CN": "让谁的圣地降格，也是在告诉谁，他的地方不再是宗教网络的核心。对一个正需要安抚封臣的统治者，这可能比账面一千虔诚更值得斟酌。"
+          },
+          "subtitles": {
+            "zh-CN": "让谁的圣地降格，也是在告诉谁，他的地方不再是宗教网络的核心。对一个正需要安抚封臣的统治者，这可能比账面一千虔诚更值得斟酌。",
+            "en": "Demoting someone's holy site also tells its holder that their land is no longer central to our faith's network. For a ruler trying to appease vassals, that may deserve more thought than the visible 1,000-piety price."
+          }
+        },
+        {
+          "id": "V3-N047",
+          "narration": {
+            "zh-CN": "如果我的目标是皇帝个人学识和长期建设，采用纳杰夫之前，还有一个很容易忘的选择：先经营已经有的圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "如果我的目标是皇帝个人学识和长期建设，采用纳杰夫之前，还有一个很容易忘的选择：先经营已经有的圣地。",
+            "en": "If my goal is the emperor's personal Learning and long-term development, there is an easily forgotten alternative before adopting Najaf: invest in the holy sites we already have."
+          }
+        },
+        {
+          "id": "V3-N048",
+          "narration": {
+            "zh-CN": "本期的逊尼派本来就承认巴格达，不能再付一次钱采用它。前面查看时，那里由玩家持有，也有已经激活的圣物基础。巴格达类型的地方项，本来就有学识与发展方面的效果。"
+          },
+          "subtitles": {
+            "zh-CN": "本期的逊尼派本来就承认巴格达，不能再付一次钱采用它。前面查看时，那里由玩家持有，也有已经激活的圣物基础。巴格达类型的地方项，本来就有学识与发展方面的效果。",
+            "en": "Our Sunni faith already recognizes Baghdad, so we cannot pay to adopt it again. In the earlier inspection, the player held it and it already had active relics. Baghdad's local type effects already include Learning and development benefits."
+          }
+        },
+        {
+          "id": "V3-N049",
+          "narration": {
+            "zh-CN": "这不等于我已经证明，把巴格达升格就是最优解。它的最新状态、名额和费用，还得看当场。但至少，它应该进入比较，而不是因为纳杰夫的名字更显眼，就从计划里消失。"
+          },
+          "subtitles": {
+            "zh-CN": "这不等于我已经证明，把巴格达升格就是最优解。它的最新状态、名额和费用，还得看当场。但至少，它应该进入比较，而不是因为纳杰夫的名字更显眼，就从计划里消失。",
+            "en": "That does not prove promoting Baghdad is optimal. Its latest state, capacity and price still need checking. But it should at least enter the comparison, rather than disappear from the plan because Najaf has the more eye-catching name."
+          }
+        },
+        {
+          "id": "V3-N050",
+          "narration": {
+            "zh-CN": "对于同一笔虔诚，可以列三个方向：把已有站点用好，采用一处新地点，或者新建需要的类型。再加上把资源留着处理更急的事情。把这些放在一起，才是在选方案。"
+          },
+          "subtitles": {
+            "zh-CN": "对于同一笔虔诚，可以列三个方向：把已有站点用好，采用一处新地点，或者新建需要的类型。再加上把资源留着处理更急的事情。把这些放在一起，才是在选方案。",
+            "en": "For the same piety budget, compare three paths: use an existing site better, adopt another location, or create the type you need. Also consider keeping the resources for something more urgent. Comparing those alternatives is how we choose a plan."
+          }
+        },
+        {
+          "id": "V3-N051",
+          "narration": {
+            "zh-CN": "特殊建筑也不能和采用混成一笔收益。不同建筑的宗教条件，有的是两个条件同时满足，有的是满足其中一条就行。"
+          },
+          "subtitles": {
+            "zh-CN": "特殊建筑也不能和采用混成一笔收益。不同建筑的宗教条件，有的是两个条件同时满足，有的是满足其中一条就行。",
+            "en": "Special buildings should not be bundled into adoption's benefits. Different buildings use different religious conditions: some require both conditions, while others accept either one."
+          }
+        },
+        {
+          "id": "V3-N052",
+          "narration": {
+            "zh-CN": "伊玛目阿里清真寺的相关条件，要求它是持有人信仰的圣地，同时还满足伊斯兰或融合条件。如果建筑已经存在，只缺圣地关联，采用可能补上这个缺口。但仍要看实际地产持有人，以及建筑究竟有没有启用。"
+          },
+          "subtitles": {
+            "zh-CN": "伊玛目阿里清真寺的相关条件，要求它是持有人信仰的圣地，同时还满足伊斯兰或融合条件。如果建筑已经存在，只缺圣地关联，采用可能补上这个缺口。但仍要看实际地产持有人，以及建筑究竟有没有启用。",
+            "en": "The relevant conditions for the Imam Ali Mosque require a holy site of the holding owner's faith, and also the Islamic or syncretism condition. If the building already exists and only the holy site association is missing, adoption may fill that gap. But check the actual holding owner and whether the building is enabled."
+          }
+        },
+        {
+          "id": "V3-N053",
+          "narration": {
+            "zh-CN": "萨迈拉大清真寺的相关条件，则有“伊斯兰或融合，或者持有人信仰圣地”这样的选择关系。对已经满足伊斯兰分支的逊尼派持有人，不能把新建智慧圣地说成解锁它的必要花费。更不能把还没建的建筑，当作点完采用就会自动出现。"
+          },
+          "subtitles": {
+            "zh-CN": "萨迈拉大清真寺的相关条件，则有“伊斯兰或融合，或者持有人信仰圣地”这样的选择关系。对已经满足伊斯兰分支的逊尼派持有人，不能把新建智慧圣地说成解锁它的必要花费。更不能把还没建的建筑，当作点完采用就会自动出现。",
+            "en": "The Great Mosque of Samarra instead has alternatives: the Islamic or syncretism branch, or holy site status for the holding owner's faith. For a Sunni holder already meeting the Islamic branch, creating a Site of Wisdom is not a necessary unlocking cost. And a building that has not been built will not simply appear when we click Adopt."
+          }
+        },
+        {
+          "id": "V3-N054",
+          "narration": {
+            "zh-CN": "朝圣是另一笔账。关联圣地可能增加一个值得考虑的目的地，但还要看主持人、活动类型、近期访问、路程、旅费与安全。麦加朝觐仍然去麦加，不能拿智慧之地替代。对于非冒险者，自己当前首都又会受到普通朝圣的首都排除；如果萨迈拉就是首都，先把这一条查清。"
+          },
+          "subtitles": {
+            "zh-CN": "朝圣是另一笔账。关联圣地可能增加一个值得考虑的目的地，但还要看主持人、活动类型、近期访问、路程、旅费与安全。麦加朝觐仍然去麦加，不能拿智慧之地替代。对于非冒险者，自己当前首都又会受到普通朝圣的首都排除；如果萨迈拉就是首都，先把这一条查清。",
+            "en": "Pilgrimage has its own calculation. An associated holy site may offer another destination worth considering, but the host, activity type, recent visits, route, travel costs and safety still matter. The Hajj still goes to Mecca; a Site of Wisdom cannot replace it. For non-adventurers, ordinary pilgrimage also excludes the current capital. If Samarra is your capital, check that first."
+          }
+        },
+        {
+          "id": "V3-N055",
+          "narration": {
+            "zh-CN": "一次采用可能服务建筑，也可能服务朝圣。把目标说具体，才能知道自己买到了需要的条件，还是买了一个用不上的可能。"
+          },
+          "subtitles": {
+            "zh-CN": "一次采用可能服务建筑，也可能服务朝圣。把目标说具体，才能知道自己买到了需要的条件，还是买了一个用不上的可能。",
+            "en": "Adoption might serve a building or a pilgrimage. Name the actual goal, so you know whether you bought a condition you need or an opportunity you will not use."
+          }
+        },
+        {
+          "id": "V3-N056",
+          "narration": {
+            "zh-CN": "接下来，把圣物放进这张账本里。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来，把圣物放进这张账本里。",
+            "en": "Next, bring relics into this calculation."
+          }
+        },
+        {
+          "id": "V3-N057",
+          "narration": {
+            "zh-CN": "我们曾把穆罕默德的斗篷供奉进纳杰夫。它从人物手里转到圣地，槽里出现了它，圣地也读到了激活、有效总量四的变化。这里首先发生的是所有权转移。不能一边把它算成圣地投入，一边又继续把它的个人装备价值完整记在皇帝身上。"
+          },
+          "subtitles": {
+            "zh-CN": "我们曾把穆罕默德的斗篷供奉进纳杰夫。它从人物手里转到圣地，槽里出现了它，圣地也读到了激活、有效总量四的变化。这里首先发生的是所有权转移。不能一边把它算成圣地投入，一边又继续把它的个人装备价值完整记在皇帝身上。",
+            "en": "We enshrined the Prophet Muhammad's cloak at Najaf. It moved from the character to the holy site, appeared in its slot, and the site showed active with an effective total of four. The first change was ownership. We cannot count it as a holy site investment while also crediting the emperor with its full personal equipment value."
+          }
+        },
+        {
+          "id": "V3-N058",
+          "narration": {
+            "zh-CN": "如果另一种信仰也承认纳杰夫，它看到的是同一处地方、同一份物理库存和槽位。不是我们放了一件，对方的宗教版本里就自动复制出另一件。"
+          },
+          "subtitles": {
+            "zh-CN": "如果另一种信仰也承认纳杰夫，它看到的是同一处地方、同一份物理库存和槽位。不是我们放了一件，对方的宗教版本里就自动复制出另一件。",
+            "en": "If another faith recognizes Najaf, it sees the same place, physical inventory and slots. Enshrining one relic does not create a second copy for that other faith."
+          }
+        },
+        {
+          "id": "V3-N059",
+          "narration": {
+            "zh-CN": "分别保存的，是各信仰与圣地的关联、普通或主要等级，以及每件物品被哪种信仰认可。共享库存，不代表认可相同；认可相同，也不代表全信仰收益的所有条件都相同。"
+          },
+          "subtitles": {
+            "zh-CN": "分别保存的，是各信仰与圣地的关联、普通或主要等级，以及每件物品被哪种信仰认可。共享库存，不代表认可相同；认可相同，也不代表全信仰收益的所有条件都相同。",
+            "en": "What is stored separately is each faith's association with the site, its ordinary or major status, and which faith recognizes each item. A shared inventory does not mean shared recognition. Shared recognition does not make all the conditions for faith-wide benefits identical either."
+          }
+        },
+        {
+          "id": "V3-N060",
+          "narration": {
+            "zh-CN": "有效稀有度怎样算，也要围着县主看。县主当前的信仰必须仍然关联这处圣地，然后按它的认可，检查实际装在槽里的圣物，才会得到当前的有效贡献。库存里有物品，不代表已经装进有效槽；对象本身稀有度高，也不代表对当前圣地贡献高。"
+          },
+          "subtitles": {
+            "zh-CN": "有效稀有度怎样算，也要围着县主看。县主当前的信仰必须仍然关联这处圣地，然后按它的认可，检查实际装在槽里的圣物，才会得到当前的有效贡献。库存里有物品，不代表已经装进有效槽；对象本身稀有度高，也不代表对当前圣地贡献高。",
+            "en": "Effective rarity also depends on the county holder. Their current faith must still be associated with the site. Its recognition is then used to evaluate the relics actually equipped in the slots. An item in inventory is not necessarily in a slot that counts. High item rarity does not necessarily mean a high current contribution to this holy site."
+          }
+        },
+        {
+          "id": "V3-N061",
+          "narration": {
+            "zh-CN": "举一个完全按规则计算的例子。县主属于信仰甲，旧物是四档，但甲不认可；新物只有三档，甲却认可，而且槽位和供奉条件都成立。只看物品档次，是四换三；按当前县主信仰计算，有效贡献却可能从零变成三。"
+          },
+          "subtitles": {
+            "zh-CN": "举一个完全按规则计算的例子。县主属于信仰甲，旧物是四档，但甲不认可；新物只有三档，甲却认可，而且槽位和供奉条件都成立。只看物品档次，是四换三；按当前县主信仰计算，有效贡献却可能从零变成三。",
+            "en": "Here is a hypothetical calculation from the rules. The holder follows faith A. The old relic has rarity four but A does not recognize it. The new relic has rarity three, but A recognizes it and all slot and enshrinement conditions are met. In item rarity, that is four for three. For the current holder's faith, the effective contribution could rise from zero to three."
+          }
+        },
+        {
+          "id": "V3-N062",
+          "narration": {
+            "zh-CN": "这就是为什么不能只按品质颜色挑圣物。反过来，如果旧四档本来就被甲认可，换成也被甲认可的三档，当前贡献就可能从四降到三。新物被更多信仰认可，可能对未来改宗、持有人变化更有韧性，但不等于眼下更强。"
+          },
+          "subtitles": {
+            "zh-CN": "这就是为什么不能只按品质颜色挑圣物。反过来，如果旧四档本来就被甲认可，换成也被甲认可的三档，当前贡献就可能从四降到三。新物被更多信仰认可，可能对未来改宗、持有人变化更有韧性，但不等于眼下更强。",
+            "en": "That is why quality color alone is not enough. Conversely, if A already recognizes the rarity-four relic, replacing it with a recognized rarity-three relic could reduce the current contribution from four to three. Recognition by more faiths may make a relic more resilient to later conversions or changes of holder. It does not automatically make it stronger now."
+          }
+        },
+        {
+          "id": "V3-N063",
+          "narration": {
+            "zh-CN": "也别忘了县主信仰还要关联圣地。县主改宗到另一边，而新信仰没有承认这里，即使物品留在槽里，也不能照搬之前的有效贡献。"
+          },
+          "subtitles": {
+            "zh-CN": "也别忘了县主信仰还要关联圣地。县主改宗到另一边，而新信仰没有承认这里，即使物品留在槽里，也不能照搬之前的有效贡献。",
+            "en": "The holder's faith must also remain associated with the site. If the holder converts to a faith that does not recognize this as a holy site, relics staying in the slots do not preserve their previous effective contribution."
+          }
+        },
+        {
+          "id": "V3-N064",
+          "narration": {
+            "zh-CN": "这组取舍的真正对象，是圣物原来的用途、现在能贡献多少，以及控制这里的人将来可能怎样变化。圣物越稀有，越应该把留给自己、供奉另一处、或干脆暂不移动，也放进候选。"
+          },
+          "subtitles": {
+            "zh-CN": "这组取舍的真正对象，是圣物原来的用途、现在能贡献多少，以及控制这里的人将来可能怎样变化。圣物越稀有，越应该把留给自己、供奉另一处、或干脆暂不移动，也放进候选。",
+            "en": "The real comparison is between the relic's previous use, its contribution now, and how control of the location might change. The rarer the relic, the more reason to consider keeping it, enshrining it elsewhere, or leaving it where it is for now."
+          }
+        },
+        {
+          "id": "V3-N065",
+          "narration": {
+            "zh-CN": "共享库存意味着，你在这里换东西，也会影响其他关联信仰眼中的这份资产。游戏的自动选槽，不会替你完成这种利益比较。"
+          },
+          "subtitles": {
+            "zh-CN": "共享库存意味着，你在这里换东西，也会影响其他关联信仰眼中的这份资产。游戏的自动选槽，不会替你完成这种利益比较。",
+            "en": "A shared inventory means changing relics here also changes an asset shared with other associated faiths. Automatic slot selection will not weigh those interests for you."
+          }
+        },
+        {
+          "id": "V3-N066",
+          "narration": {
+            "zh-CN": "它会优先找兼容空槽；没有空槽时，再从兼容旧物里挑对象稀有度较低的，平手按原来的顺序。它不会替你比较谁认可哪件、换掉后哪一派不高兴，更不会自动算个人装备的机会成本。"
+          },
+          "subtitles": {
+            "zh-CN": "它会优先找兼容空槽；没有空槽时，再从兼容旧物里挑对象稀有度较低的，平手按原来的顺序。它不会替你比较谁认可哪件、换掉后哪一派不高兴，更不会自动算个人装备的机会成本。",
+            "en": "It looks for a compatible empty slot first. If none is available, it chooses a compatible old item with lower item rarity, breaking ties by the existing order. It does not compare who recognizes each relic, which faith might object to its removal, or the opportunity cost of personal equipment."
+          }
+        },
+        {
+          "id": "V3-N067",
+          "narration": {
+            "zh-CN": "原版可以在一次供奉操作里直接换旧物。正常执行者有效时，新物进入圣地，旧物交给这次执行的人。不是自动退给原捐献者，也不是优先还给别教领袖或县主。单独取出，正常接收者同样是当前执行者。"
+          },
+          "subtitles": {
+            "zh-CN": "原版可以在一次供奉操作里直接换旧物。正常执行者有效时，新物进入圣地，旧物交给这次执行的人。不是自动退给原捐献者，也不是优先还给别教领袖或县主。单独取出，正常接收者同样是当前执行者。",
+            "en": "The base game can replace an old relic directly within one enshrinement action. With a valid acting character, the new relic enters the holy site and the old one goes to that actor. It does not automatically return to its original donor, another faith's leader or the county holder. With a separate retrieval, the normal recipient is also the current actor."
+          }
+        },
+        {
+          "id": "V3-N068",
+          "narration": {
+            "zh-CN": "能不能换，还要同时满足新物供奉和旧物移除等原版要求。尤其是共享非空槽，先认准会被换出的究竟是哪一件；操作之后，再看清新旧物品各自去了哪里。"
+          },
+          "subtitles": {
+            "zh-CN": "能不能换，还要同时满足新物供奉和旧物移除等原版要求。尤其是共享非空槽，先认准会被换出的究竟是哪一件；操作之后，再看清新旧物品各自去了哪里。",
+            "en": "Replacement still needs the original requirements for enshrining the new relic and removing the old one. With a shared, occupied slot, identify exactly which item will leave. Afterward, check where both items actually went."
+          }
+        },
+        {
+          "id": "V3-L068-01",
+          "narration": {
+            "zh-CN": "现在直接用另一件四级圣物替换斗篷。新物进了纳杰夫，旧斗篷回到执行操作的皇帝手里，没交给当地领主。"
+          },
+          "subtitles": {
+            "zh-CN": "现在直接用另一件四级圣物替换斗篷。新物进了纳杰夫，旧斗篷回到执行操作的皇帝手里，没交给当地领主。",
+            "en": "Now we replace the cloak directly with another rarity-four relic. The new item enters Najaf, and the old cloak returns to the emperor performing the action, not the local county holder."
+          }
+        },
+        {
+          "id": "V3-L068-02",
+          "narration": {
+            "zh-CN": "这次有效总量仍是四，虔诚也没变。但预览里还有其他人的好感变化。换圣物的账，不能只看扣不扣虔诚。"
+          },
+          "subtitles": {
+            "zh-CN": "这次有效总量仍是四，虔诚也没变。但预览里还有其他人的好感变化。换圣物的账，不能只看扣不扣虔诚。",
+            "en": "The effective total stays at four, and piety is unchanged this time. But the preview also lists changes to other people's opinions. We need to consider those as well as the piety cost."
+          }
+        },
+        {
+          "id": "V3-L068-03",
+          "narration": {
+            "zh-CN": "换回来的斗篷可以另作安排，新物也要放弃原来的个人用途。先比较两边用途和各信仰的认可，再决定值不值得换。"
+          },
+          "subtitles": {
+            "zh-CN": "换回来的斗篷可以另作安排，新物也要放弃原来的个人用途。先比较两边用途和各信仰的认可，再决定值不值得换。",
+            "en": "The returned cloak can be used elsewhere, while the incoming relic gives up its previous personal use. Compare both uses and each faith's recognition before deciding whether the swap is worthwhile."
+          }
+        },
+        {
+          "id": "V3-N069",
+          "narration": {
+            "zh-CN": "我们已经拍到过单独取回斗篷，实际花了五百虔诚。物品回到人物手里，槽变空，激活状态也随之变化。但这五百是那次取出的钱包事实，不能拿它覆盖所有替换方式，更不能把人物的奉献经验也当成已经完整读过。"
+          },
+          "subtitles": {
+            "zh-CN": "我们已经拍到过单独取回斗篷，实际花了五百虔诚。物品回到人物手里，槽变空，激活状态也随之变化。但这五百是那次取出的钱包事实，不能拿它覆盖所有替换方式，更不能把人物的奉献经验也当成已经完整读过。",
+            "en": "We have already filmed a separate retrieval of the cloak, which actually cost 500 piety. It returned to the character, the slot became empty and the active state changed. But that 500 is the observed purse change for that retrieval. It does not cover every form of replacement, nor does it mean we fully read the character's devotion experience."
+          }
+        },
+        {
+          "id": "V3-N070",
+          "narration": {
+            "zh-CN": "直接替换还可能同时经过新物供奉、旧物移除两段规则。所以，先取出再放入，与直接换进去，不一定是同一张账单。"
+          },
+          "subtitles": {
+            "zh-CN": "直接替换还可能同时经过新物供奉、旧物移除两段规则。所以，先取出再放入，与直接换进去，不一定是同一张账单。",
+            "en": "Direct replacement may apply both the new relic's enshrinement rules and the old relic's removal rules. Retrieving first and then enshrining is therefore not necessarily the same bill as a direct replacement."
+          }
+        },
+        {
+          "id": "V3-N071",
+          "narration": {
+            "zh-CN": "再算一个有明确条件的例子：旧物四档，新物三档，当前执行者的信仰都认可它们，而且相关分支条件持续成立。四档的基础值是五百，三档是二百五十。供奉那一段可能产生负二百五十的差额，旧物移除那一段又可能扣五百虔诚和五百奉献经验。"
+          },
+          "subtitles": {
+            "zh-CN": "再算一个有明确条件的例子：旧物四档，新物三档，当前执行者的信仰都认可它们，而且相关分支条件持续成立。四档的基础值是五百，三档是二百五十。供奉那一段可能产生负二百五十的差额，旧物移除那一段又可能扣五百虔诚和五百奉献经验。",
+            "en": "Consider another conditional example: the old relic has rarity four, the new one rarity three, the actor's faith recognizes both, and the relevant branch conditions remain satisfied. The base value is 500 for rarity four and 250 for rarity three. The enshrinement portion may apply a -250 change, while removal may cost another 500 piety and 500 devotion experience."
+          }
+        },
+        {
+          "id": "V3-N072",
+          "narration": {
+            "zh-CN": "合起来，钱包可能少七百五十，奉献经验少五百。"
+          },
+          "subtitles": {
+            "zh-CN": "合起来，钱包可能少七百五十，奉献经验少五百。",
+            "en": "Together, that could mean losing 750 from the purse and 500 devotion experience."
+          }
+        },
+        {
+          "id": "V3-N073",
+          "narration": {
+            "zh-CN": "这是条件算例，不是任何四换三都必收七百五十。自己操作时，要展开当前完整预览，分别看钱包、奉献和关系；不要只凭“换进去的东西更好”，就认定这次只有收益。"
+          },
+          "subtitles": {
+            "zh-CN": "这是条件算例，不是任何四换三都必收七百五十。自己操作时，要展开当前完整预览，分别看钱包、奉献和关系；不要只凭“换进去的东西更好”，就认定这次只有收益。",
+            "en": "This is a conditional example, not a universal 750 charge for every four-for-three replacement. In your own game, expand the complete current preview and check piety, devotion and relationships separately. A better incoming item does not mean the action has only benefits."
+          }
+        },
+        {
+          "id": "V3-N074",
+          "narration": {
+            "zh-CN": "还可能有其他信仰的反应。自己没有损失虔诚，不代表别人没有意见。相关好感作用在被规则筛选出来的封臣、领主和宗教领袖身上，不是对全世界同教人物统一加减。"
+          },
+          "subtitles": {
+            "zh-CN": "还可能有其他信仰的反应。自己没有损失虔诚，不代表别人没有意见。相关好感作用在被规则筛选出来的封臣、领主和宗教领袖身上，不是对全世界同教人物统一加减。",
+            "en": "Other faiths may react too. Losing no piety yourself does not mean nobody objects. The opinion effects target vassals, lieges and religious leaders selected by the rules. They are not a uniform adjustment to every character of that faith worldwide."
+          }
+        },
+        {
+          "id": "V3-N075",
+          "narration": {
+            "zh-CN": "“夺回圣物”的提示，也不等于对方已经拿到一个现在就能用的宣战理由。普通分支还会看攻击者是否认可、持有者信仰是否不认可、物品能否转移，以及一般宣战条件。双方都认可旧物时，不能只凭一句提示，就宣布那个普通宣战理由已经成立。"
+          },
+          "subtitles": {
+            "zh-CN": "“夺回圣物”的提示，也不等于对方已经拿到一个现在就能用的宣战理由。普通分支还会看攻击者是否认可、持有者信仰是否不认可、物品能否转移，以及一般宣战条件。双方都认可旧物时，不能只凭一句提示，就宣布那个普通宣战理由已经成立。",
+            "en": "A message about reclaiming a relic does not prove someone already has a usable casus belli. The normal case also checks whether the attacker recognizes it, whether the holder's faith does not, whether the item can transfer, and the usual war declaration conditions. If both faiths recognize the old relic, that message alone does not establish the normal casus belli."
+          }
+        },
+        {
+          "id": "V3-N076",
+          "narration": {
+            "zh-CN": "所以，一次看起来更省虔诚的替换，也可能把一件有争议的物品带进自己库存。真正的便宜，要把后续关系一起算。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，一次看起来更省虔诚的替换，也可能把一件有争议的物品带进自己库存。真正的便宜，要把后续关系一起算。",
+            "en": "A replacement that seems cheaper in piety may therefore put a disputed item in your inventory. The real bargain must include its later diplomatic consequences."
+          }
+        },
+        {
+          "id": "V3-N077",
+          "narration": {
+            "zh-CN": "如果我们后来不想经营纳杰夫了，放弃也不是一键撤销。"
+          },
+          "subtitles": {
+            "zh-CN": "如果我们后来不想经营纳杰夫了，放弃也不是一键撤销。",
+            "en": "If we later decide not to develop Najaf, withdrawal is not a one-click undo."
+          }
+        },
+        {
+          "id": "V3-N078",
+          "narration": {
+            "zh-CN": "降格只是放下主要名额，圣地仍在自己的信仰名单里。放弃则移除自己的信仰与它的关联；这版正常决议针对普通圣地，还要满足最低数量等要求。圣地总数和主要数量，是两个不同的问题。"
+          },
+          "subtitles": {
+            "zh-CN": "降格只是放下主要名额，圣地仍在自己的信仰名单里。放弃则移除自己的信仰与它的关联；这版正常决议针对普通圣地，还要满足最低数量等要求。圣地总数和主要数量，是两个不同的问题。",
+            "en": "Demotion only gives up major status; the site stays on our faith's list. Withdrawal removes our faith's association with it. This version's normal decision targets ordinary sites and also checks minimum counts and other requirements. Total holy site capacity and major capacity are different questions."
+          }
+        },
+        {
+          "id": "V3-N079",
+          "narration": {
+            "zh-CN": "在另一条重新载入的实验分支里，我们放弃的是空槽、普通的纳杰夫。它从我们的信仰名单消失，另一种信仰仍然把它当作主要圣地，地点本身也还在。这展示了退出关联，没有展示非空圣物怎样返还。"
+          },
+          "subtitles": {
+            "zh-CN": "在另一条重新载入的实验分支里，我们放弃的是空槽、普通的纳杰夫。它从我们的信仰名单消失，另一种信仰仍然把它当作主要圣地，地点本身也还在。这展示了退出关联，没有展示非空圣物怎样返还。",
+            "en": "In another reloaded test branch, we withdrew from ordinary Najaf with empty slots. It left our faith's list, while another faith still treated it as major and the location itself remained. That demonstrates removal of an association, not what happens to relics in an occupied inventory."
+          }
+        },
+        {
+          "id": "V3-N080",
+          "narration": {
+            "zh-CN": "如果里面有圣物，就必须分成两种情况。"
+          },
+          "subtitles": {
+            "zh-CN": "如果里面有圣物，就必须分成两种情况。",
+            "en": "If relics are present, there are two different cases."
+          }
+        },
+        {
+          "id": "V3-N081",
+          "narration": {
+            "zh-CN": "只要还有任何其他信仰关联这里，放弃这一边时，那条专门的退物过程就不会执行。判断的是有没有别的关联信仰，不是它在地图上还剩多少信众。不能因为捐东西的是我，就想象退出时会自动打包退给我。"
+          },
+          "subtitles": {
+            "zh-CN": "只要还有任何其他信仰关联这里，放弃这一边时，那条专门的退物过程就不会执行。判断的是有没有别的关联信仰，不是它在地图上还剩多少信众。不能因为捐东西的是我，就想象退出时会自动打包退给我。",
+            "en": "As long as any other faith remains associated, withdrawing our side does not run that specific relic return process. It checks whether another associated faith exists, not how many adherents it has left on the map. Being the donor does not mean the relics automatically come back to me on withdrawal."
+          }
+        },
+        {
+          "id": "V3-N082",
+          "narration": {
+            "zh-CN": "如果最后一个关联信仰也退出，而且当地伯爵领有持有人，这一版的规则才会把已供奉的物品交给当地县主。县主可以不是行动者，也不必与行动者同信仰，甚至不必认可这些物品。"
+          },
+          "subtitles": {
+            "zh-CN": "如果最后一个关联信仰也退出，而且当地伯爵领有持有人，这一版的规则才会把已供奉的物品交给当地县主。县主可以不是行动者，也不必与行动者同信仰，甚至不必认可这些物品。",
+            "en": "Only when the last associated faith withdraws, and the local county has a holder, do this version's rules hand the enshrined items to that county holder. The holder need not be the actor, share the actor's faith, or even recognize those relics."
+          }
+        },
+        {
+          "id": "V3-N083",
+          "narration": {
+            "zh-CN": "这与正常取出交给当前执行者，是两条不同的路。若当地没有县主，也不能自己补出一个默认接收者。放弃用的归属变更，与专门取出的费用分支不同；但这也不表示从此没有其他归属事件或政治影响。"
+          },
+          "subtitles": {
+            "zh-CN": "这与正常取出交给当前执行者，是两条不同的路。若当地没有县主，也不能自己补出一个默认接收者。放弃用的归属变更，与专门取出的费用分支不同；但这也不表示从此没有其他归属事件或政治影响。",
+            "en": "That differs from normal retrieval, which gives the item to the current actor. If the county has no holder, we cannot invent a default recipient. The ownership change on withdrawal follows different fee rules from explicit retrieval. That does not rule out other ownership events or political consequences."
+          }
+        },
+        {
+          "id": "V3-L083-01",
+          "narration": {
+            "zh-CN": "接下来退出共享圣地巴格达。一千虔诚花掉了，它从我们的信仰名单消失，圣物却仍留在原来的槽里。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来退出共享圣地巴格达。一千虔诚花掉了，它从我们的信仰名单消失，圣物却仍留在原来的槽里。",
+            "en": "Next, we withdraw from shared Baghdad. We spend 1,000 piety and it disappears from our faith's list, but the relic remains in its original slot."
+          }
+        },
+        {
+          "id": "V3-L083-02",
+          "narration": {
+            "zh-CN": "更要小心，当地领主还信我们这一派，我们这一派却已经退出。按当前条件计算，圣地已经不能激活；画面上的旧状态还没有同步。"
+          },
+          "subtitles": {
+            "zh-CN": "更要小心，当地领主还信我们这一派，我们这一派却已经退出。按当前条件计算，圣地已经不能激活；画面上的旧状态还没有同步。",
+            "en": "Here we need extra care: the holder still follows our faith, but our faith has withdrawn. Under the current conditions, the site can no longer activate; the old state shown on screen has not caught up yet."
+          }
+        },
+        {
+          "id": "V3-L083-03",
+          "narration": {
+            "zh-CN": "所以，共享不等于每个信仰都能独立享受完整收益。退出之前，先看谁还关联、当地领主信什么，以及圣物最后留给谁。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，共享不等于每个信仰都能独立享受完整收益。退出之前，先看谁还关联、当地领主信什么，以及圣物最后留给谁。",
+            "en": "Sharing a site does not mean each faith independently receives its full benefits. Before withdrawing, check who remains associated, the holder's faith, and who ultimately keeps the relics."
+          }
+        },
+        {
+          "id": "V3-L083-04",
+          "narration": {
+            "zh-CN": "再看只关联我们这一派的智慧圣地。最后一个信仰退出后，公共库存清空，斗篷回到了皇帝的个人清单，并没有自动装备。"
+          },
+          "subtitles": {
+            "zh-CN": "再看只关联我们这一派的智慧圣地。最后一个信仰退出后，公共库存清空，斗篷回到了皇帝的个人清单，并没有自动装备。",
+            "en": "Now consider the wisdom site associated only with our faith. After the last faith withdraws, its shared inventory is emptied. The cloak returns to the emperor's personal inventory, without being automatically equipped."
+          }
+        },
+        {
+          "id": "V3-L083-05",
+          "narration": {
+            "zh-CN": "规则在这里把圣物交给当地领主。这次皇帝恰好也是当地领主；要是别人占着这块地，就不能把放弃圣地当成自己收回圣物的办法。"
+          },
+          "subtitles": {
+            "zh-CN": "规则在这里把圣物交给当地领主。这次皇帝恰好也是当地领主；要是别人占着这块地，就不能把放弃圣地当成自己收回圣物的办法。",
+            "en": "Here, the rule returns the relics to the local county holder. This time the emperor happens to hold the county himself. If someone else holds the land, abandoning the site is not a way to retrieve its relics for yourself."
+          }
+        },
+        {
+          "id": "V3-N084",
+          "narration": {
+            "zh-CN": "这些归还规则，限定在本期的一点二零点零点四版本。换版本时，尤其不要拿“最后是谁拿东西”凭印象继续套。"
+          },
+          "subtitles": {
+            "zh-CN": "这些归还规则，限定在本期的一点二零点零点四版本。换版本时，尤其不要拿“最后是谁拿东西”凭印象继续套。",
+            "en": "These return rules are specific to the 1.20.0.4 version used in this episode. When changing versions, do not carry over assumptions about who ends up with the items."
+          }
+        },
+        {
+          "id": "V3-N085",
+          "narration": {
+            "zh-CN": "最后再看智慧之地。采用是接入已有地点和类型；新建让我们选择需要的类型与位置，也要交出相应资源和合格圣物。"
+          },
+          "subtitles": {
+            "zh-CN": "最后再看智慧之地。采用是接入已有地点和类型；新建让我们选择需要的类型与位置，也要交出相应资源和合格圣物。",
+            "en": "Finally, return to the Site of Wisdom. Adoption connects us to an existing location and type. Creation lets us choose the type and location we need, but also requires the corresponding resources and an eligible relic."
+          }
+        },
+        {
+          "id": "V3-N086",
+          "narration": {
+            "zh-CN": "这里重新载入另一条实验分支。它已经采用纳杰夫，起初还有四千二百五十虔诚。先放弃空的纳杰夫花一千，随后在萨迈拉新建智慧之地花两千，剩下一千二百五十。不要把前面取出斗篷那段的余额接到这里。"
+          },
+          "subtitles": {
+            "zh-CN": "这里重新载入另一条实验分支。它已经采用纳杰夫，起初还有四千二百五十虔诚。先放弃空的纳杰夫花一千，随后在萨迈拉新建智慧之地花两千，剩下一千二百五十。不要把前面取出斗篷那段的余额接到这里。",
+            "en": "We reload another test branch here. Najaf is already adopted and we start with 4,250 piety. Withdrawing from empty Najaf costs 1,000; creating a Site of Wisdom in Samarra then costs 2,000, leaving 1,250. Do not join this balance to the earlier cloak retrieval sequence."
+          }
+        },
+        {
+          "id": "V3-N087",
+          "narration": {
+            "zh-CN": "先放弃再新建，是这次演示的路径，也不表示每次新建都必须先放弃。"
+          },
+          "subtitles": {
+            "zh-CN": "先放弃再新建，是这次演示的路径，也不表示每次新建都必须先放弃。",
+            "en": "Withdrawal followed by creation is the route demonstrated here. It does not mean creation always requires withdrawing first."
+          }
+        },
+        {
+          "id": "V3-N088",
+          "narration": {
+            "zh-CN": "这次选择的类型、地点和圣物，最后形成了一处普通的智慧圣地。斗篷进入它的槽里，地点被读到激活，有效总量四，县主是玩家。新建没有顺便送主要等级，也没有替我们证明所有地方修正已经净加到人物和县的面板上。"
+          },
+          "subtitles": {
+            "zh-CN": "这次选择的类型、地点和圣物，最后形成了一处普通的智慧圣地。斗篷进入它的槽里，地点被读到激活，有效总量四，县主是玩家。新建没有顺便送主要等级，也没有替我们证明所有地方修正已经净加到人物和县的面板上。",
+            "en": "Our chosen type, location and relic produced an ordinary Site of Wisdom. The cloak entered its slot; the site read active with an effective total of four, and the player held the county. Creation did not also grant major status. Nor did it prove every local modifier had been added as a net gain to the character and county panels."
+          }
+        },
+        {
+          "id": "V3-N089",
+          "narration": {
+            "zh-CN": "从经营目标看，它把学习与建设方向的地方类型，放到了更贴近玩家自身的地方。代价则是两千虔诚、圣物原本的个人用途，以及占用的网络和位置资源。如果还要主要层的外交和两种经验，就得再比较主要名额，不能把它们提前塞进这笔普通新建的收益里。"
+          },
+          "subtitles": {
+            "zh-CN": "从经营目标看，它把学习与建设方向的地方类型，放到了更贴近玩家自身的地方。代价则是两千虔诚、圣物原本的个人用途，以及占用的网络和位置资源。如果还要主要层的外交和两种经验，就得再比较主要名额，不能把它们提前塞进这笔普通新建的收益里。",
+            "en": "For our goals, it places a local type focused on Learning and construction somewhere closer to the player. The cost is 2,000 piety, the relic's alternative personal use, and network and location capacity. If we also want the major layer's Diplomacy and two experience bonuses, that needs a separate major-slot comparison. Do not count them as benefits already purchased by ordinary creation."
+          }
+        },
+        {
+          "id": "V3-N090",
+          "narration": {
+            "zh-CN": "现在再回头看开场的一千。它有没有白花，不取决于名单里多了一个漂亮名字，而取决于你原来缺什么，这次补上什么。"
+          },
+          "subtitles": {
+            "zh-CN": "现在再回头看开场的一千。它有没有白花，不取决于名单里多了一个漂亮名字，而取决于你原来缺什么，这次补上什么。",
+            "en": "Now look back at the opening 1,000. Whether it was wasted depends on what we lacked and what adoption supplied, not whether our list gained an attractive name."
+          }
+        },
+        {
+          "id": "V3-N091",
+          "narration": {
+            "zh-CN": "想养自己的学识，先看看已有巴格达和自己持有的县。想经营宗教政治，比较纳杰夫的固定项与月虔诚。想靠骑士作战，别轻易丢掉麦加。想养生活方式，算智慧主要带来的经验，也别把共同的外交系数再算一次。"
+          },
+          "subtitles": {
+            "zh-CN": "想养自己的学识，先看看已有巴格达和自己持有的县。想经营宗教政治，比较纳杰夫的固定项与月虔诚。想靠骑士作战，别轻易丢掉麦加。想养生活方式，算智慧主要带来的经验，也别把共同的外交系数再算一次。",
+            "en": "For personal Learning, first examine existing Baghdad and the counties you hold. For religious politics, compare Najaf's fixed effects and monthly piety. For knight-led warfare, think carefully before giving up Mecca. For lifestyles, calculate Wisdom's major experience bonuses without counting the shared Diplomacy coefficient again."
+          }
+        },
+        {
+          "id": "V3-N092",
+          "narration": {
+            "zh-CN": "用圣物时，认清唯一库存、县主信仰与认可；退出时，认清关联、接收者和当下版本。把完整后续投入、被放弃的旧收益，以及谁会不高兴放在一起，才知道这一次应该采用、升格、新建，还是先把资源留在手里。"
+          },
+          "subtitles": {
+            "zh-CN": "用圣物时，认清唯一库存、县主信仰与认可；退出时，认清关联、接收者和当下版本。把完整后续投入、被放弃的旧收益，以及谁会不高兴放在一起，才知道这一次应该采用、升格、新建，还是先把资源留在手里。",
+            "en": "When using relics, check the single shared inventory, the holder's faith and recognition. When withdrawing, check associations, recipients and the current version. Compare the full follow-up investment, the old benefits you surrender and who may object. Then decide whether to adopt, promote, create, or keep the resources for now."
+          }
+        },
+        {
+          "id": "V3-N093",
+          "narration": {
+            "zh-CN": "圣地好不好，最终要落到一个具体的人、一个具体的地方，和你接下来真正想做的事情上。"
+          },
+          "subtitles": {
+            "zh-CN": "圣地好不好，最终要落到一个具体的人、一个具体的地方，和你接下来真正想做的事情上。",
+            "en": "A holy site's value has to fit a specific person, a specific place and what you actually want to do next."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

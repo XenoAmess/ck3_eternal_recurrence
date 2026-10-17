@@ -413,3 +413,49 @@ HOLY_SITE_GRADE_VALUE_KNOWLEDGE = {'schema': 'xar.ck3.holy-site-grade-value-know
                                                                  'and beneficiary conclusions and '
                                                                  'independently reread; no '
                                                                  'conversion action is proposed.'}}
+
+
+# Resource semantics copied from value-contract.json; no runtime document reads.
+HOLY_SITE_GRADE_VALUE_KNOWLEDGE["modifier_semantics"] = {'piety_level_impact_mult': {'qualification': 'resource_localization_semantics_only',
+                             'localized_name': '奉献等级影响',
+                             'meaning': 'amplifies modifiers granted by the current devotion level',
+                             'does_not_itself_establish': ['direct_piety_gain',
+                                                           'devotion_experience_gain',
+                                                           'devotion_level_increase',
+                                                           'extra_personal_tenet_slots',
+                                                           'all_per_piety_level_terms_multiplier'],
+                             'individual_level_benefit_consumers_verified': False,
+                             'complete_level_description_provider': 'GetPietyLevelDesc',
+                             'why_item_list_remains_unverified': 'ordinary piety_level definitions hide '
+                                                                 'effects and defer the complete list to the '
+                                                                 'native custom description',
+                             'do_not_infer_scaled_items': ['clergy_opinion',
+                                                           'knight_limit',
+                                                           'personal_tenet_slot_add'],
+                             'source_pins': {'path': 'docs/ck3-native-ai/evidence/holy-site-major-grade-value12004/piety-level-impact-source-pins.json',
+                                             'sha256': 'b6a1f2651a616f47e337d9334ce467857cb7193b24cee451b9a3915db5f63d4f',
+                                             'machine_id': '4-8e1c2f1861',
+                                             'source_observed_at_utc': '2026-10-17T19:07:20.373084+00:00'},
+                             'source_spans': [{'game_relative_path': 'common/religion/holy_site_types/00_holy_site_types.txt',
+                                               'sha256': '0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40',
+                                               'line_ranges': [[687, 710]]},
+                                              {'game_relative_path': 'localization/simp_chinese/game_concepts_l_simp_chinese.yml',
+                                               'sha256': '66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86',
+                                               'line_ranges': [[410, 423], [1518, 1519], [2341, 2342]]},
+                                              {'game_relative_path': 'localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml',
+                                               'sha256': 'c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada',
+                                               'line_ranges': [[22, 27], [52, 52], [643, 644], [1340, 1357]]},
+                                              {'game_relative_path': 'common/modifiers/00_basic_modifiers.txt',
+                                               'sha256': '1af1573ef4895834804a9d11017dfa2ff0a93e1d8f829772397b9d7d9421d921',
+                                               'line_ranges': [[143, 184]]},
+                                              {'game_relative_path': 'common/modifier_definition_formats/00_definitions.txt',
+                                               'sha256': 'a1db27f5dc5ae1c1e89764ccb265d4167ba8be5be40b88602b0d90b471287cc4',
+                                               'line_ranges': [[238, 241]]}],
+                             'separate_mecca_knight_term': {'modifier_key': 'monthly_piety_gain_per_knight_mult',
+                                                            'coefficient': 0.02,
+                                                            'conditional_knights': 10,
+                                                            'conditional_raw_contribution': 0.2,
+                                                            'is_piety_level_impact_formula': False,
+                                                            'actual_panel_net_increase_observed': False},
+                             'current_values_observed': False,
+                             'actual_beneficiary_net_values_observed': False}}

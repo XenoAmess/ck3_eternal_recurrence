@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFont
 FPS=30
 GEOMETRY=(2560,1440)
 MAX_SECONDS=20
-LABEL='源码图解 · 非实机画面 · 不代表已发生的业务结果'
+LABEL='规则图解 · 非实机画面'
 
 def now():return datetime.now(timezone.utc).isoformat()
 def read(path):return json.loads(Path(path).read_text(encoding='utf-8-sig'))
@@ -109,7 +109,7 @@ class Painter:
             d.rectangle((100,1108,100+round(2360*t/self.spec['duration_seconds']),1114),fill=self.gold)
             return image
         image=Image.new('RGB',GEOMETRY,self.bg);d=ImageDraw.Draw(image)
-        d.rectangle((0,0,2560,102),fill=(45,33,29));self.text(d,(100,29),LABEL,36,self.gold)
+        d.rectangle((0,0,2560,102),fill=(45,33,29));self.text(d,(100,32),'FAITH & POWER',32,self.muted);self.text(d,(1960,32),LABEL,28,self.gold)
         self.text(d,(100,145),self.spec['title'],68)
         self.text(d,(104,250),self.spec['subtitle'],36,self.muted)
         self.text(d,(104,310),self.spec['scope_note'],28,self.muted)
@@ -155,7 +155,7 @@ def command_log(output,label,argv):
     if result.returncode:raise RuntimeError(label+' failed; no retry performed')
     return result,record
 
-def build(spec_path,output,*,repo,package_root,ledger,allocation_reader,qualification,qualification_sha256,machine,ffmpeg,ffprobe,font,peak_bytes=16*1024**2):
+def build(spec_path,output,*,repo,package_root,ledger,allocation_reader,qualification,qualification_sha256,machine,ffmpeg,ffprobe,font,peak_bytes=16*1024**2,admission_provider=None):
     spec_path=Path(spec_path).resolve();output=Path(output).resolve();repo=Path(repo).resolve()
     if output.exists():raise ValueError('Write-once output directory already exists')
     spec=read(spec_path);duration,steps=inspect_spec(spec)
@@ -176,10 +176,13 @@ def build(spec_path,output,*,repo,package_root,ledger,allocation_reader,qualific
     if any(pin(p)!=qual['tools'][name] for name,p in [('ffmpeg',ffmpeg),('ffprobe',ffprobe)]):raise ValueError('Exact qualified binaries required')
     sys.path.insert(0,str(repo/'promo/ck3_faith_and_power/integration/src'))
     sys.path.insert(0,str(package_root))
-    from faith_power_promo.storage_carry_v3 import admit_v3
+    if admission_provider is None:
+        from faith_power_promo.storage_carry_v3 import admit_v3
+    else:
+        admit_v3=admission_provider
     admission=admit_v3(repo,ledger,package_root,output,machine,peak_bytes,allocation_reader)
     output.mkdir(parents=True)
-    write(output/'storage-admission-v3.json',admission)
+    write(output/'storage-admission.json',admission)
     write(output/'frozen-spec.json',spec)
     write(output/'frozen-source-catalog.json',catalog)
     video=output/'mechanism-motion.mp4';frames=round(duration*FPS)
@@ -213,7 +216,7 @@ def build(spec_path,output,*,repo,package_root,ledger,allocation_reader,qualific
     for name,t in [('step1',1.5),('step2',min(3.8,duration-1/FPS)),('step3',duration-1/FPS)]:
         painter.frame(t).save(output/(name+'.jpg'),quality=84)
     close=admit_v3(repo,ledger,package_root,output,machine,1,allocation_reader)
-    write(output/'storage-close-v3.json',close)
+    write(output/'storage-close.json',close)
     source_catalog=pin(output/'frozen-source-catalog.json')
     receipt={'schema':'ck3-faith-power-source-motion-v1','machine_id':machine,'observed_at_utc':now(),
       'evidence_source':'Exact current local script files and narrow excerpts; source-only Pillow frames piped once into qualified FFmpeg',
@@ -225,7 +228,7 @@ def build(spec_path,output,*,repo,package_root,ledger,allocation_reader,qualific
       'steps':[{k:s[k] for k in ['id','start_seconds','end_seconds','semantic_change','claim_ids','source_ref_ids']} for s in steps],
       'claim_ids':sorted({x for s in steps for x in s['claim_ids']}),'source_ref_ids':sorted({x for s in steps for x in s['source_ref_ids']}),
       'encode':pin(output/'encode.command.json'),'probe':pin(output/'probe.command.json'),'PTS':pin(output/'frame-pts.stdout'),
-      'full_decode':pin(output/'full-decode.command.json'),'storage_admission':pin(output/'storage-admission-v3.json'),'storage_close':pin(output/'storage-close-v3.json'),
+      'full_decode':pin(output/'full-decode.command.json'),'storage_admission':pin(output/'storage-admission.json'),'storage_close':pin(output/'storage-close.json'),
       'review_stills_kind':'Direct Pillow source frames; actual encoded output separately full decoded/PTS checked',
       'review_stills':[pin(output/(x+'.jpg')) for x in ['step1','step2','step3']],
       'qualification_freshness_owner':'Calling round must acquire fresh official latest-final qualification before build; no cached-version inference',

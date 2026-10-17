@@ -17,6 +17,50 @@ import subprocess
 import sys
 
 SCHEMA = 'ck3-faith-power-formal-edit-v1'
+VALUE_V3_SCHEMA = 'ck3-faith-power-value-v3-formal-edit-v1'
+VOICE_CATALOG_SCHEMA = 'faith-power-value-v3-voice-authoring-catalog-v2'
+EVIDENCE_SCHEMA = 'ck3-faith-power-value-v3-cue-evidence-v1'
+
+
+class MetadataBindings:
+    """SHA-check small text inputs; binary inputs are only statted, never opened."""
+    TEXT_SUFFIXES = {'.json','.jsonl','.md','.py','.txt','.stdout','.yaml','.yml','.toml','.mod','.gui','.csv','.tsv','.bbcode'}
+    MAX_TEXT_BYTES = 32 * 1024**2
+
+    def __init__(self, common):
+        self.common=common
+        self.checked={}
+        self.media_stats={}
+
+    def text_path(self, path):
+        path=Path(path)
+        if path.suffix.lower() not in self.TEXT_SUFFIXES or path.stat().st_size>self.MAX_TEXT_BYTES:
+            raise ValueError('Metadata-only mode refuses binary or oversized text read: '+str(path))
+        return path
+
+    def bound(self, declared):
+        if not isinstance(declared,dict) or set(declared)!={'path','bytes','sha256'}:
+            raise ValueError('Expected exact path/bytes/SHA binding')
+        if (not isinstance(declared['bytes'],int) or isinstance(declared['bytes'],bool) or declared['bytes']<0
+            or not isinstance(declared['sha256'],str) or len(declared['sha256'])!=64
+            or any(c not in '0123456789abcdefABCDEF' for c in declared['sha256'])):
+            raise ValueError('Invalid declared bytes/SHA binding')
+        path=Path(declared['path']).resolve()
+        stat=path.stat()
+        if not path.is_file() or stat.st_size!=declared['bytes']:
+            raise ValueError('Declared input size differs: '+str(path))
+        key=(str(path),declared['bytes'],declared['sha256'].lower())
+        if path.suffix.lower() in self.TEXT_SUFFIXES:
+            self.text_path(path)
+            if key not in self.checked:
+                actual=self.common.pin(path)
+                if actual['sha256'].lower()!=key[2]:raise ValueError('Metadata input bytes changed: '+str(path))
+                self.checked[key]=actual
+        else:
+            self.media_stats[key]={'declared':declared,'observed_bytes':stat.st_size,'observed_mtime_ns':stat.st_mtime_ns,
+                'evidence_scope':'stat-only; declared SHA inherited, media bytes not revalidated'}
+        return path
+
 
 
 def pointer(value, path):
@@ -53,30 +97,82 @@ def apply_delta(base, operations):
 
 
 class FormalInputs:
-    def __init__(self, document, common):
+    def __init__(self, document, common, *, metadata_only=False):
         self.document = document
         self.common = common
-        self.bindings = common.Inputs({})
+        self.metadata_only = metadata_only
+        self.bindings = MetadataBindings(common) if metadata_only else common.Inputs({})
         self.bound = self.bindings.bound
 
+    def text_path(self, path):
+        return self.bindings.text_path(path) if self.metadata_only else Path(path)
+
     def load(self, declared):
-        return self.common.read(self.bound(declared))
+        return self.common.read(self.text_path(self.bound(declared)))
+
+    def source_refs(self, refs):
+        for ref in refs:
+            if not isinstance(ref,dict) or 'file' not in ref:
+                raise ValueError('Source references need explicit file pins and a narrow range or pointer')
+            path=self.text_path(self.bound(ref['file']))
+            if 'json_pointer' in ref:
+                actual=pointer(self.common.read(path),ref['json_pointer'])
+                if 'equals' in ref and actual!=ref['equals']:raise ValueError('Source pointer value differs')
+            elif 'first_line' in ref and 'last_line' in ref:
+                lines=path.read_text(encoding='utf-8-sig').splitlines()
+                if not 1<=ref['first_line']<=ref['last_line']<=len(lines):raise ValueError('Source line range invalid')
+            else:
+                raise ValueError('Source reference is not narrowed to lines or JSON pointer')
+
+    def value_v3_inventory(self):
+        doc=self.document
+        voices=self.load(doc['voice_authoring_catalog'])
+        evidence=self.load(doc['cue_evidence_catalog'])
+        if (voices.get('schema')!=VOICE_CATALOG_SCHEMA or voices.get('machine_id')!=doc['machine_id']
+            or voices.get('voice_authoring_projection') is not True or voices.get('projection_is_original_TTS_freeze') is not False):
+            raise ValueError('Value-v3 needs the explicitly labelled same-machine authoring projection')
+        if evidence.get('schema')!=EVIDENCE_SCHEMA or evidence.get('machine_id')!=doc['machine_id']:
+            raise ValueError('Value-v3 cue evidence catalog schema/machine differs')
+        old={row['id']:row for row in voices['cues']}
+        annotations={row['id']:row for row in evidence['cues']}
+        if len(old)!=len(voices['cues']) or voices['cue_count']!=len(old):raise ValueError('Voice authoring cue count differs')
+        if len(annotations)!=len(evidence['cues']) or set(annotations)!=set(old):
+            raise ValueError('Evidence annotations must cover the exact authoring inventory')
+        for key,row in old.items():
+            annotation=annotations[key]
+            self.source_refs(annotation.get('source_refs',[]))
+            old[key]={**row,'claim_ids':annotation['claim_ids'],'shot_ids':annotation['shot_ids']}
+        claims={row['id']:row for row in evidence['claims']}
+        checks={row['id']:row for row in evidence['native_checks']}
+        if len(claims)!=len(evidence['claims']) or len(checks)!=len(evidence['native_checks']):
+            raise ValueError('Duplicate evidence claim/check identifiers')
+        expected_slots=voices.get('new_live_result_voice_slots',{})
+        if not expected_slots or set(doc['pending_result_slots'])!=set(expected_slots):
+            raise ValueError('Value-v3 must preserve every pending live-result slot')
+        self.evidence_unknowns=evidence.get('unknowns',[])
+        self.source_claim_limits=[{'claim_id':claim['id'],'known_limits':claim['known_limits']}
+            for claim in claims.values() if claim.get('known_limits')]
+        return old,claims,checks
 
     def inspect(self):
         common, doc = self.common, self.document
-        if doc.get('schema') != SCHEMA or not doc.get('machine_id'):
+        value_v3=doc.get('schema')==VALUE_V3_SCHEMA
+        if doc.get('schema') not in {SCHEMA,VALUE_V3_SCHEMA} or not doc.get('machine_id'):
             raise ValueError('Explicit formal schema and machine required')
         if doc.get('scope') not in {'episode01-formal-review', 'episode01-P-relic-review-scene'}:
             raise ValueError('Declare formal episode or independent P/relic scene')
-        delta = self.load(doc['existing_voice_delta'])
-        base = self.load(delta['base_input'])
-        projected = apply_delta(base, delta['json_patch_suggestions'])
-        old = {row['id']: row for row in projected['retained_cues']}
+        if value_v3:
+            old,claims,checks=self.value_v3_inventory()
+            batches=doc.get('result_voice_batches',[])
+        else:
+            delta = self.load(doc['existing_voice_delta'])
+            base = self.load(delta['base_input'])
+            projected = apply_delta(base, delta['json_patch_suggestions'])
+            old = {row['id']: row for row in projected['retained_cues']}
+            claims, checks = {}, {}
+            batches = doc['new_voice_batches']
+            if not batches:raise ValueError('At least one measured new voice batch required')
         new = {}
-        claims, checks = {}, {}
-        batches = doc['new_voice_batches']
-        if not batches:
-            raise ValueError('At least one measured new voice batch required')
         for batch in batches:
             frozen_new = self.load(batch['text_freeze'])
             measured_new = self.load(batch['measured_voices'])
@@ -84,13 +180,20 @@ class FormalInputs:
             for item in (frozen_new, measured_new, result_evidence):
                 if item['machine_id'] != doc['machine_id']:
                     raise ValueError('Measured voice/result catalog crossed machine')
-            if measured_new['text_freeze'] != batch['text_freeze'] or measured_new['failures']:
+            failures=measured_new.get('failures',measured_new.get('failures_or_not_sent',[]))
+            if measured_new['text_freeze'] != batch['text_freeze'] or failures:
                 raise ValueError('New voices need exact independent text freeze and no failed requests')
             new_text = {row['id']: row for row in frozen_new['cues']}
             new_audio = {row['id']: row for row in measured_new['cues']}
             if set(old) & set(new_text) or set(new) & set(new_text) or set(new_text) != set(new_audio):
                 raise ValueError('Old/new voice inventory overlap or mismatch')
-            new.update({key: {**text, **new_audio[key]} for key, text in new_text.items()})
+            result_cues={row['id']:row for row in result_evidence.get('cues',[])} if value_v3 else {}
+            if result_cues and set(result_cues)!=set(new_text):raise ValueError('Result cue evidence inventory differs')
+            for key,text in new_text.items():
+                merged={**text,**new_audio[key]}
+                if key in result_cues:
+                    for field in ('claim_ids','shot_ids'):merged[field]=result_cues[key][field]
+                new[key]=merged
             for check in result_evidence['native_checks']:
                 if check['id'] in checks and checks[check['id']] != check:
                     raise ValueError('Different observations share a check identifier')
@@ -117,6 +220,13 @@ class FormalInputs:
         max_graphic_run = graphic_run = 0.0
         motion_seconds = explanation_run = max_explanation_run = 0.0
         motion_intervals = {}
+        if value_v3:
+            for claim in claims.values():
+                self.source_refs(claim.get('source_refs',[]))
+                needed=claim.get('native_check_ids',[])
+                if any(key not in checks for key in needed):raise ValueError('Claim references absent native observation')
+                if claim.get('requires_native_checks') and not needed:
+                    gaps.append(claim['id']+': required native observations unbound')
         for check in checks.values():
             if pointer(self.load(check['file']), check['json_pointer']) != check['equals']:
                 raise ValueError('Actual native observation differs: ' + check['id'])
@@ -133,10 +243,17 @@ class FormalInputs:
                 raise ValueError('Measured voice clock differs')
             if not 0 <= float(row.get('subtitle_start_seconds', 0)) < row['speech_duration_seconds']:
                 raise ValueError('Subtitle onset must precede the unchanged measured speech end')
+            common.subtitle_groups(row)
+            if value_v3:
+                if not row['claim_ids']:gaps.append(row['id']+': source claim unbound')
+                for key in row['claim_ids']:
+                    if key not in claims:raise ValueError('Selected value-v3 cue claim is absent')
             if row['id'] in new:
                 for key in row['claim_ids']:
                     if key not in claims:
                         raise ValueError('New result sentence lacks its explicit source claim')
+                    if value_v3 and not claims[key].get('native_check_ids'):
+                        gaps.append(row['id']+': new result claim lacks native observations')
                     if any(check_id not in checks for check_id in claims[key]['native_check_ids']):
                         raise ValueError('Result claim references an absent observation')
             parts = row.get('visual_parts')
@@ -185,7 +302,7 @@ class FormalInputs:
                     if source_catalog.get('machine_id') != doc['machine_id']:
                         raise ValueError('Source-motion catalog crossed machine')
                     for item in source_catalog['sources']:
-                        path = self.bound(item['file'])
+                        path = self.text_path(self.bound(item['file']))
                         lines = path.read_text(encoding='utf-8-sig').splitlines()
                         first, last = item['first_line'], item['last_line']
                         text = '\n'.join(lines[first - 1:last]) + '\n'
@@ -239,20 +356,37 @@ class FormalInputs:
         warnings = []
         for key, value in states.items():
             if value is None:
-                if doc['scope'] == 'episode01-formal-review':
+                if value_v3 or doc['scope'] == 'episode01-formal-review':
                     gaps.append(key + ': result still unbound')
             elif value.get('status') == 'omitted':
                 if not value.get('reason'):
                     raise ValueError('An omitted result needs its explicit reason')
+                if value_v3:gaps.append(key+': required value-v3 result omitted')
             elif value.get('status') == 'observed-bound':
                 if not value.get('cue_ids') or not set(value['cue_ids']) <= set(selected):
                     raise ValueError('An observed result must bind actual selected measured cues')
+                if value_v3 and not set(value['cue_ids'])<=set(new):
+                    raise ValueError('Value-v3 live slot must bind its actual new result voice batch')
             else:
                 raise ValueError('Result slot needs observed-bound or explicit omitted status')
         if doc['scope'] == 'episode01-formal-review' and not 1200 <= total <= 2400:
             warnings.append('Outside director 20–40 minute preference; an honest shorter review may build. No padding or raw loops.')
-        self.load(doc['assembly_plan'])  # Only supplies the real ProjectConfig source, never a synthetic cue inventory.
-        return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps,
+        if doc.get('project_config') is not None:
+            common.explicit_project_config(self.load(doc['project_config']),rows)
+        elif value_v3:
+            gaps.append('project_config: actual selected value-v3 native project unbound')
+        else:
+            self.load(doc['assembly_plan'])  # Legacy ProjectConfig source remains unchanged.
+        if value_v3 and doc.get('assembly_plan') is not None:self.load(doc['assembly_plan'])
+        if value_v3 and doc.get('storage_reservation') is not None:self.load(doc['storage_reservation'])
+        media_stats=list(self.bindings.media_stats.values()) if self.metadata_only else []
+        metadata_checked=list(self.bindings.checked.values()) if self.metadata_only else []
+        return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
+            'content_ready':not gaps,'metadata_only':self.metadata_only,'fullrender_admitted':False,
+            'media_bytes_revalidated':not self.metadata_only,'media_stat_observations':media_stats,
+            'metadata_SHA_checked_inputs':metadata_checked,
+            'evidence_unknowns':getattr(self,'evidence_unknowns',[]),
+            'source_claim_limits':getattr(self,'source_claim_limits',[]),
             'budget': common.peak_budget(total, len(rows)), 'scope': doc['scope'], 'editorial_warnings': warnings,
             'selected_existing_voice_count': sum(row['id'] in old for row in rows),
             'selected_new_voice_count': sum(row['id'] in new for row in rows),
@@ -267,17 +401,48 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('operation', choices=('plan', 'build'))
     parser.add_argument('--workers', type=int, choices=(1, 2), default=2)
-    for name in ('repo', 'input', 'runtime', 'reservation', 'package-root', 'output', 'v3-helper', 'allocation-reader'):
-        parser.add_argument('--' + name, type=Path, required=True)
+    parser.add_argument('--metadata-only',action='store_true',help='Plan only: SHA metadata, stat binary inputs; no storage scan/admission')
+    for name in ('repo','input','output'):
+        parser.add_argument('--'+name,type=Path,required=True)
+    for name in ('runtime','reservation','package-root','v3-helper','allocation-reader'):
+        parser.add_argument('--'+name,type=Path)
     args = parser.parse_args(argv)
+    if args.metadata_only and args.operation!='plan':parser.error('--metadata-only is restricted to plan')
+    if not args.metadata_only:
+        for name in ('runtime','reservation','package_root','v3_helper','allocation_reader'):
+            if getattr(args,name) is None:parser.error('--'+name.replace('_','-')+' is required for normal plan/build')
     sys.path.insert(0, str(args.repo / 'promo/ck3_faith_and_power/integration/src'))
     from faith_power_promo import full_episode as common
     document = common.read(args.input)
     machine = subprocess.check_output([sys.executable, '-B', args.repo / 'tools/ck3_live_run_id.py', 'machine'], text=True).strip()
     if machine != document['machine_id']:
         raise ValueError('Formal input belongs to another machine')
-    inputs = FormalInputs(document, common)
+    inputs = FormalInputs(document, common,metadata_only=args.metadata_only)
     inspected = inputs.inspect()
+    if args.metadata_only:
+        args.output.mkdir(parents=True,exist_ok=False)
+        report={key:value for key,value in inspected.items() if key!='rows'}
+        cursor=0;planned_mapping=[]
+        for row in inspected['rows']:
+            end=cursor+row['duration_seconds']
+            planned_mapping.append({'id':row['id'],'authored_interval_seconds':[cursor,end],
+                'claim_ids':row['claim_ids'],'shot_ids':row['shot_ids'],'visual_parts':row.get('visual_parts'),
+                'subtitle_groups':common.subtitle_groups(row),'editor_annotations':row.get('editor_annotations'),
+                'final_media_PTS_observed':False})
+            cursor=end
+        report.update(machine_id=machine,observed_at_utc=datetime.now(timezone.utc).isoformat(),
+            evidence_source='SHA-checked small metadata/source/PTS; binary inputs stat-only, inherited media SHA not revalidated',
+            input=common.pin(args.input),source=common.pin(__file__),common_renderer=common.pin(common.__file__),
+            storage_admission=None,storage_scan_performed=False,media_written=False,
+            current_runtime_qualification_checked=False,fullrender_admitted=False,
+            planned_cue_visual_mapping=planned_mapping)
+        target=common.write(args.output/'formal-metadata-plan.json',report)
+        print(json.dumps({'plan':common.pin(target),'content_ready':inspected['content_ready'],
+            'ready_to_build':False,'fullrender_admitted':False,'seconds':inspected['seconds'],'gaps':inspected['gaps']},ensure_ascii=False))
+        return 0
+    if document.get('schema')==VALUE_V3_SCHEMA:
+        if inputs.bound(document['storage_reservation']).resolve()!=args.reservation.resolve():
+            raise ValueError('Value-v3 normal plan/build must use its exact SHA-bound storage reservation')
     required_sources = {str(Path(__file__).resolve()), str(args.v3_helper.resolve())}
     snapshots = document['producer_source_snapshots']
     if {str(Path(item['file']['path']).resolve()) for item in snapshots} != required_sources:

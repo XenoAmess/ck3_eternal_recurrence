@@ -1,0 +1,118 @@
+{
+  "schema": "ck3.piety_level_impact.resource_semantics.sources.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+  "source_head": "e23f9de04018b638c62e0b72d39d88b56f0010cb",
+  "game_version": "1.20.0.4",
+  "original_frozen_source_pins": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\piety-level-impact-clarification-a01\\source-pins.json",
+    "bytes": 15044,
+    "sha256": "3b220c4388e4ae73ad73bd59522a4462e2674b4f3397a1c725593ba498a53151"
+  },
+  "sources": [
+    {
+      "id": "S01",
+      "bytes": 169446,
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+      "kind": "installed_game_resource",
+      "excerpts": [
+        {
+          "start_line": 687,
+          "end_line": 710,
+          "text": "mecca = {\n\tcounty = c_mecca\n\n\tcounty_holder_character_modifier = {\n\t\tmonthly_piety_gain_mult = 0.05\n\t\tknight_effectiveness_mult = 0.05\n\t}\n\n\tcounty_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tdevelopment_growth_factor = 0.01\n\t\ttravel_danger = -1\n\t}\n\n\tfaith_character_modifier = {\n\t\tmonthly_piety_gain_per_knight_mult = 0.02\n\t}\n\n\tfaith_character_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tknight_effectiveness_mult = 0.01\n\t\tpiety_level_impact_mult = 0.01\n\t}\n}"
+        }
+      ],
+      "game_relative_path": "common/religion/holy_site_types/00_holy_site_types.txt"
+    },
+    {
+      "id": "S02",
+      "bytes": 350826,
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+      "kind": "installed_game_resource",
+      "excerpts": [
+        {
+          "start_line": 410,
+          "end_line": 423,
+          "text": " game_concept_piety: \"虔诚\"\n game_concept_pious: \"虔诚\"\n game_concept_piety_i: \"[GetLocalPlayerPietyTextIcon]\"\n game_concept_piety_desc: \"$game_concept_piety$代表角色的美德。\\n\\n虔诚的行动（按照[faith|E]的[doctrines|E]）会增加角色的虔诚，例如进行[GetActivityType('activity_pilgrimage').GetName]。\\n\\n根据[government_form|E]、教义等等的不同，虔诚可以花费在多种宗教事务上。\\n\\n角色每次获得$game_concept_piety$，也会向下一[piety_level|E]迈进。\"\n game_concept_piety_experience: \"奉献\"\n game_concept_piety_experience_desc: \"角色获得的每一点奉献都增加到下一[piety_level|E]的进展上。每当角色获得[piety|E]，也会获得同样数量的奉献。\"\n game_concept_maximum_piety_level: \"最高奉献等级\"\n game_concept_maximum_piety_level_desc: \"$game_concept_maximum_piety_level$代表了一位[ruler|E]究其一生能达到的最高[piety_level|E]。默认情况下，该等级为[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L]。[AddLocalizationIf( GetPlayer.GetGovernment.HasGovernmentFlag( 'government_is_mandala' ), 'maximum_piety_level_mandala')]\"\n maximum_piety_level_mandala: \"\\n\\n然而，当一名[mandala|E][ruler|E]在达到[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L]并以与其[aspect|E]相符的方式去世时，该统治者的[heir|E]将可以提升至下一奉献等级，直到达到[GetModifier( 'piety_level_8' ).GetNameWithTooltip|L]。\"\n game_concept_piety_level: \"奉献等级\"\n game_concept_piety_levels: \"奉献等级\"\n additional_mandala_government_piety_levels: \"[mandala|E][government|E]可以在[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L]后解锁额外的奉献等级直到[GetModifier( 'piety_level_8' ).GetNameWithTooltip|L]。为了达到这种程度的奉献等级，他们的虔诚需要经过数代人奉献。\"\n game_concept_piety_level_desc: \"一个角色的$game_concept_piety_level$衡量该角色的德行和虔心，以及在其[faith|E]其他成员心中的地位。\\n\\n角色每次获得[piety|E]，也会向下一奉献等级迈进。\\n\\n[AddLocalizationIf( HasDlcFeature( 'all_under_heaven' ), 'additional_mandala_government_piety_levels' )]\\n\\n奉献等级为：\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_0' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_1' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_2' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_3' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_4' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L][AddLocalizationIf( HasDlcFeature( 'all_under_heaven' ), 'game_concept_additional_piety_level_desc' )]\"\n game_concept_additional_piety_level_desc: \"\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_6' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_7' ).GetNameWithTooltip|L]\\n$EFFECT_LIST_BULLET$[GetModifier( 'piety_level_8' ).GetNameWithTooltip|L]\""
+        },
+        {
+          "start_line": 1518,
+          "end_line": 1519,
+          "text": " game_concept_clergy_opinion: \"神职人员好感\"\n game_concept_clergy_opinion_desc: \"这类[opinion|E]只影响你自身[faith|E]的[clergy|E]。\""
+        },
+        {
+          "start_line": 2341,
+          "end_line": 2342,
+          "text": " game_concept_piety_level_impact: \"奉献等级影响\"\n game_concept_piety_level_impact_desc: \"奉献等级影响提高或降低你当前[piety_level|E]提供的[modifiers|E]。\""
+        }
+      ],
+      "game_relative_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml"
+    },
+    {
+      "id": "S03",
+      "bytes": 160863,
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+      "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+      "kind": "installed_game_resource",
+      "excerpts": [
+        {
+          "start_line": 22,
+          "end_line": 27,
+          "text": " MOD_DIPLOMACY_PER_PIETY_LEVEL: \"每级[piety_level|E]使[diplomacy|E]\"\n MOD_MARTIAL_PER_PIETY_LEVEL: \"每级[piety_level|E]使[martial|E]\"\n MOD_STEWARDSHIP_PER_PIETY_LEVEL: \"每级[piety_level|E]使[stewardship|E]\"\n MOD_INTRIGUE_PER_PIETY_LEVEL: \"每级[piety_level|E]使[intrigue|E]\"\n MOD_LEARNING_PER_PIETY_LEVEL: \"每级[piety_level|E]使[learning|E]\"\n MOD_PROWESS_PER_PIETY_LEVEL: \"每级[piety_level|E]使[prowess|E]\""
+        },
+        {
+          "start_line": 52,
+          "end_line": 52,
+          "text": " MOD_PIETY_LEVEL_IMPACT_MULT: \"[piety_i|E][piety_level_impact|E]\""
+        },
+        {
+          "start_line": 643,
+          "end_line": 644,
+          "text": " MOD_MONTHLY_PIETY_GAIN_PER_KNIGHT_ADD: \"每位[knight|E]给予的[piety|E]\"\n MOD_MONTHLY_PIETY_GAIN_PER_KNIGHT_MULT: \"每位[knight|E]使每月[piety|E]\""
+        },
+        {
+          "start_line": 1340,
+          "end_line": 1357,
+          "text": " piety_level_0: \"戴罪之人\"\n piety_level_0_desc: \"$piety_level_0$是唯一的负面[piety_level|E]。下一个等级为[GetModifier( 'piety_level_1' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc( '(int32)0' )]\"\n piety_level_1: \"恭顺尽责\"\n piety_level_1_desc: \"$piety_level_1$是第一级[piety_level|E]。下个等级是[GetModifier( 'piety_level_2' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc( '(int32)1' )]\"\n piety_level_2: \"虔诚信者\"\n piety_level_2_desc: \"$piety_level_2$是第二级[piety_level|E]。下个等级是[GetModifier( 'piety_level_3' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc( '(int32)2' )]\"\n piety_level_3: \"忠实仆人\"\n piety_level_3_desc: \"$piety_level_3$是第三级[piety_level|E]。下个等级是[GetModifier( 'piety_level_4' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc( '(int32)3' )]\"\n piety_level_4: \"美德典范\"\n piety_level_4_desc: \"$piety_level_4$是第四级[piety_level|E]。下个等级是[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc( '(int32)4' )]\"\n piety_level_5: \"宗教楷模\"\n piety_level_5_desc: \"$piety_level_5$是非[mandala|E][governments|E]的第五级也是最高的[piety_level|E]。下一等级为[GetModifier( 'piety_level_6' ).GetNameWithTooltip|L]。\\n效果：\\n[GetPietyLevelDesc('(int32)5')|=+]\"\n piety_level_6: \"神性在身\"\n piety_level_6_desc: \"$piety_level_6$是第六级[piety_level|E]。下一等级为[GetModifier( 'piety_level_7' ).GetNameWithTooltip|L]。\\n\\n当[mandala|E][ruler|E]达到[GetModifier( 'piety_level_5' ).GetNameWithTooltip|L]后，以与其[aspect|E]相符的方式去世，该统治者的[heir|E]可将奉献等级提升至这一等级。\\n\\n效果：\\n[GetPietyLevelDesc('(int32)6')|=+]\"\n piety_level_7: \"半人半神\"\n piety_level_7_desc: \"$piety_level_7$是第七级[piety_level|E]。下一等级为[GetModifier( 'piety_level_8' ).GetNameWithTooltip|L]。\\n\\n当[mandala|E][ruler|E]达到[GetModifier( 'piety_level_6' ).GetNameWithTooltip|L]后，以与其[aspect|E]相符的方式去世，该统治者的[heir|E]可将奉献等级提升至这一等级。\\n\\n效果：\\n[GetPietyLevelDesc('(int32)7')|=+]\"\n piety_level_8: \"神明临凡\"\n piety_level_8_desc: \"$piety_level_8$是[mandala|E][government|E]的第八级也是最高的[piety_level|E]。\\n\\n当[mandala|E][ruler|E]达到[GetModifier( 'piety_level_7' ).GetNameWithTooltip|L]后，以与其[aspect|E]相符的方式去世，该统治者的[heir|E]可将奉献等级提升至这一最高等级。\\n\\n效果：\\n[GetPietyLevelDesc('(int32)8')|=+]\""
+        }
+      ],
+      "game_relative_path": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml"
+    },
+    {
+      "id": "S04",
+      "bytes": 19345,
+      "sha256": "1af1573ef4895834804a9d11017dfa2ff0a93e1d8f829772397b9d7d9421d921",
+      "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+      "kind": "installed_game_resource",
+      "excerpts": [
+        {
+          "start_line": 143,
+          "end_line": 184,
+          "text": "# Piety, prestige and stress level that do not modify anything exist for tooltiping\npiety_level_0 = {\n\thide_effects = yes # Custom description will generate the full level information\n\tpersonal_tenet_slot_add = -1\n}\npiety_level_1 = {\n\thide_effects = yes # Custom description will generate the full level information\n}\npiety_level_2 = {\n\thide_effects = yes # Custom description will generate the full level information\n}\npiety_level_3 = {\n\thide_effects = yes # Custom description will generate the full level information\n}\npiety_level_4 = {\n\thide_effects = yes # Custom description will generate the full level information\n\tpersonal_tenet_slot_add = 1\n}\npiety_level_5 = {\n\thide_effects = yes # Custom description will generate the full level information\n\tpersonal_tenet_slot_add = 1\n}\npiety_level_6 = { #Mandala\n\thide_effects = yes # Custom description will generate the full level information\n\tvassal_limit_max = 15\n\tmonthly_legitimacy_add = 0.2\n\tmonthly_dynasty_prestige = 0.1\n\tpersonal_tenet_slot_add = 1\n}\npiety_level_7 = { #Mandala\n\thide_effects = yes # Custom description will generate the full level information\n\tvassal_limit_max = 25\n\tmonthly_legitimacy_add = 0.3\n\tmonthly_dynasty_prestige = 0.15\n\tpersonal_tenet_slot_add = 1\n}\npiety_level_8 = { #Mandala\n\thide_effects = yes # Custom description will generate the full level information\n\tvassal_limit_max = 35\n\tmonthly_legitimacy_add = 0.4\n\tmonthly_dynasty_prestige = 0.2\n\tpersonal_tenet_slot_add = 2"
+        }
+      ],
+      "game_relative_path": "common/modifiers/00_basic_modifiers.txt"
+    },
+    {
+      "id": "S05",
+      "bytes": 70167,
+      "sha256": "a1db27f5dc5ae1c1e89764ccb265d4167ba8be5be40b88602b0d90b471287cc4",
+      "observed_at_utc": "2026-10-17T19:07:20.373084+00:00",
+      "kind": "installed_game_resource",
+      "excerpts": [
+        {
+          "start_line": 238,
+          "end_line": 241,
+          "text": "piety_level_impact_mult = {\n\tdecimals = 0\n\tpercent = yes\n}"
+        }
+      ],
+      "game_relative_path": "common/modifier_definition_formats/00_definitions.txt"
+    }
+  ],
+  "new_reverse_engineering": false,
+  "new_game_action": false,
+  "resource_observation_repeated": false,
+  "per_modifier_consumer_verified": false
+}

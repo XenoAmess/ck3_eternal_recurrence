@@ -1,0 +1,70 @@
+{
+  "schema": "ck3.faith_episode01.r0011.mixed_lifecycle_followup.v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T21:12:08.084254+00:00",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0011",
+  "source_commit": "e23f9de04018b638c62e0b72d39d88b56f0010cb",
+  "superseded_status_scope": "normal-close-pending in frozen scoped receipt at 2026-10-17T20:52:13.862891Z; the old receipt remains unchanged",
+  "source_mixed_stop": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\root-mixed-keeper-stop-proof-a01.json",
+    "bytes": 5007,
+    "sha256": "f20b1443a2f59ecbfaf600261001b57c39f1f518508b773aff55c4194b5fe272"
+  },
+  "source_normal_close": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\case-output\\normal-close-result.json",
+    "bytes": 11054,
+    "sha256": "93c4eb08259ebe2af2fb1fbd8b2607da750aa1e7625a3300897908b8bec320a5"
+  },
+  "original_host_exit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\host-original-process-exit.json",
+    "bytes": 239,
+    "sha256": "ae84ce76bd75c47cb060b3b9f82baf187e7559b7ca5d67fe248a143fa2ee7966"
+  },
+  "original_public_exit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\root-public-run-original-exit-a01.json",
+    "bytes": 1409,
+    "sha256": "45435e0766e15c0e5547138175f8474a9b9a2e2440dcd89beb4ccad1a026e6a7"
+  },
+  "original_keeper_exit": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\keeper-actual-parent-exit.json",
+    "bytes": 5104,
+    "sha256": "f636bc74f8fe334762fdf41c086b47f6d884b2ba12a1f92eb65919555c185904"
+  },
+  "source_release": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0011\\root-screen-release-a01.json",
+    "bytes": 1361,
+    "sha256": "e2a258cfad08ce8940573ee322d854599287066a8ba7b6ecfff91f70c681088c"
+  },
+  "observed": {
+    "game_pid": 14764,
+    "actual_normal_gui_os_exit_code": 0,
+    "normal_close_qualified": true,
+    "original_host_pid": 18004,
+    "original_host_returncode": 1,
+    "original_host_actual_popen_wait": true,
+    "original_public_pid": 16340,
+    "original_public_returncode": 0,
+    "original_public_actual_popen_wait": true,
+    "actual_keeper_returncode": 0,
+    "report_status": "RED",
+    "report_error": null,
+    "report_cleanup_ok": true,
+    "historical_failed_step_id": "r10-value-abandon-open-decision-a01",
+    "host_exit_rewritten": false,
+    "RED_reclassified_GREEN": false,
+    "ordinary_normal_helper_host0_gate_relaxed": false,
+    "resource_stop_route": "case-scoped resource-only cooperative keeper STOP",
+    "release_sequence": 11619,
+    "release_utc": "2026-10-17T21:06:31.538158+00:00",
+    "task_state": "done",
+    "resources": []
+  },
+  "scope": {
+    "independent_single_business_results_preserved": true,
+    "whole_trace_pass": false,
+    "whole_product_business_pass": false,
+    "release_pass": false,
+    "old_business_evidence_rewritten": false,
+    "old_historical_case_SHA_rewritten": false
+  }
+}
