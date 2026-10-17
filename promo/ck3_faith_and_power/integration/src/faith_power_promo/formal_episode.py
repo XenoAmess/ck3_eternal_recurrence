@@ -131,6 +131,8 @@ class FormalInputs:
                 raise ValueError('Audio request text differs')
             if abs(common.cue_duration(row['speech_duration_seconds']) - row['duration_seconds']) > 1e-6:
                 raise ValueError('Measured voice clock differs')
+            if not 0 <= float(row.get('subtitle_start_seconds', 0)) < row['speech_duration_seconds']:
+                raise ValueError('Subtitle onset must precede the unchanged measured speech end')
             if row['id'] in new:
                 for key in row['claim_ids']:
                     if key not in claims:

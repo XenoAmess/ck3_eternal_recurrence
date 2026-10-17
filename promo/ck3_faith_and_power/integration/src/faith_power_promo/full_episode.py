@@ -276,6 +276,9 @@ def bounded(plan, seconds, *, audio):
 
 def subtitle(row,font_path,font_name):
     tracks=[]; cues=[]
+    subtitle_start=float(row.get('subtitle_start_seconds',0))
+    if not 0<=subtitle_start<row['speech_duration_seconds']:
+        raise ValueError('Subtitle onset must precede the unchanged measured speech end')
     for language,size,margin,height,top in (('zh',49,178,60,1120),('en',31,65,38,1280)):
         face=ImageFont.truetype(str(font_path),size)
         layout=wrap_text(row[language],font=FontSpec(language,font_name,size),
@@ -284,7 +287,7 @@ def subtitle(row,font_path,font_name):
         style=AssStyleConfig(language,font_name,size,primary_colour='&H00CFE5F0',outline_colour='&H00131821',
             outline=2,shadow=1,bold=True,margin_left=145,margin_right=145,margin_vertical=margin)
         tracks.append(SubtitleTrackConfig(language,'zh-CN' if language=='zh' else 'en',2 if language=='zh' else 1,style))
-        cues.append(AssCue(row['id']+'.'+language,language,0,row['speech_duration_seconds'],'\n'.join(layout.lines)))
+        cues.append(AssCue(row['id']+'.'+language,language,subtitle_start,row['speech_duration_seconds'],'\n'.join(layout.lines)))
     style=AssStyleConfig('source',font_name,28,primary_colour='&H006AA5CB',outline=2,alignment=8,
         margin_left=100,margin_right=100,margin_vertical=30)
     tracks.append(SubtitleTrackConfig('source','zh-CN',3,style)); cursor=0
@@ -379,7 +382,7 @@ def companion_text(rows,mapping,directory):
         for number,(row,item) in enumerate(zip(rows,mapping),1):
             start=item['actual_final_first_pts']
             body=row['zh']+'\n'+row['en'] if language=='bilingual' else row[language]
-            lines.extend([str(number),stamp(start)+' --> '+stamp(start+row['speech_duration_seconds']),body,''])
+            lines.extend([str(number),stamp(start+float(row.get('subtitle_start_seconds',0)))+' --> '+stamp(start+row['speech_duration_seconds']),body,''])
         paths.append(write_text(directory/('episode01.'+language+'.srt'),'\n'.join(lines)))
     lines=['# Faith and Power: review narration','','Source and live result disclosures are preserved in the input catalog and burned-in source labels.','']
     for row,item in zip(rows,mapping):
