@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17 11:11 UTC：R4 B准备与采用许可的窄观察
+
+`machine_id: 4-8e1c2f1861`。[R4规划观察](../ck3-native-ai/faith-and-power-episode01-r0004-branch-planning.md)确认一次B选择后rite13→15、faith50/mainrite13不变，个人190参数相等，当前核心adaptive为core、Faith main核心不变。原生Requirements、1000piety报价/affordable及无采用冷却已读，bypass0下CanConfirm=true；截至11:11:33Z未Confirm/未采用。B保存冻结但driver绑定仍unconfirmed、冷载待验；11:28:49Z本场正常GUI/原HANDLE/native/public/keeper0、CAS11323空资源闭场；媒体QA另计。
+
 ### 2026-10-17 10:28 UTC：R3已读最终拒绝，完整原因仍缺
 
 `machine_id: 4-8e1c2f1861`。[R3小型规划观察](../ck3-native-ai/faith-and-power-episode01-r0003-observations.md)确认a14原版fallback已打开采用详情：actor15893、参数/选中HolySite32，bypass0下最终CanConfirm=false；未Confirm、采用0。完整Requirements尚无原生观察口，泛化tooltip与截断像素不能填完整原因/报价。R3正常GUI/HANDLE/public/keeper0、CAS11282释放；两take QA另结。下一门是完整条件及费用观察，再规划可证的补救链。

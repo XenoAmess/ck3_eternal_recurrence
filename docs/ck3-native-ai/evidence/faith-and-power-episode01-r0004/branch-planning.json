@@ -1,0 +1,931 @@
+{
+  "schema": "xar.ck3.faith-episode01-r4-branch-planning/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T11:32:04.393876+00:00",
+  "compiler_checkout": "641f1a9f64a74028a0418deb98067d805420ea09",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0004",
+  "game_build": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "detail_terms_cutoff_utc": "2026-10-17T11:11:33.713711+00:00",
+  "latest_included_query_cutoff_utc": "2026-10-17T11:11:34.905000+00:00",
+  "closing_status": "actual_normal_close_qualified",
+  "close": {
+    "normal_close_qualified": true,
+    "retained_os_exit_code": 0,
+    "native_process_exit_code": 0,
+    "cleanup_proven": true,
+    "public_original_exit_code": 0,
+    "keeper_original_exit_code": 0,
+    "cas_sequence": 11323,
+    "resources": [],
+    "closure_at_utc": "2026-10-17T11:28:49.082549+00:00"
+  },
+  "game_operations_by_compiler": false,
+  "evidence": {
+    "r4-before-b-snapshot-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-before-b-snapshot-a01.json",
+      "bytes": 69295,
+      "sha256": "52372358c51566928e95f9aa1cac9fa23e25ae990185a0342bb959fb7c5657c4"
+    },
+    "r4-before-b-personal-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-before-b-personal-a01.json",
+      "bytes": 55198,
+      "sha256": "4d227f67c0660eae7ae8865e0369f1c190d7dc92bb6df8cd0bc7f77f0f4b1f31"
+    },
+    "r4-before-b-core-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-before-b-core-a01.json",
+      "bytes": 39069,
+      "sha256": "e8f90c8bfa125a594bf06f6e28b9ac681babb57c4dfb6e4f247adeadf663eef2"
+    },
+    "r4-before-b-tenets-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-before-b-tenets-a01.json",
+      "bytes": 38100,
+      "sha256": "e957c8389fc45e47902d756e33c5767da56cec12d74204650a4ca2a74f5e16b7"
+    },
+    "r4-before-b-preparation-logs-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-before-b-preparation-logs-a01.json",
+      "bytes": 36132,
+      "sha256": "cf1a7acff45753aa2753456a7c64f04ef1b6a9f1493f181c2605eb31039facc7"
+    },
+    "r4-prepare-b-select-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-prepare-b-select-a01.json",
+      "bytes": 37600,
+      "sha256": "6442746e7b6d6485a0cdd60af46613d1be791696f468f2d6cb4accf458dbf024"
+    },
+    "r4-after-b-snapshot-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-snapshot-a01.json",
+      "bytes": 68517,
+      "sha256": "52878ae94a7c013b19c46b77bca363645c515207866882187a42a668726aef08"
+    },
+    "r4-after-b-religion-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-religion-a01.json",
+      "bytes": 53698,
+      "sha256": "58034eca0d74299f80bd311a9abe92c351bad2b186a891686d9fdb3b2e8e5286"
+    },
+    "r4-after-b-personal-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-personal-a01.json",
+      "bytes": 54809,
+      "sha256": "22285712fdc0594ddb566c2fea6d3c415c5b256f40663497da62a4ee86d3be01"
+    },
+    "r4-after-b-core-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-core-a01.json",
+      "bytes": 38685,
+      "sha256": "19327b78769adb406e6cc3cf9ee196b65723484053584d53b2275e80fb463fac"
+    },
+    "r4-after-b-tenets-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-tenets-a01.json",
+      "bytes": 37700,
+      "sha256": "8809c861e4feaf84041556b9bc1f87947ee99d338e82ad5ed65eb621e1f39d50"
+    },
+    "r4-after-b-preparation-logs-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-after-b-preparation-logs-a01.json",
+      "bytes": 36045,
+      "sha256": "5eeb5a95d8ed75a31e2b58b98ef007c561c5cb784d1e964085e18e4ac846466a"
+    },
+    "r4-save-b-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-save-b-a01.json",
+      "bytes": 37617,
+      "sha256": "3c9bd238820e8b6d9dc1e9e6b3f7f2d220404fa1b0f80ffa942a566ea9f24fe2"
+    },
+    "r4-b-adoption-detail-a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-b-adoption-detail-a01.json",
+      "bytes": 42105,
+      "sha256": "61047d81161604fb3ce8d1abd81db95576a4797fe63a7621b75918b3b1d454bd"
+    },
+    "b_copy": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/scenario/saves/B-maliki-prepared.ck3.json",
+      "bytes": 539,
+      "sha256": "23a69e820a1cc3edddc85ab4923e6600ddb8a90e1d7826af0d4ff6f2ac874bdc"
+    },
+    "normal_close": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/case-output/normal-close-result.json",
+      "bytes": 11515,
+      "sha256": "3414233c7b5fe6da6d91b9af8793a54eae39e2c1e8080db26bcc6063c297411b"
+    },
+    "public_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-run-r4-a01/original-exit.json",
+      "bytes": 1155,
+      "sha256": "550b111779bb0234bb607955ce4b1a2ce0e90e2f7e73ea780ea23b3356dcc5ee"
+    },
+    "keeper_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/keeper-actual-parent-exit.json",
+      "bytes": 4894,
+      "sha256": "396bce1758836fd7fcf8b2ddb6631c80da5f06cbffd705b87c6b26468d79ae10"
+    },
+    "screen_release": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-screen-release-a01.json",
+      "bytes": 1339,
+      "sha256": "e2f9697c05e7b1ba5ee7a01ce3ae7f63091d0bb0110884235abd5b426bf20a0f"
+    }
+  },
+  "native_report_snapshot": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/native-report.json",
+    "bytes": 10130920,
+    "sha256": "d911fa2adbdbc547e3a21bc6072ee4d18c25b6ba5bc527bbb4089eac2d5feeab",
+    "read_at_utc": "2026-10-17T11:32:04.393876+00:00",
+    "scope": "Final owner report after actual R4 normal closure; relevant small projections retained; no permanent full-report retention promise."
+  },
+  "receipt_report_correlations": [
+    {
+      "receipt": "r4-before-b-snapshot-a01",
+      "report_pointer": "/steps/4/result",
+      "canonical_result_sha256": "14cc5686863e45e7fa310a41e8c18e657c08cc2c073616ba98bc8cce7c44572f"
+    },
+    {
+      "receipt": "r4-before-b-personal-a01",
+      "report_pointer": "/steps/6/result",
+      "canonical_result_sha256": "e70beeadc3130960a31db15a27cec310f94b55379d45eeef9702fb09dbf2ba6f"
+    },
+    {
+      "receipt": "r4-before-b-core-a01",
+      "report_pointer": "/steps/7/result",
+      "canonical_result_sha256": "b51edc4465aff70302f65e09007112f48f7127a6e084baec91ba721d5ce5807c"
+    },
+    {
+      "receipt": "r4-before-b-tenets-a01",
+      "report_pointer": "/steps/8/result",
+      "canonical_result_sha256": "d6f2c6ef8aece3dd3909ca5556b1989fb0af2468338534fb9f0e997a23fa9387"
+    },
+    {
+      "receipt": "r4-before-b-preparation-logs-a01",
+      "report_pointer": "/steps/9/result",
+      "canonical_result_sha256": "0e41bfceb2b4f2e95f4436425ee58e75cefd2c0b42e744e3603388ac7ced6e9e"
+    },
+    {
+      "receipt": "r4-prepare-b-select-a01",
+      "report_pointer": "/steps/11/result",
+      "canonical_result_sha256": "8f9566bbc76e3a7a21a47aaffc32be74fcc5550ee25a7f9eb0f3526c12e4edce"
+    },
+    {
+      "receipt": "r4-after-b-snapshot-a01",
+      "report_pointer": "/steps/12/result",
+      "canonical_result_sha256": "a0ba04fb2b9baa1a94bc0cca96f281ff5b98a76bd3a1137df0d265eec36bf286"
+    },
+    {
+      "receipt": "r4-after-b-religion-a01",
+      "report_pointer": "/steps/13/result",
+      "canonical_result_sha256": "56ec2a964fce90c1fdbe88cfed955d5b0ed07fa059cb5c78b5763094915daa2b"
+    },
+    {
+      "receipt": "r4-after-b-personal-a01",
+      "report_pointer": "/steps/14/result",
+      "canonical_result_sha256": "dff0b91eda2b90dd925b46386715edf7d3c39d363f6c55269f621451e861b34c"
+    },
+    {
+      "receipt": "r4-after-b-core-a01",
+      "report_pointer": "/steps/15/result",
+      "canonical_result_sha256": "57ee683fcbb4c2e23fdf4b0271ea9bae9f082814d5c6d919ceb4838093535575"
+    },
+    {
+      "receipt": "r4-after-b-tenets-a01",
+      "report_pointer": "/steps/16/result",
+      "canonical_result_sha256": "c9900a995d23fec5f531b14eb970cc68b4097ccca4a438f692dcf69575d90eb6"
+    },
+    {
+      "receipt": "r4-after-b-preparation-logs-a01",
+      "report_pointer": "/steps/17/result",
+      "canonical_result_sha256": "f35a811b00eeaa1504ce8462b72ed020bfb0079df26a08119e3c1209b33cf1f0"
+    },
+    {
+      "receipt": "r4-save-b-a01",
+      "report_pointer": "/steps/18/result",
+      "canonical_result_sha256": "3d6eadb7a9d229bb4640ad3ef0dc33c994f91f6d2ce9b73586bba1d2054ef5b4"
+    },
+    {
+      "receipt": "r4-b-adoption-detail-a01",
+      "report_pointer": "/steps/22/result",
+      "canonical_result_sha256": "5193a88bf6bfb21b289a0c7c1e3d078f8872a35d900ad61b164874a90c803482"
+    }
+  ],
+  "before_after": {
+    "personal_before": {
+      "schema": "ck3_12004_character_personal_parameters_v1",
+      "source": "character_personal_tenets",
+      "available": true,
+      "unavailable_reason": null,
+      "has_character_extension": true,
+      "supported_keys_complete": true,
+      "personal_parameters_complete": true,
+      "personal_tenet_keys": [
+        "tenet_struggle_submission"
+      ],
+      "queried_snapshot_id": "native:2",
+      "queried_revision": 3,
+      "queried_native_revision": 2,
+      "parameter_count": 190,
+      "parameters_canonical_sha256": "cd3b3f0ae242d2a7a09f00cf18a80850bbf660101314b4fefa3dbaf53ac05798",
+      "true_rows": [
+        {
+          "key": "unlock_voluntary_laampdom_faith",
+          "value": true
+        }
+      ]
+    },
+    "personal_after": {
+      "schema": "ck3_12004_character_personal_parameters_v1",
+      "source": "character_personal_tenets",
+      "available": true,
+      "unavailable_reason": null,
+      "has_character_extension": true,
+      "supported_keys_complete": true,
+      "personal_parameters_complete": true,
+      "personal_tenet_keys": [
+        "tenet_struggle_submission"
+      ],
+      "queried_snapshot_id": "native:3",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "parameter_count": 190,
+      "parameters_canonical_sha256": "cd3b3f0ae242d2a7a09f00cf18a80850bbf660101314b4fefa3dbaf53ac05798",
+      "true_rows": [
+        {
+          "key": "unlock_voluntary_laampdom_faith",
+          "value": true
+        }
+      ]
+    },
+    "personal_parameter_vectors_equal": true,
+    "numeric_before": {
+      "schema": "ck3_12004_rite_numeric_special_parameters_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "faith_numeric_consumer_source": "faith_main_rite",
+      "authored_presence_provenance_observed": false,
+      "supported_key_count": 5,
+      "current_rite": {
+        "rite_id": 13,
+        "observed_special_parameters_complete": true,
+        "parameters": [
+          {
+            "key": "minimum_fervor",
+            "raw": -1,
+            "scale": 1,
+            "value": null,
+            "state": "unset",
+            "unit": "fervor_points"
+          },
+          {
+            "key": "fervor_per_holy_site",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_per_controlled_holy_site"
+          },
+          {
+            "key": "bonus_fervor_gain",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_gain_bonus"
+          },
+          {
+            "key": "bonus_heresy_protection",
+            "raw": 0,
+            "scale": 1,
+            "value": 0,
+            "state": "value",
+            "unit": "heresy_protection_count_bonus"
+          },
+          {
+            "key": "heresy_threshold",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "fervor_threshold_adjustment"
+          }
+        ]
+      },
+      "faith_main_rite": {
+        "rite_id": 13,
+        "observed_special_parameters_complete": true,
+        "parameters": [
+          {
+            "key": "minimum_fervor",
+            "raw": -1,
+            "scale": 1,
+            "value": null,
+            "state": "unset",
+            "unit": "fervor_points"
+          },
+          {
+            "key": "fervor_per_holy_site",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_per_controlled_holy_site"
+          },
+          {
+            "key": "bonus_fervor_gain",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_gain_bonus"
+          },
+          {
+            "key": "bonus_heresy_protection",
+            "raw": 0,
+            "scale": 1,
+            "value": 0,
+            "state": "value",
+            "unit": "heresy_protection_count_bonus"
+          },
+          {
+            "key": "heresy_threshold",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "fervor_threshold_adjustment"
+          }
+        ]
+      },
+      "faith_numeric_final": {
+        "schema": "ck3_12004_faith_numeric_final_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 29395,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "current_rite_id": 13,
+        "faith_id": 50,
+        "main_rite_id": 13,
+        "value_state": "value",
+        "main_rite_adjustment_raw": 0,
+        "native_define_raw": 6500000,
+        "final_heresy_threshold_raw": 6500000,
+        "final_heresy_threshold": 65.0,
+        "scale": 100000,
+        "unit": "fervor_points",
+        "source": "faith_main_rite",
+        "native_getter_rva": "0x2440900",
+        "native_define_rva": "0x5C68D88"
+      }
+    },
+    "numeric_after": {
+      "schema": "ck3_12004_rite_numeric_special_parameters_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "faith_numeric_consumer_source": "faith_main_rite",
+      "authored_presence_provenance_observed": false,
+      "supported_key_count": 5,
+      "current_rite": {
+        "rite_id": 15,
+        "observed_special_parameters_complete": true,
+        "parameters": [
+          {
+            "key": "minimum_fervor",
+            "raw": -1,
+            "scale": 1,
+            "value": null,
+            "state": "unset",
+            "unit": "fervor_points"
+          },
+          {
+            "key": "fervor_per_holy_site",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_per_controlled_holy_site"
+          },
+          {
+            "key": "bonus_fervor_gain",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_gain_bonus"
+          },
+          {
+            "key": "bonus_heresy_protection",
+            "raw": 0,
+            "scale": 1,
+            "value": 0,
+            "state": "value",
+            "unit": "heresy_protection_count_bonus"
+          },
+          {
+            "key": "heresy_threshold",
+            "raw": 500000,
+            "scale": 100000,
+            "value": 5.0,
+            "state": "value",
+            "unit": "fervor_threshold_adjustment"
+          }
+        ]
+      },
+      "faith_main_rite": {
+        "rite_id": 13,
+        "observed_special_parameters_complete": true,
+        "parameters": [
+          {
+            "key": "minimum_fervor",
+            "raw": -1,
+            "scale": 1,
+            "value": null,
+            "state": "unset",
+            "unit": "fervor_points"
+          },
+          {
+            "key": "fervor_per_holy_site",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_per_controlled_holy_site"
+          },
+          {
+            "key": "bonus_fervor_gain",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "yearly_fervor_gain_bonus"
+          },
+          {
+            "key": "bonus_heresy_protection",
+            "raw": 0,
+            "scale": 1,
+            "value": 0,
+            "state": "value",
+            "unit": "heresy_protection_count_bonus"
+          },
+          {
+            "key": "heresy_threshold",
+            "raw": 0,
+            "scale": 100000,
+            "value": 0.0,
+            "state": "value",
+            "unit": "fervor_threshold_adjustment"
+          }
+        ]
+      },
+      "faith_numeric_final": {
+        "schema": "ck3_12004_faith_numeric_final_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "available": true,
+        "unavailable_reason": null,
+        "capture_epoch": 72715,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "current_rite_id": 15,
+        "faith_id": 50,
+        "main_rite_id": 13,
+        "value_state": "value",
+        "main_rite_adjustment_raw": 0,
+        "native_define_raw": 6500000,
+        "final_heresy_threshold_raw": 6500000,
+        "final_heresy_threshold": 65.0,
+        "scale": 100000,
+        "unit": "fervor_points",
+        "source": "faith_main_rite",
+        "native_getter_rva": "0x2440900",
+        "native_define_rva": "0x5C68D88"
+      }
+    },
+    "tenets_before": {
+      "schema": "ck3_12004_tenet_rows_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "current_rite": {
+        "rite_id": 13,
+        "core_tenets": [
+          {
+            "key": "tenet_legalism",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_religious_legal_pronouncements",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_struggle_submission",
+            "current_rite_status": 4
+          }
+        ]
+      },
+      "faith_main_rite": {
+        "rite_id": 13,
+        "core_tenets": [
+          {
+            "key": "tenet_legalism",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_religious_legal_pronouncements",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_struggle_submission",
+            "current_rite_status": 4
+          }
+        ]
+      },
+      "personal_tenets_complete": true,
+      "personal_tenets": [
+        {
+          "key": "tenet_struggle_submission",
+          "current_rite_status": 4
+        }
+      ],
+      "effective_tenet_states": [
+        {
+          "key": "tenet_legalism",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_religious_legal_pronouncements",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_struggle_submission",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_aniconism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_communal_identity",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_mendicant_preachers",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_adaptive",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_esotericism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_literalism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_asceticism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_inner_journey",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_ritual_celebrations",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_sanctity_of_nature",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_communal_possessions",
+          "current_rite_status": 1
+        }
+      ],
+      "status_values": {
+        "unknown": 0,
+        "known": 1,
+        "prohibited": 2,
+        "permitted": 3,
+        "core": 4
+      }
+    },
+    "tenets_after": {
+      "schema": "ck3_12004_tenet_rows_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "current_rite": {
+        "rite_id": 15,
+        "core_tenets": [
+          {
+            "key": "tenet_adaptive",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_legalism",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_religious_legal_pronouncements",
+            "current_rite_status": 4
+          }
+        ]
+      },
+      "faith_main_rite": {
+        "rite_id": 13,
+        "core_tenets": [
+          {
+            "key": "tenet_legalism",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_religious_legal_pronouncements",
+            "current_rite_status": 4
+          },
+          {
+            "key": "tenet_struggle_submission",
+            "current_rite_status": 4
+          }
+        ]
+      },
+      "personal_tenets_complete": true,
+      "personal_tenets": [
+        {
+          "key": "tenet_struggle_submission",
+          "current_rite_status": 4
+        }
+      ],
+      "effective_tenet_states": [
+        {
+          "key": "tenet_adaptive",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_legalism",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_religious_legal_pronouncements",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_struggle_submission",
+          "current_rite_status": 4
+        },
+        {
+          "key": "tenet_aniconism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_communal_identity",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_mendicant_preachers",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_esotericism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_literalism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_asceticism",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_inner_journey",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_ritual_celebrations",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_sanctity_of_nature",
+          "current_rite_status": 1
+        },
+        {
+          "key": "tenet_communal_possessions",
+          "current_rite_status": 1
+        }
+      ],
+      "status_values": {
+        "unknown": 0,
+        "known": 1,
+        "prohibited": 2,
+        "permitted": 3,
+        "core": 4
+      }
+    },
+    "preparation_marker_counts_before": [
+      0,
+      0,
+      0
+    ],
+    "preparation_marker_counts_after": [
+      0,
+      0,
+      1
+    ],
+    "piety_before": {
+      "raw": 225000000,
+      "scale": 100000
+    },
+    "piety_after": {
+      "raw": 225000000,
+      "scale": 100000
+    },
+    "after_event": null,
+    "after_identity": {
+      "played_character_id": 15893,
+      "rite_id": 15,
+      "faith_id": 50,
+      "faith_key": "sunni",
+      "faith_main_rite_id": 13,
+      "date_raw": 51394920
+    }
+  },
+  "selection": {
+    "status": "event_instance_advanced",
+    "postcondition_verified": true,
+    "old_event_instance_id": 1,
+    "new_event_instance_id": null,
+    "selected_option_number": 2,
+    "selected_native_option_index": 1,
+    "starting_snapshot_id": "native:2",
+    "starting_revision": 3,
+    "ending_snapshot_id": "native:3",
+    "ending_revision": 4,
+    "bridge_pid": 19004,
+    "connection_generation": 1
+  },
+  "frozen_b": {
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r4-a01\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 50209815,
+      "sha256": "1419b3ed54bdf294a81047f62e8bb1e17ebc205b490f632dcb20997d6832bbf6",
+      "date_raw": 51394920,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 7,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "copy_receipt": "b_copy",
+    "driver_binding": {
+      "status": "unconfirmed",
+      "reason": "save_binding_mismatch",
+      "save_binding_verified": false
+    },
+    "cold_load_qualified": false
+  },
+  "latest_detail_frozen_projection": {
+    "id": "r4-b-detail-a02",
+    "plan": {
+      "id": "r4-b-detail-a02",
+      "tool": "ck3_query_player_holy_site_adoption_detail_v1",
+      "args": {
+        "holy_site_id": 32
+      },
+      "continue_on_error": true
+    },
+    "started_at": "2026-10-17T11:11:33.428283+00:00",
+    "finished_at": "2026-10-17T11:11:33.713711+00:00",
+    "result": {
+      "schema": "ck3_12004_holy_site_adoption_detail_v1",
+      "game_version": "1.20.0.4",
+      "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "available": true,
+      "unavailable_reason": null,
+      "capture_epoch": 88071,
+      "date_raw": 51394920,
+      "played_character_id": 15893,
+      "requested_holy_site_id": 32,
+      "detail_present": true,
+      "root_present": true,
+      "decision_key": "adopt_holy_site_decision",
+      "detail_actor_id": 15893,
+      "current_actor_id": 15893,
+      "decision_option_id": -1,
+      "selected_index": 14,
+      "candidate_count": 21,
+      "selected_item_token": 361,
+      "parameter_holy_site_id": 32,
+      "selected_holy_site_id": 32,
+      "parameter_and_selection_match": true,
+      "native_can_confirm": true,
+      "bypass_requirements_observed": true,
+      "bypass_requirements_raw": 0,
+      "normal_requirements_legality_observed": true,
+      "normal_requirements_can_confirm": true,
+      "confirm_tooltip_available": true,
+      "confirm_tooltip": "",
+      "confirm_tooltip_unavailable_reason": null,
+      "native_detail_context_verified": true,
+      "native_requirements_description_available": true,
+      "native_requirements_description": "\u0015indent_newline:0 \u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive 你是\u0015E; \u0015TOOLTIP:GAME_CONCEPT,independent 独立\u0015!\u0015!统治者\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive 你必须满足以下之一：\n\u0015indent_newline:3 •是你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,head_of_faith 信仰领袖\u0015!\u0015!\u0015!\n\u0015indent_newline:3 •你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,head_of_faith 信仰领袖\u0015!\u0015!是你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,clerical_puppet 领地司祭傀儡\u0015!\u0015!或\u0015E; \u0015TOOLTIP:GAME_CONCEPT,external_clerical_puppet 神职统治者傀儡\u0015!\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,holy_sites 圣地\u0015!\u0015!少于9个\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:HOLY_SITE,32 \u0015L; 纳杰夫\u0015!\u0015!位于你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,realm 领地\u0015!\u0015!内\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:CHARACTER,15436 \u0015TOOLTIP:CHARACTER,15436 \u0015L \u0015high 皇子\u0015!\u0015high 穆瓦法克\u0015!\u0015!\u0015!\u0015!信奉\u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:HOLY_SITE,32 \u0015L; 纳杰夫\u0015!\u0015!尚不是\u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!\u0015E; \u0015TOOLTIP:GAME_CONCEPT,holy_site 圣地\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive 你的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!不能已经在此\u0015E; \u0015TOOLTIP:GAME_CONCEPT,barony 男爵领\u0015!\u0015!的法理\u0015E; \u0015TOOLTIP:GAME_CONCEPT,kingdom 王国\u0015!\u0015!中创建或采纳了\u0015E; \u0015TOOLTIP:GAME_CONCEPT,holy_site 圣地\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive 至少一项：\u0015!\u0015!\u0015indent_newline:3 \n\u0015!\u0015indent_newline:9 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:RITE,15 \u0015TOOLTIP:RITE,15 \u0015L; 马立克派\u0015!\u0015!\u0015!拥有采用任何\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,holy_sites 圣地\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,doctrine 教义\u0015!\u0015!或\u0015E; \u0015TOOLTIP:GAME_CONCEPT,core_tenet 信条\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:3 \n\u0015!\u0015indent_newline:9 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:HOLY_SITE,32 \u0015L; 纳杰夫\u0015!\u0015!拥有至少一个与\u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!相同\u0015E; \u0015TOOLTIP:GAME_CONCEPT,religion 宗教\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!，或者一个与\u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!融合的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!，且该信仰不被\u0015ONCLICK:FAITH,50 \u0015TOOLTIP:FAITH,sunni \u0015L; 逊尼派\u0015!\u0015!\u0015!视为\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith_hostile 敌对\u0015!\u0015!或\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith_evil 邪恶\u0015!\u0015!\u0015!\u0015!\u0015indent_newline:0 \n\u0015!\u0015indent_newline:6 \u0016trigger_pass_inactive! \u0015trigger_inactive \u0015ONCLICK:HOLY_SITE,32 \u0015L; 纳杰夫\u0015!\u0015!是现存\u0015E; \u0015TOOLTIP:GAME_CONCEPT,faith 信仰\u0015!\u0015!的\u0015E; \u0015TOOLTIP:GAME_CONCEPT,holy_site 圣地\u0015!\u0015!；该信仰至少有一个\u0015E; \u0015TOOLTIP:GAME_CONCEPT,county 伯爵领\u0015!\u0015!信奉它。\u0015!\u0015!",
+      "native_requirements_description_unavailable_reason": null,
+      "native_cost_description_available": true,
+      "native_cost_description": "花费：\u0015TOOLTIP:GAME_CONCEPT,piety_i \u0016piety_icon_islam!\u0015!1000",
+      "native_cost_description_unavailable_reason": null,
+      "native_resource_quote_available": true,
+      "native_resource_quote": {
+        "raw_scale": 100000,
+        "resource_vector_raw": [
+          0,
+          0,
+          100000000,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "costs_raw": {
+          "gold": 0,
+          "prestige": 0,
+          "piety": 100000000,
+          "treasury": 0
+        },
+        "native_affordable": true
+      },
+      "native_decision_cooldown_observed": true,
+      "native_decision_cooldown": {
+        "decision_key": "adopt_holy_site_decision",
+        "present": false,
+        "expiry_raw": null,
+        "current_counter_raw": 51394920,
+        "active": false,
+        "counter_unit": "native_decision_clock_counter",
+        "calendar_conversion_observed": false
+      },
+      "native_planning_unavailable_reason": null,
+      "rendered_visibility_observed": false,
+      "action_ready": false,
+      "read_only": true,
+      "decision_confirm_invoked": false,
+      "adoption_completed_observed": false,
+      "exact_ck3_build": "1.20.0.4",
+      "exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "queried_snapshot_id": "native:4",
+      "queried_revision": 5,
+      "queried_native_revision": 4,
+      "snapshot_revision": 4,
+      "backend_id": "ck3-1.20.0.4-native-player-holy-site-adoption-detail-v1",
+      "domain_key": "player_holy_site_adoption_detail_v1",
+      "status": "observed",
+      "advertised": false
+    },
+    "report_pointer": "/steps/23"
+  },
+  "new_relic_query_availability": [
+    {
+      "id": "r4-nadjaf-relics-a01",
+      "report_pointer": "/steps/24",
+      "ok": true,
+      "schema": "ck3_12004_player_holy_site_relic_context_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "status": "observed",
+      "finished_at_utc": "2026-10-17T11:11:34.273612+00:00",
+      "interpretation": "availability only; no relic action or reward credit here"
+    },
+    {
+      "id": "r4-baghdad-relics-a01",
+      "report_pointer": "/steps/25",
+      "ok": true,
+      "schema": "ck3_12004_player_holy_site_relic_context_v1",
+      "available": true,
+      "unavailable_reason": null,
+      "status": "observed",
+      "finished_at_utc": "2026-10-17T11:11:34.905000+00:00",
+      "interpretation": "availability only; no relic action or reward credit here"
+    }
+  ],
+  "planning_contract": {
+    "personal_parameters_are_current_rite_core_parameters": false,
+    "allow_adopt_any_holy_site_independent_boolean_observed": false,
+    "native_current_terms_can_confirm": true,
+    "native_quote_piety": 1000,
+    "native_quote_affordable": true,
+    "adoption_cooldown_present": false,
+    "action_ready_value_preserved": false,
+    "confirm_invoked": false,
+    "adoption_completed": false,
+    "resource_delta_after_adoption": null,
+    "benefit_or_final_effect_observed": false,
+    "next_step": "Fresh guarded single confirm only under owner execution contract, then independent membership/level/inventory/payment/free/cooldown postconditions; otherwise preserve legal observation without business credit."
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T11:32:04.393876+00:00",
+    "package_budget_bytes": 160000,
+    "large_file_copies": false,
+    "volume_free_bytes": 131895791616,
+    "record_review_at_utc": "2027-04-15T11:32:04.393876+00:00",
+    "derived_review": "48h after owner application and verification; no permanent raw-report retention implied"
+  }
+}
