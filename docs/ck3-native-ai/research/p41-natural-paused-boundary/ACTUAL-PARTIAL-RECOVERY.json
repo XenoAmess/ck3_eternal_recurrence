@@ -1,0 +1,82 @@
+{
+  "schema": "xar.public-sentinel-partial-actual-recovery/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T11:24:16.039997+00:00",
+  "control_source": {
+    "name": "1734-1-result.json",
+    "bytes": 905,
+    "sha256": "a28a279237c2910cc58e9bcc3d2e1af079387617f235d56ce9cd8aecc0e10dd0"
+  },
+  "audit_source": {
+    "name": "SENTINEL-PLAYER-DECISION-PARTIAL-RECOVERY-1734.json",
+    "bytes": 3352,
+    "sha256": "5a07ebe2881725ac15f290ecbcf4baf2751872efe7433f5d7174a189f0f70869"
+  },
+  "explicit_runtime_source_epoch": {
+    "name": "ROOT-P41-SENTINEL-PARTIAL-SOURCE-EPOCH01.json",
+    "bytes": 2556,
+    "sha256": "9bced207f77020afff52e42551c245531427611f1ef2ff367e9b62c536d947c0"
+  },
+  "result": {
+    "schema": "g2.queue.sentinel-player-decision-partial-recovery/v1",
+    "status": "sentinel_player_decision_partial_recovered",
+    "actual_recovery_kind": "sentinel_player_decision_boundary_partial",
+    "audit": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-queue\\SENTINEL-PLAYER-DECISION-PARTIAL-RECOVERY-1734.json",
+    "actual_paused": true,
+    "observed_date_raw": 53220840,
+    "observed_date_drift_raw": 144,
+    "completed_cycles": 1940,
+    "failed_pending_business_credit": 0,
+    "failed_pending_date_credit": 0,
+    "original_auto_replayed": false,
+    "fresh_readonly_calls": 2,
+    "new_gameplay_submissions": 0,
+    "new_auto_admitted": true
+  },
+  "qualification": {
+    "actual_recovery_kind": "sentinel_player_decision_boundary_partial",
+    "selected_step": "war-objective-hold-sentinel-advance-war-33554458-army-428-at-2638-until-53220864-speed-5",
+    "war": 33554458,
+    "army": 428,
+    "province": 2638,
+    "until": 53220864,
+    "speed": 5,
+    "original_submission_may_have_applied": true,
+    "read_only_precondition": false,
+    "original_action_replayed": false,
+    "failed_pending_cycle_credit": 0,
+    "failed_pending_date_credit": 0,
+    "failed_pending_business_credit": 0
+  },
+  "physical_no_action_claimed": false,
+  "life_advance_completed_claimed": false,
+  "new_pause_resume_arm_cancel_or_UI_submissions": 0,
+  "public_api_installs_or_dispatches_runtime_recovery": false,
+  "portable_delivery_sha256": "b475136633c725e37d5ee09ed73370e0388ac3914248ac944a1e77adf262a95f",
+  "public_pure_api": {
+    "tools/g2_saved_campaign/sentinel_partial_recovery.py": {
+      "sha256": "f29ad5ed683ef3b8c515c08f4a90cb8e3372a941c4112eaddb607dd55df1f970",
+      "bytes": 10584,
+      "basis": "published staged Git blob"
+    },
+    "ck3_autonomous_player/tests/unit/test_sentinel_partial_recovery.py": {
+      "sha256": "f3ff3c1eb6a74f4f301be652478fe142e56878d4615d20e7e4396fc9e5b97898",
+      "bytes": 5414,
+      "basis": "published staged Git blob"
+    },
+    "ck3_autonomous_player/tests/unit/fixtures/p41_sentinel_partial_projection.json": {
+      "sha256": "c1c57e3989e9a954c589ae475df3cc34d0c3a89d54fa3b1453d6c2438e74199d",
+      "bytes": 14532,
+      "basis": "published staged Git blob"
+    }
+  },
+  "public_pure_api_ast_equal_reviewed_copytarget": true,
+  "public_tests": {
+    "methods": 6,
+    "mutation_subtests": 18,
+    "normal": "PASS",
+    "optimized_python": "PASS",
+    "native_or_sdk_io_calls": 0
+  },
+  "public_source_format_change": "Only trailing empty lines removed; function AST unchanged from reviewed portable source"
+}

@@ -13,3 +13,13 @@
 SDK42 仅准备了未启用备用源：1320叶中1319叶复用不可变输入，只有 Driver 原子 COW；保留原 LF，语义与候选 CRLF 源相同。该备用源不代表发生 SDK 切换。同 SDK 部分推进核对由独立控制修复负责，不能当作普通只读失败清理；本公共包不安装控制器、不改现场 source epoch。连续稳定30年优先，其后低于1秒／日、再0.5秒／日，均未达成。
 
 Public COW/AST pins, test fixture hashes and the unarmed SDK42 source identity are recorded in [the transplant receipt](research/p41-natural-paused-boundary/PUBLIC-TRANSPLANT.json).
+
+## 同 SDK 的部分推进核对
+
+Root 随后实际执行控制1734，只读取新 SEM1735／1736，两帧一致：public1426／Native1443、raw53220840、同一个待处理交互。原1731仍是错误，原计划截止53220864没有被写成完成；观察到144raw／6日变化，completed_cycles仍1940，失败待结算周期／日期／业务信用均为0，没有原动作重放或新的暂停、继续、哨兵、取消及UI提交。[实际小回执](research/p41-natural-paused-boundary/ACTUAL-PARTIAL-RECOVERY.json)保留控制、audit及明确的新runtime source epoch身份，不伪称原冻结源码全字节未变。
+
+公共 `g2_saved_campaign.sentinel_partial_recovery` 只提取纯资格与状态投影：核对精确错误、真实 before-submit 计划、原未结算周期和截止日期，再用调用者注入的生命周期规范化及两次内核出生身份观察核对两份新鲜暂停帧。状态投影只清除失败分支、刷新已观察帧并标记存档 dirty；已有计数、业务 pending、治理状态和 checkpoint 日历原样保留。调用者必须先完成资格核对，再将返回帧用于投影；API本身不读文件、不发请求、不持久化、不清HALT，也不安装运行端分派。
+
+这不是只读准入失败：`original_submission_may_have_applied=True`、`read_only_precondition=False`，不宣称原时钟物理上未执行。公共6项／18个变形子例包括 public／Native序号不同、完整Game出生身份负例及持久业务状态保留；原3项cached-parent dispatcher／持久化测试属于外置场次链，不冒称公共纯API重建了整条队列。SDK42仍未启用；同SDK局部恢复不等于连续30年完成。
+
+后续 Root 以 `ROOT-P41-CONTINUITY-RESUME02-ADMITTED.json`（SHA-256 `cf9c847adfbffa77d955d852a557cf3edac111c5b6f3ce36b3bc89dc800f77b1`）重新准入，first FULL1826在raw53221848／1979周期建立窗口8，交接截点报告该窗口已推进266余日；Game／SDK／OBS未重启。另一个presentation watcher30639因读取原子替换中的NEXT元数据时遇PermissionError退出，造成提示滞后；这是独立展示故障，不据此重置游戏窗口或称游戏再次堵塞。本公共包未修改该watcher，不宣称提示持续健康。
