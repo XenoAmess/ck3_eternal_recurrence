@@ -1,0 +1,11 @@
+{
+  "schema": "xar.p35.modal-consumer.nonmodal-dispatch/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "PASS_SOURCE_ONLY",
+  "legacy_nonmodal_exact_credit_equality": true,
+  "legacy_no_helper_file_required": true,
+  "mismatched_helper_rejected_by_actual_AST_loader_function": true,
+  "fixture_scope": "Derived nonmodal DTO over production Fake-Native-I/O sentinel receipt; no new Game evidence",
+  "Game_or_runtime_calls": 0,
+  "canonical_sha256": "55b11845238f800b3ce66eb8962e7e647dea7af55f3688cbd9b64274328efb3a"
+}

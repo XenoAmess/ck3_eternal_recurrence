@@ -671,3 +671,6 @@ docs/ck3-native-ai/research/sdk34-refuge-and-readback/*.patch -text whitespace=-
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/README.md -text
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/plan.actual-a01.json -text
 /promo/ck3_native_war_ai/episode-04-march-logistics/review02/r196-shot-context-a01/source-pins.actual-a01.json -text
+
+docs/ck3-native-ai/research/sdk35-zero-hop-and-capture-close/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/research/sdk35-zero-hop-and-capture-close/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

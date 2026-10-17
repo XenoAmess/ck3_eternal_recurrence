@@ -1,0 +1,101 @@
+{
+  "schema": "root.ck3.native22-zero-hop-actual/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T03:07:44.857760+00:00",
+  "status": "NATIVE_QUERY_AND_EXACT_DAY_SUCCEEDED_CONSUMER_REPAIR_REQUIRED",
+  "auto": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0022-1-result.json",
+    "sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df"
+  },
+  "fresh_semantic": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0023-1-result.json",
+    "sha256": "060d49a1d3eec9affb3752617ceef8fc98232a07fc76a534f23b362174c4c597"
+  },
+  "fresh_metrics": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0024-1-result.json",
+    "sha256": "004e324cdb620e6432bfaef13dc7c94b43d6cab4ec9e3b8e26c84503a1a40254"
+  },
+  "full_error": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0021-1-result.json",
+    "sha256": "62f746edfa30b4a5114a85aa6d685c378b817be6de2e84f77e58ad4b3fa7dfc3"
+  },
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53483040,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51",
+    "connection_generation": 1,
+    "bridge_pid": 263980
+  },
+  "native_contact_horizon": {
+    "status": "available",
+    "date_raw": 53483040,
+    "snapshot_revision": 1,
+    "subject_army_id": 1023410456,
+    "target_province_id": 2604,
+    "hostile_army_ids": [
+      369099275
+    ],
+    "subject_route": {
+      "timeline_observable": true,
+      "army_id": 1023410456,
+      "current_province_id": 2604,
+      "effective_origin_province_id": 2604,
+      "route_province_ids": [],
+      "arrival_date_raws": []
+    },
+    "hostile_routes": [
+      {
+        "timeline_observable": true,
+        "army_id": 369099275,
+        "current_province_id": 2605,
+        "effective_origin_province_id": 2604,
+        "route_province_ids": [
+          2604
+        ],
+        "arrival_date_raws": [
+          53483280
+        ]
+      }
+    ],
+    "horizon_start_date_raw": 53483040,
+    "horizon_end_date_raw": 53483064,
+    "one_day_contact_free": true,
+    "conflicts": []
+  },
+  "native_clock_stop": {
+    "state": "triggered",
+    "generation": 1,
+    "starting_date_raw": 53483040,
+    "target_date_raw": 53483064,
+    "last_observed_date_raw": 53483064,
+    "trigger_date_raw": 53483064,
+    "speed": 3,
+    "mode": "terminal_or_sentinel",
+    "army_count": 0,
+    "combat_count": 0,
+    "completed_daily_ticks": 1,
+    "intermediate_pause_count": 0,
+    "trigger_flags": 1,
+    "trigger_reasons": [
+      "date_deadline"
+    ],
+    "signed_date_delta_from_target_raw": 0,
+    "overshoot_days": 0,
+    "pause_wrapper_called": true,
+    "pause_observed": true,
+    "terminal_observed": false,
+    "abnormal": false
+  },
+  "actual_end_date_raw": 53483064,
+  "fresh_semantic_paused": true,
+  "game_pid": 263980,
+  "original_action_replayed": false,
+  "continuity_goal_achieved": false,
+  "consumer_error": "route-contact exact day rejected: exact one-day composite",
+  "video_body_read": false
+}

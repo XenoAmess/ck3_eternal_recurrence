@@ -1,0 +1,72 @@
+{
+  "status": "INDEPENDENT_P35_ACTUAL_QUEUE_FIXTURE_REVIEW_GREEN_NOT_RUNTIME_INSTALLED",
+  "reviewer": "/root/fresh_harness_review",
+  "changed_existing_functions": [
+    "classify_active_battle_epoch_v1",
+    "classify_committed_contact_advance_v1"
+  ],
+  "new_functions": [
+    "classify_modal35"
+  ],
+  "original_class": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_canonical_result_classifier.py",
+    "bytes": 261198,
+    "sha256": "2748a29bde90221a8d2a7851df1e7c011611bc4ad4a0845df88639dde8664f87"
+  },
+  "candidate_class": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_modal_result_classifier.py",
+    "bytes": 262062,
+    "sha256": "55b11845238f800b3ce66eb8962e7e647dea7af55f3688cbd9b64274328efb3a"
+  },
+  "candidate_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_battle_route_modal_classifier_v1.py",
+    "bytes": 16268,
+    "sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f"
+  },
+  "candidate_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-MODAL-CLASSIFIER-CANDIDATE01-PIN.json",
+    "bytes": 909,
+    "sha256": "98e863a794feed57332e4a96784f901903230499e69eec1b895174ef76121143"
+  },
+  "tests": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-classifier-clean-install01\\PRODUCTION-QUEUE-TESTS.json",
+      "bytes": 19392,
+      "sha256": "a655c72be7629314df8c600490df9ce05800c1e011fc4ba8215c3b80516d5a18"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-classifier-clean-install01\\NONMODAL-DISPATCH-TEST.json",
+      "bytes": 547,
+      "sha256": "de677d57805ae40e6d92435a27edb3ef8af2c9501ee8055f69271d0a6ac0a95e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-classifier-clean-install01\\WIRE-REVISION-TEST.json",
+      "bytes": 1351,
+      "sha256": "4f7299da651559b13624d276b2f8ba4f0ff382dcd943dd4070fdd58b40267fd7"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-classifier-clean-install01\\CLEAN-INSTALL-TEST.json",
+      "bytes": 821,
+      "sha256": "0670e381eb68ee660ee57555c9068655ceb22fec7ab8342f7194a877b5b0aaee"
+    }
+  ],
+  "Root_metadata_producer": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-native22-adoption-prep01\\prepare_clean_classifier_epoch.py",
+    "bytes": 10521,
+    "sha256": "5244e994c59e09eee7ee71286546e9cdf8e8919cdf402e1396c3212cbcf54679"
+  },
+  "active_source_freeze_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-COLD-SOURCE-FROZEN.json",
+    "bytes": 12483,
+    "sha256": "2f1d0d6b18eed5bcf6410e54d91b2f34d3f8a0f49a97ef04d2b0c6f59fe9e014"
+  },
+  "SDK1318_or_2748_changes": 0,
+  "Game_MCP_Native_OBS_calls": 0,
+  "live_queue_requests_published": 0,
+  "limits": [
+    "Driver endpoint I/O is fake for modal branch tests",
+    "Native22 actual Game modal branch remains unobserved",
+    "Root must supply actual immediately preceding SEM/METRICS and actual Native22 kernel lifecycle pin",
+    "Loaded queue revalidates actual in-memory clean boundary at install"
+  ]
+}

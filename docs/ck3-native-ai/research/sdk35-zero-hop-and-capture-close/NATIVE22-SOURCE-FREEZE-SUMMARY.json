@@ -1,0 +1,47 @@
+{
+  "actual_request": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0016-1-result.json",
+    "request_id": "step-6-b30e6d35d3c5",
+    "sha256": "79b175d2347d8019da823bad1953699bb4e379e2ffdb9ee9cf9ca791a7b603dd",
+    "step": "query-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275"
+  },
+  "bridge_object": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\native.obj",
+    "sha256": "698dd6980a314f635b2f4f928aeaeafd44a08805774dfd12736345fa5097d370"
+  },
+  "bridge_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+    "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+  },
+  "dispatch": {
+    "branch": "reviewed-crozier typed_early",
+    "callback": "ExecuteTypedQuery12002<QueryKind12002::route>",
+    "legacy_long_dispatch_preempted": true,
+    "provider": "xar::ck3_12002::ReadRouteContactHorizon",
+    "provider_map_line": "0001:007c08f0       ?ReadRouteContactHorizon@ck3_12002@xar@@YA?AW4RouteContactHorizonStatus@game@2@AEBURouteBindings@12@AEBUSnapshot@42@AEBURouteContactHorizonRequest@42@AEAURouteContactHorizonSnapshot@42@@Z 00000001807c18f0 f   ck3_12002_routes.obj"
+  },
+  "game_calls": 0,
+  "link_plan": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\LINK-PLAN.json",
+    "sha256": "edc34456eebe5d7ee5fab1f2386ecd6a0255c62ae6233bbe234929cc8529c0ff"
+  },
+  "old_11906_reader": "not selected by actual typed_query_failure_v1 route packet",
+  "retained_link_input_bytes_hashed": 324403081,
+  "retained_link_inputs_checked": 363,
+  "route_object": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\native22-build\\ck3_12002_routes.obj",
+    "sha256": "eed6931e34b4e552801918abdceaf88febe660a6babc32143f6f06e2c5d1a735"
+  },
+  "route_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final02\\ck3_12002_routes.cpp",
+    "sha256": "8486de95f1f4a320222783f1efd7c2a829d979ed83104bd99505478ef750976a"
+  },
+  "schema": "xar.native22.source-freeze-small-projection.v1",
+  "status": "OFFLINE_DISPATCH_QUALIFIED_NOT_LIVE_VERIFIED",
+  "original_full_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final03\\SOURCE-FREEZE.json",
+    "sha256": "c877a07df4790288dfd87a0c4b2d51e35bd5af448354fd98e4686cbc875a4812",
+    "compiled_headers_count": 334
+  },
+  "machine_id": "xenoamess-full-tower-eb9d2c1186"
+}

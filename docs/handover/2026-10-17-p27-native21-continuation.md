@@ -192,3 +192,11 @@ raw53481528／Native5831／public103／12157cycles。原单县／rally-hold help
 修复后窗口30实际又在58日失败：FULL592／AUTO625为`native_war_no_safe_exact_route`，raw53483040／Native6038／public208／12448cycles。SEM626与本地clear627保持零MCP／零业务信用，未重发动作；敌军2605→2604，所有替代路径不安全，当前原生零跳不可用。SDK35／Native22正在独立准备，当前不写已部署。此前21日running只是历史截面；稳定30年、低于1秒／日、0.5秒／日仍依次未达，失败窗口不能拼接。
 
 第七d173f601的Official38990144747和Linear38990144789均success。第六results首次失败旧正式回放的八字段当前基线夹具误验已在第八明确纠正：正式启动基线仅六字段，当前raw／lease／Game完整绑定保持。原错误和旧GREEN保留，不能继续引用为真实启动形状验收。
+
+## Native22冷载与第九有限公共包
+
+第八41846f49的Official38994392765／Linear38994392772实际success，Z已安全同步。Root随后为原生零跳修复冷载Native22 `db399c0e…` 和SDK35，新Game263980／出生134366781612159835保留原raw53483040／12448周期、无回退；旧窗口30失败58日保留，新31尚未在本截点开启。最窄21行零跳源和公共既有route fixture已实际MSVC通过，完整敌军／接敌和原版时钟守卫不变；[第九专题与来源](../ck3-native-ai/research/sdk35-zero-hop-and-capture-close/README.md)记录零跳实机健康仍待Root证明。
+
+旧21.23GB录像关闭探测至内联hash后完成约218.23秒，原固定90秒关闭失败与Game6068 forced exit1不追改；后到OBS正常exit0单列。公共录制适配器先正常关闭采集并发布capture_closed，再后台做全片SHA；只读消费者与producer实接回放已通过，不等完整hash也不冒称媒体完整性。R4首worker缺psutil的环境RED保留，后来OBS增长证明不等于新异步关闭阶段实机验收。WAL／路线速度5仍default off且SDK35不采用；连续30年、<1秒／日、0.5秒／日均未达。
+
+较新Root实证已补：首地图／overlay帧准入c473321b…、watchdog实际增长dce5084b…；AUTO22零跳available＋Native clock精确一天53483040→53483064、paused/tick1/overshoot0。但旧55b分类器仅允许movingphase，误拒`native_war_stationary_contact_horizon_progress`导致FULL21失败；同SDK消费修复和原22重消费正在进行，不能重发时钟。Native修复已实机不等于外层连续流程恢复，31仍未在此截点准入，见上述第九专题的小投影。

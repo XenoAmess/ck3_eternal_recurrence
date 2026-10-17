@@ -120,7 +120,7 @@ class CaptureContractTests(unittest.TestCase):
         self.exe.write_bytes(b"synthetic executable identity; never run")
         self.recordings = self.root / "recordings"
         self.recordings.mkdir()
-        self.receipts = self.recordings / "session"
+        self.receipts = self.recordings / self.session
         self.receipts.mkdir()
         self.profile_path = self.root / "engine.json"
         name = "ManagedWindowCapture-" + uuid.uuid4().hex
@@ -366,7 +366,14 @@ class CaptureContractTests(unittest.TestCase):
         engine = mock.Mock(profile=self.profile, job=job, client=client, process=SimpleNamespace(pid=100))
         engine.start.return_value = client
         engine.reconnect.return_value = client
-        engine.close.return_value = {"actual_exit_code": 0}
+        engine.close.return_value = {"actual_exit_code": 0, "normal_exit_proven": True, "forced_process_calls": 0}
+        (self.receipts / "obs-launch.json").write_text(
+            json.dumps({"pid": 101, "creation_filetime": 124}), encoding="utf-8")
+        class InlineFinalizer:
+            def __init__(self, *, target, args, **kwargs):
+                self.target, self.args = target, args
+            def start(self):
+                self.target(*self.args)
         class FakeWatch:
             def __init__(watch, *args):
                 watch.requested = mock.Mock()
@@ -395,6 +402,8 @@ class CaptureContractTests(unittest.TestCase):
                     "reserve_reached": reached}
         with mock.patch.object(subject, "OwnedEngine", return_value=engine), \
              mock.patch.object(subject, "FileGrowthWatch", FakeWatch), \
+             mock.patch.object(subject.threading, "Thread", InlineFinalizer), \
+             mock.patch.object(subject, "_lower_media_finalizer_priority", return_value={"applied": False}), \
              mock.patch.object(subject, "_generation_helpers", return_value=helpers), \
              mock.patch.object(subject, "_window_identity", return_value="synthetic-owned-window"), \
              mock.patch.dict(sys.modules, {"win32gui": gui}), \
@@ -528,7 +537,10 @@ class CaptureContractTests(unittest.TestCase):
         ffprobe.write_bytes(b"synthetic; never execute")
         with mock.patch.object(subject.subprocess, "Popen", return_value=SimpleNamespace(pid=77)) as spawn, \
              mock.patch.object(subject.shutil, "disk_usage", return_value=SimpleNamespace(free=2000)), \
-             mock.patch.object(subject, "_generation_helpers", side_effect=AssertionError("continuous consulted deadline")):
+             mock.patch.object(subject, "_generation_helpers", return_value=(
+                 lambda *args, **kwargs: nullcontext(SimpleNamespace(check=mock.Mock(),
+                     creation_filetime=999, executable=Path(sys.executable))),
+                 None, None, mock.Mock(side_effect=AssertionError("continuous consulted deadline")))):
             result = subject.launch_recording(profile_path, self.recordings, 100, 456, None,
                 launch_receipt=launch, ffprobe=ffprobe, continuous=True)
         job = json.loads((Path(result["receipt_root"]) / "job.json").read_text(encoding="utf-8"))

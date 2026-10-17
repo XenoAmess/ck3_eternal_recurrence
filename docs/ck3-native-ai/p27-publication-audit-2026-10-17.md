@@ -273,3 +273,13 @@ CTRL2088保持12076cycles，0MCP／0业务信用／无原动作重放。SDK32随
 AUTO50实际一天＋event110的消费者只放宽合法暂停弹窗读回，完整clock、敌军、四动作与METRICS后验不变。公共函数、真实完成包投影、16否例和UI形状测试23项／10子例通过；不会给事件选择或战争信用。Root同SDK52/53/54只安装／重消费／结算原一天，随后真实选择event110并完成异步原版离线分析，来源注册已发布。精确出处及未知边界见[有限归档](research/sdk34-refuge-and-readback/README.md)。
 
 最新Root截点窗口29失败3日，修复后的30又失败58日／12448cycles／raw53483040，根因当前原生零跳不可用与替代路径危险；不再写仍running30。新Native22未部署，本批不混入新DLL或WAL。连续30年稳定优先，再<1秒／日、0.5秒／日，均未达。第七d173f601 Official38990144747／Linear38990144789均success。
+
+## 第九批：零跳与采集释放的有限闭合
+
+第八41846f49已push／Z同步，Official38994392765与Linear38994392772均success。后续Root已报告Native22冷载新Game263980、同raw53483040和12448周期无回退；旧30失败58日不改，新31尚无准入。公共只移21行原生零跳与既有fixture，并实际MSVC compile/run通过，保留后来9行movement cutoff，不复制DLL或334头全manifest。新测试EXE精确Defender登记实际仍admin-required/no Add，未记生效信用。
+
+录制218.234秒延迟与21.23GB仅由小元数据推导，旧90秒失败／Game强退与迟到OBS正常关闭并列。主仓CK3录制适配器先release／capture_closed再后台SHA，保留公共主窗口GetParent守卫；公共只读reader和真实producer实接验证媒体SHA仍未完成时采集已关闭。独立宣传工具链未被vendoring，R4私有shutdown原小patch单列研究，不假称所有public host已接入。
+
+两个modal消费者公共4producer／48否例与CUnit0真producer通过，明确使用正式SDK验证器、无UI业务信用；旧runtime整canonical不搬。WAL报告已在第八入库，不重复实现；速度5报告保留default off／35不采用／未来2748重基边界。所有精确来源与测试见[第九有限归档](research/sdk35-zero-hop-and-capture-close/README.md)，无视频、Driver、SAVE正文读取或复制。
+
+提交前Root另交实际Native22零跳和clock一天成功原22，raw53483040→53483064／tick1／paused／overshoot0；地图＋overlay首帧和watchdog均已实际准入。旧55b随后因stationary phase遗漏拒绝结算，FULL21失败、同SDK纯分类修复中；不把物理一天推进写成新窗口31已开启或主流程已恢复，也不重发原时钟。

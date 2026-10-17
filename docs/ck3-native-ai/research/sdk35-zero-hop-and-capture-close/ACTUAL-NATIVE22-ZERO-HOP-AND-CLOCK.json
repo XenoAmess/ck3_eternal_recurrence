@@ -1,0 +1,119 @@
+{
+  "schema": "xar.Native22.actual-zero-hop-clock-projection.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "original_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0022-1-result.json",
+    "sha256": "d99b4c4750cd3791ab2e63c09105933483092c4912618945df1b6c75808431df"
+  },
+  "is_error": false,
+  "status": "executed",
+  "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2604-h-1-369099275",
+  "phase": "native_war_stationary_contact_horizon_progress",
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:1",
+    "revision": 2,
+    "native_revision": 1,
+    "date_raw": 53483040,
+    "actor_character_id": 39979,
+    "episode_run_id": "native-39979-5ee2d59fcb51",
+    "connection_generation": 1,
+    "bridge_pid": 263980
+  },
+  "contact_horizon": {
+    "status": "available",
+    "date_raw": 53483040,
+    "snapshot_revision": 1,
+    "subject_army_id": 1023410456,
+    "target_province_id": 2604,
+    "hostile_army_ids": [
+      369099275
+    ],
+    "subject_route": {
+      "timeline_observable": true,
+      "army_id": 1023410456,
+      "current_province_id": 2604,
+      "effective_origin_province_id": 2604,
+      "route_province_ids": [],
+      "arrival_date_raws": []
+    },
+    "hostile_routes": [
+      {
+        "timeline_observable": true,
+        "army_id": 369099275,
+        "current_province_id": 2605,
+        "effective_origin_province_id": 2604,
+        "route_province_ids": [
+          2604
+        ],
+        "arrival_date_raws": [
+          53483280
+        ]
+      }
+    ],
+    "horizon_start_date_raw": 53483040,
+    "horizon_end_date_raw": 53483064,
+    "one_day_contact_free": true,
+    "conflicts": []
+  },
+  "clock_and_observation": {
+    "starting_date_raw": 53483040,
+    "ending_date_raw": 53483064,
+    "elapsed_days": 1,
+    "paused": true,
+    "exact_day_native_clock": {
+      "armed": {
+        "state": "armed",
+        "generation": 1,
+        "starting_date_raw": 53483040,
+        "target_date_raw": 53483064,
+        "last_observed_date_raw": 53483040,
+        "trigger_date_raw": 0,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "stopped": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53483040,
+        "target_date_raw": 53483064,
+        "last_observed_date_raw": 53483064,
+        "trigger_date_raw": 53483064,
+        "speed": 3,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    },
+    "active_event": null,
+    "event_resolution": "none",
+    "final_screen": "map_hud"
+  },
+  "queue_consumer_at_first_attempt": "55b rejected stationary phase; original clock must not be replayed",
+  "continuous_window31_admitted_claimed": false
+}

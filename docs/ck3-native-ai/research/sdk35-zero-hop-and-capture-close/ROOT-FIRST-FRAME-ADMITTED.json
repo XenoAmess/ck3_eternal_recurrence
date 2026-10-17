@@ -1,0 +1,41 @@
+{
+  "schema": "root.native22.first-frame-pixel-admission/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "GREEN",
+  "reviewer": "/root",
+  "at_utc": "2026-10-17T02:55:05.011743+00:00",
+  "game_pid": 263980,
+  "game_creation_date": "20261017023601.215983+000",
+  "game_creation_filetime": 134366781612159835,
+  "recorder_session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+  "recording_job_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7",
+  "desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+  "scene": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-NATIVE22-SCENE-REVIEW01.png",
+    "sha256": "c0cb5fe4732bdb3179b8f1f7db49809e918dc49d4cba9be4efcd126ee9606f54",
+    "size": [
+      1280,
+      720
+    ]
+  },
+  "before_selection_game_pixels_reviewed": true,
+  "before_selection_decision_pixels_reviewed": true,
+  "legacy_field_semantics": "restored saved campaign before first SDK request; no frontend selection performed",
+  "actual_map_visible_reviewed": true,
+  "actual_decision_overlay_visible_reviewed": true,
+  "Game_map_visible": true,
+  "decision_overlay_visible": true,
+  "desktop2_capture_or_input": false,
+  "camera_gameplay_gate_required": false,
+  "actual_visible_calendar": "1105-05-16",
+  "actual_visible_pause_label": true,
+  "recording_active_growth_proof": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-NATIVE22-RECORDING-VERIFIED.json",
+    "sha256": "40f6deca4ee6b752132c8e7a14b4bc522f74475c1870f7f5be9c139d4038afb2"
+  },
+  "original_failed_recording_session_preserved": "cff9df38-fc46-4531-8e8d-8b10cb3fa100",
+  "new_Game_restart_for_recording_dependency": false,
+  "new_overlay_restart_for_recording_dependency": false,
+  "MCP_or_gameplay_calls_performed_for_pixel_review": 0,
+  "30year_goal_complete": false
+}

@@ -695,6 +695,27 @@ RouteContactHorizonStatus BuildSubjectRouteTimeline(
     return RouteContactHorizonStatus::target_province_not_found;
   }
 
+  // A stationary current-province query observes the stored native MovePath;
+  // it is not a request to move the unit to its own province.  MoveMode and
+  // ResolveRouteOrigin can reject such a hypothetical self-move even though
+  // the actual CUnit is stationary.  Both the published empty route and the
+  // live CUnit path header must agree before publishing a zero-edge timeline.
+  // The caller still checks the complete hostile scope, contact intervals,
+  // paused clock and two independent samples.
+  if (request.target_province_id == selected->current_province_id &&
+      selected->route_read_status == game::ArmyRouteReadStatus::complete_empty &&
+      selected->route_source_count == 0 &&
+      selected->route_province_ids.empty() &&
+      !selected->move_target_observable &&
+      selected->move_target_province_id == -1 &&
+      selected->army_state == "regular" &&
+      !selected->in_combat && !selected->retreating) {
+    return BuildActiveRouteTimeline(bindings, game_state, snapshot.date_raw,
+                                    *selected, output)
+               ? RouteContactHorizonStatus::available
+               : RouteContactHorizonStatus::timeline_unavailable;
+  }
+
   // Re-querying the already committed target must project the exact stored
   // active MovePath.  Re-running A* could produce a different equal-cost tail
   // and would no longer prove the route the simulation is actually following.

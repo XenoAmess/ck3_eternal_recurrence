@@ -549,5 +549,37 @@
     "Game_OBS_restarted": false,
     "Native22_deployed_claimed": false,
     "machine_id": "xenoamess-full-tower-eb9d2c1186"
+  },
+  "eighth_public_ci": {
+    "commit": "41846f4955391be89a719432a4010ed73d199b54",
+    "official_run": 38994392765,
+    "linear_run": 38994392772,
+    "conclusion": "success"
+  },
+  "sdk35_zero_hop_capture_and_modal": {
+    "public_archive": "docs/ck3-native-ai/research/sdk35-zero-hop-and-capture-close/SOURCE-PINS.json",
+    "Native_source_hunk_added_lines": 21,
+    "public_late_movement_cutoff_preserved": true,
+    "public_Native_MSVC_compile_and_run": "GREEN",
+    "Native22_DLL": "db399c0edd9634829e6734a4b3937a061dbbd4b707ea2c0e5f3f5ae957e7860f",
+    "actual_0hop_and_clock_proof_sha256": "53c015ffb64ade67f7814ce00c70dd0b94f155719fa4d0f2f28b034f399e6ff9",
+    "actual_clock_raw_delta": 24,
+    "actual_paused_SEM_METRICS": [
+      23,
+      24
+    ],
+    "first_queue_consumer_stationary_phase": "rejected; same-SDK repair pending, no clock replay",
+    "continuous_window31_admitted_claimed": false,
+    "recording_public_tests": 72,
+    "recording_public_subtests": 42,
+    "modal_and_prior_popup_tests": 21,
+    "modal_and_prior_popup_subtests": 52,
+    "public_Defender_new_test_EXE_registration": "admin_required_for_verified_readback/no Add",
+    "video_finalization_live_close_verified": false,
+    "old_Game_forced_exit1_preserved": true,
+    "closed_probe_to_inline_completed_seconds": 218.234463,
+    "interval_is_pure_SHA_CPU_time": false,
+    "WAL_clock5_adopted_in_SDK35": false,
+    "runtime_source_replaced_by_publication": false
   }
 }

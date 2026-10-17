@@ -1,0 +1,33 @@
+--- a/2748-canonical.py
++++ b/modal-candidate.py
+@@ -876,6 +876,8 @@
+         "existing_typed_material_verified": False, "business_success_inferred": False, "replay_allowed": False}
+ 
+ def classify_active_battle_epoch_v1(body, *, initial_frame=None, game_pid=None):
++    modal=classify_modal35(body,initial_frame,game_pid,classify_gameplay_start_binding_v1,"active_battle")
++    if modal is not None:return modal
+     if not isinstance(body, dict):
+         return None
+     plan = body.get("plan") if isinstance(body.get("plan"), dict) else {}
+@@ -1001,6 +1003,8 @@
+             "business_success_inferred": False, "replay_allowed": False}
+ 
+ def classify_committed_contact_advance_v1(body, *, initial_frame=None, game_pid=None):
++    modal=classify_modal35(body,initial_frame,game_pid,classify_gameplay_start_binding_v1,"committed_route")
++    if modal is not None:return modal
+     from xar_autoplayer.bridge.native_driver import _validate_tactical_daily_sentinel_stop
+     from xar_autoplayer.bridge.war_contract import parse_committed_route_sentinel_advance_speed, parse_committed_route_sentinel_advance_step
+     if not isinstance(body, dict):
+@@ -3902,3 +3906,12 @@
+     deferred=classify_war_results_first_read_state_changed_v1(body,initial_frame=initial_frame,game_pid=game_pid)
+     if deferred is not None:return deferred,state,pending_focus
+     return classify_before_war_results_first_failure_v1(body,state=state,pending_focus=pending_focus,initial_frame=initial_frame,game_pid=game_pid)
++
++MODAL35_SHA="7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f"
++def classify_modal35(b,i,p,f,s):
++    r=b.get("result") if isinstance(b,dict) else None
++    if not isinstance(r,dict) or r.get("stop_kind")!="player_decision" or r.get("sentinel_scope")!=s:return None
++    h=Path(classify_modal35.__code__.co_filename).with_name("root_battle_route_modal_classifier_v1.py");r=h.read_bytes()
++    if hashlib.sha256(r).hexdigest()!=MODAL35_SHA:raise ValueError("modal35 helper changed")
++    n={};exec(compile(r,str(h),"exec"),n)
++    return n["classify"](b,i,p,f,s)

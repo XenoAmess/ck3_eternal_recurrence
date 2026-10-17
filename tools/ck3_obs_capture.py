@@ -357,7 +357,13 @@ def launch_recording(profile_path, recording_root, pid, hwnd, seconds, *,
         worker = subprocess.Popen(argv,
             stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
             creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
+    ProcessGeneration, _, _, _ = _generation_helpers()
+    with ProcessGeneration(worker.pid, Path(sys.executable)) as actual_worker:
+        actual_worker.check()
+        worker_birth = actual_worker.creation_filetime
+        worker_executable = str(actual_worker.executable)
     return {"schema": SCHEMA, "session_id": session, "worker_pid": worker.pid,
+            "worker_creation_filetime": worker_birth, "worker_executable": worker_executable,
             "receipt_root": str(root), "state": "requested", "runtime_qualified": False}
 
 
@@ -707,6 +713,109 @@ def _stop_owned(engine):
     return output
 
 
+def _publish_closed_receipt(path, value):
+    path = Path(path)
+    pending = path.with_name(path.name + "." + uuid.uuid4().hex + ".pending")
+    try:
+        _write_new(pending, value)
+        if path.exists():
+            raise FileExistsError(path)
+        pending.rename(path)  # On the required Windows runtime this refuses an existing target.
+    finally:
+        try:
+            pending.unlink()
+        except FileNotFoundError:
+            pass
+
+
+def _lower_media_finalizer_priority():
+    """Change only this capture worker after all capture custody has closed."""
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.GetCurrentProcess.restype = ctypes.c_void_p
+    kernel.GetPriorityClass.argtypes = [ctypes.c_void_p]
+    kernel.GetPriorityClass.restype = ctypes.c_ulong
+    kernel.SetPriorityClass.argtypes = [ctypes.c_void_p, ctypes.c_ulong]
+    kernel.SetPriorityClass.restype = ctypes.c_int
+    handle = kernel.GetCurrentProcess()
+    before = kernel.GetPriorityClass(handle)
+    applied = bool(kernel.SetPriorityClass(handle, 0x4000))
+    after = kernel.GetPriorityClass(handle)
+    return {"scope": "current_post_capture_worker_only", "requested": 0x4000,
+            "before": before, "after": after, "applied": applied and after == 0x4000}
+
+
+def _finalize_closed_media(root, completed_payload):
+    """Background finalization preserves the existing full-file SHA receipt."""
+    try:
+        try:
+            priority = _lower_media_finalizer_priority()
+        except Exception as error:
+            priority = {"scope": "current_post_capture_worker_only", "applied": False,
+                        "error": str(error)[:2048]}
+        _write_new(root / "media-finalization-started.json", {
+            "at_utc": datetime.now(timezone.utc).isoformat(), "priority": priority,
+            "capture_resources_already_closed": True})
+        output = Path(completed_payload["path"])
+        before = output.stat()
+        if before.st_size != completed_payload["bytes"]:
+            raise RuntimeError("closed media size changed before final hashing")
+        digest = _sha(output)
+        after = output.stat()
+        if after.st_size != before.st_size or after.st_mtime_ns != before.st_mtime_ns:
+            raise RuntimeError("closed media changed during final hashing")
+        _publish_closed_receipt(root / "completed.json", {**completed_payload, "sha256": digest,
+            "media_finalization": {"mode": "background_thread_after_capture_close",
+                "priority": priority, "completed_at_utc": datetime.now(timezone.utc).isoformat()}})
+    except Exception as error:
+        # Capture cleanup remains authoritative.  Missing full-file integrity is
+        # a separate RED artifact, never a fabricated completed/failed capture.
+        _publish_closed_receipt(root / "media-finalization-failed.json", {
+            "at_utc": datetime.now(timezone.utc).isoformat(),
+            "path": completed_payload.get("path"), "error": str(error)[:2048],
+            "capture_resources_already_closed": True, "completed_sha256_claimed": False})
+
+
+def _publish_capture_closed_and_finalize(root, job, completed_payload, cleanup):
+    close = cleanup.get("engine_close") or {}
+    if (cleanup.get("inputs_unbound") is not True
+            or close.get("actual_exit_code") != 0 or close.get("normal_exit_proven") is not True
+            or close.get("forced_process_calls") != 0
+            or any(cleanup.get(key) for key in ("stop_error", "unbind_error", "close_error", "disk_read_error"))):
+        raise RuntimeError("capture_closed requires actual normal owned OBS cleanup")
+    root = Path(root)
+    output = Path(completed_payload["path"]).resolve()
+    if (root.name != job["session_id"]
+            or output != (Path(job["recording_root"]) / (job["session_id"] + ".mkv")).resolve()
+            or output.stat().st_size != completed_payload["bytes"]):
+        raise RuntimeError("capture_closed output differs from the immutable job")
+    obs = _read(root / "obs-launch.json")
+    if type(obs.get("pid")) is not int or obs["pid"] <= 0 or type(obs.get("creation_filetime")) is not int or obs["creation_filetime"] <= 0:
+        raise RuntimeError("capture_closed requires the original owned OBS generation")
+    started = _read(root / "started.json")
+    game_birth = started.get("game_creation_filetime")
+    if (started.get("game_pid") != job["pid"] or type(game_birth) is not int or game_birth <= 0
+            or job.get("game_creation_filetime") is not None
+            and job["game_creation_filetime"] != game_birth):
+        raise RuntimeError("capture_closed requires the actual captured Game generation")
+    capture_closed = {"schema": "xar.ck3.capture-closed-before-media-hash/v1",
+        "at_utc": datetime.now(timezone.utc).isoformat(), "session_id": job["session_id"],
+        "game_pid": job["pid"], "game_creation_filetime": game_birth,
+        "obs_pid": obs["pid"], "obs_creation_filetime": obs["creation_filetime"],
+        "output_path": str(output), "output_bytes": completed_payload["bytes"],
+        "closed_file_probe": {"path": str(root / "closed-file-probe.json"), "sha256": _sha(root / "closed-file-probe.json")},
+        "cleanup": {"path": str(root / "cleanup.json"), "sha256": _sha(root / "cleanup.json")},
+        "inputs_unbound": True, "engine_close": close,
+        "media_sha256_pending": True, "final_completed_path": str(root / "completed.json"),
+        "postprocessing_worker_pid": __import__("os").getpid(),
+        "capture_custody_released_before_publication": True}
+    _publish_closed_receipt(root / "capture_closed.json", capture_closed)
+    # The caller and Root may proceed after capture_closed.  This non-daemon
+    # thread keeps only the closed file finalizer alive until its SHA is saved.
+    finalizer = threading.Thread(target=_finalize_closed_media,
+        args=(root, completed_payload), name="owned-closed-media-sha256", daemon=False)
+    finalizer.start()
+
+
 def run_worker(path):
     job = _read(path)
     validate_job(job)
@@ -733,6 +842,7 @@ def run_worker(path):
     configured = False
     watch = None
     cleanup, frames, samples = {}, [], []
+    completed_payload = None
     sample_summary = {}
     initial_files = {str(p.resolve()) for p in Path(job["recording_root"]).iterdir() if p.is_file()}
     if job.get("start_signal") is not None:
@@ -969,8 +1079,8 @@ def run_worker(path):
                         or _job_bytes(job)[1] + 1024**2 >= job["max_output_bytes"]))):
                 raise RuntimeError("closed probe violates bitrate/byte allocation")
             _write_new(root / "closed-file-probe.json", observed)
-            _write_new(root / "completed.json", {"state": "completed", "path": str(output),
-                "bytes": output.stat().st_size, "sha256": _sha(output), "peak_logical_bytes": peak,
+            completed_payload = {"state": "completed", "path": str(output),
+                "bytes": output.stat().st_size, "peak_logical_bytes": peak,
                 "frame_receipts": frames, "file_growth_samples": samples,
                 "file_growth_summary": sample_summary, "continuous": continuous,
                 "stop_reason": watch.reason, "duration_seconds": job["duration_seconds"],
@@ -979,7 +1089,7 @@ def run_worker(path):
                 "closed_average_total_bitrate_limit": 5_000_000, "actual_closed_average_bitrate": bitrate,
                 "instantaneous_bitrate_hard_cap_qualified": False,
                 "hidden_Game_freshness_qualified": False, "decision_business_success_inferred": False,
-                "ended_at_utc": datetime.now(timezone.utc).isoformat()})
+                "ended_at_utc": datetime.now(timezone.utc).isoformat()}
         except Exception as error:
             primary = error
             _write_new(root / "failed.json", {"state": "failed", "error": str(error),
@@ -1039,6 +1149,24 @@ def run_worker(path):
         raise primary
     if cleanup.get("stop_error") or cleanup.get("unbind_error") or cleanup.get("close_error") or cleanup.get("disk_read_error") or (not continuous and not cleanup.get("within_byte_allocation")) or cleanup.get("engine_close", {}).get("actual_exit_code") != 0:
         raise RuntimeError("recording complete but dedicated OBS cleanup is not GREEN")
+
+    if completed_payload is None:
+        raise RuntimeError("normal capture closed without a final media payload")
+    _publish_capture_closed_and_finalize(root, job, completed_payload, cleanup)
+
+
+def read_capture_closed_receipt(receipt_root, *, session_id, game_pid,
+                                game_creation_filetime, recording_worker_pid, recording_root):
+    """Read only the admitted capture closure; final media SHA stays separate."""
+    if __package__:
+        from .ck3_capture_closed_receipt import validate_capture_closed_receipt
+    else:
+        from ck3_capture_closed_receipt import validate_capture_closed_receipt
+    return validate_capture_closed_receipt(
+        receipt_root, session_id=session_id, game_pid=game_pid,
+        game_creation_filetime=game_creation_filetime,
+        recording_worker_pid=recording_worker_pid, recording_root=recording_root,
+    )
 
 
 def stop_session_recording(receipt_root):

@@ -1,0 +1,47 @@
+{
+  "schema": "xar.p35.modal-consumer.wire-revision-test/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "PASS_SOURCE_ONLY",
+  "starting_public_revision": 3,
+  "starting_native_revision": 11,
+  "native_IO_rejects_wrong_positive_expected_revision": true,
+  "actual_wires": [
+    {
+      "step": "set-speed-3",
+      "wire_expected_revision": 11,
+      "native_revision": 11
+    },
+    {
+      "step": "research-arm-tactical-daily-sentinel-v1-53400000-to-53400096-speed-3-mode-decision-a-1-501",
+      "wire_expected_revision": 12,
+      "native_revision": 12
+    },
+    {
+      "step": "resume-map",
+      "wire_expected_revision": 12,
+      "native_revision": 12
+    },
+    {
+      "step": "pause-map",
+      "wire_expected_revision": 13,
+      "native_revision": 13
+    },
+    {
+      "step": "research-query-tactical-daily-sentinel-v1",
+      "wire_expected_revision": 14,
+      "native_revision": 14
+    },
+    {
+      "step": "research-cancel-tactical-daily-sentinel-v1-generation-42",
+      "wire_expected_revision": 14,
+      "native_revision": 14
+    },
+    {
+      "step": "research-query-tactical-daily-sentinel-v1",
+      "wire_expected_revision": 14,
+      "native_revision": 14
+    }
+  ],
+  "zero_revision_internal_primitives_retained": true,
+  "Game_or_runtime_calls": 0
+}

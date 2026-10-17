@@ -1,0 +1,132 @@
+{
+  "schema": "xar.p35.modal-consumer.delivery/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:39:04.532003+00:00",
+  "status": "SOURCE_FIXTURE_GREEN_NOT_INSTALLED",
+  "owner": "/root/declarable_query_performance",
+  "handoff": "/root/fresh_harness_review",
+  "old_canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\root_p34_route_exactday_popup_result_classifier.py",
+    "bytes": 261198,
+    "sha256": "2748a29bde90221a8d2a7851df1e7c011611bc4ad4a0845df88639dde8664f87"
+  },
+  "new_canonical": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\root_p35_modal_result_classifier.py",
+    "bytes": 262062,
+    "sha256": "55b11845238f800b3ce66eb8962e7e647dea7af55f3688cbd9b64274328efb3a"
+  },
+  "new_shared_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\root_battle_route_modal_classifier_v1.py",
+    "bytes": 16268,
+    "sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f"
+  },
+  "helper_literal_sha256_verified": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f",
+  "changed_existing_functions": [
+    "classify_active_battle_epoch_v1",
+    "classify_committed_contact_advance_v1"
+  ],
+  "unchanged_scope": [
+    "2748 exactday repair",
+    "hold-v2",
+    "route-contact-window",
+    "nonmodal original consumers"
+  ],
+  "test_results": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\PRODUCTION-QUEUE-TESTS.json",
+      "bytes": 19392,
+      "sha256": "0bc20d0f196f3b86afbd17f9a8209c8850d6c264a8de401c55de0777e10d7237"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\NONMODAL-DISPATCH-TEST.json",
+      "bytes": 547,
+      "sha256": "de677d57805ae40e6d92435a27edb3ef8af2c9501ee8055f69271d0a6ac0a95e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\WIRE-REVISION-TEST.json",
+      "bytes": 1351,
+      "sha256": "4f7299da651559b13624d276b2f8ba4f0ff382dcd943dd4070fdd58b40267fd7"
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\classifier.patch",
+      "bytes": 2083,
+      "sha256": "cb96e423fc2d34f6e581b6032b3b78a18aeb18ab03c228898a2d78e54c4a2a4e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\NONMODAL-DISPATCH-TEST.json",
+      "bytes": 547,
+      "sha256": "de677d57805ae40e6d92435a27edb3ef8af2c9501ee8055f69271d0a6ac0a95e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\PRODUCTION-QUEUE-TESTS.json",
+      "bytes": 19392,
+      "sha256": "0bc20d0f196f3b86afbd17f9a8209c8850d6c264a8de401c55de0777e10d7237"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\REPORT.md",
+      "bytes": 6880,
+      "sha256": "dab9341c431c5129a597c4dfbe7758ccf5126e5274099d0054304e680c601ad4"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\root_battle_route_modal_classifier_v1.py",
+      "bytes": 16268,
+      "sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\root_p35_modal_result_classifier.py",
+      "bytes": 262062,
+      "sha256": "55b11845238f800b3ce66eb8962e7e647dea7af55f3688cbd9b64274328efb3a"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\SOURCE-BINDING.json",
+      "bytes": 2312,
+      "sha256": "72efe13eb301866b5d24387c5616c98007c854eb62c5c5f8d99434d9d7670c57"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\STORAGE-PREP.json",
+      "bytes": 1004,
+      "sha256": "38ba3408b7ab600096f6170e9fac3d14d338cb952222269bf54950e1e047311c"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\test_nonmodal_dispatch.py",
+      "bytes": 3200,
+      "sha256": "8538898efc69d0768cd42d984ba178a16d7806890fe4bd937a94a96db30a177e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\test_producer_formal_queue.py",
+      "bytes": 20075,
+      "sha256": "39fc90beb9a39210f10b1777513c48a2b4763295733ea262bd8a6a6423ca5e3e"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\test_wire_revision.py",
+      "bytes": 2186,
+      "sha256": "c50bdc971fe8fecb7c9100536c54c3f0fb34486443fbe8f46764f22bf35b751d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\WIRE-REVISION-TEST.json",
+      "bytes": 1351,
+      "sha256": "4f7299da651559b13624d276b2f8ba4f0ff382dcd943dd4070fdd58b40267fd7"
+    }
+  ],
+  "actual_logical_bytes_before_delivery": 337360,
+  "authorized_peak_bytes": 16777216,
+  "current_parent_storage": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+    "bytes": 2650,
+    "sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09"
+  },
+  "disk": {
+    "total": 14000483987456,
+    "used": 12952517296128,
+    "free": 1047966691328
+  },
+  "protection_until_utc": "2026-10-24T02:39:04.532003+00:00",
+  "protection_reason": "Root authorized source candidate pending normal future adoption; exact current frozen inputs and test evidence retained",
+  "derived_review_at_utc": "2026-10-19T02:39:04.532003+00:00",
+  "auto_renew": false,
+  "Game_MCP_OBS_SAVE_or_live_Driver_operations": 0,
+  "W_SDK_R3_R4_or_index_writes": 0,
+  "current35_installation": "not_authorized_by_this_delivery; fresh retains2748 untilRootdecision"
+}

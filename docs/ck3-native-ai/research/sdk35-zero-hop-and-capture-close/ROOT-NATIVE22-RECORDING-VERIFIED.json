@@ -1,0 +1,48 @@
+{
+  "status": "NEW_RECORDING_GROWTH_OBSERVED_ROOT_MAP_OVERLAY_REVIEW_PENDING",
+  "at_utc": "2026-10-17T02:52:19.281241+00:00",
+  "recorder_session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+  "recording_creator_sdk_prefix": "p35",
+  "actual_retained_identities": [
+    {
+      "role": "new_Game",
+      "pid": 263980,
+      "creation_filetime": 134366781612159835,
+      "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+    },
+    {
+      "role": "new_overlay",
+      "pid": 227236,
+      "creation_filetime": 134366783082037774,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+    },
+    {
+      "role": "new_owned_OBS",
+      "pid": 56104,
+      "creation_filetime": 134366789809194788,
+      "executable": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\bin\\64bit\\obs64.exe"
+    }
+  ],
+  "actual_game_hwnd": 157025262,
+  "actual_overlay_hwnd": 955188742,
+  "declared_desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+  "recording_job_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7",
+  "job_sha256": "ad8dd192f043e2ffb3e22d907e972262567074f66bc2259a7087ef26be7268fb",
+  "recording_request_sha256": "4c1d3811e24935dddc70b8109e030ecfb1828ac985048ce307738e672174cae6",
+  "started_sha256": "f91102da810289e0218ae94514a3d554de1ccc64a115cc7e09368260ca1adafd",
+  "profile_sha256": "6ecae01eef95a2a1a11e3e0d930be5299ab3ad02c7b8245686c88a43f37033ee",
+  "video_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7.mkv",
+  "video_bytes_before": 80150528,
+  "video_bytes_after": 85372928,
+  "video_growth_bytes_in_6_seconds": 5222400,
+  "continuous": true,
+  "duration_seconds": null,
+  "deadline_utc": null,
+  "max_output_bytes": null,
+  "map_or_overlay_pixels_admitted": false,
+  "same_previous_OBS_or_segment_claimed": false,
+  "Game_SDK_MCP_OBS_control_calls": 0,
+  "new_capture_or_desktop_input_calls": 0,
+  "worker_liveness_independently_assessed": false,
+  "live_Driver_reads": 0
+}

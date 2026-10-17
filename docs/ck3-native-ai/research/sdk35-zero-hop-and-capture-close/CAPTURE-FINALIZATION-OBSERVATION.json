@@ -1,0 +1,32 @@
+{
+  "schema": "xar.capture-finalization-small-observation.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_metadata": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\closed-file-probe.json",
+      "sha256": "042fefaf19610e119e8bb48c263b042f94f3bc1b7bfa1071468d42d152b82dbc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\completed.json",
+      "sha256": "466c317891d20a01f11bb2f20fe400ed64f2fafe9445d511650fabded986ca66"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\cleanup.json",
+      "sha256": "e8e57095fe578a1e196d80ea817400d2bdabc4e5689c062b07cc8fde4ad9efe0"
+    }
+  ],
+  "video_bytes_reported_by_completed_metadata": 21225495814,
+  "closed_probe_file_mtime_utc": "2026-10-17T02:13:05.278402+00:00",
+  "completed_ended_at_utc": "2026-10-17T02:16:43.512865+00:00",
+  "probe_to_completed_seconds": 218.234463,
+  "interval_basis": "Retained closed-probe mtime to inline post-SHA ended_at; includes surrounding metadata overhead, not isolated SHA CPU time",
+  "actual_OBS_engine_close": {
+    "requested": true,
+    "actual_exit_code": 0,
+    "normal_exit_proven": true,
+    "forced_process_calls": 0
+  },
+  "old_fixed_shutdown_deadline_RED_retained": true,
+  "old_Game_normal_exit_credit": false,
+  "video_body_read_or_hashed_for_this_report": false
+}

@@ -1,0 +1,14 @@
+{
+  "status": "GREEN",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "test_count": 16,
+  "command": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe -B -X utf8 test_ck3_capture_closed_receipt.py",
+  "actual_tool_result": {
+    "chunk_id": "ac18bd",
+    "wall_time_seconds": 0.6481678,
+    "exit_code": 0,
+    "original_token_count": 624,
+    "output": "test_boolean_exit_ack_does_not_prove_integer_exit_zero (__main__.CaptureClosedReceiptTests.test_boolean_exit_ack_does_not_prove_integer_exit_zero) ... ok\r\ntest_closed_capture_passes_without_completed_or_reading_video_body (__main__.CaptureClosedReceiptTests.test_closed_capture_passes_without_completed_or_reading_video_body) ... ok\r\ntest_final_media_failure_is_separate_from_capture_closure (__main__.CaptureClosedReceiptTests.test_final_media_failure_is_separate_from_capture_closure) ... ok\r\ntest_game_only_nullable_job_birth_uses_actual_started_birth (__main__.CaptureClosedReceiptTests.test_game_only_nullable_job_birth_uses_actual_started_birth) ... ok\r\ntest_independent_game_worker_and_root_admission_mismatches (__main__.CaptureClosedReceiptTests.test_independent_game_worker_and_root_admission_mismatches) ... ok\r\ntest_malformed_file_probe_is_rejected_as_validation_error (__main__.CaptureClosedReceiptTests.test_malformed_file_probe_is_rejected_as_validation_error) ... ok\r\ntest_missing_capture_publication_is_pending_even_with_cleanup (__main__.CaptureClosedReceiptTests.test_missing_capture_publication_is_pending_even_with_cleanup) ... ok\r\ntest_missing_cleanup_publication_is_pending (__main__.CaptureClosedReceiptTests.test_missing_cleanup_publication_is_pending) ... ok\r\ntest_native_capture_and_obs_identities_are_exact (__main__.CaptureClosedReceiptTests.test_native_capture_and_obs_identities_are_exact) ... ok\r\ntest_normal_exit_cannot_be_replaced_by_forced_or_failed_exit (__main__.CaptureClosedReceiptTests.test_normal_exit_cannot_be_replaced_by_forced_or_failed_exit) ... ok\r\ntest_original_job_scope_mismatch_rejects (__main__.CaptureClosedReceiptTests.test_original_job_scope_mismatch_rejects) ... ok\r\ntest_real_capture_failure_cannot_be_ignored (__main__.CaptureClosedReceiptTests.test_real_capture_failure_cannot_be_ignored) ... ok\r\ntest_small_receipt_hash_tamper_rejects (__main__.CaptureClosedReceiptTests.test_small_receipt_hash_tamper_rejects) ... ok\r\ntest_small_receipt_path_escape_rejects_before_read (__main__.CaptureClosedReceiptTests.test_small_receipt_path_escape_rejects_before_read) ... ok\r\ntest_video_size_and_probe_must_agree (__main__.CaptureClosedReceiptTests.test_video_size_and_probe_must_agree) ... ok\r\ntest_wrong_video_path_even_with_same_size_rejects (__main__.CaptureClosedReceiptTests.test_wrong_video_path_even_with_same_size_rejects) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 16 tests in 0.561s\r\n\r\nOK\r\n"
+  },
+  "new_Game_SDK_OBS_MCP_desktop_calls": 0
+}

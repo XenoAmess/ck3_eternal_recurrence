@@ -1,0 +1,48 @@
+{
+  "schema": "root.native21.actual-late-closure/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:22:48.340524+00:00",
+  "Game": {
+    "pid": 6068,
+    "creation_filetime": 134366412679616931,
+    "actual_exit_code": 1,
+    "forced_owned_cleanup": true,
+    "normal_close_qualified": false
+  },
+  "SDK34_dual_normal_exit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-P34-OWNER-CLOSED.json",
+    "sha256": "2a4c7978b383e61e5a4f776dbce3f913c1623d2d1ce89a750618548cf4b2d664"
+  },
+  "supervisor": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-FRESH-SUPERVISOR-CLOSED.json",
+    "sha256": "15d66b729ada2adaece96b48bd93d49167de16fd117602d28cfe9b3101de574b"
+  },
+  "recording_completed": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\completed.json",
+    "sha256": "466c317891d20a01f11bb2f20fe400ed64f2fafe9445d511650fabded986ca66"
+  },
+  "recording_actual_cleanup": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\recordings\\f333b9bb-4ace-48eb-886a-959a1578607d\\cleanup.json",
+    "sha256": "e8e57095fe578a1e196d80ea817400d2bdabc4e5689c062b07cc8fde4ad9efe0"
+  },
+  "recording_worker_reported_media_sha256": "e6a71e45a2fafbafd99f4932fc4816cca364865bf4fde498703a7210d40554c3",
+  "Root_video_body_hash_calls": 0,
+  "owned_OBS_actual_exit_code": 0,
+  "owned_OBS_normal_exit_proven": true,
+  "overlay_owner_actual_exit": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\owner-1ff338fbd25547f9aa5202d1f4e4c512\\owner-ended.json",
+    "sha256": "8639b69a56bc43daa08c00ec7ea7f258b3a711fca174912504482377bb3d6d17"
+  },
+  "original_shutdown_deadline_RED_retained": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-RECORDING-SHUTDOWN.json",
+    "sha256": "8786022026363da7b0f0be0e403cd9f03afa6263e1aea95fa0419199f4cfcf36"
+  },
+  "SAVE628": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\p34-responses\\0628-1-result.json",
+    "sha256": "2ff8465ca7b52760e971aa58c63eead93f757e92b72b45ba54b5d9db9b230f6e"
+  },
+  "source_boundary_no_rollback": true,
+  "continuity_window30_failed_days": 58,
+  "30year_goal_complete": false,
+  "screen_release_expected_sequence": 5982
+}

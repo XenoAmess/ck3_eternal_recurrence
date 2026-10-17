@@ -1,4 +1,6 @@
 ﻿#include "xar_bridge/ck3_12002_routes.hpp"
+#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
+#include <windows.h>
 
 #ifdef NDEBUG
 #undef NDEBUG
@@ -43,11 +45,12 @@ void *g_tail = nullptr;
 std::array<void *, 2> g_path{};
 int g_destroyed = 0;
 int g_path_builds = 0;
+std::int32_t g_move_mode = 0;
 std::int64_t g_duration = 100'000;
 bool g_empty = false;
 bool g_fort_defender = false;
 void *g_changing_clock = nullptr;
-std::int32_t MoveMode(void *, void *, std::int32_t) { return 0; }
+std::int32_t MoveMode(void *, void *, std::int32_t) { return g_move_mode; }
 void *Origin(void *) { return g_origin; }
 void *Constructor(void *p) {
   std::memset(p, 0, 0x130);
@@ -126,7 +129,7 @@ struct Fixture {
   Fixture() {
     g_origin = province[0].data();
     g_path = {info[1].data(), info[2].data()};
-    g_destroyed = g_path_builds = 0;
+    g_destroyed = g_path_builds = 0; g_move_mode = 0;
     g_duration = 100'000; g_empty = false; g_fort_defender = false;
     g_changing_clock = nullptr;
     Put(state, 8, std::int32_t{43'823'104});
@@ -200,6 +203,37 @@ struct Fixture {
     Put(combat[i], 0xD8, combat[i].data()); Put(combat[i], 0x420, combat[i].data());
   }
 };
+struct TypedRouteMailboxProbe {
+  ck3_12002::RouteBindings *bindings = nullptr;
+  game::Snapshot *snapshot = nullptr;
+  game::RouteContactHorizonRequest request{};
+  game::RouteContactHorizonSnapshot result{};
+  game::RouteContactHorizonStatus status =
+      game::RouteContactHorizonStatus::unavailable;
+  ck3_11906::MainThreadQueryMailboxV1 mailbox{};
+  std::uint32_t calls = 0;
+};
+
+bool ExecuteTypedRouteMailboxProbe(
+    void *opaque,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto &probe = *static_cast<TypedRouteMailboxProbe *>(opaque);
+  if (probe.bindings == nullptr || probe.snapshot == nullptr ||
+      !stamp.paused || stamp.thread_id != GetCurrentThreadId() ||
+      stamp.date_raw != probe.snapshot->date_raw ||
+      probe.mailbox.state.load() !=
+          ck3_11906::MainThreadQueryMailboxStateV1::executing ||
+      probe.mailbox.executor.load() != &ExecuteTypedRouteMailboxProbe ||
+      probe.mailbox.executor_context != &probe ||
+      probe.mailbox.owner_thread_id.load() != stamp.thread_id) {
+    return false;
+  }
+  ++probe.calls;
+  probe.status = ck3_12002::ReadRouteContactHorizon(
+      *probe.bindings, *probe.snapshot, probe.request, probe.result);
+  return probe.status == game::RouteContactHorizonStatus::available;
+}
+
 } // namespace
 
 int main() {
@@ -299,5 +333,111 @@ int main() {
   Put(f.unit[0], 0x10, Fixture::subject_id);
   Put(f.jomini, 0x20, std::uint8_t{0}); f.scope.paused = false;
   assert(ReadActualContactScope(f.binding, f.scope, contact_request, contact) == game::ActualContactScopeStatus::requires_paused);
+  // Stationary self-target must read the live CUnit MovePath, not test
+  // whether CK3 accepts a meaningless hypothetical self-move command.
+  {
+    Fixture stationary;
+    auto &own = stationary.scope.player_armies[0];
+    own.route_read_status = game::ArmyRouteReadStatus::complete_empty;
+    own.route_source_count = 0;
+    own.army_state = "regular";
+    own.move_target_observable = false;
+    own.move_target_province_id = -1;
+    const game::RouteContactHorizonRequest zero_hop{
+        Fixture::subject_id, own.current_province_id, {Fixture::enemy_id}};
+    game::RouteContactHorizonSnapshot stationary_route{};
+    g_move_mode = 2;
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::available);
+    assert(stationary_route.subject_route.timeline_observable);
+    assert(stationary_route.subject_route.route_province_ids.empty());
+    assert(stationary_route.subject_route.arrival_date_raws.empty());
+    assert(stationary_route.one_day_contact_free);
+    assert(g_path_builds == 0 && g_destroyed == 0);
+
+    // Exercise the application-main mailbox callback slot into the actual
+    // ck3_12002 provider with the same paused frame and zero-hop request.
+    // bridge.cpp typed_early selects this provider for the reviewed .4 build;
+    // a separate source/link check pins that production dispatch choice.
+    TypedRouteMailboxProbe mailbox_probe{};
+    mailbox_probe.bindings = &stationary.binding;
+    mailbox_probe.snapshot = &stationary.scope;
+    mailbox_probe.request = zero_hop;
+    mailbox_probe.mailbox.state.store(
+        ck3_11906::MainThreadQueryMailboxStateV1::executing);
+    mailbox_probe.mailbox.executor.store(&ExecuteTypedRouteMailboxProbe);
+    mailbox_probe.mailbox.executor_context = &mailbox_probe;
+    mailbox_probe.mailbox.owner_thread_id.store(GetCurrentThreadId());
+    ck3_11906::MainThreadExecutionStampV1 stamp{};
+    stamp.thread_id = GetCurrentThreadId();
+    stamp.date_raw = stationary.scope.date_raw;
+    stamp.paused = true;
+    assert(mailbox_probe.mailbox.executor.load()(
+        mailbox_probe.mailbox.executor_context, stamp));
+    assert(mailbox_probe.calls == 1 &&
+           mailbox_probe.status == game::RouteContactHorizonStatus::available &&
+           mailbox_probe.result.subject_route.timeline_observable &&
+           mailbox_probe.result.subject_route.route_province_ids.empty() &&
+           mailbox_probe.result.one_day_contact_free);
+
+    // Published empty route with a nonempty native path is stale.
+    Put(stationary.unit[0], 0x40, std::int32_t{1});
+    Put(stationary.unit[0], 0x44, std::int32_t{1});
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::timeline_unavailable);
+    Put(stationary.unit[0], 0x40, std::int32_t{0});
+    Put(stationary.unit[0], 0x44, std::int32_t{0});
+
+    // Missing snapshot proof and actual combat may not bypass MoveMode.
+    own.route_read_status = game::ArmyRouteReadStatus::not_attempted;
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::route_unavailable);
+    own.route_read_status = game::ArmyRouteReadStatus::complete_empty;
+    own.in_combat = true;
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::route_unavailable);
+    own.in_combat = false;
+
+    // Existing complete-hostile comparison still detects a same-province
+    // enemy, so an empty subject path is not automatically contact-free.
+    stationary.scope.active_wars[0].enemy_armies[0].current_province_id = 2;
+    Put(stationary.unit[1], 0x20, stationary.province[0].data());
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::available);
+    assert(!stationary_route.one_day_contact_free);
+    assert(std::any_of(stationary_route.conflicts.begin(),
+                       stationary_route.conflicts.end(),
+                       [](const auto &conflict) {
+                         return conflict.kind == "same_province";
+                       }));
+
+    // Exact native hostile arrival after one day is safe only for that tick;
+    // arrival on the horizon boundary is still a conflict.
+    stationary.scope.active_wars[0].enemy_armies[0].current_province_id = 3;
+    stationary.scope.active_wars[0].enemy_armies[0].route_province_ids = {2};
+    Put(stationary.unit[1], 0x20, stationary.province[1].data());
+    std::array<void *, 1> inbound{stationary.info[0].data()};
+    Put(stationary.unit[1], 0x38, inbound.data());
+    Put(stationary.unit[1], 0x40, std::int32_t{1});
+    Put(stationary.unit[1], 0x44, std::int32_t{1});
+    Put(stationary.unit[1], 0x190, std::int64_t{100'000});
+    g_duration = 200'000;
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::available);
+    assert(stationary_route.one_day_contact_free);
+    assert(stationary_route.hostile_routes[0].arrival_date_raws ==
+           std::vector<std::int32_t>{stationary.scope.date_raw + 48});
+    g_duration = 100'000;
+    assert(ReadRouteContactHorizon(stationary.binding, stationary.scope,
+                                   zero_hop, stationary_route) ==
+           game::RouteContactHorizonStatus::available);
+    assert(!stationary_route.one_day_contact_free);
+  }
   std::cout << "ck3_12002_routes fixture PASS: projected timing, contact order, new province ABI, full ID, clock change, paused gate\n";
 }

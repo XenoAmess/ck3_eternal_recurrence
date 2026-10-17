@@ -1,0 +1,21 @@
+{
+  "schema": "xar.sdk35.public-focused-tests.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T03:09:20.822539+00:00",
+  "recording_CI_command": {
+    "tests": 72,
+    "subtests": 42,
+    "status": "GREEN"
+  },
+  "modal_plus_prior_popup_regression": {
+    "tests": 21,
+    "subtests": 52,
+    "status": "GREEN"
+  },
+  "public_Native_compile_test": "actual MSVC /W4 /WX compile/link/run GREEN",
+  "python_only": "GREEN",
+  "Game_MCP_OBS_control_calls": 0,
+  "failed_initial_old_capture_test_fixture": "4 RED: newly required custody/generation facts absent from old fake I/O; source game_only birth separately corrected with real started receipt",
+  "portable_modal_initial_revision_fixture_RED": "preserved external; public2 assumption corrected to actual public3/native11, no Native wire guard relaxed",
+  "scope": "No broad old matrix repeated; current Native, recording and modal consumers only"
+}

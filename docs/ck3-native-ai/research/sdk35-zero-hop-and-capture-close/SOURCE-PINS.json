@@ -1,0 +1,242 @@
+{
+  "schema": "xar.sdk35-publication-source-index.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:59:15.251005+00:00",
+  "public_base_commit": "41846f4955391be89a719432a4010ed73d199b54",
+  "originals": [
+    {
+      "path": "NATIVE22-DELIVERY.original.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final03\\DELIVERY.json",
+      "sha256": "3ad6b672ec8f35e3744bd8d2418b1ef19df3d9331cd35da71a7a7b7f444ce8a4",
+      "bytes": 2614
+    },
+    {
+      "path": "NATIVE22-SOURCE-FREEZE-SUMMARY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\NATIVE22-SOURCE-FREEZE-SUMMARY.json",
+      "sha256": "fefa637cbc226c63c3bfae846853d522960ed33910276696804d2f3b339486ab",
+      "bytes": 2862
+    },
+    {
+      "path": "PUBLIC-NATIVE-ZERO-HOP-VALIDATED.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\PUBLIC-NATIVE-ZERO-HOP-VALIDATED.json",
+      "sha256": "19d2a6c6119a2f2b5fbc649f2ae643eb5eb8c2928b5634afe89d846904cfe1ce",
+      "bytes": 1630
+    },
+    {
+      "path": "PUBLIC-NATIVE-ZERO-HOP.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\PUBLIC-NATIVE-ZERO-HOP.patch",
+      "sha256": "7b8f308b23bfacff866751bb5799d9767f04518bdc42f35b9bc417bafa391ee7",
+      "bytes": 11110
+    },
+    {
+      "path": "PUBLIC-OBS-CAPTURE-CLOSE.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\PUBLIC-OBS-CAPTURE-CLOSE.patch",
+      "sha256": "90de468d181f2dbfbdbb3736621212d380ff6f91aa81e10f08baa7609e8eda1e",
+      "bytes": 10461
+    },
+    {
+      "path": "ROOT-NATIVE21-LATE-CLOSED-BOUNDARY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-ACTUAL-NATIVE21-LATE-CLOSED-BOUNDARY.json",
+      "sha256": "f193c36bec7609ce2c05cf05e31ba62d538734c235beecad976a45d9ffc43b5e",
+      "bytes": 2680
+    },
+    {
+      "path": "ROOT-RECORDING-SHUTDOWN.original.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\ROOT-RECORDING-SHUTDOWN.json",
+      "sha256": "8786022026363da7b0f0be0e403cd9f03afa6263e1aea95fa0419199f4cfcf36",
+      "bytes": 265
+    },
+    {
+      "path": "ROOT-NATIVE22-RECORDING-VERIFIED.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-NATIVE22-RECORDING-VERIFIED.json",
+      "sha256": "40f6deca4ee6b752132c8e7a14b4bc522f74475c1870f7f5be9c139d4038afb2",
+      "bytes": 2232
+    },
+    {
+      "path": "ROUTE-CLOCK-SPEED-REPORT.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\REPORT.json",
+      "sha256": "13c2654fa98e065988df46a478446ef969ec245018ade1f4583de3917bd6da31",
+      "bytes": 9933
+    },
+    {
+      "path": "ROUTE-CLOCK-SPEED-DELIVERY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\DELIVERY.json",
+      "sha256": "a73bddf44426641ca39805a025e0310e8e2005d546bc5db12fa7ce1c78b16254",
+      "bytes": 10908
+    },
+    {
+      "path": "MODAL-DELIVERY.original.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\DELIVERY.json",
+      "sha256": "e5589d408b6cb654fb2681e453fa8ac37790171a8c99bc70df5219359a6be0e9",
+      "bytes": 6662
+    },
+    {
+      "path": "MODAL-RUNTIME-CLASSIFIER.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\classifier.patch",
+      "sha256": "cb96e423fc2d34f6e581b6032b3b78a18aeb18ab03c228898a2d78e54c4a2a4e",
+      "bytes": 2083
+    },
+    {
+      "path": "MODAL-INDEPENDENT-REVIEW.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-classifier-clean-install01\\REVIEW.json",
+      "sha256": "5c5c5f0a2090f4a32378043622ce3e042da53d8f1ae62ae1214ba51fb1a51b23",
+      "bytes": 3619
+    },
+    {
+      "path": "MODAL-FORMAL-QUEUE-TESTS.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\PRODUCTION-QUEUE-TESTS.json",
+      "sha256": "0bc20d0f196f3b86afbd17f9a8209c8850d6c264a8de401c55de0777e10d7237",
+      "bytes": 19392
+    },
+    {
+      "path": "MODAL-NONMODAL-EQUIVALENCE.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\NONMODAL-DISPATCH-TEST.json",
+      "sha256": "de677d57805ae40e6d92435a27edb3ef8af2c9501ee8055f69271d0a6ac0a95e",
+      "bytes": 547
+    },
+    {
+      "path": "MODAL-WIRE-REVISION.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-battle-route-modal-consumer01\\WIRE-REVISION-TEST.json",
+      "sha256": "4f7299da651559b13624d276b2f8ba4f0ff382dcd943dd4070fdd58b40267fd7",
+      "bytes": 1351
+    },
+    {
+      "path": "MODAL-PORTABLE-DELIVERY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-public-portable01\\DELIVERY.json",
+      "sha256": "ab3ae41f367fffd9f6161f95094dfbedac3e4e8b59200f24e8204c421cbfb6e1",
+      "bytes": 2527
+    },
+    {
+      "path": "MODAL-PORTABLE-TESTS.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-modal-public-portable01\\PORTABLE-TESTS-FINAL.json",
+      "sha256": "bd5a41c14195c250bb8d782acb47fca02099f9fd5c4b4102bfd841622516ad8f",
+      "bytes": 5485
+    },
+    {
+      "path": "CAPTURE-CLOSED-CONSUMER-DELIVERY.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\DELIVERY.json",
+      "sha256": "bc7e5b586d0e5d81061db715d6121854bb75cdd348a5fdb667c970695d8a710b",
+      "bytes": 3331
+    },
+    {
+      "path": "CAPTURE-CLOSED-CONSUMER-TESTS.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\TEST-RESULT-FINAL.json",
+      "sha256": "7b21d45d91db638eeafe8c9b2b7f76b4b0aa10efde1d27d39976751168c23ad0",
+      "bytes": 2954
+    },
+    {
+      "path": "R4-CAPTURE-CLOSED-CONSUMER-RESEARCH.patch",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\root_record_shutdown.capture-close.research.patch",
+      "sha256": "22a65b9568ca2cea97b34f226b0dc74eb6b510e4f820cc40e24f2cb5890ad2ed",
+      "bytes": 5351
+    },
+    {
+      "path": "ROOT-FIRST-FRAME-ADMITTED.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-FIRST-FRAME-ADMITTED.json",
+      "sha256": "c473321bf339a47fa4ffcc64261c9857d225e96de8f09f4b5084834044b21826",
+      "bytes": 2055
+    },
+    {
+      "path": "ROOT-WATCHDOG-DEPENDENCIES02-VERIFIED.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-recording-watchdog01\\ROOT-P35-WATCHDOG-DEPENDENCIES02-STARTED-VERIFIED.json",
+      "sha256": "dce5084ba2d1e699bd7283c281df1848830fd5b197b7b5060ba73aee7280972d",
+      "bytes": 16318
+    },
+    {
+      "path": "ROOT-NATIVE22-ZERO-HOP-ACTUAL01.json",
+      "original": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-NATIVE22-ZERO-HOP-ACTUAL01.json",
+      "sha256": "53c015ffb64ade67f7814ce00c70dd0b94f155719fa4d0f2f28b034f399e6ff9",
+      "bytes": 3532
+    }
+  ],
+  "native_DLL_or_full_334_header_manifest_copied": false,
+  "video_Driver_SAVE_body_read_or_copied": false,
+  "current_Native22_DLL_sha256": "db399c0edd9634829e6734a4b3937a061dbbd4b707ea2c0e5f3f5ae957e7860f",
+  "Native22_live_zero_hop_acceptance": {
+    "status": "actual query available/one_day_contact_free; exact clock+24 verified by Native",
+    "AUTO": 22,
+    "queue_consumer": "stationary phase rejected first attempt, hot classifier repair pending",
+    "original_clock_replayed": false,
+    "continuous_window31_admitted": false
+  },
+  "recording_async_finalization_live_close_verified": false,
+  "WAL_and_clock5_deployed_in_SDK35": false,
+  "WAL_report_already_public": "../sdk34-refuge-and-readback/DRIVER-PERSIST-FINDINGS.md",
+  "root_window30_failed_days": 58,
+  "continuous_30_years_or_speed_goals_completed": false,
+  "capture_closed_public_reader": "tools/ck3_capture_closed_receipt.py",
+  "capture_closed_public_wrapper": "tools/ck3_obs_capture.py:read_capture_closed_receipt",
+  "public_shutdown_coordinator_automatically_replaced": false,
+  "modal_public_CUnit_0_supported": true,
+  "first_frame_and_recording_root_review": "Root admitted firstframe c473321bf339a47fa4ffcc64261c9857d225e96de8f09f4b5084834044b21826",
+  "Native22_actual_paused_SEM_METRICS_proof": {
+    "path": "ROOT-NATIVE22-ZERO-HOP-ACTUAL01.json",
+    "sha256": "53c015ffb64ade67f7814ce00c70dd0b94f155719fa4d0f2f28b034f399e6ff9",
+    "actual_frames": [
+      23,
+      24
+    ]
+  },
+  "public_source_and_test_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "sha256": "9b01e602386d5f144c6a06df19ca05c3e88e1b3e22b5e51f1a6fed4c8d6e66ed",
+      "normalized_lf_sha256": "9b01e602386d5f144c6a06df19ca05c3e88e1b3e22b5e51f1a6fed4c8d6e66ed",
+      "bytes": 92949
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes_test.cpp",
+      "sha256": "e5544b5497e71fc68d556aa09f2deec03eadf9dcc61ef98d95eae213acba8efb",
+      "normalized_lf_sha256": "e5544b5497e71fc68d556aa09f2deec03eadf9dcc61ef98d95eae213acba8efb",
+      "bytes": 23867
+    },
+    {
+      "path": "tools/ck3_obs_capture.py",
+      "sha256": "54b6be3d3b937992762d19d84fe02553172600669f109a3a85afa4a2155c4a5c",
+      "normalized_lf_sha256": "54b6be3d3b937992762d19d84fe02553172600669f109a3a85afa4a2155c4a5c",
+      "bytes": 64967
+    },
+    {
+      "path": "tools/ck3_capture_closed_receipt.py",
+      "sha256": "bf5552199a53bea1909fb8271873740b47b06e04f6856998005296b83b495151",
+      "normalized_lf_sha256": "bf5552199a53bea1909fb8271873740b47b06e04f6856998005296b83b495151",
+      "bytes": 8175
+    },
+    {
+      "path": "tools/root_battle_route_modal_classifier_v1.py",
+      "sha256": "df06e17a55b49d71cbdc6a83e3d831557c1b5fada51524a4bd581cbdfae4307e",
+      "normalized_lf_sha256": "df06e17a55b49d71cbdc6a83e3d831557c1b5fada51524a4bd581cbdfae4307e",
+      "bytes": 16304
+    },
+    {
+      "path": "tools/test_ck3_obs_capture.py",
+      "sha256": "06b87a30469bfdd72c06b00e8d3f9cf95578f4f64f7c6541264f9891c5017ab4",
+      "normalized_lf_sha256": "06b87a30469bfdd72c06b00e8d3f9cf95578f4f64f7c6541264f9891c5017ab4",
+      "bytes": 52344
+    },
+    {
+      "path": "tools/test_ck3_obs_capture_finalize.py",
+      "sha256": "4b5a2cefbca22d3e90210ff41982a13820a3c2e4ac133a3a5960458af044268f",
+      "normalized_lf_sha256": "4b5a2cefbca22d3e90210ff41982a13820a3c2e4ac133a3a5960458af044268f",
+      "bytes": 8791
+    },
+    {
+      "path": "tools/test_ck3_capture_closed_receipt.py",
+      "sha256": "6c6e6279374bced42bbdca745a6e4ef8b9c943bf7baac5d7d82e478df82dbcc5",
+      "normalized_lf_sha256": "6c6e6279374bced42bbdca745a6e4ef8b9c943bf7baac5d7d82e478df82dbcc5",
+      "bytes": 8949
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/battle_route_modal_producer_fixture.py",
+      "sha256": "d95f1569e3506bc3656ac0811858c09fd1a222530c36979990eb6b2a2193f467",
+      "normalized_lf_sha256": "d95f1569e3506bc3656ac0811858c09fd1a222530c36979990eb6b2a2193f467",
+      "bytes": 11861
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_battle_route_modal_classifier_v1.py",
+      "sha256": "b46ace53e1fb529c14b1bd82640b53d633818cd086944fd7cbaba54beaa10670",
+      "normalized_lf_sha256": "b46ace53e1fb529c14b1bd82640b53d633818cd086944fd7cbaba54beaa10670",
+      "bytes": 9096
+    }
+  ]
+}

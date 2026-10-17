@@ -1,0 +1,120 @@
+{
+  "schema": "xar.modal-consumer.portable-producer-test/v1",
+  "at_utc": "2026-10-17T02:58:48.623267+00:00",
+  "status": "SOURCE_FIXTURE_GREEN_NOT_LIVE",
+  "cases": [
+    {
+      "case": "active_battle:active_event:idle",
+      "startup_field_count": 6,
+      "current_public_native": [
+        3,
+        11
+      ],
+      "category": "active_battle_player_decision_interrupted_observed",
+      "actual_elapsed_days": 1,
+      "business_or_UI_credit": false,
+      "replay_allowed": false
+    },
+    {
+      "case": "active_battle:pending_character_interaction:triggered",
+      "startup_field_count": 6,
+      "current_public_native": [
+        3,
+        11
+      ],
+      "category": "active_battle_player_decision_interrupted_observed",
+      "actual_elapsed_days": 1,
+      "business_or_UI_credit": false,
+      "replay_allowed": false
+    },
+    {
+      "case": "committed_route:active_event:idle",
+      "startup_field_count": 6,
+      "current_public_native": [
+        3,
+        11
+      ],
+      "category": "committed_route_player_decision_interrupted_observed",
+      "actual_elapsed_days": 1,
+      "business_or_UI_credit": false,
+      "replay_allowed": false
+    },
+    {
+      "case": "committed_route:pending_character_interaction:triggered",
+      "startup_field_count": 6,
+      "current_public_native": [
+        3,
+        11
+      ],
+      "category": "committed_route_player_decision_interrupted_observed",
+      "actual_elapsed_days": 1,
+      "business_or_UI_credit": false,
+      "replay_allowed": false
+    }
+  ],
+  "negative_checks": [
+    "active_battle:active_event:idle:wrong_game",
+    "active_battle:active_event:idle:public_native_swap",
+    "active_battle:active_event:idle:wrong_boundary",
+    "active_battle:active_event:idle:unpaused",
+    "active_battle:active_event:idle:failed_postcondition",
+    "active_battle:active_event:idle:unknown_modal",
+    "active_battle:active_event:idle:UI_action",
+    "active_battle:active_event:idle:wrong_generation",
+    "active_battle:active_event:idle:bad_tick",
+    "active_battle:active_event:idle:war_scope",
+    "active_battle:active_event:idle:cancel_missing",
+    "active_battle:pending_character_interaction:triggered:wrong_game",
+    "active_battle:pending_character_interaction:triggered:public_native_swap",
+    "active_battle:pending_character_interaction:triggered:wrong_boundary",
+    "active_battle:pending_character_interaction:triggered:unpaused",
+    "active_battle:pending_character_interaction:triggered:failed_postcondition",
+    "active_battle:pending_character_interaction:triggered:unknown_modal",
+    "active_battle:pending_character_interaction:triggered:UI_action",
+    "active_battle:pending_character_interaction:triggered:wrong_generation",
+    "active_battle:pending_character_interaction:triggered:bad_tick",
+    "active_battle:pending_character_interaction:triggered:war_scope",
+    "active_battle:pending_character_interaction:triggered:triggered_canceled",
+    "committed_route:active_event:idle:wrong_game",
+    "committed_route:active_event:idle:public_native_swap",
+    "committed_route:active_event:idle:wrong_boundary",
+    "committed_route:active_event:idle:unpaused",
+    "committed_route:active_event:idle:failed_postcondition",
+    "committed_route:active_event:idle:unknown_modal",
+    "committed_route:active_event:idle:UI_action",
+    "committed_route:active_event:idle:wrong_generation",
+    "committed_route:active_event:idle:bad_tick",
+    "committed_route:active_event:idle:war_scope",
+    "committed_route:active_event:idle:incomplete_hostile",
+    "committed_route:active_event:idle:margin_weakened",
+    "committed_route:active_event:idle:cancel_missing",
+    "committed_route:pending_character_interaction:triggered:wrong_game",
+    "committed_route:pending_character_interaction:triggered:public_native_swap",
+    "committed_route:pending_character_interaction:triggered:wrong_boundary",
+    "committed_route:pending_character_interaction:triggered:unpaused",
+    "committed_route:pending_character_interaction:triggered:failed_postcondition",
+    "committed_route:pending_character_interaction:triggered:unknown_modal",
+    "committed_route:pending_character_interaction:triggered:UI_action",
+    "committed_route:pending_character_interaction:triggered:wrong_generation",
+    "committed_route:pending_character_interaction:triggered:bad_tick",
+    "committed_route:pending_character_interaction:triggered:war_scope",
+    "committed_route:pending_character_interaction:triggered:incomplete_hostile",
+    "committed_route:pending_character_interaction:triggered:margin_weakened",
+    "committed_route:pending_character_interaction:triggered:triggered_canceled"
+  ],
+  "public_cunit_zero": [
+    {
+      "army_id": 0,
+      "Driver_execute_step_exercised": true,
+      "category": "active_battle_player_decision_interrupted_observed",
+      "business_or_UI_credit": false
+    }
+  ],
+  "Driver_execute_step_with_only_Native_IO_fake": true,
+  "Service_auto_turn_exercised": false,
+  "formal_queue_exercised": false,
+  "Native_Game_or_MCP_calls": 0,
+  "helper_sha256": "df06e17a55b49d71cbdc6a83e3d831557c1b5fada51524a4bd581cbdfae4307e",
+  "Driver_sha256": "7394c6b11a121e12339368980d2da817a688a87480e976563408847254721a5f",
+  "public_native_fixture_source_sha256": "5888fca8eaa03be4cd26add1770223ed9dcd017e135f8efe60f9d588ff83fc2b"
+}

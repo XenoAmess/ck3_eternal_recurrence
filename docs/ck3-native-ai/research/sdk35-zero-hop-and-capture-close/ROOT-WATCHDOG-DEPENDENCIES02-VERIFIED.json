@@ -1,0 +1,297 @@
+{
+  "status": "ACTUAL_ATTACH_ONLY_WATCHDOG_HEALTHY",
+  "at_utc": "2026-10-17T03:02:41.413924+00:00",
+  "sdk_prefix": "p35",
+  "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+  "launch_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-recording-watchdog01\\live-dependencies02",
+  "actual_watchdog_base": {
+    "role": "descendant",
+    "pid": 251864,
+    "creation_filetime": 134366797463903544,
+    "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "parent_pid": 202708,
+    "argv": [
+      "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\recording-recovery-cold38-01\\recording_recovery_adapter.py",
+      "--session",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+      "--sdk-prefix",
+      "p35",
+      "--initial-recording-request",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-OBS-RECORDING-REQUESTED.json",
+      "--overlay-source",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\live_decision_overlay.py",
+      "--provider-source",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recording-dependencies-recovery02\\hotfix_provider.py",
+      "--feeder-template",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_same_game_loop_feeder.py",
+      "--python",
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "--attach-only",
+      "--feeder-stop-marker",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-CONTINUOUS-FEEDER-STOP-P35"
+    ]
+  },
+  "actual_ancestry": [
+    {
+      "role": "redirector",
+      "pid": 202708,
+      "creation_filetime": 134366797463600957,
+      "executable": "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+      "parent_pid": 256352,
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\recording-recovery-cold38-01\\recording_recovery_adapter.py",
+        "--session",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+        "--sdk-prefix",
+        "p35",
+        "--initial-recording-request",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-OBS-RECORDING-REQUESTED.json",
+        "--overlay-source",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\live_decision_overlay.py",
+        "--provider-source",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recording-dependencies-recovery02\\hotfix_provider.py",
+        "--feeder-template",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_same_game_loop_feeder.py",
+        "--python",
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "--attach-only",
+        "--feeder-stop-marker",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-CONTINUOUS-FEEDER-STOP-P35"
+      ]
+    },
+    {
+      "role": "descendant",
+      "pid": 223200,
+      "creation_filetime": 134366797463697214,
+      "executable": "C:\\Windows\\System32\\conhost.exe",
+      "parent_pid": 202708,
+      "argv": [
+        "\\??\\C:\\WINDOWS\\system32\\conhost.exe",
+        "0x4"
+      ]
+    },
+    {
+      "role": "descendant",
+      "pid": 251864,
+      "creation_filetime": 134366797463903544,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "parent_pid": 202708,
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\recording-recovery-cold38-01\\recording_recovery_adapter.py",
+        "--session",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+        "--sdk-prefix",
+        "p35",
+        "--initial-recording-request",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-OBS-RECORDING-REQUESTED.json",
+        "--overlay-source",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\live_decision_overlay.py",
+        "--provider-source",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recording-dependencies-recovery02\\hotfix_provider.py",
+        "--feeder-template",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_same_game_loop_feeder.py",
+        "--python",
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "--attach-only",
+        "--feeder-stop-marker",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-CONTINUOUS-FEEDER-STOP-P35"
+      ]
+    }
+  ],
+  "actual_sdk_pair": {
+    "at_utc": "2026-10-17T03:00:03.630580+00:00",
+    "status": "SDK_PAIR_HANDLES_RETAINED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 243932,
+        "creation_filetime": 134366796000699187,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 237856,
+        "creation_filetime": 134366796028033296,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "observer": "owned_Game_supervisor_retained_handles",
+    "rpc_started": false
+  },
+  "sdk_pair_pin_sha256": "433a6709672c07fca835cb046a37432198be64c3d7c77e9790cfe912b2f7513a",
+  "health": {
+    "at_utc": "2026-10-17T03:02:39.686098+00:00",
+    "status": "healthy",
+    "stage": "capture_only"
+  },
+  "health_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\automatic-recording-recovery-p35\\STATUS.json",
+  "actual_Game_identity": {
+    "role": "same_actual_Game",
+    "pid": 263980,
+    "creation_filetime": 134366781612159835,
+    "executable": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+  },
+  "actual_Game_Desktop1_windows": [
+    {
+      "hwnd": 157025262,
+      "pid": 263980,
+      "rect": [
+        0,
+        0,
+        2560,
+        1440
+      ],
+      "window_hwnd": 157025262,
+      "on_current_virtual_desktop": false,
+      "desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+      "dwm_cloaked_flags": 2
+    }
+  ],
+  "actual_recording_request": {
+    "schema": "xar.ck3.obs-window-capture.v2",
+    "session_id": "42cd404e-1838-4d64-8493-12022d93e2e7",
+    "worker_pid": 2280,
+    "worker_creation_filetime": 134366789791385256,
+    "worker_executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "receipt_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7",
+    "state": "requested",
+    "runtime_qualified": false,
+    "sdk_prefix": "p35",
+    "expected_sdk_pair_pin": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P35.json",
+    "dependency_amendment": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recording-dependencies-recovery02\\SOURCE-PINS.json",
+    "replaces_preOBS_failed_session": "cff9df38-fc46-4531-8e8d-8b10cb3fa100"
+  },
+  "recording_request_sha256": "4c1d3811e24935dddc70b8109e030ecfb1828ac985048ce307738e672174cae6",
+  "recording_job": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7\\job.json",
+  "recording_job_sha256": "ad8dd192f043e2ffb3e22d907e972262567074f66bc2259a7087ef26be7268fb",
+  "profile_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-OBS-PROFILE.json",
+  "profile_sha256": "6ecae01eef95a2a1a11e3e0d930be5299ab3ad02c7b8245686c88a43f37033ee",
+  "video_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\recordings\\42cd404e-1838-4d64-8493-12022d93e2e7.mkv",
+  "video_bytes_before": 455884800,
+  "video_bytes_observed": 458801152,
+  "video_growth_bytes_in_6_seconds": 2916352,
+  "final_feeder_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_p35_same_game_loop_feeder.py",
+  "final_feeder_sha256": "bcc174cd1a509be4d5e2c5a105bb6f532cca0abe8bae789155038a0cfa82a098",
+  "actual_feeder_status": null,
+  "Gameplay_recovery_claimed": false,
+  "actual_overlay_identity": {
+    "role": "same_actual_overlay",
+    "pid": 227236,
+    "creation_filetime": 134366783082037774,
+    "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "argv": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\live_decision_overlay.py",
+      "--session",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+      "--launch-receipt",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-GAME-LAUNCH.json",
+      "--campaign-label",
+      "1066 Robert continuous campaign \u00b7 Native22/P35",
+      "--desktop-id",
+      "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+      "--decision-text-file",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\live-decision.txt"
+    ]
+  },
+  "actual_feed_text": "\u8fdb\u7a0b\u7ed1\u5b9a\uff1aPID 263980 \u00b7 20261017023601.215983+000\n\u9762\u677f\u542b\u672c\u5c40\u6700\u540e\u5df2\u77e5\u56de\u6267\uff1b\u4e0d\u5c06\u5386\u53f2\u56de\u6267\u8ba1\u4e3a\u672c\u6b21\u65b0\u52a8\u4f5c\u3002\n\u672c\u5c40\uff1a1066 Robert continuous campaign \u00b7 Native22/P35\n\u5b9e\u9645\u7ed3\u679c \u00b7 query-campaign-root-context-v1\uff08\u67e5\u8be2\u5df2\u8fd4\u56de\uff09\n\u6218\u4e89\u70ed\u70b9\u955c\u5934\uff1a\u7b49\u5f85\u539f\u751f\u56de\u6267\n\n\u5f53\u524d\u7406\u7531\nobserve and settle the opening focus before war planning\n\n\u6700\u8fd1\u8bb0\u5f55\uff08\u8ba1\u5212\u4e0e\u7ed3\u679c\u5206\u5f00\uff09\n11:02:35 \u63d0\u4ea4\u524d\u8ba1\u5212 \u00b7 query-campaign-root-context-v1\n11:02:35 \u955c\u5934\u5207\u6362 \u00b7 \u6218\u4e89\u70ed\u70b9\u955c\u5934\uff1a\u7b49\u5f85\u539f\u751f\u56de\u6267\n11:02:35 \u8fd4\u56de \u00b7 query-campaign-root-context-v1 \u00b7 \u67e5\u8be2\u5df2\u8fd4\u56de\n\n\u6570\u636e\u6765\u81ea\u672c\u5c40\u5b9e\u9645\u8bf7\u6c42\u4e0e\u56de\u6267\uff1b\u8bf7\u6c42\u8fd4\u56de\u4e0d\u7b49\u4e8e\u6218\u6597\u83b7\u80dc\u3002",
+  "actual_OBS_engine_identity": {
+    "role": "actual_new_OBS_engine",
+    "pid": 56104,
+    "creation_filetime": 134366789809194788,
+    "executable": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\bin\\64bit\\obs64.exe"
+  },
+  "actual_overlay_Desktop1": {
+    "window_hwnd": 955188742,
+    "on_current_virtual_desktop": false,
+    "desktop_id": "964b3ff9-3cf7-4ba9-881b-47444f31cfbe",
+    "dwm_cloaked_flags": 2
+  },
+  "feed_sha256": "dbd4c57dac41d82f70b9c5d4ba10e9c890abcfc1ce5cee78153a2b8c4c1ddb72",
+  "latest_P35_actual_relays": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\p35-responses-0011-1-result.json",
+      "sha256": "4aa705da72006aec14541669aacd4ba4125853a6aa87d3da90a3c4814bb41a29",
+      "ended_at_utc": "2026-10-17T03:02:35.709804+00:00",
+      "request": {
+        "sequence": 11,
+        "tool": "root_current_runtime_metrics",
+        "arguments": {},
+        "source": "Root's bounded full_loop; unique new request"
+      },
+      "source_ref": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0011-1-result.json"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\p35-responses-0010-1-result.json",
+      "sha256": "d9ad69505bebc47ee1a04d12d82435c512fc60c7e20c649458ae888bfb185047",
+      "ended_at_utc": "2026-10-17T03:02:35.690366+00:00",
+      "request": {
+        "sequence": 10,
+        "tool": "ck3_auto_turn",
+        "arguments": {},
+        "source": "Root's bounded full_loop; unique new request"
+      },
+      "source_ref": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0010-1-result.json"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\p35-responses-0010-0-plan.json",
+      "sha256": "43f0f4b6ad67e198335f4ebba2fc9c54d3c10571eb2d274e2ee3ac7fe2a0e3e6",
+      "ended_at_utc": "2026-10-17T03:02:35.340396+00:00",
+      "request": {
+        "tool": "root_before_auto_turn_submit",
+        "parent_sequence": 10
+      },
+      "source_ref": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0010-0-plan.json"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\p35-responses-0008-1-result.json",
+      "sha256": "fec3871f5f8dc34489bbc0487a6ffd56904a06f5d9f45521d89570e8fcff931f",
+      "ended_at_utc": "2026-10-17T03:02:09.076973+00:00",
+      "request": {
+        "sequence": 8,
+        "tool": "root_current_runtime_metrics",
+        "arguments": {},
+        "source": "Root's bounded full_loop; unique new request"
+      },
+      "source_ref": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0008-1-result.json"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\p35-responses-0007-1-result.json",
+      "sha256": "5f5fe81e472857b8e440701d222c4760d48b607f061a011839629bb55438cce1",
+      "ended_at_utc": "2026-10-17T03:02:09.055728+00:00",
+      "request": {
+        "sequence": 7,
+        "tool": "ck3_auto_turn",
+        "arguments": {},
+        "source": "Root's bounded full_loop; unique new request"
+      },
+      "source_ref": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0007-1-result.json"
+    }
+  ],
+  "adapter_sha256": "15fc8e7e5d566cb30951c20e38ee2d5f6b568e33135ff5f35328ffec980cdda0",
+  "dryrun_calls": 1,
+  "watchdog_start_calls": 1,
+  "attach_only": true,
+  "feeder_start_calls_by_this_start": 0,
+  "Game_or_OBS_restart_calls_by_this_start": 0,
+  "Game_MCP_or_Desktop2_capture_or_input_calls": 0,
+  "window_enumeration_calls": 0,
+  "Driver_reads": 0,
+  "continuity_ledger_writes": 0,
+  "failure_branch_production_tested": false
+}

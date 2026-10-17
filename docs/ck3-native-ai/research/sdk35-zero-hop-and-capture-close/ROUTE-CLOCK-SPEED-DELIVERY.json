@@ -1,0 +1,203 @@
+{
+  "schema": "xar.p34-route-clock-research-delivery.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:29:40.688142+00:00",
+  "status": "FINAL_OFFLINE_NOT_DEPLOYED",
+  "report": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\REPORT.json",
+    "bytes": 9933,
+    "sha256": "13c2654fa98e065988df46a478446ef969ec245018ade1f4583de3917bd6da31"
+  },
+  "Driver_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\route-exact-day-speed-five-offdefault.patch",
+    "bytes": 4041,
+    "sha256": "92da2a807ac3a83e29947db034836292e81b118e4b3d47c799773e79ec34890c"
+  },
+  "paired_classifier_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\paired-classifier-speed-five.patch",
+    "bytes": 3872,
+    "sha256": "d03c27d343b4a4fab3f0eba8b2b6fa7d3c2d5f142a596226db56c86a22d32961"
+  },
+  "optional_entry_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\root-entry-startup-offdefault.patch",
+    "bytes": 792,
+    "sha256": "33990d0fc54b7dd0e99a5f0e0c643dfda8768d309bf9bc63e54667d81d1c11de"
+  },
+  "Driver_tests": "12 groups PASS: actual SDK34 query/registered route/life/clock consumers with synthetic endpoint",
+  "outer_tests": "18 complete pure original classifier groups PASS; closed actual3 baseline, synthetic5/mutants",
+  "negative_verifiers": "3 -O explicit failure negatives exit1",
+  "Native_or_Game_calls": 0,
+  "live_source_or_control_or_Driver_writes": 0,
+  "Game_qualification_or_speedup_claim": false,
+  "adoption": "All paired source rebased/frozen together only by Root at a normal future SDK rotation; disabled by default.",
+  "package_bytes_before_manifest": 202834,
+  "approved_peak_bytes": 16777216,
+  "files": [
+    {
+      "relative": "analyze_closed_responses.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\analyze_closed_responses.py",
+      "bytes": 6357,
+      "sha256": "b48a2aa5137f3912934ee393b8db959e4543fb5328316c522347aa5bb05aa540"
+    },
+    {
+      "relative": "BUDGET.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\BUDGET.json",
+      "bytes": 842,
+      "sha256": "ecba39b03cdb6720e2b445c8e4fad54d04f0083010713351e101eabeac9ac5cf"
+    },
+    {
+      "relative": "build_candidate.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\build_candidate.py",
+      "bytes": 10373,
+      "sha256": "6d3a1e20ddb8435946675bc9af397a72f977dd1c4cf1a865c9b2b3ce1445ac31"
+    },
+    {
+      "relative": "CANDIDATE-MANIFEST.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\CANDIDATE-MANIFEST.json",
+      "bytes": 1288,
+      "sha256": "73516e132350251c6b74349c6acd2d4ef81c375407b53f78d8b61efa825917a9"
+    },
+    {
+      "relative": "CLASSIFIER-MANIFEST.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\CLASSIFIER-MANIFEST.json",
+      "bytes": 733,
+      "sha256": "a87abfeadcd3bb2dbe0df924582185e7029ee4f45656740a32f3c5ed354d3883"
+    },
+    {
+      "relative": "CLOSED-P34-PERFORMANCE.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\CLOSED-P34-PERFORMANCE.json",
+      "bytes": 89799,
+      "sha256": "5a35957891bbb4e8f3c470e468d069599cf1cb9cd97dfa41a13ace5474808c66"
+    },
+    {
+      "relative": "config-only/ARGS-RECIPE.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\ARGS-RECIPE.json",
+      "bytes": 1865,
+      "sha256": "82ceca34d81fc005483914d9d58f214d1557496025a7166d19552b6b28a6ed51"
+    },
+    {
+      "relative": "config-only/DELIVERY.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\DELIVERY.json",
+      "bytes": 1748,
+      "sha256": "5b655bb5680edbe32b4ff65385de26c0a77d001baf263b8a7988ff89cf27e62b"
+    },
+    {
+      "relative": "config-only/REPORT.md",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\REPORT.md",
+      "bytes": 6361,
+      "sha256": "bcff1ff3749c7ca04e7b24341e4ecf9fb4bf4b5d271127a905e060b38693390f"
+    },
+    {
+      "relative": "config-only/SOURCE-PINS.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\SOURCE-PINS.json",
+      "bytes": 5994,
+      "sha256": "3dc96d4e65abf86a68aea2de616925a477890ade8dbc3240bffb9a3bc62c8f4f"
+    },
+    {
+      "relative": "config-only/START.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\START.json",
+      "bytes": 580,
+      "sha256": "dc6eb2544f20b2a89baa70159eef72027501cb913b2639d07211fe78d4c55564"
+    },
+    {
+      "relative": "config-only/VERIFY_SOURCE.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\config-only\\VERIFY_SOURCE.py",
+      "bytes": 5619,
+      "sha256": "5d28ffffd45df2b477de25ce1f44f093fe548beca3dc4a6d176b3ec2028c9b65"
+    },
+    {
+      "relative": "ENTRY-MANIFEST.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\ENTRY-MANIFEST.json",
+      "bytes": 851,
+      "sha256": "a035fca2fb1d6b3d1efe97ffda7d50299a32292d33b8120d8cd71eb688c7979a"
+    },
+    {
+      "relative": "fill_research_plan.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\fill_research_plan.py",
+      "bytes": 4250,
+      "sha256": "57f0d9a9cf6d555c5433935a87624be8be83f1f0e7d69e2301cfb2dfe1ef63a1"
+    },
+    {
+      "relative": "FOCUSED-TESTS.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\FOCUSED-TESTS.json",
+      "bytes": 7172,
+      "sha256": "1d7663b479c375518df2b3839628c2343a5d4568a52a330c9947a90f65503989"
+    },
+    {
+      "relative": "paired-classifier-speed-five.patch",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\paired-classifier-speed-five.patch",
+      "bytes": 3872,
+      "sha256": "d03c27d343b4a4fab3f0eba8b2b6fa7d3c2d5f142a596226db56c86a22d32961"
+    },
+    {
+      "relative": "PAIRED-CLASSIFIER-TESTS.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\PAIRED-CLASSIFIER-TESTS.json",
+      "bytes": 3388,
+      "sha256": "b6449b62240aa5483ff83c2bcb2a589f9360d266f46e72f2f47dc624f12ad4fe"
+    },
+    {
+      "relative": "REPORT.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\REPORT.json",
+      "bytes": 9933,
+      "sha256": "13c2654fa98e065988df46a478446ef969ec245018ade1f4583de3917bd6da31"
+    },
+    {
+      "relative": "RESEARCH-PLAN-CHECK.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\RESEARCH-PLAN-CHECK.json",
+      "bytes": 994,
+      "sha256": "830bb923ad2ef5525b5b1fd038c82199e21851b9a7ad5bcc6e7dcd6c4ed905ac"
+    },
+    {
+      "relative": "research-plan.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\research-plan.json",
+      "bytes": 7318,
+      "sha256": "9e5969aa39f1f8b9af8f2c51efaaf273924e2e07e29b1b77d29ae529b77b3344"
+    },
+    {
+      "relative": "root-entry-startup-offdefault.patch",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\root-entry-startup-offdefault.patch",
+      "bytes": 792,
+      "sha256": "33990d0fc54b7dd0e99a5f0e0c643dfda8768d309bf9bc63e54667d81d1c11de"
+    },
+    {
+      "relative": "route-exact-day-speed-five-offdefault.patch",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\route-exact-day-speed-five-offdefault.patch",
+      "bytes": 4041,
+      "sha256": "92da2a807ac3a83e29947db034836292e81b118e4b3d47c799773e79ec34890c"
+    },
+    {
+      "relative": "SOURCE-PINS.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\SOURCE-PINS.json",
+      "bytes": 1977,
+      "sha256": "2897298168e595134a7ec733f102a6f26c53987e24f87101d8fad40119738f3c"
+    },
+    {
+      "relative": "STORAGE-CLOSING.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\STORAGE-CLOSING.json",
+      "bytes": 685,
+      "sha256": "de142382d7fd997142ca7f2c69f4d6125be69892b6d326407b7d24ff618c1752"
+    },
+    {
+      "relative": "VERIFIER-NEGATIVES.json",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\VERIFIER-NEGATIVES.json",
+      "bytes": 2735,
+      "sha256": "cc612c6fbf9658371a651301326e1c28e9a6c52db70953c89077d6096de8c788"
+    },
+    {
+      "relative": "verify_candidate.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\verify_candidate.py",
+      "bytes": 17046,
+      "sha256": "1b1fdfb8ab83986f45ebeea59481ec83b11acdcfb94b5855e77f9dc06bb7ac9d"
+    },
+    {
+      "relative": "verify_paired_classifier.py",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-route-clock-speed-research01\\verify_paired_classifier.py",
+      "bytes": 7516,
+      "sha256": "5e7bf94749096a6cf77bb37a5afe0725fe7f21e07137935dc22524ae23070a25"
+    }
+  ],
+  "current_SDK35_adoption": false,
+  "superseded_preliminary_patch_sha256": "52cc80ff0016ae3f6d3da1cb210a682ea95cf0f819b3f444c99b6b6b2e21eebc",
+  "future_classifier_rebase_required": "old5e7001 to Root-authoritative2748; exact fullSHA/path remains integration-owner responsibility",
+  "tests_repeated_for_metadata_close": false
+}

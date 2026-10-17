@@ -1,0 +1,30 @@
+{
+  "schema": "xar.native22-public-transplant-validation.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T02:51:52.296458+00:00",
+  "compile_exit_code": 0,
+  "test_exit_code": 0,
+  "test_stdout": "ck3_12002_routes fixture PASS: projected timing, contact order, new province ABI, full ID, clock change, paused gate\n",
+  "EXE_sha256": "7b41e762889427148cbf283eac31a48cc743697d9deb41df6eaa7682ca066b25",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes.cpp",
+      "sha256": "9b01e602386d5f144c6a06df19ca05c3e88e1b3e22b5e51f1a6fed4c8d6e66ed"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_routes_test.cpp",
+      "sha256": "e5544b5497e71fc68d556aa09f2deec03eadf9dcc61ef98d95eae213acba8efb"
+    }
+  ],
+  "late_movement_cutoff_public_hunk_preserved": true,
+  "current_branch_game_test": false,
+  "Game_Native_pipe_OBS_calls": 0,
+  "Defender_registration": {
+    "status": "settings_failed",
+    "manifest": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\build\\defender-exe-exclusions\\20261017T024833Z-f16f69cc\\manifest.json",
+    "receipt": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-publication-prep01\\build\\defender-exe-exclusions\\20261017T024833Z-f16f69cc\\receipt.json",
+    "receipt_sha256": "7bca719895517e3c2cdb2fa4b9dad826c40bbcd59f72110189b6960a7edfbea5",
+    "error": "admin_required_for_verified_readback; no Add attempted and no UAC bypass"
+  },
+  "Defender_registration_verified": false
+}

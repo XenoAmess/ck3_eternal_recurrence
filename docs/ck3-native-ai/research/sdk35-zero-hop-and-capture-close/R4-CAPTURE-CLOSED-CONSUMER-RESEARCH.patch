@@ -1,0 +1,93 @@
+--- research/root_record_shutdown.before.py
++++ research/root_record_shutdown.capture_closed.py
+@@ -1,6 +1,7 @@
+ """Cooperate with this session's sole recorder stop owner before closing Game."""
+ from datetime import datetime, timezone
+ from pathlib import Path
++import hashlib
+ import time
+ import uuid
+ 
+@@ -16,6 +17,61 @@
+         return maximum
+     return min(maximum, max(0.0,
+         (deadline - datetime.now(timezone.utc)).total_seconds() - reserve_seconds))
++
++
++def verified_capture_close(root, sid, generation, requested, read):
++    """Actual capture/OBS closure is independent of final whole-media hashing."""
++    path = root / 'capture_closed.json'
++    cleanup_path = root / 'cleanup.json'
++    if not path.exists() or not cleanup_path.exists():
++        return None
++    capture = read(path)
++    actual = read(cleanup_path)
++    obs = read(root / 'obs-launch.json')
++    job = read(root / 'job.json')
++    def checked_small_pin(row, expected):
++        target = Path(row['path']).resolve()
++        if (target != expected.resolve() or target.stat().st_size > 1024 ** 2
++                or hashlib.sha256(target.read_bytes()).hexdigest() != row['sha256']):
++            raise ValueError('capture-close small receipt pin differs')
++        return target
++    checked_small_pin(capture['cleanup'], cleanup_path)
++    probe_path = checked_small_pin(capture['closed_file_probe'], root / 'closed-file-probe.json')
++    probe = read(probe_path)
++    close = actual.get('engine_close', {})
++    output = Path(capture['output_path']).resolve()
++    if (capture.get('schema') != 'xar.ck3.capture-closed-before-media-hash/v1'
++            or capture.get('session_id') != sid
++            or capture.get('game_pid') != generation.pid
++            or capture.get('game_creation_filetime') != generation.creation_filetime
++            or capture.get('obs_pid') != obs.get('pid')
++            or capture.get('obs_creation_filetime') != obs.get('creation_filetime')
++            or type(capture.get('obs_pid')) is not int or capture['obs_pid'] <= 0
++            or type(capture.get('obs_creation_filetime')) is not int or capture['obs_creation_filetime'] <= 0
++            or capture.get('postprocessing_worker_pid') != requested['worker_pid']
++            or capture.get('inputs_unbound') is not True or actual.get('inputs_unbound') is not True
++            or any(capture.get('engine_close', {}).get(key) != close.get(key)
++                   for key in ['actual_exit_code', 'normal_exit_proven', 'forced_process_calls'])
++            or close.get('actual_exit_code') != 0 or close.get('normal_exit_proven') is not True
++            or close.get('forced_process_calls') != 0
++            or actual.get('unknown_or_global_stop_calls') != 0
++            or capture.get('media_sha256_pending') is not True
++            or Path(capture['final_completed_path']).resolve() != (root / 'completed.json').resolve()
++            or not output.is_relative_to(Path(job['recording_root']).resolve())
++            or type(capture.get('output_bytes')) is not int or capture['output_bytes'] <= 0
++            or output.stat().st_size != capture['output_bytes']
++            or int(probe.get('format', {}).get('size', -1)) != capture['output_bytes']
++            or not any(row.get('codec_type') == 'video' for row in probe.get('streams', []))):
++        raise ValueError('capture-close session/Game/OBS/normal-cleanup facts differ')
++    return {'status': 'CLEANUP_OBSERVED', 'receipt_root': str(root),
++            'capture_closed_verified': True,
++            'capture_closed': {'path': str(path), 'sha256': hashlib.sha256(path.read_bytes()).hexdigest()},
++            'completed_file': (root / 'completed.json').exists(),
++            'failed_file': (root / 'failed.json').exists(),
++            'inputs_unbound': True, 'engine_exit_code': 0, 'normal_engine_exit_proven': True,
++            'stop_rpc_calls': 0, 'original_cleanup_preserved': True,
++            'media_sha256_verified_by_shutdown_consumer': False,
++            'media_hash_does_not_gate_Game_close': True}
+ 
+ 
+ def finish_owned_recording(n, generation, deadline, keeper, read, write):
+@@ -48,17 +104,9 @@
+     end = time.monotonic() + cleanup_wait_seconds(deadline,
+         RECORD_OBSERVER_MAX_SECONDS, reserve_seconds=GAME_CLOSE_RESERVE_SECONDS)
+     while True:
+-        cleanup = root / 'cleanup.json'
+-        if cleanup.exists():
+-            actual = read(cleanup)
+-            close = actual.get('engine_close', {})
+-            return {'status': 'CLEANUP_OBSERVED', 'receipt_root': str(root),
+-                    'completed_file': (root / 'completed.json').exists(),
+-                    'failed_file': (root / 'failed.json').exists(),
+-                    'inputs_unbound': actual.get('inputs_unbound'),
+-                    'engine_exit_code': close.get('actual_exit_code'),
+-                     'normal_engine_exit_proven': close.get('normal_exit_proven') is True,
+-                     'stop_rpc_calls': 0, 'original_cleanup_preserved': True}
++        closed = verified_capture_close(root, sid, generation, requested, read)
++        if closed is not None:
++            return closed
+         remaining = min(end - time.monotonic(), cleanup_wait_seconds(deadline,
+             RECORD_OBSERVER_MAX_SECONDS, reserve_seconds=GAME_CLOSE_RESERVE_SECONDS))
+         if remaining <= 0:

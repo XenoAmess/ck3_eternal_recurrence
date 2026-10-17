@@ -1,0 +1,100 @@
+{
+  "schema": "xar.p34-route-exact-day-speed-research.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "status": "FINAL_OFFLINE_CANDIDATE_NOT_DEPLOYED",
+  "conclusion": "A narrow default-off route one-day speed5 research candidate can reuse the existing complete proof and Native +24 consumer. Existing global route AB is too broad and the current MCP entry does not accept its agent CLI flags. The paired outer classifier must also change; Driver alone would advance then be rejected. Actual route5 qualification and wall-time benefit remain pending.",
+  "actual_baseline": {
+    "SDK": "34",
+    "source_root": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/sdk-p34-candidate/src",
+    "freeze_sha256": "87cba4955f737d18bec7b4b1c81f9f454f2dc377e5261237806bb0b07d2d6cf7",
+    "Driver_sha256": "f6aefa0f5d15694b6cc0cbe455c7389200232e6c9898e11c95b8fca0cc6f123c",
+    "classifier_sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b",
+    "Native21_DLL_sha256": "c0208ee8d7be6d974b536ed7c88547f01a24d06838556d9b59d0738cf633de0e",
+    "Game": "6068/creationFT134366412679616931",
+    "actor": 39979,
+    "episode": "native-39979-5ee2d59fcb51",
+    "older_actor_or_route_evidence_not_transferred": true
+  },
+  "original_flow": {
+    "kind": "Our wall-clock speed policy consumes an engine time command; this is not native NPC candidate search or war scoring.",
+    "route_producer": "Existing .4 owning-thread full-hostile route horizon, native movement-duration/current-route data and complete current source-frame conjunction. No route candidate or target changes.",
+    "clock_caller": "Registered exact route method -> original _execute_life_advance(exact_one_day=True) -> existing speed command -> Native terminal-a0/start+24 arm -> one resume.",
+    "clock_producer": "Existing final daily callback executes the original daily stage first, then date-sequence/watch/deadline evaluation and native pause. Deadline is date based, independent of wall-clock speed.",
+    "clock_consumer": "Original generation/date/tick/paused/zero-overshoot verification and modal/event handling. Exact primitive a0 uses no CArmy watch and relies on the already required complete one-day route proof; it is not a new hostile-retarget predictor.",
+    "stock_speed_ticks_seconds_per_day": [
+      2,
+      1,
+      0.5,
+      0.2,
+      0.0
+    ],
+    "stock_speed5_meaning": "No throttle from this define, not zero wall time or guaranteed sub1s/day.",
+    "Native_source_boundary": "Existing .4 clock studies and prior P31 retained Native21 sentinel review are reused. The retained c0338 object is linked, but exact TU-copy byte-to-object source lineage was not reclosed here. No new Native API, binary or qualified watch scope is claimed."
+  },
+  "existing_configuration_blockers": [
+    "MCP server parser/main does not expose the agent native-auto-run --route-contact-speed/--allow-route-contact-high-speed-ab arguments.",
+    "Legal global constructor speed5/ABtrue also affects route-window2/3 and noncombat sentinel/committed scopes; false speed5 live-ready bits do not independently block explicit global AB.",
+    "Existing stationary hold research setter requires global route3/ABfalse; combining global route5 with current hold5 startup call raises ValueError.",
+    "Frozen outer classify_route_contact_horizon_one_day_v1 hardcodes speed3 in policy, actions and Native receipts; installing only a Driver5 change would fail after a real +24 day."
+  ],
+  "minimal_paired_candidate": {
+    "Driver": "Independent default-off configure_route_exact_day_research_speed(3|5), actual CAP readback and only fresh contact_free one-day speed selection. Global route remains3/ABfalse; stationary5 can coexist. Missing exact Native arm/status or set5 keeps original preference3.",
+    "receipt": "Only an actually selected research speed5 day carries the dedicated exact-one-day research marker. No marker is added for default3 or fallback3.",
+    "outer_classifier": "Original speed3 remains;5 requires the exact dedicated marker, consistent speed/action/Native fields and all original complete-hostile/frame/date/tick/pause/overshoot guards. Other speeds and broad-scope markers reject.",
+    "private_entry": "Optional startup environment XAR_ROUTE_EXACT_DAY_AB_SPEED=5 calls the narrow setter after the existing hold configuration; absent or3 keeps/disables research. No new public or private MCP tool.",
+    "required_adoption": "Driver + paired classifier + optional entry/owner configuration must be reviewed/rebased and frozen together at the next Root-owned normal SDK rotation. No Game or Native restart is indicated.",
+    "rollback": "Default omission or startup value3 restores original speed3 without changing route/war policy. No failed gameplay step is replayed."
+  },
+  "validation": {
+    "Driver_tests": "12 groups: real SDK34 query->execute_step route->life->Native arm/resume/status consumers, synthetic lower endpoint; default wire parity, explicit5, missing set5 fallback3, missing-sentinel prefix3, stale/full-hostile absence zero-resume, bad generation/overshoot rejection, scope/config enable/disable isolation.",
+    "unchanged_consumers": "10 original proof, multi-day route, battle, life, exact clock, modal and stop function ASTs are unchanged. New flag references are limited to init/config/readback/one-day route method.",
+    "outer_classifier_tests": "18 groups: actual closed0031 speed3 original/candidate credit identical; speed5 counterfactual rejected by old and accepted by paired candidate; marker/scope/type/speed/policy/generation/tick/pause/hostile/PID mutants reject; war termination grants only the original one actual day and no business success.",
+    "verifier_failures": "Explicit require/ValueError, no assert acceptance checks; -O bad SDK pin, bad expected day and bad classifier target all exit1.",
+    "limits": "Synthetic5 is not a CK3 speed/parity or performance result. Driver chain does not execute a Service planner or outer queue; paired tests execute complete original pure classifier functions. Original event/modal consumer behavior and rejection rules are preserved, not newly qualified."
+  },
+  "measured_baseline_scope": {
+    "fixed_closed_prefix": 625,
+    "small_file_limit": 524288,
+    "small_files_read": 623,
+    "oversized_bodies_not_read": [
+      "0010-1-result.json",
+      "0235-1-result.json"
+    ],
+    "route_actual_days": 56,
+    "route_selected_AUTO_seconds_min": 1.0668872999958694,
+    "route_selected_AUTO_seconds_median": 1.3848315000068396,
+    "route_selected_AUTO_seconds_sum": 83.87829950032756,
+    "matched_query_advance_metrics_days": 54,
+    "H1_query_seconds_median": 0.35543769993819296,
+    "metrics_seconds_median": 0.004350350005552173,
+    "query_through_after_metrics_interval_seconds_median": 2.292917,
+    "unattributed_between_RPC_control_gap_seconds_median": 0.12535019997111707,
+    "meaning": "Selected AUTO elapsed includes SDK/Driver/persistence inside that call. Matched interval includes query/advance/metrics and controls/gaps. Neither is pure Native time or the whole campaign average; unmatched/manual time is not labeled Rootidle. Native stage split is unavailable from these closed small receipts alone."
+  },
+  "smallest_actual_followup_owned_by_Root": [
+    "Keep current stable play running. Review the three paired source pieces at a normal next SDK rotation; do not enable global routeAB or force a route/war for this experiment.",
+    "Only when the ordinary planner naturally selects a fresh complete contact_free one-day step, collect its actual5 arm/start+24/tick1/date_deadline/generation/paused/overshoot0 result and following same-Game/actor metrics. If no safe current proof exists, retain original planner behavior.",
+    "Use the already installed clock stage/owner cache timing for that completed sample and the complete adjacent H1/AUTO/metrics interval; compare descriptively with the speed3 baseline, including context differences and control gaps. No extra observer, large export, forced save, reload or Native build is required.",
+    "A passing first route5 day is narrow qualification, not stable30year or sub1/.5 whole-loop acceptance. Repeated natural stop/war/event results remain subject to existing guards."
+  ],
+  "operations": {
+    "Game_Native_MCP_OBS_desktop_calls": 0,
+    "live_Driver_SAVE_video_reads": 0,
+    "live_source_or_runtime_control_writes": 0,
+    "W_index_or_public_source_writes": 0,
+    "Native_builds": 0,
+    "new_global_storage_reservation": 0
+  },
+  "G2_boundary": "Original8M remains6/8. This research does not expand schemes/government or claim stable30year or performance completion.",
+  "final_integration_boundary": {
+    "Driver_final_patch_sha256": "92da2a807ac3a83e29947db034836292e81b118e4b3d47c799773e79ec34890c",
+    "supersedes_preliminary_Driver_patch_sha256": "52cc80ff0016ae3f6d3da1cb210a682ea95cf0f819b3f444c99b6b6b2e21eebc",
+    "reason": "Final92da includes the necessary dedicated exact-day research receipt for strict paired outer classification.52cc is not the final candidate.",
+    "classifier_patch_base_sha256": "5e7001cbb5f50434983e164c3f9f713cee092e2b13597ac3b335bfb08eb6070b",
+    "future_classifier_rebase": "Root currently names2748 as the future authoritative classifier. Integration owner must bind its exact fullSHA/path and preserve its newer fixes; never overwrite it with old3efc candidate.",
+    "current_SDK35_adoption": false,
+    "current_runtime": "Root is freezing SDK35/Native22 separately; this packet describes closed SDK34/Native21 baseline and a future default-off candidate only.",
+    "tests_repeated_for_metadata_close": false,
+    "public_handoff": "Small report and existing exact patch/test receipts to pause_sdk_recovery_prepare next public package; no live deployment."
+  }
+}

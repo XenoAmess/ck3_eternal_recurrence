@@ -1,0 +1,65 @@
+{
+  "status": "PORTABLE_CAPTURE_CLOSED_CONSUMER_VERIFIED_NOT_DEPLOYED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T03:00:37.697916+00:00",
+  "owner": "/root/realm_overview_implementation",
+  "public_index_owner": "/root/pause_sdk_recovery_prepare",
+  "production": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\ck3_capture_closed_receipt.py",
+    "bytes": 8175,
+    "sha256": "bf5552199a53bea1909fb8271873740b47b06e04f6856998005296b83b495151"
+  },
+  "suggested_production_path": "tools/ck3_capture_closed_receipt.py",
+  "test": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\test_ck3_capture_closed_receipt.py",
+    "bytes": 8949,
+    "sha256": "6c6e6279374bced42bbdca745a6e4ef8b9c943bf7baac5d7d82e478df82dbcc5"
+  },
+  "suggested_test_path": "tools/test_ck3_capture_closed_receipt.py",
+  "test_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\TEST-RESULT-FINAL.json",
+    "bytes": 2954,
+    "sha256": "7b21d45d91db638eeafe8c9b2b7f76b4b0aa10efde1d27d39976751168c23ad0"
+  },
+  "research_only_patch": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-capture-closed-portable-consumer01\\root_record_shutdown.capture-close.research.patch",
+    "bytes": 5351,
+    "sha256": "22a65b9568ca2cea97b34f226b0dc74eb6b510e4f820cc40e24f2cb5890ad2ed"
+  },
+  "research_patch_apply_to_public": false,
+  "origin_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\root_record_shutdown.py",
+    "bytes": 6549,
+    "sha256": "5d966610069b7ceafcc481b820d159776bb2c9db7c5a9cf0fc92e6cab8423c91",
+    "function": "verified_capture_close",
+    "start_line": 22,
+    "end_line": 74
+  },
+  "existing_private_focused": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p35-native22-host-prep01\\FOCUSED-FINAL.json",
+    "bytes": 1023,
+    "sha256": "8c0e8545e72df029cb2e2ef6a17348c26b813608971e820f5e46c238e2ce6fef"
+  },
+  "portable_changes": [
+    "explicit caller session/Game/worker and output-root parameters",
+    "original job scope and actual started birth including nullable game_only job birth",
+    "canonical producer output filename and custody-release flag",
+    "small receipt path/hash/size guards",
+    "typed exit integers and malformed probe rejection",
+    "separate media finalization failure without video-body read"
+  ],
+  "public_wrapper_pending_with_owner": true,
+  "public_runner_fully_wired_claimed": false,
+  "existing_R4_or_W_or_native_changed": false,
+  "Runtime_calls": 0,
+  "storage_parent": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\STORAGE-ADMISSION.json",
+    "bytes": 2650,
+    "sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09"
+  },
+  "small_subpeak_bytes": 131072,
+  "shared_parent_subbudget_bytes": 16777216,
+  "additional_global_reservation_bytes": 0,
+  "build_review_after_close_days": 14,
+  "record_review_days": 180
+}

@@ -1,0 +1,59 @@
+{
+  "schema": "xar.modal-consumer.portable-public-delivery/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "computername": "XENOAMESS-FULL-",
+  "at_utc": "2026-10-17T03:00:07.005663+00:00",
+  "public_leaves": [
+    {
+      "path": "ck3_autonomous_player/tests/unit/battle_route_modal_producer_fixture.py",
+      "bytes": 11861,
+      "sha256": "d95f1569e3506bc3656ac0811858c09fd1a222530c36979990eb6b2a2193f467"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_battle_route_modal_classifier_v1.py",
+      "bytes": 9096,
+      "sha256": "b46ace53e1fb529c14b1bd82640b53d633818cd086944fd7cbaba54beaa10670"
+    },
+    {
+      "path": "docs/ck3-native-ai/battle-route-modal-consumer-portable.md",
+      "bytes": 3772,
+      "sha256": "fb510e8654f13551e4be4553f388cb0224ced1fa91990c8134c473c10f2986f1"
+    },
+    {
+      "path": "tools/root_battle_route_modal_classifier_v1.py",
+      "bytes": 16304,
+      "sha256": "df06e17a55b49d71cbdc6a83e3d831557c1b5fada51524a4bd581cbdfae4307e"
+    }
+  ],
+  "parent_frozen_helper_sha256": "7968a6327bef980a49c34f5caf290fbdca09cb00e12603a4d56a5648a06fa69f",
+  "public_helper_changes": "Exactly three Army ID predicates permit CUnit0 through INT_MAX; no other production helper change",
+  "tests": {
+    "green_receipt": "PORTABLE-TESTS-FINAL.json",
+    "green_sha256": "bd5a41c14195c250bb8d782acb47fca02099f9fd5c4b4102bfd841622516ad8f",
+    "red_receipt": "PORTABLE-TESTS.json",
+    "red_sha256": "b70f346edf685b00ec69f67c8e3d5ab4086373eb7b260f246da6b7d437121c0a",
+    "methods": 2,
+    "producer_cases": 4,
+    "negative_cases": 48,
+    "additional_CUnit0_producer_cases": 1,
+    "actual_public_native": [
+      3,
+      11
+    ],
+    "Driver_sha256": "7394c6b11a121e12339368980d2da817a688a87480e976563408847254721a5f",
+    "public_native_fixture_source_sha256": "5888fca8eaa03be4cd26add1770223ed9dcd017e135f8efe60f9d588ff83fc2b",
+    "formal_queue_exercised": false,
+    "Service_auto_turn_exercised": false,
+    "Native_Game_MCP_calls": 0
+  },
+  "storage": {
+    "parent_sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+    "prep_sha256": "1005272df1bb761fdd5a65104d9ddd21a713c9392bdf6ec88d0279c014bd734f",
+    "logical_bytes_before_manifest": 48163,
+    "disk_free_bytes": 1047451848704,
+    "additional_global_reservation_bytes": 0,
+    "all_outputs_below_peak_16MiB": true
+  },
+  "source_or_runtime_mutations": 0,
+  "public_commit_owner": "/root/pause_sdk_recovery_prepare"
+}
