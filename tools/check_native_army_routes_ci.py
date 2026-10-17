@@ -26,6 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "ck3_autonomous_player/native_bridge"
 TRANSLATION_UNITS = (
     "src/ck3_12002_army.cpp",
+    "src/ck3_12002_province.cpp",
     "src/ck3_12003_army_supply_timing.cpp",
     "src/ck3_12003_army_replenishment_records.cpp",
     "src/ck3_12003_current_province_supply_contributors.cpp",
@@ -46,6 +47,7 @@ TRANSLATION_UNITS = (
 INPUTS = (
     *TRANSLATION_UNITS,
     "include/xar_bridge/ck3_12002_army.hpp",
+    "include/xar_bridge/ck3_12002_province.hpp",
     "include/xar_bridge/ck3_12003_army_supply_timing.hpp",
     "include/xar_bridge/ck3_12003_army_replenishment_records.hpp",
     "include/xar_bridge/ck3_12003_current_province_supply_contributors.hpp",
