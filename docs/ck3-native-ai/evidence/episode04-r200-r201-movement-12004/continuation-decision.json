@@ -1,0 +1,59 @@
+{
+  "schema": "xar.e04.r201.continuation-decision.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T17:08:51.449401+00:00",
+  "authority": "Root instruction in this session; this file records the decision, not a new game observation",
+  "r200": "ENVIRONMENT_RED before game/run creation: missing screen_bus_lease import",
+  "r201": {
+    "actor_completed_loops": 23,
+    "independently_observed_day24": true,
+    "last_date_raw": 53148792,
+    "last_army18_province": 2633,
+    "terminal_normal_save": false,
+    "normal_exit": false,
+    "continuation_qualified": false,
+    "initial_identity_save": "Exists at initial date53148216; it is not a post-progress normal-close checkpoint",
+    "army_query": {
+      "request": {
+        "request_id": "r201-army18-prepared-at2633-a01",
+        "tool": "ck3_query_army_strengths",
+        "arguments": {
+          "army_ids": [
+            18
+          ],
+          "expected_revision": 85,
+          "profile": "ordinary_core_v1",
+          "ordered_refill_entry_mode": "observed_prepared"
+        }
+      },
+      "result": "Root reported timeout/unknown; no result body consumed or action inferred"
+    },
+    "outer_exit_code": {
+      "value": 0,
+      "evidence": "Root report; cleanup only, not CK3 normal exit"
+    }
+  },
+  "next_attempt": {
+    "plan": "Fresh load of R199 normal S0; move to intermediate2633 and obtain automatic normal save with normal close",
+    "status": "Plan only in this packet; R202 actual execution is independent and not projected from R201",
+    "seed": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 73703921,
+      "sha256": "db00016aa3215626593791420b45761b148cd156aed98f317ea2f8149ef3b600"
+    }
+  },
+  "counts": {
+    "research": "9/14",
+    "business": "6/11",
+    "qualified_dynamic": "0/11",
+    "ABC": "0/3"
+  },
+  "qualification": {
+    "R04": false,
+    "R05": false,
+    "R06_ADD": false,
+    "film": false,
+    "clean": false,
+    "human": false
+  }
+}

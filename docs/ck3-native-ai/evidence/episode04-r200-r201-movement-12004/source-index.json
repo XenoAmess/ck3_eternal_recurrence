@@ -1,0 +1,112 @@
+{
+  "schema": "xar.e04.r200-r201.source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T17:08:51.449401+00:00",
+  "integration_base_head": "4218ab3828531350294470dfca88916ad4984155",
+  "runtime_source_head": "26449eb2676b4ccb71cb818fb0cc398b0a5fd1e6",
+  "original_sources": {
+    "r200_environment": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r200-movement-prep-a01\\R200-PREGAME-ENVIRONMENT-FAILURE.actual-a01.json",
+      "bytes": 1634,
+      "sha256": "15678d7220d93c472251efee486a1916a3140aff4412c74c15dbc3f4deceb0fd",
+      "archive_member": "r200_environment.json"
+    },
+    "r200_stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r200-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0200.relay.stderr.txt",
+      "bytes": 775,
+      "sha256": "e3146fb28fe6b2ed495b5caa11389a4f539b4ff395ea50c346091cb10cca1226",
+      "archive_member": "r200_stderr.txt"
+    },
+    "actor_stop": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\movement-actor-a01\\STOP.actual.json",
+      "bytes": 1853,
+      "sha256": "71e019179c653eefc7cd2534ceb0f15f57e78864508843f4143a150c67821a54",
+      "archive_member": "actor_stop.json"
+    },
+    "bootstrap": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\bootstrap-result.json",
+      "bytes": 14601,
+      "sha256": "2ddebc48d65ba18a5bd5a4d75337702cb8b0d8a36b6bbbf0e4066381d425b28a",
+      "archive_member": "bootstrap.json"
+    },
+    "identity": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 8493,
+      "sha256": "8ba53367b7f6e0e9388e25f0eb2f153f66379736e5594b8ee45738d7dc6ffc2b"
+    },
+    "scope": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\R201-IDENTITY-SCOPE.actual-a01.json",
+      "bytes": 9666,
+      "sha256": "c377dd30763378d0b7bc4bd25bf420155f74693f1445aabc07f6cac643020ecc"
+    },
+    "day24": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\responses\\r201movement-152c9ed06e4e-d24-independent-after.json",
+      "bytes": 131931,
+      "sha256": "c5de5c8e2eec5aa2d3cc572c9c07f85d90f06f2c9499f941d74aa5dddc1e2102"
+    },
+    "event_context": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\responses\\r201-event-instance2-context-a01.json",
+      "bytes": 47307,
+      "sha256": "7064eb4d5156effb4109190fcbc74ecc3aa067afefb5091465f1e1aa62040c35"
+    },
+    "event_knowledge": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\responses\\r201-event-pam-bull-0004-knowledge-a01.json",
+      "bytes": 31606,
+      "sha256": "8eb10f880b5cd3d89d84cce2e36a1419633b0949685a8a86eeefa33df35fc642"
+    },
+    "event_ack": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\responses\\r201-event-instance2-empty-ack-once-a01.json",
+      "bytes": 13877,
+      "sha256": "55e3eb6c38d715da91541c5f72529911331a52eed5d627ed5721e961d078c05b"
+    },
+    "after_ack": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\responses\\r201-after-event-ack-independent-a01.json",
+      "bytes": 130322,
+      "sha256": "d68cc226a0d75af74992034873e56a9fd5930ed2d2eb9bb2c64c1f6f1347e77f"
+    },
+    "release_execution": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\R201-TIMEOUT-SCREEN-RELEASE.actual-a02.execution.json",
+      "bytes": 1285,
+      "sha256": "ed5505dc912d3f4d09eab1a00a1eaa0aad21660cf4aa9a0241674bc7bc52467b",
+      "archive_member": "release_execution.json"
+    },
+    "release_stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\R201-TIMEOUT-SCREEN-RELEASE.actual-a02.stdout",
+      "bytes": 1597,
+      "sha256": "b0a66bd0add28b2c9e41c0630fd36e60029267515ea78cefd04adbba36e427f1",
+      "archive_member": "release_stdout.json"
+    },
+    "done_execution": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\R201-TIMEOUT-SCREEN-TASK-DONE.actual-a01.execution.json",
+      "bytes": 1237,
+      "sha256": "41e5dd2563c7d40b090eb1e35cd5b8aa4be4566598f86ab38cc304b8ca186e0c",
+      "archive_member": "done_execution.json"
+    },
+    "done_stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\R201-TIMEOUT-SCREEN-TASK-DONE.actual-a01.stdout",
+      "bytes": 1311,
+      "sha256": "6171b12beedbdf6e1e89aba9c836b5fdeeff1f0358b47cffcf56f27687445964",
+      "archive_member": "done_stdout.json"
+    },
+    "unresolved_army_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r201-movement-prep-a01\\desktop-3fevhd2-1c74096080--vanilla--R0201\\requests\\r201-army18-prepared-at2633-a01.json",
+      "bytes": 265,
+      "sha256": "ffc1b846044026e8f9ef91a9dca7a12853a3b088bbadf6f1f575627565cfa303",
+      "archive_member": "unresolved_army_request.json"
+    },
+    "actor_source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r201-movement-autoactor-a01\\movement_actor.py",
+      "bytes": 13546,
+      "sha256": "f756d7ed5434b09fca2a88c416f8f28e1336a1855b6142a311a08a8cd89cacdd",
+      "scope": "provenance only; source AST is not actual loop completion"
+    }
+  },
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 8534,
+    "sha256": "877bcc0f691d58e8d970bf62976aa26582dece20f9a29f9dad48e50b98422e4c"
+  },
+  "source_paths": "Historical machine provenance only. Portable facts and selected originals are local to this directory; original absolute paths are not runtime dependencies.",
+  "storage_policy_version": "1.0.0",
+  "retention": "Canonical knowledge record; external original lifetimes are not extended by this copy. Review this integration metadata within 48h; no new raw/save/Driver copy."
+}

@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-18：R200环境失败与R201无正常续行S0
+
+`machine_id: desktop-3fevhd2-1c74096080`。[本轮交接](../handover/2026-10-18-war-episode04-r200-r201-movement.md)区分23闭环与独立day24、事件确认与Army查询未知、cleanup与CK3 exit1。R201推进后无正常闭场Save，后继从R199正常源独立准备，不把移动前缀当普通ADD或影片通过；研究9/14、业务6/11、动态0/11、ABC0/3保持。
+
 ### 2026-10-17：695完整出发路线与围城姿态窄修
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。[695专题](../ck3-native-ai/routed-siege-stance-2026-10-17.md)修正敌军sieging姿态与完整已出发路线并存时的误阻塞：只跳过静止围城专用预测，四支敌军完整接触范围保留，仍须Native horizon。三项便携／七否例及unsafe-route回归通过；三项旧断言的既有RED在A09原函数上同样复现，不改断言或宣称全套绿。

@@ -1,5 +1,11 @@
 # 第4期研究总账：行军、补给与损耗
 
+## 2026-10-18 R200环境RED与R201异常移动前缀
+
+`machine_id: desktop-3fevhd2-1c74096080`；R201实际source26449/a34b。[专题、字面投影与续行决定](../../../docs/ck3-native-ai/episode04-r200-r201-movement-abnormal-close-12004.md)保全R200缺screen_bus_lease导致游戏未启动；R201只闭23个actor循环，独立day24为53148792/paused、Army18@2633且剩余route尚非抵达。已注册pam_bull_events.0004空确认native0一次ACK/postcondition及独立消失均通过。后续Army查询超时未知，bootstrap1803.239秒timeout/CK3 exit1；outer0与CAS6234→6235 expired释放/done6236只算清理。初始身份Save不能顶替推进后正常闭场Save，R201不具新S0资格。
+
+后继从R199正常S0独立冷载，先取得中途2633自动正常保存与正常退出；R202实际结果另证。本次未录制、未取得ADD/clean/1×/人审，研究9/14、业务6/11、合格动态0/11、ABC0/3不变。
+
 ## 2026-10-17 13:22 UTC R199位置准备：q0负例、一日与正常闭场
 
 `machine_id: desktop-3fevhd2-1c74096080`；[R199专题与便携小原件](../../../docs/ck3-native-ai/episode04-r199-refill-position-preparation-12004.md)绑定实际source26449／native tree5ffec8a7及R0199。七个缺额槽位全q=0且position=false，没有安装R06 probe。Move18→2629只有ACK与独立六跳route；精确一日53148192→53148216后仍paused、仍在2635/sieging，没有到达或ADD信用。正常Save/checkpoint、CK3/bootstrap exit0、screenCAS6195空资源与taskdone6196已保全。媒体编码180.000秒／5400帧与Start→Finish墙钟224.637917秒分开；179秒末样本仍旧日期，原生一日在raw结束后；墙钟超过计划44.637917秒，RED保留，controller正常Finish不等于整片qualified。研究9/14、业务6/11、动态0/11、ABC0/3不变；下一次自然移动需正常源与新鲜身份/资格，不把本次路线当已改变位置闸。

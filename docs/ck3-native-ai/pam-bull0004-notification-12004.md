@@ -15,3 +15,7 @@ Root 当场原生提交 API option_number1 一次：ACK accepted/submitted；选
 旧 [current-event-scopes.md](current-event-scopes.md) 的2026-10-05 .3分析已命中相同 file/node SHA，但历史 machine_id 未核实，仅复用源码知识。R186 实际 .4 knowledge 返回 unregistered，故本次补进现有共享 registry 与 source index；不新建 event 系统，不新增策略，不声称已改变冻结的 R186 进程。安装路径只来自本次 prepared.json；EXE SHA 复用其已核回执，没有新读 EXE。其他机器必须重新核安装与运行事实。
 
 源片段、原件 pins 与离线重放输入：[evidence/episode04-pam-bull0004-r186-12004/](evidence/episode04-pam-bull0004-r186-12004/)。候选通过现有 policy 对实际 packet 离线识别，并分别验证错误 root、错误 snapshot 总数及禁用选项均拒绝；不调用游戏或提交动作。此文与 record 为外置候选，由 Root 闭场后集成。
+
+## R201已注册知识的实际复用（2026-10-17 UTC）
+
+`machine_id: desktop-3fevhd2-1c74096080`，source26449/PID19896/gen1；[R201局部原件](episode04-r200-r201-movement-abnormal-close-12004.md)中context实例2/date53148792，详细窗口native0“就这样吧。”；knowledge返回available且上述file/node SHA一致。一次option1/native0确认有postcondition，独立snapshot再证active_event=null。只复用已知空确认知识，不新增策略或重读原版定义；随后Army查询未知及整场timeout/exit1不被本窗口关闭改写。
