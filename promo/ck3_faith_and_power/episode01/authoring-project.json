@@ -1,0 +1,1747 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-power-episode01",
+    "title": "CK3：信仰与权力 第一期——圣地不是打下来就算"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-power-capture-v1",
+    "preset": "ck3-faith-power-longform-zh-v1"
+  },
+  "locales": {
+    "narration": "zh-CN",
+    "subtitles": [
+      "zh-CN",
+      "en"
+    ]
+  },
+  "constraints": {
+    "duration_limit_seconds": null
+  },
+  "chapters": [
+    {
+      "id": "A01",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "先把问题问对"
+      },
+      "cues": [
+        {
+          "id": "E01-A001",
+          "narration": {
+            "zh-CN": "为什么打下一座城，还可能不能采用这里的圣地？看到一扇灰色按钮，你会先怀疑哪项条件？"
+          },
+          "subtitles": {
+            "zh-CN": "为什么打下一座城，还可能不能采用这里的圣地？看到一扇灰色按钮，你会先怀疑哪项条件？",
+            "en": "Why might taking a city still leave its holy site unavailable for adoption? Which requirement would you check first?"
+          }
+        },
+        {
+          "id": "E01-A002",
+          "narration": {
+            "zh-CN": "是土地还没真正归到自己一边，还是信仰之间的关系不够？又或者，问题根本不在这两处？"
+          },
+          "subtitles": {
+            "zh-CN": "是土地还没真正归到自己一边，还是信仰之间的关系不够？又或者，问题根本不在这两处？",
+            "en": "Is the land relationship wrong, is religious compatibility missing, or is the obstacle elsewhere?"
+          }
+        },
+        {
+          "id": "E01-A003",
+          "narration": {
+            "zh-CN": "这一期先不急着改信条。我们要把采用圣地拆成一组能检查、能比较，也能安排先后的决定。"
+          },
+          "subtitles": {
+            "zh-CN": "这一期先不急着改信条。我们要把采用圣地拆成一组能检查、能比较，也能安排先后的决定。",
+            "en": "Before changing any tenet, let's turn adoption into checks and choices we can put in order."
+          }
+        },
+        {
+          "id": "E01-A004",
+          "narration": {
+            "zh-CN": "这样做的好处很直接：你能知道下一步该补什么，也能判断，为这座圣地付出的代价是否值得。"
+          },
+          "subtitles": {
+            "zh-CN": "这样做的好处很直接：你能知道下一步该补什么，也能判断，为这座圣地付出的代价是否值得。",
+            "en": "That tells you what to fix next, and whether this particular site is worth the effort."
+          }
+        },
+        {
+          "id": "E01-A005",
+          "narration": {
+            "zh-CN": "先提醒一个找入口的小陷阱：普通决议列表里没看见采用，不等于这个角色永远没有采用资格。"
+          },
+          "subtitles": {
+            "zh-CN": "先提醒一个找入口的小陷阱：普通决议列表里没看见采用，不等于这个角色永远没有采用资格。",
+            "en": "A missing Adopt entry in the ordinary decision list does not prove permanent ineligibility."
+          }
+        },
+        {
+          "id": "E01-A006",
+          "narration": {
+            "zh-CN": "这份版本的原版界面，会从具体圣地把目标带进采用窗口。所以先找对地点，再读它的要求。"
+          },
+          "subtitles": {
+            "zh-CN": "这份版本的原版界面，会从具体圣地把目标带进采用窗口。所以先找对地点，再读它的要求。",
+            "en": "In this version, the holy-site interface passes a specific target into the adoption window."
+          }
+        },
+        {
+          "id": "E01-A007",
+          "narration": {
+            "zh-CN": "接下来的规则，以锁定的一点二零点零点四版为准；当前存档里实际有什么，仍然要看当前画面。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来的规则，以锁定的一点二零点零点四版为准；当前存档里实际有什么，仍然要看当前画面。",
+            "en": "Our rules are pinned to version 1.20.0.4. The current save still needs its own observation."
+          }
+        },
+        {
+          "id": "E01-A008",
+          "narration": {
+            "zh-CN": "我们先从最容易混在一起的三件事开始：谁控制土地，谁承认圣地，以及它对谁属于主要圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "我们先从最容易混在一起的三件事开始：谁控制土地，谁承认圣地，以及它对谁属于主要圣地。",
+            "en": "Start with three questions: who holds the land, which faiths claim the site, and for whom it is eminent."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "A02",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "土地、名单与等级"
+      },
+      "cues": [
+        {
+          "id": "E01-A009",
+          "narration": {
+            "zh-CN": "第一张账是土地。打开县的面板，先认清持有人，再沿着领主关系往上看，别只看地图涂成什么颜色。"
+          },
+          "subtitles": {
+            "zh-CN": "第一张账是土地。打开县的面板，先认清持有人，再沿着领主关系往上看，别只看地图涂成什么颜色。",
+            "en": "First, the land: identify the county holder and follow the liege chain, beyond the map color."
+          }
+        },
+        {
+          "id": "E01-A010",
+          "narration": {
+            "zh-CN": "战争中占住一块地方，与正式持有这个县，是不同状态。这里要核对采用要求真正检查的领属关系。"
+          },
+          "subtitles": {
+            "zh-CN": "战争中占住一块地方，与正式持有这个县，是不同状态。这里要核对采用要求真正检查的领属关系。",
+            "en": "Military occupation and holding a county are different states; read the relationship adoption actually checks."
+          }
+        },
+        {
+          "id": "E01-A011",
+          "narration": {
+            "zh-CN": "县民信什么，县主信什么，你自己又信什么，也要分别看。它们不会因为同在一片颜色里就自动一致。"
+          },
+          "subtitles": {
+            "zh-CN": "县民信什么，县主信什么，你自己又信什么，也要分别看。它们不会因为同在一片颜色里就自动一致。",
+            "en": "The population, county holder, and player can follow different faiths, even inside one realm."
+          }
+        },
+        {
+          "id": "E01-A012",
+          "narration": {
+            "zh-CN": "画面里若还出现男爵领，也要认清它与县的层次。站点的位置、地方持有人与县主，不要只靠一个头像猜成同一对象。"
+          },
+          "subtitles": {
+            "zh-CN": "画面里若还出现男爵领，也要认清它与县的层次。站点的位置、地方持有人与县主，不要只靠一个头像猜成同一对象。",
+            "en": "Keep barony location, local holder, and county holder distinct instead of inferring all three from one portrait."
+          }
+        },
+        {
+          "id": "E01-A013",
+          "narration": {
+            "zh-CN": "第二张账是信仰的圣地名单。它问的不是谁收这里的税，而是哪些信仰把这个站点列进自己的网络。"
+          },
+          "subtitles": {
+            "zh-CN": "第二张账是信仰的圣地名单。它问的不是谁收这里的税，而是哪些信仰把这个站点列进自己的网络。",
+            "en": "Second, faith membership: which faiths list the site, rather than who collects its taxes."
+          }
+        },
+        {
+          "id": "E01-A014",
+          "narration": {
+            "zh-CN": "同一座圣地，可以同时和不止一个信仰有关。采用时不能只挑最熟悉的那个名字，忽略其余关联。"
+          },
+          "subtitles": {
+            "zh-CN": "同一座圣地，可以同时和不止一个信仰有关。采用时不能只挑最熟悉的那个名字，忽略其余关联。",
+            "en": "One site can belong to several faiths. Adoption must consider all relevant associations."
+          }
+        },
+        {
+          "id": "E01-A015",
+          "narration": {
+            "zh-CN": "第三张账才是等级。同一个地点，对这个信仰可能是普通圣地，对另一个信仰却可能是主要圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "第三张账才是等级。同一个地点，对这个信仰可能是普通圣地，对另一个信仰却可能是主要圣地。",
+            "en": "Third is rank: the same site may be regular for one faith and eminent for another."
+          }
+        },
+        {
+          "id": "E01-A016",
+          "narration": {
+            "zh-CN": "所以问巴格达是不是主要圣地，还差半句话：对谁而言？少了这个对象，答案很容易听起来互相矛盾。"
+          },
+          "subtitles": {
+            "zh-CN": "所以问巴格达是不是主要圣地，还差半句话：对谁而言？少了这个对象，答案很容易听起来互相矛盾。",
+            "en": "Is Baghdad eminent? The missing half of that question is: for which faith?"
+          }
+        },
+        {
+          "id": "E01-A017",
+          "narration": {
+            "zh-CN": "锁定的初始定义给了一个很清楚的对照：巴格达对聂斯托里是主要圣地，对逊尼则列作普通圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "锁定的初始定义给了一个很清楚的对照：巴格达对聂斯托里是主要圣地，对逊尼则列作普通圣地。",
+            "en": "The pinned initial definitions make Baghdad eminent for Nestorian and regular for Sunni."
+          }
+        },
+        {
+          "id": "E01-A018",
+          "narration": {
+            "zh-CN": "这里说的是这份版本的初始配置。如果存档已经经历过采用、晋升或其他变化，就以实际列表为准。"
+          },
+          "subtitles": {
+            "zh-CN": "这里说的是这份版本的初始配置。如果存档已经经历过采用、晋升或其他变化，就以实际列表为准。",
+            "en": "That is the initial configuration. A changed save must be checked against its current lists."
+          }
+        },
+        {
+          "id": "E01-A019",
+          "narration": {
+            "zh-CN": "比较两张面板时，还要确认看的是同一个站点。中文名字相近，或者都在同一县，不能替代对象核对。"
+          },
+          "subtitles": {
+            "zh-CN": "比较两张面板时，还要确认看的是同一个站点。中文名字相近，或者都在同一县，不能替代对象核对。",
+            "en": "Compare the same site, not merely similar names or two sites inside the same county."
+          }
+        },
+        {
+          "id": "E01-A020",
+          "narration": {
+            "zh-CN": "这样分账以后，征服的作用就清楚了：它可能改变领地条件，却没有替你自动完成信仰名单的接入。"
+          },
+          "subtitles": {
+            "zh-CN": "这样分账以后，征服的作用就清楚了：它可能改变领地条件，却没有替你自动完成信仰名单的接入。",
+            "en": "Conquest may change territorial conditions; it does not automatically add a faith association."
+          }
+        },
+        {
+          "id": "E01-A021",
+          "narration": {
+            "zh-CN": "主要与普通也先别理解成城市的永久头衔。我们此刻比较的是，这个站点在各自信仰关系中的位置。"
+          },
+          "subtitles": {
+            "zh-CN": "主要与普通也先别理解成城市的永久头衔。我们此刻比较的是，这个站点在各自信仰关系中的位置。",
+            "en": "Regular and eminent describe the site's relationship to a faith, not a permanent title of the city."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "A03",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "把要求读成检查顺序"
+      },
+      "cues": [
+        {
+          "id": "E01-A022",
+          "narration": {
+            "zh-CN": "现在回到采用要求。不要只找一条红字，而要把所有没有满足的条件留下来，判断它们分别卡在哪一层。"
+          },
+          "subtitles": {
+            "zh-CN": "现在回到采用要求。不要只找一条红字，而要把所有没有满足的条件留下来，判断它们分别卡在哪一层。",
+            "en": "Keep every failed requirement, rather than stopping at the first red line."
+          }
+        },
+        {
+          "id": "E01-A023",
+          "narration": {
+            "zh-CN": "这份定义先检查独立身份，以及宗教管理权限。一个头衔很高的统治者，也不能只凭身份就跳过后者。"
+          },
+          "subtitles": {
+            "zh-CN": "这份定义先检查独立身份，以及宗教管理权限。一个头衔很高的统治者，也不能只凭身份就跳过后者。",
+            "en": "The definition checks independence and religious authority; a high title alone does not replace authority."
+          }
+        },
+        {
+          "id": "E01-A024",
+          "narration": {
+            "zh-CN": "有宗教领袖时，要核对本人是否满足领袖这条路线，或是否通过规则承认的神学代理关系取得管理权限。"
+          },
+          "subtitles": {
+            "zh-CN": "有宗教领袖时，要核对本人是否满足领袖这条路线，或是否通过规则承认的神学代理关系取得管理权限。",
+            "en": "With a head of faith, check the head-of-faith route and the permitted theological-agent relationship."
+          }
+        },
+        {
+          "id": "E01-A025",
+          "narration": {
+            "zh-CN": "没有宗教领袖，也不是所有人都能随意管理。脚本还有神权或神学代理关系，以及奉献等级等检查。"
+          },
+          "subtitles": {
+            "zh-CN": "没有宗教领袖，也不是所有人都能随意管理。脚本还有神权或神学代理关系，以及奉献等级等检查。",
+            "en": "Without a head of faith, the rule still checks theocracy or theological-agent relations and devotion."
+          }
+        },
+        {
+          "id": "E01-A026",
+          "narration": {
+            "zh-CN": "接着看土地与县主。目标必须符合相对操作者的领属要求，县的持有人还必须与操作者同信仰。"
+          },
+          "subtitles": {
+            "zh-CN": "接着看土地与县主。目标必须符合相对操作者的领属要求，县的持有人还必须与操作者同信仰。",
+            "en": "Next, the target must meet the actor's realm relationship, and its county holder must share the actor's faith."
+          }
+        },
+        {
+          "id": "E01-A027",
+          "narration": {
+            "zh-CN": "这里检查的是同信仰，不能擅自换成同一种礼仪；也不能因为县民已经改信，就略过县主本人。"
+          },
+          "subtitles": {
+            "zh-CN": "这里检查的是同信仰，不能擅自换成同一种礼仪；也不能因为县民已经改信，就略过县主本人。",
+            "en": "The check is for the same faith, not necessarily the same rite or merely converted local people."
+          }
+        },
+        {
+          "id": "E01-A028",
+          "narration": {
+            "zh-CN": "然后问名单有没有空间，目标是不是已经属于自己。已经在名单里的站点，不需要再采用一次。"
+          },
+          "subtitles": {
+            "zh-CN": "然后问名单有没有空间，目标是不是已经属于自己。已经在名单里的站点，不需要再采用一次。",
+            "en": "Check capacity and existing membership next. A site already on your list is not a new adoption target."
+          }
+        },
+        {
+          "id": "E01-A029",
+          "narration": {
+            "zh-CN": "候选从哪里来，也值得看一眼。采用的小组件先从操作者领地的县出发，再枚举这些县里的圣地。"
+          },
+          "subtitles": {
+            "zh-CN": "候选从哪里来，也值得看一眼。采用的小组件先从操作者领地的县出发，再枚举这些县里的圣地。",
+            "en": "The adoption widget starts with counties in the actor's realm, then enumerates their holy sites."
+          }
+        },
+        {
+          "id": "E01-A030",
+          "narration": {
+            "zh-CN": "这一步是在找值得继续检查的对象，不是给每个对象发通过证明。列表里看得见，最终要求仍然可能拒绝。"
+          },
+          "subtitles": {
+            "zh-CN": "这一步是在找值得继续检查的对象，不是给每个对象发通过证明。列表里看得见，最终要求仍然可能拒绝。",
+            "en": "Enumeration finds objects to examine; appearing in the list does not certify final legality."
+          }
+        },
+        {
+          "id": "E01-A031",
+          "narration": {
+            "zh-CN": "对智能体来说，候选来源与拒绝理由都要留下。这样下次局面变化，才能知道应该重新检查哪些目标。"
+          },
+          "subtitles": {
+            "zh-CN": "对智能体来说，候选来源与拒绝理由都要留下。这样下次局面变化，才能知道应该重新检查哪些目标。",
+            "en": "The agent should keep candidate provenance and rejection reasons to know what to reevaluate after a change."
+          }
+        },
+        {
+          "id": "E01-A032",
+          "narration": {
+            "zh-CN": "数量条件要读取当前宗教的实际设置。我们不会把某份默认数字，讲成所有宗教和所有模组都不能改变的上限。"
+          },
+          "subtitles": {
+            "zh-CN": "数量条件要读取当前宗教的实际设置。我们不会把某份默认数字，讲成所有宗教和所有模组都不能改变的上限。",
+            "en": "Read the religion's actual limits; defaults are not universal rules across religions and mods."
+          }
+        },
+        {
+          "id": "E01-A033",
+          "narration": {
+            "zh-CN": "地理也有独立的一栏：目标所属法理王国与已经记录的圣地使用情况，会影响这一步是否允许。"
+          },
+          "subtitles": {
+            "zh-CN": "地理也有独立的一栏：目标所属法理王国与已经记录的圣地使用情况，会影响这一步是否允许。",
+            "en": "Geography has its own check, involving the target's de jure kingdom and recorded holy-site use."
+          }
+        },
+        {
+          "id": "E01-A034",
+          "narration": {
+            "zh-CN": "这不能随口概括成一个王国只能有一座圣地。具体记录属于谁，怎样形成，必须沿着当前规则核对。"
+          },
+          "subtitles": {
+            "zh-CN": "这不能随口概括成一个王国只能有一座圣地。具体记录属于谁，怎样形成，必须沿着当前规则核对。",
+            "en": "Do not reduce that to one holy site per kingdom; the recorded rule is more specific."
+          }
+        },
+        {
+          "id": "E01-A035",
+          "narration": {
+            "zh-CN": "还有一个容易漏掉的条件：这个站点至少要有一个关联信仰，仍然拥有伯爵领信众。"
+          },
+          "subtitles": {
+            "zh-CN": "还有一个容易漏掉的条件：这个站点至少要有一个关联信仰，仍然拥有伯爵领信众。",
+            "en": "At least one associated faith must still have county followers."
+          }
+        },
+        {
+          "id": "E01-A036",
+          "narration": {
+            "zh-CN": "地点还在地图上，或者名字很有历史，并不能代替这条检查。缺的是活跃关联，不只是土地是否存在。"
+          },
+          "subtitles": {
+            "zh-CN": "地点还在地图上，或者名字很有历史，并不能代替这条检查。缺的是活跃关联，不只是土地是否存在。",
+            "en": "A surviving place or historic name does not prove the required living faith association."
+          }
+        },
+        {
+          "id": "E01-A037",
+          "narration": {
+            "zh-CN": "宗教兼容是下一组问题，我们马上单独展开。先记住，它通过了，也不会抹掉刚才那些共同条件。"
+          },
+          "subtitles": {
+            "zh-CN": "宗教兼容是下一组问题，我们马上单独展开。先记住，它通过了，也不会抹掉刚才那些共同条件。",
+            "en": "Compatibility is another check. Passing it does not erase the shared requirements we just covered."
+          }
+        },
+        {
+          "id": "E01-A038",
+          "narration": {
+            "zh-CN": "最后还要看实际报价、能否支付，以及这个动作是否仍在冷却。能列出候选，与现在能点确认，是两回事。"
+          },
+          "subtitles": {
+            "zh-CN": "最后还要看实际报价、能否支付，以及这个动作是否仍在冷却。能列出候选，与现在能点确认，是两回事。",
+            "en": "Finally, read the actual price, affordability, and cooldown. Being a candidate is not final permission."
+          }
+        },
+        {
+          "id": "E01-A039",
+          "narration": {
+            "zh-CN": "因此一条有用的计划，不是简单说能或不能，而是说清：哪条失败，补它要什么，补完还有没有下一道门。"
+          },
+          "subtitles": {
+            "zh-CN": "因此一条有用的计划，不是简单说能或不能，而是说清：哪条失败，补它要什么，补完还有没有下一道门。",
+            "en": "A useful plan names each obstacle, its remedy, and the remaining checks after that remedy."
+          }
+        },
+        {
+          "id": "E01-A040",
+          "narration": {
+            "zh-CN": "如果读不到某个条件，就把它记为尚未确认。看不见完整名单，不等于没有候选；没有接口，也不等于游戏拒绝。"
+          },
+          "subtitles": {
+            "zh-CN": "如果读不到某个条件，就把它记为尚未确认。看不见完整名单，不等于没有候选；没有接口，也不等于游戏拒绝。",
+            "en": "Unknown conditions stay unknown. Incomplete observation is not the same as an empty candidate list or rejection."
+          }
+        },
+        {
+          "id": "E01-A041",
+          "narration": {
+            "zh-CN": "这样排查也能少走弯路：若先卡在管理权，贸然为一个宗教关系去改革，可能花了代价仍然不能采用。"
+          },
+          "subtitles": {
+            "zh-CN": "这样排查也能少走弯路：若先卡在管理权，贸然为一个宗教关系去改革，可能花了代价仍然不能采用。",
+            "en": "If authority is already missing, reforming compatibility first may spend resources without unlocking adoption."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "A04",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "跨教兼容的两条路线"
+      },
+      "cues": [
+        {
+          "id": "E01-A042",
+          "narration": {
+            "zh-CN": "跨教这一段，最值得停下来读的是至少一项。它给出的是两条可替代路线，不是让你把两条都凑齐。"
+          },
+          "subtitles": {
+            "zh-CN": "跨教这一段，最值得停下来读的是至少一项。它给出的是两条可替代路线，不是让你把两条都凑齐。",
+            "en": "The key phrase is at least one: these are alternative routes, not two requirements to satisfy together."
+          }
+        },
+        {
+          "id": "E01-A043",
+          "narration": {
+            "zh-CN": "第一条，是操作者所在礼仪具有允许采用任意信仰圣地的参数。它改变的是采用的宗教兼容许可。"
+          },
+          "subtitles": {
+            "zh-CN": "第一条，是操作者所在礼仪具有允许采用任意信仰圣地的参数。它改变的是采用的宗教兼容许可。",
+            "en": "The first route is the actor's rite parameter permitting adoption of any faith's holy site."
+          }
+        },
+        {
+          "id": "E01-A044",
+          "narration": {
+            "zh-CN": "听见任意两个字，很容易把它理解成什么都不用管。实际上，独立、管理权、县主与空间等共同要求仍在。"
+          },
+          "subtitles": {
+            "zh-CN": "听见任意两个字，很容易把它理解成什么都不用管。实际上，独立、管理权、县主与空间等共同要求仍在。",
+            "en": "Any faith does not mean no other checks; authority, land, holder faith, and capacity still matter."
+          }
+        },
+        {
+          "id": "E01-A045",
+          "narration": {
+            "zh-CN": "第二条，不靠这项任意采用权限，而是在目标关联的信仰中，找到一个符合兼容条件的对象。"
+          },
+          "subtitles": {
+            "zh-CN": "第二条，不靠这项任意采用权限，而是在目标关联的信仰中，找到一个符合兼容条件的对象。",
+            "en": "The other route finds a compatible faith among the site's associated faiths."
+          }
+        },
+        {
+          "id": "E01-A046",
+          "narration": {
+            "zh-CN": "这个对象可以与操作者属于同一宗教；也可以通过规则检查的综摄关系满足对应部分。"
+          },
+          "subtitles": {
+            "zh-CN": "这个对象可以与操作者属于同一宗教；也可以通过规则检查的综摄关系满足对应部分。",
+            "en": "That faith may share the actor's religion, or satisfy the relevant syncretism relationship."
+          }
+        },
+        {
+          "id": "E01-A047",
+          "narration": {
+            "zh-CN": "这里的同宗教，不等于同信仰。先分清用的是哪一层分类，再读敌意，才不会把一句简写理解得过宽。"
+          },
+          "subtitles": {
+            "zh-CN": "这里的同宗教，不等于同信仰。先分清用的是哪一层分类，再读敌意，才不会把一句简写理解得过宽。",
+            "en": "Shared religion is not the same as shared faith; identify the category before evaluating hostility."
+          }
+        },
+        {
+          "id": "E01-A048",
+          "narration": {
+            "zh-CN": "但还没完：操作者的信仰对它的敌意，必须不高于迷途。同宗教这几个字，并不单独包办整条路线。"
+          },
+          "subtitles": {
+            "zh-CN": "但还没完：操作者的信仰对它的敌意，必须不高于迷途。同宗教这几个字，并不单独包办整条路线。",
+            "en": "The actor's faith must also regard it as no worse than astray; shared religion alone is insufficient."
+          }
+        },
+        {
+          "id": "E01-A049",
+          "narration": {
+            "zh-CN": "这里有方向。我们检查的是操作者的信仰怎样看待目标信仰，不能把对方对我们的态度直接倒过来使用。"
+          },
+          "subtitles": {
+            "zh-CN": "这里有方向。我们检查的是操作者的信仰怎样看待目标信仰，不能把对方对我们的态度直接倒过来使用。",
+            "en": "Direction matters: evaluate how the actor's faith views the target, not automatically the reverse."
+          }
+        },
+        {
+          "id": "E01-A050",
+          "narration": {
+            "zh-CN": "综摄也不是把两个信仰合并成一个。它在这里提供的是一条特定关系，后面仍然接着敌意等条件。"
+          },
+          "subtitles": {
+            "zh-CN": "综摄也不是把两个信仰合并成一个。它在这里提供的是一条特定关系，后面仍然接着敌意等条件。",
+            "en": "Syncretism does not merge two faiths; here it supplies a relationship within a larger check."
+          }
+        },
+        {
+          "id": "E01-A051",
+          "narration": {
+            "zh-CN": "而且，站点可能关联好几个信仰。只要有一个满足这条兼容分支，就不能因为另一个不兼容而提前判死。"
+          },
+          "subtitles": {
+            "zh-CN": "而且，站点可能关联好几个信仰。只要有一个满足这条兼容分支，就不能因为另一个不兼容而提前判死。",
+            "en": "With several associated faiths, one compatible witness can satisfy this branch despite another incompatible faith."
+          }
+        },
+        {
+          "id": "E01-A052",
+          "narration": {
+            "zh-CN": "这正是为什么要先看完整关联名单：你熟悉的那个信仰，也许不是规则最终使用的那个见证对象。"
+          },
+          "subtitles": {
+            "zh-CN": "这正是为什么要先看完整关联名单：你熟悉的那个信仰，也许不是规则最终使用的那个见证对象。",
+            "en": "The best-known faith may not be the association that actually satisfies the rule."
+          }
+        },
+        {
+          "id": "E01-A053",
+          "narration": {
+            "zh-CN": "再把刚才的活跃信众条件拿回来。兼容的一教，与仍有伯爵领信众的一教，脚本并没有要求必须相同。"
+          },
+          "subtitles": {
+            "zh-CN": "再把刚才的活跃信众条件拿回来。兼容的一教，与仍有伯爵领信众的一教，脚本并没有要求必须相同。",
+            "en": "The compatible faith and the faith retaining county followers need not be the same witness."
+          }
+        },
+        {
+          "id": "E01-A054",
+          "narration": {
+            "zh-CN": "因此不能只做一个含糊的宗教通过标记。要分别回答：谁提供兼容，谁提供仍有信众的条件。"
+          },
+          "subtitles": {
+            "zh-CN": "因此不能只做一个含糊的宗教通过标记。要分别回答：谁提供兼容，谁提供仍有信众的条件。",
+            "en": "Record two answers separately: which faith supplies compatibility, and which supplies surviving followers."
+          }
+        },
+        {
+          "id": "E01-A055",
+          "narration": {
+            "zh-CN": "反过来，若所有关联信仰都没有县信众，仅仅补上任意采用权限，也不能替你修复这一道共同门槛。"
+          },
+          "subtitles": {
+            "zh-CN": "反过来，若所有关联信仰都没有县信众，仅仅补上任意采用权限，也不能替你修复这一道共同门槛。",
+            "en": "If no associated faith has county followers, arbitrary adoption permission cannot repair that separate failure."
+          }
+        },
+        {
+          "id": "E01-A056",
+          "narration": {
+            "zh-CN": "顺应的核心定义，正是任意采用参数的一个来源；嗣子论也声明了这项权限，但取得它还有自己的准入。"
+          },
+          "subtitles": {
+            "zh-CN": "顺应的核心定义，正是任意采用参数的一个来源；嗣子论也声明了这项权限，但取得它还有自己的准入。",
+            "en": "Adaptive core tenets and Adoptionism declare this permission; obtaining them has separate eligibility rules."
+          }
+        },
+        {
+          "id": "E01-A057",
+          "narration": {
+            "zh-CN": "伊斯兰综摄主义提供的是面向目标宗教的另一种关系来源。它与任意采用的覆盖范围，不能只凭名字画等号。"
+          },
+          "subtitles": {
+            "zh-CN": "伊斯兰综摄主义提供的是面向目标宗教的另一种关系来源。它与任意采用的覆盖范围，不能只凭名字画等号。",
+            "en": "Islamic syncretism supplies a targeted relationship; its coverage is not identical to arbitrary adoption."
+          }
+        },
+        {
+          "id": "E01-A058",
+          "narration": {
+            "zh-CN": "选择路线时，先问自己的目标有哪些，再比较改革、关系与其他连带变化；不要因为一座圣地就盲改整套安排。"
+          },
+          "subtitles": {
+            "zh-CN": "选择路线时，先问自己的目标有哪些，再比较改革、关系与其他连带变化；不要因为一座圣地就盲改整套安排。",
+            "en": "Choose by your actual targets and the wider cost of reform, rather than changing everything for one site."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "A05",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "名字与作用对象"
+      },
+      "cues": [
+        {
+          "id": "E01-A059",
+          "narration": {
+            "zh-CN": "现在来看一个特别容易误判的细节：界面上都写着顺应，不代表它们给操作者提供完全相同的权限。"
+          },
+          "subtitles": {
+            "zh-CN": "现在来看一个特别容易误判的细节：界面上都写着顺应，不代表它们给操作者提供完全相同的权限。",
+            "en": "The same Adaptive label does not guarantee the same permissions."
+          }
+        },
+        {
+          "id": "E01-A060",
+          "narration": {
+            "zh-CN": "这套宗教结构里，要把信仰、礼仪，以及人物自己的个人信条分开。共享一个信仰，也可能采用不同礼仪。"
+          },
+          "subtitles": {
+            "zh-CN": "这套宗教结构里，要把信仰、礼仪，以及人物自己的个人信条分开。共享一个信仰，也可能采用不同礼仪。",
+            "en": "Separate faith, rite, and personal tenets; characters can share a faith while following different rites."
+          }
+        },
+        {
+          "id": "E01-A061",
+          "narration": {
+            "zh-CN": "采用兼容这条规则，检查的是操作者所在礼仪的对应参数。它不是在问人物身上有没有任何同名信条。"
+          },
+          "subtitles": {
+            "zh-CN": "采用兼容这条规则，检查的是操作者所在礼仪的对应参数。它不是在问人物身上有没有任何同名信条。",
+            "en": "This compatibility rule checks the actor's rite parameter, not merely any identically named personal tenet."
+          }
+        },
+        {
+          "id": "E01-A062",
+          "narration": {
+            "zh-CN": "固定来源里，顺应核心带有任意采用权限，个人版本没有声明这一项。少了它，就不能靠名字补出来。"
+          },
+          "subtitles": {
+            "zh-CN": "固定来源里，顺应核心带有任意采用权限，个人版本没有声明这一项。少了它，就不能靠名字补出来。",
+            "en": "The pinned Adaptive core declares arbitrary-adoption permission; its personal version does not."
+          }
+        },
+        {
+          "id": "E01-A063",
+          "narration": {
+            "zh-CN": "如果只给一个人物加入个人选项，就先观察这个人物的个人参数。不要顺手宣布整个礼仪或全体同信仰角色都变了。"
+          },
+          "subtitles": {
+            "zh-CN": "如果只给一个人物加入个人选项，就先观察这个人物的个人参数。不要顺手宣布整个礼仪或全体同信仰角色都变了。",
+            "en": "A personal option requires a personal-parameter observation; it does not prove a rite-wide or faith-wide change."
+          }
+        },
+        {
+          "id": "E01-A064",
+          "narration": {
+            "zh-CN": "这不等于个人信条毫无作用，只说明不能把一个位置的效果，搬到另一个位置上充当采用资格。"
+          },
+          "subtitles": {
+            "zh-CN": "这不等于个人信条毫无作用，只说明不能把一个位置的效果，搬到另一个位置上充当采用资格。",
+            "en": "That does not make personal tenets useless; it means their effects cannot be transplanted into this permission check."
+          }
+        },
+        {
+          "id": "E01-A065",
+          "narration": {
+            "zh-CN": "同样，不能把某个信仰主礼仪的参数，直接当作当前操作者礼仪的参数。读取时先确认对象究竟是谁。"
+          },
+          "subtitles": {
+            "zh-CN": "同样，不能把某个信仰主礼仪的参数，直接当作当前操作者礼仪的参数。读取时先确认对象究竟是谁。",
+            "en": "Do not substitute a faith's main-rite parameter for the current actor's rite without checking identity."
+          }
+        },
+        {
+          "id": "E01-A066",
+          "narration": {
+            "zh-CN": "对游玩智能体而言，这里最有价值的不是记住一个中文答案，而是学会保留权限来源和实际作用对象。"
+          },
+          "subtitles": {
+            "zh-CN": "对游玩智能体而言，这里最有价值的不是记住一个中文答案，而是学会保留权限来源和实际作用对象。",
+            "en": "For the playing agent, the reusable lesson is to keep the source and scope of each permission."
+          }
+        },
+        {
+          "id": "E01-A067",
+          "narration": {
+            "zh-CN": "当人物、礼仪或核心配置发生变化，先重新读要求，再决定下一步。旧面板曾经通过，不能担保新状态仍然通过。"
+          },
+          "subtitles": {
+            "zh-CN": "当人物、礼仪或核心配置发生变化，先重新读要求，再决定下一步。旧面板曾经通过，不能担保新状态仍然通过。",
+            "en": "After an actor, rite, or core change, reread requirements instead of relying on an earlier pass."
+          }
+        },
+        {
+          "id": "E01-A068",
+          "narration": {
+            "zh-CN": "所以这段对照的落点很简单：别只问有没有顺应；要问顺应放在哪里，谁在使用，最终要求是否真的改变。"
+          },
+          "subtitles": {
+            "zh-CN": "所以这段对照的落点很简单：别只问有没有顺应；要问顺应放在哪里，谁在使用，最终要求是否真的改变。",
+            "en": "Ask where Adaptive sits, who uses it, and whether the evaluated requirement actually changes."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "A06",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "比较路线与准备方案"
+      },
+      "cues": [
+        {
+          "id": "E01-A069",
+          "narration": {
+            "zh-CN": "要比较这些路线，最好从一份冻结的母档分别开始。我们需要同一个问题的几种配置，而不是三段不相干的传奇。"
+          },
+          "subtitles": {
+            "zh-CN": "要比较这些路线，最好从一份冻结的母档分别开始。我们需要同一个问题的几种配置，而不是三段不相干的传奇。",
+            "en": "Compare configurations from one frozen baseline, rather than three unrelated success stories."
+          }
+        },
+        {
+          "id": "E01-A070",
+          "narration": {
+            "zh-CN": "第一臂保留出发配置，观察实际通过与失败的要求。我们不预设它一定不兼容，实际列表才是决策输入。"
+          },
+          "subtitles": {
+            "zh-CN": "第一臂保留出发配置，观察实际通过与失败的要求。我们不预设它一定不兼容，实际列表才是决策输入。",
+            "en": "Arm A keeps the starting setup and records actual passes and failures, without assuming incompatibility."
+          }
+        },
+        {
+          "id": "E01-A071",
+          "narration": {
+            "zh-CN": "每次回载后，重新确认人物、礼仪和目标站点。上一次记录过的名字，只能帮助定位，不能代替这一次的实际身份。"
+          },
+          "subtitles": {
+            "zh-CN": "每次回载后，重新确认人物、礼仪和目标站点。上一次记录过的名字，只能帮助定位，不能代替这一次的实际身份。",
+            "en": "After each reload, rebind actor, rite, and site identities instead of reusing an earlier name or reference."
+          }
+        },
+        {
+          "id": "E01-A072",
+          "narration": {
+            "zh-CN": "第二条计划，是准备取得任意采用权限，再检查同一个目标。先看实际分支变化，不提前宣布采用成功。"
+          },
+          "subtitles": {
+            "zh-CN": "第二条计划，是准备取得任意采用权限，再检查同一个目标。先看实际分支变化，不提前宣布采用成功。",
+            "en": "The second plan prepares arbitrary-adoption permission, then checks the same target without assuming success."
+          }
+        },
+        {
+          "id": "E01-A073",
+          "narration": {
+            "zh-CN": "第三条候选路线，是面向目标宗教的综摄兼容。本期只安排前两臂实拍，这一条先作为规则对照计划。"
+          },
+          "subtitles": {
+            "zh-CN": "第三条候选路线，是面向目标宗教的综摄兼容。本期只安排前两臂实拍，这一条先作为规则对照计划。",
+            "en": "Targeted syncretism is a third candidate route. This episode plans live capture for A and B; this route remains a rule comparison."
+          }
+        },
+        {
+          "id": "E01-A074",
+          "narration": {
+            "zh-CN": "若合法转换同时改变了别的信条或教义，就把这些变化一并列出。不能把整套改革，剪成只改一个开关的实验。"
+          },
+          "subtitles": {
+            "zh-CN": "若合法转换同时改变了别的信条或教义，就把这些变化一并列出。不能把整套改革，剪成只改一个开关的实验。",
+            "en": "List every tenet and doctrine changed by a lawful conversion; do not disguise a full reform as one changed switch."
+          }
+        },
+        {
+          "id": "E01-A075",
+          "narration": {
+            "zh-CN": "本期方案是八六七年阿拔斯的独立机制实验，准备额外两千虔诚，B臂拟准备马立克礼仪。采用仍按原版规则，准备内容不算正常游玩所得。"
+          },
+          "subtitles": {
+            "zh-CN": "本期方案是八六七年阿拔斯的独立机制实验，准备额外两千虔诚，B臂拟准备马立克礼仪。采用仍按原版规则，准备内容不算正常游玩所得。",
+            "en": "The plan uses an 867 Abbasid mechanism case, 2,000 prepared piety, and proposed Maliki preparation for B. Original adoption rules still apply."
+          }
+        },
+        {
+          "id": "E01-A076",
+          "narration": {
+            "zh-CN": "如果某一臂没有合法取得所需配置，就把它留下为未完成对照。不能为了表格整齐，替游戏填上一个预想结果。"
+          },
+          "subtitles": {
+            "zh-CN": "如果某一臂没有合法取得所需配置，就把它留下为未完成对照。不能为了表格整齐，替游戏填上一个预想结果。",
+            "en": "An unattainable configuration remains an unfinished comparison, not an invented result to complete the table."
+          }
+        },
+        {
+          "id": "E01-A077",
+          "narration": {
+            "zh-CN": "到了能提交的那一步，只执行一次当前合法的采用，再独立读取名单与资源。收到请求，不等于动作已经生效。"
+          },
+          "subtitles": {
+            "zh-CN": "到了能提交的那一步，只执行一次当前合法的采用，再独立读取名单与资源。收到请求，不等于动作已经生效。",
+            "en": "Submit one currently legal adoption, then independently read membership and resources; acknowledgement is not success."
+          }
+        },
+        {
+          "id": "E01-A078",
+          "narration": {
+            "zh-CN": "结果还不清楚时，先查当前状态，不要再点一次。否则你可能是在比较重复操作，而不是原来设计的路线。"
+          },
+          "subtitles": {
+            "zh-CN": "结果还不清楚时，先查当前状态，不要再点一次。否则你可能是在比较重复操作，而不是原来设计的路线。",
+            "en": "If the result is uncertain, query state before retrying, so repeated actions do not contaminate the comparison."
+          }
+        },
+        {
+          "id": "E01-A079",
+          "narration": {
+            "zh-CN": "最终我们希望留下的是一张能执行的判断表：共同条件、兼容路线、尚缺资格，以及下一步值得付出的代价。"
+          },
+          "subtitles": {
+            "zh-CN": "最终我们希望留下的是一张能执行的判断表：共同条件、兼容路线、尚缺资格，以及下一步值得付出的代价。",
+            "en": "The goal is an actionable table of shared checks, compatibility routes, remaining gaps, and worthwhile next steps."
+          }
+        },
+        {
+          "id": "E01-A080",
+          "narration": {
+            "zh-CN": "读懂这些以后，才轮到下一个问题：一次真正的采用，究竟新增了什么，又没有替你改变什么？"
+          },
+          "subtitles": {
+            "zh-CN": "读懂这些以后，才轮到下一个问题：一次真正的采用，究竟新增了什么，又没有替你改变什么？",
+            "en": "Then comes the next question: what does an actual adoption add, and what remains unchanged?"
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "adoption-audit",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "采用前后的观察合同"
+      },
+      "cues": [
+        {
+          "id": "E01-B001",
+          "narration": {
+            "zh-CN": "真正按下采用之前，我们先约定，怎样才算回答了刚才的问题。"
+          },
+          "subtitles": {
+            "zh-CN": "真正按下采用之前，我们先约定，怎样才算回答了刚才的问题。",
+            "en": "Before adopting, let's decide what would actually answer our question."
+          }
+        },
+        {
+          "id": "E01-B002",
+          "narration": {
+            "zh-CN": "按钮亮起，只说明这一步看起来已经具备资格；地图上的颜色，也不能替代信仰自己的圣地名单。"
+          },
+          "subtitles": {
+            "zh-CN": "按钮亮起，只说明这一步看起来已经具备资格；地图上的颜色，也不能替代信仰自己的圣地名单。",
+            "en": "An enabled button suggests eligibility. Map colour cannot stand in for the faith's holy-site list."
+          }
+        },
+        {
+          "id": "E01-B003",
+          "narration": {
+            "zh-CN": "第一张要保存的，是操作前的名单：目标在不在里面，与哪些信仰有关，现在分别是什么等级。"
+          },
+          "subtitles": {
+            "zh-CN": "第一张要保存的，是操作前的名单：目标在不在里面，与哪些信仰有关，现在分别是什么等级。",
+            "en": "First, save the pre-action list: membership, related faiths, and the site's rank for each."
+          }
+        },
+        {
+          "id": "E01-B004",
+          "narration": {
+            "zh-CN": "第二张是目标自己的身份。地图名字相同，不能保证我们前后看的就是同一座站点。"
+          },
+          "subtitles": {
+            "zh-CN": "第二张是目标自己的身份。地图名字相同，不能保证我们前后看的就是同一座站点。",
+            "en": "Second, identify the site itself. Matching map names do not guarantee the same object."
+          }
+        },
+        {
+          "id": "E01-B005",
+          "narration": {
+            "zh-CN": "第三张才是交易账：谁付钱、当前报价多少、有没有免费额度，以及这一项动作是否还在冷却。"
+          },
+          "subtitles": {
+            "zh-CN": "第三张才是交易账：谁付钱、当前报价多少、有没有免费额度，以及这一项动作是否还在冷却。",
+            "en": "Third, record the transaction: payer, quoted cost, free uses, and this action's cooldown."
+          }
+        },
+        {
+          "id": "E01-B006",
+          "narration": {
+            "zh-CN": "然后只执行一次，再从新的状态重新打开名单；先前那张截图，不能证明后来真的新增了关联。"
+          },
+          "subtitles": {
+            "zh-CN": "然后只执行一次，再从新的状态重新打开名单；先前那张截图，不能证明后来真的新增了关联。",
+            "en": "Execute once, then read a fresh list. The earlier screenshot cannot prove a new association appeared."
+          }
+        },
+        {
+          "id": "E01-B007",
+          "narration": {
+            "zh-CN": "采用的脚本明确写了添加圣地关联，随后处理尚有的免费次数；这给了我们要检查的方向。"
+          },
+          "subtitles": {
+            "zh-CN": "采用的脚本明确写了添加圣地关联，随后处理尚有的免费次数；这给了我们要检查的方向。",
+            "en": "The script declares adding a holy-site association, then consuming an available free use."
+          }
+        },
+        {
+          "id": "E01-B008",
+          "narration": {
+            "zh-CN": "但这几行没有替我们回答默认等级、库存是否保留，或者其他信仰的关系有没有改变。"
+          },
+          "subtitles": {
+            "zh-CN": "但这几行没有替我们回答默认等级、库存是否保留，或者其他信仰的关系有没有改变。",
+            "en": "Those lines do not settle the default rank, inventory retention, or other faiths' relationships."
+          }
+        },
+        {
+          "id": "E01-B009",
+          "narration": {
+            "zh-CN": "所以不要抢着把新关联叫作普通，也不要看见采用二字，就想当然地给它重新挑一种加成。"
+          },
+          "subtitles": {
+            "zh-CN": "所以不要抢着把新关联叫作普通，也不要看见采用二字，就想当然地给它重新挑一种加成。",
+            "en": "Do not assume the adopted rank, or imagine adoption lets us pick a different bonus template."
+          }
+        },
+        {
+          "id": "E01-B010",
+          "narration": {
+            "zh-CN": "这也是我希望游玩智能体学会的一件事：操作完成后，重新认识世界，而不是把预期抄进结果栏。"
+          },
+          "subtitles": {
+            "zh-CN": "这也是我希望游玩智能体学会的一件事：操作完成后，重新认识世界，而不是把预期抄进结果栏。",
+            "en": "The playing agent should read the changed world, rather than copy its prediction into the result field."
+          }
+        },
+        {
+          "id": "E01-B011",
+          "narration": {
+            "zh-CN": "如果回包只说请求收到，或者界面一时没更新，我们先查询当前状态，不再补按一次。"
+          },
+          "subtitles": {
+            "zh-CN": "如果回包只说请求收到，或者界面一时没更新，我们先查询当前状态，不再补按一次。",
+            "en": "If we only receive an acknowledgement or a stale display, query the state before doing anything again."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "creation",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "采用还是新建"
+      },
+      "cues": [
+        {
+          "id": "E01-B013",
+          "narration": {
+            "zh-CN": "现在把目标换一下：如果我需要的不是加入一个已有地点，而是自己选择地点和类型呢？"
+          },
+          "subtitles": {
+            "zh-CN": "现在把目标换一下：如果我需要的不是加入一个已有地点，而是自己选择地点和类型呢？",
+            "en": "Now change the goal: what if I want to choose the location and type myself?"
+          }
+        },
+        {
+          "id": "E01-B014",
+          "narration": {
+            "zh-CN": "这时才轮到新建。采用接入已有站点，新建界面则要分别选择类型、男爵领和投入的圣物。"
+          },
+          "subtitles": {
+            "zh-CN": "这时才轮到新建。采用接入已有站点，新建界面则要分别选择类型、男爵领和投入的圣物。",
+            "en": "That is a creation problem. Its interface separately selects a type, a barony, and relics."
+          }
+        },
+        {
+          "id": "E01-B015",
+          "narration": {
+            "zh-CN": "这三张名单不要混在一起：有想要的类型，不代表想要的位置可用；有位置，也不代表手里有合格圣物。"
+          },
+          "subtitles": {
+            "zh-CN": "这三张名单不要混在一起：有想要的类型，不代表想要的位置可用；有位置，也不代表手里有合格圣物。",
+            "en": "Keep those lists separate. An available type does not guarantee a valid location or suitable relics."
+          }
+        },
+        {
+          "id": "E01-B016",
+          "narration": {
+            "zh-CN": "画面可以先选一种类型，再换一个位置，让观众看清究竟是哪一项要求跟着变化。"
+          },
+          "subtitles": {
+            "zh-CN": "画面可以先选一种类型，再换一个位置，让观众看清究竟是哪一项要求跟着变化。",
+            "en": "Select a type, then change the location, so we can see which requirement actually changes."
+          }
+        },
+        {
+          "id": "E01-B017",
+          "narration": {
+            "zh-CN": "但真正提交之前，仍然要看最后的原版许可和报价，不能把出现在选择器里当成已经获准创建。"
+          },
+          "subtitles": {
+            "zh-CN": "但真正提交之前，仍然要看最后的原版许可和报价，不能把出现在选择器里当成已经获准创建。",
+            "en": "Before submitting, still read the final permission and quote. Appearing in a picker is not approval."
+          }
+        },
+        {
+          "id": "E01-B018",
+          "narration": {
+            "zh-CN": "有时游戏会提醒，首都能够新建圣地。这个提醒很有用，但它只是在检查首都这一个机会。"
+          },
+          "subtitles": {
+            "zh-CN": "有时游戏会提醒，首都能够新建圣地。这个提醒很有用，但它只是在检查首都这一个机会。",
+            "en": "A capital holy-site alert is useful, but its declared search considers that capital opportunity only."
+          }
+        },
+        {
+          "id": "E01-B019",
+          "narration": {
+            "zh-CN": "没有这条提醒，不能推出所有地方都不行；有这条提醒，也不能推出自己一定付得起。"
+          },
+          "subtitles": {
+            "zh-CN": "没有这条提醒，不能推出所有地方都不行；有这条提醒，也不能推出自己一定付得起。",
+            "en": "No alert does not mean every location is invalid; an alert does not prove affordability."
+          }
+        },
+        {
+          "id": "E01-B020",
+          "narration": {
+            "zh-CN": "提醒会查管理权限、地点、名额和一些圣物组合，却没有把付款能力一并保证下来。"
+          },
+          "subtitles": {
+            "zh-CN": "提醒会查管理权限、地点、名额和一些圣物组合，却没有把付款能力一并保证下来。",
+            "en": "The alert checks authority, location, capacity, and relic combinations, but does not guarantee payment."
+          }
+        },
+        {
+          "id": "E01-B021",
+          "narration": {
+            "zh-CN": "把它当作一个值得打开的线索，比把它当成最终承诺更适合做计划。"
+          },
+          "subtitles": {
+            "zh-CN": "把它当作一个值得打开的线索，比把它当成最终承诺更适合做计划。",
+            "en": "Treating it as a lead to inspect makes for a better plan than treating it as a promise."
+          }
+        },
+        {
+          "id": "E01-B022",
+          "narration": {
+            "zh-CN": "准备圣物时，要分别问：是不是自己的、有没有装备、当前信仰认不认可，以及品质组合够不够。"
+          },
+          "subtitles": {
+            "zh-CN": "准备圣物时，要分别问：是不是自己的、有没有装备、当前信仰认不认可，以及品质组合够不够。",
+            "en": "For the relics, ask separately about ownership, equipment, recognition, and the required quality combination."
+          }
+        },
+        {
+          "id": "E01-B023",
+          "narration": {
+            "zh-CN": "高品质和被认可不是同一件事；一件价值很高的宝物，也可能不满足眼前这份宗教要求。"
+          },
+          "subtitles": {
+            "zh-CN": "高品质和被认可不是同一件事；一件价值很高的宝物，也可能不满足眼前这份宗教要求。",
+            "en": "Quality and recognition are different. An expensive artifact may still fail this religious requirement."
+          }
+        },
+        {
+          "id": "E01-B024",
+          "narration": {
+            "zh-CN": "新建的起步门槛，与已有站点之后能够积累多少有效圣物贡献，也不是同一个数字。"
+          },
+          "subtitles": {
+            "zh-CN": "新建的起步门槛，与已有站点之后能够积累多少有效圣物贡献，也不是同一个数字。",
+            "en": "Creation's starting threshold is different from the effective relic contribution of an established site."
+          }
+        },
+        {
+          "id": "E01-B025",
+          "narration": {
+            "zh-CN": "这一期先把它们分别记账，下一期再追踪一件圣物，看看它到底让谁得到什么。"
+          },
+          "subtitles": {
+            "zh-CN": "这一期先把它们分别记账，下一期再追踪一件圣物，看看它到底让谁得到什么。",
+            "en": "For now, keep the accounts separate. Next episode, we'll follow a relic and its beneficiaries."
+          }
+        },
+        {
+          "id": "E01-B026",
+          "narration": {
+            "zh-CN": "选择采用还是新建，先由目标决定：要的是这个地方，还是某种只能重新规划的类型与位置。"
+          },
+          "subtitles": {
+            "zh-CN": "选择采用还是新建，先由目标决定：要的是这个地方，还是某种只能重新规划的类型与位置。",
+            "en": "Let the goal decide between adoption and creation: this existing place, or a chosen type and location."
+          }
+        },
+        {
+          "id": "E01-B027",
+          "narration": {
+            "zh-CN": "如果目标已经能由现有站点服务，就先检查采用；不要为一个没有实际用途的新类型多付一整套成本。"
+          },
+          "subtitles": {
+            "zh-CN": "如果目标已经能由现有站点服务，就先检查采用；不要为一个没有实际用途的新类型多付一整套成本。",
+            "en": "If an existing site serves the goal, examine adoption first before paying for unnecessary redesign."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "budget",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "免费额度与实际费用"
+      },
+      "cues": [
+        {
+          "id": "E01-B028",
+          "narration": {
+            "zh-CN": "接下来算一笔很容易被免费两个字遮住的账：免费次数，到底是谁的。"
+          },
+          "subtitles": {
+            "zh-CN": "接下来算一笔很容易被免费两个字遮住的账：免费次数，到底是谁的。",
+            "en": "Now for the cost hidden behind the word free: whose free uses are they?"
+          }
+        },
+        {
+          "id": "E01-B029",
+          "narration": {
+            "zh-CN": "这份版本的定义在新信仰建立时设置三次额度，记在信仰一侧，不是每位统治者各发三次。"
+          },
+          "subtitles": {
+            "zh-CN": "这份版本的定义在新信仰建立时设置三次额度，记在信仰一侧，不是每位统治者各发三次。",
+            "en": "These definitions grant three uses on creating a faith. They belong to the faith, not separately to each ruler."
+          }
+        },
+        {
+          "id": "E01-B030",
+          "narration": {
+            "zh-CN": "因此，规划时要看当前还剩多少，不能因为换了一个行动人物，就把账本重新填满。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，规划时要看当前还剩多少，不能因为换了一个行动人物，就把账本重新填满。",
+            "en": "Plan from the remaining balance. Changing the acting character does not refill that account."
+          }
+        },
+        {
+          "id": "E01-B031",
+          "narration": {
+            "zh-CN": "同样，看到新信仰的初始化规则，也不能反推眼前这份老信仰现在一定还有三次。"
+          },
+          "subtitles": {
+            "zh-CN": "同样，看到新信仰的初始化规则，也不能反推眼前这份老信仰现在一定还有三次。",
+            "en": "A new-faith initialization rule does not prove that an established faith still has three uses today."
+          }
+        },
+        {
+          "id": "E01-B032",
+          "narration": {
+            "zh-CN": "源码里的创建基准是两千虔诚，采用是一千；镜头里的成交价，要以当前原版报价和实际扣除为准。"
+          },
+          "subtitles": {
+            "zh-CN": "源码里的创建基准是两千虔诚，采用是一千；镜头里的成交价，要以当前原版报价和实际扣除为准。",
+            "en": "The declared base is two thousand piety for creation and one thousand for adoption; actual quotes and payment govern this run."
+          }
+        },
+        {
+          "id": "E01-B033",
+          "narration": {
+            "zh-CN": "有免费额时，相应脚本会走减免分支。我们保存动作前后的余额，才能知道这次到底用了哪一种支付。"
+          },
+          "subtitles": {
+            "zh-CN": "有免费额时，相应脚本会走减免分支。我们保存动作前后的余额，才能知道这次到底用了哪一种支付。",
+            "en": "Available free uses trigger the waiver branch. Compare both balances to learn how this transaction was paid."
+          }
+        },
+        {
+          "id": "E01-B034",
+          "narration": {
+            "zh-CN": "想连续做几步，就把整条链放在一起算；前一步花掉最后一次免费，后一步面对的世界已经不同。"
+          },
+          "subtitles": {
+            "zh-CN": "想连续做几步，就把整条链放在一起算；前一步花掉最后一次免费，后一步面对的世界已经不同。",
+            "en": "Budget the whole chain. Once a step spends the final free use, the next step faces different terms."
+          }
+        },
+        {
+          "id": "E01-B035",
+          "narration": {
+            "zh-CN": "冷却也是如此。采用、晋升、降级和放弃，各自有自己的决议冷却，并不是一把共同的五年锁。"
+          },
+          "subtitles": {
+            "zh-CN": "冷却也是如此。采用、晋升、降级和放弃，各自有自己的决议冷却，并不是一把共同的五年锁。",
+            "en": "Adoption, elevation, demotion, and abandonment have separate decision cooldowns, rather than one shared five-year lock."
+          }
+        },
+        {
+          "id": "E01-B036",
+          "narration": {
+            "zh-CN": "有免费额和没有免费额，脚本给出的冷却公式不同；最后一次额度附近，尤其值得核对实际结果。"
+          },
+          "subtitles": {
+            "zh-CN": "有免费额和没有免费额，脚本给出的冷却公式不同；最后一次额度附近，尤其值得核对实际结果。",
+            "en": "The declared formulas differ with and without free uses. Check the actual boundary after the final free action."
+          }
+        },
+        {
+          "id": "E01-B037",
+          "narration": {
+            "zh-CN": "新建又单独检查行动人物的创建锁。还有免费次数，并不意味着一把已经存在的锁可以忽略。"
+          },
+          "subtitles": {
+            "zh-CN": "新建又单独检查行动人物的创建锁。还有免费次数，并不意味着一把已经存在的锁可以忽略。",
+            "en": "Creation separately checks an actor variable. Free uses do not let us ignore an existing creation lock."
+          }
+        },
+        {
+          "id": "E01-B038",
+          "narration": {
+            "zh-CN": "玩家不用背这些变量名，真正该记住的是：逐项看可用日期，不要拿另一项已经解锁当作通行证。"
+          },
+          "subtitles": {
+            "zh-CN": "玩家不用背这些变量名，真正该记住的是：逐项看可用日期，不要拿另一项已经解锁当作通行证。",
+            "en": "You need not memorize variable names. Read each action's availability instead of borrowing permission from another."
+          }
+        },
+        {
+          "id": "E01-B039",
+          "narration": {
+            "zh-CN": "对游玩智能体来说，等待也有成本。宗教计划排得再漂亮，也要和眼前的战争、防御、政务一起安排。"
+          },
+          "subtitles": {
+            "zh-CN": "对游玩智能体来说，等待也有成本。宗教计划排得再漂亮，也要和眼前的战争、防御、政务一起安排。",
+            "en": "For the playing agent, waiting also costs time. Religious plans must coexist with war, defence, and government."
+          }
+        },
+        {
+          "id": "E01-B040",
+          "narration": {
+            "zh-CN": "如果缺口只是等冷却或补资源，就保留目标与重评条件，继续处理当前更紧迫的事务。"
+          },
+          "subtitles": {
+            "zh-CN": "如果缺口只是等冷却或补资源，就保留目标与重评条件，继续处理当前更紧迫的事务。",
+            "en": "If the gap is time or resources, retain the goal and its review trigger while handling more urgent affairs."
+          }
+        },
+        {
+          "id": "E01-B041",
+          "narration": {
+            "zh-CN": "如果缺口是整套宗教关系，才比较改革的长期收益；不要为了让这一扇按钮变绿，就替整个王朝改教。"
+          },
+          "subtitles": {
+            "zh-CN": "如果缺口是整套宗教关系，才比较改革的长期收益；不要为了让这一扇按钮变绿，就替整个王朝改教。",
+            "en": "If the gap is religious relationships, weigh long-term reform before changing a dynasty's faith for one button."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "replanning",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "名额与重规划"
+      },
+      "cues": [
+        {
+          "id": "E01-B042",
+          "narration": {
+            "zh-CN": "最后来看重规划。先把两本名额账摊开：一份是圣地总数，一份是其中的主要圣地数。"
+          },
+          "subtitles": {
+            "zh-CN": "最后来看重规划。先把两本名额账摊开：一份是圣地总数，一份是其中的主要圣地数。",
+            "en": "For replanning, open two capacity accounts: all holy sites, and the eminent sites among them."
+          }
+        },
+        {
+          "id": "E01-B043",
+          "narration": {
+            "zh-CN": "晋升把一个普通关系变成主要关系，并不会让圣地总数少一座；降级也一样不会腾出总数名额。"
+          },
+          "subtitles": {
+            "zh-CN": "晋升把一个普通关系变成主要关系，并不会让圣地总数少一座；降级也一样不会腾出总数名额。",
+            "en": "Elevation changes a regular relationship to eminent. Neither elevation nor demotion frees total-site capacity."
+          }
+        },
+        {
+          "id": "E01-B044",
+          "narration": {
+            "zh-CN": "所以，当你说名额满了，先说清是哪一种满了，否则很容易做一件完全没有解决问题的事。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，当你说名额满了，先说清是哪一种满了，否则很容易做一件完全没有解决问题的事。",
+            "en": "When capacity is full, say which capacity. Otherwise, the chosen action may solve nothing."
+          }
+        },
+        {
+          "id": "E01-B045",
+          "narration": {
+            "zh-CN": "在这个版本的默认定义中，总数上限是九，主要上限是三；实际宗教可以覆盖这些默认值。"
+          },
+          "subtitles": {
+            "zh-CN": "在这个版本的默认定义中，总数上限是九，主要上限是三；实际宗教可以覆盖这些默认值。",
+            "en": "This version defaults to nine total and three eminent sites, but a religion can override those defaults."
+          }
+        },
+        {
+          "id": "E01-B046",
+          "narration": {
+            "zh-CN": "还要看下限。不能只问最多装多少，也要问游戏要求这份信仰至少保留多少。"
+          },
+          "subtitles": {
+            "zh-CN": "还要看下限。不能只问最多装多少，也要问游戏要求这份信仰至少保留多少。",
+            "en": "Read the minima too: the question is not only how many fit, but how many must remain."
+          }
+        },
+        {
+          "id": "E01-B047",
+          "narration": {
+            "zh-CN": "想把旧主要换成新主要，通常会想到先降旧的，再升新的；但站在最低数量上，第一步就可能被拒。"
+          },
+          "subtitles": {
+            "zh-CN": "想把旧主要换成新主要，通常会想到先降旧的，再升新的；但站在最低数量上，第一步就可能被拒。",
+            "en": "To replace an eminent site, demoting first may seem natural, but a minimum can block that first step."
+          }
+        },
+        {
+          "id": "E01-B048",
+          "narration": {
+            "zh-CN": "这时先检查有没有合法替代者，以及是否还容得下一次晋升；通过以后，再讨论降级旧站点。"
+          },
+          "subtitles": {
+            "zh-CN": "这时先检查有没有合法替代者，以及是否还容得下一次晋升；通过以后，再讨论降级旧站点。",
+            "en": "Check for a legal replacement and room to elevate it before considering demotion of the old site."
+          }
+        },
+        {
+          "id": "E01-B049",
+          "narration": {
+            "zh-CN": "反过来，如果主要名额已经全满，先晋升也未必做得到。顺序不是口号，得从当前边界推出来。"
+          },
+          "subtitles": {
+            "zh-CN": "反过来，如果主要名额已经全满，先晋升也未必做得到。顺序不是口号，得从当前边界推出来。",
+            "en": "If eminent capacity is already full, elevating first may also fail. Derive the sequence from today's limits."
+          }
+        },
+        {
+          "id": "E01-B050",
+          "narration": {
+            "zh-CN": "如果两边都卡死，就诚实保留不可达，而不是把两个分别非法的动作，想象成一次自动交换。"
+          },
+          "subtitles": {
+            "zh-CN": "如果两边都卡死，就诚实保留不可达，而不是把两个分别非法的动作，想象成一次自动交换。",
+            "en": "If both orders are blocked, keep the goal unreachable; two illegal steps do not become a legal swap."
+          }
+        },
+        {
+          "id": "E01-B051",
+          "narration": {
+            "zh-CN": "放弃解决的是另一件事：把这座站点从自己的信仰关联中移除；它不能直接拿来处理仍是主要的站点。"
+          },
+          "subtitles": {
+            "zh-CN": "放弃解决的是另一件事：把这座站点从自己的信仰关联中移除；它不能直接拿来处理仍是主要的站点。",
+            "en": "Abandonment removes the faith's association. The declared route does not directly accept an eminent site."
+          }
+        },
+        {
+          "id": "E01-B052",
+          "narration": {
+            "zh-CN": "而且当前总数必须高于宗教最低数。已经只剩最低数量时，先想替代来源，再想退出。"
+          },
+          "subtitles": {
+            "zh-CN": "而且当前总数必须高于宗教最低数。已经只剩最低数量时，先想替代来源，再想退出。",
+            "en": "The total must exceed the religion's minimum. At that boundary, find a replacement before planning an exit."
+          }
+        },
+        {
+          "id": "E01-B053",
+          "narration": {
+            "zh-CN": "地理记录还有第三本账。降级没有声明释放王国记录，放弃一座也不保证整片记录马上清空。"
+          },
+          "subtitles": {
+            "zh-CN": "地理记录还有第三本账。降级没有声明释放王国记录，放弃一座也不保证整片记录马上清空。",
+            "en": "Geographical records form a third account. Demotion declares no release, and abandoning one site may not clear a kingdom."
+          }
+        },
+        {
+          "id": "E01-B054",
+          "narration": {
+            "zh-CN": "如果同一信仰在这个法理王国还有别的圣地，释放规则仍要继续检查，不能只盯着刚刚退出的那一座。"
+          },
+          "subtitles": {
+            "zh-CN": "如果同一信仰在这个法理王国还有别的圣地，释放规则仍要继续检查，不能只盯着刚刚退出的那一座。",
+            "en": "If the faith retains another site in that de jure kingdom, the release rule must account for it too."
+          }
+        },
+        {
+          "id": "E01-B055",
+          "narration": {
+            "zh-CN": "因此，不要把这套规则压成每个王国只能一座这样一句话；先看它记录什么，再看哪些动作真的改它。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，不要把这套规则压成每个王国只能一座这样一句话；先看它记录什么，再看哪些动作真的改它。",
+            "en": "Avoid reducing this to one site per kingdom. Read what is recorded and which actions actually change it."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "social-cost",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "social-cost"
+      },
+      "cues": [
+        {
+          "id": "E01-B056",
+          "narration": {
+            "zh-CN": "名额之外，还要付政治成本。宗教等级的升降，不只是在自己面板里挪一颗标记。"
+          },
+          "subtitles": {
+            "zh-CN": "名额之外，还要付政治成本。宗教等级的升降，不只是在自己面板里挪一颗标记。",
+            "en": "Beyond capacity, there are political costs. Changing a holy site's rank affects more than a marker on our panel."
+          }
+        },
+        {
+          "id": "E01-B057",
+          "narration": {
+            "zh-CN": "这一版本的定义给晋升、降级和放弃安排了县主意见与行动人物修正，部分影响会持续多年。"
+          },
+          "subtitles": {
+            "zh-CN": "这一版本的定义给晋升、降级和放弃安排了县主意见与行动人物修正，部分影响会持续多年。",
+            "en": "These definitions attach county-holder opinions and actor modifiers to rank changes and abandonment, lasting years."
+          }
+        },
+        {
+          "id": "E01-B058",
+          "narration": {
+            "zh-CN": "所以，最少按几次，不一定总代价最低；为了省一次虔诚支出，可能换来一段更难处理的内部关系。"
+          },
+          "subtitles": {
+            "zh-CN": "所以，最少按几次，不一定总代价最低；为了省一次虔诚支出，可能换来一段更难处理的内部关系。",
+            "en": "Fewer clicks need not mean lower overall cost. Saving piety may create a harder domestic problem."
+          }
+        },
+        {
+          "id": "E01-B059",
+          "narration": {
+            "zh-CN": "遇到基督教大分裂相关条件，降级还声明调用局势变化；把它再升回去，并没有声明自动抵销。"
+          },
+          "subtitles": {
+            "zh-CN": "遇到基督教大分裂相关条件，降级还声明调用局势变化；把它再升回去，并没有声明自动抵销。",
+            "en": "Under the specified Christian schism conditions, demotion also declares a progress effect; elevation declares no automatic cancellation."
+          }
+        },
+        {
+          "id": "E01-B060",
+          "narration": {
+            "zh-CN": "我们不把这些分支硬塞进阿拔斯实验，也不替没拍过的数值宣布结果；这里只提醒重规划还要查自己的局势。"
+          },
+          "subtitles": {
+            "zh-CN": "我们不把这些分支硬塞进阿拔斯实验，也不替没拍过的数值宣布结果；这里只提醒重规划还要查自己的局势。",
+            "en": "We will not force that branch into the Abbasid case or invent its numerical outcome. Check the situation in your own campaign."
+          }
+        },
+        {
+          "id": "E01-B061",
+          "narration": {
+            "zh-CN": "给智能体的成本表，因此要同时放虔诚、免费次数、等待、失去的收益、圣物归属，以及宗教政治影响。"
+          },
+          "subtitles": {
+            "zh-CN": "给智能体的成本表，因此要同时放虔诚、免费次数、等待、失去的收益、圣物归属，以及宗教政治影响。",
+            "en": "The agent's cost table should include piety, free uses, delay, lost benefits, relic ownership, and religious politics."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "abandon",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "放弃与不可直接恢复"
+      },
+      "cues": [
+        {
+          "id": "E01-B062",
+          "narration": {
+            "zh-CN": "如果决定退出，圣物会退到谁手里？这里必须把版本讲清楚，我们现在解释的是一点二零点零点四。"
+          },
+          "subtitles": {
+            "zh-CN": "如果决定退出，圣物会退到谁手里？这里必须把版本讲清楚，我们现在解释的是一点二零点零点四。",
+            "en": "If we leave, who receives the relics? The version matters: we are explaining 1.20.0.4."
+          }
+        },
+        {
+          "id": "E01-B063",
+          "narration": {
+            "zh-CN": "在这份定义里，只有没有其他关联信仰，而且县主存在时，放弃才会把供奉圣物交给县主。"
+          },
+          "subtitles": {
+            "zh-CN": "在这份定义里，只有没有其他关联信仰，而且县主存在时，放弃才会把供奉圣物交给县主。",
+            "en": "Here, abandonment assigns enshrined artifacts to the county holder only when no other associated faith remains and a holder exists."
+          }
+        },
+        {
+          "id": "E01-B064",
+          "narration": {
+            "zh-CN": "接收者是县主，不一定是按按钮的人；还有别的信仰关联时，也不能提前宣布已经退还。"
+          },
+          "subtitles": {
+            "zh-CN": "接收者是县主，不一定是按按钮的人；还有别的信仰关联时，也不能提前宣布已经退还。",
+            "en": "The recipient is the county holder, who may not be the actor. Another faith's association changes the branch."
+          }
+        },
+        {
+          "id": "E01-B065",
+          "narration": {
+            "zh-CN": "更细的一点是，这里检查还有没有其他关联信仰，不是检查那个信仰在世界上还剩几个县信众。"
+          },
+          "subtitles": {
+            "zh-CN": "更细的一点是，这里检查还有没有其他关联信仰，不是检查那个信仰在世界上还剩几个县信众。",
+            "en": "The branch asks whether another faith remains associated, not how many county followers that faith has."
+          }
+        },
+        {
+          "id": "E01-B066",
+          "narration": {
+            "zh-CN": "一个已经没有县信众、却仍然关联的信仰，也不能被我们随手从这份判断里删掉。"
+          },
+          "subtitles": {
+            "zh-CN": "一个已经没有县信众、却仍然关联的信仰，也不能被我们随手从这份判断里删掉。",
+            "en": "A faith with no county followers but a remaining association cannot simply be omitted from that test."
+          }
+        },
+        {
+          "id": "E01-B067",
+          "narration": {
+            "zh-CN": "再把它和采用条件放在一起看：采用需要至少一个关联信仰仍有县信众；如果关联集合真空了，会怎样？"
+          },
+          "subtitles": {
+            "zh-CN": "再把它和采用条件放在一起看：采用需要至少一个关联信仰仍有县信众；如果关联集合真空了，会怎样？",
+            "en": "Compare that with adoption, which needs an associated faith with county followers. What if the associated set becomes empty?"
+          }
+        },
+        {
+          "id": "E01-B068",
+          "narration": {
+            "zh-CN": "按这两条规则推下去，重新采用就不能当作万能的反向按钮；这是一条规则推论，实际对象是否仍在还要另读。"
+          },
+          "subtitles": {
+            "zh-CN": "按这两条规则推下去，重新采用就不能当作万能的反向按钮；这是一条规则推论，实际对象是否仍在还要另读。",
+            "en": "The two rules imply that readoption is no universal undo. That is a rule-based inference; object persistence still needs observation."
+          }
+        },
+        {
+          "id": "E01-B069",
+          "narration": {
+            "zh-CN": "就算站点还能找回来，之前花掉的额度、已经产生的冷却和意见，也未必跟着倒转。"
+          },
+          "subtitles": {
+            "zh-CN": "就算站点还能找回来，之前花掉的额度、已经产生的冷却和意见，也未必跟着倒转。",
+            "en": "Even if the site can be found again, spent uses, cooldowns, and opinions need not reverse with it."
+          }
+        },
+        {
+          "id": "E01-B070",
+          "narration": {
+            "zh-CN": "因此，拍比较实验时，我们从同一份冻结母档分出独立路线，不靠一串反向操作假装回到原点。"
+          },
+          "subtitles": {
+            "zh-CN": "因此，拍比较实验时，我们从同一份冻结母档分出独立路线，不靠一串反向操作假装回到原点。",
+            "en": "For comparisons, branch from one frozen baseline instead of pretending a sequence of reverse actions restores it."
+          }
+        },
+        {
+          "id": "E01-B071",
+          "narration": {
+            "zh-CN": "给普通游玩的建议也是一样：先评估最后会留下什么，再问每一步是否合法，别把恢复责任交给一个想象中的撤销键。"
+          },
+          "subtitles": {
+            "zh-CN": "给普通游玩的建议也是一样：先评估最后会留下什么，再问每一步是否合法，别把恢复责任交给一个想象中的撤销键。",
+            "en": "In ordinary play, inspect the intended end state and each legal step, rather than relying on an imagined undo button."
+          }
+        }
+      ],
+      "artifact_ids": []
+    },
+    {
+      "id": "conclusion",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {
+        "zh-CN": "回到可执行计划"
+      },
+      "cues": [
+        {
+          "id": "E01-B072",
+          "narration": {
+            "zh-CN": "现在回到开场那句话：城已经拿到手，为什么圣地还没有进入自己的网络？"
+          },
+          "subtitles": {
+            "zh-CN": "现在回到开场那句话：城已经拿到手，为什么圣地还没有进入自己的网络？",
+            "en": "Return to the opening question: why might a controlled city still be outside our holy-site network?"
+          }
+        },
+        {
+          "id": "E01-B073",
+          "narration": {
+            "zh-CN": "先找行动身份和管理权，再核土地与县主信仰，接着看已有名单、宗教兼容、名额和地理记录。"
+          },
+          "subtitles": {
+            "zh-CN": "先找行动身份和管理权，再核土地与县主信仰，接着看已有名单、宗教兼容、名额和地理记录。",
+            "en": "Check the actor and authority, land and holder faith, existing membership, compatibility, capacity, and geography."
+          }
+        },
+        {
+          "id": "E01-B074",
+          "narration": {
+            "zh-CN": "最后把当前报价和冷却补齐；所有要求都通过以后，才执行一次，并用新的名单和账本确认实际变化。"
+          },
+          "subtitles": {
+            "zh-CN": "最后把当前报价和冷却补齐；所有要求都通过以后，才执行一次，并用新的名单和账本确认实际变化。",
+            "en": "Then read the quote and cooldown. Execute once only when legal, and confirm the changes with fresh lists and balances."
+          }
+        },
+        {
+          "id": "E01-B075",
+          "narration": {
+            "zh-CN": "这份检查顺序是我们给游玩智能体的规划方法；它不是宣称原版人工智能一定也按同样顺序思考。"
+          },
+          "subtitles": {
+            "zh-CN": "这份检查顺序是我们给游玩智能体的规划方法；它不是宣称原版人工智能一定也按同样顺序思考。",
+            "en": "This sequence is our planning method for the playing agent, not a claim about vanilla AI's internal reasoning."
+          }
+        },
+        {
+          "id": "E01-B076",
+          "narration": {
+            "zh-CN": "本期真实实验能回答哪一条，就让哪一条带着前后证据落地；其余问题保持明确边界，不挤进一个万能结论。"
+          },
+          "subtitles": {
+            "zh-CN": "本期真实实验能回答哪一条，就让哪一条带着前后证据落地；其余问题保持明确边界，不挤进一个万能结论。",
+            "en": "Let each actual experiment support its bounded answer. Leave the remaining questions open and clearly scoped."
+          }
+        },
+        {
+          "id": "E01-B078",
+          "narration": {
+            "zh-CN": "你现在可以把采用、新建、主要等级和放弃分别规划了；它们改变的对象不同，消耗的账也不同。"
+          },
+          "subtitles": {
+            "zh-CN": "你现在可以把采用、新建、主要等级和放弃分别规划了；它们改变的对象不同，消耗的账也不同。",
+            "en": "You can now plan adoption, creation, rank changes, and abandonment separately: different objects and different accounts."
+          }
+        },
+        {
+          "id": "E01-B079",
+          "narration": {
+            "zh-CN": "下一次看见灰按钮，先把它当作一张诊断单，找到真正缺失的条件，再决定值不值得为它改变整个计划。"
+          },
+          "subtitles": {
+            "zh-CN": "下一次看见灰按钮，先把它当作一张诊断单，找到真正缺失的条件，再决定值不值得为它改变整个计划。",
+            "en": "Next time a button is grey, read it as a diagnosis, identify the missing condition, and decide whether the larger plan should change."
+          }
+        },
+        {
+          "id": "E01-B080",
+          "narration": {
+            "zh-CN": "而一座圣地进入名单之后，谁真正得到加成，哪件圣物值得留下，就是下一期要继续追的那本账。"
+          },
+          "subtitles": {
+            "zh-CN": "而一座圣地进入名单之后，谁真正得到加成，哪件圣物值得留下，就是下一期要继续追的那本账。",
+            "en": "Once the site is in the network, who benefits, and which relic deserves a slot? Those are the next accounts to follow."
+          }
+        }
+      ],
+      "artifact_ids": []
+    }
+  ]
+}

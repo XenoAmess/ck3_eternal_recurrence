@@ -4,16 +4,18 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ck3-faith-power-promo-integration"
-version = "0.1.0"
-description = "Source-only pilot planning and evidence intake for CK3 Faith and Power"
+version = "0.2.0"
+description = "Evidence intake, episode authoring and bounded context samples for CK3 Faith and Power"
 requires-python = ">=3.11"
-dependencies = ["xar-promo-toolchain>=0.3.0"]
+dependencies = ["xar-promo-toolchain>=0.3.0", "Pillow"]
 
 [project.entry-points."xar_promo.adapters"]
 ck3-faith-power-capture-v1 = "faith_power_promo.components:adapter_factory"
+ck3-faith-episode01-media-v1 = "faith_power_promo.context_composer:adapter_factory"
 
 [project.entry-points."xar_promo.presets"]
 ck3-faith-power-longform-zh-v1 = "faith_power_promo.components:preset_factory"
+faith-episode01-opening-zh-v1 = "faith_power_promo.context_composer:preset_factory"
 
 [tool.setuptools.packages.find]
 where = ["src"]

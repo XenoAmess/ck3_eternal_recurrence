@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T09:16:58.891024+00:00",
+  "status": "SOURCE_REVIEWED_STATIC",
+  "live_qualification": false,
+  "action_ready": false,
+  "native_legality": null,
+  "source_manifest": "sources.json",
+  "planning_notes": "relic-planning-contract.md",
+  "rules": [
+    {
+      "id": "relic-recognition",
+      "sources": [
+        "S01:34-41",
+        "S05:15-23",
+        "S19:430-448"
+      ],
+      "static": "template recognition is faith-scoped; dynamic sanctification also exists",
+      "requires_native": [
+        "artifact_full_id",
+        "artifact_is_holy_relic_for_player_faith",
+        "artifact_is_holy_relic_for_holder_faith"
+      ]
+    },
+    {
+      "id": "enshrine-script-permission",
+      "sources": [
+        "S02:1-26"
+      ],
+      "static": {
+        "actor_control_any": [
+          "county_holder",
+          "county_holder_top_liege",
+          "clerical_region_holder"
+        ],
+        "site_must_belong_to_actor_faith": true
+      },
+      "requires_native": [
+        "artifact_ownership",
+        "site_full_id",
+        "slot",
+        "enshrinable_artifact_ids",
+        "can_enshrine",
+        "effect_preview"
+      ]
+    },
+    {
+      "id": "remove-script-permission",
+      "sources": [
+        "S02:47-64"
+      ],
+      "static": {
+        "actor_control_any": [
+          "county_holder",
+          "county_holder_top_liege",
+          "clerical_region_holder"
+        ],
+        "same_faith_rule_present": false
+      },
+      "requires_native": [
+        "enshrined_artifact_id",
+        "can_remove",
+        "removal_or_swap_context",
+        "effect_preview"
+      ]
+    },
+    {
+      "id": "active-and-beneficiaries",
+      "sources": [
+        "S03:518-559",
+        "S03:1125-1225",
+        "S04:32-78"
+      ],
+      "static": "associated, active, controlled, eminent, relic-recognized and recipient-benefits are distinct dimensions",
+      "requires_native": [
+        "is_active",
+        "active_artifact_rarity_sum",
+        "county_holder_faith",
+        "barony_holder_faith",
+        "is_held_by_queried_faith",
+        "is_eminent_for_queried_faith",
+        "active_effect_desc",
+        "inactive_effect_desc"
+      ]
+    },
+    {
+      "id": "create-slots-and-rarity",
+      "sources": [
+        "S07:7-20",
+        "S08:928-932",
+        "S09:511-568",
+        "S09:703-714"
+      ],
+      "static": {
+        "holy_relic_slots": 3,
+        "slot_allows_any_type_or_category": true,
+        "default_create_required_rarity_sum": 3,
+        "default_max_scaling_rarity_sum": 12
+      },
+      "requires_native": [
+        "creation_enshrinable_artifact_ids",
+        "creation_selected_artifact_ids",
+        "creation_selected_rarity_sum",
+        "creation_enabled",
+        "creation_cost_breakdown"
+      ]
+    },
+    {
+      "id": "create-authority-and-resources",
+      "sources": [
+        "S02:28-45",
+        "S10:1292-1337",
+        "S11:2000-2023",
+        "S12:2054-2064"
+      ],
+      "static": "religious authority branches, kingdom occupancy and cooldown/free-action consumption apply",
+      "requires_native": [
+        "actual_actor_authority",
+        "actual_dynamic_holy_site_kingdoms",
+        "actual_cooldown",
+        "actual_free_actions",
+        "full_create_legality"
+      ]
+    },
+    {
+      "id": "remove-own-relic-cost",
+      "sources": [
+        "S14:330-460",
+        "S15:1130-1157",
+        "S16:111-120"
+      ],
+      "static": {
+        "piety_loss_by_rarity": {
+          "common": 50,
+          "masterwork": 100,
+          "famed": 250,
+          "illustrious": 500
+        },
+        "opinion_base": -20,
+        "opinion_years": 10,
+        "opinion_decays": true
+      },
+      "conditions": "own-faith relic and removal/degrading-replacement branch; affected characters separately conditional",
+      "requires_native": [
+        "current_effect_preview",
+        "piety_and_experience_after",
+        "actual_opinion_targets_after",
+        "artifact_owner_and_slot_after"
+      ]
+    },
+    {
+      "id": "enshrine-reward-source-ambiguity",
+      "sources": [
+        "S14:137-164",
+        "S14:209-295"
+      ],
+      "static": "replacement flag assignment and reward condition do not match a simple improving-artifact narrative",
+      "universal_piety_reward_proven": false,
+      "requires_native": [
+        "selected_action_effect_preview",
+        "actual_piety_delta",
+        "actual_opinion_delta"
+      ]
+    }
+  ],
+  "unresolved": [
+    {
+      "id": "holder-semantics",
+      "sources": [
+        "S03:518",
+        "S04:33"
+      ],
+      "description": "GUI uses county-holder faith, type comment says barony holder; keep both identities and trust native IsHeldByFaith/effects for actual case"
+    },
+    {
+      "id": "comment-only-can-benefit-holy-site",
+      "sources": [
+        "S04:71-73"
+      ],
+      "description": "can_benefit_holy_site only found in this common-file comment; not a verified callable interface"
+    }
+  ]
+}

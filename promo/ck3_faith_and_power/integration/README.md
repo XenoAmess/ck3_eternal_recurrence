@@ -1,6 +1,6 @@
 # 宗教试拍的规划与证据接线
 
-当前只交付可审阅的作者输入与只读接口。两条试拍仍是 `CAPTURE_PENDING`，未绑定原片、原生动作、音频、实际时长或最终时码。没有通过生成静态卡补足动态镜头。ProjectConfig 三章均为 `planned`，旁白 cue 留空，等待同场实验结果及实测音频。
+采用／圣物两条因果试拍仍是 `CAPTURE_PENDING`，系列 ProjectConfig 三章均为 `planned`。第一期已有独立的158条逐句文稿和准备场景有声样段；[第一期输入与机器索引](../episode01/README.md)保存其边界。上下文原片不补齐原生业务链，也不让两条因果试拍获得采用／圣物结果信用。
 
 2026-10-17T05:42:56.604633Z，`machine_id: 4-8e1c2f1861` 已创建并验证一个[authoring-only run](../build-records/authoring-20261017-a01.json)：12份小型输入、270,034 B，固定源码提交`bf5d4d871f4a974339279a110693074df3aef406`和再次查询的最新0.3.0 wheel。其phase明确跳过实际试拍，不能作为capture或render资格；下文命令是此能力的可复用入口，新attempt须另选目录。
 
@@ -45,7 +45,7 @@ from faith_power_promo.composer import compose
 outcome = handle_plan(document_path, workdir=fresh_path, registry=registry(), composer=compose)
 ```
 
-调用方需明确把本 integration 的 `src` 加入其 Python import 路径。未绑定的 ProjectConfig 返回 `No native run`；只保存作者输入的 run 缺少 `faith-production-inputs-v1` 时也拒绝。此诊断是预期的拍摄待完成边界，不能改写为成片通过。现在 `validate_only=False` 一律拒绝；render、字幕布局、声画、PTS 和人工 1× 审片未取得资格。
+调用方需明确把本 integration 的 `src` 加入其 Python import 路径。未绑定的 ProjectConfig 返回 `No native run`；只保存作者输入的 run 缺少 `faith-production-inputs-v1` 时也拒绝。此诊断是预期的因果拍摄待完成边界。这个 `composer.py` 的 `validate_only=False` 继续一律拒绝；下节的上下文 renderer 使用独立合同，不能放宽其完整原生链门槛。
 
 将来供只读媒体规划的 `faith-production-inputs-v1` artifact 须包含 schema=`ck3-faith-power-production-inputs-v1`、`evidence_index_artifact_id` 和非空 `cues`。每 cue 含 id／chain_id／claim_ids／shot_ids、zh／en、实测 speech_duration_seconds／duration_seconds，以及 audio_artifact_id、subtitle_ass_artifact_id、prepared_clip_artifact_id、clip_receipt_artifact_id。所有证据、源锁、索引、原片和引用原生回包必须先保全到同一 run；composer 按 bytes／SHA 解析已保全部件，不能直接读取 mutable 原路径充数。prepared clip receipt schema 为 `ck3-faith-power-prepared-capture-clip-v1`，需实际绑定 chain_id、raw_sha256、prepared_media、duration_seconds、fps=30、playback_speed=1，interpolation／looping／tail_padding 均为 false。该未来 positive path 尚无实录输入验证，不能称已生产可用。
 
@@ -59,3 +59,42 @@ tools/.venv/Scripts/python.exe -B -m xar_promo validate <new-authoring-run>/run-
 ```
 
 额外保全作者检查回执／索引同样使用 `preserve`，每件唯一 artifact ID。冻结时把本次真实 toolchain version／wheel SHA、machine_id、UTC 和来源回执一并保全。不要执行 `build`；作者 run 与 schema 通过均不提供拍摄、宗教业务、clean、音频、视频或人工审阅信用。
+
+## 第一期开篇的可复用生产入口
+
+`episode01_production.py` 是本仓库脚本，直接调用工具链公开 Python API；它没有添加 xar-promo CLI 子命令。`context_composer.py` 从真实49.6秒试拍的 composer 提取，仍限于30–60秒准备／观察上下文。媒体工具、字体和原片路径全部由当次输入提供；库不查固定盘符、不取屏、不启动游戏，也不领取或绕开 screen keeper。
+
+可在仓库根目录只读检查文稿、缓存指纹、未绑定守卫、源区间拒重叠和公共 render-planner 接口：
+
+```text
+tools/.venv/Scripts/python.exe -B promo/ck3_faith_and_power/integration/verify_episode01.py
+tools/.venv/Scripts/python.exe -B promo/ck3_faith_and_power/integration/episode01_production.py --help
+```
+
+生成一份新的、未绑定媒体的作者 ProjectConfig（不调用TTS）：
+
+```text
+tools/.venv/Scripts/python.exe -B promo/ck3_faith_and_power/integration/episode01_production.py project --script promo/ck3_faith_and_power/episode01/script.json --output <new-external-project.json>
+```
+
+实际生产先在外置输入中填好 `runtime-input-template.json`，以当前机器 `tools/ck3_live_run_id.py machine` 身份绑定 FFmpeg／ffprobe／字体的路径、bytes和SHA。按通用存储策略取得当前机器、未来复核时间、并发预留和系统增长完整的共享容量回执；本脚本消费 `machine-storage-coordination-episode01-v1` 回执，不另造预留。`--package-root` 是当前获准工作包，`--reservation-task` 必须命中该回执的一条任务，`--peak-bytes` 是这次实际峰值估算，产物须位于工作包内。每次重型写入都重新读容量和本包占用，产出闭场读回；不够时拒绝。完整全片尚无获准编码预算，不能拿样段额度启动全片。
+
+按冻结语音配方重新配音的实际入口如下。`synthesize` 会联网调用provider；复用现有音频直接进入下一条媒体入口。可选 `edge_tts_module_root` 选择外置provider安装，`tts_runtime_receipt` 保留其实际来源／版本／wheel SHA。当前配方的身份是 EdgeTTS7.3.1；更换版本或声音先冻结新指纹，不静默使用机器默认值。每句保存实际请求、音频SHA、ffprobe时长和失败记录；失败不自动重发，结果槽从不转为配音文本。
+
+```text
+tools/.venv/Scripts/python.exe -B promo/ck3_faith_and_power/integration/episode01_production.py synthesize --repo <repo-root> --script promo/ck3_faith_and_power/episode01/script.json --recipe promo/ck3_faith_and_power/episode01/tts-recipe.json --runtime <current-runtime.json> --reservation <current-reservations.json> --reservation-task <admitted-task> --package-root <approved-package> --peak-bytes <estimated-peak-bytes> --output <new-narration-attempt>
+```
+
+媒体复用入口接收 `ck3-faith-power-measured-narration-v1`（`cues[].id/audio/request/speech_duration_seconds`）与显式源选择。`audio`／`request`／原测量脚本均为path、bytes、SHA绑定。允许作者文档合并章节，但每句中文必须逐字匹配原provider请求，原测量脚本另行保全。跨机搬迁时显式更新当前位置的路径绑定，保留原始回执，不能把旧索引里的路径当目标机默认值。
+
+```text
+tools/.venv/Scripts/python.exe -B promo/ck3_faith_and_power/integration/episode01_production.py context-sample --repo <repo-root> --script promo/ck3_faith_and_power/episode01/script.json --measured <existing-measured-narration.json> --selection <bound-context-selection.json> --runtime <current-runtime.json> --reservation <current-reservations.json> --reservation-task <admitted-task> --package-root <approved-package> --peak-bytes <estimated-peak-bytes> --output <new-context-attempt>
+```
+
+`context-selection-template.json` 的每段绑定实际raw、只读raw审计、原Job终态和获准区间。审计 schema 是 `ck3-faith-power-raw-media-read-audit-v1`，必须匹配源机器、raw SHA及原始tree-empty终态；`ABORT_TREE_EMPTY` 原样保留，画面常显“中断RED”。调用会重新读取全部源帧PTS，以可解码末帧限制素材长度，不信容器声明的120秒或头部30fps。不同cue不能重复同一源区间，不循环、不变速、不补动态帧。VFR到CFR用原时钟持有／重复现有帧，字幕始终明示该派生关系。准备画面不冒充旁白中计划已完成。
+
+公开 API 链为 `start_run → preserve_artifact(Path) → handle_plan → handle_build`。它保全作者输入、实际请求、音频、源审计、原终态、显式字体和生产源码；raw留在原证据位置，保留其精确绑定及FFmpeg argv。`context_composer` 仅从run解析已保全部件。字幕按实际字体测量中英各最多两行，游戏画面放在上方1120像素区域。通过工具链公开 `render_planner` 注入 `fontsdir`，不依赖 Windows 字体路径；随后输出全解码、实际容器时长、逐帧CFR PTS及cue/claim/source/raw到final区间映射。该路径不调用TTS。
+
+每次 `synthesize`／`context-sample` 都重新查询官方 `releases/latest`，核对最新正式wheel的精确URL／SHA与当前解释器已安装的 `direct_url.json`，运行真实version/help/build-help，并核本次媒体工具SHA及version。发现新Release先升级并核API；生产入口不会用历史回执替本次检查。源码依赖下限不是“永远使用0.3.0”的生产许可。
+
+2026-10-17真实样段的媒体通过范围与签核缺口以带machine_id的样段索引为准。当前提取后的可移植源码只做了离线合同／ProjectConfig检查；显式字体目录等变化尚未重新渲染，不把原机器样段的端到端通过自动移给这版入口。全片render、听审、完整1×和人工签核继续未完成。所有输出的业务／clean／人工审阅信用均为false，失败产物留在原attempt，新尝试必须另选目录。

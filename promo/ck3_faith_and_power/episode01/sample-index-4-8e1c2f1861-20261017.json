@@ -1,0 +1,765 @@
+{
+  "schema": "ck3-faith-power-machine-sample-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T09:15:03.600205+00:00",
+  "source": "Actual frozen narration measurements, raw all-frame audits, sample final MP4 receipt and final-snapshot readback",
+  "scope": "Historical observations on this machine only. Paths locate evidence, not prerequisites for another machine.",
+  "sample_observed_at_utc": "2026-10-17T09:09:12.696159+00:00",
+  "sample_status": "REAL_CONTEXT_AV_CANDIDATE; AUTOMATED_DECODE_PTS_AND_SPARSE_VISUAL_PASS; FULL_1X_LISTENING_SIGNOFF_PENDING",
+  "video": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\build\\episode01-opening-sample.mp4",
+    "bytes": 5370496,
+    "sha256": "16896a8972595206492c94e27a1fe4c358362a0a3887b171a48383848da5c841"
+  },
+  "actual_container_duration_seconds": 49.621354,
+  "authored_video_duration_seconds": 49.6,
+  "duration_difference_scope": "AAC/container start and tail timing; actual video frame span remains separately measured. Neither value is a default final-episode duration.",
+  "encoded_video": {
+    "width": 2560,
+    "height": 1440,
+    "fps": "30/1",
+    "frame_count": 1488,
+    "first_pts": 0.021354,
+    "last_pts": 49.588021
+  },
+  "raw01": {
+    "file": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\r1-take01\\raw-gameplay.mkv",
+      "bytes": 77178431,
+      "sha256": "494395d7abf7bacac2af5b5a920768365f9e85137048cd173975ab08ef217de6"
+    },
+    "frame_count": 2336,
+    "actual_first_pts": 0.0,
+    "actual_last_pts": 119.933,
+    "container_duration_seconds": 119.966,
+    "actual_frames_per_elapsed_second": 19.472184,
+    "cadence": "VFR approximately 19.47 frames/second; nominal header 30/1 is not actual cadence",
+    "clean_credit": false
+  },
+  "raw02": {
+    "file": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\r1-take02\\raw-gameplay.mkv",
+      "bytes": 50593792,
+      "sha256": "e5adb7f9c29e6b4f43376c3b16b19918061b264ee035bfb18bfe2bcacfaf1618"
+    },
+    "actual_decodable_frames": 1237,
+    "actual_first_pts": 0.0,
+    "actual_last_pts": 67.767,
+    "terminal_status": "RED: Job aborted/exit 1; decode/log report File ended prematurely",
+    "container_duration_120_is_not_available_media": true,
+    "sample_uses_only_verified_early_intervals_below_60_seconds": true,
+    "clean_credit": false
+  },
+  "derivation": {
+    "target_fps": 30,
+    "method": "Original-speed disjoint actual raw intervals; fps=30:round=near duplicates/holds source frames over native capture gaps.",
+    "source_loops": false,
+    "motion_interpolation": false,
+    "slowdown": false,
+    "synthetic_visual": false
+  },
+  "review": {
+    "full_av_decode_pass": true,
+    "all_final_pts_checked": true,
+    "sparse_encoded_frames_inspected": 4,
+    "human_full_1x_review_performed": false,
+    "human_listening_performed": false,
+    "pronunciation_approved": false,
+    "signoff": "pending",
+    "native_adoption_performed_or_verified": false,
+    "clean_span_certified": false
+  },
+  "narration_measurements": {
+    "observed_at_utc": "2026-10-17T08:28:25.733790+00:00",
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\full-script-a01\\episode01-full-script-measured-a01.json",
+      "bytes": 980182,
+      "sha256": "9f375f490c4b16faf93987e7428b4101cc1c499d492ed04a08c45957d26f1cfd"
+    },
+    "cue_count": 158,
+    "result_independent_speech_total_seconds": 1540.68,
+    "not_a_default_timeline": true,
+    "cue_measurements": [
+      {
+        "cue_id": "E01-A001",
+        "speech_seconds": 8.808
+      },
+      {
+        "cue_id": "E01-A002",
+        "speech_seconds": 8.88
+      },
+      {
+        "cue_id": "E01-A003",
+        "speech_seconds": 9.456
+      },
+      {
+        "cue_id": "E01-A004",
+        "speech_seconds": 9.264
+      },
+      {
+        "cue_id": "E01-A005",
+        "speech_seconds": 9.096
+      },
+      {
+        "cue_id": "E01-A006",
+        "speech_seconds": 10.152
+      },
+      {
+        "cue_id": "E01-A007",
+        "speech_seconds": 9.6
+      },
+      {
+        "cue_id": "E01-A008",
+        "speech_seconds": 9.312
+      },
+      {
+        "cue_id": "E01-A009",
+        "speech_seconds": 10.464
+      },
+      {
+        "cue_id": "E01-A010",
+        "speech_seconds": 9.84
+      },
+      {
+        "cue_id": "E01-A011",
+        "speech_seconds": 10.128
+      },
+      {
+        "cue_id": "E01-A012",
+        "speech_seconds": 11.976
+      },
+      {
+        "cue_id": "E01-A013",
+        "speech_seconds": 10.152
+      },
+      {
+        "cue_id": "E01-A014",
+        "speech_seconds": 10.032
+      },
+      {
+        "cue_id": "E01-A015",
+        "speech_seconds": 9.888
+      },
+      {
+        "cue_id": "E01-A016",
+        "speech_seconds": 10.08
+      },
+      {
+        "cue_id": "E01-A017",
+        "speech_seconds": 9.792
+      },
+      {
+        "cue_id": "E01-A018",
+        "speech_seconds": 10.344
+      },
+      {
+        "cue_id": "E01-A019",
+        "speech_seconds": 10.392
+      },
+      {
+        "cue_id": "E01-A020",
+        "speech_seconds": 9.312
+      },
+      {
+        "cue_id": "E01-A021",
+        "speech_seconds": 10.104
+      },
+      {
+        "cue_id": "E01-A022",
+        "speech_seconds": 10.056
+      },
+      {
+        "cue_id": "E01-A023",
+        "speech_seconds": 10.704
+      },
+      {
+        "cue_id": "E01-A024",
+        "speech_seconds": 10.296
+      },
+      {
+        "cue_id": "E01-A025",
+        "speech_seconds": 10.032
+      },
+      {
+        "cue_id": "E01-A026",
+        "speech_seconds": 10.392
+      },
+      {
+        "cue_id": "E01-A027",
+        "speech_seconds": 9.24
+      },
+      {
+        "cue_id": "E01-A028",
+        "speech_seconds": 9.408
+      },
+      {
+        "cue_id": "E01-A029",
+        "speech_seconds": 10.056
+      },
+      {
+        "cue_id": "E01-A030",
+        "speech_seconds": 10.968
+      },
+      {
+        "cue_id": "E01-A031",
+        "speech_seconds": 10.488
+      },
+      {
+        "cue_id": "E01-A032",
+        "speech_seconds": 11.52
+      },
+      {
+        "cue_id": "E01-A033",
+        "speech_seconds": 9.096
+      },
+      {
+        "cue_id": "E01-A034",
+        "speech_seconds": 10.368
+      },
+      {
+        "cue_id": "E01-A035",
+        "speech_seconds": 7.896
+      },
+      {
+        "cue_id": "E01-A036",
+        "speech_seconds": 10.224
+      },
+      {
+        "cue_id": "E01-A037",
+        "speech_seconds": 9.936
+      },
+      {
+        "cue_id": "E01-A038",
+        "speech_seconds": 11.16
+      },
+      {
+        "cue_id": "E01-A039",
+        "speech_seconds": 10.44
+      },
+      {
+        "cue_id": "E01-A040",
+        "speech_seconds": 10.776
+      },
+      {
+        "cue_id": "E01-A041",
+        "speech_seconds": 9.984
+      },
+      {
+        "cue_id": "E01-A042",
+        "speech_seconds": 10.2
+      },
+      {
+        "cue_id": "E01-A043",
+        "speech_seconds": 10.104
+      },
+      {
+        "cue_id": "E01-A044",
+        "speech_seconds": 10.968
+      },
+      {
+        "cue_id": "E01-A045",
+        "speech_seconds": 8.976
+      },
+      {
+        "cue_id": "E01-A046",
+        "speech_seconds": 8.424
+      },
+      {
+        "cue_id": "E01-A047",
+        "speech_seconds": 10.536
+      },
+      {
+        "cue_id": "E01-A048",
+        "speech_seconds": 10.272
+      },
+      {
+        "cue_id": "E01-A049",
+        "speech_seconds": 10.392
+      },
+      {
+        "cue_id": "E01-A050",
+        "speech_seconds": 9.96
+      },
+      {
+        "cue_id": "E01-A051",
+        "speech_seconds": 10.272
+      },
+      {
+        "cue_id": "E01-A052",
+        "speech_seconds": 9.552
+      },
+      {
+        "cue_id": "E01-A053",
+        "speech_seconds": 10.104
+      },
+      {
+        "cue_id": "E01-A054",
+        "speech_seconds": 9.576
+      },
+      {
+        "cue_id": "E01-A055",
+        "speech_seconds": 9.72
+      },
+      {
+        "cue_id": "E01-A056",
+        "speech_seconds": 10.44
+      },
+      {
+        "cue_id": "E01-A057",
+        "speech_seconds": 10.656
+      },
+      {
+        "cue_id": "E01-A058",
+        "speech_seconds": 10.896
+      },
+      {
+        "cue_id": "E01-A059",
+        "speech_seconds": 9.648
+      },
+      {
+        "cue_id": "E01-A060",
+        "speech_seconds": 10.488
+      },
+      {
+        "cue_id": "E01-A061",
+        "speech_seconds": 10.272
+      },
+      {
+        "cue_id": "E01-A062",
+        "speech_seconds": 10.2
+      },
+      {
+        "cue_id": "E01-A063",
+        "speech_seconds": 11.76
+      },
+      {
+        "cue_id": "E01-A064",
+        "speech_seconds": 9.024
+      },
+      {
+        "cue_id": "E01-A065",
+        "speech_seconds": 10.632
+      },
+      {
+        "cue_id": "E01-A066",
+        "speech_seconds": 9.912
+      },
+      {
+        "cue_id": "E01-A067",
+        "speech_seconds": 12.096
+      },
+      {
+        "cue_id": "E01-A068",
+        "speech_seconds": 10.752
+      },
+      {
+        "cue_id": "E01-A069",
+        "speech_seconds": 10.8
+      },
+      {
+        "cue_id": "E01-A070",
+        "speech_seconds": 10.752
+      },
+      {
+        "cue_id": "E01-A071",
+        "speech_seconds": 11.568
+      },
+      {
+        "cue_id": "E01-A072",
+        "speech_seconds": 10.728
+      },
+      {
+        "cue_id": "E01-A073",
+        "speech_seconds": 10.632
+      },
+      {
+        "cue_id": "E01-A074",
+        "speech_seconds": 11.16
+      },
+      {
+        "cue_id": "E01-A075",
+        "speech_seconds": 14.448
+      },
+      {
+        "cue_id": "E01-A076",
+        "speech_seconds": 11.256
+      },
+      {
+        "cue_id": "E01-A077",
+        "speech_seconds": 11.04
+      },
+      {
+        "cue_id": "E01-A078",
+        "speech_seconds": 10.44
+      },
+      {
+        "cue_id": "E01-A079",
+        "speech_seconds": 10.896
+      },
+      {
+        "cue_id": "E01-A080",
+        "speech_seconds": 8.712
+      },
+      {
+        "cue_id": "E01-B001",
+        "speech_seconds": 6.048
+      },
+      {
+        "cue_id": "E01-B002",
+        "speech_seconds": 9.768
+      },
+      {
+        "cue_id": "E01-B003",
+        "speech_seconds": 9.192
+      },
+      {
+        "cue_id": "E01-B004",
+        "speech_seconds": 8.736
+      },
+      {
+        "cue_id": "E01-B005",
+        "speech_seconds": 9.864
+      },
+      {
+        "cue_id": "E01-B006",
+        "speech_seconds": 9.816
+      },
+      {
+        "cue_id": "E01-B007",
+        "speech_seconds": 9.072
+      },
+      {
+        "cue_id": "E01-B008",
+        "speech_seconds": 8.472
+      },
+      {
+        "cue_id": "E01-B009",
+        "speech_seconds": 8.976
+      },
+      {
+        "cue_id": "E01-B010",
+        "speech_seconds": 9.768
+      },
+      {
+        "cue_id": "E01-B011",
+        "speech_seconds": 8.472
+      },
+      {
+        "cue_id": "E01-B013",
+        "speech_seconds": 8.208
+      },
+      {
+        "cue_id": "E01-B014",
+        "speech_seconds": 9.816
+      },
+      {
+        "cue_id": "E01-B015",
+        "speech_seconds": 10.464
+      },
+      {
+        "cue_id": "E01-B016",
+        "speech_seconds": 7.872
+      },
+      {
+        "cue_id": "E01-B017",
+        "speech_seconds": 9.216
+      },
+      {
+        "cue_id": "E01-B018",
+        "speech_seconds": 9.048
+      },
+      {
+        "cue_id": "E01-B019",
+        "speech_seconds": 8.52
+      },
+      {
+        "cue_id": "E01-B020",
+        "speech_seconds": 8.712
+      },
+      {
+        "cue_id": "E01-B021",
+        "speech_seconds": 6.624
+      },
+      {
+        "cue_id": "E01-B022",
+        "speech_seconds": 9.552
+      },
+      {
+        "cue_id": "E01-B023",
+        "speech_seconds": 9.024
+      },
+      {
+        "cue_id": "E01-B024",
+        "speech_seconds": 7.968
+      },
+      {
+        "cue_id": "E01-B025",
+        "speech_seconds": 7.8
+      },
+      {
+        "cue_id": "E01-B026",
+        "speech_seconds": 9.12
+      },
+      {
+        "cue_id": "E01-B027",
+        "speech_seconds": 9.552
+      },
+      {
+        "cue_id": "E01-B028",
+        "speech_seconds": 7.08
+      },
+      {
+        "cue_id": "E01-B029",
+        "speech_seconds": 9.312
+      },
+      {
+        "cue_id": "E01-B030",
+        "speech_seconds": 8.472
+      },
+      {
+        "cue_id": "E01-B031",
+        "speech_seconds": 8.184
+      },
+      {
+        "cue_id": "E01-B032",
+        "speech_seconds": 10.272
+      },
+      {
+        "cue_id": "E01-B033",
+        "speech_seconds": 10.488
+      },
+      {
+        "cue_id": "E01-B034",
+        "speech_seconds": 9.24
+      },
+      {
+        "cue_id": "E01-B035",
+        "speech_seconds": 9.96
+      },
+      {
+        "cue_id": "E01-B036",
+        "speech_seconds": 10.008
+      },
+      {
+        "cue_id": "E01-B037",
+        "speech_seconds": 9.6
+      },
+      {
+        "cue_id": "E01-B038",
+        "speech_seconds": 9.432
+      },
+      {
+        "cue_id": "E01-B039",
+        "speech_seconds": 10.512
+      },
+      {
+        "cue_id": "E01-B040",
+        "speech_seconds": 8.808
+      },
+      {
+        "cue_id": "E01-B041",
+        "speech_seconds": 10.056
+      },
+      {
+        "cue_id": "E01-B042",
+        "speech_seconds": 9.384
+      },
+      {
+        "cue_id": "E01-B043",
+        "speech_seconds": 9.288
+      },
+      {
+        "cue_id": "E01-B044",
+        "speech_seconds": 8.4
+      },
+      {
+        "cue_id": "E01-B045",
+        "speech_seconds": 9.0
+      },
+      {
+        "cue_id": "E01-B046",
+        "speech_seconds": 8.136
+      },
+      {
+        "cue_id": "E01-B047",
+        "speech_seconds": 9.984
+      },
+      {
+        "cue_id": "E01-B048",
+        "speech_seconds": 9.168
+      },
+      {
+        "cue_id": "E01-B049",
+        "speech_seconds": 9.96
+      },
+      {
+        "cue_id": "E01-B050",
+        "speech_seconds": 9.264
+      },
+      {
+        "cue_id": "E01-B051",
+        "speech_seconds": 10.152
+      },
+      {
+        "cue_id": "E01-B052",
+        "speech_seconds": 9.408
+      },
+      {
+        "cue_id": "E01-B053",
+        "speech_seconds": 9.864
+      },
+      {
+        "cue_id": "E01-B054",
+        "speech_seconds": 9.792
+      },
+      {
+        "cue_id": "E01-B055",
+        "speech_seconds": 9.768
+      },
+      {
+        "cue_id": "E01-B056",
+        "speech_seconds": 8.52
+      },
+      {
+        "cue_id": "E01-B057",
+        "speech_seconds": 9.432
+      },
+      {
+        "cue_id": "E01-B058",
+        "speech_seconds": 9.576
+      },
+      {
+        "cue_id": "E01-B059",
+        "speech_seconds": 9.624
+      },
+      {
+        "cue_id": "E01-B060",
+        "speech_seconds": 10.488
+      },
+      {
+        "cue_id": "E01-B061",
+        "speech_seconds": 10.728
+      },
+      {
+        "cue_id": "E01-B062",
+        "speech_seconds": 9.864
+      },
+      {
+        "cue_id": "E01-B063",
+        "speech_seconds": 9.024
+      },
+      {
+        "cue_id": "E01-B064",
+        "speech_seconds": 8.688
+      },
+      {
+        "cue_id": "E01-B065",
+        "speech_seconds": 9.336
+      },
+      {
+        "cue_id": "E01-B066",
+        "speech_seconds": 7.728
+      },
+      {
+        "cue_id": "E01-B067",
+        "speech_seconds": 10.008
+      },
+      {
+        "cue_id": "E01-B068",
+        "speech_seconds": 11.088
+      },
+      {
+        "cue_id": "E01-B069",
+        "speech_seconds": 8.136
+      },
+      {
+        "cue_id": "E01-B070",
+        "speech_seconds": 9.72
+      },
+      {
+        "cue_id": "E01-B071",
+        "speech_seconds": 11.184
+      },
+      {
+        "cue_id": "E01-B072",
+        "speech_seconds": 6.96
+      },
+      {
+        "cue_id": "E01-B073",
+        "speech_seconds": 9.816
+      },
+      {
+        "cue_id": "E01-B074",
+        "speech_seconds": 10.08
+      },
+      {
+        "cue_id": "E01-B075",
+        "speech_seconds": 9.48
+      },
+      {
+        "cue_id": "E01-B076",
+        "speech_seconds": 10.848
+      },
+      {
+        "cue_id": "E01-B078",
+        "speech_seconds": 9.648
+      },
+      {
+        "cue_id": "E01-B079",
+        "speech_seconds": 10.032
+      },
+      {
+        "cue_id": "E01-B080",
+        "speech_seconds": 9.624
+      }
+    ]
+  },
+  "external_evidence": {
+    "sample_final_snapshot": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\final-snapshot.json",
+      "bytes": 3146,
+      "sha256": "3d0e1681e3dd858d76c85b6cb3662c49bd4b7f0a6a751c38169eb9044c681fb2"
+    },
+    "sample_automatic_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\sample-final-receipt.json",
+      "bytes": 6687,
+      "sha256": "6cc1dd0f594ea34eaf209f0015a5e63c94eb2f90bfd4aea48da7d15f08172550"
+    },
+    "raw_to_cue_claim_source_map": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\raw-to-final-cue-claim-map.json",
+      "bytes": 47855,
+      "sha256": "75fa58c00717ea7c03a397df3358885afb9de79bf90843cfa127e6319d9e0663"
+    },
+    "actual_raw_pts_to_final_ranges": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\actual-source-pts-to-final-ranges.json",
+      "bytes": 22910,
+      "sha256": "8eac6cbe0ef3c8fbbe212fc3c99d8de93946e15bc3f4ca99977249826eaa1d74"
+    },
+    "sparse_visual_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a02\\sparse-visual-review.json",
+      "bytes": 3926,
+      "sha256": "dedf50efea0f621f0a8865a796741a29a02352ed92b07ba721dfa694f35a8843"
+    },
+    "raw01_audit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\raw-review-r1-take01-a01\\raw-audit.json",
+      "bytes": 16138,
+      "sha256": "844e807a7dbf16b9bcaa6de17b0ece745dec50a6a1b56ff23f3a8b8193249b48"
+    },
+    "raw02_audit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\raw-review-r1-take02-a02\\raw-audit.json",
+      "bytes": 24515,
+      "sha256": "6e40fd775197adf6dc514ad3efdc44590de315ec088dce689c4462d8c5a2f60d"
+    },
+    "previous_sample_attempt_failure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\sample-real-context-a01\\build-failure.json",
+      "bytes": 1433,
+      "sha256": "d9011ab6987c37858f61611a895fc28482fe2c8ccffe46b3a9b31a2045128d43"
+    }
+  },
+  "retention": {
+    "policy": "docs/storage-retention-policy.json",
+    "category": "record",
+    "review_at_utc": "2027-04-15T09:15:03.600205+00:00",
+    "external_asset_availability": "Pointers describe the recorded evidence identity; future retention/reclamation can make an original unreadable. Recheck actual availability before reuse."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-faith-power-context-builder-api-proposal-v1",
+  "status": "proposal; parent owns integration implementation",
+  "purpose": "Reuse the bounded context-sample method without importing machine paths, provider calls or game control into the repository.",
+  "suggested_inputs": {
+    "script_path": "portable authoring script path",
+    "narration_intake": "Caller-supplied exact cue text/fingerprint, existing audio path/SHA/duration, original request identity",
+    "source_selection": "Caller-supplied raw path/SHA, actual readable PTS limits, disjoint chosen intervals, terminal RED/unknown status and evidence role",
+    "attempt_directory": "Fresh external output directory; refusal on existing media/artifacts",
+    "storage_admission": "Current machine_id/time, actual package bytes, parent reservation and bounded additional peak",
+    "toolchain_probe": "Fresh official Release + exact installed wheel SHA/interpreter/CLI observations",
+    "media_tool_paths": "Explicit verified external ffmpeg/ffprobe executables"
+  },
+  "suggested_outputs": [
+    "measured inputs without result credit",
+    "released-toolchain native run",
+    "MP4 with context/RED/VFR labels",
+    "raw SHA/actual PTS to encoded cue/claim/source map",
+    "full AV decode and final PTS audit",
+    "sparse encoded subtitle frames",
+    "pending human-review package"
+  ],
+  "forbidden_implicit_actions": [
+    "Start CK3 or operate desktop",
+    "Acquire screen leases",
+    "Record new footage",
+    "Invoke TTS during media-only reuse",
+    "Read fixed machine paths as defaults",
+    "Treat ACK as outcome",
+    "Treat raw context as a clean business demonstration",
+    "Loop, slow or freeze footage to meet duration"
+  ],
+  "retained_lesson": "Pass pathlib.Path to preserve_artifact. Preserve failed attempts; retry into a fresh attempt rather than overwrite."
+}

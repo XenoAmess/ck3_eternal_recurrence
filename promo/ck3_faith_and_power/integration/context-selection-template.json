@@ -1,0 +1,27 @@
+{
+  "schema": "ck3-faith-power-context-source-selection-v1",
+  "template_only": true,
+  "machine_id": null,
+  "scope": "context-only-first-opening",
+  "business_result_verified": false,
+  "segments": [
+    {
+      "cue_id": "E01-A075",
+      "source_machine_id": null,
+      "raw": {"path": null, "bytes": null, "sha256": null},
+      "raw_audit": {"path": null, "bytes": null, "sha256": null},
+      "raw_start_seconds": null,
+      "approved_raw_end_seconds": null,
+      "decoded_last_pts_seconds": null,
+      "raw_terminal_status": null
+    }
+  ],
+  "notes": [
+    "A template is deliberately unbound. Select enough distinct cues and disjoint real raw intervals for 30–60 authored seconds.",
+    "Root machine_id identifies the current rendering machine. Each segment source_machine_id identifies the observed capture/audit machine; carrying media to another machine does not transfer any runtime qualifications.",
+    "raw_terminal_status must retain NORMAL_TREE_EMPTY or ABORT_TREE_EMPTY, exactly matching the original Job-empty terminal receipt. ABORT is labeled RED in output. Truncated raw cannot receive original integrity or clean-span credit.",
+    "Read decoded PTS, not the container duration or nominal r_frame_rate. This builder re-reads actual source frame PTS before rendering.",
+    "Cue duration is ceil((measured speech + 0.20) * 30 / 16) * 16 / 30. An actual source interval must cover that full clock without loops or slowdown.",
+    "The reviewed machine-specific four-cue selection is recorded separately in episode01/sample-index-4-8e1c2f1861-20261017.json; it is not a cross-machine default."
+  ]
+}

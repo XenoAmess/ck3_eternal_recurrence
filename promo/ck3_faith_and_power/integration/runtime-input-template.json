@@ -1,0 +1,19 @@
+{
+  "schema": "ck3-faith-power-explicit-runtime-inputs-v1",
+  "template_only": true,
+  "machine_id": null,
+  "ffmpeg": {"path": null, "bytes": null, "sha256": null},
+  "ffprobe": {"path": null, "bytes": null, "sha256": null},
+  "subtitle_font": {
+    "family": null,
+    "file": {"path": null, "bytes": null, "sha256": null}
+  },
+  "edge_tts_module_root": null,
+  "tts_runtime_receipt": {"path": null, "bytes": null, "sha256": null},
+  "notes": [
+    "Copy into an external attempt input and fill from current-machine observations; this template is not executable production input.",
+    "Media-only context-sample does not use EdgeTTS or its dependency receipt.",
+    "synthesize must match the explicit provider version in the voice recipe; the optional module root is a caller-selected installation, never a repository dependency path.",
+    "Font must contain both Chinese and English and have the stated internal family name. The font is preserved into the run and supplied to libass via its public planner injection seam."
+  ]
+}
