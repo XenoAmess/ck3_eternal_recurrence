@@ -1,0 +1,191 @@
+{
+  "schema": "xar.ck3.faith-episode01-r3-planning-observation/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T10:34:34.541991+00:00",
+  "compiler_checkout": "11f3e38b774383485f0065c1b747a666bcfa245f",
+  "compiler_worktree_dirty_at_read": true,
+  "run_id": "4-8e1c2f1861--faith-and-power--R0003",
+  "game_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "runtime_source_commit": "e54c8c7456dc865f3d42af9cc92a115fbf631eb5",
+  "runtime_dll_sha256": "6a1cd648db5133a6e5f1af41ac16bc81467565a68a3e723976a4eb4926a507fe",
+  "evidence": {
+    "open": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/root-native-receipts/r3-open-adoption-a01.json",
+      "bytes": 184313,
+      "sha256": "0d7cb284c7a7920e016108400815e62514abfcb62a23b5c89902291ec9e7a803"
+    },
+    "detail_a01": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/root-native-receipts/r3-adoption-detail-a01.json",
+      "bytes": 36314,
+      "sha256": "07c27e13db7fd09834bee6d53c4cbf1247256c4ef015157efcfd83aa2532b029"
+    },
+    "detail_a02": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/root-native-receipts/r3-adoption-detail-a02.json",
+      "bytes": 36312,
+      "sha256": "82a876cc311ad0677ebda94a1103b6c7ba41633318b014bcc9284a58ddc48998"
+    },
+    "religion": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/root-native-receipts/r3-initial-religion.json",
+      "bytes": 53016,
+      "sha256": "632c816cc33032e2f129f21a46ef36353f2b9152f5b51e44f3874cbb10a9f12d"
+    },
+    "close": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/case-output/normal-close-result.json",
+      "bytes": 11511,
+      "sha256": "5546a890b3b7cdd339fbed5ad53b162667dbedca1f32fa4df87634beced44f77"
+    },
+    "public_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-run-r3-a01/original-exit.json",
+      "bytes": 1160,
+      "sha256": "3378d91aea0c45a8389a96651dd4183854cba94ece6137bdeed18070d4797969"
+    },
+    "keeper_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/keeper-actual-parent-exit.json",
+      "bytes": 4893,
+      "sha256": "656af1daf60b8f71c245bd61b3a6503722fad682edcfbb1212e00abfa06608fd"
+    },
+    "release": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0003/root-screen-release-a01.json",
+      "bytes": 1339,
+      "sha256": "1f69ffa05ec5cac2c827a5fab9483f17e8a081307861184bbe28668bdebafc13"
+    },
+    "runtime_manifest": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/common-r3-a01/manifest.json",
+      "bytes": 3479,
+      "sha256": "4e5089024428a2741729707065d378fad4d8c4d5c832bb2adb8b9d08a4a75c32"
+    },
+    "detail_frame": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/r2-frame-20261017T101424Z.png",
+      "bytes": 5000954,
+      "sha256": "8cb7333b554efdbd61de3b8491a06e6c1aeca611f7419baa2ace9b62ea82e724",
+      "review": {
+        "machine_id": "4-8e1c2f1861",
+        "reviewed_at_utc": "2026-10-17T10:34:34.541991+00:00",
+        "reviewer": "/root/faith_research",
+        "method": "direct view_image of owner-preserved original; no new capture/input/OCR",
+        "run_assignment": "Root supplied as R3 evidence; historical r2 filename prefix is not a runtime identity proof"
+      }
+    },
+    "decision_overlay_frame": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/r2-frame-20261017T101129Z.png",
+      "bytes": 5218723,
+      "sha256": "6bc5159c351d1a147b88902dd75abf03a4a4df0f6f4e4d76bf409c8c37423f48",
+      "review": {
+        "machine_id": "4-8e1c2f1861",
+        "reviewed_at_utc": "2026-10-17T10:34:34.541991+00:00",
+        "reviewer": "/root/faith_research",
+        "method": "direct view_image of owner-preserved original; no new capture/input/OCR",
+        "run_assignment": "Root supplied as R3 evidence; historical r2 filename prefix is not a runtime identity proof"
+      }
+    }
+  },
+  "frames": [
+    {
+      "evidence": "open",
+      "started_at_utc": "2026-10-17T10:14:10.298428+00:00",
+      "finished_at_utc": "2026-10-17T10:14:10.725428+00:00",
+      "snapshot_id": "native:2",
+      "public_revision": 3,
+      "native_revision": 2,
+      "date_raw": 51394920,
+      "pid": 4876,
+      "generation": 1
+    },
+    {
+      "evidence": "detail_a01",
+      "started_at_utc": "2026-10-17T10:14:10.974463+00:00",
+      "finished_at_utc": "2026-10-17T10:14:11.350171+00:00",
+      "snapshot_id": "native:2",
+      "public_revision": 3,
+      "native_revision": 2,
+      "date_raw": 51394920,
+      "pid": 4876,
+      "generation": 1
+    },
+    {
+      "evidence": "detail_a02",
+      "started_at_utc": "2026-10-17T10:17:45.013773+00:00",
+      "finished_at_utc": "2026-10-17T10:17:45.195186+00:00",
+      "snapshot_id": "native:2",
+      "public_revision": 3,
+      "native_revision": 2,
+      "date_raw": 51394920,
+      "pid": 4876,
+      "generation": 1
+    }
+  ],
+  "observed_detail": {
+    "decision_key": "adopt_holy_site_decision",
+    "played_character_id": 15893,
+    "detail_actor_id": 15893,
+    "current_actor_id": 15893,
+    "requested_holy_site_id": 32,
+    "decision_option_id": -1,
+    "selected_index": 14,
+    "candidate_count": 21,
+    "selected_item_token": 361,
+    "parameter_holy_site_id": 32,
+    "selected_holy_site_id": 32,
+    "parameter_and_selection_match": true,
+    "bypass_requirements_observed": true,
+    "bypass_requirements_raw": 0,
+    "native_can_confirm": false,
+    "normal_requirements_legality_observed": true,
+    "normal_requirements_can_confirm": false,
+    "confirm_tooltip_available": true,
+    "confirm_tooltip": "\u0016warning_icon!\u0015X 你未满足所有要求\u0015!",
+    "native_resource_quote_available": false,
+    "native_resource_quote": null,
+    "action_ready": false,
+    "decision_confirm_invoked": false,
+    "adoption_completed_observed": false,
+    "rendered_visibility_observed": false
+  },
+  "detail_values_equal_at_two_captures": true,
+  "query_cutoff_utc": "2026-10-17T10:17:45.195186+00:00",
+  "closure_cutoff_utc": "2026-10-17T10:28:47.200534+00:00",
+  "planner": {
+    "can_confirm_normal_conditions": false,
+    "confirm_allowed": false,
+    "rejection_specific_cause": null,
+    "rejection_reason_completeness": "unavailable",
+    "structured_quote": null,
+    "action_result": "not_submitted",
+    "adoption_completed": false,
+    "next_action": "obtain complete native Requirements and source-bound conditions before planning a remedy",
+    "candidate_count_is_legal_action_count": false,
+    "token_and_index_are_persistent_identity": false
+  },
+  "requirements_gap": {
+    "confirm_tooltip_is_complete_requirements": false,
+    "native_requirements_body_observed": false,
+    "ui_pixels_are_partial": true,
+    "needed": [
+      "complete Requirements text or structured tree with completeness/truncation provenance",
+      "per-condition actual scope/value/status and OR/AND group boundaries",
+      "native price/payer/free/cooldown readback"
+    ],
+    "abi_entrypoint": "unknown; do not infer from UI expression names"
+  },
+  "close": {
+    "normal_close_qualified": true,
+    "retained_os_exit_code": 0,
+    "public_original_exit_code": 0,
+    "keeper_original_exit_code": 0,
+    "cas_sequence": 11282,
+    "resources": []
+  },
+  "media_qa": "separate producer; this index grants no take/clean/human/film credit",
+  "compiler_game_operations": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T10:34:34.541991+00:00",
+    "volume_free_bytes": 132747550720,
+    "package_budget_bytes": 60000,
+    "large_file_copies": false,
+    "record_review_at_utc": "2027-04-15T10:34:34.541991+00:00",
+    "derived_review": "48h after owner applies and verifies"
+  }
+}
