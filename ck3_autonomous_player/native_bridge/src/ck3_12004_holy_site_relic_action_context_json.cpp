@@ -44,7 +44,8 @@ std::string SerializeHolySiteRelicActionContext12004(const Snapshot&s){
  ",\"evaluation_context\":{\"getter_backend\":"+Q(s.getter_backend)+",\"native_getter_calls\":"+std::to_string(s.native_getter_calls)+
  ",\"owner_thread_requirement\":\"existing_religion_owner_callback\",\"gameplay_command_submitted\":false,\"window_selection_written\":false,\"world_cache_written\":false,"
  "\"original_effect_description_evaluates_script_context\":true,\"script_rng_effects_verified\":false,\"script_rng_effects\":\"unknown\"},"
- "\"action_ready\":false,\"business_outcome_observed\":false,\"beneficiaries_observed\":false,\"beneficiaries\":null,\"read_only\":true}";
+  "\"action_ready\":false,\"business_outcome_observed\":false,\"beneficiaries_observed\":false,\"beneficiaries\":null"+
+  (s.recognition_matrix?",\"recognition_matrix\":"+holy_site_relic::SerializeHolySiteRelicRecognitionMatrix12004(*s.recognition_matrix):"")+",\"read_only\":true}";
 }
 std::string SerializeHolySiteRelicActionContextCommand12004(const Snapshot&s,std::string_view id,std::uint64_t revision,std::int64_t date){
  return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":"+Q(id)+",\"ok\":true,\"result\":{\"step\":"+Q(kQueryStep)+

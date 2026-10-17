@@ -1,0 +1,252 @@
+{
+  "schema": "ck3_holy_site_shared_relic_planning_supplement_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T18:33:32.759139+00:00",
+  "supported_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "original_game_scripts_and_exact_build_native_static_with_separately_labeled_R7_R8_live_history",
+  "integration": "data supplement for existing knowledge actions; Root owns applying/unifying main module",
+  "new_policy_or_gate": false,
+  "new_action_tool": false,
+  "new_live_qualification": false,
+  "shared_relic_value": {
+    "state_model": {
+      "shared_world_key": [
+        "session",
+        "holy_site_full_id"
+      ],
+      "shared_fields": [
+        "one_embedded_inventory",
+        "actual_equipped_slots",
+        "cached_world_active",
+        "cached_world_active_rarity"
+      ],
+      "per_faith_relation_key": [
+        "faith_full_id",
+        "holy_site_full_id"
+      ],
+      "per_faith_relation_fields": [
+        "associated",
+        "eminent"
+      ],
+      "recognition_key": [
+        "artifact_full_id",
+        "faith_full_id"
+      ],
+      "recognition_semantics": "original 2530EF0: dynamic sanctification OR template compiled trigger; never infer false from empty dynamic list",
+      "current_rarity_semantics": "original 265A3F0 iterates actual equipped slots; 2531320 requires county holder current Faith association and original recognition; sums artifact object rarity for effective slots",
+      "cached_value_scope": "one global site+18/+1C, not per-Faith Active",
+      "modifier_scope": "source-confirmed actual Faithwide producer gates are separate from recognition; actual recipient numerical readback is a separate observation domain",
+      "faithwide_actual_producer": {
+        "rva": "0x24FB270..0x24FB8E0",
+        "gates": [
+          "requested Faith eminent+8A8 includes site",
+          "2441F30 county holder current Faith fullID equals requested Faith fullID"
+        ],
+        "fixed": "type+58 modifier list",
+        "scaled": "type+3D8 expression evaluated with HolySite fullID scope via2872820",
+        "active_caveat": "no site+18 check in this complete producer or controller-Faith gate; do not import GUI Active description gate into every actual fixed modifier",
+        "recipient": "291C0B0 ->291F080 consumes actor current Rite+20/+2C modifier list into actual character aggregate"
+      },
+      "local_fixed_actual_consumer": {
+        "entry": "0x291E3A0",
+        "observed_gate_fragment": "0x291E537..0x291E71B",
+        "gates": [
+          "site Active+18 true",
+          "actor current Faith in site+98"
+        ],
+        "scope_limit": "this fragment proves local character fixed gate; county scaled numerical consumer requires its own evidence"
+      },
+      "county_scaled_actual_producer": {
+        "entry": "0x2864E40",
+        "gates": [
+          "site Active+18 true",
+          "2441F30 county holder current Faith equality"
+        ],
+        "eminent_required": false,
+        "type_expression": "type+3F0, HolySite fullID scope",
+        "next_identity_binding": "2864D93 passes receiver R15; receiver+298 owner with Title fullID+18, aggregate+8; runtime root/getter not yet bound"
+      },
+      "freshness": "new domain capture_epoch and actual owner/slot/cache readback; public/native snapshot revision alone may stay unchanged after enshrine"
+    },
+    "current_observation_gaps": [
+      "arbitrary/all associated Faith recognition is not exposed by existing player/county-holder-only context",
+      "actual Faithwide/local recipient IDs, source-attributed numerical before/after values have not been independently observed, although the stated native producer/consumer conditions are source-confirmed",
+      "no retained live nonempty shared-slot single-command replacement; transaction rollback atomicity is not claimed",
+      "R8 abandon inventory was empty: neither nonempty shared retention nor last-Faith county-holder return has live evidence",
+      "actual devotion experience, opinion modifiers and CB availability remain separate from preview"
+    ],
+    "minimal_MCP_extension": {
+      "tool": "ck3_query_holy_site_relic_faith_recognition_matrix_v1",
+      "status": "design_handoff_to_unique_runtime_provider_owner; no new provider qualification in this package",
+      "arguments": [
+        "expected_revision",
+        "holy_site_id",
+        "candidate_artifact_ids=[]"
+      ],
+      "scope": "actual nonempty slots union explicit candidate artifacts, crossed with all associated Faiths in one religion owner capture",
+      "native_predicate_rva": "0x2530EF0",
+      "default_off_optin": "--private-holy-site-relic-faith-recognition-query",
+      "caps": {
+        "faiths": 64,
+        "slots": 64,
+        "candidates": 4,
+        "distinct_artifacts": 8,
+        "native_predicate_calls": 256
+      },
+      "overflow": "whole-scope refusal before any predicate call; never report truncated subset as complete",
+      "unknown": "per-cell available/value=null with reason; identity/array drift invalidates scope",
+      "semantics": "recognition only; not ActiveForFaith, modifier values or action readiness",
+      "evaluation_atomic": false,
+      "script_rng_effects_verified": false,
+      "script_rng_effects": "unknown"
+    },
+    "source_refs": {
+      "native": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/native-sharing.evidence.json",
+      "scripts": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/script-costs.evidence.json",
+      "recognition_and_cache": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/core-evidence.json",
+      "actual_consumer": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/beneficiary-consumer-addendum.json",
+      "mcp": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/mcp-gap.evidence.json"
+    }
+  },
+  "actions": {
+    "enshrine_relic": {
+      "shared_resource_change": "new artifact transfers from actor to the single shared HolySite inventory/actual effective slot; no per-Faith private copy",
+      "empty_slot": "original picker prefers first compatible empty slot; R7 actual empty-slot contribution and owner transfer are historical evidence",
+      "nonempty_replacement": {
+        "old_artifact_recipient": "valid current command actor, not original donor/county holder/Faith head unless equal to actor",
+        "new_artifact_recipient": "requested HolySite fullID",
+        "source": "29AADE0 receiver -> 252FDD0(old,actor); old fullID frozen from actual shared effective slot",
+        "picker": "first compatible empty else occupied lowest object rarity, ties first; no per-Faith recognition/value/political protection",
+        "final_native_checks": "actual new-enshrine compiled rule plus old-removal compiled rule for valid nonempty old object; current normal button and frozen preview still apply",
+        "existing_request_fields": [
+          "relic_artifact_id",
+          "relic_expected_effective_slot_index",
+          "relic_expected_replacing_empty",
+          "relic_expected_replacing_artifact_id",
+          "relic_expected_preview_sha256"
+        ],
+        "request_constraints": {
+          "relic_expected_replacing_empty": false
+        },
+        "subject": "current HolySite subject fullID, not an extra guessed pointer",
+        "single_command": "one original enshrine GUI callback and command; internally enshrine-new/remove-old script on-actions; do not dispatch a second remove, and do not claim transactional rollback atomicity",
+        "postconditions": [
+          "new HolySite owner is S, character owner cleared and removed from actor owned list",
+          "slot k contains new fullID",
+          "old character owner is current actor and present in actor owned list",
+          "old HolySite owner cleared and absent from site S equipped slots",
+          "other slots/associated Faith relations independently read",
+          "current/cache rarity and actual resource/effect read separately"
+        ],
+        "live_qualified": false
+      },
+      "script_political_conditions": {
+        "regional_permission": "actor is county holder, county holder top liege or holy_site_county.clerical_region_title.holder (clerical-region title holder); actor Faith also associates site; this script layer is not whole native permission",
+        "base_by_rarity": {
+          "1": 50,
+          "2": 100,
+          "3": 250,
+          "4": 500
+        },
+        "enshrine_piety_branch": "when old recognized by actor Faith and old rarity>=new rarity produces flag=no, and new recognized: add_piety B(new)-B(old); do not invert comparison from variable name/comment",
+        "remove_on_action_also_applies": "if old recognized by actor Faith and no new or new rarity<old rarity: add_piety_and_experience -B(old)",
+        "opinion": "conditional +15 enshrine and -20 removal, 10-year decay, exact vassal/liege/Faith-head scopes in script evidence; not universal same-Faith opinion",
+        "cross_faith_risk": "unlimited else_if can include equal/upgraded replacement; no own piety loss does not prove no other-Faith opinion/CB risk",
+        "cb": {
+          "grant": "tooltip only, no direct CB grant effect",
+          "normal_artifact_conditions": [
+            "attacker Faith recognizes artifact",
+            "defender Faith does not recognize artifact",
+            "artifact_prevent_transfer absent"
+          ],
+          "character_conditions": [
+            "attacker Faith differs from defender Faith",
+            "attacker is not landless adventurer",
+            "general declaration-of-war qualification separately required"
+          ],
+          "AI_extra_conditions": {
+            "ai_zeal_minimum": 100,
+            "attacker_tier_minimum": "duchy",
+            "player_exempt_from_these_two_AI_gates": true
+          },
+          "artifact_search_scope": "AI searches defender owned; player may also include defender vassal holders whose Faith differs from attacker Faith, subject original trigger",
+          "Iberian_branch": "separate; do not project ordinary trigger over it"
+        },
+        "fixed_gold_or_unconditional_button_piety": "not declared by these two callbacks; read current original total preview and actual wallet"
+      },
+      "planning_value": "compare current county-holder effective contribution, all-Faith recognition, actual recipient benefits, personal equipment/display opportunity value, returned old value, cost and diplomacy; original picker is not optimization",
+      "historical_case_ref": "faith-e01-r7-relic-ownership-active-20261017"
+    },
+    "remove_relic": {
+      "normal_recipient": "valid current command actor via 29AB8A0 -> 252FDD0, not original donor or county holder by default",
+      "invalid_actor_fallback": "not normal typed player success; never model as automatic return to county holder",
+      "regional_permission": "same regional script alternatives as enshrine, without enshrine-specific actor-Faith site-association condition; final native membership/current button still required",
+      "cost": "if old recognized by actor Faith and no replacement: add_piety_and_experience -B(old), B=50/100/250/500; conditional opinion/CB branches independent",
+      "shared_loss": "removes item from common physical slots; current county-holder contribution and global Active may fall, affecting whichever recipients actual modifier consumers establish",
+      "not_undo": "new action with resources/experience/political effects; separate from native nonempty single-command replacement",
+      "selection": "must select the actual filled-slot artifact into108; selected slot110 is independent and is not a remove prerequisite. Do not blindly toggle110. Original enshrine/remove clears108; selected slot/highlight alone is not selected artifact or normal button readiness",
+      "postconditions": [
+        "old character owner is actor and old HolySite owner cleared",
+        "old in actor owned list and absent from site equipped slots",
+        "all shared slots and associations read",
+        "current/cache values and actual resources read independently"
+      ],
+      "historical_case_ref": "faith-e01-r7-relic-ownership-active-20261017"
+    },
+    "abandon": {
+      "operation": "remove current actor-Faith membership edge, not unconditional deletion of shared world object",
+      "return_branches": [
+        {
+          "when": "any other associated Faith exists, even without county followers",
+          "recipient": null,
+          "effect": "dedicated return loop is skipped; shared nonempty behavior still needs actual readback"
+        },
+        {
+          "when": "no other associated Faith exists AND county holder exists",
+          "recipient": "county holder at execution, whether or not actor/same Faith/recognizer",
+          "effect": "each enshrined artifact set_owner county holder before removing actor-Faith edge"
+        },
+        {
+          "when": "no other associated Faith exists AND no county holder",
+          "recipient": "unknown/not assigned by this branch",
+          "effect": "dedicated return loop skipped; do not invent fallback"
+        }
+      ],
+      "does_not_use_explicit_remove_on_action": true,
+      "other_owner_effects": "generic set_owner may still have separate event/claim behavior; not proven risk-free",
+      "script_permission": "site belongs to actor Faith, ordinary for that Faith, current count strictly above religion minimum, current management permission",
+      "cost": {
+        "piety_base": 1000,
+        "cooldown_base_years": 5,
+        "free_action": "Faith free_holy_site_actions>=1 makes cost/cooldown zero and consumes one; not a relic-button discount"
+      },
+      "opinion": {
+        "non_actor_county_holder": {
+          "value": -50,
+          "duration_years": 10,
+          "decays": true
+        },
+        "actor_modifier": {
+          "duration_years": 10,
+          "zealot_same_faith_opinion": -20,
+          "parochial_same_faith_opinion": -20
+        }
+      },
+      "county_faith_consequence": "if county holder retains departed Faith, current contribution membership condition can fail although another Faith and the item remain; read current/cache, do not force refresh",
+      "historical_case_ref": "faith-e01-r8-abandon-nadjaf-20261017"
+    }
+  },
+  "selectively_supersedes_old_unknowns": [
+    "whether Faith views share same actual inventory: static source closed",
+    "Active/current effective rarity implementation: static source closed",
+    "normal valid-actor replacement/remove recipient: static source closed",
+    "abandon script return conditions and recipient: static source closed"
+  ],
+  "does_not_supersede": [
+    "actual beneficiary/modifier numerical observations",
+    "current command permission and stable preview",
+    "actual nonempty replacement/shared nonempty or last-Faith abandon outcome",
+    "complete global update scheduler or script RNG purity"
+  ]
+}

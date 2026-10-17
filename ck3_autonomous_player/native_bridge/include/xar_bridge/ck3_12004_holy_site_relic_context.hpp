@@ -2,6 +2,8 @@
 
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12002_religion_context.hpp"
+#include "xar_bridge/ck3_12004_holy_site_relic_recognition_matrix.hpp"
+#include "xar_bridge/ck3_12004_holy_site_modifier_aggregate.hpp"
 #include <cstddef>
 #include <cstdint>
 #include <optional>
@@ -88,6 +90,8 @@ struct Snapshot {
   CountyContext county_context{};
   Inventory inventory{};
   CurrentEvaluation current_relic_evaluation{};
+  std::optional<RecognitionMatrix> recognition_matrix;
+  std::optional<ModifierAggregateObservation> modifier_aggregate_observation;
   std::uint32_t native_getter_calls = 0;
   std::string getter_backend = "unavailable";
   std::string unavailable_reason = "holy_site_relic_context_not_read";
@@ -99,7 +103,8 @@ Bindings BindHolySiteRelicContextImage12004(std::uintptr_t image_base,
 // The original recognition getter allocates script context and uses TLS. Its
 // deeper trigger/RNG state effects are unverified, and are disclosed in JSON.
 bool ReadHolySiteRelicContext12004(const Bindings &,
-    const ck3_12002::religion::Context &, std::uint32_t holy_site_id, Snapshot &) noexcept;
+    const ck3_12002::religion::Context &, std::uint32_t holy_site_id, Snapshot &,
+    const void *jomini_owner = nullptr) noexcept;
 std::string SerializeHolySiteRelicContext12004(const Snapshot &);
 std::string SerializeHolySiteRelicContextCommand12004(const Snapshot &,
     std::string_view request_id, std::uint64_t snapshot_revision, std::int64_t date_raw);

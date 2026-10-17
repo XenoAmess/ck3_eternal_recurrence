@@ -769,3 +769,7 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/small-originals
 docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/literal-observations.json -text
 docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/source-index.json -text
 docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-decision.json -text
+
+
+# Exact disassembly bytes retain source spacing and line endings.
+/docs/ck3-native-ai/evidence/holy-site-effect-observation12004/*.asm -text whitespace=-blank-at-eol,cr-at-eol

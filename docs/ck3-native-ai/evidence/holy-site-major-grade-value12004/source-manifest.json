@@ -1,0 +1,314 @@
+{
+  "schema": "holy-site-major-grade-value-source-manifest-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-17T18:18:22.332555+00:00",
+  "target_build": "1.20.0.4",
+  "exe_sha256_binding": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "exe_rehashed_this_task": false,
+  "mode": "Actual installed small resources only; EXE pin reused from same-machine R8 frozen binding",
+  "sources": [
+    {
+      "source_id": "S01",
+      "game_relative_path": "common/religion/holy_site_types/_holy_site_types.info",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\_holy_site_types.info",
+      "bytes": 3329,
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "line_ranges": [
+        [
+          19,
+          29
+        ],
+        [
+          32,
+          78
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 19,
+          "line_end": 29,
+          "text": "\t### Brief: parameters ( parameter list )\n\t# Arbitrary parameters to be checked in applying various effects.\n\t# Localization: \"holy_site_parameter_<parameter_name>\" where $PARAMETER_NAME$ inserts localized named of parameter\n\t# Trigger (barony scope): 'has_holy_site_parameter' where $TITLE$ inserts localized named of barony\n\t# Trigger (faith scope): 'controls_holy_site_with_parameter' where $FAITH$ inserts localized named of faith\n\t# \n\t# Note: The above trigger just checks for existence, so it does not\n\t# matter if the value is set to 'yes' or 'no'.\n\t#\n\tparameters = {\n\t\tsome_parameter = yes"
+        },
+        {
+          "line_start": 32,
+          "line_end": 78,
+          "text": "\t### Brief: faith_character_modifier ( modifiers )\n\t# Modifiers applied to all characters of any faith with this holy site when the holder of the barony is of their faith.\n\t# Will only be applied if the holy site is an Eminent holy site for the Faith\n\t# Ex: { development_growth_factor = 0.1, church_holding_build_gold_cost = -0.1 }\n\t#\n\tfaith_character_modifier = {\n\t\t<modifier>\n\t}\n\n\t### Brief: faith_character_modifier_scaled ( scalable modifier list, repeatable )\n\t# Optional, repeatable. Each entry defines a character modifier whose values\n\t# multiply by a script-evaluated scale and is applied to all characters of the faith.\n\t# Will only be applied if the holy site is an Eminent holy site for the Faith.\n\t#\n\t# The `scale` field is a script value evaluated with the holy_site as the top\n\t# scope. The built-in `holy_site_total_artifact_rarity` returns the sum of\n\t# Rarity values across artifacts whose is_holy_relic trigger is true.\n\t# (1=Common, 2=Masterwork, 3=Famed, 4=Illustrious).\n\t#\n\tfaith_character_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tmonthly_piety_gain_mult = 0.05\n\t}\n\n\t### Brief: character_modifier ( modifiers )\n\t# Modifiers applied to holder of county of holy site, if same faith.\n\t# Will be applied if Regular or Eminent holy site of faith.\n\t#\n\tcounty_holder_character_modifier = {\n\t\t<modifier>\n\t}\n\n\t### Brief: county_modifier_scaled ( scalable modifier list, repeatable )\n\t# Optional, repeatable. Each entry defines a county modifier whose values\n\t# multiply by a script-evaluated scale and is applied to the holy site's\n\t# county.\n\t# Will be applied if Regular or Eminent holy site of faith.\n\t#\n\t# The `scale` field is a script value evaluated with the holy_site as the top\n\t# scope. The built-in `holy_site_total_artifact_rarity` returns the sum of\n\t# Rarity values across artifacts whose can_benefit_holy_site trigger\n\t# passes (1=Common, 2=Masterwork, 3=Famed, 4=Illustrious; 0 if none qualify).\n\t#\n\tcounty_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tmonthly_county_control_growth_factor = 0.01\n\t}"
+        }
+      ]
+    },
+    {
+      "source_id": "S02",
+      "game_relative_path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "bytes": 169446,
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "line_ranges": [
+        [
+          687,
+          710
+        ],
+        [
+          842,
+          865
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 687,
+          "line_end": 710,
+          "text": "mecca = {\n\tcounty = c_mecca\n\n\tcounty_holder_character_modifier = {\n\t\tmonthly_piety_gain_mult = 0.05\n\t\tknight_effectiveness_mult = 0.05\n\t}\n\n\tcounty_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tdevelopment_growth_factor = 0.01\n\t\ttravel_danger = -1\n\t}\n\n\tfaith_character_modifier = {\n\t\tmonthly_piety_gain_per_knight_mult = 0.02\n\t}\n\n\tfaith_character_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tknight_effectiveness_mult = 0.01\n\t\tpiety_level_impact_mult = 0.01\n\t}\n}"
+        },
+        {
+          "line_start": 842,
+          "line_end": 865,
+          "text": "nadjaf = {\n\tcounty = c_kufa\n\tbarony = b_an-najaf\n\n\tcounty_holder_character_modifier = {\n\t\tclergy_opinion = 3\n\t}\n\n\tcounty_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tdevelopment_growth_factor = 0.01\n\t\tcounty_opinion_add = 1\n\t}\n\n\tfaith_character_modifier = {\n\t\tdiplomacy_per_piety_level = 1\n\t\tclergy_opinion = 5\n\t}\n\n\tfaith_character_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tmonthly_piety_gain_mult = 0.01\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "source_id": "S03",
+      "game_relative_path": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\01_dynamic_holy_site_types.txt",
+      "bytes": 5129,
+      "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "line_ranges": [
+        [
+          72,
+          96
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 72,
+          "line_end": 96,
+          "text": "site_of_wisdom = {\n\tis_dynamic = yes\n\n\tcounty_holder_character_modifier = {\n\t\tlearning = 2\n\t}\n\n\tcounty_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tbuild_gold_cost = -0.01\n\t\tbuild_prestige_cost = -0.01\n\t\tbuild_piety_cost = -0.01\n\t\tdevelopment_growth = 0.01\n\t}\n\n\tfaith_character_modifier = {\n\t\tdiplomacy_per_piety_level = 1\n\t}\n\n\tfaith_character_modifier_scaled = {\n\t\tscale = holy_site_total_artifact_rarity\n\t\tmonthly_learning_lifestyle_xp_gain_mult = 0.01\n\t\tmonthly_diplomacy_lifestyle_xp_gain_mult = 0.01\n\t}\n}"
+        }
+      ]
+    },
+    {
+      "source_id": "S04",
+      "game_relative_path": "common/decisions/50_holy_site_decisions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "line_ranges": [
+        [
+          25,
+          59
+        ],
+        [
+          62,
+          100
+        ],
+        [
+          191,
+          211
+        ],
+        [
+          214,
+          265
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 25,
+          "line_end": 59,
+          "text": "\tis_valid = {\n\t\tsave_temporary_scope_as = root\n\t\texists = scope:selected_item\n\n\t\tcan_manage_faith_holy_sites_trigger = yes\n\n\t\tscope:selected_item ?= {\n\t\t\troot.faith = {\n\t\t\t\tis_faith_holy_site = prev\n\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }\n\t\t\t\tsave_temporary_scope_as = faith\n\t\t\t\tcustom_tooltip = {\n\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max\n\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max\n\t\t\t\t}\n\t\t\t}\n\t\t\tcustom_tooltip = {\n\t\t\t\ttext = elevate_holy_site_decision_target_in_realm_or_head_of_faith\n\t\t\t\tOR = {\n\t\t\t\t\troot.faith.religious_head ?= root\n\t\t\t\t\tholy_site_barony.holder = {\n\t\t\t\t\t\ttarget_is_same_character_or_above = root\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t\tcustom_tooltip = {\n\t\t\t\ttext = elevate_holy_site_decision_county_holder_correct_faith\n\t\t\t\tholy_site_county.holder.faith = root.faith\n\t\t\t}\n\t\t}\n\n\t\t# Show usage of free holy site action, if appropriate\n\t\tfaith = {\n\t\t\tholy_site_free_action_show_usage_trigger = yes\n\t\t}"
+        },
+        {
+          "line_start": 62,
+          "line_end": 100,
+          "text": "\tcost = {\n\t\tpiety = {\n\t\t\tvalue = 1000\n\t\t\tif = {\n\t\t\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n\t\t\t\tmultiply = 0\n\t\t\t}\n\t\t}\n\t}\n\n\tcooldown = { years = holy_site_decision_cooldown_value }\n\n\teffect = {\n\t\tscope:selected_item.holy_site_county.holder = {\n\t\t\tsave_scope_as = county_holder\n\t\t}\n\t\troot.faith = {\n\t\t\tmake_holy_site_eminent = {\n\t\t\t\ttarget = scope:selected_item\n\t\t\t\tactor = root\n\t\t\t}\n\t\t\tconsume_free_holy_site_action_effect = yes\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:county_holder\n\t\t\t\tNOT = { scope:county_holder = root }\n\t\t\t}\n\t\t\tscope:county_holder = {\n\t\t\t\tadd_opinion = {\n\t\t\t\t\tmodifier = holy_site_elevated_county_holder_opinion\n\t\t\t\t\ttarget = root\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tadd_character_modifier = {\n\t\t\tmodifier = holy_site_elevated_modifier\n\t\t\tyears = 10\n\t\t}"
+        },
+        {
+          "line_start": 191,
+          "line_end": 211,
+          "text": "\tis_valid = {\n\t\tsave_temporary_scope_as = root\n\t\texists = scope:selected_item\n\n\t\tcan_manage_faith_holy_sites_trigger = yes\n\n\t\tscope:selected_item ?= {\n\t\t\troot.faith = {\n\t\t\t\tis_faith_eminent_holy_site = prev\n\t\t\t\tsave_temporary_scope_as = faith\n\t\t\t\tcustom_tooltip = {\n\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min\n\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\n\t\t# Show usage of free holy site action, if appropriate\n\t\tfaith = {\n\t\t\tholy_site_free_action_show_usage_trigger = yes\n\t\t}"
+        },
+        {
+          "line_start": 214,
+          "line_end": 265,
+          "text": "\tcost = {\n\t\tpiety = {\n\t\t\tvalue = 1000\n\t\t\tif = {\n\t\t\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n\t\t\t\tmultiply = 0\n\t\t\t}\n\t\t}\n\t}\n\n\tcooldown = { years = holy_site_decision_cooldown_value }\n\n\teffect = {\n\t\tscope:selected_item.holy_site_county.holder = {\n\t\t\tsave_scope_as = county_holder\n\t\t}\n\t\troot.faith = {\n\t\t\tmake_holy_site_not_eminent = {\n\t\t\t\ttarget = scope:selected_item\n\t\t\t\tactor = root\n\t\t\t}\n\t\t\tconsume_free_holy_site_action_effect = yes\n\t\t}\n\t\tif = {\n\t\t\tlimit = {\n\t\t\t\texists = scope:county_holder\n\t\t\t\tNOT = { scope:county_holder = root }\n\t\t\t}\n\t\t\tscope:county_holder = {\n\t\t\t\tadd_opinion = {\n\t\t\t\t\tmodifier = holy_site_demoted_county_holder_opinion\n\t\t\t\t\ttarget = root\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t\tadd_character_modifier = {\n\t\t\tmodifier = holy_site_demoted_modifier\n\t\t\tyears = 10\n\t\t}\n\t\t# Demoting a schism-rite holy site feeds Great Schism progress\n\t\thidden_effect = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\troot.faith = faith:christian_faith\n\t\t\t\t\tpam_schism_county_rite_in_pair_trigger = { COUNTY = scope:selected_item.holy_site_county }\n\t\t\t\t}\n\t\t\t\tpam_change_great_schism_progress_effect = {\n\t\t\t\t\tVALUE = pam_great_schism_progress_holy_site_value\n\t\t\t\t\tTT = pam_great_schism_progress_holy_site_tt\n\t\t\t\t}\n\t\t\t}\n\t\t}"
+        }
+      ]
+    },
+    {
+      "source_id": "S05",
+      "game_relative_path": "common/script_values/00_holy_site_values.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+      "bytes": 1191,
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "line_ranges": [
+        [
+          1,
+          27
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 1,
+          "line_end": 27,
+          "text": "# Scope: holy_site\n# Returns: the sum of Artifact Rarity values of every artifact enshrined in\n# the holy site whose is_holy_relic trigger passes for the controlling faith.\n# (And the controlling faith also has this holy site as one of their own)\n# Each artifact contributes 1=Common, 2=Masterwork, 3=Famed, 4=Illustrious.\n# 0 if nothing qualifies.\n# Backed by the `total_active_artifact_rarity_sum` trigger registered in\n# holy_site_artifact_trigger_impl.cpp.\nholy_site_total_artifact_rarity = {\n\tvalue = root.total_active_artifact_rarity_sum\n}\n\n# How long a ruler must wait between holy site actions, shared by the decisions and by holy site creation.\nholy_site_action_cooldown_years = {\n\tvalue = 5\n}\n\n# Scope: character taking one of the holy site decisions.\n# Cooldown in years, waived while the faith still has a free holy site action left. Decision cooldowns\n# are evaluated with only the taking character in scope - no saved scopes - so this can read the faith\n# but nothing about the selected holy site.\nholy_site_decision_cooldown_value = {\n\tvalue = holy_site_action_cooldown_years\n\tif = {\n\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n\t\tvalue = 0\n\t}"
+        }
+      ]
+    },
+    {
+      "source_id": "S06",
+      "game_relative_path": "common/opinion_modifiers/00_religious_opinions.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\00_religious_opinions.txt",
+      "bytes": 5239,
+      "sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "line_ranges": [
+        [
+          4,
+          15
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 4,
+          "line_end": 15,
+          "text": "holy_site_elevated_county_holder_opinion = {\n\topinion = 50\n\tdecaying = yes\n\tyears = 10\n}\n\n# Demoted my [holy_site|E] county\nholy_site_demoted_county_holder_opinion = {\n\topinion = -50\n\tdecaying = yes\n\tyears = 10\n}"
+        }
+      ]
+    },
+    {
+      "source_id": "S07",
+      "game_relative_path": "common/modifiers/00_religion_modifiers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_religion_modifiers.txt",
+      "bytes": 8469,
+      "sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "line_ranges": [
+        [
+          7,
+          16
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 7,
+          "line_end": 16,
+          "text": "holy_site_elevated_modifier = {\n\ticon = piety_positive\n\tzealot_same_faith_opinion = 30\n}\n\nholy_site_demoted_modifier = {\n\ticon = piety_negative\n\tzealot_same_faith_opinion = -20\n\tparochial_same_faith_opinion = -20\n}"
+        }
+      ]
+    },
+    {
+      "source_id": "S08",
+      "game_relative_path": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\modifiers\\modifiers_l_simp_chinese.yml",
+      "bytes": 160863,
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+      "line_ranges": [
+        [
+          22,
+          22
+        ],
+        [
+          52,
+          52
+        ],
+        [
+          644,
+          644
+        ],
+        [
+          917,
+          921
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 22,
+          "line_end": 22,
+          "text": " MOD_DIPLOMACY_PER_PIETY_LEVEL: \"每级[piety_level|E]使[diplomacy|E]\""
+        },
+        {
+          "line_start": 52,
+          "line_end": 52,
+          "text": " MOD_PIETY_LEVEL_IMPACT_MULT: \"[piety_i|E][piety_level_impact|E]\""
+        },
+        {
+          "line_start": 644,
+          "line_end": 644,
+          "text": " MOD_MONTHLY_PIETY_GAIN_PER_KNIGHT_MULT: \"每位[knight|E]使每月[piety|E]\""
+        },
+        {
+          "line_start": 917,
+          "line_end": 921,
+          "text": " MOD_MONTHLY_DEVELOPMENT_GROWTH: \"[development|E]增长\"\n MOD_MONTHLY_DEVELOPMENT_DECLINE: \"[development|E]下降\"\n MOD_CHARACTER_CAPITAL_MONTHLY_DEVELOPMENT_GROWTH_ADD: \"[realm_capital|E]的[development|E]增长\"\n MOD_CHARACTER_CAPITAL_MONTHLY_CONTROL_ADD: \"[realm_capital|E]的[control|E]\"\n MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR: \"[development|E]增长\""
+        }
+      ]
+    },
+    {
+      "source_id": "S09",
+      "game_relative_path": "localization/simp_chinese/vassal_stances_l_simp_chinese.yml",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\vassal_stances_l_simp_chinese.yml",
+      "bytes": 24244,
+      "sha256": "327d3c0f1e2e56d50c3d6a011c04de9ae022b7de5d18572e005158fa1e955f9d",
+      "line_ranges": [
+        [
+          32,
+          39
+        ],
+        [
+          47,
+          54
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 32,
+          "line_end": 39,
+          "text": " parochial: \"本乡本土\"\n parochial_desc: \"$parochial$[vassals|E]想要稳定、分权与和平，支持让领地远离外部事务。正直或内敛的封臣经常选择这种[vassal_stance|E]。\\n\\n#low $parochial$封臣喜欢领主：#!\\n$EFFECT_LIST_BULLET$修建或升级[holdings|E]\\n$EFFECT_LIST_BULLET$让他们成为[close_family|E]的[guardians|E]\\n$EFFECT_LIST_BULLET$使用$task_domestic_affairs$[councillor_task|E]\\n\\n#low $parochial$封臣不喜欢领主：#!\\n$EFFECT_LIST_BULLET$拥有高[crown_authority|E]\\n$EFFECT_LIST_BULLET$发动重大[wars|E]\\n\\n他们更喜欢拥有高[stewardship_i][stewardship|E]能力的正直和理性的[heirs|E]。\"\n parochial_filter_option: \"$parochial$\"\n parochial_filter_option_desc: \"仅显示[GetVassalStance( 'parochial' ).GetName][vassal_stance|E]的角色\"\n parochial_vassal: \"[GetVassalStance( 'parochial' ).GetTextIcon][GetVassalStance( 'parochial' ).GetName][vassal|E]\"\n parochial_vassals: \"[GetVassalStance( 'parochial' ).GetTextIcon][GetVassalStance( 'parochial' ).GetName][vassals|E]\"\n parochial_opinion: \"$parochial_vassal$好感\"\n parochial_same_faith_opinion: \"$parochial_opinion$#weak （相同[faith|E]）#!\""
+        },
+        {
+          "line_start": 47,
+          "line_end": 54,
+          "text": " zealot: \"宗教狂热\"\n zealot_desc: \"$zealot$[vassals|E]专注于信仰事务，会被虔诚行动拉拢。狂热或记仇的封臣以及[clergy|E]经常选择这种[vassal_stance|E]。\\n\\n#low $zealot$封臣喜欢领主：#!\\n$EFFECT_LIST_BULLET$修建或升级[temple|E][holdings|E]\\n$EFFECT_LIST_BULLET$[GetScheme('learn_language').GetTypeName][scheme|E]成功\\n$EFFECT_LIST_BULLET$拥有[virtuous|E][traits|E]\\n$EFFECT_LIST_BULLET$进行[pilgrimage|E][activities|E]\\n\\n#low $zealot$封臣不喜欢领主：#!\\n$EFFECT_LIST_BULLET$向[head_of_faith|E]请求[gold_i][gold|E]\\n$EFFECT_LIST_BULLET$拥有[sinful|E][traits|E]\\n$EFFECT_LIST_BULLET$成功完成[GetScheme('study_faith').GetTypeName][scheme|E]\\n\\n他们更喜欢拥有高[learning_i][learning|E]能力的狂热和品行端正的[heirs|E]。\"\n zealot_filter_option: \"$zealot$\"\n zealot_filter_option_desc: \"仅显示[GetVassalStance( 'zealot' ).GetName][vassal_stance|E]的角色\"\n zealot_vassal: \"[GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName][vassal|E]\"\n zealot_vassals: \"[GetVassalStance( 'zealot' ).GetTextIcon][GetVassalStance( 'zealot' ).GetName][vassals|E]\"\n zealot_opinion: \"$zealot_vassal$好感\"\n zealot_same_faith_opinion: \"$zealot_opinion$#weak （相同[faith|E]）#!\""
+        }
+      ]
+    },
+    {
+      "source_id": "S10",
+      "game_relative_path": "common/scripted_triggers/00_religious_triggers.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "bytes": 88549,
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "line_ranges": [
+        [
+          1990,
+          1998
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 1990,
+          "line_end": 1998,
+          "text": "faith_has_free_holy_site_action_trigger = {\n\ttrigger_if = {\n\t\tlimit = { has_variable = free_holy_site_actions }\n\t\tvar:free_holy_site_actions >= 1\n\t}\n\ttrigger_else = {\n\t\talways = no\n\t}\n}"
+        }
+      ],
+      "reuse": "Same-machine child actual installed read; no second hash scan"
+    },
+    {
+      "source_id": "S11",
+      "game_relative_path": "common/scripted_effects/00_religion_effects.txt",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "bytes": 41530,
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "line_ranges": [
+        [
+          1285,
+          1294
+        ]
+      ],
+      "excerpts": [
+        {
+          "line_start": 1285,
+          "line_end": 1294,
+          "text": "# After the cost is already waived, a decision effect runs this on the faith\nconsume_free_holy_site_action_effect = {\n\tif = {\n\t\tlimit = { faith_has_free_holy_site_action_trigger = yes }\n\t\tchange_variable = {\n\t\t\tname = free_holy_site_actions\n\t\t\tsubtract = 1\n\t\t}\n\t}\n}"
+        }
+      ],
+      "reuse": "Same-machine child actual installed read; no second hash scan"
+    }
+  ]
+}

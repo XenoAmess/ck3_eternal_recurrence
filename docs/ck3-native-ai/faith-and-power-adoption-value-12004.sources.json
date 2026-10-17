@@ -1,0 +1,356 @@
+{
+  "schema": "ck3-holy-site-adoption-value-sources-v1",
+  "machine_id": "4-8e1c2f1861",
+  "generated_at_utc": "2026-10-17T18:32:02.236547+00:00",
+  "repository_head_at_generation": "352ed2552fba0b0557dd61df09282cda82daa820",
+  "game_version": "1.20.0.4",
+  "steam_build_id": 25734779,
+  "game_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "method": "offline text review and retained receipt projection; no new native state or command",
+  "static_sources": [
+    {
+      "id": "S01",
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "lines": [
+        [
+          491,
+          562
+        ],
+        [
+          565,
+          631
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S02",
+      "path": "common/religion/holy_site_types/_holy_site_types.info",
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "lines": [
+        [
+          32,
+          78
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S03",
+      "path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        [
+          359,
+          383
+        ],
+        [
+          842,
+          865
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S04",
+      "path": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "lines": [
+        [
+          72,
+          96
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S05",
+      "path": "common/buildings/00_special_buildings.txt",
+      "sha256": "33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4",
+      "lines": [
+        [
+          116,
+          155
+        ],
+        [
+          967,
+          1010
+        ],
+        [
+          1285,
+          1350
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S06",
+      "path": "common/activities/activity_types/pilgrimage.txt",
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "lines": [
+        [
+          28,
+          140
+        ],
+        [
+          220,
+          275
+        ],
+        [
+          424,
+          433
+        ],
+        [
+          855,
+          866
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S07",
+      "path": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "lines": [
+        [
+          1964,
+          2018
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S08",
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "lines": [
+        [
+          1285,
+          1294
+        ],
+        [
+          1344,
+          1387
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S09",
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "lines": [
+        [
+          1948,
+          2013
+        ],
+        [
+          2048,
+          2065
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S10",
+      "path": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "lines": [
+        [
+          13,
+          27
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "S11",
+      "path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "lines": [
+        [
+          1136,
+          1136
+        ]
+      ],
+      "origin": "installed_game_text",
+      "machine_id": "4-8e1c2f1861",
+      "read_back_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    }
+  ],
+  "historical_sources": [
+    {
+      "id": "H01",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0004/root-native-receipts/r4-baghdad-relics-a01.json",
+      "sha256": "782d40e69698c6b132e64d14f98ca4e8287f762dd422a36a4f8fc890651b0957",
+      "machine_id": "4-8e1c2f1861",
+      "availability": "retained_small_receipt_or_projection",
+      "read_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "H02",
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r8-abandon-12004.evidence.json",
+      "sha256": "24b954430cdce8f96732876274ccefdd3b73853d37c5e464e71fb6ae8bec788d",
+      "machine_id": "4-8e1c2f1861",
+      "availability": "retained_small_receipt_or_projection",
+      "read_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "H03",
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r8-create-12004.evidence.json",
+      "sha256": "4fcf7551356e48fa27a33d503230372fffbd7548ff7125c38311f6633c3bc9f1",
+      "machine_id": "4-8e1c2f1861",
+      "availability": "retained_small_receipt_or_projection",
+      "read_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "H04",
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-replanning-r7-12004.evidence.json",
+      "sha256": "c07e10e6aeb7288cf404e6be26d0232803bd777e65c56c86c573d34bceb3561b",
+      "machine_id": "4-8e1c2f1861",
+      "availability": "retained_small_receipt_or_projection",
+      "read_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    },
+    {
+      "id": "H05",
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-relic-r7-12004.evidence.json",
+      "sha256": "8a02566981ca7cc5bff370e40dcbb736234c091cb9f3ed7257fcaaea1379729b",
+      "machine_id": "4-8e1c2f1861",
+      "availability": "retained_small_receipt_or_projection",
+      "read_at_utc": "2026-10-17T18:32:02.236547+00:00"
+    }
+  ],
+  "historical_cases": [
+    {
+      "id": "baghdad14_r4",
+      "source": "H01",
+      "observed_at_utc": [
+        "2026-10-17T11:11:34.558458+00:00",
+        "2026-10-17T11:11:34.905000+00:00"
+      ],
+      "actor_id": 15893,
+      "faith_id": 50,
+      "personal_rite_id": 15,
+      "site_id": 14,
+      "county_holder_id": 15893,
+      "county_holder_faith_id": 50,
+      "associated_faith_ids": [
+        26,
+        27,
+        36,
+        49,
+        50
+      ],
+      "inventory_ids": [
+        64
+      ],
+      "cached_active": true,
+      "current_active": true,
+      "current_effective_rarity": 2,
+      "world_effects_applied_observed": false,
+      "warning": "R4 historical state, not a current actor/owner/benefit default; R6 partial window permission is not reused."
+    },
+    {
+      "id": "nadjaf32_r8_before_abandon",
+      "source": "H02",
+      "sites_observed_at_utc": [
+        "2026-10-17T16:23:40.307760+00:00",
+        "2026-10-17T16:23:40.611515+00:00"
+      ],
+      "relic_observed_at_utc": [
+        "2026-10-17T16:23:40.796457+00:00",
+        "2026-10-17T16:23:41.052395+00:00"
+      ],
+      "actor_id": 15893,
+      "faith_id": 50,
+      "site_id": 32,
+      "county_holder_id": 15436,
+      "county_holder_faith_id": 50,
+      "faith50_grade": "ordinary",
+      "faith51_grade": "eminent",
+      "inventory_ids": [],
+      "current_active": false,
+      "current_effective_rarity": 0,
+      "world_effects_applied_observed": false
+    },
+    {
+      "id": "samarra326_r8_after_create",
+      "source": "H03",
+      "site_observed_at_utc": [
+        "2026-10-17T16:34:53.980566+00:00",
+        "2026-10-17T16:34:54.335305+00:00"
+      ],
+      "relic_observed_at_utc": [
+        "2026-10-17T16:34:55.341863+00:00",
+        "2026-10-17T16:34:55.580445+00:00"
+      ],
+      "actor_id": 15893,
+      "faith_id": 50,
+      "site_id": 326,
+      "type_key": "site_of_wisdom",
+      "barony_title_id": 6622,
+      "county_holder_id": 15893,
+      "county_holder_faith_id": 50,
+      "associated_faith_ids": [
+        50
+      ],
+      "faith50_grade": "ordinary",
+      "inventory_ids": [
+        237
+      ],
+      "current_active": true,
+      "current_effective_rarity": 4,
+      "artifact237_after_owner": "holy_site:326",
+      "wallet_before": 3250,
+      "wallet_after": 1250,
+      "world_effects_applied_observed": false,
+      "warning": "Current capital, built/enabled buildings, creation cooldown, free action count and net beneficiary modifiers were not observed."
+    }
+  ],
+  "boundaries": [
+    "All IDs in historical_cases are historical instance IDs, never current defaults.",
+    "Type declarations and conditional arithmetic are not observed net attribute changes.",
+    "No new native permission, modifier receipt, pilgrimage or building state was produced.",
+    "This candidate grants no business qualification or whole-product pass."
+  ],
+  "native_consumer_review": {
+    "id": "NS01",
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/SOURCE-CONTRACT.actual.json",
+    "sha256": "80cf9447706821caeb9b6429cb6b0a6baf6d4c7b09021570f3faa2c9f10d07d9",
+    "machine_id": "4-8e1c2f1861",
+    "observed_utc": "2026-10-17T18:30:44.285396+00:00",
+    "repository_path_owned_by_faith_research": "docs/ck3-native-ai/evidence/holy-site-major-grade-value12004/native-consumer-contract.json",
+    "topic_owned_by_faith_research": "holy-site-major-grade-value12004.md",
+    "actual_live_attribute_observation": false,
+    "rvas": {
+      "faith_modifier_producer": "0x24FB270",
+      "county_holder_faith_gate": "0x2441F30",
+      "faith_actor_consumer": "0x291F080",
+      "local_fixed": "0x291E3A0",
+      "county_scaled": "0x2864E40",
+      "gui_description_only": "0x2659880"
+    },
+    "caution": "Local native Title input families are not equivalent to any same-Faith actor or an invented holder==actor shortcut; county receiver binding and live aggregate/source freshness remain unclosed."
+  }
+}

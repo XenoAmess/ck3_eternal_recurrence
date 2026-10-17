@@ -199,11 +199,11 @@ Bindings BindHolySiteRelicContextImage12004(std::uintptr_t base,std::string_view
   return b;
 }
 bool ReadHolySiteRelicContext12004(const Bindings &b,const ck3_12002::religion::Context &c,
-    std::uint32_t requested,Snapshot &out) noexcept {
+    std::uint32_t requested,Snapshot &out,const void *jomini_owner) noexcept {
   out={};out.capture_epoch=c.capture_epoch;out.date_raw=c.date_raw;out.played_character_id=c.played_character_id;
   out.player_rite_id=c.rite_id;out.player_faith_id=c.faith_id;out.requested_holy_site_id=requested;out.holy_site_id=requested;
   out.getter_backend=std::string(b.getter_backend);
-  const auto fail=[&](const char *why){out.unavailable_reason=why;return false;};
+  const auto fail=[&](const char *why){out.recognition_matrix.reset();out.modifier_aggregate_observation.reset();out.unavailable_reason=why;return false;};
   try {
     if (!b.enabled||!b.image_base||!b.read_memory||!c.available||!c.capture_epoch||c.played_character_id<=0||!c.faith_id)
       return fail("current_player_religion_context_unavailable");
@@ -229,6 +229,16 @@ bool ReadHolySiteRelicContext12004(const Bindings &b,const ck3_12002::religion::
       }
     } else {out.inventory.artifact_ids.clear();out.inventory.slots.clear();out.inventory.unavailable_reason="inventory_reference_or_slot_array_unavailable";}
     EvaluateCurrent(b,site,out);
+    if (jomini_owner) {
+      RecognitionMatrix matrix{};
+      (void)ReadHolySiteRelicRecognitionMatrix12004(b,jomini_owner,c,requested,std::nullopt,&out,matrix);
+      out.recognition_matrix=std::move(matrix);
+      ModifierAggregateObservation modifiers{};
+      (void)ReadHolySiteModifierAggregate12004(b,c,requested,modifiers);
+      out.modifier_aggregate_observation=std::move(modifiers);
+    }
+    // The legacy counter keeps its original scope. Matrix calls are disclosed
+    // separately, and all original post-evaluation identity/cache checks follow.
     std::vector<std::uint32_t> after_ids,after_faiths;std::vector<Slot> after_slots;
     CountyContext after_county{};County(b,site,after_county);
     const bool county_same=after_county.available==out.county_context.available &&

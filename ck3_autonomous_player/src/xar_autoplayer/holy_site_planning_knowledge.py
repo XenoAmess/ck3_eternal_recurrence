@@ -1,8 +1,8 @@
 """Frozen holy-site planning inputs, separate from native state and permission.
 
 This resource can be read without a game or a gameplay driver. It describes
-reviewed 1.20.0.4 resource scripts and separately scoped historical cases; it
-never evaluates current runtime scopes or grants native permission.
+reviewed 1.20.0.4 resources, exact-build native sources and separately scoped
+historical cases; it never evaluates current scopes or grants native permission.
 """
 
 from __future__ import annotations
@@ -10,6 +10,11 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Literal
 
+from .holy_site_decision_value_knowledge import (
+    HOLY_SITE_DECISION_VALUE_KNOWLEDGE,
+    HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE,
+)
+from .holy_site_grade_value_knowledge import HOLY_SITE_GRADE_VALUE_KNOWLEDGE
 from .holy_site_historical_cases import (
     HOLY_SITE_ADOPTION_HISTORICAL_CASES,
     HOLY_SITE_GRADE_REALLOCATION_HISTORICAL_CASES,
@@ -61,10 +66,11 @@ _COMMON_POSTCONDITIONS = [
     "Retain the native request and later material state; an ACK is not a completed action.",
 ]
 _COMMON_UNKNOWNS = [
-    "The engine's complete final command validator and holy-site action ABI.",
-    "HolySite.IsActive implementation, effective rarity calculation and actual beneficiaries.",
-    "Whether different Faith views share the same site-bound inventory; do not invent an independent inventory ID.",
-    "Native owner/slot/replacement legality and final costs for this actor/artifact/site.",
+    "Current actor/site/artifact final permission, stable selection/preview and actual quote/affordability; mapped exact-build entrypoints do not authorize the current action.",
+    "Current cached/current rarity, cache freshness and actual recipient modifier values; source-closed algorithms do not prove current values or applied world effects.",
+    "Unobserved nonempty replacement/retention and last-associated-Faith return outcomes; one original command does not prove transactional rollback atomicity.",
+    "Current free-action counters, post-payment devotion/opinion/CB results and complete update scheduling beyond the scoped observations.",
+    "Unmapped validator or effect-timing details outside the documented exact-build source contracts.",
 ]
 
 _KNOWLEDGE: dict[str, dict[str, object]] = {
@@ -524,6 +530,27 @@ _KNOWLEDGE["create"]["native_create_once_source"]["historical_case_ref"] = "fait
 _KNOWLEDGE["create"]["candidate_pipeline"][1]["native_producer_status"] = "source_closed_exact4_with_R8_historical_native_observation"
 
 
+# Portable source-valued comparisons; query deepcopy keeps returned data isolated.
+for _action in ("promote", "demote"):
+    _KNOWLEDGE[_action]["grade_value_comparison"] = HOLY_SITE_GRADE_VALUE_KNOWLEDGE
+for _action in ("adopt", "create"):
+    _KNOWLEDGE[_action]["value_analysis"] = {
+        **{key: value for key, value in HOLY_SITE_DECISION_VALUE_KNOWLEDGE.items() if key != "actions"},
+        "action": HOLY_SITE_DECISION_VALUE_KNOWLEDGE["actions"][_action],
+    }
+for _action in ("enshrine_relic", "remove_relic", "abandon"):
+    _KNOWLEDGE[_action]["shared_relic_value"] = {
+        **{key: value for key, value in HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE.items() if key not in {"shared", "actions"}},
+        **HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE["shared"],
+        "action": HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE["actions"][_action],
+    }
+for _action in ("enshrine_relic", "remove_relic"):
+    _KNOWLEDGE[_action]["candidate_pipeline"][0].update(
+        status="source_reviewed_static_current_models_unobserved",
+        reason="The exact-build shared-slot, cached-candidate and original picker routes are source-bound; read the current selected artifact/slot and final native permission independently.",
+    )
+
+
 def query_holy_site_planning_knowledge_v1(
     action: HolySitePlanningAction, *, ck3_build: str = HOLY_SITE_KNOWLEDGE_BUILD,
 ) -> dict[str, object]:
@@ -546,7 +573,7 @@ def query_holy_site_planning_knowledge_v1(
         "status": "unavailable",
         "qualification": "unsupported_build",
         "source_manifest": "docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/source-manifest.json",
-        "source_kind": "versioned_game_resource_scripts_and_gui_not_engine_cpp",
+        "source_kind": "versioned_game_resources_exact_build_native_sources_and_scoped_historical_observations",
         "source_manifest_additions": "docs/ck3-native-ai/evidence/faith-and-power-episode01-planning/knowledge-source-comparison.json",
         "knowledge": None,
     }
@@ -560,8 +587,16 @@ def query_holy_site_planning_knowledge_v1(
     knowledge["unknowns"] = _COMMON_UNKNOWNS + knowledge.pop("additional_unknowns")
     knowledge["rarity_source_boundary"] = {
         "declaration": "The resource describes the controlling Faith's recognized relic rarity sum, only when that Faith also has the site; tiers contribute 1/2/3/4.",
-        "native_algorithm_verified": False,
-        "sources": [_source(_VALUES, _VALUES_SHA, 1, 10)],
+        "native_algorithm_verified": True,
+        "source_verified": True,
+        "native_algorithm_verification_scope": "Exact 1.20.0.4 native source: one shared inventory/global cache, original recognition and county-holder-Faith rarity producer; separately scoped R7/R8 getter observations.",
+        "current_value_observed": False,
+        "world_effects_applied_observed": False,
+        "beneficiaries_observed": False,
+        "sources": [
+            _source(_VALUES, _VALUES_SHA, 1, 10),
+            deepcopy(HOLY_SITE_SHARED_RELIC_VALUE_KNOWLEDGE["shared"]["source_refs"]["recognition_and_cache"]),
+        ],
     }
     result.update(status="available", qualification="source_reviewed_static", knowledge=knowledge)
     return result

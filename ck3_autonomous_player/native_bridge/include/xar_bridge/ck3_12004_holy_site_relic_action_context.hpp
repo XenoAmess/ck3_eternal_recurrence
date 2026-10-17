@@ -46,6 +46,7 @@ struct Snapshot {
  relic_permissions::Snapshot permissions{};
  Ownership artifact_ownership{};
  Destination destination{};
+ std::optional<holy_site_relic::RecognitionMatrix> recognition_matrix;
  Text selected_action_effect_description{},enshrine_disabled_tooltip{},remove_disabled_tooltip{};
  bool selected_artifact_matches_request=false,preview_identity_available=false;
  std::string preview_identity_sha256;

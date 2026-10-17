@@ -1,0 +1,175 @@
+{
+  "schema": "ck3-holy-site-adoption-value-decision-matrix-v1",
+  "game_version": "1.20.0.4",
+  "machine_id": "4-8e1c2f1861",
+  "generated_at_utc": "2026-10-17T18:32:02.236547+00:00",
+  "state_observed": false,
+  "native_legality": null,
+  "action_ready": false,
+  "scope": "Conditional research scenarios, not a ranked optimal policy",
+  "scenarios": [
+    {
+      "id": "existing_baghdad_first",
+      "objective": "Improve personal learning, economy, or an existing network before expanding it",
+      "consider_actions": [
+        "retain",
+        "query_promote"
+      ],
+      "when": [
+        "The same site instance already belongs to the acting Faith.",
+        "Fresh context confirms the intended county/building holder, Active/rarity, and benefit recipient."
+      ],
+      "decision": "Do not submit duplicate adopt; compare existing Baghdad management/promotion with a new site.",
+      "comparison": "Historical Baghdad14 already belonged to Faith50, county holder was player15893, current Active and rarity2 were observed in R4. Eminent-only declared effects can make promotion a candidate, subject to capacity, lost major benefits, fresh native permission and price.",
+      "does_not_prove": [
+        "Promotion is currently legal.",
+        "Baghdad is the optimal choice.",
+        "Any declared modifier was measured as applied."
+      ],
+      "sources": [
+        "S01:512-517",
+        "S02:32-78",
+        "S03:359-383",
+        "H01"
+      ]
+    },
+    {
+      "id": "empty_vassal_nadjaf",
+      "objective": "Gain personal learning or personal income immediately",
+      "consider_actions": [
+        "defer_adopt",
+        "retain_piety",
+        "query_other_site"
+      ],
+      "when": [
+        "Target county is held by a vassal rather than the player.",
+        "Target is empty/inactive and no independent building or pilgrimage payoff has been verified."
+      ],
+      "decision": "Do not value adoption as immediate personal learning/income; require a named recipient and a complete activation/use plan.",
+      "comparison": "Nadjaf local fixed declaration is clergy_opinion+3 for the county holder, not learning for the adopting emperor. In R8 that holder was15436 and rarity0; scaled relic terms therefore have no positive magnitude in that observed evaluation.",
+      "does_not_prove": [
+        "Adoption has no strategic value.",
+        "Inactive fixed modifiers definitely apply.",
+        "A later recognized relic or independent building benefit is impossible."
+      ],
+      "sources": [
+        "S02:56-78",
+        "S03:842-865",
+        "H02"
+      ]
+    },
+    {
+      "id": "faithwide_nadjaf_budget",
+      "objective": "Seek the Nadjaf eminent Faith-wide piety/clergy package",
+      "consider_actions": [
+        "adopt_then_reallocate_and_enshrine",
+        "promote_existing_site",
+        "defer"
+      ],
+      "when": [
+        "The acting Faith does not yet own the target.",
+        "The desired type effect is in an eminent-only block.",
+        "Full major capacity may require a different existing major to be demoted."
+      ],
+      "decision": "Price the complete sequence and the benefit lost at the old major; adoption alone does not purchase the eminent package.",
+      "comparison": "With no free actions and all fresh quotes1000: planned adopt+demote+promote=3000 piety, not a measured three-action bundle. On historical C2 adoption was already sunk; R7 measured the remaining demote26+promote32 at2000. A recognized relic creates a further artifact opportunity cost, and later removal was independently paid500 in R7.",
+      "does_not_prove": [
+        "Free action count is zero now.",
+        "Devotion falls by the wallet amount.",
+        "Demoting Mecca is best.",
+        "The package has already increased anyone’s net stats."
+      ],
+      "sources": [
+        "S01:543-562",
+        "S03:856-863",
+        "S07:1990-1998",
+        "S08:1285-1294",
+        "S10:13-27",
+        "H04",
+        "H05"
+      ]
+    },
+    {
+      "id": "imam_ali_missing_membership",
+      "objective": "Satisfy one missing enabling condition of a specific existing special building",
+      "consider_actions": [
+        "query_adopt",
+        "defer_for_other_building_requirements"
+      ],
+      "when": [
+        "A built Imam Ali Mosque is actually present.",
+        "Its own holding holder has the acting Faith and meets the Islam/syncretism branch.",
+        "The missing condition is the barony’s holy-site association with that holder Faith.",
+        "Fresh final native adoption permission, quote and post-building state are available."
+      ],
+      "decision": "Adoption can be justified by satisfying the missing relation predicate; verify final enabled state and the actual building beneficiary afterward.",
+      "comparison": "Imam Ali Mosque uses membership AND Islam/syncretism. This is a building-specific gate, independent of calling a site eminent or relic Active. An unbuilt mosque still needs gold, construction, a suitable slot and other construction requirements.",
+      "does_not_prove": [
+        "The historical Nadjaf building exists or is disabled.",
+        "A building is constructed by adoption.",
+        "The county holder and holding holder are the same person.",
+        "All special buildings use this AND."
+      ],
+      "sources": [
+        "S01:555-562",
+        "S05:967-1010"
+      ]
+    },
+    {
+      "id": "create_in_own_heartland",
+      "objective": "Choose a type/location whose local benefit recipient is the player",
+      "consider_actions": [
+        "query_create_wisdom",
+        "query_adopt",
+        "retain_piety_and_artifact"
+      ],
+      "when": [
+        "Fresh creation context offers the exact type, barony and qualifying artifact tuple.",
+        "The player actually holds the county and intends to invest there.",
+        "The budget includes piety, relic use elsewhere, major capacity if needed, and creation cooldown."
+      ],
+      "decision": "Compare a player-held wisdom site with adopting a vassal-held site, using actual recipients and chosen goals rather than the site count alone.",
+      "comparison": "R8 created ordinary326 at barony6622 for2000 actual piety, Active4 with237 owned by the site. Its type declares county-holder learning2 and scaled local construction costs; eminent-only XP remains unavailable through ordinary status. For a Sunni building holder, Samarra Great Mosque’s Islam OR holy-site branch already satisfies the religion alternative, so creation is unnecessary merely to satisfy that branch.",
+      "does_not_prove": [
+        "The current building holder/enable state is known.",
+        "A current capital can be used for pilgrimage.",
+        "The new type has produced measured net learning/development.",
+        "All artifacts or type/barony pairs qualify.",
+        "The earlier abandonment was necessary for creation."
+      ],
+      "sources": [
+        "S02:32-78",
+        "S04:72-96",
+        "S05:1302-1330",
+        "S09:2048-2065",
+        "H03"
+      ]
+    },
+    {
+      "id": "pilgrimage_option_only",
+      "objective": "Improve an actually usable pilgrimage option",
+      "consider_actions": [
+        "query_adopt",
+        "use_existing_destination",
+        "defer"
+      ],
+      "when": [
+        "Fresh activity location logic exposes the candidate for this host and pilgrimage type.",
+        "Host health, recent visits, travel route, expense and safety meet the current plan.",
+        "The site is not excluded as the non-adventurer host’s own capital."
+      ],
+      "decision": "Value destination relevance only after the actual activity candidate and location validity are checked.",
+      "comparison": "Hajj remains Mecca-only. A wisdom site in Samarra cannot replace Hajj; if Samarra is the current capital, the ordinary landed host capital exclusion also matters. Adding an association does not prove a free, safe, immediately available pilgrimage.",
+      "does_not_prove": [
+        "Any pilgrimage was executed in this episode.",
+        "An inactive site is always a valid destination.",
+        "The historical actor’s current capital has been read."
+      ],
+      "sources": [
+        "S06:28-140",
+        "S06:220-275",
+        "S06:855-866"
+      ]
+    }
+  ]
+}

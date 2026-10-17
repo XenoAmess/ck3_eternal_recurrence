@@ -5,6 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
+from .holy_site_relic_recognition_matrix import normalize_holy_site_relic_recognition_matrix_v1
+from .holy_site_modifier_aggregate_observation import normalize_holy_site_modifier_aggregate_v1
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .player_holy_site_private_transport import _availability, _ref
@@ -177,6 +179,12 @@ def normalize_player_holy_site_relic_context_v1(
         disagreement = _boolean(current.get("cache_evaluation_disagreement"), "cache_evaluation_disagreement", nullable=not cached["available"])
         if not cached["available"] and disagreement is not None:
             raise ValueError("comparison with unavailable cached state must remain null")
+    if "recognition_matrix" in result:
+        result["recognition_matrix"] = normalize_holy_site_relic_recognition_matrix_v1(
+            result["recognition_matrix"], parent=result, holy_site_id=holy_site_id)
+    if "modifier_aggregate_observation" in result:
+        result["modifier_aggregate_observation"] = normalize_holy_site_modifier_aggregate_v1(
+            result["modifier_aggregate_observation"], parent=result, holy_site_id=holy_site_id)
     return result
 
 

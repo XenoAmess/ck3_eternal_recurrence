@@ -136,7 +136,8 @@ bool ExecutePlayerReligionMailbox12002(
       SetCaptureStage("holy_site_relic_context");
       (void)ck3_12004::religion::holy_site_relic::ReadHolySiteRelicContext12004(
           query.holy_site_relic_bindings,out,
-          query.requested_holy_site_id.value_or(0xFFFFFFFFU),query.holy_site_relic_snapshot);
+          query.requested_holy_site_id.value_or(0xFFFFFFFFU),query.holy_site_relic_snapshot,
+            reinterpret_cast<const void *>(stamp.jomini_state));
       query.completed=true;
       SetCaptureStage("finish_holy_site_relic_frame");
       (void)FinishQueryMailbox(*envelope);return true;

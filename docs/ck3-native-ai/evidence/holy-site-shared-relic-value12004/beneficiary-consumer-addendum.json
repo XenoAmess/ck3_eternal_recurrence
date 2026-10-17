@@ -1,0 +1,262 @@
+{
+  "schema": "ck3_shared_relic_actual_consumer_addendum_a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T18:32:11.411683+00:00",
+  "source_owner": "/root/faith_research/creation_contract; this lane only re-read its frozen finite packages",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "original code from prior immutable exact-EXE section cache; no new EXE/process read or native invocation",
+  "sources": [
+    {
+      "name": "actual-faithwide-producer",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-faithwide-producer.json",
+        "bytes": 4041,
+        "sha256": "4abf31b8fe7a366b2e61dbe4e58e8a9a312e2a3f435d776d479e86574346fb95"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-faithwide-producer.asm",
+        "bytes": 27698,
+        "sha256": "74ec5333603b9f001fced08fc6bdcda9e2de4f3324ef90a7a7cd13e66d404706"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:27:35.696617+00:00",
+      "begin_rva": "0x24fb270",
+      "end_exclusive": "0x24fb8e0",
+      "body_sha256": "0a54a83a220b7d24fd9858f4f9870d773a4c7f3e79c08c055296482ec936cd10",
+      "bytes_hex": "48894c2408555356574154415541564157488dac2438fcffff4881ecc80400000f29b424b00400004c8bfa4c8be933c9448be1898d18040000498d750848635e0c488b3e48894de048894de8488d45f8488945f0488d054dd12302488945f84c8d35fa59fe024c897540488b0547d1230233d2448d4108488d4df8ffd033c0488945e0488945e8488b45f84c8d45e8488d55e0488d4df8ff50204c8d0cdf4c8bc78b55ec488d4de0e8532d4dfe9049639f2c090000498bbf2009000033c048894424604889442468488d4424784889442470488d05cfd0230248894424784c8975c04533f6488b05ccd0230233d2458d4608488d4c2478ffd04c897424604c89742468488b4424784c8d442468488d542460488d4c2478ff50204c8d0cdf4c8bc78b54246c488d4c2460e8d12c4dfe90488d542460488bcee87308000090488b5424604885d27414448974246c488b4c2470488b01458d4608ff50104d8d75704c89742430498bcee8d3d619ff418b87b80400004c8b05152f82034d85c0742d8bc881e1ffffff00413b482c731f8bd14803d2498b4820488b4cd10848898d280400004885c97405394108740e488b0dbc2e820348898d28040000488b99900800004863819c080000488d3c8348897c2438483bdf0f84710300000f1f4400008b0348833d262a82030075094c8b3dbd298203eb3c4c8b05142a82038bc881e1ffffff00413b482c73198bd14803d2498b48204c8b7cd1084d85ff74064139471074074c8b3d86298203488b8d280400004d8b6f2041837d6400750e4183bde4030000000f84e9020000418b47108985200400004881c1a8080000488d9520040000e8397f4efe84c00f84c4020000498bd7488b8d28040000e8426af4ff84c00f84ad020000488b8510040000448b707c41837d64007436498b4720488d485880b81804000000740f488bd1488b4c2430e8aa1d0000eb1648898d20040000488d9520040000488bcee8024e38fe4183bde4030000000f84ab000000498bd7488d8d90000000e8951c000090498d95d80300004c8bc0488b4c2430e8b072370090488d8da8010000e883e138fe4883bd90010000007439488d8d90010000e8ede138fe488b8da0010000488b0141b808000000488b9590010000ff50104533ed4c89ad900100004489ad98010000eb034533ed488b95a80000004885d274284489adb4000000488b8db8000000488b0141b808000000ff50104c89ada80000004489adb00000004c8bad10040000453b757c0f849b010000488d5570498bcfe80cd715004c8bf8488d057ac723024889442450c744245821000000c644245c00488d0569bb35fe48894424204c8d0d0dbb35feba78000000448d4289488d4c2460e82289d20190488d8d00020000e87de338fe90488d05a1c7fb014889442440c744244804000000c644244c000f104424400f114588c744246001000000488d4598493bc7741a4d8b471049837f181072034d8b3f498bd7488d4d98e8ffa635fe4533ff4c897c2428488d85000200004889442420458d4f014c8d442460488d542450488d4d50e844af91014183cc024489a5180400004c39bd000200007432488d8d00020000e8d4e338fe488b8d10020000488b01458d4708488b9500020000ff50104c89bd000200004489bd080200004c8d0d77ba35feba78000000448d4289488d4c2460e8e084d2014183e4fd4183cc014489a518040000488d4d70e8fca835fe453b757c7d40660f1f4400004963c64869c8c00100004881c190010000488d555048837d6810480f43555049034d704c634560e824a635fe41ffc6453b757c7ccb488b7c2438488d4d50e8ada835fe4883c304483bdf488b8d280400000f8599fcffff4c8b742430498b3e4963460c4c69e0c00100004c03e78b5e0c493bfc0f84a4000000f30f10350fad4f028b46083bd87575ffc3660f6ec00f5bc0f30f59c6f30f2cc0448bf33bd8440f4cf0488b4e10488b01418bd648c1e20341b808000000ff50084c8bf848634e0c48893cc84863460c488b1685c07e124c8bc049c1e003498bcfe822b0d201488b16488b4e10488b0141b808000000ff50104c893e895e0c44897608eb104863cb488b0648893cc8ff460c8b5e0c4881c7c0010000493bfc0f8564ffffff488b7de0486345ec3bc3751a4c8d04c74c2bc7488b16488bcfe815b8d20185c0750432dbeb02b3014885ff741733c08945ec488b4df04c8b09448d4008488bd741ff51100fb6c30f28b424b00400004881c4c8040000415f415e415d415c5f5e5b5dc3",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-controller-faith-gate",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-controller-faith-gate.json",
+        "bytes": 1307,
+        "sha256": "c68c05fc2a80fa13fb916c7118f0d5c53904bfa684d7c1af29229ab058f5cff7"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-controller-faith-gate.asm",
+        "bytes": 5397,
+        "sha256": "3584cc1f560662a0c0f187e69578521e168e51b29523ea6860e0f148ef1ba51f"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:27:35.696617+00:00",
+      "begin_rva": "0x2441f30",
+      "end_exclusive": "0x2442049",
+      "body_sha256": "a7f3d8d13fc68c2bada6148f5310542cce2a07b939a0c9cbeec66931c6cf2988",
+      "bytes_hex": "48895c24084c8b05bcbb8d03488bd94d85c0746d448b8ab0000000418bc1458b582c25ffffff004c8b1582bb8d03413bc373198bc8498b40204803c9488b54c8084885d2740644394a107403498bd2448b8a08010000418bc125ffffff00413bc373198bc8498b40204803c9488b54c8084885d2740644394a10740c498bd2eb07488b1528bb8d03488b05a95582034885c0742c448b8228010000418bc881e1ffffff003b482c7317488b40204803c9488b44c8084885c07406443940187407488b0579558203488b15fac28d034885d2742d448b80b4000000418bc025ffffff003b422c73198bc8488b42204803c9488b4cc8084885c97406443941087407488b0d395682038b43083981b8040000488b5c24080f94c0c3",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-faithwide-recipient",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-faithwide-recipient.json",
+        "bytes": 1021,
+        "sha256": "449dbd5a48f023641d75e2d25308f555b34d9508699cca8cdb399ce33ff388c8"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-faithwide-recipient.asm",
+        "bytes": 2699,
+        "sha256": "37f25bc5aa4303a1e6d8d87b6d1043a3b7b1458a759bdeb4a6f48ee7ef9e9d5e"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:27:35.696617+00:00",
+      "begin_rva": "0x291f080",
+      "end_exclusive": "0x291f10a",
+      "body_sha256": "6cc7b709725eaa5314267a460642184673b9c31a3a55315d42e27dc13db7546b",
+      "bytes_hex": "48895c240848896c2418565741564883ec304c8b055ff23f034c8bf2488bf14d85c0742b8b92b40000008bc225ffffff00413b402c73188bc8498b40204803c9488b6cc8084885ed74053955087407488b2d9a853403488b5d204883c6104863452c488d3cc3483bdf741f0f1f440000488b1341b8a0860100488bcee82f97b1ff4883c308483bdf75e6",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-local-fixed-gate",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-local-fixed-gate.json",
+        "bytes": 1713,
+        "sha256": "ffbc0e82184689e8f6e3b9d2ea31509104c0dc0e9110ec3ab01c04b2c23f1074"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-local-fixed-gate.asm",
+        "bytes": 7997,
+        "sha256": "0e28b1c96bb84541d95b58558267d8a555b190cf68313f4a8582ce3d152e6b60"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:27:35.696617+00:00",
+      "begin_rva": "0x291e537",
+      "end_exclusive": "0x291e71b",
+      "body_sha256": "94de5874007bd172605c555547932d6bd040c3c8f03b711ea9b8511dd85180f0",
+      "bytes_hex": "488bd7498bcde86e070000488b4748837864020f85cb010000488b9fe0010000486387ec0100004c8d2c83493bdd0f84a90100000f1f4400008b0348833d06f93f0300742e4c8b05fdf83f038bc881e1ffffff00413b482c73198bd14803d2498b48204c8b74d1084d85f674064139461074074c8b356ff83f03498b462083b824020000000f844501000041807e18000f843a01000048833d23fd3f03007433418b97b40000004c8b0513fd3f038bc225ffffff00413b402c73188bc84803c9498b4020488b44c8084885c074053950087407488b055f9034034963b6a4000000498bbe980000004c8d3cb7448ba0b8040000ba1000000065488b042558000000488b088b040a3905f81734030f8ffc050000488b05ef17340348c1e8203de84e0000721544896424204d8bcf4c8bc7e804226701488bf8eb5166410f6ecc660f70c90048c1ee0248c1e6044803f7483bfe74240f1f440000f30f6f07660f76c10f50c04863c885c00f85a80000004883c710483bfe75e1493bff740e44392774094883c704493bff75f2498b8e98000000496386a4000000488d1481483bfa41bc00000000490f44fc4885ff741a498b56204881c21802000041b8a0860100488d4d10e8004a9eff4c8bbdd80300004883c304493bdd0f855cfeffff4c8badd0030000",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-scaled-context",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-scaled-context.json",
+        "bytes": 1193,
+        "sha256": "cd628aa7767d55b1bdd3915f2043dac67215475a045b0fae2e2abf26fdb13c53"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-scaled-context.asm",
+        "bytes": 3664,
+        "sha256": "5472e08be5e696bb750a54ae108a0cd35cc530919e595479d9c50e5670aa1db7"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:27:35.696617+00:00",
+      "begin_rva": "0x24fd1f0",
+      "end_exclusive": "0x24fd2d0",
+      "body_sha256": "8647be9232bf4e0c45b1a5e5572b9038ed9d7626d4d3cc7b4c856c3b81d0208d",
+      "bytes_hex": "48895c24084889742410574883ec2033f6c74110ffffffff8931488bf948897108488bda4883c118e8b3c338fe488d05d4fff8014889b70001000048898718010000488d0d3710fe02488d052800f9014889b70801000048898720010000488d052310fe0248898738010000b8170000006689074889b7280100004889b73001000089b7400100004889b7480100004889b7500100006689b7640100004088b766010000488b74243848898f1001000048898f58010000c78760010000ffffffff8b4310488b5c243048894708488bc74883c4205fc3cccccccccccccccccccc",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-county-scaled-producer",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-county-scaled-producer.json",
+        "bytes": 3181,
+        "sha256": "e7a0534fefdf65e0a966bfebffd3868b3f77068af62ecb397d1a905a8a1d2f47"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-county-scaled-producer.asm",
+        "bytes": 20131,
+        "sha256": "f8f2ebf887248b3b8ac7142b82f8d9a675d8b6b988b853de49ee9a3ff4e2ff40"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:29:06.746828+00:00",
+      "begin_rva": "0x2864e40",
+      "end_exclusive": "0x2865302",
+      "body_sha256": "5672a1e3acdceb94eef67018b6f09ca1cc808e78ad9aa86341074513118416d0",
+      "bytes_hex": "48894c2408555356574154415541564157488dac2438feffff4881ecc8020000488bf14533ed4489ad180200004c8db9680200004c89bd20020000498bcfe82d3ce3fe488b86980200008b40184c8b05648c4b034d85c074278bc881e1ffffff00413b482c73198bd14803d2498b48204c8b44d1084d85c074064139401074074c8b05198c4b0341817814646e614c0f851904000041837810ff0f840e0400004539a8ec0100000f8401040000418b80280100004c8b0d6d2640034d85c974268bc881e1ffffff00413b492c73188bd14803d2498b4920488b4cd1084885c974053941187407488b0d43264003488b15c4934b034885d2742d448b89b4000000418bc125ffffff003b422c73198bc84803c9488b4220488b44c8084885c07406443948087407488b05032740038b80b80400004c8b0d86934b034d85c9742e8bc881e1ffffff00413b492c73208bd14803d2498b49204c8b4cd1084c898d280200004d85c9740641394108740e4c8b0d2c934b034c898d28020000498b98e0010000496380ec010000488d3c83483bdf0f84e40200004c8b35a38e4b034c8b253c8e4b038b034d85f674268bc881e1ffffff00413b4e2c73188bd14803d2498b4e20488b74d1084885f674053946107403498bf4817e1474536f480f857e020000837e10ff0f8474020000807e18000f846a0200004c8b7e204183bffc030000000f8451020000488bd6498bc9e8decebdff84c00f843e020000488b8510020000448bb074020000488bd6488d4d10e87c81c9ff90498d97f00300004c8bc04c8bbd20020000498bcfe892d7000090488d8d28010000e8654602fe4883bd10010000007439488d8d10010000e8cf4602fe488b8d20010000488b0141b808000000488b9510010000ff50104533e44c89a5100100004489a518010000eb034533e4488b55284885d2741444896534488b4d38488b0141b808000000ff5010488d542470488bcee8153cdfff488bf0488d050378ef014889442440c74424481e000000c644244c00488d057220fffd48894424204c8d0d1620fffdba78000000448d4289488d4d90e82cee9b0190488d4d10e88a4802fe90488d05ae2cc5014889442430c744243804000000c644243c000f104424300f1145b8c7459001000000488d45c8483bc6741a4c8b461048837e18107203488b36488bd6488d4dc8e80d0cfffd4c89642428488d4510488944242041b9010000004c8d4590488d542440488d4c2450e856145b014183cd024489ad1802000048837d10007425488d4d10e8eb4802fe488b4d20488b0141b808000000488b5510ff50104c896510448965184c8d0d981ffffdba78000000448d4289488d4d90e802ea9b014183e5fd4183cd014489ad18020000488d4c2470e81d0efffd488bb510020000443bb6740200007d3b4963c64869c8c00100004881c190010000488d54245048837c246810480f4354245049030f4c63442460e83e0bfffd41ffc6443bb6740200007cc5488d4c2450e8c80dfffd4c8b35f18b4b034c8b258a8b4b03eb0e4c8bbd20020000488bb5100200004883c304483bdf4c8b8d280200000f852afdffff498b1f4963470c4869f8c00100004803fb483bdf741e41b8a0860100488bd3488d4e08e84e35bdff4881c3c0010000483bdf75e24881c4c8020000415f415e415d415c5f5e5b5dc3",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "actual-county-scaled-caller",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-county-scaled-caller.json",
+        "bytes": 761,
+        "sha256": "b270b2d04071e70b251bbeca9ea8bd50e0653e2b5ed5a6ce596bd0333aab119d"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/actual-county-scaled-caller.asm",
+        "bytes": 125,
+        "sha256": "7824b471fc4ad5d5d967b00a02f8c3812c1e9518f642f4b14d01b581b5e8e433"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:29:55.818746+00:00",
+      "begin_rva": "0x2864d90",
+      "end_exclusive": "0x2864d98",
+      "body_sha256": "d78b345bc1fdf18e9a9000cd4b94c1b74098dd170521d191d12bce2861c8e426",
+      "bytes_hex": "498bcfe8a8000000",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "character-aggregator",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/character-aggregator.json",
+        "bytes": 1321,
+        "sha256": "b7245332c900ee22e8edc7681e79af1cb453f1a1d4cb9327d64efb140f75b634"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/character-aggregator.asm",
+        "bytes": 4482,
+        "sha256": "f941e9aede88ab148b2d455a6c7d38c5a2a868d68eb6c3d5697f7c9825905d85"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:18:01.878814+00:00",
+      "begin_rva": "0x28c3ac0",
+      "end_exclusive": "0x28c3be0",
+      "body_sha256": "439110c6b4bfac57e4eb90d4a299c06ad16e68374b1be3d73da7804363eafa12",
+      "bytes_hex": "4883ec28488b81b00100004885c0741b488b80580200004885c0740f4839480875094883c0104883c428c365488b042558000000ba10000000488b088b040a39057b404a037f0c488d0582404a034883c428c3488d0d66404a03e865ff9501833d5a404a03ff75df488d0d61404a03e8fcd791fe488d0dbd404a03e830dd3dfe488d0d19414a03e8a4dd3dfe660f6f054c321302488d0dd57daa0133d2660f7f053b424a034889151c424a0348891525424a03891537424a03891539424a03e8a0039601488d0df53f4a03e894fe9501488d05f93f4a034883c428c3cccccccc48895c2410564883ec20488b99b0010000488bf14885db0f84ed000000488b9b580200004885db0f84dd00000048394b080f85d300000081bbf0020000644d68",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    },
+    {
+      "name": "character-modifier-read",
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/character-modifier-read.json",
+        "bytes": 1321,
+        "sha256": "0d630288c9af699bb8928980e5554bf1e18d884fb436b184c11026636ac282e5"
+      },
+      "asm": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/character-modifier-read.asm",
+        "bytes": 6634,
+        "sha256": "020b08083b90b82d71f4cbd66ec827e69d85987148a3de9a23ad9614af9c8ee6"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T18:18:01.897574+00:00",
+      "begin_rva": "0x23036e0",
+      "end_exclusive": "0x2303800",
+      "body_sha256": "71cb3e8464cca1a04e9d63ecf2d822287915a7f684b69d633d2c64bb471fd0de",
+      "bytes_hex": "4057b8ffff0000450fb7d84c8bd2488bf966443bc0750a33c0488902488bc25fc34c63490c48895c2410488b1948897424184c8bc3488bc34a8d344b4d85c97e21498bd148d1ea4c2bca6645391c504b8d0c484c8bca4c0f42c1498bc04885d275df483bc6488b742418742866443b187222482bc348d1f885c07818488b5c24104863c8488b4768488b04c8498902498bc25fc3488b5c241033c0498902498bc25fc3cccccccccccccccccccccccccc4053b8ffff0000440fb7d2488bd9663bd0750432c05bc34c8b194c63490c4d8bc348897c2410498bc34b8d3c4b4d85c97e21498bd148d1ea4c2bca66453914504b8d0c484c8bca4c0f42c1498bc04885d275df483bc7488b7c2410742166443b10721b492bc348d1f885c078114863c8",
+      "scope": "bounded source range, not a guessed function boundary",
+      "raw_and_asm_readback_pass": true
+    }
+  ],
+  "faithwide_boundary": {
+    "source": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/faithwide-rebuild-boundary.json",
+      "bytes": 558,
+      "sha256": "15f60d50b4d8d79e902fa09aad5b259c7ad9be067580327c6edfc453e2a8f81b"
+    },
+    "record": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_utc": "2026-10-17T18:26:29.031424+00:00",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "new_EXE_or_process_reads": 0,
+      "source_kind": "existing immutable section-cache only; no live qualification",
+      "requested_rva": 38778052,
+      "begin_rva": 38777456,
+      "end_rva": 38779104,
+      "unwind_rva": 86323624,
+      "own_new_metadata_records": 40,
+      "own_metadata_bytes": 480,
+      "own_ledger_sha256": "c9a5735d663320fe28d2c37d24ac2b540e8ff459af529fd018599c942d6e9f80"
+    },
+    "matches_primary_range": true
+  },
+  "source_confirmed": {
+    "faithwide": "24FB270 requested current Rite Faith+890 sites filtered by Faith+8A8 eminent membership and2441F30 county holder current Faith fullID equality; merges type+58 fixed and evaluates type+3D8 scaled in HolySite scope",
+    "recipient": "actual character aggregation291C0B0->291F080 consumes current Rite+20/+2C modifiers via2438830, separate from effect text",
+    "local_fixed_fragment": "291E5C2 Active+18 check;291E6C2..6E4 association search for actor Faith;291E6E6..6FB type+218 merged",
+    "active_caveat": "no Active+18 test in complete24FB270..24FB8E0 or2441F30; never infer all Faith fixed modifiers disabled from GUI Active-false text omission",
+    "scaled_boundary": "HolySite expression context confirmed;2872820 is not claimed to directly read cached1C; exact loaded script formula/rounding and runtime freshness remain separate.",
+    "county_scaled": "2864E40 requires Site Active18 and2441F30 county-holder Faith equality, no eminent membership; evaluates type+3F0 in HolySite scope.2864D93 passes receiver R15; receiver root/identity getter not yet bound."
+  },
+  "shared_faith_conclusion": "with holderFaith50, Faith51 does not qualify this site Faithwide block even if eminent and recognizes artifact; source condition, not actual R7 numerical benefit readback",
+  "new_live_numerical_benefit_qualification": false,
+  "new_game_process_reads": 0,
+  "new_native_calls": 0,
+  "new_builds": 0,
+  "upstream_final_contract": {
+    "source": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/major-grade-value-a01/native-child/SOURCE-CONTRACT.actual.json",
+      "bytes": 13684,
+      "sha256": "80cf9447706821caeb9b6429cb6b0a6baf6d4c7b09021570f3faa2c9f10d07d9"
+    },
+    "actual_conclusions": [
+      "Shared Site/rarity is global. Faith-wide modifier delivery is not shared merely because Faiths associate with Site or independently mark it eminent.",
+      "For controllerFaith50 and associatedFaith51,2441F30 rejects Faith51, even when Faith51 eminent. Its characters do not receive this Site faith-wide contribution through this producer.",
+      "Faith-wide fixed and scaled production require eminent membership and county-holder Faith equality. The entire24FB270 loop has no Active18 gate. Do not transplant the Active=false description suppression into actual fixed-faith application.",
+      "Local fixed application explicitly requires Active18 and actorFaith association. It is reachable only through the native selected Title families. The helper does not itself check Title+128==actor; do not collapse leased/supplemental first vector into personally held counties.",
+      "County-scaled application explicitly requires Active18 and same county-holder Faith gate, without eminent membership.",
+      "Scaled inputs are loaded expressions evaluated with the exact HolySite scope; rarity formula/source and rounding must be joined with the static script and native rarity getter, not inferred from a preview number."
+    ],
+    "implementable_observation": {
+      "actor_aggregate": "Reuse existing exact4 ReadCharacterModifier2C4D1D012004 and source-derived tiny allowlist loaded-u16 keys. Preserve actor fullID/current frame, cache owner backlink, optionalQ64, and read failures. It observes current total, not isolated Site delta.",
+      "faith_current_sources": "Pure-copy current actor Rite+20 pointer list/count2C and individual collection u16-key/Q64 values. Add a provenance join to exact current Faith, Site eminent membership and controllerFaith. Current list freshness is not proved by static producer.",
+      "county_next": "Bind receiver passed at2864D93, owner receiver+298/ownerTitleID+18, receiver aggregate+8 and type-specific modifier enum. Do not guess caller ABI or invoke2864E40 to refresh.",
+      "local_sources": "Existing production following_291e3a0_local_titles and following_291e3a0_first_title_vector preserve the two native input families. Observe county supplemental HolySite rows and original gates, not all same-Faith actors."
+    },
+    "unresolved": [
+      "Loaded modifier key->u16 enum for chosen holy-site type needs exact current loaded-source binding before actor total can be requested.",
+      "No isolated single-Site net total readback; aggregate can include other sites, doctrine, traits and other effects.",
+      "County receiver runtime root/identity getter still unclosed;2864D93 is exact next caller.",
+      "No refresh scheduling or cache freshness claim, no live R7/R8 value proof, no upgrade/downgrade business execution."
+    ]
+  }
+}

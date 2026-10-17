@@ -2,6 +2,8 @@
 
 2026-10-18文案修订：用户指出首个19:25审阅版像检查报告。新的[完整中文讲解稿v2](narration-v2.zh.md)已改按玩家问题组织，[修订说明](../../../docs/ck3-native-ai/faith-and-power-episode01-editorial-revision.md)记录原因和事实边界。v2尚未配音或替换视频，不复用旧时码；下文旧稿与历史媒体记录继续保留。
 
+收益补充已落入[主要等级](../../../docs/ck3-native-ai/holy-site-major-grade-value12004.md)、[采用／新建](../../../docs/ck3-native-ai/faith-and-power-adoption-value-12004.md)、[共享圣物与返还](../../../docs/ck3-native-ai/holy-site-shared-relic-value12004.md)三份研究，并接入现有[规划MCP知识](../../../docs/ck3-native-ai/faith-and-power-episode01-value-analysis-mcp-12004.md)。新增真实MCP查询验证通过；原生观察源码已合，编译与补拍待完成。[讲解稿v3](narration-v3.zh.md)已加入具体收益、损失和使用场景，取代上段v2草稿，仍待补拍和重新配音剪辑；旧片不会因文档更新而自动成为新版。
+
 > 2026-10-17后继更正：下列初始记录保留建立时截点；当前结果与媒体见文末[后继状态](#2026-10-17-后继状态)。
 
 `script.json` 保存158条已冻结中文旁白与英文副字幕、逐句 claim/来源跨度/shot 映射及三处真实结果槽。文字覆盖采用条件、关系与作用域、新建、名额、成本和退出规划；静态规则锁定1.20.0.4。所有完整节目镜头仍待实际素材绑定，三处结果槽的 `zh`、`en`、`outcome` 保持 `null`，不能用占位台词提前配音。

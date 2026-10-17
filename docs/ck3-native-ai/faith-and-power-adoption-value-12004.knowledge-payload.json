@@ -1,0 +1,283 @@
+{
+  "schema": "ck3-holy-site-decision-value-payload-v1",
+  "game_version": "1.20.0.4",
+  "machine_id": "4-8e1c2f1861",
+  "generated_at_utc": "2026-10-17T18:32:02.236547+00:00",
+  "state_observed": false,
+  "native_legality": null,
+  "action_ready": false,
+  "integration": {
+    "target_tool": "ck3_query_holy_site_planning_knowledge_v1",
+    "target_actions": [
+      "adopt",
+      "create"
+    ],
+    "suggested_field": "decision_value_model",
+    "owner": "Root merges into shared knowledge; this standalone payload modifies no main source",
+    "preserve_existing_guards": true,
+    "source_manifest": "faith-and-power-adoption-value-12004.sources.json",
+    "scenario_matrix": "faith-and-power-adoption-value-12004.matrix.json"
+  },
+  "shared": {
+    "required_inputs": [
+      {
+        "key": "goal_and_horizon",
+        "read": "Desired personal income/learning, local development, Faith-wide piety/XP, religious politics, building use or pilgrimage; investment horizon and competing piety uses."
+      },
+      {
+        "key": "identity_and_control",
+        "read": "Fresh actor/current Rite/Faith/main Rite; county holder, holding/building holder, barony holder, realm/top liege and each holder’s Faith. Never substitute player for the beneficiary. If valuing vassal development as the liege’s income, independently read the actual holding/tax/contract flow."
+      },
+      {
+        "key": "site_and_faith_relation",
+        "read": "Exact instance/type/barony/county, every associated Faith and each grade, current Faith list including valid ID0, total/eminent limits and kingdom records."
+      },
+      {
+        "key": "activation_and_relics",
+        "read": "Current native evaluation and cached Active separately, qualified rarity, complete inventory/slots/owners, recognition for county-holder Faith and actor Faith; selected artifact ID separately from selected slot."
+      },
+      {
+        "key": "beneficiary_and_effects",
+        "read": "Separate local fixed, county scaled, Faith fixed and Faith scaled eligibility; never apply a single Active gate to every block. Read actual recipient IDs and before/after net values with other changes controlled."
+      },
+      {
+        "key": "resources_and_cooldowns",
+        "read": "Current piety raw/scale, devotion independently, Faith free-action count, action-specific decision cooldown and creation cooldown, final quote freshness/affordability and total sequence reserve."
+      },
+      {
+        "key": "building_state",
+        "read": "Exact building type and actual built/enabled state, building holder and Faith, exact AND/OR predicate, slot, innovation, gold and build time if unbuilt."
+      },
+      {
+        "key": "pilgrimage_state",
+        "read": "Actual host/type-specific candidate/location validity, current capital, last visits/cooldown, route/time/expense/safety and host physical availability."
+      },
+      {
+        "key": "alternatives",
+        "read": "Existing Faith sites before new adoption, candidate demotion’s lost benefits, artifact personal/equipment/other-site use, free action opportunity cost, and non-holy-site investments."
+      }
+    ],
+    "effect_layers": [
+      {
+        "layer": "territorial_control",
+        "rule": "Realm control enables access requirements but does not itself associate the site with actor Faith. Adoption adds a Faith/site relation; the reviewed effect does not transfer county/title ownership.",
+        "sources": [
+          "S01:504-520",
+          "S01:555-562"
+        ]
+      },
+      {
+        "layer": "association_and_grade",
+        "rule": "Already associated means no duplicate adoption. Historical adoption gave ordinary membership. Eminent-only Faith blocks require the Faith-specific eminent relation; another Faith being eminent is insufficient.",
+        "sources": [
+          "S01:512-517",
+          "S02:32-78",
+          "H02",
+          "H04"
+        ]
+      },
+      {
+        "layer": "activation_and_recognition",
+        "rule": "Adoption’s tooltip named active_site checks an associated Faith with county followers; it is not the native relic Active evaluation. Read membership, grade, recognition, rarity and Active separately.",
+        "sources": [
+          "S01:529-534",
+          "H02",
+          "H03"
+        ]
+      },
+      {
+        "layer": "recipient",
+        "rule": "County-holder and county blocks retain ordinary eligibility at the definition layer. Separate local fixed Active/associated-recipient-actor-Faith gate and original Title input families from Faith fixed eminent/county-holder-Faith gate; a blank inactive GUI preview does not prove all Faith fixed effects stop. Scaled terms use qualified rarity. Actual net stat changes still require independent observation.",
+        "sources": [
+          "S02:32-78",
+          "NS01"
+        ],
+        "native_consumer_topic": "holy-site-major-grade-value12004.md"
+      },
+      {
+        "layer": "building",
+        "rule": "Inspect the particular building predicate. Imam Ali uses holy-site relation AND Islam/syncretism; Samarra uses Islam/syncretism OR relation. Association neither constructs a building nor proves final enabled state. Fallback creation callback may add a missing slot, not a finished building.",
+        "sources": [
+          "S05:983-991",
+          "S05:1306-1330",
+          "S08:1344-1387",
+          "S09:2048-2053"
+        ]
+      },
+      {
+        "layer": "pilgrimage",
+        "rule": "Faith network relevance is only a possible destination benefit. Actual activity filters, recent visits, current capital exclusion and Hajj-Mecca restriction apply separately.",
+        "sources": [
+          "S06:28-140",
+          "S06:220-275",
+          "S06:855-866"
+        ]
+      }
+    ],
+    "opportunity_costs": {
+      "rule": "Compare incremental sequence cost against the relevant alternative, not headline site count.",
+      "cost_dimensions": [
+        "piety spend and independent devotion effect",
+        "Faith-shared finite free actions",
+        "per-action decision cooldown and separate creation lock",
+        "site total/major/kingdom capacity",
+        "benefit lost at the demoted or abandoned relation",
+        "artifact ownership/equipment/personal benefit and alternative site use",
+        "building gold/time/innovation",
+        "travel expense and risk"
+      ],
+      "script_note": "Adopt base1000; free branch waives script piety/decision cooldown then consumes one Faith-scope free action. Common duration5years does not establish one shared all-action decision lock. Creation callback consumes a free action or sets holy_site_creation_cooldown.",
+      "historical_note": "R7 demote+promote measured2000; R8 create measured2000; these are distinct input branches. R7 remove measured500 with additional preview effects not independently measured.",
+      "free_actions_current": null,
+      "creation_cooldown_current": null,
+      "sources": [
+        "S01:543-562",
+        "S07:1990-1998",
+        "S08:1285-1294",
+        "S09:2048-2065",
+        "S10:13-27",
+        "H03",
+        "H04",
+        "H05",
+        "S11:1136"
+      ]
+    },
+    "independent_postconditions": [
+      "Read same instance and the full Faith relation/grade lists; for create prove the new instance plus preservation of prior sites.",
+      "Read wallet raw/scale independently and devotion separately; do not infer either from an ACK or cached preview.",
+      "Read current Active/rarity, every artifact owner/slot/recognition and actual benefit recipient/modifier separately.",
+      "Read the relevant action cooldown/free pool and building/activity state if those were the reason for acting.",
+      "An ACK, pending response, reset model or accepted=false after dispatch cannot authorize a retry; preserve intent and query independent world state."
+    ],
+    "unknown_is_not_zero": true,
+    "net_benefit_current": null,
+    "research_boundary": "Definitions, historical native observations and actual applied net modifiers are different evidence levels. Native caller/beneficiary closure from the eminent/relic topics can refine this model; absence of a read does not grant the benefit.",
+    "declared_type_coefficients": {
+      "semantics": "Raw source coefficients only; not actual net gains. Separate fixed vs per-qualified-rarity scaled blocks and their native applicability. Percentages are coefficients times100; development_growth is additive.",
+      "nadjaf": {
+        "county_holder_fixed": {
+          "clergy_opinion": 3
+        },
+        "county_scaled_per_qualified_rarity": {
+          "development_growth_factor": 0.01,
+          "county_opinion_add": 1
+        },
+        "faith_eminent_fixed": {
+          "diplomacy_per_piety_level": 1,
+          "clergy_opinion": 5
+        },
+        "faith_eminent_scaled_per_qualified_rarity": {
+          "monthly_piety_gain_mult": 0.01
+        },
+        "source": "S03:842-865"
+      },
+      "baghdad": {
+        "county_holder_fixed": {
+          "learning": 1,
+          "development_growth_factor": 0.05
+        },
+        "county_scaled_per_qualified_rarity": {
+          "build_gold_cost": -0.01,
+          "hostile_raid_time": 0.02
+        },
+        "faith_eminent_fixed": {
+          "church_holding_build_gold_cost": -0.1,
+          "learning": 1
+        },
+        "faith_eminent_scaled_per_qualified_rarity": {
+          "development_growth_factor": 0.01,
+          "monthly_income_mult": 0.005
+        },
+        "source": "S03:359-383"
+      },
+      "site_of_wisdom": {
+        "county_holder_fixed": {
+          "learning": 2
+        },
+        "county_scaled_per_qualified_rarity": {
+          "build_gold_cost": -0.01,
+          "build_prestige_cost": -0.01,
+          "build_piety_cost": -0.01,
+          "development_growth": 0.01
+        },
+        "faith_eminent_fixed": {
+          "diplomacy_per_piety_level": 1
+        },
+        "faith_eminent_scaled_per_qualified_rarity": {
+          "monthly_learning_lifestyle_xp_gain_mult": 0.01,
+          "monthly_diplomacy_lifestyle_xp_gain_mult": 0.01
+        },
+        "source": "S04:72-96"
+      },
+      "conditional_reallocation_comparison": "Nadjaf and wisdom have the same diplomacy_per_piety_level coefficient1: switching the one eminent slot gives coefficient delta0 for that term when the same recipient qualifies. Compare the other lost/gained blocks, not a second copy of diplomacy.",
+      "relic_requirement_warning": "Do not turn the scaled-piety/XP relic requirement into a universal requirement for fixed Faith effects; consumers and actual net values are distinct."
+    },
+    "native_applicability_source": {
+      "source": "NS01",
+      "faith_fixed_and_scaled": "Producer requires eminent membership and county-holder Faith equality; the full producer loop has no Active18 gate. Scaled values still depend on the loaded HolySite-scope expression.",
+      "local_fixed": "Active18 plus actual recipient actor Faith association, reachable through the original two native Title families; do not invent holder==actor or award it to all same-Faith characters.",
+      "county_scaled": "Active18 plus county-holder Faith equality, no eminent requirement; runtime aggregate receiver identity remains unclosed.",
+      "gui_preview": "GetActiveEffectsDesc suppresses all text while inactive; this is not proof that Faith fixed contribution stops.",
+      "net_current_modifier": null,
+      "live_recalculation_observed": false
+    }
+  },
+  "actions": {
+    "adopt": {
+      "evaluate_in_order": [
+        "Exclude already-associated sites before any resource comparison.",
+        "Name the objective, beneficiary and exact missing condition that adding the Faith relation would satisfy.",
+        "Keep original AI candidate generation, GUI item validity, decision script gates and fresh native final Can/quote as distinct stages; no stage proves optimality.",
+        "Compare existing-site management/promotion before expansion, and budget any demotion, promotion and relic provision as separate legal actions.",
+        "If building/pilgrimage is the payoff, query its own predicate and current state before crediting value."
+      ],
+      "scenario_ids": [
+        "existing_baghdad_first",
+        "empty_vassal_nadjaf",
+        "faithwide_nadjaf_budget",
+        "imam_ali_missing_membership",
+        "pilgrimage_option_only"
+      ],
+      "native_ai_boundary": {
+        "script_reserves_one_slot_for_player": true,
+        "source": "S01:565-631",
+        "compatibility_weight_proves_benefit_optimality": false
+      },
+      "sources": [
+        "S01",
+        "S02",
+        "S03",
+        "S05",
+        "S06",
+        "S07",
+        "S08",
+        "S10"
+      ]
+    },
+    "create": {
+      "evaluate_in_order": [
+        "Compare an existing associated site and an adoptable existing instance with a new chosen type/location.",
+        "Resolve actual county-holder recipient; ordinary wisdom can retain local definition eligibility while eminent-only XP remains excluded.",
+        "Require exact type/barony/artifact tuple, fresh normal Can with bypass0, and separate price freshness/affordability evidence.",
+        "Budget artifact opportunity cost, capacity/kingdom records and creation lock; do not infer absence of a lock or free action count from a prior payment.",
+        "Do not credit a Samarra mosque unlock merely because a site is created when the building holder already meets the Islam OR branch."
+      ],
+      "scenario_ids": [
+        "create_in_own_heartland",
+        "pilgrimage_option_only"
+      ],
+      "historical_example": "samarra326_r8_after_create",
+      "sources": [
+        "S02",
+        "S04",
+        "S05",
+        "S06",
+        "S08",
+        "S09",
+        "H03"
+      ]
+    }
+  },
+  "historical_cases_are_not_current_state": true,
+  "production_or_whole_product_pass": false
+}

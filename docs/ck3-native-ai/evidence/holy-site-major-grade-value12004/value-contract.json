@@ -1,0 +1,608 @@
+{
+  "schema": "xar.ck3.holy-site-grade-value-knowledge.v1",
+  "qualification": "source_reviewed_static",
+  "target_build": "1.20.0.4",
+  "source_machine_id": "4-8e1c2f1861",
+  "recorded_utc": "2026-10-17T18:34:22.454462+00:00",
+  "current_state_observed": false,
+  "native_legality": null,
+  "action_ready": false,
+  "actual_beneficiary_net_values_observed": false,
+  "sources": [
+    {
+      "source_id": "S01",
+      "game_relative_path": "common/religion/holy_site_types/_holy_site_types.info",
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "line_ranges": [
+        [
+          19,
+          29
+        ],
+        [
+          32,
+          78
+        ]
+      ]
+    },
+    {
+      "source_id": "S02",
+      "game_relative_path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "line_ranges": [
+        [
+          687,
+          710
+        ],
+        [
+          842,
+          865
+        ]
+      ]
+    },
+    {
+      "source_id": "S03",
+      "game_relative_path": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "line_ranges": [
+        [
+          72,
+          96
+        ]
+      ]
+    },
+    {
+      "source_id": "S04",
+      "game_relative_path": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "line_ranges": [
+        [
+          25,
+          59
+        ],
+        [
+          62,
+          100
+        ],
+        [
+          191,
+          211
+        ],
+        [
+          214,
+          265
+        ]
+      ]
+    },
+    {
+      "source_id": "S05",
+      "game_relative_path": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "line_ranges": [
+        [
+          1,
+          27
+        ]
+      ]
+    },
+    {
+      "source_id": "S06",
+      "game_relative_path": "common/opinion_modifiers/00_religious_opinions.txt",
+      "sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "line_ranges": [
+        [
+          4,
+          15
+        ]
+      ]
+    },
+    {
+      "source_id": "S07",
+      "game_relative_path": "common/modifiers/00_religion_modifiers.txt",
+      "sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "line_ranges": [
+        [
+          7,
+          16
+        ]
+      ]
+    },
+    {
+      "source_id": "S08",
+      "game_relative_path": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+      "line_ranges": [
+        [
+          22,
+          22
+        ],
+        [
+          52,
+          52
+        ],
+        [
+          644,
+          644
+        ],
+        [
+          917,
+          921
+        ]
+      ]
+    },
+    {
+      "source_id": "S09",
+      "game_relative_path": "localization/simp_chinese/vassal_stances_l_simp_chinese.yml",
+      "sha256": "327d3c0f1e2e56d50c3d6a011c04de9ae022b7de5d18572e005158fa1e955f9d",
+      "line_ranges": [
+        [
+          32,
+          39
+        ],
+        [
+          47,
+          54
+        ]
+      ]
+    },
+    {
+      "source_id": "S10",
+      "game_relative_path": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "line_ranges": [
+        [
+          1990,
+          1998
+        ]
+      ]
+    },
+    {
+      "source_id": "S11",
+      "game_relative_path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "line_ranges": [
+        [
+          1285,
+          1294
+        ]
+      ]
+    }
+  ],
+  "effect_layers": {
+    "grade_identity": "(faith_id, holy_site_full_id): regular/eminent is a Faith relationship, not a global site grade.",
+    "activation_identity": "The site has one global cached Active/rarity pair. The known rarity producer uses county-holder Faith association/recognition; do not invent one cache per associated Faith.",
+    "local": "The two declared local families are regular/eminent eligible, but actual fixed-local title-family contributions and county-scaled production require Active. Title inputs are restricted native families, not all same-Faith characters and not a guessed holder-equals-actor shortcut.",
+    "faith_wide": "Actual24FB270 includes only sites eminent for the receiving Rite Faith and passing2441F30 county-holder-Faith equality. Its complete primary has no Site+18 Active gate. Scaled expressions still evaluate against exact HolySite scope; do not turn this into an unqualified live fixed-value claim.",
+    "parameters": "These three types declare no parameters. Other types use separately consumed parameter triggers; changing grade does not create an undeclared parameter.",
+    "source_info_holder_faith_condition": "S01 line33 says barony holder, but the actual2441F30 consumer resolves barony -> county -> county holder -> current Rite Faith. The executable consumer is the precise controlling-Faith test for this build.",
+    "description_is_not_application": "2659880 suppresses the complete ActiveEffects description while Site+18=false; this does not prove that the different actual Faith-wide fixed producer contributed zero."
+  },
+  "type_effects": {
+    "mecca": {
+      "county_holder_fixed_regular_and_eminent": [
+        {
+          "modifier_key": "monthly_piety_gain_mult",
+          "coefficient": 0.05,
+          "unit": "fraction",
+          "source_id": "S02",
+          "source_lines": [
+            690,
+            693
+          ]
+        },
+        {
+          "modifier_key": "knight_effectiveness_mult",
+          "coefficient": 0.05,
+          "unit": "fraction",
+          "source_id": "S02",
+          "source_lines": [
+            690,
+            693
+          ]
+        }
+      ],
+      "county_scaled_regular_and_eminent": [
+        {
+          "modifier_key": "development_growth_factor",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            695,
+            699
+          ]
+        },
+        {
+          "modifier_key": "travel_danger",
+          "coefficient": -1,
+          "unit": "flat_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            695,
+            699
+          ]
+        }
+      ],
+      "faith_character_fixed_eminent_increment": [
+        {
+          "modifier_key": "monthly_piety_gain_per_knight_mult",
+          "coefficient": 0.02,
+          "unit": "fraction_per_recipient_knight",
+          "source_id": "S02",
+          "source_lines": [
+            701,
+            703
+          ]
+        }
+      ],
+      "faith_character_scaled_eminent_increment": [
+        {
+          "modifier_key": "knight_effectiveness_mult",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            705,
+            709
+          ]
+        },
+        {
+          "modifier_key": "piety_level_impact_mult",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            705,
+            709
+          ]
+        }
+      ],
+      "type_parameters": [],
+      "source_id": "S02",
+      "source_lines": [
+        687,
+        710
+      ],
+      "activation_and_recipient_conditions_must_be_read_separately": true
+    },
+    "nadjaf": {
+      "county_holder_fixed_regular_and_eminent": [
+        {
+          "modifier_key": "clergy_opinion",
+          "coefficient": 3,
+          "unit": "flat",
+          "source_id": "S02",
+          "source_lines": [
+            846,
+            848
+          ]
+        }
+      ],
+      "county_scaled_regular_and_eminent": [
+        {
+          "modifier_key": "development_growth_factor",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            850,
+            854
+          ]
+        },
+        {
+          "modifier_key": "county_opinion_add",
+          "coefficient": 1,
+          "unit": "flat_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            850,
+            854
+          ]
+        }
+      ],
+      "faith_character_fixed_eminent_increment": [
+        {
+          "modifier_key": "diplomacy_per_piety_level",
+          "coefficient": 1,
+          "unit": "skill_per_recipient_effective_devotion_level",
+          "source_id": "S02",
+          "source_lines": [
+            856,
+            859
+          ]
+        },
+        {
+          "modifier_key": "clergy_opinion",
+          "coefficient": 5,
+          "unit": "flat",
+          "source_id": "S02",
+          "source_lines": [
+            856,
+            859
+          ]
+        }
+      ],
+      "faith_character_scaled_eminent_increment": [
+        {
+          "modifier_key": "monthly_piety_gain_mult",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S02",
+          "source_lines": [
+            861,
+            864
+          ]
+        }
+      ],
+      "type_parameters": [],
+      "source_id": "S02",
+      "source_lines": [
+        842,
+        865
+      ],
+      "activation_and_recipient_conditions_must_be_read_separately": true
+    },
+    "site_of_wisdom": {
+      "county_holder_fixed_regular_and_eminent": [
+        {
+          "modifier_key": "learning",
+          "coefficient": 2,
+          "unit": "flat_skill",
+          "source_id": "S03",
+          "source_lines": [
+            75,
+            77
+          ]
+        }
+      ],
+      "county_scaled_regular_and_eminent": [
+        {
+          "modifier_key": "build_gold_cost",
+          "coefficient": -0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            79,
+            85
+          ]
+        },
+        {
+          "modifier_key": "build_prestige_cost",
+          "coefficient": -0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            79,
+            85
+          ]
+        },
+        {
+          "modifier_key": "build_piety_cost",
+          "coefficient": -0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            79,
+            85
+          ]
+        },
+        {
+          "modifier_key": "development_growth",
+          "coefficient": 0.01,
+          "unit": "flat_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            79,
+            85
+          ]
+        }
+      ],
+      "faith_character_fixed_eminent_increment": [
+        {
+          "modifier_key": "diplomacy_per_piety_level",
+          "coefficient": 1,
+          "unit": "skill_per_recipient_effective_devotion_level",
+          "source_id": "S03",
+          "source_lines": [
+            87,
+            89
+          ]
+        }
+      ],
+      "faith_character_scaled_eminent_increment": [
+        {
+          "modifier_key": "monthly_learning_lifestyle_xp_gain_mult",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            91,
+            95
+          ]
+        },
+        {
+          "modifier_key": "monthly_diplomacy_lifestyle_xp_gain_mult",
+          "coefficient": 0.01,
+          "unit": "fraction_per_site_rarity",
+          "source_id": "S03",
+          "source_lines": [
+            91,
+            95
+          ]
+        }
+      ],
+      "type_parameters": [],
+      "source_id": "S03",
+      "source_lines": [
+        72,
+        96
+      ],
+      "activation_and_recipient_conditions_must_be_read_separately": true
+    }
+  },
+  "source_calculated_examples": [
+    {
+      "type_key": "site_of_wisdom",
+      "site_rarity": 4,
+      "kind": "conditional_source_coefficient_projection",
+      "actual_net_values_observed": false,
+      "local_retained_after_grade_change": {
+        "learning": 2,
+        "build_gold_cost": -0.04,
+        "build_prestige_cost": -0.04,
+        "build_piety_cost": -0.04,
+        "development_growth": 0.04
+      },
+      "eminent_only_increment": {
+        "diplomacy_per_piety_level": 1,
+        "monthly_learning_lifestyle_xp_gain_mult": 0.04,
+        "monthly_diplomacy_lifestyle_xp_gain_mult": 0.04
+      },
+      "unit_warning": "development_growth+.04 is additive, not +4%; the learning+2 is local, not an eminent increment.",
+      "historical_inputs": "R8 independently observed ordinary site326, Active=true, rarity4 and county holder15893; no actual skill/county modifier values were read."
+    },
+    {
+      "type_key": "nadjaf",
+      "site_rarity": 4,
+      "kind": "conditional_source_coefficient_projection",
+      "actual_net_values_observed": false,
+      "local_retained_after_grade_change": {
+        "clergy_opinion": 3,
+        "development_growth_factor": 0.04,
+        "county_opinion_add": 4
+      },
+      "eminent_only_increment": {
+        "diplomacy_per_piety_level": 1,
+        "clergy_opinion": 5,
+        "monthly_piety_gain_mult": 0.04
+      },
+      "historical_inputs": "R7 first promoted empty site32, then separately enshrined237 and observed Active/rarity4. Grade change alone did not prove a benefit increase."
+    },
+    {
+      "comparison": "nadjaf eminent -> wisdom eminent",
+      "kind": "conditional_source_coefficient_difference",
+      "assumptions": [
+        "both sites active and eligible for the same receiving Faith",
+        "same recipient devotion state",
+        "separate site rarity inputs"
+      ],
+      "diplomacy_per_piety_level_coefficient_delta": 0,
+      "lost": [
+        "clergy_opinion+5",
+        "monthly_piety_gain_mult+.01*R_nadjaf"
+      ],
+      "gained": [
+        "monthly_learning_lifestyle_xp_gain_mult+.01*R_wisdom",
+        "monthly_diplomacy_lifestyle_xp_gain_mult+.01*R_wisdom"
+      ],
+      "local_families_changed_by_grade_alone": false,
+      "actual_net_values_observed": false,
+      "rarity_inputs": {
+        "nadjaf": 4,
+        "site_of_wisdom": 4
+      },
+      "inputs_are_not_a_same_run_observation": true,
+      "raw_modifier_coefficient_delta": {
+        "diplomacy_per_piety_level": 0,
+        "clergy_opinion": -5,
+        "monthly_piety_gain_mult": -0.04,
+        "monthly_learning_lifestyle_xp_gain_mult": 0.04,
+        "monthly_diplomacy_lifestyle_xp_gain_mult": 0.04
+      }
+    }
+  ],
+  "grade_change_preserves_by_itself": [
+    "Faith membership and total count",
+    "site full ID/type/barony",
+    "same embedded inventory membership/owner identity in the R7 observed scope",
+    "other Faith grades in the R7 observed scope",
+    "local effect-family eligibility, subject to separate activation/recipient conditions"
+  ],
+  "cost_and_political_inputs": {
+    "promote_script_piety": 1000,
+    "demote_script_piety": 1000,
+    "script_cooldown_years_per_decision": 5,
+    "free_action_branch": "The script waives piety/cooldown while a free holy-site action exists and consumes one; current count is unknown.",
+    "county_holder_opinion_if_holder_is_not_actor": {
+      "promote": 50,
+      "demote": -50,
+      "decays_over_years": 10
+    },
+    "actor_modifier_years": 10,
+    "promote_actor_modifier": {
+      "zealot_same_faith_opinion": 30
+    },
+    "demote_actor_modifier": {
+      "zealot_same_faith_opinion": -20,
+      "parochial_same_faith_opinion": -20
+    },
+    "opinion_warning": "Zealot/Parochial refer to vassal stances, not a zealous character trait; actual recipients, caps and combined net opinion were not read.",
+    "schism_warning": "The demote script has a conditional Christian schism-rite branch. Do not apply it to the Sunni sample or every religion.",
+    "historical_R7": "demote26 and promote32 each independently paid1000; each decision later had its own active native cooldown. No universal cross-decision lock is inferred.",
+    "source_ids": [
+      "S04",
+      "S05",
+      "S06",
+      "S07",
+      "S09",
+      "S10",
+      "S11"
+    ],
+    "stance_localizations": {
+      "zealot": "宗教狂热",
+      "parochial": "本乡本土"
+    }
+  },
+  "comparison_inputs": [
+    "desired recipient and weights: actor/local holder/county/all Faith characters including outside realm",
+    "each source site Active, global rarity, controlling holder Faith and relevant Faith eminent relation",
+    "recipient effective devotion level and actual knights; not actor values reused for everybody",
+    "lost and gained final applied modifier components, local effects retained, equipment opportunity cost",
+    "full-chain current native quotes, free-action count, each decision cooldown and level caps",
+    "county-holder relations and same-Faith vassal stance exposure, conditional schism effects",
+    "same-date independent after-state and unresolved observations; counts alone do not measure utility",
+    "Source-derived modifier family and exact consumer gate, rather than one shared Active switch for every family."
+  ],
+  "does_not_claim": [
+    "optimal replacement",
+    "all associated Faiths receive the same benefits",
+    "Active proves final recipient modifiers applied",
+    "historical permission or prices authorize the current action"
+  ],
+  "native_consumer_source": {
+    "qualification": "source_reviewed_static_actual_consumer_chain",
+    "contract_ref": "docs/ck3-native-ai/evidence/holy-site-major-grade-value12004/native-consumer-contract.json",
+    "sha256": "9a5eeb18664f134dfb52b9d94b94589340dd24518cf76a3b9895cd82dce83d79",
+    "external_original_sha256": "80cf9447706821caeb9b6429cb6b0a6baf6d4c7b09021570f3faa2c9f10d07d9",
+    "repository_copy_normalization": "CRLF to LF only, required by repository attributes; JSON content unchanged.",
+    "excerpts_ref": "docs/ck3-native-ai/evidence/holy-site-major-grade-value12004/native-source-excerpts.json",
+    "parameters_consumer_closed": false,
+    "county_runtime_receiver_bound": false,
+    "cache_freshness_observed": false,
+    "actual_recipient_net_values_observed": false,
+    "implementable_observation": {
+      "actor_aggregate": "Reuse existing exact4 ReadCharacterModifier2C4D1D012004 and source-derived tiny allowlist loaded-u16 keys. Preserve actor fullID/current frame, cache owner backlink, optionalQ64, and read failures. It observes current total, not isolated Site delta.",
+      "faith_current_sources": "Pure-copy current actor Rite+20 pointer list/count2C and individual collection u16-key/Q64 values. Add a provenance join to exact current Faith, Site eminent membership and controllerFaith. Current list freshness is not proved by static producer.",
+      "county_next": "Bind receiver passed at2864D93, owner receiver+298/ownerTitleID+18, receiver aggregate+8 and type-specific modifier enum. Do not guess caller ABI or invoke2864E40 to refresh.",
+      "local_sources": "Existing production following_291e3a0_local_titles and following_291e3a0_first_title_vector preserve the two native input families. Observe county supplemental HolySite rows and original gates, not all same-Faith actors."
+    },
+    "unresolved": [
+      "Loaded modifier key->u16 enum for chosen holy-site type needs exact current loaded-source binding before actor total can be requested.",
+      "No isolated single-Site net total readback; aggregate can include other sites, doctrine, traits and other effects.",
+      "County receiver runtime root/identity getter still unclosed;2864D93 is exact next caller.",
+      "No refresh scheduling or cache freshness claim, no live R7/R8 value proof, no upgrade/downgrade business execution."
+    ]
+  },
+  "shared_site_example": {
+    "kind": "source_condition_evaluation_not_live_Faith51_benefit_test",
+    "site_id_historical_alias": 32,
+    "associated_faith_ids": [
+      51,
+      50
+    ],
+    "county_holder_faith_id": 50,
+    "if_Faith51_is_eminent": "2441F30 still rejects Faith51 for the Faith-wide producer because county-holder Faith is50.",
+    "artifact_recognition_for_51_alone_proves_delivery": false,
+    "local_county_effect_is_not_Faith51_wide_character_effect": true,
+    "on_actual_county_holder_faith_change": "Invalidate old controlling-Faith, global rarity and beneficiary conclusions and independently reread; no conversion action is proposed."
+  }
+}

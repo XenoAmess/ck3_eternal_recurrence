@@ -1,0 +1,156 @@
+{
+  "schema": "xar.holy-site.fixed-pc-key-source.actual4.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-17T18:42:50.994520+00:00",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "evidence_kind": "existing immutable exact4 section cache; no new EXE or process read",
+  "no_game": true,
+  "no_build": true,
+  "no_native_call": true,
+  "no_main_or_shared_cache_write": true,
+  "source_pins": [
+    {
+      "asm": "holy-site-fixed-faith-pc-input.asm",
+      "asm_sha256": "4b8a32d95b0206aa69045acde3094dbe318231537853ecb631ab4c9b7b3e0f87",
+      "raw_packet": "holy-site-fixed-faith-pc-input.json",
+      "raw_packet_sha256": "98e07655a6805f18172e0d6c2e3f7a32afd47abb960e53776353524aa1462c36",
+      "raw_sha256": "10d8c015cec5be42861c67defcf46bff1284a58855e127da1c20c876a09bfc9c",
+      "selected_instructions": [
+        {
+          "line": 5,
+          "instruction": "0024FB508 498b4720                         mov      rax, qword ptr [r15 + 0x20]"
+        },
+        {
+          "line": 6,
+          "instruction": "0024FB50C 488d4858                         lea      rcx, [rax + 0x58]"
+        },
+        {
+          "line": 7,
+          "instruction": "0024FB510 80b81804000000                   cmp      byte ptr [rax + 0x418], 0"
+        },
+        {
+          "line": 11,
+          "instruction": "0024FB521 e8aa1d0000                       call     0x24fd2d0"
+        },
+        {
+          "line": 16,
+          "instruction": "0024FB539 e8024e38fe                       call     0x880340"
+        }
+      ]
+    },
+    {
+      "asm": "modifier-input-forwarder.asm",
+      "asm_sha256": "d45ccff4a47c7bcf922e40d9cce822957787a24626935876422e54de8c8cd30b",
+      "raw_packet": "modifier-input-forwarder.json",
+      "raw_packet_sha256": "4d196d24054b2226afd8bb1f6a72e7ee96433998b482196c8f7ca8540d4c18bc",
+      "raw_sha256": "e322c273e83f4a3609ba334309cbd3e03cf78bce04f1948671158605037cc0d5",
+      "selected_instructions": [
+        {
+          "line": 5,
+          "instruction": "002438838 837a0c00                         cmp      dword ptr [rdx + 0xc], 0"
+        },
+        {
+          "line": 7,
+          "instruction": "00243883F 488bf2                           mov      rsi, rdx"
+        },
+        {
+          "line": 81,
+          "instruction": "002438964 488d4f68                         lea      rcx, [rdi + 0x68]"
+        },
+        {
+          "line": 82,
+          "instruction": "002438968 4c8bc3                           mov      r8, rbx"
+        },
+        {
+          "line": 83,
+          "instruction": "00243896B 488bd6                           mov      rdx, rsi"
+        },
+        {
+          "line": 84,
+          "instruction": "00243896E e88da7ecff                       call     0x2303100"
+        }
+      ]
+    },
+    {
+      "asm": "pc-u16-q64-merge.asm",
+      "asm_sha256": "5f1d9b70cae3a738932b161c9730f2ca95805c12f6ce803b593ef18bbf0434fb",
+      "raw_packet": "pc-u16-q64-merge.json",
+      "raw_packet_sha256": "44f9acf4a5a703b96a87f8b642ce0dc0e4adf66620547b8a4d57ed41f1338855",
+      "raw_sha256": "e887ee421dde1979396580cb9559586f3ddb6e83206b177c78ac0d5d38a3950f",
+      "selected_instructions": [
+        {
+          "line": 6,
+          "instruction": "00230310D 498bd8                           mov      rbx, r8"
+        },
+        {
+          "line": 7,
+          "instruction": "002303110 4c8bf2                           mov      r14, rdx"
+        },
+        {
+          "line": 22,
+          "instruction": "002303142 4c637a0c                         movsxd   r15, dword ptr [rdx + 0xc]"
+        },
+        {
+          "line": 35,
+          "instruction": "002303190 498b4668                         mov      rax, qword ptr [r14 + 0x68]"
+        },
+        {
+          "line": 36,
+          "instruction": "002303194 488b0cf0                         mov      rcx, qword ptr [rax + rsi*8]"
+        },
+        {
+          "line": 75,
+          "instruction": "002303218 498b06                           mov      rax, qword ptr [r14]"
+        },
+        {
+          "line": 76,
+          "instruction": "00230321B 0fb71470                         movzx    edx, word ptr [rax + rsi*2]"
+        },
+        {
+          "line": 77,
+          "instruction": "00230321F 66413bd3                         cmp      dx, r11w"
+        },
+        {
+          "line": 85,
+          "instruction": "002303244 48013cc8                         add      qword ptr [rax + rcx*8], rdi"
+        }
+      ]
+    }
+  ],
+  "exact_layout": {
+    "type_fixed_faith_pc_offset": "0x58",
+    "pc_key_pointer_offset": "0x0",
+    "pc_key_signed_count_offset": "0xC",
+    "pc_value_pointer_offset": "0x68",
+    "key_element": "uint16_t",
+    "value_element": "int64_t fixed-point Q64, scale100000",
+    "type_fixed_count_offset": "0x64",
+    "invalid_key": "0xFFFF"
+  },
+  "native_dataflow": [
+    "24FB50C selects type+58 as PC. Type+64 is therefore that same PC signed key count+C.",
+    "Fixed modifier type flag+418 chooses dynamic24FD2D0 or direct persistent pointer-list append880340. This flag does not change the PC input layout.",
+    "2438830 receives PC inRDX and explicit scale inR8; empty PC+C skips. It records the source and forwards the same PC to2303100 at243896E.",
+    "2303100 sourcePC inR14: count+C; QWORD[PC+68] followed by indexed8 read; QWORD[PC] followed by indexed2 movzx read. FFFF is skipped on the merge loop.",
+    "This source-derived fixed PC key can be passed to the existing exact4 actor aggregate reader. It is a loaded modifier key, not a guessed name-table token or physical array index."
+  ],
+  "allowed_observation": "Copy the selected current Site type fixed PC ordered keys and Q64 values with same-frame identity/generation guards; for each permitted observed key read actor/site-holder actual current aggregate through existing ReadCharacterModifier2C4D1D012004. Preserve unknown name as null until separately proven.",
+  "boundaries": [
+    "Actor aggregate totals include every contribution to the same key. They do not isolate a holy-site delta or prove its source on their own.",
+    "Observe before/after the same actor and exact same loaded key; retain real native revision/date and other changed effects. Do not infer a +5 delta solely from the fixed source value.",
+    "Empty fixed PC is a known no-fixed-key source, not a numerical observation of zero for an arbitrary named modifier.",
+    "The dynamic type+418 path may modify values; raw fixed definition remains a key source, not a final contribution quote.",
+    "Named descriptor field/count remains unclosed; no numerical token from generic string tables is adopted as a u16 modifier enum.",
+    "No scaled PC evaluation, county ABI extension, mutation, refresh, or native producer invocation is authorized by this contract."
+  ],
+  "parent_consumer_contract": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child\\SOURCE-CONTRACT.actual.json",
+    "sha256": "80cf9447706821caeb9b6429cb6b0a6baf6d4c7b09021570f3faa2c9f10d07d9"
+  },
+  "storage": {
+    "cap_bytes": 131072,
+    "activation_sha256": "1e3af1feac009ffb860301e3f0c6821be2254ccf92c7d33d8ae6ddd567efbb94",
+    "ledger_sha256": "22dfb71ca9a9771cdcc49740c462bc2dfeaba7a9377907b33148191437273b98",
+    "active_review_at_utc": "2026-10-17T18:51:39.690703Z"
+  }
+}

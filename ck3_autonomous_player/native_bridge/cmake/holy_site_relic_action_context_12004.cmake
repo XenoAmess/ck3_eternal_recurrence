@@ -10,7 +10,14 @@ if(BUILD_TESTING)
   src/ck3_12004_holy_site_relic_action_context_json.cpp
   src/ck3_12004_holy_site_relic_permissions.cpp
   src/ck3_12004_holy_site_relic_permissions_json.cpp
-  src/ck3_12004_holy_site_relic_context.cpp)
+  src/ck3_12004_holy_site_relic_context.cpp
+  src/ck3_12004_holy_site_modifier_aggregate.cpp
+  src/ck3_12004_holy_site_modifier_aggregate_json.cpp
+  src/construction_character_modifier_2c4d1d0_12004.cpp
+  src/conception_modifier_context_12004.cpp
+  src/construction_scaled_key_2c4d530_12004.cpp
+  src/ck3_12004_holy_site_relic_recognition_matrix.cpp
+  src/ck3_12004_holy_site_relic_recognition_matrix_json.cpp)
  target_include_directories(xar_ck3_12004_holy_site_relic_action_context_test PRIVATE include src)
  target_compile_features(xar_ck3_12004_holy_site_relic_action_context_test PRIVATE cxx_std_20)
  target_compile_definitions(xar_ck3_12004_holy_site_relic_action_context_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)

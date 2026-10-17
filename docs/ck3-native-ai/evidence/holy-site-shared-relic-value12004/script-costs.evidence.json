@@ -1,0 +1,753 @@
+{
+  "schema": "ck3_12004_shared_relic_script_costs_evidence_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T18:22:28.042656+00:00",
+  "completed_at_utc": "2026-10-17T18:22:28.068338+00:00",
+  "machine_identity_source": "tools/ck3_live_run_id.py machine: actual subprocess output",
+  "exe_source_binding": {
+    "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "basis": "reused existing source-cache provenance and original packet raw bytes; no fresh EXE read"
+  },
+  "source_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\script-sources\\sources.json",
+    "bytes": 12451,
+    "sha256": "bb34fa8174138473ed64ab0f8d9d612440b47402f6e8db3459a6229ed7f7ea16"
+  },
+  "source_manifest_observed_at_utc": "2026-10-17T09:16:58.891024+00:00",
+  "document": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\shared-relic-value-a01\\script-costs\\共享圣地与替换的成本和归属.md",
+    "bytes": 11763,
+    "sha256": "fececd64e586f3ea16fcb8c2dc2307d1a3f48d66e0889a6df09b5796c5ed429c"
+  },
+  "sources": [
+    {
+      "id": "S02",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_rules\\02_holy_sites.txt",
+      "relative_path": "common/scripted_rules/02_holy_sites.txt",
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "bytes": 2090,
+      "line_count": 64,
+      "observed_at_utc": "2026-10-17T18:22:28.043116+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 26,
+          "numbered_text": "1: # Whether an artifact can be enshrined in a specific holy site.\n2: # root            = the artifact being considered for enshrining\n3: # scope:actor     = the character who would perform the enshrinement\n4: # scope:holy_site = the target holy site\n5: # scope:replacing = the artifact being replaced (if any)\n6: can_enshrine_artifact = {\n7: \tcustom_description = {\n8: \t\ttext = holy_site_not_holder_or_top_liege\n9: \n10: \t\tscope:holy_site.holy_site_county = {\n11: \t\t\tOR = {\n12: \t\t\t\tholder = scope:actor\n13: \t\t\t\tholder.top_liege = scope:actor\n14: \t\t\t\tclerical_region_title.holder = scope:actor\n15: \t\t\t}\n16: \t\t}\n17: \t}\n18: \t# Controlling another faith's holy site does not make it a shrine of yours\n19: \tcustom_description = {\n20: \t\ttext = holy_site_of_actor_faith\n21: \n22: \t\tscope:actor.faith = {\n23: \t\t\tis_faith_holy_site = scope:holy_site\n24: \t\t}\n25: \t}\n26: }"
+        },
+        {
+          "first_line": 47,
+          "last_line": 64,
+          "numbered_text": "47: # Whether an enshrined artifact can be removed from a holy site.\n48: # root            = the enshrined artifact\n49: # scope:holy_site = the holy site it sits in\n50: # scope:actor     = the character who would perform the removal\n51: # scope:replacing = the artifact being replaced (if any)\n52: can_remove_enshrined_artifact = {\n53: \tcustom_description = {\n54: \t\ttext = holy_site_not_holder_or_top_liege\n55: \n56: \t\tscope:holy_site.holy_site_county = {\n57: \t\t\tOR = {\n58: \t\t\t\tholder = scope:actor\n59: \t\t\t\tholder.top_liege = scope:actor\n60: \t\t\t\tclerical_region_title.holder = scope:actor\n61: \t\t\t}\n62: \t\t}\n63: \t}\n64: }"
+        }
+      ]
+    },
+    {
+      "id": "S13",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "relative_path": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "bytes": 19759,
+      "line_count": 908,
+      "observed_at_utc": "2026-10-17T18:22:28.043692+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 337,
+          "last_line": 413,
+          "numbered_text": "337: \tis_valid = {\n338: \t\tsave_temporary_scope_as = root\n339: \t\texists = scope:selected_item\n340: \n341: \t\tcan_manage_faith_holy_sites_trigger = yes\n342: \n343: \t\tscope:selected_item ?= {\n344: \t\t\troot.faith = {\n345: \t\t\t\tsave_temporary_scope_as = faith\n346: \t\t\t\tis_faith_holy_site = prev\n347: \t\t\t\tNOT = { is_faith_eminent_holy_site = prev }\n348: \t\t\t\tcustom_tooltip = {\n349: \t\t\t\t\ttext = abandon_holy_site_decision_above_holy_sites_min\n350: \t\t\t\t\tlist_size:holy_site > root.faith.religion.holy_sites_min\n351: \t\t\t\t}\n352: \t\t\t}\n353: \t\t}\n354: \n355: \t\t# Show usage of free holy site action, if appropriate\n356: \t\tfaith = {\n357: \t\t\tholy_site_free_action_show_usage_trigger = yes\n358: \t\t}\n359: \t}\n360: \n361: \tcost = {\n362: \t\tpiety = {\n363: \t\t\tvalue = 1000\n364: \t\t\tif = {\n365: \t\t\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n366: \t\t\t\tmultiply = 0\n367: \t\t\t}\n368: \t\t}\n369: \t}\n370: \n371: \tcooldown = { years = holy_site_decision_cooldown_value }\n372: \n373: \teffect = {\n374: \t\tscope:selected_item.holy_site_county.holder = {\n375: \t\t\tsave_scope_as = county_holder\n376: \t\t}\n377: \t\thidden_effect = {\n378: \t\t\t# The site outlives its last faith, but nothing can reach it again, so its relics leave before the faith does\n379: \t\t\tscope:selected_item ?= {\n380: \t\t\t\tif = {\n381: \t\t\t\t\tlimit = {\n382: \t\t\t\t\t\texists = scope:county_holder\n383: \t\t\t\t\t\tNOT = { any_holy_site_faith = { this != root.faith } }\n384: \t\t\t\t\t}\n385: \t\t\t\t\tevery_holy_site_enshrined_artifact = {\n386: \t\t\t\t\t\tset_owner = { target = scope:county_holder }\n387: \t\t\t\t\t}\n388: \t\t\t\t}\n389: \t\t\t}\n390: \t\t}\n391: \t\troot.faith = {\n392: \t\t\tremove_holy_site = {\n393: \t\t\t\ttarget = scope:selected_item\n394: \t\t\t\tactor = root\n395: \t\t\t}\n396: \t\t\tconsume_free_holy_site_action_effect = yes\n397: \t\t}\n398: \t\tif = {\n399: \t\t\tlimit = {\n400: \t\t\t\texists = scope:county_holder\n401: \t\t\t\tNOT = { scope:county_holder = root }\n402: \t\t\t}\n403: \t\t\tscope:county_holder = {\n404: \t\t\t\tadd_opinion = {\n405: \t\t\t\t\tmodifier = holy_site_demoted_county_holder_opinion\n406: \t\t\t\t\ttarget = root\n407: \t\t\t\t}\n408: \t\t\t}\n409: \t\t}\n410: \t\tadd_character_modifier = {\n411: \t\t\tmodifier = holy_site_demoted_modifier\n412: \t\t\tyears = 10\n413: \t\t}"
+        }
+      ]
+    },
+    {
+      "id": "S14",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "relative_path": "common/on_action/inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "bytes": 13630,
+      "line_count": 541,
+      "observed_at_utc": "2026-10-17T18:22:28.044117+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 29,
+          "numbered_text": "1: # An artifact has changed ownership\n2: # root = the artifact\n3: # scope:owner = the person who now holds the artifact\n4: # scope:old_owner = the person who used to hold the artifact\n5: # scope:old_holy_site = the holy site that used to hold the artifact (set only when\n6: #                       the artifact transitioned out of holy-site ownership into\n7: #                       character ownership; otherwise absent)\n8: on_artifact_changed_owner = {\n9: \tevents = {\n10: \t\tartifact.0011\n11: \t\tartifact.0101\n12: \t}\n13: \n14: \teffect = {\n15: \t\tif = {\n16: \t\t\tlimit = {\n17: \t\t\t\texists = scope:old_owner\n18: \t\t\t}\n19: \n20: \t\t\tsave_scope_as = artifact\n21: \t\t\tgrant_banner_house_claim_effect = yes\n22: \t\t\tevery_artifact_claimant = { #This on_action is not triggered on succession for the ones getting the claim, so we force it here\n23: \t\t\t\ttrigger_event = {\n24: \t\t\t\t\ton_action = on_artifact_claim_gained\n25: \t\t\t\t}\n26: \t\t\t}\n27: \t\t}\n28: \t}\n29: }"
+        },
+        {
+          "first_line": 129,
+          "last_line": 165,
+          "numbered_text": "129: # Fired when an artifact has been enshrined in a holy site (whether the slot was empty\n130: # or an existing artifact was replaced).\n131: # root             = the artifact that was enshrined\n132: # scope:holy_site  = the holy site receiving the artifact\n133: # scope:actor      = the character who initiated the enshrining\n134: # scope:replacing  = the artifact that was replaced in the slot, if any\n135: on_holy_site_artifact_enshrined = {\n136: \teffect = {\n137: \t\t# Save if we're improving the artifact level with a replace\n138: \t\tif = {\n139: \t\t\tlimit = {\n140: \t\t\t\tscope:replacing ?= {\n141: \t\t\t\t\tis_holy_relic_for = scope:actor.faith\n142: \t\t\t\t\trarity_level >= root.rarity_level\n143: \t\t\t\t}\n144: \t\t\t}\n145: \t\t\tsave_scope_value_as = {\n146: \t\t\t\tname = replacing_with_better_artifact\n147: \t\t\t\tvalue = no\n148: \t\t\t}\n149: \t\t}\n150: \t\telse = {\n151: \t\t\tsave_scope_value_as = {\n152: \t\t\t\tname = replacing_with_better_artifact\n153: \t\t\t\tvalue = yes\n154: \t\t\t}\n155: \t\t}\n156: \n157: \n158: \t\t# If this is a relic of your faith\n159: \t\tif = {\n160: \t\t\tlimit = {\n161: \t\t\t\tis_holy_relic_for = scope:actor.faith\n162: \n163: \t\t\t\t# Don't gain things from replacing with a worse/equal level artifact\n164: \t\t\t\tscope:replacing_with_better_artifact = no\n165: \t\t\t}"
+        },
+        {
+          "first_line": 167,
+          "last_line": 243,
+          "numbered_text": "167: \t\t\tsave_scope_value_as = {\n168: \t\t\t\tname = replace_piety_value\n169: \t\t\t\tvalue = 0\n170: \t\t\t}\n171: \t\t\tscope:replacing ?= {\n172: \t\t\t\tswitch = {\n173: \t\t\t\t\ttrigger = rarity\n174: \t\t\t\t\tillustrious = {\n175: \t\t\t\t\t\tscope:actor = {\n176: \t\t\t\t\t\t\tsave_scope_value_as = {\n177: \t\t\t\t\t\t\t\tname = replace_piety_value\n178: \t\t\t\t\t\t\t\tvalue = massive_piety_loss\n179: \t\t\t\t\t\t\t}\n180: \t\t\t\t\t\t}\n181: \t\t\t\t\t}\n182: \t\t\t\t\tfamed = {\n183: \t\t\t\t\t\tscope:actor = {\n184: \t\t\t\t\t\t\tsave_scope_value_as = {\n185: \t\t\t\t\t\t\t\tname = replace_piety_value\n186: \t\t\t\t\t\t\t\tvalue = major_piety_loss\n187: \t\t\t\t\t\t\t}\n188: \t\t\t\t\t\t}\n189: \t\t\t\t\t}\n190: \t\t\t\t\tmasterwork = {\n191: \t\t\t\t\t\tscope:actor = {\n192: \t\t\t\t\t\t\tsave_scope_value_as = {\n193: \t\t\t\t\t\t\t\tname = replace_piety_value\n194: \t\t\t\t\t\t\t\tvalue = medium_piety_loss\n195: \t\t\t\t\t\t\t}\n196: \t\t\t\t\t\t}\n197: \t\t\t\t\t}\n198: \t\t\t\t\tcommon = {\n199: \t\t\t\t\t\tscope:actor = {\n200: \t\t\t\t\t\t\tsave_scope_value_as = {\n201: \t\t\t\t\t\t\t\tname = replace_piety_value\n202: \t\t\t\t\t\t\t\tvalue = minor_piety_loss\n203: \t\t\t\t\t\t\t}\n204: \t\t\t\t\t\t}\n205: \t\t\t\t\t}\n206: \t\t\t\t}\n207: \t\t\t}\n208: \n209: \t\t\tswitch = {\n210: \t\t\t\ttrigger = rarity\n211: \t\t\t\tillustrious = {\n212: \t\t\t\t\tscope:actor = {\n213: \t\t\t\t\t\tadd_piety = {\n214: \t\t\t\t\t\t\tvalue = massive_piety_value\n215: \t\t\t\t\t\t\tadd = scope:replace_piety_value\n216: \t\t\t\t\t\t}\n217: \t\t\t\t\t}\n218: \t\t\t\t}\n219: \t\t\t\tfamed = {\n220: \t\t\t\t\tscope:actor = {\n221: \t\t\t\t\t\tadd_piety = {\n222: \t\t\t\t\t\t\tvalue = major_piety_value\n223: \t\t\t\t\t\t\tadd = scope:replace_piety_value\n224: \t\t\t\t\t\t}\n225: \t\t\t\t\t}\n226: \t\t\t\t}\n227: \t\t\t\tmasterwork = {\n228: \t\t\t\t\tscope:actor = {\n229: \t\t\t\t\t\tadd_piety = {\n230: \t\t\t\t\t\t\tvalue = medium_piety_value\n231: \t\t\t\t\t\t\tadd = scope:replace_piety_value\n232: \t\t\t\t\t\t}\n233: \t\t\t\t\t}\n234: \t\t\t\t}\n235: \t\t\t\tcommon = {\n236: \t\t\t\t\tscope:actor = {\n237: \t\t\t\t\t\tadd_piety = {\n238: \t\t\t\t\t\t\tvalue = minor_piety_value\n239: \t\t\t\t\t\t\tadd = scope:replace_piety_value\n240: \t\t\t\t\t\t}\n241: \t\t\t\t\t}\n242: \t\t\t\t}\n243: \t\t\t}"
+        },
+        {
+          "first_line": 245,
+          "last_line": 295,
+          "numbered_text": "245: \t\t\t# Your zealous vassals like it\n246: \t\t\tscope:actor = {\n247: \t\t\t\tevery_vassal = {\n248: \t\t\t\t\tvassal_stance = zealot\n249: \t\t\t\t\tlimit = {\n250: \t\t\t\t\t\troot = {\n251: \t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n252: \t\t\t\t\t\t}\n253: \t\t\t\t\t}\n254: \t\t\t\t\tadd_opinion = {\n255: \t\t\t\t\t\tmodifier = enshrined_holy_relic_at_holy_site\n256: \t\t\t\t\t\ttarget = scope:actor\n257: \t\t\t\t\t}\n258: \t\t\t\t}\n259: \n260: \t\t\t\t# Zealot lieges like it\n261: \t\t\t\tevery_liege_or_above = {\n262: \t\t\t\t\tlimit = {\n263: \t\t\t\t\t\tOR = {\n264: \t\t\t\t\t\t\tai_zeal >= 50\n265: \t\t\t\t\t\t\thas_trait = devoted\n266: \t\t\t\t\t\t\thas_trait = zealous\n267: \t\t\t\t\t\t}\n268: \t\t\t\t\t\troot = {\n269: \t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n270: \t\t\t\t\t\t}\n271: \t\t\t\t\t}\n272: \t\t\t\t\tadd_opinion = {\n273: \t\t\t\t\t\tmodifier = enshrined_holy_relic_at_holy_site\n274: \t\t\t\t\t\ttarget = scope:actor\n275: \t\t\t\t\t}\n276: \t\t\t\t}\n277: \t\t\t\t# your head of faith likes it\n278: \t\t\t\tfaith = {\n279: \t\t\t\t\treligious_head ?= {\n280: \t\t\t\t\t\tif = {\n281: \t\t\t\t\t\t\tlimit = {\n282: \t\t\t\t\t\t\t\tthis != scope:actor\n283: \t\t\t\t\t\t\t\troot = {\n284: \t\t\t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n285: \t\t\t\t\t\t\t\t}\n286: \t\t\t\t\t\t\t}\n287: \n288: \t\t\t\t\t\t\tadd_opinion = {\n289: \t\t\t\t\t\t\t\tmodifier = enshrined_holy_relic_at_holy_site\n290: \t\t\t\t\t\t\t\ttarget = scope:actor\n291: \t\t\t\t\t\t\t}\n292: \t\t\t\t\t\t}\n293: \t\t\t\t\t}\n294: \t\t\t\t}\n295: \t\t\t}"
+        },
+        {
+          "first_line": 322,
+          "last_line": 399,
+          "numbered_text": "322: # Fired when an artifact has been removed from a holy site (back into the actor's inventory).\n323: # Also fires for the artifact replaced by a swap-style enshrining — in that\n324: # (Only fired from explicit enshrining/removing effects, not generic inventory effects)\n325: # case scope:replacing is the artifact that took its place.\n326: # root             = the artifact that was removed\n327: # scope:holy_site  = the holy site the artifact was taken from\n328: # scope:actor      = the character who initiated the removal\n329: # scope:replacing  = the artifact taking this one's place, if removal is part of a swap\n330: on_holy_site_artifact_removed = {\n331: \teffect = {\n332: \t\t# Save if we're improving the artifact level with a replace\n333: \t\tif = {\n334: \t\t\tlimit = {\n335: \t\t\t\tis_holy_relic_for = scope:actor.faith\n336: \t\t\t\tOR = {\n337: \t\t\t\t\tNOT = { exists = scope:replacing }\n338: \t\t\t\t\tscope:replacing ?= {\n339: \t\t\t\t\t\trarity_level < root.rarity_level\n340: \t\t\t\t\t}\n341: \t\t\t\t}\n342: \t\t\t}\n343: \t\t\tsave_scope_value_as = {\n344: \t\t\t\tname = replacing_with_better_artifact\n345: \t\t\t\tvalue = no\n346: \t\t\t}\n347: \t\t}\n348: \t\telse = {\n349: \t\t\tsave_scope_value_as = {\n350: \t\t\t\tname = replacing_with_better_artifact\n351: \t\t\t\tvalue = yes\n352: \t\t\t}\n353: \t\t}\n354: \n355: \t\t# Heads of Faith don't like this.\n356: \t\tif = {\n357: \t\t\tlimit = {\n358: \t\t\t\t# Don't lose things from replacing with a better/equal level artifact\n359: \t\t\t\tscope:replacing_with_better_artifact = no\n360: \t\t\t}\n361: \t\t\tscope:holy_site = {\n362: \t\t\t\tevery_holy_site_faith = {\n363: \t\t\t\t\tlimit = {\n364: \t\t\t\t\t\tnum_county_followers > 0\n365: \t\t\t\t\t}\n366: \t\t\t\t\treligious_head ?= {\n367: \t\t\t\t\t\tif = {\n368: \t\t\t\t\t\t\tlimit = {\n369: \t\t\t\t\t\t\t\tthis != scope:actor\n370: \t\t\t\t\t\t\t\troot = {\n371: \t\t\t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n372: \t\t\t\t\t\t\t\t}\n373: \t\t\t\t\t\t\t}\n374: \n375: \t\t\t\t\t\t\tadd_opinion = {\n376: \t\t\t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n377: \t\t\t\t\t\t\t\ttarget = scope:actor\n378: \t\t\t\t\t\t\t}\n379: \t\t\t\t\t\t}\n380: \t\t\t\t\t}\n381: \t\t\t\t}\n382: \t\t\t}\n383: \t\t}\n384: \n385: \t\t# If this is a relic of your faith\n386: \t\tif = {\n387: \t\t\tlimit = {\n388: \t\t\t\tis_holy_relic_for = scope:actor.faith\n389: \t\t\t\tscope:replacing_with_better_artifact = no\n390: \t\t\t}\n391: \n392: \t\t\t# Costs Piety if it is your faith\n393: \t\t\tswitch = {\n394: \t\t\t\ttrigger = rarity\n395: \t\t\t\tillustrious = { scope:actor = { add_piety_and_experience = massive_piety_loss } }\n396: \t\t\t\tfamed = { scope:actor = { add_piety_and_experience = major_piety_loss } }\n397: \t\t\t\tmasterwork = { scope:actor = { add_piety_and_experience = medium_piety_loss } }\n398: \t\t\t\tcommon = { scope:actor = { add_piety_and_experience = minor_piety_loss } }\n399: \t\t\t}"
+        },
+        {
+          "first_line": 401,
+          "last_line": 524,
+          "numbered_text": "401: \t\t\t# Your zealous / minority vassals don't like it\n402: \t\t\tscope:actor = {\n403: \t\t\t\tevery_vassal = {\n404: \t\t\t\t\tcustom = every_zealot_vassal\n405: \t\t\t\t\tvassal_stance = zealot\n406: \t\t\t\t\tlimit = {\n407: \t\t\t\t\t\tfaith = scope:actor.faith\n408: \t\t\t\t\t}\n409: \t\t\t\t\tadd_opinion = {\n410: \t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n411: \t\t\t\t\t\ttarget = scope:actor\n412: \t\t\t\t\t}\n413: \t\t\t\t}\n414: \t\t\t\tevery_vassal = {\n415: \t\t\t\t\tcustom = every_minority_vassal\n416: \t\t\t\t\tvassal_stance = minority\n417: \t\t\t\t\tlimit = {\n418: \t\t\t\t\t\tfaith = scope:actor.faith\n419: \t\t\t\t\t}\n420: \t\t\t\t\tadd_opinion = {\n421: \t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n422: \t\t\t\t\t\ttarget = scope:actor\n423: \t\t\t\t\t}\n424: \t\t\t\t}\n425: \n426: \t\t\t\tif = {\n427: \t\t\t\t\tlimit = { liege != this }\n428: \t\t\t\t\t# Fellow zealous vassals don't like it\n429: \t\t\t\t\tliege = {\n430: \t\t\t\t\t\tevery_vassal = {\n431: \t\t\t\t\t\t\tcustom = every_zealot_fellow_vassal\n432: \t\t\t\t\t\t\tvassal_stance = zealot\n433: \t\t\t\t\t\t\tlimit = {\n434: \t\t\t\t\t\t\t\tfaith = scope:actor.faith\n435: \t\t\t\t\t\t\t}\n436: \t\t\t\t\t\t\tadd_opinion = {\n437: \t\t\t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n438: \t\t\t\t\t\t\t\ttarget = scope:actor\n439: \t\t\t\t\t\t\t}\n440: \t\t\t\t\t\t}\n441: \t\t\t\t\t}\n442: \t\t\t\t\t# Lieges don't like it\n443: \t\t\t\t\tevery_liege_or_above = {\n444: \t\t\t\t\t\tlimit = {\n445: \t\t\t\t\t\t\tOR = {\n446: \t\t\t\t\t\t\t\tai_zeal >= 50\n447: \t\t\t\t\t\t\t\thas_trait = devoted\n448: \t\t\t\t\t\t\t\thas_trait = zealous\n449: \t\t\t\t\t\t\t}\n450: \t\t\t\t\t\t\troot = {\n451: \t\t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n452: \t\t\t\t\t\t\t}\n453: \t\t\t\t\t\t}\n454: \t\t\t\t\t\tadd_opinion = {\n455: \t\t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n456: \t\t\t\t\t\t\ttarget = scope:actor\n457: \t\t\t\t\t\t}\n458: \t\t\t\t\t}\n459: \t\t\t\t}\n460: \t\t\t}\n461: \t\t}\n462: \t\telse_if = {\n463: \t\t \t# If this is not a relic of your faith\n464: \t\t\tsave_scope_as = artifact\n465: \t\t\tcustom_tooltip = {\n466: \t\t\t\ttext = holy_site_relic_will_get_reclaim_relic_cb\n467: \t\t\t}\n468: \n469: \t\t\t# Your vassals / fellow vassals / liege doesn't like it\n470: \t\t\tscope:actor = {\n471: \t\t\t\tevery_vassal = {\n472: \t\t\t\t\tlimit = {\n473: \t\t\t\t\t\tOR = {\n474: \t\t\t\t\t\t\tfaith != scope:actor.faith\n475: \t\t\t\t\t\t\tscope:replacing_with_better_artifact = no\n476: \t\t\t\t\t\t}\n477: \t\t\t\t\t\troot = {\n478: \t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n479: \t\t\t\t\t\t}\n480: \t\t\t\t\t}\n481: \t\t\t\t\tadd_opinion = {\n482: \t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n483: \t\t\t\t\t\ttarget = scope:actor\n484: \t\t\t\t\t}\n485: \t\t\t\t}\n486: \t\t\t\tif = {\n487: \t\t\t\t\tlimit = { liege != this }\n488: \t\t\t\t\tliege = {\n489: \t\t\t\t\t\tevery_vassal = {\n490: \t\t\t\t\t\t\tlimit = {\n491: \t\t\t\t\t\t\t\tOR = {\n492: \t\t\t\t\t\t\t\t\tfaith != scope:actor.faith\n493: \t\t\t\t\t\t\t\t\tscope:replacing_with_better_artifact = no\n494: \t\t\t\t\t\t\t\t}\n495: \t\t\t\t\t\t\t\troot = {\n496: \t\t\t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n497: \t\t\t\t\t\t\t\t}\n498: \t\t\t\t\t\t\t}\n499: \t\t\t\t\t\t\tadd_opinion = {\n500: \t\t\t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n501: \t\t\t\t\t\t\t\ttarget = scope:actor\n502: \t\t\t\t\t\t\t}\n503: \t\t\t\t\t\t}\n504: \t\t\t\t\t}\n505: \t\t\t\t\tevery_liege_or_above = {\n506: \t\t\t\t\t\tlimit = {\n507: \t\t\t\t\t\t\tOR = {\n508: \t\t\t\t\t\t\t\tfaith != scope:actor.faith\n509: \t\t\t\t\t\t\t\tscope:replacing_with_better_artifact = no\n510: \t\t\t\t\t\t\t}\n511: \t\t\t\t\t\t\troot = {\n512: \t\t\t\t\t\t\t\tis_holy_relic_for = prev.faith\n513: \t\t\t\t\t\t\t}\n514: \t\t\t\t\t\t}\n515: \t\t\t\t\t\tadd_opinion = {\n516: \t\t\t\t\t\t\tmodifier = removed_holy_relic_from_holy_site\n517: \t\t\t\t\t\t\ttarget = scope:actor\n518: \t\t\t\t\t\t}\n519: \t\t\t\t\t}\n520: \t\t\t\t}\n521: \t\t\t}\n522: \t\t}\n523: \t}\n524: }"
+        },
+        {
+          "first_line": 527,
+          "last_line": 541,
+          "numbered_text": "527: # Fired whenever an artifact's holy-site ownership has changed.\n528: # (artifact is now owned by a holy site, or no longer owner by a holy site)\n529: #\n530: # root                 = the artifact\n531: # scope:holy_site      = the holy site that now owns the artifact, if any\n532: # scope:old_holy_site  = the holy site that used to own the artifact, if any\n533: # scope:old_owner      = the character who used to own the artifact, if any\n534: #\n535: # Either or both of the old_* scopes may be present depending on what the previous\n536: # owner was. The new holy_site scope is absent only if the artifact was cleared of\n537: # holy-site ownership without immediately being given to a new one.\n538: on_artifact_changed_holy_site_owner = {\n539: \teffect = {\n540: \t}\n541: }"
+        }
+      ]
+    },
+    {
+      "id": "S15",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "bytes": 50566,
+      "line_count": 2342,
+      "observed_at_utc": "2026-10-17T18:22:28.044984+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 1130,
+          "last_line": 1157,
+          "numbered_text": "1130: #PIETY\n1131: miniscule_piety_value = 25\n1132: minor_piety_value = 50\n1133: medium_piety_value = 100\n1134: major_piety_value = 250\n1135: massive_piety_value = 500\n1136: monumental_piety_value = 1000\n1137: \n1138: \n1139: miniscule_piety_loss = {\n1140: \tvalue = 0\n1141: \tsubtract = miniscule_piety_value\n1142: }\n1143: minor_piety_loss = {\n1144: \tvalue = 0\n1145: \tsubtract = minor_piety_value\n1146: }\n1147: medium_piety_loss = {\n1148: \tvalue = 0\n1149: \tsubtract = medium_piety_value\n1150: }\n1151: major_piety_loss = {\n1152: \tvalue = 0\n1153: \tsubtract = major_piety_value\n1154: }\n1155: massive_piety_loss = {\n1156: \tvalue = 0\n1157: \tsubtract = massive_piety_value"
+        }
+      ]
+    },
+    {
+      "id": "S16",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\pam_opinions.txt",
+      "relative_path": "common/opinion_modifiers/pam_opinions.txt",
+      "sha256": "68cdfc641a32a38daf6e9de6651634278b522b26c2886fbf6b55341ce7e09b52",
+      "bytes": 4274,
+      "line_count": 192,
+      "observed_at_utc": "2026-10-17T18:22:28.045283+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 111,
+          "last_line": 120,
+          "numbered_text": "111: removed_holy_relic_from_holy_site = {\n112: \topinion = -20\n113: \tyears = 10\n114: \tdecaying = yes\n115: }\n116: \n117: enshrined_holy_relic_at_holy_site = {\n118: \topinion = 15\n119: \tyears = 10\n120: \tdecaying = yes"
+        }
+      ]
+    },
+    {
+      "id": "S17",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\holy_site_window_l_english.yml",
+      "relative_path": "localization/english/gui/holy_site_window_l_english.yml",
+      "sha256": "7c0929203d6019e80607ab7cc57641e7eb649726de6c686678d0b4b37978fdf5",
+      "bytes": 9969,
+      "line_count": 99,
+      "observed_at_utc": "2026-10-17T18:22:28.045547+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 33,
+          "last_line": 48,
+          "numbered_text": "33:  HOLY_SITE_ENSHRINE_REQUIRES_OWNERSHIP: \"@warning_icon!#X You must own an artifact to enshrine it.#!\"\n34:  HOLY_SITE_REMOVE_REQUIRES_HOLDER: \"@warning_icon!#X You must hold this Holy Site's county to remove the enshrined relic.#!\"\n35:  HOLY_SITE_ACTION_BUTTON_ENSHRINE: \"Enshrine Relic\"\n36:  HOLY_SITE_ACTION_BUTTON_REMOVE: \"Remove Relic\"\n37:  HOLY_SITE_ACTION_BUTTON_SWAP: \"Swap Relic\"\n38:  HOLY_SITE_ACTION_BUTTON_NO_SELECTION_TT: \"#weak Select an artifact from your inventory to enshrine, or an enshrined relic to remove.#!\"\n39:  HOLY_SITE_ENSHRINE_BUTTON_ALREADY_ENSHRINED_TT: \"#weak This artifact is already enshrined here.#!\"\n40:  HOLY_SITE_REMOVE_BUTTON_NOT_ENSHRINED_TT: \"#weak Select an enshrined relic from this Holy Site to remove.#!\"\n41:  HOLY_SITE_ACTION_EFFECTS_HEADER: \"Action effects\"\n42:  HOLY_SITE_INVENTORY_BULLET_ENSHRINE: \"$MODIFIER_BULLET$[ARTIFACT.GetName] becomes [enshrined|E] at [HOLY_SITE.GetName].\\n$MODIFIER_BULLET$You are no longer the owner of [ARTIFACT.GetName].\\n\"\n43:  HOLY_SITE_INVENTORY_BULLET_REMOVE: \"$MODIFIER_BULLET$$SET_ARTIFACT_OWNER_FIRST$\"\n44:  HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER: \"\\n#bold [holy_site|E] County:#! #weak (total [holy_relic|E] rarity change: #high $CURRENT_SUM$#! to #high $NEW_SUM$#!)#!\\n\"\n45:  HOLY_SITE_FAITH_CHARACTER_MODIFIER_CHANGE_HEADER: \"\\n#bold All [Faith.GetAdherentNamePlural]:#! #weak ([holy_relics|E] rarity change: #high $CURRENT_SUM$#! to #high $NEW_SUM$#!)#!\\n\"\n46:  HOLY_SITE_INVENTORY_SLOT_TT: \"#T [InventorySlot.GetName] Slot#!\\n[SelectLocalization( HolySiteWindow.IsSelectedSlot( InventorySlot.Self ), 'HOLY_SITE_SLOT_SELECTED_TT', 'HOLY_SITE_SLOT_UNSELECTED_TT' )]\"\n47:  HOLY_SITE_SLOT_SELECTED_TT: \"#I Click to deselect this slot.#!\\n#weak Selected slots are the destination for the next Enshrine action.#!\"\n48:  HOLY_SITE_SLOT_UNSELECTED_TT: \"#I Click to select this slot as the destination for the next Enshrine action.#!\""
+        },
+        {
+          "first_line": 98,
+          "last_line": 98,
+          "numbered_text": "98:  holy_site_relic_will_get_reclaim_relic_cb: \"Different [faith|E] [rulers|E] who consider the [artifact.GetName] a [holy_relic|E] will gain a [GetCasusBelliType('reclaim_relic_artifact_war').GetName] [casus_belli|E] against you\""
+        }
+      ]
+    },
+    {
+      "id": "X01",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\01_ep1_wars.txt",
+      "relative_path": "common/casus_belli_types/01_ep1_wars.txt",
+      "sha256": "21c1ab2e4fef36b869469bcc0d28b9c18efc026d63de62af708642cde289eb95",
+      "bytes": 16701,
+      "line_count": 697,
+      "observed_at_utc": "2026-10-17T18:22:28.045903+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 342,
+          "last_line": 427,
+          "numbered_text": "342: reclaim_relic_artifact_war = {\n343: \ticon = reclaim_relic_artifact_war\n344: \tgroup = artifact\n345: \tai_only_against_neighbors = yes\n346: \tallow_hostages = no\n347: \n348: \tallowed_for_character = {\n349: \t\ttrigger_if = {\n350: \t\t\tlimit = {\n351: \t\t\t\tis_ai = yes\n352: \t\t\t}\n353: \t\t\tai_zeal >= 100\n354: \t\t}\n355: \t\tOR = {\n356: \t\t\thighest_held_title_tier >= tier_duchy\n357: \t\t\tis_ai = no\n358: \t\t}\n359: \t\tNOT = {\n360: \t\t\tgovernment_has_flag = government_is_landless_adventurer\n361: \t\t}\n362: \t}\n363: \tallowed_against_character = {\n364: \t\tcustom_tooltip = { # The custom_tooltip is here for error suppression\n365: \t\t\ttext = SCOPE_EMPTY\n366: \t\t\tscope:attacker.faith != scope:defender.faith\n367: \t\t\ttrigger_if = {\n368: \t\t\t\tlimit = {\n369: \t\t\t\t\tscope:attacker = { is_ai = yes }\n370: \t\t\t\t}\n371: \t\t\t\tscope:defender = {\n372: \t\t\t\t\tany_character_artifact = {\n373: \t\t\t\t\t\tOR = {\n374: \t\t\t\t\t\t\t# Standard relics.\n375: \t\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n376: \t\t\t\t\t\t\t# Struggle relics.\n377: \t\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n378: \t\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n379: \t\t\t\t\t\t}\n380: \t\t\t\t\t}\n381: \t\t\t\t}\n382: \t\t\t}\n383: \t\t\ttrigger_else = {\n384: \t\t\t\tscope:defender = {\n385: \t\t\t\t\tOR = {\n386: \t\t\t\t\t\tany_character_artifact = {\n387: \t\t\t\t\t\t\tOR = {\n388: \t\t\t\t\t\t\t\t# Standard relics.\n389: \t\t\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n390: \t\t\t\t\t\t\t\t# Struggle relics.\n391: \t\t\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n392: \t\t\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n393: \t\t\t\t\t\t\t}\n394: \t\t\t\t\t\t}\n395: \t\t\t\t\t\tany_vassal_or_below = {\n396: \t\t\t\t\t\t\tfaith != scope:attacker.faith\n397: \t\t\t\t\t\t\tany_character_artifact = {\n398: \t\t\t\t\t\t\t\tOR = {\n399: \t\t\t\t\t\t\t\t\t# Standard relics.\n400: \t\t\t\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n401: \t\t\t\t\t\t\t\t\t# Struggle relics.\n402: \t\t\t\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n403: \t\t\t\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n404: \t\t\t\t\t\t\t\t}\n405: \t\t\t\t\t\t\t}\n406: \t\t\t\t\t\t}\n407: \t\t\t\t\t}\n408: \t\t\t\t}\n409: \t\t\t}\n410: \t\t}\n411: \t}\n412: \n413: \ton_declaration = {\n414: \t\ton_declared_war = yes\n415: \t}\n416: \n417: \tcost = {\n418: \t\tprestige = {\n419: \t\t\tvalue = 0\n420: \t\t\tadd = {\n421: \t\t\t\tvalue = medium_prestige_value\n422: \t\t\t\tdesc = CB_BASE_COST\n423: \t\t\t}\n424: \n425: \t\t\tmultiply = common_cb_prestige_cost_multiplier\n426: \t\t}\n427: \t}"
+        },
+        {
+          "first_line": 450,
+          "last_line": 510,
+          "numbered_text": "450: \t\t# transfer artifacts\n451: \t\tscope:defender = {\n452: \t\t\tevery_character_artifact = {\n453: \t\t\t\tlimit = {\n454: \t\t\t\t\tOR = {\n455: \t\t\t\t\t\t# Standard relics.\n456: \t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n457: \t\t\t\t\t\t# Struggle relics.\n458: \t\t\t\t\t\t## The Bells of Santiago de Compostela.\n459: \t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n460: \t\t\t\t\t}\n461: \t\t\t\t}\n462: \t\t\t\tset_owner = {\n463: \t\t\t\t\ttarget = scope:attacker\n464: \t\t\t\t\thistory = {\n465: \t\t\t\t\t\ttype = conquest\n466: \t\t\t\t\t\tactor = scope:defender\n467: \t\t\t\t\t\trecipient = scope:attacker\n468: \t\t\t\t\t}\n469: \t\t\t\t}\n470: \t\t\t\tif = {\n471: \t\t\t\t\tlimit = {\n472: \t\t\t\t\t\tNOT = {\n473: \t\t\t\t\t\t\tscope:defender = { has_personal_artifact_claim = prev }\n474: \t\t\t\t\t\t}\n475: \t\t\t\t\t}\n476: \t\t\t\t\tscope:defender = { add_personal_artifact_claim = prev }\n477: \t\t\t\t}\n478: \t\t\t}\n479: \t\t\tevery_vassal_or_below = {\n480: \t\t\t\tlimit = {\n481: \t\t\t\t\tfaith != scope:attacker.faith\n482: \t\t\t\t}\n483: \t\t\t\tevery_character_artifact = {\n484: \t\t\t\t\tlimit = {\n485: \t\t\t\t\t\tOR = {\n486: \t\t\t\t\t\t\t# Standard relics.\n487: \t\t\t\t\t\t\trelic_war_valid_religious_artifact_trigger = yes\n488: \t\t\t\t\t\t\t# Struggle relics.\n489: \t\t\t\t\t\t\t## The Bells of Santiago de Compostela.\n490: \t\t\t\t\t\t\trelic_war_valid_struggle_artifact_trigger = yes\n491: \t\t\t\t\t\t}\n492: \t\t\t\t\t}\n493: \t\t\t\t\tset_owner = {\n494: \t\t\t\t\t\ttarget = scope:attacker\n495: \t\t\t\t\t\thistory = {\n496: \t\t\t\t\t\t\ttype = conquest\n497: \t\t\t\t\t\t\tactor = scope:attacker\n498: \t\t\t\t\t\t\trecipient = scope:defender\n499: \t\t\t\t\t\t}\n500: \t\t\t\t\t}\n501: \t\t\t\t\tif = {\n502: \t\t\t\t\t\tlimit = {\n503: \t\t\t\t\t\t\tNOT = {\n504: \t\t\t\t\t\t\t\tscope:defender = { has_personal_artifact_claim = prev }\n505: \t\t\t\t\t\t\t}\n506: \t\t\t\t\t\t}\n507: \t\t\t\t\t\tscope:defender = { add_personal_artifact_claim = prev }\n508: \t\t\t\t\t}\n509: \t\t\t\t}\n510: \t\t\t}"
+        }
+      ]
+    },
+    {
+      "id": "X02",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_artifact_triggers.txt",
+      "relative_path": "common/scripted_triggers/00_artifact_triggers.txt",
+      "sha256": "ab6ae5dcb1db9e05574b9f635ba62a3303f307df5d0401cbd7d4672684170aeb",
+      "bytes": 63329,
+      "line_count": 2393,
+      "observed_at_utc": "2026-10-17T18:22:28.046786+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 2223,
+          "last_line": 2248,
+          "numbered_text": "2223: relic_war_valid_religious_artifact_trigger = {\n2224: \tis_holy_relic_for = scope:attacker.faith\n2225: \tNOT = {\n2226: \t\tis_holy_relic_for = scope:defender.faith\n2227: \t}\n2228: \tNOT = { has_variable = artifact_prevent_transfer }\n2229: }\n2230: \n2231: relic_war_valid_struggle_artifact_trigger = {\n2232: \texists = var:relic\n2233: \tvar:relic = flag:iberian_struggle\n2234: \tscope:attacker = {\n2235: \t\tany_character_struggle = { is_struggle_type = iberian_struggle }\n2236: \t\t# Plus one of the valid using faiths.\n2237: \t\tOR = {\n2238: \t\t\tscope:attacker = {\n2239: \t\t\t\tislamic_artifact_access_trigger = yes\n2240: \t\t\t}\n2241: \t\t\tscope:attacker = {\n2242: \t\t\t\tchristian_artifact_access_trigger = yes\n2243: \t\t\t}\n2244: \t\t}\n2245: \t}\n2246: \tscope:attacker.faith != scope:defender.faith\n2247: \tNOT = { has_variable = artifact_prevent_transfer }\n2248: }"
+        }
+      ]
+    },
+    {
+      "id": "X03",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\00_religious_opinions.txt",
+      "relative_path": "common/opinion_modifiers/00_religious_opinions.txt",
+      "sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "bytes": 5239,
+      "line_count": 320,
+      "observed_at_utc": "2026-10-17T18:22:28.047085+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 11,
+          "last_line": 15,
+          "numbered_text": "11: holy_site_demoted_county_holder_opinion = {\n12: \topinion = -50\n13: \tdecaying = yes\n14: \tyears = 10\n15: }"
+        }
+      ]
+    },
+    {
+      "id": "X04",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifiers\\00_religion_modifiers.txt",
+      "relative_path": "common/modifiers/00_religion_modifiers.txt",
+      "sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "bytes": 8469,
+      "line_count": 363,
+      "observed_at_utc": "2026-10-17T18:22:28.047353+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 12,
+          "last_line": 16,
+          "numbered_text": "12: holy_site_demoted_modifier = {\n13: \ticon = piety_negative\n14: \tzealot_same_faith_opinion = -20\n15: \tparochial_same_faith_opinion = -20\n16: }"
+        }
+      ]
+    },
+    {
+      "id": "X05",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "relative_path": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "bytes": 88549,
+      "line_count": 3599,
+      "observed_at_utc": "2026-10-17T18:22:28.048228+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 1989,
+          "last_line": 1998,
+          "numbered_text": "1989: # Faith is the scope here\n1990: faith_has_free_holy_site_action_trigger = {\n1991: \ttrigger_if = {\n1992: \t\tlimit = { has_variable = free_holy_site_actions }\n1993: \t\tvar:free_holy_site_actions >= 1\n1994: \t}\n1995: \ttrigger_else = {\n1996: \t\talways = no\n1997: \t}\n1998: }"
+        }
+      ]
+    },
+    {
+      "id": "X06",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_religion_effects.txt",
+      "relative_path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "bytes": 41530,
+      "line_count": 1511,
+      "observed_at_utc": "2026-10-17T18:22:28.048771+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 1285,
+          "last_line": 1294,
+          "numbered_text": "1285: # After the cost is already waived, a decision effect runs this on the faith\n1286: consume_free_holy_site_action_effect = {\n1287: \tif = {\n1288: \t\tlimit = { faith_has_free_holy_site_action_trigger = yes }\n1289: \t\tchange_variable = {\n1290: \t\t\tname = free_holy_site_actions\n1291: \t\t\tsubtract = 1\n1292: \t\t}\n1293: \t}\n1294: }"
+        }
+      ]
+    },
+    {
+      "id": "X07",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+      "relative_path": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "bytes": 1191,
+      "line_count": 28,
+      "observed_at_utc": "2026-10-17T18:22:28.049023+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 13,
+          "last_line": 28,
+          "numbered_text": "13: # How long a ruler must wait between holy site actions, shared by the decisions and by holy site creation.\n14: holy_site_action_cooldown_years = {\n15: \tvalue = 5\n16: }\n17: \n18: # Scope: character taking one of the holy site decisions.\n19: # Cooldown in years, waived while the faith still has a free holy site action left. Decision cooldowns\n20: # are evaluated with only the taking character in scope - no saved scopes - so this can read the faith\n21: # but nothing about the selected holy site.\n22: holy_site_decision_cooldown_value = {\n23: \tvalue = holy_site_action_cooldown_years\n24: \tif = {\n25: \t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }\n26: \t\tvalue = 0\n27: \t}\n28: }"
+        }
+      ]
+    },
+    {
+      "id": "X08",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\events\\artifacts\\artifact_events.txt",
+      "relative_path": "events/artifacts/artifact_events.txt",
+      "sha256": "aab135e64c2586b7315f0ab2e7ab14bb35801ffbbb6368649305a8d5379bfbb5",
+      "bytes": 97658,
+      "line_count": 4252,
+      "observed_at_utc": "2026-10-17T18:22:28.049865+00:00",
+      "source_kind": "installed_stock_script_readonly",
+      "excerpts": [
+        {
+          "first_line": 5,
+          "last_line": 12,
+          "numbered_text": "5: artifact.0011 = {\n6: \tscope = artifact\n7: \thidden = yes\n8: \n9: \ttrigger = {\n10: \t\texists = scope:old_owner\n11: \t\tNOT = { has_variable = suppress_artifact_notifications } \n12: \t}"
+        },
+        {
+          "first_line": 91,
+          "last_line": 98,
+          "numbered_text": "91: artifact.0101 = {\n92: \tscope = artifact\n93: \thidden = yes\n94: \n95: \ttrigger = {\n96: \t\texists = scope:old_owner\n97: \t\thas_variable = artifact_santiago_bells\n98: \t}"
+        }
+      ]
+    }
+  ],
+  "native_return_contract_sources": [
+    {
+      "id": "enshrine-receiver-complete",
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-receiver-complete.json",
+        "bytes": 59797,
+        "sha256": "75bfef0b1094973fc64e639108f749b770af0e742ebabcb6871e6482396c8681"
+      },
+      "asm": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-receiver-complete.asm",
+        "bytes": 30072,
+        "sha256": "def487c7dbf7e35e67410ca6777fa6729b5eda534b1eee24f0b670d209d314ef"
+      },
+      "original_observed_at_utc": "2026-10-17T12:49:40.051934+00:00",
+      "rechecked_at_utc": "2026-10-17T18:22:28.052225+00:00",
+      "begin_rva": 43691488,
+      "end_rva": 43693291,
+      "raw_bytes_sha256": "6c900e0c7f46a45a1c7dba6b4fe7e0304808cccc22512439e6d23bc4555e3673",
+      "raw_bytes_length": 1803,
+      "copied_raw_bytes": false,
+      "excerpts": [
+        {
+          "first_line": 91,
+          "last_line": 157,
+          "numbered_text": "91: 0029AAF40 418b5910                         mov      ebx, dword ptr [r9 + 0x10]\n92: 0029AAF44 418b4108                         mov      eax, dword ptr [r9 + 8]\n93: 0029AAF48 39477c                           cmp      dword ptr [rdi + 0x7c], eax\n94: 0029AAF4B 741f                             je       0x29aaf6c\n95: 0029AAF4D 8bd0                             mov      edx, eax\n96: 0029AAF4F 488bcf                           mov      rcx, rdi\n97: 0029AAF52 e8a953b8ff                       call     0x2530300\n98: 0029AAF57 4c8b3d0a2f3703                   mov      r15, qword ptr [rip + 0x3372f0a]\n99: 0029AAF5E 4c8b25cb2e3703                   mov      r12, qword ptr [rip + 0x3372ecb]\n100: 0029AAF65 448b8518010000                   mov      r8d, dword ptr [rbp + 0x118]\n101: 0029AAF6C 83bd20010000ff                   cmp      dword ptr [rbp + 0x120], -1\n102: 0029AAF73 0f848b000000                     je       0x29ab004\n103: 0029AAF79 83fbff                           cmp      ebx, -1\n104: 0029AAF7C 0f8482000000                     je       0x29ab004\n105: 0029AAF82 488b15dfc52b03                   mov      rdx, qword ptr [rip + 0x32bc5df]\n106: 0029AAF89 4885d2                           test     rdx, rdx\n107: 0029AAF8C 7424                             je       0x29aafb2\n108: 0029AAF8E 8bc3                             mov      eax, ebx\n109: 0029AAF90 25ffffff00                       and      eax, 0xffffff\n110: 0029AAF95 3b422c                           cmp      eax, dword ptr [rdx + 0x2c]\n111: 0029AAF98 7318                             jae      0x29aafb2\n112: 0029AAF9A 8bc8                             mov      ecx, eax\n113: 0029AAF9C 4803c9                           add      rcx, rcx\n114: 0029AAF9F 488b4220                         mov      rax, qword ptr [rdx + 0x20]\n115: 0029AAFA3 488b44c808                       mov      rax, qword ptr [rax + rcx*8 + 8]\n116: 0029AAFA8 4885c0                           test     rax, rax\n117: 0029AAFAB 7405                             je       0x29aafb2\n118: 0029AAFAD 395818                           cmp      dword ptr [rax + 0x18], ebx\n119: 0029AAFB0 7407                             je       0x29aafb9\n120: 0029AAFB2 488b05b7c52b03                   mov      rax, qword ptr [rip + 0x32bc5b7]\n121: 0029AAFB9 81781c72616843                   cmp      dword ptr [rax + 0x1c], 0x43686172\n122: 0029AAFC0 7542                             jne      0x29ab004\n123: 0029AAFC2 837818ff                         cmp      dword ptr [rax + 0x18], -1\n124: 0029AAFC6 743c                             je       0x29ab004\n125: 0029AAFC8 4d85ff                           test     r15, r15\n126: 0029AAFCB 742d                             je       0x29aaffa\n127: 0029AAFCD 418bc0                           mov      eax, r8d\n128: 0029AAFD0 25ffffff00                       and      eax, 0xffffff\n129: 0029AAFD5 413b472c                         cmp      eax, dword ptr [r15 + 0x2c]\n130: 0029AAFD9 7319                             jae      0x29aaff4\n131: 0029AAFDB 8bc8                             mov      ecx, eax\n132: 0029AAFDD 4803c9                           add      rcx, rcx\n133: 0029AAFE0 498b4720                         mov      rax, qword ptr [r15 + 0x20]\n134: 0029AAFE4 488b54c808                       mov      rdx, qword ptr [rax + rcx*8 + 8]\n135: 0029AAFE9 4885d2                           test     rdx, rdx\n136: 0029AAFEC 7406                             je       0x29aaff4\n137: 0029AAFEE 44394210                         cmp      dword ptr [rdx + 0x10], r8d\n138: 0029AAFF2 7403                             je       0x29aaff7\n139: 0029AAFF4 498bd4                           mov      rdx, r12\n140: 0029AAFF7 4c8be2                           mov      r12, rdx\n141: 0029AAFFA 8bd3                             mov      edx, ebx\n142: 0029AAFFC 498bcc                           mov      rcx, r12\n143: 0029AAFFF e8cc4db8ff                       call     0x252fdd0\n144: 0029AB004 4585f6                           test     r14d, r14d\n145: 0029AB007 781d                             js       0x29ab026\n146: 0029AB009 443b7674                         cmp      r14d, dword ptr [rsi + 0x74]\n147: 0029AB00D 7d17                             jge      0x29ab026\n148: 0029AB00F 488b9528010000                   mov      rdx, qword ptr [rbp + 0x128]\n149: 0029AB016 48035668                         add      rdx, qword ptr [rsi + 0x68]\n150: 0029AB01A 4c8bc7                           mov      r8, rdi\n151: 0029AB01D 488d4e28                         lea      rcx, [rsi + 0x28]\n152: 0029AB021 e82a9b93ff                       call     0x22e4b50\n153: 0029AB026 41b911000000                     mov      r9d, 0x11\n154: 0029AB02C 448bc3                           mov      r8d, ebx\n155: 0029AB02F 488bd6                           mov      rdx, rsi\n156: 0029AB032 488bcf                           mov      rcx, rdi\n157: 0029AB035 e8e6fcffff                       call     0x29aad20"
+        }
+      ]
+    },
+    {
+      "id": "remove-receiver-complete",
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-receiver-complete.json",
+        "bytes": 21337,
+        "sha256": "1d7e43c648b574a4a83f0776e7921d6cb82bedb13f8e1d8b2d75379baf436a09"
+      },
+      "asm": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-receiver-complete.asm",
+        "bytes": 10368,
+        "sha256": "707032c803adc9401b169b84a4b4a6b973924a399778e4c4cb9b1abebfa8ad49"
+      },
+      "original_observed_at_utc": "2026-10-17T12:49:40.046718+00:00",
+      "rechecked_at_utc": "2026-10-17T18:22:28.053359+00:00",
+      "begin_rva": 43694240,
+      "end_rva": 43694866,
+      "raw_bytes_sha256": "80cc3c7e4b63404ce1a78c5f192fd244137db1d3b8c5238116fd18f84e98a7eb",
+      "raw_bytes_length": 626,
+      "copied_raw_bytes": false,
+      "excerpts": [
+        {
+          "first_line": 122,
+          "last_line": 141,
+          "numbered_text": "122: 0029ABAB6 41833eff                         cmp      dword ptr [r14], -1\n123: 0029ABABA 7424                             je       0x29abae0\n124: 0029ABABC 498bce                           mov      rcx, r14\n125: 0029ABABF e8ccb3eefd                       call     0x896e90\n126: 0029ABAC4 81781c72616843                   cmp      dword ptr [rax + 0x1c], 0x43686172\n127: 0029ABACB 7513                             jne      0x29abae0\n128: 0029ABACD 837818ff                         cmp      dword ptr [rax + 0x18], -1\n129: 0029ABAD1 740d                             je       0x29abae0\n130: 0029ABAD3 418b16                           mov      edx, dword ptr [r14]\n131: 0029ABAD6 488bce                           mov      rcx, rsi\n132: 0029ABAD9 e8f242b8ff                       call     0x252fdd0\n133: 0029ABADE eb1a                             jmp      0x29abafa\n134: 0029ABAE0 488bd6                           mov      rdx, rsi\n135: 0029ABAE3 488bcd                           mov      rcx, rbp\n136: 0029ABAE6 e8358993ff                       call     0x22e4420\n137: 0029ABAEB 84c0                             test     al, al\n138: 0029ABAED 740b                             je       0x29abafa\n139: 0029ABAEF 488bd6                           mov      rdx, rsi\n140: 0029ABAF2 488bcd                           mov      rcx, rbp\n141: 0029ABAF5 e8169893ff                       call     0x22e5310"
+        }
+      ]
+    }
+  ],
+  "structured_contract": {
+    "roles": {
+      "actor": "A",
+      "actor_faith": "F",
+      "site": "S",
+      "county_holder": "H",
+      "new_artifact": "N",
+      "old_artifact": "O"
+    },
+    "recognition_evaluation": "Each occurrence refers to original current-faith evaluation; no guarantee of cached truth or verified script RNG purity.",
+    "return_paths": [
+      {
+        "operation": "replacement",
+        "new_recipient": "S",
+        "old_recipient": "A when native actor resolves valid",
+        "fallback": "transfer branch skipped if actor invalid; no invented recipient",
+        "evidence": "native enshrine-receiver-complete 29AAF6C..29AAFFF"
+      },
+      {
+        "operation": "explicit_remove",
+        "old_recipient": "A when native actor resolves valid",
+        "fallback": "invalid actor: native equipped membership, then unequip 22E5310; no county-holder fallback",
+        "evidence": "native remove-receiver-complete 29ABAB6..29ABAF5"
+      },
+      {
+        "operation": "abandon_association",
+        "ordered_checks": [
+          "resolve H",
+          "no other associated faith besides F AND H exists",
+          "then every enshrined artifact set_owner H",
+          "then remove F association"
+        ],
+        "with_other_faith": "no transfer in this block",
+        "without_H": "no transfer in this block",
+        "evidence": "S13:374-396"
+      }
+    ],
+    "base_piety_by_stock_rarity": {
+      "common": 50,
+      "masterwork": 100,
+      "famed": 250,
+      "illustrious": 500
+    },
+    "enshrine_with_existing_old": {
+      "flag_no_condition": "R(O,F) && O.rarity_level >= N.rarity_level",
+      "piety_and_positive_opinion_branch": "R(N,F) && replacing_with_better_artifact=no",
+      "piety_effect": "A.add_piety = B(N)-B(O)",
+      "explicit_experience_effect": false,
+      "evidence": "S14:138-295"
+    },
+    "remove": {
+      "flag_no_condition": "R(O,F) && (no N || N.rarity_level < O.rarity_level)",
+      "loss_branch": "R(O,F) && flag=no",
+      "loss_effect": "A.add_piety_and_experience=-B(O)",
+      "head_opinion_branch": "flag=no; every S associated faith with county followers>0; extant non-A head recognizes O",
+      "fallthrough_else_if_has_limit": false,
+      "evidence": "S14:333-522"
+    },
+    "opinion_modifiers": {
+      "enshrined_holy_relic_at_holy_site": {
+        "value": 15,
+        "years": 10,
+        "decaying": true
+      },
+      "removed_holy_relic_from_holy_site": {
+        "value": -20,
+        "years": 10,
+        "decaying": true
+      },
+      "holy_site_demoted_county_holder_opinion": {
+        "value": -50,
+        "years": 10,
+        "decaying": true
+      }
+    },
+    "ordinary_relic_cb": {
+      "custom_tooltip_does_not_grant_cb": true,
+      "artifact_conditions": [
+        "recognized attacker.faith",
+        "NOT recognized defender.faith",
+        "NOT artifact_prevent_transfer"
+      ],
+      "character_conditions": [
+        "different faiths",
+        "NOT landless adventurer",
+        "AI: ai_zeal>=100",
+        "AI: highest tier>=duchy; player exempt from AI tier restriction"
+      ],
+      "struggle_relics_have_separate_branch": true,
+      "general_war_guards_still_required": true,
+      "evidence": [
+        "S14:465-467",
+        "X01:348-427",
+        "X02:2223-2248"
+      ]
+    },
+    "abandon": {
+      "payer": "A",
+      "piety_cost": 1000,
+      "free_condition": "F.free_holy_site_actions>=1",
+      "free_count_consumed": 1,
+      "base_cooldown_years": 5,
+      "free_cooldown_years": 0,
+      "H_opinion_condition": "H exists && H!=A, even if another faith remains",
+      "A_modifier_years": 10,
+      "A_modifier": {
+        "zealot_same_faith_opinion": -20,
+        "parochial_same_faith_opinion": -20
+      },
+      "explicit_remove_on_action_reused": false
+    },
+    "runtime_proof_requirements": [
+      "native permissions and current button predicate",
+      "effective slot and replacing object",
+      "original full effect preview and SHA",
+      "single submit then separate ownership/inventory/site current-cache/wallet postcondition",
+      "experience/opinion/CB/beneficiary attributes require own readback"
+    ]
+  },
+  "live_evidence": [
+    {
+      "run": "R7",
+      "machine_id": "4-8e1c2f1861",
+      "document": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-relic-r7-12004.md",
+        "bytes": 9159,
+        "sha256": "1c37f34212202780a43668fdc1cfb71636bc632a6a2f6afd0e6d256173386ceb"
+      },
+      "projection": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-relic-r7-12004.evidence.json",
+        "bytes": 83407,
+        "sha256": "8a02566981ca7cc5bff370e40dcbb736234c091cb9f3ed7257fcaaea1379729b"
+      },
+      "projection_observed_at_utc": "2026-10-17T15:54:39.948913+00:00",
+      "receipt_source_hashes_verified": true,
+      "verified_receipts": [
+        {
+          "id": "r7-P-after-promote-snapshot-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-P-after-promote-snapshot-a01.json",
+          "sha256": "9b0f12f2c463b319aa3bca1fad25946088d1108a5945290b53855a5b14afaba5",
+          "bytes": 68675
+        },
+        {
+          "id": "r7-P-after-promote-sites-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-P-after-promote-sites-a01.json",
+          "sha256": "4764aecb0662a59737bc38fd1fd0694ea8926155182daf57c9272706d4f28411",
+          "bytes": 90889
+        },
+        {
+          "id": "r7-relic32-before-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic32-before-a01.json",
+          "sha256": "bbebefbd4699120e49d64a7a67eb2b26b4ec3d7716eeaa9818d6ad2eae111fa4",
+          "bytes": 37433
+        },
+        {
+          "id": "r7-relic32-permissions237-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic32-permissions237-a01.json",
+          "sha256": "f76df1d380efa4bd74401d5bc57b1f63658e166ad4939712b4c464f0e1116c03",
+          "bytes": 39983
+        },
+        {
+          "id": "r7-relic32-action237-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic32-action237-a01.json",
+          "sha256": "0a90d043f8b17e6f34d1273f8504c392f23684cb94125856de018c80383c5557",
+          "bytes": 44020
+        },
+        {
+          "id": "r7-relic-select237-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-select237-a01.json",
+          "sha256": "6c2822e53bfec0515f58b9b0224896c18d2b44bc5cb42defdd31bc15e6693f6a",
+          "bytes": 200347
+        },
+        {
+          "id": "r7-relic-selected237-context-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-selected237-context-a01.json",
+          "sha256": "3ada992ae0958718d2b75d491e4ec0dc485d356de3922dabf3d19ddd39afa7f1",
+          "bytes": 45503
+        },
+        {
+          "id": "r7-enshrine237-once-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-enshrine237-once-a01.json",
+          "sha256": "c9dbdb19fd7d55c262fc1c057815a2ba84e851c8bb6f24dc63e42b8e099e0566",
+          "bytes": 200524
+        },
+        {
+          "id": "r7-enshrine237-once-a01-snapshot",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-enshrine237-once-a01-snapshot.json",
+          "sha256": "342181e30c0134c9a0877b5e1366455895a6866b9f1ca4fa41d8ef4582b60a50",
+          "bytes": 68685
+        },
+        {
+          "id": "r7-enshrine237-once-a01-relic",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-enshrine237-once-a01-relic.json",
+          "sha256": "7df18a0b056f68ae907cc0fc612cb1601d37848dc8df28b0cbc98851ea754226",
+          "bytes": 38296
+        },
+        {
+          "id": "r7-enshrine237-once-a01-context",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-enshrine237-once-a01-context.json",
+          "sha256": "cadcaa00b1a65680509dac3d2698ec3f58fbc691e56e4ce98d355f96962e00a1",
+          "bytes": 43744
+        },
+        {
+          "id": "r7-relic-select-slot0-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-select-slot0-a01.json",
+          "sha256": "f5c10df1ad9af3dc9cee5b406ceabbdba1c9b545eae9be28bf6cd19e291d0972",
+          "bytes": 184019
+        },
+        {
+          "id": "r7-relic-selected-slot0-context-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-selected-slot0-context-a01.json",
+          "sha256": "0a23f1ceae5eb6804d6278054f15ac4c5dd335f1b243f7269d2e466a0b4f1f93",
+          "bytes": 43752
+        },
+        {
+          "id": "r7-relic-select237-for-remove-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-select237-for-remove-a01.json",
+          "sha256": "87fb521e80bc4242b11a552cef34ba916e397397dc02ece610a56410850bac9a",
+          "bytes": 184006
+        },
+        {
+          "id": "r7-relic-selected237-for-remove-context-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-selected237-for-remove-context-a01.json",
+          "sha256": "e306199899bdd470adab11877e11dae1aa966ef5564a6e07871345a027901417",
+          "bytes": 46222
+        },
+        {
+          "id": "r7-remove237-once-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-remove237-once-a01.json",
+          "sha256": "4da9c8aa7787a2efa73ed37662616a8aa6c55d6fc2ab4a8e46d14c62a147edcd",
+          "bytes": 184112
+        },
+        {
+          "id": "r7-remove237-once-a01-snapshot",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-remove237-once-a01-snapshot.json",
+          "sha256": "70d63b3b61eeeb08a5e0456eb34027dc0eade0678ac319eab397d5bddaf7c729",
+          "bytes": 68681
+        },
+        {
+          "id": "r7-remove237-once-a01-relic",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-remove237-once-a01-relic.json",
+          "sha256": "1ce2fc2f07355ef618cd683a2f959d33bd93844b3d07336d6303433d72a2f2a8",
+          "bytes": 37450
+        },
+        {
+          "id": "r7-remove237-once-a01-context",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-remove237-once-a01-context.json",
+          "sha256": "7aa7b23f3ccf54d105d0de42c86cf7db471b27501ee2ce5babd0711fbe2cbd78",
+          "bytes": 44038
+        }
+      ],
+      "new_game_observation_performed": false
+    },
+    {
+      "run": "R8",
+      "machine_id": "4-8e1c2f1861",
+      "document": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\r8-w-knowledge-a01\\faith-and-power-episode01-r8-abandon-12004.md",
+        "bytes": 6925,
+        "sha256": "726194849163ea3cfae685f760dbd903b1896c7328e3badf33a73898d7036ca0"
+      },
+      "projection": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\r8-w-knowledge-a01\\faith-and-power-episode01-r8-abandon-12004.evidence.json",
+        "bytes": 29104,
+        "sha256": "24b954430cdce8f96732876274ccefdd3b73853d37c5e464e71fb6ae8bec788d"
+      },
+      "projection_observed_at_utc": "2026-10-17T16:29:41.137945+00:00",
+      "receipt_source_hashes_verified": true,
+      "verified_receipts": [
+        {
+          "id": "r8-w-create-initial-snapshot",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-w-create-initial-snapshot.json",
+          "sha256": "35b0be7d4c549365914e37cc87efb343319ed0cdb45aca5b4559c567c05b7e66",
+          "bytes": 68651
+        },
+        {
+          "id": "r8-w-create-initial-religion",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-w-create-initial-religion.json",
+          "sha256": "6abfc022217552935c622b66fbdd3f2f2bbedcaf35dfc28cfab6229e558d071e",
+          "bytes": 55072
+        },
+        {
+          "id": "r8-W-baseline-sites-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-baseline-sites-a01.json",
+          "sha256": "225da2d0774c25cdecaccf594245e88e83f6d58fe94d6025922289cc23ca24e8",
+          "bytes": 90873
+        },
+        {
+          "id": "r8-W-baseline-relic32-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-baseline-relic32-a01.json",
+          "sha256": "79ddc5ba63f16d1c59483e1a78a2be1702db67f35fbff2f320571365f156ed30",
+          "bytes": 37436
+        },
+        {
+          "id": "r8-W-abandon32-detail-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-abandon32-detail-a01.json",
+          "sha256": "83c3606d1f39ebf406bad5078a5f987a55993d81ca1d1acc6ce0067cdbf8a3c2",
+          "bytes": 39361
+        },
+        {
+          "id": "r8-W-confirm-abandon32-once-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-confirm-abandon32-once-a01.json",
+          "sha256": "ee5a894b22c47d73da4b3eb12692d6b7747d2d8c06186828156a3dfd2374af09",
+          "bytes": 65198
+        },
+        {
+          "id": "r8-W-after-abandon-snapshot-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-snapshot-a01.json",
+          "sha256": "8b03598b74abb16190d0dfebef70a66cd9527e80408a10def5add785e9016831",
+          "bytes": 68663
+        },
+        {
+          "id": "r8-W-after-abandon-sites-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-sites-a01.json",
+          "sha256": "0995b35d0c2636cc2bdd510d9b769622261d6a7b3fdbe1afad8896ccff7c7ec7",
+          "bytes": 89850
+        },
+        {
+          "id": "r8-W-after-abandon-site32-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-site32-a01.json",
+          "sha256": "6be521382544868e2902f79ce4486c51fa9020e5b9b698f071759dfbe48ebca5",
+          "bytes": 90646
+        },
+        {
+          "id": "r8-W-after-abandon-relic32-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-relic32-a01.json",
+          "sha256": "3de55e03674546af583571e6cffe9f6316a03d58167c1f0115eecc9ac88a8844",
+          "bytes": 37440
+        },
+        {
+          "id": "r8-W-after-abandon-cooldown-a01",
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-cooldown-a01.json",
+          "sha256": "479b4a89f40cbcbe97c8b8ebf44c1f01fc3a0f872cf5059a5a4808f800ae670a",
+          "bytes": 35948
+        }
+      ],
+      "new_game_observation_performed": false
+    }
+  ],
+  "live_scope": {
+    "R7": "empty enshrine and explicit remove 237 at32; piety2250->2250->1750; actor/holy-owner/owned/slots/current+cached active transitions; associatedFaithIDs[51,50] unchanged",
+    "R8": "independent empty shared-site input; F50 association6->5, F51 remains; piety4250->3250",
+    "not_proven": [
+      "replacement live",
+      "last-faith nonempty abandon return",
+      "F51 recognition",
+      "actual devotion experience",
+      "actual opinions",
+      "actual CB or war",
+      "all beneficiary attributes"
+    ]
+  },
+  "storage": {
+    "policy": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "active_ledger": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\storage-reservations-v3.json",
+      "bytes": 60594,
+      "sha256": "22dfb71ca9a9771cdcc49740c462bc2dfeaba7a9377907b33148191437273b98"
+    },
+    "reservation_review_at_utc": "2026-10-17T18:51:39.690703+00:00",
+    "lane": "bounded research output, not runtime",
+    "requested_max_bytes": 102400,
+    "source_copy_mode": "selected numbered text only; no full original scripts or EXE copied",
+    "disk_observed_at_utc": "2026-10-17T18:22:28.069212+00:00",
+    "disk_total_bytes": 511776722944,
+    "disk_free_bytes": 126742020096,
+    "task_output_logical_bytes_with_result": 92914,
+    "task_budget_pass": true,
+    "retention": "record; consolidate into docs and review after180days; helper derived may be reviewed after48h",
+    "review_at_utc": "2027-04-15T18:22:28.069223+00:00"
+  },
+  "activity": {
+    "main_tree_writes": false,
+    "game_or_screen_actions": false,
+    "builds": false,
+    "steam_actions": false,
+    "new_exe_scan": false,
+    "files_deleted": false,
+    "ledger_mutated": false
+  },
+  "verification": "Fixed original source hashes checked; original native packet bytes decoded and full raw SHA checked; retained actual receipt hashes checked; output budget checked before exclusive create."
+}

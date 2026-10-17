@@ -197,13 +197,17 @@ bool ReadHolySiteRelicActionContext12004(const Bindings&b,const void*owner,const
  out.permissions.capture_epoch=c.capture_epoch;out.permissions.date_raw=c.date_raw;out.permissions.played_character_id=c.played_character_id;
  out.permissions.player_faith_id=c.available?c.faith_id:std::nullopt;out.permissions.requested_holy_site_id=site_id;out.permissions.requested_artifact_id=artifact_id;
  out.permissions.artifact_permissions.artifact_id=artifact_id;out.permissions.artifact_permissions.unavailable_reason="artifact_permissions_not_read";
- const auto fail=[&](const char*why){out.available=false;out.unavailable_reason=why;out.preview_identity_available=false;out.preview_identity_sha256.clear();return false;};
+ const auto fail=[&](const char*why){out.recognition_matrix.reset();out.available=false;out.unavailable_reason=why;out.preview_identity_available=false;out.preview_identity_sha256.clear();return false;};
  try {
   if(!b.permissions.model.enabled||site_id==absent||artifact_id==absent)return fail("relic_action_context_or_full_reference_invalid");
   if(b.source_bound){if(!SourcePins(b))return fail("relic_action_context_loaded_source_pins_changed");out.loaded_source_pins_verified=true;out.getter_backend=b.getter_backend;}
   if(!relic_permissions::ReadHolySiteRelicPermissions12004(b.permissions,owner,c,site_id,artifact_id,out.permissions))return fail("base_relic_permissions_unavailable");
   Pass p{};if(!Base(b,owner,c,out,p))return fail("relic_action_context_bound_objects_or_window_unavailable");
   OwnershipRead(b,p,out,artifact_id,out.artifact_ownership);
+  holy_site_relic::RecognitionMatrix matrix{};
+  (void)holy_site_relic::ReadHolySiteRelicRecognitionMatrix12004(b.permissions.model,owner,c,site_id,artifact_id,nullptr,matrix);
+  out.recognition_matrix=std::move(matrix);
+  // Matrix recognition calls do not alter the legacy preview identity or counter.
   // Missing/mismatched window still permits independent owner/slot readback.
   if(!out.permissions.window_context.available||!p.window_available){
    if(!Stable(b,owner,p))return fail("relic_action_context_inputs_changed_during_read");

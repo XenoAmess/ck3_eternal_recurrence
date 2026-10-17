@@ -1,0 +1,383 @@
+{
+  "schema": "ck3_12004_shared_relic_value_core_evidence_a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T18:22:20.903912+00:00",
+  "source_head_at_readback": "352ed2552fba0b0557dd61df09282cda82daa820",
+  "game_version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_mode": "re-read retained immutable native source packets and tracked historical live projections; no new native getter or process observation",
+  "static_sources": {
+    "tracked_bundle": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/evidence/holy-site-relic-native12004/source-pins.json",
+      "bytes": 46136,
+      "sha256": "5480c9f59a9826ec4e989521a749912924b2ff30949187d5d78d61bc95c941ff"
+    },
+    "selected_bodies": [
+      {
+        "id": "holy-site-active-leaf",
+        "observed_at_utc": "2026-10-17T09:17:41.462967+00:00",
+        "begin_rva": "0x22c34b0",
+        "end_rva": "0x22c34b5",
+        "bytes_sha256": "2a0c05b547620f32eb862e23015183656e25ac55b8febeff3e039f8d8292e3c8",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/holy-site-active-leaf.json",
+        "packet_sha256": "5b1ccf8447befde1e38527245cd3caa10b83b6c55b51292ad254793ee2c8a0de",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/holy-site-active-leaf.json",
+          "bytes": 832,
+          "sha256": "5b1ccf8447befde1e38527245cd3caa10b83b6c55b51292ad254793ee2c8a0de"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "function-02530ef0",
+        "observed_at_utc": "2026-10-17T09:13:58.149176+00:00",
+        "begin_rva": "0x2530ef0",
+        "end_rva": "0x25311cf",
+        "bytes_sha256": "f4c88f9285220a2deaea89f88696e327f6a19657704fa3d261f4b29cd90995d4",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02530ef0.json",
+        "packet_sha256": "ab8d01aee9a0387fd002d651abbce63d9decfa9005d56eba7c1aad5073a7ed85",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02530ef0.json",
+          "bytes": 23090,
+          "sha256": "ab8d01aee9a0387fd002d651abbce63d9decfa9005d56eba7c1aad5073a7ed85"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "function-02531200",
+        "observed_at_utc": "2026-10-17T09:16:22.618559+00:00",
+        "begin_rva": "0x2531200",
+        "end_rva": "0x2531320",
+        "bytes_sha256": "27d0a094ae33557641b9d1684fb014eb11fb6603ae9e057e6f3446be16be6af1",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02531200.json",
+        "packet_sha256": "20b4c7baa22d6ca502f19a3be6c32c0a7824ee821a68ed0eebc8d84e58d480eb",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02531200.json",
+          "bytes": 11087,
+          "sha256": "20b4c7baa22d6ca502f19a3be6c32c0a7824ee821a68ed0eebc8d84e58d480eb"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "function-02531320",
+        "observed_at_utc": "2026-10-17T09:13:50.873804+00:00",
+        "begin_rva": "0x2531320",
+        "end_rva": "0x2531468",
+        "bytes_sha256": "c59d62a476a219d7d71c5864b4be77d34f78ddec86d923d99aadf7311caea4a9",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02531320.json",
+        "packet_sha256": "ce4849666449ea251dcc68442cd2647591b48fceeffe4d9d5418a4a16b1e35ea",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-02531320.json",
+          "bytes": 12854,
+          "sha256": "ce4849666449ea251dcc68442cd2647591b48fceeffe4d9d5418a4a16b1e35ea"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "holy-site-active-rarity-producer-complete-chunks",
+        "observed_at_utc": "2026-10-17T09:17:42.539276+00:00",
+        "begin_rva": "0x265a3f0",
+        "end_rva": "0x265a4c0",
+        "bytes_sha256": "e32e6f62db9e2a9a7c678cf2dd02b1362d9df4efa2a370ebe0bac761c42ffab9",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/holy-site-active-rarity-producer-complete-chunks.json",
+        "packet_sha256": "67d6f928514b2888170a9f2c804d028d1d4a3d1ac4cf5183688b467a8ad84d75",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/holy-site-active-rarity-producer-complete-chunks.json",
+          "bytes": 8520,
+          "sha256": "67d6f928514b2888170a9f2c804d028d1d4a3d1ac4cf5183688b467a8ad84d75"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "inventory-add-cache-update",
+        "observed_at_utc": "2026-10-17T09:17:43.944857+00:00",
+        "begin_rva": "0x22e5730",
+        "end_rva": "0x22e580c",
+        "bytes_sha256": "fbe5e57da0bfeca87b7b30d8f628d3a341a514bde6923b534235c11f4edc1e9f",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/inventory-add-cache-update.json",
+        "packet_sha256": "c6bd83cd83cc75a6f7c227ee5f9aac580879c0afb6f208ed4ef5945b09596e7d",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/inventory-add-cache-update.json",
+          "bytes": 8556,
+          "sha256": "c6bd83cd83cc75a6f7c227ee5f9aac580879c0afb6f208ed4ef5945b09596e7d"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "function-022e4d00",
+        "observed_at_utc": "2026-10-17T09:16:22.632044+00:00",
+        "begin_rva": "0x22e4d00",
+        "end_rva": "0x22e5113",
+        "bytes_sha256": "6fea12f1488fd53dae69e3b8267fa0a4391f8643c902f67863be63bd3c6360a0",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-022e4d00.json",
+        "packet_sha256": "929d3b8287dcf1d13e333a55d278eb75fa730c0ad6579aaaef13dbd4453f2d58",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/function-022e4d00.json",
+          "bytes": 38264,
+          "sha256": "929d3b8287dcf1d13e333a55d278eb75fa730c0ad6579aaaef13dbd4453f2d58"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "religion-manager-rarity-evaluate-complete-chunks",
+        "observed_at_utc": "2026-10-17T09:24:26.919248+00:00",
+        "begin_rva": "0x29d8890",
+        "end_rva": "0x29d8a38",
+        "bytes_sha256": "f92dec26ae9de7596b10722560dd292d286a885136cf5563447776a209c1889c",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/religion-manager-rarity-evaluate-complete-chunks.json",
+        "packet_sha256": "14a27353a6794840f94ca53a04493e8a6b9478387ffb799a6f6063518120a418",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/religion-manager-rarity-evaluate-complete-chunks.json",
+          "bytes": 14703,
+          "sha256": "14a27353a6794840f94ca53a04493e8a6b9478387ffb799a6f6063518120a418"
+        },
+        "packet_readback_pass": true
+      },
+      {
+        "id": "religion-manager-rarity-apply-complete-chunks",
+        "observed_at_utc": "2026-10-17T09:24:27.327137+00:00",
+        "begin_rva": "0x29d8dd0",
+        "end_rva": "0x29d908b",
+        "bytes_sha256": "aba52522fd96e5d1ab1d9c5458a40d261d9e1e76fa2d5d0850410f2621ca36b7",
+        "external_packet": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/religion-manager-rarity-apply-complete-chunks.json",
+        "packet_sha256": "d7805ec130ff75d2cd50de9f8fc15b5ed14107ea49feb4b3e93023fd4f6a726c",
+        "body_hash_readback_pass": true,
+        "packet_readback": {
+          "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/relic-candidate/native-source/religion-manager-rarity-apply-complete-chunks.json",
+          "bytes": 25204,
+          "sha256": "d7805ec130ff75d2cd50de9f8fc15b5ed14107ea49feb4b3e93023fd4f6a726c"
+        },
+        "packet_readback_pass": true
+      }
+    ],
+    "religion_manager_type_proof": {
+      "vtable_rva": "0x4774888",
+      "col_pointer_slot_rva": "0x4774880",
+      "col_rva": "0x4e2e600",
+      "col_bytes_hex": "01000000000000000000000000aea10560e0e20400e6e204",
+      "type_descriptor_rva": "0x5a1ae00",
+      "type_name": ".?AVCReligionManager@@",
+      "vtable_bytes_hex": "70819d4201000000b0e2f74301000000c0839d420100000030e3f7430100000000839d420100000040859d420100000028e6e2440100000028069e420100000090889d4201000000f0099d4001000000d08d9d4201000000",
+      "vtable_bytes_sha256": "4e361a963a331f089c3f766c7a874ff96aae382239e8576d5f016c35b2399ad7",
+      "evaluation_slot": "0x40",
+      "evaluation_target_rva": "0x29D8890",
+      "apply_slot": "0x50",
+      "apply_target_rva": "0x29D8DD0",
+      "scope": "static RTTI/vtable association and finite bodies; upstream dispatch timing remains unknown"
+    }
+  },
+  "historical_cases": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-relic-r7-12004.evidence.json",
+        "bytes": 83407,
+        "sha256": "8a02566981ca7cc5bff370e40dcbb736234c091cb9f3ed7257fcaaea1379729b"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:54:39.948913+00:00",
+      "run_id": "4-8e1c2f1861--faith-and-power--R0007",
+      "scope_limits": [
+        "Only Faith50 player/county-holder recognition of artifact237 is read; association with Faith51 does not prove Faith51 relic recognition or benefit.",
+        "Only site32 association membership is reread in this relic chain; other current-faith sites/grades/inventories are not independently reread after enshrine/remove.",
+        "Cached Active and original native current relic evaluation are observed; world_effects_applied_observed and beneficiaries_observed stay false.",
+        "No artifact237 saint-name provenance or broader template implementation is inferred from the displayed name and recognition result.",
+        "Removal is a new paid action, not rollback; devotion, vassal opinion and all beneficiary result magnitudes remain unmeasured.",
+        "ACK after/before selection data are not independent artifact ownership or site-slot business poststates.",
+        "Post-enshrine native snapshot revision remains4 despite new inventory/Active; use fresh domain query capture_epoch and full identities rather than snapshot revision alone.",
+        "Main and original saves/receipts/media are not modified; no whole-product/normal-campaign achievement or R7 closure is claimed."
+      ],
+      "verified_comparisons": {
+        "all_assertions": "PASS",
+        "wallet_piety_deltas_raw": [
+          0,
+          -50000000
+        ],
+        "piety_scale": 100000,
+        "artifact_237_owner_transition": [
+          "character:15893",
+          "holy_site:32",
+          "character:15893"
+        ],
+        "player_inventory_reference_transition": [
+          [
+            188,
+            189,
+            237,
+            267,
+            277
+          ],
+          [
+            188,
+            189,
+            267,
+            277
+          ],
+          [
+            188,
+            189,
+            237,
+            267,
+            277
+          ]
+        ],
+        "site_inventory_transition": [
+          [],
+          [
+            237
+          ],
+          []
+        ],
+        "slot0_transition": [
+          null,
+          237,
+          null
+        ],
+        "cached_active_transition": [
+          false,
+          true,
+          false
+        ],
+        "cached_and_native_rarity_transition": [
+          0,
+          4,
+          0
+        ],
+        "associated_faith_ids_stable": [
+          51,
+          50
+        ],
+        "county_context_unchanged": true,
+        "artifact237_dynamic_sanctification_list_empty_but_native_faith50_recognition_true": true,
+        "native_revision_unchanged_across_enshrine": true
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r8-abandon-12004.evidence.json",
+        "bytes": 29104,
+        "sha256": "24b954430cdce8f96732876274ccefdd3b73853d37c5e464e71fb6ae8bec788d"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:29:41.137945+00:00",
+      "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+      "scope_limits": [
+        "The source/baseline is original C2 coldloaded in R8, not the post-demotion/post-relic R7 state.",
+        "Artifact objects for embedded site inventories remain unresolved; player-owned inventory/individual artifact ownership is not read in this W subset.",
+        "Only the displayed associated-Faith rows for these six sites are compared, not all game Faiths.",
+        "The target inventory was empty and Faith51 remained; no artifact return or last-associated-Faith behavior was verified.",
+        "Active was already false before abandonment; this sample does not show an active-to-inactive transition or net benefit change.",
+        "Free action count, devotion/profile after payment, holder opinion and all beneficiaries remain unmeasured.",
+        "Raw cooldown counters have no native calendar conversion in this sample.",
+        "This W receipt subset contains no normal closure, media review, whole-product acceptance or actual Create result; ongoing-run status belongs to Root."
+      ],
+      "verified_comparisons": {
+        "all_require_checks": "PASS",
+        "faith50_membership_removed_site_ids": [
+          32
+        ],
+        "faith50_membership_added_site_ids": [],
+        "T_E_R_transition": [
+          {
+            "T": 6,
+            "E": 3,
+            "R": 3
+          },
+          {
+            "T": 5,
+            "E": 3,
+            "R": 2
+          }
+        ],
+        "piety_raw_delta": -100000000,
+        "piety_scale": 100000,
+        "remaining_five_complete_site_rows_unchanged": true,
+        "site32_still_available_with_faith51_eminent": true,
+        "site32_other_faith_rows_unchanged": true,
+        "site_inventory_artifact_ids_before_and_after": {
+          "26": [
+            60
+          ],
+          "27": [
+            61,
+            62
+          ],
+          "0": [
+            63
+          ],
+          "14": [
+            64
+          ],
+          "29": [
+            65
+          ],
+          "32": []
+        },
+        "site32_empty_slots_unchanged": true,
+        "county_context_unchanged": true,
+        "county_holder_faith_associated_transition": [
+          true,
+          false
+        ]
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r8-create-12004.evidence.json",
+        "bytes": 43428,
+        "sha256": "4fcf7551356e48fa27a33d503230372fffbd7548ff7125c38311f6633c3bc9f1"
+      },
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:41:43.710743+00:00",
+      "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+      "scope_limits": [
+        "No direct independent pre-Create artifact237 ownership/player inventory object read in this subset; creation candidate membership is retained without rewriting it as a full owner snapshot.",
+        "All beneficiary/modifier recalculations and net character/county numbers remain unknown despite cached/current Active agreement.",
+        "Devotion/profile after payment, creation cooldown/free action count and kingdom counts were not independently read.",
+        "No later save/normal closure, media review, normal-campaign or whole-product acceptance is credited here.",
+        "No actual Create for other types/baronies/artifacts is inferred from this scene."
+      ],
+      "verified_comparisons": {
+        "all_require_checks": "PASS",
+        "normal_Create_true_bypass_zero": true,
+        "full_pre_Create_tuple": {
+          "type_key": "site_of_wisdom",
+          "barony_title_id": 6622,
+          "ordered_artifact_ids": [
+            237
+          ],
+          "native_rarity_sum_raw": 400000,
+          "raw_scale": 100000
+        },
+        "actual_piety_delta_raw": -200000000,
+        "raw_scale": 100000,
+        "cached_quote_matches_actual_cost_this_case": true,
+        "cached_quote_freshness_observed": false,
+        "standalone_affordability_observed": false,
+        "old_five_complete_site_rows_unchanged": true,
+        "world_member_delta_unique_new_site326": true,
+        "new_site_Faith50_eminent": false,
+        "new_site_actual_Active": true,
+        "new_site_actual_effective_rarity": 4,
+        "artifact237_actual_after_owner": "holy_site:326",
+        "Create_before_artifact237_owner_independently_observed": false,
+        "beneficiary_or_modifier_actual_values_observed": false,
+        "actual_devotion_after_Create_observed": false,
+        "creation_cooldown_observed": false,
+        "kingdom_total_before_after_observed": false
+      }
+    }
+  ],
+  "source_vs_live_separated": true,
+  "new_game_process_reads": 0,
+  "new_native_calls": 0,
+  "new_builds": 0,
+  "new_live_business_qualification": false
+}

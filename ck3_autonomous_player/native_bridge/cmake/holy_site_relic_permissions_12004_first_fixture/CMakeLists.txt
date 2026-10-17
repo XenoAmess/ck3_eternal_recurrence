@@ -9,7 +9,14 @@ add_executable(xar_ck3_12004_holy_site_relic_permissions_test
  "${_candidate_native}/src/ck3_12004_holy_site_relic_permissions_test.cpp"
  "${_candidate_native}/src/ck3_12004_holy_site_relic_permissions.cpp"
  "${_candidate_native}/src/ck3_12004_holy_site_relic_permissions_json.cpp"
- "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_context.cpp")
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_context.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_modifier_aggregate.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_modifier_aggregate_json.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/construction_character_modifier_2c4d1d0_12004.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/conception_modifier_context_12004.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/construction_scaled_key_2c4d530_12004.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_recognition_matrix.cpp"
+ "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_recognition_matrix_json.cpp")
 target_include_directories(xar_ck3_12004_holy_site_relic_permissions_test PRIVATE
  "${_candidate_native}/include" "${XAR_REPO_SOURCE_ROOT}/ck3_autonomous_player/native_bridge/include")
 target_compile_features(xar_ck3_12004_holy_site_relic_permissions_test PRIVATE cxx_std_20)

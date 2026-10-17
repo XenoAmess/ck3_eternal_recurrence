@@ -6,6 +6,7 @@ import hashlib
 import re
 
 from .driver import BridgeUnavailableError
+from .holy_site_relic_recognition_matrix import normalize_holy_site_relic_recognition_matrix_v1
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .player_holy_site_private_transport import _ref
@@ -117,7 +118,9 @@ def _ownership(value: object, *, expected_artifact: int | None, actor: int, site
 def normalize_player_holy_site_relic_action_context_v1(
     value: object, *, snapshot: Mapping[str, object], holy_site_id: int, artifact_id: int,
 ) -> dict[str, object]:
-    result = _shape(value, "relic action context", """
+    matrix_present = isinstance(value, dict) and "recognition_matrix" in value
+    base_value = {key: item for key, item in value.items() if key != "recognition_matrix"} if matrix_present else value
+    result = _shape(base_value, "relic action context", """
         schema game_version executable_sha256 available unavailable_reason capture_epoch date_raw played_character_id
         requested_holy_site_id requested_artifact_id loaded_source_pins_verified permissions artifact_ownership
         destination selected_artifact_matches_request selected_action_effect_description enshrine_disabled_tooltip
@@ -227,6 +230,10 @@ def normalize_player_holy_site_relic_action_context_v1(
             raise ValueError("native relic preview identity does not match its actual canonical components")
     elif result["preview_identity_sha256"] is not None:
         raise ValueError("unavailable native preview identity must remain null")
+    if matrix_present:
+        result["recognition_matrix"] = normalize_holy_site_relic_recognition_matrix_v1(
+            value["recognition_matrix"], parent=result, holy_site_id=holy_site_id,
+            requested_action_artifact_id=artifact_id)
     return result
 
 

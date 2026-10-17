@@ -85,7 +85,9 @@ std::string SerializeHolySiteRelicContext12004(const Snapshot &s) {
       "\"world_cache_written\":false,\"script_evaluation_allocates_and_uses_tls\":true,"
       "\"script_rng_effects_verified\":false,\"script_rng_effects\":\"unknown\"},"
       "\"beneficiaries_observed\":false,\"beneficiaries\":null,\"can_enshrine_observed\":false,\"can_enshrine\":null,"
-      "\"window_candidates_observed\":false,\"read_only\":true}";
+       "\"window_candidates_observed\":false"+
+       (s.recognition_matrix?",\"recognition_matrix\":"+SerializeHolySiteRelicRecognitionMatrix12004(*s.recognition_matrix):"")+
+       (s.modifier_aggregate_observation?",\"modifier_aggregate_observation\":"+SerializeHolySiteModifierAggregate12004(*s.modifier_aggregate_observation):"")+",\"read_only\":true}";
 }
 std::string SerializeHolySiteRelicContextCommand12004(const Snapshot &s,
     std::string_view request,std::uint64_t revision,std::int64_t date) {

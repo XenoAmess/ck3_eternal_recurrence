@@ -1,0 +1,195 @@
+{
+  "schema": "ck3_shared_relic_value_delivery_a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T18:33:32.955667+00:00",
+  "base_head_read_only_at_seal": "352ed2552fba0b0557dd61df09282cda82daa820",
+  "target_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_mode": "offline source review and retained same-machine historical R7/R8 projections",
+  "new_live_qualification": false,
+  "no_main_or_game_or_runtime_mutations": true,
+  "files": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/holy-site-shared-relic-value12004.md",
+        "bytes": 19522,
+        "sha256": "5df495b9f4bb5b820be869eb75d584a63599b901ad15b9f2ca6cf28856985fe2"
+      },
+      "target": "docs/ck3-native-ai/holy-site-shared-relic-value12004.md",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/holy-site-shared-relic-value12004.md",
+        "bytes": 19522,
+        "sha256": "5df495b9f4bb5b820be869eb75d584a63599b901ad15b9f2ca6cf28856985fe2"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/narration.zh-CN.md",
+        "bytes": 3777,
+        "sha256": "39b8407a5609ae9898380c545cbe05d4174ead9dc9503c13f166bb455d021f47"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/narration.zh-CN.md",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/narration.zh-CN.md",
+        "bytes": 3797,
+        "sha256": "946651f1a3479df870967654c270ecf6ef57d52cc894b5461ecd3a39f34f36ca"
+      },
+      "link_rewrites": {
+        "`holy-site-shared-relic-value12004.md`": "[机制研究](../../holy-site-shared-relic-value12004.md)"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/planning-supplement.json",
+        "bytes": 15062,
+        "sha256": "e5821a315cb4e581dcf1ce1ef3d51ba7b1dbd9afe0110db0aab9c407d96a7ef1"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/planning-supplement.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/planning-supplement.json",
+        "bytes": 15062,
+        "sha256": "e5821a315cb4e581dcf1ce1ef3d51ba7b1dbd9afe0110db0aab9c407d96a7ef1"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/core-evidence-a01.json",
+        "bytes": 17925,
+        "sha256": "7bdfec40fa75d59a9bdfead30aa5e24e30bea2c046925d8a293a172a378dcd3a"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/core-evidence.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/core-evidence.json",
+        "bytes": 17925,
+        "sha256": "7bdfec40fa75d59a9bdfead30aa5e24e30bea2c046925d8a293a172a378dcd3a"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/native-sharing/共享圣地圣物库存与替换.md",
+        "bytes": 7046,
+        "sha256": "0154d12595b5673d91cd95c1f7581f2561d9a5c3fd52732c57dd141f041e528b"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/native-sharing.md",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/native-sharing.md",
+        "bytes": 7072,
+        "sha256": "71afcdaf3d8b259d132168811e279299d165627300f5d617e6bf0ed3b289e890"
+      },
+      "link_rewrites": {
+        "(compactevidence.json)": "(native-sharing.evidence.json)",
+        "`expected_": "`relic_expected_"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/native-sharing/compactevidence.json",
+        "bytes": 16949,
+        "sha256": "380879161940dcbaf3d447cd0633a1347f0b4ba431e351b0ed64c1343a5ac19a"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/native-sharing.evidence.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/native-sharing.evidence.json",
+        "bytes": 16949,
+        "sha256": "380879161940dcbaf3d447cd0633a1347f0b4ba431e351b0ed64c1343a5ac19a"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/script-costs/共享圣地与替换的成本和归属.md",
+        "bytes": 11763,
+        "sha256": "fececd64e586f3ea16fcb8c2dc2307d1a3f48d66e0889a6df09b5796c5ed429c"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/script-costs.md",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/script-costs.md",
+        "bytes": 11797,
+        "sha256": "69369d866eb7c1976bc74c9bf71e2845cc2402a68b139791e4d381d7c9abc535"
+      },
+      "link_rewrites": {
+        "`source-evidence.json`": "[script-costs.evidence.json](script-costs.evidence.json)"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/script-costs/source-evidence.json",
+        "bytes": 67513,
+        "sha256": "fdde0a6ecb0ac7f2fe439ac83f46c3e706be68419f2de48f963f04efe3862a11"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/script-costs.evidence.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/script-costs.evidence.json",
+        "bytes": 67513,
+        "sha256": "fdde0a6ecb0ac7f2fe439ac83f46c3e706be68419f2de48f963f04efe3862a11"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/mcp-gap/mcp-capability-gap-and-readonly-proposal.md",
+        "bytes": 10088,
+        "sha256": "797249c44dccd13c98b32a8b7edcf7c2f393267d6d0005813dfc49d708914c9f"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/mcp-gap.md",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/mcp-gap.md",
+        "bytes": 10091,
+        "sha256": "34de3319232259fea24c8a66166277faa1b6080eaacae9cd0750684f8df90a1d"
+      },
+      "link_rewrites": {
+        "(capability-evidence.json)": "(mcp-gap.evidence.json)",
+        "`expected_replacing_": "`relic_expected_replacing_"
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/mcp-gap/capability-evidence.json",
+        "bytes": 40862,
+        "sha256": "22c9e998edfb73d8246ea3ce7de3b3b43321540a2ca38359f2ff30fdad743198"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/mcp-gap.evidence.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/mcp-gap.evidence.json",
+        "bytes": 40862,
+        "sha256": "22c9e998edfb73d8246ea3ce7de3b3b43321540a2ca38359f2ff30fdad743198"
+      },
+      "link_rewrites": {}
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/beneficiary-consumer-addendum.json",
+        "bytes": 24228,
+        "sha256": "862544bc626257c0d00950274bd9769eceacbf78d6f6450392df298fddc86708"
+      },
+      "target": "docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/beneficiary-consumer-addendum.json",
+      "result": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/research/shared-relic-value-a01/patch-source/docs/ck3-native-ai/evidence/holy-site-shared-relic-value12004/beneficiary-consumer-addendum.json",
+        "bytes": 24228,
+        "sha256": "862544bc626257c0d00950274bd9769eceacbf78d6f6450392df298fddc86708"
+      },
+      "link_rewrites": {}
+    }
+  ],
+  "integration": {
+    "all_new_docs": true,
+    "planning_supplement": "Root unifies into existing holy_site_planning_knowledge actions; no policy gate or action changes here",
+    "provider_owner": "episode01_runtime uniquely owns proposed recognition matrix; this package is schema/research only"
+  },
+  "storage": {
+    "ledger": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/storage-reservations-v3.json",
+      "bytes": 60594,
+      "sha256": "22dfb71ca9a9771cdcc49740c462bc2dfeaba7a9377907b33148191437273b98"
+    },
+    "active_review_deadline_utc": "2026-10-17T18:51:39.690703+00:00",
+    "admitted_peak_bytes": 2097152,
+    "machine_volume_free_bytes": 126784548864,
+    "ledger_unchanged": true
+  },
+  "review_due_utc": "2026-10-24T18:33:32.955667+00:00",
+  "retention": "small reusable source pins and active episode decision knowledge; review exact native/script applicability on build change, review external derived patch after actual integration under common policy"
+}

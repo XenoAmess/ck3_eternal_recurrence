@@ -8,6 +8,13 @@ get_filename_component(_candidate_native_root "${CMAKE_CURRENT_LIST_DIR}/../.." 
 add_executable(xar_ck3_12004_holy_site_relic_context_test
   "${_candidate_native_root}/src/ck3_12004_holy_site_relic_context_test.cpp"
   "${_candidate_native_root}/src/ck3_12004_holy_site_relic_context.cpp"
+  "${_candidate_native_root}/src/ck3_12004_holy_site_modifier_aggregate.cpp"
+  "${_candidate_native_root}/src/ck3_12004_holy_site_modifier_aggregate_json.cpp"
+  "${_candidate_native_root}/src/construction_character_modifier_2c4d1d0_12004.cpp"
+  "${_candidate_native_root}/src/conception_modifier_context_12004.cpp"
+  "${_candidate_native_root}/src/construction_scaled_key_2c4d530_12004.cpp"
+  "${_candidate_native_root}/src/ck3_12004_holy_site_relic_recognition_matrix.cpp"
+  "${_candidate_native_root}/src/ck3_12004_holy_site_relic_recognition_matrix_json.cpp"
   "${_candidate_native_root}/src/ck3_12004_holy_site_relic_context_json.cpp")
 target_include_directories(xar_ck3_12004_holy_site_relic_context_test PRIVATE
   "${_candidate_native_root}/include"
