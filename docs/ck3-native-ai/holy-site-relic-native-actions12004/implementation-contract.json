@@ -1,0 +1,263 @@
+{
+  "schema": "ck3_12004_holy_site_relic_native_actions_documented_contract_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:44:08.717367+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "evidence_kind": "source/API/serializer review of external action candidate; no new builds or live calls by documentation lane",
+  "source_files": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_holy_site_relic_action_context.hpp",
+      "bytes": 3419,
+      "sha256": "1f0f43f993cd42d63655880e8c1ae484dab76ab54297b937888226e8c6be487b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context.cpp",
+      "bytes": 18660,
+      "sha256": "8af3eebcb48ba5adc3c357d8422d3cbeaad916a70b2fdbc5999131318854122f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context_json.cpp",
+      "bytes": 6259,
+      "sha256": "fe25f6cc62cd4b5da3ddccec35cad78fa71c578c2aa7699cda7dbcb6c1385411"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context_pins.inc",
+      "bytes": 1526,
+      "sha256": "e311e7e6493cd601ae5b7b5567fe383c2547a62aae0cff9d6accbdfedafb30e7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_action_preview_adapter12004.cpp",
+      "bytes": 6157,
+      "sha256": "246644796be2a16319328bd7439351ad7677881fede086d46a49b1aec40088e3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\holy_site_relic_action_v1.hpp",
+      "bytes": 2519,
+      "sha256": "21a0d9875590fa88cd1688e497d380eb369da7ec252b927563863e3fc4f7ed65"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_holy_site_relic_actions.hpp",
+      "bytes": 4976,
+      "sha256": "eb0f47801b30de5f0920c03616ec105c4c8b9a6407568b90e9c3d1b713a24a59"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\holy_site_relic_action_preview_adapter12004.hpp",
+      "bytes": 678,
+      "sha256": "c1dbccc1f0e33b3424e871d70de491c25c9ae16730fb866963c9e5ec9962f6d9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_request12004.cpp",
+      "bytes": 2445,
+      "sha256": "cc998a6cb2ef30088759200bad2525614c2f25a44d161b05431321770c98f7ef"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_actions.cpp",
+      "bytes": 17176,
+      "sha256": "08d529fc4a110de77d2c0ea62799d57405276e38f276d152d80f87fa0ac5019c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_actions_json.cpp",
+      "bytes": 2241,
+      "sha256": "995fedd6e71858d07be975bcb95daa5b1cfd910fc5f90a040e727734a9dd9f84"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_navigation12004.cpp",
+      "bytes": 8714,
+      "sha256": "597791c1a77b17bc403562b5cb48b16ee0bb14dd02668a4a48cef4f7d558e3b3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_site_relic_action_context_private_transport.py",
+      "bytes": 18084,
+      "sha256": "4a107482a2943108864817575fbc47111271762eb7118028763054e41cfc5ddc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-action-context-common-hooks-a01.json",
+      "bytes": 7060,
+      "sha256": "6332cf9c28218446b2387203bd6b913a97170337674b0c8b35a7496d04b32a62"
+    }
+  ],
+  "copied_small_source_packages": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\abi-contract.json",
+        "bytes": 4484,
+        "sha256": "bee6f5d5ee9d30a75410773b5f0e906b4123603e9c6ca74b3f4bd8bc98404331"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\source-abi.json",
+        "bytes": 4484,
+        "sha256": "bee6f5d5ee9d30a75410773b5f0e906b4123603e9c6ca74b3f4bd8bc98404331"
+      },
+      "byte_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\source-pins.json",
+        "bytes": 19813,
+        "sha256": "17b695c47c8560a064f3380fd76c792fb04a4e55ca72636c06c869981c2b8453"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\source-pins.json",
+        "bytes": 19813,
+        "sha256": "17b695c47c8560a064f3380fd76c792fb04a4e55ca72636c06c869981c2b8453"
+      },
+      "byte_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\loaded-code-prefix-pins-a01.json",
+        "bytes": 13404,
+        "sha256": "c1fc57f4bfc46209467fba4c2f768bc871c7329ae192b869b9c75410880fbe76"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\loaded-code-prefix-pins.json",
+        "bytes": 13404,
+        "sha256": "c1fc57f4bfc46209467fba4c2f768bc871c7329ae192b869b9c75410880fbe76"
+      },
+      "byte_equal": true
+    }
+  ],
+  "query": {
+    "mcp_tool": "ck3_query_player_holy_site_relic_action_context_v1",
+    "required_arguments": [
+      "expected_revision",
+      "holy_site_id",
+      "artifact_id"
+    ],
+    "wire_step": "query-player-holy-site-relic-action-context-v1",
+    "domain": "player_holy_site_relic_action_context_v1",
+    "result_key": "player_holy_site_relic_action_context",
+    "schema": "ck3_12004_player_holy_site_relic_action_context_v1",
+    "permission": "allow_private_player_holy_site_relic_action_context_query",
+    "cli_flag": "--private-player-holy-site-relic-action-context-query",
+    "backend": "ck3-1.20.0.4-native-player-holy-site-relic-action-context-v1",
+    "read_only": true,
+    "mcp_idempotent_hint": false,
+    "owner_callback": "existing_religion_owner_callback",
+    "window_missing_retains_independent_ownership_observation": true,
+    "window_missing_does_not_grant_destination_text_or_preview_identity": true
+  },
+  "dto": {
+    "ownership": [
+      "available",
+      "object_resolved",
+      "artifact_id",
+      "character_owner_id",
+      "holy_site_owner_id",
+      "rarity_level",
+      "character_owner_matches_player",
+      "holy_site_owner_matches_requested",
+      "player_owned_reference_member",
+      "player_equipped_slot_member",
+      "site_equipped_slot_member",
+      "unavailable_reason"
+    ],
+    "destination": [
+      "available",
+      "action_kind",
+      "selected_slot_index",
+      "explicit_slot_type_compatible",
+      "original_picker_called",
+      "effective_slot_index",
+      "replacing_artifact_id",
+      "replacing_artifact",
+      "method",
+      "effective_slot_script_permission_independently_observed",
+      "unavailable_reason"
+    ],
+    "text": [
+      "available",
+      "text",
+      "unavailable_reason"
+    ],
+    "destination_method": "source_bound_explicit_slot_branch_then_original_native_picker",
+    "root_available_is_not_action_ready": true,
+    "empty_sentinel_serialized_as_null_with_availability_context": true
+  },
+  "preview_identity": {
+    "prefix": "ck3-relic-action-preview-v1",
+    "transient_capture_epoch_in_canonical": false,
+    "includes": [
+      "date_raw",
+      "played_character_id",
+      "permissions.player_faith_id",
+      "requested_holy_site_id",
+      "requested_artifact_id",
+      "artifact_ownership",
+      "destination",
+      "selected_action_effect_description",
+      "enshrine_disabled_tooltip",
+      "remove_disabled_tooltip",
+      "artifact_permissions.can_enshrine",
+      "artifact_permissions.can_remove",
+      "current_buttons.can_enshrine",
+      "current_buttons.can_remove"
+    ],
+    "action_rechecks_owner_frame_and_two_proofs": true,
+    "does_not_certify_past_action_success": true,
+    "rite_id_in_canonical": false,
+    "player_rite_full_id_and_pointer_and_faith_revalidated_after_description": true,
+    "a01_canonical_hash_accepted_as_current_schema_hash": false
+  },
+  "typed_ui": {
+    "operations": {
+      "select_relic_artifact": 100,
+      "set_relic_slot": 101,
+      "enshrine_relic": 102,
+      "remove_relic": 103
+    },
+    "selection_build_optin": "XAR_ENABLE_HOLY_SITE_RELIC_TYPED_UI12004",
+    "gameplay_build_optin": "XAR_ENABLE_HOLY_SITE_RELIC_BUTTON_ACTION12004",
+    "input_keys": [
+      "relic_artifact_id",
+      "relic_slot_index",
+      "relic_desired_selected",
+      "relic_expected_effective_slot_index",
+      "relic_expected_replacing_empty",
+      "relic_expected_replacing_artifact_id",
+      "relic_expected_preview_sha256"
+    ],
+    "public_pointers_or_admission_flags_accepted": false,
+    "actual_button_visibility_enabled_callback_and_context_rechecked": true,
+    "original_button_callbacks": {
+      "enshrine": "17D5DD0",
+      "remove": "17D62F0"
+    },
+    "direct_mutation_receiver_invoked": false,
+    "public_mcp_deployment_qualified_by_this_doc": false,
+    "live_qualified_means_current_source_bound_observation_not_historical_business_pass": true,
+    "requested_candidate_condition": {
+      "applies_to": "enshrine only",
+      "at_least_one_requested_artifact_evaluation_required": true,
+      "all_requested_artifact_duplicate_evaluations_must_be_available_and_true": true,
+      "unknown_other_artifact_evaluations_block_this_requested_action": false,
+      "source": "production preview adapter, not caller-supplied qualification flags"
+    }
+  },
+  "known_unknown": {
+    "native_context_allocations_and_tls": true,
+    "script_rng_side_effects": "unknown",
+    "complete_queue_consumer_schedule_and_revalidation_order_closed": false,
+    "effect_description_is_executed_effect": false,
+    "business_outcome_in_action_ack": false,
+    "final_beneficiaries_or_attributes_observed_by_this_doc": false,
+    "partially_constructed_string_after_native_getter_exception_cleanup_qualified": false
+  },
+  "independent_postconditions": [
+    "artifact owner channels",
+    "player owned references",
+    "site actual slots",
+    "replacing artifact owner/reference transfer",
+    "resource and experience deltas",
+    "current rarity and cached active independently",
+    "closed-window owner/reference/equipped readback",
+    "final attributes/beneficiaries only if directly observed"
+  ],
+  "documentation_revision": "a02",
+  "supersedes_implementation_contract": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\implementation-contract.json",
+    "bytes": 11761,
+    "sha256": "5855e05480509ac5ae31a8969d6835512328bbd015fb4382cbddd9493010626b"
+  },
+  "source_review_relative_path": "source-review-a02.json"
+}

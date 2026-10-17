@@ -4,10 +4,13 @@
 #include "xar_bridge/appointment_window_snapshot_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/holy_site_decision_action_v1.hpp"
+#include "xar_bridge/holy_site_creation12004.hpp"
+#include "xar_bridge/ck3_12004_holy_site_relic_actions.hpp"
 #include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
+#include <optional>
 
 namespace xar::ck3_11906 {
 
@@ -24,10 +27,13 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6, faith=7, holy_site_creation=8 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
-  hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13 };
+  hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13,
+  open_holy_site_creation=14, select_holy_site_creation_type=15,
+  select_holy_site_creation_barony=16, set_holy_site_creation_artifact_selection=17,
+  select_relic_artifact=100, set_relic_slot=101, enshrine_relic=102, remove_relic=103 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {
@@ -47,7 +53,12 @@ struct IngameUiRequestV1 {
   std::uint32_t subject_id = 0;
   bool holy_site_decision_explicit = false;
   ck3_12004::religion::holy_site::DecisionAction holy_site_action = ck3_12004::religion::holy_site::DecisionAction::adopt;
+  bool relic_action_explicit=false;
+  ck3_12004::religion::relic_actions::Request relic_action{};
   AppointmentWindowRequestV1 appointment{};
+  // UI selectors only. Current actor/Faith come from the original religion reader.
+  std::string holy_site_creation_type_key;
+  std::optional<bool> holy_site_creation_selected;
   // Fixed semantic fields only; complete child paths stay provider-private.
   std::string army_tooltip_kind;
   std::string army_tooltip_receipt;
@@ -134,6 +145,8 @@ struct IngameUiResultV1 {
   bool holy_site_decision_parameters_verified = false;
   std::string holy_site_decision_definition_key;
   std::uint32_t holy_site_decision_parameter_id = 0xFFFFFFFFU;
+  bool relic_action_requested=false;
+  ck3_12004::religion::relic_actions::Result relic_action{};
   bool verification_pending = false;
   bool window_exists = false;
   bool effective_visible = false;
@@ -167,6 +180,9 @@ struct IngameUiResultV1 {
   NamedGuiTreeInspectionV1 tree{};
   ArmyTooltipObservationV1 army_tooltip{};
   AppointmentWindowSnapshotV1 title_appointment{};
+  ck3_12004::religion::holy_site_creation::Snapshot holy_site_creation{};
+  bool holy_site_creation_ui_postcondition_observed=false;
+  bool holy_site_creation_ui_selection_verified=false;
   std::string status = "unavailable";
   std::string unavailable_reason;
 };

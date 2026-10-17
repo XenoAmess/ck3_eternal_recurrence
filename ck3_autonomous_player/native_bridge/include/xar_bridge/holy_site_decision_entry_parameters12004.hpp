@@ -43,7 +43,7 @@ namespace entry_parameters_source {
 struct Pin { std::uintptr_t rva; std::string_view hex; };
 // Frozen original code from gui-management-source.json and
 // decision-params-source.json; fixtures populate these same exact-build pins.
-inline constexpr std::array<Pin, 10> kPins{{
+inline constexpr std::array<Pin, 13> kPins{{
  {0x3AA30E0,"488bc1488d5110488b89f000000048ff6008"},
  {0x3A9F960,"48895c2408574883ec50488bfa488bd9e82bd6ddfc48894424200f57c00f1144"},
  {0x3AC38C0,"48895c2408488974241048897c2418554154415541564157488dac24c0feffff"},
@@ -54,6 +54,9 @@ inline constexpr std::array<Pin, 10> kPins{{
  {0xCAB1C0,"40534883ec20488bda48894c2430e88d3800004c8bc0488d542430488bcbe8ad"},
  {0xCAE7A0,"48895c2408410fb6004d8bd835c59d1c81488bd94469c8930100014c8bd2410f"},
  {0xCAE5D0,"4883ec2865488b042558000000ba10000000488b088b040a3905ae1b0a057f0c"},
+ {0x87BE10,"4883ec2865488b042558000000ba10000000488b088b040a3905323f3e057f0c"},
+ {0x876E00,"488bc2c3"},
+ {0xA79540,"48895c240848896c2410565741564883ec404d8bf0e8c6b4deff488bf0418b46"},
 }};
 }
 } // namespace xar::ck3_12004::religion::holy_site

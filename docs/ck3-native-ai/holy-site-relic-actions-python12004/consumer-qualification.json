@@ -1,0 +1,235 @@
+{
+  "schema": "holy-site-relic-actions-python-consumer-qualification-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:01:40.615262+00:00",
+  "status": "COMPILED_NATIVE_RELIC_ACTION_PACKETS_THROUGH_REAL_MCP_PASS",
+  "tests_run": 5,
+  "tests_skipped": 0,
+  "new_native_packets_consumed": 12,
+  "explicit_mutations_rejected": 6,
+  "unknown_same_intent_new_public_revision_rejected": true,
+  "unknown_same_intent_new_driver_same_episode_rejected": true,
+  "full_consumer_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-actions-mcp-qualified-a01.json",
+    "bytes": 328333,
+    "sha256": "8b484b4f9b593d3cddf5395ca764b0103abb2bc927708f185459ad73a87d2c19"
+  },
+  "native_consumer_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\consumer-manifest.json",
+    "bytes": 13394,
+    "sha256": "d934b69088691966d435d7b45a5bf58d63533e6df9d382e51d62b87ded09ec7b"
+  },
+  "captured_managed_scope_validation": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-actions-captured-managed-scope-a01.json",
+    "bytes": 983,
+    "sha256": "3d3c0cb9bfe943357b62386cd8f0403a4d1bd859f528b65d40d6639ef678b62c"
+  },
+  "captured_managed_scope_is_save_uuid": false,
+  "captured_managed_scope_is_fresh_live_evidence": false,
+  "live_game_qualification": false,
+  "real_engine_callback_execution_proven": false,
+  "full_native_dll_linked": false,
+  "source_bound_isolated_production_formatters": true,
+  "production_layers": [
+    "NativeHeadlessGameplayDriver._execute_primitive_step",
+    "GameplayBridgeService",
+    "create_server",
+    "MCP ClientSession"
+  ],
+  "native_boundary_mocked": [
+    "endpoint I/O",
+    "hello",
+    "state_snapshot"
+  ],
+  "native_packets": [
+    {
+      "filename": "action-closed.json",
+      "sha256": "1976b2e2ffa248895ab812aff53c4db70002b0fb4572112106259ee60035b995",
+      "request_source_sha256": "023015d215f67f1467b69b3693d6546319cb7ea8ddfc5c54d68b41946bd802c0",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "callback-result-unknown.json",
+      "sha256": "363f25d5f1f2343b3cc9dfbb8c14c66acbabbc28f89ff2aa2b9ed59300dca88e",
+      "request_source_sha256": "023015d215f67f1467b69b3693d6546319cb7ea8ddfc5c54d68b41946bd802c0",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "enshrine-ack-only.json",
+      "sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "request_source_sha256": "023015d215f67f1467b69b3693d6546319cb7ea8ddfc5c54d68b41946bd802c0",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "foreign-selected-slot.json",
+      "sha256": "a80ee255f683bc93c5a254fc19f1b580bf08903c31b91d7aa746ca6d8fa2f84a",
+      "request_source_sha256": "e9f21408ee6459b122d8984e2215142ed9c70c98b4124dee2415d8b8037a65de",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "hidden-button.json",
+      "sha256": "03f889001de0079530cfe9308e4f06da5be52aba39397cd298eeb4db4559b729",
+      "request_source_sha256": "023015d215f67f1467b69b3693d6546319cb7ea8ddfc5c54d68b41946bd802c0",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "loaded-pin-rejected.json",
+      "sha256": "60096b712ef831d11ad232f21efb66770a04a91c749c1bb8c83da130cfb98471",
+      "request_source_sha256": "b8aff127eaca5153e9efe038b90bf206240dbcf1ac09f17823424e58085dbcd8",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "preview-drift.json",
+      "sha256": "556d9656599bac1ba33831943f8b739c84a7b9eaf47d3bea7032c6cd185a2257",
+      "request_source_sha256": "023015d215f67f1467b69b3693d6546319cb7ea8ddfc5c54d68b41946bd802c0",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "remove-ack-only.json",
+      "sha256": "53a07741004f61cbdb5abcecf9a05c2ce29aa07fc5b33ff6a63c776a8663c12d",
+      "request_source_sha256": "08847599125eaabdb99a9b885fe7963241a00c0ceb0fa1c8113db75dee922b00",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "select-preserves-slot.json",
+      "sha256": "2ec0d95561825e57cf33c95805a7748293bbc6820d23296051ca6df2deaf051f",
+      "request_source_sha256": "b8aff127eaca5153e9efe038b90bf206240dbcf1ac09f17823424e58085dbcd8",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "slot-already-selected.json",
+      "sha256": "7600725b3db00039b205080ec5e5506902026773bffc01ca1f0d4c0f98bf4f60",
+      "request_source_sha256": "e9f21408ee6459b122d8984e2215142ed9c70c98b4124dee2415d8b8037a65de",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "slot-clear.json",
+      "sha256": "a70728451a67d13163d5738291f7ba4f18e9e5997e047b997f09f9eacc85430e",
+      "request_source_sha256": "5290fe7752783627b8df150c60168d40ea621dde7f2e145185535b1c3dd1c7eb",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    },
+    {
+      "filename": "stale-artifact-generation.json",
+      "sha256": "c9d633eb5a71c6c81baeab620e2dca0b1548b3123ee273c94a8dcfc8d499dec0",
+      "request_source_sha256": "46807b4e3a562fa63ac38012383dccbb018492071757a6bed265045a35690fc4",
+      "public_revision": 2,
+      "native_revision": 701,
+      "mcp_is_error": false
+    }
+  ],
+  "negative_cases": [
+    {
+      "name": "foreign-build",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-site",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "missing-native-relic-result",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "invented-business-success",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "unfrozen-gameplay-attempt",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "missing-original-owner",
+      "source_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "explicit_mutation_of_compiled_packet": true,
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    }
+  ],
+  "durable_guard_receipt": {
+    "guard": "unknown_identical_intent",
+    "new_public_revision_rejected": true,
+    "new_driver_same_episode_rejected": true,
+    "state_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\s01\\24",
+    "retained_pending_files": [
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\s01\\24\\native-session\\holy-site-relic-action-intents\\437db7e6cdfd7863869d822fdcabc13123287f8910cb0ecc696702acd49641e0.pending.json"
+    ]
+  },
+  "common_hook_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_sha256": "f2b69a1dc2f52a22baeccc276b0231ce5a27881fc2914aabb2035df4d26129ef",
+      "candidate_utf8_sha256": "3085662a91bd68e40100ec2d57b0a72efc1fe4d8d33f15a61c753ae646e4d204"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "base_sha256": "51780954728311025dc000ad5e4ae827609d3ecbb343ed098919984adcd894f6",
+      "candidate_utf8_sha256": "e505cf0b8a9dfab81e361942ec3d9dfe7b276583f61c7a207e4ba1e8afca2a5a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "base_sha256": "e6029f0a023a773a824a2eabcf968b47306e6bf58ca28135d6d1d827342065cb",
+      "candidate_utf8_sha256": "404b02dd83285244db0e6b320666d0c039b0abd14430a3fdd0068cd1d140f5fd"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "base_sha256": "3ae14651d24410e74b11353492756b49a38b0f7b9540f20bcdac2ffa3362e775",
+      "candidate_utf8_sha256": "aa9c303656de556895948abfd4b775b9ca302601fa63c0fde577814a14798103"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "base_sha256": "5bbc46abfbe15bce38d4b3739a14447be27951373a56e574b95fc5fae84f9845",
+      "candidate_utf8_sha256": "47d564c491cf4f219c93e4191ada55d0eb8d9e613612a2489f75174cf2399b0f"
+    }
+  ],
+  "actual_retained_state_file_count": 65,
+  "retained_state_file_identity_and_sha_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-actions-mcp-qualified-a01.json",
+    "bytes": 328333,
+    "sha256": "8b484b4f9b593d3cddf5395ca764b0103abb2bc927708f185459ad73a87d2c19"
+  },
+  "main_modified": false,
+  "common_module_files_copied": false,
+  "known_limitations": [
+    "ACK/after-selection does not prove gameplay outcome",
+    "No automatic business-state pending unlock",
+    "Managed run scope is not a save content UUID; a new run does not resolve old unknowns"
+  ]
+}

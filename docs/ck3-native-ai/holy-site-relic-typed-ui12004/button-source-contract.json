@@ -1,0 +1,151 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:33:43.537270+00:00",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source",
+  "new_exe_reads": 0,
+  "ranges": [
+    {
+      "begin_rva": 2957046,
+      "end_exclusive": 2957270,
+      "semantic": "OnEnshrineButtonClicked registration, name-load 2D1F33 callback lea2D1FC4",
+      "bytes_hex": "488d1d1bc3200548895de7488d45b74889456f48897def660f6f05cb4f7204f30f7f45ff40887def8d4f20e88a4e5800660f6f0532507204f30f7f45ff0f100556fe2b040f11008b0d5dfe2b048948100fb70d57fe2b04668948140fb60d4efe2b0488481640887817488945ef488d450f48894567488d55b7488d4d0fe8883f580090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe862235a0090488d450f4889442430897c242848897c24204533c94c8d05756a500133d2488d4defe8dab95001",
+      "bytes_sha256": "a4361c50337829f6c67460de7b1cb5b4860110b01323125c61b310d5be69a4d9"
+    },
+    {
+      "begin_rva": 2957462,
+      "end_exclusive": 2957675,
+      "semantic": "OnRemoveButtonClicked registration, name-load2D20D3 callback lea2D2159",
+      "bytes_hex": "488d1d7bc1200548895de7488d45b74889456f48897def660f6f052b4e7204f30f7f45ff40887def8d4f20e8ea4c5800660f6f05724e7204f30f7f45ff0f10059efc2b040f11008b0da5fc2b048948100fb60d9ffc2b0488481440887815488945ef488d450f48894567488d55b7488d4d0fe8f33d580090488d452f488945770f57c00f11452f48897d2f48897d3748895d3f4c634de349c1e1054c8b45d74d03c833d2488d4d2fe8cd215a0090488d450f4889442430897c242848897c24204533c94c8d050069500133d2488d4defe845b85001",
+      "bytes_sha256": "dc641b8c0b1cbf5aedac750b782f5445311657faef448f73d9f8524dd5dde829"
+    },
+    {
+      "begin_rva": 25004608,
+      "end_exclusive": 25004636,
+      "semantic": "Enshrine callback validates window non-null, calls17D5DD0, true is only returned callback ACK",
+      "bytes_hex": "4883ec284885c9740ce882d3ffffb0014883c428c332c04883c428c3",
+      "bytes_sha256": "2c7e76c4c2bc2f6063614647fc4df0c14bf3836f9e54232835fe8be6ead0c8a2"
+    },
+    {
+      "begin_rva": 25004640,
+      "end_exclusive": 25004668,
+      "semantic": "Remove callback validates window non-null, calls17D62F0, true is only returned callback ACK",
+      "bytes_hex": "4883ec284885c9740ce882d8ffffb0014883c428c332c04883c428c3",
+      "bytes_sha256": "451ab387f887ed007ae35274a2333cf92c9fb8cf4ad7a1140a25726f3b870470"
+    }
+  ],
+  "names": [
+    {
+      "rva": 72949136,
+      "text": "OnEnshrineButtonClicked",
+      "raw_hex": "4f6e456e736872696e65427574746f6e436c69636b6564"
+    },
+    {
+      "rva": 72949112,
+      "text": "OnRemoveButtonClicked",
+      "raw_hex": "4f6e52656d6f7665427574746f6e436c69636b6564"
+    }
+  ],
+  "gui": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_holy_site.gui",
+    "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+    "excerpt": [
+      {
+        "line": 860,
+        "text": "\t\t\t\t\t\t\tbutton_standard = {"
+      },
+      {
+        "line": 861,
+        "text": "\t\t\t\t\t\t\t\ttext = \"HOLY_SITE_ACTION_BUTTON_REMOVE\""
+      },
+      {
+        "line": 862,
+        "text": "\t\t\t\t\t\t\t\tenabled = \"[HolySiteWindow.IsRemoveButtonEnabled]\""
+      },
+      {
+        "line": 863,
+        "text": "\t\t\t\t\t\t\t\ttooltip = \"[HolySiteWindow.GetRemoveButtonTooltip]\""
+      },
+      {
+        "line": 864,
+        "text": "\t\t\t\t\t\t\t\tonclick = \"[HolySiteWindow.OnRemoveButtonClicked]\""
+      },
+      {
+        "line": 865,
+        "text": "\t\t\t\t\t\t\t\tshortcut = \"holy_site_remove_artifact\""
+      },
+      {
+        "line": 866,
+        "text": "\t\t\t\t\t\t\t}"
+      },
+      {
+        "line": 867,
+        "text": ""
+      },
+      {
+        "line": 868,
+        "text": "\t\t\t\t\t\t\tbutton_primary = {"
+      },
+      {
+        "line": 869,
+        "text": "\t\t\t\t\t\t\t\ttext = \"HOLY_SITE_ACTION_BUTTON_SWAP\""
+      },
+      {
+        "line": 870,
+        "text": "\t\t\t\t\t\t\t\tvisible = \"[HolySiteWindow.HasSelectedFilledSlot]\""
+      },
+      {
+        "line": 871,
+        "text": "\t\t\t\t\t\t\t\tenabled = \"[HolySiteWindow.IsEnshrineButtonEnabled]\""
+      },
+      {
+        "line": 872,
+        "text": "\t\t\t\t\t\t\t\ttooltip = \"[HolySiteWindow.GetEnshrineButtonTooltip]\""
+      },
+      {
+        "line": 873,
+        "text": "\t\t\t\t\t\t\t\tonclick = \"[HolySiteWindow.OnEnshrineButtonClicked]\""
+      },
+      {
+        "line": 874,
+        "text": "\t\t\t\t\t\t\t}"
+      },
+      {
+        "line": 875,
+        "text": ""
+      },
+      {
+        "line": 876,
+        "text": "\t\t\t\t\t\t\tbutton_primary = {"
+      },
+      {
+        "line": 877,
+        "text": "\t\t\t\t\t\t\t\ttext = \"HOLY_SITE_ACTION_BUTTON_ENSHRINE\""
+      },
+      {
+        "line": 878,
+        "text": "\t\t\t\t\t\t\t\tvisible = \"[Not( HolySiteWindow.HasSelectedFilledSlot )]\""
+      },
+      {
+        "line": 879,
+        "text": "\t\t\t\t\t\t\t\tenabled = \"[HolySiteWindow.IsEnshrineButtonEnabled]\""
+      },
+      {
+        "line": 880,
+        "text": "\t\t\t\t\t\t\t\ttooltip = \"[HolySiteWindow.GetEnshrineButtonTooltip]\""
+      },
+      {
+        "line": 881,
+        "text": "\t\t\t\t\t\t\t\tonclick = \"[HolySiteWindow.OnEnshrineButtonClicked]\""
+      },
+      {
+        "line": 882,
+        "text": "\t\t\t\t\t\t\t}"
+      }
+    ]
+  },
+  "status": "SOURCE_REVIEWED_STATIC",
+  "engine_code_executed": false,
+  "presentation_live_qualified": false,
+  "action_ready": false
+}

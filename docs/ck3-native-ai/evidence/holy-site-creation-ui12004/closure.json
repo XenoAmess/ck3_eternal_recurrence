@@ -1,0 +1,104 @@
+{
+  "schema": "holy-site-creation-ui-qualification-closure/v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:43:02.057739+00:00",
+  "base_commit": "3d7a9f11d8fae7ca6465509a55c3999f571f1970",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification": "source-and-offline-production-dto-mcp-only",
+  "live_game_qualification": false,
+  "native_engine_ui_executed": false,
+  "create_exposed": false,
+  "full_dll_link_qualified": false,
+  "source_contract_ref": "docs/ck3-native-ai/evidence/holy-site-creation-native12004/source-contract.json",
+  "source_contract_sha256": "7add888e9607df317b8f9981ab15a34f97723c2c63ed5db31ed949f483f1920b",
+  "native_ui_patch": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\holy-site-creation-native-ui-a01.patch",
+    "bytes": 29882,
+    "sha256": "c47d8bbe71b3b316f9157f2f1c728f35329a5eae2f181237dc28ea5a564b45bd"
+  },
+  "public_ui_patch": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-public-stage\\creation-ui-public-a01.patch",
+    "bytes": 70075,
+    "sha256": "dce928f0e401df47dbe00b73e07e14e623ba00abd4b946a91e1dd716555f670d"
+  },
+  "native_whole_tu_build": {
+    "receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-ui-a02\\build-result.json",
+      "bytes": 5275,
+      "sha256": "e6ff4684c7399fe715822fb4f2aaf287c75a33f12d4813d028ae7e692ea348ce"
+    },
+    "compiled_tus": 7,
+    "compile_options": [
+      "/W4",
+      "/WX"
+    ],
+    "dto_only_full_target_link": "RED:31 unresolved existing native execution dependencies; not a whole DLL attempt"
+  },
+  "native_exact_function_dto": {
+    "source_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-stage\\qualification\\extracted-a03\\extraction-manifest.json",
+      "bytes": 70350,
+      "sha256": "64ee36a4e398b6fd8b0f16ae77d866096541c81d2e8187cbc4aa8cea3fb0e30d"
+    },
+    "source_definitions": 25,
+    "source_verbatim_verified": true,
+    "actual_project_headers": 177,
+    "generated_tu": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-stage\\qualification\\extracted-a03\\generated_production_ui.cpp",
+      "bytes": 40325,
+      "sha256": "830f459171d86f0ab4845d8ec08f27942bb42704333bbce16a5d2227e287df18"
+    },
+    "build_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-ui-a03\\build-result.json",
+      "bytes": 4063,
+      "sha256": "7c40998219e706c65c75d6d85a17bdcb1a7aa68915fc14829d4047fba8fa2cbd"
+    },
+    "fixture_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-ui-a03\\native-fixture-result.json",
+      "bytes": 989,
+      "sha256": "f14c477bd0d074238feb8e3e13ef14fe346964a3f2b2237b1abf0a1c909395ba"
+    },
+    "raw_packet_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-ui-a03\\native-ui-packets-manifest.json",
+      "bytes": 4962,
+      "sha256": "b29126bc108f4483a68392267f5f2254201d400a713c5f6d37d174d58f454162"
+    },
+    "new_parser_rejections": 7,
+    "new_dto_inputs": 10,
+    "fixture_authored_fields": [
+      "visibility",
+      "GUI owner",
+      "selected state"
+    ],
+    "native_stubs_added": false
+  },
+  "actual_sdk": {
+    "closure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-public-stage\\ui-public-closure-a01.json",
+      "bytes": 8030,
+      "sha256": "f5e9cc5811901c0556ce4f5622b41df72cfaf231cc2b0afdc251548b63e9b660"
+    },
+    "raw_report": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-public-stage\\qualification-ui-mcp-a01.json",
+      "bytes": 346216,
+      "sha256": "148ff8336bd0fb37a5373ecd23241b7c55084c2ee61b049d307c3380816200ee"
+    },
+    "tests": 4,
+    "actual_mcp_results": 19,
+    "original_production_dto_cases": 10,
+    "explicit_mutation_rejections": 9,
+    "public_revision": 2,
+    "native_revision": 37,
+    "query25_or_old_suites_repeated": false
+  },
+  "planner_boundaries": [
+    "Complete native picker models are cached lists, not producer freshness.",
+    "Selection verified covers only the requested target; type selection may reset barony; full slots may evict first artifact.",
+    "Unknown dispatch retains pending and original raw; no blind retry.",
+    "Creation, payment/free use/cooldown and world effects need separate native action and material after evidence."
+  ],
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T14:40:00+00:00"
+  }
+}

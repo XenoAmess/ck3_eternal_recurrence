@@ -438,6 +438,50 @@ _KNOWLEDGE.update({
 })
 
 
+# Source-reviewed read-only creation follow-up; no current state or action credit.
+_KNOWLEDGE["create"]["native_read_only_context"] = {'qualification': 'source_reviewed_static_offline_query_qualified_live_pending',
+ 'query_tool': 'ck3_query_player_holy_site_creation_context_v1',
+ 'requires_explicit_private_opt_in': True,
+ 'source_contract_ref': 'docs/ck3-native-ai/evidence/holy-site-creation-native12004/source-contract.json',
+ 'source_contract_sha256': '7add888e9607df317b8f9981ab15a34f97723c2c63ed5db31ed949f483f1920b',
+ 'explanation_ref': 'docs/ck3-native-ai/holy-site-creation-native12004.md',
+ 'source_machine_id': '4-8e1c2f1861',
+ 'current_state_observed': False,
+ 'action_ready': False,
+ 'executes_create': False,
+ 'original_models': {'types': '17EACB0->window+130',
+                     'baronies': 'SetData17E92F0 current player domain ->window+100',
+                     'artifacts': '17EA880 actual player inventory, unequipped and native Faith '
+                                  'recognition ->window+118',
+                     'selected_whole': 'GetSelectedArtifacts->window+E0; not single focused '
+                                       'artifact'},
+ 'query_fields': ['available_holy_site_types',
+                  'potential_barony_title_ids',
+                  'enshrinable_artifact_ids',
+                  'selected_type_key',
+                  'selected_barony_title_id',
+                  'selected_artifact_ids',
+                  'native_create_button_enabled',
+                  'bypass_requirements_raw',
+                  'create_tooltip',
+                  'cached_resource_vector_raw'],
+ 'truth_boundaries': ['Original final enabled and refusal are separate from static script '
+                      'declarations.',
+                      'Normal legality requires observed bypass=0; missing is unknown.',
+                      'Cached quote freshness and standalone affordability remain unobserved.',
+                      'Rendered visibility and independent UI selection need separately opted-in '
+                      'typed UI.',
+                      'No Create command, payment/free use/cooldown or world transition '
+                      'qualification.',
+                      'Signed native actor is preserved; the public CharacterRef entrance still '
+                      'rejects negative IDs.']}
+_KNOWLEDGE["create"]["candidate_pipeline"][1]["native_producer_status"] = "static-confirmed-exact4-source-live-pending"
+_KNOWLEDGE["create"]["additional_unknowns"] = [
+    "Actual live creation picker models, selected state and final native terms.",
+    "Actual Create invocation, runtime ordering, site level, ownership transfer, payment/free use and cooldown.",
+]
+
+
 def query_holy_site_planning_knowledge_v1(
     action: HolySitePlanningAction, *, ck3_build: str = HOLY_SITE_KNOWLEDGE_BUILD,
 ) -> dict[str, object]:

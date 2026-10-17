@@ -63,7 +63,7 @@ struct Fixture {
   memory.Header(site,0x68,slots,3);
   owner=memory.Make(0x20);gfx=memory.Make(0x100);handler=memory.Make(0x600);window=memory.Make(0x160);auto*root=memory.Make(8);
   memory.Put(owner,0x10,gfx);memory.Put(gfx,0x88,handler);memory.Put(handler,0x5D8,window);
-  memory.Put(window,0,image+0x4592338);memory.Put(window,0x10,image+0x4592310);memory.Put(window,0x98,gfx);
+  memory.Put(window,0,image+0x4592338);memory.Put(window,0x10,image+0x4592310);memory.Put(window,0x98,owner);
   memory.Put(window,0xA0,handler);memory.Put(window,0x60,root);memory.Put(window,0xC8,site_id);memory.Put(window,0x108,first);
   const void*selected_slot=static_cast<unsigned char*>(slots)+24;memory.Put(window,0x110,selected_slot);
   auto*cached=memory.Make(4);memory.Put(cached,0,second);memory.Header(window,0x130,cached,1);

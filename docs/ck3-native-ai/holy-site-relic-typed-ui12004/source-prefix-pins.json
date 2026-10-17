@@ -1,0 +1,68 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:25:53.888962+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source",
+  "metadata_sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe",
+  "new_exe_reads": 0,
+  "pins": [
+    {
+      "entry_rva": 24990384,
+      "bytes": 26,
+      "name": "SelectArtifact leaf",
+      "prefix_hex": "4885d2740a8b4210898108010000c3c78108010000ffffffffc3",
+      "prefix_sha256": "24d00e3018796eb45b4da19d20b629db5008a35115d1ee57ec0d36cac59ffae1"
+    },
+    {
+      "entry_rva": 24990448,
+      "bytes": 26,
+      "name": "ToggleSelectedSlot leaf",
+      "prefix_hex": "4885d2741433c048399110010000480f44d048899110010000c3",
+      "prefix_sha256": "2fd55b460224a0568637e7185c52dae6effd0d1ad58adfed2be2a715d9a5f573"
+    },
+    {
+      "entry_rva": 24992112,
+      "bytes": 32,
+      "name": "IsEnshrineButtonEnabled",
+      "prefix_hex": "4883ec584c8bd9448b91080100004183faff0f84c60000004c8b0dd984540448",
+      "prefix_sha256": "3b58cf9cbd55923b83cbef41df358d73a5e833c50d026b416f726b5a7befa215"
+    },
+    {
+      "entry_rva": 24993344,
+      "bytes": 32,
+      "name": "IsRemoveButtonEnabled",
+      "prefix_hex": "4883ec584c8bd9448b91080100004183faff0f84f40000004c8b0d098054044c",
+      "prefix_sha256": "9f534bc73e3c746b9934f60e7de07496739139dc94de22c85f4ff979bd9f91b7"
+    },
+    {
+      "entry_rva": 24993232,
+      "bytes": 32,
+      "name": "OnEnshrineButtonClicked",
+      "prefix_hex": "40534883ec20488bd9e892fbffff84c07451488b057f8054044885c0742c448b",
+      "prefix_sha256": "bd49ca1b9e29b9832fa58dc19f51a32df7ddf19b444738a9de738562af810d9d"
+    },
+    {
+      "entry_rva": 24994544,
+      "bytes": 32,
+      "name": "OnRemoveButtonClicked",
+      "prefix_hex": "40534883ec20488bd9e842fbffff84c07451488b055f7b54044885c0742c448b",
+      "prefix_sha256": "842caed92e2d57bbafe6b6c7315b0a22cad62a2fe19be802120649f7e80f7eb6"
+    },
+    {
+      "entry_rva": 25004608,
+      "bytes": 28,
+      "name": "Enshrine GUI registered callback",
+      "prefix_hex": "4883ec284885c9740ce882d3ffffb0014883c428c332c04883c428c3",
+      "prefix_sha256": "2c7e76c4c2bc2f6063614647fc4df0c14bf3836f9e54232835fe8be6ead0c8a2"
+    },
+    {
+      "entry_rva": 25004640,
+      "bytes": 28,
+      "name": "Remove GUI registered callback",
+      "prefix_hex": "4883ec284885c9740ce882d8ffffb0014883c428c332c04883c428c3",
+      "prefix_sha256": "451ab387f887ed007ae35274a2333cf92c9fb8cf4ad7a1140a25726f3b870470"
+    }
+  ],
+  "original_engine_code_executed": false,
+  "action_ready": false
+}

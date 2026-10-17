@@ -1,0 +1,47 @@
+{
+  "schema": "holy-site-creation-context-query-knowledge-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:02:03.556333+00:00",
+  "proof_layer": "offline-production-driver-service-sdk",
+  "live_game_observed": false,
+  "create_supported": false,
+  "typed_ui_public_hooks_status": "pending",
+  "tool": "ck3_query_player_holy_site_creation_context_v1",
+  "input": [
+    "expected_revision: strict positive public revision"
+  ],
+  "planner_uses": [
+    "Current original model candidates and native type predicate observations can explain a creation preparation plan.",
+    "Preserve candidate order, duplicate full references, observed empty lists and observed unselected nulls.",
+    "Unknown native predicates remain null; incomplete native models remain unavailable, never an empty success.",
+    "native_create_button_enabled is not rendered visibility; hidden-root still has a readable cached model.",
+    "normal_requirements_can_create is observed only with an observed native enabled result and bypass raw zero.",
+    "Cached ten-component int64 quote is not fresh affordability; native_affordable remains null.",
+    "No actor override, selections, requirements bypass, or create command is accepted by this query.",
+    "Use ordinary planning to choose a goal, then query after any UI selection/frame change before claiming readiness."
+  ],
+  "explicit_limits": [
+    "All fixture native I/O and state snapshots are synthetic; source-bound engine getter execution is not proven.",
+    "a02 actor15893 crosses the production MCP chain; a01 native signed high actor is rejected by public state parsing.",
+    "No native ID conversion or raw packet edit was used to conceal the public actor boundary.",
+    "No creation action, actual resource payment, successful construction, or live gameplay qualification is established."
+  ],
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\qualification-mcp-a02.json",
+      "bytes": 201739,
+      "sha256": "9e3493d9c0a5678e0c479b2d7328b7a42b1aa4247caf0d3a416f1261d660fade"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\qualification-public-optin-a03.json",
+      "bytes": 10853,
+      "sha256": "3b52c7f94aac94786203f9aa0ae567fedf5b8fbbc02af8c7e1e36c42e2c699e0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\creation-context-query-a02.patch",
+      "bytes": 47037,
+      "sha256": "a43d2de23e0b6c52f994cc32497eb720949934495688e2358669fd3035bc3e00"
+    }
+  ],
+  "review_at_utc": "2027-04-15T14:02:03.556333+00:00"
+}

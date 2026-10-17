@@ -1,0 +1,255 @@
+{
+  "schema": "ck3_12004_holy_site_relic_actions_independent_source_review_a02_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:44:08.717367+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "independent bounded source/API review of context, serializer, production preview adapter and matching Python canonical",
+  "status": "NO_BLOCKING_ISSUE_FOUND_IN_REVIEWED_SCOPE",
+  "review_is_live_or_build_qualification": false,
+  "new_builds_fixture_runs_or_game_calls": 0,
+  "cpp_modified_by_reviewer": false,
+  "findings": [
+    {
+      "id": "faith-canonical-native-python",
+      "review_status": "REVIEWED_SOURCE_CONSISTENT",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context_json.cpp",
+        "bytes": 6259,
+        "sha256": "fe25f6cc62cd4b5da3ddccec35cad78fa71c578c2aa7699cda7dbcb6c1385411"
+      },
+      "line_evidence": [
+        {
+          "line": 27,
+          "text": "  N(s.permissions.player_faith_id)+'|'+std::to_string(s.requested_holy_site_id)+'|'+std::to_string(s.requested_artifact_id)+'|'+"
+        }
+      ],
+      "conclusion": "Native canonical adds current faith after date/player; Python has the same position. Source consistency is not an executed consumer result."
+    },
+    {
+      "id": "faith-rite-stability",
+      "review_status": "REVIEWED_FAIL_CLOSED",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context.cpp",
+        "bytes": 18660,
+        "sha256": "8af3eebcb48ba5adc3c357d8422d3cbeaad916a70b2fdbc5999131318854122f"
+      },
+      "line_evidence": [
+        {
+          "line": 110,
+          "text": " if(!Read(b,p.actor,0xB4,p.rite_id)||p.rite_id!=c.rite_id||!Resolve(b,b.permissions.model.rite_storage,p.rite_id,8,p.rite)||"
+        },
+        {
+          "line": 178,
+          "text": " if(!Read(b,p.actor,0xB4,rite_id)||rite_id!=p.rite_id||!Resolve(b,b.permissions.model.rite_storage,rite_id,8,rite)||rite!=p.rite||"
+        },
+        {
+          "line": 179,
+          "text": "  !Read(b,rite,0x4B8,faith_id)||faith_id!=p.faith_id)return false;"
+        }
+      ],
+      "conclusion": "Base binds context player rite/faith; Stable resolves same rite full ID/pointer and checks faith after description. Drift fails whole frame and clears preview identity."
+    },
+    {
+      "id": "requested-candidate-duplicates",
+      "review_status": "REVIEWED_FAIL_CLOSED",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_action_preview_adapter12004.cpp",
+        "bytes": 6157,
+        "sha256": "246644796be2a16319328bd7439351ad7677881fede086d46a49b1aec40088e3"
+      },
+      "line_evidence": [
+        {
+          "line": 53,
+          "text": "   const bool requested_seen=std::any_of(rows.begin(),rows.end(),[&](const auto&row){return row.artifact_id==r.artifact_id;});"
+        },
+        {
+          "line": 55,
+          "text": "   if(!requested_seen||!requested_rows_known_valid)return false;"
+        },
+        {
+          "line": 54,
+          "text": "   const bool requested_rows_known_valid=std::all_of(rows.begin(),rows.end(),[&](const auto&row){return row.artifact_id!=r.artifact_id||(row.available&&row.can_be_candidate==true);});"
+        },
+        {
+          "line": 55,
+          "text": "   if(!requested_seen||!requested_rows_known_valid)return false;"
+        }
+      ],
+      "conclusion": "Enshrine requires at least one requested ID row and every duplicate requested row known true; unrelated rows need not all be known."
+    },
+    {
+      "id": "effective-destination",
+      "review_status": "REVIEWED_SOURCE_CONSISTENT",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context.cpp",
+        "bytes": 18660,
+        "sha256": "8af3eebcb48ba5adc3c357d8422d3cbeaad916a70b2fdbc5999131318854122f"
+      },
+      "line_evidence": [
+        {
+          "line": 152,
+          "text": "  d.explicit_slot_type_compatible=compatible;if(compatible)chosen=static_cast<std::int32_t>(*d.selected_slot_index);"
+        },
+        {
+          "line": 154,
+          "text": " if(chosen<0){"
+        },
+        {
+          "line": 159,
+          "text": " if(chosen<0){d.unavailable_reason=\"original_effective_slot_not_found\";return;}"
+        },
+        {
+          "line": 161,
+          "text": " d.effective_slot_index=static_cast<std::uint32_t>(chosen);d.replacing_artifact_id=Id(p.slots[static_cast<std::size_t>(chosen)].artifact);"
+        },
+        {
+          "line": 222,
+          "text": "   (!out.destination.replacing_artifact_id||out.destination.replacing_artifact.available))"
+        }
+      ],
+      "conclusion": "Explicit compatible index takes precedence, otherwise original picker; absent/out-of-range picker fails; unresolved nonempty replacement prevents preview identity."
+    },
+    {
+      "id": "owner-owned-equipped",
+      "review_status": "REVIEWED_FAIL_CLOSED",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context.cpp",
+        "bytes": 18660,
+        "sha256": "8af3eebcb48ba5adc3c357d8422d3cbeaad916a70b2fdbc5999131318854122f"
+      },
+      "line_evidence": [
+        {
+          "line": 130,
+          "text": "  (state.character!=absent&&state.site!=absent)){v.unavailable_reason=\"artifact_owner_full_reference_or_exclusive_channel_invalid\";return;}"
+        },
+        {
+          "line": 132,
+          "text": "  const auto&ids=out.permissions.player_inventory.artifact_ids;v.player_owned_reference_member=std::find(ids.begin(),ids.end(),id)!=ids.end();"
+        },
+        {
+          "line": 134,
+          "text": " Equipped(b,p.inventory,a,out,v.player_equipped_slot_member);Equipped(b,At(p.site,0x28),a,out,v.site_equipped_slot_member);"
+        },
+        {
+          "line": 221,
+          "text": "   out.artifact_ownership.player_owned_reference_member.has_value()&&out.artifact_ownership.player_equipped_slot_member.available&&out.artifact_ownership.site_equipped_slot_member.available&&"
+        }
+      ],
+      "conclusion": "Owner channels/full references, owned ID membership, and native equipped membership stay separate; missing observations do not become false business facts."
+    },
+    {
+      "id": "production-action-ownership",
+      "review_status": "REVIEWED_FAIL_CLOSED",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_action_preview_adapter12004.cpp",
+        "bytes": 6157,
+        "sha256": "246644796be2a16319328bd7439351ad7677881fede086d46a49b1aec40088e3"
+      },
+      "line_evidence": [
+        {
+          "line": 57,
+          "text": "  if(r.operation==Operation::enshrine&&(!owner.character_owner_matches_player.value_or(false)||!owner.player_owned_reference_member.value_or(false)||"
+        },
+        {
+          "line": 63,
+          "text": "  proof.artifact_character_owner_matches_player=owner.character_owner_matches_player.value_or(false);"
+        },
+        {
+          "line": 58,
+          "text": "   owner.holy_site_owner_id||!s.permissions.artifact_permissions.can_enshrine.value.value_or(false)||!s.permissions.current_buttons.can_enshrine.value.value_or(false)))return false;"
+        },
+        {
+          "line": 59,
+          "text": "  if(r.operation==Operation::remove&&(!owner.holy_site_owner_matches_requested.value_or(false)||!owner.site_equipped_slot_member.value.value_or(false)||"
+        },
+        {
+          "line": 59,
+          "text": "  if(r.operation==Operation::remove&&(!owner.holy_site_owner_matches_requested.value_or(false)||!owner.site_equipped_slot_member.value.value_or(false)||"
+        },
+        {
+          "line": 64,
+          "text": "  proof.player_owned_ids_contains_artifact=owner.player_owned_reference_member.value_or(false);proof.site_equipped_slot_member=owner.site_equipped_slot_member.value.value_or(false);"
+        }
+      ],
+      "conclusion": "Enshrine binds player ownership+owned references+empty holy owner; remove binds target holy owner+site equipped, without requiring prior player owner."
+    },
+    {
+      "id": "native-text-exception",
+      "review_status": "NONBLOCKING_BOUNDARY_NOT_RUNTIME_QUALIFIED",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context.cpp",
+        "bytes": 18660,
+        "sha256": "8af3eebcb48ba5adc3c357d8422d3cbeaad916a70b2fdbc5999131318854122f"
+      },
+      "line_evidence": [
+        {
+          "line": 64,
+          "text": " text.clear();NativeString v{};if(!CallText(b,w,rva,v))return false;"
+        },
+        {
+          "line": 73,
+          "text": " const bool destroyed=DestroyText(b,v);if(!copied||!destroyed)text.clear();return copied&&destroyed;"
+        }
+      ],
+      "conclusion": "Normal returned strings use destructor; failed native CallText returns before destructor. Fail-closed prevents actions, but partial construction may retain temporary allocation; no zero-side-effect claim."
+    },
+    {
+      "id": "rite-not-in-canonical",
+      "review_status": "NONBLOCKING_SCOPE_LIMIT",
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context_json.cpp",
+        "bytes": 6259,
+        "sha256": "fe25f6cc62cd4b5da3ddccec35cad78fa71c578c2aa7699cda7dbcb6c1385411"
+      },
+      "line_evidence": [
+        {
+          "line": 26,
+          "text": " return \"ck3-relic-action-preview-v1|\"+std::to_string(s.date_raw)+'|'+std::to_string(s.played_character_id)+'|'+"
+        },
+        {
+          "line": 27,
+          "text": "  N(s.permissions.player_faith_id)+'|'+std::to_string(s.requested_holy_site_id)+'|'+std::to_string(s.requested_artifact_id)+'|'+"
+        }
+      ],
+      "conclusion": "Canonical binds faith, not rite. Rite identity is validated within each owner callback, not frozen as a separate earlier-query hash component."
+    }
+  ],
+  "python_canonical_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_site_relic_action_context_private_transport.py",
+    "bytes": 18084,
+    "sha256": "4a107482a2943108864817575fbc47111271762eb7118028763054e41cfc5ddc"
+  },
+  "python_canonical_line_evidence": [
+    {
+      "line": 73,
+      "text": "        str(value[\"played_character_id\"]), _literal(permissions[\"player_faith_id\"]), str(value[\"requested_holy_site_id\"]),"
+    }
+  ],
+  "current_native_qualification_evidence_references": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a02\\native-result.json",
+      "bytes": 526,
+      "sha256": "8c49fa8aeadb509da54d0d8a52a929e328b520383281f5a2a9d073f11d5848d7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a02\\source-freeze.json",
+      "bytes": 5103,
+      "sha256": "b61f802f1f90c880be55cc82927a460e6d80817b741d1f9c2416e972e4ec84d6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a02\\native-packet-manifest.json",
+      "bytes": 2254,
+      "sha256": "c4c2a80c015ad3e70306bc407587f0c2658025938f1be073f15db6091d31c3b9"
+    }
+  ],
+  "qualification_counts_reinterpreted_or_reported": false,
+  "final_mcp_qualification_pending_controller_closure": true,
+  "final_qualification_writer": "parent execution/controller lane only",
+  "not_reviewed_as_complete": [
+    "all deep script/RNG side effects",
+    "whole queue consumer schedule",
+    "actual engine getter execution",
+    "new MCP qualification results",
+    "real typed UI gameplay success and independent closed-window postconditions"
+  ]
+}

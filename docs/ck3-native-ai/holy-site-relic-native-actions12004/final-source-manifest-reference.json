@@ -1,0 +1,12 @@
+{
+  "schema": "ck3_relic_actions_final_source_authority_reference_v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-17T14:35:37.095178+00:00",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "CONTROLLER_FINAL_SOURCE_MANIFEST_BOUND_NOT_DEPLOYED",
+  "expected_controller_relative_target": "final-source-manifest.json",
+  "actual_final_source_manifest_path": "final-source-manifest.json",
+  "actual_final_source_manifest_sha256": "db6db3a04632b4a10afc13496e87ef99463cf0134b9640369cb55fb8f9b88f6d",
+  "authority": "Final source/build/qualification writer is parent execution/controller lane; a01/a02 implementation-contract SHA remain historical source review checkpoints, not final deployed-source identity.",
+  "a03_does_not_rehash_inflight_implementation_sources": true
+}

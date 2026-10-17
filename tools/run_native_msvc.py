@@ -2,7 +2,8 @@
 """Configure or incrementally build native targets with the installed x64 MSVC tools.
 
 The wrapper initializes vcvars64 in a child cmd process and keeps compiler
-temporary files, logs and Python caches below the requested build directory.
+temporary files and Python caches below the requested build directory.
+Logs and the build report may use a separate --evidence-dir.
 It does not start CK3 or prepare a game profile.
 """
 from __future__ import annotations
@@ -32,6 +33,7 @@ def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--source-dir", type=Path, default=DEFAULT_SOURCE)
     result.add_argument("--build-dir", type=Path, required=True)
+    result.add_argument("--evidence-dir", type=Path, help="Write configure/build logs and the report here instead of the build directory")
     result.add_argument("--vs-install", type=Path)
     result.add_argument("--configuration", choices=CONFIGURATIONS, default="Release")
     result.add_argument("--jobs", type=int, default=64)
@@ -193,6 +195,7 @@ def run(args: argparse.Namespace) -> dict:
         raise ValueError("--jobs must be positive")
     args.source_dir = args.source_dir.resolve()
     args.build_dir = args.build_dir.resolve()
+    evidence_dir = (getattr(args, "evidence_dir", None) or args.build_dir).resolve()
     defender_enabled = opted_in(ROOT)
     external_candidate = getattr(args, "defender_external_candidate", None)
     if defender_enabled and not args.probe:
@@ -200,6 +203,7 @@ def run(args: argparse.Namespace) -> dict:
     if not args.probe and not (args.source_dir / "CMakeLists.txt").is_file():
         raise RuntimeError(f"CMakeLists.txt is missing: {args.source_dir}")
     args.build_dir.mkdir(parents=True, exist_ok=True)
+    evidence_dir.mkdir(parents=True, exist_ok=True)
     sys.pycache_prefix = str(args.build_dir / ".python-cache")
     environment = child_environment(args.build_dir)
     installation = visual_studio_installation(args.vs_install, environment)
@@ -209,7 +213,7 @@ def run(args: argparse.Namespace) -> dict:
               "jobs": args.jobs, "targets": args.target or ["xar_ck3_bridge", "xar_ck3_bridge_injector"],
               "tools": tools, "local_ck3_contacted": False,
               "temporary_dir": environment["TEMP"], "python_cache": environment["PYTHONPYCACHEPREFIX"]}
-    report_path = args.build_dir / "native-msvc-result.json"
+    report_path = evidence_dir / "native-msvc-result.json"
     try:
         if args.probe:
             report["versions"] = probe_tools(tools, environment, args.build_dir)
@@ -226,10 +230,10 @@ def run(args: argparse.Namespace) -> dict:
             report["configured"] = configure
             report["built"] = build
             if configure:
-                run_logged(configure_command(args, tools), args.build_dir / "msvc-configure.log", environment, args.build_dir)
+                run_logged(configure_command(args, tools), evidence_dir / "msvc-configure.log", environment, args.build_dir)
                 report["dependency_prefix_mode"] = repair_dependency_prefix(args.build_dir, tools["cl"])
             if build:
-                run_logged(build_command(args, tools), args.build_dir / "msvc-build.log", environment, args.build_dir)
+                run_logged(build_command(args, tools), evidence_dir / "msvc-build.log", environment, args.build_dir)
             report["status"] = "built" if build else "configured"
             if build:
                 report["build_succeeded"] = True

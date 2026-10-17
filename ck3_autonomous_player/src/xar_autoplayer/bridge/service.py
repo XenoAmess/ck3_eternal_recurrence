@@ -1025,6 +1025,49 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_holy_site_creation_context_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Forward a read of the current model; never select or create a holy site."""
+        query = getattr(self.driver, "query_player_holy_site_creation_context_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read holy-site creation context")
+        return query(expected_revision=expected_revision)
+
+    def query_player_holy_site_relic_action_context_v1(
+        self, *, expected_revision: int, holy_site_id: int, artifact_id: int,
+    ) -> dict[str, object]:
+        """Read native relic ownership, destination and current-selection text."""
+        query = getattr(self.driver, "query_player_holy_site_relic_action_context_private_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("selected backend cannot read holy-site relic action context")
+        return query(expected_revision=expected_revision, holy_site_id=holy_site_id,
+                     artifact_id=artifact_id)
+
+    def select_holy_site_relic_artifact_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int) -> dict[str, object]:
+        action = getattr(self.driver, "select_holy_site_relic_artifact_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot execute this finite relic UI action")
+        return action(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id)
+
+    def set_holy_site_relic_slot_selection_v1(self, *, expected_revision: int, holy_site_id: int, slot_index: int, desired_selected: bool) -> dict[str, object]:
+        action = getattr(self.driver, "set_holy_site_relic_slot_selection_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot execute this finite relic UI action")
+        return action(expected_revision=expected_revision, holy_site_id=holy_site_id, slot_index=slot_index, desired_selected=desired_selected)
+
+    def enshrine_holy_site_relic_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int, expected_effective_slot_index: int, expected_replacing_empty: bool, expected_preview_sha256: str, expected_replacing_artifact_id: int | None = None) -> dict[str, object]:
+        action = getattr(self.driver, "enshrine_holy_site_relic_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot execute this finite relic UI action")
+        return action(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_effective_slot_index=expected_effective_slot_index, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256, expected_replacing_artifact_id=expected_replacing_artifact_id)
+
+    def remove_holy_site_relic_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int, expected_replacing_empty: bool, expected_preview_sha256: str) -> dict[str, object]:
+        action = getattr(self.driver, "remove_holy_site_relic_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot execute this finite relic UI action")
+        return action(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256)
+
     def query_player_holy_site_relic_permissions_v1(
         self, *, expected_revision: int, holy_site_id: int,
         artifact_id: int | None = None,
@@ -12914,11 +12957,16 @@ class GameplayBridgeService:
 
     def _typed_ingame_ui_v1(self, operation: str, kind: str, subject_id: int, expected_revision: int,
             *, army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
-            holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
+            holy_site_action: HolySiteDecisionActionV1 | None = None,
+            holy_site_creation_type_key: str | None = None,
+            holy_site_creation_selected: bool | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (QUERY_CAPABILITY, NAVIGATE_CAPABILITY, validate_ui_request,
             ingame_ui_build_binding, validate_ui_build_scope)
+        if kind == "holy_site_creation" and getattr(self.driver, "allow_private_player_holy_site_creation_ui", False) is not True:
+            raise UnsupportedStepError("creation UI selectors are independently disabled")
         validate_ui_request(operation, kind, subject_id, expected_revision,
-            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action,
+            holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected)
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True or snapshot.get("map_ready") is not True:
             raise BridgeUnavailableError("typed UI requires a paused map-ready snapshot")
@@ -12951,10 +12999,18 @@ class GameplayBridgeService:
             if not callable(method):
                 raise UnsupportedStepError("selected backend lacks the finite HolySite decision method")
             return method(selected_action, subject_id, expected_revision=expected_revision)
+        if kind == "holy_site_creation":
+            if capabilities.get("backend_id") != "native-headless":
+                raise UnsupportedStepError("creation UI requires the exact native backend")
+            validate_ui_build_scope(ingame_ui_build_binding(snapshot)[0], operation, kind)
         if kind == "faith" and capabilities.get("backend_id") != "native-headless":
             raise UnsupportedStepError("Faith presentation requires the exact native backend")
         method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
             "open_holy_site": "open_holy_site_window_v1", "open_faith": "open_faith_window_v1",
+            "open_holy_site_creation": "open_holy_site_creation_window_v1",
+            "select_holy_site_creation_type": "select_holy_site_creation_type_v1",
+            "select_holy_site_creation_barony": "select_holy_site_creation_barony_v1",
+            "set_holy_site_creation_artifact_selection": "set_holy_site_creation_artifact_selection_v1",
             "open_holy_site_adoption": "open_holy_site_adoption_decision_v1",
             "confirm_site_adoption": "confirm_holy_site_adoption_decision_v1",
             "select_army": "select_army_ui_v1", "open_combat": "open_combat_window_v1", "open_knights": "open_knights_window_v1",
@@ -12963,6 +13019,14 @@ class GameplayBridgeService:
         method = getattr(self.driver, method_name, None)
         if not callable(method):
             raise UnsupportedStepError("selected backend lacks this typed UI method")
+        if kind == "holy_site_creation" and operation != "query":
+            if operation == "open_holy_site_creation":
+                return method(expected_revision=expected_revision)
+            if operation == "select_holy_site_creation_type":
+                return method(holy_site_creation_type_key, expected_revision=expected_revision)
+            if operation == "set_holy_site_creation_artifact_selection":
+                return method(subject_id, holy_site_creation_selected, expected_revision=expected_revision)
+            return method(subject_id, expected_revision=expected_revision)
         if operation == "open_knights":
             return method(expected_revision=expected_revision)
         if operation in {"hover_left_knights", "hover_right_knights"}:
@@ -12971,6 +13035,21 @@ class GameplayBridgeService:
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_character", "character", character_id, expected_revision)
+
+    def open_holy_site_creation_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_holy_site_creation", "holy_site_creation", 0, expected_revision)
+
+    def select_holy_site_creation_type_v1(self, type_key: str, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("select_holy_site_creation_type", "holy_site_creation", 0,
+            expected_revision, holy_site_creation_type_key=type_key)
+
+    def select_holy_site_creation_barony_v1(self, barony_title_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("select_holy_site_creation_barony", "holy_site_creation", barony_title_id,
+            expected_revision)
+
+    def set_holy_site_creation_artifact_selection_v1(self, artifact_id: int, selected: bool, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("set_holy_site_creation_artifact_selection", "holy_site_creation", artifact_id,
+            expected_revision, holy_site_creation_selected=selected)
 
     def open_faith_window_v1(self, faith_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_faith", "faith", faith_id, expected_revision)

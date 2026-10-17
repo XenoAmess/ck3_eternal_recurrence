@@ -20,6 +20,9 @@
 #include "xar_bridge/ck3_12004_holy_site_decision_cooldown.hpp"
 #include "xar_bridge/ck3_12004_holy_site_relic_context.hpp"
 #include "xar_bridge/ck3_12004_holy_site_relic_permissions.hpp"
+#include "xar_bridge/ck3_12004_holy_site_relic_action_context.hpp"
+
+#include "xar_bridge/holy_site_creation12004_mailbox.hpp"
 
 #include <vector>
 
@@ -63,6 +66,12 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::vow_of_poverty_terms12003::Terms vow_of_poverty_terms{};
   bool completed = false;
   std::string failure;
+  bool holy_site_creation_query = false;
+  ck3_12004::religion::holy_site_creation::Bindings holy_site_creation_bindings{};
+  ck3_12004::religion::holy_site_creation::Snapshot holy_site_creation_snapshot{};
+  bool holy_site_relic_action_context_query = false;
+  ck3_12004::religion::relic_action_context::Bindings relic_action_context_bindings{};
+  ck3_12004::religion::relic_action_context::Snapshot relic_action_context_snapshot{};
   bool holy_site_relic_permissions_query = false;
   std::optional<std::uint32_t> requested_relic_artifact_id;
   ck3_12004::religion::relic_permissions::Bindings relic_permissions_bindings{};

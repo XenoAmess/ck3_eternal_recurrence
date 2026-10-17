@@ -9618,8 +9618,11 @@ endif()
 include(cmake/snapshot_foundation_12004.cmake)
 include(cmake/army_family_12004.cmake)
 include(cmake/religion_observers_12004.cmake)
+include(cmake/holy_site_creation12004.cmake)
+include(cmake/holy_site_creation12004_ui.cmake)
 include(cmake/holy_site_relic_context_12004.cmake)
 include(cmake/holy_site_relic_permissions_12004.cmake)
+include(cmake/holy_site_relic_action_context_12004.cmake)
 include(cmake/commander_movement_metadata_12004.cmake)
 include(cmake/snapshot_foundation_12004_first.cmake)
 include(cmake/adopted_domains_12004.cmake)
@@ -9995,3 +9998,6 @@ include(cmake/military_reinforcement_action_12004.cmake)
 
 # Exact4 typed presentation candidate, default off.
 include(cmake/religion_ui12004.cmake)
+
+# Exact4 typed relic UI; selection and original buttons have explicit separate opt-ins.
+include(cmake/holy_site_relic_typed_ui12004.cmake)

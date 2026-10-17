@@ -126,21 +126,52 @@ bool Callback(Reader &r,const void *button,const void *&block,Pass &p) {
   }
   return true;
 }
+bool DecisionDetailLiteral(Reader &r,const void *constant,Pass &p) {
+  const void *metadata=nullptr,*accessor=nullptr,*data=At(constant,8);
+  std::uint32_t slot=absent;
+  std::uint64_t size=0,capacity=0;
+  if(!r.Read(constant,0x28,slot)||slot!=0)
+    return Fail(p,"entry_parameter_view_literal_output_slot_differs");
+  if(!r.Read(constant,0,metadata)||metadata!=r.ImageAt(0x542FD20)
+      ||!Typed(r,metadata,0x448BF90,0x563EC30,0x4A03BD8)
+      ||!r.Read(r.ImageAt(0x448BF90),0x28,accessor)||accessor!=r.ImageAt(0x876E00)
+      ||!r.Read(r.ImageAt(0x448BF90),0x30,accessor)||accessor!=r.ImageAt(0x876E00))
+    return Fail(p,"entry_parameter_view_literal_type_differs");
+  if(!r.Read(data,16,size)||size!=15||!r.Read(data,24,capacity)
+      ||capacity<size||(capacity<16&&capacity!=15)
+      ||(capacity>=16&&(!r.Read(data,0,data)||!data)))
+    return Fail(p,"entry_parameter_view_literal_unavailable");
+  const char expected[]="decision_detail";
+  std::array<char,sizeof(expected)> bytes{};
+  if(!r.Bytes(data,bytes.data(),bytes.size())||std::memcmp(bytes.data(),expected,bytes.size())!=0)
+    return Fail(p,"entry_parameter_view_literal_differs");
+  return true;
+}
 bool SelfArgument(Reader &r,const void *block,std::uint32_t &type,Pass &p) {
-  Header arguments{}; const void *indices=nullptr,*declarations=nullptr;
+  Header arguments{},constants{}; const void *indices=nullptr,*declarations=nullptr;
   std::int32_t index_count=0,declaration_count=0,index=-1;
   std::uint32_t runtime=absent,declared=absent,kind=0,required=absent,output_slot=0;
   std::uint8_t declaration_flag=0,receiver_flag=0;
-  if(!Array(r,block,0,arguments)||arguments.count!=2
-      ||!r.Read(block,0xB0,indices)||!indices||!r.Read(block,0xBC,index_count)
-      ||index_count<2||index_count>8192||!r.Read(indices,4,index)||index<0
+  std::uint32_t first_output=absent;
+  // 3E4BC50 copies constants before evaluating dynamic descriptors. The
+  // source-closed stock expression has CString slot0 and dynamic Self slot1;
+  // ordinal0 of the dynamic array therefore owns indices[0]. A79540 consumes
+  // block+30 and the following output Any, not the dynamic ordinal itself.
+  if(!r.Read(block,0x30,first_output)||first_output!=0)
+    return Fail(p,"entry_parameter_view_first_output_slot_differs");
+  if(!Array(r,block,0,arguments)||!Array(r,block,0x80,constants)
+      ||arguments.count!=1||constants.count!=1)
+    return Fail(p,"entry_parameter_constant_dynamic_layout_unsupported");
+  if(!DecisionDetailLiteral(r,constants.data,p))return false;
+  if(!r.Read(block,0xB0,indices)||!indices||!r.Read(block,0xBC,index_count)
+      ||index_count<1||index_count>8192||!r.Read(indices,0,index)||index<0
       ||!r.Read(block,0x98,declarations)||!declarations
       ||!r.Read(block,0xA4,declaration_count)||declaration_count<=index||declaration_count>8192
       ||!r.Read(r.b.decision_params_runtime_class_id,0,runtime)||runtime==absent
       ||!r.Read(declarations,std::size_t(index)*8,declared)||declared!=runtime
       ||!r.Read(declarations,std::size_t(index)*8+4,declaration_flag))
     return Fail(p,"entry_parameter_self_declaration_unavailable");
-  const auto *arg=At(arguments.data,0x40);
+  const auto *arg=arguments.data;
   Header chain{}; const void *function=nullptr,*userdata=nullptr;
   if(!Array(r,arg,0,chain)||chain.count!=0
       ||!r.Read(arg,0x18,p.return_type)||!r.Read(arg,0x1C,kind)

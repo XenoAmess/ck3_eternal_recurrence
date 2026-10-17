@@ -1,0 +1,83 @@
+{
+  "schema": "holy-site-creation-query-python-closure-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:02:03.556333+00:00",
+  "status": "QUERY_CONTRACT_PASS_WITH_EXPLICIT_PUBLIC_SIGNED_ACTOR_LIMIT",
+  "live_game_qualification": false,
+  "main_source_changed_by_this_lane": false,
+  "patch": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\creation-context-query-a02.patch",
+    "bytes": 47037,
+    "sha256": "a43d2de23e0b6c52f994cc32497eb720949934495688e2358669fd3035bc3e00"
+  },
+  "hooks": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\tools\\creation-context-common-hooks-a02.json",
+    "bytes": 6763,
+    "sha256": "ece21c28c1543c371e82928250fed3aefde40cbb1459dbda2d5fae65c44a7190"
+  },
+  "native_sdk_evidence": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\qualification-mcp-a02.json",
+    "bytes": 201739,
+    "sha256": "9e3493d9c0a5678e0c479b2d7328b7a42b1aa4247caf0d3a416f1261d660fade"
+  },
+  "focused_host_choice_fix_evidence": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\qualification-public-optin-a03.json",
+    "bytes": 10853,
+    "sha256": "3b52c7f94aac94786203f9aa0ae567fedf5b8fbbc02af8c7e1e36c42e2c699e0"
+  },
+  "qualification_accounting": {
+    "first_new_suite_tests": 6,
+    "first_new_suite_actual_native_mcp_tests_passed": 5,
+    "first_new_suite_static_host_parser_test_failed": 1,
+    "only_failed_static_test_rerun_after_host_choices_fix": 1,
+    "new_a02_positive_packets": 8,
+    "explicit_packet_mutation_negatives": 15,
+    "independent_after_frame_change_negative": 1,
+    "original_a01_signed_actor_rejection": 1,
+    "actual_mcp_results_preserved": 25,
+    "public_revision": 2,
+    "native_revision": 37,
+    "old_cpp_or_old_sdk_suites_rerun": false,
+    "already_passed_new_native_mcp_tests_rerun": false
+  },
+  "final_hooks_differ_only_in": [
+    "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py"
+  ],
+  "three_production_module_candidate_hashes_unchanged_after_native_mcp_pass": true,
+  "test_source_unchanged_since_actual_mcp_run": true,
+  "new_production_source_current_fingerprint": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_site_creation_context_private_transport.py",
+    "bytes": 12168,
+    "sha256": "44fe037920fe63e052334d8ce3817d9e7a91b92f96789746813d48cf9d5ccc3d"
+  },
+  "source_handoff_files": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_site_creation_context_private_transport.py",
+      "bytes": 12168,
+      "sha256": "44fe037920fe63e052334d8ce3817d9e7a91b92f96789746813d48cf9d5ccc3d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\ck3_autonomous_player\\tests\\unit\\test_player_holy_site_creation_context_12004_native_mcp.py",
+      "bytes": 23642,
+      "sha256": "6dd4858aa3506c103b7eda0306b8646eb79eb16f9190a37ec84b388aad6b99f5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\ck3_autonomous_player\\native_bridge\\research\\creation_context_source_overlay.py",
+      "bytes": 3524,
+      "sha256": "1899bc102da7e22d842c36416d2a360c9939c7eddc22d33d5f8e384ed17f0e0d"
+    }
+  ],
+  "docs_knowledge": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\docs\\ck3-native-ai\\faith-and-power-creation-context-python-12004.json",
+    "bytes": 2720,
+    "sha256": "ea5f5e7d7d0692db8c08a921f9b02cc9c9e94995d1409991409df979662723ad"
+  },
+  "python_candidate_bytes_at_closure_before_this_receipt": 341756,
+  "lane_bytes_at_closure_before_this_receipt": 6993830,
+  "free_bytes_at_closure": 121582927872,
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T14:02:03.556333+00:00",
+    "reason": "query source integration and exact qualification provenance"
+  }
+}

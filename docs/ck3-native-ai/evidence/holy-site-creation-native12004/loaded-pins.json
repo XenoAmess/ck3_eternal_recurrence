@@ -1,0 +1,167 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pins": [
+    {
+      "name": "SetData",
+      "rva": 25072368,
+      "bytes": 32,
+      "hex": "4c8bdc49895b1049897318574883ec50488bf1488d0506a3da02498943c8488d",
+      "sha256": "d457d02614de9fa16fa20ecf1dc12d0e2b94421a4b4b423748e48a0a2569e8cd"
+    },
+    {
+      "name": "window_factory",
+      "rva": 11627088,
+      "bytes": 32,
+      "hex": "48895c2410488974241848894c240857415641574883ec40498bf8488bda4c8b",
+      "sha256": "bd81cd9205071ea8f39fc3a92389b7517ab604bae03ab98bcca83f9a08673427"
+    },
+    {
+      "name": "enabled",
+      "rva": 25074288,
+      "bytes": 32,
+      "hex": "40534881ec80000000488d542420e83d11000090488b084c8b413033d2488bc8",
+      "sha256": "a07d306d8649c1a17799efec4d7b50ea56ff2810de4a1011f64828b632822007"
+    },
+    {
+      "name": "tooltip",
+      "rva": 25071696,
+      "bytes": 23,
+      "hex": "40534883ec20488bdae8720a0000488bc34883c4205bc3",
+      "sha256": "417af167b6c4a7b8fa80ebd9114b10b7038f287269774c315deb3e4c79f56594"
+    },
+    {
+      "name": "can_pick",
+      "rva": 25079312,
+      "bytes": 32,
+      "hex": "48895c240848897424185557415441564157488dac24e0fdffff4881ec200300",
+      "sha256": "4d9be3faa92ee143b91305acff67f089b00f37814e2e0d797cb84db568147fbb"
+    },
+    {
+      "name": "rarity",
+      "rva": 25078224,
+      "bytes": 32,
+      "hex": "48c702000000004c8bda488b81e0000000486389ec000000488d0c88483bc174",
+      "sha256": "b2cc116102d6b561ba4b687b7a07f3e697a88ab1d5fd23968e0002e1a2c4dca5"
+    },
+    {
+      "name": "settings",
+      "rva": 10968320,
+      "bytes": 32,
+      "hex": "48895c2408564883ec20be1000000065488b042558000000488b188b041e3905",
+      "sha256": "e1f2fc265340eb73e6fec84d2d5fccb062fb9536e3e6045093d2b64102d87465"
+    },
+    {
+      "name": "destroy_string",
+      "rva": 8740944,
+      "bytes": 32,
+      "hex": "40534883ec20488b5118488bd94883fa10722c488b0948ffc24881fa00100000",
+      "sha256": "28344f97105316da1c329b27dc76f5e74e4f8b4e2ff29ce6e5825a206f06ab0b"
+    },
+    {
+      "name": "select_type",
+      "rva": 25073616,
+      "bytes": 32,
+      "hex": "40534883ec20488bd94885d20f848f000000817a384f6244470f858200000048",
+      "sha256": "3790068b50ff30ba440d4088d6d1f2f31f683d6070be750e4c99e81293b2c820"
+    },
+    {
+      "name": "select_barony",
+      "rva": 25073808,
+      "bytes": 32,
+      "hex": "40534883ec20488bd94885d27436817a14646e614c752d8b4a1083f9ff742548",
+      "sha256": "f35ff9eec73a89e04d1d35ae33ef1e74b26f6b7cbd8bc2cdab68976502ea0330"
+    },
+    {
+      "name": "select_artifact",
+      "rva": 25073984,
+      "bytes": 32,
+      "hex": "4885d20f84f300000048895c2420564883ec20817a1469747241488bda488bf1",
+      "sha256": "1c8e45406e366ece9a6fefc54d36a79d1962a5b14f847d64502a38d7e515aac5"
+    },
+    {
+      "name": "faith_any",
+      "rva": 11639504,
+      "bytes": 32,
+      "hex": "4883ec2865488b042558000000ba10000000488b088b040a3905c24820057f0c",
+      "sha256": "d7517b34345cf8fe3e798a93dc350547aed3ef90bd5689f1073f41609b01f822"
+    },
+    {
+      "name": "open_view",
+      "rva": 11483616,
+      "bytes": 32,
+      "hex": "48895c2408488974241048897c241841564883ec504d8bf08bfa488bd9e84eff",
+      "sha256": "e395761983ceaff2cebd220bb13d53c81e6fc71b1387f243bc418380dde752df"
+    },
+    {
+      "name": "type_model",
+      "rva": 14234400,
+      "bytes": 8,
+      "hex": "488d8130010000c3",
+      "sha256": "c09d9193ba2cf3ebbbb4fa1440a6e20765c55ba70c6834d9ac175dd848450e86"
+    },
+    {
+      "name": "barony_model",
+      "rva": 12582000,
+      "bytes": 8,
+      "hex": "488d8100010000c3",
+      "sha256": "8a861bed787dc2c96bae1b792d7aab642e6faa9082837afb0038497aee50f809"
+    },
+    {
+      "name": "artifact_model",
+      "rva": 14234352,
+      "bytes": 8,
+      "hex": "488d8118010000c3",
+      "sha256": "fa4b4348fc6f5be93312d900c6d06f45743568b10d7d81fea980150df0603b14"
+    },
+    {
+      "name": "selected_model",
+      "rva": 12059040,
+      "bytes": 8,
+      "hex": "488d81e0000000c3",
+      "sha256": "920d7783517163670409d11e69824533eab2f64375e70567ec9a8c1c1b28b4d7"
+    },
+    {
+      "name": "raw_quote_writer",
+      "rva": 51433152,
+      "bytes": 32,
+      "hex": "48895c2410488974241848897c2420554154415541564157488dac24c0fcffff",
+      "sha256": "7284905a226450c918f5d72835519e7ff7a32b05f5678ec4c01863cd3b583595"
+    },
+    {
+      "name": "faith_any_destructor",
+      "rva": 8725184,
+      "bytes": 1,
+      "hex": "c2",
+      "sha256": "c557e71380112b980eaf1145fa80621130dfbdfa1e375d87ae0018b7c60ac16b"
+    },
+    {
+      "name": "faith_any_inplace",
+      "rva": 8875520,
+      "bytes": 4,
+      "hex": "488bc2c3",
+      "sha256": "f75638fe0016cf82faddfa60bf6db21d3445dcb56700c1f3c0aae5c3aa912f53"
+    },
+    {
+      "name": "faith_any_const_data",
+      "rva": 8876544,
+      "bytes": 8,
+      "hex": "418b0039020f94c0",
+      "sha256": "5d2b6ff644f4b93387d5a8974181a36efb181777beaaaa96761c08cf1111865f"
+    },
+    {
+      "name": "faith_any_accept",
+      "rva": 11643536,
+      "bytes": 32,
+      "hex": "40534883ec30498bc8c744242000000000488bda4c8d052df09d0433d24c8d0d",
+      "sha256": "01e244be64a8c0dbe4ad540499cb89ec05ff83ea9c5561cc0d8034689a52f624"
+    },
+    {
+      "name": "faith_any_copy_dword",
+      "rva": 8876528,
+      "bytes": 6,
+      "hex": "8b02418900c3",
+      "sha256": "e16b475e8578ff73315378479178bec9347fe05c003c177ec4180b1b9efcccc2"
+    }
+  ]
+}

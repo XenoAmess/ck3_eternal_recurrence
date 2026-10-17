@@ -1,0 +1,323 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:35:37.093041+00:00",
+  "base_head": "3d7a9f11d8fae7ca6465509a55c3999f571f1970",
+  "source_files": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/holy_site_relic_action_context_12004.cmake",
+      "bytes": 1418,
+      "sha256": "e7c30ed87bf4b6d6b9b9ea75faf380e2c3e758d4329b4a92cec3b5c1973406bc",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/holy_site_relic_action_context_first_fixture/CMakeLists.txt",
+      "bytes": 3789,
+      "sha256": "fe4de34237f0b638de95a60ea6d7f91370ca1db633bb799f7d88cbaa63a4dae8",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/holy_site_relic_typed_ui12004.cmake",
+      "bytes": 1884,
+      "sha256": "e008f1108ab24e62795aaa094f24ce7a879cd0a70a63c0870bb3e459d1db0652",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/holy_site_relic_typed_ui12004_first_fixture/CMakeLists.txt",
+      "bytes": 3318,
+      "sha256": "f5752f9da27ee81f646331d5c60ccea8534f4b76d3f4c785946c10662b50f741",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/relic_owner_binding_focused12004/CMakeLists.txt",
+      "bytes": 1332,
+      "sha256": "77f4f3980fbd5a9475fa826dc0071bfba50a29f9700afcc13eab4815e401c5b5",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_holy_site_relic_action_context.hpp",
+      "bytes": 3419,
+      "sha256": "1f0f43f993cd42d63655880e8c1ae484dab76ab54297b937888226e8c6be487b",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_holy_site_relic_actions.hpp",
+      "bytes": 4976,
+      "sha256": "eb0f47801b30de5f0920c03616ec105c4c8b9a6407568b90e9c3d1b713a24a59",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/holy_site_relic_action_preview_adapter12004.hpp",
+      "bytes": 678,
+      "sha256": "c1dbccc1f0e33b3424e871d70de491c25c9ae16730fb866963c9e5ec9962f6d9",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/holy_site_relic_action_v1.hpp",
+      "bytes": 2519,
+      "sha256": "21a0d9875590fa88cd1688e497d380eb369da7ec252b927563863e3fc4f7ed65",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/holy_site_relic_navigation12004.hpp",
+      "bytes": 416,
+      "sha256": "c1d05535b8c46621c9f83ad2b9496368c3c9f3d40b323d779806d70aaafdbeec",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/holy_site_relic_request12004.hpp",
+      "bytes": 287,
+      "sha256": "fdb8338cc5a04fe591ae0904bf02f682d211ef06881c0e8f3600c2ff9b49893d",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/consume_holy_site_relic_action_context_native_packets.py",
+      "bytes": 6131,
+      "sha256": "43d45baf7c590e2584d4df54663a4ded1a38e58ccd4b2068c40f496db8775d5f",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/consume_holy_site_relic_actions_native_packets.py",
+      "bytes": 4920,
+      "sha256": "85e9d88144ef94b6361c536c4ac05c8ca77992a15eb69de0bad527c77f1de6dc",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/consume_holy_site_relic_binding_focused_packets.py",
+      "bytes": 19275,
+      "sha256": "82f3a80b978e20d3f4d06037fd6610f70b69779aae37a39bb35fb2e01990f92c",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/extract_relic_ui_pure_fixture12004.py",
+      "bytes": 4460,
+      "sha256": "fae455804f4f6bff29e7439c01fbde7fc241657d448b88b822890cbf2f78f7e6",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/generate_holy_site_relic_action_context_pins.py",
+      "bytes": 1947,
+      "sha256": "1d0f01a294ae7a8e2fb953f66c13fc2ac3389d91ff2868e5c81bd0a28f6749e6",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/generate_holy_site_relic_actions_pins.py",
+      "bytes": 1215,
+      "sha256": "ae61c6814de35ada8b0baed87b5c90d326bef1153d51c1dec299353efc43f820",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/relic_action_context_source_overlay.py",
+      "bytes": 3775,
+      "sha256": "d06f34e09bc41cb93716d9d368cc5e5a49b60cdb15f680201310293ba74b01c6",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_action_context.cpp",
+      "bytes": 18687,
+      "sha256": "f5bcbf716862e139d05ed5e560496c20b0a73749ccfbeec35aba35eec1035582",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_action_context_json.cpp",
+      "bytes": 6259,
+      "sha256": "fe25f6cc62cd4b5da3ddccec35cad78fa71c578c2aa7699cda7dbcb6c1385411",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_action_context_pins.inc",
+      "bytes": 1526,
+      "sha256": "e311e7e6493cd601ae5b7b5567fe383c2547a62aae0cff9d6accbdfedafb30e7",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_action_context_test.cpp",
+      "bytes": 8498,
+      "sha256": "b9693b0b441330eb2478cb36fe85c94608ea267f8b32d9d6364307b8d1131fda",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions.cpp",
+      "bytes": 17339,
+      "sha256": "0c21d355d9da3fc3d7fe48315981a118747bd4985a34c75c6ab0e8fb7f1d931f",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions_json.cpp",
+      "bytes": 2241,
+      "sha256": "995fedd6e71858d07be975bcb95daa5b1cfd910fc5f90a040e727734a9dd9f84",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions_pins.inc",
+      "bytes": 798,
+      "sha256": "d36c26ac7be7c434851196a024b40e75c55ef75608adee39c7e62f7d61fdc2f4",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions_test.cpp",
+      "bytes": 19276,
+      "sha256": "da38fb0b8a50aa9e048f325c3beaba30ca349b3e1162d4d91c8311db514163ab",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_window_binding_test.cpp",
+      "bytes": 4387,
+      "sha256": "089e3bba5cae7794a93498f55f7df293c4d78fcbd6362aad47e63b6886a5072d",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/holy_site_relic_action_preview_adapter12004.cpp",
+      "bytes": 6157,
+      "sha256": "246644796be2a16319328bd7439351ad7677881fede086d46a49b1aec40088e3",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/holy_site_relic_navigation12004.cpp",
+      "bytes": 8714,
+      "sha256": "597791c1a77b17bc403562b5cb48b16ee0bb14dd02668a4a48cef4f7d558e3b3",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/holy_site_relic_owner_binding_focused_test.cpp",
+      "bytes": 4272,
+      "sha256": "0e29053f3c67ebca115cf7a723c1b1efdd3c9666b0c8bd130ed6b64a55117cfd",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/holy_site_relic_request12004.cpp",
+      "bytes": 2445,
+      "sha256": "cc998a6cb2ef30088759200bad2525614c2f25a44d161b05431321770c98f7ef",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/player_holy_site_relic_action_context_private_transport.py",
+      "bytes": 18084,
+      "sha256": "4a107482a2943108864817575fbc47111271762eb7118028763054e41cfc5ddc",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/relic_action_private_transport.py",
+      "bytes": 22414,
+      "sha256": "3eb97756cfb36629d2a71f89ae88105e809028ada0c01df9840f0594751db386",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_holy_site_relic_actions_12004_native_mcp.py",
+      "bytes": 18490,
+      "sha256": "aff29c93ed8926389617e49af5bf8da911605608c5b55744f359c4fd2d09dfdc",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_player_holy_site_relic_action_context_12004_native_mcp.py",
+      "bytes": 17662,
+      "sha256": "8cc4922fd5f8c233682b4ca0c19d45c3bf0f066e66a1c61e6067f6f9ef898dda",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "tools/relic-action-context-native-packets-contract-a02.json",
+      "bytes": 533,
+      "sha256": "6d5c999799c8002caae9d1f079d1f880e43c6cfbf86c68460959598c0f2cde81",
+      "kind": "owned_new_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "bytes": 452897,
+      "sha256": "b56ede5c8deae46162f6b5e8dd3ed984c3849b49e093df96528f850e76039517",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_religion_mailbox.hpp",
+      "bytes": 6424,
+      "sha256": "819271275fdc19d64f65c3c9177b1ef2dbb5239c47f67d37b9fd2bc3f8bb858b",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_ui_navigation_v1.hpp",
+      "bytes": 10256,
+      "sha256": "041c2cc1527aa6dc381f4342e256a5a713c9c2f20943109b6ea9dc59cc7487ee",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "bytes": 311131,
+      "sha256": "d3b2d512105e6b12d055f39d2a350fdd18780cf2b0c92d2dd4c23e3388ba9ee3",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_religion_mailbox.cpp",
+      "bytes": 32116,
+      "sha256": "485aa3b2c44f9e9ddc09c44b153dfeeb35a58acda93798044a76b90b1209bda9",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_permissions.cpp",
+      "bytes": 19668,
+      "sha256": "ac2b844d49679277f29a9b4ac09ec51377df61efd103da381fb252840118757d",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_permissions_test.cpp",
+      "bytes": 13101,
+      "sha256": "1c45149d30890689e0829f13a3f0d589f6ac5b4be498087c81679602fc4c009e",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "bytes": 117678,
+      "sha256": "3132ab34ba0ab44edf442163643a82dd464d7c76003e944e95e5ec91e2ecbf70",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 248496,
+      "sha256": "5a92bd61381003caff7759367f9a2de38a8c7f0f34b59df041041ed932752b6b",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1578258,
+      "sha256": "296b7d33129c390a7409135b21057117dce5ae0403ebddc7f6477a1abc78ba83",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 852210,
+      "sha256": "7e8f869231e02066a63722c9a7958e592123fae3acec2338e175ffa150e8a3c3",
+      "kind": "combined_common_file"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "bytes": 46512,
+      "sha256": "db482d1e8c88c1ea6a6bd0033fe2ac50197a51026870203d71e690a28207db7b",
+      "kind": "combined_common_file"
+    }
+  ],
+  "source_only_not_live": true,
+  "input_packages": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\DELIVERY-qualified-a02.json",
+      "bytes": 11902,
+      "sha256": "e587b2ad638316b7680e56a9caf403877328ba6848a6b0e713346799b9a4781a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\DELIVERY-window-binding-a01.json",
+      "bytes": 15242,
+      "sha256": "ad039103ad16c226d3bfbdefe27989af043815bf2cf64f05c23d03d9d4080b76"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-action-context-python-qualified-a03.json",
+      "bytes": 5518,
+      "sha256": "45366fcefc5f0529c995ec006a167057d3bc6166d3a842258b998ed5022aeeef"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-actions-python-qualified-a01.json",
+      "bytes": 4199,
+      "sha256": "f0add38388633d19ced1c8a4b826313111174221dd72bea9088720ed3b06e543"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\docs-package-a03.json",
+      "bytes": 7242,
+      "sha256": "6d8104027742159f39909c0021a8e7218767cb187c27192b183a7714a404df93"
+    }
+  ]
+}

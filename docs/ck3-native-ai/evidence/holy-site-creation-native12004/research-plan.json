@@ -1,0 +1,172 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "holy-site-creation-candidates12004",
+  "question": "Which actual stock creation models, selected state and native terms can be exposed to the existing planner without executing creation?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "Existing paused current GetPlayer/UI owner mailbox; Root exclusively owns live CK3. This lane only static source and offline fixtures.",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "Creation window and complete Faith/Title/Artifact IDs only during current paused callback; definition type key separate.",
+    "producer_trigger": "paused-query",
+    "producer": "Original Faith typed OpenGameViewData -> creation SetData builds native models; query reads cached models and final native enabled/tooltip without opening or submitting.",
+    "caller": "Exact4 original publisher B0EB80/factoryB16A50, AA typedFaith; registered enabled/tooltip methods -> original command vtable+30 validator.",
+    "consumer": "Owned production reader/serializer -> existing paused owner religion mailbox -> actual Driver/Service/MCP; new core and SDK qualified with synthetic native I/O only.",
+    "cache_lifetime": "SetData/reset and original selectors rebuild window state/cost. Query neither forces cache refresh nor claims freshness; no pointer survives callback/reload.",
+    "expected_signal": "Complete original native type/barony/artifact models and selected set, original enabled/tooltip and bypass, cached quote separately freshness-unobserved.",
+    "zero_sample_meaning": "No live samples in this lane. Unavailable is unknown, not empty or illegal. Synthetic empty/false remain distinct from unobserved.",
+    "stop_condition": "Source/docs8MiB and own fixture hard64MiB inside admitted shared512MiB; no whole clone/EXE copy, no game/desktop. New source stage under8MiB; no old test replay.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "source",
+      "layer": "source-contract",
+      "path": "source-contract.json",
+      "sha256": "7add888e9607df317b8f9981ab15a34f97723c2c63ed5db31ed949f483f1920b",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Manual exact4 caller/producer/consumer layouts and ownership contract; not live"
+    },
+    {
+      "id": "pins",
+      "layer": "exact-build",
+      "path": "loaded-pins.json",
+      "sha256": "64555e4d708379684ff55c49e04f5489baefedacbd3a44583f6dd716daa6fb09",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Twenty-three exact cached byte prefixes used by production loaded-image guard"
+    },
+    {
+      "id": "sdk",
+      "layer": "offline-fixture",
+      "path": "query-qualification.json",
+      "sha256": "19f22a4d9e5402d57afa7119a62583faf0c02970709701e6d35a4f8ba71f1c18",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual production reader and real MCP consumer qualification with synthetic native I/O; no game"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "entry",
+      "label": "Stock creation GUI"
+    },
+    {
+      "id": "models",
+      "label": "Original candidate producers"
+    },
+    {
+      "id": "selection",
+      "label": "Actual selected type/barony/artifact set"
+    },
+    {
+      "id": "terms",
+      "label": "Original quote and final enabled predicate"
+    },
+    {
+      "id": "wire",
+      "label": "Existing owner mailbox to real MCP"
+    },
+    {
+      "id": "create",
+      "label": "Creation command - excluded"
+    },
+    {
+      "id": "live",
+      "label": "Future actual native candidates and terms"
+    }
+  ],
+  "edges": [
+    {
+      "id": "producer",
+      "from": "entry",
+      "to": "models",
+      "label": "Creation source models",
+      "status": "static-confirmed",
+      "evidence": [
+        "source"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "selected",
+      "from": "models",
+      "to": "selection",
+      "label": "Original selectors",
+      "status": "static-confirmed",
+      "evidence": [
+        "source"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "legality",
+      "from": "selection",
+      "to": "terms",
+      "label": "Native full selected context",
+      "status": "static-confirmed",
+      "evidence": [
+        "source"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "transport",
+      "from": "terms",
+      "to": "wire",
+      "label": "Production owner mailbox and actual MCP; offline fixture qualified",
+      "status": "static-confirmed",
+      "evidence": [
+        "source",
+        "sdk"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "final",
+      "from": "terms",
+      "to": "create",
+      "label": "Actual creation and world transition excluded",
+      "status": "unknown",
+      "evidence": [
+        "source"
+      ],
+      "open_question": "Original callback located, but no Create submit or actual world postcondition in scope."
+    },
+    {
+      "id": "live-sample",
+      "from": "wire",
+      "to": "live",
+      "label": "Future cold-load native observation",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "No actual live creation-window sample, visibility or selection acquired; query offline qualification is separate."
+    }
+  ],
+  "cases": [
+    {
+      "id": "native-models",
+      "question": "What candidates/selected tuple does the loaded original window actually return for current player Faith?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "native-terms",
+      "question": "What final original enabled, bypass, refusal and cached quote are read in that same native frame?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "create-world",
+      "question": "Does a stock Create commit and material world transition occur?",
+      "status": "not-applicable",
+      "evidence": [],
+      "reason": "Current task exposes read-only planning and separately opted-in typed UI selection only; Create excluded."
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:07:57.264160+00:00"
+}

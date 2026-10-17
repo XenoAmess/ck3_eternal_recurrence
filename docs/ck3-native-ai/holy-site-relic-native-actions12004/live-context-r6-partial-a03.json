@@ -1,0 +1,213 @@
+{
+  "schema": "ck3_relic_permissions_r6_actual_partial_planning_input_a03_v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-17T14:25:20.424074+00:00",
+  "source_started_at_utc": "2026-10-17T14:05:34.781657+00:00",
+  "source_finished_at_utc": "2026-10-17T14:05:35.200388+00:00",
+  "source_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-baghdad14-relic-permissions64-a01.json",
+    "bytes": 40315,
+    "sha256": "8b2fed0a78ef7769c4d618401cae6a027d0a2d5fa5764fbc2e41320958b0e08c"
+  },
+  "receipt_embedded_machine_id": null,
+  "machine_binding": {
+    "basis": "explicit matching R6 identity_allocation and Root direct-review machine_id/run_id; exact frozen argv SHA; retained actual bridge PID matches receipt diagnostics; not inferred from path",
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\frozen-argv.json",
+      "bytes": 26632,
+      "sha256": "2a709ef74b89792a1cb58c1e6521e46ba2438a1e9d51295d32f957da09cdf843"
+    },
+    "root_run_direct_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\steam-offline-direct-review.json",
+      "bytes": 1565,
+      "sha256": "67cd259ca74b7dc6124400c30d072b81cefaa63c1bd0cb3d57b71729141f9948"
+    },
+    "retained_process_identity": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\case-output\\retained-current-process-identity.json",
+      "bytes": 109,
+      "sha256": "2c3ee03e4f79966e28dea3849e3bbeb310e364e06eaab949910dc72ad7ef6f6f"
+    },
+    "run_id": "4-8e1c2f1861--faith-and-power--R0006",
+    "bridge_pid": 21920,
+    "bridge_create_time": 1792244644.324554
+  },
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "backend_id": "ck3-1.20.0.4-native-player-holy-site-relic-permissions-v1",
+  "frame": {
+    "capture_epoch": 121374,
+    "date_raw": 51394920,
+    "played_character_id": 15893,
+    "player_faith_id": 50,
+    "queried_snapshot_id": "native:5",
+    "queried_revision": 6,
+    "queried_native_revision": 5,
+    "snapshot_revision": 5
+  },
+  "requested_holy_site_id": 14,
+  "requested_artifact_id": 64,
+  "loaded_source_pins_verified": true,
+  "site_inventory_slots": {
+    "available": true,
+    "slots": [
+      {
+        "slot_index": 0,
+        "artifact_id": 64
+      },
+      {
+        "slot_index": 1,
+        "artifact_id": null
+      },
+      {
+        "slot_index": 2,
+        "artifact_id": null
+      }
+    ],
+    "unavailable_reason": null
+  },
+  "player_inventory": {
+    "available": true,
+    "artifact_ids": [
+      188,
+      189,
+      237,
+      267,
+      277
+    ],
+    "native_character_owner_id": 15893,
+    "native_holy_site_owner_id": null,
+    "owner_matches_player": true,
+    "unavailable_reason": null
+  },
+  "current_candidates": {
+    "available": true,
+    "artifact_ids": [
+      237,
+      267,
+      277
+    ],
+    "evaluations": [
+      {
+        "artifact_id": 188,
+        "object_resolved": true,
+        "available": true,
+        "predicate_called": true,
+        "can_be_candidate": false,
+        "unavailable_reason": null
+      },
+      {
+        "artifact_id": 189,
+        "object_resolved": true,
+        "available": true,
+        "predicate_called": true,
+        "can_be_candidate": false,
+        "unavailable_reason": null
+      },
+      {
+        "artifact_id": 237,
+        "object_resolved": true,
+        "available": true,
+        "predicate_called": true,
+        "can_be_candidate": true,
+        "unavailable_reason": null
+      },
+      {
+        "artifact_id": 267,
+        "object_resolved": true,
+        "available": true,
+        "predicate_called": true,
+        "can_be_candidate": true,
+        "unavailable_reason": null
+      },
+      {
+        "artifact_id": 277,
+        "object_resolved": true,
+        "available": true,
+        "predicate_called": true,
+        "can_be_candidate": true,
+        "unavailable_reason": null
+      }
+    ],
+    "method": "original_native_candidate_predicate_over_current_player_inventory",
+    "producer_invoked": false,
+    "unavailable_reason": null
+  },
+  "artifact_permissions": {
+    "available": false,
+    "object_resolved": true,
+    "artifact_id": 64,
+    "native_holy_site_owner_id": 14,
+    "rarity_level": 2,
+    "player_inventory_contains_reference": false,
+    "can_enshrine": {
+      "available": false,
+      "value": null,
+      "unavailable_reason": "native_permission_not_read"
+    },
+    "can_remove": {
+      "available": false,
+      "value": null,
+      "unavailable_reason": "native_permission_not_read"
+    },
+    "slot_context": "current_holy_site_window",
+    "unavailable_reason": "requested_site_window_context_unavailable"
+  },
+  "window_context": {
+    "available": false,
+    "root_present": null,
+    "selected_holy_site_id": null,
+    "selected_artifact_id": null,
+    "slot_mode": "unknown",
+    "selected_slot_index": null,
+    "selected_slot_artifact_id": null,
+    "cached_candidates": {
+      "available": false,
+      "artifact_ids": null,
+      "refresh_time_known": false,
+      "producer_invoked": false,
+      "unavailable_reason": "window_candidate_cache_not_read"
+    },
+    "unavailable_reason": "holy_site_window_registered_owner_unavailable"
+  },
+  "current_buttons": {
+    "available": false,
+    "selected_artifact_id": null,
+    "context_matches_requested_artifact": null,
+    "can_enshrine": {
+      "available": false,
+      "value": null,
+      "unavailable_reason": "native_permission_not_read"
+    },
+    "can_remove": {
+      "available": false,
+      "value": null,
+      "unavailable_reason": "native_permission_not_read"
+    },
+    "unavailable_reason": "requested_site_window_context_unavailable"
+  },
+  "evaluation_context": {
+    "native_getter_calls": 6,
+    "getter_backend": "source_bound_native_getter",
+    "owner_thread_requirement": "existing_religion_owner_callback",
+    "gameplay_command_submitted": false,
+    "world_cache_written": false,
+    "window_selection_written": false,
+    "window_candidate_cache_written": false,
+    "script_evaluation_allocates_and_uses_tls": true,
+    "inventory_getter_may_initialize_static_context": true,
+    "script_rng_effects_verified": false,
+    "script_rng_effects": "unknown"
+  },
+  "action_ready": false,
+  "planning_conclusion": {
+    "consider_current_player_owned_artifacts_before_removing_existing_site_relic": true,
+    "candidate_true_scope": "site14 current county-holder-faith original native candidate predicate over player inventory",
+    "site32_candidate_permission_or_preview_observed_by_this_receipt": false,
+    "artifact64_is_player_owned": false,
+    "native_CanEnshrine_or_CanRemove_observed": false,
+    "current_button_permission_observed": false,
+    "any_enshrine_permitted_or_completed_conclusion": false,
+    "window_binding_probe_result_observed": false,
+    "window_binding_fix_confirmed": false
+  },
+  "scope": "Actual R6 partial only. No new game call, no extrapolation to final permission or source-candidate action live qualification."
+}

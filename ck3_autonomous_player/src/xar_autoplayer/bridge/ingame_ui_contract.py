@@ -12,11 +12,15 @@ NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
 NAVIGATE_CAPABILITY = "game.command.navigate-ingame-ui-v1"
 QUERY_CAPABILITY = "game.command.query-ingame-ui-window-v1"
-KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith"}
+KINDS = {"character", "army", "combat", "knights", "holy_site", "holy_site_adoption", "faith", "holy_site_creation"}
 OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat": "combat", "open_knights": "knights",
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army", "open_holy_site":"holy_site",
-              "open_holy_site_adoption":"holy_site", "confirm_site_adoption":"holy_site_adoption", "open_faith":"faith"}
+              "open_holy_site_adoption":"holy_site", "confirm_site_adoption":"holy_site_adoption", "open_faith":"faith",
+              "open_holy_site_creation":"holy_site_creation",
+              "select_holy_site_creation_type":"holy_site_creation",
+              "select_holy_site_creation_barony":"holy_site_creation",
+              "set_holy_site_creation_artifact_selection":"holy_site_creation"}
 ARMY_TOOLTIP_KINDS = {"supply_state", "attrition"}
 _CURRENT_ARMY_BUILDS = (CK3_12003, CK3_12004)
 
@@ -24,7 +28,12 @@ _CURRENT_ARMY_BUILDS = (CK3_12003, CK3_12004)
 def validate_ui_request(operation: str, kind: str, subject_id: int, revision: int, *,
                         army_tooltip_kind: str | None = None,
                         army_tooltip_receipt: str | None = None,
-                        holy_site_action: HolySiteDecisionActionV1 | None = None) -> None:
+                        holy_site_action: HolySiteDecisionActionV1 | None = None,
+                        holy_site_creation_type_key: str | None = None,
+                        holy_site_creation_selected: bool | None = None) -> None:
+    from .holy_site_creation_ui_contract import validate_creation_ui_fields
+    validate_creation_ui_fields(operation, kind, subject_id,
+        type_key=holy_site_creation_type_key, selected=holy_site_creation_selected)
     if holy_site_action is not None:
         normalize_holy_site_decision_action_v1(holy_site_action)
         if operation not in {"open_holy_site_adoption", "confirm_site_adoption"} or army_tooltip_kind is not None or army_tooltip_receipt is not None:
@@ -48,6 +57,8 @@ def validate_ui_request(operation: str, kind: str, subject_id: int, revision: in
         return
     if army_tooltip_receipt is not None or operation in {"hover_army_tooltip", "leave_army_tooltip"}:
         raise ValueError("army tooltip operation/receipt requires its semantic kind")
+    if kind == "holy_site_creation":
+        return
     if operation in {"query", "open_knights"}:
         if subject_id != 0:
             raise ValueError("this operation has no caller-selected subject")
@@ -88,6 +99,11 @@ def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: st
                             army_tooltip_kind: str | None = None) -> None:
     if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
+    if kind == "holy_site_creation":
+        from .holy_site_creation_ui_contract import OPERATIONS
+        if build != CK3_12004 or operation not in OPERATIONS | {"query"} or army_tooltip_kind is not None:
+            raise ValueError("creation presentation requires its fixed exact4 UI routes")
+        return
     if kind == "holy_site":
         if build != CK3_12004 or operation not in {"query", "open_holy_site", "open_holy_site_adoption"} or army_tooltip_kind is not None:
             raise ValueError("HolySite presentation requires exact 1.20.0.4")
@@ -115,7 +131,10 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                          expected_build: NativeBuildIdentity = CK3_11906,
                          army_tooltip_kind: str | None = None,
                          army_tooltip_receipt: str | None = None,
-                         holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
+                         holy_site_action: HolySiteDecisionActionV1 | None = None,
+                         holy_site_creation_type_key: str | None = None,
+                         holy_site_creation_selected: bool | None = None,
+                         creation_context_snapshot: Mapping[str, object] | None = None) -> dict[str, object]:
     validate_ui_build_scope(expected_build, operation, kind, army_tooltip_kind=army_tooltip_kind)
     if holy_site_action is not None:
         normalize_holy_site_decision_action_v1(holy_site_action)
@@ -190,6 +209,9 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             expected_pending = army_tooltip_kind is not None
             if value.get("status") != "observed" or value["dispatch_invoked"] or value["verification_pending"] != expected_pending:
                 raise ValueError("query result must be independent and read only")
+        elif kind == "holy_site_creation":
+            if value["verification_pending"] or value.get("status") not in {"ui_selection_verified", "already_selected_verified"}:
+                raise ValueError("creation UI success needs actual selected-state verification")
         elif not value["verification_pending"] or value.get("status") not in {
             "acknowledged_verification_pending", "already_visible_verification_pending", "already_layout_fitted_verification_pending"
         }:
@@ -199,7 +221,9 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         if kind == "knights" and (not value["subject_id_available"] or value["owner_character_id"] != actor_id
                                   or value["current_subject_id"] != actor_id):
             raise ValueError("knights UI owner is not the played actor")
-    elif value.get("status") != "unavailable" or not isinstance(value.get("unavailable_reason"), str) or not value["unavailable_reason"]:
+    elif not (kind == "holy_site_creation" and value.get("status") == "verification_pending"
+            and value["verification_pending"] and value.get("native_dispatch_attempted") is True) and (
+            value.get("status") != "unavailable" or not isinstance(value.get("unavailable_reason"), str) or not value["unavailable_reason"]):
         raise ValueError("unavailable native UI needs an explicit reason")
     tree = value.get("tree")
     if not isinstance(tree, dict) or type(tree.get("truncated")) is not bool or type(tree.get("root_available")) is not bool:
@@ -210,11 +234,12 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         raise ValueError("native census count/bound mismatch")
     current4_character_query = expected_build == CK3_12004 and kind == "character"
     current4_faith = expected_build == CK3_12004 and kind == "faith"
+    current4_creation = expected_build == CK3_12004 and kind == "holy_site_creation"
     current4_holy_site = expected_build == CK3_12004 and kind in {"holy_site", "holy_site_adoption"}
-    expected_window = "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
+    expected_window = "holy_site_creation_window" if current4_creation else "decisiondetail_view" if kind=="holy_site_adoption" else "holy_site_window" if current4_holy_site else "character_window" if current4_character_query else "faith_window" if current4_faith else "army_window"
     if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != expected_window:
         raise ValueError("current native UI window name differs from the admitted kind")
-    if current4_character_query or current4_faith:
+    if current4_character_query or current4_faith or current4_creation:
         if type(value.get("native_dispatch_attempted")) is not bool:
             raise ValueError("typed presentation dispatch attempt is missing")
         if operation == "query" and value["native_dispatch_attempted"]:
@@ -223,7 +248,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
             raise ValueError("typed presentation original invocation lacks consumed attempt")
         if value["native_army_id"] != 0 or value["owner_character_id_available"]:
             raise ValueError("typed presentation cannot claim Army or selected Unit owner")
-    if current4_faith and value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
+    if (current4_faith or current4_creation) and value["subject_id_available"] and not 0 <= value["current_subject_id"] < 2**32 - 1:
         raise ValueError("current Faith window requires a complete Faith ID")
     if current4_character_query:
         if value["subject_id_available"] and not 0 < value["current_subject_id"] < 2**32 - 1:
@@ -335,6 +360,11 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     normalize_combat_geometry(value,operation=operation,kind=kind)
     normalize_army_tooltip_result(value, operation=operation, subject_id=subject_id,
         tooltip_kind=army_tooltip_kind, action_receipt=army_tooltip_receipt)
+    if current4_creation:
+        from .holy_site_creation_ui_contract import validate_creation_ui_result
+        validate_creation_ui_result(value, operation=operation, subject_id=subject_id,
+            type_key=holy_site_creation_type_key, selected=holy_site_creation_selected,
+            snapshot=creation_context_snapshot)
     return dict(value)
 
 

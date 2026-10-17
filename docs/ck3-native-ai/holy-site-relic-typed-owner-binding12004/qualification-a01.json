@@ -1,0 +1,89 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:31:10.215156+00:00",
+  "schema": "ck3_holy_site_relic_typed_window_owner_repair_v1",
+  "status": "PASS_OFFLINE_FOCUSED_PRODUCTION_HELPER_AND_FULL_FORMATTERS_NOT_LIVE_RETESTED",
+  "all_passed": true,
+  "focused_checks": 10,
+  "full_native_packets": 7,
+  "producer": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui03\\xar_relic_owner12004_test.exe",
+    "bytes": 173568,
+    "sha256": "eaf6f0957e9d42129a7c12755734049e2fb6f3c3fe4b9755769bbbe684538b24"
+  },
+  "source_freeze": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\source-freeze.json",
+    "bytes": 2654,
+    "sha256": "2abf3986fdb1b7afa259c310c833ab6dfb342ed9689fa1830518f9666107c755"
+  },
+  "native_result": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\result.json",
+    "bytes": 5287,
+    "sha256": "90139451d5e623dd92441a26f2eb369023eb22ea3848bdcbd7d0720b1b558712"
+  },
+  "consumer_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\consumer-manifest.json",
+    "bytes": 9295,
+    "sha256": "dccbdae30d952d40ebb20cf91b7e9f12ee1c8ccb208ec076646ffed3385fa2c1"
+  },
+  "all_seven_packets_unchanged": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\all-seven-packets-identity.json",
+    "bytes": 2917,
+    "sha256": "9800918fc94477c4c0ce4b41907e695e80542a6c7b321233ca4fd96ab39e9312"
+  },
+  "real_R6_probe": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\r6-live-process-read-a01.json",
+    "bytes": 33452,
+    "sha256": "95f98799b0581dece92315205cca759c3deeb0ec5b84d77683db00b01340e7af"
+  },
+  "source_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\window-binding-source-review-a03.json",
+    "bytes": 9516,
+    "sha256": "f8dc08be97f16b7f8e5cd4dadb2765172d0db596a528fde99f6cbd4c83860f41"
+  },
+  "source_packets": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-constructor-existing.json",
+      "bytes": 13793,
+      "sha256": "6f7f1414241343d18adc749cdf2b1fc765bc3988348bbffffb784e2d431421fa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-publication-existing.json",
+      "bytes": 6295,
+      "sha256": "f42d6893ed61c9cc50589c3216a6d5fdae05e15ea9c2376d0cc4c6c6442a765f"
+    }
+  ],
+  "original_constructor": {
+    "rva": "17D4D40..17D4EF4",
+    "body_sha256": "557bf8c919fba2b2a33fe033559d19005a96dc864bd102b853a2bda038b67cc4",
+    "meaning": "RDX -> window+98; R8 -> window+A0"
+  },
+  "original_publication": {
+    "rva": "B0EA60..B0EAEC",
+    "body_sha256": "7cf9e39b3ccf01c25e77c514e0cc45244a753415fe872cae314426c2c06ce465",
+    "meaning": "handler+40 -> RDX; handler -> R8; constructor -> handler+5D8"
+  },
+  "old_producers_preserved": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui01\\xar_relic_ui12004_isolated_packet_test.exe",
+      "bytes": 180736,
+      "sha256": "5564919d6455f8e40ccadb444bde8f69d3d7c3f0a7c2098ca333257084a08eaf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui02\\xar_relic_owner12004_test.exe",
+      "bytes": 173568,
+      "sha256": "148bfc5d60878ec1128fe5fe4ea22c67acaed6976828d1cf287f0e0ae32ef317"
+    }
+  ],
+  "old_frozen_ui_stage_preserved": true,
+  "old_30_check_matrix_executed": false,
+  "original_engine_code_executed": false,
+  "full_dll_linked": false,
+  "live_getter_or_action_qualified": false,
+  "business_outcome_observed": false,
+  "action_ready": false,
+  "after_dispatch_owner_drift": "ACK retained; selection postcondition unknown; verification pending; do not retry",
+  "python_MCP_scope": "Sibling real consumer is qualified separately; a01-to-a02 reuse requires exact seven packet hashes in the identity receipt",
+  "evidence_review_at_utc": "2026-10-24T14:31:10.215156+00:00",
+  "derived_build_review": "Review within48h of Root integration; preserve active unresolved-input evidence, reclaim reconstructible derived outputs per common storage policy"
+}

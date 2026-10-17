@@ -1,0 +1,627 @@
+{
+  "schema": "faith-e01-r0006-planner-observations-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:36:33.088848+00:00",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0006",
+  "scope": "Frozen R6 receipts through window diagnostics14:18 and media index14:21; phase snapshot, not whole-product acceptance",
+  "run_binding": {
+    "source_commit": "3d7a9f11d8fae7ca6465509a55c3999f571f1970",
+    "pid": 21920,
+    "connection_generation": 1,
+    "actor_id": 15893,
+    "date_raw": 51394920,
+    "game": {
+      "version": "1.20.0.4",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+    },
+    "native_dll_pin_from_frozen_manifest": {
+      "path_key": "dll",
+      "bytes": 13633024,
+      "sha256": "5482752bd8f0b3b575c663e1eabd80afb652c46004d1b4c0e3d57055f42fd202"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r6-a01\\manifest.json",
+      "bytes": 5008,
+      "sha256": "8efec81b54fe536e9cc602e956eca4bab767eef149d42aae7e889255a9a01bff"
+    },
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\frozen-argv.json",
+      "bytes": 26632,
+      "sha256": "2a709ef74b89792a1cb58c1e6521e46ba2438a1e9d51295d32f957da09cdf843"
+    }
+  },
+  "preparation": {
+    "fixture_version": "0.2.0",
+    "source_delivery": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\funded-replan-v2\\DELIVERY.json",
+      "bytes": 2855,
+      "sha256": "9bc1daed68fbf8a162c2c85cfacf4f99c1cac8cad6a726c0c7cf586c13e28663"
+    },
+    "inherited_extra_piety_from_F": 2000,
+    "this_B_extra_piety": 3000,
+    "cumulative_extra_piety": 5000,
+    "R5_cumulative_extra_piety": 2000,
+    "original_inputs_unchanged": true,
+    "before": {
+      "frame": {
+        "snapshot_id": "native:2",
+        "public_revision": 3,
+        "native_revision": 2,
+        "date_raw": 51394920,
+        "actor_id": 15893
+      },
+      "piety_wallet": {
+        "raw": 225000000,
+        "scale": 100000
+      },
+      "devotion_total_raw": 300000000,
+      "effective_level": 3,
+      "rite_id": 13,
+      "faith_id": 50,
+      "faith_main_rite_id": 13,
+      "raw_scale": 100000
+    },
+    "after": {
+      "frame": {
+        "snapshot_id": "native:3",
+        "public_revision": 4,
+        "native_revision": 3,
+        "date_raw": 51394920,
+        "actor_id": 15893
+      },
+      "piety_wallet": {
+        "raw": 525000000,
+        "scale": 100000
+      },
+      "devotion_total_raw": 600000000,
+      "effective_level": 4,
+      "rite_id": 15,
+      "faith_id": 50,
+      "faith_main_rite_id": 13,
+      "raw_scale": 100000
+    },
+    "causal_limit": "Combined add-resource and personal-Rite preparation; no isolated single-factor trial.",
+    "spiritual_fulfillment_raw_before_after": [
+      2000000,
+      2000000
+    ]
+  },
+  "adoption": {
+    "before_packet": "r6-before-adopt-detail-a01",
+    "confirm_packet": "r6-confirm-adoption-once-a01",
+    "ordinary_can_confirm": true,
+    "bypass_requirements_raw": 0,
+    "native_resource_quote": {
+      "raw_scale": 100000,
+      "resource_vector_raw": [
+        0,
+        0,
+        100000000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costs_raw": {
+        "gold": 0,
+        "prestige": 0,
+        "piety": 100000000,
+        "treasury": 0
+      },
+      "native_affordable": true
+    },
+    "ack_business_outcome_observed": false,
+    "ack_attached_piety_wallet": {
+      "raw": 525000000,
+      "scale": 100000
+    },
+    "independent_after_piety_wallet": {
+      "raw": 425000000,
+      "scale": 100000
+    },
+    "before_faith_holy_site_ids": [
+      26,
+      27,
+      0,
+      14,
+      29
+    ],
+    "after_faith_holy_site_ids": [
+      26,
+      27,
+      0,
+      14,
+      29,
+      32
+    ],
+    "after_site32": {
+      "available": true,
+      "holy_site_id": 32,
+      "type_key": "nadjaf",
+      "barony_title_id": 6650,
+      "associated_faiths": [
+        {
+          "faith_id": 51,
+          "available": true,
+          "faith_lists_site": true,
+          "eminent": true,
+          "unavailable_reason": null
+        },
+        {
+          "faith_id": 50,
+          "available": true,
+          "faith_lists_site": true,
+          "eminent": false,
+          "unavailable_reason": null
+        }
+      ],
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 32,
+        "native_holy_site_owner_id": 32,
+        "native_character_owner_id": null,
+        "artifact_ids": [],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      },
+      "unavailable_reason": null
+    },
+    "ordinary_membership_observed": true,
+    "Faith51_before_grade_observed": false,
+    "site32_before_inventory_observed_in_these_packets": false,
+    "after_adoption_devotion_observed_in_these_packets": false,
+    "cooldown": {
+      "decision_key": "adopt_holy_site_decision",
+      "present": true,
+      "expiry_raw": 51438720,
+      "current_counter_raw": 51394920,
+      "active": true,
+      "counter_unit": "native_decision_clock_counter",
+      "calendar_conversion_observed": false
+    },
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r6-a01\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 50210503,
+      "sha256": "7bd48c5eb8c51a24badd02ba57cb030dba3526da4483479ae9adc231cea7ea7e",
+      "date_raw": 51394920,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 9,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "frozen_C2_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\C2-nadjaf-adopted-funded.ck3.json",
+      "bytes": 546,
+      "sha256": "c30a6f43035dacc9771c64ca443f1d4ceb3c75c8dbd512d33b0134beb6950d31",
+      "content": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T14:03:28.219596+00:00",
+        "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r6-a01\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "destination": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\C2-nadjaf-adopted-funded.ck3",
+        "bytes": 50210503,
+        "sha256": "7bd48c5eb8c51a24badd02ba57cb030dba3526da4483479ae9adc231cea7ea7e",
+        "source_sha256": "7bd48c5eb8c51a24badd02ba57cb030dba3526da4483479ae9adc231cea7ea7e"
+      }
+    }
+  },
+  "presentation": {
+    "faith_open": {
+      "status": "acknowledged_verification_pending",
+      "requested_subject_id": 50,
+      "current_subject_id": 0,
+      "effective_visible": false,
+      "verification_pending": true
+    },
+    "faith_independent_query": {
+      "status": "observed",
+      "current_subject_id": 50,
+      "effective_visible": true,
+      "dispatch_invoked": false
+    },
+    "character_open_wire": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\native-report.mcp-calls.jsonl",
+      "only_two_lines_hashed_not_growing_full_log": true,
+      "records": [
+        {
+          "line_number": 1263,
+          "line_bytes": 233,
+          "line_sha256": "756f857c9e40ae783e342369e12628fa4943db1b86afa81a0bac46b45e817061",
+          "at_utc": "2026-10-17T14:05:29.845216+00:00",
+          "direction": "request",
+          "arguments": {
+            "character_id": 15893,
+            "expected_revision": 6
+          }
+        },
+        {
+          "line_number": 1264,
+          "line_bytes": 1179240,
+          "line_sha256": "be4478eaca05b0a8b0ce308cda2a4629af63de7a57a189e36ce8d99b5b2c174a",
+          "at_utc": "2026-10-17T14:05:30.619209+00:00",
+          "direction": "response",
+          "arguments": {
+            "character_id": 15893,
+            "expected_revision": 6
+          },
+          "selected_payload": {
+            "status": "acknowledged_verification_pending",
+            "accepted": true,
+            "available": true,
+            "window_kind": "character",
+            "requested_subject_id": 15893,
+            "current_subject_id": 0,
+            "dispatch_invoked": true,
+            "native_dispatch_attempted": true,
+            "verification_pending": true
+          }
+        }
+      ]
+    },
+    "character_independent_query": {
+      "status": "observed",
+      "current_subject_id": 15893,
+      "effective_visible": true,
+      "dispatch_invoked": false
+    },
+    "faith_holy_site_tab_observed": false
+  },
+  "actual_gaps": {
+    "promote": {
+      "packet": "r6-open-promote32-Emax-a01",
+      "unavailable_reason": "entry_parameter_self_declaration_unavailable",
+      "native_dispatch_attempted": false,
+      "original_Emax_business_rejection_observed": false,
+      "confirm_performed": false
+    },
+    "relic": {
+      "packet": "r6-baghdad14-relic-permissions64-a01",
+      "player_inventory": {
+        "available": true,
+        "artifact_ids": [
+          188,
+          189,
+          237,
+          267,
+          277
+        ],
+        "native_character_owner_id": 15893,
+        "native_holy_site_owner_id": null,
+        "owner_matches_player": true,
+        "unavailable_reason": null
+      },
+      "current_candidates": {
+        "available": true,
+        "artifact_ids": [
+          237,
+          267,
+          277
+        ],
+        "evaluations": [
+          {
+            "artifact_id": 188,
+            "object_resolved": true,
+            "available": true,
+            "predicate_called": true,
+            "can_be_candidate": false,
+            "unavailable_reason": null
+          },
+          {
+            "artifact_id": 189,
+            "object_resolved": true,
+            "available": true,
+            "predicate_called": true,
+            "can_be_candidate": false,
+            "unavailable_reason": null
+          },
+          {
+            "artifact_id": 237,
+            "object_resolved": true,
+            "available": true,
+            "predicate_called": true,
+            "can_be_candidate": true,
+            "unavailable_reason": null
+          },
+          {
+            "artifact_id": 267,
+            "object_resolved": true,
+            "available": true,
+            "predicate_called": true,
+            "can_be_candidate": true,
+            "unavailable_reason": null
+          },
+          {
+            "artifact_id": 277,
+            "object_resolved": true,
+            "available": true,
+            "predicate_called": true,
+            "can_be_candidate": true,
+            "unavailable_reason": null
+          }
+        ],
+        "method": "original_native_candidate_predicate_over_current_player_inventory",
+        "producer_invoked": false,
+        "unavailable_reason": null
+      },
+      "window_context": {
+        "available": false,
+        "root_present": null,
+        "selected_holy_site_id": null,
+        "selected_artifact_id": null,
+        "slot_mode": "unknown",
+        "selected_slot_index": null,
+        "selected_slot_artifact_id": null,
+        "cached_candidates": {
+          "available": false,
+          "artifact_ids": null,
+          "refresh_time_known": false,
+          "producer_invoked": false,
+          "unavailable_reason": "window_candidate_cache_not_read"
+        },
+        "unavailable_reason": "holy_site_window_registered_owner_unavailable"
+      },
+      "artifact_permissions": {
+        "available": false,
+        "object_resolved": true,
+        "artifact_id": 64,
+        "native_holy_site_owner_id": 14,
+        "rarity_level": 2,
+        "player_inventory_contains_reference": false,
+        "can_enshrine": {
+          "available": false,
+          "value": null,
+          "unavailable_reason": "native_permission_not_read"
+        },
+        "can_remove": {
+          "available": false,
+          "value": null,
+          "unavailable_reason": "native_permission_not_read"
+        },
+        "slot_context": "current_holy_site_window",
+        "unavailable_reason": "requested_site_window_context_unavailable"
+      },
+      "current_buttons": {
+        "available": false,
+        "selected_artifact_id": null,
+        "context_matches_requested_artifact": null,
+        "can_enshrine": {
+          "available": false,
+          "value": null,
+          "unavailable_reason": "native_permission_not_read"
+        },
+        "can_remove": {
+          "available": false,
+          "value": null,
+          "unavailable_reason": "native_permission_not_read"
+        },
+        "unavailable_reason": "requested_site_window_context_unavailable"
+      },
+      "action_ready": false,
+      "evaluation_context": {
+        "native_getter_calls": 6,
+        "getter_backend": "source_bound_native_getter",
+        "owner_thread_requirement": "existing_religion_owner_callback",
+        "gameplay_command_submitted": false,
+        "world_cache_written": false,
+        "window_selection_written": false,
+        "window_candidate_cache_written": false,
+        "script_evaluation_allocates_and_uses_tls": true,
+        "inventory_getter_may_initialize_static_context": true,
+        "script_rng_effects_verified": false,
+        "script_rng_effects": "unknown"
+      },
+      "beneficiaries_observed": false
+    }
+  },
+  "media": {
+    "source_index": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\r6-media-increment-a01\\R6-MEDIA-SOURCE-INCREMENT.json",
+      "bytes": 17270,
+      "sha256": "eeca63cca72d900131baffce52065f906217ee79b22d53a4461dc574789abfcf"
+    },
+    "observed_at_utc": "2026-10-17T14:21:17.337709+00:00",
+    "take01_seconds": 120,
+    "take01_first_frame_epoch_utc": "2026-10-17T13:54:08.268088+00:00",
+    "take01_last_frame_estimated_utc": "2026-10-17T13:56:08.235088+00:00",
+    "B_and_adoption_inside_take01": false,
+    "take02_seconds": 55.866,
+    "take02_frames": 1112,
+    "new_context_candidate_seconds": 32,
+    "formal_first_episode_complete": false,
+    "human_full_1x_review_performed": false,
+    "clean_span_certified": false,
+    "media_files_rehashed_by_this_consumer": false,
+    "media_redecoded_by_this_consumer": false,
+    "new_context_candidate_seconds_is_declaration_not_recomputed_total": true,
+    "listed_take02_editorial_interval_seconds": [
+      8,
+      6,
+      10
+    ],
+    "listed_take02_editorial_sum_seconds": 24,
+    "declared_minus_listed_seconds": 8,
+    "remaining8_seconds_interval_frozen_in_source_index": false,
+    "editorial_total_independently_verified": false
+  },
+  "qualification_boundary": {
+    "research_holder": true,
+    "whole_product_pass": false,
+    "R6_normal_exit_observed_at_this_snapshot": false,
+    "R7_started_by_this_consumer": false,
+    "Robert_campaign_credit_delta": 0,
+    "large_save_files_rehashed_by_this_consumer": false,
+    "main_tree_modified_by_this_consumer": false,
+    "game_actions_by_this_consumer": false
+  },
+  "sources": {
+    "r6-initial-snapshot": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-initial-snapshot.json",
+      "bytes": 69419,
+      "sha256": "003a4b8030c80357b0487916352279ca21cc418c9c5d9f85f4ca4d81bc8e6760",
+      "tool": "ck3_take_snapshot",
+      "started_at_utc": "2026-10-17T13:49:03.949334+00:00",
+      "finished_at_utc": "2026-10-17T13:49:04.152769+00:00"
+    },
+    "r6-before-B-event-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-before-B-event-a01.json",
+      "bytes": 76948,
+      "sha256": "ff9252beea8b93bf484765df8bc9827937bd659456ad30469dc76bf6c8b17e30",
+      "tool": "ck3_query_current_event_window_context_v1",
+      "started_at_utc": "2026-10-17T14:00:39.706987+00:00",
+      "finished_at_utc": "2026-10-17T14:00:39.991798+00:00"
+    },
+    "r6-before-B-religion-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-before-B-religion-a01.json",
+      "bytes": 53513,
+      "sha256": "e3ff7699678c2db4a09adbc78a82e7dafd4bee944594a427d6d582b146aab6ac",
+      "tool": "ck3_query_player_religion_context_v1",
+      "started_at_utc": "2026-10-17T14:00:40.147215+00:00",
+      "finished_at_utc": "2026-10-17T14:00:40.427449+00:00"
+    },
+    "r6-after-B-religion-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-after-B-religion-a01.json",
+      "bytes": 53764,
+      "sha256": "10e84e9ba8e8b7a2754691cc932ab113bb310e42d0695656c7b3fb82afdc6cc2",
+      "tool": "ck3_query_player_religion_context_v1",
+      "started_at_utc": "2026-10-17T14:01:20.874388+00:00",
+      "finished_at_utc": "2026-10-17T14:01:21.073300+00:00"
+    },
+    "r6-select-prepared-B-once-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-select-prepared-B-once-a01.json",
+      "bytes": 37677,
+      "sha256": "3def2cc4d1ff0a27f1b7de673e74883e44b877d34c11f3ca4d319e6df4282c32",
+      "tool": "ck3_select_event_option",
+      "started_at_utc": "2026-10-17T14:01:19.838320+00:00",
+      "finished_at_utc": "2026-10-17T14:01:20.367191+00:00"
+    },
+    "r6-after-B-snapshot-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-after-B-snapshot-a01.json",
+      "bytes": 68647,
+      "sha256": "f2820781beb325a92bb758aa013881ba3638f27a69fb28024622a21006a0ed9e",
+      "tool": "ck3_take_snapshot",
+      "started_at_utc": "2026-10-17T14:01:20.554126+00:00",
+      "finished_at_utc": "2026-10-17T14:01:20.744095+00:00"
+    },
+    "r6-before-adopt-detail-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-before-adopt-detail-a01.json",
+      "bytes": 42044,
+      "sha256": "5d4a13a52fef68d9d70265e7045c8b9ff6b6c83487de22695385ec24ce875e6d",
+      "tool": "ck3_query_player_holy_site_adoption_detail_v1",
+      "started_at_utc": "2026-10-17T14:01:22.463510+00:00",
+      "finished_at_utc": "2026-10-17T14:01:22.681222+00:00"
+    },
+    "r6-confirm-adoption-once-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-confirm-adoption-once-a01.json",
+      "bytes": 64870,
+      "sha256": "b8457af60af145f5e3e91013ded9ee88d110c8f5594fb20768aae3d421f8ebc6",
+      "tool": "ck3_confirm_holy_site_adoption_decision_v1",
+      "started_at_utc": "2026-10-17T14:02:04.716897+00:00",
+      "finished_at_utc": "2026-10-17T14:02:05.057064+00:00"
+    },
+    "r6-after-adopt-snapshot-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-after-adopt-snapshot-a01.json",
+      "bytes": 68665,
+      "sha256": "6679ce96261c602af2940841002fe7c485afe7998ddf1d41916e7f58a19e048a",
+      "tool": "ck3_take_snapshot",
+      "started_at_utc": "2026-10-17T14:02:05.210867+00:00",
+      "finished_at_utc": "2026-10-17T14:02:05.427014+00:00"
+    },
+    "r6-before-B-sites-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-before-B-sites-a01.json",
+      "bytes": 90228,
+      "sha256": "4832ca49bd4635e1a182e25aa13f83f98148fc95fa5f3e289bf39bea3269d78a",
+      "tool": "ck3_query_player_holy_site_v1",
+      "started_at_utc": "2026-10-17T14:00:40.576754+00:00",
+      "finished_at_utc": "2026-10-17T14:00:40.797095+00:00"
+    },
+    "r6-after-adopt-sites-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-after-adopt-sites-a01.json",
+      "bytes": 90880,
+      "sha256": "4c402427902c5759a713bc11758841f8433e277b80f82fbcc56b3de346a63249",
+      "tool": "ck3_query_player_holy_site_v1",
+      "started_at_utc": "2026-10-17T14:02:05.591703+00:00",
+      "finished_at_utc": "2026-10-17T14:02:05.800993+00:00"
+    },
+    "r6-after-adopt-cooldown-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-after-adopt-cooldown-a01.json",
+      "bytes": 35932,
+      "sha256": "1108531d3d1aeb91ae1f7a9a47a9e0eaaa8afe37ec7bcce475a65ff84269ace4",
+      "tool": "ck3_query_player_holy_site_decision_cooldown_v1",
+      "started_at_utc": "2026-10-17T14:02:06.378979+00:00",
+      "finished_at_utc": "2026-10-17T14:02:06.626503+00:00"
+    },
+    "r6-promote32-Emax-detail-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-promote32-Emax-detail-a01.json",
+      "bytes": 37246,
+      "sha256": "b1d67afa2d7347b36eea01b4c64172eab03796fbcbd170c425e26506c2b0c73a",
+      "tool": "ck3_query_player_holy_site_decision_detail_v1",
+      "started_at_utc": "2026-10-17T14:03:31.604614+00:00",
+      "finished_at_utc": "2026-10-17T14:03:31.820836+00:00"
+    },
+    "r6-open-promote32-Emax-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-open-promote32-Emax-a01.json",
+      "bytes": 187211,
+      "sha256": "ac00bcaf384cb42e00e909729b22250cd8ea3c16ef45c21ef8fd2e4923339b83",
+      "tool": "ck3_open_holy_site_decision_v1",
+      "started_at_utc": "2026-10-17T14:03:30.826879+00:00",
+      "finished_at_utc": "2026-10-17T14:03:31.394904+00:00"
+    },
+    "r6-save-C2-adopted-funded-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-save-C2-adopted-funded-a01.json",
+      "bytes": 37719,
+      "sha256": "a00c75a35cd9630efe64e4df4cdc3203ce11759aee0a062245e635b073d0b6e8",
+      "tool": "ck3_save_checkpoint",
+      "started_at_utc": "2026-10-17T14:02:29.577853+00:00",
+      "finished_at_utc": "2026-10-17T14:02:30.666059+00:00"
+    },
+    "r6-open-faith50-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-open-faith50-a01.json",
+      "bytes": 368919,
+      "sha256": "a259040b878300c26b43cdd392ea510139605857d6c96aa58060c1af651d7af6",
+      "tool": "ck3_open_faith_window_v1",
+      "started_at_utc": "2026-10-17T14:05:02.691241+00:00",
+      "finished_at_utc": "2026-10-17T14:05:03.487417+00:00"
+    },
+    "r6-faith50-window-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-faith50-window-a01.json",
+      "bytes": 499384,
+      "sha256": "781f0ae9d0b6c8783a59154546b89e1ac96c84b4e6f31a1f8d0af749d8629e75",
+      "tool": "ck3_query_ingame_ui_window_v1",
+      "started_at_utc": "2026-10-17T14:05:03.862554+00:00",
+      "finished_at_utc": "2026-10-17T14:05:04.515816+00:00"
+    },
+    "r6-character15893-window-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-character15893-window-a01.json",
+      "bytes": 560031,
+      "sha256": "89e52ef499ee71b8e964c73f0f87f1684ebd03a8d45d4bdb96231ed1cf029a43",
+      "tool": "ck3_query_ingame_ui_window_v1",
+      "started_at_utc": "2026-10-17T14:05:30.943161+00:00",
+      "finished_at_utc": "2026-10-17T14:05:31.905578+00:00"
+    },
+    "r6-window32-diagnostic-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-window32-diagnostic-a01.json",
+      "bytes": 193868,
+      "sha256": "9d5fc5525ed3c4f936ae7d089a05bebea300c78597ee06c8ffd2690dd3b32cbc",
+      "tool": "ck3_query_ingame_ui_window_v1",
+      "started_at_utc": "2026-10-17T14:18:18.926323+00:00",
+      "finished_at_utc": "2026-10-17T14:18:19.563163+00:00"
+    },
+    "r6-baghdad14-relic-permissions64-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-baghdad14-relic-permissions64-a01.json",
+      "bytes": 40315,
+      "sha256": "8b2fed0a78ef7769c4d618401cae6a027d0a2d5fa5764fbc2e41320958b0e08c",
+      "tool": "ck3_query_player_holy_site_relic_permissions_v1",
+      "started_at_utc": "2026-10-17T14:05:34.781657+00:00",
+      "finished_at_utc": "2026-10-17T14:05:35.200388+00:00"
+    }
+  }
+}

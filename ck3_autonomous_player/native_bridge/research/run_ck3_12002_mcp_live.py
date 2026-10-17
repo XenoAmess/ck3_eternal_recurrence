@@ -1075,8 +1075,12 @@ def native_server(args: argparse.Namespace) -> None:
     )
     bind_normal_exit_managed_profile(driver, args)
     bind_stock_grant_title_picker_permission(driver, getattr(args, "private_grant_title_picker", False))
+    driver.allow_private_player_holy_site_creation_ui = bool(getattr(args, "private_player_holy_site_creation_ui", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
+    driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_holy_site_creation_context_query = "ck3_query_player_holy_site_creation_context_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_holy_site_relic_action_context_query = "ck3_query_player_holy_site_relic_action_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_permissions_query = "ck3_query_player_holy_site_relic_permissions_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_relic_context_query = "ck3_query_player_holy_site_relic_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_query = "ck3_query_player_holy_site_v1" in driver.case_declared_read_only_mcp_tools
@@ -4175,6 +4179,10 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
     if getattr(args, "normal_exit_managed_profile", None) is not None:
         child_args += ["--normal-exit-managed-profile", str(args.normal_exit_managed_profile),
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
+    if getattr(args, "private_holy_site_relic_actions", False):
+        child_args.append("--private-holy-site-relic-actions")
+    if getattr(args, "private_player_holy_site_creation_ui", False):
+        child_args.append("--private-player-holy-site-creation-ui")
     for tool in getattr(args, "case_read_only_mcp_tool", []):
         child_args += ["--case-read-only-mcp-tool", tool]
     if args.sdk_smoke_test:
@@ -4481,7 +4489,13 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--poll-interval", type=float, default=0.05)
     result.add_argument("--hold-seconds", type=float, default=0)
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
+    result.add_argument("--private-player-holy-site-creation-ui", action="store_true",
+        help="enable four exact4 creation UI selectors, independently of read-only tools")
+    result.add_argument("--private-holy-site-relic-actions", action="store_true",
+        help="explicit opt-in for four finite relic actions; default off, never a read-only tool declaration")
     result.add_argument("--case-read-only-mcp-tool", action="append", default=[], choices=(
+        "ck3_query_player_holy_site_creation_context_v1",
+        "ck3_query_player_holy_site_relic_action_context_v1",
         "ck3_query_player_holy_site_relic_permissions_v1",
         "ck3_query_player_holy_site_relic_context_v1",
         "ck3_query_player_holy_site_v1",

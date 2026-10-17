@@ -1,0 +1,245 @@
+{
+  "schema": "ck3_12004_holy_site_relic_action_context_loaded_code_prefix_pins_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:29:53.103058+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "exe_identity_provenance": "C:/workspace/ck3-version-and-sync-20261017/executable-identity.json",
+  "metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "cache_inspection_only": true,
+  "new_exe_reads": 0,
+  "new_exe_full_scans": 0,
+  "pins": [
+    {
+      "label": "selected_action_effect_description",
+      "rva": 24996240,
+      "rva_hex": "0x17D6990",
+      "end_rva_exclusive": 24996272,
+      "bytes": 32,
+      "bytes_hex": "48895c24105556574154415541564157488dac24a0feffff4881ec600200004c",
+      "bytes_sha256": "75034f2632eeff244be25af84cd1111e1f6008588df064cc15b9693c517dc51c",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\holy-site-selected-action-effect-body-bounded.json",
+        "bytes": 98185,
+        "sha256": "e19e2fe96beae0997facedd1c0d2a28ad63ae8ea134f44a0ebd39bbbaa809a92",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "227fcee2b20f4d52d58b34f8bb12a3fd2870097c1c7b8f05fe606752d5f8df5c"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "enshrine_button_tooltip",
+      "rva": 24992352,
+      "rva_hex": "0x17D5A60",
+      "end_rva_exclusive": 24992384,
+      "bytes": 32,
+      "bytes_hex": "48895c2410488974241848897c242055488dac24a0feffff4881ec6002000048",
+      "bytes_sha256": "1adc2d1674c9427aefe6cd265dd57f5fadbeb12f3cb787722447e01d5eb9144e",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-button-tooltip-bounded.json",
+        "bytes": 28878,
+        "sha256": "512f72332a1784560f2dca621c972d72ba9a143de1e5b538a7091284bc85556a",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "7fc9d03da5d32a4c0e3e7b2a142c6ad850edd490a1c9d4eb46830bab5ba93859"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "remove_button_tooltip",
+      "rva": 24993632,
+      "rva_hex": "0x17D5F60",
+      "end_rva_exclusive": 24993664,
+      "bytes": 32,
+      "bytes_hex": "48895c2410488974241848897c242055488dac24a0feffff4881ec6002000048",
+      "bytes_sha256": "1adc2d1674c9427aefe6cd265dd57f5fadbeb12f3cb787722447e01d5eb9144e",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-button-tooltip-bounded.json",
+        "bytes": 30737,
+        "sha256": "011123185dd8bff9004e85156710912e2cd102adf749aaf2bc5f578055065224",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "8b83424d0556c82d0344ea8000381dd9f039b9d57edae9ae07f95020730691cd"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "native_string_destructor",
+      "rva": 8740944,
+      "rva_hex": "0x856050",
+      "end_rva_exclusive": 8740976,
+      "bytes": 32,
+      "bytes_hex": "40534883ec20488b5118488bd94883fa10722c488b0948ffc24881fa00100000",
+      "bytes_sha256": "28344f97105316da1c329b27dc76f5e74e4f8b4e2ff29ce6e5825a206f06ab0b",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": null,
+      "evidence_kind": "new 32-byte bounded read of existing cache; no EXE read"
+    },
+    {
+      "label": "automatic_slot_picker",
+      "rva": 46663136,
+      "rva_hex": "0x2C805E0",
+      "end_rva_exclusive": 46663168,
+      "bytes": 32,
+      "bytes_hex": "48895c2408488974241048897c24184c89742420488bbab800000033d28b714c",
+      "bytes_sha256": "9d212bff57154fb4f2248f5d42e41e819b10d033007d9689b747915364b75ba2",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\effective-slot-picker-complete.json",
+        "bytes": 9496,
+        "sha256": "de1ae8c7c82e3ef19713ea1c41b7a227a0b7682f1b0f9a60cd30a07f18faca4b",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "999b28796ed5ae9586d73243fdadccd83083a2099c0417c70a6ab9f6a3cd4223"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "equipped_slot_membership",
+      "rva": 36586528,
+      "rva_hex": "0x22E4420",
+      "end_rva_exclusive": 36586560,
+      "bytes": 32,
+      "bytes_hex": "48895c24084c8b41404863414c488d0c404d8d1cc84d3bc374558b5a104c8b0d",
+      "bytes_sha256": "b3a92bf0819fa472290b5b2861ec5907be454acfbe529647881e264ebc64fe59",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\equipped-slot-membership-complete.json",
+        "bytes": 5870,
+        "sha256": "97d3f8963fb56d31c3036d144137ad9529c09a6763b7841b82b66829f921737f",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "d30da59eb3c978dc6aa8347755ee82fc239eed265c3df3011e3c34f59b32c859"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "effective_explicit_index_guard",
+      "rva": 43693549,
+      "rva_hex": "0x29AB5ED",
+      "end_rva_exclusive": 43693581,
+      "bytes": 32,
+      "bytes_hex": "8b452039477c4c63752c410f94c44585f67833443b76747d2d488b46684b8d0c",
+      "bytes_sha256": "cf99d172f28e58b3061831ef3ecf6b9b357cb5f89fac9c4e8f09eab6b67322b7",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\explicit-effective-slot-and-replacing-branch.json",
+        "bytes": 8113,
+        "sha256": "93423d93b3a4985a529fac061fb16a11612bee6b2204c4ddf5c2500bd71a3cb3",
+        "offset_bytes": 0,
+        "original_packet_bytes_sha256": "92f8939dd0dd92b8626c161774ada71f1a14bf0f1bb5e6450090d6c458379ccd"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "effective_explicit_type_guard",
+      "rva": 43693587,
+      "rva_hex": "0x29AB613",
+      "end_rva_exclusive": 43693619,
+      "bytes": 32,
+      "bytes_hex": "80ba09020000007547488b8fb80000008b414039424475088b41443942407430",
+      "bytes_sha256": "82b621f20dcf9e6ea065a428c6cbc9263bb55ff04834fbc56e48b911afe11a2c",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\explicit-effective-slot-and-replacing-branch.json",
+        "bytes": 8113,
+        "sha256": "93423d93b3a4985a529fac061fb16a11612bee6b2204c4ddf5c2500bd71a3cb3",
+        "offset_bytes": 38,
+        "original_packet_bytes_sha256": "92f8939dd0dd92b8626c161774ada71f1a14bf0f1bb5e6450090d6c458379ccd"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "character_transfer_clears_holy_site_owner",
+      "rva": 38993497,
+      "rva_hex": "0x252FE59",
+      "end_rva_exclusive": 38993520,
+      "bytes": 23,
+      "bytes_hex": "c7477cffffffff488b15017773034885d2742a448b4778",
+      "bytes_sha256": "1f12611f526454ff4d09b15bcf251ecdb4d948f00f4fcb38b8e385020e66a905",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\character-owner-transfer-bounded.json",
+        "bytes": 46961,
+        "sha256": "8a9950e354537074a6cd3fc96e906efa49de1714e720e65aad7ac618923401d8",
+        "offset_bytes": 137,
+        "original_packet_bytes_sha256": "a8f8cc1d157ad0d2940a9aa704597f8f0386d76e0892570a83475fb42ff4e9dc"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "character_transfer_sets_character_owner",
+      "rva": 38993612,
+      "rva_hex": "0x252FECC",
+      "end_rva_exclusive": 38993632,
+      "bytes": 20,
+      "bytes_hex": "895f784885d274248bc325ffffff003b422c7318",
+      "bytes_sha256": "4e4c3665f0a766ded37d8004bf9a6a2519ebc0cce2107f370dfcf32f6480b02f",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\character-owner-transfer-bounded.json",
+        "bytes": 46961,
+        "sha256": "8a9950e354537074a6cd3fc96e906efa49de1714e720e65aad7ac618923401d8",
+        "offset_bytes": 252,
+        "original_packet_bytes_sha256": "a8f8cc1d157ad0d2940a9aa704597f8f0386d76e0892570a83475fb42ff4e9dc"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "holy_site_transfer_clears_character_owner",
+      "rva": 38995038,
+      "rva_hex": "0x253045E",
+      "end_rva_exclusive": 38995055,
+      "bytes": 17,
+      "bytes_hex": "c74778ffffffff488b1514da7e03895f7c",
+      "bytes_sha256": "702e8047d623b7871cbab011f3fed2eab2461abb41147376297395c64573f01c",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\holy-site-owner-transfer-bounded.json",
+        "bytes": 26707,
+        "sha256": "024e366192e69ff3f7535565537dc4e9c6f4502b7836b8ce0d6d5d166b310517",
+        "offset_bytes": 350,
+        "original_packet_bytes_sha256": "39386195681a56b8886f95f6158d3f73fd9b1dc2718716c33d1d0a5efae31762"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    },
+    {
+      "label": "holy_site_transfer_sets_holy_site_owner",
+      "rva": 38995052,
+      "rva_hex": "0x253046C",
+      "end_rva_exclusive": 38995075,
+      "bytes": 23,
+      "bytes_hex": "895f7c83fbff744b4885d274248bc325ffffff003b422c",
+      "bytes_sha256": "158c19d007afbff234fbcf6379a8b9297dfc9247b2bf4011d06aa16c10ba50a8",
+      "source_cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+      "existing_raw_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\holy-site-owner-transfer-bounded.json",
+        "bytes": 26707,
+        "sha256": "024e366192e69ff3f7535565537dc4e9c6f4502b7836b8ce0d6d5d166b310517",
+        "offset_bytes": 364,
+        "original_packet_bytes_sha256": "39386195681a56b8886f95f6158d3f73fd9b1dc2718716c33d1d0a5efae31762"
+      },
+      "evidence_kind": "existing raw packet exact byte equality"
+    }
+  ],
+  "include_file": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\native-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_action_context_pins.inc",
+    "bytes": 1526,
+    "sha256": "e311e7e6493cd601ae5b7b5567fe383c2547a62aae0cff9d6accbdfedafb30e7"
+  },
+  "generator": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\build_loaded_prefix_pins.py",
+    "bytes": 4893,
+    "sha256": "a2aa3e539ba3e2a752a0dd50bd234ff81e3b2299d8d2205c17b516f53b65331f"
+  },
+  "source_contract": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\abi-contract.json",
+    "bytes": 4484,
+    "sha256": "bee6f5d5ee9d30a75410773b5f0e906b4123603e9c6ca74b3f4bd8bc98404331"
+  },
+  "scope": "prefix equality inputs, not live loaded-code verification, full-function equivalence, or action qualification",
+  "build_or_live_test_performed": false,
+  "action_qualified": false
+}

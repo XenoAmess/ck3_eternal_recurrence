@@ -1,0 +1,21 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:12:16.219294+00:00",
+  "status": "PASS",
+  "scope": "new static create native-source reference via actual production MCP only; no old suite",
+  "module_sha256": "5ee42593b1394ca4f32f272a0ae2a311071078328132ee924c6aa1729a04f006",
+  "local_ck3_contacted": false,
+  "actual_mcp_results": 3,
+  "checks": [
+    "new create SourceContract ref exact file SHA",
+    "static source state remains unknown/action_readyfalse",
+    "unsupported build rejects knowledge inheritance",
+    "nested query fields deep-copy isolation"
+  ],
+  "raw_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-planner-reference-a02.json",
+    "bytes": 68138,
+    "sha256": "c11056dc573f2287df1e3cada6f18187f2e10c0074f0ddff62b8d84d372c4428"
+  },
+  "earlier_test_fixture_failure": "qualification-planner-reference-a01-failure.json: optional config attribute probe refused before Client session; 0 MCP results; no production fix required"
+}

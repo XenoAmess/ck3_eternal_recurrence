@@ -1,0 +1,261 @@
+{
+  "schema": "ck3_12004_holy_site_relic_action_script_risk_sources_v1",
+  "machine_id": "4-8e1c2f1861",
+  "packaged_at_utc": "2026-10-17T13:40:55.926217+00:00",
+  "original_observed_at_utc": "2026-10-17T09:16:58.891024+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_game_source_reads": 0,
+  "original_source_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\script-sources\\sources.json",
+    "bytes": 12451,
+    "sha256": "bb34fa8174138473ed64ab0f8d9d612440b47402f6e8db3459a6229ed7f7ea16"
+  },
+  "preserved_numbered_excerpts": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\script-sources\\source-excerpts.md",
+    "bytes": 60666,
+    "sha256": "a8462fc9a2e90f4a519dcf0a23f1b8a573c53dfad9e97b0518de102a8f9e8df8"
+  },
+  "sources": [
+    {
+      "id": "S02",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_rules\\02_holy_sites.txt",
+      "relative_path": "common/scripted_rules/02_holy_sites.txt",
+      "bytes": 2090,
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "line_count": 64,
+      "ranges": [
+        {
+          "first": 1,
+          "last": 64
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 6,
+          "last": 26
+        },
+        {
+          "first": 52,
+          "last": 64
+        }
+      ]
+    },
+    {
+      "id": "S03",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_holy_site.gui",
+      "relative_path": "gui/window_holy_site.gui",
+      "bytes": 32840,
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "line_count": 1278,
+      "ranges": [
+        {
+          "first": 425,
+          "last": 437
+        },
+        {
+          "first": 518,
+          "last": 559
+        },
+        {
+          "first": 740,
+          "last": 763
+        },
+        {
+          "first": 852,
+          "last": 881
+        },
+        {
+          "first": 924,
+          "last": 960
+        },
+        {
+          "first": 1006,
+          "last": 1012
+        },
+        {
+          "first": 1125,
+          "last": 1225
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 832,
+          "last": 835
+        },
+        {
+          "first": 860,
+          "last": 881
+        }
+      ]
+    },
+    {
+      "id": "S07",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\artifacts\\slots\\01_holy_site.txt",
+      "relative_path": "common/artifacts/slots/01_holy_site.txt",
+      "bytes": 321,
+      "sha256": "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df",
+      "line_count": 20,
+      "ranges": [
+        {
+          "first": 1,
+          "last": 20
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 1,
+          "last": 17
+        }
+      ]
+    },
+    {
+      "id": "S08",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "relative_path": "common/defines/00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "line_count": 1926,
+      "ranges": [
+        {
+          "first": 919,
+          "last": 932
+        },
+        {
+          "first": 1577,
+          "last": 1579
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 1579,
+          "last": 1579
+        }
+      ]
+    },
+    {
+      "id": "S14",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "relative_path": "common/on_action/inventory_on_actions.txt",
+      "bytes": 13630,
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "line_count": 541,
+      "ranges": [
+        {
+          "first": 129,
+          "last": 295
+        },
+        {
+          "first": 322,
+          "last": 522
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 129,
+          "last": 320
+        },
+        {
+          "first": 324,
+          "last": 524
+        }
+      ]
+    },
+    {
+      "id": "S15",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "relative_path": "common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "line_count": 2342,
+      "ranges": [
+        {
+          "first": 1130,
+          "last": 1157
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 1132,
+          "last": 1135
+        },
+        {
+          "first": 1143,
+          "last": 1157
+        }
+      ]
+    },
+    {
+      "id": "S16",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\pam_opinions.txt",
+      "relative_path": "common/opinion_modifiers/pam_opinions.txt",
+      "bytes": 4274,
+      "sha256": "68cdfc641a32a38daf6e9de6651634278b522b26c2886fbf6b55341ce7e09b52",
+      "line_count": 192,
+      "ranges": [
+        {
+          "first": 111,
+          "last": 120
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 111,
+          "last": 120
+        }
+      ]
+    },
+    {
+      "id": "S17",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\holy_site_window_l_english.yml",
+      "relative_path": "localization/english/gui/holy_site_window_l_english.yml",
+      "bytes": 9969,
+      "sha256": "7c0929203d6019e80607ab7cc57641e7eb649726de6c686678d0b4b37978fdf5",
+      "line_count": 99,
+      "ranges": [
+        {
+          "first": 12,
+          "last": 17
+        },
+        {
+          "first": 30,
+          "last": 45
+        },
+        {
+          "first": 89,
+          "last": 98
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 33,
+          "last": 45
+        },
+        {
+          "first": 98,
+          "last": 98
+        }
+      ]
+    },
+    {
+      "id": "S18",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\pam\\pam_game_concepts_l_english.yml",
+      "relative_path": "localization/english/dlc/pam/pam_game_concepts_l_english.yml",
+      "bytes": 47822,
+      "sha256": "46a618caa266a7a3bb2cbdf38734e24971bd4e5f334f32af58a202e4713f5121",
+      "line_count": 358,
+      "ranges": [
+        {
+          "first": 246,
+          "last": 252
+        }
+      ],
+      "action_planning_relevant_ranges": [
+        {
+          "first": 246,
+          "last": 252
+        }
+      ]
+    }
+  ],
+  "scope": "static risk and exact original file/line pins; not a live effect preview or executed consequence"
+}

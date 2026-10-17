@@ -1,0 +1,155 @@
+{
+  "schema": "ck3-creation-ui-public-planning-contract-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:37:48.316890+00:00",
+  "evidence_kind": "production parser/serializer synthetic DTO through actual Driver/Service/MCP; no live engine invocation",
+  "build_scope": {
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "capability": "Prepare and observe the current player's holy-site creation window; never create a holy site",
+  "current_faith_only": true,
+  "ui_optin": {
+    "cli": "--private-player-holy-site-creation-ui",
+    "driver_attribute": "allow_private_player_holy_site_creation_ui",
+    "default": false,
+    "standalone_mode": "native-headless stdio",
+    "managed_host_forwarded": true
+  },
+  "read_only_query_optin": {
+    "cli": "--private-player-holy-site-creation-context-query",
+    "independent_from_ui_optin": true
+  },
+  "tools": [
+    {
+      "name": "ck3_open_holy_site_creation_window_v1",
+      "arguments": {
+        "expected_revision": "int"
+      }
+    },
+    {
+      "name": "ck3_select_holy_site_creation_type_v1",
+      "arguments": {
+        "type_key": "str",
+        "expected_revision": "int"
+      }
+    },
+    {
+      "name": "ck3_select_holy_site_creation_barony_v1",
+      "arguments": {
+        "barony_title_id": "int",
+        "expected_revision": "int"
+      }
+    },
+    {
+      "name": "ck3_set_holy_site_creation_artifact_selection_v1",
+      "arguments": {
+        "artifact_id": "int",
+        "selected": "bool",
+        "expected_revision": "int"
+      }
+    }
+  ],
+  "generic_query": {
+    "tool": "ck3_query_ingame_ui_window_v1",
+    "window_kind": "holy_site_creation",
+    "ui_optin_required": true
+  },
+  "wire": {
+    "kind": "holy_site_creation",
+    "enum": 8,
+    "operations": {
+      "open_holy_site_creation": 14,
+      "select_holy_site_creation_type": 15,
+      "select_holy_site_creation_barony": 16,
+      "set_holy_site_creation_artifact_selection": 17
+    },
+    "step_query": "query-ingame-ui-window-v1",
+    "step_selectors": "navigate-ingame-ui-v1",
+    "subject_id": "query/open/type use 0; barony/artifact use full uint32 reference below sentinel 0xFFFFFFFF",
+    "type_key": "1..160 exact UTF-8 bytes, no NUL; only the type selector accepts it",
+    "selected": "actual explicit bool, false preserved; only artifact selector accepts it",
+    "request_id": "step-{sequence}-{uuid.hex[:12]}; hello consumes sequence 1 in these fresh-driver fixtures",
+    "revisions": "caller uses actual public revision; Driver binds actual native revision separately"
+  },
+  "planner_sequence": [
+    "先获取当前公共快照和玩家身份；每次调用携带该快照的 expected_revision，不把 native_revision 当公共 revision。",
+    "只读查询取得 complete 候选模型。若模型未知、玩家信仰不匹配或原生不可用，保留诊断，不用空列表代替未知。",
+    "打开当前信仰创建窗口；从原生返回候选选择 type_key 和 barony_title_id。每次操作后读回独立选中状态，再规划下一项。",
+    "逐项设置圣物 selected=true/false；使用完整 artifact_id。已选中时允许 already_selected_verified，不需要重复切换。",
+    "准备完成后重新观察选中类型、男爵领、圣物及原生 tooltip。缓存成本没有新鲜度证明；缺失合法性、资源可负担性、渲染可见性都保持 unknown。",
+    "此接口以 create_dispatched=false 和核心 action_ready=false 结束；创建仍是未开放能力，不能把选择完成记为圣地已创建。"
+  ],
+  "postcondition": {
+    "success": "available=true, postcondition_observed=true, selection_verified=true, actual desired state in captured context; ui_selection_verified additionally needs attempted+invoked",
+    "already_selected": "already_selected_verified plus independently observed desired selected state; no invocation needed",
+    "unknown": "native_dispatch_attempted=true may coexist with dispatch_invoked=false; available=false/status=verification_pending; retain raw receipt and do not automatically resend",
+    "refused": "no attempt, available=false/status=unavailable; preserve diagnostic and any observed context",
+    "observation_before_retry": "query current selected state first; no claim of durable cross-restart deduplication is made",
+    "context_null": "capture was not available; preserve null rather than inventing actor/date/selection",
+    "binding": "nested capture_epoch must equal outer pump_epoch, played actor/date bind to actual current snapshot, current faith must match observed window"
+  },
+  "boundaries": [
+    "No create operation, actor override, faith override, arbitrary callback, address or coordinates.",
+    "Native bool reports observed state only. A true native button under unknown bypass cannot establish ordinary legality.",
+    "Synthetic visibility/GUI addresses/selected states prove serialization and consumer contracts only, not rendered UI or native selection execution.",
+    "Existing signed high-bit played actor remains rejected at the public CharacterRef entry; no conversion of original raw actor IDs was introduced.",
+    "This candidate uses only exact CK3 1.20.0.4 build identity. No other build or historical machine installation is qualified."
+  ],
+  "qualification": {
+    "tests": 4,
+    "actual_mcp_results": 19,
+    "unaltered_new_native_packets": 10,
+    "explicit_packet_mutation_rejections": 9,
+    "high_barony_title_id": 2147483681,
+    "high_artifact_id": 4026531849,
+    "public_revision": 2,
+    "native_revision": 37,
+    "old_query_or_native_suites_repeated": false,
+    "native_engine_selection_executed": false,
+    "live_game_qualification": false,
+    "sdk_evidence": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-public-stage\\qualification-ui-mcp-a01.json",
+      "bytes": 346216,
+      "sha256": "148ff8336bd0fb37a5373ecd23241b7c55084c2ee61b049d307c3380816200ee"
+    },
+    "native_packet_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-ui-a03\\native-ui-packets-manifest.json",
+      "bytes": 4962,
+      "sha256": "b29126bc108f4483a68392267f5f2254201d400a713c5f6d37d174d58f454162"
+    },
+    "native_source_extraction": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\ui-stage\\qualification\\extracted-a03\\extraction-manifest.json",
+      "bytes": 70350,
+      "sha256": "64ee36a4e398b6fd8b0f16ae77d866096541c81d2e8187cbc4aa8cea3fb0e30d"
+    }
+  },
+  "source_hooks": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+      "query_result_utf8_sha256": "0b0e58e87c5892b367aaf73f449cd54a55ab260005db08670d5521ec1048dbd4",
+      "candidate_utf8_sha256": "ae44eab5630c9cef0c917c96572770350018bafe40eceabd864d881e11fd85db"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "query_result_utf8_sha256": "1531257bcb33d82da8a12e13e6bf7fb58d62728838cfdf7af9c858d1b5dede0e",
+      "candidate_utf8_sha256": "97238dd61dc287583d70043b4b5ecc918def70ba0e63a7ee09851f03724f0dc1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "query_result_utf8_sha256": "6c8e82ad02c9500d17636ebeadf66fae34a942f0f46d98123ea2ca24c9fc569c",
+      "candidate_utf8_sha256": "a63f9265bd0dff2295fbbb9698747e1fb1051921aad88b016187af24c6e16076"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "query_result_utf8_sha256": "a2702dc1c1eef7c459dd00905f8798e9a428d8f7728962a6fa72e55ffe52a180",
+      "candidate_utf8_sha256": "831a510a3a24acd82a5dc86cb4e561d87b02147bb00fc5e7a91918a70141ed9c"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "query_result_utf8_sha256": "e15f97c2eae7323c0649865ca05585bc6d2c302c1f8dc0474fe90ae8bd2d716e",
+      "candidate_utf8_sha256": "cd11efcd1cf7659a9eb7239c805810379f25a6f05ecb98e8311f0cc0ff9c9adf"
+    }
+  ],
+  "review_at_utc": "2027-04-15T14:37:48.316890+00:00"
+}

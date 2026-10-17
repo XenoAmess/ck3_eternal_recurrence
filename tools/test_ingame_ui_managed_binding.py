@@ -211,7 +211,17 @@ class ManagedUiBindingTests(unittest.TestCase):
         self.assertEqual(driver.calls[0][1]['request_fields'],
             {'window_kind': 'character', 'subject_id': 33437, 'operation': 'open_character'})
         self.assertTrue(got['verification_pending'])
+        self.assertEqual(got['status'], 'acknowledged_verification_pending')
+        self.assertEqual(got['requested_subject_id'], 33437)
         self.assertTrue(driver.records[-1][1]['ok'])
+
+    def test_exact4_character_rejects_mismatched_army_result_after_one_dispatch(self):
+        driver = self.fixture()
+        with self.assertRaisesRegex(ValueError, 'native UI binding mismatch: window_kind'):
+            driver._ingame_ui_v1('open_character', 'character', 33437, expected_revision=4)
+        self.assertEqual(len(driver.calls), 1)
+        self.assertFalse(driver.records[-1][1]['ok'])
+        self.assertEqual(driver.records[-1][1]['result']['raw_native_ui_result'], driver.raw)
 
     def test_actual_result_revision_actor_date_normalizer_remains(self):
         for key, value in [('native_revision',4), ('played_character_id',33437), ('date_raw',0)]:

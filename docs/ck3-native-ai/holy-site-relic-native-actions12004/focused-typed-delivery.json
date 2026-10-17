@@ -1,0 +1,264 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:31:10.215156+00:00",
+  "schema": "ck3_holy_site_relic_typed_window_binding_delivery_a01_v1",
+  "status": "SEALED_OFFLINE_TYPED_OWNER_REPAIR_FOCUSED_PASS_AWAITING_ROOT_COLD_LOAD",
+  "all_passed": true,
+  "qualification_scope": "10 focused offline production-helper checks /7 full native packets; no old30 matrix, full DLL, live getter, engine action or business success qualification",
+  "owned_files": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions.cpp",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_actions.cpp",
+      "bytes": 17339,
+      "sha256": "0c21d355d9da3fc3d7fe48315981a118747bd4985a34c75c6ab0e8fb7f1d931f",
+      "operation": "replace",
+      "baseline_sha256": "819328c858c3c776f60a64da3f93f6663f4be83b4b5171b7df0309a13840e70c"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_holy_site_relic_actions_test.cpp",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_actions_test.cpp",
+      "bytes": 19276,
+      "sha256": "da38fb0b8a50aa9e048f325c3beaba30ca349b3e1162d4d91c8311db514163ab",
+      "operation": "replace",
+      "baseline_sha256": "2cdacd16ec164edabbe51ad247897ce15290fcb36a273669bd31e421f222f1e4"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/holy_site_relic_owner_binding_focused_test.cpp",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\ck3_autonomous_player\\native_bridge\\src\\holy_site_relic_owner_binding_focused_test.cpp",
+      "bytes": 4272,
+      "sha256": "0e29053f3c67ebca115cf7a723c1b1efdd3c9666b0c8bd130ed6b64a55117cfd",
+      "operation": "add",
+      "baseline_sha256": null
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/cmake/relic_owner_binding_focused12004/CMakeLists.txt",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\ck3_autonomous_player\\native_bridge\\cmake\\relic_owner_binding_focused12004\\CMakeLists.txt",
+      "bytes": 1332,
+      "sha256": "77f4f3980fbd5a9475fa826dc0071bfba50a29f9700afcc13eab4815e401c5b5",
+      "operation": "add",
+      "baseline_sha256": null
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/holy-site-relic-typed-owner-binding12004.md",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\docs\\ck3-native-ai\\holy-site-relic-typed-owner-binding12004.md",
+      "bytes": 3837,
+      "sha256": "f95e9eff4fc569a248647642b9748e7c2d931024d533554c5c60e013cd7f3df4",
+      "operation": "add",
+      "baseline_sha256": null
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/holy-site-relic-typed-owner-binding12004/qualification-a01.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-stage\\docs\\ck3-native-ai\\holy-site-relic-typed-owner-binding12004\\qualification-a01.json",
+      "bytes": 4888,
+      "sha256": "d7cc8a3d17aafaf075543dc2624d118108a8309d3bb1efd9649eb1a1a0f0a0f0",
+      "operation": "add",
+      "baseline_sha256": null
+    }
+  ],
+  "apply_order": "Overlay these four source files and two docs AFTER original ui-stage delivery; parent owns common integration; do not reapply old complete patch",
+  "source_baseline_delivery": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\DELIVERY-qualified-a02.json",
+    "bytes": 11902,
+    "sha256": "e587b2ad638316b7680e56a9caf403877328ba6848a6b0e713346799b9a4781a"
+  },
+  "source_repairs": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-source-fix-a01.json",
+      "bytes": 1894,
+      "sha256": "39be8fb4daab4cea3772305a2c719ec16b400ce82fe286050d010ec47f42f9a3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-fixture-source-fix-a01.json",
+      "bytes": 1213,
+      "sha256": "73710ba13372dbc808f1a724daee329836cf8d4a8de9ac32f5decce83f276114"
+    }
+  ],
+  "minimal_patches": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-window-owner-fix-a01.patch",
+      "bytes": 2843,
+      "sha256": "2ab4c87d8c82558713557f885f748aa680048d2343d7e8bf230362f2cebffb39"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\typed-fixture-window-owner-fix-a01.patch",
+      "bytes": 1191,
+      "sha256": "574fd2c88a30936816008bf42521e52d71e3edacdc3d5432f93d23afb754c025"
+    }
+  ],
+  "real_R6_probe": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\r6-live-process-read-a01.json",
+    "bytes": 33452,
+    "sha256": "95f98799b0581dece92315205cca759c3deeb0ec5b84d77683db00b01340e7af"
+  },
+  "readonly_probe_script": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\probe_window_binding_readonly.py",
+    "bytes": 7504,
+    "sha256": "8803aecb7b167e8e28f5256fc7162b431bb2eeeabf7abba90d57ebf8f7502803"
+  },
+  "original_R6_gui14_raw": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r6-a01\\state\\native-session\\ingame-ui-native-results\\native-ui-efdf494eb6354245befb9f803a4929c7.json",
+    "sha256": "11eff914756794d100c86c29a2402ed1bb37e4e92d3e63ff668d911a13e0de50"
+  },
+  "source_window_package": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\docs-package-a03.json",
+    "bytes": 7242,
+    "sha256": "6d8104027742159f39909c0021a8e7218767cb187c27192b183a7714a404df93"
+  },
+  "source_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\window-binding-source-review-a03.json",
+    "bytes": 9516,
+    "sha256": "f8dc08be97f16b7f8e5cd4dadb2765172d0db596a528fde99f6cbd4c83860f41"
+  },
+  "source_packets": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-constructor-existing.json",
+      "bytes": 13793,
+      "sha256": "6f7f1414241343d18adc749cdf2b1fc765bc3988348bbffffb784e2d431421fa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-publication-existing.json",
+      "bytes": 6295,
+      "sha256": "f42d6893ed61c9cc50589c3216a6d5fdae05e15ea9c2376d0cc4c6c6442a765f"
+    }
+  ],
+  "native_qualification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\result.json",
+    "bytes": 5287,
+    "sha256": "90139451d5e623dd92441a26f2eb369023eb22ea3848bdcbd7d0720b1b558712"
+  },
+  "focused_checks": 10,
+  "native_packet_count": 7,
+  "producer": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui03\\xar_relic_owner12004_test.exe",
+    "bytes": 173568,
+    "sha256": "eaf6f0957e9d42129a7c12755734049e2fb6f3c3fe4b9755769bbbe684538b24"
+  },
+  "consumer_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\consumer-manifest.json",
+    "bytes": 9295,
+    "sha256": "dccbdae30d952d40ebb20cf91b7e9f12ee1c8ccb208ec076646ffed3385fa2c1"
+  },
+  "prior_focused_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a01\\consumer-manifest.json",
+    "bytes": 8947,
+    "sha256": "af1e1050bc5973b5edc1fc23f855bb656e1085d30edca9a62e110704fd34686d"
+  },
+  "all_seven_packet_identity": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\all-seven-packets-identity.json",
+    "bytes": 2917,
+    "sha256": "9800918fc94477c4c0ce4b41907e695e80542a6c7b321233ca4fd96ab39e9312"
+  },
+  "old_two_positive_packet_identity": [
+    {
+      "name": "select-preserves-slot.json",
+      "old_sha256": "2ec0d95561825e57cf33c95805a7748293bbc6820d23296051ca6df2deaf051f",
+      "new_sha256": "2ec0d95561825e57cf33c95805a7748293bbc6820d23296051ca6df2deaf051f",
+      "byte_identical": true
+    },
+    {
+      "name": "enshrine-ack-only.json",
+      "old_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "new_sha256": "0667ffa2bd274e1ca8671b3e35aea2e41df49781314c6ecb40dd903b0a376e5b",
+      "byte_identical": true
+    }
+  ],
+  "old_producers_preserved": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui01\\xar_relic_ui12004_isolated_packet_test.exe",
+      "bytes": 180736,
+      "sha256": "5564919d6455f8e40ccadb444bde8f69d3d7c3f0a7c2098ca333257084a08eaf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui02\\xar_relic_owner12004_test.exe",
+      "bytes": 173568,
+      "sha256": "148bfc5d60878ec1128fe5fe4ea22c67acaed6976828d1cf287f0e0ae32ef317"
+    }
+  ],
+  "reproduction": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\qualify_typed_owner_binding_a01.py",
+      "bytes": 5171,
+      "sha256": "151090b008152fbc83b32001a5d0682fe07a717233b62a60671b92cb57f6468a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\qualify_typed_owner_binding_a02.py",
+      "bytes": 1698,
+      "sha256": "cc73e63e8acc063d8925034846c44334d2ac128c38d4f25786d7de23b6e1cb94"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\seal_focused_consumer_manifest.py",
+      "bytes": 1672,
+      "sha256": "8a4d10bede499c9b42e95cffc1d432a6b572c74af433df4b0654e70f08f4702e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\seal_typed_owner_delivery_a01.py",
+      "bytes": 15820,
+      "sha256": "7e80a52a535fe1f5c1ad4e6074c84eba785cff3f08bf0612bde194ae506764a2"
+    }
+  ],
+  "original_logs": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\build.stdout.log",
+      "bytes": 5607,
+      "sha256": "cd481d46278888678bbbe7ee9b3257c79a96dd22906bfd30b2098e20b7168a35"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\build.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\focused-fixture.stdout.log",
+      "bytes": 192,
+      "sha256": "e5cd9c8c2a25ee71de2c5dbf8818a695073216380da5837f70170bfe0654ece5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\focused-fixture.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\build.json",
+      "bytes": 1973,
+      "sha256": "2b6d7e799baa7ead2cbb767db27d2efbad20482498b5242b63a5e6c6afb66a00"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\focused-fixture.json",
+      "bytes": 1097,
+      "sha256": "802e1d3f7a019b6638c5e2797c08e5fc77db57d8261f4e0835be935c64b0f058"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\source-freeze.json",
+      "bytes": 2654,
+      "sha256": "2abf3986fdb1b7afa259c310c833ab6dfb342ed9689fa1830518f9666107c755"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\storage-admission.json",
+      "bytes": 790,
+      "sha256": "720837bf35d3c324a05165a1a06344e2f3722d6d763ba8209ad7a366fab6215e"
+    }
+  ],
+  "pure_formatter_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\isolated-pure-ui-a02.cpp",
+    "bytes": 26269,
+    "sha256": "84fd11c6981b7cb5290719070d870c9620f84048ed789daf4830e9ae0098ef74"
+  },
+  "pure_formatter_source_spans": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\isolated-pure-ui-a02.json",
+    "bytes": 8419,
+    "sha256": "ba9d6c63b29c2ae18934ce14c8d67ab3ea737b504fdf9a219fa6b9f6e6ff93ad"
+  },
+  "storage_close": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\storage-close-a02.json",
+    "bytes": 1368,
+    "sha256": "54065444cb107147f646d55a3b94d4a0934f7f2a1c92e96fb93ff1a0bcbc10f9"
+  },
+  "old_30_check_matrix_executed": false,
+  "original_engine_code_executed": false,
+  "full_dll_linked": false,
+  "live_getter_or_action_qualified": false,
+  "gameplay_action_ready": false,
+  "main_or_a04_mutated": false,
+  "old_ui_stage_or_bui01_or_bui02_mutated": false,
+  "expected_followup": "Parent merges typed core/test repair with reader repair; new cold load reads real window context/permissions before any action; independent final inventory/owner/slot verification remains required"
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "ck3_12004_holy_site_relic_action_slot_source_abi_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:24:12.720650+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "STATIC_SOURCE_BOUND_NOT_ACTION_QUALIFIED",
+  "read_only_investigation": true,
+  "functions": {
+    "automatic_slot_picker": {
+      "rva": "2C805E0",
+      "end_rva_exclusive": "2C806CB",
+      "abi": "int32_t(const Inventory* RCX,const Artifact* RDX)",
+      "entry_evidence": "effective-slot-picker-complete",
+      "algorithm": "first compatible empty slot, else minimum-rarity compatible occupied slot; first index wins ties; none=-1",
+      "calls_in_complete_body": 0,
+      "tls_in_complete_body": false,
+      "gameplay_writes_in_complete_body": false,
+      "evaluates_slot_script_permission": false
+    },
+    "effective_requested_slot_branch": {
+      "begin_rva": "29AB5ED",
+      "end_rva_exclusive": "29AB6B5",
+      "entry_evidence": "explicit-effective-slot-and-replacing-branch",
+      "callable_function": false,
+      "requested_index_offset_primary_command": "2C",
+      "inventory_offset_site": "28",
+      "slot_array_offset_inventory": "40",
+      "slot_count_offset_inventory": "4C",
+      "slot_stride": 24,
+      "slot_type_pointer_offset": "8",
+      "slot_artifact_full_id_offset": "10",
+      "compatibility": "slotType.u8[209]!=0 || (slotType.u32[44]==artifactType.u32[40] && slotType.u32[40]==artifactType.u32[44])",
+      "artifact_type_pointer_offset": "B8",
+      "fallback_rva": "2C805E0",
+      "recommended_implementation_method": "source_bound_explicit_slot_branch_then_original_native_picker",
+      "independent_combined_original_getter_found": false
+    },
+    "equipped_membership": {
+      "rva": "22E4420",
+      "end_rva_exclusive": "22E449F",
+      "abi": "bool(const Inventory* RCX,const Artifact* RDX)",
+      "second_argument_is_full_id": false,
+      "entry_evidence": "equipped-slot-membership-complete",
+      "reads_owned_reference_array": false
+    },
+    "character_inventory_const_getter": {
+      "rva": "28AA810",
+      "end_rva_exclusive": "28AA88C",
+      "abi": "const Inventory*(const Character* RCX)",
+      "real_component_pointer_offset": "1B0",
+      "inventory_offset_component": "458",
+      "missing_component_uses_tls_static_fallback": true,
+      "call_only_after_real_component_verified": true
+    },
+    "slot_type_holy_site_permission": {
+      "rva": "30FE7B0",
+      "end_rva_exclusive": "30FE882",
+      "abi": "bool(const SlotType* RCX,const HolySite* RDX,NativeTooltip* or null R8)",
+      "empty_trigger_count_offset": "164",
+      "compiled_trigger_offset": "118",
+      "scope_constructor_rva": "24FD1F0",
+      "evaluator_rva": "37998D0",
+      "deep_rng_side_effects": "unknown"
+    },
+    "selected_action_effect_description": {
+      "rva": "17D6990",
+      "abi": "NativeString*(HolySiteWindow* RCX,NativeString* output RDX)",
+      "registration_name_load_rva": "2D3083",
+      "callback_rva": "17D8C80",
+      "reads_only_current_selected_subject": true,
+      "helper_rva": "17D7240",
+      "effect_description_callee_rva": "245DE80",
+      "deep_rng_side_effects": "unknown",
+      "full_deep_readonly_safety_qualified": false
+    }
+  },
+  "ownership": {
+    "character_owner_raw_offset": "78",
+    "holy_site_owner_raw_offset": "7C",
+    "empty_full_id_raw": 4294967295,
+    "character_transfer_rva": "252FDD0",
+    "character_transfer_clears_site_at_rva": "252FE59",
+    "character_transfer_sets_character_at_rva": "252FECC",
+    "site_transfer_rva": "2530300",
+    "site_transfer_clears_character_at_rva": "253045E",
+    "site_transfer_sets_site_at_rva": "253046C",
+    "owned_reference_array_offset_inventory": "58",
+    "owned_reference_count_offset_inventory": "64",
+    "owned_reference_stride": 4,
+    "named_artifact_GetOwner_pure_getter_closed": false,
+    "equipped_and_owned_reference_membership_are_independent": true
+  },
+  "unqualified": [
+    "live getter safety for this new domain",
+    "new helper model/native fixture and MCP qualification",
+    "same-frame full live observation of effective slot and owner/ref/slot membership",
+    "all downstream preview/script RNG side effects",
+    "mutating command action execution and postcondition"
+  ],
+  "gameplay_command_submitted": false,
+  "action_qualified": false
+}

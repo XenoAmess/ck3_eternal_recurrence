@@ -151,11 +151,11 @@ void ReadPlayerInventory(const Bindings&b,Pass&p,Snapshot&out) {
  p.player_inventory_available=v.available=true;v.unavailable_reason.clear();
 }
 void ReadWindow(const Bindings&b,const void*owner,std::uint32_t site_id,Pass&p,Snapshot&out) {
- auto&w=out.window_context;const void*back=nullptr,*window_gfx=nullptr;std::uintptr_t primary=0,secondary=0;
+ auto&w=out.window_context;const void*back=nullptr,*window_owner=nullptr;std::uintptr_t primary=0,secondary=0;
  if(!Read(b,owner,0x10,p.gfx)||!p.gfx||!Read(b,p.gfx,0x88,p.handler)||!p.handler||
   !Read(b,p.handler,0x5D8,p.window)||!p.window||!Read(b,p.window,0,primary)||primary!=b.model.image_base+0x4592338||
   !Read(b,p.window,0x10,secondary)||secondary!=b.model.image_base+0x4592310||
-  !Read(b,p.window,0xA0,back)||back!=p.handler||!Read(b,p.window,0x98,window_gfx)||window_gfx!=p.gfx||
+  !Read(b,p.window,0xA0,back)||back!=p.handler||!Read(b,p.window,0x98,window_owner)||window_owner!=owner||
   !Read(b,p.window,0x60,p.root)){
   w.unavailable_reason="holy_site_window_registered_owner_unavailable";return;}
  w.root_present=p.root!=nullptr;

@@ -1,0 +1,206 @@
+{
+  "schema": "holy-site-relic-binding-focused-python-qualified-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:34:14.723366+00:00",
+  "all_passed": true,
+  "status": "SIX_READER_SEVEN_TYPED_FOCUSED_REAL_MCP_PASS",
+  "reader_packets": 6,
+  "typed_packets": 7,
+  "skipped": 0,
+  "source_mapping": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\native_bridge\\research\\consume_holy_site_relic_binding_focused_packets.py",
+        "bytes": 19275,
+        "sha256": "82f3a80b978e20d3f4d06037fd6610f70b69779aae37a39bb35fb2e01990f92c"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/consume_holy_site_relic_binding_focused_packets.py"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\docs\\ck3-native-ai\\holy-site-relic-window-binding-focused-mcp12004\\qualification.json",
+        "bytes": 30710,
+        "sha256": "7bcc0725e6aa64f08bfeb70d0cd12c69e2639d29782db6001ef4e2e138efac1b"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/holy-site-relic-window-binding-focused-mcp12004/qualification.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\docs\\ck3-native-ai\\holy-site-relic-window-binding-focused-mcp12004\\README.md",
+        "bytes": 2311,
+        "sha256": "183be33d17f7b73f8725ed6bd45c52d577e0215507e7e0060a9b9fdb2f0dfa20"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/holy-site-relic-window-binding-focused-mcp12004/README.md"
+    }
+  ],
+  "reproducible_sources": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\native_bridge\\research\\consume_holy_site_relic_binding_focused_packets.py",
+        "bytes": 19275,
+        "sha256": "82f3a80b978e20d3f4d06037fd6610f70b69779aae37a39bb35fb2e01990f92c"
+      },
+      "repository_relative_path": "ck3_autonomous_player/native_bridge/research/consume_holy_site_relic_binding_focused_packets.py"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\docs\\ck3-native-ai\\holy-site-relic-window-binding-focused-mcp12004\\qualification.json",
+        "bytes": 30710,
+        "sha256": "7bcc0725e6aa64f08bfeb70d0cd12c69e2639d29782db6001ef4e2e138efac1b"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/holy-site-relic-window-binding-focused-mcp12004/qualification.json"
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\docs\\ck3-native-ai\\holy-site-relic-window-binding-focused-mcp12004\\README.md",
+        "bytes": 2311,
+        "sha256": "183be33d17f7b73f8725ed6bd45c52d577e0215507e7e0060a9b9fdb2f0dfa20"
+      },
+      "repository_relative_path": "docs/ck3-native-ai/holy-site-relic-window-binding-focused-mcp12004/README.md"
+    }
+  ],
+  "patch": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-binding-focused-mcp-qualified-a01.patch",
+    "bytes": 53582,
+    "sha256": "5baf25c5d9ca751ecc39225e22292ecfab614aa28613919ebefd138c76ac5eca"
+  },
+  "compact_qualification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\docs\\ck3-native-ai\\holy-site-relic-window-binding-focused-mcp12004\\qualification.json",
+    "bytes": 30710,
+    "sha256": "7bcc0725e6aa64f08bfeb70d0cd12c69e2639d29782db6001ef4e2e138efac1b"
+  },
+  "actual_receipts": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-window-binding-focused-mcp-a01.json",
+      "bytes": 130460,
+      "sha256": "bc36f815a8e1a507ee11c08565c0e096c38ee6832bf4ce6ec7c9043638457087"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-typed-binding-focused-mcp-a01.json",
+      "bytes": 149887,
+      "sha256": "0c125dddd796b18ee6837afb6e3ce40e19b0869dd0ade80a7a0c53fa950da13c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-binding-portable-focused-mcp-a01.json",
+      "bytes": 257943,
+      "sha256": "fd7b6485c87f344a94bab2b198ce81f2e4af3bf5cc190ea572e125d458e36610"
+    }
+  ],
+  "source_freezes": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\source-freeze.json",
+      "bytes": 6345,
+      "sha256": "2d6c0b097a226a627336afa316be96a7ef4d0b095f27b3820ca5e7c7a396bb5a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\source-freeze.json",
+      "bytes": 2654,
+      "sha256": "2abf3986fdb1b7afa259c310c833ab6dfb342ed9689fa1830518f9666107c755"
+    }
+  ],
+  "latest_native_inputs": {
+    "reader_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packet-manifest.json",
+      "bytes": 3158,
+      "sha256": "42f8518880fb2b6a66b13a05ad9487534090051ce2adfc500dd7a2b6d3fddd2d"
+    },
+    "reader_producer": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\b03\\xar_ck3_12004_holy_site_relic_window_binding_test.exe",
+      "bytes": 218112,
+      "sha256": "066743ec8cdbae773d3e5597e2f8f4e6058ae229c2ca823c31953e05962dc704"
+    },
+    "typed_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\consumer-manifest.json",
+      "bytes": 9295,
+      "sha256": "dccbdae30d952d40ebb20cf91b7e9f12ee1c8ccb208ec076646ffed3385fa2c1"
+    },
+    "typed_producer": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui03\\xar_relic_owner12004_test.exe",
+      "bytes": 173568,
+      "sha256": "eaf6f0957e9d42129a7c12755734049e2fb6f3c3fe4b9755769bbbe684538b24"
+    },
+    "typed_source_extraction": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\isolated-pure-ui-a02.json",
+      "bytes": 8419,
+      "sha256": "ba9d6c63b29c2ae18934ce14c8d67ab3ea737b504fdf9a219fa6b9f6e6ff93ad"
+    }
+  },
+  "identity_proofs": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\actual-mcp-packet-identity.json",
+      "bytes": 1934,
+      "sha256": "032abdf16afbc30a346cb3ac2857eb2755ad8727f75697d3c62465f79717d1c3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\focused-qualification-a02\\all-seven-packets-identity.json",
+      "bytes": 2917,
+      "sha256": "9800918fc94477c4c0ce4b41907e695e80542a6c7b321233ca4fd96ab39e9312"
+    }
+  ],
+  "source_dependencies": {
+    "existing_qualified_context_descriptor": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-action-context-python-qualified-a03.json",
+      "bytes": 5518,
+      "sha256": "45366fcefc5f0529c995ec006a167057d3bc6166d3a842258b998ed5022aeeef"
+    },
+    "existing_qualified_actions_descriptor": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-actions-python-qualified-a01.json",
+      "bytes": 4199,
+      "sha256": "f0add38388633d19ced1c8a4b826313111174221dd72bea9088720ed3b06e543"
+    },
+    "combined_public_hook_manifest": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\combined-python-hooks-a01.json",
+      "bytes": 22919,
+      "sha256": "73ab842336477992460745b0658d1618dd59c3eb9497194bdcdacc8fff092872"
+    },
+    "setup_helper": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\tests\\unit\\test_holy_site_relic_actions_12004_native_mcp.py",
+      "bytes": 18490,
+      "sha256": "aff29c93ed8926389617e49af5bf8da911605608c5b55744f359c4fd2d09dfdc"
+    },
+    "overlay_helper": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\ck3_autonomous_player\\native_bridge\\research\\relic_action_context_source_overlay.py",
+      "bytes": 3775,
+      "sha256": "d06f34e09bc41cb93716d9d368cc5e5a49b60cdb15f680201310293ba74b01c6"
+    }
+  },
+  "storage": {
+    "owned_stage": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage",
+    "measured_stage_bytes_before_descriptor": 3324611,
+    "suballocation_bytes": 4194304,
+    "shared_action_lane_admission_bytes": 104857600,
+    "existing_evidence_preserved": true,
+    "raw_receipts_and_state_not_for_repository": true
+  },
+  "qualification_scope": {
+    "old_matrix_executed": false,
+    "native_boundary_mocked": [
+      "endpoint I/O",
+      "hello",
+      "state_snapshot"
+    ],
+    "original_engine_getters_or_callbacks_executed": false,
+    "live_game_qualification": false,
+    "business_outcome_observed": false,
+    "typed_full_dll_linked": false,
+    "typed_formatter_scope": "Compiled exact production parser, nav serializer and complete envelope bodies in source-bound isolated TU; owner/root admission and original callbacks injected",
+    "source_bound_native_pins_in_fixture": false,
+    "merged_repository_sdk_bootstrap_separately_tested": false,
+    "portable_candidate_bootstrap_actual_sdk_tested": true
+  },
+  "retention": {
+    "policy": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "policy_version": "1.0.0",
+    "protection_max_hours": 168,
+    "protected_until_utc": "2026-10-24T14:34:14.723366+00:00",
+    "review_by_utc": "2026-10-24T14:34:14.723366+00:00",
+    "reason": "Current owner-role repair source and unresolved pending diagnostics; raw evidence stays external pending final review",
+    "review_deadline_does_not_unlock_unknown_intent": true
+  },
+  "main_modified": false,
+  "game_deployed": false
+}

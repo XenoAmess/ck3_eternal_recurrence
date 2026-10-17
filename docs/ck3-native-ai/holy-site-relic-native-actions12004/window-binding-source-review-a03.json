@@ -1,0 +1,200 @@
+{
+  "schema": "ck3_12004_relic_window_owner_binding_layered_review_a03_v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-17T14:26:51.448054+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "layers": {
+    "r6_original_permissions_partial": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\docs\\ck3-native-ai\\holy-site-relic-native-actions12004\\live-context-r6-partial-a03.json",
+      "bytes": 7462,
+      "sha256": "78b4a7a6f8abb17654f37dc413e3a18ba0689507597b1b100a353dc81ab84307"
+    },
+    "observation_plan": {
+      "plan": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\research-plan-a01.json",
+        "bytes": 7759,
+        "sha256": "ec19c7685bda4ed751e8d320b7aac0e418d9c3134ae2d74d8898d555969cb1fb"
+      },
+      "actual_check_result": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\research-plan-check-a01.json",
+        "bytes": 925,
+        "sha256": "4b1cb28cedc0ad2a9631bcff7ef0f0d1f1dc71f673c1292c7243febe04804ec0"
+      },
+      "result": "plan-consistent",
+      "proof_layer": "record-structure-and-file-integrity",
+      "checked_evidence_files": 5,
+      "observation_plan_issues": [],
+      "semantic_correctness_verified": false,
+      "controller_reported_execution": {
+        "argument": "--for-observation",
+        "exit_code": 0,
+        "source": "parent execution lane explicit report; child did not rerun check or infer exit code from result JSON"
+      }
+    },
+    "actual_readonly_probe": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\window-binding-repair-a01\\r6-live-process-read-a01.json",
+        "bytes": 33452,
+        "sha256": "95f98799b0581dece92315205cca759c3deeb0ec5b84d77683db00b01340e7af"
+      },
+      "observed_at_utc": "2026-10-17T14:18:15.309149+00:00",
+      "process_identity": {
+        "pid": 21920,
+        "create_time": 1792244644.324554,
+        "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe"
+      },
+      "source_receipt_reference": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-baghdad14-relic-permissions64-a01.json",
+        "sha256": "8b2fed0a78ef7769c4d618401cae6a027d0a2d5fa5764fbc2e41320958b0e08c",
+        "mailbox_jomini_state": 1947839025792
+      },
+      "access": "PROCESS_QUERY_INFORMATION|PROCESS_VM_READ",
+      "read_budget_bytes": 65536,
+      "actual_bytes_requested": 3408,
+      "frame_chain_stable": true,
+      "window_98_equals_jomini_owner": true,
+      "window_98_equals_owner_plus10": false,
+      "owner_plus10_is_separate_Gfx_complete_object": true,
+      "global_and_mailbox_handler_chains_agree": true,
+      "all_observed_RTTI_complete_object_offsets": 0,
+      "type_names": {
+        "jomini": ".?AVCInGameInterfaceIdler@@",
+        "owner_plus10": ".?AVCIngameInterfaceIdlerGfx@@",
+        "handler": ".?AVCIngameInterfaceHandler@@",
+        "window": ".?AVCHolySiteWindow@@",
+        "window_gfx": ".?AVCInGameInterfaceIdler@@",
+        "global_root": ".?AVCInGameInterfaceIdler@@",
+        "global_raw_idler": ".?AVCIngameInterfaceIdlerGfx@@",
+        "global_raw_handler": ".?AVCIngameInterfaceHandler@@"
+      },
+      "selected_holy_site_id": 14,
+      "selected_artifact_id": null,
+      "selected_slot_index": null,
+      "callbacks_invoked": 0,
+      "process_writes": 0,
+      "input_actions": 0,
+      "permission_or_action_business_qualified": false,
+      "old_window_gfx_field_label_is_historical_not_actual_Gfx_role": true
+    },
+    "original_static_constructor_and_caller": {
+      "constructor": {
+        "source_packet": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-constructor-existing.json",
+          "bytes": 13793,
+          "sha256": "6f7f1414241343d18adc749cdf2b1fc765bc3988348bbffffb784e2d431421fa"
+        },
+        "parent_source_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\gui-source\\gui-native-source-a02.json",
+        "parent_source_sha256": "372f1943ba74a4a338a4c116e35acf45120c913b457be1e78fae6925014147ee",
+        "source_observed_at_utc": "2026-10-17T07:56:18.864328+00:00",
+        "name": "CHolySiteWindow.constructor",
+        "begin_rva": 24988992,
+        "end_rva_exclusive": 24989428,
+        "complete_body_bytes": 436,
+        "complete_body_sha256": "557bf8c919fba2b2a33fe033559d19005a96dc864bd102b853a2bda038b67cc4",
+        "selected_instructions": [
+          {
+            "rva": 24989010,
+            "bytes": "498bf8",
+            "mnemonic": "mov",
+            "op_str": "rdi, r8"
+          },
+          {
+            "rva": 24989013,
+            "bytes": "488bda",
+            "mnemonic": "mov",
+            "op_str": "rbx, rdx"
+          },
+          {
+            "rva": 24989099,
+            "bytes": "49899e98000000",
+            "mnemonic": "mov",
+            "op_str": "qword ptr [r14 + 0x98], rbx"
+          },
+          {
+            "rva": 24989106,
+            "bytes": "4989bea0000000",
+            "mnemonic": "mov",
+            "op_str": "qword ptr [r14 + 0xa0], rdi"
+          }
+        ]
+      },
+      "caller": {
+        "source_packet": {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-publication-existing.json",
+          "bytes": 6295,
+          "sha256": "f42d6893ed61c9cc50589c3216a6d5fdae05e15ea9c2376d0cc4c6c6442a765f"
+        },
+        "parent_source_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\gui-source\\gui-native-source-a02.json",
+        "parent_source_sha256": "372f1943ba74a4a338a4c116e35acf45120c913b457be1e78fae6925014147ee",
+        "source_observed_at_utc": "2026-10-17T07:56:18.864328+00:00",
+        "name": "CIngameInterfaceHandler.holy_site_window_publication",
+        "begin_rva": 11594336,
+        "end_rva_exclusive": 11594476,
+        "complete_body_bytes": 140,
+        "complete_body_sha256": "7cf9e39b3ccf01c25e77c514e0cc45244a753415fe872cae314426c2c06ce465",
+        "selected_instructions": [
+          {
+            "rva": 11594349,
+            "bytes": "488b5940",
+            "mnemonic": "mov",
+            "op_str": "rbx, qword ptr [rcx + 0x40]"
+          },
+          {
+            "rva": 11594368,
+            "bytes": "4c8bc7",
+            "mnemonic": "mov",
+            "op_str": "r8, rdi"
+          },
+          {
+            "rva": 11594371,
+            "bytes": "488bd3",
+            "mnemonic": "mov",
+            "op_str": "rdx, rbx"
+          },
+          {
+            "rva": 11594377,
+            "bytes": "e8b262cc00",
+            "mnemonic": "call",
+            "op_str": "0x17d4d40"
+          },
+          {
+            "rva": 11594392,
+            "bytes": "488987d8050000",
+            "mnemonic": "mov",
+            "op_str": "qword ptr [rdi + 0x5d8], rax"
+          }
+        ]
+      },
+      "contract": "constructor(this, handler+40, handler) stores second argument at window+98 and third at window+A0",
+      "all_downstream_window98_consumers_exhaustively_closed": false,
+      "nearby_consumer_ranges_were_finite_exploration_only": [
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-consumer-nearby-bounded.json",
+          "bytes": 10216,
+          "sha256": "5f1c9aea12ea5de05efc2ffdb5e25c484e230b9ee5879f21f691664c8936479a"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-secondary-lifecycle-consumers-bounded.json",
+          "bytes": 16117,
+          "sha256": "2906339cffa4d850fdf510d6f018c73668e0493d0fdf8ce6e0e370fb47c12af1"
+        },
+        {
+          "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\docs-stage-a03\\source-window\\window-base-owner-consumer-bounded.json",
+          "bytes": 9597,
+          "sha256": "e3be9c6fdf8a3540df93b41902c9af9b9f537bf6ff264b508978aa2fda2a254d"
+        }
+      ]
+    }
+  },
+  "conclusion": {
+    "incorrect_guard_observed": "window+98 == *(jomini_owner+10) compares owner against separate Gfx object",
+    "source_and_live_supported_binding": "window+98 == jomini_owner; window+A0 == resolved handler; independent owner/global handler chains agree in R6 sample",
+    "repair_of_source_is_engine_permission_qualification": false,
+    "original_Can_buttons_text_getters_run_after_repair": false,
+    "new_enshrine_or_remove_permitted_or_completed_claimed": false,
+    "current_buttons_can_differ_from_explicit_artifact_guard_when_no_artifact_selected": true
+  },
+  "child_new_process_memory_calls": 0,
+  "child_new_exe_reads": 0,
+  "child_cpp_main_or_a04_modified": false
+}

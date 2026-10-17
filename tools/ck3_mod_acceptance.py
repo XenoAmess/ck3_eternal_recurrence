@@ -33,9 +33,16 @@ SAVED_FLAGS = {
     "sha256": "--saved-campaign-save-sha256", "player_id": "--saved-campaign-player-id",
     "date_raw": "--saved-campaign-date-raw", "product_inventory": "--saved-campaign-product-inventory",
 }
+CASE_HOLY_SITE_RELIC_ACTION_MCP_TOOLS = frozenset({'ck3_set_holy_site_relic_slot_selection_v1', 'ck3_select_holy_site_relic_artifact_v1', 'ck3_remove_holy_site_relic_v1', 'ck3_enshrine_holy_site_relic_v1'})
+CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS = frozenset({
+    "ck3_open_holy_site_creation_window_v1", "ck3_select_holy_site_creation_type_v1",
+    "ck3_select_holy_site_creation_barony_v1", "ck3_set_holy_site_creation_artifact_selection_v1",
+})
 CASE_READ_ONLY_MCP_TOOLS = frozenset({
     "ck3_query_current_title_appointment_v1",
     "ck3_query_player_religion_context_v1",
+    "ck3_query_player_holy_site_creation_context_v1",
+    "ck3_query_player_holy_site_relic_action_context_v1",
     "ck3_query_player_holy_site_relic_permissions_v1",
     "ck3_query_player_holy_site_relic_context_v1",
     "ck3_query_player_holy_site_v1",
@@ -144,6 +151,16 @@ class Selection:
                 or not set(tools) <= set(self.case.get("required_mcp_tools", []))):
             raise ValueError("Case read-only opt-in must declare unique registered required MCP tools")
         self.opt_in_read_only_mcp_tools = tools
+        self.opt_in_holy_site_relic_actions = self.case.get("opt_in_holy_site_relic_actions", False)
+        if type(self.opt_in_holy_site_relic_actions) is not bool:
+            raise ValueError("opt_in_holy_site_relic_actions must be an explicit Boolean")
+        if self.opt_in_holy_site_relic_actions and not CASE_HOLY_SITE_RELIC_ACTION_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Relic action opt-in must declare all four finite action tools as required")
+        self.opt_in_holy_site_creation_ui = self.case.get("opt_in_holy_site_creation_ui", False)
+        if type(self.opt_in_holy_site_creation_ui) is not bool:
+            raise ValueError("opt_in_holy_site_creation_ui must be an explicit Boolean")
+        if self.opt_in_holy_site_creation_ui and not CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
+            raise ValueError("Creation UI opt-in must declare all four finite UI tools as required")
         self.prepared_path = prepared_path.resolve() if prepared_path else None
         self.prepared = read_json(self.prepared_path) if self.prepared_path else None
         if self.prepared:
@@ -355,6 +372,10 @@ class Selection:
             self.saved = saved
         else:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
+        if self.opt_in_holy_site_relic_actions:
+            argv.append("--private-holy-site-relic-actions")
+        if self.opt_in_holy_site_creation_ui:
+            argv.append("--private-player-holy-site-creation-ui")
         for tool in self.opt_in_read_only_mcp_tools:
             argv += ["--case-read-only-mcp-tool", tool]
         return argv
@@ -365,6 +386,8 @@ class Selection:
                 "shared_manifest": str(self.manifest_path), "run_id": self.values["run_id"],
                 "host_argv": self.argv, "required_mcp_tools": self.case.get("required_mcp_tools", []),
                 "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
+                "opt_in_holy_site_relic_actions": self.opt_in_holy_site_relic_actions,
+                "opt_in_holy_site_creation_ui": self.opt_in_holy_site_creation_ui,
                 "runtime_environment": self.runtime_environment,
                 "phases": self.case.get("phases", []), "budgets": self.case["budgets"],
                 "effective_budgets": self.effective_budgets, "readiness_policy": self.readiness_policy,
@@ -545,7 +568,8 @@ class Selection:
             'shared_game':self.manifest['game'],'case_contract':read_json(self.adapter_config),
             'product_spec':self.product,'canonical_products_path':str(self.case_path(self.products['product_inventory'])),
             'case_inputs':case_inputs,'saved_campaign':self.prepared.get('startup',{}).get('saved_campaign',{}) if self.prepared else self.context.get('saved_campaign',{}),
-            'runtime_manifest':pin(self.manifest_path),'readiness_policy':self.readiness_policy}
+            'runtime_manifest':pin(self.manifest_path),'readiness_policy':self.readiness_policy,
+            'opt_in_holy_site_creation_ui':self.opt_in_holy_site_creation_ui}
 
     def prepare(self, inputs_path, output):
         if self.context:

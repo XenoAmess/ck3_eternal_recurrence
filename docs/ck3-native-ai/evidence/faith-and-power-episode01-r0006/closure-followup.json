@@ -1,0 +1,197 @@
+{
+  "schema": "faith-e01-r0006-closure-and-delivery-followup-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:44:27.280504+00:00",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0006",
+  "preserved_prior_phase_index": "source-index.json",
+  "normal_quit": {
+    "confirm_started_at_utc": "2026-10-17T14:38:33.968178+00:00",
+    "confirm_finished_at_utc": "2026-10-17T14:38:41.853679+00:00",
+    "native_submission_count": 1,
+    "confirm_returned_dispatch_pending": true,
+    "independent_observe_started_at_utc": "2026-10-17T14:38:51.635291+00:00",
+    "independent_observe_finished_at_utc": "2026-10-17T14:38:51.880808+00:00",
+    "observer_native_submission_count": 0,
+    "process_observation": {
+      "pid": 21920,
+      "creation_filetime_100ns": 134367182443245539,
+      "retained_handle_token": "9d371441dca719c1fd679d21b9b72342",
+      "wait_result": 0,
+      "wait_state": "signaled",
+      "exit_code": 0,
+      "process_identity_verified": true,
+      "process_exit_observed": true,
+      "observed_monotonic_ns": 579398865732300,
+      "timeout_ms": 5000,
+      "observation_deadline_reached": false,
+      "observation_clock_domain": "driver_monotonic_v1",
+      "errors": []
+    },
+    "normal_close_qualified": true,
+    "autosave_verified": false,
+    "business_pass": false,
+    "research_holder_completed": true
+  },
+  "original_process_waits": {
+    "public": {
+      "pid": 20628,
+      "actual_original_popen_wait": true,
+      "returncode": 0,
+      "completed_at_utc": "2026-10-17T14:39:47.195796+00:00"
+    },
+    "host": {
+      "at_utc": "2026-10-17T14:39:47.234760+00:00",
+      "pid": 15708,
+      "returncode": 0,
+      "run_id": "4-8e1c2f1861--faith-and-power--R0006",
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "keeper": {
+      "pid_from_keeper_process_record": 3504,
+      "actual_exit_code": 0,
+      "terminal_report_at_utc": "2026-10-17T14:39:54.573147+00:00"
+    },
+    "root_reported_tool_sessions": {
+      "run": 75438,
+      "keeper": 10480,
+      "overlay": 3505,
+      "reported_exit_codes": [
+        0,
+        0,
+        0
+      ],
+      "source": "Root current task instruction; these are tool session references, not substituted OS PIDs.",
+      "overlay_original_process_receipt_independently_read_by_this_consumer": false
+    }
+  },
+  "cas_release": {
+    "sequence": 11414,
+    "task_id": "faith-e01-shared-a07",
+    "task_updated_at_utc": "2026-10-17T14:40:07.983848+00:00",
+    "event_timestamp_utc": "2026-10-17T14:40:07.984914+00:00",
+    "state": "done",
+    "resources": []
+  },
+  "authorization": {
+    "source": "Current conversation user selection, relayed by Root in this follow-up instruction; prior repo daily entry recorded13:16:56 UTC",
+    "exact_choice": "先提供本地文件，继续制作（推荐）",
+    "exact_user_message_timestamp_utc": null,
+    "local_file_delivery_authorized": true,
+    "continue_production_authorized": true,
+    "formal_episode_completion_granted": false,
+    "human_review_granted": false,
+    "local_review_entry": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\full-review-build-a01\\delivery\\LOCAL-REVIEW-README.md"
+  },
+  "limited_retention_plan": {
+    "policy_version": "1.0.0",
+    "policy": {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    "owner": "/root",
+    "review_at_utc": "2026-10-19T14:21:17.337709+00:00",
+    "protection_auto_renew": false,
+    "plan_only_no_asset_ledger_mutated_by_this_consumer": true,
+    "groups": [
+      {
+        "category": "checkpoint",
+        "assets": [
+          "F-pending-prepare.ck3",
+          "C2-nadjaf-adopted-funded.ck3"
+        ],
+        "reason": "Immutable F preparation control and actual funded C2 input for independent R7",
+        "next_use": "R7 cold restore after R6 closure; compare actual identities and saved state",
+        "review_at_utc": "2026-10-19T14:21:17.337709+00:00",
+        "existing_earlier_review_or_expiry_not_extended": true
+      },
+      {
+        "category": "raw_evidence",
+        "assets": [
+          "episode01-r6-take01",
+          "episode01-r6-take02",
+          "minimal R6 source-bound unavailable/window diagnostics and original closure receipts"
+        ],
+        "reason": "Formal edit source and two unresolved native contract comparisons",
+        "next_use": "Resolve context interval accounting and compare repaired providers with original unavailable packets",
+        "review_at_utc": "2026-10-19T14:21:17.337709+00:00",
+        "existing_media_protection_deadline_not_extended": true
+      },
+      {
+        "category": "delivered_media",
+        "assets": [
+          "local adoption review MP4",
+          "local research lecture review MP4"
+        ],
+        "reason": "User-authorized local review while formal production continues",
+        "next_use": "Local review; default720h from existing asset registration, large files earlier168h review",
+        "copy_or_this_note_resets_ttl": false
+      }
+    ],
+    "deletion_performed": false,
+    "automatic_gc_claimed": false
+  },
+  "sources": {
+    "normal_quit_root": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\case-output\\normal-quit-root-result.json",
+      "bytes": 4368,
+      "sha256": "123590be11fbd8a7d3bc5f7efc63b6a9787129376f320465a4fe08655c04b868"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\case-output\\normal-close-result.json",
+      "bytes": 14037,
+      "sha256": "56c67045bd038bdc2adc13ca38ea4311d319208c33fc6c954ac3ed973f0898cf"
+    },
+    "confirm_once": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-normal-exit-confirm-once-a01.json",
+      "bytes": 5630,
+      "sha256": "e431061e39c90dde0f3c207264e65b4d2a6be05ab84b490e26fe71ccf769c71c"
+    },
+    "observe_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-native-receipts\\r6-normal-exit-observe-a01.json",
+      "bytes": 5870,
+      "sha256": "6e5d53b61dba78e7b58e42c662e92482088ccb3c3a681f1177f5c2ef090adc6c"
+    },
+    "public_original_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r6-run-session-a01\\original-exit.json",
+      "bytes": 1162,
+      "sha256": "e81cec65b130f6eaf7d9d534996b0c7e19afd1db00c3c8b257db2c050efe7922"
+    },
+    "host_original_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "1049519f5ddb4e9ece656f51bfad47c589b75d5bfffc3f12a9952924dbf3e950"
+    },
+    "keeper_process": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\keeper-process.json",
+      "bytes": 1084,
+      "sha256": "e11576794efa13b91653c4f5a81f3fe86d1187fc35ef16fefa076a2d744f9aeb"
+    },
+    "keeper_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\keeper-actual-parent-exit.json",
+      "bytes": 5055,
+      "sha256": "2ada39d9d956dc41cbf6c735d4d5ec5dcb5e7b885c410af3556100483dbe9af2"
+    },
+    "keeper_stop_proof": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-keeper-stop-proof-a01.json",
+      "bytes": 1910,
+      "sha256": "0eab30bb277cdc99c44d3fd91e27c2e375f6b0082e51cc945110b354a66fd6e6"
+    },
+    "cas_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\root-screen-release-a01.json",
+      "bytes": 1313,
+      "sha256": "1034cd50d4e31c4e02bfdd5d6693e8bf864b061b9048f5ab893d1a53db1499ad"
+    },
+    "research_holder_completion": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0006\\case-output\\episode01-r6-finish-root-result.json",
+      "bytes": 1234,
+      "sha256": "bd3ecdfa4c96569016e03f1fae78d2a6beb872613b838f4267f7c3a3e7133d50"
+    }
+  },
+  "large_media_or_saves_rehashed": false,
+  "old_business_validation_rerun": false,
+  "main_tree_modified_by_this_consumer": false,
+  "resources": []
+}

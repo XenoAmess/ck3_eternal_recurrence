@@ -1,0 +1,36 @@
+{
+  "schema": "ck3_12004_holy_site_relic_native_actions_qualification_reference_v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-17T13:40:55.926217+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "status": "R6_BINDING_SOURCE_REPAIRED_FOCUSED_NATIVE_MCP_QUALIFIED_NOT_LIVE",
+  "native_owned_fixture_evidence": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a01\\native-result.json",
+      "bytes": 524,
+      "sha256": "e08f1cf7b19c8892b737bd0f0308c84b2cc1ea4dca18742a3cab4c95de903a91"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a01\\source-freeze.json",
+      "bytes": 3464,
+      "sha256": "dab4addd3cc7562b3383ea4380bbd1594681e04c9590731f7c1d312c1ff1a65d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a01\\native-packet-manifest.json",
+      "bytes": 2098,
+      "sha256": "18ac129d324ae0d0a5aca9aee43dc96009b38ca2e79aa073ed78f24bfc00b88c"
+    }
+  ],
+  "native_fixture_is_engine_execution": false,
+  "final_pass_counts_reported": false,
+  "new_mcp_consumer_closure_pending": true,
+  "new_action_context_live_qualification_claimed": false,
+  "typed_ui_gameplay_live_success_claimed": false,
+  "r5_adoption_live_context_is_new_action_qualification": false,
+  "controller_final_record_relative_path": "qualification.json",
+  "instruction": "Controller appends separate final qualification.json with exact source/build/native/MCP/live bindings and limits; this pending record does not grant actions.",
+  "observed_at_utc": "2026-10-17T14:35:37.081213+00:00",
+  "qualification_record": "qualification.json",
+  "live_action_qualified": false,
+  "action_ready": false
+}

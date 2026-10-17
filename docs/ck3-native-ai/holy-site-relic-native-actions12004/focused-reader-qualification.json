@@ -1,0 +1,60 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:29:17.794481+00:00",
+  "producer": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\b03\\xar_ck3_12004_holy_site_relic_window_binding_test.exe",
+    "bytes": 218112,
+    "sha256": "066743ec8cdbae773d3e5597e2f8f4e6058ae229c2ca823c31953e05962dc704"
+  },
+  "packets": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-distinct-action-context.json",
+      "bytes": 6542,
+      "sha256": "392b570dbcbf06ed8a9193171da094ad2909124d0cca6e9c029c5293b6c15a35"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-distinct-permissions.json",
+      "bytes": 3710,
+      "sha256": "56a081d5cbc8e7e4dadbf61cd58748fea86d4269a761db341ebee6f832d43c1e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-foreign-owner-permissions.json",
+      "bytes": 3923,
+      "sha256": "3d10ea1627dd8ce9244a34c0f8096424383259147bd58a36f8ae4e46dc758fcd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-null-owner-action-context.json",
+      "bytes": 6731,
+      "sha256": "ba8637d471774eed098c2c98f43d466a25991cf2dce1d83abe380151ccd1ca30"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-owner-drift-action-context.json",
+      "bytes": 6532,
+      "sha256": "97736eaf0f808636084cf4bce7fa859aafbbf6520fbb2d14eedafae3a3ce1ee8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-owner-drift-permissions.json",
+      "bytes": 3756,
+      "sha256": "db281cbab42a5c1ee86718de5dd88ff5fed28a06d7071a2a52e8fa3a88758469"
+    }
+  ],
+  "production_readers_and_serializers_executed": true,
+  "synthetic_storage": true,
+  "original_engine_getters_executed": false,
+  "historical_matrix_executed": false,
+  "packet_content_identity": [
+    {
+      "new": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\binding-qualification-a02\\native-packets\\binding-distinct-action-context.json",
+        "bytes": 6542,
+        "sha256": "392b570dbcbf06ed8a9193171da094ad2909124d0cca6e9c029c5293b6c15a35"
+      },
+      "historically_consumed_packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a02\\native-packets\\enshrine-empty.json",
+        "bytes": 6542,
+        "sha256": "392b570dbcbf06ed8a9193171da094ad2909124d0cca6e9c029c5293b6c15a35"
+      },
+      "byte_identical": true
+    }
+  ]
+}

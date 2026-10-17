@@ -1,0 +1,124 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:49:11.523340+00:00",
+  "status": "SOURCE_AND_OWNED_FIXTURE_QUALIFIED_ONLY",
+  "new_helper_checks": 30,
+  "new_full_command_packets": 12,
+  "production_core_reader_policy_and_nested_serializer_executed": true,
+  "pure_production_formatter_definitions_compiled_byte_identically": 16,
+  "source_extraction": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\isolated-pure-ui-a02.json",
+    "bytes": 8419,
+    "sha256": "ba9d6c63b29c2ae18934ce14c8d67ab3ea737b504fdf9a219fa6b9f6e6ff93ad"
+  },
+  "wrapper_owner_root_admission_injected": true,
+  "original_engine_code_executed": false,
+  "actual_gui_presentation_provider_executed": false,
+  "actual_production_preview_adapter_executed": false,
+  "production_preview_adapter_object_compiled": true,
+  "action_enabled_navigation_branch_object_compiled": true,
+  "full_dll_linked": false,
+  "live_qualification": false,
+  "action_ready": false,
+  "main_modified": false,
+  "other_agent_source_build_modified": false,
+  "receipts": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a04\\result.json",
+      "bytes": 2679,
+      "sha256": "36701556ec8c617c7c36925286105f91300c2a8a04924c4deac8d637588d9eb6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a04\\storage-admission.json",
+      "bytes": 1011,
+      "sha256": "29c1194631d4841a235aad83703dc59110ecfde1710017fba0e2a93e1eb62a56"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\storage-admission.json",
+      "bytes": 1012,
+      "sha256": "69c9621e70ba5438ab017ee90319d37c613a896bad8c1988cc9f837b42f87e06"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\source-freeze.json",
+      "bytes": 5780,
+      "sha256": "d7f156f23dc866519924f0f4254cf9f678cc0c43031db787ec9766ddcdd8489e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\result.json",
+      "bytes": 2813,
+      "sha256": "d4e84d96d0d6bb5da235bec730b3b425827f898d04cd3fd9979de7b35b16117b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\consumer-manifest.json",
+      "bytes": 13394,
+      "sha256": "d934b69088691966d435d7b45a5bf58d63533e6df9d382e51d62b87ded09ec7b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\adapter-compile-a02\\source-pin.json",
+      "bytes": 697,
+      "sha256": "c275b05e6ca884b9e2f46b63d095eff2b67248a97e7c0c89dfbf34a34db405dc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\adapter-compile-a02\\result.json",
+      "bytes": 1461,
+      "sha256": "d1a26de2b76a098ad26afa59ae92badd32f91e175bad2cab8001d9e0aff0a657"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\isolated-pure-ui-a02.json",
+      "bytes": 8419,
+      "sha256": "ba9d6c63b29c2ae18934ce14c8d67ab3ea737b504fdf9a219fa6b9f6e6ff93ad"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a01\\build-fixture.json",
+      "bytes": 1198,
+      "sha256": "236ff5a874f0533987df77aa74f7a47f914489b48716084c2860d57b32a042c3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a01\\build-fixture.json",
+      "bytes": 1183,
+      "sha256": "6ba0062e2364e4b3f55eeac8493d8044d032a627f359dfb7d28bd731bf350f72"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a02\\compile-navigation.json",
+      "bytes": 1083,
+      "sha256": "0bc1bb1c0a2bd54f3166d83c3c36b354869fd40b4971d6382d22dc91971440e3"
+    }
+  ],
+  "native_producer": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bui01\\xar_relic_ui12004_isolated_packet_test.exe",
+    "bytes": 180736,
+    "sha256": "5564919d6455f8e40ccadb444bde8f69d3d7c3f0a7c2098ca333257084a08eaf"
+  },
+  "packet_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a03\\consumer-manifest.json",
+    "bytes": 13394,
+    "sha256": "d934b69088691966d435d7b45a5bf58d63533e6df9d382e51d62b87ded09ec7b"
+  },
+  "superseded_records": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a01",
+      "reason": "MSVC optional<uint32_t> vs signed literal warning under WX; fixed unsigned fixture comparisons"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a02",
+      "reason": "Copied nav TU needed base/src include for local army tooltip inc; no production logic failure"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\qualification-a04",
+      "reason": "Passed local helper packets; later corrected noop dispatch reporting and produced complete command packets"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a01",
+      "reason": "Direct full TU link had 27 unrelated runtime unresolved symbols; no broad runtime build"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\whole-packet-a02",
+      "reason": "Passed production-pure-formatters full packets; manifest post-processing NameError repaired separately; noop dispatch report superseded by a03"
+    }
+  ],
+  "retention": {
+    "source_review_due_utc": "2026-10-24T00:00:00+00:00",
+    "derived_build_review": "48 hours after Root integration review",
+    "reason": "Active episode01 second pilot typed UI and original button action transport, then first independent business poststate"
+  }
+}

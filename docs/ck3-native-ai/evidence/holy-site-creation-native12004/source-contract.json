@@ -1,0 +1,869 @@
+{
+  "schema": "ck3-holy-site-creation-source-contract/v2",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T14:05:30.679411+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "Manual exact4 source interpretation; fixture proof is separately scoped; no live creation observation",
+  "sources": [
+    {
+      "id": "set-data",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/set-data.json",
+      "sha256": "48200b621739506e7a6c02d61a2631d37424a370227fd1a24927b47be47e749f",
+      "source_bytes_sha256": "2d4739da2a8d0d94704b40dfb2477e55c6fb5c643ea0e91fbcab536805e441b4",
+      "range": [
+        25072368,
+        25073035
+      ],
+      "supports": "SetData17E92F0 builds barony IDs +100 from current player domain; filters rank1, lease byte130 and existing HolySite ref12C."
+    },
+    {
+      "id": "type-model-leaf",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/type-model-leaf.json",
+      "sha256": "b4320625f188c67a8932e8326727c64e0fcf24ef36bc87dfa172f4ccba0702d9",
+      "source_bytes_sha256": "dab21c06e1eec6900a37ffdb0c104cad592da785308cc2d786453f7b6aca81b5",
+      "range": [
+        14234400,
+        14234416
+      ],
+      "supports": "GetAvailableHolySiteTypes returns type-pointer vector +130."
+    },
+    {
+      "id": "barony-model-leaf",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/barony-model-leaf.json",
+      "sha256": "33d15c2160af0c8fa3e5380ae20275a7b5268769ec33b52158f53e13b8d39959",
+      "source_bytes_sha256": "a4df41d76b38900ee387c9eb722af73dd603b63435463f48ebd45d5935bdcdc3",
+      "range": [
+        12582000,
+        12582016
+      ],
+      "supports": "GetPotentialBaronyTitles returns full Title ID vector +100."
+    },
+    {
+      "id": "artifact-model-leaf",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/artifact-model-leaf.json",
+      "sha256": "484765d48f0c1619091f0f0478d42c8009c517055dceed5ab83f737c746b8c57",
+      "source_bytes_sha256": "73b0100e14871ef9c5f0e39850997a8169b7619aeaa5c257cc55eadec2296e43",
+      "range": [
+        14234352,
+        14234368
+      ],
+      "supports": "GetEnshrinableArtifacts returns full Artifact ID vector +118."
+    },
+    {
+      "id": "type-model-producer-all-physical",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/type-model-producer-all-physical.json",
+      "sha256": "233936bf2a8a1ffcfce60bfc656844e378f14357c5b11ba8d72d1b18b70f6599",
+      "source_bytes_sha256": "974e66966d0776b95f484e76a4bcc75940199f993791f95370b50cf5ab418d84",
+      "range": [
+        25077888,
+        25078224
+      ],
+      "supports": "17EA880 actually produces Artifact candidates from current player inventory, excludes equipped and applies native recognition for window Faith; working packet label does not name semantics."
+    },
+    {
+      "id": "creation-inventory",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/creation-inventory.json",
+      "sha256": "49693eee411f2b7eb9df55e891eda4165d211e9e622a8fba7830946e6f34c806",
+      "source_bytes_sha256": "0019c9f89e3dd7ae117afc50a955379ec895ec2583fefc3aaafcc78ec95d0c40",
+      "range": [
+        42641552,
+        42641673
+      ],
+      "supports": "28AA890 returns inventory at character+1B0+458 or native empty fallback."
+    },
+    {
+      "id": "equipped-predicate",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/equipped-predicate.json",
+      "sha256": "e3c5ba6b91fc6b44bced15158d1201887627419c2e9c2f56245a095c33abfc4d",
+      "source_bytes_sha256": "d30da59eb3c978dc6aa8347755ee82fc239eed265c3df3011e3c34f59b32c859",
+      "range": [
+        36586528,
+        36586655
+      ],
+      "supports": "22E4420 walks inventory equipped slots and compares full Artifact IDs."
+    },
+    {
+      "id": "artifact-recognition",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/artifact-recognition.json",
+      "sha256": "8d8568d121ca58af56e9f6a2c1a1774c4a11f06f45acca0c1839b73b015d7190",
+      "source_bytes_sha256": "f4c88f9285220a2deaea89f88696e327f6a19657704fa3d261f4b29cd90995d4",
+      "range": [
+        38997744,
+        38998479
+      ],
+      "supports": "Reached native recognition2530EF0, not a script simulation."
+    },
+    {
+      "id": "rebuild-artifact",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/rebuild-artifact.json",
+      "sha256": "83793c4c6a562b12975c875e334f21ebf283ae4fb5c5d49f33c9e08b7856bf67",
+      "source_bytes_sha256": "b0fe60aeeb517287ddf20e0670b77e84eac464c73f084881271da2c2b87e15fb",
+      "range": [
+        25078496,
+        25078716
+      ],
+      "supports": "17EAAE0 rebuilds preview slot rows +160 stride24 then selected artifact refs row+10."
+    },
+    {
+      "id": "type-select",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/type-select.json",
+      "sha256": "f091302ac15bf037080796a978845196e7fb25c1f2eb69dd61fb430b016e3e84",
+      "source_bytes_sha256": "de757397926e82c331a8bbddecf090ecb8107c5a96ddcd08b62474e79d41da03",
+      "range": [
+        25073616,
+        25073797
+      ],
+      "supports": "17E97D0 sets type+D0 and may change/clear barony; refreshes window cost."
+    },
+    {
+      "id": "barony-select",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/barony-select.json",
+      "sha256": "60178b99a97eab0d55e8b76435c5f72a77deb143be52d6a6a8a4d4e99dde77d9",
+      "source_bytes_sha256": "95e7c059cf10f6a25f30fa31b3daac24215cd90a579e0cdbf3fff0632cf2c115",
+      "range": [
+        25073808,
+        25073899
+      ],
+      "supports": "17E9890 checks real barony, sets Title+D8, refreshes cost and clears map selection mode."
+    },
+    {
+      "id": "artifact-selector-all-physical",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/artifact-selector-all-physical.json",
+      "sha256": "7a372b74b425ab9932e5011d167f0ba0e984795f4b4f289e82bf8b9b6f168d21",
+      "source_bytes_sha256": "b072f3d670c3e35c49590191508215afa668f54e8cacbf9679f7c29fad3b3f8a",
+      "range": [
+        25073984,
+        25074237
+      ],
+      "supports": "17E9940 toggles +E0; at native limit removes first then appends; rebuilds slots and cost."
+    },
+    {
+      "id": "selected-artifact-model-leaf",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/selected-artifact-model-leaf.json",
+      "sha256": "978d43ef219bc0269702a5a281fd869b07a75150cda42c6c909e15d6904f2f68",
+      "source_bytes_sha256": "d9a6b3b03db45122aac439a85aff7664cec1b7f343d62304d6937b060859ec0e",
+      "range": [
+        12059040,
+        12059056
+      ],
+      "supports": "GetSelectedArtifacts returns full Artifact ID vector +E0."
+    },
+    {
+      "id": "scope-builder",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/scope-builder.json",
+      "sha256": "ec2c90e176f876358b5eaebe15607c88091ce512b097cae13555c5414fd92b96",
+      "source_bytes_sha256": "6592279e4c0aad355e1763588db63d14b7aad2645e3bbfe99d962c04e94408fc",
+      "range": [
+        25078720,
+        25078955
+      ],
+      "supports": "17EABC0 original command uses current player actor+50, Faith+20, type+28, barony+30 and copied all selected artifacts+38."
+    },
+    {
+      "id": "window-cost",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/window-cost.json",
+      "sha256": "805f04b41122a3d84ead516e7a01f26a79c105cdaeb5441557c8ced6c368ada1",
+      "source_bytes_sha256": "bd3ee6f68f6b1a17d6c5dff3634ddcddf423509f6c2b2a5a93ebba8d4c0e124b",
+      "range": [
+        25073152,
+        25073507
+      ],
+      "supports": "17E9600 clears embedded cost breakdown at window+178 and evaluates actual selected context."
+    },
+    {
+      "id": "final-method-leaves",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/final-method-leaves.json",
+      "sha256": "39dcac764d31c57777d3667d685ff15765e2c3853577c31d21d09cae3e991b7c",
+      "source_bytes_sha256": "d525cb59537efe71b2ab722e541561ada0f77f6145fd33bb78ed0547786882cf",
+      "range": [
+        25071648,
+        25071792
+      ],
+      "supports": "Named enabled/tooltip/click method leaves; no Create invocation in scope."
+    },
+    {
+      "id": "enabled-reflection",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/enabled-reflection.json",
+      "sha256": "b50a37a112d1c3702591fc08206508226654ac348a470444b01a3e7e5ac0f33d",
+      "source_bytes_sha256": "89b426d6aa658fc5dbd2d6d7016f3994560f359db0e9ed9ea945b4d4373a3035",
+      "range": [
+        25084304,
+        25084360
+      ],
+      "supports": "Registered IsCreateButtonEnabled calls17E9040."
+    },
+    {
+      "id": "tooltip-reflection",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/tooltip-reflection.json",
+      "sha256": "b6edc4076916077e8f09b83cf4a0bbeb12addd17f59df84d2a0c95f9bef4251d",
+      "source_bytes_sha256": "d7e060953b4e18837862b382a696106b3283414642cb1004c0a5c2ebb0d9d6b2",
+      "range": [
+        25084368,
+        25084431
+      ],
+      "supports": "NativeCString32 output copied then destroyed856050."
+    },
+    {
+      "id": "create-enabled",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-enabled.json",
+      "sha256": "433f39dde476fa3faee2f2f14f45cd7d6faf90056e6430ac79e140a455945771",
+      "source_bytes_sha256": "7eab64db5964804fcbdbbe26a7d8c18e3a10a9799b3d0e77c70cc96d3d1acfa2",
+      "range": [
+        25074288,
+        25074374
+      ],
+      "supports": "17E9A70 creates original command and calls virtual+30 with null reason; owns local vector cleanup."
+    },
+    {
+      "id": "create-tooltip",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-tooltip.json",
+      "sha256": "0cc9aaa669212f3ee2105198f08af0e681e8c99e9e1695116559e29416dc948e",
+      "source_bytes_sha256": "114a20c9e84c80ab32592bc381103835c5d61638fdb90d471d2f6e9bf8854f87",
+      "range": [
+        25074384,
+        25074515
+      ],
+      "supports": "Same command validator with CString reason output, original local cleanup."
+    },
+    {
+      "id": "creation-command-vtable",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/creation-command-vtable.json",
+      "sha256": "658c368f1ca33e9abe64d73d462ad81461b52cbefd50a4a10b44da609743b159",
+      "source_bytes_sha256": "8299bc73eae082fa275f831d42818011218c8a59ded546675838dd75bc691c5d",
+      "range": [
+        74907544,
+        74907632
+      ],
+      "supports": "476FF98 slot30 points29A5AD0; command construction/submit excluded."
+    },
+    {
+      "id": "final-validator",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/final-validator.json",
+      "sha256": "7227e5904e918e86fed99bd3c4816883eed8d20b2ae9d51718b565845185b2ef",
+      "source_bytes_sha256": "7ad823d7431357e8e89de83d1d9668dce88d6d34ee3309e70d25e86b6c8dc176",
+      "range": [
+        43670224,
+        43672684
+      ],
+      "supports": "Requirements bypass, identity, count/duplicate/rarity limits, script rule and affordability. Ordinary legality requires bypass observed zero."
+    },
+    {
+      "id": "create-callback",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-callback.json",
+      "sha256": "139e4ff5fe582a0af9198a4c88c357ec6a5327f417574142fd5f967bf5135325",
+      "source_bytes_sha256": "73145bd58688894f45885f47723f9831f119f1472cf9c2bb8f10adfd0a54dc40",
+      "range": [
+        25074528,
+        25074759
+      ],
+      "supports": "17E9B60 checks original enabled and submits once37F06D0 then clears window. Located for lifecycle only."
+    },
+    {
+      "id": "breakdown-reference",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/breakdown-reference.json",
+      "sha256": "b4e6bfda53582bde51991ae6fa35043d4fad3b3b6d1f381a110fcf8b58f29478",
+      "source_bytes_sha256": "e45c6d5f9ee70ecfdeca7f89242663ba4e24150819982640af6d5d9508e0902c",
+      "range": [
+        18551184,
+        18551379
+      ],
+      "supports": "11B1190 clears10 raw int64 values at breakdown+0 and owned vectors; not a new object pointer."
+    },
+    {
+      "id": "breakdown-producer",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/breakdown-producer.json",
+      "sha256": "8d59701b018805e9f9c806ed83c7ed989f7137a9a3ca1735973dc64a030029e3",
+      "source_bytes_sha256": "31a913ba4af6aaf3b65d047448077bc8fe4da8f7ebb69c3ec6fa4329766eb587",
+      "range": [
+        69013520,
+        69013539
+      ],
+      "supports": "41D1010 first physical prefix. Follow 1023,114B,1180 continuations and 310CEC0 core; do not stop at first .pdata fragment."
+    },
+    {
+      "id": "rarity-total-leaf-and-cleanup",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/rarity-total-leaf-and-cleanup.json",
+      "sha256": "abf98f76386296005e7c0b176ebd4c68cfbec2f58321771aa18b93d0eea6818e",
+      "source_bytes_sha256": "4c4d0b551659bb43ab9f8d6c81691caf5b5d9828cfb07f23198ca0f0030eda10",
+      "range": [
+        25078224,
+        25078496
+      ],
+      "supports": "17EA9D0 sums each selected Artifact rarity+B0 times100000; output int64 with scale100000."
+    },
+    {
+      "id": "dynamic-type-producer-complete",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\source\\dynamic-type-producer-complete.json",
+      "bytes": 12314,
+      "sha256": "90871e9ef970908b9714b6b75ebceec36f6831e5bfbdbc0a1e2a80fe0b5e2ae7",
+      "source_bytes_sha256": "ed307d39fdacef08e412994f5856988476a94dcc8480af34e665bf54e756e198",
+      "range": [
+        25078960,
+        25079312
+      ],
+      "supports": "17EACB0 traverses actual HolySiteType DB A14A30 and includes dynamic byte+418 !=0 in model+130. Complete range through return; replaces truncated working packet."
+    },
+    {
+      "id": "breakdown-producer-cont",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\source\\breakdown-producer-cont.json",
+      "bytes": 10665,
+      "sha256": "336e8df6dfa5e7e153206ccc9f9cbdb9e349eb3d069a5f73274d03581238e5a9",
+      "source_bytes_sha256": "c3c82f330971aa53dacc9d9e1329283f4179ee8681ce968cf808461510bf1553",
+      "range": [
+        69013539,
+        69013835
+      ],
+      "supports": "41D1023 continuation of original cost producer, not a separate getter."
+    },
+    {
+      "id": "breakdown-producer-cont2",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\source\\breakdown-producer-cont2.json",
+      "bytes": 2371,
+      "sha256": "54efefb327011aff0518c463a20b0c2a313c88f5650766c97dbf1609ebf87416",
+      "source_bytes_sha256": "e9bf6d1b1eae6e5a6cb9c5cb5f6abc18dc49c45b0c68a1266158883dd0dc8fa5",
+      "range": [
+        69013835,
+        69013888
+      ],
+      "supports": "41D114B second physical continuation of original cost producer."
+    },
+    {
+      "id": "breakdown-total-write-continuation",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\source\\breakdown-total-write-continuation.json",
+      "bytes": 21862,
+      "sha256": "dfa1cdd053ae7ca7cf164ba52ca25de8ba1c92dc8e7f6d94ee2ec730f1d60f64",
+      "source_bytes_sha256": "ec9a228abfab5bd0976d9ba61ec868ad5d29c38e44d951ca1449d3c5eb5f8872",
+      "range": [
+        69013888,
+        69014400
+      ],
+      "supports": "Normal 41D1180 continuation passes actual embedded breakdown base to 310CEC0; packet includes nearby bytes after normal return and is not claimed to be one function."
+    }
+  ],
+  "new_exe_code_reads": 0,
+  "new_exe_metadata_records": 174,
+  "new_exe_metadata_bytes": 2088,
+  "working_label_corrections": {
+    "type-model-producer-all-physical": "Artifact producer",
+    "rebuild-barony": "Dynamic type producer",
+    "rebuild-artifact": "Preview slot rebuilder"
+  },
+  "window_offsets": {
+    "faith_id": 200,
+    "type_pointer": 208,
+    "barony_title_id": 216,
+    "selected_artifacts": 224,
+    "potential_baronies": 256,
+    "enshrinable_artifacts": 280,
+    "available_types": 304,
+    "preview_faith_ids": 328,
+    "slot_rows": 352,
+    "cached_resource_breakdown": 376
+  },
+  "vector_layout": "ptr0/capacity_i32+8/count_i32+12; IDs stride4/type pointers stride8/slot row stride24",
+  "unknown": [
+    "Actual currently loaded creation UI candidates/terms/cached quote/selection until future cold-load read",
+    "Rendered visibility requires separately qualified typed UI root runtime/tree proof",
+    "Fresh standalone affordability and cached quote freshness are not returned",
+    "Faith free-action counter, creation cooldown owner/expiry and actual payer are not separate observed fields",
+    "AI creation candidate search cadence/ranking not investigated",
+    "Actual Create command, payment, cooldown/free use and resulting world state are excluded"
+  ],
+  "supersedes_source_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\source-contract-a01.json",
+    "bytes": 15118,
+    "sha256": "a1c100740fdea77da5d7677009fcbc24ffc4696c3998046d8aa27daef9cee267"
+  },
+  "repository_context_commit": "3d7a9f11d8fae7ca6465509a55c3999f571f1970",
+  "opening_source": {
+    "closure": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\c0-source\\closure.json",
+      "bytes": 13608,
+      "sha256": "4f50f0f41cac667d611e6f72e6d53c2bcf5771daf48555f584c856be5662db5c"
+    },
+    "manual_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\c0-source\\C0-SOURCE-DELIVERY.md",
+      "bytes": 6777,
+      "sha256": "d72c2b54e89eaf66509f09a2a5a9ddebe217f7ee5738e190e0ec19411d488dcf"
+    },
+    "files": [
+      {
+        "file": "actual_destructor.asm",
+        "bytes": 6466,
+        "sha256": "66fd297b1ca01920cff21094d68f344c90aa0c56b080d06fe205568c40611a04"
+      },
+      {
+        "file": "actual_destructor.json",
+        "bytes": 13587,
+        "sha256": "016c7c9a54c55a8bc780ce09e252916b1d415b68f46686550b6f04f2e0bd2714"
+      },
+      {
+        "file": "any-factory-rip-locators.json",
+        "bytes": 533,
+        "sha256": "43de9936ca9a6a3db4df0d2b3c3d268dd6d42caf58615b0db4223f24ce3ffee7"
+      },
+      {
+        "file": "any-singleton-locators.json",
+        "bytes": 434,
+        "sha256": "d23cafdccc3a2b923e877d565c1145bcec07359e120c4addb15cbe79c262e41b"
+      },
+      {
+        "file": "any_copy_dword_leaf.asm",
+        "bytes": 201,
+        "sha256": "728724a6872d34d7e7f96ee294eb300942f9b109fd3d67737035bc95126e6c58"
+      },
+      {
+        "file": "any_copy_dword_leaf.json",
+        "bytes": 1227,
+        "sha256": "d72cdb163eb75df0ddec3c7db9567c6abac12e6d831d7b964a07ce7be5853186"
+      },
+      {
+        "file": "any_destructor_leaf.asm",
+        "bytes": 2,
+        "sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+      },
+      {
+        "file": "any_destructor_leaf.json",
+        "bytes": 851,
+        "sha256": "0f22ca634cce42e31379f161f94dd9e2bf7e8919fe40a4109a2e04a513a98ba4"
+      },
+      {
+        "file": "any_get_inplace_leaf.asm",
+        "bytes": 116,
+        "sha256": "09c223662e757b622b2f6ef2e239fdd72226b337f17aeab93acc798f02f1e55b"
+      },
+      {
+        "file": "any_get_inplace_leaf.json",
+        "bytes": 1084,
+        "sha256": "618456c4e7527b6dcd3dfae172c3f2ca79fdd1e741f0a3821cd0ea41819ba259"
+      },
+      {
+        "file": "bind_root.asm",
+        "bytes": 14259,
+        "sha256": "308d71d21a835387b5f33406e5ab9f5e9940f9ec53a446136d5334499ccaa624"
+      },
+      {
+        "file": "bind_root.json",
+        "bytes": 29004,
+        "sha256": "23b617f9b9d2e32f435812135fefe5afb59c1d5fd3a22c57588faa3aa75ddc26"
+      },
+      {
+        "file": "C0-SOURCE-DELIVERY.md",
+        "bytes": 6777,
+        "sha256": "d72c2b54e89eaf66509f09a2a5a9ddebe217f7ee5738e190e0ec19411d488dcf"
+      },
+      {
+        "file": "c0-targeted-locators.json",
+        "bytes": 744,
+        "sha256": "bb0546545aa92e9f28498746caeb070cbe07ed840c316c12384b63157f41e643"
+      },
+      {
+        "file": "creation_enum_exact.json",
+        "bytes": 2150,
+        "sha256": "1f6621dc26f47046a8778b57201007d6ba4c7423d8d43922adbc7518567a081f"
+      },
+      {
+        "file": "creation_enum_neighbor.json",
+        "bytes": 2150,
+        "sha256": "c53adddcb845d6519118b26e256a6db3fe76cf2cf1a7986dcfa63df5a266cefd"
+      },
+      {
+        "file": "destructor_b117f0.asm",
+        "bytes": 1011,
+        "sha256": "43068abc2221c0033e5268fe080e655b1ff2c78c7b93f502896b431bb6a69233"
+      },
+      {
+        "file": "destructor_b117f0.json",
+        "bytes": 2892,
+        "sha256": "d4ca0b266d317828f59b4678c6939a55b433e802532b11bfaec14c72745f7ebb"
+      },
+      {
+        "file": "factory_b16a50.asm",
+        "bytes": 6213,
+        "sha256": "50b056ddf8ecab062dc6163b51d9fa881072eb34e9b13fea9bff034333954b69"
+      },
+      {
+        "file": "factory_b16a50.json",
+        "bytes": 13167,
+        "sha256": "ad7fa3ef30bf7c5b79541f5a29ce34387471913dee01e67bb51c33ffb1a6a6ab"
+      },
+      {
+        "file": "faith-any-locators.json",
+        "bytes": 1118,
+        "sha256": "91cd008cef3c9387e712efefebd87d8478fa1de8565e9ca4ce2eca2d83c13d8c"
+      },
+      {
+        "file": "faith-visitor-bases.json",
+        "bytes": 1966,
+        "sha256": "f8b40ac245e064731ebd0807fcecdc9123ca8cd61ae2755f6ac16a86b77e64c4"
+      },
+      {
+        "file": "faith-visitor-rtti.json",
+        "bytes": 2692,
+        "sha256": "9d74353077ff8099c5c853117cc1c0297b8a3ac490634e1b548bb9afcb2cbf5e"
+      },
+      {
+        "file": "faith_ref_accept.asm",
+        "bytes": 1399,
+        "sha256": "00b4be95911d67cdc0de258c0d74cd21efd9c426c14058a7f6216197debd0131"
+      },
+      {
+        "file": "faith_ref_accept.json",
+        "bytes": 3667,
+        "sha256": "ceec2867fd816b80230dcf69a3edcd534c9d4e6bdaed95e5984fb7829a1fe2c5"
+      },
+      {
+        "file": "faith_ref_any_factory.asm",
+        "bytes": 1325,
+        "sha256": "36ab33be8df68431c748d964a6f2921fd88f949cb326cb0bdfd05a0036f91a38"
+      },
+      {
+        "file": "faith_ref_any_factory.json",
+        "bytes": 3514,
+        "sha256": "6a6f4100dffb5abbbcab87dcb88f7ed3f15daacb18f8b81fa329da5e1b65cbfa"
+      },
+      {
+        "file": "faith_ref_any_singleton.json",
+        "bytes": 960,
+        "sha256": "f49a5c86eb127bdae72f665cf4918486e8081437d871d1ac063dba91fc14e770"
+      },
+      {
+        "file": "faith_ref_any_vtable.json",
+        "bytes": 2306,
+        "sha256": "afcc44b2ab865c276888827a8993163ec75a843495f6784b1ab319f0094ba1aa"
+      },
+      {
+        "file": "faith_ref_type_leaf.asm",
+        "bytes": 374,
+        "sha256": "d14b39f5c5c143d08976ad2b76c436d3279ecbaceea36ff591250ef3739496d4"
+      },
+      {
+        "file": "faith_ref_type_leaf.json",
+        "bytes": 1600,
+        "sha256": "bacdb8dcaa7eafa981f63b1659a2747f8c5d0308a083986df561595acaa33186"
+      },
+      {
+        "file": "faith_visit_pointer_leaf.asm",
+        "bytes": 890,
+        "sha256": "724409466320c24c230ae0d6cfb123d792b33303dc6192662cea1ae882261442"
+      },
+      {
+        "file": "faith_visit_pointer_leaf.json",
+        "bytes": 2591,
+        "sha256": "ac7122bc0143237f21677303a49bf984ce97e10eb32d51a6da474ae495471ba5"
+      },
+      {
+        "file": "faith_visit_ref_leaf.asm",
+        "bytes": 1360,
+        "sha256": "d99524cc9d86f9425270e8b6e5fd6c4cb4a522426686d0bf5c18fccbad23266c"
+      },
+      {
+        "file": "faith_visit_ref_leaf.json",
+        "bytes": 3531,
+        "sha256": "5d4bd1bec54f0da28a5b9ea05dbe1a19f43778c580c0a30d143a6871760ad1b6"
+      },
+      {
+        "file": "faith_visit_ref_value_leaf.asm",
+        "bytes": 749,
+        "sha256": "33ad6b46a34ddec6fddafd5468c1d94646753fc0d6d75d4b9b3c0062caa23ad7"
+      },
+      {
+        "file": "faith_visit_ref_value_leaf.json",
+        "bytes": 2325,
+        "sha256": "a17bb327adb2f3b8f97dbcdc0a7634aba849955ae0527daecb7bf5f0810e52f7"
+      },
+      {
+        "file": "faith_visitor_10329a0.asm",
+        "bytes": 816,
+        "sha256": "0beee9daac5396ddd3f443247dbbf212b14321a14ad4c684b28976925a76ed25"
+      },
+      {
+        "file": "faith_visitor_10329a0.json",
+        "bytes": 2507,
+        "sha256": "3eb5160e3d877afa0951717d42dae266b869a686454a830ddb348d415065a360"
+      },
+      {
+        "file": "faith_visitor_table.json",
+        "bytes": 2202,
+        "sha256": "440f87c6a24b0cf3a74074c55dbe2e21f66b744cd509d02e620f5f17579d4aac"
+      },
+      {
+        "file": "faith_visitor_thunks.asm",
+        "bytes": 1173,
+        "sha256": "d34f11567f0d8a974111a5aac4e4e4e6313d573f320ecc2acacaa056ec1ca280"
+      },
+      {
+        "file": "faith_visitor_thunks.json",
+        "bytes": 3251,
+        "sha256": "379eb1fb4ebdf9d3dcca75e8eb20241aaf9c05777cf75d84ac23845d2e59149f"
+      },
+      {
+        "file": "open_data.asm",
+        "bytes": 7549,
+        "sha256": "72383a0fae4df935d0b5a7e8790680e53f1ef2bf67064ba6a415ab81d070d125"
+      },
+      {
+        "file": "open_data.json",
+        "bytes": 15706,
+        "sha256": "f7a68454a6df675cd57cbc22be2af86e690b0cf34e7fc498b83aa8cefceb0eee"
+      },
+      {
+        "file": "open_expression.asm",
+        "bytes": 9021,
+        "sha256": "64a87091cf6e594bdafe763304e85c415b2de0afddb3438d2e15cd83c6967432"
+      },
+      {
+        "file": "open_expression.json",
+        "bytes": 18686,
+        "sha256": "7d35c26d1126205502c35b0eeb74e0a103b0b88c5f6769c90dc7a0c16176b3f3"
+      },
+      {
+        "file": "open_inner.asm",
+        "bytes": 2700,
+        "sha256": "9f464a30908e15c3982a1fa8a6e8808761348a80cdfa20f7f24d8b1aa0539610"
+      },
+      {
+        "file": "open_inner.json",
+        "bytes": 6182,
+        "sha256": "4568700eb574e1c379566a2e5f0a03b69e33c3d0353211ebdd6531b9a28753f1"
+      },
+      {
+        "file": "open_view_table_tail.json",
+        "bytes": 1790,
+        "sha256": "309fa4544d1f3e3858da42fc1a2be24fbc5c6d8a20db25cc61ef00e735340811"
+      },
+      {
+        "file": "owned-pdata-ledger.json",
+        "bytes": 19981,
+        "sha256": "a464b08c97c6be90e6be48fa6707950cb1dc59446338479e79eba3ae1e603c79"
+      },
+      {
+        "file": "publisher.asm",
+        "bytes": 2862,
+        "sha256": "448a36d1b7f805d4559161dfe4cc6c79ab7bdd0d870324e0204926ddac4fbd3a"
+      },
+      {
+        "file": "publisher.json",
+        "bytes": 6514,
+        "sha256": "c69d4ceee3e661d3d141fa92196bd1a123519f22dac0789b9608a00c9ea0c710"
+      },
+      {
+        "file": "read_c0.py",
+        "bytes": 3659,
+        "sha256": "78697cf47ce1061fae913b7ff06e5624472b72707721816091c3c02b16be6789"
+      },
+      {
+        "file": "setdata_17e92f0.asm",
+        "bytes": 11627,
+        "sha256": "256f3d635ed631c68c15ad29497698794c28d89ccabe8fed2a072e16781998b5"
+      },
+      {
+        "file": "setdata_17e92f0.json",
+        "bytes": 23468,
+        "sha256": "0d14ffd2797feed9a87f5a339fadc34348fd8cf90e3b547239776821723b7482"
+      },
+      {
+        "file": "start.json",
+        "bytes": 448,
+        "sha256": "3cddd7b6d049055f2016e0673756c014fec7214476486ab08fdcaefe580b20fb"
+      },
+      {
+        "file": "uint_accept.asm",
+        "bytes": 1399,
+        "sha256": "60a540aa861f367ea814135b1aeab9b6f14dc902546691ddfe8ddf581d075bcd"
+      },
+      {
+        "file": "uint_accept.json",
+        "bytes": 3667,
+        "sha256": "fec429b4aa059d0247dccfa652930f6b1d4a47fc6cc1df2d374259315040aee0"
+      },
+      {
+        "file": "uint_any_factory.asm",
+        "bytes": 1325,
+        "sha256": "e79cad9e25e9ee57b940fd0f6d4d54e1b6dc9469ea8ff9fceb6385844b565a07"
+      },
+      {
+        "file": "uint_any_factory.json",
+        "bytes": 3514,
+        "sha256": "cefd8496d291f663158184707780d3f6184bb611edaf907e1303589bce891fd6"
+      },
+      {
+        "file": "uint_any_singleton.json",
+        "bytes": 960,
+        "sha256": "b0dd3dd4216f60f1be89e9aefa3955368e5ff91ed7bb749302621000822966e0"
+      },
+      {
+        "file": "uint_any_vtable.json",
+        "bytes": 2306,
+        "sha256": "50ab915f27a8b3dd429b6206e89288ca20a1a6e2a6e11a52ef20b694155864a3"
+      },
+      {
+        "file": "uint_type_leaf.asm",
+        "bytes": 374,
+        "sha256": "a11b32d6bdfaea650758f34d16a92463457c6635ca862730b479abba4ba40fda"
+      },
+      {
+        "file": "uint_type_leaf.json",
+        "bytes": 1600,
+        "sha256": "e41516f8566f27fd01e23518d63534e7072768b58ae948cd056b89ce1d5f7f50"
+      },
+      {
+        "file": "view_resolver.asm",
+        "bytes": 2884,
+        "sha256": "2f8a1ada70a983403dd026655b12f9b2ddb7cc66d7e6478968472109b985129b"
+      },
+      {
+        "file": "view_resolver.json",
+        "bytes": 6570,
+        "sha256": "d2c1e99d85279d4695f2039f5704454ba23e88bf9733e2f6fb744b00555550f4"
+      },
+      {
+        "file": "vslot17e90b0.asm",
+        "bytes": 1710,
+        "sha256": "c0244d8e91e2d8d2011738c1da84e59338a3254f576e8cfa4e3e201220f6be96"
+      },
+      {
+        "file": "vslot17e90b0.json",
+        "bytes": 4248,
+        "sha256": "9d3920ec1ba9222c23c7b4ba7baa964f8c416ac2c1c1265b8598c8817c1e1b59"
+      },
+      {
+        "file": "vslot17e9110.asm",
+        "bytes": 4741,
+        "sha256": "3aa0f9ebd136cd682a9bec67a887ef3dbeca59f4257e12e212ef89f48ed4e90f"
+      },
+      {
+        "file": "vslot17e9110.json",
+        "bytes": 10126,
+        "sha256": "011c3a5272176b0122ac114f1272795004927f52aad7134e79e67e9af66fe885"
+      },
+      {
+        "file": "vslot17e9220.asm",
+        "bytes": 1290,
+        "sha256": "58f7de9f0e397efe14ed789afec6798595fab3d20af91fdf6921cb399fa6e300"
+      },
+      {
+        "file": "vslot17e9220.json",
+        "bytes": 3424,
+        "sha256": "8b602a303d8eb119c3889e6f9015e66ce4e83b373d2e6e1f750f52e460a28eb4"
+      },
+      {
+        "file": "vslot17e9590.asm",
+        "bytes": 1698,
+        "sha256": "099d08d0a324cd20a5bfacb00dbea018ed22196d69e79015e1bba741d7212d53"
+      },
+      {
+        "file": "vslot17e9590.json",
+        "bytes": 4191,
+        "sha256": "dff0f84509afeecbb42e489f491f3ad7dc14c7d7268c2b1818956306c46e4f71"
+      },
+      {
+        "file": "window_rtti.json",
+        "bytes": 4947,
+        "sha256": "c64523daa84fa7761ef6bf28d3f64145fb8407903c99adaedd7cc1f7f06a4e57"
+      },
+      {
+        "file": "window_vtables.json",
+        "bytes": 5216,
+        "sha256": "5b69d4ddb042709ccfb61468682b9bef412b9dc58de945d499b452df4af4f902"
+      }
+    ],
+    "chain": "HolySiteCreationWindow publisher B0EB80 -> B16A50 alloc A88 -> handler+5E8; view token43BC maps AA; actual OpenGameViewData AF39E0; SetData virtual+90=17E92F0",
+    "typed_any": "FaithRef B19AD0 -> singleton54D70F8/vtable44B92F0; DWORD full Faith ID at Any40+8; six original virtual edges loaded-checked",
+    "unlocated_boundary": "The separate compiled RawFaith.GetID expression producer was not located; no claim that it was."
+  },
+  "cached_cost_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\gui-source\\cost-readonly-source.json",
+    "bytes": 59251,
+    "sha256": "6c1ce59aca0e4a2d0ed3acdd4ac0c629dd7971b535335d5252c427be3b74b3ba",
+    "core": {
+      "name": "Cost_EvaluateCore",
+      "rva": "0x310cec0",
+      "end_exclusive": "0x310d0d1",
+      "bytes": 529,
+      "sha256": "937c8b0bfaddaed42e95589e087ffff74902efde6097684791bca3baab9a54ef",
+      "loaded_code_pin_hex": "48895c2410488974241848897c2420554154415541564157488dac24c0fcffff"
+    },
+    "resource_enum_order": {
+      "rva": "0x48BDAA8",
+      "hex": "75280000262b0000272b00008d310000f5290000323b0000243d0000423e0000303d00002c3e0000",
+      "enum_values": [
+        10357,
+        11046,
+        11047,
+        12685,
+        10741,
+        15154,
+        15652,
+        15938,
+        15664,
+        15916
+      ],
+      "consumer": "310ADF0 looks up resource keyword enum and locates its index in this exact 10-DWORD list, then loads raw qword at values+8*index; unknown key leads index10 and is not admitted"
+    },
+    "layout": "Embedded window+178: ten signed int64 raw resources, scale100000; not a pointer. 11B1190 clears values. 17E9600 rebuilds against original selected command scope.",
+    "observation_boundary": "No live freshness or standalone native affordability observation; never infer affordable=true from cache or overall enabled=false."
+  },
+  "loaded_prefix_pins": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\loaded-pins.json",
+    "bytes": 5599,
+    "sha256": "64555e4d708379684ff55c49e04f5489baefedacbd3a44583f6dd716daa6fb09"
+  },
+  "query_contract": {
+    "step": "query-player-holy-site-creation-context-v1",
+    "schema": "ck3_12004_player_holy_site_creation_context_v1",
+    "backend": "ck3-1.20.0.4-native-player-holy-site-creation-context-v1",
+    "owner": "Existing current paused religion mailbox Enter/Finish, expected native revision, stamp jomini_state+10 -> gfx+88 -> original typed handler; owner graph double-read",
+    "guards": [
+      "exact EXE SHA and 23 loaded prefixes",
+      "actual GetPlayer full ID and window Faith match actual religion Context",
+      "typed window/COL/owner backlink",
+      "complete bounded original models and selected set, duplicate/order preservation",
+      "second raw pass and bypass-setting pass"
+    ],
+    "truth_domains": {
+      "models": "native original picker models; no adoption candidates",
+      "can_create": "original IsCreateButtonEnabled; ordinary legality only when observed bypass=0",
+      "cached_quote": "raw cache only; freshness false",
+      "rendered_visibility": "not observed by read-only context",
+      "action_ready": false,
+      "create_invoked": false
+    },
+    "public_signed_actor_boundary": "Core retains signed int32 complete actor IDs. Current shared public Driver rejects negative CharacterRef; no public high-bit actor support claimed."
+  },
+  "qualification": {
+    "core_a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-a01\\native-fixture-result.json",
+      "bytes": 878,
+      "sha256": "0c5d11d6902d3a3bd216ff06fc1572e1e0dcae9974311d4b03f82f5cebb6433b"
+    },
+    "new_guards_a02": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-a02\\new-guards-result.json",
+      "bytes": 646,
+      "sha256": "bd881a67c77743dce223f346c3386c0a6ae2fbd9c753b3dabbb40da36690ceff"
+    },
+    "packets_a02": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-a02\\native-packets-manifest.json",
+      "bytes": 2078,
+      "sha256": "21934c0dc97a52cc284e396b13d04a842f9dcc567e6cfe7741682c3c0c101d54"
+    },
+    "mailbox_compile": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\qualification-a03\\build-retry-result.json",
+      "bytes": 2394,
+      "sha256": "f5bed1f5b92c6bf0e9f951544535041fd3301ec83a2d711f0c039d357132b3ff"
+    },
+    "real_sdk_consumer": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\python-stage\\query-closure-a01.json",
+      "bytes": 4299,
+      "sha256": "19f22a4d9e5402d57afa7119a62583faf0c02970709701e6d35a4f8ba71f1c18"
+    },
+    "layer": "synthetic native I/O -> actual production reader/serializer -> actual production MCP consumer; no game",
+    "full_dll_link_performed": false,
+    "live_execution_performed": false
+  },
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T14:05:00+00:00",
+    "reason": "Exact creation source/guard contract and new offline qualification references; external large caches retain separate project policy."
+  }
+}

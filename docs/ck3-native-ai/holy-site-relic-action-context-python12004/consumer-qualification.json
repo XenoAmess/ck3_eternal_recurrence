@@ -1,0 +1,256 @@
+{
+  "schema": "relic-action-context-python-consumer-qualification-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:38:08.554272+00:00",
+  "consumer_started_at_utc": "2026-10-17T13:36:52.886226+00:00",
+  "consumer_completed_at_utc": "2026-10-17T13:37:10.131110+00:00",
+  "status": "COMPILED_NATIVE_ACTION_CONTEXT_PACKETS_THROUGH_REAL_MCP_PASS",
+  "tests_run": 4,
+  "tests_skipped": 0,
+  "positive_packets_consumed": 9,
+  "explicit_mutated_packets_rejected": 11,
+  "native_preview_canonical_sha256_recomputed": true,
+  "live_game_qualification": false,
+  "real_engine_getter_execution_proven": false,
+  "native_boundary_mocked": [
+    "endpoint I/O",
+    "hello",
+    "state_snapshot"
+  ],
+  "production_layers": [
+    "NativeHeadlessGameplayDriver",
+    "GameplayBridgeService",
+    "create_server",
+    "MCP ClientSession"
+  ],
+  "full_consumer_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-action-context-mcp-qualified-a02.json",
+    "bytes": 517391,
+    "sha256": "18dbca03ceacd01cc8229e29369b444d5f84db89c68624a03c8acd321a12fe40"
+  },
+  "native_packet_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\qualification-a01\\native-packet-manifest.json",
+    "bytes": 2098,
+    "sha256": "18ac129d324ae0d0a5aca9aee43dc96009b38ca2e79aa073ed78f24bfc00b88c"
+  },
+  "prior_bootstrap_failure": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\python-stage\\tools\\relic-action-context-mcp-qualified-a01.json",
+    "bytes": 3882,
+    "sha256": "6aa9c2f68bba0fda77735b7a3ac6987bd557546706d283e29171f531ddcd4050",
+    "reason": "Concurrent service.py base SHA changed; zero tests/native I/O",
+    "resolution": "Explicit same-insert rebase a02 preserving current main source"
+  },
+  "compiled_packets": [
+    {
+      "filename": "enshrine-empty.json",
+      "sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": true
+    },
+    {
+      "filename": "enshrine-replace.json",
+      "sha256": "9f1affaaddc9131ab7a7764232834929ac4a67d9c9747b72b0eea9421a14e58f",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": true
+    },
+    {
+      "filename": "explicit-incompatible-fallback.json",
+      "sha256": "0cf5f009dc2922bd7444d386dcada2a51f18097fc7f927aa1e387ac838a48824",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": true
+    },
+    {
+      "filename": "no-compatible-slot.json",
+      "sha256": "c38f90f8c9230fb353e2bb42f69877c89fe44e0fe63f24913ad1a764d201d39a",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": false
+    },
+    {
+      "filename": "ownership-drift.json",
+      "sha256": "97736eaf0f808636084cf4bce7fa859aafbbf6520fbb2d14eedafae3a3ce1ee8",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": false
+    },
+    {
+      "filename": "remove-installed.json",
+      "sha256": "0620121a0e532af20ff11905ccd5ee3a4cd94ce17b6b931035498463b23873eb",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": true
+    },
+    {
+      "filename": "request-not-selected.json",
+      "sha256": "95ac221f2880b156643315b3ac09ca839e5b23064716c1353ee7763b0315f118",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": false
+    },
+    {
+      "filename": "unknown-text.json",
+      "sha256": "26c6b9d78e730497a1f3f7a291208b90997910cc764b3dc7f0b11d1f7f256992",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": false
+    },
+    {
+      "filename": "window-unavailable.json",
+      "sha256": "ba8637d471774eed098c2c98f43d466a25991cf2dce1d83abe380151ccd1ca30",
+      "mcp_is_error": false,
+      "public_expected_revision": 2,
+      "native_expected_revision": 701,
+      "native_expected_snapshot_revision": 701,
+      "preview_identity_available": false
+    }
+  ],
+  "negative_cases": [
+    {
+      "name": "foreign-build",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-requested-site",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-requested-artifact",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-player",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "different-date",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "missing-nested-permissions",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "window-selection-written",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "invented-action-readiness",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "wrong-preview-canonical-hash",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "text-changed-without-new-preview-hash",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    },
+    {
+      "name": "effective-slot-permission-invented",
+      "explicit_mutation_of_compiled_packet": true,
+      "request_and_frame_source": "original_compiled_packet",
+      "source_compiled_packet": "enshrine-empty.json",
+      "source_compiled_packet_sha256": "e4e7047e053d4c4ed389332124d48541d5310fffe6813865795414191aed32b2",
+      "native_failure_observed": false,
+      "mcp_is_error": true
+    }
+  ],
+  "common_hook_source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_sha256": "f2b69a1dc2f52a22baeccc276b0231ce5a27881fc2914aabb2035df4d26129ef",
+      "candidate_utf8_sha256": "52b2dc07042a2392042f4c0f5709cfff5f3a588898653464cc096ecb138df6e5"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "base_sha256": "51780954728311025dc000ad5e4ae827609d3ecbb343ed098919984adcd894f6",
+      "candidate_utf8_sha256": "4f6c7859f0c9968dd94fd48ac7fc43d96ab3f20497f92c4755c530b7e7cc4a07"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "base_sha256": "e6029f0a023a773a824a2eabcf968b47306e6bf58ca28135d6d1d827342065cb",
+      "candidate_utf8_sha256": "8fc4d9a09afa00b5ef1bc2a64eb4c35c67a0d9d6e5e7d36408658fd99964f02d"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "base_sha256": "3ae14651d24410e74b11353492756b49a38b0f7b9540f20bcdac2ffa3362e775",
+      "candidate_utf8_sha256": "31f8c4ea2ac9a5c390af295692574a656d943084bbc0c6b5893fd3724e641cab"
+    },
+    {
+      "path": "tools/ck3_mod_acceptance.py",
+      "base_sha256": "5bbc46abfbe15bce38d4b3739a14447be27951373a56e574b95fc5fae84f9845",
+      "candidate_utf8_sha256": "ee98bbd500d8356ae1f112998eedf119ab6e2bfcb55c7a57192894560b0efb64"
+    }
+  ],
+  "main_modified": false,
+  "common_files_copied": false
+}

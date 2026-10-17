@@ -9,7 +9,7 @@
 using namespace xar::ck3_12004::religion::holy_site;
 namespace {
 constexpr std::uintptr_t base=0x140000000ULL;
-constexpr std::uint32_t site_id=0x81000002U, class_id=0x233U, selected_token=0x10293847U;
+constexpr std::uint32_t site_id=0x81000002U, class_id=168U, selected_token=0x10293847U;
 struct Region {std::uintptr_t address;std::vector<unsigned char> bytes;};
 struct Entry {
   std::uintptr_t button,owner,ancestor,button_def,owner_def,ancestor_def;
@@ -37,6 +37,10 @@ struct Fixture {
     Add(base+0x6000,24);Put(base+0x6000,0x10,base+0x3AA30E0);
     Meta(0x54D7588,0x44DF830,0x4A922E8,0x56C73B0);
     Meta(0x54D7570,0x44DF6E0,0x4A92248,0x56C7530);
+    Meta(0x542FD20,0x448BF90,0x4A03BD8,0x563EC30);
+    Add(base+0x448BF90+0x10,0x28);
+    Put(base+0x448BF90,0x28,base+0x876E00);
+    Put(base+0x448BF90,0x30,base+0x876E00);
     Add(base+0x48BD150-8,24);Put(base+0x48BD150-8,0,base+0x4AA0020);
     Add(base+0x4AA0020,24);Put(base+0x4AA0020,0,std::uint32_t{1});
     Put(base+0x4AA0020,12,std::uint32_t{0x5586B90});Put(base+0x4AA0020,20,std::uint32_t{0x4AA0020});
@@ -116,13 +120,17 @@ struct Fixture {
       Put(c,0xF0,e.button);Put(c,0x10+0x34,std::uint32_t{4});
       Put(c,0x10+0x38,base+(i?0x1031E60:0xA79540));
     }
-    Add(e.arguments,0x80);Add(e.declarations,8);Add(e.indices,12);
-    Header(e.callback0,0x10,e.arguments,2);Put(e.callback0,0x10+0xB0,e.indices);
-    Put(e.callback0,0x10+0xBC,std::int32_t{3});Put(e.indices,4,std::int32_t{0});
+    Add(e.arguments,0x80);Add(e.arguments+0x1000,0x30);Add(e.declarations,8);Add(e.indices,12);
+    Header(e.callback0,0x10,e.arguments,1);Header(e.callback0,0x10+0x80,e.arguments+0x1000,1);
+    Header(e.callback0,0x10+0xB0,e.indices,2);Put(e.indices,0,std::int32_t{0});Put(e.indices,4,std::int32_t{-1});
+    Put(e.arguments+0x1000,0,base+0x542FD20);
+    const char view[]="decision_detail";
+    for(std::size_t i=0;i<sizeof(view);++i)Put(e.arguments+0x1000,8+i,std::uint8_t(view[i]));
+    Put(e.arguments+0x1000,0x18,std::uint64_t{15});Put(e.arguments+0x1000,0x20,std::uint64_t{15});
     Put(e.callback0,0x10+0x98,e.declarations);Put(e.callback0,0x10+0xA4,std::int32_t{1});
-    Put(e.declarations,0,class_id);Put(e.arguments,0x40+0x18,std::uint32_t{0xA1B2C3D4});
-    Put(e.arguments,0x40+0x1C,std::uint32_t{2});Put(e.arguments,0x40+0x20,base+0xCAB1C0);
-    Put(e.arguments,0x40+0x30,class_id);Put(e.arguments,0x40+0x38,std::uint32_t{1});
+    Put(e.declarations,0,class_id);Put(e.declarations,4,std::uint8_t{1});Put(e.arguments,0x18,std::uint32_t{0xA1B2C3D4});
+    Put(e.arguments,0x1C,std::uint32_t{2});Put(e.arguments,0x20,base+0xCAB1C0);
+    Put(e.arguments,0x30,class_id);Put(e.arguments,0x34,std::uint8_t{1});Put(e.arguments,0x38,std::uint32_t{1});
     Add(e.params,0x118);Add(e.definition,0x50);Add(e.key,64);Add(e.scopes,0x18);
     Put(e.params,0,e.definition);Put(e.definition,0,base+0x48BD150);
     Put(e.definition,0x38,std::uint32_t{0x4744624F});
@@ -175,6 +183,40 @@ void SameSignatureDifferentActions() {
   Require(!f.ReadEntry(abandon,DecisionAction::promote,out)&&out.decision_key_verified
       &&out.decision_key==DecisionKey(DecisionAction::abandon)&&out.unavailable_reason=="entry_parameter_decision_key_differs","other fixed action cannot be excluded safely");
 }
+void ConstantArgumentRoute() {
+  // R6 actual metadata: dynamic1/constant1, main firstslot0/kind3,
+  // dynamic Self ordinal0/output1, indices[0]=0 and indices[1]=-1,
+  // declaration/runtime type168 with flag1 and raw return type0.
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.callback0,0x10+0x34,std::uint32_t{3});
+   f.Put(e.arguments,0x18,std::uint32_t{});EntryParameterSnapshot out{};
+   Require(f.ReadEntry(e,DecisionAction::promote,out)&&out.self_return_type_raw==0,
+       "actual R6 constant1/dynamic1 with sentinel indices[1] rejected or second output confused with dynamic ordinal1");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Header(e.callback0,0x10,e.arguments,2);
+   f.Header(e.callback0,0x10+0x80,0,0);EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_constant_dynamic_layout_unsupported","unverified two-dynamic fixture shape authorized a view");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.callback0,0x10+0x30,std::uint32_t{1});EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_view_first_output_slot_differs","final wrapper consumed an unchecked output pair");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments+0x1000,0x28,std::uint32_t{1});EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_view_literal_output_slot_differs","constant overwrote the Self output slot");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments+0x1000,0,base+0x54D7588);EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_view_literal_type_differs","foreign Any metadata was treated as CString");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments+0x1000,8,std::uint8_t{'x'});EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_view_literal_differs","another view name authorized decision-detail opening");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments+0x1000,8+15,std::uint8_t{'x'});EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0,"unterminated view literal qualified");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);const auto heap=e.arguments+0x2000;f.Add(heap,16);
+   const char view[]="decision_detail";for(std::size_t i=0;i<sizeof(view);++i)f.Put(heap,i,std::uint8_t(view[i]));
+   f.Put(e.arguments+0x1000,8,heap);f.Put(e.arguments+0x1000,0x20,std::uint64_t{31});EntryParameterSnapshot out{};
+   Require(f.ReadEntry(e,DecisionAction::promote,out),"source-closed borrowed heap CString route was mistaken for an unknown type");}
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.indices,0,std::int32_t{-1});EntryParameterSnapshot out{};
+   Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified&&f.lookup_calls==0
+       &&out.unavailable_reason=="entry_parameter_self_declaration_unavailable","constant ordinal index was guessed as a Self receiver");}
+}
 void IdentityRejections() {
   {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(base+0x5D4C2EC,0,std::uint32_t{});
    f.Put(e.scopes,0,std::uint32_t{});EntryParameterSnapshot out{};
@@ -187,9 +229,9 @@ void IdentityRejections() {
    Require(!f.ReadEntry(e,DecisionAction::demote,out)&&!out.decision_key_verified,"storage generation was not checked");}
   {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.callback0,0xF0,e.owner);EntryParameterSnapshot out{};
    Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified,"foreign callback receiver qualified");}
-  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments,0x40+0x1C,std::uint32_t{1});EntryParameterSnapshot out{};
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments,0x1C,std::uint32_t{1});EntryParameterSnapshot out{};
    Require(!f.ReadEntry(e,DecisionAction::promote,out)&&out.unavailable_reason=="entry_parameter_kind1_receiver_unknown","kind1 guessed its receiver flag");}
-  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments,0x40+0x38,std::int32_t{});EntryParameterSnapshot out{};
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Put(e.arguments,0x38,std::int32_t{});EntryParameterSnapshot out{};
    Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified
        &&out.unavailable_reason=="entry_parameter_self_argument_differs"&&f.lookup_calls==0,"Self writing the first argument was mistaken for the second actual input");}
   {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.Header(e.button,0x3F8,e.callbacks,1);EntryParameterSnapshot out{};
@@ -233,7 +275,7 @@ void CacheAndStability() {
    f.Put(e.cache_rows,other*0x30+4,std::uint8_t{1});f.Put(e.cache_rows,other*0x30+8,base+0x54D7588);EntryParameterSnapshot out{};
    Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified
        &&out.unavailable_reason=="entry_parameter_cache_type_ambiguous","duplicate typed cache rows qualified");}
-  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.changed_return_address=e.arguments+0x40+0x18;EntryParameterSnapshot out{};
+  {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.changed_return_address=e.arguments+0x18;EntryParameterSnapshot out{};
    Require(!f.ReadEntry(e,DecisionAction::promote,out)&&!out.decision_key_verified
        &&out.unavailable_reason=="entry_parameter_source_changed","unmapped return type source change was missed");}
   {Fixture f;auto e=f.AddEntry(0,DecisionAction::promote);f.change_lookup_on_second=true;EntryParameterSnapshot out{};
@@ -243,8 +285,8 @@ void CacheAndStability() {
 }
 int main() {
   try {
-    SameSignatureDifferentActions();IdentityRejections();NativeInheritance();CacheAndStability();
-    std::cout<<"same-signature action identities / complete generation / context provider boundary / native inherited cache ownership / double-read stability PASS\n";
+    ConstantArgumentRoute();SameSignatureDifferentActions();IdentityRejections();NativeInheritance();CacheAndStability();
+    std::cout<<"stock constant1 plus dynamic Self1 / literal view and output-slot guards / same-signature action identities / complete generation / context provider boundary / native inherited cache ownership / double-read stability PASS\n";
     return 0;
   }catch(const std::exception &error){std::cerr<<error.what()<<'\n';return 1;}
 }

@@ -45,13 +45,18 @@ void *ResolveReligionCharacter(const PlayerReligionMailboxContext12002 &query,
 } // namespace
 
 bool IsPlayerReligionPrivateStep12002(std::string_view step) noexcept {
-  return step == kPlayerReligionPrivateStep12002 ||
+  return
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1)
+      step == ck3_12004::religion::holy_site_creation::kQueryStep ||
+#endif
+      step == kPlayerReligionPrivateStep12002 ||
       step == ck3_12004::religion::holy_site::kQueryStep ||
       step == ck3_12004::religion::holy_site::kAdoptionDetailQueryStep ||
       step == ck3_12004::religion::holy_site::kDecisionDetailQueryStep ||
       step == ck3_12004::religion::holy_site::kDecisionCooldownQueryStep ||
       step == ck3_12004::religion::holy_site_relic::kQueryStep ||
-      step == ck3_12004::religion::relic_permissions::kQueryStep;
+      step == ck3_12004::religion::relic_permissions::kQueryStep ||
+      step == ck3_12004::religion::relic_action_context::kQueryStep;
 }
 
 bool ParsePlayerReligionRevision12002(std::string_view payload,
@@ -101,6 +106,23 @@ bool ExecutePlayerReligionMailbox12002(
       // The owner envelope still identifies the frame whose native read failed.
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
+    }
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1)
+    if (query.holy_site_creation_query) {
+      SetCaptureStage("holy_site_creation_context");
+      (void)ck3_12004::religion::holy_site_creation::ReadFromJomini12004(
+          query.holy_site_creation_bindings,reinterpret_cast<const void *>(stamp.jomini_state),
+          out,query.holy_site_creation_snapshot);
+      query.completed=true;(void)FinishQueryMailbox(*envelope);return true;
+    }
+#endif
+    if(query.holy_site_relic_action_context_query){
+      SetCaptureStage("holy_site_relic_action_context");
+      (void)ck3_12004::religion::relic_action_context::ReadHolySiteRelicActionContext12004(
+          query.relic_action_context_bindings,reinterpret_cast<const void*>(stamp.jomini_state),
+          out,query.requested_holy_site_id.value_or(0xFFFFFFFFU),
+          query.requested_relic_artifact_id.value_or(0xFFFFFFFFU),query.relic_action_context_snapshot);
+      query.completed=true;(void)FinishQueryMailbox(*envelope);return true;
     }
     if (query.holy_site_relic_permissions_query) {
       SetCaptureStage("holy_site_relic_permissions");
@@ -248,6 +270,14 @@ std::string SerializePlayerReligionResult12002(
     const PlayerReligionMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1)
+  if(query.holy_site_creation_query)
+    return ck3_12004::religion::holy_site_creation::SerializeCommand12004(
+        query.holy_site_creation_snapshot,request_id,query.envelope.expected_snapshot_revision,frame.date_raw);
+#endif
+  if(query.holy_site_relic_action_context_query)
+    return ck3_12004::religion::relic_action_context::SerializeHolySiteRelicActionContextCommand12004(
+        query.relic_action_context_snapshot,request_id,query.envelope.expected_snapshot_revision,frame.date_raw);
   if(query.holy_site_relic_permissions_query)
     return ck3_12004::religion::relic_permissions::SerializeHolySiteRelicPermissionsCommand12004(
         query.relic_permissions_snapshot,request_id,query.envelope.expected_snapshot_revision,frame.date_raw);
@@ -380,13 +410,15 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     failure = "player_religion_request_invalid"; return false;
   }
   const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  const bool creation_query = step == ck3_12004::religion::holy_site_creation::kQueryStep;
   const bool holy_site_query = step == ck3_12004::religion::holy_site::kQueryStep;
   const bool decision_detail_query = step == ck3_12004::religion::holy_site::kDecisionDetailQueryStep;
   const bool decision_cooldown_query = step == ck3_12004::religion::holy_site::kDecisionCooldownQueryStep;
   const bool adoption_detail_query = step == ck3_12004::religion::holy_site::kAdoptionDetailQueryStep || decision_detail_query;
   const bool relic_context_query = step == ck3_12004::religion::holy_site_relic::kQueryStep;
   const bool relic_permissions_query = step == ck3_12004::religion::relic_permissions::kQueryStep;
-  if ((holy_site_query || adoption_detail_query || decision_cooldown_query || relic_context_query || relic_permissions_query) && !actual4) {
+  const bool relic_action_context_query = step == ck3_12004::religion::relic_action_context::kQueryStep;
+  if ((creation_query || holy_site_query || adoption_detail_query || decision_cooldown_query || relic_context_query || relic_permissions_query || relic_action_context_query) && !actual4) {
     failure = "player_holy_site_exact12004_required"; return false;
   }
   if (!adapter.enabled() || (!actual4 &&
@@ -397,6 +429,7 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   }
   try {
     PlayerReligionMailboxContext12002 query{};
+    query.holy_site_creation_query = creation_query;
     query.holy_site_query = holy_site_query;
     query.holy_site_adoption_detail_query=adoption_detail_query;
     query.holy_site_decision_detail_query=decision_detail_query;
@@ -410,10 +443,14 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     }
     query.holy_site_relic_context_query=relic_context_query;
     query.holy_site_relic_permissions_query=relic_permissions_query;
+    query.holy_site_relic_action_context_query=relic_action_context_query;
+    if(relic_action_context_query&&(!HasField(payload,"holy_site_id")||!HasField(payload,"artifact_id"))){
+      failure="relic_action_context_holy_site_and_artifact_full_ids_required";return false;
+    }
     if(relic_permissions_query && !HasField(payload,"holy_site_id")){
       failure="relic_permissions_holy_site_full_id_required";return false;
     }
-    if(relic_permissions_query && HasField(payload,"artifact_id")){
+    if((relic_permissions_query||relic_action_context_query) && HasField(payload,"artifact_id")){
       std::uint64_t artifact=0;
       if(!bridge::JsonUnsignedField(payload,"artifact_id",artifact)||artifact>=0xFFFFFFFFULL){
         failure="relic_permissions_artifact_full_id_invalid";return false;
@@ -426,7 +463,7 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     if(adoption_detail_query && !HasField(payload,"holy_site_id")){
       failure="player_holy_site_adoption_full_id_required";return false;
     }
-    if ((holy_site_query || adoption_detail_query || relic_context_query || relic_permissions_query) && HasField(payload, "holy_site_id")) {
+    if ((holy_site_query || adoption_detail_query || relic_context_query || relic_permissions_query || relic_action_context_query) && HasField(payload, "holy_site_id")) {
       std::uint64_t id = 0;
       if (!bridge::JsonUnsignedField(payload, "holy_site_id", id) || id >= 0xFFFFFFFFULL) {
         failure = "player_holy_site_full_id_invalid"; return false;
@@ -441,6 +478,16 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     if (actual4) {
       const auto sha = adapter.descriptor().executable_sha256;
       query.bindings = ck3_12004::religion::BindReligionContextImage12004(image_base, sha);
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1)
+      if(creation_query){
+        query.holy_site_creation_bindings=ck3_12004::religion::holy_site_creation::BindImage12004(image_base,sha);
+        return RunPlayerReligionMailbox12002(query,request_id,serialized,failure);
+      }
+#endif
+      if(relic_action_context_query){
+        query.relic_action_context_bindings=ck3_12004::religion::relic_action_context::BindHolySiteRelicActionContextImage12004(image_base,sha);
+        return RunPlayerReligionMailbox12002(query,request_id,serialized,failure);
+      }
       if(relic_permissions_query){
         query.relic_permissions_bindings=ck3_12004::religion::relic_permissions::BindHolySiteRelicPermissionsImage12004(image_base,sha);
         return RunPlayerReligionMailbox12002(query,request_id,serialized,failure);

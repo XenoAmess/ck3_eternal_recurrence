@@ -1,6 +1,6 @@
 # 四种圣地决议的原生接口
 
-本专题在[采用接口](holy-site-adoption-native12004.md)及[费用与冷却读取](holy-site-adoption-planning-inputs-12004.md)上增加晋升、降级、放弃。`machine_id: 4-8e1c2f1861`；GUI 来源审阅记录时间 `2026-10-17T12:52:38.329134Z`，隔离接线观察时间见末节 a25 原件，源码基线 `50dfea0612211a97250232b7b87674acc9fdfa0d`，exact CK3 `1.20.0.4`，EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。这是新增原生实现的候选合同，新增 native fixture、原包 MCP 消费与 live 资格尚待完成；R5 采用成功不外推为另外三种动作通过。
+本专题在[采用接口](holy-site-adoption-native12004.md)及[费用与冷却读取](holy-site-adoption-planning-inputs-12004.md)上增加晋升、降级、放弃。`machine_id: 4-8e1c2f1861`；GUI 来源审阅记录时间 `2026-10-17T12:52:38.329134Z`，隔离接线观察时间见末节 a25 原件，源码基线 `50dfea0612211a97250232b7b87674acc9fdfa0d`，exact CK3 `1.20.0.4`，EXE SHA-256 `98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518`。新增 native fixture 与原包经生产 MCP 消费的离线资格已完成，详见末节；三种新动作的 live 资格尚待完成，R5 采用成功不外推为另外三种动作通过。
 
 ## 固定动作与原版来源
 
@@ -65,4 +65,8 @@ Confirm 会重读同一固定 action 的完整详情并保留原版自身再次 
 
 交叉源审在首次 native 构建前纠正了 cache end sentinel 与 Self output slot 两处问题：原 owning map 的额外末行是 `FF`，probe 企图进入该行时必须先拒绝原 lookup；Self 第二 descriptor 必须写 output Any slot1，不能将写到首实参的表达式当作第二参数。新增相应拒绝断言。它们是构建前 source-review 修正，不应捏造成已发生的实机或 native fixture RED。
 
-新增 detail fixture 提供 `--management-only` 模式，仅执行三种新动作、跨 action/未知 enum 与 fresh Confirm 守卫，不重跑旧213项；另有独立冷却与 Self 参数解析新夹具。它们的对象、code/RTTI pin 和回调均是显式合成输入，仍须实际编译运行、保全完整原生 command_result，再由当前生产 Driver/Service 和真实 MCP 消费。新增 live 资格留给正常受管场次。
+新增三项 native fixture 已实际运行 exit0：detail 使用 `--management-only`，183项新检查、8份完整 command_result，未执行旧213项；独立冷却53项检查、9份完整 command_result；Self 参数解析夹具覆盖同签名动作身份、完整 generation、provider 边界、原生继承缓存所有权与双读稳定。实际原件见 `runtime/management-candidate-a04/qualification-a01.json`，SHA-256 `ae52ffbc96b4ab61d6c00ad3d6aa4b50818a5e5979875ed1252123e144f0431b`。其 native 源实际逐字节冻结于 dirty 集成阶段；不能只用当时的基线 `8ba965bb` 表示整份编译输入。
+
+共享 Service 随远端合流后，在最终 clean main `3d7a9f11d8fae7ca6465509a55c3999f571f1970` 上仅重消费同17份原包：6项测试、20次实际 MCP 返回、0跳过，生产 Driver/Service/normalizers/create_server 均从该 main 加载。17份原包和31份候选源码在消费前后 SHA 均相同。资格观察时间 `2026-10-17T13:35:46.983243+00:00`，`machine_id: 4-8e1c2f1861`；原始回执 `management-native-real-mcp-a30.json`，SHA-256 `fa0a654d0a8fb142fdbc68c3991169aa30305e7de65cb5f23870928b9044ca1d`。其中三份明确标记的 action-key 变异仅用于 Python 拒绝断言，不增加 native 原包数量。此轮未重编或重新运行 native 夹具。
+
+这些夹具的对象、code/RTTI pin、回调与 endpoint hello/frame 均为显式合成输入；实际 original GUI/open/Confirm 回调未在游戏执行。本节证明离线 reader/serializer 与生产 MCP 链路，并未证明三种新动作已实机开窗或生效。之后部署须以 runtime 的完整 native 源封签绑定最终提交与实际 DLL；本 MCP 回执不能替代部署或 live 验收。原 a29 dirty 消费及较早参数准入证据保留为历史，不冒充最终 clean 来源。

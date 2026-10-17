@@ -2043,6 +2043,59 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
+    if getattr(driver, "allow_private_player_holy_site_creation_context_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_holy_site_creation_context_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+        ) -> dict[str, object]:
+            """Read the exact4 current creation model; cached quote is not fresh affordability."""
+            return service.query_player_holy_site_creation_context_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_creation_context_v1")
+
+    if getattr(driver, "allow_private_player_holy_site_relic_action_context_query", False) is True:
+        @server.tool(annotations=ToolAnnotations(
+            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_query_player_holy_site_relic_action_context_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
+        ) -> dict[str, object]:
+            """Read native relic action context for two explicit full IDs; no selection or command."""
+            return service.query_player_holy_site_relic_action_context_v1(
+                expected_revision=expected_revision, holy_site_id=holy_site_id,
+                artifact_id=artifact_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_relic_action_context_v1")
+
+    if getattr(driver, "allow_private_holy_site_relic_actions", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_select_holy_site_relic_artifact_v1(expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)]) -> dict[str, object]:
+            """Execute one explicitly frozen native relic UI action; ACK is pending, never business success."""
+            return service.select_holy_site_relic_artifact_v1(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_select_holy_site_relic_artifact_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+        def ck3_set_holy_site_relic_slot_selection_v1(expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], slot_index: Annotated[int, Field(strict=True, ge=0, lt=4096)], desired_selected: Annotated[bool, Field(strict=True)]) -> dict[str, object]:
+            """Execute one explicitly frozen native relic UI action; ACK is pending, never business success."""
+            return service.set_holy_site_relic_slot_selection_v1(expected_revision=expected_revision, holy_site_id=holy_site_id, slot_index=slot_index, desired_selected=desired_selected)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_set_holy_site_relic_slot_selection_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+        def ck3_enshrine_holy_site_relic_v1(expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], expected_effective_slot_index: Annotated[int, Field(strict=True, ge=0, lt=4096)], expected_replacing_empty: Annotated[bool, Field(strict=True)], expected_preview_sha256: Annotated[str, Field(strict=True, pattern="^[0-9a-f]{64}$")], expected_replacing_artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] | None = None) -> dict[str, object]:
+            """Execute one explicitly frozen native relic UI action; ACK is pending, never business success."""
+            return service.enshrine_holy_site_relic_v1(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_effective_slot_index=expected_effective_slot_index, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256, expected_replacing_artifact_id=expected_replacing_artifact_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_enshrine_holy_site_relic_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+        def ck3_remove_holy_site_relic_v1(expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], expected_replacing_empty: Annotated[bool, Field(strict=True)], expected_preview_sha256: Annotated[str, Field(strict=True, pattern="^[0-9a-f]{64}$")]) -> dict[str, object]:
+            """Execute one explicitly frozen native relic UI action; ACK is pending, never business success."""
+            return service.remove_holy_site_relic_v1(expected_revision=expected_revision, holy_site_id=holy_site_id, artifact_id=artifact_id, expected_replacing_empty=expected_replacing_empty, expected_preview_sha256=expected_preview_sha256)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_remove_holy_site_relic_v1")
+
     if getattr(driver, "allow_private_player_holy_site_relic_permissions_query", False) is True:
         @server.tool(annotations=ToolAnnotations(
             readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))
@@ -3708,8 +3761,40 @@ def create_server(
         """Open one exact4 full Faith ID through the opted-in original typed route; query independently."""
         return service.open_faith_window_v1(faith_id, expected_revision=expected_revision)
 
+    if getattr(driver, "allow_private_player_holy_site_creation_ui", False) is True:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_open_holy_site_creation_window_v1(expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+            """Open creation for the current faith; never create a holy site."""
+            return service.open_holy_site_creation_window_v1(expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_open_holy_site_creation_window_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_select_holy_site_creation_type_v1(type_key: Annotated[str, Field(strict=True, min_length=1, max_length=160)],
+                expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+            """Select one original type; the result does not confirm a creation."""
+            return service.select_holy_site_creation_type_v1(type_key, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_select_holy_site_creation_type_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_select_holy_site_creation_barony_v1(barony_title_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+                expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+            """Select one original candidate barony and preserve its complete reference."""
+            return service.select_holy_site_creation_barony_v1(barony_title_id, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_select_holy_site_creation_barony_v1")
+
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_set_holy_site_creation_artifact_selection_v1(artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32-1)],
+                selected: Annotated[bool, Field(strict=True)], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+            """Set one original artifact selection; unknown attempts require observation before retry."""
+            return service.set_holy_site_creation_artifact_selection_v1(artifact_id, selected, expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_set_holy_site_creation_artifact_selection_v1")
+
     @server.tool()
-    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+    def ck3_query_ingame_ui_window_v1(window_kind: Literal["character", "army", "combat", "knights", "holy_site", "faith", "holy_site_creation"], expected_revision: IngameUiRevisionV1) -> dict[str, object]:
         """Fresh owner-thread full-ID window readback plus bounded target subtree."""
         return service.query_ingame_ui_window_v1(window_kind, expected_revision=expected_revision)
 
@@ -5107,6 +5192,20 @@ def parser() -> argparse.ArgumentParser:
         help="enable an explicit private ransom using the current native collection quote",
     )
     result.add_argument(
+        "--private-player-holy-site-creation-ui", action="store_true",
+        help="enable only four exact4 creation UI selectors; no create callback",
+    )
+    result.add_argument(
+        "--private-player-holy-site-creation-context-query", action="store_true",
+        help="enable exact4 current creation-model reads only; never select or create",
+    )
+    result.add_argument(
+        "--private-player-holy-site-relic-action-context-query", action="store_true",
+        help="enable independent exact4 relic ownership/destination/current-selection text reads only",
+    )
+    result.add_argument("--private-holy-site-relic-actions", action="store_true",
+        help="enable four finite relic UI action tools; callbacks remain subject to native source/frame/preview gates")
+    result.add_argument(
         "--private-player-holy-site-relic-permissions-query", action="store_true",
         help="enable independent exact4 relic candidates and current-window permissions reads only",
     )
@@ -5294,6 +5393,14 @@ def main(argv: list[str] | None = None) -> int:
         )
         if all(war31_paths) else None
     )
+    if args.private_player_holy_site_creation_ui and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("private creation UI requires native-headless stdio")
+    if args.private_player_holy_site_creation_context_query and (
+        args.driver != "native-headless" or args.transport != "stdio"
+    ):
+        raise ValueError("private holy-site creation context requires native-headless stdio")
     if args.private_current_first_heir_relationship_query and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -5443,6 +5550,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    if args.private_player_holy_site_creation_ui:
+        driver.allow_private_player_holy_site_creation_ui = True
+    if args.private_player_holy_site_creation_context_query:
+        driver.allow_private_player_holy_site_creation_context_query = True
+    if args.private_player_holy_site_relic_action_context_query:
+        driver.allow_private_player_holy_site_relic_action_context_query = True
+    driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
     if args.private_player_holy_site_relic_permissions_query:
         driver.allow_private_player_holy_site_relic_permissions_query = True
     if args.private_player_holy_site_relic_context_query:

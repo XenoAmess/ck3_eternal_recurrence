@@ -1,0 +1,98 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T13:50:28.494437+00:00",
+  "status": "PASS_SOURCE_ONLY_COMPILE_DEFINITION_SCOPE",
+  "compile_commands": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\bflag01\\compile_commands.json",
+    "sha256": "d2b899a1f20926f19351b831afa5ffaa1043cfaf2979ba5eb9c790ef232f8863"
+  },
+  "translation_units": [
+    {
+      "target": "xar_ck3_bridge",
+      "source": "dummy.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_bridge",
+      "source": "ck3_12004_holy_site_relic_actions.cpp",
+      "typed_ui_definition": true,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_bridge",
+      "source": "ck3_12004_holy_site_relic_actions_json.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_bridge",
+      "source": "holy_site_relic_request12004.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_bridge",
+      "source": "holy_site_relic_navigation12004.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": true
+    },
+    {
+      "target": "xar_ck3_bridge",
+      "source": "holy_site_relic_action_preview_adapter12004.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": "dummy.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": "ck3_12004_holy_site_relic_actions.cpp",
+      "typed_ui_definition": true,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": "ck3_12004_holy_site_relic_actions_json.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": "holy_site_relic_request12004.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_ck3_ingame_ui_navigation_v1_test",
+      "source": "holy_site_relic_navigation12004.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    },
+    {
+      "target": "xar_unrelated",
+      "source": "dummy.cpp",
+      "typed_ui_definition": false,
+      "button_action_definition": false
+    }
+  ],
+  "unrelated_tu_new_definitions": false,
+  "core_only_typed_definition": true,
+  "bridge_navigation_only_button_definition": true,
+  "production_module_unchanged": true,
+  "build_executed": false,
+  "game_executed": false,
+  "main_modified": false,
+  "receipt_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\flag-scope-a01\\result.json",
+    "sha256": "4bb2a36ce9692e56033338d118b706811ba5b633cdc088e276beb9984313f500"
+  },
+  "source_pin_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\ui-stage\\flag-scope-a01\\source-pins.json",
+    "sha256": "95311e030fcc95daf01eebc8adac155c225daf10a336890222a1f94e17292669"
+  }
+}

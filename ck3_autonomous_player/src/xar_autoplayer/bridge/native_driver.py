@@ -3544,6 +3544,48 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_holy_site_creation_context_private_v1(
+        self, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Observe the current native creation model without changing its selection."""
+        from .player_holy_site_creation_context_private_transport import (
+            query_player_holy_site_creation_context_private_v1,
+        )
+        return query_player_holy_site_creation_context_private_v1(
+            self, expected_revision=expected_revision,
+            timeout_seconds=self.command_timeout_seconds)
+
+    def query_player_holy_site_relic_action_context_private_v1(
+        self, *, expected_revision: int, holy_site_id: int, artifact_id: int,
+    ) -> dict[str, object]:
+        """Read explicit relic action context without selecting or submitting."""
+        from .player_holy_site_relic_action_context_private_transport import (
+            query_player_holy_site_relic_action_context_private_v1,
+        )
+        return query_player_holy_site_relic_action_context_private_v1(
+            self, expected_revision=expected_revision, holy_site_id=holy_site_id,
+            artifact_id=artifact_id)
+
+    def select_holy_site_relic_artifact_private_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int) -> dict[str, object]:
+        from .relic_action_private_transport import execute_relic_action_private_v1
+        return execute_relic_action_private_v1(self, expected_revision=expected_revision,
+            holy_site_id=holy_site_id, operation="select_relic_artifact", fields={"relic_artifact_id": artifact_id})
+
+    def set_holy_site_relic_slot_selection_private_v1(self, *, expected_revision: int, holy_site_id: int, slot_index: int, desired_selected: bool) -> dict[str, object]:
+        from .relic_action_private_transport import execute_relic_action_private_v1
+        return execute_relic_action_private_v1(self, expected_revision=expected_revision,
+            holy_site_id=holy_site_id, operation="set_relic_slot", fields={"relic_slot_index": slot_index, "relic_desired_selected": desired_selected})
+
+    def enshrine_holy_site_relic_private_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int, expected_effective_slot_index: int, expected_replacing_empty: bool, expected_preview_sha256: str, expected_replacing_artifact_id: int | None = None) -> dict[str, object]:
+        from .relic_action_private_transport import execute_relic_action_private_v1
+        return execute_relic_action_private_v1(self, expected_revision=expected_revision,
+            holy_site_id=holy_site_id, operation="enshrine_relic", fields={"relic_artifact_id": artifact_id, "relic_expected_effective_slot_index": expected_effective_slot_index, "relic_expected_replacing_empty": expected_replacing_empty, "relic_expected_preview_sha256": expected_preview_sha256, **({"relic_expected_replacing_artifact_id": expected_replacing_artifact_id} if expected_replacing_artifact_id is not None else {})})
+
+    def remove_holy_site_relic_private_v1(self, *, expected_revision: int, holy_site_id: int, artifact_id: int, expected_replacing_empty: bool, expected_preview_sha256: str) -> dict[str, object]:
+        from .relic_action_private_transport import execute_relic_action_private_v1
+        return execute_relic_action_private_v1(self, expected_revision=expected_revision,
+            holy_site_id=holy_site_id, operation="remove_relic", fields={"relic_artifact_id": artifact_id, "relic_expected_replacing_empty": expected_replacing_empty, "relic_expected_preview_sha256": expected_preview_sha256})
+
     def query_player_holy_site_relic_permissions_private_v1(
         self, *, expected_revision: int, holy_site_id: int,
         artifact_id: int | None = None,
@@ -6244,12 +6286,17 @@ class NativeHeadlessGameplayDriver:
 
     def _ingame_ui_v1(self, operation: str, kind: str, subject_id: int, *, expected_revision: int,
             army_tooltip_kind: str | None = None, army_tooltip_receipt: str | None = None,
-            holy_site_action: HolySiteDecisionActionV1 | None = None) -> dict[str, object]:
+            holy_site_action: HolySiteDecisionActionV1 | None = None,
+            holy_site_creation_type_key: str | None = None,
+            holy_site_creation_selected: bool | None = None) -> dict[str, object]:
         from .ingame_ui_contract import (NAVIGATE_STEP, QUERY_STEP, NAVIGATE_CAPABILITY,
             QUERY_CAPABILITY, validate_ui_request, normalize_ui_result,
             ingame_ui_build_binding, validate_ui_build_scope)
+        if kind == "holy_site_creation" and getattr(self, "allow_private_player_holy_site_creation_ui", False) is not True:
+            raise UnsupportedStepError("creation UI selectors are independently disabled")
         validate_ui_request(operation, kind, subject_id, expected_revision,
-            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
+            army_tooltip_kind=army_tooltip_kind, army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action,
+            holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected)
         starting = self.take_snapshot()
         binding = _title_camera_navigation_binding_from_snapshot(starting)
         if starting.get("paused") is not True or starting.get("map_ready") is not True:
@@ -6269,6 +6316,10 @@ class NativeHeadlessGameplayDriver:
             if capabilities.get("backend_id") != "native-headless" or capability not in capabilities.get("bridge_capabilities", []):
                 raise UnsupportedStepError("capability_not_available: Army tooltip requires the exact native backend")
         fields = {"window_kind": kind, "subject_id": subject_id}
+        if holy_site_creation_type_key is not None:
+            fields["type_key"] = holy_site_creation_type_key
+        if holy_site_creation_selected is not None:
+            fields["selected"] = holy_site_creation_selected
         if holy_site_action is not None:
             fields["holy_site_action"] = holy_site_action
         if operation != "query":
@@ -6295,7 +6346,9 @@ class NativeHeadlessGameplayDriver:
             result = normalize_ui_result(raw, operation=operation, kind=kind, subject_id=subject_id,
                 native_revision=int(starting["native_revision"]), date_raw=int(starting["date_raw"]), actor_id=actor,
                 expected_build=source_binding[0], army_tooltip_kind=army_tooltip_kind,
-                army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action)
+                army_tooltip_receipt=army_tooltip_receipt, holy_site_action=holy_site_action,
+                holy_site_creation_type_key=holy_site_creation_type_key, holy_site_creation_selected=holy_site_creation_selected,
+                creation_context_snapshot=starting if kind == "holy_site_creation" else None)
         except Exception as error:
             self._record_command(step, ok=False,
                 result={"raw_native_ui_result": copy.deepcopy(raw)} if raw is not None else None,
@@ -6309,6 +6362,21 @@ class NativeHeadlessGameplayDriver:
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_character", "character", character_id, expected_revision=expected_revision)
+
+    def open_holy_site_creation_window_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_holy_site_creation", "holy_site_creation", 0, expected_revision=expected_revision)
+
+    def select_holy_site_creation_type_v1(self, type_key: str, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("select_holy_site_creation_type", "holy_site_creation", 0,
+            expected_revision=expected_revision, holy_site_creation_type_key=type_key)
+
+    def select_holy_site_creation_barony_v1(self, barony_title_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("select_holy_site_creation_barony", "holy_site_creation", barony_title_id,
+            expected_revision=expected_revision)
+
+    def set_holy_site_creation_artifact_selection_v1(self, artifact_id: int, selected: bool, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("set_holy_site_creation_artifact_selection", "holy_site_creation", artifact_id,
+            expected_revision=expected_revision, holy_site_creation_selected=selected)
 
     def open_faith_window_v1(self, faith_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_faith", "faith", faith_id, expected_revision=expected_revision)

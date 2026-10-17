@@ -1,0 +1,19 @@
+{
+  "schema": "relic-action-context-planned-native-packets-v1",
+  "machine_id": "4-8e1c2f1861",
+  "source_only": true,
+  "native_execution_claimed": false,
+  "canonical_includes_player_faith_id": true,
+  "expected_filenames": [
+    "enshrine-empty.json",
+    "enshrine-replace.json",
+    "explicit-incompatible-fallback.json",
+    "remove-installed.json",
+    "request-not-selected.json",
+    "no-compatible-slot.json",
+    "unknown-text.json",
+    "ownership-drift.json",
+    "window-unavailable.json",
+    "faith-drift.json"
+  ]
+}
