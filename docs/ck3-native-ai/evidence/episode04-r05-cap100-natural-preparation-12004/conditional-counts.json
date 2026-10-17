@@ -1,0 +1,37 @@
+{
+  "schema": "e04-r05-cap100-finite-conditional-counts-v1",
+  "kind": "offline arithmetic, not a future schedule or observed transition",
+  "scale": 100000,
+  "held_rate_raw": -175438,
+  "assumptions": [
+    "new actual commander/rate/capacity independently read",
+    "same negative rate and actual capacity at every admitted update",
+    "no signed overflow",
+    "all relevant scheduled callbacks admitted",
+    "30-day spacing is Root supplied clock premise, not monthly-rate naming"
+  ],
+  "rows": {
+    "stock300_cap300": {
+      "first_stock_raw": 29824562,
+      "first_strict_below10_update": 166,
+      "first_zero_update": 172,
+      "days_from_first_opportunity_below10": 4950,
+      "days_from_first_opportunity_zero": 5130
+    },
+    "stock300_new_cap100": {
+      "first_stock_raw": 10000000,
+      "first_strict_below10_update": 53,
+      "first_zero_update": 59,
+      "days_from_first_opportunity_below10": 1560,
+      "days_from_first_opportunity_zero": 1740
+    },
+    "already_observed_stock100_cap100": {
+      "first_stock_raw": 9824562,
+      "first_strict_below10_update": 52,
+      "first_zero_update": 58,
+      "days_from_first_opportunity_below10": 1530,
+      "days_from_first_opportunity_zero": 1710
+    }
+  },
+  "first_zero_is_starvation_loss_qualification": false
+}

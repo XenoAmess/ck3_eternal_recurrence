@@ -184,3 +184,22 @@ immediate_liege采用名不冒充此入口的独立源码证明；2494B40等旧�
 Character ID/fallback身份。字段仍是proposed观测合同，不是当前capability或新API；
 defaultOFF、不额外调用谓词。原OR口09580/09780仍按096A8/096B7绑定。
 R197实际OR仍unknown，physical positive仍false；static不抵扣实机/视频/性能验收。
+
+
+## 2026-10-17 parent seed28BFC50的独立leaf源码
+
+源码机器desktop-3fevhd2-1c74096080，exact1.20.0.4/同EXE SHA。既有exactentry守卫
+实际停止在body0/meta216；邻row不覆盖目标，之后复用已封leaf-CFG合同只读
+[28BFC50,28BFD40)240B。可达body118B/31指令/零CALL，剩余122B不解释，不借邻函数
+unwind、不伪造pdata；源/check/原始窗口与guard记录均保留。
+
+只消费入口RCX=C，入口RDX被[C+1B8]覆盖而不读，所以不会把selector闭包当输入或修改它。
+native_context=[C+1C0]非空时，候选[[native_context+1C0]+28]的magic/ID有效即返回候选，
+否则返回原C；无native_context时按link+C8完整ID解析Character，失败返5C67570fallback。
+这是一次parent step，非H的循环固定点；0FEC0把结果作seed，seed==原A则返回fallback。
+既有immediate_liege采用名现有独立body结构对照，不能据标签补业务身份或实机值。
+
+下一实际输入可取caller2C0FEE0的原调用RCX/完整RAX Character ID，不额外调用getter。
+六个既有M/G下层未知不变；R197实际OR仍unknown，physicalpositive仍false，未授runtime/视频。
+
+[便携原件与边界](evidence/episode04-county-parent-seed-12004/README.md)、[精确archive索引](evidence/episode04-county-parent-seed-12004/PORTABLE-INDEX.json)及[标准库校验器](evidence/episode04-county-parent-seed-12004/verify_portable.py)已入库。archive保留首次exact-entry拒绝及后续独立leaf-CFG来源，不能把240B窗口当另读函数或把118B称为pdata完整函数。研究9/14、业务6/11、动态0/11、ABC0/3不变。

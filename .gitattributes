@@ -748,3 +748,13 @@ docs/ck3-native-ai/research/obs-preconfigured-first-run/** -text whitespace=cr-a
 /docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/source-index.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/media-review-report.md -text whitespace=cr-at-eol
 /docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/media-asset-manifest.json -text whitespace=cr-at-eol
+
+# R04 parent seed / R05 finite preparation exact evidence (2026-10-17)
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/source.exact.tar.xz -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/ROOT-DELIVERY.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/README.md -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/SOURCE-INDEX.actual-a01.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/PORTABLE-INDEX.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/verify_portable.py -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r05-cap100-natural-preparation-12004/source-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r05-cap100-natural-preparation-12004/conditional-counts.json -text whitespace=cr-at-eol

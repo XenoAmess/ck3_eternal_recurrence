@@ -1,0 +1,133 @@
+{
+  "schema": "xar.e04.r04.parent-seed-portable.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T13:45:58.049725+00:00",
+  "source_head_historical": null,
+  "source_head_limit": "Original source package does not declare a Git HEAD; no runtime deployment inferred.",
+  "archive": {
+    "path": "source.exact.tar.xz",
+    "bytes": 15948,
+    "sha256": "4141147cd0f193b0833c933d1fe7b6fb3222d9c8a6b1b2b7967101dfa9723d87",
+    "members": [
+      {
+        "name": "CALLER-SELECTOR.exact.json",
+        "bytes": 2231
+      },
+      {
+        "name": "COMPLETED-PACK-PRODUCER.actual.json",
+        "bytes": 400
+      },
+      {
+        "name": "CURRENT-IDENTITY-METADATA.actual-a01.json",
+        "bytes": 773
+      },
+      {
+        "name": "EXACT-ENTRY-GUARD-STOP.actual-a01.json",
+        "bytes": 691
+      },
+      {
+        "name": "GETTER-CFG-CLOSURE.actual-a01.json",
+        "bytes": 984
+      },
+      {
+        "name": "GETTER-PREFIX-READ.actual-a01.json",
+        "bytes": 1051
+      },
+      {
+        "name": "GETTER-STATIC-CHECK.actual-a02.json",
+        "bytes": 1657
+      },
+      {
+        "name": "IMMEDIATE-GETTER-CONTRACT.proposed-a01.json",
+        "bytes": 1801
+      },
+      {
+        "name": "LEAF-READER-DERIVATION.actual-a01.json",
+        "bytes": 748
+      },
+      {
+        "name": "LEAF-READER-DERIVATION.actual-a02.json",
+        "bytes": 904
+      },
+      {
+        "name": "NATIVE-TREE.generated-a03.md",
+        "bytes": 4072
+      },
+      {
+        "name": "RAW-READ-LEDGER.actual-a01.json",
+        "bytes": 6036
+      },
+      {
+        "name": "READER-DERIVATION.actual-a01.json",
+        "bytes": 627
+      },
+      {
+        "name": "README.md",
+        "bytes": 3461
+      },
+      {
+        "name": "RESEARCH-PLAN.H-leaf-a02.json",
+        "bytes": 4059
+      },
+      {
+        "name": "RESEARCH-PLAN.proposed-a02.json",
+        "bytes": 3412
+      },
+      {
+        "name": "RESEARCH-PLAN.static-closed-a03.json",
+        "bytes": 4705
+      },
+      {
+        "name": "SOURCE-FIRST.actual-a01.json",
+        "bytes": 1107
+      },
+      {
+        "name": "SOURCE-INDEX.actual-a01.json",
+        "bytes": 2514
+      },
+      {
+        "name": "STATIC-CHECK-RENDER.actual-a03.json",
+        "bytes": 2570
+      },
+      {
+        "name": "STATIC-PLAN-CHECK.actual-a02.json",
+        "bytes": 1884
+      },
+      {
+        "name": "TOPIC-APPEND.candidate.md",
+        "bytes": 1159
+      },
+      {
+        "name": "capture_getter.py",
+        "bytes": 7447
+      },
+      {
+        "name": "capture_leaf.py",
+        "bytes": 5113
+      },
+      {
+        "name": "finish_small.py",
+        "bytes": 2078
+      },
+      {
+        "name": "source-28BFC50.asm",
+        "bytes": 2215
+      },
+      {
+        "name": "source-28BFC50.bin",
+        "bytes": 118
+      },
+      {
+        "name": "source-28BFC50.function.json",
+        "bytes": 1268
+      },
+      {
+        "name": "source-28BFC50.prefix240.bin",
+        "bytes": 240
+      }
+    ]
+  },
+  "original_source_index": "SOURCE-INDEX.actual-a01.json",
+  "source_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "limits": "Archive is complete source provenance, including refused exact-entry path, 240B leaf window, 118B reachable body, 122B uninterpreted tail, metadata216B/19total reads. Original absolute paths are provenance only. Pure verifier reads local archive, not EXE or C: paths. Actual OR/getter and R04 physical positive remain unknown/false."
+}

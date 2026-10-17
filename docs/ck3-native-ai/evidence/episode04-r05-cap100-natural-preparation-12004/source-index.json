@@ -1,0 +1,101 @@
+{
+  "schema": "e04-r05-cap100-natural-preparation-source-index-v1",
+  "prepared_at_utc": "2026-10-17T13:35:37.444781+00:00",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sources": [
+    {
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-commander-conditional-capacity-12004/capacity.source.json",
+      "bytes": 57468,
+      "sha256": "cfaa5b700d4b194275f998febe798980d406daa234c24b4bbe203fdb2936f092"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-commander-conditional-supply-capacity-12004.md",
+      "bytes": 5497,
+      "sha256": "5b3f46e86ffef567cb1c7019d8ab7ab87ec5b8b8b4a46bf3289dbb4d83e37f63"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/episode04-commander-capacity-zero-preparation-12004.md",
+      "bytes": 8362,
+      "sha256": "de51300103d512ad1482ca5d87042b0fb66209f11ad6b200129386dfb03d0fb1"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/evidence/episode04-commander-capacity-zero-preparation-12004/decision.json",
+      "bytes": 5565,
+      "sha256": "fa7d1196d6e86733070827edb970e190cab2372c03cedc1999e9fecb39046b66"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-current-callback-supply-risk-12004.md",
+      "bytes": 15044,
+      "sha256": "be04be0fda1bc0107bbf3eda794aa325e10364c5aebf05fbcb6a21d45cc12cd2"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-next-supply-effects-source24-12004.md",
+      "bytes": 12092,
+      "sha256": "9216574e4bcb5122480d27521c01cb8e8a92c57769ae1eda23e37a5354802a86"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/episode04-r196-cap100-and-multiday-preparation-12004.md",
+      "bytes": 7940,
+      "sha256": "1aabf1b60674023b46acad0b491cb5dbfd8dd0aaedc5e436c068e4b99be0d4dc"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/commander-in-battle-assignment-timing-12003.md",
+      "bytes": 13679,
+      "sha256": "61400388d0885cb272dc0167b5c6b3c6b574bff27fbab1430ce7186ce5ba0c82"
+    },
+    {
+      "repo_relative_path": "ck3_autonomous_player/native_bridge/research/ck3_1_20_0_4_commander_assignment.json",
+      "bytes": 8245,
+      "sha256": "6d19d7e9185f16e129b5148b7eaa8508afa19621418ae174431a91c93a74f2cd"
+    }
+  ],
+  "held_capacity_selected_asm": [
+    {
+      "rva": "0x2c53c7d",
+      "bytes": "e83efec6ff",
+      "mnemonic": "call",
+      "operands": "0x28c3ac0"
+    },
+    {
+      "rva": "0x2c53cf7",
+      "bytes": "488b0d724f0103",
+      "mnemonic": "mov",
+      "operands": "rcx, qword ptr [rip + 0x3014f72]"
+    },
+    {
+      "rva": "0x2c53e13",
+      "bytes": "4d85e4",
+      "mnemonic": "test",
+      "operands": "r12, r12"
+    },
+    {
+      "rva": "0x2c540fc",
+      "bytes": "498916",
+      "mnemonic": "mov",
+      "operands": "qword ptr [r14], rdx"
+    },
+    {
+      "rva": "0x2c5414f",
+      "bytes": "498916",
+      "mnemonic": "mov",
+      "operands": "qword ptr [r14], rdx"
+    },
+    {
+      "rva": "0x2c54154",
+      "bytes": "488b05154b0103",
+      "mnemonic": "mov",
+      "operands": "rax, qword ptr [rip + 0x3014b15]"
+    }
+  ],
+  "updater_source": "Actual4 support_24E4D10-DETAIL.json/463B retained historical source referenced by current-callback doc; not reread here.",
+  "no_new_native_facts": true,
+  "new_work": "current slow-rate conditional count comparison and one-opportunity finite preparation decision",
+  "counts": {
+    "new_exe_reads": 0,
+    "sdk": 0,
+    "ui": 0,
+    "builds": 0,
+    "main_edits": 0,
+    "tests": 0
+  }
+}

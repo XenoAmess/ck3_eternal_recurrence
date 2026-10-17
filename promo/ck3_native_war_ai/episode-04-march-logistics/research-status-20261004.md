@@ -366,3 +366,7 @@ R04仍condition=false/完整窗缺失，无正例；本次不增加研究、素�
 69段配音不等于新版complete film。精确save/CLOSED、两个enum修正post SHA及清理后的源可用性见新交接。
 
 R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../../docs/ck3-native-ai/episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。
+
+## 2026-10-17 R04/R05可复用来源补记（无新整卡）
+
+`machine_id: desktop-3fevhd2-1c74096080`。[R04一次parent seed源码](../../../docs/ck3-native-ai/episode04-county-entry-relation-core-12004.md)新持28BFC50可达118B/31指令、0CALL/0写，不把原始240B窗口的122B余量解释为另一个函数；它是单步，不是H固定点遍历。实际OR、getter返回值和physical positive仍未证。[R05合法cap100准备](../../../docs/ck3-native-ai/episode04-r05-cap100-natural-preparation-12004.md)复用已闭源码：成功自然供给callback会先ADD再按当时实际cap裁剪；不证明普通任命立即clamp，也不证明绝不立即clamp。只建议新鲜合法低cap与一次真实机会后的100库存正常checkpoint，不能盲耗53成功机会/1560日作本场归零。未读新EXE/存档/Driver，无新runtime、R08wire或媒体资格。研究9/14、业务6/11、合格动态0/11、ABC0/3保持。

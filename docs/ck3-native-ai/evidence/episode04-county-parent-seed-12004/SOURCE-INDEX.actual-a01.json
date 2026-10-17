@@ -1,0 +1,70 @@
+{
+  "schema": "xar.e04.r04.parent-seed-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T13:43:14.026891+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "body": {
+    "member": "source-28BFC50.bin",
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r04-immediate-getter-source-a01\\source-28BFC50.bin",
+    "bytes": 118,
+    "sha256": "7f713bce578456413e82347434024b5a390a28bd40d17a4779f6eb3c4c7f6da4"
+  },
+  "asm": {
+    "member": "source-28BFC50.asm",
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r04-immediate-getter-source-a01\\source-28BFC50.asm",
+    "bytes": 2215,
+    "sha256": "73cf084147340a36a3456b922869d46a3e63371a8764fd974c7d5d1f04c228bf"
+  },
+  "raw_window": {
+    "member": "source-28BFC50.prefix240.bin",
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r04-immediate-getter-source-a01\\source-28BFC50.prefix240.bin",
+    "bytes": 240,
+    "sha256": "b57c99f9911fdd89d1858d1e16b5a5b451c724d76349365e9bc58f11a7bc0ae7"
+  },
+  "exact_runtime_entry": false,
+  "unwind": null,
+  "reachable_body_range": [
+    "28BFC50",
+    "28BFCC6"
+  ],
+  "fixed_window_range": [
+    "28BFC50",
+    "28BFD40"
+  ],
+  "uninterpreted_extra_window_bytes": 122,
+  "extra_window_bytes_used_as_other_function_evidence": false,
+  "runtime_neighbor_rows": {
+    "requested": "0x28bfc50",
+    "next_runtime_row": [
+      "0x28bfd40",
+      "0x28bfd77",
+      "0x51095e0"
+    ],
+    "previous_runtime_row": [
+      "0x28bfc00",
+      "0x28bfc47",
+      "0x511d0d8"
+    ]
+  },
+  "actual_new_reads": {
+    "code_window_bytes": 240,
+    "metadata_bytes": 216,
+    "metadata_reads": 18,
+    "code_reads": 1,
+    "total_reads": 19,
+    "total_EXE_bytes": 456,
+    "code_limit": 1024,
+    "metadata_limit": 512,
+    "headers_fullhashes_callee_bodies": 0
+  },
+  "entry_guard_stop_member": "EXACT-ENTRY-GUARD-STOP.actual-a01.json",
+  "leaf_guard_contract": "Prior heldH named-window/closedRET CFG capture, after preserved exactentry refusal; no code extension or borrowed neighbor unwind",
+  "identity_member": "CURRENT-IDENTITY-METADATA.actual-a01.json",
+  "contract_member": "IMMEDIATE-GETTER-CONTRACT.proposed-a01.json",
+  "native_caller_return": "2C0FEE0",
+  "parent_consumer": "0FEC0 seed compare with originalA then candidate walk",
+  "R197_actual_getter_OR": "unknown",
+  "R04_physical_positive": false,
+  "main_HEAD_frozen_or_modified": false,
+  "proposed_canonical_root": "docs/ck3-native-ai/evidence/episode04-county-parent-seed-12004/"
+}
