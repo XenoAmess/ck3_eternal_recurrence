@@ -1,0 +1,33 @@
+{
+  "schema": "xar.poll-reporting-fixture-source-dependency.v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "runner_machine_id": "unknown",
+  "at_utc": "2026-10-17T10:08:08.105435+00:00",
+  "original_CI": {
+    "conclusion": "failure",
+    "headSha": "d78848c5f33c7fa5ce3acc0e653eb98a00c4abd3",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39022414910"
+  },
+  "fixture_error": "NameError: require_fixture_policy_submission is not defined in both extracted AST namespaces; 12 cases errored",
+  "fix": "load actual fixture_start_tool and require_fixture_policy_submission AST definitions; mark existing synthetic Robert policy v1 explicitly; no production bypass or precomputed DTO",
+  "existing_submission_module_mock": "unchanged reporting-test seam; not a full startup submission integration test",
+  "fixture_before_git_blob_sha256": "e78471f3a2da1066665a943e61138e1e93d715494c4c511fb45ef608a499bfbb",
+  "fixture_after_worktree_sha256": "33a5078344eb617809c92f9e630b51aa3a00c451ead640fa56729ee0875af864",
+  "production_host_sha256": "2c00d8e5a50392ea8986e22eb88ed0e1d122a8f131ba3306091a2d52a5776f2a",
+  "production_host_modified": false,
+  "original_poll_marker_deadline_revision_sidecar_assertions": "unchanged",
+  "new_negative": "unknown and missing policy rejected before all native IO",
+  "local_tests": {
+    "poll_reporting_methods": 17,
+    "exit_code": 0,
+    "shared_step_commands_51_through_58": "all passed; no full58 local claim"
+  },
+  "prior_adapter_local_timeout_explained": {
+    "fixture_fake_child_poll": "always None",
+    "production_idle_default_seconds": 600,
+    "local_budget_seconds": 120,
+    "production_wait_contract_modified": false
+  },
+  "live_operations": 0
+}

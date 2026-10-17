@@ -109,7 +109,8 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
         wanted = {"serialized", "JsonLines", "StartupPollReporting", "annotate_write_error", "write_atomic_report",
-                  "wait_for_consistent_frontend", "wait_for_fixture_business_context", "fixture_qualification_counts"}
+                  "wait_for_consistent_frontend", "wait_for_fixture_business_context", "fixture_qualification_counts",
+                  "fixture_start_tool", "require_fixture_policy_submission"}
         cls.definitions = [node for node in tree.body if getattr(node, "name", None) in wanted]
         run = next(node for node in tree.body if isinstance(node, ast.AsyncFunctionDef) and node.name == "run")
         cls.actual_write = next(node for node in run.body if isinstance(node, ast.FunctionDef) and node.name == "write")
@@ -241,7 +242,7 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
     async def test_actual_business_poll_keeps_every_row_and_forces_admission_and_ready(self):
         context = self.context()
         client = self.business_client()
-        policy = {"required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}
+        policy = {"schema": "ck3-frontend-fixture-start-policy-v1", "required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}
         with self.fixture_module():
             result = await context.namespace["wait_for_fixture_business_context"](client, policy, {},
                 report=context.report, write=context.write, timeout=20, poll_interval=.1, poll_reporting=context.reporting)
@@ -311,7 +312,7 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
             client = self.business_client(qualified_after=1000)
             with self.fixture_module(), self.assertRaises(TimeoutError):
                 await context.namespace["wait_for_fixture_business_context"](client,
-                    {"required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}, {},
+                    {"schema": "ck3-frontend-fixture-start-policy-v1", "required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}, {},
                     report=context.report, write=context.write, timeout=.2, poll_interval=.1, poll_reporting=context.reporting)
             state = context.report["frontend_fixture_business_context"]
             self.assertEqual(state["status"], "FAILED_AFTER_SINGLE_START_NO_RETRY")
@@ -329,7 +330,7 @@ class PollReportingTests(unittest.IsolatedAsyncioTestCase):
         with self.fixture_module(), mock.patch.object(context.reporting.journal, "write", side_effect=error) as sink:
             with self.assertRaises(OSError) as raised:
                 await context.namespace["wait_for_fixture_business_context"](client,
-                    {"required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}, {},
+                    {"schema": "ck3-frontend-fixture-start-policy-v1", "required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}, {},
                     report=context.report, write=context.write, timeout=5, poll_reporting=context.reporting)
         self.assertIs(raised.exception, error)
         self.assertEqual(sink.call_count, 1)
@@ -344,7 +345,8 @@ class FixtureRootRevisionTests(unittest.IsolatedAsyncioTestCase):
     @classmethod
     def setUpClass(cls):
         tree = ast.parse(HOST.read_text(encoding="utf-8-sig"))
-        names = {"fixture_whole_root_admission_frame", "wait_for_fixture_business_context", "fixture_qualification_counts"}
+        names = {"fixture_whole_root_admission_frame", "wait_for_fixture_business_context", "fixture_qualification_counts",
+                 "fixture_start_tool", "require_fixture_policy_submission"}
         cls.definitions = [node for node in tree.body if getattr(node, "name", None) in names]
 
     def context(self, revisions=(3,), *, change=None, error=None):
@@ -408,7 +410,7 @@ class FixtureRootRevisionTests(unittest.IsolatedAsyncioTestCase):
             "pump_epoch": snapshot["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]["pump_epochs"]}
         value.namespace, value.client, value.submission = namespace, client, submission
         value.module = mock.patch.dict(sys.modules, {module.__name__: module})
-        value.policy = {"required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}
+        value.policy = {"schema": "ck3-frontend-fixture-start-policy-v1", "required_log_markers": ["READY"], "forbidden_log_markers": ["FAIL"]}
         def write():
             value.writes += 1
         value.write = write
@@ -422,6 +424,18 @@ class FixtureRootRevisionTests(unittest.IsolatedAsyncioTestCase):
 
     def roots(self, context):
         return [args["expected_revision"] for name, args in context.client.calls if name == "ck3_query_campaign_root_context_v1"]
+
+    async def test_unknown_or_missing_start_policy_fails_before_native_io(self):
+        for schema in (None, "SYNTHETIC_UNREVIEWED_POLICY"):
+            with self.subTest(schema=schema):
+                context = self.context()
+                if schema is None:
+                    context.policy.pop("schema")
+                else:
+                    context.policy["schema"] = schema
+                with self.assertRaisesRegex(ValueError, "unsupported closed fixture startup policy"):
+                    await self.run_context(context)
+                self.assertEqual(context.client.calls, [])
 
     async def test_stable_public_revision_three_admits_original_binding(self):
         context = self.context((3,))
