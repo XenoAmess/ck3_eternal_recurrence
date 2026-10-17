@@ -71,3 +71,9 @@ tools/.venv/Scripts/python.exe -B -X utf8 -m unittest discover -s ck3_autonomous
 `gateway-resource4.patch`（10457 B，SHA `a26f64ab799956c0e68ef1ab452a545d38064c87abf26fdb249eee66ee066450`），
 SOURCE SHA `4594c65418bdac3dec3b578be4b764ee9d04c7472aa1a70195379b80f14a6a41`。
 基线26449到采纳基线 b8be8ca6c 的五目标无上游差异；旧候选原件不改。
+
+## 2026-10-18 R204：连续32日与7条自然回调
+
+`machine_id: desktop-3fevhd2-1c74096080`；[R204专题](episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
+
+原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。

@@ -1,0 +1,581 @@
+{
+  "schema": "xar.e04.r204.portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T20:30:55.523808+00:00",
+  "runtime_source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "integration_base": "81fe511570fa65589d887f4b8502b35d08184d4e",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "PID": 29068,
+  "process_creation_filetime_100ns": 134367407686810142,
+  "episode_run_id": "native-31254-6a76736d65fa",
+  "connection_generation": 1,
+  "sources": {
+    "window_summary": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r204-window-result-a01\\R204-WINDOW-SUMMARY.actual.json",
+      "bytes": 6742,
+      "sha256": "4243ae0cea831adcfc3ad40eadfc501514fd52f41068bd11853f8011caf8fe0c",
+      "archive_member": "window_summary.json"
+    },
+    "window_author_delivery": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r204-window-result-a01\\ROOT-DELIVERY.actual-a01.json",
+      "bytes": 918,
+      "sha256": "087909e91dced390e8c5a7a9256eb5318c2b3e2ac2c70630bec8cc0009fd225f",
+      "archive_member": "window_author_delivery.json"
+    },
+    "runtime_scope": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-IDENTITY-SCOPE.actual-a01.json",
+      "bytes": 8893,
+      "sha256": "d9dbc4bc597c81c1f74ede6017b1a400c7bf1f05e12186ede1e7edaee1ac26ad",
+      "archive_member": "runtime_scope.json"
+    },
+    "map_frame": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-MAP-FRAME.a01.json",
+      "bytes": 4063,
+      "sha256": "4e0baef38b7c8d042ea359ac85497a47572d8100546e6e16456ee0029b1acf07",
+      "archive_member": "map_frame.json"
+    },
+    "root_map_review": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-MAP-ROOT-REVIEW.actual.json",
+      "bytes": 1375,
+      "sha256": "8a919fe74d2b0697c31b18aca7385de4c7984ce09df96924df9b88a6ca8cbc99",
+      "archive_member": "root_map_review.json"
+    },
+    "film_result": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-RESULT.actual.json",
+      "bytes": 4336,
+      "sha256": "486a13a44776ec5fef700f94329d5a1231c13e8ab51be1bbe3e2700ddcae6938",
+      "archive_member": "film_result.json"
+    },
+    "film_advance": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-ADVANCE.actual.json",
+      "bytes": 1639,
+      "sha256": "b6d2ca1db1b47dc455af7f726f10b698e4c424fdac858af46856ba8dbc11d42e",
+      "archive_member": "film_advance.json"
+    },
+    "media_QA": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\MEDIA-QA.actual-a01.json",
+      "bytes": 6118,
+      "sha256": "9d6a0daaad5dbe36c3c53a3a3d04ac78199ee3d823d6483c5336792d7f82bf04",
+      "archive_member": "media_QA.json"
+    },
+    "visual_samples": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\VISUAL-SAMPLE-REVIEW.actual-a01.json",
+      "bytes": 2189,
+      "sha256": "8e60b0dd70bfcd468b957d85123019737e533ff8b71c54a29f7e83f54a9e6f47",
+      "archive_member": "visual_samples.json"
+    },
+    "manual_cleanup": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-MANUAL-CLEANUP.collect-cleanup-a01.json",
+      "bytes": 17158,
+      "sha256": "1c23b55a33330ea4f162048bf82101fcfd4f2eb993df0a0d8f45d456c5079439",
+      "archive_member": "manual_cleanup.json"
+    },
+    "collect_consumer": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-collect-cleanup-a01\\COLLECT-CONSUMED.actual.json",
+      "bytes": 1885,
+      "sha256": "6f7034dcb40c4813d065ee73a759aaeee4f3d6d2017fc8afa3253707f984b118",
+      "archive_member": "collect_consumer.json"
+    },
+    "arm_token": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-arm-a01\\ARM-TOKEN.actual.json",
+      "bytes": 20092,
+      "sha256": "adc214afc610e883c47272e8cde9f7a9404f77b853dd42e24428df39b3868dd0",
+      "archive_member": "arm_token.json"
+    },
+    "advance_a01_RED": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a01\\RESULT.actual.json",
+      "bytes": 2802,
+      "sha256": "aed8666321dffe2dd1e0fcc37d24c435208b1f6ddcbb0443e4b0d17d66fcc120",
+      "archive_member": "advance_a01_RED.json"
+    },
+    "advance_a02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\RESULT.actual.json",
+      "bytes": 10389,
+      "sha256": "a4eb22bd1ad858ecb7c653a5d3432ca7f241018af47e2ca5445de40497619f99",
+      "archive_member": "advance_a02.json"
+    },
+    "normal_save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\r204-battle-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 5346,
+      "sha256": "7c1acfc482a4099fd6add54c5377ae6d2bb4a957e7eb902daaed09182bda880a",
+      "archive_member": "normal_save.json"
+    },
+    "bootstrap_observed": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\r204-battle-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 945,
+      "sha256": "0b1e4ef4759eb2101334f8f01f1d44f674272dbcb20e1a81d32ec4384e9f1b0d",
+      "archive_member": "bootstrap_observed.json"
+    },
+    "screen_release": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\r204-battle-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4932,
+      "sha256": "7a38cd256d0e904a6d94ca731191c0f825a016aced4012b3fe9d873b08d68a36",
+      "archive_member": "screen_release.json"
+    },
+    "bootstrap": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\desktop-3fevhd2-1c74096080--vanilla--R0204\\bootstrap-result.json",
+      "bytes": 15523,
+      "sha256": "9197a146c46cd0f18ceefee1ec65e7a916944835d0a9e4fdea373c2d704ef6a3",
+      "archive_member": "bootstrap.json"
+    },
+    "recorder_start": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\desktop-3fevhd2-1c74096080--vanilla--R0204\\responses\\r204-battle-a01-ready-record-start-once.json",
+      "bytes": 7296,
+      "sha256": "76cf9b280dbc31f25595c2c80da2ed8db879579c3e842315187ed1a0afd7dbb5",
+      "archive_member": "recorder_start.json"
+    },
+    "recorder_finish": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\desktop-3fevhd2-1c74096080--vanilla--R0204\\responses\\r204-battle-a01-ready-record-finish-once.json",
+      "bytes": 5312,
+      "sha256": "5e2e0e106440b6d61671a6af0500f204e211f9c25637864d1ffba3806afe4077",
+      "archive_member": "recorder_finish.json"
+    },
+    "recorder_finish_receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\research-film-a01\\FINISH.actual-a01.json",
+      "bytes": 1434,
+      "sha256": "035162d7eb1b53954ee39adedf8f09f41e2e86303e51d3ffd6906b64497c303c",
+      "archive_member": "recorder_finish_receipt.json"
+    },
+    "historical_actor_a01": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r204-inline-observer-a01\\r204_inline_observer.py",
+      "bytes": 32305,
+      "sha256": "8b7840238efa4fc74bd98800946835ad7a4b940d4f88047b8e256af8aa6ade8a",
+      "archive_member": "historical_actor_a01.py"
+    },
+    "historical_overlay_a02": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r204-inline-observer-a02\\r204_inline_observer.py",
+      "bytes": 2527,
+      "sha256": "e76f03d6e4b9d3892c8efa3d80b72a184227ef3e6cca44cdf6be5b17e77231be",
+      "archive_member": "historical_overlay_a02.py"
+    },
+    "film_day_01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-DAY.d01.json",
+      "bytes": 3095,
+      "sha256": "a63a75ebe076a81d5706c119c172b027c8d6e1bd983306427558f6336b5d2290",
+      "archive_member": "film_day_01.json"
+    },
+    "film_day_02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-DAY.d02.json",
+      "bytes": 3095,
+      "sha256": "940e89de9e3ec9b09d6da36790696ab0a40995ea7307d01f843243667a35cade",
+      "archive_member": "film_day_02.json"
+    },
+    "film_day_03": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-DAY.d03.json",
+      "bytes": 3095,
+      "sha256": "a86d0f80e2b0fbf4cf792953ff60a1e0a6f7d10c38c5fbac9c4e4e6f245b38ba",
+      "archive_member": "film_day_03.json"
+    },
+    "film_day_04": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-DAY.d04.json",
+      "bytes": 3095,
+      "sha256": "eb763ac824f4cf4ffdfb982356fae2843556e5e619f42f1e7ae9deb13de1c5b7",
+      "archive_member": "film_day_04.json"
+    },
+    "film_day_05": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-DAY.d05.json",
+      "bytes": 3095,
+      "sha256": "f5fed4c35f51f57e30adcedc101e4fb1b39b788fc9bb1c6af1dfd7ed8b790869",
+      "archive_member": "film_day_05.json"
+    },
+    "a01_day_01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a01\\DAY-01.actual.json",
+      "bytes": 943,
+      "sha256": "1bd7a32fe8265ac120c19ff5d6aa142155b592abaac4d37679916614d9f25bc5",
+      "archive_member": "a01_day_01.json"
+    },
+    "a02_day_01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-01.actual.json",
+      "bytes": 943,
+      "sha256": "c572d9db2ec10223a43bfba21f0aeae2a9fa25d24f2532b42e0d392b808e5051",
+      "archive_member": "a02_day_01.json"
+    },
+    "a02_day_02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-02.actual.json",
+      "bytes": 943,
+      "sha256": "4709ca8e22e0eb4d0f261f2b1be260ac7e4c14e06e0d6788dd8c2a3d16b461d8",
+      "archive_member": "a02_day_02.json"
+    },
+    "a02_day_03": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-03.actual.json",
+      "bytes": 943,
+      "sha256": "bc4e5c0944cb2ac22a875a873991e19fb786ee5dba6ea327fbe80e6db5ac59a1",
+      "archive_member": "a02_day_03.json"
+    },
+    "a02_day_04": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-04.actual.json",
+      "bytes": 943,
+      "sha256": "be165c671093c838c27ec035482fe5d7709598217722e27dea659b2879bda083",
+      "archive_member": "a02_day_04.json"
+    },
+    "a02_day_05": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-05.actual.json",
+      "bytes": 943,
+      "sha256": "894b43b68e4508477dd774777a289afebb2205ce3c7c34ba48cb557858c13535",
+      "archive_member": "a02_day_05.json"
+    },
+    "a02_day_06": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-06.actual.json",
+      "bytes": 943,
+      "sha256": "f1bbe4060490587d860aef26d2487c20360b30378c7601a333eeefd352d3cb40",
+      "archive_member": "a02_day_06.json"
+    },
+    "a02_day_07": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-07.actual.json",
+      "bytes": 943,
+      "sha256": "9755ff757f8cdb7068edda185d00fa155f8c9b86b69720b77c3055b9ab9359d4",
+      "archive_member": "a02_day_07.json"
+    },
+    "a02_day_08": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-08.actual.json",
+      "bytes": 943,
+      "sha256": "1e8a6f59a7e26e1d6c4f0c1e7f3843d4ac8ac22e54f62eefa154b28296215d75",
+      "archive_member": "a02_day_08.json"
+    },
+    "a02_day_09": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-09.actual.json",
+      "bytes": 943,
+      "sha256": "0bb1e6121c599027773cb295ad503ecc8d5466066548184158413baef9e1debd",
+      "archive_member": "a02_day_09.json"
+    },
+    "a02_day_10": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-10.actual.json",
+      "bytes": 944,
+      "sha256": "4693704db101a4f1733da9d1a746b48e0196acce68b1595bcf22455d9f048ef0",
+      "archive_member": "a02_day_10.json"
+    },
+    "a02_day_11": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-11.actual.json",
+      "bytes": 944,
+      "sha256": "9380eae789f0c23f382537aeedc28136a9bc272c0e82f517fe0ff2394ec5924a",
+      "archive_member": "a02_day_11.json"
+    },
+    "a02_day_12": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-12.actual.json",
+      "bytes": 944,
+      "sha256": "9bda20561ed674682a226b6190a3e83bc189a2b6559bd7727a81b5b7ee289cdf",
+      "archive_member": "a02_day_12.json"
+    },
+    "a02_day_13": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-13.actual.json",
+      "bytes": 944,
+      "sha256": "4489f0685cebd2fd963fa05589eb80d27a0342f25dfba2e1a883000ecc8a02cc",
+      "archive_member": "a02_day_13.json"
+    },
+    "a02_day_14": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-14.actual.json",
+      "bytes": 944,
+      "sha256": "ac75224cc8030e2422d041533a6c629e91ed5d9831eb3d7e2da02b6f0e930c18",
+      "archive_member": "a02_day_14.json"
+    },
+    "a02_day_15": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-15.actual.json",
+      "bytes": 944,
+      "sha256": "5177f9bf49e6ee18547257b5c38fe6a49e8254057b67446b1fb49358d2b03b31",
+      "archive_member": "a02_day_15.json"
+    },
+    "a02_day_16": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-16.actual.json",
+      "bytes": 944,
+      "sha256": "fb467c86ba4d838078f43e419551b5f46466c15303c9a7f8022b1f052e399622",
+      "archive_member": "a02_day_16.json"
+    },
+    "a02_day_17": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-17.actual.json",
+      "bytes": 944,
+      "sha256": "1ba7ce995c33ecabde2e2d758541be349e195685fac7851d9cf0402243a4b421",
+      "archive_member": "a02_day_17.json"
+    },
+    "a02_day_18": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-18.actual.json",
+      "bytes": 944,
+      "sha256": "8b577190f78243b4db2c4a82047d3c0b20b1873f0f2324881f836be200302d82",
+      "archive_member": "a02_day_18.json"
+    },
+    "a02_day_19": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-19.actual.json",
+      "bytes": 944,
+      "sha256": "f7dc75330e8ae5714990d8a800416da2293e10f7a02d4033258ae4abd5eba646",
+      "archive_member": "a02_day_19.json"
+    },
+    "a02_day_20": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-20.actual.json",
+      "bytes": 944,
+      "sha256": "73cf99538cfbc4ddc709f71a3f84a445752f6adccb0aa2d959b7ab3675721a65",
+      "archive_member": "a02_day_20.json"
+    },
+    "a02_day_21": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-21.actual.json",
+      "bytes": 944,
+      "sha256": "ae1b2cf91071efce4467fd230071f86acdadf6eed9819e9dc9e5d5895f1b5634",
+      "archive_member": "a02_day_21.json"
+    },
+    "a02_day_22": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-22.actual.json",
+      "bytes": 944,
+      "sha256": "a5c2eb764c517d399ec4d2106d4b9caa3c856dc3449b95a45c253d3fede4692b",
+      "archive_member": "a02_day_22.json"
+    },
+    "a02_day_23": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-23.actual.json",
+      "bytes": 944,
+      "sha256": "208355c30dde4fe56b5415991962dd61d5c980859fc1d10b4be5d1b4379ccde8",
+      "archive_member": "a02_day_23.json"
+    },
+    "a02_day_24": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-24.actual.json",
+      "bytes": 944,
+      "sha256": "93900d386ef0780dfc2dfb24ff696b0828ff6ff9bde8973e14ef998b5e777a11",
+      "archive_member": "a02_day_24.json"
+    },
+    "a02_day_25": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-25.actual.json",
+      "bytes": 944,
+      "sha256": "bd505a26b0ef72ca45dcf5ff157184e74674048c1e5199fb3ae806144e31f9ae",
+      "archive_member": "a02_day_25.json"
+    },
+    "a02_day_26": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\DAY-26.actual.json",
+      "bytes": 944,
+      "sha256": "878753ca94c73c1f684663fe955c36dff6cb6883469bc0aacc6a93532b8a47cb",
+      "archive_member": "a02_day_26.json"
+    },
+    "a02_checkpoint_01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D01-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "d22b0d69a3294807d234a728bbe84f96a0fbf50d478d3b85cb33ac10a3d3b927",
+      "archive_member": "a02_checkpoint_01.json"
+    },
+    "a02_checkpoint_02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D02-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "6eeb3d69521600587991340a781a037b168286099698ee0bf3e92e56f7512d84",
+      "archive_member": "a02_checkpoint_02.json"
+    },
+    "a02_checkpoint_03": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D03-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "bc9a35ea4bdd0f11f9400d713f0440c7e03ae9580ff4bdcd365f63f327be2e3f",
+      "archive_member": "a02_checkpoint_03.json"
+    },
+    "a02_checkpoint_04": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D04-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "6240c6c9a22603e869ba5df71a7f587f5386b707edff88ca0cb36757f23499c4",
+      "archive_member": "a02_checkpoint_04.json"
+    },
+    "a02_checkpoint_05": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D05-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "a356bb37a7b6be1b43291901f3750fdc5ce5ab507ffea1d9c9c9c00d314879d2",
+      "archive_member": "a02_checkpoint_05.json"
+    },
+    "a02_checkpoint_06": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D06-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "9ed9d682167dfc31117596ca1adf25a304eaacfb92ecf36cd2d07586b8b63ad3",
+      "archive_member": "a02_checkpoint_06.json"
+    },
+    "a02_checkpoint_07": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D07-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "ed0a3bab5776a222342a9bcd6c4a1d8fbd66ad8861763ffead97b5049e5f4225",
+      "archive_member": "a02_checkpoint_07.json"
+    },
+    "a02_checkpoint_08": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D08-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "5ad9db816d194ee52befd36099fc1969594112d335924e314e9eff2c20f6d5ae",
+      "archive_member": "a02_checkpoint_08.json"
+    },
+    "a02_checkpoint_09": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D09-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "a58a7595db28be8f3961aab168398721ab822ad44aaa11f37e1b52f552d7e28e",
+      "archive_member": "a02_checkpoint_09.json"
+    },
+    "a02_checkpoint_10": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D10-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "f5a8e5a96bd7d21019c8f9da8c0330f8726c6cc1052c6fbf8076c4efb19316d3",
+      "archive_member": "a02_checkpoint_10.json"
+    },
+    "a02_checkpoint_11": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D11-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "9a4a7da8d2ee9744cffe852118e3f438dd68eda8a4174764d7f390177dc2c672",
+      "archive_member": "a02_checkpoint_11.json"
+    },
+    "a02_checkpoint_12": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D12-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "8b86541626c81490a7f258df5d2efff750227b16aa7e2d1849c976938de9a55c",
+      "archive_member": "a02_checkpoint_12.json"
+    },
+    "a02_checkpoint_13": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D13-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "5e6f1eeecae0def6c4b641a5addc6b56bd0026ffa2b13cbd7dc8b34f0633b24d",
+      "archive_member": "a02_checkpoint_13.json"
+    },
+    "a02_checkpoint_14": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D14-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "17996cc1e65c4499874cc4e2844165fb3b968c9d0e0389e3700085d2df389ae8",
+      "archive_member": "a02_checkpoint_14.json"
+    },
+    "a02_checkpoint_15": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D15-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "40c9eae3723d277027af2375a5cbc96434c45f7e3ec15c1364591aa171d3774c",
+      "archive_member": "a02_checkpoint_15.json"
+    },
+    "a02_checkpoint_16": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D16-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "260aa2494fc4b78c870d5dc76bd8aae7f6b61ec613ad6a35a4dc161c2f8212c0",
+      "archive_member": "a02_checkpoint_16.json"
+    },
+    "a02_checkpoint_17": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D17-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "0a20105ad4c4f3b21f66367d38371b992e3e76ec962c36579ca7d35d6123b07f",
+      "archive_member": "a02_checkpoint_17.json"
+    },
+    "a02_checkpoint_18": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D18-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "2f08b189c752a6497c9db00090dcc33ce78f9714f9760ec282e5c488a4dbb806",
+      "archive_member": "a02_checkpoint_18.json"
+    },
+    "a02_checkpoint_19": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D19-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "22a520be29b01a7b8ad8f3b12701b41b3f05dbacf271b72120eb5b17a7921ec5",
+      "archive_member": "a02_checkpoint_19.json"
+    },
+    "a02_checkpoint_20": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D20-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "87a764dada1e4c68957c2683732370e79744f513d94b1a656395d25bb53ec958",
+      "archive_member": "a02_checkpoint_20.json"
+    },
+    "a02_checkpoint_21": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D21-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "9c2c552940a8932b7cd761ed23af2ac3688562d9a9ba0108349424fab5a180d1",
+      "archive_member": "a02_checkpoint_21.json"
+    },
+    "a02_checkpoint_22": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D22-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "30a9f4f6d74d6ccc15c212dd94f1e3025ac5b09db85848f5a0ca4a22bb2fb5dc",
+      "archive_member": "a02_checkpoint_22.json"
+    },
+    "a02_checkpoint_23": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D23-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "94bc331548fc72da5655c1e0c73750265ba8d666b8e34058c9c33f65f4c65d1e",
+      "archive_member": "a02_checkpoint_23.json"
+    },
+    "a02_checkpoint_24": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D24-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "5da230e012ebf2eb99c7ed6c9d0e95b867cd0872c120e5814e5d47a512747976",
+      "archive_member": "a02_checkpoint_24.json"
+    },
+    "a02_checkpoint_25": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D25-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "b7b44affc1cc7c7a1810c685f844ac3b9941cb85d6ba499392393d1de9db99a9",
+      "archive_member": "a02_checkpoint_25.json"
+    },
+    "a02_checkpoint_26": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D26-CHECKPOINT.actual.json",
+      "bytes": 2235,
+      "sha256": "20ca928f658dfab1135440d9f02561c1d9aedbaaf13a3d02924b90d5ddfbddce",
+      "archive_member": "a02_checkpoint_26.json"
+    },
+    "a02_final_consumer": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\D26-CONSUMED.actual.json",
+      "bytes": 1872,
+      "sha256": "2568a96dacec9fa99ee50d6ad10787056d56581d70e41db25b260673603d959a",
+      "archive_member": "a02_final_consumer.json"
+    },
+    "start_checkpoint_a01": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a01\\START-CHECKPOINT.actual.json",
+      "bytes": 2237,
+      "sha256": "c6e83ea6451c81954a680ce788dfdf0ed9d1860317415594bb98acf2f71a8de9",
+      "archive_member": "start_checkpoint_a01.json"
+    },
+    "start_checkpoint_a02": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-INLINE-advance-window-a02\\START-CHECKPOINT.actual.json",
+      "bytes": 2238,
+      "sha256": "3edea84c58694570c6cc06baddf728f4a5a407c77694b710d825ee266d608b8b",
+      "archive_member": "start_checkpoint_a02.json"
+    }
+  },
+  "day_chain_keys": [
+    "film_day_01",
+    "film_day_02",
+    "film_day_03",
+    "film_day_04",
+    "film_day_05",
+    "a01_day_01",
+    "a02_day_01",
+    "a02_day_02",
+    "a02_day_03",
+    "a02_day_04",
+    "a02_day_05",
+    "a02_day_06",
+    "a02_day_07",
+    "a02_day_08",
+    "a02_day_09",
+    "a02_day_10",
+    "a02_day_11",
+    "a02_day_12",
+    "a02_day_13",
+    "a02_day_14",
+    "a02_day_15",
+    "a02_day_16",
+    "a02_day_17",
+    "a02_day_18",
+    "a02_day_19",
+    "a02_day_20",
+    "a02_day_21",
+    "a02_day_22",
+    "a02_day_23",
+    "a02_day_24",
+    "a02_day_25",
+    "a02_day_26"
+  ],
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 101812,
+    "sha256": "26e4e88bd87eb77fdbb0454a395e74eb55617850f5081a72aa4842cc04fa1d47"
+  },
+  "frame": {
+    "path": "map-a01-client.png",
+    "bytes": 1526788,
+    "sha256": "7eeb0ad81d199e5004d0cd8d8db201f6b08713494fe49583f1c06fbff9664cc8",
+    "width": 1280,
+    "height": 720,
+    "source_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-MAP-FRAME.a01.client.png"
+  },
+  "qualification": "Selected exact small originals and actor day-contract outputs, not a fresh full Driver/cash replay. Original large snapshots/cash/save/video are pins only; historical source wrappers are not executed on another machine.",
+  "request_suffix_correction": {
+    "original_seam": "self.ownership();name=self.prefix+'-'+suffix",
+    "replacement_seam": "self.ownership();name=self.prefix+'-'+suffix.lower()",
+    "scope": "Only newly generated suffix before existing lowercase grammar/exclusive-file guard. Do not rename/replay historical requests or lower arbitrary existing identifiers.",
+    "effective_source_sha256": "fa5e1df72f46dd1684fa83ab070d5d44a45ec878ecbad590cbdc79e5f8ebaf9a"
+  },
+  "counts": {
+    "research": "9/14",
+    "business": "6/11",
+    "qualified_dynamic": "0/11",
+    "ABC": "0/3",
+    "formal_cue_coverage_added": 0
+  },
+  "retention": "No old source/media expiry renewed. External integration derivatives review within48h; canonical small records follow repository retention policy."
+}

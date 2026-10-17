@@ -1523,3 +1523,9 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## R203实际接线知识（2026-10-18）
 
 `machine_id: desktop-3fevhd2-1c74096080`。[地图战斗/一日后验专题](episode04-r203-battle-logistics-12004.md)新增可复用纯合同：composite用progress_status与native exactclock、独立前后帧验证，不能用顶层accepted。原actor RED不重标、不重投日步；.4 CombatWindow路由仍未迁移，legacy1.19地址不能复用，当前地图客户区拍法已可执行。下一具名施工入口为exact .4 CombatWindow handler/type/subject观察口。零resource4行不授无付款，手工OFF companion与pre_resume_hook配置分别归档；源码/原件/场次资格均可沿专题索引复用。
+
+## 2026-10-18 R204：连续32日与7条自然回调
+
+`machine_id: desktop-3fevhd2-1c74096080`；[R204专题](episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
+
+原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。

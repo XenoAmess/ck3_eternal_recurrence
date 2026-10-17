@@ -241,3 +241,9 @@ R183使用 source/native `20c7319b6964c80fa419540cf4e30852feff4810`、a26、CK3 
 ## 2026-10-18 R203正常战斗短片交接
 
 `machine_id: desktop-3fevhd2-1c74096080`。见[R203交接](2026-10-18-war-episode04-r203-battle-logistics.md)：actual19024/a35、加载ready澄清、army-only UI边界、actor RED但实际精确+1日，正常Save/exit0与手工采样OFF另证。9.333秒280帧仅基础媒体通过，计数9/14、6/11、0/11、0/3保持；R204独立现场，不把后继master模块当旧冻结actor已部署。
+
+## 2026-10-18 R204：连续32日与7条自然回调
+
+`machine_id: desktop-3fevhd2-1c74096080`；[R204专题](../ck3-native-ai/episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
+
+原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。
