@@ -1,0 +1,258 @@
+{
+  "schema": "xar.p65-strategic-mercenary-purpose.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "recorded_utc": "2026-10-17T23:47:03.306199+00:00",
+  "status": "PUBLIC_SOURCE_PORTED_NOT_CURRENT_RUNTIME_DEPLOYED",
+  "authorization": "Root accepted finite strategic policy and public scope in current session; current R7 and recording untouched",
+  "policy_thresholds": {
+    "defensive_exposure_war_score_at_most": -25,
+    "strategic_marginal_fraction": "1/4",
+    "normal_strategic_treasury_cap_fraction": "1/3",
+    "primary_title_or_conditional_local_flip_treasury_cap_fraction": "1/2",
+    "gold_floor": 200,
+    "maximum_current_military_allocation_months": 18,
+    "declared_policy_not_native_ai_or_victory_probability": true
+  },
+  "public_source_qualification": {
+    "schema": "xar.strategic-mercenary-public-source-qualification.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_utc": "2026-10-17T23:45:11.281518+00:00",
+    "checks": [
+      {
+        "name": "all_rows_retained_no_staging_or_global_reversal_veto",
+        "passed": true
+      },
+      {
+        "name": "real_normal_contact_selector_and_five_stale_binding_negatives",
+        "passed": true
+      },
+      {
+        "name": "negative_native_can_hire",
+        "passed": true
+      },
+      {
+        "name": "negative_native_can_afford",
+        "passed": true
+      },
+      {
+        "name": "negative_employed",
+        "passed": true
+      },
+      {
+        "name": "negative_incomplete_ten_resource_quote",
+        "passed": true
+      },
+      {
+        "name": "negative_wrong_quote_scale",
+        "passed": true
+      },
+      {
+        "name": "negative_negative_resource_cost",
+        "passed": true
+      },
+      {
+        "name": "negative_reserve",
+        "passed": true
+      },
+      {
+        "name": "negative_high_military_allocation",
+        "passed": true
+      },
+      {
+        "name": "negative_stale_root",
+        "passed": true
+      },
+      {
+        "name": "negative_stale_actor",
+        "passed": true
+      },
+      {
+        "name": "negative_stale_date",
+        "passed": true
+      },
+      {
+        "name": "negative_spawn_unknown",
+        "passed": true
+      },
+      {
+        "name": "negative_positive_strength_unknown",
+        "passed": true
+      },
+      {
+        "name": "negative_known_hostile_spawn",
+        "passed": true
+      },
+      {
+        "name": "negative_no_recoverable_own_war",
+        "passed": true
+      },
+      {
+        "name": "losing_title_exposure_queries_even_when_count_leading",
+        "passed": true
+      },
+      {
+        "name": "eleven_stakes_score_marginal_and_cash_opportunity_cost_cases",
+        "passed": true
+      },
+      {
+        "name": "registered_mcp_service_query_single_hire_unknown_no_retry_cold_employer_and_wallet_inventory",
+        "passed": true
+      },
+      {
+        "name": "concrete_army_orders_and_mandatory_windows_keep_priority",
+        "passed": true
+      }
+    ],
+    "check_count": 21,
+    "service_chain": {
+      "registered_service": true,
+      "query_count": 2,
+      "hire_count": 1,
+      "cold_hire_count": 0,
+      "unverified_payment_and_army_preserved": true,
+      "native_replies": "synthetic outer I/O; no live call",
+      "post_observation": {
+        "pre_source_frame": {
+          "played_character_id": 29829,
+          "native_revision": 3,
+          "date_raw": 53288472,
+          "snapshot_id": "native:3",
+          "revision": 3,
+          "episode_run_id": "source-fixture-normal-construction-cli12004"
+        },
+        "pre_capture_epoch": 1,
+        "pre_player_army_ids": [
+          1
+        ],
+        "pre_treasury_raw": 50000000,
+        "source_frame": {
+          "played_character_id": 29829,
+          "native_revision": 3,
+          "date_raw": 53288472,
+          "snapshot_id": "native:3",
+          "revision": 3,
+          "episode_run_id": "source-fixture-normal-construction-cli12004"
+        },
+        "post_treasury_raw": 50000000,
+        "treasury_delta_raw": 0,
+        "quoted_contract_gold_raw": 10000000,
+        "new_observed_player_armies": [],
+        "payment_verified": false,
+        "army_creation_verified": false,
+        "company_to_new_army_binding_verified": false,
+        "limits": "wallet change may include other flows; new IDs may have other causes; employment, payment, and army attribution are separate"
+      }
+    },
+    "source_pins": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+        "bytes": 20640,
+        "sha256": "542712b175d3b6db71fe2368e965a8955062b5080261637f8a6f7764b5489e99"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "bytes": 18419,
+        "sha256": "6309b3bac8bcbaf1b4a1c901ca1595f1e90f3f9e5d4ce836aebcaa08f6e87a49"
+      }
+    ],
+    "outer_native_replies_and_chooser": "explicit synthetic fixture; real registered MCP and Service",
+    "live_game_native_calls": 0,
+    "actual_hire_payment_army_arrival_or_war_credit": false
+  },
+  "pytest": {
+    "passed": 22,
+    "schema": "xar.strategic-mercenary-public-tests.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_utc": "2026-10-17T23:45:01.331155+00:00",
+    "ended_utc": "2026-10-17T23:45:12.557620+00:00",
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p65-strategic-mercenary-source01\\tests-public-final01",
+      "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py"
+    ],
+    "exit_code": 0,
+    "log_bytes": 186,
+    "log_sha256": "3a5009f2d3c6df0a3e130a61036c0b7c0df49b342e439e3b74633ef5a0a58522",
+    "native_game_or_live_calls": 0,
+    "runtime_changes": 0
+  },
+  "input_and_qualification_refs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p65-strategic-mercenary-source01\\SOURCE-INDEX.json",
+      "bytes": 5201,
+      "sha256": "94ff8e71b39603285fd77ed8964d60ff91aa8182ac41c9c3e54228e44b544d7b"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p65-strategic-mercenary-source01\\QUALIFICATION-STRATEGIC-THRESHOLDS-V3.json",
+      "bytes": 4313,
+      "sha256": "709c56e81ea5fb36085042538054d240caee3aad66092675dbbae9c00941581f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\capacity-reviews\\ROOT-N42-STRATEGIC-MERCENARY-SOURCE-ADMISSION.json",
+      "bytes": 3499,
+      "sha256": "3e3066fb0e0b7177c650f429fbbe03eb6574349e6890ac59bd0726b64dba2847"
+    }
+  ],
+  "changed_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+      "bytes": 20640,
+      "sha256": "542712b175d3b6db71fe2368e965a8955062b5080261637f8a6f7764b5489e99"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 18419,
+      "sha256": "6309b3bac8bcbaf1b4a1c901ca1595f1e90f3f9e5d4ce836aebcaa08f6e87a49"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_strategic_reserve_v1.py",
+      "bytes": 19326,
+      "sha256": "1b78f50bc2ddb14b8b206476395e4d196a4b43658b17ca5f65230a8bbc8481d3"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_reinforcement_tradeoff_v1.py",
+      "bytes": 28900,
+      "sha256": "84d563b03b9696f7e6a470350937e794c23c1db7ee0c545d79a2eebf4f382db9"
+    }
+  ],
+  "preserved_direct_api_and_finance_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+      "bytes": 18652,
+      "sha256": "aefdb2c6cd88a467362e7b310025f5aef294ad33982024306470b1e6cae0fa9e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_finance_v1.py",
+      "bytes": 3780,
+      "sha256": "2bfe72a7433af86b62269e82bf3997ee7377df2a4098c02b24a349028f366d34"
+    }
+  ],
+  "retention": {
+    "policy_version": "1.0.0",
+    "external_candidate_logical_bytes_at_close": 201143,
+    "external_candidate_output_cap_bytes": 1048576,
+    "external_review_utc": "2026-10-19T23:30:00Z",
+    "new_global_reserved_bytes": 0,
+    "deleted_assets": 0
+  },
+  "limits": [
+    "outer Native replies, chooser and camera are explicit synthetic fixtures",
+    "all market rows assessed; observer compaction occurs after selection",
+    "company ETA unknown is accepted strategic risk, no arrival or rescue guarantee",
+    "headcount and soldiers-per-gold are not effective combat power or win probability",
+    "employer, payment, army creation, army affiliation and war benefit remain separate",
+    "CB defeat title transfer still unverified"
+  ],
+  "game_MCP_Driver_SAVE_media_or_Native_build_operations": 0,
+  "runtime_deployment": false,
+  "actual_hire_payment_army_arrival_or_war_credit": false,
+  "g2_m6_m7_credit": false
+}

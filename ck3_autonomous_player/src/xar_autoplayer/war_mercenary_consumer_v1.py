@@ -1,4 +1,4 @@
-"""Normal-turn mercenary query, coarse defensive choice and durable follow-up."""
+"""Normal-turn strategic mercenary choice and durable independent follow-up."""
 
 from __future__ import annotations
 
@@ -25,8 +25,12 @@ from .m5_observed_opportunity_selector import observed_frame
 from .war_mercenary_observer_v1 import project_mercenary_observer_v1
 from .war_reinforcement_tradeoff_v1 import (
     _count as observed_army_count,
-    assess_mercenary_reinforcement_v1, observe_war_spending_priority_v1,
-    observe_mercenary_purchase_model_need_v1,
+    observe_war_spending_priority_v1,
+)
+
+from .war_strategic_reserve_v1 import (
+    assess_mercenary_reinforcement_v1, observe_mercenary_purchase_model_need_v1,
+    observe_post_hire_inventory_v1,
 )
 
 _LEDGER = "war-mercenary-pending-v1.json"
@@ -82,7 +86,9 @@ def _plan_war_mercenary_turn_v1(
     Missing capabilities or a rejected model preserve the original war action.
     Mandatory windows, concrete army orders and war termination keep priority.
     """
-    priority = observe_war_spending_priority_v1(snapshot)
+    from .strategy import _same_frame_campaign_root_context
+    priority = observe_war_spending_priority_v1(snapshot, campaign_root=
+        _same_frame_campaign_root_context(history, dict(snapshot)))
     if not priority["wars"]:
         return plan
     plan = {**plan, "war_spending_priority_v1": priority}
@@ -115,7 +121,7 @@ def _plan_war_mercenary_turn_v1(
             if prior.get("status") != "employment_observed":
                 continue
             chosen = prior.get("decision", {}).get("selected_candidate", {})
-            if not active_ids.intersection(chosen.get("numerical_balance_reversed_war_ids", [])):
+            if not active_ids.intersection(chosen.get("purpose_war_ids", chosen.get("numerical_balance_reversed_war_ids", []))):
                 continue
             old_ids = set(prior.get("pre_player_army_ids", []))
             new_force = [row for row in snapshot.get("player_armies", [])
@@ -123,6 +129,8 @@ def _plan_war_mercenary_turn_v1(
                          and row.get("current_province_id") == chosen.get("predicted_auto_raise_province_id")
                          and (new_count := observed_army_count([row], snapshot=snapshot, role="player")) is not None
                          and new_count > 0]
+            prior["post_hire_observations_v1"] = observe_post_hire_inventory_v1(snapshot, prior)
+            write_json_atomic(directory / _LEDGER, ledger)
             if not new_force:
                 return {**plan, "war_mercenary_status": "employment_observed_await_fresh_raised_inventory_no_duplicate_hire",
                         "war_mercenary_receipt": prior}
@@ -131,7 +139,7 @@ def _plan_war_mercenary_turn_v1(
         need = observe_mercenary_purchase_model_need_v1(priority)
         plan = {**plan, "war_mercenary_purchase_model_need_v1": need}
         if need["query_can_change_current_headcount_flip_model"] is False:
-            return {**plan, "war_mercenary_status": "headcount_model_has_no_current_deficit_keep_war_action"}
+            return {**plan, "war_mercenary_status": "strategic_model_has_no_current_evidenced_purpose_keep_war_action"}
     if QUERY_CAPABILITY not in bridge_capabilities:
         return {**plan, "war_mercenary_status": "native_query_capability_unavailable"}
     context, context_reference = _context_with_reference(history, snapshot)
@@ -150,6 +158,7 @@ def _plan_war_mercenary_turn_v1(
                           "observed_source_frame": frame, "capture_epoch": context["capture_epoch"],
                           "employer_character_id": match["employer_id"],
                           "army_creation_verified": False, "payment_verified": False}
+            employment["post_hire_observations_v1"] = observe_post_hire_inventory_v1(snapshot, pending)
             ledger["observed"].append(employment)
             ledger["pending"] = None
             write_json_atomic(directory / _LEDGER, ledger)
@@ -174,7 +183,7 @@ def _plan_war_mercenary_turn_v1(
     if spending.get("status") != "observed":
         return {**plan, "war_mercenary_status": "existing_spending_intent_or_frame_unavailable",
                 "war_mercenary_spending_observation": spending}
-    decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root)
+    decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root, operational_plan=plan, history=history)
     decision = project_mercenary_observer_v1(
         decision,
         assessment_source_sha256=getattr(driver, "war_mercenary_assessment_source_sha256", None),
@@ -193,7 +202,7 @@ def _plan_war_mercenary_turn_v1(
     return {**plan, "selected_step": HIRE_STEP, "phase": "native_war_mercenary_hire",
             "war_mercenary_source_frame": frame, "war_mercenary_pre_capture_epoch": context["capture_epoch"],
             "war_mercenary_deferred_step": step,
-            "reason": "hire the cheapest affordable company that reverses the observed local headcount deficit at friendly staging"}
+            "reason": "buy the selected cash-bounded military reserve for the priority threatened own war; arrival remains unknown"}
 
 
 def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object]:
@@ -225,9 +234,9 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
         text += (f"雇佣合同{money(chosen.get('gold_cost_raw'))}金，"
                  f"余款{money(chosen.get('gold_after_hire_raw'))}金，"
                  f"军费预留{money(finance.get('required_gold_reserve_raw'))}金；"
-                 "出生地与当地集结相符仅为推断，抵达未保证。")
-    elif status == "headcount_model_has_no_current_deficit_keep_war_action":
-        text += "现有头数无采购缺口，保留战争行动；未来增援与抵达仍未知。"
+                 "战略备兵；原生预计出生省已观测，抵达时间未知，不能保证救急。")
+    elif status == "strategic_model_has_no_current_evidenced_purpose_keep_war_action":
+        text += "当前尚无足够战略采购用途，保留战争行动；未来增援与抵达仍未知。"
     elif plan.get("selected_step") == QUERY_STEP:
         text += "先查询当帧雇佣报价与集结地点。"
     elif plan.get("selected_step") == ROOT_STEP:
@@ -235,7 +244,7 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
     elif status and ("pending" in status or "employment" in status):
         text += "先核上一份雇佣回执，不重复购买。"
     elif isinstance(decision, Mapping):
-        text += "当帧报价未同时满足增兵改善、当地集结及军费预留，继续原行动。"
+        text += "当帧候选未同时满足原生征募、完整报价、现金预留及当前用途，继续原行动。"
     else:
         text += "具体战争行动优先；雇佣报价与抵达未核实。"
     text += "头数不代表胜率。"

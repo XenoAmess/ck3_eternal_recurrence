@@ -86,6 +86,7 @@ class WarDriver(NormalConstructionFixtureDriver):
             "status": "available", "player_character_id": self.snapshot["played_character"]["character_id"],
             "snapshot_revision": self.snapshot["native_revision"], "date_raw": self.snapshot["date_raw"],
             "readiness": {"ready": True},
+            "primary_title": {"title_id": 2230},  # explicit synthetic stakes for reserve policy
             "player_monthly_gold_income": {"raw": 592266, "scale": 100000},
             "player_max_monthly_gold_maintenance_v1": {
                 "status": "available", "value": {"raw": 451200, "scale": 100000}}}
@@ -138,7 +139,8 @@ def test_actual_losing_defence_keeps_war_clock_and_skips_building_quote(tmp_path
     assert driver.requests == []  # no optional quote or cash query before preserving the war turn
     planned = plan_war_mercenary_turn_v1(driver, baseline["plan"], snapshot=snapshot,
         history=[], bridge_capabilities={QUERY_CAPABILITY, HIRE_CAPABILITY})
-    assert planned["selected_step"] == QUERY_STEP
+    assert planned["selected_step"] == "life-advance"
+    assert planned["war_mercenary_status"] == "strategic_model_has_no_current_evidenced_purpose_keep_war_action"
 
 
 def test_cheapest_adequate_local_company_changes_count_balance_without_a_win_claim(tmp_path):
@@ -414,7 +416,9 @@ def test_full_market_selection_has_bounded_plan_and_durable_observer(tmp_path, c
     driver.recorded[-1][1]["player_mercenary_context"] = market
     history = driver.take_snapshot()["native_command_history"]
     before = deepcopy((driver.snapshot, history))
-    full = assess_mercenary_reinforcement_v1(
+    from xar_autoplayer.war_strategic_reserve_v1 import assess_mercenary_reinforcement_v1 as assess_strategic
+
+    full = assess_strategic(
         driver.snapshot, market, campaign_root=driver.snapshot["campaign_root_context"],
     )
     assert len(full["candidates"]) == 584  # direct policy API remains complete
@@ -433,7 +437,7 @@ def test_full_market_selection_has_bounded_plan_and_durable_observer(tmp_path, c
     assert (driver.snapshot, history) == before
     observer = decision["candidate_observer_v1"]
     assert observer["candidate_count"] == 584
-    assert observer["eligible_count"] == (584 if can_stage else 0)
+    assert observer["eligible_count"] == 584  # a preexisting army at spawn is not required
     assert observer["candidate_digest_sha256"] == hashlib.sha256(json.dumps(
         full["candidates"], ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False,
     ).encode("utf-8")).hexdigest()
@@ -443,11 +447,7 @@ def test_full_market_selection_has_bounded_plan_and_durable_observer(tmp_path, c
     assert observer["input_query_reference"]["immutable_archive"] is False
     assert len(json.dumps(decision)) < 16 * 1024
     assert len(json.dumps(decision)) < len(json.dumps(full)) / 20
-    if not can_stage:
-        assert plan["selected_step"] == "life-advance"
-        assert plan["reason"] == "ordinary machine reason"
-        assert observer["rejection_reason_counts"]["spawn_is_not_a_current_stationary_friendly_staging_province"] == 584
-        return
+    assert decision["selected_candidate"]["spawn_requires_preexisting_friendly_army"] is False
     assert decision["selected_company_id"] == 0
     assert plan["selected_step"] == HIRE_STEP
     with pytest.raises(ValueError, match="source frame is stale"):
