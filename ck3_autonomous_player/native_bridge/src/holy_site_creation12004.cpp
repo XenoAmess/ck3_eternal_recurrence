@@ -220,9 +220,11 @@ bool ReadContext12004(const Bindings&b,const void*handler,const ck3_12002::relig
    out.available_holy_site_types.push_back(std::move(row));
   }
   std::string selected_key;
+  const void*native_default_type=nullptr;
   if(first.type){
-    if(!TypeKey(b,first.type,selected_key)||selected_key.empty())return fail("holy_site_creation_selected_type_unavailable");
-    out.selected_type_key=std::move(selected_key);
+    if(TypeKey(b,first.type,selected_key)&&!selected_key.empty())out.selected_type_key=std::move(selected_key);
+    else if(!Read(b,reinterpret_cast<const void*>(b.image_base+0x5D21700),0,native_default_type)||
+      native_default_type!=first.type)return fail("holy_site_creation_selected_type_unavailable");
    }
   if(first.barony!=absent)out.selected_barony_title_id=first.barony;
   out.potential_barony_title_ids=first.baronies;out.enshrinable_artifact_ids=first.artifacts;
@@ -236,6 +238,11 @@ bool ReadContext12004(const Bindings&b,const void*handler,const ck3_12002::relig
    if(!Destroy(b,text.data()))return fail("holy_site_creation_create_reason_cleanup_failed");
   }
   if(!ReadRaw(b,handler,ctx,second)||first!=second)return fail("holy_site_creation_context_changed_during_read");
+  if(native_default_type){
+   const void*confirmed_default_type=nullptr;
+   if(!Read(b,reinterpret_cast<const void*>(b.image_base+0x5D21700),0,confirmed_default_type)||
+     confirmed_default_type!=native_default_type)return fail("holy_site_creation_native_default_type_changed");
+  }
   std::uint8_t after_bypass=0;
   if(out.bypass_requirements_observed&&(!Settings(b,after_bypass)||after_bypass!=out.bypass_requirements_raw))
    return fail("holy_site_creation_requirements_setting_changed");

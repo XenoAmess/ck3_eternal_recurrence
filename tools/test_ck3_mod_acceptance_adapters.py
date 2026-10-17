@@ -38,10 +38,11 @@ class Focused(unittest.TestCase):
             prep.write_json(plan,{'steps':[{'tool':'ck3_take_snapshot'}]})
             selected=object.__new__(entry.Selection)
             selected.opt_in_read_only_mcp_tools=[]
-            # This pure build_argv fixture bypasses __init__; retain the two
-            # explicitly initialized opt-ins added by the holy-site provider.
+            # This pure build_argv fixture bypasses __init__; retain every
+            # explicitly initialized opt-in added by the holy-site provider.
             selected.opt_in_holy_site_relic_actions=False
             selected.opt_in_holy_site_creation_ui=False
+            selected.opt_in_holy_site_creation_create_once=False
             selected.manifest={'host':{},'source_root':{},'source_index':{},'native_source_index':{},'native':{'dll':{},'injector':{}}}
             selected.shared_file=lambda row,label=None:host if label=='host' else root/'shared-input'
             selected.manifest_path_key=lambda *a:root/'shared-source'

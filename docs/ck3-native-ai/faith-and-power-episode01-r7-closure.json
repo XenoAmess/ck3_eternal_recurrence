@@ -1,0 +1,466 @@
+{
+  "schema": "ck3-faith-e01-r7-normal-closure-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T16:00:41.407393+00:00",
+  "observation_mode": "offline_small_record_projection",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0007",
+  "sources": {
+    "normal_confirm": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-normal-exit-confirm-once-a01.json",
+      "bytes": 5471,
+      "sha256": "7e036d483a974a84915a8af2226776702010ddcef6bc5f81ac76c70c12c37979"
+    },
+    "normal_observe": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-normal-exit-observe-a01.json",
+      "bytes": 5715,
+      "sha256": "c38e1a3e62fc377a081c1b13c98cece40fc8ea0411a5416f5039e2c11e39c521"
+    },
+    "root_normal_gui_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\case-output\\normal-quit-root-result.json",
+      "bytes": 4369,
+      "sha256": "9b85f5b68ceb278f9ac72a3d2fb4dec21cea6d4dc2de1ca4b3c325bda2128018"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\case-output\\normal-close-result.json",
+      "bytes": 14040,
+      "sha256": "f8b8acaf227302107e4f0527bf976b28d66c6f02605795de74c29e55d2d7411e"
+    },
+    "public_run_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r7-run-session-a01\\original-exit.json",
+      "bytes": 1172,
+      "sha256": "c461c43fa8196888190324fbeef48df337a9177b7e3401d2729e8dd2c7f2608f"
+    },
+    "host_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "9bb29a0af5312ff509180681938009a31fe2fab7bb366d11a2aa62fca25bfc3c"
+    },
+    "allocator_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r7-allocate-session-a01\\original-exit.json",
+      "bytes": 1594,
+      "sha256": "bfb8f328d55b4a1af0d2707128646d86c6ef0d6d5e56d139b875e023dc79e80a"
+    },
+    "keeper_actual_parent_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\keeper-actual-parent-exit.json",
+      "bytes": 9391,
+      "sha256": "9b2835847b0f3d797e8c96210fe16250924d9c78a0021c75ad7f39b19dfcac32"
+    },
+    "screen_cas_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-screen-release-a01.json",
+      "bytes": 1313,
+      "sha256": "e45f1ef3d845ce0099aa5b7795a34d75a3ebd2379f9e90e95e56789733229407"
+    },
+    "public_verify_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r7-public-verify-a01\\original-exit.json",
+      "bytes": 1088,
+      "sha256": "90e5645d65d396a694b88ffe8b1b3e6807c3765f98c989d99d17f2e8c52d2eda"
+    },
+    "public_verify": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r7-public-verify-a01\\stdout.json",
+      "bytes": 15287,
+      "sha256": "4dcd5077c2fbb062c9963b373ae6c587997c6e4ee245d0a6ebdb73143538537e"
+    }
+  },
+  "runtime_binding": {
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\frozen-argv.json",
+      "bytes": 22436,
+      "sha256": "9edf5a9d90a156b384fe200c01b0eb58fd0e27f556d4f066c56d112f53996e8a"
+    },
+    "live_source_commit": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+    "dll_generation": "a05",
+    "files": {
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a05\\publish\\xar_ck3_bridge.dll": {
+        "bytes": 13821440,
+        "sha256": "13126d50051490c29f1c82cf2fd3f1050d8e501c727805f78daf22140a6987ef"
+      },
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe": {
+        "bytes": 101040248,
+        "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+      }
+    },
+    "game_pid": 20256,
+    "game_create_time": 1792250472.7258115,
+    "game_creation_filetime_100ns": 134367240727258115
+  },
+  "normal_confirm": {
+    "started_at": "2026-10-17T15:55:14.371153+00:00",
+    "finished_at": "2026-10-17T15:55:22.223628+00:00",
+    "ok": true,
+    "tool": "ck3_request_normal_exit_v1",
+    "args": {
+      "action": "confirm_desktop",
+      "expected_exit_context_signature": "afde3adc672ba102c42e58c7071ba26637b50762552756f58552bfcde6400f88"
+    },
+    "status": "dispatch_pending",
+    "claim_consumed": true,
+    "retry_authorized": false,
+    "process_exit_observed": false,
+    "exit_code": null,
+    "typed_normal_exit_observed": false,
+    "autosave_verified": false,
+    "native_submission_count": 1,
+    "request_id": "normal-exit-confirm_desktop-cfa370f1fbc54ab6bd7632ba835d7929",
+    "source_inventory_sha256": "2c03201c415c0a07d99616c663f1f89970ed014da179e0af68404be2db3d1ef8",
+    "process_creation_filetime_100ns": 134367240727258115,
+    "driver_dispatch_receipt_observed_monotonic_ns": 583984208209100,
+    "receipt_clock_meaning": "driver observed a validated dispatch_invoked native response; not native callback time",
+    "process_observation": {
+      "pid": 20256,
+      "creation_filetime_100ns": 134367240727258115,
+      "retained_handle_token": "1e0bae62cf4bd1a68d453e0187e654d8",
+      "wait_result": 258,
+      "wait_state": "timeout",
+      "exit_code": 0,
+      "process_identity_verified": true,
+      "process_exit_observed": false,
+      "observed_monotonic_ns": 583989210220300,
+      "timeout_ms": 5000,
+      "observation_deadline_reached": true,
+      "observation_clock_domain": "driver_monotonic_v1",
+      "errors": []
+    },
+    "native_dispatch": {
+      "action": "confirm_desktop",
+      "confirmation_visible": true,
+      "exit_autosave": {
+        "state_available": true,
+        "control_visible": true,
+        "control_enabled": true,
+        "should_save": false,
+        "disable_claimed": true,
+        "dispatch_invoked": false,
+        "postcondition_observed": false
+      },
+      "dispatches": [
+        {
+          "claim_latched": false,
+          "dispatch_invoked": false,
+          "native_handled": false,
+          "post_read_complete": false,
+          "postcondition_observed": false
+        },
+        {
+          "claim_latched": false,
+          "dispatch_invoked": false,
+          "native_handled": false,
+          "post_read_complete": false,
+          "postcondition_observed": false
+        },
+        {
+          "claim_latched": true,
+          "dispatch_invoked": true,
+          "native_handled": true,
+          "post_read_complete": true,
+          "postcondition_observed": false
+        }
+      ]
+    }
+  },
+  "normal_observe": {
+    "started_at": "2026-10-17T15:55:26.095433+00:00",
+    "finished_at": "2026-10-17T15:55:26.352291+00:00",
+    "ok": true,
+    "tool": "ck3_observe_normal_exit_v1",
+    "status": "process_exit_observed_zero",
+    "claim_consumed": true,
+    "retry_authorized": false,
+    "process_exit_observed": true,
+    "exit_code": 0,
+    "typed_normal_exit_observed": true,
+    "autosave_verified": false,
+    "native_submission_count": 0,
+    "request_id": "normal-exit-confirm_desktop-cfa370f1fbc54ab6bd7632ba835d7929",
+    "source_inventory_sha256": "2c03201c415c0a07d99616c663f1f89970ed014da179e0af68404be2db3d1ef8",
+    "process_creation_filetime_100ns": 134367240727258115,
+    "observer_retained": false,
+    "driver_dispatch_receipt_observed_monotonic_ns": 583984208209100,
+    "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+    "process_observation": {
+      "pid": 20256,
+      "creation_filetime_100ns": 134367240727258115,
+      "retained_handle_token": "1e0bae62cf4bd1a68d453e0187e654d8",
+      "wait_result": 0,
+      "wait_state": "signaled",
+      "exit_code": 0,
+      "process_identity_verified": true,
+      "process_exit_observed": true,
+      "observed_monotonic_ns": 583993336544200,
+      "timeout_ms": 5000,
+      "observation_deadline_reached": false,
+      "observation_clock_domain": "driver_monotonic_v1",
+      "errors": []
+    }
+  },
+  "normal_gui_review": {
+    "run_id": "4-8e1c2f1861--faith-and-power--R0007",
+    "reviewer": "/root",
+    "normal_gui_quit": true,
+    "quit_route": "native_gui_route",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T15:55:35.569828+00:00",
+    "evidence_source": "Root invoked after directly reviewing original unchecked-autosave PNG; typed once-only normal GUI exit and independent retained HANDLE observation bound to this process",
+    "pid": 20256,
+    "create_time": 1792250472.7258115,
+    "autosave_unchecked_observed": true,
+    "business_pass": false
+  },
+  "normal_close": {
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 20256,
+      "create_time": 1792250472.7258115,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "host_finished_at": "2026-10-17T15:55:39.320200+00:00",
+    "managed_thread_finished": true,
+    "cleanup_ok": true,
+    "host_error": null,
+    "business_pass": false,
+    "normal_close_qualified": true,
+    "native_zero_proof": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "alive_or_business_credit": false,
+      "managed_session_done": true,
+      "pid": 20256,
+      "started_at": "2026-10-17T15:21:10.549993+00:00",
+      "finished_at": "2026-10-17T15:55:24.398865+00:00",
+      "exit_reason": "process_exit",
+      "process_exit_code": 0
+    },
+    "shutdown": {
+      "ck3_pid": 20256,
+      "ck3_exit_code": 0,
+      "job_active_processes_before_termination": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "final_ck3_inventory": {
+        "tasklist_returncode": 0,
+        "tasklist_pids": [],
+        "wmi_pids": [],
+        "native_pids": [],
+        "inventory_backend": "tasklist+toolhelp32",
+        "processes": []
+      },
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "original_process_exits": {
+    "public_run_original_exit": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:20:53.855815+00:00",
+      "completed_at_utc": "2026-10-17T15:55:39.751339+00:00",
+      "phase": "run",
+      "pid": 16420,
+      "returncode": 0,
+      "actual_original_popen_wait": true
+    },
+    "host_original_exit": {
+      "at_utc": "2026-10-17T15:55:39.876761+00:00",
+      "pid": 16224,
+      "returncode": 0,
+      "actual_original_popen_wait": true,
+      "run_id": "4-8e1c2f1861--faith-and-power--R0007",
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "allocator_original_exit": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:18:59.259274+00:00",
+      "completed_at_utc": "2026-10-17T15:55:48.363838+00:00",
+      "phase": "allocate",
+      "pid": 23004,
+      "returncode": 0,
+      "actual_original_popen_wait": true
+    }
+  },
+  "keeper": {
+    "actual_exit_code": 0,
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "faith-e01-shared-a08",
+    "last_sequence": 11458,
+    "failure": null,
+    "thread_exited": true,
+    "at_utc": "2026-10-17T15:55:48.250204+00:00",
+    "checkout_head": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "recording_terminal_projections": [
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:35:18.246320+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "probe_exit_code": 0,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "human_review_performed": false,
+      "raw_reference_from_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r7-P-take01\\raw-gameplay.mkv",
+        "bytes": 80136142,
+        "sha256": "b19bb05d5d6472f677702123f6d9d861f569696dffea0afc9ee2f512fead578a"
+      },
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 22132,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T15:35:18.073570+00:00"
+      },
+      "raw_rehashed_by_this_task": false
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:43:44.925863+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "probe_exit_code": 0,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "human_review_performed": false,
+      "raw_reference_from_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r7-relic-take02\\raw-gameplay.mkv",
+        "bytes": 72676225,
+        "sha256": "d59f5b061ed8abb16d15699517ba152c7a4720a06232fbd69289b23697135aa3"
+      },
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 14680,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T15:43:44.830623+00:00"
+      },
+      "raw_rehashed_by_this_task": false
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:50:51.580819+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "probe_exit_code": 0,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "human_review_performed": false,
+      "raw_reference_from_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r7-relic-remove-take03\\raw-gameplay.mkv",
+        "bytes": 42794375,
+        "sha256": "2101f8e08776cb67fce89632a0cf3f6dbdde9ae5d91716ade64832dad763e354"
+      },
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 20564,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T15:50:51.465273+00:00"
+      },
+      "raw_rehashed_by_this_task": false
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:53:34.258123+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "probe_exit_code": 0,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "human_review_performed": false,
+      "raw_reference_from_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r7-creation-context-take04\\raw-gameplay.mkv",
+        "bytes": 24751332,
+        "sha256": "5f6120e0e60f6bc8e1c9f7805fc5f16e1c555405b0729c45c6fd0888f918b05d"
+      },
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 16396,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T15:53:34.129560+00:00"
+      },
+      "raw_rehashed_by_this_task": false
+    }
+  ],
+  "screen_release": {
+    "ok": true,
+    "task": {
+      "task_id": "faith-e01-shared-a08",
+      "state": "done",
+      "resources": [],
+      "updated_at_utc": "2026-10-17T15:55:58.948442+00:00",
+      "last_sequence": 11459
+    },
+    "event": {
+      "sequence": 11459,
+      "event_id": "9eedd1b245934e2faee1fd0e7c5dd052",
+      "timestamp_utc": "2026-10-17T15:55:58.949475+00:00",
+      "kind": "completed",
+      "state": "done",
+      "resources": []
+    }
+  },
+  "public_verify": {
+    "research_holder_completed": true,
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "scope": "research/capture holder; actual P-arm effects, quotes and cooldowns reviewed independently",
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "original_process": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T15:56:12.787821+00:00",
+      "evidence_source": "Actual original subprocess public verify exit, not business credit",
+      "actual_exit_code": 2,
+      "whole_product_business_pass": false
+    }
+  },
+  "overlay_close": {
+    "source_kind": "Root parent task message",
+    "tool_session_id": 43715,
+    "reported_actual_tool_exit_code": 0,
+    "native_os_receipt_provided": false,
+    "exact_os_pid": null,
+    "observed_at_utc": null,
+    "meaning": "Tool-session completion report only; no fabricated original OS process receipt or timestamp."
+  },
+  "creation_boundary": {
+    "source_kind": "Root parent task message",
+    "window_opened_reported": true,
+    "selected_type_unavailable_reported": true,
+    "create_submitted_reported": false,
+    "successful_creation_observed": false,
+    "exact_source_time_not_inferred": true
+  },
+  "qualification_boundary": {
+    "research_holder_completed": true,
+    "normal_close_qualified": true,
+    "business_pass": false,
+    "whole_product_business_pass": false,
+    "whole_product_release_pass": false,
+    "media_human_review_performed": false,
+    "ordinary_campaign_credit_added": false,
+    "create_world_business_credit_added": false
+  },
+  "planner_closure_lesson": "A once-only native GUI confirm may return pending after its own finite observation timeout. Keep the original request/process identity and observe independently; do not repeat the consumed confirm. Separate normal process closure, resource release, research-holder completion, media review and business acceptance.",
+  "validation": {
+    "all_require_checks": "PASS",
+    "large_file_or_raw_body_read_for_hash": false,
+    "business_or_gameplay_rerun": false,
+    "main_tree_modified_by_this_task": false,
+    "unknown_timezones_converted": false
+  }
+}

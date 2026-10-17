@@ -59,3 +59,5 @@ R7 P 在同一暂停日期完成了“降麦加一档，再将纳杰夫升为主
 5. 使用新保存分支或保留的 C2 重开比较其他策略。反向升级/降级会产生新费用、冷却和副作用，不能当作回滚。
 
 本研究范围仅为本场两项付费原生操作及其已读状态差异。列表回执的 `active_state_observed`、`relic_recognition_observed`、`beneficiaries_observed` 均为 false；主要等级变化不证明站点已激活、空库存已产生圣物收益、所有受益者修正已重算，亦不证明麦加→纳杰夫具有正净收益。媒体质量、实机闭场及整个产品验收应引用其各自独立记录。机制背景继续见[圣地研究](faith-and-power-holy-sites-12004.md)。
+
+后继补注（machine_id: 4-8e1c2f1861）：[R7正常闭场及媒体/业务边界](faith-and-power-episode01-r7-closure.md)与[小回执](faith-and-power-episode01-r7-closure.json)现已补齐。原生独立退出观察为2026-10-17T15:55:26.095433–26.352291+00:00，CAS11459于15:55:58.949475+00:00实际done/resources[]。public verify原exit2/research holder完成；四条raw正常收尾但未人审，whole-product仍未通过。本文原先“尚未闭场”的边界保留为建立时截点，后续事实只按该闭场来源追加。
