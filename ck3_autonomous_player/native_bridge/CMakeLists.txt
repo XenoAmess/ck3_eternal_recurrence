@@ -4738,6 +4738,16 @@ if(BUILD_TESTING)
   target_include_directories(xar_ck3_adapter_registry_test PRIVATE include)
   target_link_libraries(xar_ck3_adapter_registry_test PRIVATE
     xar_ck3_12002_runtime bcrypt)
+  # The enabled production mailbox references this real executor by address.
+  # Its TU also owns navigation/appointment entry points, so keep that existing
+  # source closure and protocol provider on this same test target.
+  if(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1)
+    target_sources(xar_ck3_adapter_registry_test PRIVATE
+      src/ingame_ui_navigation_v1.cpp
+      src/appointment_window_snapshot_v1.cpp
+      src/appointment_character_level12004.cpp)
+    target_link_libraries(xar_ck3_adapter_registry_test PRIVATE xar_bridge_protocol)
+  endif()
   if(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
     target_sources(xar_ck3_adapter_registry_test PRIVATE
       src/current_first_heir_relationship_v1.cpp
