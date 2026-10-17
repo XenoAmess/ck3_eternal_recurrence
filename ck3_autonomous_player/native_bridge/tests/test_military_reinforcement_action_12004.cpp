@@ -28,7 +28,7 @@ NamedGuiTreeInspectionV1 SourceTree() {
   continuation.status="available";continuation.stable_double_read=true;
   continuation.static_direct_owner_switch_12004.emplace();auto &v=*continuation.static_direct_owner_switch_12004;
   v.status="available";v.unavailable_reason.clear();v.ancestor_depth=8U;v.owner_full_id=31254;
-  v.military_component_present=true;v.raw_byte_4a9=1;v.enabled=true;v.value_basis="raw_military_byte";v.stable_double_read=true;
+  v.military_component_present=true;v.raw_byte_4a9=std::uint8_t{1};v.enabled=true;v.value_basis="raw_military_byte";v.stable_double_read=true;
   binding.callbacks.push_back(cb);t.widget_count=t.widgets.size();return t;
 }
 MilitaryReinforcementResult12004 Result() {
