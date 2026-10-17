@@ -1589,7 +1589,7 @@ SHA-256 `7c0929203d6019e80607ab7cc57641e7eb649726de6c686678d0b4b37978fdf5`, 9969
 45:  HOLY_SITE_FAITH_CHARACTER_MODIFIER_CHANGE_HEADER: "\n#bold All [Faith.GetAdherentNamePlural]:#! #weak ([holy_relics|E] rarity change: #high $CURRENT_SUM$#! to #high $NEW_SUM$#!)#!\n"
 ```
 
-```text
+```ck3-localization
 89:  holy_site_creation_rarity_level_too_low: "@warning_icon! #X [enshrined|E] Artifacts have too few rarity levels to create a [holy_site|E]: Total is $RARITY_LEVELS_GIVEN|V0$, required is $RARITY_LEVELS_REQUIRED|V0$#!"
 90:  holy_site_creation_too_many_artifacts: "@warning_icon! #X Too many Artifacts selected to [enshrine|E]: Total is $ARTIFACTS_GIVEN|V0$, maximum is $ARTIFACTS_MAX|V0$#!"
 91:  holy_site_creation_faith_has_too_many_holy_sites: "@warning_icon! #X [Faith.GetName] has too many [holy_sites|E]: Current is $HOLY_SITES|V0$, maximum is $HOLY_SITES_MAX|V0$#!"

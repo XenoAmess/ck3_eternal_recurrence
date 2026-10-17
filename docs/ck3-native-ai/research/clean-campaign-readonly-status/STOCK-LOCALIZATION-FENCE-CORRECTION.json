@@ -1,0 +1,23 @@
+{
+  "schema": "xar.stock-localization-excerpt-language-correction.v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T10:32:26.605870+00:00",
+  "original_ci": {
+    "run": 39023807179,
+    "head": "c346ce524348c3f6e9803611727b70116919b863",
+    "conclusion": "failure",
+    "failed_step": "Enforce Python-only Windows automation",
+    "finding": "script-source-excerpts.md:1592 legacy shell syntax in fenced block"
+  },
+  "source_origin_commit": "e380df2d",
+  "source_observation_machine_id": "4-8e1c2f1861",
+  "changed_public_file": "docs/ck3-native-ai/evidence/holy-site-relic-native12004/script-source-excerpts.md",
+  "before_sha256": "cd2eeccc4d63d4feb9a2a36457c79329e1cb55babc440773c56f5650ecce823f",
+  "after_sha256": "c85d4bb47c5f405030b22091aee3f78e3c5a58245627e255369e0edd32a443c0",
+  "change": "opening fence text to ck3-localization for stock localization YML lines89-98",
+  "quoted_stock_source_bytes_changed": false,
+  "original_stock_manifest_or_pins_modified": false,
+  "checker_modified": false,
+  "scoped_fence_findings": [],
+  "live_operations": 0
+}
