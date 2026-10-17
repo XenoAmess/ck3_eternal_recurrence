@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.r197-abnormal-close-small-originals.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "85eb547cca4fddaec4b8a89ec9dd203e6935299c",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0197",
+  "root_observed_at_utc": "2026-10-17T06:29:57.764836+00:00",
+  "archive": {
+    "path": "R197-SMALL-ORIGINALS.actual-a01.zip",
+    "bytes": 18849,
+    "sha256": "15a27cac102294bae8c5a596d4fef58156151d98b0488b16e7b2accbf3733bbf"
+  },
+  "entries": [
+    {
+      "archive_member": "01-root-unfreeze.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\ROOT-UNFREEZE-AFTER-TIMEOUT.actual-a01.json",
+      "bytes": 1486,
+      "sha256": "c8fc43842eb50ca39005cae1d13b0915135ac39cfa602a066615e7ced444a4c2"
+    },
+    {
+      "archive_member": "02-normal-save-receipt.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\r197-research-map-continuation-a02-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 5299,
+      "sha256": "f86404fbe004cd7aa0d91fc6b16876a4caee68b2455a79134423251ff2215492"
+    },
+    {
+      "archive_member": "03-bootstrap-result.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\bootstrap-result.json",
+      "bytes": 15314,
+      "sha256": "9b831e20acf9d7d03036106f33dc780ab2850b2480e39499e79cb6d0bd14bda5"
+    },
+    {
+      "archive_member": "04-screen-task-final.json",
+      "original_path": "D:\\workspace\\.codex-task-bus\\tasks\\e04-r197-r0197.json",
+      "bytes": 574,
+      "sha256": "469d0cefb363ec358ca609de376fce6f3c943314f0a884b5963604c5259d5ad5"
+    },
+    {
+      "archive_member": "05-film-started.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\research-film-a01\\STARTED.actual.json",
+      "bytes": 1784,
+      "sha256": "f0961b0029926139b6501c0994dc41337ec8ee07deda0b2c4e5e56f555dad920"
+    },
+    {
+      "archive_member": "06-film-finish.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\research-film-a01\\FINISH.actual-a01.json",
+      "bytes": 1419,
+      "sha256": "26413497703bed2873b290c04c24c418d6659357a9a32344bbd852deedc2e8f8"
+    },
+    {
+      "archive_member": "07-film-native-finish-response.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\responses\\r197-research-map-continuation-a02-ready-record-finish-once.json",
+      "bytes": 5291,
+      "sha256": "25e757fafed3f2adf42eadb08d6017ab53210edea76b79fb42495c4a7e17e19f"
+    },
+    {
+      "archive_member": "08-r04-p-preview-once.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\responses\\r197-p-preview-once-a01.json",
+      "bytes": 32815,
+      "sha256": "522f42fccef31657eb07016d43d58259adbe93beda18ea0678af4e7421615263"
+    },
+    {
+      "archive_member": "09-r06-disable-unsupported.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\desktop-3fevhd2-1c74096080--vanilla--R0197\\responses\\r197-disable-reinforcement-once-a01.json",
+      "bytes": 1358,
+      "sha256": "24e4bd31d51ed2c1b3106bcb15707c4c622eb0a3719dffd6f206a51693143369"
+    },
+    {
+      "archive_member": "10-r05-observe-recovery.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\r05-cap100-preparation-a01\\observe-recovery-a01.actual.json",
+      "bytes": 5912,
+      "sha256": "e00e7e80fe88eb6416654b1cfb3260a16eb335473d13f51fb58e2bcf0f4e4697"
+    },
+    {
+      "archive_member": "11-r05-assign-failure.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\r05-cap100-preparation-a01\\assign.failure.json",
+      "bytes": 1724,
+      "sha256": "e8148d8f74120824fdd9300daadefbb7412e7f5eb124bfd2d29f787725fc02fd"
+    },
+    {
+      "archive_member": "12-r05-assign-mutation-once.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\r05-cap100-preparation-a01\\assign34232.mutation-once.json",
+      "bytes": 359,
+      "sha256": "071f82135c3f9af7095f6c2ef858f2b0cb8efcce1e1782e0e55ea3bc696b88e4"
+    },
+    {
+      "archive_member": "13-root-bus-poll-after-timeout.json",
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r197-county-refill-a01\\ROOT-BUS-POLL-after-timeout-a01.json",
+      "bytes": 846,
+      "sha256": "5438931c190cc73f20e3605ef1acb768a3cc2e24d79ead26ce94e89e095e3f79"
+    }
+  ],
+  "scope": "selected small original receipts only; no save body, raw video, screenshot, whole Driver journal or SDK call",
+  "normal_exit_qualified": false,
+  "new_normal_S0_eligible": false,
+  "counts_adopted_v2": {
+    "research": "9/14",
+    "business": "6/11",
+    "dynamic": "0/11",
+    "ABC": "0/3"
+  },
+  "counts_strict_R07_v1": {
+    "research": "8/14",
+    "business": "5/11"
+  },
+  "related_repo_topic": "docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md",
+  "verification": "python -B verify_portable.py --index source-index.json --archive R197-SMALL-ORIGINALS.actual-a01.zip"
+}

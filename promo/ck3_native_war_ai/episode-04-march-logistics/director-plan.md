@@ -1,5 +1,12 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-17 06:29 UTC R197导演状态：地图研究片段，非合格战争动态
+
+`machine_id: desktop-3fevhd2-1c74096080`、source `85eb547cca4fddaec4b8a89ec9dd203e6935299c`。R197一次县P preview [真实relation输入](../../../docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md)使source P true、target P first false可说；不能剪成已跨县或军队扣兵。[军务disable](../../../docs/ck3-native-ai/episode04-r197-reinforcement-step-admission-12004.md)被SDK unsupported拒绝，没有切换画面或补员ADD；R05 assign34232仍为state_changed未知，不能说cap100/自然扣兵已到。录制Start→Finish `NORMAL_TREE_EMPTY`、无guard error/partial，仅地图取证，军务开关未入镜；本lane不读/哈希/解码原片，不授clean、完整1×或人工签核。
+
+[异常闭场便携小证据](../../../docs/ck3-native-ai/evidence/episode04-r197-abnormal-close-12004/source-index.json)绑定正常Save回执与最终timeout/shutdown exit1。虽然资源全部清理并screen释放，新checkpoint不具正常S0资格；后续镜头须新正常源与独立实机。计数保持v2研究 **9/14**、业务 **6/11**、动态 **0/11**、ABC **0/3**；原R07-v1严格仍8/14、5/11。不以R197一次Start/Finish或source修复候选补票。
+
+
 ## 2026-10-17 02:51 UTC 导演口径：一次实付与有限陆→船画面
 
 `machine_id: desktop-3fevhd2-1c74096080`。[Root R07-v2研究决策](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json)原件2,371 B／SHA-256 `1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f`签出既有v2设计的研究核心；含此前已计入R01，当前研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，合格动态 **0/11**、正式ABC **0/3**。须并列保存原R07-v1严格卡仍false：七日单窗与避经济机会未满足；若按原卡不采纳v2，研究 **8/14（57.14%）**、业务 **5/11（45.5%）**。 R195/R196同正常S0／source611／a33双独立32日配对，R196在1032由payer31254个人账户出现一次实际SUB3金币，原生精确account write及生产pair replay已留证。此为一次付款，不证明普遍费率、source-bound quote、零费、维护归因或统帅因果；单窗consumer `full_v2_qualified=false`原结果保留，Root采纳的是v2研究核心而非把该字段改写为true。 [R196有限媒体实际原件](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json)20,836 B／SHA-256 `26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403`：原片2,369帧／编码78.966秒、墙钟82.824864秒，可用流全解码exit0，PTS无缺失/回退；八张实际帧只见陆营38秒→船面板41秒，视觉转场界于(38,41]秒。这个区间不是native callback精确PTS，也不能由八帧推出连续clean、完整1×或人工签核；动态维持0/11。 配音只可说本场实付3金币并展示实际抽样转场；正式镜头clean、1×及人审仍待验。

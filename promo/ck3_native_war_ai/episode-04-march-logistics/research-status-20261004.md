@@ -1,5 +1,12 @@
 # 第4期研究总账：行军、补给与损耗
 
+## 2026-10-17 06:29 UTC R197异常闭场：P局部入参阳性，整卡不涨
+
+`machine_id: desktop-3fevhd2-1c74096080`，source `85eb547cca4fddaec4b8a89ec9dd203e6935299c`，R0197从R191正常S0独立载入。[R04县P专题](../../../docs/ck3-native-ai/episode04-r197-county-relation-wire-12004.md)有一次实际preview，source relation receiver34960/actor31254原生P true，target first receiver34232/actor31254原生P false，最终county condition=false；未知OR输入保留，无Move/抵达/物理扣兵。[R06准入专题](../../../docs/ck3-native-ai/episode04-r197-reinforcement-step-admission-12004.md)解释唯一disable请求unsupported且未切换，未调用provider/ADD；R05只读观察恢复，assign34232 state_changed未知且未重投，0自然日/cap100。三者均不新增业务卡。
+
+[13份小原件索引](../../../docs/ck3-native-ai/evidence/episode04-r197-abnormal-close-12004/source-index.json)固定Root异常闭场原件SHA-256 `c8fc43842eb50ca39005cae1d13b0915135ac39cfa602a066615e7ced444a4c2`和正常Save回执SHA-256 `f86404fbe004cd7aa0d91fc6b16876a4caee68b2455a79134423251ff2215492`。最终bootstrap timeout、shutdown exit1，清理treegone/SDK/keeper/recorder及screen空资源与正常exit资格分开：**新checkpoint非正常S0**。Film Start/Finish仅地图，未读原片字节或完整媒体，不授动态。现行v2 **9/14、6/11、0/11、0/3**；旧R07-v1严格 **8/14、5/11**，两口径并列。
+
+
 ## 2026-10-17 02:51 UTC R07-v2采纳与原v1边界并列
 
 `machine_id: desktop-3fevhd2-1c74096080`。[Root R07-v2研究决策](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/root-research-decision.actual.json)原件2,371 B／SHA-256 `1e597a5ea062648526d1e1f4856028d29f263626c8c438ea2ab8ad4afe144c2f`签出既有v2设计的研究核心；含此前已计入R01，当前研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，合格动态 **0/11**、正式ABC **0/3**。须并列保存原R07-v1严格卡仍false：七日单窗与避经济机会未满足；若按原卡不采纳v2，研究 **8/14（57.14%）**、业务 **5/11（45.5%）**。 R195/R196同正常S0／source611／a33双独立32日配对，R196在1032由payer31254个人账户出现一次实际SUB3金币，原生精确account write及生产pair replay已留证。此为一次付款，不证明普遍费率、source-bound quote、零费、维护归因或统帅因果；单窗consumer `full_v2_qualified=false`原结果保留，Root采纳的是v2研究核心而非把该字段改写为true。 [R196有限媒体实际原件](../../../docs/ck3-native-ai/evidence/episode04-r196-r07-boarding-pair-12004/media-shot-facts.actual.json)20,836 B／SHA-256 `26edcb7acc4d83b5b5bb977210935ccb8ec1a9c240c482698766955b8f98d403`：原片2,369帧／编码78.966秒、墙钟82.824864秒，可用流全解码exit0，PTS无缺失/回退；八张实际帧只见陆营38秒→船面板41秒，视觉转场界于(38,41]秒。这个区间不是native callback精确PTS，也不能由八帧推出连续clean、完整1×或人工签核；动态维持0/11。 本节只结实际新分子，不覆盖原卡失败、小样本或历史source时点。
