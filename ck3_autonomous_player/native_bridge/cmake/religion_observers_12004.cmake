@@ -3,9 +3,22 @@ include("${CMAKE_CURRENT_LIST_DIR}/religion_shared_readers_12004.cmake")
 target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_holy_site_snapshot.cpp
   src/ck3_12004_holy_site_snapshot_json.cpp
+  src/ck3_12004_holy_site_adoption_detail.cpp
+  src/ck3_12004_holy_site_adoption_detail_json.cpp
   src/ck3_12004_religion_bindings.cpp)
 
 if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_holy_site_adoption_detail_test
+    src/ck3_12004_holy_site_adoption_detail_test.cpp
+    src/ck3_12004_holy_site_adoption_detail.cpp
+    src/ck3_12004_holy_site_adoption_detail_json.cpp)
+  target_include_directories(xar_ck3_12004_holy_site_adoption_detail_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_holy_site_adoption_detail_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_holy_site_adoption_detail_test PRIVATE NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_holy_site_adoption_detail_test PRIVATE /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+  add_test(NAME xar_ck3_12004_holy_site_adoption_detail_test COMMAND xar_ck3_12004_holy_site_adoption_detail_test "${CMAKE_CURRENT_BINARY_DIR}/holy-site-adoption-12004-wire")
   add_executable(xar_ck3_12004_holy_site_snapshot_test
     src/ck3_12004_holy_site_snapshot_test.cpp
     src/ck3_12004_holy_site_snapshot.cpp

@@ -37,6 +37,7 @@ CASE_READ_ONLY_MCP_TOOLS = frozenset({
     "ck3_query_current_title_appointment_v1",
     "ck3_query_player_religion_context_v1",
     "ck3_query_player_holy_site_v1",
+    "ck3_query_player_holy_site_adoption_detail_v1",
     "ck3_query_player_religion_personal_parameters_v1",
     "ck3_query_player_religion_doctrines_v1",
     "ck3_query_player_religion_tenets_v1",

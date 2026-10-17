@@ -113,7 +113,7 @@ bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query,
   auto &out = query.result.tree_inspection;
   out = {};
   out.scope_root_name.assign(root_name);
-  out.standard_click_bindings_12004 = military;
+  out.standard_click_bindings_12004 = military || holy_site;
   ZhongguoScoreboardAccessV1 access{};
   void *root = nullptr;
   void *widget = nullptr;
@@ -133,7 +133,7 @@ bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query,
       before.played_character_id != -1 && before.date_raw == stamp.date_raw &&
       ReadIngameUiGuiOwnerBindingV1(query.environment, gui_before);
   if (!InspectNamedGuiSubtreeV1(access, query.environment.module_base,
-                                root, root_name, out, military, capture)) return false;
+                                root, root_name, out, military || holy_site, capture)) return false;
   if (capture) {
     game::Snapshot after{}; IngameUiGuiOwnerBindingV1 gui_after{};
     void *after_root=nullptr,*after_widget=nullptr;

@@ -1730,6 +1730,8 @@ add_library(xar_ck3_bridge SHARED
   src/tactical_daily_sentinel_v1.cpp
   src/title_map_navigation_v1.cpp
   src/ingame_ui_navigation_v1.cpp
+  src/ck3_12004_holy_site_ui.cpp
+  src/ck3_12004_holy_site_adoption_entry.cpp
   src/appointment_window_snapshot_v1.cpp
     src/appointment_character_level12004.cpp
   src/title_map_navigation_v1_camera.cpp
@@ -3786,10 +3788,17 @@ if(BUILD_TESTING)
   endif()
 
   add_executable(xar_ck3_ingame_ui_navigation_v1_test
-    tests/ingame_ui_navigation_v1_test.cpp src/protocol.cpp)
+    tests/ingame_ui_navigation_v1_test.cpp src/ck3_12004_holy_site_ui.cpp
+    src/ck3_12004_holy_site_adoption_detail.cpp
+    src/zhongguo_scoreboard_action_v1.cpp src/protocol.cpp)
   target_include_directories(xar_ck3_ingame_ui_navigation_v1_test PRIVATE include)
   target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /UNDEBUG)
+  else()
+    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE -UNDEBUG)
+  endif()
   add_test(NAME xar_ck3_ingame_ui_navigation_v1_test
     COMMAND xar_ck3_ingame_ui_navigation_v1_test)
   if(XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1)
@@ -4744,6 +4753,8 @@ if(BUILD_TESTING)
   if(XAR_ENABLE_WAR_DECLARED_OVERVIEW_V1)
     target_sources(xar_ck3_adapter_registry_test PRIVATE
       src/ingame_ui_navigation_v1.cpp
+      src/ck3_12004_holy_site_ui.cpp
+      src/ck3_12004_holy_site_adoption_entry.cpp
       src/appointment_window_snapshot_v1.cpp
       src/appointment_character_level12004.cpp)
     target_link_libraries(xar_ck3_adapter_registry_test PRIVATE xar_bridge_protocol)

@@ -23,10 +23,10 @@ inline constexpr std::uintptr_t kUiOpenViewRvaV1 = 0xA79200;
 inline constexpr std::uintptr_t kUiOpenViewDataRvaV1 = 0xA79700;
 inline constexpr std::uintptr_t kUiIdAnyTypeGetterRvaV1 = 0x998130;
 
-enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4 };
+enum class IngameUiWindowKindV1 : std::uint32_t { character=0, army=1, combat=2, knights=3, title_appointment=4, holy_site=5, holy_site_adoption=6 };
 enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, select_army=2, open_combat=3, open_knights=4,
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
-  hover_army_tooltip=8, leave_army_tooltip=9 };
+  hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
 struct CombatUiGeometryV1 {
@@ -118,6 +118,16 @@ struct IngameUiResultV1 {
   GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
   bool available = false;
   bool dispatch_invoked = false;
+  bool native_dispatch_attempted = false;
+  bool holy_site_adopt_visibility_observed = false, holy_site_adopt_visible = false;
+  bool holy_site_regular_visible = false, holy_site_eminent_visible = false;
+  bool holy_site_adopt_receiver_bound = false;
+  std::string holy_site_adopt_receiver_child_path;
+  bool holy_site_adoption_detail_verified = false;
+  bool holy_site_adoption_regular_legality_observed = false;
+  bool holy_site_adoption_can_confirm = false;
+  std::uint32_t holy_site_adoption_parameter_id = 0xFFFFFFFFU;
+  std::uint32_t holy_site_adoption_selected_id = 0xFFFFFFFFU;
   bool verification_pending = false;
   bool window_exists = false;
   bool effective_visible = false;

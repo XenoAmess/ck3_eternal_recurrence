@@ -3550,6 +3550,12 @@ class NativeHeadlessGameplayDriver:
         return query_player_holy_site_private_v1(
             self, expected_revision=expected_revision, holy_site_id=holy_site_id)
 
+    def query_holy_site_adoption_detail_private_v1(self, *, expected_revision: int,
+                                                holy_site_id: int) -> dict[str, object]:
+        from .holy_site_adoption_detail_private_transport import query_holy_site_adoption_detail_private_v1
+        return query_holy_site_adoption_detail_private_v1(
+            self,expected_revision=expected_revision,holy_site_id=holy_site_id)
+
     def query_player_religion_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:
@@ -6260,6 +6266,15 @@ class NativeHeadlessGameplayDriver:
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("open_character", "character", character_id, expected_revision=expected_revision)
+
+    def open_holy_site_window_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_holy_site", "holy_site", holy_site_id, expected_revision=expected_revision)
+
+    def open_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("open_holy_site_adoption", "holy_site", holy_site_id, expected_revision=expected_revision)
+
+    def confirm_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id, expected_revision=expected_revision)
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._ingame_ui_v1("select_army", "army", subject_army_id, expected_revision=expected_revision)

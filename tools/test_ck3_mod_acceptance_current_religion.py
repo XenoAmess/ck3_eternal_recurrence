@@ -12,9 +12,10 @@ import ck3_mod_acceptance
 ROOT = Path(__file__).resolve().parents[1]
 HOST = ROOT / 'ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py'
 TOOLS = ('ck3_query_player_religion_doctrines_v1', 'ck3_query_player_religion_tenets_v1',
-         'ck3_query_player_holy_site_v1')
+         'ck3_query_player_holy_site_v1', 'ck3_query_player_holy_site_adoption_detail_v1')
 PERMISSIONS = ('allow_private_player_religion_doctrines_query',
-               'allow_private_player_religion_tenets_query', 'allow_private_player_holy_site_query')
+               'allow_private_player_religion_tenets_query', 'allow_private_player_holy_site_query',
+               'allow_private_holy_site_adoption_detail_query')
 
 
 class CurrentReligionPublicOptinTests(unittest.TestCase):

@@ -46,7 +46,8 @@ void *ResolveReligionCharacter(const PlayerReligionMailboxContext12002 &query,
 
 bool IsPlayerReligionPrivateStep12002(std::string_view step) noexcept {
   return step == kPlayerReligionPrivateStep12002 ||
-      step == ck3_12004::religion::holy_site::kQueryStep;
+      step == ck3_12004::religion::holy_site::kQueryStep ||
+      step == ck3_12004::religion::holy_site::kAdoptionDetailQueryStep;
 }
 
 bool ParsePlayerReligionRevision12002(std::string_view payload,
@@ -96,6 +97,13 @@ bool ExecutePlayerReligionMailbox12002(
       // The owner envelope still identifies the frame whose native read failed.
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
+    }
+    if (query.holy_site_adoption_detail_query) {
+      SetCaptureStage("holy_site_adoption_detail");
+      (void)ck3_12004::religion::holy_site::ReadHolySiteAdoptionDetail12004(
+          query.adoption_detail_bindings,reinterpret_cast<const void *>(stamp.jomini_state),
+          out,query.requested_holy_site_id.value_or(0xFFFFFFFFU),query.adoption_detail_snapshot);
+      query.completed=true;(void)FinishQueryMailbox(*envelope);return true;
     }
     if (query.holy_site_query) {
       SetCaptureStage("holy_site_snapshot");
@@ -208,6 +216,9 @@ std::string SerializePlayerReligionResult12002(
     const PlayerReligionMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  if(query.holy_site_adoption_detail_query)
+    return ck3_12004::religion::holy_site::SerializeHolySiteAdoptionDetailCommand12004(
+        query.adoption_detail_snapshot,request_id,query.envelope.expected_snapshot_revision,frame.date_raw);
   if (query.holy_site_query) {
     return ck3_12004::religion::holy_site::SerializeHolySiteCommand12004(
         query.holy_site_snapshot, request_id, query.envelope.expected_snapshot_revision, frame.date_raw);
@@ -329,7 +340,8 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   }
   const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
   const bool holy_site_query = step == ck3_12004::religion::holy_site::kQueryStep;
-  if (holy_site_query && !actual4) {
+  const bool adoption_detail_query = step == ck3_12004::religion::holy_site::kAdoptionDetailQueryStep;
+  if ((holy_site_query || adoption_detail_query) && !actual4) {
     failure = "player_holy_site_exact12004_required"; return false;
   }
   if (!adapter.enabled() || (!actual4 &&
@@ -341,7 +353,11 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   try {
     PlayerReligionMailboxContext12002 query{};
     query.holy_site_query = holy_site_query;
-    if (holy_site_query && HasField(payload, "holy_site_id")) {
+    query.holy_site_adoption_detail_query=adoption_detail_query;
+    if(adoption_detail_query && !HasField(payload,"holy_site_id")){
+      failure="player_holy_site_adoption_full_id_required";return false;
+    }
+    if ((holy_site_query || adoption_detail_query) && HasField(payload, "holy_site_id")) {
       std::uint64_t id = 0;
       if (!bridge::JsonUnsignedField(payload, "holy_site_id", id) || id >= 0xFFFFFFFFULL) {
         failure = "player_holy_site_full_id_invalid"; return false;
@@ -356,6 +372,10 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     if (actual4) {
       const auto sha = adapter.descriptor().executable_sha256;
       query.bindings = ck3_12004::religion::BindReligionContextImage12004(image_base, sha);
+      if(adoption_detail_query){
+        query.adoption_detail_bindings=ck3_12004::religion::holy_site::BindHolySiteAdoptionDetailImage12004(image_base,sha);
+        return RunPlayerReligionMailbox12002(query,request_id,serialized,failure);
+      }
       if (holy_site_query) {
         query.holy_site_bindings = ck3_12004::religion::holy_site::BindHolySiteSnapshotImage12004(image_base, sha);
         return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);

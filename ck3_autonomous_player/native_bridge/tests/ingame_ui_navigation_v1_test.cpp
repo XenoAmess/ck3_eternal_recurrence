@@ -3,8 +3,11 @@
 #undef NDEBUG
 #endif
 #include "../src/ingame_ui_navigation_v1.cpp"
+#include "../src/ck3_12004_holy_site_adoption_entry.cpp"
 #include <cassert>
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 
 namespace xar::ck3_11906 {
 // Explicit offline GUI projection stubs. No CK3 function executes.
@@ -84,7 +87,7 @@ bool ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(const ZhongguoScoreboar
   context=row.context;owner=row.owner;return fixture_gui_available;
 }
 }
-int main() {
+int main(int argc,char **argv) {
   using namespace xar::ck3_11906;
   IngameUiRequestV1 r{};
   for(auto revision:{GuiAbiRevisionV1::legacy11906,GuiAbiRevisionV1::crozier12003}) {
@@ -110,6 +113,59 @@ int main() {
   assert(!ParseIngameUiRequestV1(R"({"window_kind":"combat","operation":"hover_side1_knights","subject_id":16777218})",false,r));
   assert(ParseIngameUiRequestV1(R"({"window_kind":"combat","operation":"fit_combat_window","subject_id":16777218})",false,r));
   assert(!ParseIngameUiRequestV1(R"({"window_kind":"army","operation":"fit_combat_window","subject_id":18})",false,r));
+  for(const auto id:{0U,0x81000002U,0xFFFFFFFEU}) {
+    IngameUiRequestV1 holy{IngameUiOperationV1::open_holy_site,IngameUiWindowKindV1::holy_site,id};
+    assert(ValidateIngameUiRequestV1(holy));
+    assert(IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12004,holy));
+    assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::crozier12003,holy));
+    assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::legacy11906,holy));
+  }
+  assert(ParseIngameUiRequestV1(R"({"window_kind":"holy_site","operation":"open_holy_site","subject_id":2164260866})",false,r));
+  assert(r.subject_id==0x81000002U&&r.operation==IngameUiOperationV1::open_holy_site);
+  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holy_site","operation":"open_holy_site","subject_id":4294967295})",false,r));
+  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holy_site","operation":"adopt","subject_id":0})",false,r));
+  assert(!ParseIngameUiRequestV1(R"({"window_kind":"holy_site","operation":"select_army","subject_id":0})",false,r));
+  assert(ParseIngameUiRequestV1(R"({"window_kind":"holy_site","operation":"open_holy_site_adoption","subject_id":2164260866})",false,r));
+  {
+    // Pure classifier security cases. These explicit descriptor fixtures do
+    // not assert the actual current GUI row or invoke any original callback.
+    NamedGuiStandardClickBinding12004V1 binding{};binding.button_base_slot13=binding.primary_group=true;
+    for(const auto target:{0xA79540U,0x1031E60U}){
+      NamedGuiStandardClickCallback12004V1 callback{};callback.index=static_cast<std::uint32_t>(binding.callbacks.size());
+      callback.callback_slot2_rva=0x3AA30E0;callback.indirect_target_3aa30e0=true;callback.native_target_8_rva=0x3A9F960;
+      callback.expression_descriptor_3a9f960=true;callback.expression_3a9f960.final_kind_34_raw=3;
+      callback.expression_3a9f960.final_target_38_rva=target;binding.callbacks.push_back(callback);
+    }
+    assert(Signature(binding));auto wrong=binding;
+    std::swap(wrong.callbacks[0].expression_3a9f960.final_target_38_rva,wrong.callbacks[1].expression_3a9f960.final_target_38_rva);
+    assert(!Signature(wrong));wrong=binding;wrong.callbacks.pop_back();assert(!Signature(wrong));
+    NamedGuiTreeInspectionV1 tree{};NamedGuiWidgetInspectionV1 row{};
+    row.effective_visible=row.enabled=true;row.standard_click_binding_12004=binding;tree.widgets.push_back(row);
+    assert(Unique(tree));tree.widgets.push_back(row);assert(!Unique(tree));
+    tree.widgets[1].effective_visible=false;assert(Unique(tree));tree.widgets[0].enabled=false;assert(!Unique(tree));
+  }
+  {
+    ZhongguoScoreboardNativeEnvironmentV1 unavailable{};IngameUiResultV1 holy{};bool attempted=true;
+    assert(!HolySiteUiCanOpen12004(unavailable,nullptr,0));
+    assert(!InvokeHolySiteUi12004(unavailable,nullptr,0,attempted)&&!attempted);
+    assert(!ReadHolySiteUi12004(unavailable,nullptr,holy)&&holy.unavailable_reason=="holy_site_loaded_source_pins_changed");
+  }
+  if(argc==2) {
+    // A real production serializer packet from the fail-closed provider path.
+    // No game callback runs; transport wrapping is left explicitly synthetic.
+    game::Snapshot paused{};paused.paused=paused.map_ready=paused.has_played_character=true;
+    paused.played_character_alive=true;paused.played_character_id=29829;paused.date_raw=53146848;
+    MainThreadExecutionStampV1 stamp{};stamp.paused=true;stamp.date_raw=paused.date_raw;
+    stamp.thread_id=GetCurrentThreadId();stamp.pump_epoch=14;
+    ZhongguoScoreboardNativeEnvironmentV1 unavailable{};unavailable.gui_abi_revision=GuiAbiRevisionV1::crozier12004;
+    IngameUiRequestV1 holy{IngameUiOperationV1::open_holy_site,IngameUiWindowKindV1::holy_site,0x81000002U};
+    IngameUiResultV1 denied{};
+    assert(ExecuteIngameUiNavigationV1(unavailable,holy,paused,stamp,{},denied));
+    assert(!denied.available&&!denied.native_dispatch_attempted&&!denied.dispatch_invoked);
+    const std::filesystem::path directory(argv[1]);std::filesystem::create_directories(directory);
+    std::ofstream output(directory/"holy-site-denied.json");
+    output<<SerializeIngameUiResultV1(holy,denied,3)<<'\n';assert(bool(output));
+  }
   // A complete content union is fitted with the smallest translation using
   // current native viewport units. Scaling, origin, and oversize are policy
   // inputs rather than a hard-coded screenshot resolution or multiplier.

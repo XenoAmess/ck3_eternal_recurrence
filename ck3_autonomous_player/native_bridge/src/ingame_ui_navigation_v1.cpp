@@ -6,6 +6,9 @@
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
 #include "xar_bridge/ck3_12004_ingame_ui.hpp"
+#include "xar_bridge/ck3_12004_holy_site_ui.hpp"
+#include "xar_bridge/ck3_12004_holy_site_adoption_entry.hpp"
+#include "xar_bridge/ck3_12004_holy_site_adoption_detail.hpp"
 #include "xar_bridge/ck3_12004_title_map.hpp"
 #include "xar_bridge/title_map_navigation_v1_camera.hpp"
 #include "xar_bridge/current_first_heir_typed_windows_v1.hpp"
@@ -610,6 +613,7 @@ bool ReadCharacterWindow12004QueryV1(
 }
 bool ReadWindow(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *handler,
                 IngameUiWindowKindV1 kind,IngameUiResultV1 &out) noexcept {
+  if(kind==IngameUiWindowKindV1::holy_site)return ReadHolySiteUi12004(env,handler,out);
   if(env.gui_abi_revision==GuiAbiRevisionV1::crozier12004 && kind==IngameUiWindowKindV1::character)
     return ReadCharacterWindow12004QueryV1(env,handler,out);
   const auto n=static_cast<std::size_t>(kind);void *window=nullptr;
@@ -778,7 +782,7 @@ bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &co
 }
 bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
-  if(k>4 || o>9 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(k>6 || o>12 || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
   if(k==4)return o==0 && r.subject_id==0 && r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() && ValidateAppointmentWindowRequestV1(r.appointment);
   if(r.appointment.requested_title_id || r.appointment.candidate_offset || r.appointment.candidate_limit!=32 || r.appointment.breakdown_character_id || r.appointment.diagnostic_character_id)return false;
   if(!r.army_tooltip_kind.empty() || o==8 || o==9) {
@@ -787,6 +791,8 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
         (o==8?r.army_tooltip_receipt.empty():ArmyTooltipNonceValid(r.army_tooltip_receipt));
   }
   if(!r.army_tooltip_receipt.empty())return false;
+  if(k==5)return (o==0 && r.subject_id==0) || o==10 || o==11;
+  if(k==6)return o==12;
   if(r.operation==IngameUiOperationV1::query)return r.subject_id==0;
   if(r.operation==IngameUiOperationV1::open_knights)return r.window_kind==IngameUiWindowKindV1::knights && r.subject_id==0;
   if (o==2 && k==1) return r.subject_id <= static_cast<std::uint32_t>((std::numeric_limits<std::int32_t>::max)());
@@ -794,6 +800,11 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 }
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
+  if(r.window_kind==IngameUiWindowKindV1::holy_site_adoption)return revision==GuiAbiRevisionV1::crozier12004 &&
+      r.operation==IngameUiOperationV1::confirm_site_adoption;
+  if(r.window_kind==IngameUiWindowKindV1::holy_site)return revision==GuiAbiRevisionV1::crozier12004 &&
+      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::open_holy_site ||
+       r.operation==IngameUiOperationV1::open_holy_site_adoption);
   if(r.window_kind==IngameUiWindowKindV1::title_appointment)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;
   if(revision==GuiAbiRevisionV1::crozier12004 && r.window_kind==IngameUiWindowKindV1::character)
     return r.operation==IngameUiOperationV1::query;
@@ -811,6 +822,8 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
   else if(kind=="combat")r.window_kind=IngameUiWindowKindV1::combat;
   else if(kind=="knights")r.window_kind=IngameUiWindowKindV1::knights;
   else if(kind=="title_appointment")r.window_kind=IngameUiWindowKindV1::title_appointment;
+  else if(kind=="holy_site")r.window_kind=IngameUiWindowKindV1::holy_site;
+  else if(kind=="holy_site_adoption")r.window_kind=IngameUiWindowKindV1::holy_site_adoption;
   else return false;
   if(!bridge::JsonUnsignedField(json,"subject_id",id) || id>(std::numeric_limits<std::uint32_t>::max)())return false;
   r.subject_id=static_cast<std::uint32_t>(id);
@@ -826,6 +839,9 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="fit_combat_window")r.operation=IngameUiOperationV1::fit_combat_window;
     else if(operation=="hover_army_tooltip")r.operation=IngameUiOperationV1::hover_army_tooltip;
     else if(operation=="leave_army_tooltip")r.operation=IngameUiOperationV1::leave_army_tooltip;
+    else if(operation=="open_holy_site")r.operation=IngameUiOperationV1::open_holy_site;
+    else if(operation=="open_holy_site_adoption")r.operation=IngameUiOperationV1::open_holy_site_adoption;
+    else if(operation=="confirm_site_adoption")r.operation=IngameUiOperationV1::confirm_site_adoption;
     else return false;
   }
   if(json.find("\"army_tooltip_kind\"")!=std::string_view::npos &&
@@ -844,7 +860,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
 }
 std::string_view IngameUiWindowNameV1(IngameUiWindowKindV1 k) noexcept {
   switch(k){case IngameUiWindowKindV1::character:return "character_window";case IngameUiWindowKindV1::army:return "army_window";
-    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";default:return "unavailable";}
+    case IngameUiWindowKindV1::combat:return "combat_window";case IngameUiWindowKindV1::knights:return "knight_view";case IngameUiWindowKindV1::title_appointment:return "title_appointment";case IngameUiWindowKindV1::holy_site:return "holy_site_window";case IngameUiWindowKindV1::holy_site_adoption:return "decisiondetail_view";default:return "unavailable";}
 }
 bool ReadIngameUiGuiOwnerBindingV1(const ZhongguoScoreboardNativeEnvironmentV1 &env,
                                 IngameUiGuiOwnerBindingV1 &out) noexcept {
@@ -930,12 +946,38 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   void *handler=nullptr;
   if(!ResolveHandler(env,handler)){out.unavailable_reason="ingame_handler_unverified";return true;}
   if(request.window_kind==IngameUiWindowKindV1::title_appointment)return QueryAppointment(env,handler,request,out);
+  using AdoptionSnapshot=ck3_12004::religion::holy_site::AdoptionDetailSnapshot;
+  AdoptionSnapshot adoption{};
+  const bool confirm_adoption=request.operation==IngameUiOperationV1::confirm_site_adoption;
+  if(confirm_adoption){
+    ck3_12002::religion::Context frame{};frame.available=true;frame.capture_epoch=stamp.pump_epoch;
+    frame.date_raw=out.date_raw;frame.played_character_id=out.played_character_id;
+    const auto binding=ck3_12004::religion::holy_site::BindHolySiteAdoptionDetailImage12004(env.module_base,env.executable_sha256);
+    if(!ck3_12004::religion::holy_site::ReadHolySiteAdoptionDetail12004(binding,
+        reinterpret_cast<const void*>(stamp.jomini_state),frame,request.subject_id,adoption)){
+      out.unavailable_reason=adoption.unavailable_reason;return true;
+    }
+    out.holy_site_adoption_detail_verified=true;out.holy_site_adoption_can_confirm=adoption.native_can_confirm;
+    out.holy_site_adoption_regular_legality_observed=adoption.bypass_requirements_observed&&adoption.bypass_requirements_raw==0;
+    out.holy_site_adoption_parameter_id=adoption.parameter_holy_site_id;out.holy_site_adoption_selected_id=adoption.selected_holy_site_id;
+    ZhongguoScoreboardAccessV1 access{};void*root=nullptr,*widget=nullptr,*linked_handler=nullptr,*vt=nullptr;std::string name;
+    out.tree.scope_root_name="decisiondetail_view";
+    if(!ResolveNamedGuiWidgetV1(env,access,"decisiondetail_view","decisiondetail_view",root,widget)||!root||widget!=root||
+      root!=adoption.root||!Value(adoption.detail,0xA0,linked_handler)||linked_handler!=handler||
+      !ReadGuiWidgetRuntimeV1(access,root,name,vt,out.effective_visible,out.enabled)||name!="decisiondetail_view"||
+      !InspectNamedGuiSubtreeV1(access,env.module_base,root,name,out.tree)||out.tree.truncated){
+      out.unavailable_reason="adoption_confirm_actual_detail_root_unverified";return true;
+    }
+    out.window_exists=true;out.subject_id_available=true;out.current_subject_id=adoption.selected_holy_site_id;
+  }
   const bool current_select=IsModernArmyUiV1(env.gui_abi_revision) && request.operation==IngameUiOperationV1::select_army;
+  const bool holy_open=request.operation==IngameUiOperationV1::open_holy_site &&
+      HolySiteUiCanOpen12004(env,handler,request.subject_id);
   // Original SelectUnit creates/opens view6 itself. A not-yet-created or hidden
   // panel cannot block the action; only the subsequent independent query can
   // prove its visible subject. All owner/modal/full-generation gates remain.
-  if(!ReadWindow(env,handler,request.window_kind,out)) {
-    if(!current_select)return true;
+  if(!confirm_adoption && !ReadWindow(env,handler,request.window_kind,out)) {
+    if(!current_select && !holy_open)return true;
     // Failed root/type/stability reads can leave partial observations. They
     // cannot be promoted into the ACK of a later successful selection call.
     out.window_exists=false;out.effective_visible=false;out.enabled=false;
@@ -979,11 +1021,23 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   }
   const auto expected=request.operation==IngameUiOperationV1::open_knights ? static_cast<std::uint32_t>(snapshot.played_character_id):request.subject_id;
   if((request.operation==IngameUiOperationV1::open_character || request.operation==IngameUiOperationV1::open_combat ||
-      request.operation==IngameUiOperationV1::open_knights) && out.effective_visible && out.subject_id_available && out.current_subject_id==expected) {
+      request.operation==IngameUiOperationV1::open_knights || request.operation==IngameUiOperationV1::open_holy_site) && out.effective_visible && out.subject_id_available && out.current_subject_id==expected) {
     out.available=true;out.verification_pending=true;out.status="already_visible_verification_pending";return true;
   }
   void *subject=nullptr;bool invoked=false;
-  if(request.operation==IngameUiOperationV1::open_character) {
+  if(confirm_adoption){
+    if(!out.effective_visible||!out.enabled||!out.holy_site_adoption_detail_verified||
+      !out.holy_site_adoption_regular_legality_observed||!out.holy_site_adoption_can_confirm){
+      out.unavailable_reason="adoption_confirm_requires_visible_detail_and_regular_native_legality";return true;
+    }
+    const auto binding=ck3_12004::religion::holy_site::BindHolySiteAdoptionDetailImage12004(env.module_base,env.executable_sha256);
+    invoked=ck3_12004::religion::holy_site::ConfirmHolySiteAdoptionDetail12004(binding,adoption,out.native_dispatch_attempted);
+  }else if(request.operation==IngameUiOperationV1::open_holy_site) {
+    if(!holy_open){out.unavailable_reason="holy_site_registered_window_or_full_id_unverified";return true;}
+    invoked=InvokeHolySiteUi12004(env,handler,request.subject_id,out.native_dispatch_attempted);
+  } else if(request.operation==IngameUiOperationV1::open_holy_site_adoption) {
+    invoked=OpenHolySiteAdoptionEntry12004(env,handler,request.subject_id,context,out);
+  } else if(request.operation==IngameUiOperationV1::open_character) {
     if(!Object(env.module_base,kCharacterStorage,request.subject_id,0x18,subject)){out.unavailable_reason="character_full_id_not_found";return true;}
     invoked=InvokeCharacter(env.module_base,request.subject_id);
   } else if(request.operation==IngameUiOperationV1::select_army) {
@@ -1039,7 +1093,7 @@ bool ExecuteIngameUiNavigationV1(const ZhongguoScoreboardNativeEnvironmentV1 &en
   }
   out.dispatch_invoked=invoked;out.available=invoked;out.verification_pending=invoked;
   out.status=invoked?"acknowledged_verification_pending":"unavailable";
-  if(!invoked)out.unavailable_reason="native_navigation_fault";
+  if(!invoked){if(out.unavailable_reason.empty())out.unavailable_reason="native_navigation_fault";}
   else out.unavailable_reason.clear();
   return true;
 }
@@ -1527,7 +1581,7 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   std::ostringstream o;o<<std::boolalpha<<std::setprecision(std::numeric_limits<float>::max_digits10);
   o<<"{\"schema\":\"ck3-ingame-ui-window-v1\",\"accepted\":"<<v.available<<",\"available\":"<<v.available
    <<",\"status\":\""<<v.status<<"\",\"window_kind\":\"";
-  constexpr std::array<std::string_view,5> kinds{"character","army","combat","knights","title_appointment"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
+  constexpr std::array<std::string_view,7> kinds{"character","army","combat","knights","title_appointment","holy_site","holy_site_adoption"};o<<kinds[static_cast<std::size_t>(r.window_kind)]
    <<"\",\"window_name\":\""<<IngameUiWindowNameV1(r.window_kind)<<"\",\"requested_subject_id\":"<<r.subject_id
    <<",\"window_exists\":"<<v.window_exists<<",\"effective_visible\":"<<v.effective_visible<<",\"enabled\":"<<v.enabled
    <<",\"subject_id_available\":"<<v.subject_id_available<<",\"current_subject_id\":"<<v.current_subject_id
@@ -1536,6 +1590,19 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
   o<<",\"owner_character_id\":";
   if(current && !v.owner_character_id_available)o<<"null";else o<<v.owner_character_id;
   o<<",\"dispatch_invoked\":"<<v.dispatch_invoked<<",\"verification_pending\":"<<v.verification_pending
+   <<",\"native_dispatch_attempted\":"<<v.native_dispatch_attempted
+   <<",\"holy_site_adoption_entry\":{\"visibility_observed\":"<<v.holy_site_adopt_visibility_observed
+   <<",\"adopt_visible\":"<<v.holy_site_adopt_visible<<",\"regular_visible\":"<<v.holy_site_regular_visible
+   <<",\"eminent_visible\":"<<v.holy_site_eminent_visible<<",\"receiver_bound\":"<<v.holy_site_adopt_receiver_bound
+   <<",\"receiver_child_path\":\""<<JsonEscape(v.holy_site_adopt_receiver_child_path)
+   <<"\",\"native_adoption_legality_observed\":false,\"decision_confirm_invoked\":false}"
+   <<",\"holy_site_adoption_confirmation\":{\"selected_detail_verified\":"<<v.holy_site_adoption_detail_verified
+   <<",\"normal_requirements_legality_observed\":"<<v.holy_site_adoption_regular_legality_observed
+   <<",\"native_can_confirm\":"<<(v.holy_site_adoption_detail_verified?(v.holy_site_adoption_can_confirm?"true":"false"):"null")
+   <<",\"parameter_holy_site_id\":"<<(v.holy_site_adoption_parameter_id==0xFFFFFFFFU?"null":std::to_string(v.holy_site_adoption_parameter_id))
+   <<",\"selected_holy_site_id\":"<<(v.holy_site_adoption_selected_id==0xFFFFFFFFU?"null":std::to_string(v.holy_site_adoption_selected_id))
+   <<",\"original_confirm_attempted\":"<<(r.operation==IngameUiOperationV1::confirm_site_adoption&&v.native_dispatch_attempted)
+   <<",\"business_outcome_observed\":false}"
    <<",\"date_raw\":"<<v.date_raw<<",\"paused\":"<<v.paused<<",\"played_character_id\":"<<v.played_character_id
    <<",\"native_revision\":"<<revision<<",\"pump_epoch\":"<<v.pump_epoch<<",\"thread_id\":"<<v.thread_id
    <<",\"application_owner_thread_verified\":"<<v.application_owner_thread_verified

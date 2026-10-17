@@ -12695,6 +12695,9 @@ class GameplayBridgeService:
                 return method(subject_id, army_tooltip_kind, expected_revision=expected_revision)
             return method(subject_id, army_tooltip_kind, army_tooltip_receipt, expected_revision=expected_revision)
         method_name = {"query": "query_ingame_ui_window_v1", "open_character": "open_character_window_v1",
+            "open_holy_site": "open_holy_site_window_v1",
+            "open_holy_site_adoption": "open_holy_site_adoption_decision_v1",
+            "confirm_site_adoption": "confirm_holy_site_adoption_decision_v1",
             "select_army": "select_army_ui_v1", "open_combat": "open_combat_window_v1", "open_knights": "open_knights_window_v1",
             "hover_left_knights":"hover_combat_knights_v1", "hover_right_knights":"hover_combat_knights_v1",
             "fit_combat_window":"fit_combat_window_v1"}[operation]
@@ -12709,6 +12712,15 @@ class GameplayBridgeService:
 
     def open_character_window_v1(self, character_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("open_character", "character", character_id, expected_revision)
+
+    def open_holy_site_window_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_holy_site", "holy_site", holy_site_id, expected_revision)
+
+    def open_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("open_holy_site_adoption", "holy_site", holy_site_id, expected_revision)
+
+    def confirm_holy_site_adoption_decision_v1(self, holy_site_id: int, *, expected_revision: int) -> dict[str, object]:
+        return self._typed_ingame_ui_v1("confirm_site_adoption", "holy_site_adoption", holy_site_id, expected_revision)
 
     def select_army_ui_v1(self, subject_army_id: int, *, expected_revision: int) -> dict[str, object]:
         return self._typed_ingame_ui_v1("select_army", "army", subject_army_id, expected_revision)
