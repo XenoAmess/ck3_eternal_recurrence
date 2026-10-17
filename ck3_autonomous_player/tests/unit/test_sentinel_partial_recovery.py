@@ -5,6 +5,10 @@ import unittest
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "tools"))
 from g2_saved_campaign import sentinel_partial_recovery as recovery
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
+from xar_autoplayer.bridge.pending_character_interaction_context_contract import (
+    normalize_pending_interaction_id,
+)
 
 FIXTURE = json.loads((Path(__file__).parent / "fixtures" / "p41_sentinel_partial_projection.json").read_bytes())
 
@@ -18,6 +22,7 @@ class Tests(unittest.TestCase):
         return recovery.qualify_stable_observations(fixture["fresh1"], fixture["fresh2"],
             before=fixture["state"]["before"], launch=fixture["launch"],
             lifecycle=fixture["fresh1"]["succession_lifecycle"], normalize_lifecycle=lambda value: value,
+            normalize_pending_interaction_id=normalize_pending_interaction_id,
             until=qualification["until"], expected_birth=fixture["expected_birth"],
             observed_births=(fixture["expected_birth"], fixture["expected_birth"]))
 
@@ -34,6 +39,43 @@ class Tests(unittest.TestCase):
         self.assertEqual(current["date_raw"] - FIXTURE["state"]["before"]["date_raw"], 6 * 24)
         self.assertNotEqual(current["revision"], current["native_revision"])
         self.assertEqual(current["decision_identity"][0], "interaction")
+
+    def test_signed_interaction_identity_uses_its_canonical_contract(self):
+        # Only the pending identity comes from actual SEM4006. Replacing it in
+        # the earlier stable pair is synthetic, not successful recovery4005.
+        record = json.loads((Path(__file__).parent / "fixtures" /
+            "p41_signed_pending_interaction.json").read_bytes())
+        pending = record["semantic"]["pending_character_interaction"]
+        actual_id = pending["instance_id"]
+        self.assertEqual(actual_id, -1392508926)
+        for identity in (actual_id, -(2**31), 0, 2**31 - 1):
+            with self.subTest(valid_identity=identity):
+                fixture = copy.deepcopy(FIXTURE)
+                for key in ("fresh1", "fresh2"):
+                    fixture[key]["pending_character_interaction"] = {
+                        **pending, "instance_id": identity}
+                current = self.observed(fixture)
+                self.assertEqual(current["decision_identity"][1]["instance_id"], identity)
+        for identity in (-1, -(2**31) - 1, 2**31, True):
+            with self.subTest(invalid_identity=identity):
+                fixture = copy.deepcopy(FIXTURE)
+                for key in ("fresh1", "fresh2"):
+                    fixture[key]["pending_character_interaction"]["instance_id"] = identity
+                with self.assertRaises(ValueError):
+                    self.observed(fixture)
+
+    def test_event_and_character_identity_contracts_remain_separate(self):
+        fixture = copy.deepcopy(FIXTURE)
+        for key in ("fresh1", "fresh2"):
+            fixture[key]["pending_character_interaction"] = None
+            fixture[key]["active_event"] = {"instance_id": 0, "option_count": 1}
+        with self.assertRaises(ValueError):
+            self.observed(fixture)
+        fixture = copy.deepcopy(FIXTURE)
+        for key in ("fresh1", "fresh2"):
+            fixture[key]["pending_character_interaction"]["sender_character_id"] = 0
+        with self.assertRaises(ValueError):
+            self.observed(fixture)
 
     def test_project_only_failed_branch_preserves_durable_state(self):
         state = copy.deepcopy(FIXTURE["state"])
@@ -87,6 +129,7 @@ class Tests(unittest.TestCase):
             recovery.qualify_stable_observations(FIXTURE["fresh1"], FIXTURE["fresh2"],
                 before=FIXTURE["state"]["before"], launch=FIXTURE["launch"],
                 lifecycle=FIXTURE["fresh1"]["succession_lifecycle"], normalize_lifecycle=lambda x: x,
+                normalize_pending_interaction_id=normalize_pending_interaction_id,
                 until=qualified["until"], expected_birth=FIXTURE["expected_birth"],
                 observed_births=(FIXTURE["expected_birth"], FIXTURE["expected_birth"] + 1))
 

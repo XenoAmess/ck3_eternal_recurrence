@@ -36,6 +36,10 @@
    至少一份public revision != native revision的帧夹具：规划/Service绑public，
    wire.expected_revision绑native；两者各自的前后帧及错误raw packet均须核对。
    等号夹具通过不能代替此检查，旧已被新链推翻的GREEN保留但明确superseded。
+   处理原生身份前先查并复用该域已有canonical normalizer；opaque handle不能套
+   positive_int、取abs、转unsigned或重新编号。恢复、controller、status等辅助层也须
+   调用同一合同，事件实例与角色ID各按自己的合同；测试覆盖实际高位句柄及null sentinel，
+   不因常见正数夹具通过就自行缩窄合法范围。
 6. 性能修改保持玩法策略中立；需要改变机会范围、战争意愿或风险偏好时另列玩法变更，
    不能把它计作性能收益。不以模拟/ACK/单个样本宣称真实战果或普遍优于原版。
 

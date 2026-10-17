@@ -1,0 +1,23 @@
+{
+  "schema": "xar.p41.signed-pending-interaction-projection/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_name": "4006-1-result.json",
+  "source_bytes": 29762,
+  "source_sha256": "77503cc837b7044adc152e6ccb5022f6fb375d2fb68047b3b94298db7570796e",
+  "semantic": {
+    "snapshot_id": "native:3618",
+    "revision": 3601,
+    "native_revision": 3618,
+    "date_raw": 53255880,
+    "paused": true,
+    "map_ready": true,
+    "active_event": null,
+    "pending_character_interaction": {
+      "instance_id": -1392508926,
+      "sender_character_id": 32887,
+      "auto_accept_notification": false,
+      "source": "native"
+    }
+  },
+  "evidence_limit": "Actual single paused semantic read. Tests mutate both historical stable frames with its identity as synthetic cases; no successful recovery4005 is claimed."
+}

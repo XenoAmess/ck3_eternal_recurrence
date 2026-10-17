@@ -146,7 +146,8 @@ def projected_state(state, final_frame, receipt_path):
     return projected
 
 def qualify_stable_observations(first_body, second_body, *, before, launch,
-        lifecycle, normalize_lifecycle, until, expected_birth, observed_births):
+        lifecycle, normalize_lifecycle, normalize_pending_interaction_id,
+        until, expected_birth, observed_births):
     """Caller supplies two actual fresh reads and their same kernel generation."""
     require(type(expected_birth) is int and expected_birth > 0
         and observed_births == (expected_birth, expected_birth), "full Game birth changed")
@@ -159,7 +160,8 @@ def qualify_stable_observations(first_body, second_body, *, before, launch,
             and frame["native_revision"] >= before["native_revision"], "clock bound/revision changed")
         interaction = body.get("pending_character_interaction")
         if isinstance(interaction, dict):
-            require(type(interaction.get("instance_id")) is int and interaction["instance_id"] > 0
+            require(normalize_pending_interaction_id(interaction.get("instance_id"))
+                    == interaction["instance_id"]
                 and type(interaction.get("sender_character_id")) is int and interaction["sender_character_id"] > 0
                 and interaction.get("source") == "native" and type(interaction.get("auto_accept_notification")) is bool,
                 "complete native interaction identity required")

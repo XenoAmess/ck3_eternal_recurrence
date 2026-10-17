@@ -1,0 +1,59 @@
+{
+  "schema": "xar.pending-opaque-id-auxiliary-correction/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T12:02:45.659614+00:00",
+  "base_public_commit": "8ea1d5378f05b95de2a87a801dab8985f5bf3b04",
+  "changed_functions": [
+    "qualify_stable_observations"
+  ],
+  "all_other_pure_functions_ast_equal": true,
+  "canonical_module": "xar_autoplayer/bridge/pending_character_interaction_context_contract.py",
+  "normalizer_and_integer_validator_ast_equal_frozen_sdk42": true,
+  "identity_representation_preserved": true,
+  "event_and_character_contracts_unchanged": true,
+  "original_failed_control": {
+    "name": "4005-1-result.json",
+    "bytes": 541,
+    "sha256": "bc46c53fbbc1806b9dee90ac5e8a24470502b575d19b81a1a249777919b121ae",
+    "client_error": "sentinel partial recovery denied: complete native interaction identity required",
+    "replay_allowed": false
+  },
+  "original_failed_window": {
+    "window": 8,
+    "days": 1413,
+    "cycles": 3030,
+    "observed_partial_days": 5
+  },
+  "tests": {
+    "methods": 8,
+    "subtests": 26,
+    "native_io_calls": 0,
+    "actual4006_single_frame_projection": true,
+    "two_frame_identity_mutations_synthetic": true,
+    "optimized_python": "8 methods PASS"
+  },
+  "sdk42_business_source_changed": false,
+  "public_correction_installed_into_runtime": false,
+  "published_inputs": {
+    "tools/g2_saved_campaign/sentinel_partial_recovery.py": {
+      "bytes": 10662,
+      "sha256": "5adca5f78a4e95ae7673e3d6ef9eb219452dec9cb9a11200ec38180d33cfd897",
+      "basis": "published Git blob"
+    },
+    "ck3_autonomous_player/tests/unit/test_sentinel_partial_recovery.py": {
+      "bytes": 7808,
+      "sha256": "4731582e950351d19b31cd6e68735e82ec16e8f0dccc0c72a4633c55b877f0b9",
+      "basis": "published Git blob"
+    },
+    "ck3_autonomous_player/tests/unit/fixtures/p41_signed_pending_interaction.json": {
+      "bytes": 830,
+      "sha256": "0f61496f5cb7fbcdbb60b664a1275284047fb96b85e3a3bb53d1cbc2051ffd56",
+      "basis": "published Git blob"
+    },
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py": {
+      "bytes": 47873,
+      "sha256": "a0cec914987b8e430fc5660d0ec248fed9179b8c23676b4a185c177a94a58177",
+      "basis": "published Git blob"
+    }
+  }
+}
