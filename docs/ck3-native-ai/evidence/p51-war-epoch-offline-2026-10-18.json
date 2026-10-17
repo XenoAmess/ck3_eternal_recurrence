@@ -1,0 +1,84 @@
+{
+  "schema": "xar.p51-war-epoch-offline-validation/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-17T19:49:01.873341+00:00",
+  "ended_at_utc": "2026-10-17T19:49:07.246114+00:00",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-war-audit01\\seal_epoch.py",
+    "bytes": 4416,
+    "sha256": "d255d334e5f1e4680d910d6729ddf5a1a0c1957385740658727ee8ff71a22887"
+  },
+  "baseline_commit": "5c3d0a483e3578dec840465e5330f8566dead38c",
+  "epoch": "73-plus-war-epoch01",
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py",
+    "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 5.1505374000407755,
+  "stdout": ".............................                                            [100%]\n29 passed in 4.27s\n",
+  "stderr": "ordinary camera failed request_id=auto-camera-254a93c57386-1 reason=camera is outside this synthetic Service fixture\n",
+  "diff_check_exit_code": 0,
+  "Service_NativeDriver_strategy_modified": false,
+  "unchanged_critical_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 859835,
+      "sha256": "b33189d7d050661e30e7c288b71235e3c643b299bb106fc43feb1f882b47ca33"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1584862,
+      "sha256": "6e391fbc2253eaaec0a6184aa9e6c6d34db5241a9270a25b112bd2d59798b214"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1027237,
+      "sha256": "b6fd6f0e8f4e07d047dcbc3ba3bd114166ac4e5a1351e6dfe06fce1d02bb455f"
+    }
+  ],
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 48458,
+      "sha256": "0aff93b341ef759acf6125b5a2aa3943f3a16d4d9ec5b76ce4801756b32324d9"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+      "bytes": 18652,
+      "sha256": "aefdb2c6cd88a467362e7b310025f5aef294ad33982024306470b1e6cae0fa9e"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 12375,
+      "sha256": "171f6a7f496a8020526e8ce97774005549bb7af2e669665682d2ea646c1923be"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_spending_epoch_v2.py",
+      "bytes": 9104,
+      "sha256": "65323891afa363c99b649f117c2b0474ee5f90c131c367381c7c15d1595f7988"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\p50-war-reinforcement-tradeoff-2026-10-18.md",
+      "bytes": 16187,
+      "sha256": "4e75fdc3bbdcdf5315185cd3dfa13bf9b8521daeff6dfdf4e5c15eda2d73f631"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p51-war-epoch-actual-review-2026-10-18.json",
+      "bytes": 43608,
+      "sha256": "c6e0cbcf15bc8c05678c400c51a86f57aa88b34aef1a58d2f0a2f325e5019a8c"
+    }
+  ],
+  "current_SDK48_or_perf73_modified": false,
+  "actual_Game_MCP_or_Native_calls": 0,
+  "material_hire_or_war_outcome_verified": false
+}

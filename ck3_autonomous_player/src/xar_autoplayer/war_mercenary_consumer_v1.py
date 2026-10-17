@@ -25,6 +25,7 @@ from .m5_observed_opportunity_selector import observed_frame
 from .war_reinforcement_tradeoff_v1 import (
     _count as observed_army_count,
     assess_mercenary_reinforcement_v1, observe_war_spending_priority_v1,
+    observe_mercenary_purchase_model_need_v1,
 )
 
 _LEDGER = "war-mercenary-pending-v1.json"
@@ -115,6 +116,11 @@ def plan_war_mercenary_turn_v1(
                 return {**plan, "war_mercenary_status": "employment_observed_await_fresh_raised_inventory_no_duplicate_hire",
                         "war_mercenary_receipt": prior}
             break
+    if pending is None:
+        need = observe_mercenary_purchase_model_need_v1(priority)
+        plan = {**plan, "war_mercenary_purchase_model_need_v1": need}
+        if need["query_can_change_current_headcount_flip_model"] is False:
+            return {**plan, "war_mercenary_status": "headcount_model_has_no_current_deficit_keep_war_action"}
     if QUERY_CAPABILITY not in bridge_capabilities:
         return {**plan, "war_mercenary_status": "native_query_capability_unavailable"}
     context = _context(history, snapshot)
