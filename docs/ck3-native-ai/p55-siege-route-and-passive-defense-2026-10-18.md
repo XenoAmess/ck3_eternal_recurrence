@@ -26,3 +26,11 @@ R2 AUTO265（源 UTC 2026-10-17T21:07:08Z–21:07:53Z，native10292/public83/raw
 - `git diff --check` 通过。首次新增 Native fixture 错把 sentinel 的冻结 combat watch count 当作结束时战斗数量，严格原校验如实拒绝；仅修正测试夹具，未放宽生产校验。
 
 不宣称已经解围、已经胜利、四天无接敌、battle model 已校准，亦不增加 M6/M7 验收分数。多军 V2 模型与实际战斗校准继续独立进行，不能由本次非攻击续行外推完成。
+
+## 2026-10-18：保全机器理由合同的 CI 更正
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。公共 `410e1b3f` 的 Official CI 在 LIFE 失败步骤出现三条 RED：新增兵力文案前缀改写了 `plan.reason`，随后被 Service 复制进 `lifestyle_deferred_war_red.reason`，破坏精确的 `route input unavailable` 合同。此为 P55 展示实现错误，不改旧测试来接受前缀。
+
+修复保持原机器 `reason` 和所有 deferred reason 原样，把用户文案放进独立 `war_decision_presentation_v1`。该字段明确绑定源 phase 和 selected step，经已有 `compact_plan` 到 overlay 的 `reason_text` 实际消费；LIFE 等后续消费者改变动作后，两层展示检查都会弃用旧动作文案。输入与画面文案因而各有合法消费路径，不以无人读取的 annotation 冒充展示完成。
+
+失败步骤的原四个测试文件重新运行：92 tests、14 subtests 通过，原三条精确理由断言未改。另重跑战争与实际 feed/formatter 回归。精确 UTC、源码 SHA 和本次验证见 [CI 理由合同修复证据](evidence/p55-reason-contract-ci-fix-2026-10-18.json)。本次只改公共源码与测试；当前 R3、SDK、feeder、Driver 和 overlay owner 均未改动或重启。

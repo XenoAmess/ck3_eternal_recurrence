@@ -242,7 +242,14 @@ def reason_text(plan):
     reasons["native_war_route_preview"] = "移动前按当前日期和起点核对通往战争目标的实际路线。"
     reasons["native_war_candidate_contact_horizon"] = "路线存在交叉，先核对未来一天双方到达与接敌时序。"
     reasons["native_war_capital_regroup_hold_progress"] = "进攻路线均不安全，暂守当前首都，推进后重评战争与路线。"
-    return reasons.get(phase, plan.get("reason") or "等待实际决策理由。")
+    summary = reasons.get(phase, plan.get("reason") or "等待实际决策理由。")
+    presentation = plan.get("war_decision_presentation_v1")
+    if (isinstance(presentation, dict) and isinstance(presentation.get("reason"), str)
+            and presentation["reason"].strip()
+            and presentation.get("phase") == phase
+            and presentation.get("selected_step") == plan.get("selected_step")):
+        return presentation["reason"][:1200] + "\n" + summary
+    return summary
 
 
 def war_reason(plan):

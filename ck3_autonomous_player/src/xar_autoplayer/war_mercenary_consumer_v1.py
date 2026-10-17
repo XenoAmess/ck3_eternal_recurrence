@@ -176,7 +176,7 @@ def _plan_war_mercenary_turn_v1(
 
 
 def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object]:
-    """Show the selected cash-risk war separately from all shared-force enemies.
+    """Prepare display text without changing the machine-readable reason.
 
     A concrete war order keeps priority over procurement. The priority union
     still matters on those turns; the nearby siege defenders are not the whole
@@ -218,9 +218,11 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
     else:
         text += "具体战争行动优先；雇佣报价与抵达未核实。"
     text += "头数不代表胜率。"
-    original = plan.get("war_decision_original_reason_v1", plan.get("reason"))
-    return {**plan, "reason": text + (" " + original if isinstance(original, str) else ""),
-            "war_decision_original_reason_v1": original,
+    return {**plan,
+            "war_decision_presentation_v1": {
+                "phase": plan.get("phase"), "selected_step": plan.get("selected_step"),
+                "reason": text,
+            },
             "war_decision_reason_scope_v1": {
                 "cash_priority_war_id": war.get("war_id"),
                 "current_cash_priority_war_enemy_soldiers": war.get("observed_enemy_raised_soldiers"),

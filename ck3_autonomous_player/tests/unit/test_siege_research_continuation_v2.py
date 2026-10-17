@@ -5,6 +5,7 @@ AUTO's war/target. First-hop replies in the staged test are counterfactual;
 actual259/261 replies, native identities and strength amounts are unchanged.
 """
 import copy
+import importlib.util
 import json
 from pathlib import Path
 import unittest
@@ -134,11 +135,33 @@ class SiegeResearchContinuationTests(unittest.TestCase):
         original = packet["actual_r3_finance_reason_example"]["actual_plan"]
         result = annotate_war_decision_reason_v1(original)
         self.assertEqual(result["selected_step"], "move-army-167772577-to-2622")
-        self.assertIn("我军1357", result["reason"])
-        self.assertIn("优先保地战敌555", result["reason"])
-        self.assertIn("全部主导战争敌军4783（去重）", result["reason"])
-        self.assertIn("雇佣报价与抵达未核实", result["reason"])
-        self.assertNotIn("合同172", result["reason"])
+        self.assertEqual(result["reason"], original["reason"])  # Machine contract is unchanged.
+        # Exercise the actual compact feed and display formatter. Neither
+        # import invokes a desktop, process, SDK, or live overlay operation.
+        root = Path(__file__).parents[3]
+        modules = []
+        for name in ("decision_observation_feed", "live_decision_overlay"):
+            path = root / "tools/g2_saved_campaign" / (name + ".py")
+            spec = importlib.util.spec_from_file_location("war_reason_test_" + name, path)
+            module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+            modules.append(module)
+        compact = modules[0].compact_plan(result)
+        self.assertEqual(compact["reason"], original["reason"])
+        rendered = modules[1].reason_text(compact)
+        self.assertIn("我军1357", rendered)
+        self.assertIn("优先保地战敌555", rendered)
+        self.assertIn("全部主导战争敌军4783（去重）", rendered)
+        self.assertIn("雇佣报价与抵达未核实", rendered)
+        self.assertNotIn("合同172", rendered)
+        # A later LIFE consumer may select a different action; old bound war
+        # wording must not describe that action as the earlier movement.
+        superseded = {**result, "phase": "lifestyle_private_selection", "selected_step": "private-life-perk",
+                      "reason": "spend the native legal perk", "lifestyle_deferred_war_red": {
+                          "reason": "route input unavailable"}}
+        projected = modules[0].compact_plan(superseded)
+        self.assertNotIn("war_decision_presentation_v1", projected)
+        self.assertEqual(modules[1].reason_text(projected), "spend the native legal perk")
+        self.assertEqual(modules[1].reason_text(superseded), "spend the native legal perk")
         self.assertEqual(result["war_decision_reason_scope_v1"]["primary_war_ids"], [100663323, 134217796])
         self.assertIsNone(result["war_decision_reason_scope_v1"]["battle_win_probability"])
 

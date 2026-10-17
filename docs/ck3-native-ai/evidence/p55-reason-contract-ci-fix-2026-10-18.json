@@ -1,0 +1,80 @@
+{
+  "schema": "xar.ck3.p55-reason-contract-ci-fix/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T21:59:30.162812+00:00",
+  "base_commit": "410e1b3ff0c41d0893c72c096aa89421c3cc42b3",
+  "failure_sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\CI-DIAGNOSIS-410e1b3f.json",
+      "bytes": 3116,
+      "sha256": "0d20e138f4ef67383102ec65c48e35a26665e4e8c98916a42fde7f6744158571"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\CI-FAILED-410e1b3f-static.log",
+      "bytes": 25921,
+      "sha256": "a975dfe7bf961c4e6d46d8c65222bc64299551d3d20abeb22ecc032fab294715"
+    }
+  ],
+  "changed_sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "bytes": 16299,
+      "sha256": "8cabf7431271e9ecf6e6054b3514ca5a9002031c206710f6baac40d11b426c39"
+    },
+    {
+      "path": "tools/g2_saved_campaign/decision_observation_feed.py",
+      "bytes": 5634,
+      "sha256": "b081412623c81a6af00f12f3acb96f6e17454d2fa9af260a3bc2a953255d231e"
+    },
+    {
+      "path": "tools/g2_saved_campaign/live_decision_overlay.py",
+      "bytes": 32166,
+      "sha256": "ad9823990aa7bcd6188bcdecd3820692954734199a87426f2062396e4c748857"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+      "bytes": 18406,
+      "sha256": "0a72ed6e633147b9d7297971f2584fa7779122ffeac1e1ab97d47712832dd960"
+    },
+    {
+      "path": "docs/ck3-native-ai/p55-siege-route-and-passive-defense-2026-10-18.md",
+      "bytes": 5823,
+      "sha256": "d2a5c7083b362672ba8d72f2f52a432cd7a7e74f0a2a95299ade28dad556b752"
+    }
+  ],
+  "cause": "P55 visible war text prefixed plan.reason before LIFE copied it into the exact lifestyle_deferred_war_red.reason contract",
+  "fix": "preserve machine reason and deferred reason byte-for-byte; separate phase/selected-step-bound war_decision_presentation_v1 consumed by real compact_plan then existing overlay reason_text",
+  "stale_presentation_guard": "both compact projection and formatter reject text after a later consumer changes phase or selected_step",
+  "tests": [
+    {
+      "scope": "exact Official CI failed step: original four native legal lifestyle files",
+      "result": "92 passed,14 subtests in4.53s",
+      "chunk": "2ab41c",
+      "original_three_assertions_unchanged": true
+    },
+    {
+      "scope": "war/finance/profile/P52/P55 plus compact decision feed and overlay resilience",
+      "result": "55 passed,35 subtests in6.85s",
+      "chunk": "0e8509"
+    },
+    {
+      "scope": "git diff --check",
+      "result": "pass",
+      "chunk": "7d025a"
+    }
+  ],
+  "not_changed": [
+    "procurement decisions",
+    "selected-step admission",
+    "Service deferred reason contract",
+    "current R3 owner",
+    "current feeder",
+    "current Driver",
+    "frozen SDKs",
+    "running overlay"
+  ],
+  "live_calls": 0,
+  "desktop_calls": 0,
+  "runtime_restarts": 0,
+  "ci_rerun_or_remote_success_claimed": false
+}

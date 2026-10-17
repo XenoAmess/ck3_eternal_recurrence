@@ -52,6 +52,14 @@ def compact_plan(actual):
     if isinstance(admission, dict):
         plan["prewar_force_admission"] = {key: admission[key] for key in (
             "status", "reason", "declare_admitted", "force_risk_qualified", "force_risk") if key in admission}
+    presentation = actual.get("war_decision_presentation_v1")
+    if (isinstance(presentation, dict) and isinstance(presentation.get("reason"), str)
+            and presentation.get("phase") == actual.get("phase")
+            and presentation.get("selected_step") == actual.get("selected_step")):
+        plan["war_decision_presentation_v1"] = {
+            "phase": actual.get("phase"), "selected_step": actual.get("selected_step"),
+            "reason": presentation["reason"][:1200],
+        }
     return plan
 
 
