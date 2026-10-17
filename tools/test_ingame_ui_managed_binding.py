@@ -182,11 +182,36 @@ class ManagedUiBindingTests(unittest.TestCase):
             self.assertFalse(driver.records[-1][1]['ok'])
             self.assertEqual(driver.records[-1][1]['result']['raw_native_ui_result'], driver.raw)
 
-    def test_current_character_scope_remains_rejected_without_send(self):
-        driver = self.fixture()
+    def test_current_character_scope_matches_exact_build_without_unsupported_send(self):
+        from xar_autoplayer.bridge.version_identity import CK3_12003
+        before = self.snapshot(False)
+        before['diagnostics']['hello'] = {
+            'expected_ck3_version': CK3_12003.game_version,
+            'expected_ck3_sha256': CK3_12003.executable_sha256}
+        driver = self.fixture(before=before)
         with self.assertRaisesRegex(ValueError, 'army query and select only'):
             driver._ingame_ui_v1('open_character', 'character', 33437, expected_revision=4)
         self.assertEqual(driver.calls, [])
+
+        for operation, kind, subject, reason in [
+            ('open_combat', 'combat', 18, 'army query and select only'),
+            ('query', 'current_character', 0, 'unsupported typed UI operation/window')]:
+            driver = self.fixture()
+            with self.subTest(operation=operation, kind=kind), self.assertRaisesRegex(ValueError, reason):
+                driver._ingame_ui_v1(operation, kind, subject, expected_revision=4)
+            self.assertEqual(driver.calls, [])
+
+        # Exact4's separately opted-in typed Any route now admits Character opens.
+        raw = self.raw(operation='open_character', kind='character', subject=33437)
+        raw.update(native_army_id=0, owner_character_id_available=False,
+            owner_character_id=None, native_dispatch_attempted=True)
+        driver = self.fixture(raw=raw)
+        got = driver._ingame_ui_v1('open_character', 'character', 33437, expected_revision=4)
+        self.assertEqual(len(driver.calls), 1)
+        self.assertEqual(driver.calls[0][1]['request_fields'],
+            {'window_kind': 'character', 'subject_id': 33437, 'operation': 'open_character'})
+        self.assertTrue(got['verification_pending'])
+        self.assertTrue(driver.records[-1][1]['ok'])
 
     def test_actual_result_revision_actor_date_normalizer_remains(self):
         for key, value in [('native_revision',4), ('played_character_id',33437), ('date_raw',0)]:
