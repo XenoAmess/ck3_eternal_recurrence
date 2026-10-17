@@ -1,0 +1,23 @@
+{
+  "schema": "xar.user-explicit-permanent-assets.v1",
+  "registry_version": 1,
+  "scope": "Only individually identified assets covered by a current explicit user instruction for permanent retention; applies across execution machines by exact machine_id and replica identity.",
+  "rules": {
+    "read_before_every_deletion_plan_and_execution": true,
+    "exact_asset_deletion_forbidden": true,
+    "whole_ancestor_deletion_forbidden": true,
+    "unrelated_sibling_assets_follow_normal_policy": true,
+    "automatic_expiry_allowed": false,
+    "integrity_and_capacity_review_revokes_retention": false,
+    "missing_or_unreadable_registry_means_deletion_checks_incomplete": true,
+    "hash_or_replica_identity_mismatch_means_review_not_deletion": true,
+    "historical_default_permanent_retention_is_not_new_authority": true
+  },
+  "asset_entry_required_fields": [
+    "asset_id", "replica_id", "machine_id", "absolute_path", "bytes", "sha256",
+    "registered_at_utc", "source_copy_receipt", "asset_registration_manifest",
+    "user_explicit_permanent", "no_autoexpiry", "expires_at_utc",
+    "deletion_forbidden", "ancestor_deletion_forbidden", "integrity_capacity_review_at_utc"
+  ],
+  "assets": []
+}
