@@ -23,3 +23,7 @@ Root 随后实际执行控制1734，只读取新 SEM1735／1736，两帧一致�
 这不是只读准入失败：`original_submission_may_have_applied=True`、`read_only_precondition=False`，不宣称原时钟物理上未执行。公共6项／18个变形子例包括 public／Native序号不同、完整Game出生身份负例及持久业务状态保留；原3项cached-parent dispatcher／持久化测试属于外置场次链，不冒称公共纯API重建了整条队列。SDK42仍未启用；同SDK局部恢复不等于连续30年完成。
 
 后续 Root 以 `ROOT-P41-CONTINUITY-RESUME02-ADMITTED.json`（SHA-256 `cf9c847adfbffa77d955d852a557cf3edac111c5b6f3ce36b3bc89dc800f77b1`）重新准入，first FULL1826在raw53221848／1979周期建立窗口8，交接截点报告该窗口已推进266余日；Game／SDK／OBS未重启。另一个presentation watcher30639因读取原子替换中的NEXT元数据时遇PermissionError退出，造成提示滞后；这是独立展示故障，不据此重置游戏窗口或称游戏再次堵塞。本公共包未修改该watcher，不宣称提示持续健康。
+
+## 公共构建依赖的独立勘误
+
+`9c7e6a81` 的 Official39028836692 在隔离 Army 生产器链接阶段失败：并行合入的 event-time supply callback 调用既有 `ResolveObjectiveProvince`，旧测试源清单漏了实现。外部 `26449eb2` 已补真实 province.cpp 与输入header；同类 standalone parent-join CMake target另补既有STATIC runtime archive依赖，保留原两个join-enabled wrapper，不写stub、不删除观察字段，也不运行bridge DLL或游戏。[原RED与修正范围](research/p41-natural-paused-boundary/CI-PROVINCE-DEPENDENCY-CORRECTION.json)分开记录，真实MSVC／fixture结果等后继Official；完整公共CMake target未在本机重建，不宣称其已通过。

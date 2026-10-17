@@ -12,6 +12,10 @@ if(BUILD_TESTING AND WIN32)
     src/ck3_12004_supply_parent_join_whole_test.cpp
     src/ck3_12004_actual_supply_callback_journal.cpp
     src/ck3_12004_actual_loss_writer_journal.cpp)
+  # The event-time province read uses the real resolver from the runtime archive.
+  # Keep the two local join-enabled wrappers; no bridge DLL or game is launched.
+  target_link_libraries(xar_ck3_12004_supply_parent_join_whole_test
+    PRIVATE xar_ck3_12002_runtime)
   target_include_directories(xar_ck3_12004_supply_parent_join_whole_test PRIVATE include)
   target_compile_features(xar_ck3_12004_supply_parent_join_whole_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_supply_parent_join_whole_test PRIVATE

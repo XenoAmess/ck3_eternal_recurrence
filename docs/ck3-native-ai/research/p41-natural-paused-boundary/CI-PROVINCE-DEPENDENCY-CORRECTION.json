@@ -1,0 +1,37 @@
+{
+  "schema": "xar.isolated-native-army-province-link-correction/v1",
+  "collector_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "runner_machine_id": "unknown",
+  "observed_at_utc": "2026-10-17T11:37:37.237817+00:00",
+  "original_run": {
+    "conclusion": "failure",
+    "headSha": "9c7e6a817b39dda1d14f59b1cf8395ee16a17cf0",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39028836692"
+  },
+  "failure": "LNK2019 ResolveObjectiveProvince referenced by event-time supply callback",
+  "originating_public_commit": "249e25a5239fe812ffc22495cad5d17db992d871",
+  "correction": "Link the existing real province resolver; do not stub or omit the event-time observation. Isolated producer adds province.cpp and its header input, parent-join CMake target links existing STATIC runtime archive.",
+  "isolated_translation_units": 18,
+  "all_declared_inputs_exist": true,
+  "native_production_source_changes": false,
+  "game_or_live_driver_contacted": false,
+  "public_cmake_whole_target_rebuilt_locally": false,
+  "actual_msvc_and_fixtures": "PENDING_OFFICIAL_SUCCESSOR",
+  "inputs": {
+    "tools/check_native_army_routes_ci.py": {
+      "bytes": 8965,
+      "sha256": "305d4c9f463973f2949c4f67414c0449824b6c5afb334b934dde37005dd78aa9",
+      "basis": "published Git blob"
+    },
+    "ck3_autonomous_player/native_bridge/cmake/actual_supply_callback_observations_12004.cmake": {
+      "bytes": 4576,
+      "sha256": "144485aad348c4db74fc5fa56d0b041ae01c88ebc33a39145a6a0f54dc42b23f",
+      "basis": "published Git blob"
+    }
+  },
+  "isolated_producer_fix_commit": "26449eb2676b4ccb71cb818fb0cc398b0a5fd1e6",
+  "local_followup_scope": "Only add the missing existing runtime archive link to the standalone parent-join consumer and retain this original RED record.",
+  "native_cpp_source_changes": false,
+  "public_native_test_build_configuration_change": true
+}
