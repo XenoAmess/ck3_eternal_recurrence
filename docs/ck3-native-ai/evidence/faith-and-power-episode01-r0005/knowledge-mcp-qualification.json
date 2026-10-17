@@ -1,0 +1,169 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T12:09:09.390120+00:00",
+  "kind": "new historical knowledge payload only, actual production create_server + real MCP Client; no native DTO/driver/game",
+  "python": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "tests": 1,
+  "failures": 0,
+  "errors": 0,
+  "actual_mcp_calls": [
+    {
+      "action": "adopt",
+      "full_structured_content_sha256": "272bd22b2a8f945ba4ffc8665eebffb1d7650646908102c49828605a10245838",
+      "full_response_preserved": false,
+      "qualification": "source_reviewed_static",
+      "state_observed": false,
+      "native_legality": null,
+      "action_ready": false,
+      "historical_case_evidence": [
+        {
+          "case_id": "faith-e01-r5-nadjaf-20261017",
+          "kind": "historical_native_observation",
+          "game_build": "1.20.0.4",
+          "machine_id": "4-8e1c2f1861",
+          "run_id": "4-8e1c2f1861--faith-and-power--R0005",
+          "observed_until_utc": "2026-10-17T12:04:35.487269+00:00",
+          "record_path": "docs/ck3-native-ai/evidence/faith-and-power-episode01-r0005/adoption-case.json",
+          "record_sha256": "8ca7a9425b0e7530702996012194d34df0f160453eb6b9194c126c1f991547c7",
+          "scope": {
+            "pid": 12556,
+            "connection_generation": 1,
+            "actor_id": 15893,
+            "rite_id": 15,
+            "faith_id": 50,
+            "faith_main_rite_id": 13,
+            "date_raw": 51394920
+          },
+          "observed": {
+            "membership_added": true,
+            "new_faith50_level": "regular",
+            "same_full_id_type_barony": true,
+            "faith51_association_retained": true,
+            "faith51_after_level": "eminent",
+            "inventory_before_after_empty": true,
+            "actual_piety_paid": 1000,
+            "cached_active_after": false,
+            "evaluated_active_after": false,
+            "post_confirm_detail_unavailable": true,
+            "post_adoption_checkpoint_saved": true,
+            "checkpoint_sha256": "0f1774d0be0f7652ce8dda22ce76a1eceeb36b6f9d42ae15422eae5bfd4cd18f"
+          },
+          "unknown_or_not_verified": [
+            "faith51 prior same-run grade and unchanged-grade claim",
+            "nonempty artifact retention",
+            "post-action cooldown/free-action count/used kingdoms",
+            "world effects applied and actual beneficiaries",
+            "C cold restore, complete Driver binding and normal close",
+            "media clean spans and human review"
+          ],
+          "planning_lessons": [
+            "Current native terms must be re-read; this historical permission and price cannot authorize another action.",
+            "This case added a regular association to the same existing site; no universal default-grade invariant is claimed.",
+            "Actual membership and piety debit are independent of the confirmation ACK.",
+            "The already-empty inventory stayed empty; nonempty artifact retention was not tested.",
+            "This successful adoption did not activate the empty site in cache or current native evaluation; actual benefits remain unobserved.",
+            "Post-Confirm detail became unavailable while adoption succeeded; do not retry or interpret missing cooldown as absent.",
+            "Faith51 remained associated; its prior same-run eminent flag was not captured, so unchanged grade is not claimed."
+          ],
+          "generalization": "single prepared vanilla case only; re-read current native terms; no engine-wide default, price or Active invariant"
+        }
+      ]
+    },
+    {
+      "action": "adopt_fresh",
+      "full_structured_content_sha256": "272bd22b2a8f945ba4ffc8665eebffb1d7650646908102c49828605a10245838",
+      "full_response_preserved": false,
+      "qualification": "source_reviewed_static",
+      "state_observed": false,
+      "native_legality": null,
+      "action_ready": false,
+      "historical_case_evidence": [
+        {
+          "case_id": "faith-e01-r5-nadjaf-20261017",
+          "kind": "historical_native_observation",
+          "game_build": "1.20.0.4",
+          "machine_id": "4-8e1c2f1861",
+          "run_id": "4-8e1c2f1861--faith-and-power--R0005",
+          "observed_until_utc": "2026-10-17T12:04:35.487269+00:00",
+          "record_path": "docs/ck3-native-ai/evidence/faith-and-power-episode01-r0005/adoption-case.json",
+          "record_sha256": "8ca7a9425b0e7530702996012194d34df0f160453eb6b9194c126c1f991547c7",
+          "scope": {
+            "pid": 12556,
+            "connection_generation": 1,
+            "actor_id": 15893,
+            "rite_id": 15,
+            "faith_id": 50,
+            "faith_main_rite_id": 13,
+            "date_raw": 51394920
+          },
+          "observed": {
+            "membership_added": true,
+            "new_faith50_level": "regular",
+            "same_full_id_type_barony": true,
+            "faith51_association_retained": true,
+            "faith51_after_level": "eminent",
+            "inventory_before_after_empty": true,
+            "actual_piety_paid": 1000,
+            "cached_active_after": false,
+            "evaluated_active_after": false,
+            "post_confirm_detail_unavailable": true,
+            "post_adoption_checkpoint_saved": true,
+            "checkpoint_sha256": "0f1774d0be0f7652ce8dda22ce76a1eceeb36b6f9d42ae15422eae5bfd4cd18f"
+          },
+          "unknown_or_not_verified": [
+            "faith51 prior same-run grade and unchanged-grade claim",
+            "nonempty artifact retention",
+            "post-action cooldown/free-action count/used kingdoms",
+            "world effects applied and actual beneficiaries",
+            "C cold restore, complete Driver binding and normal close",
+            "media clean spans and human review"
+          ],
+          "planning_lessons": [
+            "Current native terms must be re-read; this historical permission and price cannot authorize another action.",
+            "This case added a regular association to the same existing site; no universal default-grade invariant is claimed.",
+            "Actual membership and piety debit are independent of the confirmation ACK.",
+            "The already-empty inventory stayed empty; nonempty artifact retention was not tested.",
+            "This successful adoption did not activate the empty site in cache or current native evaluation; actual benefits remain unobserved.",
+            "Post-Confirm detail became unavailable while adoption succeeded; do not retry or interpret missing cooldown as absent.",
+            "Faith51 remained associated; its prior same-run eminent flag was not captured, so unchanged grade is not claimed."
+          ],
+          "generalization": "single prepared vanilla case only; re-read current native terms; no engine-wide default, price or Active invariant"
+        }
+      ]
+    },
+    {
+      "action": "create_history_scope",
+      "full_structured_content_sha256": "f38671ca9f5e0400f91ee0438886ff3478e667584c5d11a727e6f67262b74726",
+      "full_response_preserved": false,
+      "qualification": "source_reviewed_static",
+      "state_observed": false,
+      "native_legality": null,
+      "action_ready": false,
+      "historical_case_evidence": null
+    },
+    {
+      "action": "foreign_build_history_scope",
+      "full_structured_content_sha256": "3403ce7b59ef5d4179e3664fdc16152a3ccdba9d878ff623e2df6b40368c5c8d",
+      "full_response_preserved": false,
+      "qualification": "unsupported_build",
+      "state_observed": false,
+      "native_legality": null,
+      "action_ready": false,
+      "historical_case_evidence": null
+    }
+  ],
+  "loaded_modules": {
+    "knowledge": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r0005-historical-knowledge-a02\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\holy_site_planning_knowledge.py",
+    "history": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r0005-historical-knowledge-a02\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\holy_site_historical_cases.py",
+    "server": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py"
+  },
+  "qualified_sources": {
+    "ck3_autonomous_player\\tests\\unit\\test_holy_site_historical_case_knowledge.py": "95b85143e32ed8dc2834ee47d9b4b517ea78afb1929ce19bb1a66cc6fcbde912",
+    "ck3_autonomous_player\\src\\xar_autoplayer\\holy_site_planning_knowledge.py": "f0b11fcf84b807a5d1401dff82fad86cb5b1c1a02fa158e26c7fd91e61122700",
+    "ck3_autonomous_player\\src\\xar_autoplayer\\holy_site_historical_cases.py": "2e355c6dc6ec34b59e604052c2d3fd4ec8c9a4e3cecab84a09cda2ca14a538b1",
+    "docs\\ck3-native-ai\\evidence\\faith-and-power-episode01-r0005\\adoption-case.json": "8ca7a9425b0e7530702996012194d34df0f160453eb6b9194c126c1f991547c7"
+  },
+  "native_tests_or_old_fixtures_run": false,
+  "game_operations": false,
+  "root_writes": false
+}

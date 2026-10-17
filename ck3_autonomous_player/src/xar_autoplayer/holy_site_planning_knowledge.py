@@ -1,13 +1,16 @@
 """Frozen holy-site planning inputs, separate from native state and permission.
 
 This resource can be read without a game or a gameplay driver. It describes
-reviewed 1.20.0.4 resource scripts; it never evaluates their runtime scopes.
+reviewed 1.20.0.4 resource scripts and separately scoped historical cases; it
+never evaluates current runtime scopes or grants native permission.
 """
 
 from __future__ import annotations
 
 from copy import deepcopy
 from typing import Literal
+
+from .holy_site_historical_cases import HOLY_SITE_ADOPTION_HISTORICAL_CASES
 
 
 HolySitePlanningAction = Literal["adopt", "create", "promote", "demote", "abandon", "enshrine_relic", "remove_relic"]
@@ -60,6 +63,7 @@ _COMMON_UNKNOWNS = [
 
 _KNOWLEDGE: dict[str, dict[str, object]] = {
     "adopt": {
+        "historical_case_evidence": HOLY_SITE_ADOPTION_HISTORICAL_CASES,
         "decision_key": "adopt_holy_site_decision",
         "entrypoint": {
             "is_invisible": True,

@@ -1,0 +1,95 @@
+{
+  "schema": "ck3-faith-episode01-lifecycle-observation/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T12:16:53.948627+00:00",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0005",
+  "pid": 12556,
+  "evidence": [
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0005/case-output/normal-close-result.json",
+      "bytes": 13936,
+      "sha256": "a8e78c52887f7e9bf657c669de0f5496d0085590f93fde33d0f3794e015873dd"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0005/case-output/normal-quit-root-result.json",
+      "bytes": 4316,
+      "sha256": "8ea5ec5ca766d7c7866be83ca6db4270d22cb34578628f83a2d089ada1978ba9"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0005/root-screen-release-a01.json",
+      "bytes": 1313,
+      "sha256": "551484c40805f0fb44629960b335322bec6c56205b94b1ef087a756653fa97b0"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0005/keeper-actual-parent-exit.json",
+      "bytes": 2965,
+      "sha256": "e5168d69ce9e461833891d39d7c4c3d8c0529887d8a43093057dd6c03cad3cd9"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-run-r5-a01/original-exit.json",
+      "bytes": 1160,
+      "sha256": "afc9307eb23b9e16708868c69e62e7b406a6ec67ab53c28f4743c07e95433f5c"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0005/native-report.json",
+      "bytes": 10533817,
+      "sha256": "6b2ff128aa1eb7d0b652677f46e1b85669c7a149a9372ce2cd2ff7b1f20a2e61"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-verify-r5-a01/original-exit.json",
+      "bytes": 1166,
+      "sha256": "0da29cc08e7333c71ea29eaad0f40e4b9fba0a2bef2b7109e89f5c2e9663324e"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-verify-r5-a01/stdout.log",
+      "bytes": 15179,
+      "sha256": "6b719ad32a1d6b0430d2961076ad0b15329e9e64e0dd8611bcaeec810c2d1016"
+    }
+  ],
+  "observed": {
+    "normal_gui_quit": true,
+    "retained_os_exit_code": 0,
+    "process_create_time": 1792238101.9297795,
+    "managed_thread_finished": true,
+    "cleanup_proven": true,
+    "original_driver_returncode": 0,
+    "keeper_actual_exit_code": 0,
+    "screen_release": {
+      "sequence": 11345,
+      "at_utc": "2026-10-17T12:10:12.274575+00:00",
+      "state": "done",
+      "resources": []
+    }
+  },
+  "public_verify": {
+    "actual_returncode": 2,
+    "completed_at_utc": "2026-10-17T12:13:59.815509+00:00",
+    "research_holder_completed": true,
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "scope": "research/capture holder; actual adoption and media evidence are reviewed independently",
+    "note": "Not a public verify PASS; adoption and media are separate independently reviewed evidence."
+  },
+  "qualification": {
+    "normal_close_qualified": true,
+    "lifecycle_business_pass": false,
+    "adoption_business_evidence": "Separate immutable adoption-case.json; lifecycle flags do not negate or confer mechanism outcomes",
+    "not_qualified": [
+      "C cold restore / complete Driver binding",
+      "media clean spans / human review"
+    ]
+  },
+  "case_asof": {
+    "record_path": "docs/ck3-native-ai/evidence/faith-and-power-episode01-r0005/adoption-case.json",
+    "sha256": "8ca7a9425b0e7530702996012194d34df0f160453eb6b9194c126c1f991547c7",
+    "observed_until_utc": "2026-10-17T12:04:35.487269+00:00",
+    "note": "Case and MCP historical cutoff are immutable. This later receipt settles normal-close status only."
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "review_after_utc": "2027-04-15T00:00:00Z",
+    "reason": "Small source pins permit planning/qualification audit; no source video/save/log copies"
+  }
+}
