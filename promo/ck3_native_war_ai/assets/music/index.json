@@ -1,0 +1,30 @@
+{
+  "schema": "ck3-war-ai.series-music-asset.v1",
+  "title": "Quiet Courtly Tension",
+  "repo_path": "promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav",
+  "bytes": 30726160,
+  "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+  "git_blob_sha1": "f5bf616ef2897521ec92a0445fa5ec68a4e76607",
+  "storage": "regular Git WAV bytes",
+  "original_production_machine_id": "unknown",
+  "verification": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-17T18:37:08.083161+00:00",
+    "full_source_sha256_checked": true,
+    "riff_wave_header_checked": true
+  },
+  "provenance": [
+    "promo/ck3_native_war_ai/build-records/v5-theme-fullfilm-20260924-r1.json",
+    "promo/ck3_native_war_ai/episode-02-battle-second-half/evidence-a09-video-bgm-20261002/music-policy.json"
+  ],
+  "historical_E02_mix": {
+    "narration_gain_db": 0,
+    "music_gain_db": -17,
+    "loop_same_original": true,
+    "fade_in_seconds": 2,
+    "fade_out_seconds": 8,
+    "normalization": false
+  },
+  "rights_note": "The named existing records bind this theme and exact hash. They contain no separate music licence; this import asserts no additional copyright or licence.",
+  "human_listening_signoff": "not-provided"
+}
