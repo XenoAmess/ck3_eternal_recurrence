@@ -25,3 +25,14 @@
 手工collect后实际payment disable与独立clear、natural disable与独立off均确认，`actual_cleanup_complete=true`、unknown请求[]。采样precleanup摘要中的enabled=true和close helper里的NOT_CONFIGURED是各自时刻/职责；NOT_CONFIGURED指未配置pre_resume_hook，不能抹去具名手工cleanup。最终正常Save74,845,159B/SHA `101f8fbfdd70b0147b5b49383c4152d99ca22fa42b3e052e6bc01fc4732d7245`、date53149656；CK3/bootstrap正常exit0，SCREEN-RELEASE helper0、CAS6346 done/resources[]。正常闭场不覆盖a01 RED，不授胜利、抵达2629或R06 ADD。
 
 [便携说明](evidence/episode04-r204-battle-natural-payments-12004/README.md)与[exact来源索引](evidence/episode04-r204-battle-natural-payments-12004/source-index.json)可供视频和agent复用。研究9/14、业务6/11、合格动态0/11、ABC0/3、正式cue数保持不变。不同机器须重核安装、运行时、Steam/SYSTEM/容量，不能外推本场身份或通过。
+
+## Root闭场后转交的下一行动（2026-10-18，尚未在R204执行）
+
+以下为Root在本包首次推送后转交四个source owner的结论/施工线索，`machine_id: desktop-3fevhd2-1c74096080`；本整合不再重读其原始raw或扩R204许可，不将它们当作本ZIP已经独立重放的证据。
+
+- R04：owner确认R204 Army18后来retreat=true/state6、forced route7边至2617；不能授county-entry positive。下一优先旧protected正常S0@2644 scout，先取War4 actual holding再合法preview，要求新first hop≤3；排除已经证过的1034/2637/2645，不能用路线长度或RETREAT替代P条件通过。
+- R06：现有external probe、a06 prepare/a08 launcher可复用；下场先获得position=true和完整最终shared q>0，再启对应观察。prepare自身没有拒q0，因此实际准备入口需薄gate；natural/core/ADD共同token的只读carrier仍缺，不能把三个独立journal拼成因果或声称已具备actual ADD。
+- R08：owner新源码核对没有漏raw4 enable：runtime217–220、window73、passive326–333、gateway160–182共享permit。另一28F7840分支中的selector4不保证调用，也不是已命名军费类别。下一靶是context+28/+30 actual writer→同次NET→payer/cadence，使用另获准的有限external窗口或default-OFF只读叶；R204禁止external，故本场没有实施这一步。
+- R05：发现原版 `common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt:839–843` 的subtract_supply线索；不得连同deplete_army_by_percentage调用。参数scope/unit仍由owner核定，只作为来源定位，不是已可调用、已验收或可直接耗库存的能力。
+
+以上不增研究9/14、业务6/11、动态0/11或ABC0/3；下一场需独立source/参数/容量/运行身份准入，不能复用R204许可。
