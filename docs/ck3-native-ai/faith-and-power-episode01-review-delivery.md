@@ -1,5 +1,7 @@
 # 信仰与权力第一期：本地审阅与游玩智能体研究入口
 
+> 新版入口：[faith-and-power-episode01-value-v3-delivery](faith-and-power-episode01-value-v3-delivery.md)。2026-10-18补充收益与代价讲解，约30分12秒；machine_id `4-8e1c2f1861`，实际补录2026-10-17T22:21:32.936035+00:00。以下旧片记录保留各自历史截点。
+
 2026-10-18后继：用户指出本版文案像检查报告。其声画机器检查保留原结论，但口播风格需要修订。[中文讲解稿v2](../../promo/ck3_faith_and_power/episode01/narration-v2.zh.md)已重写，尚未替换下方MP4的配音与字幕；[修订记录](faith-and-power-episode01-editorial-revision.md)说明旧稿问题和新稿范围。
 
 第一期本地审阅版已完成：[观看MP4](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/native-run/derived/direct/episode01-review.mp4)，约19分25秒，2560×1440／30fps，中英双语字幕。[文稿、三套字幕、11章时间和来源索引](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/README.md)齐备，精确元数据见[交付索引](faith-and-power-episode01-review-delivery.json)。用户已授权本地先交，本次没有上传。
