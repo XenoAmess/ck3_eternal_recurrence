@@ -105,7 +105,8 @@ bool InspectGuiWindowTree(FrontendGuiRouteMailboxContextV1 &query,
   const auto root_name = GuiWindowTreeRootForV1(query.gui_window_tree_scope);
   if (root_name.empty()) return false;
   const bool military = query.gui_window_tree_scope == GuiWindowTreeScopeV1::military;
-  if (military && (!query.environment.exact_build_admitted ||
+  const bool holy_site = query.gui_window_tree_scope == GuiWindowTreeScopeV1::holy_site;
+  if ((military || holy_site) && (!query.environment.exact_build_admitted ||
       query.environment.offline_fixture_function_overrides ||
       query.environment.gui_abi_revision != GuiAbiRevisionV1::crozier12004 ||
       query.environment.executable_sha256 != ck3_12004::kExecutableSha256)) return false;

@@ -2042,6 +2042,17 @@ def create_server(
                 expected_revision=expected_revision, war_id=war_id, outcome=outcome,
             )
 
+    if getattr(driver, "allow_private_player_holy_site_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_holy_site_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] | None = None,
+        ) -> dict[str, object]:
+            """Read exact4 HolySite type, Faith relations/eminent status and inventory IDs; no adoption permission."""
+            return driver.query_player_holy_site_private_v1(
+                expected_revision=expected_revision, holy_site_id=holy_site_id)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_query_player_holy_site_v1")
+
     if (getattr(driver, "allow_private_player_religion_context_query", False) is True
             or "ck3_query_player_religion_context_v1" in getattr(driver, "case_declared_read_only_mcp_tools", ())):
         @server.tool(annotations=read_only_tool)
@@ -3901,7 +3912,7 @@ def create_server(
 
     @server.tool()
     def ck3_inspect_gui_window_tree_v1(
-        window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier", "death_succession", "death_destiny", "military"],
+        window_kind: Literal["ingame_topbar", "decisions", "decision_detail", "courtier", "vivhite_courtier", "death_succession", "death_destiny", "military", "holy_site"],
     ) -> dict[str, object]:
         """Read one bounded native window tree. Military may include frame-bound type635 definition candidates; no receiver pointer or input."""
         return service.inspect_gui_window_tree_v1(window_kind)
@@ -4978,6 +4989,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable an explicit private ransom using the current native collection quote",
     )
     result.add_argument(
+        "--private-player-holy-site-query", action="store_true",
+        help="enable exact4 HolySite identity, Faith relations and embedded inventory reads",
+    )
+    result.add_argument(
         "--private-player-religion-context-query", action="store_true",
         help="enable the private current-player native Rite/Faith/Religion context read",
     )
@@ -5300,6 +5315,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    if args.private_player_holy_site_query:
+        driver.allow_private_player_holy_site_query = True
     if args.private_player_religion_context_query:
         driver.allow_private_player_religion_context_query = True
     if args.private_player_religion_doctrines_query:

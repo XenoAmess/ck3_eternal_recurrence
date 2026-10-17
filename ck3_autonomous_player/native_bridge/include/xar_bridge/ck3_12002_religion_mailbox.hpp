@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12003_player_devotion_profile.hpp"
 #include "xar_bridge/ck3_12003_player_rite_virtue_sin_profile.hpp"
 #include "xar_bridge/ck3_12003_vow_of_poverty_terms.hpp"
+#include "xar_bridge/ck3_12004_holy_site_snapshot.hpp"
 
 #include <vector>
 
@@ -58,6 +59,10 @@ struct PlayerReligionMailboxContext12002 {
   ck3_12003::religion::vow_of_poverty_terms12003::Terms vow_of_poverty_terms{};
   bool completed = false;
   std::string failure;
+  bool holy_site_query = false;
+  std::optional<std::uint32_t> requested_holy_site_id;
+  ck3_12004::religion::holy_site::Bindings holy_site_bindings{};
+  ck3_12004::religion::holy_site::Snapshot holy_site_snapshot{};
 };
 
 bool IsPlayerReligionPrivateStep12002(std::string_view step) noexcept;

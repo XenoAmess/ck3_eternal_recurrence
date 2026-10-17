@@ -8,6 +8,7 @@ GUI_WINDOW_TREE_ROOTS = {
     "ingame_topbar": "ingame_topbar",
     "decisions": "decisions_view",
     "military": "military_view",
+    "holy_site": "holy_site_window",
     "decision_detail": "decisiondetail_view",
     "courtier": "xar_courtier_creator_window",
     "vivhite_courtier": "ervc_courtier_creator_window",

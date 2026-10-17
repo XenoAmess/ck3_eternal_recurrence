@@ -45,7 +45,8 @@ void *ResolveReligionCharacter(const PlayerReligionMailboxContext12002 &query,
 } // namespace
 
 bool IsPlayerReligionPrivateStep12002(std::string_view step) noexcept {
-  return step == kPlayerReligionPrivateStep12002;
+  return step == kPlayerReligionPrivateStep12002 ||
+      step == ck3_12004::religion::holy_site::kQueryStep;
 }
 
 bool ParsePlayerReligionRevision12002(std::string_view payload,
@@ -95,6 +96,16 @@ bool ExecutePlayerReligionMailbox12002(
       // The owner envelope still identifies the frame whose native read failed.
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
+    }
+    if (query.holy_site_query) {
+      SetCaptureStage("holy_site_snapshot");
+      (void)ck3_12004::religion::holy_site::ReadHolySiteSnapshot12004(
+          query.holy_site_bindings, reinterpret_cast<const void *>(stamp.jomini_state),
+          out, query.requested_holy_site_id, query.holy_site_snapshot);
+      query.completed = true;
+      SetCaptureStage("finish_holy_site_frame");
+      (void)FinishQueryMailbox(*envelope);
+      return true;
     }
     // Resolve the fixed confession definition against this current Context
     // and actual player. A legal false permission remains an observed value.
@@ -197,6 +208,10 @@ std::string SerializePlayerReligionResult12002(
     const PlayerReligionMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  if (query.holy_site_query) {
+    return ck3_12004::religion::holy_site::SerializeHolySiteCommand12004(
+        query.holy_site_snapshot, request_id, query.envelope.expected_snapshot_revision, frame.date_raw);
+  }
   std::string pilgrimage_routes = "[";
   for (const auto &route : query.pilgrimage_candidate_routes) {
     if (pilgrimage_routes.size() > 1) pilgrimage_routes += ',';
@@ -313,6 +328,10 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     failure = "player_religion_request_invalid"; return false;
   }
   const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  const bool holy_site_query = step == ck3_12004::religion::holy_site::kQueryStep;
+  if (holy_site_query && !actual4) {
+    failure = "player_holy_site_exact12004_required"; return false;
+  }
   if (!adapter.enabled() || (!actual4 &&
       (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
        game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
@@ -321,6 +340,14 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
   }
   try {
     PlayerReligionMailboxContext12002 query{};
+    query.holy_site_query = holy_site_query;
+    if (holy_site_query && HasField(payload, "holy_site_id")) {
+      std::uint64_t id = 0;
+      if (!bridge::JsonUnsignedField(payload, "holy_site_id", id) || id >= 0xFFFFFFFFULL) {
+        failure = "player_holy_site_full_id_invalid"; return false;
+      }
+      query.requested_holy_site_id = static_cast<std::uint32_t>(id);
+    }
     query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
@@ -329,6 +356,10 @@ bool HandlePlayerReligionPrivate12002(const game::GameAdapter &adapter,
     if (actual4) {
       const auto sha = adapter.descriptor().executable_sha256;
       query.bindings = ck3_12004::religion::BindReligionContextImage12004(image_base, sha);
+      if (holy_site_query) {
+        query.holy_site_bindings = ck3_12004::religion::holy_site::BindHolySiteSnapshotImage12004(image_base, sha);
+        return RunPlayerReligionMailbox12002(query, request_id, serialized, failure);
+      }
       const auto addons = ck3_12004::religion::BindReligionContextAddonsImage12004(image_base, sha);
       query.progress_bindings = addons.progress_bindings;
       query.mystical_communion_bindings = addons.mystical_communion_bindings;
