@@ -1,0 +1,650 @@
+{
+  "schema": "xar.ck3.p49-war-results-scope-pause-publication/v1",
+  "recorded_at_utc": "2026-10-17T17:26:07.302174+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "Source publication and immutable bounded metadata only; no runtime operations",
+  "source_delivery_sha256": "bfb42490fef5a1c8f585d39a3ff731212e88f9d982871c165a24f3fbc705d138",
+  "production_change": {
+    "Service_method": "_execute_planned_turn_without_unhandled_capture",
+    "Service_added_lines": 6,
+    "helper_sha256": "697bde508093b4ea1bd9612730ecfe3b0fdd434efc9fdf890ccc229e08592161",
+    "close_replay": false,
+    "close_credit": 0,
+    "uncontrolled_drift_credit": 0,
+    "public_classifier_API_wired_into_public_runner": false
+  },
+  "classifier_research_patch": {
+    "path": "p48-scope-transition-classifier-research.patch",
+    "sha256": "8f234f9a1b27fc6da53bf8f4958e20eccc734bbc0d5275223d13a2e0b69d733e",
+    "base_sha256": "053cf1c1fa25f2c68f3a2b1c75be961591627310118439cc804cd0dd760ab06e",
+    "target_sha256": "a9cc9f8096bdd32268b9424e4962c1b26a39e145fe8d523ed332560efc27872a",
+    "scope": "Historical minimal runtime dispatch delta; pure function published separately; not an automatic installer"
+  },
+  "validation": {
+    "tests": 23,
+    "subtests": 11,
+    "status": "GREEN",
+    "focused": {
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "ck3_autonomous_player/tests/unit/test_war_results_scope_transition_pause.py",
+        "ck3_autonomous_player/tests/unit/test_war_results_scope_transition_chain.py",
+        "ck3_autonomous_player/tests/unit/test_war_results_close_latch_reconciliation.py"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 4.0915125999599695,
+      "stdout": ".....................                                         [100%]\n21 passed, 11 subtests passed in 3.42s\n",
+      "stderr": "",
+      "runtime_operations": 0
+    },
+    "connection": {
+      "argv": [
+        "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "ck3_autonomous_player/tests/unit/test_war_results_scope_connection.py"
+      ],
+      "returncode": 0,
+      "stdout": "..                                                                       [100%]\n2 passed in 1.40s\n",
+      "stderr": "",
+      "scope": "Synthetic later connection and planner query; not actual new UI operation"
+    },
+    "real_chain": "Service.auto_turn -> NativeDriver constructor/close transport/execute_step/primitive/history; Native I/O inputs and preselected initial plan are doubles",
+    "public_revision": 870,
+    "native_revision": 7550,
+    "wire_close_expected_revision": 7550,
+    "wire_pause_expected_revision": 7551,
+    "synthetic_cases": [
+      "105-day drift before pause",
+      "pause command failure",
+      "fresh connection9 observation"
+    ]
+  },
+  "original_failures": {
+    "P47_Window14_failed_days": 510,
+    "AUTO781_result": "verification_pending; closure unknown",
+    "uncontrolled_observed_days": 105,
+    "uncontrolled_stable_credit": 0,
+    "P48": "route4+AB and stationary hold5 conflict in actual RT configure; queue/app exits1/1, before tools/actions",
+    "P49_CAP": "machine_id metadata mismatch; original CAP2 and UI3 failures retained; control4 local reconsume0MCP"
+  },
+  "actual_prefix": {
+    "initial_date_raw": 53317032,
+    "health_date_raw": 53317368,
+    "health_elapsed_days": 14,
+    "health_cycles": 5072,
+    "Window15_start_raw": 53317368,
+    "Window15_target_raw": 53580360,
+    "first_FULL": 37,
+    "later_Root_report_date_raw": 53318640,
+    "later_days_from_P49_initial": 67,
+    "later_days_from_Window15_start": 53,
+    "later_Root_report_scope": "Fixed parent report; not a guarantee that the runtime remains running",
+    "UI5": {
+      "operation": "query",
+      "available": true,
+      "status": "hidden",
+      "ticket_sequence": 7869,
+      "connection_generation": 10,
+      "date_raw": 53317032,
+      "native_revision": 7683,
+      "scope_unchanged": true,
+      "closure_verified": false
+    },
+    "AUTO15": {
+      "selected_step": "select-event-option-2",
+      "accepted": true,
+      "status": "submitted",
+      "event_instance_id": 69,
+      "option_number": 2,
+      "option_index": 1,
+      "paused": true,
+      "postcondition": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 69,
+        "new_event_instance_id": null,
+        "selected_option_number": 2,
+        "selected_native_option_index": 1
+      }
+    },
+    "AUTO23": {
+      "starting_date_raw": 53317032,
+      "ending_date_raw": 53317200,
+      "elapsed_days": 7,
+      "timeline_speed": 5,
+      "completed_daily_ticks": 7,
+      "overshoot_days": 0,
+      "paused": true
+    },
+    "MET24": {
+      "date_raw": 53317200,
+      "revision": 13,
+      "native_revision": 7694,
+      "paused": true,
+      "map_ready": true,
+      "connection_generation": 10
+    },
+    "MET36": {
+      "date_raw": 53317368,
+      "revision": 22,
+      "native_revision": 7703,
+      "paused": true,
+      "map_ready": true,
+      "connection_generation": 10
+    },
+    "resume_proof_sha256": "c9ac56d0f9336b97e1c2ae9a84f552175a4fd59209a24607fb3e6fec60625e76",
+    "Game_OBS_restart": false,
+    "old_781_close_credit": 0,
+    "future_same_failure_branch_live_qualified": false
+  },
+  "event69_offline_known_reuse": {
+    "schema": "root.event-source-reuse-actual-offline-check/v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "at_utc": "2026-10-17T17:17:26.583427+00:00",
+    "event_definition_key": "stress_threshold.2202",
+    "original_capture_sha256": "1d70a7953e9616453a8cb5d956569d00cf6efe21bfb5614f986f3d485dfdfc31",
+    "actual_loader": "deployed P49 source, load_source_reviewed_event_v1",
+    "source_knowledge": {
+      "status": "offline-source-reviewed",
+      "binding_mode": "exact",
+      "fingerprint": "b614c52ae704465d95dfd8981958d57aa82779b91d526f1bda7874e8b61cb7b5",
+      "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\b614c52ae704465d95dfd8981958d57aa82779b91d526f1bda7874e8b61cb7b5.json",
+      "entry_sha256": "235d7cc1aaae41e40b9606684dd348e8f76800773ae343405bf19d103cf01d73",
+      "material_effects_verified": false,
+      "registry_contract_accepted": false
+    },
+    "reused_known": true,
+    "original_capture_unchanged": true,
+    "Game_MCP_OBS_calls": 0,
+    "optimal_decision_claimed": false,
+    "business_effect_credit": 0,
+    "review_at_utc": "2026-10-19T14:10:00+00:00"
+  },
+  "performance": {
+    "P47_fixed_318_day_result_sha256": "3d7ef1007a7839e8b76311dbb61568d39b74649f19d11fbc4453dd2880cdb253",
+    "elapsed_seconds": 479.490396,
+    "game_days": 318,
+    "seconds_per_day": 1.507831433962264,
+    "whole_campaign_average": false,
+    "nested_stage_times_additive": false,
+    "P49_final_delivery": {
+      "sha256": "ad04a15ec1b813b1dd3ae49c3d55c5d524b8aff7c83d13dc2e05a3d9330ce889",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-performance-audit01\\DELIVERY.json",
+      "settled_window": {
+        "turn_start": 5104,
+        "turn_end": 5165,
+        "game_days": 118,
+        "wall_seconds": 134.92461,
+        "seconds_per_game_day": 1.143429,
+        "turns": 62,
+        "zero_day_turns": 43,
+        "save_rpc_count": 1,
+        "inter_rpc_gap_seconds": 4.413361,
+        "failed_full_control": "included_as_untimed_control"
+      },
+      "boundary": {
+        "preceding_handoff_gap_seconds": 166.180383,
+        "preceding_gap_in_settled_rate": false,
+        "whole_campaign_rate_measured": false,
+        "goal_below_one_second_per_day_met": false
+      },
+      "plan_attribution": {
+        "raw_nested_plan_seconds": 42.765141,
+        "unique_plan_wall_seconds": 29.275382,
+        "observed_native_wait_within_plan_seconds": 0.998858,
+        "observed_snapshot_within_plan_seconds": 2.611838,
+        "python_cpu_seconds_measured": false
+      }
+    }
+  },
+  "configuration_contract": {
+    "default_route_speed": 3,
+    "high_speed_AB": false,
+    "stationary_hold_speed": 5,
+    "route4_AB_and_hold5_compatible": false,
+    "parser_success_proves_joint_RT_configuration": false,
+    "offline_configuration_receipt_boundary": "Real RT configuration and registration, but unconnected Driver constructed with __new__; actual launch is separate evidence"
+  },
+  "remaining": {
+    "G2": "6/8",
+    "natural_succession_live_qualified": false,
+    "stable_30_years": false,
+    "below_1_second_per_day": false,
+    "below_half_second_per_day": false
+  },
+  "source_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-CONTINUITY-RESUME01.json",
+      "bytes": 3496,
+      "sha256": "c9ac56d0f9336b97e1c2ae9a84f552175a4fd59209a24607fb3e6fec60625e76"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-hot-retry01\\COMPLETE-SERVER-CONFIGURATION-TESTS.json",
+      "bytes": 591,
+      "sha256": "200f1395e52fceb471f0be78af5770a10d1c3c46e0d3dab5dcb3b65ec5bff519"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-cap-bootstrap-metadata01\\TEST-RESULT.json",
+      "bytes": 3363,
+      "sha256": "6e0a56f9d0c93515b96f0e1b077da804c27ae777fa35ef2f7522c1f28de77e24"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-CAP-BOOTSTRAP-METADATA-EPOCH01.json",
+      "bytes": 4807,
+      "sha256": "e46aab6ae158404b883047809fa9979daff5b6d21a22588cde3cdcdbc2ea2305"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-EVENT69-OFFLINE-KNOWN-REUSE01.json",
+      "bytes": 1227,
+      "sha256": "ac494da189ac14289c10febed029aa46a8a93157ceac2d527ac6a0c450f0cf32"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0005-1-result.json",
+      "bytes": 4758,
+      "sha256": "bd5eb7432baa4d9bb503ad0639c14338fdfe4ab04b8630f5094c96bf4336f554"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0015-1-result.json",
+      "bytes": 96042,
+      "sha256": "a36d397f5b3087cd67a41eb995e3e28b75fe82b57eb999dbaa37064405ba8272"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0023-1-result.json",
+      "bytes": 170162,
+      "sha256": "7dd0ce4b3d566be758a32f1d4fb00a41aa72831182736d406e64ad3f7f6d1fc9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0024-1-result.json",
+      "bytes": 1649,
+      "sha256": "9bc6068411092731e7c46d11982731d59aa059a96426ad263b71757bbbe645bf"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0036-1-result.json",
+      "bytes": 1593,
+      "sha256": "e7b4efec16d3636ac19967361dd4a21c708d1a0f822895f71b7c9749a2750bd5"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p47-stationary-performance01\\RESULT.json",
+      "bytes": 9225,
+      "sha256": "3d7ef1007a7839e8b76311dbb61568d39b74649f19d11fbc4453dd2880cdb253"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-publication01\\PREPARED-SOURCE.json",
+      "bytes": 731,
+      "sha256": "e87e68ce4223e100a86441dce5dde05634ae0f1f7d67176312e2b291074153ab"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-publication01\\PUBLIC-FOCUSED.json",
+      "bytes": 684,
+      "sha256": "1f83e6e40e4b81468095516cf878aacc55d31381ea997e0304d7821ac75a7028"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-publication01\\CONNECTION-FOCUSED.json",
+      "bytes": 515,
+      "sha256": "77f101f295bd5348f3add1efe7bf6982bc465f2783d7dc6d364c1cdbfdf85234"
+    }
+  ],
+  "availability": "External originals are outside Git and subject to storage retention policy; this is a field projection, not a replacement raw response",
+  "publication_operations": {
+    "Game_MCP_OBS": 0,
+    "live_Driver_SAVE_media_body_reads": 0,
+    "Native_builds": 0
+  },
+  "vacation_checkpoint": {
+    "Window15_status": "repair_required",
+    "Window15_failed_days": 573,
+    "cycles": 5364,
+    "date_raw": 53331120,
+    "original_SAVE652": {
+      "expected_revision": 850,
+      "observed_revision": 851,
+      "native_save_dispatch_entered": false
+    },
+    "original_response": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0652-1-result.json",
+      "sha256": "ac9ea82ff0dc34358e5b2d7b3b1327c1b2b12c78bce73d88c0fdfbb1da6194c9",
+      "bytes": 596
+    },
+    "recovery653": {
+      "status": "actual_checkpoint_materialized_original_pending_finished",
+      "attempts": 1,
+      "completed_cycles_unchanged": 5364,
+      "original_SAVE_replayed": false,
+      "new_SAVE_materialized": true,
+      "checkpoint_saved_count_added": 1,
+      "new_date_turn_business_credit": 0,
+      "Game_paused": true,
+      "new_FULL_published": false
+    },
+    "SAVE655_checkpoint": {
+      "status": "saved",
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "size": 129434601,
+      "sha256": "f4daba018c805d3c9025df7ca7627e5fd63931eac6618489adc808e2ec25bae2",
+      "date_raw": 53331120,
+      "history_index": 8853
+    },
+    "SAVE_bytes_and_hash_source": "Native SAVE655 materialization receipt; publication did not read/hash the SAVE body",
+    "SEM656": {
+      "date_raw": 53331120,
+      "paused": true,
+      "map_ready": true,
+      "character_id": 31254,
+      "alive": true,
+      "public_revision": 852,
+      "native_revision": 8533
+    },
+    "source_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0653-1-result.json",
+        "bytes": 2401,
+        "sha256": "506e348cf7ca17ad885027601b543b9b0d123c5a8554c2d98c641abe515c6b0f"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0655-1-result.json",
+        "bytes": 9523,
+        "sha256": "dbe24f39cebcaabeda536a6dbfe521da5845cfa30a009db8fcf7adc19e31b3d8"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0656-1-result.json",
+        "bytes": 27347,
+        "sha256": "cecdd22b77071e5a772bb0e3a66170d019c2344f7d6795014f899713f9e80784"
+      }
+    ],
+    "one_shot_recovery_slot_consumed": true,
+    "replay_653_allowed": false,
+    "future_feeder_automatic_checkpoint_recovery_implemented": false,
+    "SDK_owner_closed": {
+      "proof": {
+        "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+        "processes": [
+          {
+            "role": "sdk_queue",
+            "pid": 240280,
+            "creation_filetime": 134367294199228752,
+            "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "kernel_exit_observed": true,
+            "wait_result": 0,
+            "exit_code": 0,
+            "observation_error": null
+          },
+          {
+            "role": "sdk_application",
+            "pid": 33956,
+            "creation_filetime": 134367294235448739,
+            "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "kernel_exit_observed": true,
+            "wait_result": 0,
+            "exit_code": 0,
+            "observation_error": null
+          }
+        ],
+        "normal": true,
+        "launcher_exit_code": 0,
+        "Game_stopped": false,
+        "recording_stopped": false
+      },
+      "source_sha256": "dfb89dbd5805a79a1fecbb5b1023d79dfe9b558fac7e72c610014389a3c7acde"
+    },
+    "source_epoch_sha256": "1e80c29ea919192ca8e0b5cca5220732ee9df3b25cd4cf97a785165fa7ec9cb2",
+    "handoff_inputs": {
+      "pins": {
+        "ACTUAL-CHECKPOINT-HANDOFF.json": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\ACTUAL-CHECKPOINT-HANDOFF.json",
+          "sha256": "147f91f3ad2cf96c47c5520822ede51933ce0353c368c1de4b55777c607b1389",
+          "bytes": 15217
+        },
+        "CLOSED-DRIVER-SEAL.json": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\CLOSED-DRIVER-SEAL.json",
+          "sha256": "eb90732fd7129ecbfd8375e7868988cea1d31be952908cef08522f012654c1d6",
+          "bytes": 6519
+        },
+        "PARKED-TAKEOVER-CARD.json": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\PARKED-TAKEOVER-CARD.json",
+          "sha256": "279e87c41b322e7e3af4a4d3f68fd16058922223542c080fbb648bd88b01515b",
+          "bytes": 7478
+        }
+      },
+      "Game_status": "ROOT_REPORTED_ONE_WM_CLOSE_NO_EXIT_PAUSED_PARK_NO_FORCE",
+      "last_observed_Game_identity": {
+        "pid": 51028,
+        "creation_filetime": 134367033244212072,
+        "hwnd": 220202746
+      },
+      "protected_Driver": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\p49-holiday-preserved-inputs\\SDKP49-CLOSED-driver-state.json",
+        "sha256": "53369adaa167031fccf1233cc1f3c65509037b4969e53934b80c6be5d334d497",
+        "bytes": 74083792
+      },
+      "source_freeze": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-FINAL-SDK-FREEZE-P49.json",
+        "sha256": "89452c585d511612636c16c27e400e59a1ba63ca43ccc645113793a8c84e7944",
+        "bytes": 285172
+      },
+      "source_epochs": [
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-CAP-BOOTSTRAP-METADATA-EPOCH01.json",
+          "sha256": "e46aab6ae158404b883047809fa9979daff5b6d21a22588cde3cdcdbc2ea2305",
+          "bytes": 4807
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-CHECKPOINT-PREDISPATCH-EPOCH01.json",
+          "sha256": "1e80c29ea919192ca8e0b5cca5220732ee9df3b25cd4cf97a785165fa7ec9cb2",
+          "bytes": 3611
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-RECORDING-GAMEPLAY-COMPATIBILITY-EPOCH01.json",
+          "sha256": "482fa32e76452d7db632eb50ec35a1bf42804359e3f06d1e5b2cd371171c647f",
+          "bytes": 2056
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-RECOVERY-SOURCE-EPOCH01.json",
+          "sha256": "cee4d97ff1485d1f392ec1689b8bf11e5b1ad599fa136acb1aa2e1f2a34a877d",
+          "bytes": 1612
+        },
+        {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-SENTINEL-PARTIAL-FEEDER-EPOCH01.json",
+          "sha256": "6b5f61d8249ac98efb3f77bb9a7f30fdcb24ac313bda8c77740597a05969a37c",
+          "bytes": 2794
+        }
+      ],
+      "Game_normal_exit_proven": false,
+      "force": false,
+      "existing_keeper_must_remain": true,
+      "retention_review_due_utc": "2026-10-19T17:30:00+00:00",
+      "latest_checkpoint_copy_requires_Game_exit": true,
+      "Driver_body_read_by_publication": false,
+      "SAVE_body_read_by_publication": false
+    }
+  },
+  "vacation_final_closeout": {
+    "raw_proof_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\ROOT-VACATION-CLOSEOUT.json",
+      "bytes": 6288,
+      "sha256": "eb0cb9f94bb8f921a9c7c4115a335236ef8ff762b59c37dc17a069da107af53b"
+    },
+    "fields": {
+      "schema": "root.ck3.vacation-closeout/v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "at_utc": "2026-10-17T17:43:26.369559+00:00",
+      "status": "USER_REQUESTED_PAUSED_PARK_HANDOFF_RECORDING_CLOSED",
+      "game": {
+        "pid": 51028,
+        "creation_filetime": 134367033244212072,
+        "last_semantic_paused": true,
+        "last_semantic": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0656-1-result.json",
+          "bytes": 27347,
+          "sha256": "cecdd22b77071e5a772bb0e3a66170d019c2344f7d6795014f899713f9e80784"
+        },
+        "one_WM_CLOSE_result": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\owned-game-wm-close01\\ROOT-WM-CLOSE-RESULT.json",
+          "bytes": 1180,
+          "sha256": "bdc7abc892b9b05aafbec1fa9d7be00c9c776d3a967069f5f1b7782c426ef9e0"
+        },
+        "post_WM_CLOSE_fresh_semantic_obtained": false,
+        "normal_exit_capability": false,
+        "forced_game_close": false,
+        "supervisor_exec": 10165,
+        "supervisor_pid": 229304,
+        "screen_task": "g2-robert-clean01-native25-screen-20261017-launch3",
+        "screen_released": false,
+        "frozen_owner_checkout_must_remain_clean": true
+      },
+      "completed_cycles": 5364,
+      "date_raw": 53331120,
+      "narrative_game_days": 7783,
+      "narrative_target_raw": 53407320,
+      "continuous_30year_complete": false,
+      "window": {
+        "window_id": 15,
+        "status": "repair_required",
+        "start_date_raw": 53317368,
+        "last_settled_date_raw": 53331120,
+        "last_settled_cycles": 5364,
+        "manual_repair_count": 14,
+        "automatic_recovery_count": 10
+      },
+      "window15_elapsed_days": 573,
+      "Window16_opened": false,
+      "actual_save": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0655-1-result.json",
+        "bytes": 9523,
+        "sha256": "dbe24f39cebcaabeda536a6dbfe521da5845cfa30a009db8fcf7adc19e31b3d8"
+      },
+      "closed_driver_seal": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\CLOSED-DRIVER-SEAL.json",
+        "bytes": 6519,
+        "sha256": "eb90732fd7129ecbfd8375e7868988cea1d31be952908cef08522f012654c1d6"
+      },
+      "takeover_card": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-holiday-handoff01\\PARKED-TAKEOVER-CARD.json",
+        "bytes": 7478,
+        "sha256": "279e87c41b322e7e3af4a4d3f68fd16058922223542c080fbb648bd88b01515b"
+      },
+      "SDK_pair_normal_exit": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-OWNER-CLOSED.json",
+        "bytes": 813,
+        "sha256": "dfb89dbd5805a79a1fecbb5b1023d79dfe9b558fac7e72c610014389a3c7acde"
+      },
+      "capture_closed": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\capture_closed.json",
+        "bytes": 1708,
+        "sha256": "892ce9c284bc35982239a94e1ca2777c13197406a742bfb62ca3176fbf2f6326"
+      },
+      "recording_completed": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0\\completed.json",
+        "bytes": 18714,
+        "sha256": "3da048585c46362907cdb2aab48e5d49a5895acac828547fcd6cda094dac5078"
+      },
+      "video": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\recordings\\5ebe8c91-d388-4a66-91c4-60d9692c33e0.mkv",
+        "bytes": 11135802708,
+        "sha256": "8be3727656aeec56460c84051e0f9169ab2276aa85ec8afe2a309443c52d75f2",
+        "ended_at_utc": "2026-10-17T17:36:59.305319+00:00"
+      },
+      "video_hash_basis": "completed worker report; no Root media reread",
+      "capture_worker_process_check": "NoSuchProcess; actual worker kernel exit code not retained",
+      "OBS_engine_exit_zero_proven": true,
+      "normal_exits_Root_retained": {
+        "sdk_owner39400": 0,
+        "feeder7435": 0,
+        "statuswatch18227": 0,
+        "adoption11131": 0,
+        "collector30172": 0,
+        "offline_workers_owner27897": 0,
+        "narrative_watcher58416": 0
+      },
+      "overlay_exit": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P49-OVERLAY-HANDOFF-CLOSED.json",
+        "bytes": 513,
+        "sha256": "46fc1087f45071060967fa4d1c3b3a6e3a3523f29113fe71c8b9362a7632ed23"
+      },
+      "watchdog_method": "exact owned TerminateProcess; do not call normal exit",
+      "current_repair_status": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\runtime-repair-status\\CURRENT.json",
+        "bytes": 7933,
+        "sha256": "9340e2d7a7101ccae8189bd5043c867bb15c08614090bf6d54b539dd0b000e33"
+      },
+      "checkpoint_handoff_EDL_correction": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-presentation-handoff-close01\\CHECKPOINT-HANDOFF-EDL-CORRECTION.json",
+        "bytes": 2136,
+        "sha256": "04e5341405d284fb0c9147ecb288ceec76bc0bb65293aa20a797759ff7225de3"
+      },
+      "collector_snapshot": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-presentation-handoff-close01\\snapshot-collector-20261017T173803312529Z.json",
+        "bytes": 1878,
+        "sha256": "83b2feaa75adb45e6a705cfbb729bbe88eab0794734d8a27850c467b6d728867"
+      },
+      "final_film_rendered": false,
+      "storage": {
+        "D_free_bytes": 1010652880896,
+        "same_N_reservation_bytes": 171798691840,
+        "quota_bytes": 13800000000000,
+        "review_at_utc": "2026-10-18T11:49:00.265518+00:00",
+        "reservation_not_released_because_park_and_continuation_inputs_active": true,
+        "deletion_performed": false
+      },
+      "source_bodies_read_in_closeout": {
+        "Driver": false,
+        "SAVE": false,
+        "video": false
+      },
+      "review_due_utc": "2026-10-19T17:30:00+00:00"
+    },
+    "additional_metadata_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\90e81184-8475-4053-9b83-d01c0f314e0e\\completed.json",
+        "bytes": 18332,
+        "sha256": "3e982e7761dee9d2f16a48d841bd98f845d352bab352e0c4b8fd3e0c104bdc6d"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-FRONTEND-RECORDING-ADMITTED.json",
+        "bytes": 2768,
+        "sha256": "a581f72d0b2e4dd4de48942d449d1239183a8dc7c89bb00d9beaa6fe29e4d4bf"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-RECORDED-MAIN-MENU-REVIEW01.json",
+        "bytes": 1372,
+        "sha256": "15208e06fe3f8a515f7c42807c9a089df0f9782ee846bf52bdb3d7ba8bb6d725"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-presentation-handoff-close01\\snapshot-collector-20261017T173803312529Z.json",
+        "bytes": 1878,
+        "sha256": "83b2feaa75adb45e6a705cfbb729bbe88eab0794734d8a27850c467b6d728867"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-presentation-handoff-close01\\CHECKPOINT-HANDOFF-EDL-CORRECTION.json",
+        "bytes": 2136,
+        "sha256": "04e5341405d284fb0c9147ecb288ceec76bc0bb65293aa20a797759ff7225de3"
+      }
+    ],
+    "first_menu_video_Root_report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\90e81184-8475-4053-9b83-d01c0f314e0e.mkv",
+      "bytes": 2933294635,
+      "sha256": "71fba679c813f3dc7780c9e562a1729d1be4415ab1dd1fdab7782311a2d9940d",
+      "ended_at_utc": "2026-10-17T08:06:30.737814+00:00"
+    },
+    "publication_media_body_reads": 0,
+    "final_park_pointer": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\ROOT-CURRENT-CONTINUATION-POINTER.json",
+      "bytes": 8228,
+      "sha256": "20e4846d006691831197187e21dbd476a167bef5d3576695a2196aa35a3b2336"
+    }
+  }
+}

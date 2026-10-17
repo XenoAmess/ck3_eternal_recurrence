@@ -1,0 +1,118 @@
+"""One bounded queue classification for a paused war-results UI transition."""
+
+from __future__ import annotations
+
+from collections.abc import Mapping
+
+
+def classify_paused_war_results_scope_transition_v1(body, *, binding, game_pid):
+    from collections.abc import Mapping
+    import re
+    reason_pattern = re.compile(
+        r"war_results_ui_scope_transition;begin_date_raw=(\d+);"
+        r"end_date_raw=(\d+);begin_paused=true;end_paused=false;"
+        r"owner_boundary_admitted=true\Z"
+    )
+    plan = body.get("plan") if isinstance(body, Mapping) else None
+    result = body.get("result") if isinstance(body, Mapping) else None
+    if not (isinstance(plan, Mapping) and isinstance(result, Mapping)
+            and body.get("selected_step") == "close-war-results-window-v1"
+            and result.get("status") == "verification_pending"):
+        return None
+    reason = result.get("unavailable_reason")
+    match = reason_pattern.fullmatch(reason) if isinstance(reason, str) else None
+    if match is None:
+        return None
+    pause = result.get("scope_transition_pause")
+    source = pause.get("original_close") if isinstance(pause, Mapping) else None
+    after = pause.get("after_pause") if isinstance(pause, Mapping) else None
+    top = result.get("native_command_result")
+    owner = top.get("war_results_window_owner_receipt") if isinstance(top, Mapping) else None
+    rid = result.get("native_request_id")
+    if (body.get("status") != "pending" or body.get("ui_action_credit") is not False
+            or plan.get("policy") != "ordinary-war-results-window-v1"
+            or plan.get("phase") != "war_results_window"
+            or plan.get("selected_step") != "close-war-results-window-v1"
+            or plan.get("pending_actions") != ["close-war-results-window-v1"]
+            or result.get("schema") != "ck3-war-results-window-v1"
+            or result.get("sdk_validation_schema") != "war-results-window-source-v1"
+            or result.get("backend_id") != "native-headless"
+            or result.get("operation") != "close" or result.get("window_name") != "war_results"
+            or result.get("button_name") != "close_button"
+            or result.get("available") is not False or result.get("accepted") is not False
+            or result.get("closure_verified") is not False or result.get("scope_unchanged") is not False
+            or result.get("dismiss_stage") != "callback_returned"
+            or result.get("dismiss_exception_code") != 0
+            or result.get("dispatch_attempted") is not True
+            or result.get("dispatch_invoked") is not True
+            or result.get("native_handled") is not True
+            or result.get("post_observed") is not True
+            or result.get("application_owner_thread_verified") is not True
+            or result.get("game_version") != "1.20.0.4"
+            or result.get("executable_sha256") != "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+            or int(match[1]) != int(match[2]) or int(match[1]) != binding["date_raw"]
+            or type(game_pid) is not int or game_pid <= 0 or binding.get("bridge_pid") != game_pid
+            or not isinstance(rid, str) or not rid.startswith("war-overview-close-")
+            or result.get("request_id") != rid
+            or not isinstance(top, Mapping) or top.get("ok") is not True or top.get("request_id") != rid
+            or not isinstance(owner, Mapping) or owner.get("request_id") != rid
+            or type(owner.get("ticket_sequence")) is not int or owner["ticket_sequence"] <= 0
+            or owner.get("executor_started_sequence") != owner["ticket_sequence"]
+            or owner.get("completed_sequence") != owner["ticket_sequence"]
+            or owner.get("date_raw") != binding["date_raw"]
+            or owner.get("connection_generation") != binding["connection_generation"]
+            or any(result.get(wire) != binding[key] for wire, key in (
+                ("queried_snapshot_id", "snapshot_id"), ("queried_revision", "revision"),
+                ("queried_native_revision", "native_revision"),
+                ("queried_date_raw", "date_raw"),
+                ("queried_actor_character_id", "actor_character_id"),
+                ("queried_episode_run_id", "episode_run_id"),
+                ("queried_connection_generation", "connection_generation"),
+            ))
+            or not isinstance(pause, Mapping)
+            or pause.get("schema") != "xar.war-results-scope-transition-pause/v1"
+            or pause.get("status") != "paused_same_owner_requery_required"
+            or pause.get("close_replayed") is not False
+            or pause.get("close_action_credit") is not False
+            or pause.get("fresh_war_results_query_required") is not True
+            or not isinstance(source, Mapping) or source.get("native_request_id") != rid
+            or source.get("native_revision") != binding["native_revision"]
+            or source.get("date_raw") != binding["date_raw"]
+            or source.get("actor_character_id") != binding["actor_character_id"]
+            or source.get("episode_run_id") != binding["episode_run_id"]
+            or source.get("connection_generation") != binding["connection_generation"]
+            or not isinstance(after, Mapping) or after.get("paused") is not True
+            or after.get("map_ready") is not True
+            or after.get("actor_character_id") != binding["actor_character_id"]
+            or after.get("episode_run_id") != binding["episode_run_id"]
+            or after.get("connection_generation") != binding["connection_generation"]
+            or after.get("bridge_pid") != game_pid or after.get("hello_pid") != game_pid
+            or type(after.get("native_revision")) is not int
+            or after["native_revision"] < binding["native_revision"]
+            or type(after.get("date_raw")) is not int
+            or after["date_raw"] < binding["date_raw"]):
+        raise ValueError("war results scope transition lacks same-owner paused requery proof")
+    drift = after["date_raw"] - binding["date_raw"]
+    return {
+        "schema": "g2.queue.ordinary-result-credit/v1",
+        "selected_step": "close-war-results-window-v1",
+        "service_status": "pending", "result_status": "verification_pending",
+        "category": "war_results_scope_transition_paused_pending",
+        "ui_verification_pending": True,
+        "war_results_window_closed_verified": False,
+        "source_native_request_id": rid,
+        "source_native_owner_receipt": dict(owner),
+        "source_gameplay_frame": dict(binding),
+        "paused_requery_frame": dict(after),
+        "unexpected_calendar_drift_raw": drift,
+        "actual_elapsed_days_uncredited": drift // 24 if drift % 24 == 0 else None,
+        "readonly_ui_query_required": True,
+        "new_close_retry_authorized": False,
+        "submitted_pending": True, "primitive_accepted": False,
+        "typed_nonmaterial_observation": True,
+        "existing_typed_material_verified": False,
+        "date_advance_observed": False,
+        "business_success_inferred": False,
+        "paired_after_metrics_still_required": True,
+        "replay_allowed": False,
+    }

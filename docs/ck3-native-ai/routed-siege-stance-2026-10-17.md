@@ -25,3 +25,7 @@
 新增三项测试通过真实 `main → load_driver → NativeDriver` 构造器及正常Service／MCP注册，检查默认3与显式4／5、AB开关、parser越界及非Native拒绝；仅管道I/O与服务器run为替身，Service工厂包装仍创建真实Service，不发送Native命令。连同既有LIFE配置回归共4项／13子例通过。没有实际4／5 route运行、接敌安全或速度收益信用，当前47稳定游玩与录像不受本公共源码操作影响。
 
 源候选patch SHA `39c6424e905a712f40e64cc39f4bc30934fa33d4215726004c82c1690fe4cfe1`；原候选MCP基 `e9f3d86e…`、目标 `be09564c…`。公共窄移植保留后续HolySite入口；作者的Fake factory／forwarding检查与本地真实构造链测试分别计量。46旧argv exit2与47默认参数成功仍是原来的历史事实，不能用后来公共接线改写。
+
+### 2026-10-18 01:27 CST联合配置与后继失败补录
+
+上述47首批健康是历史前缀；窗口14后来在510日后因AUTO781战果关闭期间暂停改变而失败，另105日漂移不授稳定信用。48已通过正式parser／Native构造器，但route4＋AB与hold5在后续RT configure互斥；49以route3／AB false＋hold5实际接续。参数透传存在不能证明联合配置兼容，也不等于当前启用了route4实验。详见[战果专题的原件与49健康边界](war-results-latch-camera-sentinel-2026-10-17.md#2026-10-18-0127-cst补录关闭期间暂停改变与sdk49接续)；695本身没有放松完整敌军范围。

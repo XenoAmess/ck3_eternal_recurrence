@@ -40,6 +40,10 @@
    positive_int、取abs、转unsigned或重新编号。恢复、controller、status等辅助层也须
    调用同一合同，事件实例与角色ID各按自己的合同；测试覆盖实际高位句柄及null sentinel，
    不因常见正数夹具通过就自行缩窄合法范围。
+   正式启动参数须从实际入口走parser → factory/constructor → 全部RT configure →
+   Service/server注册，验证联合配置；parser或另一个CLI通过不能证明正式入口兼容。
+   区分真实constructor与__new__/替身构造的证据范围。保留SDK48的route4+AB与hold5
+   配置失败；当前合法重试为route3/AB false+hold5，不能把单项透传当成可组合启用。
 6. 性能修改保持玩法策略中立；需要改变机会范围、战争意愿或风险偏好时另列玩法变更，
    不能把它计作性能收益。不以模拟/ACK/单个样本宣称真实战果或普遍优于原版。
 

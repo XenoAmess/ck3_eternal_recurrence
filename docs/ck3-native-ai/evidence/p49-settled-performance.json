@@ -1,0 +1,462 @@
+{
+  "5070-5150": {
+    "first_turn": 5070,
+    "last_turn": 5150,
+    "first_date_raw": 53317200,
+    "last_date_raw": 53320968,
+    "game_days": 157,
+    "turns": 81,
+    "zero_date_turns": 55,
+    "rpc_count": 172,
+    "timed_rpc_count": 169,
+    "untimed_control_count": 3,
+    "untimed_controls_by_command": {
+      "control:full_loop": 3
+    },
+    "failed_full_loop_control_count": 0,
+    "first_response_sequence": 28,
+    "last_response_sequence": 199,
+    "wall_seconds": 470.917325,
+    "seconds_per_game_day": 2.999473407643312,
+    "rpc_busy_union_seconds": 177.519001,
+    "unattributed_gap_seconds": 293.398324,
+    "long_gap_threshold_seconds": 30,
+    "long_gap_count": 2,
+    "long_gap_seconds": 247.094566,
+    "max_gap_seconds": 166.180383,
+    "rpc_elapsed_by_tool_seconds": {
+      "ck3_auto_turn": 166.9455988020636,
+      "ck3_save_checkpoint": 9.393861999968067,
+      "ck3_take_semantic_snapshot_private_v1": 0.026256200158968568,
+      "root_current_runtime_metrics": 1.1536049989517778
+    },
+    "checkpoint_saved_delta_after_first_turn": 2,
+    "checkpoint_save_rpc_count": 2,
+    "limits": [
+      "RPC busy and tool elapsed can overlap; do not sum categories into wall time.",
+      "Gaps are unattributed; a long gap is not automatically human repair.",
+      "Window excludes recording startup and all work outside first/last response timestamps."
+    ],
+    "auto_by_group": {
+      "army_query": {
+        "count": 27,
+        "auto_seconds": 21.590350200189278,
+        "game_days": 0
+      },
+      "stationary_hold_speed5": {
+        "count": 26,
+        "auto_seconds": 120.97162080113776,
+        "game_days": 157
+      },
+      "war_results_query": {
+        "count": 21,
+        "auto_seconds": 7.403061100514606,
+        "game_days": 0
+      },
+      "private-select-player-lifestyle-perk-v1": {
+        "count": 1,
+        "auto_seconds": 4.531572600128129,
+        "game_days": 0
+      },
+      "private-query-player-lifestyle-receipt-v1": {
+        "count": 1,
+        "auto_seconds": 5.859516700031236,
+        "game_days": 0
+      },
+      "war_termination_query": {
+        "count": 5,
+        "auto_seconds": 6.589477400062606,
+        "game_days": 0
+      }
+    },
+    "gaps_over_3s": [
+      {
+        "seconds": 80.914183,
+        "after_sequence": 34,
+        "before_sequence": 35,
+        "after_tool": "root_current_runtime_metrics",
+        "before_tool": "ck3_take_semantic_snapshot_private_v1"
+      },
+      {
+        "seconds": 15.818444,
+        "after_sequence": 35,
+        "before_sequence": 36,
+        "after_tool": "ck3_take_semantic_snapshot_private_v1",
+        "before_tool": "root_current_runtime_metrics"
+      },
+      {
+        "seconds": 25.679654,
+        "after_sequence": 36,
+        "before_sequence": 38,
+        "after_tool": "root_current_runtime_metrics",
+        "before_tool": "ck3_auto_turn"
+      },
+      {
+        "seconds": 166.180383,
+        "after_sequence": 99,
+        "before_sequence": 101,
+        "after_tool": "root_current_runtime_metrics",
+        "before_tool": "ck3_auto_turn"
+      }
+    ],
+    "top_auto": [
+      [
+        6.174046500120312,
+        5118,
+        131,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.868509900057688,
+        5106,
+        107,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.859516700031236,
+        5085,
+        62,
+        "private-query-player-lifestyle-receipt-v1",
+        0
+      ],
+      [
+        5.813542900141329,
+        5094,
+        82,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.775556400185451,
+        5136,
+        170,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.642451300052926,
+        5088,
+        70,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.555689800065011,
+        5124,
+        143,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.416545800166205,
+        5139,
+        176,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.345511500025168,
+        5071,
+        31,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.331030299887061,
+        5142,
+        182,
+        "stationary_hold_speed5",
+        7
+      ]
+    ]
+  },
+  "5104-5165": {
+    "first_turn": 5104,
+    "last_turn": 5165,
+    "first_date_raw": 53318808,
+    "last_date_raw": 53321640,
+    "game_days": 118,
+    "turns": 62,
+    "zero_date_turns": 43,
+    "rpc_count": 129,
+    "timed_rpc_count": 127,
+    "untimed_control_count": 2,
+    "untimed_controls_by_command": {
+      "control:full_loop": 1,
+      "control:full_loop_client_error": 1
+    },
+    "failed_full_loop_control_count": 1,
+    "first_response_sequence": 102,
+    "last_response_sequence": 230,
+    "wall_seconds": 134.92461,
+    "seconds_per_game_day": 1.1434288983050847,
+    "rpc_busy_union_seconds": 130.511249,
+    "unattributed_gap_seconds": 4.413361000000009,
+    "long_gap_threshold_seconds": 30,
+    "long_gap_count": 0,
+    "long_gap_seconds": 0,
+    "max_gap_seconds": 0.800364,
+    "rpc_elapsed_by_tool_seconds": {
+      "ck3_auto_turn": 124.83086270070635,
+      "ck3_save_checkpoint": 4.884302499936894,
+      "ck3_take_semantic_snapshot_private_v1": 0.00861999997869134,
+      "root_current_runtime_metrics": 0.7877308987081051
+    },
+    "checkpoint_saved_delta_after_first_turn": 1,
+    "checkpoint_save_rpc_count": 1,
+    "limits": [
+      "RPC busy and tool elapsed can overlap; do not sum categories into wall time.",
+      "Gaps are unattributed; a long gap is not automatically human repair.",
+      "Window excludes recording startup and all work outside first/last response timestamps."
+    ],
+    "auto_by_group": {
+      "war_results_query": {
+        "count": 16,
+        "auto_seconds": 5.497350100195035,
+        "game_days": 0
+      },
+      "army_query": {
+        "count": 19,
+        "auto_seconds": 15.581499499967322,
+        "game_days": 0
+      },
+      "stationary_hold_speed5": {
+        "count": 19,
+        "auto_seconds": 93.28996070078574,
+        "game_days": 118
+      },
+      "war_termination_query": {
+        "count": 5,
+        "auto_seconds": 5.694493799936026,
+        "game_days": 0
+      },
+      "other_query": {
+        "count": 2,
+        "auto_seconds": 3.361534900031984,
+        "game_days": 0
+      },
+      "select-event-option-2": {
+        "count": 1,
+        "auto_seconds": 1.4060236997902393,
+        "game_days": 0
+      }
+    },
+    "gaps_over_3s": [],
+    "top_auto": [
+      [
+        6.20849490002729,
+        5162,
+        222,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        6.174046500120312,
+        5118,
+        131,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        6.1293189998250455,
+        5158,
+        214,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.868509900057688,
+        5106,
+        107,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.775556400185451,
+        5136,
+        170,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.555689800065011,
+        5124,
+        143,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.47757440013811,
+        5165,
+        229,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.416545800166205,
+        5139,
+        176,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.331030299887061,
+        5142,
+        182,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.230232900008559,
+        5133,
+        164,
+        "stationary_hold_speed5",
+        7
+      ]
+    ]
+  },
+  "5151-5165": {
+    "first_turn": 5151,
+    "last_turn": 5165,
+    "first_date_raw": 53320968,
+    "last_date_raw": 53321640,
+    "game_days": 28,
+    "turns": 15,
+    "zero_date_turns": 11,
+    "rpc_count": 32,
+    "timed_rpc_count": 31,
+    "untimed_control_count": 1,
+    "untimed_controls_by_command": {
+      "control:full_loop_client_error": 1
+    },
+    "failed_full_loop_control_count": 1,
+    "first_response_sequence": 199,
+    "last_response_sequence": 230,
+    "wall_seconds": 33.474124,
+    "seconds_per_game_day": 1.1955044285714287,
+    "rpc_busy_union_seconds": 32.126296,
+    "unattributed_gap_seconds": 1.3478279999999998,
+    "long_gap_threshold_seconds": 30,
+    "long_gap_count": 0,
+    "long_gap_seconds": 0,
+    "max_gap_seconds": 0.548246,
+    "rpc_elapsed_by_tool_seconds": {
+      "ck3_auto_turn": 31.961336799664423,
+      "root_current_runtime_metrics": 0.16501359990797937
+    },
+    "checkpoint_saved_delta_after_first_turn": 0,
+    "checkpoint_save_rpc_count": 0,
+    "limits": [
+      "RPC busy and tool elapsed can overlap; do not sum categories into wall time.",
+      "Gaps are unattributed; a long gap is not automatically human repair.",
+      "Window excludes recording startup and all work outside first/last response timestamps."
+    ],
+    "auto_by_group": {
+      "stationary_hold_speed5": {
+        "count": 4,
+        "auto_seconds": 22.984643700066954,
+        "game_days": 28
+      },
+      "war_results_query": {
+        "count": 3,
+        "auto_seconds": 0.8364359999541193,
+        "game_days": 0
+      },
+      "other_query": {
+        "count": 2,
+        "auto_seconds": 3.361534900031984,
+        "game_days": 0
+      },
+      "select-event-option-2": {
+        "count": 1,
+        "auto_seconds": 1.4060236997902393,
+        "game_days": 0
+      },
+      "war_termination_query": {
+        "count": 2,
+        "auto_seconds": 1.791040699928999,
+        "game_days": 0
+      },
+      "army_query": {
+        "count": 3,
+        "auto_seconds": 1.5816577998921275,
+        "game_days": 0
+      }
+    },
+    "gaps_over_3s": [],
+    "top_auto": [
+      [
+        6.20849490002729,
+        5162,
+        222,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        6.1293189998250455,
+        5158,
+        214,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.47757440013811,
+        5165,
+        229,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        5.1692554000765085,
+        5151,
+        200,
+        "stationary_hold_speed5",
+        7
+      ],
+      [
+        2.943106099963188,
+        5153,
+        204,
+        "other_query",
+        0
+      ],
+      [
+        1.4060236997902393,
+        5155,
+        208,
+        "select-event-option-2",
+        0
+      ],
+      [
+        0.99017159990035,
+        5160,
+        218,
+        "war_termination_query",
+        0
+      ],
+      [
+        0.800869100028649,
+        5156,
+        210,
+        "war_termination_query",
+        0
+      ],
+      [
+        0.758261299924925,
+        5164,
+        227,
+        "army_query",
+        0
+      ],
+      [
+        0.5567189999856055,
+        5157,
+        212,
+        "army_query",
+        0
+      ]
+    ]
+  }
+}

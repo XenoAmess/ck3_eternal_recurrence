@@ -33,3 +33,25 @@ Root于14:15 UTC纠正现场截点：SDK44窗口11在推进143日后，FULL416�
 同报告确认两战的逐战policy defer已在AUTO59实际出现，到期AUTO81／83重查；早期EVENT30／32合法重置否定计数。这只证明既有policy已生效，不是新的Native否定、业务动作或相对基线提速证明。Commander查询因当前scope缺current commander ID，不能安全凭纯SDK冷却保证即时失效，本轮不实施该建议。Army private scalar在该P44样本仍off，不转移旧Game的AB证书。
 
 稳定30年优先，其后小于1秒／日，再0.5秒／日；均未达成，G2仍6/8。完整公共文件和候选来源见[来源清单](evidence/results-latch-camera-public-transplant.json)，不纳Driver、SAVE、原片、Game DLL或完整历史。
+
+## 2026-10-18 01:27 CST补录：关闭期间暂停改变与SDK49接续
+
+本节按10月17日UTC原件在次日补录，不代表零点已经知道结果。[有限来源及实际字段投影](evidence/p49-war-results-scope-pause.json)保留失败与恢复的不同信用。
+
+SDK47窗口14在510日后停止：FULL750／AUTO781于16:16:18.626413Z完成Native关闭回调，但同raw53314512的暂停状态由true变false，返回verification_pending／accepted=false／UI信用0。旧classifier只认旧reason及scope_unchanged，因合同变化拒绝；后续SEM782已到53317032、unpaused且event69存在，额外105日为无人计时漂移，不计稳定、日期或业务信用。原781关闭结果仍未知，动作不重放；暂停控制783在env缺N时发送前失败，也不写成成功暂停。
+
+公共Service只在既有战果关闭返回后增加六行调用；新helper要求精确的完整回调、同日期暂停翻转原因及source／owner合同，先读当前语义帧，必要时仅调用现有pause-map，再独立读回同owner／actor／episode／connection与非倒退版本、日期的暂停地图。它只发布paused_same_owner_requery_required观察，不能替代新窗口查询或授予原关闭成功。暂停失败、后态未知或错owner继续保留pending；原命令不重发。另提取[纯结果资格函数](../../tools/g2_saved_campaign/war_results_scope_transition_outcome.py)和[最小历史classifier差分](evidence/p48-scope-transition-classifier-research.patch)，不复制完整canonical，也不声称所有公共runner已接入该API。
+
+23项定向／回归测试及11个子例通过。真实Service.auto_turn经过实际NativeDriver构造器、关闭transport、execute_step／primitive与history；仅Native输入及预选初始plan为替身。规划public870与wire Native7550明确不同，关闭请求绑7550、随后暂停绑7551。105日中途漂移、暂停失败和新connection9为明确合成变形；旧connection8的执行闩锁不得跨connection退休，独立新查询不补旧动作信用。原作者仅helper或构造绕过测试与此链分别记录，未冒充实机重放。
+
+SDK48已通过正式parser与Native构造器，却在RT配置驻守speed5时拒绝route4＋AB：stationary-objective A/B requires route/contact speed 3。queue／app均exit1，尚无MCP工具／Game动作。4218的参数透传本身不等于这组联合配置兼容；SDK49改回route3／AB false＋既有hold5。今后验证必须走完整正式入口的parser→factory／constructor→全部RT configure→Service／server注册；不能只凭parser通过声称可启动。
+
+SDK49原CAP2的Native结果保留，派生治理metadata误加machine_id造成校验失败，UI3亦在发送前失败；control4仅本地重消费原CAP并使用有披露的纠正副本，0MCP、不重放。随后独立UI5在connection10／ticket7869确认hidden，仍无781关闭信用。AUTO15真实选择event69的option2并获event_instance_advanced后验；AUTO23／MET24真实+7日，SEM35／MET36为cycles5072、raw53317368、paused／map-ready匹配。本代从53317032累计健康14日，Root准入c9ac56d0开启窗口15（baseline53317368，firstFULL37）。后来固定Root截点raw53318640，是本代累计67日、该窗口53日，不混用分母。同Game51028和5ebe录像未重启；这些是固定健康前缀，不保证未来持续运行，也不授新helper未来同故障分支实机验收。
+
+event69的stress_threshold.2202随后经batch0037离线分析发布；Root对原冻结before69用已部署loader复用，status=offline-source-reviewed、binding_mode=exact、reused_known=true，原件未变，0MCP。该来源已知证明发生在实际选择之后，不倒推早先选择已用已知策略；registry_contract_accepted与material_effects_verified仍false，不称语义最优或增加G2信用。
+
+[SDK47已封318日样本](evidence/p47-stationary-performance-318d.json)为479.490396秒，即1.507831秒／日，固定4702–4941周期；不是全战役均速，嵌套stage不能相加。后续[SDK49固定5104–5165](evidence/p49-settled-performance.json)已由ad04a15e最终封包：118日／134.924610秒＝1.143429秒／日，含62轮、43零日、1次SAVE、4.413361秒内部gap；此前166.180383秒交接gap不在该连续片段内，较宽157日样本含两个gap为2.999473秒／日。[stage并集](evidence/p49-stage-slice.json)把82个递归plan累计42.765141秒纠正为62个区间的29.275382秒独立wall，其中已观察Native wait0.998858秒、snapshot2.611838秒；余量不等于Python CPU，不与外层时长相加。该报告无生产补丁或活状态读取。
+
+695提交56527e80的Official39048607827／Linear39048607848与MCP提交4218ab38的Official39049025056／Linear39049025059均SUCCESS；旧RED保留。本批不操作Game／MCP／OBS、不读实时Driver／SAVE／媒体，不重编Native。用户随后要求度假温和收尾，Root在最终SAVE652前置竞态后准备653原位恢复，不再开FULL；最终闭场见[度假交接](../handover/2026-10-18-robert30-clean-vacation-handoff.md)，不把上述健康前缀继续写成实时running。目标仍稳定30年，再<1秒／日、0.5秒／日；均未达，G2仍6/8，自然继承未验收。
+
+最终Root eb0cb9f9已封：窗口15 repair_required573日，653新SAVE真实物化、cycles5364／raw53331120不变，旧6520dispatch／不重放、无窗口16。SDK双正常0／0及录像／辅助进程收尾，Game一次WM_CLOSE未退、无force，原supervisor／keeper保留；后WM_CLOSE没有fresh SEM，不借先前656称当前地图已验证。EDL仅封存、有历史open wait勘误未整链，无渲染。park指针20e4846d和最新SAVE／Driver seal／存储期限／接手顺序见上述交接。

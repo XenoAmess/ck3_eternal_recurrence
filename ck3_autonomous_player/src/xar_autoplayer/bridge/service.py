@@ -5054,6 +5054,12 @@ class GameplayBridgeService:
                 result = self.query_war_results_window_v1(expected_revision=int(planned["revision"]))
             elif selected_step == CLOSE_WAR_RESULTS_WINDOW_V1_STEP:
                 result = self.close_war_results_window_v1(expected_revision=int(planned["revision"]))
+                from ..war_results_scope_pause_v1 import pause_after_war_results_scope_transition_v1
+                pause_evidence = pause_after_war_results_scope_transition_v1(self.driver, result)
+                if pause_evidence is not None:
+                    # The original close remains verification-pending.  This
+                    # idempotent pause only prevents unobserved calendar drift.
+                    result = {**result, "scope_transition_pause": pause_evidence}
             elif (
                 event_option_number is not None
                 and isinstance(planned_event_id, int)

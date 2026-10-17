@@ -1,0 +1,283 @@
+{
+  "source_file_size": 47568477,
+  "read_bytes": 750655,
+  "time_lower": "2026-10-17T17:09:39.958552",
+  "time_upper": "2026-10-17T17:11:54.875243",
+  "records": 2872,
+  "stages": [
+    {
+      "stage": "driver.life_advance_postcondition_wait",
+      "count": 58,
+      "nested_elapsed_sum_seconds": 75.398767,
+      "max_seconds": 4.895954
+    },
+    {
+      "stage": "driver.life_advance_public_change_wait",
+      "count": 157,
+      "nested_elapsed_sum_seconds": 75.347298,
+      "max_seconds": 1.108205
+    },
+    {
+      "stage": "service._plan_turn_internal",
+      "count": 82,
+      "nested_elapsed_sum_seconds": 42.765141,
+      "max_seconds": 1.540969
+    },
+    {
+      "stage": "service.normal_plan_turn",
+      "count": 62,
+      "nested_elapsed_sum_seconds": 29.416304,
+      "max_seconds": 1.544982
+    },
+    {
+      "stage": "mcp.auto_turn_service",
+      "count": 19,
+      "nested_elapsed_sum_seconds": 15.510772,
+      "max_seconds": 1.53932
+    },
+    {
+      "stage": "driver.full_state_persistence",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 10.448259,
+      "max_seconds": 1.180751
+    },
+    {
+      "stage": "driver.full_state_atomic_write",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 10.160676,
+      "max_seconds": 1.169121
+    },
+    {
+      "stage": "driver.full_state_temp_write_bytes",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 9.986323,
+      "max_seconds": 1.160343
+    },
+    {
+      "stage": "driver.full_state_temp_stream_write",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 9.954374,
+      "max_seconds": 1.158594
+    },
+    {
+      "stage": "driver.semantic_snapshot",
+      "count": 1221,
+      "nested_elapsed_sum_seconds": 4.952626,
+      "max_seconds": 0.017804
+    },
+    {
+      "stage": "service._prepare_succession_transition_v1",
+      "count": 82,
+      "nested_elapsed_sum_seconds": 4.448427,
+      "max_seconds": 0.368266
+    },
+    {
+      "stage": "service._plan_private_family_wartime_v1",
+      "count": 46,
+      "nested_elapsed_sum_seconds": 2.734225,
+      "max_seconds": 0.328428
+    },
+    {
+      "stage": "service._plan_private_family_opportunity_v1",
+      "count": 19,
+      "nested_elapsed_sum_seconds": 2.720889,
+      "max_seconds": 0.327812
+    },
+    {
+      "stage": "driver.native_command_result_wait",
+      "count": 97,
+      "nested_elapsed_sum_seconds": 1.897743,
+      "max_seconds": 0.063782
+    },
+    {
+      "stage": "driver.history_free_snapshot",
+      "count": 315,
+      "nested_elapsed_sum_seconds": 0.979004,
+      "max_seconds": 0.034552
+    },
+    {
+      "stage": "service._plan_private_lifestyle_trial_v1",
+      "count": 17,
+      "nested_elapsed_sum_seconds": 0.680312,
+      "max_seconds": 0.100037
+    },
+    {
+      "stage": "driver.native_pipe_send_wait",
+      "count": 19,
+      "nested_elapsed_sum_seconds": 0.53216,
+      "max_seconds": 0.042197
+    },
+    {
+      "stage": "service.plan_construction_private",
+      "count": 18,
+      "nested_elapsed_sum_seconds": 0.489397,
+      "max_seconds": 0.068061
+    },
+    {
+      "stage": "driver.composite_primitive",
+      "count": 19,
+      "nested_elapsed_sum_seconds": 0.292364,
+      "max_seconds": 0.026097
+    },
+    {
+      "stage": "driver.full_state_utf8_encoding",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 0.249522,
+      "max_seconds": 0.021122
+    },
+    {
+      "stage": "service.auto_turn_camera",
+      "count": 62,
+      "nested_elapsed_sum_seconds": 0.181578,
+      "max_seconds": 0.066593
+    },
+    {
+      "stage": "driver.full_state_replace",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 0.158193,
+      "max_seconds": 0.008712
+    },
+    {
+      "stage": "driver.native_endpoint_send",
+      "count": 97,
+      "nested_elapsed_sum_seconds": 0.017002,
+      "max_seconds": 0.000927
+    },
+    {
+      "stage": "service.plan_release_formal",
+      "count": 46,
+      "nested_elapsed_sum_seconds": 0.009912,
+      "max_seconds": 0.000518
+    },
+    {
+      "stage": "driver.full_state_json_serialization",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 0.008741,
+      "max_seconds": 0.000608
+    },
+    {
+      "stage": "driver.full_state_temp_open",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 0.006696,
+      "max_seconds": 0.00041
+    },
+    {
+      "stage": "service._plan_private_crown_normal_v1",
+      "count": 14,
+      "nested_elapsed_sum_seconds": 0.004696,
+      "max_seconds": 0.000598
+    },
+    {
+      "stage": "mcp.army_result_shape",
+      "count": 19,
+      "nested_elapsed_sum_seconds": 0.001852,
+      "max_seconds": 0.000163
+    },
+    {
+      "stage": "service._plan_private_feast_normal_v1",
+      "count": 14,
+      "nested_elapsed_sum_seconds": 0.001734,
+      "max_seconds": 0.000209
+    },
+    {
+      "stage": "driver.full_state_temp_close",
+      "count": 21,
+      "nested_elapsed_sum_seconds": 0.001352,
+      "max_seconds": 7.4e-05
+    }
+  ],
+  "public_change_wait_examples": [
+    {
+      "schema": "xar.ck3.army-query-timing.v1",
+      "stage": "driver.life_advance_public_change_wait",
+      "python_pid": 33956,
+      "thread_id": 41408,
+      "step": "life-advance",
+      "elapsed_ns": 20992000,
+      "finished_at_utc": "2026-10-17T17:09:41.913740+00:00",
+      "native_request_id": null,
+      "before_date_raw": 53318808,
+      "before_native_revision": 7785,
+      "before_public_revision": 104,
+      "after_date_raw": 53318808,
+      "after_native_revision": 7786,
+      "after_public_revision": 105
+    },
+    {
+      "schema": "xar.ck3.army-query-timing.v1",
+      "stage": "driver.life_advance_public_change_wait",
+      "python_pid": 33956,
+      "thread_id": 41408,
+      "step": "life-advance",
+      "elapsed_ns": 331052200,
+      "finished_at_utc": "2026-10-17T17:09:42.245358+00:00",
+      "native_request_id": null,
+      "before_date_raw": 53318808,
+      "before_native_revision": 7786,
+      "before_public_revision": 105,
+      "after_date_raw": 53318832,
+      "after_native_revision": 7787,
+      "after_public_revision": 106
+    }
+  ],
+  "public_change_wait_by_calendar_delta": {
+    "date_changed": {
+      "count": 118,
+      "elapsed_seconds": 69.960223
+    },
+    "same_date": {
+      "count": 39,
+      "elapsed_seconds": 5.387076
+    }
+  },
+  "plan_intervals": {
+    "raw_count": 82,
+    "raw_nested_sum_seconds": 42.765141,
+    "union_count": 62,
+    "unique_wall_seconds": 29.275382
+  },
+  "nested_within_plan": {
+    "native_wait_or_pipe": {
+      "overlapping_rows": 40,
+      "unique_intersection_seconds": 1.001551,
+      "by_stage": {
+        "driver.native_command_result_wait": 0.998858,
+        "driver.native_endpoint_send": 0.002693
+      }
+    },
+    "semantic_snapshot": {
+      "overlapping_rows": 732,
+      "unique_intersection_seconds": 2.611838,
+      "by_stage": {
+        "driver.semantic_snapshot": 2.611838
+      }
+    },
+    "full_state_persistence": {
+      "overlapping_rows": 0,
+      "unique_intersection_seconds": 0,
+      "by_stage": {}
+    },
+    "normal_plan": {
+      "overlapping_rows": 62,
+      "unique_intersection_seconds": 29.275382,
+      "by_stage": {
+        "service.normal_plan_turn": 29.275382
+      }
+    },
+    "family": {
+      "overlapping_rows": 65,
+      "unique_intersection_seconds": 2.734226,
+      "by_stage": {
+        "service._plan_private_family_opportunity_v1": 2.720888,
+        "service._plan_private_family_wartime_v1": 2.734226
+      }
+    },
+    "succession": {
+      "overlapping_rows": 82,
+      "unique_intersection_seconds": 4.448426,
+      "by_stage": {
+        "service._prepare_succession_transition_v1": 4.448426
+      }
+    }
+  }
+}

@@ -1,0 +1,334 @@
+{
+  "schema": "xar.ck3.p47-stationary-performance/v1",
+  "status": "sealed_responses_only",
+  "first_turn": 4702,
+  "last_turn": 4941,
+  "first_auto_seq": 33,
+  "last_metrics_seq": 532,
+  "first_auto_started_at_utc": "2026-10-17T16:04:17.723168+00:00",
+  "last_metrics_ended_at_utc": "2026-10-17T16:12:17.213564+00:00",
+  "wall_seconds": 479.490396,
+  "game_days": 318,
+  "seconds_per_day": 1.507831433962264,
+  "turns": 240,
+  "timing_file_size_at_read": 43796298,
+  "timing_tail_bytes_read": 6291456,
+  "auto_by_kind": {
+    "stationary_hold_speed5": {
+      "count": 47,
+      "sum_s": 228.257025,
+      "median_s": 5.270865,
+      "max_s": 7.884746,
+      "advanced_days": 283
+    },
+    "life_advance_one_day": {
+      "count": 28,
+      "sum_s": 97.276253,
+      "median_s": 3.37501,
+      "max_s": 4.354102,
+      "advanced_days": 28
+    },
+    "army_strength_query": {
+      "count": 53,
+      "sum_s": 38.912882,
+      "median_s": 0.680472,
+      "max_s": 1.563273,
+      "advanced_days": 0
+    },
+    "war_termination_query": {
+      "count": 32,
+      "sum_s": 21.018956,
+      "median_s": 0.613707,
+      "max_s": 1.615454,
+      "advanced_days": 0
+    },
+    "other": {
+      "count": 15,
+      "sum_s": 18.010978,
+      "median_s": 0.983052,
+      "max_s": 2.970109,
+      "advanced_days": 0
+    },
+    "route_contact_advance": {
+      "count": 7,
+      "sum_s": 16.429721,
+      "median_s": 1.904369,
+      "max_s": 3.653746,
+      "advanced_days": 7
+    },
+    "war_results_query": {
+      "count": 44,
+      "sum_s": 13.460926,
+      "median_s": 0.302268,
+      "max_s": 0.531564,
+      "advanced_days": 0
+    },
+    "route_contact_query": {
+      "count": 10,
+      "sum_s": 3.615323,
+      "median_s": 0.278843,
+      "max_s": 0.657213,
+      "advanced_days": 0
+    },
+    "move_preview": {
+      "count": 4,
+      "sum_s": 1.0176,
+      "median_s": 0.255301,
+      "max_s": 0.285513,
+      "advanced_days": 0
+    }
+  },
+  "selected_stage_by_kind": {
+    "stationary_hold_speed5|driver.life_advance_postcondition_wait": {
+      "count": 144,
+      "sum_s": 189.017146,
+      "median_s": 0.02802,
+      "max_s": 6.731822
+    },
+    "stationary_hold_speed5|driver.life_advance_public_change_wait": {
+      "count": 455,
+      "sum_s": 188.871673,
+      "median_s": 0.384442,
+      "max_s": 1.491666
+    },
+    "life_advance_one_day|driver.exact_clock_observation": {
+      "count": 28,
+      "sum_s": 70.465745,
+      "median_s": 2.493211,
+      "max_s": 2.763626
+    },
+    "life_advance_one_day|driver.life_advance_postcondition_wait": {
+      "count": 56,
+      "sum_s": 69.657854,
+      "median_s": 1.175892,
+      "max_s": 2.711591
+    },
+    "life_advance_one_day|driver.life_advance_public_change_wait": {
+      "count": 84,
+      "sum_s": 69.637269,
+      "median_s": 0.17093,
+      "max_s": 2.481391
+    },
+    "army_strength_query|service.normal_plan_turn": {
+      "count": 53,
+      "sum_s": 34.473614,
+      "median_s": 0.589814,
+      "max_s": 1.471176
+    },
+    "stationary_hold_speed5|driver.full_state_persistence": {
+      "count": 47,
+      "sum_s": 19.641521,
+      "median_s": 0.306182,
+      "max_s": 1.210479
+    },
+    "stationary_hold_speed5|driver.full_state_temp_stream_write": {
+      "count": 47,
+      "sum_s": 18.507284,
+      "median_s": 0.286187,
+      "max_s": 1.194372
+    },
+    "war_termination_query|service.normal_plan_turn": {
+      "count": 32,
+      "sum_s": 17.911127,
+      "median_s": 0.525929,
+      "max_s": 1.513124
+    },
+    "life_advance_one_day|service.normal_plan_turn": {
+      "count": 28,
+      "sum_s": 13.564992,
+      "median_s": 0.400568,
+      "max_s": 1.263367
+    },
+    "stationary_hold_speed5|service.normal_plan_turn": {
+      "count": 47,
+      "sum_s": 12.77635,
+      "median_s": 0.225862,
+      "max_s": 0.664049
+    },
+    "route_contact_advance|driver.life_advance_postcondition_wait": {
+      "count": 16,
+      "sum_s": 11.271503,
+      "median_s": 0.180849,
+      "max_s": 2.565691
+    },
+    "route_contact_advance|driver.life_advance_public_change_wait": {
+      "count": 23,
+      "sum_s": 11.265672,
+      "median_s": 0.279878,
+      "max_s": 2.307533
+    },
+    "route_contact_advance|driver.exact_clock_observation": {
+      "count": 7,
+      "sum_s": 11.171401,
+      "median_s": 1.326325,
+      "max_s": 2.629044
+    },
+    "life_advance_one_day|driver.full_state_persistence": {
+      "count": 28,
+      "sum_s": 10.232646,
+      "median_s": 0.325567,
+      "max_s": 0.693494
+    },
+    "life_advance_one_day|driver.full_state_temp_stream_write": {
+      "count": 28,
+      "sum_s": 9.68408,
+      "median_s": 0.304193,
+      "max_s": 0.672109
+    },
+    "war_results_query|service.normal_plan_turn": {
+      "count": 44,
+      "sum_s": 8.220686,
+      "median_s": 0.184549,
+      "max_s": 0.420616
+    },
+    "other|service.normal_plan_turn": {
+      "count": 15,
+      "sum_s": 6.78211,
+      "median_s": 0.467586,
+      "max_s": 1.007884
+    },
+    "other|driver.full_state_persistence": {
+      "count": 8,
+      "sum_s": 3.129624,
+      "median_s": 0.311077,
+      "max_s": 0.948527
+    },
+    "other|driver.full_state_temp_stream_write": {
+      "count": 8,
+      "sum_s": 2.894834,
+      "median_s": 0.286004,
+      "max_s": 0.925902
+    },
+    "route_contact_query|service.normal_plan_turn": {
+      "count": 10,
+      "sum_s": 2.66695,
+      "median_s": 0.176756,
+      "max_s": 0.582167
+    },
+    "route_contact_advance|driver.full_state_persistence": {
+      "count": 7,
+      "sum_s": 2.474151,
+      "median_s": 0.347803,
+      "max_s": 0.490249
+    },
+    "route_contact_advance|driver.full_state_temp_stream_write": {
+      "count": 7,
+      "sum_s": 2.332654,
+      "median_s": 0.327565,
+      "max_s": 0.470123
+    },
+    "war_results_query|driver.native_command_result_wait": {
+      "count": 43,
+      "sum_s": 2.229346,
+      "median_s": 0.052161,
+      "max_s": 0.095565
+    },
+    "stationary_hold_speed5|driver.native_command_result_wait": {
+      "count": 197,
+      "sum_s": 2.040256,
+      "median_s": 0.010114,
+      "max_s": 0.057249
+    },
+    "life_advance_one_day|driver.native_command_result_wait": {
+      "count": 104,
+      "sum_s": 1.971567,
+      "median_s": 0.011919,
+      "max_s": 0.099638
+    },
+    "route_contact_advance|service.normal_plan_turn": {
+      "count": 7,
+      "sum_s": 1.658433,
+      "median_s": 0.188207,
+      "max_s": 0.486646
+    },
+    "other|driver.life_advance_postcondition_wait": {
+      "count": 5,
+      "sum_s": 1.153997,
+      "median_s": 0.271876,
+      "max_s": 0.336525
+    },
+    "other|driver.life_advance_public_change_wait": {
+      "count": 5,
+      "sum_s": 1.152523,
+      "median_s": 0.271576,
+      "max_s": 0.336245
+    },
+    "move_preview|service.normal_plan_turn": {
+      "count": 4,
+      "sum_s": 0.71222,
+      "median_s": 0.182091,
+      "max_s": 0.190875
+    },
+    "other|driver.native_command_result_wait": {
+      "count": 9,
+      "sum_s": 0.596688,
+      "median_s": 0.062356,
+      "max_s": 0.116634
+    },
+    "war_termination_query|driver.native_command_result_wait": {
+      "count": 12,
+      "sum_s": 0.580018,
+      "median_s": 0.042906,
+      "max_s": 0.06413
+    },
+    "route_contact_advance|driver.native_command_result_wait": {
+      "count": 23,
+      "sum_s": 0.228381,
+      "median_s": 0.010613,
+      "max_s": 0.01746
+    },
+    "army_strength_query|driver.native_command_result_wait": {
+      "count": 4,
+      "sum_s": 0.145274,
+      "median_s": 0.036294,
+      "max_s": 0.041937
+    },
+    "stationary_hold_speed5|driver.native_endpoint_send": {
+      "count": 197,
+      "sum_s": 0.035195,
+      "median_s": 0.000143,
+      "max_s": 0.004215
+    },
+    "life_advance_one_day|driver.native_endpoint_send": {
+      "count": 104,
+      "sum_s": 0.01412,
+      "median_s": 0.000128,
+      "max_s": 0.000367
+    },
+    "war_results_query|driver.native_endpoint_send": {
+      "count": 43,
+      "sum_s": 0.005388,
+      "median_s": 0.000124,
+      "max_s": 0.000207
+    },
+    "route_contact_advance|driver.native_endpoint_send": {
+      "count": 23,
+      "sum_s": 0.003052,
+      "median_s": 0.000129,
+      "max_s": 0.000238
+    },
+    "war_termination_query|driver.native_endpoint_send": {
+      "count": 12,
+      "sum_s": 0.001427,
+      "median_s": 0.000115,
+      "max_s": 0.000171
+    },
+    "other|driver.native_endpoint_send": {
+      "count": 9,
+      "sum_s": 0.001262,
+      "median_s": 0.000121,
+      "max_s": 0.000251
+    },
+    "army_strength_query|driver.native_endpoint_send": {
+      "count": 4,
+      "sum_s": 0.00046,
+      "median_s": 0.000114,
+      "max_s": 0.000135
+    }
+  },
+  "limits": [
+    "Stage intervals may nest; stage sums cannot be added to each other or to AUTO elapsed.",
+    "Timestamp join is by completed AUTO RPC interval, not by native request ID.",
+    "No current Driver, SAVE, video or in-flight result body was read."
+  ]
+}
