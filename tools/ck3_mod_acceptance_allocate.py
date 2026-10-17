@@ -742,6 +742,169 @@ def previous_runtime_failure_closure(previous,freeze,report,close_path,keeper_ro
         'release_pass':False,'control_files_absent':absent,'administrative_resource_admission_only':True},
         'actual_process_inventory':inventory}
 
+def previous_failed_live_resource_closure(previous, freeze, close_path, keeper_root, release_path, bus_packet):
+    """Admit an ended failed live attempt's resources; never grant normal-exit credit."""
+    import psutil
+    previous, keeper_root = previous.resolve(), keeper_root.resolve()
+    require(close_path.stat().st_size <= 1048576, 'Failed-live closure exceeds small bound')
+    bundle = read_json(close_path)
+    require(bundle.get('schema') == 'ck3-mod-acceptance-failed-live-resource-closure-v1' and
+            bundle.get('run_id') == freeze['run_id'] == previous.name and
+            isinstance(bundle.get('machine_id'), str) and
+            freeze['run_id'].startswith(bundle['machine_id'] + '--') and
+            Path(bundle.get('keeper_root', '')).resolve() == keeper_root and
+            all(bundle.get(key) is False for key in ('normal_close_qualified', 'typed_normal_exit_proven',
+                                                    'business_pass', 'release_pass')),
+            'Failed-live closure identity or negative qualification differs')
+    refs, evidence = bundle.get('original_evidence'), {}
+    require(isinstance(refs, dict), 'Original failed-live evidence pins required')
+    def original(key, expected=None, *, decode=True, max_bytes=1048576):
+        row = refs[key]; path = Path(row['path']).resolve()
+        require(expected is None or path == Path(expected).resolve(), 'Failed-live original path differs: ' + key)
+        require(type(row.get('bytes')) is int and 0 <= row['bytes'] <= max_bytes,
+                'Failed-live evidence bound differs: ' + key)
+        check_pin(path, row); evidence[key] = row
+        return read_json(path) if decode else path.read_bytes()
+    original('frozen_argv', previous/'frozen-argv.json')
+    ready = original('ready_context', previous/'ready-context.json')
+    require(ready.get('run_id') == freeze['run_id'] and
+            Path(ready.get('run_dir', '')).resolve() == previous and
+            Path(ready.get('keeper_root', '')).resolve() == keeper_root,
+            'Failed-live ready context crossed allocation')
+    prepared = original('prepared_case', ready['prepared_case']['path'])
+    require(refs['prepared_case'] == ready['prepared_case'] and
+            Path(prepared['startup']['state_dir']).resolve() == Path(freeze['state_dir']).resolve() and
+            prepared['runtime_manifest'] == freeze['runtime_manifest'],
+            'Failed-live preparation crossed frozen runtime/state')
+    state = Path(freeze['state_dir']).resolve()
+    host = original('host_started', previous/'host-started.json')
+    host_exit = original('host_exit', previous/'host-original-process-exit.json')
+    supervisor = original('host_supervisor', previous/'host-supervisor-started.json')
+    require(host.get('run_id') == host_exit.get('run_id') == freeze['run_id'] and
+            host.get('actual_popen_retained') is True and host.get('argv') == freeze['argv'] and
+            host_exit.get('pid') == host.get('pid') and host_exit.get('actual_original_popen_wait') is True and
+            type(host_exit.get('returncode')) is int and host_exit['returncode'] != 0 and
+            host_exit.get('normal_ck3_exit_inferred') is False and
+            type(supervisor.get('pid')) is int and type(host.get('supervisor_pid')) is int,
+            'Failed-live original host/supervisor nonzero wait differs')
+    supervisor_argv = supervisor.get('argv', [])
+    require(isinstance(supervisor_argv, list) and '--supervise' in supervisor_argv and
+            supervisor_argv.count('--run-root') == 1 and
+            Path(supervisor_argv[supervisor_argv.index('--run-root') + 1]).resolve() == previous and
+            supervisor_argv.count('--keeper-root') == 1 and
+            Path(supervisor_argv[supervisor_argv.index('--keeper-root') + 1]).resolve() == keeper_root,
+            'Failed-live supervisor argv belongs to another run/keeper')
+    def public_wait(mode, code):
+        value = original(mode + '_wait')
+        require(value.get('machine_id') == bundle['machine_id'] and value.get('phase') == mode and
+                value.get('actual_original_popen_wait') is True and value.get('completed_at_utc') and
+                type(value.get('returncode')) is int and value['returncode'] == code,
+                'Failed-live actual public wait differs: ' + mode)
+        argv = value.get('argv'); require(isinstance(argv, list), 'Actual public argv missing')
+        index = next((i for i, arg in enumerate(argv) if Path(arg).name == 'ck3_mod_acceptance.py'), -1)
+        require(index >= 0 and argv[index + 1] == mode, 'Failed-live public command mode differs')
+        def argument(flag):
+            require(argv.count(flag) == 1 and argv.index(flag) + 1 < len(argv), 'Failed-live public flag missing: ' + flag)
+            return argv[argv.index(flag) + 1]
+        require(argument('--case') == freeze['cell'] and
+                Path(argument('--prepared-case')).resolve() == Path(refs['prepared_case']['path']).resolve(),
+                'Failed-live public command crossed case/preparation')
+        if mode == 'run':
+            context = read_json(Path(argument('--run-context')))
+            require(context.get('run_id') == freeze['run_id'] and
+                    Path(context.get('run_dir', '')).resolve() == previous,
+                    'Failed-live public run context differs')
+        else:
+            require(Path(argument('--keeper-output')).resolve() == keeper_root,
+                    'Failed-live allocator keeper differs')
+        parent = Path(refs[mode + '_wait']['path']).resolve().parent
+        intent = original(mode + '_intent', parent/'intent.json')
+        require(intent.get('argv') == argv and intent.get('phase') == mode,
+                'Failed-live original command intent differs')
+        original(mode + '_stdout', parent/'stdout.log', decode=False, max_bytes=16777216)
+        original(mode + '_stderr', parent/'stderr.log', decode=False, max_bytes=16777216)
+        return Path(argument('--runtime')).resolve()
+    require(public_wait('run', 2) == public_wait('allocate', 0), 'Failed-live public runtime differs')
+    report = original('native_report', previous/'native-report.json', max_bytes=67108864)
+    require(report.get('status') == 'RED' and report.get('error') and report.get('finished_at') and
+            report.get('managed_session_done') is True and report.get('managed_session_thread_finished') is True and
+            report.get('cleanup_ok') is True and Path(report['state_dir']).resolve() == state and
+            Path(report['agent_source_root']).resolve() == Path(freeze['source_root']).resolve() and
+            report.get('pipe') == freeze['argv'][freeze['argv'].index('--bridge-pipe') + 1],
+            'Failed-live original finished report/cleanup differs')
+    session = report.get('session', {}); native = session.get('report', {}); shutdown = native.get('shutdown', {})
+    require(session.get('error') is None and native.get('pid') == shutdown.get('ck3_pid') and
+            native.get('finished_at') and shutdown.get('ok') is True and
+            shutdown.get('cleanup_proven') is True and shutdown.get('tree_gone') is True and
+            shutdown.get('job_active_processes_final') == 0 and shutdown.get('contract_errors') == [] and
+            all(value is True for value in shutdown.get('control_files_absent', {}).values()) and
+            bool(shutdown.get('control_files_absent')) and
+            all(shutdown.get('final_ck3_inventory', {}).get(key) == [] for key in ('tasklist_pids', 'wmi_pids', 'native_pids')),
+            'Failed-live original native Job/process/control cleanup is incomplete')
+    normal = original('normal_close', previous/'case-output/normal-close-result.json')
+    require(normal.get('normal_close_qualified') is False and normal.get('business_pass') is False and
+            normal.get('host_error') == report['error'], 'Failed-live original close claims normal/business credit')
+    game = original('retained_identity', previous/'case-output/retained-current-process-identity.json')
+    retained = original('retained_exit', previous/'case-output/actual-retained-handle-os-exit.json')
+    require(game.get('retained_synchronize_query_handle_acquired') is True and
+            retained.get('retained_synchronize_query_handle_acquired') is True and
+            retained.get('pid') == game.get('pid') == native.get('pid') and
+            retained.get('create_time') == game.get('create_time') and retained.get('signaled') is True and
+            type(retained.get('exit_code')) is int and retained['exit_code'] != 0 and
+            retained.get('actual_retained_os0') is False and retained == normal.get('retained_handle') and
+            shutdown.get('ck3_exit_code') == retained['exit_code'],
+            'Failed-live original retained nonzero CK3 exit differs')
+    diagnostic = bundle.get('failed_query', {})
+    rows = [row for row in report.get('steps', []) if row.get('id') == diagnostic.get('step_id')]
+    require(len(rows) == 1 and rows[0].get('ok') is False and rows[0].get('error') and
+            rows[0].get('finished_at') and rows[0].get('plan', {}).get('tool') == diagnostic.get('tool'),
+            'Failed-live source-bound failed query is missing')
+    original('server_stderr', report['server_stderr'], decode=False, max_bytes=16777216)
+    keeper = original('keeper_report', keeper_root/'report.json')
+    waited = original('keeper_exit', previous/'keeper-actual-parent-exit.json')
+    require(waited.get('run_id') == freeze['run_id'] and waited.get('keeper_actual_exit_code') == 0 and
+            waited.get('keeper_report') == keeper and keeper.get('task_id') == freeze['screen_task'] and
+            keeper.get('thread_exited') is True and keeper.get('failure') is None and keeper.get('entry_error') is None,
+            'Failed-live actual keeper wait/thread differs')
+    original('release', release_path)
+    release = read_failed_runtime_release(release_path); task, event = release['task'], release.get('event', {})
+    require(closed_lease(keeper, release, freeze['screen_task']) and task.get('state') == 'done' and
+            event.get('task_id') == freeze['screen_task'] and event.get('sequence') == task['last_sequence'] and
+            event.get('state') == 'done' and event.get('resources') == [], 'Failed-live actual CAS release differs')
+    require(isinstance(bus_packet.get('tasks'), list) and
+            not any('ck3-screen:acquired' in row.get('resources', []) for row in bus_packet['tasks']),
+            'Failed-live still has an actual screen owner')
+    keeper_process = original('keeper_process', previous/'keeper-process.json')
+    for label, identity in (('host', host), ('CK3', game), ('keeper', keeper_process)):
+        require(type(identity.get('pid')) is int and identity['pid'] > 0 and
+                type(identity.get('create_time')) in (int, float), 'Failed-live identity absent: ' + label)
+        try: present = psutil.Process(identity['pid']).create_time() == identity['create_time']
+        except psutil.NoSuchProcess: present = False
+        require(not present, 'Failed-live original process still present: ' + label)
+    require(not psutil.pid_exists(supervisor['pid']) and not psutil.pid_exists(host['supervisor_pid']),
+            'Failed-live original supervisor still present')
+    inventory = runtime_process_inventory(psutil, os.getpid())
+    require(not inventory['blockers'], 'Failed-live runtime/CK3/controller still running')
+    selected_host = Path(freeze['argv'][4]).resolve()
+    for process in psutil.process_iter(['pid', 'name']):
+        if (process.info.get('name') or '').lower().startswith(('python', 'pypy')):
+            try: arguments = process.cmdline()
+            except psutil.NoSuchProcess: continue
+            require(not any(Path(arg).resolve() == selected_host for arg in arguments if arg),
+                    'Failed-live frozen host interpreter or redirector still present')
+    absent = {name:not (state/'control'/name).exists() for name in ('ck3.json', 'unsafe-cleanup.json')}
+    absent['watchdog-*.ready.json'] = not list((state/'control').glob('watchdog-*.ready.json'))
+    require(all(absent.values()), 'Failed-live PID/unsafe/watchdog controls remain')
+    return {'mode':'previous-shared-failed-live-resource-closed', 'failure_cleanup':{
+        'close':pin(close_path), 'original_evidence':evidence,
+        'original_host_exit_code':host_exit['returncode'], 'original_host_wait_proven':True,
+        'original_ck3_exit_code':retained['exit_code'], 'actual_retained_os0':False,
+        'original_report_status':report['status'], 'original_host_error':report['error'],
+        'native_job_cleanup_observed':True, 'normal_close_qualified':False, 'typed_normal_exit_proven':False,
+        'business_pass':False, 'release_pass':False, 'control_files_absent':absent,
+        'administrative_resource_admission_only':True}, 'actual_process_inventory':inventory}
+
+
 def previous_failed_resource_closure(previous,freeze,close_path,keeper_root,release_path,bus_packet):
     """Admit failed-case resource closure, never native/OS0/normal/PASS credit."""
     evidence={}
@@ -1134,7 +1297,8 @@ def allocate_and_keep(selection,args):
         prelaunch_host=failure_schema=='ck3-mod-acceptance-prelaunch-host-failure-closure-v1'
         pre_ready=failure_schema=='ck3-mod-acceptance-pre-ready-closure-v1'
         failed_resource=failure_schema=='lyd.actual-failed-resource-closure.v1'
-        if allocated_unused or never_launched or prelaunch_host or pre_ready or failed_resource:
+        failed_live=failure_schema=='ck3-mod-acceptance-failed-live-resource-closure-v1'
+        if allocated_unused or never_launched or prelaunch_host or pre_ready or failed_resource or failed_live:
             report=None
         elif failure_path:
             report=read_json(previous/'native-report.json')
@@ -1147,6 +1311,9 @@ def allocate_and_keep(selection,args):
         if allocated_unused:
             session_closure=previous_allocated_unused_closure(previous,freeze,failure_path,
                             args.previous_keeper,release,bus_packet)
+        elif failed_live:
+            session_closure=previous_failed_live_resource_closure(previous,freeze,failure_path,
+                            args.previous_keeper,args.previous_release,bus_packet)
         elif failed_resource:
             session_closure=previous_failed_resource_closure(previous,freeze,failure_path,
                             args.previous_keeper,args.previous_release,bus_packet)
@@ -1202,6 +1369,10 @@ def allocate_and_keep(selection,args):
     if recording:
         for row in recording.values():
             files[Path(row['path']).resolve()]=row
+        running_inputs=path_at(selection.runtime['reviewed_launcher']['path'],base).with_name('ck3_mod_acceptance_runtime_inputs.py').resolve()
+        files[running_inputs]=pin(running_inputs)
+        running_contract=root/'ck3_autonomous_player/src/xar_autoplayer/bridge/runtime_input_contract_v1.py'
+        files[running_contract]=pin(running_contract)
     for row in selection.runtime.get('allocator_overlay',{}).values():
         if isinstance(row,dict) and {'path','bytes','sha256'}<=row.keys():
             check_pin(Path(row['path']),row);files[Path(row['path']).resolve()]=row

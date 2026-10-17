@@ -95,7 +95,7 @@ def _reject_related_override(relative: str, content: bytes, gui_contract=None) -
         verify_unrelated_gui(relative, content, gui_contract)
 
 
-def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
+def verify_source_inventory_v1(reference: dict, profile: dict, *, input_phase: str = "launch") -> dict:
     reference = _keys(reference, {'path', 'sha256'}, 'inventory reference')
     userdir = _path(profile['userdir'])
     path = _path(reference['path'])
@@ -116,7 +116,15 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
     projection = canonical_profile_projection(profile)
     if _digest(inventory['profile_binding_sha256']) != sha256(projection):
         raise ValueError('source inventory canonical profile projection changed')
-    settings_path, _ = _file(inventory['settings_file'])
+    if input_phase not in {'launch', 'running'}:
+        raise ValueError('unknown normal-exit inventory input phase')
+    runtime_settings = None
+    if input_phase == 'running':
+        from .runtime_input_contract_v1 import verify_allocated_running_settings
+        settings_path = _path(inventory['settings_file']['path'])
+        runtime_settings = verify_allocated_running_settings(profile, inventory['settings_file'])
+    else:
+        settings_path, _ = _file(inventory['settings_file'])
     if settings_path != userdir / 'pdx_settings.txt':
         raise ValueError('actual launch contract uses managed-userdir pdx_settings.txt')
     dlc_path, dlc_bytes = _file(inventory['dlc_load'])
@@ -194,4 +202,5 @@ def verify_source_inventory_v1(reference: dict, profile: dict) -> dict:
             'gui_mod_file_count': gui_file_count,
             'stock_gui_dependency_count': len(gui_contract['dependencies']) if gui_contract else 0,
             'protected_gui_symbol_count': len(gui_contract['symbols']) if gui_contract else 0,
-            'static_sources_verified': True}
+            'static_sources_verified': True, 'input_phase': input_phase,
+            'runtime_settings_observation': runtime_settings}

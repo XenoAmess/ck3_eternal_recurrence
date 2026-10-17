@@ -42,7 +42,7 @@ def main(argv=None):
     keeper = args.keeper_root.resolve()
     ready = json.loads((keeper / "recording-service-ready.json").read_text(encoding="utf-8"))
     check_pin(ready["configuration"]); check_pin(ready["service_source"])
-    frozen, context = frozen_run(args.live, all_pins=True)
+    frozen, context = frozen_run(args.live, all_pins=True, input_phase="running")
     if Path(context["keeper_root"]).resolve() != keeper or ready["screen_task"] != frozen["screen_task"]:
         raise ValueError("Actual allocated keeper and recording service differ")
     live_lease(keeper, frozen)

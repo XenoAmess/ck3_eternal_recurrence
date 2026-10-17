@@ -40,7 +40,11 @@ def _prepare(driver, expected_revision: int) -> tuple[dict, dict, dict]:
     if type(reference) is not dict:
         raise UnsupportedStepError('normal exit requires the fixed actual managed-source inventory')
     try:
-        sources = verify_source_inventory_v1(reference, profile)
+        evidence = profile.get('evidence_directory')
+        allocated = (isinstance(evidence, str) and
+                     any((Path(evidence) / name).exists() for name in ('frozen-argv.json', 'ready-context.json')))
+        sources = verify_source_inventory_v1(reference, profile,
+            input_phase='running' if allocated else 'launch')
     except (OSError, ValueError, TypeError, KeyError) as error:
         raise UnsupportedStepError(f'normal-exit source inventory unsupported: {error}') from error
     snapshot = driver.take_snapshot()

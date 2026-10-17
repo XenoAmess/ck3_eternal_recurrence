@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17 08:57 UTC：圣地实际只读观察与R0001闭场
+
+`machine_id: 4-8e1c2f1861`。[R0001观察](../ck3-native-ai/faith-and-power-episode01-r0001-observations.md)已取得同PID/gen的宗教身份、faith五站点、显式nadjaf32及嵌入库存引用；准备事件一次选择有独立后验，F/A存档已冻结，但driver绑定仍unconfirmed、恢复加载未验。08:55正常退出context在Python库存预验被游戏改写settings阻断，原场RED/CK3 exit1；08:57:50 keeper0、CAS11222/resources[]闭场。采用0、合格素材0，下一步是修复运行期输入分类、重核恢复，再取原生候选/许可与一次动作后态；详情与SHA见专题。
+
 ### 2026-10-17 07:58 UTC：第一期圣地规划与独立机制实验入口
 
 `machine_id: 4-8e1c2f1861`。[第一期规划](../ck3-native-ai/faith-and-power-episode01-planning.md)及867阿拔斯独立机制实验方案、[native-only修复](../ck3-native-ai/native-only-runtime-dependency-profile.md)已普通推送 `8bcffad1a5c7e2b6430822e66aef2c22045bc7d1`；清理后的本机容量准入已恢复，来源与UTC见[执行入口](../ck3-native-ai/faith-and-power-execution-20261017.md)及[当天日报](daily/2026-10-17.md)。当前为source-ready、宗教业务live-pending：原生候选/许可/一次动作/独立后态是下一门。用户已允许明示准备的独立机制存档，此范围不改变Robert普通战役规则或其他机器授权。下文旧“current”措辞保留当时任务背景，不能据此跨机推断现场状态。

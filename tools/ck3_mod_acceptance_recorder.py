@@ -231,7 +231,7 @@ class ScreenCaptureService:
         from ck3_mod_acceptance_launcher import frozen_run
         from ck3_mod_acceptance_keeper import live_lease
         live = Path(live).resolve()
-        frozen, context = frozen_run(live, all_pins=True)
+        frozen, context = frozen_run(live, all_pins=True, input_phase="running")
         if (Path(context["keeper_root"]).resolve() != self.keeper_root
                 or frozen["screen_task"] != self.task_id
                 or frozen["identity_allocation"]["machine_id"] != self.config["machine_id"]):

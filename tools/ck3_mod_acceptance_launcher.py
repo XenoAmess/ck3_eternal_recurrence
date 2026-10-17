@@ -28,7 +28,7 @@ def recent(timestamp, *, now=None):
     return instant
 
 
-def frozen_run(run_root, *, all_pins=True):
+def frozen_run(run_root, *, all_pins=True, input_phase="launch"):
     root = Path(run_root).resolve()
     frozen_path = root / "frozen-argv.json"
     frozen = read_json(frozen_path)
@@ -46,9 +46,20 @@ def frozen_run(run_root, *, all_pins=True):
             "Ready allocation does not bind this exact frozen argv")
     files = frozen.get("files")
     require(isinstance(files, dict) and files, "Allocated exact input pins required")
+    require(input_phase in {"launch", "running"}, "Unknown frozen input phase")
     if all_pins:
-        for name, row in files.items():
-            check_pin({**row, "path": name})
+        if input_phase == "running":
+            import importlib.util
+            source = Path(__file__).with_name("ck3_mod_acceptance_runtime_inputs.py").resolve()
+            require(str(source) in files, "Running input helper is absent from allocation pins")
+            check_pin({**files[str(source)], "path": str(source)})
+            spec = importlib.util.spec_from_file_location("shared_acceptance_runtime_inputs", source)
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            frozen["_runtime_input_observation"] = module.validate_running_inputs(root, frozen)
+        else:
+            for name, row in files.items():
+                check_pin({**row, "path": name})
         check_pin(frozen["runtime_manifest"])
     # A copied helper must not silently import another unpinned sibling.
     for name in ("ck3_mod_acceptance_launcher.py", "ck3_mod_acceptance_keeper.py", "ck3_mod_acceptance_queue.py"):
