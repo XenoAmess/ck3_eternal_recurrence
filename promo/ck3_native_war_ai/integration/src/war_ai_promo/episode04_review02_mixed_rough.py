@@ -36,10 +36,19 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
  need(sum(v['end_frame_exclusive']-v['start_frame']for v in method['cues'])==58406,'actual clock changed')
  pending=set(data['pending_cues']);overrides=data['visual_overrides'];need(not(pending&set(overrides)),'pending and selected overlap')
  need(pending<=set(by) and set(overrides)<=set(by),'unknown cue')
- if not validate_only:need(not pending,'key footage is pending; no static fallback allowed')
+ preview=data.get('preview_cue_ids');partial=preview is not None;selected=set(by)
+ if partial:
+  need(type(preview)is list and bool(preview) and all(type(k)is str for k in preview),'preview must be a nonempty cue list')
+  need(len(preview)==len(set(preview)),'duplicate preview cue')
+  selected=set(preview);need(selected<=set(by),'unknown preview cue')
+  need(preview==[r['id']for r in rows if r['id']in selected],'preview cue order must match frozen69')
+  need(not(selected&pending),'pending cue cannot enter preview')
+  need(selected<=set(overrides),'preview requires actual rough inputs')
+ if not validate_only:need(not(pending&selected),'key footage is pending; no static fallback allowed')
  cards={r['card_id']:r for r in raster['cards']};mapping={r['id']:r for r in method['cues']};segments=[];raw_sources={}
  for row,cue in zip(rows,cues):
   key=row['id'];start=0.0;need(row['zh']==cue.narration['zh-CN']and row['en']==cue.subtitles['en'],'frozen speech differs')
+  if key not in selected:continue
   audio=select_path({**row['audio'],'artifact_id':row['audio_artifact_id']},run,run_path)
   if key in pending:visual=VisualSource(key,VIDEO,Path('pending')/(key+'.mp4'),'pending-key-footage',requires_resolution=True,metadata={'pending':True})
   elif key in overrides:
@@ -58,7 +67,8 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
   del narration,workdir
   ref=mapping[segment.segment_id]['subtitle'];ref={**ref,'path':str(Path(data['repo_root'])/ref['path']),'artifact_id':'source-subtitle.'+segment.segment_id}
   body=select_path(ref,run,run_path).read_text(encoding='utf-8-sig')
-  return body+'\nDialogue: 9,0:00:00.00,9:59:59.99,English,review,0,0,0,,{\\an7\\pos(48,48)\\fs36}REVIEW / CLEAN PENDING / EVENT FRAME UNVERIFIED\n'
+  label=('PARTIAL PREVIEW / NO SIGNOFF / 'if partial else '')+'REVIEW / CLEAN PENDING / EVENT FRAME UNVERIFIED'
+  return body+'\nDialogue: 9,0:00:00.00,9:59:59.99,English,review,0,0,0,,{\\an7\\pos(48,48)\\fs36}'+label+'\n'
  def inspect(p):
   if Path(p).suffix.lower()=='.png':
    from PIL import Image
@@ -76,4 +86,6 @@ def compose(config,run,*,config_path,run_path,workdir,adapter_factory,preset_fac
    argv[i]=old.replace(a,'scale=1536:864:force_original_aspect_ratio=decrease:flags=lanczos').replace(b,'pad=1920:1080:192:0:color=black');commands.append(replace(command,spec=replace(command.spec,argv=tuple(argv))))
   return replace(plan,commands=tuple(commands))
  def unresolved(*args,**kwargs):raise ValueError('pending key footage cannot render or become a still')
- return PipelineInvocation(PipelineDraft(config,tuple(segments),Path('episode04-review02-MIXED-ROUGH-PENDING.mp4'),'episode04-review02-mixed-rough-pending','video/mp4'),PipelineDependencies(os.environ.get('WAR_PROMO_FFMPEG','ffmpeg'),subtitles,run_command,inspect,visual_resolver=unresolved,render_planner=planner),Path(workdir))
+ output=Path('episode04-review02-PARTIAL-ROUGH-PREVIEW-NO-SIGNOFF.mp4')if partial else Path('episode04-review02-MIXED-ROUGH-PENDING.mp4')
+ artifact_id='episode04-review02-partial-rough-preview-no-signoff'if partial else 'episode04-review02-mixed-rough-pending'
+ return PipelineInvocation(PipelineDraft(config,tuple(segments),output,artifact_id,'video/mp4'),PipelineDependencies(os.environ.get('WAR_PROMO_FFMPEG','ffmpeg'),subtitles,run_command,inspect,visual_resolver=unresolved,render_planner=planner),Path(workdir))

@@ -123,6 +123,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test Episode 04 partial preview selection without media or CK3
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider promo/ck3_native_war_ai/integration/test_episode04_preview_selection.py
       - name: Test resource4 gateway wallet context without CK3
         run: python -B -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p test_war_payment_resource4_wallet.py -v
       - name: Test service history export and same-packet warm attachment without CK3
