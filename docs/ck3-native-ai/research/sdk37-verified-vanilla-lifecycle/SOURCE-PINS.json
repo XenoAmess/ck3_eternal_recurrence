@@ -1,0 +1,86 @@
+{
+  "schema": "xar.sdk37-verified-vanilla-lifecycle-public.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "originals": [
+    {
+      "archive": "succession-contract-original.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-thirteenth-prep01\\succession-contract.patch",
+      "bytes": 5114,
+      "sha256": "6ed7497810553bcc0b547d3de3f553eaaab6acfc95e294b667432130bcb0c725"
+    },
+    {
+      "archive": "public-m7-verified-vanilla.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-thirteenth-prep01\\public-m7-verified-vanilla.patch",
+      "bytes": 3489,
+      "sha256": "f4796c83581daee40847cca961f04de12a5630c4752e6f7eb18b38f5c91bec0d"
+    },
+    {
+      "archive": "PUBLIC-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-thirteenth-prep01\\FIRST-PUBLIC-TESTS.json",
+      "bytes": 928,
+      "sha256": "e877be8295441bf857f046e777897576577fd0d938e1403cf33b54c97cb1495d"
+    },
+    {
+      "archive": "OPTIMIZED-PUBLIC-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-thirteenth-prep01\\OPTIMIZED-PUBLIC-TESTS.json",
+      "bytes": 1086,
+      "sha256": "492a55268898ba3697a8ad482742d6c71e9645b05c707cca4e70ce8a078b5091"
+    },
+    {
+      "archive": "OFFICIAL-TWELFTH-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p36-public-twelfth-prep01\\OFFICIAL-TWELFTH-CI-FINAL.json",
+      "bytes": 2408,
+      "sha256": "00d0d0e74042f05d6e624b08b8b920c354ce670586c9a93a323bf873e807b51e"
+    },
+    {
+      "archive": "STATIC-KNOWLEDGE-DELIVERY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\offline-learning\\DELIVERY.json",
+      "bytes": 2611,
+      "sha256": "8cd74280eb874ed341a90641e3cb39e968d4ad8885a203dd34acd314b91eb674"
+    },
+    {
+      "archive": "STATIC-KNOWLEDGE-NOTE.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\offline-learning\\PUBLIC-NOTE.md",
+      "bytes": 1157,
+      "sha256": "03c326a2e9957c31e0f06e11447aa8d8ecb257d9b1194f63225b330f670ede85"
+    }
+  ],
+  "public": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+      "normalized_sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py",
+      "normalized_sha256": "ace5689f91332a74a8a45452ef3130d547ddf9d6dfe5284db0ca3be8d8996ec4"
+    },
+    {
+      "path": "tools/g2_saved_campaign/m7_ordinary_successor_queue.py",
+      "normalized_sha256": "307757300555b397c676d9106fb7a20288b34e6c74230f1dae7c6aa94eb0e0b2"
+    },
+    {
+      "path": "tools/g2_saved_campaign/m7_ordinary_successor_async_queue.py",
+      "normalized_sha256": "ebfa9a2416e05db6cc7fd6f5b58848bf36734173d369be05def1ebb90df28a54"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_verified_vanilla_successor.py",
+      "normalized_sha256": "6e3c1f30434cdfc362724cf9eb53dc7469d389d23ae9def0c9f0272b79be4dc9"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "normalized_sha256": "e35f13a86e0c83a0e6901e381971e7b942767a99f198b41192a8a924e82685b7"
+    }
+  ],
+  "CLEAN03_candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\candidate\\xar_autoplayer\\bridge\\succession_transition_contract.py",
+    "sha256": "e99ab19e0a8e35a4587ae5228d02712476ac7cd2b8c237a899f666c0744e037a",
+    "source_manifest_sha256": "ef5a2dac99fa2a518c9c5218c33094117002b8c7d2be0dff69474fc631fb45b7"
+  },
+  "actual_runtime_caller": "private automatic_handoff; runtime does not import the public M7 module; private reviewed predicate delta to be recorded separately",
+  "new_Game_startup_mod_absence_or_death_live_acceptance": false,
+  "source_profile_fixture_is_synthetic": true,
+  "old_xar_off_and_rogue_behavior_retained": true,
+  "retention_review_at_utc": "2026-10-19T06:10:40.098768+00:00",
+  "Game_Native_SDK_OBS_MCP_calls": 0,
+  "large_Driver_SAVE_video_or_full_SDK_copied": false
+}

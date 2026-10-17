@@ -1,0 +1,25 @@
+{
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py",
+    "tools/g2_saved_campaign/test_verified_vanilla_successor.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_owner.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_modal.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_adoption.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_persistence.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_per_title.py"
+  ],
+  "returncode": 0,
+  "stdout": "...............................                  [100%]\n31 passed, 24 subtests passed in 3.49s\n",
+  "stderr": "",
+  "live_calls": 0
+}

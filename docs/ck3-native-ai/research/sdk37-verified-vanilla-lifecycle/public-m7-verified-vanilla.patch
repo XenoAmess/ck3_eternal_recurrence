@@ -1,0 +1,63 @@
+diff --git a/tools/g2_saved_campaign/m7_ordinary_successor_queue.py b/tools/g2_saved_campaign/m7_ordinary_successor_queue.py
+index 4b729d9b..944f20dc 100644
+--- a/tools/g2_saved_campaign/m7_ordinary_successor_queue.py
++++ b/tools/g2_saved_campaign/m7_ordinary_successor_queue.py
+@@ -6,6 +6,7 @@ Raw Queue responses remain the authority.
+ from __future__ import annotations
+ 
+ import copy
++import re
+ 
+ CONTINUE_AS_RECONCILED_SUCCESSOR_STEP = "continue-as-reconciled-successor"
+ SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA = "xar.ck3.succession-lifecycle-binding/v1"
+@@ -13,6 +14,28 @@ ROGUE_ONE_LIFE = "rogue_one_life"
+ AgentError = ValueError
+ 
+ 
++def ordinary_no_pact_lifecycle(value):
++    """Consume a frozen lifecycle; do not infer mod absence from None.
++
++    The legacy xar_off branch keeps its original admission. A new vanilla
++    binding is produced only after the SDK verifies profile/startup evidence.
++    This queue consumer stays independent of SDK imports.
++    """
++    if not isinstance(value, dict) or value.get("lifecycle") != "ordinary_campaign_succession":
++        return False
++    if value.get("xar_enabled") == "xar_off":
++        return True
++    absence = "absent_by_verified_xar_mod_not_loaded"
++    return (set(value) == {"schema", "lifecycle", "xar_enabled", "pact_contract",
++                           "source", "environment_sha256"}
++            and value.get("schema") == SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA
++            and value.get("xar_enabled") is None
++            and value.get("pact_contract") == absence
++            and value.get("source") == absence
++            and isinstance(value.get("environment_sha256"), str)
++            and re.fullmatch(r"[0-9a-f]{64}", value["environment_sha256"]) is not None)
++
++
+ def frame(snapshot):
+     played = snapshot.get("played_character", {})
+     return {
+@@ -113,9 +136,8 @@ def continue_successor(queue, expected_episode, transitions):
+             or before.get("one_life_terminal_reason") != "played_character_changed"):
+         raise ValueError("the observed terminal is not this retained predecessor transition")
+     lifecycle = before.get("succession_lifecycle", {})
+-    if (lifecycle.get("lifecycle") != "ordinary_campaign_succession"
+-            or lifecycle.get("xar_enabled") != "xar_off"):
+-        raise ValueError("natural Queue continuation requires the qualified ordinary xar_off lifecycle")
++    if not ordinary_no_pact_lifecycle(lifecycle):
++        raise ValueError("natural Queue continuation requires a qualified ordinary no-pact lifecycle")
+     caps_before, _ = queue.call("ck3_get_capabilities", {}, "m7-before-capabilities")
+     before_binding = binding(before, caps_before)
+     planned, plan_path = queue.call("ck3_plan_turn", {}, "m7-successor-plan")
+@@ -185,8 +207,7 @@ def consume_completed(queue, turn, response_path, source_snapshot, source_path,
+             or type(successor_id) is not int or successor_id <= 0 or successor_id == predecessor_id
+             or not isinstance(old_run, str) or not old_run
+             or not isinstance(new_run, str) or not new_run or old_run == new_run
+-            or lifecycle.get("lifecycle") != "ordinary_campaign_succession"
+-            or lifecycle.get("xar_enabled") != "xar_off"
++            or not ordinary_no_pact_lifecycle(lifecycle)
+             or result.get("succession_lifecycle") != lifecycle
+             or reconciliation.get("status") != "available"
+             or reconciliation.get("verdict") != "matched"

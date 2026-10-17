@@ -155,6 +155,15 @@ jobs:
         run: |
           python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_material_unavailable.py ck3_autonomous_player/tests/unit/test_council_planning_technical_defer.py ck3_autonomous_player/tests/unit/test_optional_check_service_cadence_v1.py ck3_autonomous_player/tests/unit/test_family_wartime_rolling_portable.py ck3_autonomous_player/tests/unit/test_family_peace_cadence_portable.py ck3_autonomous_player/tests/unit/test_family_history_free_marriage_portable.py ck3_autonomous_player/tests/unit/test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unobserved_completed_slots_cannot_prove_rollback_after_restore ck3_autonomous_player/tests/unit/test_child_focus_selected_step.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test verified vanilla lifecycle and retained successor queue without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py ck3_autonomous_player/tests/unit/test_succession_transition_contract.py tools/g2_saved_campaign/test_verified_vanilla_successor.py tools/g2_saved_campaign/test_m7_async_successor_owner.py tools/g2_saved_campaign/test_m7_async_successor_modal.py tools/g2_saved_campaign/test_m7_async_successor_adoption.py tools/g2_saved_campaign/test_m7_async_successor_persistence.py tools/g2_saved_campaign/test_m7_async_successor_per_title.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -B -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_verified_vanilla_succession.py tools/g2_saved_campaign/test_verified_vanilla_successor.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test same-frame family reuse and bounded recovery helpers without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src

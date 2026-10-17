@@ -1,0 +1,95 @@
+--- a/ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py
++++ b/ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py
+@@ -115,7 +115,13 @@
+         ),
+         UNKNOWN_SUCCESSION_LIFECYCLE: (None, "unknown"),
+     }[str(lifecycle)]
+-    if (xar_enabled, pact_contract) != expected:
++    verified_absence = (
++        lifecycle == ORDINARY_CAMPAIGN_SUCCESSION
++        and xar_enabled is None
++        and pact_contract == "absent_by_verified_xar_mod_not_loaded"
++        and source == "absent_by_verified_xar_mod_not_loaded"
++    )
++    if (xar_enabled, pact_contract) != expected and not verified_absence:
+         raise ValueError("succession lifecycle support profile is inconsistent")
+     if lifecycle == ORDINARY_CAMPAIGN_SUCCESSION and environment_sha256 is None:
+         raise ValueError(
+@@ -131,6 +137,59 @@
+     }
+ 
+ 
++def verify_xar_mod_absence_evidence_v1(manifest: object) -> bool:
++    """Require explicit actual profile/startup evidence; absence is not off.
++
++    Startup-log interpretation is a separately recorded review, not inferred
++    from an empty log or missing XAR text. The exact reviewed bytes are pinned.
++    """
++    import hashlib
++    import json
++    from pathlib import Path
++    if not isinstance(manifest, dict):
++        raise ValueError("prepared vanilla environment is malformed")
++    load = manifest.get("load_profile")
++    evidence = manifest.get("verified_mod_absence")
++    if (not isinstance(load, dict) or load.get("enabled_mods") != []
++            or not isinstance(evidence, dict)
++            or evidence.get("schema") != "xar.verified-xar-mod-absence/v1"
++            or evidence.get("status") != "ACTUAL_PROFILE_AND_STARTUP_LOG_VERIFIED"
++            or evidence.get("reviewer") != "/root"
++            or evidence.get("enabled_mods_known") is not True
++            or evidence.get("loaded_mods_known") is not True
++            or evidence.get("startup_log_reviewed") is not True
++            or evidence.get("enabled_mods") != [] or evidence.get("loaded_mods") != []
++            or evidence.get("environment_sha256") != manifest.get("environment_sha256")
++            or type(evidence.get("game_pid")) is not int or evidence["game_pid"] <= 0
++            or type(evidence.get("game_creation_filetime")) is not int
++            or evidence["game_creation_filetime"] <= 0):
++        raise ValueError("actual known-empty mod profile/startup evidence required")
++    profile = Path(str(manifest.get("profile_dir", ""))).resolve()
++    if Path(str(evidence.get("profile_dir", ""))).resolve() != profile:
++        raise ValueError("actual mod evidence belongs to another profile")
++    def checked(item: object, limit: int) -> tuple[Path, bytes]:
++        if not isinstance(item, dict) or not isinstance(item.get("path"), str):
++            raise ValueError("mod evidence file pin is missing")
++        path = Path(item["path"]).resolve(strict=True)
++        if not path.is_file() or not 0 < path.stat().st_size <= limit:
++            raise ValueError("mod evidence file is empty or oversized")
++        raw = path.read_bytes()
++        if (len(raw) > limit or item.get("bytes") != len(raw)
++                or hashlib.sha256(raw).hexdigest() != item.get("sha256")):
++            raise ValueError("actual mod evidence bytes changed")
++        return path, raw
++    path, raw = checked(evidence.get("profile_enabled_mods"), 65536)
++    if (path != profile / "dlc_load.json"
++            or load.get("dlc_load_sha256") != hashlib.sha256(raw).hexdigest()
++            or json.loads(raw).get("enabled_mods") != []):
++        raise ValueError("actual isolated profile mod list is not known empty")
++    checked(evidence.get("startup_log_snapshot"), 262144)
++    source_log = Path(str(evidence.get("startup_log_original_path", ""))).resolve()
++    if not source_log.is_relative_to(profile / "logs"):
++        raise ValueError("reviewed startup log is outside the isolated profile")
++    return True
++
++
+ def bind_succession_lifecycle_from_environment_v1(
+     manifest: object,
+     *,
+@@ -156,6 +215,17 @@
+         for row in profile
+         if isinstance(row, dict) and row.get("rule") == "xar_enabled"
+     ]
++    if not xar_settings and lifecycle == ORDINARY_CAMPAIGN_SUCCESSION:
++        if ordinary_campaign_no_pact is not True:
++            raise ValueError("ordinary campaign succession requires a fresh no-pact contract")
++        verify_xar_mod_absence_evidence_v1(manifest)
++        return normalize_succession_lifecycle_binding_v1({
++            "schema": SUCCESSION_LIFECYCLE_BINDING_V1_SCHEMA,
++            "lifecycle": lifecycle, "xar_enabled": None,
++            "pact_contract": "absent_by_verified_xar_mod_not_loaded",
++            "source": "absent_by_verified_xar_mod_not_loaded",
++            "environment_sha256": manifest.get("environment_sha256"),
++        })
+     if len(xar_settings) != 1 or xar_settings[0] not in {"xar_on", "xar_off"}:
+         raise ValueError("prepared environment lacks one frozen xar_enabled rule")
+     environment_sha256 = manifest.get("environment_sha256")

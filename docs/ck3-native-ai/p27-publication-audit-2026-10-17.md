@@ -313,3 +313,7 @@ Root较新报告SDK36窗口32已383日，旧31仍失败12日；当前Game／SDK�
 纯EDL在独立promo12ecaf98／正式v0.3.0发布，275项正常及275项-O通过、Release39005285835 success；wheel真实SHA f59c4b62…核验后主仓同步精确依赖。主仓仅CK3 adapter／collector／默认2/2/4 policy和future actual-started hook：一个hidden metadata child，cleanup写自有STOP，错误不请求停止录像。CURRENT先不可变快照；撤回误报没有等待编辑，不覆盖真实已闭区间。当前私有provider／collector未改；最终PTS／素材／mapping／像素绑定尚需独立合格入口，旧不完整render candidate只保研究，0encode／无成片信用。[第十二有限源包](research/sdk36-status-and-stall-edl/README.md)。
 
 用户随后明确干净重开1066罗贝尔、重录／重跑，至少主菜单起录，公开视频《罗贝尔的三十年》伪一镜到底；阻塞中段<5秒、默认4秒并保留原因／修复。旧carry37取消（未现场drain），Source37／缓存／focus-present仅源码复用，新局天数／战果／Driver／goal零继承，旧945日等不能转记。新局和成片未由此文档或离线测试完成；正式hook不要求已有地图／actor，实际主菜单录制资格另记。第12修改CI入口174项／91子例及loader1项实际通过；最终PTS与像素校准渲染归独立promo，当前D2和D视频不限长合同保持。
+
+## 干净原版新局：继承binder小包
+
+SDK37 CLEAN03的无XAR ordinary-no-pact合同窄移植到公共binder，保持None与xar_off区别；实际profile空清单、固定日志审阅、环境SHA和Game代字段缺失／unknown／篡改均拒。公共M7两个旧off硬门共同识别精确新六字段合同，无SDK导入依赖或第二queue。31项／24子例在正式公共入口通过，public6／Native42、原回执不重放与同owner保留；fake传输不授自然死亡／SAVE实机信用。新局启动与录制仍由Root实际准入，不承接旧局成绩。[来源与边界](research/sdk37-verified-vanilla-lifecycle/README.md)。

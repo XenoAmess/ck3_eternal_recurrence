@@ -1,0 +1,70 @@
+{
+  "schema": "xar.publication-official-CI-terminal.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T06:09:19.419671+00:00",
+  "Official": {
+    "conclusion": "success",
+    "createdAt": "2026-10-17T05:46:28Z",
+    "databaseId": 39007487520,
+    "headSha": "b25c96f2dbc373318d3bd33ecc4d21eabfd7b92b",
+    "name": "Official Runner CI",
+    "status": "completed",
+    "updatedAt": "2026-10-17T06:07:49Z",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39007487520"
+  },
+  "jobs": [
+    {
+      "databaseId": 117322817600,
+      "name": "static",
+      "status": "completed",
+      "conclusion": "success",
+      "startedAt": "2026-10-17T05:46:30Z",
+      "completedAt": "2026-10-17T06:07:48Z",
+      "steps_success": 85,
+      "steps_skipped": 20,
+      "selected_steps": [
+        {
+          "completedAt": "2026-10-17T05:47:51Z",
+          "conclusion": "success",
+          "name": "Install released promo toolchain",
+          "number": 7,
+          "startedAt": "2026-10-17T05:47:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T05:51:47Z",
+          "conclusion": "success",
+          "name": "Test OBS delayed startup and owned close without processes or sockets",
+          "number": 28,
+          "startedAt": "2026-10-17T05:51:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T05:51:50Z",
+          "conclusion": "success",
+          "name": "Test repair status and resumed-progress evidence without CK3 or overlay",
+          "number": 29,
+          "startedAt": "2026-10-17T05:51:47Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T05:51:55Z",
+          "conclusion": "success",
+          "name": "Test optional read recovery and family cadence without CK3",
+          "number": 30,
+          "startedAt": "2026-10-17T05:51:50Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "Linear": {
+    "conclusion": "success",
+    "databaseId": 39007487528,
+    "headSha": "b25c96f2dbc373318d3bd33ecc4d21eabfd7b92b",
+    "status": "completed",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39007487528"
+  },
+  "Game_MCP_Native_SDK_OBS_operations": 0,
+  "W_or_runtime_sources_changed": false
+}

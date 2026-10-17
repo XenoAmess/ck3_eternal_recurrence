@@ -1,0 +1,74 @@
+{
+  "schema": "xar.clean-campaign-offline-learning-delivery.v1",
+  "at_utc": "2026-10-17T06:08:54.906886+00:00",
+  "status": "FINAL_FILE_READY_UNBOUND_NO_WORKERS_OR_SEED_INSTALLED",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "artifacts": [
+    {
+      "relative": "REPORT.md",
+      "bytes": 3918,
+      "sha256": "3bfde8ca074c767a3120571023054c3a89de36eac0f1b0877f9ccb47aa4dc1f6"
+    },
+    {
+      "relative": "PUBLIC-NOTE.md",
+      "bytes": 1157,
+      "sha256": "03c326a2e9957c31e0f06e11447aa8d8ecb257d9b1194f63225b330f670ede85"
+    },
+    {
+      "relative": "UNBOUND-WORKER-COMMANDS.json",
+      "bytes": 6771,
+      "sha256": "6ec975ed5ed55ffdf860ceb1b8280f67699fdbf847603acae02903f95bf8b5a0"
+    },
+    {
+      "relative": "STATIC-CHARACTER-SEED-PLAN.json",
+      "bytes": 142913,
+      "sha256": "3c53a568d6026f71b069397ed0c39e34146184e313b068b69a52e433b86c66dc"
+    },
+    {
+      "relative": "prepare_clean_offline_learning.py",
+      "bytes": 11302,
+      "sha256": "a3391c7d6dec2f81a4d23eb9089dbd11490cd63ae41ac670310b37f52d8a6f92"
+    },
+    {
+      "relative": "prepare_static_character_seed.py",
+      "bytes": 8983,
+      "sha256": "6cf3c5d95085d60a9e776e4ed8c728e82c8fb164e57eab48fcff574b1601a721"
+    },
+    {
+      "relative": "launch_p37_offline_workers_owner.py",
+      "bytes": 8615,
+      "sha256": "896d9800b429a3623e14e5f683ba47fe4f06d62094fe8a05ba1bdbdfda37ab6f"
+    },
+    {
+      "relative": "TESTS.json",
+      "bytes": 737,
+      "sha256": "e48db9d2f2ad0c86d7b7f745490235381af083947363132d616ae6fa86cf1018"
+    },
+    {
+      "relative": "test_clean_learning_preparation.py",
+      "bytes": 6020,
+      "sha256": "4813b1515953e2696d48acfddd3da63965dc80885e1cf0d62324c18f2b34ed60"
+    }
+  ],
+  "source_manifest_sha256": "ef5a2dac99fa2a518c9c5218c33094117002b8c7d2be0dff69474fc631fb45b7",
+  "static_seed": {
+    "eligible_groups": 58,
+    "letter_excluded": 9,
+    "no_explicit_type_excluded": 3,
+    "old_ID_role": "Historical source binding only; existing strict loader must validate fresh observed identity/scope/options."
+  },
+  "Root_firstmap_sequence": [
+    "prepare_static_character_seed.py --install",
+    "prepare_clean_offline_learning.py --bind",
+    "launch_p37_offline_workers_owner.py --start via existing hidden retained-process launcher"
+  ],
+  "tests": {
+    "new_file_only_passed": 5,
+    "old_gameplay_replays": 0
+  },
+  "G2": "6/8 unchanged; M6/M7 incomplete",
+  "runtime_calls": 0,
+  "live_Driver_SAVE_video_reads": 0,
+  "workers_started": 0,
+  "seed_entries_installed": 0
+}
