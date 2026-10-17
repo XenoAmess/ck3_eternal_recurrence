@@ -1,0 +1,577 @@
+{
+  "schema": "ck3-faith-e01-r8-save-closure-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T16:50:35.462398+00:00",
+  "observation_mode": "offline_small_record_projection",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+  "sources": {
+    "save": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-save-created-D3-a01.json",
+      "bytes": 37710,
+      "sha256": "b16c2bc2d43a11cb47cb3f2f6b6379305f976f27724fac73c961bbe0dbc594de"
+    },
+    "D3_copy": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\D3-samarra-wisdom-created.ck3.json",
+      "bytes": 547,
+      "sha256": "ece18562e0bfe18b1369be1d02c56d66a50fff26d86fd4f0a86b08606fd7008c"
+    },
+    "normal_confirm": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-normal-exit-confirm-once-a01.json",
+      "bytes": 5473,
+      "sha256": "b9333ac47da8ab959442107922d24d9ea8745b45aa22077ad3e57a5e819db3a4"
+    },
+    "normal_observe": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-normal-exit-observe-a01.json",
+      "bytes": 5715,
+      "sha256": "4495e405c7453b42f2869e297adfe8eb96e68dd58b87386bd16aa022bb6ee8f9"
+    },
+    "root_gui_review": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\case-output\\normal-quit-root-result.json",
+      "bytes": 4369,
+      "sha256": "b440fc2a9daf1f810dad1d99d1b42d6bfdee2719de66eaa322b7e8775b4fdcbb"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\case-output\\normal-close-result.json",
+      "bytes": 14042,
+      "sha256": "b529867617a19e8631e38e23d90f85992af45fafd395173029aaab1f9636cde0"
+    },
+    "public_run_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r8-run-session-a01\\original-exit.json",
+      "bytes": 1179,
+      "sha256": "4393315123cef8fe799741d9336dffb8809d8fb29ae995391f5ff41b9f369cef"
+    },
+    "host_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "9dad3e357947d4c707d86bc803b4e1c9143c12857fd343ab09c95721b45ce286"
+    },
+    "allocator_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r8-allocate-session-a01\\original-exit.json",
+      "bytes": 1601,
+      "sha256": "e13e2f365f1159888cffd5f26440df5e993a81a1b2e76c746cf6aa253d14830a"
+    },
+    "keeper_actual_parent_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\keeper-actual-parent-exit.json",
+      "bytes": 7255,
+      "sha256": "d81e7f84c70ea9c62aa9f30a5892e313d5f1e86c1654a36067261f3f7938c31d"
+    },
+    "screen_cas_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-screen-release-a01.json",
+      "bytes": 1313,
+      "sha256": "12fa987e5ac6be6128c2557217b0518428b125a166d24b3f1181391328445fb8"
+    },
+    "public_verify_original_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r8-public-verify-a01\\original-exit.json",
+      "bytes": 1124,
+      "sha256": "c36904e8e2955dac19d25b574b2998a626793ce6b6cb3f9a0e553b2d8cb1560b"
+    },
+    "public_verify": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r8-public-verify-a01\\stdout.json",
+      "bytes": 15289,
+      "sha256": "ab2713a96b7e87ebab22215502095305baad8bba328ddf3c82ea2f1a13bcbc3c"
+    },
+    "CI_terminal": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\ci-02eea1e5\\terminal-summary.json",
+      "bytes": 2402,
+      "sha256": "bcc69878bc8b2429b11750acd7e47c7c1c19106928a1c23c6e27846d2886ebb3"
+    },
+    "overlay_old_start": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\decision-overlay-r8-start.json",
+      "bytes": 524,
+      "sha256": "43fbcf1a32a590dc366b5e5f9244626ef1cd7fb7e3b4a4a7c3ac4f3ffd02e3df"
+    },
+    "overlay_actual_a02_start": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\decision-overlay-r8-start-a02.json",
+      "bytes": 524,
+      "sha256": "ef21291cb90c55e8256213b20f48dfd8e8b55c6edc4693b1fbe3a7d51006b92f"
+    },
+    "overlay_actual_initialization": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\r8-overlay-initialization-a02.json",
+      "bytes": 548,
+      "sha256": "ef62a4932f5d7191ed1b48fc001aecb893047b80473c366e7b72f7438cb78fe3"
+    }
+  },
+  "runtime_binding": {
+    "source_commit": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\frozen-argv.json",
+      "bytes": 25759,
+      "sha256": "e739902c02a0650902ab82a2968ebcdc152aeb59e9050daa8624a21fa58d00c9"
+    },
+    "files_from_freeze": {
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a06\\publish\\xar_ck3_bridge.dll": {
+        "bytes": 13838336,
+        "sha256": "7a5ef6ca4eeb05c56d0f96b2ace2409bff704d067e66136f2b29dd253c3475c7"
+      },
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe": {
+        "bytes": 101040248,
+        "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+      }
+    },
+    "game_pid": 21564,
+    "game_create_time": 1792253831.3987103,
+    "binary_or_save_rehashed": false
+  },
+  "D3_save": {
+    "source_call": {
+      "started_at": "2026-10-17T16:36:59.703163+00:00",
+      "finished_at": "2026-10-17T16:37:00.743375+00:00",
+      "ok": true,
+      "plan": {
+        "id": "r8-save-created-D3-a01",
+        "tool": "ck3_save_checkpoint",
+        "args": {},
+        "continue_on_error": true
+      }
+    },
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 50210947,
+      "sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a",
+      "date_raw": 51394920,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "episode_projection": "native_campaign",
+      "succession_lifecycle": null,
+      "history_index": 12,
+      "episode_character_id": null,
+      "episode_run_id": null
+    },
+    "materialization": {
+      "available": true,
+      "save_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\save games",
+      "mtime_ns": 1792255020392642900
+    },
+    "driver_state_replace_receipt": {
+      "scope": "WRITE_REPLACE_RETURNED_NOT_FSYNC",
+      "status": "unconfirmed",
+      "write_replace_returned": true,
+      "save_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "attempt_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+        "bridge_pid": 21564,
+        "episode_character_id": null,
+        "episode_run_id": null,
+        "succession_lifecycle": {
+          "schema": "xar.ck3.succession-lifecycle-binding/v1",
+          "lifecycle": "rogue_one_life",
+          "xar_enabled": "xar_on",
+          "pact_contract": "terminal_settlement_required",
+          "source": "legacy-driver-default",
+          "environment_sha256": null
+        },
+        "campaign_goal": null
+      },
+      "recorded_session_binding": {
+        "pipe_name": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+        "bridge_pid": 21564,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "save_history_index": 12,
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 50210947,
+        "sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a",
+        "date_raw": 51394920,
+        "overwrite_confirmed": false,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 12,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "encoded_history_rows": 12,
+      "driver_state_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\native-session\\driver-state.json"
+    },
+    "canonical_copy_receipt": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:37:38.911418+00:00",
+      "source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\save games\\xar_checkpoint.ck3",
+      "destination": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\D3-samarra-wisdom-created.ck3",
+      "bytes": 50210947,
+      "sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a",
+      "source_sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a"
+    },
+    "large_save_rehashed": false,
+    "cold_load_verified": false
+  },
+  "normal_confirm": {
+    "started_at": "2026-10-17T16:42:22.873125+00:00",
+    "finished_at": "2026-10-17T16:42:30.821332+00:00",
+    "result": {
+      "status": "dispatch_pending",
+      "claim_consumed": true,
+      "retry_authorized": false,
+      "native_submission_count": 1,
+      "process_exit_observed": false,
+      "exit_code": null,
+      "request_id": "normal-exit-confirm_desktop-5a17b239892e41a8b41b98aba965daa5",
+      "process_creation_filetime_100ns": 134367274313987102,
+      "process_observation": {
+        "pid": 21564,
+        "creation_filetime_100ns": 134367274313987102,
+        "retained_handle_token": "2d2afe7df169166d091d3b8e2fb78f45",
+        "wait_result": 258,
+        "wait_state": "timeout",
+        "exit_code": 259,
+        "process_identity_verified": true,
+        "process_exit_observed": false,
+        "observed_monotonic_ns": 586817807449100,
+        "timeout_ms": 5000,
+        "observation_deadline_reached": true,
+        "observation_clock_domain": "driver_monotonic_v1",
+        "errors": []
+      },
+      "autosave_verified": false
+    }
+  },
+  "normal_observe": {
+    "started_at": "2026-10-17T16:42:44.947187+00:00",
+    "finished_at": "2026-10-17T16:42:45.194231+00:00",
+    "result": {
+      "status": "process_exit_observed_zero",
+      "claim_consumed": true,
+      "retry_authorized": false,
+      "native_submission_count": 0,
+      "process_exit_observed": true,
+      "exit_code": 0,
+      "typed_normal_exit_observed": true,
+      "request_id": "normal-exit-confirm_desktop-5a17b239892e41a8b41b98aba965daa5",
+      "process_creation_filetime_100ns": 134367274313987102,
+      "process_observation": {
+        "pid": 21564,
+        "creation_filetime_100ns": 134367274313987102,
+        "retained_handle_token": "2d2afe7df169166d091d3b8e2fb78f45",
+        "wait_result": 0,
+        "wait_state": "signaled",
+        "exit_code": 0,
+        "process_identity_verified": true,
+        "process_exit_observed": true,
+        "observed_monotonic_ns": 586832184679000,
+        "timeout_ms": 5000,
+        "observation_deadline_reached": false,
+        "observation_clock_domain": "driver_monotonic_v1",
+        "errors": []
+      },
+      "observer_retained": false,
+      "autosave_verified": false
+    }
+  },
+  "root_gui_review": {
+    "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+    "reviewer": "/root",
+    "normal_gui_quit": true,
+    "quit_route": "native_gui_route",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T16:43:03.191826+00:00",
+    "evidence_source": "Root invoked after directly reviewing original unchecked-autosave PNG; typed once-only normal GUI exit and independent retained HANDLE observation bound to this process",
+    "pid": 21564,
+    "create_time": 1792253831.3987103,
+    "autosave_unchecked_observed": true,
+    "business_pass": false,
+    "frame_source_from_parent_task": "r2-frame-20261017T164125Z.png"
+  },
+  "normal_close": {
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 21564,
+      "create_time": 1792253831.3987103,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "host_finished_at": "2026-10-17T16:43:07.276022+00:00",
+    "managed_thread_finished": true,
+    "cleanup_ok": true,
+    "host_error": null,
+    "business_pass": false,
+    "normal_close_qualified": true,
+    "native_zero_proof": {
+      "status": "not_applicable",
+      "reason": "finished_native_process_exit_zero_cleanup_proven",
+      "alive_or_business_credit": false,
+      "managed_session_done": true,
+      "pid": 21564,
+      "started_at": "2026-10-17T16:17:09.211946+00:00",
+      "finished_at": "2026-10-17T16:42:33.091134+00:00",
+      "exit_reason": "process_exit",
+      "process_exit_code": 0
+    },
+    "shutdown": {
+      "ck3_pid": 21564,
+      "ck3_exit_code": 0,
+      "job_active_processes_final": 0,
+      "tree_gone": true,
+      "cleanup_proven": true,
+      "contract_errors": [],
+      "ok": true
+    }
+  },
+  "original_process_exits": {
+    "public_run_original_exit": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:16:52.741979+00:00",
+      "completed_at_utc": "2026-10-17T16:43:07.773312+00:00",
+      "phase": "run",
+      "pid": 23124,
+      "returncode": 0,
+      "actual_original_popen_wait": true
+    },
+    "host_original_exit": {
+      "at_utc": "2026-10-17T16:43:08.047259+00:00",
+      "pid": 23220,
+      "returncode": 0,
+      "actual_original_popen_wait": true,
+      "normal_ck3_exit_inferred": false,
+      "business_pass": false
+    },
+    "allocator_original_exit": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:15:09.471596+00:00",
+      "completed_at_utc": "2026-10-17T16:43:20.000763+00:00",
+      "phase": "allocate",
+      "pid": 21704,
+      "returncode": 0,
+      "actual_original_popen_wait": true
+    }
+  },
+  "keeper": {
+    "actual_exit_code": 0,
+    "task_id": "faith-e01-shared-a09",
+    "last_sequence": 11493,
+    "thread_exited": true,
+    "failure": null,
+    "at_utc": "2026-10-17T16:43:19.888179+00:00",
+    "checkout_head": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+    "screen_released": false
+  },
+  "recording_terminals": [
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:25:10.901274+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 19876,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T16:25:10.771329+00:00"
+      },
+      "probe_exit_code": 0,
+      "human_review_performed": false,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "raw_reference_from_existing_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r8-W-take01\\raw-gameplay.mkv",
+        "bytes": 86261191,
+        "sha256": "0705f8784c7fa736a4c141d7a06a331f964693df5869ef1d712ecc3ff1ab23a3"
+      },
+      "raw_rehashed_here": false
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:29:14.595739+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 19856,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T16:29:14.494484+00:00"
+      },
+      "probe_exit_code": 0,
+      "human_review_performed": false,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "raw_reference_from_existing_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r8-creation-ui-take02\\raw-gameplay.mkv",
+        "bytes": 86432690,
+        "sha256": "75e1c05e8c6dd502b9bf2e6648d77b1d7273de0aa03002ee858c6a2f9b43ebde"
+      },
+      "raw_rehashed_here": false
+    },
+    {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:35:18.956596+00:00",
+      "evidence_source": "actual contained FFmpeg termination and ffprobe",
+      "result": "ENCODED_UNREVIEWED",
+      "job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 23188,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-17T16:35:18.791061+00:00"
+      },
+      "probe_exit_code": 0,
+      "human_review_performed": false,
+      "clean_spans_certified": false,
+      "native_business_verified": false,
+      "raw_reference_from_existing_keeper_receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\captures\\episode01-r8-create-once-take03\\raw-gameplay.mkv",
+        "bytes": 61485536,
+        "sha256": "1fe26ea3c4202fca4a0ccf7db6cb6a9f927a5835c0973d6e53b539ccdb82513c"
+      },
+      "raw_rehashed_here": false
+    }
+  ],
+  "screen_release": {
+    "ok": true,
+    "task": {
+      "task_id": "faith-e01-shared-a09",
+      "state": "done",
+      "resources": [],
+      "last_sequence": 11495,
+      "updated_at_utc": "2026-10-17T16:43:34.061583+00:00"
+    },
+    "event": {
+      "sequence": 11495,
+      "event_id": "44ff0977dc014449a570081a444f9925",
+      "timestamp_utc": "2026-10-17T16:43:34.062600+00:00",
+      "state": "done",
+      "resources": []
+    }
+  },
+  "public_verify": {
+    "research_holder_completed": true,
+    "case_contract_qualified": false,
+    "gui_contract_qualified": false,
+    "business_pass": false,
+    "product_release_pass": false,
+    "case_acceptance_pass": false,
+    "qualified_boundary_pass": false,
+    "scope": "research/capture holder; actual W-arm effects, quotes and cooldowns reviewed independently",
+    "original_exit": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T16:43:59.005634+00:00",
+      "actual_exit_code": 2,
+      "whole_product_business_pass": false
+    }
+  },
+  "source_CI": {
+    "schema": "faith-e01-exact-head-ci-terminal-v1",
+    "machine_id": "4-8e1c2f1861",
+    "machine_id_role": "observer_not_GitHub_runner",
+    "runner_machine_id": "unknown",
+    "observed_at_utc": "2026-10-17T16:33:32.382198+00:00",
+    "head": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+    "status": "CI_ONLY_BOTH_SUCCESS",
+    "runs": [
+      {
+        "databaseId": 39048143772,
+        "workflowName": "Official Runner CI",
+        "headSha": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39048143772"
+      },
+      {
+        "databaseId": 39048143764,
+        "workflowName": "Linear history",
+        "headSha": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39048143764"
+      }
+    ],
+    "business_or_live_game_qualification_granted": false
+  },
+  "overlay_history": {
+    "local_small_records": {
+      "old_start": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T16:23:40.897418+00:00",
+        "source": "Original retained CK3 identity and existing click-through NativeOverlay; no gameplay input",
+        "game_pid": 21564,
+        "game_create_time": 1792253831.3987103,
+        "identity_source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\case-output\\retained-current-process-identity.json",
+        "overlay_pid": 20504,
+        "overlay_hwnd": 4589272,
+        "gameplay_input": false
+      },
+      "actual_a02_start": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T16:24:24.606537+00:00",
+        "source": "Original retained CK3 identity and existing click-through NativeOverlay; no gameplay input",
+        "game_pid": 21564,
+        "game_create_time": 1792253831.3987103,
+        "identity_source": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\case-output\\retained-current-process-identity.json",
+        "overlay_pid": 20780,
+        "overlay_hwnd": 4785880,
+        "gameplay_input": false
+      },
+      "actual_initialization": {
+        "machine_id": "4-8e1c2f1861",
+        "observed_at_utc": "2026-10-17T16:24:24.335135+00:00",
+        "source": "Explicit Root initialization after original passive overlay exited1 for missing state; no game input occurred",
+        "original_start_receipt_preserved": true,
+        "source_sha256": "887cdb4c2676118edd4adc042725ecb9589343c9ccc8033efdfd249773b72c63",
+        "new_helper": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\decision_overlay_r8_a02.py",
+        "new_helper_sha256": "aac593599490f9b5bcf3997fdb9aa788a2c9dca98cf00acd34b2d1cfaf2fa59d"
+      }
+    },
+    "failed_calls_source": "Root direct exec tool return, no local original-exit receipt",
+    "failed_calls": [
+      {
+        "reason_reported": "missing_identity_argument_IndexError",
+        "reported_tool_exit_code": 1,
+        "overlay_created_reported": false
+      },
+      {
+        "reason_reported": "missing_state_FileNotFoundError",
+        "reported_tool_exit_code": 1,
+        "overlay_pid_from_preserved_start": 20504,
+        "finally_close_reported": true
+      }
+    ],
+    "actual_a02_tool_session_id": 10391,
+    "actual_a02_tool_session_wait_code_reported": 0,
+    "successful_wait_source": "Root tool result only",
+    "original_os_exit_receipt_for_success_provided": false,
+    "failure_records_not_rewritten": true,
+    "initialization_record_is_not_exit_proof": true
+  },
+  "media_QA": {
+    "source_kind": "Root parent task report plus recorder terminals",
+    "Root_reports_QA_completed": true,
+    "QA_scope_not_reconstructed_here": true,
+    "human_review_performed": false,
+    "formal_film_completed": false,
+    "raw_media_rehashed_or_redecoded_here": false
+  },
+  "qualification_boundary": {
+    "save_file_materialized_and_canonical_copy_frozen": true,
+    "Driver_state_binding_verified": false,
+    "D3_cold_load_verified": false,
+    "normal_gui_exit_and_OS0_verified": true,
+    "original_run_host_keeper_exit0": true,
+    "screen_CAS_done_empty": true,
+    "research_holder_completed": true,
+    "business_pass": false,
+    "whole_product_business_pass": false,
+    "product_release_pass": false,
+    "media_human_review_pass": false,
+    "ordinary_campaign_credit_added": false
+  },
+  "validation": {
+    "all_require_checks": "PASS",
+    "source_times_preserved_without_inferred_conversions": true,
+    "main_modified_by_this_agent": false,
+    "game_business_rerun": false,
+    "large_file_or_raw_hashing": false
+  }
+}

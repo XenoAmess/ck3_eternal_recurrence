@@ -1,0 +1,161 @@
+{
+  "schema": "faith-d3-checkpoint-binding-diagnosis-v2",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T16:53:43.990780+00:00",
+  "root_frozen_runtime_source_commit": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+  "actual_current_HEAD": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+  "native_save_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-save-created-D3-a01.json",
+    "bytes": 37710,
+    "sha256": "b16c2bc2d43a11cb47cb3f2f6b6379305f976f27724fac73c961bbe0dbc594de"
+  },
+  "canonical_copy_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\D3-samarra-wisdom-created.ck3.json",
+    "bytes": 547,
+    "sha256": "ece18562e0bfe18b1369be1d02c56d66a50fff26d86fd4f0a86b08606fd7008c"
+  },
+  "driver_state": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\native-session\\driver-state.json",
+    "bytes": 631718,
+    "sha256": "04592864183e11bdf5757485c0b83c56914e75e9e310eab24eb8d2dd92bb7088"
+  },
+  "source_pins": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1583201,
+      "sha256": "c57a86353c3450f2d312c70191133a3e28607feff87152dc76b4ad2baa5a96fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\shared-host.py",
+      "bytes": 315112,
+      "sha256": "f926fc23e9bf3d00be24e96d4b38afe93613e0aae7525d879d6f63d70e2be669"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\prepared\\prepared-case.json",
+      "bytes": 6773,
+      "sha256": "807749f9feffe09cf65531f2ed4c6bca1ed513e32a69c83ec487ad8e78579d38"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\case-contract.json",
+      "bytes": 10303,
+      "sha256": "73b29f439060b135786bd4d0a36475ddb2a84fedbbc9fb213aee088774f141c2"
+    }
+  ],
+  "checkpoint_materialized_and_copy_digest_exact_from_original_receipts": true,
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 50210947,
+    "sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a",
+    "date_raw": 51394920,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 12,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "actual_save_body_read": false,
+  "actual_save_rehashed": false,
+  "actual_canonical_file_size_metadata": 50210947,
+  "session_comparisons": {
+    "pipe_name": {
+      "attempt": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+      "recorded": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+      "equal": true
+    },
+    "bridge_pid": {
+      "attempt": 21564,
+      "recorded": 21564,
+      "equal": true
+    },
+    "episode_character_id": {
+      "attempt": null,
+      "recorded": null,
+      "equal": true
+    },
+    "episode_run_id": {
+      "attempt": null,
+      "recorded": null,
+      "equal": true
+    }
+  },
+  "offline_replay_of_available_persist_conditions": {
+    "saved_index_in_persisted_history": true,
+    "history_row_index_exact": true,
+    "history_command_is_save": true,
+    "history_ok_true": true,
+    "recorded_checkpoint_exact": true,
+    "persisted_last_checkpoint_exact": true,
+    "history_index_exact": true,
+    "episode_character_id_nonnull": false,
+    "episode_run_id_nonnull": false,
+    "session_four_fields_equal": true,
+    "checkpoint_episode_character_matches_attempt": true,
+    "checkpoint_episode_run_matches_attempt": true
+  },
+  "false_conditions": [
+    "episode_character_id_nonnull",
+    "episode_run_id_nonnull"
+  ],
+  "original_state_replace_status": "unconfirmed",
+  "write_replace_returned": true,
+  "save_binding_verified": false,
+  "original_reason": "save_binding_mismatch",
+  "episode_projection": "native_campaign",
+  "actual_one_life_seed_field": null,
+  "legacy_lifecycle_is_internal_diagnostic_not_actual_game_rule_or_compared_session_field": {
+    "schema": "xar.ck3.succession-lifecycle-binding/v1",
+    "lifecycle": "rogue_one_life",
+    "xar_enabled": "xar_on",
+    "pact_contract": "terminal_settlement_required",
+    "source": "legacy-driver-default",
+    "environment_sha256": null
+  },
+  "root_cause": "native_campaign intentionally skips one-life identity initialization; save/persist verification and cold-checkpoint eligibility require nonnull one-life identity. The parsed state loader accepts null/null. This is not a missing public case seed.",
+  "not_proven": [
+    "player/date metadata independently parsed from D3 save contents",
+    "one-life seed applicability or identity for a vanilla native_campaign save",
+    "driver-state cold restore for native_campaign"
+  ],
+  "after_snapshot_not_used_to_repair_checkpoint_identity": true,
+  "old_receipts_or_driver_state_modified": false,
+  "game_or_native_build_executed": false,
+  "main_modified": false,
+  "retention_review_after_utc": "2026-10-24T00:00:00Z",
+  "supersedes_analysis_only": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\diagnostics\\d3-checkpoint-binding-a01\\diagnosis-a01.json",
+    "bytes": 5346,
+    "sha256": "ea54eff63ee06b14dd845bbaf2c964bf72113ab6c9add10bb305cf426d1f7013"
+  },
+  "analysis_correction": "The a01 root_cause phrase about persisted-state loader requirements was too broad. The actual payload parser permits both episode fields null. Actual cold-candidate eligibility separately rejects their absence. The original save/persist findings and receipt pins remain unchanged.",
+  "actual_persisted_state_parse": {
+    "status": "accepted",
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "actual_persisted_cold_candidate_ready": false,
+  "diagnostic_patch": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\diagnostics\\d3-checkpoint-binding-a01\\checkpoint-binding-diagnostic-only-a02.patch",
+    "bytes": 1565,
+    "sha256": "7e26d609206d5785565e6cf6b82a2c04991584f0e0749a8206df3e3eb6fce7c4"
+  },
+  "patch_applied_to_main": false,
+  "binding_comparison_AST_unchanged": true,
+  "positive_save_binding_or_cold_restore_fix_claimed": false,
+  "future_correct_fix_boundary": "Add an explicit native-campaign checkpoint identity/restore contract with independently proven save identity and player/date data; do not inject one-life seed into prepared vanilla case, remove nonnull guards, or use after_snapshot as save metadata.",
+  "qualification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\diagnostics\\d3-checkpoint-binding-a01\\diagnostic-only-qualification-a02.json",
+    "bytes": 12012,
+    "sha256": "b17aeeaf0ab7f0d1913be3baf0b5cf51388c3e270455cab4a5cd9b23a4179cd6"
+  },
+  "independent_read_only_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime-audit\\r8-save-binding-independent-review-a01.json",
+    "bytes": 15271,
+    "sha256": "7cb41275abeef0fe3fc330c69693e976d31a6c9e258f1b0a3cbfb3f591189941"
+  },
+  "code_change_scope": "Optional diagnostics only, no binding/restore success fix",
+  "original_R8_inputs_main_or_receipts_changed": false
+}

@@ -289,7 +289,8 @@ def subtitle(row,font_path,font_name):
         margin_left=100,margin_right=100,margin_vertical=30)
     tracks.append(SubtitleTrackConfig('source','zh-CN',3,style)); cursor=0
     for number,part in enumerate(row['visual_parts']):
-        cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
+        if part['kind']!='mechanism-motion':  # Motion already burns its permanent source-only label at y29.
+            cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
         cursor+=part['duration_seconds']
     return render_ass_document(AssDocumentConfig('Faith and Power: review',2560,1440,row['duration_seconds']),
         tracks,cues,available_font_names=[font_name])
@@ -302,6 +303,9 @@ def visual_command(ffmpeg,row,target,bound):
         d=part['duration_seconds']
         if part['kind'] in {'diagram','native-readback'}:
             argv+=['-loop','1','-framerate','30','-t',f'{d:.9f}','-i',str(bound(part['image']))]
+            scale='scale=2560:1440:flags=lanczos'
+        elif part['kind']=='mechanism-motion':
+            argv+=['-ss',f"{part['source_start_seconds']:.9f}",'-t',f'{d:.9f}','-i',str(bound(part['video']))]
             scale='scale=2560:1440:flags=lanczos'
         else:
             argv+=['-ss',f"{part['raw_start_seconds']:.9f}",'-t',f'{d:.9f}','-i',str(bound(part['raw']))]

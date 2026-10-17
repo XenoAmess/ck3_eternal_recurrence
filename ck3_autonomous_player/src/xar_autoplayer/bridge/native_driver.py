@@ -11854,6 +11854,21 @@ class NativeHeadlessGameplayDriver:
                                 == attempt_binding["episode_run_id"]
                             )
                             save_receipt.update(
+                                # This is a driver-history identity check. A
+                                # materialized native_campaign save does not
+                                # acquire a one-life identity from this receipt.
+                                binding_contract="one_life_episode_identity_v1",
+                                checkpoint_episode_projection=(
+                                    saved_checkpoint.get("episode_projection")
+                                    if isinstance(saved_checkpoint, dict) else None
+                                ),
+                                missing_checkpoint_binding_fields=[
+                                    field for field in (
+                                        "episode_character_id", "episode_run_id",
+                                    )
+                                    if not isinstance(saved_checkpoint, dict)
+                                    or saved_checkpoint.get(field) is None
+                                ],
                                 save_binding_verified=binding_verified,
                                 reason="awaiting_write_replace" if binding_verified
                                 else "save_binding_mismatch",

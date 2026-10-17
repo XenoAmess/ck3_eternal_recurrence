@@ -184,6 +184,15 @@ def native_display(value,format_name):
     if format_name=='rite_name':
         if value!=15:raise ValueError('Unknown experiment rite identity')
         return '马立克派'
+    if format_name=='faith_names':
+        names={50:'逊尼派',51:'什叶派'}
+        if not isinstance(value,list) or any(type(item) is not int or item not in names for item in value):
+            raise ValueError('Unknown observed faith identity in this experiment')
+        return '、'.join(names[item] for item in value) if value else '无关联信仰'
+    if format_name=='site_count':
+        if not isinstance(value,list) or any(type(item) is not int for item in value):
+            raise ValueError('Site count requires the observed native site-ID list')
+        return str(len(value))+' 处圣地'
     if format_name=='known_or_unknown' and value is None:return '未知'
     if format_name not in {'json','known_or_unknown'}:raise ValueError('Unknown native display format')
     return json.dumps(value,ensure_ascii=False,separators=(',',':'))

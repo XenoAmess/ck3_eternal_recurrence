@@ -10,7 +10,13 @@ from __future__ import annotations
 from copy import deepcopy
 from typing import Literal
 
-from .holy_site_historical_cases import HOLY_SITE_ADOPTION_HISTORICAL_CASES
+from .holy_site_historical_cases import (
+    HOLY_SITE_ADOPTION_HISTORICAL_CASES,
+    HOLY_SITE_GRADE_REALLOCATION_HISTORICAL_CASES,
+    HOLY_SITE_RELIC_HISTORICAL_CASES,
+    HOLY_SITE_ABANDONMENT_HISTORICAL_CASES,
+    HOLY_SITE_CREATION_HISTORICAL_CASES,
+)
 
 
 HolySitePlanningAction = Literal["adopt", "create", "promote", "demote", "abandon", "enshrine_relic", "remove_relic"]
@@ -500,6 +506,22 @@ _KNOWLEDGE["create"]["additional_unknowns"] = [
     "Actual live creation picker models, selected state and final native terms.",
     "Actual Create invocation, runtime ordering, site level, ownership transfer, payment/free use and cooldown.",
 ]
+
+
+# Same ended chain is discoverable from either action; no current-state merge.
+_KNOWLEDGE["promote"]["historical_case_evidence"] = HOLY_SITE_GRADE_REALLOCATION_HISTORICAL_CASES
+_KNOWLEDGE["demote"]["historical_case_evidence"] = HOLY_SITE_GRADE_REALLOCATION_HISTORICAL_CASES
+_KNOWLEDGE["enshrine_relic"]["historical_case_evidence"] = HOLY_SITE_RELIC_HISTORICAL_CASES
+_KNOWLEDGE["remove_relic"]["historical_case_evidence"] = HOLY_SITE_RELIC_HISTORICAL_CASES
+
+
+# Scope the R8 world proof to historical cases; current native terms remain unknown.
+_KNOWLEDGE["abandon"]["historical_case_evidence"] = HOLY_SITE_ABANDONMENT_HISTORICAL_CASES
+_KNOWLEDGE["create"]["historical_case_evidence"] = HOLY_SITE_CREATION_HISTORICAL_CASES
+_KNOWLEDGE["create"]["native_read_only_context"]["qualification"] = "source_reviewed_static_with_R8_historical_native_observation"
+_KNOWLEDGE["create"]["native_read_only_context"]["historical_case_ref"] = "faith-e01-r8-create-wisdom-20261017"
+_KNOWLEDGE["create"]["native_create_once_source"]["historical_case_ref"] = "faith-e01-r8-create-wisdom-20261017"
+_KNOWLEDGE["create"]["candidate_pipeline"][1]["native_producer_status"] = "source_closed_exact4_with_R8_historical_native_observation"
 
 
 def query_holy_site_planning_knowledge_v1(

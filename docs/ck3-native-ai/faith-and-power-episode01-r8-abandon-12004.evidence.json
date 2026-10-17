@@ -1,0 +1,867 @@
+{
+  "schema": "ck3-faith-e01-r8-w-abandon-observation-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T16:29:41.137945+00:00",
+  "source_mode": "offline_projection_of_retained_native_receipts",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+  "sources": {
+    "r8-w-create-initial-snapshot": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-w-create-initial-snapshot.json",
+      "bytes": 68651,
+      "sha256": "35b0be7d4c549365914e37cc87efb343319ed0cdb45aca5b4559c567c05b7e66",
+      "started_at": "2026-10-17T16:22:01.539360+00:00",
+      "finished_at": "2026-10-17T16:22:01.677461+00:00",
+      "ok": true,
+      "tool": "ck3_take_snapshot",
+      "args": {
+        "include_native_command_history": false
+      }
+    },
+    "r8-w-create-initial-religion": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-w-create-initial-religion.json",
+      "bytes": 55072,
+      "sha256": "6abfc022217552935c622b66fbdd3f2f2bbedcaf35dfc28cfab6229e558d071e",
+      "started_at": "2026-10-17T16:22:02.434240+00:00",
+      "finished_at": "2026-10-17T16:22:02.615437+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_religion_context_v1",
+      "args": {}
+    },
+    "r8-W-baseline-sites-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-baseline-sites-a01.json",
+      "bytes": 90873,
+      "sha256": "225da2d0774c25cdecaccf594245e88e83f6d58fe94d6025922289cc23ca24e8",
+      "started_at": "2026-10-17T16:23:40.307760+00:00",
+      "finished_at": "2026-10-17T16:23:40.611515+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_v1",
+      "args": {}
+    },
+    "r8-W-baseline-relic32-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-baseline-relic32-a01.json",
+      "bytes": 37436,
+      "sha256": "79ddc5ba63f16d1c59483e1a78a2be1702db67f35fbff2f320571365f156ed30",
+      "started_at": "2026-10-17T16:23:40.796457+00:00",
+      "finished_at": "2026-10-17T16:23:41.052395+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_relic_context_v1",
+      "args": {
+        "holy_site_id": 32
+      }
+    },
+    "r8-W-abandon32-detail-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-abandon32-detail-a01.json",
+      "bytes": 39361,
+      "sha256": "83c3606d1f39ebf406bad5078a5f987a55993d81ca1d1acc6ce0067cdbf8a3c2",
+      "started_at": "2026-10-17T16:23:42.513300+00:00",
+      "finished_at": "2026-10-17T16:23:42.718907+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_decision_detail_v1",
+      "args": {
+        "action": "abandon",
+        "holy_site_id": 32
+      }
+    },
+    "r8-W-confirm-abandon32-once-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-confirm-abandon32-once-a01.json",
+      "bytes": 65198,
+      "sha256": "ee5a894b22c47d73da4b3eb12692d6b7747d2d8c06186828156a3dfd2374af09",
+      "started_at": "2026-10-17T16:24:50.799654+00:00",
+      "finished_at": "2026-10-17T16:24:51.158985+00:00",
+      "ok": true,
+      "tool": "ck3_confirm_holy_site_decision_v1",
+      "args": {
+        "action": "abandon",
+        "holy_site_id": 32
+      }
+    },
+    "r8-W-after-abandon-snapshot-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-snapshot-a01.json",
+      "bytes": 68663,
+      "sha256": "8b03598b74abb16190d0dfebef70a66cd9527e80408a10def5add785e9016831",
+      "started_at": "2026-10-17T16:24:51.338224+00:00",
+      "finished_at": "2026-10-17T16:24:51.591524+00:00",
+      "ok": true,
+      "tool": "ck3_take_snapshot",
+      "args": {
+        "include_native_command_history": false
+      }
+    },
+    "r8-W-after-abandon-sites-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-sites-a01.json",
+      "bytes": 89850,
+      "sha256": "0995b35d0c2636cc2bdd510d9b769622261d6a7b3fdbe1afad8896ccff7c7ec7",
+      "started_at": "2026-10-17T16:24:51.891237+00:00",
+      "finished_at": "2026-10-17T16:24:52.211176+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_v1",
+      "args": {}
+    },
+    "r8-W-after-abandon-site32-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-site32-a01.json",
+      "bytes": 90646,
+      "sha256": "6be521382544868e2902f79ce4486c51fa9020e5b9b698f071759dfbe48ebca5",
+      "started_at": "2026-10-17T16:24:52.431348+00:00",
+      "finished_at": "2026-10-17T16:24:52.752067+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_v1",
+      "args": {
+        "holy_site_id": 32
+      }
+    },
+    "r8-W-after-abandon-relic32-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-relic32-a01.json",
+      "bytes": 37440,
+      "sha256": "3de55e03674546af583571e6cffe9f6316a03d58167c1f0115eecc9ac88a8844",
+      "started_at": "2026-10-17T16:24:52.940017+00:00",
+      "finished_at": "2026-10-17T16:24:53.126210+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_relic_context_v1",
+      "args": {
+        "holy_site_id": 32
+      }
+    },
+    "r8-W-after-abandon-cooldown-a01": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\root-native-receipts\\r8-W-after-abandon-cooldown-a01.json",
+      "bytes": 35948,
+      "sha256": "479b4a89f40cbcbe97c8b8ebf44c1f01fc3a0f872cf5059a5a4808f800ae670a",
+      "started_at": "2026-10-17T16:24:53.294656+00:00",
+      "finished_at": "2026-10-17T16:24:53.585976+00:00",
+      "ok": true,
+      "tool": "ck3_query_player_holy_site_decision_cooldown_v1",
+      "args": {
+        "action": "abandon"
+      }
+    }
+  },
+  "runtime_binding": {
+    "source_commit": "02eea1e57a44a733cb833038b55a5fdc7bd4302a",
+    "source_index": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\source-index.json",
+      "bytes": 3957,
+      "sha256": "221bd94e99cb7b56d1c38d4d28f7ee61e7f717abea00e8e60ce4779406c61499"
+    },
+    "frozen_argv": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\frozen-argv.json",
+      "bytes": 25759,
+      "sha256": "e739902c02a0650902ab82a2968ebcdc152aeb59e9050daa8624a21fa58d00c9"
+    },
+    "retained_game_process": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0008\\case-output\\retained-current-process-identity.json",
+        "bytes": 110,
+        "sha256": "191c0bfc5b20799e2652f640636779e0d65bfaa6a4211dee2853542ec168fe67"
+      },
+      "pid": 21564,
+      "create_time": 1792253831.3987103,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "file_pins_from_frozen_argv": {
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a06\\publish\\xar_ck3_bridge.dll": {
+        "bytes": 13838336,
+        "sha256": "7a5ef6ca4eeb05c56d0f96b2ace2409bff704d067e66136f2b29dd253c3475c7"
+      },
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe": {
+        "bytes": 101040248,
+        "sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+      },
+      "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\scenario\\saves\\C2-nadjaf-adopted-funded.ck3": {
+        "bytes": 50210503,
+        "sha256": "7bd48c5eb8c51a24badd02ba57cb030dba3526da4483479ae9adc231cea7ea7e"
+      }
+    },
+    "raw_binary_or_save_rehashed_by_this_task": false,
+    "profile": {
+      "source": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state\\profile\\dlc_load.json",
+        "bytes": 48,
+        "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+      },
+      "enabled_mods": [],
+      "matches_frozen": true
+    }
+  },
+  "static_sources": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "relative_game_path": "common/decisions/50_holy_site_decisions.txt",
+      "line_ranges": {
+        "qualification": [
+          337,
+          359
+        ],
+        "cost_and_cooldown": [
+          361,
+          371
+        ],
+        "effects_and_conditional_relic_return": [
+          373,
+          413
+        ]
+      }
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+      "bytes": 1191,
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "relative_game_path": "common/script_values/00_holy_site_values.txt",
+      "line_ranges": {
+        "configured_duration_and_free_waiver": [
+          13,
+          27
+        ]
+      }
+    }
+  ],
+  "snapshots": {
+    "baseline": {
+      "date_raw": 51394920,
+      "paused": true,
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "played_character_piety": {
+        "raw": 425000000,
+        "scale": 100000
+      },
+      "active_event": null,
+      "managed_campaign_run_binding": {
+        "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+        "state_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+        "host_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\shared-host.py",
+        "frozen_argv_sha256": "e739902c02a0650902ab82a2968ebcdc152aeb59e9050daa8624a21fa58d00c9"
+      },
+      "played_character_id": 15893
+    },
+    "after_abandon": {
+      "date_raw": 51394920,
+      "paused": true,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "played_character_piety": {
+        "raw": 325000000,
+        "scale": 100000
+      },
+      "active_event": null,
+      "managed_campaign_run_binding": {
+        "run_id": "4-8e1c2f1861--faith-and-power--R0008",
+        "state_dir": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\r8-a02\\state",
+        "bridge_pipe": "\\\\.\\pipe\\ck3_mod_acceptance_4-8e1c2f1861--faith-and-power--R0008",
+        "host_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-r8-a02\\shared-host.py",
+        "frozen_argv_sha256": "e739902c02a0650902ab82a2968ebcdc152aeb59e9050daa8624a21fa58d00c9"
+      },
+      "played_character_id": 15893
+    }
+  },
+  "initial_religion": {
+    "rite_id": 15,
+    "faith_id": 50,
+    "faith_main_rite_id": 13,
+    "faith_key": "sunni"
+  },
+  "site_phases": {
+    "baseline": {
+      "available": true,
+      "player_rite_id": 15,
+      "player_faith_id": 50,
+      "current_faith_holy_site_ids": [
+        26,
+        27,
+        0,
+        14,
+        29,
+        32
+      ],
+      "active_state_observed": false,
+      "relic_recognition_observed": false,
+      "beneficiaries_observed": false,
+      "queried_revision": 3,
+      "queried_native_revision": 2,
+      "snapshot_revision": 2,
+      "counts_derived": {
+        "T": 6,
+        "E": 3,
+        "R": 3
+      }
+    },
+    "after_abandon": {
+      "available": true,
+      "player_rite_id": 15,
+      "player_faith_id": 50,
+      "current_faith_holy_site_ids": [
+        26,
+        27,
+        0,
+        14,
+        29
+      ],
+      "active_state_observed": false,
+      "relic_recognition_observed": false,
+      "beneficiaries_observed": false,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "snapshot_revision": 3,
+      "counts_derived": {
+        "T": 5,
+        "E": 3,
+        "R": 2
+      }
+    }
+  },
+  "baseline_site_rows": [
+    {
+      "holy_site_id": 26,
+      "type_key": "mecca",
+      "barony_title_id": 8518,
+      "associated_faith_eminent_by_id": {
+        "49": true,
+        "50": true,
+        "51": true,
+        "52": true,
+        "53": true,
+        "54": true,
+        "55": false,
+        "56": true
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 26,
+        "native_holy_site_owner_id": 26,
+        "native_character_owner_id": null,
+        "artifact_ids": [
+          60
+        ],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    },
+    {
+      "holy_site_id": 27,
+      "type_key": "medina",
+      "barony_title_id": 8492,
+      "associated_faith_eminent_by_id": {
+        "49": true,
+        "50": true,
+        "51": true,
+        "52": true,
+        "53": true,
+        "54": true,
+        "55": false,
+        "56": false
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 27,
+        "native_holy_site_owner_id": 27,
+        "native_character_owner_id": null,
+        "artifact_ids": [
+          61,
+          62
+        ],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    },
+    {
+      "holy_site_id": 0,
+      "type_key": "jerusalem",
+      "barony_title_id": 8857,
+      "associated_faith_eminent_by_id": {
+        "12": true,
+        "13": true,
+        "14": true,
+        "15": true,
+        "16": true,
+        "17": true,
+        "18": true,
+        "19": true,
+        "20": true,
+        "21": true,
+        "22": true,
+        "23": true,
+        "24": true,
+        "25": true,
+        "26": true,
+        "27": true,
+        "28": true,
+        "29": true,
+        "36": false,
+        "37": true,
+        "38": false,
+        "49": true,
+        "50": true,
+        "51": false,
+        "52": false,
+        "53": false,
+        "54": false,
+        "55": false,
+        "58": true,
+        "59": true,
+        "60": true,
+        "61": true,
+        "63": true
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 0,
+        "native_holy_site_owner_id": 0,
+        "native_character_owner_id": null,
+        "artifact_ids": [
+          63
+        ],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    },
+    {
+      "holy_site_id": 14,
+      "type_key": "baghdad",
+      "barony_title_id": 6687,
+      "associated_faith_eminent_by_id": {
+        "26": true,
+        "27": false,
+        "36": false,
+        "49": false,
+        "50": false
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 14,
+        "native_holy_site_owner_id": 14,
+        "native_character_owner_id": null,
+        "artifact_ids": [
+          64
+        ],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    },
+    {
+      "holy_site_id": 29,
+      "type_key": "sinai",
+      "barony_title_id": 8836,
+      "associated_faith_eminent_by_id": {
+        "37": false,
+        "38": true,
+        "49": false,
+        "50": false,
+        "54": false,
+        "58": true,
+        "59": true,
+        "60": false,
+        "61": false,
+        "62": true,
+        "63": false,
+        "73": false
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 29,
+        "native_holy_site_owner_id": 29,
+        "native_character_owner_id": null,
+        "artifact_ids": [
+          65
+        ],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    },
+    {
+      "holy_site_id": 32,
+      "type_key": "nadjaf",
+      "barony_title_id": 6650,
+      "associated_faith_eminent_by_id": {
+        "51": true,
+        "50": false
+      },
+      "inventory": {
+        "available": true,
+        "identity_kind": "embedded_holy_site_inventory",
+        "owner_kind": "holy_site",
+        "owner_holy_site_id": 32,
+        "native_holy_site_owner_id": 32,
+        "native_character_owner_id": null,
+        "artifact_ids": [],
+        "artifact_objects_resolved": false,
+        "unavailable_reason": null
+      }
+    }
+  ],
+  "explicit_site32_after": {
+    "available": true,
+    "holy_site_id": 32,
+    "type_key": "nadjaf",
+    "barony_title_id": 6650,
+    "associated_faiths": [
+      {
+        "faith_id": 51,
+        "available": true,
+        "faith_lists_site": true,
+        "eminent": true,
+        "unavailable_reason": null
+      }
+    ],
+    "inventory": {
+      "available": true,
+      "identity_kind": "embedded_holy_site_inventory",
+      "owner_kind": "holy_site",
+      "owner_holy_site_id": 32,
+      "native_holy_site_owner_id": 32,
+      "native_character_owner_id": null,
+      "artifact_ids": [],
+      "artifact_objects_resolved": false,
+      "unavailable_reason": null
+    },
+    "unavailable_reason": null
+  },
+  "detail": {
+    "schema": "ck3_12004_holy_site_decision_detail_v1",
+    "action": "abandon",
+    "decision_key": "abandon_holy_site_decision",
+    "requested_decision_key": "abandon_holy_site_decision",
+    "parameter_holy_site_id": 32,
+    "selected_holy_site_id": 32,
+    "parameter_and_selection_match": true,
+    "detail_actor_id": 15893,
+    "current_actor_id": 15893,
+    "native_can_confirm": true,
+    "bypass_requirements_observed": true,
+    "bypass_requirements_raw": 0,
+    "normal_requirements_legality_observed": true,
+    "normal_requirements_can_confirm": true,
+    "native_resource_quote_available": true,
+    "native_resource_quote": {
+      "raw_scale": 100000,
+      "resource_vector_raw": [
+        0,
+        0,
+        100000000,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "costs_raw": {
+        "gold": 0,
+        "prestige": 0,
+        "piety": 100000000,
+        "treasury": 0
+      },
+      "native_affordable": true
+    },
+    "native_decision_cooldown_observed": true,
+    "native_decision_cooldown": {
+      "decision_key": "abandon_holy_site_decision",
+      "present": false,
+      "expiry_raw": null,
+      "current_counter_raw": 51394920,
+      "active": false,
+      "counter_unit": "native_decision_clock_counter",
+      "calendar_conversion_observed": false
+    },
+    "decision_confirm_invoked": false,
+    "queried_revision": 3,
+    "queried_native_revision": 2,
+    "requirements_text_evidence": {
+      "available": true,
+      "exact_text_sha256_utf8": "1833d724e561d450ea4df35c00cfb5ecb9c612b5f6952f751b1515e63dd42833",
+      "native_fail_marker_present": false,
+      "total_sites_more_than_1_present": true
+    }
+  },
+  "confirmation_ack": {
+    "accepted": true,
+    "dispatch_invoked": true,
+    "native_dispatch_attempted": true,
+    "holy_site_decision": {
+      "action": "abandon",
+      "requested_decision_key": "abandon_holy_site_decision",
+      "decision_key": "abandon_holy_site_decision",
+      "parameter_binding_verified": true,
+      "parameter_holy_site_id": 32,
+      "business_outcome_observed": false
+    },
+    "holy_site_adoption_confirmation": {
+      "selected_detail_verified": true,
+      "normal_requirements_legality_observed": true,
+      "native_can_confirm": true,
+      "parameter_holy_site_id": 32,
+      "selected_holy_site_id": 32,
+      "original_confirm_attempted": true,
+      "business_outcome_observed": false
+    },
+    "played_character_id": 15893,
+    "date_raw": 51394920,
+    "native_revision": 2,
+    "queried_revision": 3,
+    "queried_native_revision": 2,
+    "queried_connection_generation": 1,
+    "attached_snapshot": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "played_character_piety": {
+        "raw": 425000000,
+        "scale": 100000
+      }
+    }
+  },
+  "cooldown_after": {
+    "schema": "ck3_12004_holy_site_decision_cooldown_v1",
+    "action": "abandon",
+    "decision_key": "abandon_holy_site_decision",
+    "native_decision_cooldown_observed": true,
+    "native_decision_cooldown": {
+      "decision_key": "abandon_holy_site_decision",
+      "present": true,
+      "expiry_raw": 51438720,
+      "current_counter_raw": 51394920,
+      "active": true,
+      "counter_unit": "native_decision_clock_counter",
+      "calendar_conversion_observed": false
+    },
+    "detail_open_required": false,
+    "decision_confirm_invoked": false,
+    "queried_revision": 4,
+    "queried_native_revision": 3
+  },
+  "relic_site32": {
+    "baseline": {
+      "available": true,
+      "capture_epoch": 21813,
+      "date_raw": 51394920,
+      "played_character_id": 15893,
+      "player_rite_id": 15,
+      "player_faith_id": 50,
+      "holy_site_id": 32,
+      "associated_faith_ids_available": true,
+      "associated_faith_ids": [
+        51,
+        50
+      ],
+      "cached_world_state": {
+        "available": true,
+        "is_active": false,
+        "total_active_artifact_rarity": 0,
+        "refresh_time_known": false,
+        "world_effects_applied_observed": false,
+        "unavailable_reason": null
+      },
+      "county_context": {
+        "available": true,
+        "barony_title_id": 6650,
+        "county_title_id": 6649,
+        "county_holder_id": 15436,
+        "county_holder_rite_id": 13,
+        "county_holder_faith_id": 50,
+        "unavailable_reason": null
+      },
+      "inventory": {
+        "available": true,
+        "artifact_ids": [],
+        "slots": [
+          {
+            "slot_index": 0,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 1,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 2,
+            "artifact_id": null
+          }
+        ],
+        "artifact_objects": [],
+        "unavailable_reason": null
+      },
+      "current_relic_evaluation": {
+        "available": true,
+        "inventory_artifact_count_raw": 0,
+        "county_holder_faith_associated": true,
+        "active_artifact_rarity_sum": 0,
+        "is_active": false,
+        "cache_evaluation_disagreement": false,
+        "method": "original_native_rarity_producer",
+        "unavailable_reason": null
+      },
+      "beneficiaries_observed": false,
+      "read_only": true,
+      "queried_revision": 3,
+      "queried_native_revision": 2,
+      "snapshot_revision": 2
+    },
+    "after_abandon": {
+      "available": true,
+      "capture_epoch": 27123,
+      "date_raw": 51394920,
+      "played_character_id": 15893,
+      "player_rite_id": 15,
+      "player_faith_id": 50,
+      "holy_site_id": 32,
+      "associated_faith_ids_available": true,
+      "associated_faith_ids": [
+        51
+      ],
+      "cached_world_state": {
+        "available": true,
+        "is_active": false,
+        "total_active_artifact_rarity": 0,
+        "refresh_time_known": false,
+        "world_effects_applied_observed": false,
+        "unavailable_reason": null
+      },
+      "county_context": {
+        "available": true,
+        "barony_title_id": 6650,
+        "county_title_id": 6649,
+        "county_holder_id": 15436,
+        "county_holder_rite_id": 13,
+        "county_holder_faith_id": 50,
+        "unavailable_reason": null
+      },
+      "inventory": {
+        "available": true,
+        "artifact_ids": [],
+        "slots": [
+          {
+            "slot_index": 0,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 1,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 2,
+            "artifact_id": null
+          }
+        ],
+        "artifact_objects": [],
+        "unavailable_reason": null
+      },
+      "current_relic_evaluation": {
+        "available": true,
+        "inventory_artifact_count_raw": 0,
+        "county_holder_faith_associated": false,
+        "active_artifact_rarity_sum": 0,
+        "is_active": false,
+        "cache_evaluation_disagreement": false,
+        "method": "original_native_rarity_producer",
+        "unavailable_reason": null
+      },
+      "beneficiaries_observed": false,
+      "read_only": true,
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "snapshot_revision": 3
+    }
+  },
+  "verified_comparisons": {
+    "all_require_checks": "PASS",
+    "faith50_membership_removed_site_ids": [
+      32
+    ],
+    "faith50_membership_added_site_ids": [],
+    "T_E_R_transition": [
+      {
+        "T": 6,
+        "E": 3,
+        "R": 3
+      },
+      {
+        "T": 5,
+        "E": 3,
+        "R": 2
+      }
+    ],
+    "piety_raw_delta": -100000000,
+    "piety_scale": 100000,
+    "remaining_five_complete_site_rows_unchanged": true,
+    "site32_still_available_with_faith51_eminent": true,
+    "site32_other_faith_rows_unchanged": true,
+    "site_inventory_artifact_ids_before_and_after": {
+      "26": [
+        60
+      ],
+      "27": [
+        61,
+        62
+      ],
+      "0": [
+        63
+      ],
+      "14": [
+        64
+      ],
+      "29": [
+        65
+      ],
+      "32": []
+    },
+    "site32_empty_slots_unchanged": true,
+    "county_context_unchanged": true,
+    "county_holder_faith_associated_transition": [
+      true,
+      false
+    ]
+  },
+  "planner_rules_candidate": [
+    {
+      "id": "abandon_removes_faith_site_edge",
+      "rule": "Store membership by Faith/site, and distinguish a missing current-Faith membership from a deleted world HolySite. Explicitly query the departed site to inspect other Faith relations and inventory."
+    },
+    {
+      "id": "abandon_does_not_release_eminent_capacity",
+      "rule": "Observed T6/E3/R3 became T5/E3/R2. Abandoning this ordinary site did not free an eminent slot; use demotion and abandonment as different planning operations with separate goals and costs."
+    },
+    {
+      "id": "native_zero_is_a_valid_holy_site_id",
+      "rule": "Preserve HolySite0 Jerusalem as a valid full ID; use explicit presence/availability rather than truthiness for ID checks."
+    },
+    {
+      "id": "empty_site_does_not_verify_relic_return",
+      "rule": "This site had empty inventory and another associated Faith remained. Do not infer artifact refund/owner transfer from unchanged empty lists; a separate nonempty and last-Faith case would need independent owner/slot poststates."
+    },
+    {
+      "id": "replan_after_paid_membership_change",
+      "rule": "Commit only from fresh normal native eligibility, bypass0, matching selected parameter, exact quote and cooldown. After one confirm, read independent wallet/membership/explicit site/cooldown and invalidate old planning context. Do not repeat unknown actions."
+    },
+    {
+      "id": "active_and_county_association_are_separate",
+      "rule": "Cached/current Active stayed false while county-holder Faith association became false. Keep these gates separate; an unchanged inactive display is not evidence that membership did not change."
+    },
+    {
+      "id": "creation_is_a_separate_action",
+      "rule": "A removed Faith membership and lower total count do not establish current Create legality, selected type or new-world creation success. Fresh native Create context and its own authorized once-only result are required."
+    }
+  ],
+  "scope_limits": [
+    "The source/baseline is original C2 coldloaded in R8, not the post-demotion/post-relic R7 state.",
+    "Artifact objects for embedded site inventories remain unresolved; player-owned inventory/individual artifact ownership is not read in this W subset.",
+    "Only the displayed associated-Faith rows for these six sites are compared, not all game Faiths.",
+    "The target inventory was empty and Faith51 remained; no artifact return or last-associated-Faith behavior was verified.",
+    "Active was already false before abandonment; this sample does not show an active-to-inactive transition or net benefit change.",
+    "Free action count, devotion/profile after payment, holder opinion and all beneficiaries remain unmeasured.",
+    "Raw cooldown counters have no native calendar conversion in this sample.",
+    "This W receipt subset contains no normal closure, media review, whole-product acceptance or actual Create result; ongoing-run status belongs to Root."
+  ]
+}
