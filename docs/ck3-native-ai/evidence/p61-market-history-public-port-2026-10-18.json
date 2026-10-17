@@ -1,0 +1,79 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_utc": "2026-10-17T22:53:55.543582+00:00",
+  "status": "PUBLIC_SOURCE_OFFLINE_QUALIFIED_NOT_COMMITTED_OR_DEPLOYED",
+  "base_head": "c9a8ef9aeb7aee262885654d5486960d26852309",
+  "source_pins": [
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 49644,
+      "sha256": "6e8933c6b0c8dd8a72ac08ea21a226602968dd3330921ec5b43248af3fc62b83"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mercenary_history_projection_v1.py",
+      "bytes": 5824,
+      "sha256": "b7f0ef27b98713408527b5a7dbc4140a729ad521c800de442783d7e4aeeae60d"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1587708,
+      "sha256": "7709bc2855b175bfcb52624c4e77984d6ed9b9ee64daf4f6379e0f46706c2883"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 860095,
+      "sha256": "c8b6dd6d74b972b38fc3786843f5efdc46f86b70c4ad7561133f989bdcd6ffe3"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py",
+      "bytes": 13025,
+      "sha256": "4a869af8cea60b52bb5e3dc2387518b09bc37f6c0883e5c69ea9f2c493fffce5"
+    },
+    {
+      "path": "docs/ck3-native-ai/p61-superseded-market-history-2026-10-18.md",
+      "bytes": 3250,
+      "sha256": "88faf16a5be6fa048d92aaaad3c58dbf425a1038de1dde4b682458b5b3837fff"
+    }
+  ],
+  "validation": {
+    "command": [
+      "tools/.venv/Scripts/python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "ck3_autonomous_player/tests/unit/test_mercenary_hire_registered_mcp_v1.py"
+    ],
+    "actual_exit_code": 0,
+    "actual_stdout": "28 passed, 3 subtests passed in 4.97s",
+    "git_diff_check_exit_code": 0,
+    "whole_matrix_run": false
+  },
+  "behavior": {
+    "latest_full_market_and_API_return_preserved": true,
+    "selected_decision_plan_pending_ledger_fields_preserved": true,
+    "selected_referenced_old_market_body_may_be_summarized": true,
+    "command_rows_indices_and_other_commands_preserved": true,
+    "new_complete_typed_available_sameframe_observation_required": true,
+    "history_json_cache_invalidated_after_interior_changes": true,
+    "restore_loader_or_schema_changed": false,
+    "startup_old_body_compaction": false,
+    "archive_created_or_reconstruction_guaranteed": false,
+    "prior_MCP_receipt_mutation": false
+  },
+  "runtime_scope": {
+    "actual_Game_SDK_or_Native_started": false,
+    "actual_Driver_SAVE_media_read": false,
+    "current_R5_P62_changed": false,
+    "sealed_private_P61_changed": false,
+    "fixture_boundary": "Actual production NativeDriver/Service/normalizer/consumer/encoder/persist/restore; only in-memory endpoint and tiny temporary state synthetic.",
+    "live_performance_improvement_claimed": false
+  },
+  "remaining": "Root source review/commit; future frozen SDK qualification and fresh runtime evidence remain separate."
+}

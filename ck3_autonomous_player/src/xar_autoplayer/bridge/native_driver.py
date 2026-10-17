@@ -9206,6 +9206,10 @@ class NativeHeadlessGameplayDriver:
         )
         try:
             try:
+                market_query_starting = (
+                    self.take_snapshot_without_native_command_history()
+                    if step == "query-player-mercenary-context-v1" else None
+                )
                 result = self._execute_step_unrecorded(
                     step, expected_revision=expected_revision
                 )
@@ -9258,6 +9262,25 @@ class NativeHeadlessGameplayDriver:
                 )
             finally:
                 finish_army_timing(army_record_timing)
+            if market_query_starting is not None:
+                try:
+                    from .mercenary_history_projection_v1 import compact_superseded_market_history_v1
+
+                    ending = self.take_snapshot_without_native_command_history()
+                    with self._history_lock:
+                        changed = compact_superseded_market_history_v1(
+                            self._command_history, result=result,
+                            before=market_query_starting, after=ending,
+                        )
+                        if changed:
+                            self._driver_state_history_json.invalidate()
+                            self._driver_state_dirty = True
+                except Exception as error:
+                    # Observation storage must not turn an accepted query into a failed action.
+                    self._market_history_projection_v1_last = {
+                        "status": "preserved_full_history",
+                        "diagnostic": type(error).__name__, "reason": str(error)[:240],
+                    }
             if (
                 step == CONTINUE_AS_RECONCILED_SUCCESSOR_STEP
                 and result.get("accepted") is True
@@ -10222,7 +10245,7 @@ class NativeHeadlessGameplayDriver:
                     if isinstance(diagnostics, dict) else None),
             }
         if step == "query-player-mercenary-context-v1":
-            starting = self.take_snapshot()
+            starting = self.take_snapshot_without_native_command_history()
             if starting.get("paused") is not True:
                 raise BridgeUnavailableError("native mercenary context query requires a paused snapshot")
             from ..m5_observed_opportunity_selector import observed_frame
@@ -10232,6 +10255,7 @@ class NativeHeadlessGameplayDriver:
             result = self._execute_primitive_step(
                 step, expected_revision=expected_revision,
                 required_capability="game.command.query-player-mercenary-context-v1",
+                include_native_command_history=False,
             )
             return {**result, "mercenary_query_source_frame_v1": source_frame}
         if commander_subject is not None:
@@ -12088,6 +12112,8 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
+        if step == "query-player-mercenary-context-v1":
+            include_native_command_history = False
         if absolute_deadline is not None and (
             isinstance(absolute_deadline, bool)
             or not isinstance(absolute_deadline, (int, float))

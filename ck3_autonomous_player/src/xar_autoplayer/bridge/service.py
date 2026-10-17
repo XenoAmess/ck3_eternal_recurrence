@@ -7193,7 +7193,7 @@ class GameplayBridgeService:
             CAPABILITY, STEP, normalize_player_mercenary_context_v1,
             player_mercenary_context_frame_binding,
         )
-        snapshot = self.snapshot()
+        snapshot = self.snapshot(include_native_command_history=False)
         player = snapshot.get("played_character")
         if (snapshot.get("paused") is not True or snapshot.get("map_ready") is not True
                 or not isinstance(player, dict) or player.get("alive") is not True):
@@ -7221,7 +7221,9 @@ class GameplayBridgeService:
             normalized = normalize_player_mercenary_context_v1(result.get("player_mercenary_context"), snapshot=snapshot)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        if player_mercenary_context_frame_binding(self.snapshot()) != player_mercenary_context_frame_binding(snapshot):
+        if player_mercenary_context_frame_binding(
+            self.snapshot(include_native_command_history=False)
+        ) != player_mercenary_context_frame_binding(snapshot):
             raise BridgeUnavailableError("mercenary context query crossed its paused frame or episode")
         return {**result, "player_mercenary_context": normalized,
                 "queried_snapshot_id": snapshot.get("snapshot_id"),
