@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17 07:58 UTC：第一期圣地规划与独立机制实验入口
+
+`machine_id: 4-8e1c2f1861`。[第一期规划](../ck3-native-ai/faith-and-power-episode01-planning.md)及867阿拔斯独立机制实验方案、[native-only修复](../ck3-native-ai/native-only-runtime-dependency-profile.md)已普通推送 `8bcffad1a5c7e2b6430822e66aef2c22045bc7d1`；清理后的本机容量准入已恢复，来源与UTC见[执行入口](../ck3-native-ai/faith-and-power-execution-20261017.md)及[当天日报](daily/2026-10-17.md)。当前为source-ready、宗教业务live-pending：原生候选/许可/一次动作/独立后态是下一门。用户已允许明示准备的独立机制存档，此范围不改变Robert普通战役规则或其他机器授权。下文旧“current”措辞保留当时任务背景，不能据此跨机推断现场状态。
+
+
 ### 2026-10-16：G2剩余项公共源码增量，6/8保持
 
 本机 xenoamess-full-tower-eb9d2c1186 的并发研究已将 [ordinary Sway](../ck3-native-ai/g2-ordinary-sway-service-v1.md) 六处小接线整理到当前公共源码，3个便携完整planner compound一次通过；真实family retry旧输入在任何可选IO前跳过。未部署活SDK，真实Start/有用终态/独立收益仍缺。新[owner冷载证据工具](../ck3-native-ai/g2-owner-cold-evidence.md)及3项定向测试通过，已用既有闭场小件核对owner/load/checkpoint/frame与后来hot/plan；不追加现场操作、政府资格或稳定窗口天数。原M0–M7仍6/8，M6/M7未完成；连续30年由主ledger独立计量。此前7b121960的Official38837456244与Linear38837456199已实际success，本次新commit的CI另记。
