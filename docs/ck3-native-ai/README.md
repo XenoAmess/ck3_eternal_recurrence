@@ -1,5 +1,11 @@
 # CK3 原生 AI 决策树索引
 
+## 2026-10-17：信仰与权力／圣地规划知识
+
+[圣地与圣物专题](faith-and-power-holy-sites-12004.md)核对了本机选定的55份1.20.0.4资源，拆分候选来源、权限、成本、圣物认可、地理额度与受益对象；C++ producer／最终许可及运行时后态仍分别标 unknown。现有游玩智能体已新增[只读 MCP 规划知识](faith-and-power-mcp-capabilities-12004.md)，支持采用、供奉、移除三类查询，真实协议离线调用通过；这不授当前局面合法性或普通 auto 宗教执行信用。
+
+执行机器为 `machine_id: 4-8e1c2f1861`，安装与环境观察为2026-10-17 05:24–05:38 UTC。[首轮执行记录](faith-and-power-execution-20261017.md)与[试拍接线](../../promo/ck3_faith_and_power/integration/README.md)保存两条待拍链、作者配置、0.3.0工具链和本机容量阻点；拍摄0/2、无新游戏／原片。其他机器的现有战争与长局结论保持各自来源。
+
 2026-10-17同批R09补注（machine_id `desktop-3fevhd2-1c74096080`）：[R0176库存/容量/权重恢复](episode04-r0176-split-merge-recovered-supply-12004.md)从既有三原raw的69条exact byte-offset slices恢复旧场输入，当前production消费者复算30+70=100=poststock/postcap。等于cap不是clamp阳性，Army18空DATA角色转移导致的strictfalse保留；反方向same-normalS0与合格30–60秒动态仍缺，R09整卡false。此为本轮新离线恢复，不是R189/R190新实机、actor或source部署信用；所有分子保持不变。
 
 

@@ -1,0 +1,40 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_project_config",
+  "project": {
+    "id": "ck3-faith-and-power",
+    "title": "CK3：信仰与权力——圣地专题"
+  },
+  "pipeline": {
+    "adapter": "ck3-faith-power-capture-v1",
+    "preset": "ck3-faith-power-longform-zh-v1"
+  },
+  "locales": {"narration": "zh-CN", "subtitles": ["zh-CN", "en"]},
+  "constraints": {"duration_limit_seconds": null},
+  "chapters": [
+    {
+      "id": "holy-sites-acquisition",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {"zh-CN": "圣地不是打下来就算——取得与重规划"},
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "holy-sites-relics",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {"zh-CN": "加成到底给了谁——效果与圣物"},
+      "cues": [],
+      "artifact_ids": []
+    },
+    {
+      "id": "holy-sites-strategy",
+      "type": "mixed-explainer",
+      "state": "planned",
+      "title": {"zh-CN": "有限名额怎样经营——宗教与权力"},
+      "cues": [],
+      "artifact_ids": []
+    }
+  ]
+}

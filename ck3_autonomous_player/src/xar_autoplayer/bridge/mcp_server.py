@@ -40,6 +40,11 @@ ArmyTooltipReceiptV1 = Annotated[str, Field(strict=True, min_length=32, max_leng
 
 from xar_autoplayer.ck3_save_artifacts import Ck3ProfileArtifactInspector
 from xar_autoplayer.ck3_runtime_diagnostics import Ck3RuntimeDiagnosticsInspector
+from xar_autoplayer.holy_site_planning_knowledge import (
+    HOLY_SITE_KNOWLEDGE_BUILD,
+    HolySitePlanningAction,
+    query_holy_site_planning_knowledge_v1,
+)
 
 from xar_autoplayer.coat_of_arms_configured_resources import (
     query_coat_of_arms_configured_resource_catalog_v1,
@@ -4248,6 +4253,14 @@ def create_server(
             expected_revision,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_holy_site_planning_knowledge_v1(
+        action: HolySitePlanningAction,
+        ck3_build: str = HOLY_SITE_KNOWLEDGE_BUILD,
+    ) -> dict[str, object]:
+        """Read source-reviewed holy-site planning inputs; no live permission or action."""
+        return query_holy_site_planning_knowledge_v1(action, ck3_build=ck3_build)
+
     @server.tool()
     def ck3_query_vanilla_event_knowledge_v1(
         event_definition_key: str,
@@ -4638,6 +4651,9 @@ def create_server(
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_set_played_character_v1"
+    )
+    _forbid_unknown_tool_arguments_v1(
+        server, "ck3_query_holy_site_planning_knowledge_v1"
     )
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_query_vanilla_event_knowledge_v1"

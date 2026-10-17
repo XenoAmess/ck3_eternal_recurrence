@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Holy-site source plans and receipts retain their exact original SHA bindings.
+docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/** -text whitespace=cr-at-eol
+
 # Exact prospective review patches retain their original evidence pins.
 ck3_autonomous_player/experimental/battle_reader_diagnostic_v1/*.patch -text whitespace=-blank-at-eol,cr-at-eol
 ck3_autonomous_player/experimental/driver_state_wal_v1/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol

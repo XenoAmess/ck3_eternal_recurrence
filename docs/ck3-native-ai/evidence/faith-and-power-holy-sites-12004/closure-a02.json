@@ -1,0 +1,39 @@
+{
+  "schema": "xar.faith-holy-sites-offline-close.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:35:45.578885+00:00",
+  "task_id": "ck3-faith-holy-sites-research-20261017",
+  "source_manifest_sha256": "1b225c6e89556948ea4560e480ae7a7197c4c95d3ae35f2741d465fa5b37e566",
+  "plan_sha256": "910531b932813b8ec03f13222068a53884c9c61d8e9044be377209d074ac278c",
+  "document_sha256": "e7102dc17290414d3af60d524bfac277a037cba133ff55a23eddc7dbf83a7cfb",
+  "checks": {
+    "research_plan": "plan-consistent",
+    "generated_graph_matches_plan": true,
+    "trailing_whitespace": false,
+    "live_execution_performed": false,
+    "cli_render_matches_document": true
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "disk_usage": {
+      "total": 511776722944,
+      "used": 505838952448,
+      "free": 5937770496
+    },
+    "json_total_before_close_bytes": 31373,
+    "json_budget_bytes": 300000,
+    "heavy_write_performed": false,
+    "retention_category": "record",
+    "review_at_utc": "2027-04-15T00:00:00Z"
+  },
+  "actions_not_performed": [
+    "game start",
+    "desktop input",
+    "native command",
+    "heavy build",
+    "git commit",
+    "git push"
+  ],
+  "supersedes_closure_sha256": "6d03c0c9be3026a570a06e648b5898f469d38b0f7b3e2dccc1456e68c02f7f9e",
+  "correction": "Earlier graph comparison recomputed check without metadata appended to the rendered result. This compared different result envelopes, not different edge records. Now actual CLI render is byte-equal after newline normalization."
+}

@@ -1,0 +1,325 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "faith-and-power-holy-sites-12004",
+  "question": "What are shipped GUI and AI holy-site adoption and relic-management candidate, legality and effect contracts?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "Offline root actor; no live actor/session selected",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Definition keys bind to exact bytes; runtime generation identities remain required",
+    "producer_trigger": "not-applicable",
+    "producer": "Shipped decision setup_items, AI scripts and GUI model references",
+    "caller": "HolySiteWindow GUI callbacks; actual native callers/scheduler unknown",
+    "consumer": "Own planner design; GUI descriptions and on_action scripts",
+    "cache_lifetime": "Native lifetimes unknown; invalidate own projections after any action/faith/rite/holder/relic/level change",
+    "expected_signal": "Source branches, candidate scopes, permission predicates and declared recipients",
+    "zero_sample_meaning": "No live sampling. A search miss only excludes matching text in searched roots.",
+    "stop_condition": "One bounded static pass; no game, desktop or native producer calls; JSON under 300KB",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "decision",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "488-634 adoption;637-736 AI enshrine;741-908 AI remove"
+    },
+    {
+      "id": "gui",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_holy_site.gui",
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "12-14 inventory;612-618 adopt;740 candidates;860-881 submit;1137-1225 effects"
+    },
+    {
+      "id": "rules",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_rules\\02_holy_sites.txt",
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "6-26 enshrine;52-64 remove"
+    },
+    {
+      "id": "trigger",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "1964-2023 adoption relation and kingdom"
+    },
+    {
+      "id": "inventory",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "129-540 relic/ownership callbacks"
+    },
+    {
+      "id": "types",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\_holy_site_types.info",
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "32-78 modifier recipients"
+    },
+    {
+      "id": "rarity",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "1-27 rarity/cooldown"
+    },
+    {
+      "id": "religion",
+      "layer": "source-contract",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\religion_on_actions.txt",
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "228-243 free actions;1948-2013 kingdom records"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gui",
+      "label": "HolySiteWindow with site identity"
+    },
+    {
+      "id": "widget",
+      "label": "Parameterized adopt decision"
+    },
+    {
+      "id": "candidates",
+      "label": "Realm counties -> county holy sites"
+    },
+    {
+      "id": "legal",
+      "label": "Widget and final decision legality"
+    },
+    {
+      "id": "adopt",
+      "label": "add_holy_site and consume free action"
+    },
+    {
+      "id": "post",
+      "label": "Independent live postconditions"
+    },
+    {
+      "id": "picker",
+      "label": "GetEnshrinableArtifacts"
+    },
+    {
+      "id": "submit",
+      "label": "Declared GUI callbacks / script commands"
+    },
+    {
+      "id": "callback",
+      "label": "Inventory on_action effects"
+    },
+    {
+      "id": "ai",
+      "label": "Native AI scheduling"
+    },
+    {
+      "id": "artifact",
+      "label": "Own recognized relics ordered by rarity"
+    },
+    {
+      "id": "site",
+      "label": "Empty eminent then any legal faith site"
+    },
+    {
+      "id": "active",
+      "label": "Native Active and rarity computation"
+    },
+    {
+      "id": "desc",
+      "label": "GUI regular/eminent effect descriptions"
+    }
+  ],
+  "edges": [
+    {
+      "id": "gui_adopt",
+      "from": "gui",
+      "to": "widget",
+      "label": "selected_item parameter",
+      "status": "static-confirmed",
+      "evidence": [
+        "gui"
+      ]
+    },
+    {
+      "id": "adopt_search",
+      "from": "widget",
+      "to": "candidates",
+      "label": "setup_items enumeration",
+      "status": "static-confirmed",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "id": "adopt_filter",
+      "from": "candidates",
+      "to": "legal",
+      "label": "is_item_valid and is_valid",
+      "status": "static-confirmed",
+      "evidence": [
+        "decision",
+        "trigger"
+      ]
+    },
+    {
+      "id": "adopt_effect",
+      "from": "legal",
+      "to": "adopt",
+      "label": "decision effect declaration",
+      "status": "static-confirmed",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "id": "adopt_post",
+      "from": "adopt",
+      "to": "post",
+      "label": "Level, identity, inventory, payment",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Read native before/after; add_holy_site implementation unlocated."
+    },
+    {
+      "id": "picker_producer",
+      "from": "gui",
+      "to": "picker",
+      "label": "Native candidate producer/cache",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate current EXE GetEnshrinableArtifacts producer/callers."
+    },
+    {
+      "id": "gui_callback",
+      "from": "picker",
+      "to": "submit",
+      "label": "SelectArtifact and submit callback",
+      "status": "static-confirmed",
+      "evidence": [
+        "gui"
+      ]
+    },
+    {
+      "id": "native_callback",
+      "from": "submit",
+      "to": "callback",
+      "label": "Native execution and on_action",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate final native validation and command; obtain runtime action receipt."
+    },
+    {
+      "id": "callback_post",
+      "from": "callback",
+      "to": "post",
+      "label": "Ownership, piety, opinion, war risks",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Read independent ownership, wallet, all affected faiths and opinion modifiers."
+    },
+    {
+      "id": "ai_schedule",
+      "from": "ai",
+      "to": "artifact",
+      "label": "Configured tier interval and AI gates",
+      "status": "unknown",
+      "evidence": [
+        "decision"
+      ],
+      "open_question": "Locate actual scheduler; configured intervals do not prove evaluation."
+    },
+    {
+      "id": "ai_choose",
+      "from": "artifact",
+      "to": "site",
+      "label": "Recognized highest rarity; empty eminent first",
+      "status": "static-confirmed",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "id": "ai_execute",
+      "from": "site",
+      "to": "submit",
+      "label": "enshrine_holy_site_artifact declaration",
+      "status": "static-confirmed",
+      "evidence": [
+        "decision"
+      ]
+    },
+    {
+      "id": "active_internal",
+      "from": "callback",
+      "to": "active",
+      "label": "Recompute and invalidation",
+      "status": "unknown",
+      "evidence": [],
+      "open_question": "Locate current native Active consumer/cache or exact controlled before/after."
+    },
+    {
+      "id": "active_render",
+      "from": "active",
+      "to": "desc",
+      "label": "Active gates descriptions; faith-specific level",
+      "status": "static-confirmed",
+      "evidence": [
+        "gui",
+        "types",
+        "rarity"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "adopt_live",
+      "question": "Default adoption level and identity retention?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "shared_inventory",
+      "question": "Do two faith entries share runtime site/inventory?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "last_relic",
+      "question": "Which fixed/scaled/parameter effects disappear?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "controller_split",
+      "question": "County/barony/rite faith effect boundaries?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "swap_piety",
+      "question": "Actual piety on initial/better/equal/worse enshrine?",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:30:15.349018+00:00"
+}

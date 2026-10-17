@@ -1,0 +1,331 @@
+{
+  "schema": "ck3-faith-power-source-only-verification-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:34:57.257333+00:00",
+  "evidence_source": "verify_authoring.py; tools/ck3_live_run_id.py machine; installed wheel direct_url.json",
+  "status": "PASS-source-authoring-only; CAPTURE_PENDING; RENDER_UNQUALIFIED",
+  "python": {
+    "executable": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]"
+  },
+  "toolchain": {
+    "installed_version": "0.3.0",
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "hashes": {
+          "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    },
+    "commands": [
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "--version"
+        ],
+        "exit_code": 0,
+        "stdout": "xar-promo 0.3.0"
+      },
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "--help"
+        ],
+        "exit_code": 0,
+        "stdout": "usage: xar-promo [-h] [--version]\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\n\nCreate, verify, and preserve reusable promotional-video project metadata.\n\npositional arguments:\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\n    init                create a ProjectConfig and its first bound run without\n                        overwriting files\n    start-run           create another run bound to the current exact\n                        ProjectConfig bytes\n    validate            validate a ProjectConfig, RunManifest, or legacy\n                        showcase v1 manifest\n    preserve            copy a file to immutable content-addressed storage and\n                        append its run record\n    signoff             append an explicit human decision bound to preserved\n                        artifact bytes\n    plan                compose and validate a pipeline plan without invoking\n                        providers or writing\n    build               run a composed pipeline and preserve success or\n                        failure material in its run\n    audit               write and preserve an automated audit without creating\n                        human approval\n    review              plan or create a pending human-review package without\n                        recording sign-off\n    export              validate or create an offline release bundle from an\n                        explicit policy\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit"
+      },
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "plan",
+          "--help"
+        ],
+        "exit_code": 0,
+        "stdout": "usage: xar-promo plan [-h] --workdir WORKDIR --composer COMPOSER\n                      [--validate-only]\n                      document\n\npositional arguments:\n  document             native ProjectConfig or RunManifest\n\noptions:\n  -h, --help           show this help message and exit\n  --workdir WORKDIR    fresh attempt path to validate without creating\n  --composer COMPOSER  project PipelineComposer as MODULE:ATTRIBUTE\n  --validate-only      explicitly request the command's always-read-only\n                       validation mode"
+      },
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "start-run",
+          "--help"
+        ],
+        "exit_code": 0,
+        "stdout": "usage: xar-promo start-run [-h] --run-id RUN_ID\n                           [--run-directory RUN_DIRECTORY]\n                           [project_config]\n\npositional arguments:\n  project_config\n\noptions:\n  -h, --help            show this help message and exit\n  --run-id RUN_ID\n  --run-directory RUN_DIRECTORY\n                        directory for run-manifest.json (default:\n                        <project>/runs/<run-id>)"
+      },
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "preserve",
+          "--help"
+        ],
+        "exit_code": 0,
+        "stdout": "usage: xar-promo preserve [-h] [--run-manifest RUN_MANIFEST]\n                          --artifact-id ARTIFACT_ID --collection {raw,derived}\n                          --role ROLE [--label LABEL]\n                          [--media-type MEDIA_TYPE]\n                          source\n\npositional arguments:\n  source\n\noptions:\n  -h, --help            show this help message and exit\n  --run-manifest RUN_MANIFEST\n  --artifact-id ARTIFACT_ID\n  --collection {raw,derived}\n  --role ROLE           semantic role such as capture, audio, subtitle, or\n                        deliverable\n  --label LABEL\n  --media-type MEDIA_TYPE"
+      },
+      {
+        "argv": [
+          "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-B",
+          "-m",
+          "xar_promo",
+          "validate",
+          "--help"
+        ],
+        "exit_code": 0,
+        "stdout": "usage: xar-promo validate [-h] [--profile {authoring,release}]\n                          [--structure-only] [--json]\n                          [document]\n\npositional arguments:\n  document\n\noptions:\n  -h, --help            show this help message and exit\n  --profile {authoring,release}\n  --structure-only      skip referenced-file byte and SHA checks\n  --json                write the GREEN result as JSON"
+      }
+    ]
+  },
+  "project_config": {
+    "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/promo-project.json",
+    "bytes": 1102,
+    "sha256": "64156de1c83dbe99de1a04da6ec132fe99cd545e9c1d4f39ef4f649a14f50c60"
+  },
+  "pilot_plan": {
+    "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/pilot-plan.json",
+    "bytes": 6619,
+    "sha256": "e205101885dfac393eb3d179f2fc7c5123ca96ca0b08539db38dbb6f4b12ebaa"
+  },
+  "source_only_index": {
+    "schema": "ck3-faith-power-evidence-index-v1",
+    "observer": {
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T05:34:57.257333+00:00",
+      "evidence_source": "verify_authoring.py; tools/ck3_live_run_id.py machine; installed wheel direct_url.json"
+    },
+    "project_id": "ck3-faith-and-power",
+    "plan": {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/pilot-plan.json",
+      "bytes": 6619,
+      "sha256": "e205101885dfac393eb3d179f2fc7c5123ca96ca0b08539db38dbb6f4b12ebaa"
+    },
+    "source_lock": {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/source-lock.json",
+      "bytes": 37385,
+      "sha256": "4a937211aacb708200945cc178970c132956c94a224baa2e675f68b7186350ed"
+    },
+    "source_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "source_observed_at_utc": "2026-10-17T04:42:43.271301+00:00",
+    "source_machine_record_scope": "historical source provenance only; no target-machine runtime credit",
+    "claims": [
+      {
+        "id": "C01-adoption-requirements",
+        "status": "static-sources-identified; runtime-unverified",
+        "statement_scope": "Decision and trigger conditions must be evaluated for the observed actor, faith, rite and site.",
+        "sources": [
+          {
+            "source_id": "S03",
+            "path": "common/decisions/50_holy_site_decisions.txt",
+            "lines": [
+              491,
+              534
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+          },
+          {
+            "source_id": "S03-trigger",
+            "path": "common/scripted_triggers/00_religious_triggers.txt",
+            "lines": [
+              1964,
+              1986
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2"
+          }
+        ]
+      },
+      {
+        "id": "C02-adoption-state-delta",
+        "status": "experiment-required",
+        "statement_scope": "Default level, instance, inventory, other faith links and actual cost after adoption remain unasserted until independently observed.",
+        "sources": [
+          {
+            "source_id": "S03",
+            "path": "common/decisions/50_holy_site_decisions.txt",
+            "lines": [
+              555,
+              562
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+          },
+          {
+            "source_id": "S08",
+            "path": "gui/window_holy_site.gui",
+            "lines": [
+              525,
+              554
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2"
+          }
+        ]
+      },
+      {
+        "id": "C03-relic-recognition",
+        "status": "static-sources-identified; runtime-unverified",
+        "statement_scope": "Use identified artifact recognition, rarity and current site context to explain the observed contribution.",
+        "sources": [
+          {
+            "source_id": "S06",
+            "path": "common/script_values/00_holy_site_values.txt",
+            "lines": [
+              1,
+              10
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7"
+          },
+          {
+            "source_id": "S08",
+            "path": "gui/window_holy_site.gui",
+            "lines": [
+              934,
+              953
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2"
+          }
+        ]
+      },
+      {
+        "id": "C04-relic-removal-delta",
+        "status": "experiment-required",
+        "statement_scope": "The ownership chain, Active, fixed/scaled effects, extra parameters and actual beneficiaries must be compared; no removal result is prefilled.",
+        "sources": [
+          {
+            "source_id": "S10",
+            "path": "common/on_action/inventory_on_actions.txt",
+            "lines": [
+              322,
+              378
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67"
+          },
+          {
+            "source_id": "S09",
+            "path": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+            "lines": [
+              202,
+              209
+            ],
+            "commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+            "version": "1.20.0.4",
+            "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b"
+          }
+        ]
+      }
+    ],
+    "pilots": [
+      {
+        "pilot_id": "P01-adoption",
+        "shot_ids": [
+          "H01-01",
+          "H01-07"
+        ],
+        "claim_ids": [
+          "C01-adoption-requirements",
+          "C02-adoption-state-delta"
+        ],
+        "status": "pending-capture",
+        "native_chain": null,
+        "raw": null,
+        "raw_timecodes": null,
+        "final_timecodes": null,
+        "business_result_verified": false
+      },
+      {
+        "pilot_id": "P02-relic",
+        "shot_ids": [
+          "H02-04",
+          "H02-09"
+        ],
+        "claim_ids": [
+          "C03-relic-recognition",
+          "C04-relic-removal-delta"
+        ],
+        "status": "pending-capture",
+        "native_chain": null,
+        "raw": null,
+        "raw_timecodes": null,
+        "final_timecodes": null,
+        "business_result_verified": false
+      }
+    ],
+    "chains": [],
+    "render_ready": false,
+    "human_1x_review_performed": false,
+    "evidence_limit": "Structural/byte integrity and producer-reported chain, not independent religious effect validation."
+  },
+  "composer": {
+    "installed_protocol_signature_matches": true,
+    "unbound_plan_exit_status": 2,
+    "unbound_plan_diagnostic": "No native run; use build_evidence_index for the unbound source-only pilot plan",
+    "build_guard_verified": true,
+    "workdir_created": false,
+    "bound_capture_plan_exercised": false
+  },
+  "python_sources": [
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/source_plan.py",
+      "bytes": 1245,
+      "sha256": "fa6902e3641484541096eab0e35f299363dc9ec11211a01d074b563d0d5b23b0"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/src/faith_power_promo/__init__.py",
+      "bytes": 79,
+      "sha256": "1fcdf25bc7522f33fba648dadc6eec695b68077ea0c26bb4278dc6bcad153f8e"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/src/faith_power_promo/components.py",
+      "bytes": 763,
+      "sha256": "33bbf5c721551c0c660ecc4408a4a533682686ceecd555075c57d4e3d4c34127"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/src/faith_power_promo/composer.py",
+      "bytes": 6260,
+      "sha256": "434b952f6c0722e35141b647fd84627796861690b30010e23d313281ee0e9f9d"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/src/faith_power_promo/evidence.py",
+      "bytes": 13119,
+      "sha256": "bdb3ab8b90ab3603957bf5addedd3d8140453c8c928d96dccdaaf695cf0b0cac"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/promo/ck3_faith_and_power/integration/verify_authoring.py",
+      "bytes": 5855,
+      "sha256": "da93674336c3720e437ce8ebc61a8624c9735b6ec80381ebb286bceaf9c8b738"
+    }
+  ],
+  "production_run_created": false,
+  "recording_performed": false,
+  "tts_invoked": false,
+  "media_rendered": false,
+  "business_result_verified": false,
+  "human_1x_review_performed": false
+}

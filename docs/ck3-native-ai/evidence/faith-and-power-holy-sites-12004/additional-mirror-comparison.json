@@ -1,0 +1,35 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:37:23.994984+00:00",
+  "source": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\faith-and-power-holy-sites-12004\\source-manifest.json",
+  "source_manifest_sha256": "1b225c6e89556948ea4560e480ae7a7197c4c95d3ae35f2741d465fa5b37e566",
+  "mirror_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+  "comparisons": [
+    {
+      "path": "common/religion/religion_types/_religion_types.info",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/religion/religion_types/_religion_types.info",
+      "bytes": 5101,
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "installed_source_sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/00_basic_values.txt",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/script_values/00_basic_values.txt",
+      "bytes": 50566,
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "installed_source_sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "byte_identical": true
+    },
+    {
+      "path": "gui/window_faith.gui",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/gui/window_faith.gui",
+      "bytes": 150682,
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "installed_source_sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "byte_identical": true
+    }
+  ],
+  "all_equal": true,
+  "raw_sources_copied_to_disk": false
+}

@@ -1,0 +1,122 @@
+{
+  "schema": "ck3-faith-power-pilot-plan-v1",
+  "project_id": "ck3-faith-and-power",
+  "stage": "source-only-authoring; no production run or captured-media binding",
+  "project_config": "promo-project.json",
+  "source_lock": "source-lock.json",
+  "source_baseline_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+  "source_baseline_version": "1.20.0.4",
+  "policy": {
+    "narration_duration_seconds": {"pilot_min": 30, "pilot_max": 60, "status": "editorial target; unmeasured"},
+    "episode_duration_seconds": {"preferred": 1800, "min": 1200, "max": 2400, "status": "editorial target; unmeasured"},
+    "width": 2560,
+    "height": 1440,
+    "fps": 30,
+    "submit_once_per_action": true,
+    "unknown_result": "read current native state before considering any further action",
+    "admission": "fresh machine/runtime/storage/Steam-offline/screen admission belongs to each capture attempt",
+    "business_credit": "ACK and hash-valid evidence establish neither effects nor a successful experiment",
+    "continuous_credit": "requires the existing CK3 capture adapter's verified clean span plus before/action/after coverage",
+    "case_labels": ["natural-campaign", "prepared-save", "fixture", "mechanism-illustration"]
+  },
+  "required_identity_fields": [
+    "machine_id", "observed_at_utc", "evidence_source", "git_commit", "game_version", "game_build",
+    "exe_sha256", "dlc_and_mod_loads", "game_language", "recording_resolution", "baseline_save_sha256",
+    "episode_id", "actor_id", "faith_id", "rite_id", "holy_site_instance_id", "holy_site_type_id",
+    "county_id", "barony_id", "controller_id", "case_label"
+  ],
+  "required_native_chain": ["before", "legality", "decision", "action", "acknowledgement", "after"],
+  "pilots": [
+    {
+      "id": "P01-adoption",
+      "chapter_id": "holy-sites-acquisition",
+      "shot_ids": ["H01-01", "H01-07"],
+      "claim_ids": ["C01-adoption-requirements", "C02-adoption-state-delta"],
+      "question": "控制土地以后，采用还缺什么；一次合法采用实际改变了哪些对象？",
+      "native_action_intent": "adopt one existing holy site using the currently legal native decision route",
+      "expected_outcome": null,
+      "required_before_and_after_fields": [
+        "actor.resources", "decision.requirements", "decision.actual_cost", "decision.cooldown",
+        "faith.holy_site_ids", "faith.major_holy_site_ids", "faith.free_holy_site_uses",
+        "holy_site.instance_id", "holy_site.type_id", "holy_site.level_by_faith",
+        "holy_site.inventory_artifact_ids", "holy_site.associated_faith_ids"
+      ],
+      "agent_decision_outputs": [
+        "candidate rejection reasons with their actual scopes",
+        "legal candidate and explicit resource/slot/cooldown budget",
+        "one submission identity; unknown ACK state blocks retries",
+        "independent state delta as a bounded outcome, including unchanged fields"
+      ],
+      "capture_intake_path": null,
+      "native_operation_id": null,
+      "raw_binding": null,
+      "raw_timecodes": null,
+      "final_timecodes": null
+    },
+    {
+      "id": "P02-relic",
+      "chapter_id": "holy-sites-relics",
+      "shot_ids": ["H02-04", "H02-09"],
+      "claim_ids": ["C03-relic-recognition", "C04-relic-removal-delta"],
+      "question": "同一宝物被谁认可、谁受益；供奉和取出后，Active及实际修正怎样变化？",
+      "native_action_intent": "enshrine or remove one identified artifact in separately recorded legal steps on a recoverable branch",
+      "expected_outcome": null,
+      "required_before_and_after_fields": [
+        "artifact.id", "artifact.owner_id", "artifact.inventory_id", "artifact.rarity",
+        "artifact.recognizing_faith_ids", "holy_site.inventory_artifact_ids", "holy_site.active",
+        "holy_site.effective_rarity_sum", "holy_site.level_by_faith", "holy_site.controller_id",
+        "holy_site.fixed_modifiers", "holy_site.scaled_modifiers", "holy_site.extra_parameters",
+        "beneficiaries.ids_and_actual_attributes", "actor.resources", "actor.opinion_changes"
+      ],
+      "agent_decision_outputs": [
+        "artifact recognition and ownership distinct from price/equipment effects",
+        "actual marginal benefit by beneficiary, alongside transfer cost",
+        "record each legal step independently; a later removal is not a retry",
+        "preserve unknown or contradictory effects for follow-up instead of asserting activation rules"
+      ],
+      "capture_intake_path": null,
+      "native_operation_id": null,
+      "raw_binding": null,
+      "raw_timecodes": null,
+      "final_timecodes": null
+    }
+  ],
+  "claims": [
+    {
+      "id": "C01-adoption-requirements",
+      "status": "static-sources-identified; runtime-unverified",
+      "statement_scope": "Decision and trigger conditions must be evaluated for the observed actor, faith, rite and site.",
+      "sources": [
+        {"source_id": "S03", "path": "common/decisions/50_holy_site_decisions.txt", "lines": [491, 534]},
+        {"source_id": "S03-trigger", "path": "common/scripted_triggers/00_religious_triggers.txt", "lines": [1964, 1986]}
+      ]
+    },
+    {
+      "id": "C02-adoption-state-delta",
+      "status": "experiment-required",
+      "statement_scope": "Default level, instance, inventory, other faith links and actual cost after adoption remain unasserted until independently observed.",
+      "sources": [
+        {"source_id": "S03", "path": "common/decisions/50_holy_site_decisions.txt", "lines": [555, 562]},
+        {"source_id": "S08", "path": "gui/window_holy_site.gui", "lines": [525, 554]}
+      ]
+    },
+    {
+      "id": "C03-relic-recognition",
+      "status": "static-sources-identified; runtime-unverified",
+      "statement_scope": "Use identified artifact recognition, rarity and current site context to explain the observed contribution.",
+      "sources": [
+        {"source_id": "S06", "path": "common/script_values/00_holy_site_values.txt", "lines": [1, 10]},
+        {"source_id": "S08", "path": "gui/window_holy_site.gui", "lines": [934, 953]}
+      ]
+    },
+    {
+      "id": "C04-relic-removal-delta",
+      "status": "experiment-required",
+      "statement_scope": "The ownership chain, Active, fixed/scaled effects, extra parameters and actual beneficiaries must be compared; no removal result is prefilled.",
+      "sources": [
+        {"source_id": "S10", "path": "common/on_action/inventory_on_actions.txt", "lines": [322, 378]},
+        {"source_id": "S09", "path": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml", "lines": [202, 209]}
+      ]
+    }
+  ]
+}

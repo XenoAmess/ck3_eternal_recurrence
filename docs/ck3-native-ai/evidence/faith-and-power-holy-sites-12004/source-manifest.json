@@ -1,0 +1,406 @@
+{
+  "schema": "xar.faith-holy-site-source-manifest.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:30:15.349018+00:00",
+  "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "installation_evidence": "C:/workspace/ck3-version-and-sync-20261017/inspect-01/result.json",
+  "installation_evidence_sha256": "a17bbf158f696eb731f97651a42713f0f975df6801628617f4b693bfd3ca5fc4",
+  "source_lock_sha256": "4a937211aacb708200945cc178970c132956c94a224baa2e675f68b7186350ed",
+  "historical_source_lock_machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "mirror_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+  "sources": [
+    {
+      "path": "common/activities/activity_types/pilgrimage.txt",
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "bytes": 111931,
+      "baseline_sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "byte_identical": true
+    },
+    {
+      "path": "common/artifacts/slots/01_holy_site.txt",
+      "sha256": "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df",
+      "bytes": 321,
+      "baseline_sha256": "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df",
+      "byte_identical": true
+    },
+    {
+      "path": "common/buildings/00_special_buildings.txt",
+      "sha256": "33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4",
+      "bytes": 212712,
+      "baseline_sha256": "33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4",
+      "byte_identical": true
+    },
+    {
+      "path": "common/casus_belli_types/00_dissolve_empire_cb.txt",
+      "sha256": "3f47c860d8b9fdfc4d10c327d602f6eaba9054632cad33775fc6ff74411b7125",
+      "bytes": 5870,
+      "baseline_sha256": "3f47c860d8b9fdfc4d10c327d602f6eaba9054632cad33775fc6ff74411b7125",
+      "byte_identical": true
+    },
+    {
+      "path": "common/character_interactions/00_religious_interactions.txt",
+      "sha256": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+      "bytes": 285647,
+      "baseline_sha256": "63afe4538725929fb20bc20cbbbbc86705dba55a384755949431419265db0ac6",
+      "byte_identical": true
+    },
+    {
+      "path": "common/character_interactions/sanctify_artifact_interaction.txt",
+      "sha256": "d9c04416d441c7cd531866be189408d9421f9745c0aacd16c03e0abb37d943df",
+      "bytes": 10345,
+      "baseline_sha256": "d9c04416d441c7cd531866be189408d9421f9745c0aacd16c03e0abb37d943df",
+      "byte_identical": true
+    },
+    {
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "bytes": 19759,
+      "baseline_sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "byte_identical": true
+    },
+    {
+      "path": "common/decisions/dlc_decisions/pam/pam_decisions.txt",
+      "sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64",
+      "bytes": 162367,
+      "baseline_sha256": "fe113568051ccf2243f08543a522bc5afeb3e25e6fb97e5440d2fae7a4cb7a64",
+      "byte_identical": true
+    },
+    {
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "bytes": 125400,
+      "baseline_sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "byte_identical": true
+    },
+    {
+      "path": "common/game_rules/01_empire_faith_gate_rules.txt",
+      "sha256": "c04dc35c7d3cd4a0c414a1b61435d013d8601014d378cbed102e7b12733d64a9",
+      "bytes": 200,
+      "baseline_sha256": "c04dc35c7d3cd4a0c414a1b61435d013d8601014d378cbed102e7b12733d64a9",
+      "byte_identical": true
+    },
+    {
+      "path": "common/important_actions/10_empire_faith_gate_actions.txt",
+      "sha256": "7f65f2ad21dd5e2bb4211a5183e3db06aa1416f2536842a550cf0b263c2eb2d1",
+      "bytes": 2210,
+      "baseline_sha256": "7f65f2ad21dd5e2bb4211a5183e3db06aa1416f2536842a550cf0b263c2eb2d1",
+      "byte_identical": true
+    },
+    {
+      "path": "common/modifiers/00_empire_faith_gate_modifiers.txt",
+      "sha256": "a9964bb6712ad70a32df6d1dbc96fccd3b1b4f17a0c86783d4991442a06601d8",
+      "bytes": 746,
+      "baseline_sha256": "a9964bb6712ad70a32df6d1dbc96fccd3b1b4f17a0c86783d4991442a06601d8",
+      "byte_identical": true
+    },
+    {
+      "path": "common/on_action/game_start.txt",
+      "sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8",
+      "bytes": 218249,
+      "baseline_sha256": "f2f5ce78a03cfbdba0f5a68fc466f8bac89126cdd4843545b4ad6d468ed238b8",
+      "byte_identical": true
+    },
+    {
+      "path": "common/on_action/inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "bytes": 13630,
+      "baseline_sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "byte_identical": true
+    },
+    {
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "bytes": 59475,
+      "baseline_sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "byte_identical": true
+    },
+    {
+      "path": "common/on_action/title_on_actions.txt",
+      "sha256": "015a6165a999cada51424131fa9691c2556f91c607ce046d5d82bae0b3d84352",
+      "bytes": 141749,
+      "baseline_sha256": "015a6165a999cada51424131fa9691c2556f91c607ce046d5d82bae0b3d84352",
+      "byte_identical": true
+    },
+    {
+      "path": "common/on_action/yearly_on_actions.txt",
+      "sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe",
+      "bytes": 147319,
+      "baseline_sha256": "14c97f3845138d74a2c2552c5dd3c95de1da035014a5cdf31c92540aae3390fe",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/faith_types/00_faith_types.txt",
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+      "bytes": 118526,
+      "baseline_sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/faith_types/_faith_types.info",
+      "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "bytes": 4481,
+      "baseline_sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "bytes": 169446,
+      "baseline_sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "bytes": 5129,
+      "baseline_sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/holy_site_types/_holy_site_types.info",
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "bytes": 3329,
+      "baseline_sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/tenet_types/00_pam_tenets.txt",
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a",
+      "bytes": 52920,
+      "baseline_sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/tenet_types/00_tenet_types.txt",
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "bytes": 130228,
+      "baseline_sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "bytes": 1191,
+      "baseline_sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/02_religion_values.txt",
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "bytes": 118720,
+      "baseline_sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/99_court_chaplain_values.txt",
+      "sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3",
+      "bytes": 60594,
+      "baseline_sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_effects/00_empire_faith_gate_effects.txt",
+      "sha256": "27648635d5eebea0cd08b7989579f256353b163d469af27c9f1b273150453e2b",
+      "bytes": 2321,
+      "baseline_sha256": "27648635d5eebea0cd08b7989579f256353b163d469af27c9f1b273150453e2b",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "bytes": 41530,
+      "baseline_sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_effects/00_religious_interaction_effects.txt",
+      "sha256": "9ecc22104b057e3425673917acbefaa320833226dd02b9a6c3dca7475b5b0928",
+      "bytes": 59428,
+      "baseline_sha256": "9ecc22104b057e3425673917acbefaa320833226dd02b9a6c3dca7475b5b0928",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_guis/00_empire_faith_gate_guis.txt",
+      "sha256": "7e998eb07fee95013e0b5ecdbd0206be1826f7e4a02bb7fafcac55c8e36db701",
+      "bytes": 3396,
+      "baseline_sha256": "7e998eb07fee95013e0b5ecdbd0206be1826f7e4a02bb7fafcac55c8e36db701",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_rules/02_holy_sites.txt",
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "bytes": 2090,
+      "baseline_sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_triggers/00_empire_faith_gate_triggers.txt",
+      "sha256": "ebcd14f8743923e4c7745e470336742e5fbd5c73a4b85febf299c6422046adf6",
+      "bytes": 9070,
+      "baseline_sha256": "ebcd14f8743923e4c7745e470336742e5fbd5c73a4b85febf299c6422046adf6",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_triggers/00_game_rule_triggers.txt",
+      "sha256": "f5e1196c2ac733b2fa2ede15635d3699829921c4c5b826d916dab10d6334e0e4",
+      "bytes": 8694,
+      "baseline_sha256": "f5e1196c2ac733b2fa2ede15635d3699829921c4c5b826d916dab10d6334e0e4",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "bytes": 88549,
+      "baseline_sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "bytes": 186187,
+      "baseline_sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "byte_identical": true
+    },
+    {
+      "path": "events/empire_faith_gate_events.txt",
+      "sha256": "e477d28cd3bff5b4f469cfd364a7ec6456d0a89d07d358375eac79a868cda9e1",
+      "bytes": 8098,
+      "baseline_sha256": "e477d28cd3bff5b4f469cfd364a7ec6456d0a89d07d358375eac79a868cda9e1",
+      "byte_identical": true
+    },
+    {
+      "path": "events/religion_events/great_holy_war_events.txt",
+      "sha256": "dfac5841107682613a78ec817d48c10b6ffb7ad411d9043901079de0a27897c0",
+      "bytes": 118565,
+      "baseline_sha256": "dfac5841107682613a78ec817d48c10b6ffb7ad411d9043901079de0a27897c0",
+      "byte_identical": true
+    },
+    {
+      "path": "events/religion_events/religious_interaction_events.txt",
+      "sha256": "27405d1ccd6217670f5812d8cbde987ed899c04b6b7d309099e2e8fbe1809a4d",
+      "bytes": 78306,
+      "baseline_sha256": "27405d1ccd6217670f5812d8cbde987ed899c04b6b7d309099e2e8fbe1809a4d",
+      "byte_identical": true
+    },
+    {
+      "path": "gui/window_holy_site.gui",
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "bytes": 32840,
+      "baseline_sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "byte_identical": true
+    },
+    {
+      "path": "gui/window_holy_site_creation.gui",
+      "sha256": "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310",
+      "bytes": 23400,
+      "baseline_sha256": "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310",
+      "byte_identical": true
+    },
+    {
+      "path": "gui/window_title.gui",
+      "sha256": "c030230fa9468b02b94f65ef6895a48dad9157aa7292d55c94a35d0288518be3",
+      "bytes": 76895,
+      "baseline_sha256": "c030230fa9468b02b94f65ef6895a48dad9157aa7292d55c94a35d0288518be3",
+      "byte_identical": true
+    },
+    {
+      "path": "localization/english/empire_faith_gate_l_english.yml",
+      "sha256": "5178aad035de6230d5b75a1836f1662e2f40e2547f26d731c8f12e12723d536f",
+      "bytes": 8579,
+      "baseline_sha256": "5178aad035de6230d5b75a1836f1662e2f40e2547f26d731c8f12e12723d536f",
+      "byte_identical": true
+    },
+    {
+      "path": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "bytes": 43748,
+      "baseline_sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "byte_identical": true
+    },
+    {
+      "path": "localization/simp_chinese/empire_faith_gate_l_simp_chinese.yml",
+      "sha256": "66fc4dc09d8c0269850f01124130e3ed7c409e63a760822bdadc2471213b19d1",
+      "bytes": 8122,
+      "baseline_sha256": "66fc4dc09d8c0269850f01124130e3ed7c409e63a760822bdadc2471213b19d1",
+      "byte_identical": true
+    },
+    {
+      "path": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+      "sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+      "bytes": 9714,
+      "baseline_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "bytes": 40713,
+      "baseline_sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/00_dynasty_values.txt",
+      "sha256": "0aad110fd46c8bb7fbedba372e049002caa25ca992cd4362b9387d07dc90ca8e",
+      "bytes": 2516,
+      "baseline_sha256": "0aad110fd46c8bb7fbedba372e049002caa25ca992cd4362b9387d07dc90ca8e",
+      "byte_identical": true
+    },
+    {
+      "path": "common/modifiers/00_activity_pilgrimage_modifiers.txt",
+      "sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+      "bytes": 8263,
+      "baseline_sha256": "b4b087debf7975b02fdc30d3244a04aca634e3e26b2fafa4c42057e71a1c1580",
+      "byte_identical": true
+    },
+    {
+      "path": "common/modifiers/12_pam_modifiers.txt",
+      "sha256": "48b6175275b7d48a9944411544770d739fe37043ebe10dd75aae6d75ef39c92c",
+      "bytes": 32057,
+      "baseline_sha256": "48b6175275b7d48a9944411544770d739fe37043ebe10dd75aae6d75ef39c92c",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_triggers/pam_saint_triggers.txt",
+      "sha256": "dd7fbd07e58363edd152570317c0b2d86d4d4ae4e31ba6c70325a3d700610b9b",
+      "bytes": 9151,
+      "baseline_sha256": "dd7fbd07e58363edd152570317c0b2d86d4d4ae4e31ba6c70325a3d700610b9b",
+      "byte_identical": true
+    },
+    {
+      "path": "common/scripted_rules/00_rules.txt",
+      "sha256": "c7ba2ae71e4461e88c6d5c86d8fc15fa7ccc73edae1e28fb3b65f0e362c4560f",
+      "bytes": 42673,
+      "baseline_sha256": "c7ba2ae71e4461e88c6d5c86d8fc15fa7ccc73edae1e28fb3b65f0e362c4560f",
+      "byte_identical": true
+    },
+    {
+      "path": "common/religion/religion_types/_religion_types.info",
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "bytes": 5101,
+      "baseline_sha256": null,
+      "byte_identical": null
+    },
+    {
+      "path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "bytes": 50566,
+      "baseline_sha256": null,
+      "byte_identical": null
+    },
+    {
+      "path": "gui/window_faith.gui",
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "bytes": 150682,
+      "baseline_sha256": null,
+      "byte_identical": null
+    }
+  ],
+  "live_execution_performed": false,
+  "entire_installation_clean_attestation": false,
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T00:00:00Z",
+    "reason": "bounded installed-source provenance and planner contract; no game resource copies"
+  }
+}
