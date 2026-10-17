@@ -738,3 +738,13 @@ docs/ck3-native-ai/research/obs-preconfigured-first-run/** -text whitespace=cr-a
 /docs/ck3-native-ai/evidence/episode04-r197-abnormal-close-12004/source-index.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/evidence/episode04-r197-abnormal-close-12004/R197-SMALL-ORIGINALS.actual-a01.zip -text
 /docs/ck3-native-ai/evidence/episode04-r197-abnormal-close-12004/verify_portable.py -text
+
+# R198 media and R199 exact small provenance (2026-10-17)
+/docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/asset-manifest.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/media-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/review-report.md -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/seek28-showinfo.log -text whitespace=-blank-at-eol,cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/small-originals.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/source-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/media-review-report.md -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-r199-refill-position-12004/media-asset-manifest.json -text whitespace=cr-at-eol

@@ -1,0 +1,19 @@
+{
+  "schema": "xar.e04.r198-media-portable-candidate.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T11:44:17.072781+00:00",
+  "source_head": "dc031358981450ae3f8e40c6234b7f27fd4662ef",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0198",
+  "future_canonical_dir": "docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/",
+  "copied_exact_originals": {
+    "review-report.md": {"bytes": 3597, "sha256": "d8e104f87ef1402eecc05f96c49963bb453882fd3821bc9776949e84b5f20e05"},
+    "asset-manifest.json": {"bytes": 6326, "sha256": "c31c694b57aba2ce213e1feb76eac7402edea27080fd573f9c69a059cd02781f"},
+    "seek28-showinfo.log": {"bytes": 2065, "sha256": "fb0097479fcc27ce92f476783a47613ab324fc9fa026d08ad1e6045ab20b0898"}
+  },
+  "source_media_dir": "D:/workspace/ck3_native_war_ai_promo_work/e04-r198-media-audit-a01/",
+  "raw_from_finish": {"bytes": 32908524, "sha256": "73ba63f6a249addf7ced95d54001f7b338e4be091bd5bb90491cab627eb62472", "rehash_in_media_audit": false},
+  "actual_media": {"duration_seconds": 57.266, "video_frames": 1718, "full_decode_exit_code": 0, "pts_strictly_increasing": true, "audio_stream_count": 0},
+  "checkbox_transition_global_frames": {"checked_last": 1088, "intermediate": 1089, "unchecked_first": 1090},
+  "candidate": {"source_frames_half_open": [780, 1675], "frames": 895, "duration_seconds": 29.833333, "continuous_clean": "PENDING", "human_1x": false, "human_signoff": false, "render_ready": false},
+  "limits": "8 JPG originals remain in source lane and are pinned by asset-manifest; player owner31254 demonstration is not vassal AI; no new research, business or dynamic credit."
+}

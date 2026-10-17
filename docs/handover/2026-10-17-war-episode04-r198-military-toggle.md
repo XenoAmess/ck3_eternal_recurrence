@@ -9,3 +9,5 @@
 Film Start→Finish `NORMAL_TREE_EMPTY`、guard error null、partial false；正常Save回执5,264 B／SHA-256 `3fc07750458cac695677eab6d28db3bb9a47e36a808a82ead4b8253ea801aed5`绑定checkpoint73,689,233 B／SHA-256 `09c5bf2f2aa3dad559a602c292ede45868d90c185bf491fb2e958f849f5bf9a0`。游戏exit0、screen task资源空，录制原片只在原close元数据中有路径/大小/hash，本交接未读raw、未审全解码/PTS/clean/1×/人工签核。动态 **0/11**、ABC **0/3**；现行v2研究 **9/14（64.29%）**、业务 **6/11（54.55%）**，原R07-v1严格 **8/14、5/11**。
 
 下一步先做R198媒体真实审阅，再设计R06自然日ADD/receiver/provider正例；R04县P、R05自然驻扎上限等旧缺口仍独立。R197的timeout/shutdown exit1原件与异常S0边界保留，不因本场正常退出改写。全部本机安装、Steam、SYSTEM、容量及录制事实只对上述machine ID有效；其他机器可复用知识与校验代码，现场状态须重新读回。
+
+2026-10-17追加（machine_id仍为desktop-3fevhd2-1c74096080）：[基础媒体审计已便携入库](../ck3-native-ai/evidence/episode04-r198-military-toggle-12004/media-index.json)，全片57.266秒/1718帧、decode0与PTS递增，checkbox转场n1088/1089/1090；旧段“未审”描述原观察时点。连续clean/1×/人审仍pending。下一正常场已完成[R199位置准备](2026-10-17-war-episode04-r199-position-preparation.md)，没有自然ADD，不增加计数。

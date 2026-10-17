@@ -1,5 +1,11 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+## 2026-10-17 13:22 UTC R199位置准备：q0负例、一日与正常闭场
+
+`machine_id: desktop-3fevhd2-1c74096080`；[R199专题与便携小原件](episode04-r199-refill-position-preparation-12004.md)绑定实际source26449／native tree5ffec8a7及R0199。七个缺额槽位全q=0且position=false，没有安装R06 probe。Move18→2629只有ACK与独立六跳route；精确一日53148192→53148216后仍paused、仍在2635/sieging，没有到达或ADD信用。正常Save/checkpoint、CK3/bootstrap exit0、screenCAS6195空资源与taskdone6196已保全。媒体编码180.000秒／5400帧与Start→Finish墙钟224.637917秒分开；179秒末样本仍旧日期，原生一日在raw结束后；墙钟超过计划44.637917秒，RED保留，controller正常Finish不等于整片qualified。研究9/14、业务6/11、动态0/11、ABC0/3不变；下一次自然移动需正常源与新鲜身份/资格，不把本次路线当已改变位置闸。
+
+[R198媒体索引](evidence/episode04-r198-military-toggle-12004/media-index.json)现已带入完整基础审计：57.266秒／1718帧，decode0/PTS递增，checkbox转场n1088→1089→1090；候选[780,1675)为895帧／29.833333秒。连续clean、1×、人审仍未通过，不把玩家owner31254演示外推封臣AI。
+
 ## 2026-10-17 10:28 UTC R198实机军务开关与正常闭场
 
 `machine_id: desktop-3fevhd2-1c74096080`；R0198使用源码/运行时 `dc031358981450ae3f8e40c6234b7f27fd4662ef`。先看[post-R197 native生产与focused cold资格](episode04-post-r197-native-admission-12004.md)：A03链接失败后sourcefix成功，旧D cold SYSTEM登记被拒；A04新C root实际构建并取得SYSTEM回执，admission执行exit0但wrapper自身RED；A05精确复用该admission并只新跑shared-v3 normal/strict cold，未重跑旧矩阵。这些是本机字节/冷测资格，不授实机开关。
@@ -99,3 +105,7 @@ C 的具名 `operation_root_relay.py` 已接入正常 constructor，绑定新 op
 2026-10-17后续独立知识（machine_id `desktop-3fevhd2-1c74096080`）：[R05低库存搜索、R07七日预算、R08 29591E0枚举与R06变量来源](episode04-r189-followup-source-index-12004.md)。它们形成于source6bf冻结期间，本次闭场后仅入库，未在R190部署或授新业务正例；主批旧pins/历史原件保持，所有分子不变。
 
 R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。
+
+## 2026-10-17 11:44 UTC R198媒体候选边界（待下次正常闭场采纳）
+
+`machine_id: desktop-3fevhd2-1c74096080`。[R198媒体索引](evidence/episode04-r198-military-toggle-12004/media-index.json)固定原片57.266秒／1718帧全解码与递增PTS，checkbox转场n1088勾选、n1089中间、n1090未勾选；`[780,1675)`为895帧／29.833333秒候选。连续clean、完整人工1×、signoff尚未通过；它是玩家owner31254演示，不能外推封臣AI。动态0/11，研究9/14、业务6/11、ABC0/3均不涨。

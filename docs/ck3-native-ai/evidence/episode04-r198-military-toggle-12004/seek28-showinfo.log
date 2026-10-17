@@ -1,0 +1,26 @@
+Input #0, matroska,webm, from 'D:\workspace\ck3_native_war_ai_promo_work\e04-r198-military-toggle-a01\raw-r198-military-a01\raw.mkv':
+  Metadata:
+    ENCODER         : Lavf63.1.101
+  Duration: 00:00:57.27, start: 0.000000, bitrate: 4597 kb/s
+  Stream #0:0: Video: h264 (Constrained Baseline), yuv420p(tv, progressive), 1280x720, 30 fps, 30 tbr, 1k tbn
+    Metadata:
+      ENCODER         : Lavc63.1.101 libx264
+      DURATION        : 00:00:57.266000000
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> wrapped_avframe (native))
+Press [q] to stop, [?] for help
+[Parsed_showinfo_0 @ 000001e10e570d80] config in time_base: 1/1000, frame_rate: 30/1
+[Parsed_showinfo_0 @ 000001e10e570d80] config out time_base: 0/0, frame_rate: 0/0
+[Parsed_showinfo_0 @ 000001e10e570d80] n:   0 pts:      0 pts_time:0       duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:E664B728 plane_checksum:[16E68911 B9AB2CD4 85BE0143] mean:[89 129 125] stdev:[36.1 8.2 7.3]
+[Parsed_showinfo_0 @ 000001e10e570d80] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown
+Output #0, null, to 'NUL':
+  Metadata:
+    encoder         : Lavf63.1.101
+  Stream #0:0: Video: wrapped_avframe, yuv420p(tv, progressive), 1280x720, q=2-31, 200 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc63.1.101 wrapped_avframe
+      DURATION        : 00:00:57.266000000
+[Parsed_showinfo_0 @ 000001e10e570d80] n:   1 pts:     33 pts_time:0.033   duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1280x720 i:P iskey:0 type:P checksum:253BCAC9 plane_checksum:[F3799A83 25942D27 DE8F031F] mean:[89 129 125] stdev:[36.2 8.2 7.3]
+[Parsed_showinfo_0 @ 000001e10e570d80] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown
+[out#0/null @ 000001e10c105380] video:0KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.03 bitrate=N/A speed=0.282x elapsed=0:00:00.11    

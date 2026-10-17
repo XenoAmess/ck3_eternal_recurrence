@@ -1,0 +1,83 @@
+{
+  "schema": "r199-bounded-offline-media-audit/v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T13:26:21.008136+00:00",
+  "raw_source": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r199-refill-add-a01/raw-r199-refill-a01/raw.mkv",
+    "bytes": 110560976,
+    "sha256": "8394c5e177752d4493ab8e93507855efc056c8353b7cc2e69345078da23d6f05",
+    "sha256_origin": "R199 Finish full-file hash; reused without rehashing in audit"
+  },
+  "planned_duration_exceeded": true,
+  "normal_recorder_exit": true,
+  "encoded_duration_seconds": 180.0,
+  "wall_duration_seconds": 224.637917,
+  "decoded_video_frames": 5400,
+  "continuous_clean_certified": false,
+  "human_1x_approved": false,
+  "signoff": false,
+  "on_camera_natural_day_proven": false,
+  "ADD_proven": false,
+  "assets": [
+    {
+      "name": "decode-pts.log",
+      "bytes": 2119461,
+      "sha256": "ff1d7fd8204ec28d8b548354868d10e4a1b31b89618ad84872dbf1689690e8ca"
+    },
+    {
+      "name": "ffprobe.json",
+      "bytes": 2445,
+      "sha256": "83f167a5827824dd6bce95f4d04f95d908dfba8c7705b6bd815bc174f0a62d14"
+    },
+    {
+      "name": "frame-000.jpg",
+      "bytes": 205844,
+      "sha256": "5cff14dc4ef0503198686fdb2b4871e9da2e421c2be9460736df1fa9a96d0ac8"
+    },
+    {
+      "name": "frame-030.jpg",
+      "bytes": 214550,
+      "sha256": "39687cbb67bb980c67b215ee05ec502896c17b8be345d72201206739360c1ef5"
+    },
+    {
+      "name": "frame-040.jpg",
+      "bytes": 214868,
+      "sha256": "bd29d6dabfeb0072cd28514befaaca17cd0caf6e10fe405dda9251f872800148"
+    },
+    {
+      "name": "frame-120.jpg",
+      "bytes": 214004,
+      "sha256": "dee93c492f018f0c9b18fa55c0c28d35232758ac79f811949ef1fc111499bd4f"
+    },
+    {
+      "name": "frame-170.jpg",
+      "bytes": 214258,
+      "sha256": "b9f8186daa6589b8536a4bedd36190184d64b97d756ec28f5814a1e2e038f4a3"
+    },
+    {
+      "name": "frame-179.jpg",
+      "bytes": 215933,
+      "sha256": "93d01f3ae3e390d1cdf8d90d9ebebe874f9a9f218f6a969fbbed39cc3cc48128"
+    },
+    {
+      "name": "probe_media.py",
+      "bytes": 643,
+      "sha256": "1cc607075ad83d3b9358cef5f35141050c544429218c4863458c0145b78a0a9a"
+    },
+    {
+      "name": "review-report.md",
+      "bytes": 4063,
+      "sha256": "fdafb60696191939b03b1f4c3ba352f039e0a9f98247579ea25123231af5b16d"
+    },
+    {
+      "name": "seal_manifest.py",
+      "bytes": 1589,
+      "sha256": "c0ede2e6cd7b52fced8ff96f6b29c3d8bac17111ba08663b322841692e3dd7cd"
+    },
+    {
+      "name": "select_frames.py",
+      "bytes": 764,
+      "sha256": "403ee939ef4cf53a60fd52eda81792e7d62cab8d3b13dbe34ddc433f224776b6"
+    }
+  ]
+}

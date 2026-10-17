@@ -1,0 +1,246 @@
+{
+  "schema": "xar.e04.r199.small-evidence.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T13:22:27.917925+00:00",
+  "source_head": "26449eb2676b4ccb71cb818fb0cc398b0a5fd1e6",
+  "native_tree": "5ffec8a7f995bb808b149945bb6e7c7f80a2b184",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0199",
+  "pid": 31464,
+  "process_creation_filetime_100ns": 134367122007865379,
+  "episode_run_id": "native-31254-959ed336b5e0",
+  "actor_id": 31254,
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 10794,
+    "sha256": "040ad3c938a45bcb2cf6cee17b21aa42e5002927254beb8a185360be5ee55ebe",
+    "members": {
+      "NORMAL-SAVE.actual.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\r199-refill-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+        "bytes": 5188,
+        "sha256": "2f520a555024e6b66486f89022a2b73ed7f4d4dd7955a57bd0322ee4cee1928a"
+      },
+      "BOOTSTRAP-OBSERVED.actual.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\r199-refill-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+        "bytes": 919,
+        "sha256": "858645ae5986227380dc7e038e41fdb752a88018385bf6b363f74c4503596573"
+      },
+      "SCREEN-RELEASE.actual.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\r199-refill-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+        "bytes": 5098,
+        "sha256": "e05ac8b60b8223007a64402d12bb4bbf839ef4cc3c79d13d6a5b8bee72326b9e"
+      },
+      "R199-SCREEN-TASK-DONE.actual-a01.stdout": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\R199-SCREEN-TASK-DONE.actual-a01.stdout",
+        "bytes": 1469,
+        "sha256": "6f0f83246ac288aacb8145335c93a957a94515d33026bb9b35ce12b2f2d4f3e0"
+      },
+      "r199-move-home-2629-once-a01.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-move-home-2629-once-a01.json",
+        "bytes": 6940,
+        "sha256": "15f0328bd38ddd20955bfe83cf2ca2475fe569cfaea24bb5f1335a847d8b0bc6"
+      },
+      "r199-refill-a01-ready-record-start-once.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-refill-a01-ready-record-start-once.json",
+        "bytes": 7165,
+        "sha256": "97117643f2170bb4603d5d71b51ff2e919da7207fef97a9dd68962a7dd54fa6f"
+      },
+      "r199-refill-a01-ready-record-finish-once.json": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-refill-a01-ready-record-finish-once.json",
+        "bytes": 5234,
+        "sha256": "2dd8010a8d7632cee5790838d9a49e8a9f5e359def164aee9b87f0ab85aeb4ac"
+      }
+    }
+  },
+  "preparation_source": {
+    "original_path": "C:\\ck3-e04-resume-20261015-a01\\refill-r199-target-selection-a09\\fresh-query1-projection-a10\\candidate\\docs\\ck3-native-ai\\episode04-r199-refill-position-preparation-12004.md",
+    "bytes": 3456,
+    "sha256": "87792519e9fe4f8ac0080c962e50297fbbaab1a6958a927806c90249bb9439cd",
+    "query_bytes": 11162744,
+    "query_sha256": "ebe0406e67179c6ec320a63f0372ad47b6978a28349253db473d1a5c7606b57f",
+    "owner_raw_read_count": 1,
+    "integration_raw_read_count": 0,
+    "seven_deficit_slots": 7,
+    "all_final_q_zero": true,
+    "all_position_eligible_false": true,
+    "probe_installed": false,
+    "actual_ADD_observed": false
+  },
+  "snapshot_literal_projections": [
+    {
+      "source": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-after-move-independent-a01.json",
+        "bytes": 125569,
+        "sha256": "5452389c9f726d9636166aeddd4a906e18084bc902229653ee03791727ef3d76"
+      },
+      "at": "2026-10-17T12:59:34.572959+00:00",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "literal_fields": {
+        "/body/date_raw": 53148192,
+        "/body/paused": true,
+        "/body/snapshot_id": "native:4",
+        "/body/revision": 5,
+        "/body/native_revision": 4,
+        "/body/episode_run_id": "native-31254-959ed336b5e0"
+      },
+      "army_pointer": "/body/player_armies/0",
+      "army_literal": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": 2629,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2634,
+          2633,
+          2627,
+          2626,
+          8753,
+          2629
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 6,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    },
+    {
+      "source": {
+        "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-after-one-day-independent-a01.json",
+        "bytes": 126583,
+        "sha256": "4706b906ed607bae32f65081d73c64a1298177e564b5ff68cfd5835dd649ddba"
+      },
+      "at": "2026-10-17T13:00:30.265986+00:00",
+      "machine_id": "desktop-3fevhd2-1c74096080",
+      "literal_fields": {
+        "/body/date_raw": 53148216,
+        "/body/paused": true,
+        "/body/snapshot_id": "native:8",
+        "/body/revision": 9,
+        "/body/native_revision": 8,
+        "/body/episode_run_id": "native-31254-959ed336b5e0"
+      },
+      "army_pointer": "/body/player_armies/0",
+      "army_literal": {
+        "army_id": 18,
+        "owner_character_id": 31254,
+        "soldiers": null,
+        "current_province_id": 2635,
+        "move_target_province_id": 2629,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2634,
+          2633,
+          2627,
+          2626,
+          8753,
+          2629
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 6,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    }
+  ],
+  "exact_day": {
+    "source": {
+      "original_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\desktop-3fevhd2-1c74096080--vanilla--R0199\\responses\\r199-advance-one-day-once-a01.json",
+      "bytes": 68404,
+      "sha256": "e06823567df5f918b8eee2b1968c3e2ea086810dd684fcce8124dd129881d10d"
+    },
+    "body_literal_subset": {
+      "starting_date_raw": 53148192,
+      "ending_date_raw": 53148216,
+      "elapsed_days": 1,
+      "requested_horizon_days": 1,
+      "paused": true,
+      "progress_status": "postcondition",
+      "snapshot_id": "native:8",
+      "revision": 9
+    }
+  },
+  "checkpoint_pin_from_normal_save": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 73703921,
+    "sha256": "db00016aa3215626593791420b45761b148cd156aed98f317ea2f8149ef3b600"
+  },
+  "recording": {
+    "raw_pin_from_finish": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r199-refill-add-a01\\raw-r199-refill-a01\\raw.mkv",
+      "bytes": 110560976,
+      "sha256": "8394c5e177752d4493ab8e93507855efc056c8353b7cc2e69345078da23d6f05"
+    },
+    "planned_seconds": 180,
+    "started_at_utc": "2026-10-17T12:56:46.953548+00:00",
+    "completed_at_utc": "2026-10-17T13:00:31.591465+00:00",
+    "start_to_finish_wall_seconds": 224.637917,
+    "wall_over_plan_seconds": 44.637917,
+    "wall_duration_gate": "RED",
+    "state": "NORMAL_TREE_EMPTY",
+    "capture_guard_error": null,
+    "partial_video": false,
+    "media_actual_report_pending": false,
+    "whole_recording_qualified": false,
+    "continuous_clean": false,
+    "human_1x": false,
+    "human_signoff": false,
+    "media_report": {
+      "path": "media-review-report.md",
+      "bytes": 4063,
+      "sha256": "fdafb60696191939b03b1f4c3ba352f039e0a9f98247579ea25123231af5b16d"
+    },
+    "media_manifest": {
+      "path": "media-asset-manifest.json",
+      "bytes": 2710,
+      "sha256": "f1be9bafdfff8119a2014b91f9b53284e3ccc74bc0ec487bc5f68c87f66e3b80"
+    },
+    "encoded_duration_seconds": 180.0,
+    "decoded_video_frames": 5400,
+    "decode_exit_code": 0,
+    "pts_seconds": [
+      0,
+      179.967
+    ],
+    "audio_stream_count": 0,
+    "sampled_move_route_bracket_seconds": [
+      30,
+      40
+    ],
+    "on_camera_natural_day_proven": false,
+    "sampled_last_date": "1067-02-23"
+  },
+  "limits": "Only the ZIP members are complete exact originals. Snapshot/day fields are literal projections with whole-original pins, not full raw replay. No save, Driver or video body was read or copied. Source-machine state does not qualify another machine.",
+  "counts": {
+    "research": [
+      9,
+      14
+    ],
+    "business": [
+      6,
+      11
+    ],
+    "qualified_dynamic": [
+      0,
+      11
+    ],
+    "ABC": [
+      0,
+      3
+    ]
+  }
+}

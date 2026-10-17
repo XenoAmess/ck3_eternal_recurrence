@@ -1,5 +1,11 @@
 # 第4期导演与研究计划：行军、补给与损耗
 
+## 2026-10-17 13:22 UTC R199位置准备：q0负例、一日与正常闭场
+
+`machine_id: desktop-3fevhd2-1c74096080`；[R199专题与便携小原件](../../../docs/ck3-native-ai/episode04-r199-refill-position-preparation-12004.md)绑定实际source26449／native tree5ffec8a7及R0199。七个缺额槽位全q=0且position=false，没有安装R06 probe。Move18→2629只有ACK与独立六跳route；精确一日53148192→53148216后仍paused、仍在2635/sieging，没有到达或ADD信用。正常Save/checkpoint、CK3/bootstrap exit0、screenCAS6195空资源与taskdone6196已保全。媒体编码180.000秒／5400帧与Start→Finish墙钟224.637917秒分开；179秒末样本仍旧日期，原生一日在raw结束后；墙钟超过计划44.637917秒，RED保留，controller正常Finish不等于整片qualified。研究9/14、业务6/11、动态0/11、ABC0/3不变；下一次自然移动需正常源与新鲜身份/资格，不把本次路线当已改变位置闸。
+
+[R198媒体索引](../../../docs/ck3-native-ai/evidence/episode04-r198-military-toggle-12004/media-index.json)现已带入完整基础审计：57.266秒／1718帧，decode0/PTS递增，checkbox转场n1088→1089→1090；候选[780,1675)为895帧／29.833333秒。连续clean、1×、人审仍未通过，不把玩家owner31254演示外推封臣AI。
+
 ## 2026-10-17 10:28 UTC R198军务开关实机片段：可核口播，动态待审
 
 `machine_id: desktop-3fevhd2-1c74096080`、source/runtime `dc031358981450ae3f8e40c6234b7f27fd4662ef`。[native生产及冷测资格](../../../docs/ck3-native-ai/episode04-post-r197-native-admission-12004.md)与[R198原生开关实录](../../../docs/ck3-native-ai/episode04-r198-military-toggle-12004.md)分开取证：R198 Army18军务页打开后唯一关闭补员动作，owner31254 raw `4A9` 后续ticket9读回0，前ticket7为1；动作即时读回仍1，不能剪成当帧立刻变0。镜头与口播可描述“本场原生后验确认开关从开到关”，不得描述已发生自然补员、ADD、付款或围城伤亡。两次15/20秒hold均暂停，日期raw53148192不变。
