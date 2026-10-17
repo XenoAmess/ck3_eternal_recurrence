@@ -416,7 +416,7 @@ int main(int argc,char **argv) {
   assert(early_wire.find("\"receipt_id\":null")!=std::string::npos && early_wire.find("\"observed_cache\":null")!=std::string::npos);
   std::cout<<"ARMY_TOOLTIP_EARLY_REFUSAL_WIRE "<<early_wire<<'\n';
   assert(!IsIngameUiRequestSupportedV1(GuiAbiRevisionV1::legacy11906,hover_supply));
-  assert(!IsIngameUiRequestSupportedV1(static_cast<GuiAbiRevisionV1>(2),hover_supply));
+  assert(!IsIngameUiRequestSupportedV1(static_cast<GuiAbiRevisionV1>(0xFFFFFFFFU),hover_supply));
   assert(ExecuteIngameUiNavigationV1(current_env,hover_supply,current_snapshot,current_stamp,fixture_gui_first,action_result));
   assert(action_result.available && action_result.dispatch_invoked && action_result.verification_pending && fixture_tooltip_setter_calls==1);
   assert(fixture_tooltip_last_target==fixture_supplies && action_result.army_tooltip.receipt_bound && !action_result.army_tooltip.cache_bytes_observed);
