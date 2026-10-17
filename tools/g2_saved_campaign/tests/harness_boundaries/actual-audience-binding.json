@@ -1,0 +1,46 @@
+{
+  "before": {
+    "schema": "xar.audience-active-sdk/v1",
+    "sdk_prefix": "p37",
+    "game_pid": 230672,
+    "game_creation_filetime": 134366924532682885,
+    "session": "90e81184-8475-4053-9b83-d01c0f314e0e",
+    "actual_pair_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37.json",
+      "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465"
+    }
+  },
+  "launch": {
+    "pid": 230672,
+    "creation_filetime": 134366924532682885,
+    "creation_date": "20261017063413.268288+000"
+  },
+  "recording_request": {
+    "session_id": "90e81184-8475-4053-9b83-d01c0f314e0e"
+  },
+  "actual_pair": {
+    "at_utc": "2026-10-17T06:49:16.051169+00:00",
+    "status": "SDK_PAIR_HANDLES_RETAINED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 224460,
+        "creation_filetime": 134366933533005540,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 162836,
+        "creation_filetime": 134366933554677600,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "observer": "owned_Game_supervisor_retained_handles",
+    "rpc_started": false
+  },
+  "actual_pair_pin": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P37.json",
+    "sha256": "4b4568526975d4af268fd754269237d3c8a0bec7fcd33732b0fad3052222d465"
+  },
+  "runtime_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime"
+}

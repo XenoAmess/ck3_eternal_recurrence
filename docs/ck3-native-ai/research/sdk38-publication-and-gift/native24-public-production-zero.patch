@@ -1,0 +1,125 @@
+--- a/ck3_autonomous_player/native_bridge/CMakeLists.txt
++++ b/ck3_autonomous_player/native_bridge/CMakeLists.txt
+@@ -246 +246 @@
+-  OFF
++  ON
+--- a/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_gift_router.hpp
++++ b/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_gift_router.hpp
+@@ -17,0 +18,4 @@
++  // Terminal proof survives a lost receipt reply until the next admitted gift.
++  std::optional<game::FactionGiftMitigationAckV1> verified_ack;
++  std::optional<game::FactionGiftMitigationReceiptV1> verified_receipt;
++  std::optional<game::FactionGiftMitigationObservationV1> verified_observation;
+--- a/ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp
++++ b/ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp
+@@ -465,4 +465,31 @@
+-      if (!state.pending_ack || !state.action_may_have_submitted ||
+-          revision <= state.pending_ack->pre_snapshot_revision ||
+-          published.date_raw != state.pending_ack->pre_observed_date_raw ||
+-          published.played_character_id != static_cast<std::int32_t>(state.pending_ack->player_character_id)) {
++      if (state.pending_ack && state.action_may_have_submitted) {
++        if (revision <= state.pending_ack->pre_snapshot_revision ||
++            published.date_raw != state.pending_ack->pre_observed_date_raw ||
++            published.played_character_id != static_cast<std::int32_t>(state.pending_ack->player_character_id)) {
++          failure = "private_faction_pending_receipt_invalid"; return false;
++        }
++        query.ack = *state.pending_ack;
++      } else if (!state.pending_ack && !state.action_may_have_submitted &&
++                 state.verified_ack && state.verified_receipt &&
++                 state.verified_observation &&
++                 state.verified_receipt->postcondition_verified &&
++                 state.verified_receipt->request_id == state.verified_ack->request_id &&
++                 revision >= state.verified_receipt->post_snapshot_revision &&
++                 published.paused && published.map_ready &&
++                 published.has_played_character && published.played_character_alive &&
++                 published.date_raw == state.verified_receipt->post_observed_date_raw &&
++                 published.played_character_id ==
++                     static_cast<std::int32_t>(state.verified_receipt->player_character_id)) {
++        // A reply may be lost after the independent receipt succeeded. Replay
++        // only its exact terminal evidence, never submit the old action again.
++        query.ack = *state.verified_ack;
++        query.receipt = *state.verified_receipt;
++        query.observation = *state.verified_observation;
++        query.receipt_complete = true;
++        query.status = "applied";
++        query.source_faction_id = query.ack.source_faction_id;
++        query.recipient_character_id = query.ack.recipient_character_id;
++        serialized = game::Render12004BuildIdentity(
++            SerializeResult(query, step, request_id), adapter.descriptor());
++        return true;
++      } else {
+@@ -471 +497,0 @@
+-      query.ack = *state.pending_ack;
+@@ -515,2 +541,6 @@
+-      if (query.ack.verification_pending) state.pending_ack = query.ack;
+-      else state.action_may_have_submitted = false;
++      if (query.ack.verification_pending) {
++        state.pending_ack = query.ack;
++        state.verified_ack.reset();
++        state.verified_receipt.reset();
++        state.verified_observation.reset();
++      } else state.action_may_have_submitted = false;
+@@ -518,0 +549,10 @@
++    if (query.mode == Mode::receipt && query.receipt_complete &&
++        query.receipt.postcondition_verified) {
++      // Keep independently verified terminal evidence for a lost reply, but
++      // release both pending latches only after the response is serialized.
++      state.verified_ack = query.ack;
++      state.verified_receipt = query.receipt;
++      state.verified_observation = query.observation;
++      state.pending_ack.reset();
++      state.action_may_have_submitted = false;
++    }
+@@ -520 +560 @@
+-  } catch (...) { failure = "private_faction_router_exception"; return false; }
++  } catch (...) { serialized.clear(); failure = "private_faction_router_exception"; return false; }
+--- a/ck3_autonomous_player/native_bridge/tests/ck3_12004_faction_adopted_whole_test.cpp
++++ b/ck3_autonomous_player/native_bridge/tests/ck3_12004_faction_adopted_whole_test.cpp
+@@ -17 +17 @@
+-void CheckRouter(bool value) {
++void CheckRouterAt(bool value, int line) {
+@@ -19 +19,2 @@
+-  if (!value) std::cerr << "router check failed: " << router_checks << '\n';
++  if (!value) std::cerr << "router check failed: " << router_checks
++      << " line " << line << std::endl;
+@@ -21,0 +23 @@
++#define CheckRouter(value) CheckRouterAt((value), __LINE__)
+@@ -311,0 +314 @@
++  CheckRouter(state.pending_ack && state.action_may_have_submitted);
+@@ -318,0 +322,36 @@
++  CheckRouter(!state.pending_ack && !state.action_may_have_submitted &&
++      state.verified_ack && state.verified_receipt &&
++      state.verified_observation && state.verified_receipt->postcondition_verified);
++  const std::string original_verified_wire = wire;
++  const auto queues_after_verified = queues;
++  CheckRouter(call(ck3_11906::kFactionGiftPrivateReceiptStepV1, FramePayload(4) + "}", 4));
++  CheckRouter(wire == original_verified_wire && queues == queues_after_verified);
++  WriteWire(out, "gift-receipt-replayed-after-lost-reply.command-result.json", wire);
++  adapter.snapshot.paused = false;
++  CheckRouter(!call(ck3_11906::kFactionGiftPrivateReceiptStepV1, FramePayload(4) + "}", 4));
++  CheckRouter(state.verified_ack && state.verified_receipt &&
++      state.verified_observation &&
++      !state.pending_ack && !state.action_may_have_submitted);
++  adapter.snapshot.paused = true;
++  Put(fixture.player_extension.data(), 0x100, std::int64_t{20'000'000});
++  gift_applied = false;
++  Put(opinion_group.data(), 0x14, std::int32_t{0});
++  CheckRouter(call(ck3_11906::kFactionGiftPrivateQueryStepV1, FramePayload(5) + "}", 5));
++  CheckRouter(state.last_query && state.last_query->gift_preview.available &&
++      !state.pending_ack && !state.action_may_have_submitted);
++  const std::string submit_next = FramePayload(5) + ",\"source_faction_id\":" + std::to_string(source_id) +
++      ",\"recipient_character_id\":" + std::to_string(recipient_id) +
++      ",\"membership_role\":\"leader\",\"definition_stable_hash\":" + std::to_string(definition_hash) +
++      ",\"gold_cost_raw\":7500000,\"opinion_delta\":35,\"minimum_gold_reserve_raw\":5000000,"
++      "\"expected_native_revision\":5}";
++  const bool second_submitted = call(ck3_11906::kFactionGiftPrivateSubmitStepV1, submit_next, 5,
++      "faction-gift-00000000000000000000000000000002");
++  if (!second_submitted) std::cerr << "second gift failure: " << failure << std::endl;
++  CheckRouter(second_submitted);
++  CheckRouter(queues == queues_after_verified + 1 && state.pending_ack &&
++      state.action_may_have_submitted && !state.verified_ack &&
++      !state.verified_receipt && !state.verified_observation);
++  WriteWire(out, "gift-second-submit-pending.command-result.json", wire);
++  Put(fixture.player_extension.data(), 0x100, std::int64_t{12'500'000});
++  gift_applied = true;
++  Put(opinion_group.data(), 0x14, std::int32_t{1});

@@ -1,0 +1,26 @@
+{
+  "schema": "xar.public-rebase-focused.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:12:15.001434+00:00",
+  "parent": "9a47d3ede7d29c60176a3dc27cbe69ba2d0c845e",
+  "command": [
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_material_publication_portable.py",
+    "ck3_autonomous_player/tests/unit/test_window_priority_portable.py",
+    "ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+    "ck3_autonomous_player/tests/unit/test_holy_site_adoption_detail_native_mcp.py"
+  ],
+  "exit_code": 0,
+  "stdout": "................................ss                                 [100%]\n32 passed, 2 skipped, 6 subtests passed in 4.69s\n",
+  "stderr": "",
+  "reason": "remote shared Service/CMake HolySite changes; preserve hooks and recheck ordinary publication plus direct HolySite route"
+}

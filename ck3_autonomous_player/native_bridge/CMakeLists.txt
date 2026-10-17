@@ -243,7 +243,7 @@ option(
 option(
   XAR_ENABLE_PREWAR_FORCE_COALITION_V2
   "Compile the private exact-build prewar coalition coverage readonly query"
-  OFF
+  ON
 )
 
 option(

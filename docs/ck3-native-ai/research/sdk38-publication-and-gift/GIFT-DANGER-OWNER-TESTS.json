@@ -1,0 +1,25 @@
+{
+  "status": "GREEN_OFFLINE_ONLY",
+  "at_utc": "2026-10-17T07:52:27.317805+00:00",
+  "first_run": {
+    "passed": 11,
+    "failed": 2,
+    "reason": "Synthetic source_round_id fixture-only violated original R+digits ledger validation; no policy failure"
+  },
+  "fixture_fix": "source_round_id changed to synthetic R515; no production source or validator relaxed",
+  "final_run": {
+    "passed": 13,
+    "failed": 0,
+    "pytest_elapsed_seconds": 0.55
+  },
+  "runtime_calls": 0,
+  "live_Driver_SAVE_reads": 0,
+  "old_tests_repeated": 0,
+  "source_diff_unchanged_after_first_run": true,
+  "fixture_boundaries": "Actual closed515 candidate/frame/metrics and531receipt; root/readiness/process wrappers and dangerous=true counterfactual explicitly synthetic",
+  "temp_cleanup": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\_test_tmp",
+    "reclaimed_bytes": 2284,
+    "owned_test_only": true
+  }
+}

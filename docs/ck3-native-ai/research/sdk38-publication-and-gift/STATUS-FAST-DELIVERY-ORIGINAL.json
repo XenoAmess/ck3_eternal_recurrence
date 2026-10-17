@@ -1,0 +1,49 @@
+{
+  "schema": "xar.public-status-fast-candidate/v1",
+  "status": "FINAL_TWO_SMALL_NORMAL_IMPORT_MODULES",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\g2_saved_campaign\\audience_sdk_binding.py",
+      "sha256": "027ee46d942cc3d6eb0db8c6ca519c67c474e53aa0f9853628af22b5518fad93",
+      "bytes": 4776
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\g2_saved_campaign\\runtime_repair_prebaseline.py",
+      "sha256": "fda2173dedd8fc16167f9f37d65f69858204a7f5a74cc7518c84632f457ffb13",
+      "bytes": 1579
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\test_fast_modules.py",
+      "sha256": "e943b92c702311d4f42533a86d1c06771bf7d33214e169fb3aa941ce3b135beb",
+      "bytes": 4181
+    }
+  ],
+  "tests": {
+    "methods": 5,
+    "result": "GREEN",
+    "seconds": 0.037,
+    "imports": "normal namespace package plus existing Z/tools dependencies; no F or frozen runtime loader"
+  },
+  "base_public_modules": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\shared_harness_reads.py",
+      "sha256": "977b9da4240b850c9ecd71522d04ab2f6adc63899a678882401255693766e1e6",
+      "bytes": 4479
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_current_fault_guard.py",
+      "sha256": "9d77e1794c402db0e5193f2c77411729f717afd0d509c98369de5319a20a331d",
+      "bytes": 12427
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\runtime_repair_recording_guard.py",
+      "sha256": "8f7e1d2b3f3f2631000fece1d3f9d91445a6d5c2c9d785099b55029419cf5cb5",
+      "bytes": 11163
+    }
+  ],
+  "new_missing_baseline_guard": "cold and clean actual baseline markers both reject missing established state",
+  "W_or_Git_writes": 0,
+  "runtime_calls": 0,
+  "progress_module": "separate second delivery; do not delay Native/SDK public commit",
+  "sole_public_writer": "/root/pause_sdk_recovery_prepare"
+}

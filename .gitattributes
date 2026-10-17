@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Keep the small SDK38/Native24 handoff inputs bound to their original bytes.
+docs/ck3-native-ai/research/sdk38-publication-and-gift/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+
 # Holy-site source plans and receipts retain their exact original SHA bindings.
 docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/** -text whitespace=cr-at-eol
 

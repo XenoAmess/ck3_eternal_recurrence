@@ -1,0 +1,14 @@
+{
+  "schema": "xar.publication-static-checks.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:10:24.330187+00:00",
+  "changed_paths": 64,
+  "changed_paths_python_only": "GREEN",
+  "yaml_parse": "GREEN",
+  "compile_changed_python": "GREEN",
+  "staged_diff_check": "GREEN",
+  "raw_pins_verified": 26,
+  "source_pins_verified": 29,
+  "full_repository_python_only": "first invocation stopped incomplete; traced follow-up still in progress; not claimed GREEN",
+  "runtime_calls": 0
+}

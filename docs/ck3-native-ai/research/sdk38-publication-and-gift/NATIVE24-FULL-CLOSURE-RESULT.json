@@ -1,0 +1,15 @@
+{
+  "schema": "xar.native24.gift-full-closure-fixture/v1",
+  "status": "PASS",
+  "link_exit_code": 0,
+  "response_file_sha256": "05415868040b5ccb5358f47ae81d04311fe92c495fc987f65e066c3636d0480d",
+  "new_exes": 0,
+  "game_or_pipe_calls": 0,
+  "native23_retained_v2_objects": {
+    "ck3_12002_routes.obj": "eed6931e34b4e552801918abdceaf88febe660a6babc32143f6f06e2c5d1a735",
+    "prewar_force_coalition_v2.obj": "e4ed66f8df77d008f1c41921640c9664d9f0fc29dad80b819b77472c59833506",
+    "prewar_force_coalition_v2_mailbox.obj": "e66eca2b076596f37b7425446836d1b9cf42a5419689b4dd252ecaebacdb3cbd"
+  },
+  "dll_sha256": "94c9b16ad97e0283e66007e99ebf698c3d5ba0b9bbf7fe99854194b6a8b2096d",
+  "test_exit_code": 0
+}

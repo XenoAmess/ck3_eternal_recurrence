@@ -25,6 +25,9 @@ from ..faction_gift_pending_v1 import (
     read_faction_gift_ledger_v1,
     resolve_faction_gift_after_cold_native_query_v1,
 )
+from ..faction_threat_response_inputs_v1 import (
+    observe_faction_gift_stock_threat_v1,
+)
 from ..runtime import _process_identity
 from .driver import (
     BridgeUnavailableError,
@@ -118,11 +121,21 @@ def _wait_for_pending_paused_revision_v1(
 
     def changed_or_ready(current: Mapping[str, object]) -> bool:
         revision = current.get("native_revision")
+        old_actor = snapshot.get("played_character")
+        new_actor = current.get("played_character")
+        actor_changed = (
+            not isinstance(old_actor, Mapping)
+            or not isinstance(new_actor, Mapping)
+            or (new_actor.get("character_id"), new_actor.get("alive"))
+               != (old_actor.get("character_id"), old_actor.get("alive"))
+        )
         return bool(
             (type(revision) is int and revision > pre_revision)
             or current.get("date_raw") != pending.get("pre_date_raw")
             or current.get("episode_run_id") != pending.get("episode_run_id")
-            or current.get("played_character") != snapshot.get("played_character")
+            # Gold/opinion may publish before native_revision. They are not a
+            # different owner and must not end the bounded wait prematurely.
+            or actor_changed
             or current.get("paused") is not True
             or current.get("map_ready") is not True
             or current.get("active_event") is not None
@@ -130,6 +143,8 @@ def _wait_for_pending_paused_revision_v1(
         )
 
     fresh = waiter(dict(snapshot), changed_or_ready, timeout_seconds=5.0)
+    source_actor = snapshot.get("played_character")
+    fresh_actor = fresh.get("played_character") if isinstance(fresh, Mapping) else None
     if not (
         isinstance(fresh, Mapping)
         and type(fresh.get("revision")) is int
@@ -138,7 +153,10 @@ def _wait_for_pending_paused_revision_v1(
         and fresh["native_revision"] > pre_revision
         and fresh.get("date_raw") == pending.get("pre_date_raw")
         and fresh.get("episode_run_id") == pending.get("episode_run_id")
-        and fresh.get("played_character") == snapshot.get("played_character")
+        and isinstance(source_actor, Mapping)
+        and isinstance(fresh_actor, Mapping)
+        and (fresh_actor.get("character_id"), fresh_actor.get("alive"))
+            == (source_actor.get("character_id"), source_actor.get("alive"))
         and fresh.get("paused") is True
         and fresh.get("map_ready") is True
         and fresh.get("active_event") is None
@@ -225,6 +243,21 @@ def plan_faction_gift_private_v1(
     traced = {**plan, "faction_gift_private_candidate_v1": candidate}
     if candidate.get("status") != "selected":
         return {**planned, "plan": traced}
+    # A legal gift is an optional spend, not evidence of faction danger.
+    # Preserve pending/readback above; only a fresh, matched stock threat
+    # may create a new automatic spending intent or its checkpoint.
+    threat = observe_faction_gift_stock_threat_v1(
+        driver, snapshot=snapshot, history=history, candidate=candidate,
+        expected_revision=int(planned["revision"]),
+    )
+    traced["faction_gift_stock_threat_v1"] = threat
+    if (threat.get("status") != "observed"
+            or threat.get("dangerous_response_ready") is not True):
+        return {**planned, "plan": {**traced,
+            "faction_gift_spending_deferred_v1": {
+                "reason": "selected_faction_not_observed_stock_dangerous",
+                "new_gift_spending_authorized": False,
+            }}}
     checkpoint = _current_checkpoint(driver, snapshot)
     if checkpoint is None:
         if "save-checkpoint" not in available_steps:

@@ -1,0 +1,34 @@
+{
+  "status": "SOURCE_CONFIRMED_PRE_READ_GUARD_BEFORE_FIRST_HEIR_READER",
+  "native22_final_sourcefreeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final03\\SOURCE-FREEZE.json",
+    "sha256": "c877a07df4790288dfd87a0c4b2d51e35bd5af448354fd98e4686cbc875a4812",
+    "bytes": 78380
+  },
+  "compiled_bridge_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+    "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+  },
+  "compiled_bridge_object": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\native.obj",
+    "sha256": "698dd6980a314f635b2f4f928aeaeafd44a08805774dfd12736345fa5097d370"
+  },
+  "compile_result": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\COMPILE-RESULT.json",
+    "sha256": "ce7a89ce49704d2a640a66e4d36e7d84d3a4ffd3306ab366735692999a9c331c",
+    "bytes": 371070
+  },
+  "compiled_header": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\frozen\\include\\xar_bridge\\first_heir_pre_read_diagnostic_v1.hpp",
+    "sha256": "7b0a39279db44542f3d0c0b7b727b613cfb75f5c3562c2349579f1dd921aff2b",
+    "bytes": 7107
+  },
+  "bridge_guard_excerpt": "20115:                 pipe, CommandResultFrame(request_id, step, false,\n20116:                     \"current first-heir relationship needs current native revision\"));\n20117:           } else {\n20118:             xar::game::Snapshot before{};\n20119:             bool pre_read_completed = false;\n20120:             const auto pre_read_failure = xar::bridge_detail::FirstHeirPreReadFailureV1(\n20121:                 previous_snapshot, before,\n20122:                 [&](xar::game::Snapshot &observed) {\n20123:                   return xar::game::ReadSnapshot(game, observed);\n20124:                 }, pre_read_completed);\n20125:             if (!pre_read_failure.empty()) {\n20126:               connected = write_frame(\n20127:                   pipe, CommandResultFrame(request_id, step, false,\n20128:                       xar::bridge_detail::FirstHeirPreReadErrorV1(\n20129:                           pre_read_failure, pre_read_completed, previous_snapshot, before)));\n20130:             } else {\n20131:               const bool observed_current =\n20132:                   state.observed_primary_heir_revision == state_revision &&\n20133:                   state.observed_primary_heir_connection_generation ==\n20134:                       connection_generation;",
+  "scope": "All seven named first-heir PRE-read guards in this exact formatter; other query/action errors and during-read/timeout remain unsupported",
+  "no_native_request_id_in_original_MCP_error": true,
+  "original_MCP_response_retained": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0196-1-result.json",
+    "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6",
+    "bytes": 2411
+  }
+}

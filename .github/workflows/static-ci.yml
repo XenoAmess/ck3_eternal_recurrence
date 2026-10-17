@@ -155,6 +155,13 @@ jobs:
         run: |
           python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_material_unavailable.py ck3_autonomous_player/tests/unit/test_council_planning_technical_defer.py ck3_autonomous_player/tests/unit/test_optional_check_service_cadence_v1.py ck3_autonomous_player/tests/unit/test_family_wartime_rolling_portable.py ck3_autonomous_player/tests/unit/test_family_peace_cadence_portable.py ck3_autonomous_player/tests/unit/test_family_history_free_marriage_portable.py ck3_autonomous_player/tests/unit/test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unobserved_completed_slots_cannot_prove_rollback_after_restore ck3_autonomous_player/tests/unit/test_child_focus_selected_step.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test material publication and observed faction danger without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_material_publication_portable.py ck3_autonomous_player/tests/unit/test_window_priority_portable.py ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py
+      - name: Test exact recovery boundaries and campaign ledger binding without CK3
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider tools/g2_saved_campaign/tests/harness_boundaries
       - name: Test verified vanilla lifecycle and retained successor queue without CK3
         env:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src

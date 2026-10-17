@@ -1,0 +1,78 @@
+{
+  "status": "FINAL_OFFLINE_SDK38_CANDIDATE_NOT_DEPLOYED",
+  "at_utc": "2026-10-17T07:52:27.317805+00:00",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "scope": "Private ordinary new faction gift spend requires matched observed stock danger",
+  "files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\SOURCE-PINS.json",
+      "bytes": 1536,
+      "sha256": "1399f1632aabce3afc00f88ae2784303ee30b656176ca531767a03dd7f07cecd"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\REPORT.md",
+      "bytes": 5484,
+      "sha256": "4006fa33a0913c4d58bdfc259a6335ff95fe3789fdd3c304f10fca4d5aa9a8d9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\TESTS.json",
+      "bytes": 976,
+      "sha256": "a3b9c5edead17e6be3f43e19c6516dc020ce0a1800da808304c59f44b54030df"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\candidate\\xar_autoplayer\\bridge\\faction_gift_formal_route_v1.py",
+      "bytes": 19862,
+      "sha256": "b3b8fff8f878e32fd635b130545b1049e7eafd140380ea863aeffbd8b93c686d"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\faction-gift-stock-danger-only.diff",
+      "bytes": 1572,
+      "sha256": "d34fb165d8ee876faacd4148462865e7431c05730253d8900d3e1026ebdfa44f"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\test_faction_gift_spending_urgency.py",
+      "bytes": 9234,
+      "sha256": "e4b4c3df5dea82b7a1b8929bc5981f5305d31a11df79e9123cd7ddeddd7ab094"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\fixtures\\faction_gift_actual_0515_0531_projection.json",
+      "bytes": 7296,
+      "sha256": "3795e720d535cdf3de74efc1a700942b8dfa47269b81fe391fa3861fee90c4c7"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\STORAGE-CHECK.json",
+      "bytes": 956,
+      "sha256": "d479e46f051441c25a2d2910079bb55493529c4e0e40a782626878506158d88e"
+    }
+  ],
+  "source_leaf_count": 1,
+  "runtime_deployed_by_this_packet": false,
+  "submit_receipt_cold_pending_implementation_changed": false,
+  "M6_M7_completion_claimed": false,
+  "actual_saved_gold_claimed": 0,
+  "game_native_sdk_ledger_operations": 0,
+  "live_Driver_SAVE_reads": 0,
+  "native_788_failure_stage_claimed_by_this_packet": null,
+  "SDK38_integration_owner": "/root/python_hotpath_opt",
+  "sole_public_writer": "/root/pause_sdk_recovery_prepare",
+  "merge_constraint": "Apply only two hunks; preserve perf same-leaf wait predicate. Actual combined SDK38 leaf SHA belongs to its freeze.",
+  "public_copy_targets": [
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\test_faction_gift_spending_urgency.py",
+      "target_relative": "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py"
+    },
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\fixtures\\faction_gift_actual_0515_0531_projection.json",
+      "target_relative": "ck3_autonomous_player/tests/unit/fixtures/faction_gift_actual_0515_0531_projection.json"
+    },
+    {
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\REPORT.md",
+      "target_relative": "docs/ck3-native-ai/faction-gift-observed-danger-spending-12004.md"
+    }
+  ],
+  "additional_global_reservation_bytes": 0,
+  "pre_delivery_bytes": 60017,
+  "packet_peak_budget_bytes": 131072,
+  "close_Dfree": 1034815336448,
+  "protected_source_or_personal_data_deleted": false
+}

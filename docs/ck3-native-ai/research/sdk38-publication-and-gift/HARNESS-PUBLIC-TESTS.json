@@ -1,0 +1,22 @@
+{
+  "schema": "xar.public-harness-boundaries-tests.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:01:20.954715+00:00",
+  "public_base_commit": "16b2806343660fc7823cffb9b53000a097e0d2df",
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tools/g2_saved_campaign/tests/harness_boundaries"
+  ],
+  "exit_code": 0,
+  "methods": 13,
+  "subtests": 56,
+  "seconds": 3.43,
+  "SDK_Native_Game_calls": 0,
+  "import_adaptation": "normal tools.g2_saved_campaign imports; no external runtime loader"
+}

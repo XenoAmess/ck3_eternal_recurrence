@@ -1,0 +1,12 @@
+{
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src",
+  "manifest_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\SOURCE-MANIFEST-P38-FINAL03.json",
+  "manifest_sha256": "2c0e9d673591abf4003a4242d20188bb18136e8a49d6897c7001fa03969f85f5",
+  "file_count": 1320,
+  "service_sha256": "2a8e6823990f2e0af0a5ca17cc602d50f93e0357c7db635977e1a76bff5ef2ee",
+  "service_diff_sha256": "a8289c797d3e7dc154c68aef3668492e23576fb41a955e04122956ce631ac08e",
+  "gift_route_sha256": "e41460937b327b039f8211f88218850b8a5f02ecf7dfe7d60f879bdd9493b517",
+  "pending_helper_sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917",
+  "runtime_admitted": false,
+  "native24_gift_terminal_ack_cache_required": true
+}

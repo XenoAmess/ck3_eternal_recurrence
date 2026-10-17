@@ -1,0 +1,70 @@
+--- research/launch_clean_feeder.py
++++ research/launch_clean_feeder_v2.py
+@@ -1,11 +1,33 @@
+-"""Shared-reader and first-FULL prevalidation for the independent clean ledger."""
++"""Bind the reviewed feeder to this clean campaign's independent ledger."""
+ import argparse
++import hashlib
+ import importlib.util
+ from pathlib import Path
+ import sys
+ 
+ ROOT = Path(__file__).resolve().parent
+-SHARED = Path("D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep")
++SHARED = ROOT.parent.parent
++FEEDER_SHA256 = "faa1f05ff3db1b6520416955d0ffffd3b17f73270c841a42b88c751d14e2cab9"
++
++
++def load_reviewed_feeder():
++    path = ROOT / "root_p37_same_game_loop_feeder.py"
++    if hashlib.sha256(path.read_bytes()).hexdigest() != FEEDER_SHA256:
++        raise ValueError("reviewed clean feeder source changed")
++    spec = importlib.util.spec_from_file_location("clean_reviewed_feeder", path)
++    base = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(base)
++    if base.N.resolve() != ROOT or base.Q != ROOT / "p37-queue":
++        raise ValueError("reviewed feeder runtime root changed")
++    # The frozen feeder retained the old shared campaign's ledger literal.
++    # All original transition and Game identity guards remain in use.
++    base.CONTINUITY_WINDOW = ROOT.parent / "ROOT-CONTINUITY-WINDOW.json"
++    from root_continuity_window import game_binding
++    prior = base.WindowLedger(base.CONTINUITY_WINDOW).load()
++    launch = base.read(ROOT / "ROOT-ACTUAL-GAME-LAUNCH.json")
++    if prior is None or prior["game_binding"] != game_binding(launch):
++        raise ValueError("clean campaign ledger and actual Game generation differ")
++    return base
+ 
+ 
+ def main():
+@@ -20,9 +42,7 @@
+     import json
+     def read(path): return json.loads(Path(path).read_bytes())
+     require_published_full(args.first_control_sequence, inbox=ROOT / "p37-requests", read=read)
+-    path = ROOT / "root_p37_same_game_loop_feeder.py"
+-    spec = importlib.util.spec_from_file_location("clean_reviewed_feeder", path)
+-    base = importlib.util.module_from_spec(spec); spec.loader.exec_module(base)
++    base = load_reviewed_feeder()
+     def interrupted(reason, source):
+         state_path = base.Q / "ROOT-CUMULATIVE-LOOP-STATE.json"
+         state = base.read(state_path)
+@@ -36,14 +56,17 @@
+     base.continuity_interrupted = interrupted
+     import msvcrt
+     with (ROOT / "ROOT-P37-FEEDER.lock").open("a+b") as lock:
+-        lock.seek(0); msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
++        lock.seek(0)
++        msvcrt.locking(lock.fileno(), msvcrt.LK_NBLCK, 1)
+         try:
+             base.main(args.first_control_sequence, None)
+         except Exception as error:
+-            if base.CONTINUITY_WINDOW.exists(): interrupted(str(error), base.Q / "ROOT-CUMULATIVE-LOOP-STATE.json")
++            if base.CONTINUITY_WINDOW.exists():
++                interrupted(str(error), base.Q / "ROOT-CUMULATIVE-LOOP-STATE.json")
+             raise
+         finally:
+-            lock.seek(0); msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
++            lock.seek(0)
++            msvcrt.locking(lock.fileno(), msvcrt.LK_UNLCK, 1)
+ 
+ 
+ if __name__ == "__main__":

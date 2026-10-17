@@ -1,0 +1,58 @@
+{
+  "conclusion": "success",
+  "headSha": "d303c19080700c435d4442a8ae76166c36c7da76",
+  "jobs": [
+    {
+      "id": 117336502520,
+      "name": "static",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-17T07:01:07Z",
+      "completed_at": "2026-10-17T07:22:26Z",
+      "passed_steps": 86,
+      "skipped_steps": 20,
+      "current": [],
+      "relevant_steps": [
+        {
+          "completedAt": "2026-10-17T07:02:32Z",
+          "conclusion": "success",
+          "name": "Install released promo toolchain",
+          "number": 7,
+          "startedAt": "2026-10-17T07:02:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T07:02:37Z",
+          "conclusion": "success",
+          "name": "Compile Python tools",
+          "number": 8,
+          "startedAt": "2026-10-17T07:02:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T07:06:32Z",
+          "conclusion": "success",
+          "name": "Test OBS delayed startup and owned close without processes or sockets",
+          "number": 28,
+          "startedAt": "2026-10-17T07:06:25Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-17T07:06:43Z",
+          "conclusion": "success",
+          "name": "Test verified vanilla lifecycle and retained successor queue without CK3",
+          "number": 31,
+          "startedAt": "2026-10-17T07:06:39Z",
+          "status": "completed"
+        }
+      ]
+    }
+  ],
+  "status": "completed",
+  "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39012061366",
+  "schema": "xar.publication-official-ci-final.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "checked_at_utc": "2026-10-17T07:22:47.655535+00:00",
+  "run_id": 39012061366,
+  "runtime_operations": 0
+}

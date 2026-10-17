@@ -1,0 +1,23 @@
+{
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+    "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+    "ck3_autonomous_player/tests/unit/test_material_publication_portable.py",
+    "ck3_autonomous_player/tests/unit/test_window_priority_portable.py",
+    "ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py"
+  ],
+  "source_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\war-results-worktree\\ck3_autonomous_player\\src",
+  "returncode": 0,
+  "stdout": "................................                                   [100%]\n32 passed, 6 subtests passed in 3.48s\n",
+  "stderr": "",
+  "Game_MCP_Native_SDK_OBS_operations": 0
+}

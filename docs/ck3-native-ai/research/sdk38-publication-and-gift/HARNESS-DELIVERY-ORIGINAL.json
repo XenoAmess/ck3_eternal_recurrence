@@ -1,0 +1,124 @@
+{
+  "status": "PORTABLE_PUBLIC_HANDOFF_FINAL_NOT_RUNTIME_DEPLOYED",
+  "tests": {
+    "methods": 13,
+    "seconds": 0.013,
+    "SDK_Native_runtime_calls": 0
+  },
+  "portable_files": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\actual185-projection.json",
+      "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284",
+      "bytes": 1835
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\actual196-projection.json",
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6",
+      "bytes": 2411
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\actual517-projection.json",
+      "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff",
+      "bytes": 565
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\campaign_continuity_binding.py",
+      "sha256": "ede3ba50fd4cbc3bac31e0cff8389a03715e95289c66a7b37e74ce97f0676fa1",
+      "bytes": 2058
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\construction_paused_frame_readonly_v1.py",
+      "sha256": "7f261b96e6d425501c059c0ff0246a53afb248fe8b5e31d0b24a9d4b0a6755fd",
+      "bytes": 3914
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\faction_pending_publication_readonly_v1.py",
+      "sha256": "0e6b2272c0f48a32a09bbcad24c4d8e25b3dd9fb0cc4d71f540be704199924dc",
+      "bytes": 1905
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\faction_submit_admission_rejected_v1.py",
+      "sha256": "f3d3fc7c6d32aa0212d1bfa40d0045dcfa2db2bcdfbf718cdf9e0cb36ec00979",
+      "bytes": 1914
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\first_heir_preread_readonly_v1.py",
+      "sha256": "65cbf697ef9678cbb48055badddcd289a68df560e86615dd6d7809176c6ebaaa",
+      "bytes": 5900
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\test_campaign_continuity_binding.py",
+      "sha256": "53f72cb265979714cc912b5c867dbc568d662a10bd05dd081bce029bc45e4194",
+      "bytes": 3239
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\test_construction.py",
+      "sha256": "ee60a938c22c3dd730f79886ac5922f5e01210221844d9c88ef8825b666953d6",
+      "bytes": 2469
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\test_faction_publication.py",
+      "sha256": "a9a9f47ff3b1c31c72e7f54626414e5d4ff54a897fa07c40369d051ba065cfb2",
+      "bytes": 2268
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\test_faction_submit_admission.py",
+      "sha256": "04424dcc86c732f6668c3144357a34d65b1a66bee4cf357b94b23005c09fae9a",
+      "bytes": 2707
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\portable\\test_first_heir.py",
+      "sha256": "a7b9645dfab047ab7a120f70df86e9edcaec25e9092eec324dd57352c0dabd70",
+      "bytes": 4583
+    }
+  ],
+  "copytargets": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\COPYTARGETS.json",
+    "sha256": "dbd4f73e2ebd009291e1987d74383e1bed07f3d7717abbceabe67f0fe0c0fafa",
+    "bytes": 1440
+  },
+  "research_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder.py",
+      "sha256": "9ff70ca1183f9e30afe21b7bf165ba4ba30b45c513a7dd247e50f85224e88c81",
+      "bytes": 2451
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder_v2.py",
+      "sha256": "cf3115d24f2a3b6df99f894415476ac91c838b0ea503507dd54dc7b4180adf83",
+      "bytes": 3415
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder_resume.py",
+      "sha256": "c2255512de3b36f1763594ff1b3e4e318cdbbd1c7d662b5edf4c43f2eed0e1fe",
+      "bytes": 6294
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\CLEAN-FEEDER-LEDGER-REPAIR01.json",
+      "sha256": "61907421bc5e54b194ebe2746a2b765538bf988258ac5e1f3dc05a3aeaff4e33",
+      "bytes": 2206
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\FEEDER-STARTUP-LEDGER-CORRECTION01.json",
+      "sha256": "4251d89d8f9952851472e82fff63d7a542e432a1f7c9588abd93c7edeeeb185c",
+      "bytes": 3417
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\watchdog-clean-ledger-future.patch",
+      "sha256": "08e9a9ae6ecffba592fbed0e79544f31e0404d8ebb190d351c02338b4111d243",
+      "bytes": 1577
+    }
+  ],
+  "actual_launcher_delta": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\actual-launcher-v2.patch",
+    "sha256": "eeabdf694b22a66d8b4fc18fb856d09aa5ab97019ecac272247a2910bc043c2f",
+    "bytes": 3263
+  },
+  "README": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\README.md",
+    "sha256": "dd3e200668c724781587b22c5d2ac548fa3f5a026f3f68e00c4598a336d4b2ed",
+    "bytes": 3332
+  },
+  "scope": "four exact qualifiers + injected ledger-path binding; no CAS/scene owner scripts as public library",
+  "retention_review": "48h after public integration; no new reservation"
+}

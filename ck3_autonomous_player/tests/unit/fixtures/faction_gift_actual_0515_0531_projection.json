@@ -1,0 +1,212 @@
+{
+  "schema": "xar.g2.faction-gift-spend-closed-projection/v1",
+  "originals": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0515-1-result.json",
+      "bytes": 102998,
+      "sha256": "2d609fb1240b37b1f69d426d711d1db0c7a8df447808c3b63466211a6ea428bc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0531-1-result.json",
+      "bytes": 92590,
+      "sha256": "5d4bbf4158974fcd47f87be047128c095566215a1fbf5b532b9086ce08135e24"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0788-1-result.json",
+      "bytes": 595,
+      "sha256": "e4d21743a19bee6b68ed5fea3f79d0a3b16afb41302574ebd7f327e8340d526a"
+    }
+  ],
+  "actual_candidate": {
+    "status": "selected",
+    "reason": "one_budgeted_native_legal_faction_member",
+    "observation": {
+      "available": true,
+      "paused": true,
+      "snapshot_revision": 506,
+      "native_snapshot_revision": 506,
+      "observed_date_raw": 53153304,
+      "date_raw": 53153304,
+      "player_resources_query_complete": true,
+      "player_character_id": 31254,
+      "player_gold_raw": 25810153,
+      "player_gold_scale": 100000,
+      "source_faction_requery_complete": true,
+      "queried_source_faction_id": 54,
+      "source_faction_present": true,
+      "source_faction_target_character_id": 31254,
+      "source_faction_targeting_player": true,
+      "source_faction_at_war": false,
+      "source_faction_metrics_available": true,
+      "source_faction_power_raw": 2331400,
+      "source_faction_discontent_raw": 0,
+      "source_faction_metric_scale": 100000,
+      "recipient_identity_resolved": true,
+      "recipient_character_id": 33946,
+      "recipient_alive": true,
+      "recipient_is_ai": true,
+      "recipient_is_direct_landed_vassal": true,
+      "recipient_opinion_query_complete": true,
+      "recipient_opinion_of_player": -8,
+      "gift_opinion_present": false,
+      "gift_opinion_modifier_value": null,
+      "source_faction_leader_character_id": 33946,
+      "source_faction_member_character_ids": [
+        33946
+      ],
+      "gift_preview": {
+        "available": true,
+        "definition_key": "gift_interaction",
+        "definition_stable_hash": 2003662901,
+        "interaction_legal": true,
+        "auto_accept": true,
+        "gold_cost_raw": 10000000,
+        "gold_scale": 100000,
+        "opinion_delta": 15
+      }
+    },
+    "candidate_source": "exact_full_targeting_vector_native_selected_one_direct_member",
+    "public_capability_advertised": false,
+    "gift_submission_enabled": false,
+    "choice": {
+      "source_faction_id": 54,
+      "recipient_character_id": 33946,
+      "membership_role": "leader",
+      "snapshot_revision": 506,
+      "native_snapshot_revision": 506,
+      "date_raw": 53153304,
+      "player_character_id": 31254,
+      "definition_stable_hash": 2003662901,
+      "gold_cost_raw": 10000000,
+      "opinion_delta": 15,
+      "minimum_gold_reserve_raw": 10000000
+    }
+  },
+  "planning_source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:506",
+    "revision": 507,
+    "native_revision": 506,
+    "date_raw": 53153304,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30",
+    "connection_generation": 1,
+    "bridge_pid": 230672
+  },
+  "war_entry_faction_context": {
+    "prior_scope_eligible": true,
+    "source": "query-player-faction-alerts-v1",
+    "snapshot_revision": 506,
+    "date_raw": 53153304,
+    "targeting_faction_count": 1,
+    "status": "watch",
+    "present": true,
+    "dangerous": false,
+    "dangerous_faction_ids": [],
+    "watch_faction_ids": [
+      54
+    ],
+    "war_handoff_faction_ids": [],
+    "exposed_county_title_ids": [],
+    "exact_ultimatum_timing_ready": false,
+    "factions": [
+      {
+        "faction_id": 54,
+        "faction_type_key": "liberty_faction",
+        "dangerous_by_stock_rule": false,
+        "danger_reason": "non_peasant_discontent_not_increasing",
+        "faction_at_war": false,
+        "power": {
+          "raw": 2331400,
+          "scale": 100000
+        },
+        "power_threshold": {
+          "raw": 8000000,
+          "scale": 100000
+        },
+        "discontent": {
+          "raw": 0,
+          "scale": 100000
+        },
+        "discontent_per_month": {
+          "raw": -300000,
+          "scale": 100000
+        },
+        "months_until_max_discontent": 0
+      }
+    ],
+    "county_culture_context": {
+      "status": "not_applicable",
+      "relation_input_ready": false,
+      "source": "query-player-faction-alerts-v1",
+      "snapshot_revision": 506,
+      "date_raw": 53153304,
+      "player_character_id": 31254,
+      "provenance": {
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "backend_id": "ck3-1.20.0.4-native-player-faction-alerts-v1"
+      },
+      "county_row_count": 0,
+      "available_relation_count": 0,
+      "rows": []
+    }
+  },
+  "prewar_force_query": {
+    "status": "unsupported",
+    "declaration_id": "35168-11-0",
+    "reason": "native_does_not_advertise_formal_prewar_v2_read_support"
+  },
+  "actual_receipt_0531": {
+    "schema_version": 1,
+    "status": "mitigated",
+    "request_id": "faction-gift-c4c2ab2a11fb48648ec06ed969845128",
+    "reason": null,
+    "post_snapshot_revision": 507,
+    "post_native_snapshot_revision": 507,
+    "post_observed_date_raw": 53153304,
+    "player_character_id": 31254,
+    "source_faction_id": 54,
+    "recipient_character_id": 33946,
+    "post_player_gold_raw": 15810153,
+    "post_recipient_opinion_of_player": 7,
+    "post_gift_opinion_present": true,
+    "post_gift_opinion_modifier_value": 15,
+    "source_faction_present": true,
+    "recipient_still_in_source_faction": true,
+    "faction_dissolved": false,
+    "recipient_left": false,
+    "mitigation_applied": true,
+    "threat_resolved": false,
+    "postcondition_verified": true
+  },
+  "actual_0788_error": {
+    "meta": null,
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_auto_turn: private-submit-faction-gift-member-v1 failed: private_faction_action_or_pending_binding_invalid",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": null,
+    "is_error": true,
+    "result_type": "complete"
+  },
+  "base_plan_for_replay": {
+    "snapshot_id": "native:506",
+    "revision": 507,
+    "plan": {
+      "selected_step": "life-advance",
+      "phase": "war_entry_deferred",
+      "prewar_force_query": {
+        "status": "unsupported",
+        "declaration_id": "35168-11-0",
+        "reason": "native_does_not_advertise_formal_prewar_v2_read_support"
+      }
+    }
+  },
+  "fixture_boundary": "Candidate/frame/metrics/receipt are verbatim narrow actual projections. Pre-private life-advance plan, root-history/readiness envelopes and runtime process metadata are explicit synthetic wrappers; dangerous=true is a synthetic counterfactual. No runtime call or claimed avoided actual spend."
+}

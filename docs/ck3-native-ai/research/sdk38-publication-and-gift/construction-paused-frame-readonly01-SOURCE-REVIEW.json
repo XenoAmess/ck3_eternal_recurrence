@@ -1,0 +1,19 @@
+{
+  "status": "SOURCE_CONFIRMED_EXACT_READONLY_REJECTION_BEFORE_QUERY_EXECUTOR",
+  "native_source_freeze": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final03\\SOURCE-FREEZE.json",
+    "sha256": "c877a07df4790288dfd87a0c4b2d51e35bd5af448354fd98e4686cbc875a4812"
+  },
+  "compiled_bridge_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+    "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+  },
+  "error_line": 22018,
+  "error": "private construction probe paused frame unavailable",
+  "source_excerpt": "          std::uint64_t expected_revision = 0;\n          if (prior_action_unresolved) {\n            connected = write_frame(\n                pipe, CommandResultFrame(request_id, step, false,\n                     \"prior private building command material state unresolved\"));\n          } else if (!xar::bridge::JsonUnsignedField(\n                  incoming.payload, \"expected_revision\", expected_revision) ||\n              expected_revision == 0) {\n            connected = write_frame(\n                pipe, CommandResultFrame(request_id, step, false,\n                                         \"private construction probe request is malformed\"));\n          } else if (expected_revision != state_revision) {\n            connected = write_frame(\n                pipe, CommandResultFrame(request_id, step, false,\n                                         \"private construction probe revision is stale\"));\n          } else {\n            xar::game::Snapshot current_snapshot{};\n            if (!previous_snapshot.has_value() ||\n                !xar::game::ReadSnapshot(game, current_snapshot) ||\n                current_snapshot != *previous_snapshot ||\n                !current_snapshot.paused || !current_snapshot.map_ready ||\n                !current_snapshot.has_played_character ||\n                !current_snapshot.played_character_alive) {\n              connected = write_frame(\n                  pipe, CommandResultFrame(request_id, step, false,\n                                           \"private construction probe paused frame unavailable\"));\n            } else {\n              const bool actual4 = xar::game::IsCk3_12004Descriptor(game.descriptor());\n              const bool crozier = xar::game::IsReviewedCrozierAdapter(game);\n              xar::ck3_11906::PlayerConstructionViewProbeMailboxContextV1 legacy_query{};\n              xar::ck3_12002::ConstructionMailboxContextV1 query12002{};\n              xar::ck3_12004::ConstructionMailboxContext12004 query12004{};\n              auto &query = actual4 ? query12004.query",
+  "request_private_action_for_exact_read_step": false,
+  "query_executor_entry_reached": false,
+  "diagnostic_is_wire_projection_not_original_wire": true,
+  "original185_originalMCPresponse_sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284",
+  "review_does_not_claim_business183_absent_or_rejected": true
+}

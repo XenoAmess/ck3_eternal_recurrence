@@ -15,6 +15,10 @@ struct FactionGiftPrivateState12002 {
   std::optional<game::FactionGiftMitigationObservationV1> last_query;
   std::optional<game::FactionGiftMitigationAckV1> pending_ack;
   bool action_may_have_submitted = false;
+  // Terminal proof survives a lost receipt reply until the next admitted gift.
+  std::optional<game::FactionGiftMitigationAckV1> verified_ack;
+  std::optional<game::FactionGiftMitigationReceiptV1> verified_receipt;
+  std::optional<game::FactionGiftMitigationObservationV1> verified_observation;
   std::unordered_set<std::string> claimed_idempotency_keys;
 };
 

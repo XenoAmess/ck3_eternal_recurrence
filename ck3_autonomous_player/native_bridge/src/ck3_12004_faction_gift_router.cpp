@@ -462,13 +462,39 @@ bool HandleFactionGiftPrivate12004(const game::GameAdapter &adapter,
       failure = "private_faction_cold_frame_or_identity_invalid"; return false;
     }
     if (query.mode == Mode::receipt) {
-      if (!state.pending_ack || !state.action_may_have_submitted ||
-          revision <= state.pending_ack->pre_snapshot_revision ||
-          published.date_raw != state.pending_ack->pre_observed_date_raw ||
-          published.played_character_id != static_cast<std::int32_t>(state.pending_ack->player_character_id)) {
+      if (state.pending_ack && state.action_may_have_submitted) {
+        if (revision <= state.pending_ack->pre_snapshot_revision ||
+            published.date_raw != state.pending_ack->pre_observed_date_raw ||
+            published.played_character_id != static_cast<std::int32_t>(state.pending_ack->player_character_id)) {
+          failure = "private_faction_pending_receipt_invalid"; return false;
+        }
+        query.ack = *state.pending_ack;
+      } else if (!state.pending_ack && !state.action_may_have_submitted &&
+                 state.verified_ack && state.verified_receipt &&
+                 state.verified_observation &&
+                 state.verified_receipt->postcondition_verified &&
+                 state.verified_receipt->request_id == state.verified_ack->request_id &&
+                 revision >= state.verified_receipt->post_snapshot_revision &&
+                 published.paused && published.map_ready &&
+                 published.has_played_character && published.played_character_alive &&
+                 published.date_raw == state.verified_receipt->post_observed_date_raw &&
+                 published.played_character_id ==
+                     static_cast<std::int32_t>(state.verified_receipt->player_character_id)) {
+        // A reply may be lost after the independent receipt succeeded. Replay
+        // only its exact terminal evidence, never submit the old action again.
+        query.ack = *state.verified_ack;
+        query.receipt = *state.verified_receipt;
+        query.observation = *state.verified_observation;
+        query.receipt_complete = true;
+        query.status = "applied";
+        query.source_faction_id = query.ack.source_faction_id;
+        query.recipient_character_id = query.ack.recipient_character_id;
+        serialized = game::Render12004BuildIdentity(
+            SerializeResult(query, step, request_id), adapter.descriptor());
+        return true;
+      } else {
         failure = "private_faction_pending_receipt_invalid"; return false;
       }
-      query.ack = *state.pending_ack;
       query.source_faction_id = query.ack.source_faction_id;
       query.recipient_character_id = query.ack.recipient_character_id;
     }
@@ -512,11 +538,25 @@ bool HandleFactionGiftPrivate12004(const game::GameAdapter &adapter,
       if (query.observation.available) state.last_query = query.observation;
     } else if (query.mode == Mode::submit) {
       state.last_query.reset();
-      if (query.ack.verification_pending) state.pending_ack = query.ack;
-      else state.action_may_have_submitted = false;
+      if (query.ack.verification_pending) {
+        state.pending_ack = query.ack;
+        state.verified_ack.reset();
+        state.verified_receipt.reset();
+        state.verified_observation.reset();
+      } else state.action_may_have_submitted = false;
     }
     serialized = game::Render12004BuildIdentity(SerializeResult(query, step, request_id), adapter.descriptor());
+    if (query.mode == Mode::receipt && query.receipt_complete &&
+        query.receipt.postcondition_verified) {
+      // Keep independently verified terminal evidence for a lost reply, but
+      // release both pending latches only after the response is serialized.
+      state.verified_ack = query.ack;
+      state.verified_receipt = query.receipt;
+      state.verified_observation = query.observation;
+      state.pending_ack.reset();
+      state.action_may_have_submitted = false;
+    }
     return true;
-  } catch (...) { failure = "private_faction_router_exception"; return false; }
+  } catch (...) { serialized.clear(); failure = "private_faction_router_exception"; return false; }
 }
 } // namespace xar::ck3_12004

@@ -1,0 +1,34 @@
+{
+  "schema": "xar.native24-publication-candidate/v1",
+  "status": "OFFLINE_PATCH_FOR_W_WRITER_NOT_COMMITTED",
+  "base_git_head": "16b2806343660fc7823cffb9b53000a097e0d2df",
+  "native24_final_dll_sha256": "8c3968297ecc75acdd8f40a9c9c44ad39b3d83582f4d119cf88c31c4bae4c4d9",
+  "native24_final_delivery_sha256": "e0016bcb0dde3f327670b3aa787ce7c05a659a69cb9802104880e4995edf4b9e",
+  "native24_final_source_freeze_sha256": "3175d521d6ac951bf0342148840ae8fc1b2caa4fe7c86caf820fff2672632e2a",
+  "patch_sha256": "810b251f31d827ef17f9d5b4a6ddaa008998453c2993037da8b53e4ea778b9b3",
+  "files": {
+    "ck3_autonomous_player/native_bridge/CMakeLists.txt": {
+      "base_sha256": "e2674d4a35e6b5256172d40a7ad288f447cd6848da62a099617a24daef178b96",
+      "target_normalized_lf_sha256": "ccdd8a866342e3d4c41deb2855770ad213e53f65ed441553e1c73087a21301dd"
+    },
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_gift_router.hpp": {
+      "base_sha256": "01a3e5342e3a1d2a22d8eebe558e7bc79840a2853f489e6fef02772cdc437dcf",
+      "target_normalized_lf_sha256": "69ec799b63068f163d0a8fb96c598c93f2109e918e081dd03c90856c89fdcfcf"
+    },
+    "ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp": {
+      "base_sha256": "9f7cc5175486f7462bb85f703fabb9fbf6d34fdf65e641a2675a38689ccc5f16",
+      "target_normalized_lf_sha256": "6f442c40ebe17cdeb6436d8b280872fcdbd72eee56be288560c4d9e23056a7fe"
+    },
+    "ck3_autonomous_player/native_bridge/tests/ck3_12004_faction_adopted_whole_test.cpp": {
+      "base_sha256": "65f3d73ca974d6f188c5ffe2dc37020ec77f02b23e6d7fe7d45e0232a385ff4a",
+      "target_normalized_lf_sha256": "cdc3568aafec216e3da896e7638571410181807b2e9b757ca125f896d13b117e"
+    }
+  },
+  "apply": "Verify four base_sha256 values, then git apply --unidiff-zero --check native24-public-production-zero.patch, then git apply --unidiff-zero native24-public-production-zero.patch",
+  "test_target": "xar_ck3_12004_faction_adopted_whole_test",
+  "test_cmake_include": "ck3_autonomous_player/native_bridge/cmake/faction_adopted_12004.cmake",
+  "prewar_v2_note": "CMake option default OFF omitted the existing formal V2 provider and capability; ON compiles existing bridge, runtime/mailbox, provider sources. Compile and focused test on public W; actual Native24 DLL is separately pinned.",
+  "gift_layout_note": "Header changes embedded FactionGiftPrivateState12002; clean rebuild all four actual consumers bridge, gift12004, gift12002, nonwar12002. CMake dependency rebuild should be verified.",
+  "patch_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-publication01\\native24-public-production-zero.patch",
+  "zero_context": true
+}

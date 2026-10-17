@@ -1,0 +1,412 @@
+{
+  "schema": "xar.sdk38-publication-pins.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T08:59:42.291560+00:00",
+  "public_base_commit": "16b2806343660fc7823cffb9b53000a097e0d2df",
+  "raw_sources": [
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/NATIVE24-DELIVERY-ORIGINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\final01\\DELIVERY.json",
+      "bytes": 1703,
+      "sha256": "e0016bcb0dde3f327670b3aa787ce7c05a659a69cb9802104880e4995edf4b9e"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/NATIVE24-PUBLICATION-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-publication01\\PUBLICATION-FINAL.json",
+      "bytes": 2753,
+      "sha256": "b9a2171d64cc3a484fea407f7cdcf8fe9b751ee049cb881e777a27185e050744"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/native24-public-production-zero.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-publication01\\native24-public-production-zero.patch",
+      "bytes": 7390,
+      "sha256": "810b251f31d827ef17f9d5b4a6ddaa008998453c2993037da8b53e4ea778b9b3"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/NATIVE24-FULL-CLOSURE-RESULT.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\tests\\FULL-CLOSURE-RESULT.json",
+      "bytes": 717,
+      "sha256": "0401f03397c04dd95d0b8b629dfac83e6ca3fbdbf9bc4ccb9bb4cce831775fcb"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/SDK38-PUBLIC-TRANSFER.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-publication-emergent-priority03\\PUBLIC-TRANSFER.json",
+      "bytes": 3339,
+      "sha256": "3cc784ab2ec7e5fd4183929bfca19edd3275f1cb2eef41114e36e5ae67a94758"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/SDK38-FREEZE-ORIGINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\SOURCE-FREEZE-P38-FINAL03.json",
+      "bytes": 854,
+      "sha256": "fcf3734fb05b6dd65e15961f65dbb05b6605def6ae80a1e812fecdd05115e35b"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/GIFT-DANGER-DELIVERY-ORIGINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\DELIVERY.json",
+      "bytes": 4157,
+      "sha256": "206f15dba4ab4c54821a9b0fc18b1902922ac529eea4176c4f781346bba7bcd9"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/GIFT-DANGER-OWNER-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-gift-spending-candidate01\\TESTS.json",
+      "bytes": 976,
+      "sha256": "a3b9c5edead17e6be3f43e19c6516dc020ce0a1800da808304c59f44b54030df"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/PUBLIC-FOCUSED-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-sixteenth-prep01\\COMBINED-SDK38-PUBLIC-FOCUSED.json",
+      "bytes": 889,
+      "sha256": "b69aa50d7fa9737af235e5f5a9c480c70d8452c28559d76263f6985966bc828e"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/OFFICIAL-FIFTEENTH-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-fifteenth-prep01\\OFFICIAL-FIFTEENTH-CI-FINAL.json",
+      "bytes": 1859,
+      "sha256": "107d2fd1333fddb79d125eb7fc82330102ff2d0b4c0f9a8a3b4fa20d492bb2e7"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/OFFICIAL-OBS-VERSION-CORRECTION-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-fifteenth-prep01\\OFFICIAL-OBS-VERSION-CORRECTION-CI-FINAL.json",
+      "bytes": 1859,
+      "sha256": "3ab7c2fd6b23c197ab0916acd8043ed023e4f329b5176f855bf0ab8f614b077f"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/OFFICIAL-EXTERNAL-73775B5C-CI-FINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-fifteenth-prep01\\OFFICIAL-EXTERNAL-73775B5C-CI-FINAL.json",
+      "bytes": 1859,
+      "sha256": "aca415e58db1e718450a149e945babcbb9248282fe28df3a4f1acfab23848624"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/HARNESS-DELIVERY-ORIGINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\DELIVERY.json",
+      "sha256": "02894bfdd0da4ce278524ddc3af4030e0c24aecbcd8f1a8976334788760e86a6",
+      "bytes": 6588
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/HARNESS-README-ORIGINAL.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\README.md",
+      "sha256": "dd3e200668c724781587b22c5d2ac548fa3f5a026f3f68e00c4598a336d4b2ed",
+      "bytes": 3332
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/actual-launcher-v2.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-public-harness-boundaries01\\actual-launcher-v2.patch",
+      "sha256": "eeabdf694b22a66d8b4fc18fb856d09aa5ab97019ecac272247a2910bc043c2f",
+      "bytes": 3263
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/CLEAN-FEEDER-LEDGER-REPAIR01.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\CLEAN-FEEDER-LEDGER-REPAIR01.json",
+      "sha256": "61907421bc5e54b194ebe2746a2b765538bf988258ac5e1f3dc05a3aeaff4e33",
+      "bytes": 2206
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/FEEDER-STARTUP-LEDGER-CORRECTION01.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\FEEDER-STARTUP-LEDGER-CORRECTION01.json",
+      "sha256": "4251d89d8f9952851472e82fff63d7a542e432a1f7c9588abd93c7edeeeb185c",
+      "bytes": 3417
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/R37-PEACE-MULTIDAY-REPORT.md",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-peace-multiday-audit01\\REPORT.md",
+      "sha256": "22023f96a5602ff6e73ea07c03746aebd34dac3dd3a599479b2259a6f9dc5ec1",
+      "bytes": 3156
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/construction-paused-frame-readonly01-SOURCE-REVIEW.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-construction-paused-frame-readonly01\\SOURCE-REVIEW.json",
+      "bytes": 3137,
+      "sha256": "7d5d6af8eed93856a339c605e2523a488f96a02a63b37d97f449c90da4369160"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/first-heir-preread-readonly01-SOURCE-REVIEW.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-first-heir-preread-readonly01\\SOURCE-REVIEW.json",
+      "bytes": 3362,
+      "sha256": "4975168ee038b43108039d79a8ac068dfeb4f1bd6191bc948b7e014d5439a9c0"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/faction-pending-publication-readonly01-SOURCE-REVIEW.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-pending-publication-readonly01\\SOURCE-REVIEW.json",
+      "bytes": 5040,
+      "sha256": "193613732ac4e1f8eda4666c450482d633576acf1595e4a0a36cab87ddced04a"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/faction-submit-admission-rejected01-NATIVE-SOURCE-PROOF.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-faction-submit-admission-rejected01\\NATIVE-SOURCE-PROOF.json",
+      "bytes": 2274,
+      "sha256": "8a900bb94c14231e0190497c66016e2a64330fe2d1b83800ec224ee9dd54de1d"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/HARNESS-PUBLIC-TESTS.json",
+      "source": "public focused execution",
+      "bytes": 586,
+      "sha256": "6f5b0f6c78c5b97e704d0f617e044e9329da83dcd75dbf9f4277663a60b1ffb5"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/STATUS-FAST-DELIVERY-ORIGINAL.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-status-candidate01\\FAST-DELIVERY.json",
+      "bytes": 2165,
+      "sha256": "a3ead9d759b657450804dae23c83518ff5c90154137b66a461652eb6cf056b7d"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/NATIVE24-FIXTURE-COMPILE-RESULT.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\tests\\FOCUSED-COMPILE-RESULT.json",
+      "bytes": 2548,
+      "sha256": "1be7fbc91c8e8d1db8c7412e52eb7b607eb5a74c407108b94f1324814bef9da5"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/sdk38-publication-and-gift/NATIVE24-IDENTICAL-SOURCE-FIXTURE-RERUN.json",
+      "source": "independent source owner execution message",
+      "bytes": 1149,
+      "sha256": "60321e3589bcbb392a63f15d20492675c0f382a3a909a3c3fa93efbb91a8ee81"
+    }
+  ],
+  "public_normalized_sources": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "sha256": "013aed54f2404784d5bfabc26c1efef4b57cd60a7f268e63749ccd18df846f0c"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_gift_router.hpp",
+      "sha256": "69ec799b63068f163d0a8fb96c598c93f2109e918e081dd03c90856c89fdcfcf"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp",
+      "sha256": "6f442c40ebe17cdeb6436d8b280872fcdbd72eee56be288560c4d9e23056a7fe"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/tests/ck3_12004_faction_adopted_whole_test.cpp",
+      "sha256": "cdc3568aafec216e3da896e7638571410181807b2e9b757ca125f896d13b117e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "sha256": "92d2d6c7ba98f6d9774efe7f1cfb749c2bfc6970cbb25fd5d879206bf5baffcd"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "sha256": "e929b86b3dcfc7c1b481de6fb55889118ec0b12cc111bf2872bb5fe248ebdebc"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_material_publication_v1.py",
+      "sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "sha256": "b3801cd2589941c9ea731884485e19817e29b484f48d35bfac3cc32511a701b4"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+      "sha256": "e4b4c3df5dea82b7a1b8929bc5981f5305d31a11df79e9123cd7ddeddd7ab094"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_material_publication_portable.py",
+      "sha256": "f4aef56ed26cc605f63457af6a61b81809dcf7d1f956057d9a827097ed36d52e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_window_priority_portable.py",
+      "sha256": "335efbb0263cd847161541685455e8444592835d29fb038ed54e5f2c1d2de0ec"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py",
+      "sha256": "a424ee36fb101887b7916a0d63be98c10165686ee1a5728e76b5cfdd8ec1b01c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/construction_paused_frame_readonly_v1.py",
+      "sha256": "7f261b96e6d425501c059c0ff0246a53afb248fe8b5e31d0b24a9d4b0a6755fd"
+    },
+    {
+      "path": "tools/g2_saved_campaign/faction_pending_publication_readonly_v1.py",
+      "sha256": "0e6b2272c0f48a32a09bbcad24c4d8e25b3dd9fb0cc4d71f540be704199924dc"
+    },
+    {
+      "path": "tools/g2_saved_campaign/first_heir_preread_readonly_v1.py",
+      "sha256": "65cbf697ef9678cbb48055badddcd289a68df560e86615dd6d7809176c6ebaaa"
+    },
+    {
+      "path": "tools/g2_saved_campaign/faction_submit_admission_rejected_v1.py",
+      "sha256": "f3d3fc7c6d32aa0212d1bfa40d0045dcfa2db2bcdfbf718cdf9e0cb36ec00979"
+    },
+    {
+      "path": "tools/g2_saved_campaign/campaign_continuity_binding.py",
+      "sha256": "ede3ba50fd4cbc3bac31e0cff8389a03715e95289c66a7b37e74ce97f0676fa1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual185-projection.json",
+      "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual196-projection.json",
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual517-projection.json",
+      "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_campaign_continuity_binding.py",
+      "sha256": "3d864d020dc7f6fbfb0fd851274fb215cf0b0e2fac73f5521ad9fbf3006d2409"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_construction_paused_frame_readonly_v1.py",
+      "sha256": "6af33ad4ac73c44924d8cdeeb20be3ac413cdda025fcb0fe815a0c649853036c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_faction_pending_publication_readonly_v1.py",
+      "sha256": "53751f97c95be0512625fd9bcf2ecd9dc445355b438e633be8f2a6cfe5fd3d47"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_faction_submit_admission_rejected_v1.py",
+      "sha256": "99fea1dbcb0e25d2e79ed84e01583c19d9174a47e24cec746b722a341668bf28"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_first_heir_preread_readonly_v1.py",
+      "sha256": "49568ac159e13e3efb94daa3ed18dfc34941d1afc3af40520ab3eac9836b45c1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/audience_sdk_binding.py",
+      "sha256": "027ee46d942cc3d6eb0db8c6ca519c67c474e53aa0f9853628af22b5518fad93"
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_prebaseline.py",
+      "sha256": "fda2173dedd8fc16167f9f37d65f69858204a7f5a74cc7518c84632f457ffb13"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_audience_prebaseline.py",
+      "sha256": "360e4ae2c99a8ff86dfec12abe24bbff5e057613b82983313bb0637ca07233c1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual-audience-binding.json",
+      "sha256": "b1806082bfad32c2dd13665e6215a70907b07f9d2fab1445dc61f0a4c5dd131b"
+    }
+  ],
+  "artifact_body_not_copied": [
+    "Native DLL",
+    "full SourceManifest/header inventory",
+    "Driver",
+    "SAVE",
+    "video"
+  ],
+  "Game_MCP_Native_SDK_OBS_operations": 0,
+  "applied_patch_normalized_sources": [
+    {
+      "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "sha256": "ccdd8a866342e3d4c41deb2855770ad213e53f65ed441553e1c73087a21301dd"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_faction_gift_router.hpp",
+      "sha256": "69ec799b63068f163d0a8fb96c598c93f2109e918e081dd03c90856c89fdcfcf"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/ck3_12004_faction_gift_router.cpp",
+      "sha256": "6f442c40ebe17cdeb6436d8b280872fcdbd72eee56be288560c4d9e23056a7fe"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/tests/ck3_12004_faction_adopted_whole_test.cpp",
+      "sha256": "cdc3568aafec216e3da896e7638571410181807b2e9b757ca125f896d13b117e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "sha256": "e93415f724006b990a90c399b21a781dc818dca1bb047dbedca66bfdd8730128"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/faction_gift_formal_route_v1.py",
+      "sha256": "e929b86b3dcfc7c1b481de6fb55889118ec0b12cc111bf2872bb5fe248ebdebc"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/pending_material_publication_v1.py",
+      "sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_formal_route_v1.py",
+      "sha256": "b3801cd2589941c9ea731884485e19817e29b484f48d35bfac3cc32511a701b4"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_faction_gift_spending_urgency.py",
+      "sha256": "e4b4c3df5dea82b7a1b8929bc5981f5305d31a11df79e9123cd7ddeddd7ab094"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_material_publication_portable.py",
+      "sha256": "f4aef56ed26cc605f63457af6a61b81809dcf7d1f956057d9a827097ed36d52e"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_window_priority_portable.py",
+      "sha256": "335efbb0263cd847161541685455e8444592835d29fb038ed54e5f2c1d2de0ec"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_emergent_priority_portable.py",
+      "sha256": "a424ee36fb101887b7916a0d63be98c10165686ee1a5728e76b5cfdd8ec1b01c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/construction_paused_frame_readonly_v1.py",
+      "sha256": "7f261b96e6d425501c059c0ff0246a53afb248fe8b5e31d0b24a9d4b0a6755fd"
+    },
+    {
+      "path": "tools/g2_saved_campaign/faction_pending_publication_readonly_v1.py",
+      "sha256": "0e6b2272c0f48a32a09bbcad24c4d8e25b3dd9fb0cc4d71f540be704199924dc"
+    },
+    {
+      "path": "tools/g2_saved_campaign/first_heir_preread_readonly_v1.py",
+      "sha256": "65cbf697ef9678cbb48055badddcd289a68df560e86615dd6d7809176c6ebaaa"
+    },
+    {
+      "path": "tools/g2_saved_campaign/faction_submit_admission_rejected_v1.py",
+      "sha256": "f3d3fc7c6d32aa0212d1bfa40d0045dcfa2db2bcdfbf718cdf9e0cb36ec00979"
+    },
+    {
+      "path": "tools/g2_saved_campaign/campaign_continuity_binding.py",
+      "sha256": "ede3ba50fd4cbc3bac31e0cff8389a03715e95289c66a7b37e74ce97f0676fa1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual185-projection.json",
+      "sha256": "c53c8172833948ab29e076053e46b06a94991c6469562438ad149a0f2c84e284"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual196-projection.json",
+      "sha256": "fe2d7587c12c15a2ddc503bf4e9fd38f76366241d96258285b34bafff8d73ee6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual517-projection.json",
+      "sha256": "ad7ed38d647fe25af2f7808f74a181c37cd3c591194d8f249ce3c1faacb1b9ff"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_campaign_continuity_binding.py",
+      "sha256": "3d864d020dc7f6fbfb0fd851274fb215cf0b0e2fac73f5521ad9fbf3006d2409"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_construction_paused_frame_readonly_v1.py",
+      "sha256": "6af33ad4ac73c44924d8cdeeb20be3ac413cdda025fcb0fe815a0c649853036c"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_faction_pending_publication_readonly_v1.py",
+      "sha256": "53751f97c95be0512625fd9bcf2ecd9dc445355b438e633be8f2a6cfe5fd3d47"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_faction_submit_admission_rejected_v1.py",
+      "sha256": "99fea1dbcb0e25d2e79ed84e01583c19d9174a47e24cec746b722a341668bf28"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_first_heir_preread_readonly_v1.py",
+      "sha256": "49568ac159e13e3efb94daa3ed18dfc34941d1afc3af40520ab3eac9836b45c1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/audience_sdk_binding.py",
+      "sha256": "027ee46d942cc3d6eb0db8c6ca519c67c474e53aa0f9853628af22b5518fad93"
+    },
+    {
+      "path": "tools/g2_saved_campaign/runtime_repair_prebaseline.py",
+      "sha256": "fda2173dedd8fc16167f9f37d65f69858204a7f5a74cc7518c84632f457ffb13"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/test_audience_prebaseline.py",
+      "sha256": "360e4ae2c99a8ff86dfec12abe24bbff5e057613b82983313bb0637ca07233c1"
+    },
+    {
+      "path": "tools/g2_saved_campaign/tests/harness_boundaries/actual-audience-binding.json",
+      "sha256": "b1806082bfad32c2dd13665e6215a70907b07f9d2fab1445dc61f0a4c5dd131b"
+    }
+  ],
+  "rebased_parent_commit": "32df525603e6b8d8efd076a8b499ee6692a52d70",
+  "rebase_parent_history": [
+    "9a47d3ede7d29c60176a3dc27cbe69ba2d0c845e"
+  ]
+}

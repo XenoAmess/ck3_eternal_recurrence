@@ -1,0 +1,23 @@
+{
+  "schema": "xar.native24-identical-source-fixture-rerun.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T09:04:13.807653+00:00",
+  "executing_agent": "/root/final_hop_contact",
+  "observer": "owner tool execution reported to sole public writer",
+  "source_identity": {
+    "public_header_sha256": "69ec799b63068f163d0a8fb96c598c93f2109e918e081dd03c90856c89fdcfcf",
+    "public_router_sha256": "6f442c40ebe17cdeb6436d8b280872fcdbd72eee56be288560c4d9e23056a7fe",
+    "public_test_sha256": "cdc3568aafec216e3da896e7638571410181807b2e9b757ca125f896d13b117e",
+    "comparison": "byte identical to frozen fixture compilation inputs"
+  },
+  "fixture": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\tests\\faction-gift-fixture.dll",
+  "function": "RunGiftFixtureNative24",
+  "checks": 45,
+  "result": "PASS",
+  "exit_code": 0,
+  "seconds_less_than": 7,
+  "new_Native_DLL_or_EXE": false,
+  "Game_pipe_calls": 0,
+  "public_CMake_target_rerun": false,
+  "scope": "existing compiled same-byte fixture; not a new public CMake configure/build or live business validation"
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "xar.native24.prewar-v2-plus-gift-terminal-delivery/v1",
+  "status": "LINKED_AND_FOCUSED_VERIFIED_NOT_LOADED",
+  "native_DLL": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\final01\\native.dll",
+  "native_sha256": "8c3968297ecc75acdd8f40a9c9c44ad39b3d83582f4d119cf88c31c4bae4c4d9",
+  "native_bytes": 18442240,
+  "source_freeze": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\final01\\SOURCE-FREEZE.json",
+  "source_freeze_sha256": "3175d521d6ac951bf0342148840ae8fc1b2caa4fe7c86caf820fff2672632e2a",
+  "all_actual_headers_and_retained_link_inputs_verified": true,
+  "focused_fixture_status": "PASS_45_CHECKS_FULL_ACTUAL_LINK_CLOSURE",
+  "focused_fixture_receipt": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-prewar-v2-native24-02\\tests\\FULL-CLOSURE-RESULT.json",
+  "exports_rva": {
+    "XarCk3BridgeIdentity": 5303792,
+    "XarCk3BridgePrepareStartup": 5305408,
+    "XarCk3BridgeStart": 5321776,
+    "XarCk3BridgeStartWithPipe": 5321792,
+    "XarCk3BridgeStop": 5321888
+  },
+  "Native23_final01_retained_immutable": true,
+  "game_or_pipe_calls": 0,
+  "actual_gameplay_qualification": "PENDING_ROOT_CONTROLLED_COLD_LOAD",
+  "storage_admission": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native21-cold-generation03\\STORAGE-ADMISSION.json",
+  "storage_review_at_utc": "2026-10-17T11:49:00.265518+00:00",
+  "current_D_free_bytes": 1034030940160,
+  "retention_review_reason": "Current cold-load input until Root controlled qualification; prior final01 retained as exact build provenance"
+}

@@ -1,0 +1,57 @@
+{
+  "status": "COMPILED_NATIVE22_PRESUBMIT_ADMISSION_REJECTION_SOURCE_BOUND",
+  "admitted_native_dll_sha256": "db399c0edd9634829e6734a4b3937a061dbbd4b707ea2c0e5f3f5ae957e7860f",
+  "source_input_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\cb-candidates-native18-01\\jobs\\49c12a1a8afd\\ck3_12004_faction_gift_router.cpp",
+      "sha256": "9f7cc5175486f7462bb85f703fabb9fbf6d34fdf65e641a2675a38689ccc5f16",
+      "bytes": 28460
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\cb-candidates-native18-01\\jobs\\49c12a1a8afd\\COMPILE-RESULT.json",
+      "sha256": "560aa53c23a1936bd2e617e8ae58ce02caa7d31fb7bbd25c9bfbc6b9f7f71457",
+      "bytes": 127627
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\LINK-PLAN.json",
+      "sha256": "edc34456eebe5d7ee5fab1f2386ecd6a0255c62ae6233bbe234929cc8529c0ff",
+      "bytes": 119024
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p34-zero-hop-native-repair01\\final03\\SOURCE-FREEZE.json",
+      "sha256": "c877a07df4790288dfd87a0c4b2d51e35bd5af448354fd98e4686cbc875a4812",
+      "bytes": 78380
+    }
+  ],
+  "actual_failed_response": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-responses\\0788-1-result.json",
+    "sha256": "e4d21743a19bee6b68ed5fea3f79d0a3b16afb41302574ebd7f327e8340d526a",
+    "bytes": 595
+  },
+  "compiled_object_sha256": "4b852484d6e1cd8a9226475791ce3cebc00791440b3aa070d4cc4093098d3f66",
+  "ReadAction_lines": [
+    300,
+    337
+  ],
+  "exact_failure_lines": [
+    458,
+    459
+  ],
+  "TrySubmit_lines": [
+    490,
+    493
+  ],
+  "native_mailbox_or_business_executor_reached": false,
+  "python_pending_created_before_native_send": true,
+  "original_request_id": "not present in MCP error; deferred to closed durable ledger",
+  "recovery_does_not_reconcile_durable_pending": true,
+  "root_next_steps": [
+    "recover fresh SEM/clear Q only",
+    "no ordinary AUTO",
+    "actual final SAVE",
+    "actual SDK close",
+    "closed-derived exact rejected request projection"
+  ],
+  "no_live_driver_reads": true,
+  "no_native_calls": true
+}

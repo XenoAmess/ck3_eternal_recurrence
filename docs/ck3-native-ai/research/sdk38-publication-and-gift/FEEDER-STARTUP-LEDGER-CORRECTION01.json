@@ -1,0 +1,70 @@
+{
+  "status": "HISTORICAL_HARNESS_MISROUTED_LEDGER_ERRATUM_ONLY_NO_REWRITE",
+  "at_utc": "2026-10-17T07:29:10.915232+00:00",
+  "last_valid_old_campaign_settlement": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000323.json",
+    "sha256": "8734f0365a572096da1535c2737ddddfa694cda2402cfce0522061d86a813066",
+    "bytes": 8469
+  },
+  "misrouted_startup_interruption_event": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\ROOT-CONTINUITY-WINDOW-EVENTS\\00000324.json",
+    "sha256": "948eab44c8c06be5d0a58bf1fbe87f7b29ebf397d4905c7097270e9d356138f0",
+    "bytes": 8751
+  },
+  "cause": "Original clean feeder retained shared old-campaign CONTINUITY_WINDOW literal. Strict Game identity rejected attach, then original launcher exception handler wrote repair_required into the same wrong ledger without a game key.",
+  "prior_old_campaign": {
+    "window_id": 32,
+    "status": "running",
+    "game_binding": {
+      "pid": 263980,
+      "creation_date": "20261017023601.215983+000"
+    },
+    "last_settled_date_raw": 53523936,
+    "last_settled_cycles": 14139,
+    "manual_repair_count": 32
+  },
+  "misrouted_effect": {
+    "window_id": 32,
+    "status": "repair_required",
+    "game_binding": {
+      "pid": 263980,
+      "creation_date": "20261017023601.215983+000"
+    },
+    "last_settled_date_raw": 53144328,
+    "last_settled_cycles": 11,
+    "manual_repair_count": 32
+  },
+  "misrouted_new_campaign_frame": {
+    "snapshot_id": "native:7",
+    "revision": 8,
+    "native_revision": 7,
+    "date_raw": 53144328,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30"
+  },
+  "misrouted_source": {
+    "settled_state": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "sha256": "5c3ee23f912efbbee1ede1f94013679d12c7a1a7b683a0fbc03e0971ea8e77b7"
+    },
+    "failure": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\p37-queue\\ROOT-CUMULATIVE-LOOP-STATE.json",
+      "sha256": "5c3ee23f912efbbee1ede1f94013679d12c7a1a7b683a0fbc03e0971ea8e77b7"
+    }
+  },
+  "interpretation": "Event324 records a harness routing error, not new gameplay failure in old Game263980. Do not interpret its mixed old Game/new frame as a campaign settlement or handoff. Original receipts/current snapshot remain unchanged. New campaign ledger was separate and not modified by this first startup catch.",
+  "original_launcher": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder.py",
+    "sha256": "9ff70ca1183f9e30afe21b7bf165ba4ba30b45c513a7dd247e50f85224e88c81",
+    "bytes": 2451
+  },
+  "v2_repair": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\CLEAN-FEEDER-LEDGER-REPAIR01.json",
+    "sha256": "61907421bc5e54b194ebe2746a2b765538bf988258ac5e1f3dc05a3aeaff4e33",
+    "bytes": 2206
+  },
+  "v2_actual_start_reported_by_Root_exec": 7159,
+  "v2_later_actual_readonly185_failure_is_separate": true,
+  "ledger_rollbacks_or_writes": 0,
+  "Game_SDK_OBS_calls": 0
+}

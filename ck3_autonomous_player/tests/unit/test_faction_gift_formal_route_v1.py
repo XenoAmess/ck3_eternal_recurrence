@@ -72,6 +72,25 @@ def observation() -> dict[str, object]:
     }
 
 
+def stock_danger_alert() -> dict[str, object]:
+    """Synthetic same-frame final Native danger for the positive spend case."""
+    return {
+        "command": "query-player-faction-alerts-v1", "ok": True,
+        "result": {"player_faction_alerts": {
+            "status": "available", "snapshot_revision": 12, "date_raw": DATE,
+            "player_character_id": 32904,
+            "readiness": {"targeting_rows_ready": True,
+                          "stock_dangerous_predicate_ready": True,
+                          "same_frame_ready": True},
+            "targeting_factions": [{
+                "faction_id": 771, "target_character_id": 32904,
+                "leader_character_id": 33011, "character_member_ids": [33011],
+                "dangerous_by_stock_rule": True, "faction_at_war": False,
+            }],
+        }},
+    }
+
+
 def candidate() -> dict[str, object]:
     return {
         "status": "selected", "observation": observation(),
@@ -152,7 +171,8 @@ def test_planner_preserves_known_empty_and_requires_pre_submit_checkpoint(tmp_pa
     assert empty["plan"]["faction_gift_private_candidate_v1"][
         "faction_dissolved_or_gift_applied"] == "not_inferred"
     save = route.plan_faction_gift_private_v1(
-        driver, planned, snapshot(), root_history(count=1), {"save-checkpoint"}
+        driver, planned, snapshot(), root_history(count=1) + [stock_danger_alert()],
+        {"save-checkpoint"}
     )
     assert save["plan"]["selected_step"] == "save-checkpoint"
     driver._last_checkpoint = {
@@ -160,7 +180,8 @@ def test_planner_preserves_known_empty_and_requires_pre_submit_checkpoint(tmp_pa
         "episode_run_id": "native-32904-a",
     }
     submit = route.plan_faction_gift_private_v1(
-        driver, planned, snapshot(), root_history(count=1), {"save-checkpoint"}
+        driver, planned, snapshot(), root_history(count=1) + [stock_danger_alert()],
+        {"save-checkpoint"}
     )
     assert submit["plan"]["selected_step"] == route.SUBMIT_STEP
 

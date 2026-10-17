@@ -1,0 +1,44 @@
+{
+  "status": "GREEN_OFFLINE_ACTUAL_METADATA_FORMAL_ATTACH_NO_RUNTIME_CALLS",
+  "at_utc": "2026-10-17T07:03:48.203924+00:00",
+  "cause": "Frozen feeder CONTINUITY_WINDOW literal referenced the old shared campaign ledger. Actual new campaign ledger and new launch Game identity match exactly.",
+  "new_launcher": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder_v2.py",
+    "bytes": 3415,
+    "sha256": "cf3115d24f2a3b6df99f894415476ac91c838b0ea503507dd54dc7b4180adf83"
+  },
+  "tests": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\test_clean_feeder_ledger_v2.py",
+    "bytes": 3758,
+    "sha256": "e0e6125615f212fbd9fa9001f92c810d16be5901f716ddc7c853a176943abbfd"
+  },
+  "tests_passed": 3,
+  "CLI_help_exit_code": 0,
+  "original_frozen_feeder_unchanged": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\root_p37_same_game_loop_feeder.py",
+    "bytes": 29427,
+    "sha256": "faa1f05ff3db1b6520416955d0ffffd3b17f73270c841a42b88c751d14e2cab9"
+  },
+  "original_launcher_preserved": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder.py",
+    "bytes": 2451,
+    "sha256": "9ff70ca1183f9e30afe21b7bf165ba4ba30b45c513a7dd247e50f85224e88c81"
+  },
+  "ledger_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\ROOT-CONTINUITY-WINDOW.json",
+  "identity_guard_changed": false,
+  "window_manual_count_or_credit_changed": false,
+  "actual_new_ledger_writes": 0,
+  "old_ledger_reads_or_writes": 0,
+  "Driver_or_SAVE_reads": 0,
+  "Game_SDK_OBS_calls": 0,
+  "Root_command": [
+    "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\launch_clean_feeder_v2.py",
+    "--first-control-sequence",
+    "10"
+  ],
+  "first_FULL_republished": false
+}

@@ -14,11 +14,13 @@ using namespace xar::ck3_12004;
 constexpr std::uint32_t source_id = 0x05000003;
 bool empty_targeting = false;
 int router_checks = 0;
-void CheckRouter(bool value) {
+void CheckRouterAt(bool value, int line) {
   ++router_checks;
-  if (!value) std::cerr << "router check failed: " << router_checks << '\n';
+  if (!value) std::cerr << "router check failed: " << router_checks
+      << " line " << line << std::endl;
   assert(value);
 }
+#define CheckRouter(value) CheckRouterAt((value), __LINE__)
 
 class RouterAdapter final : public game::GameAdapter {
 public:
@@ -309,6 +311,7 @@ int main(int argc, char **argv) {
   CheckRouter(wire.find("gift_gold_delta_not_observed") != std::string::npos &&
       wire.find("\"postcondition_verified\":false") != std::string::npos);
   WriteWire(out, "gift-receipt-unchanged.command-result.json", wire);
+  CheckRouter(state.pending_ack && state.action_may_have_submitted);
   Put(fixture.player_extension.data(), 0x100, std::int64_t{12'500'000});
   gift_applied = true;
   Put(opinion_group.data(), 0x14, std::int32_t{1});
@@ -316,6 +319,42 @@ int main(int argc, char **argv) {
   CheckRouter(wire.find("\"status\":\"applied\"") != std::string::npos &&
       wire.find("\"postcondition_verified\":true") != std::string::npos);
   WriteWire(out, "gift-receipt-applied.command-result.json", wire);
+  CheckRouter(!state.pending_ack && !state.action_may_have_submitted &&
+      state.verified_ack && state.verified_receipt &&
+      state.verified_observation && state.verified_receipt->postcondition_verified);
+  const std::string original_verified_wire = wire;
+  const auto queues_after_verified = queues;
+  CheckRouter(call(ck3_11906::kFactionGiftPrivateReceiptStepV1, FramePayload(4) + "}", 4));
+  CheckRouter(wire == original_verified_wire && queues == queues_after_verified);
+  WriteWire(out, "gift-receipt-replayed-after-lost-reply.command-result.json", wire);
+  adapter.snapshot.paused = false;
+  CheckRouter(!call(ck3_11906::kFactionGiftPrivateReceiptStepV1, FramePayload(4) + "}", 4));
+  CheckRouter(state.verified_ack && state.verified_receipt &&
+      state.verified_observation &&
+      !state.pending_ack && !state.action_may_have_submitted);
+  adapter.snapshot.paused = true;
+  Put(fixture.player_extension.data(), 0x100, std::int64_t{20'000'000});
+  gift_applied = false;
+  Put(opinion_group.data(), 0x14, std::int32_t{0});
+  CheckRouter(call(ck3_11906::kFactionGiftPrivateQueryStepV1, FramePayload(5) + "}", 5));
+  CheckRouter(state.last_query && state.last_query->gift_preview.available &&
+      !state.pending_ack && !state.action_may_have_submitted);
+  const std::string submit_next = FramePayload(5) + ",\"source_faction_id\":" + std::to_string(source_id) +
+      ",\"recipient_character_id\":" + std::to_string(recipient_id) +
+      ",\"membership_role\":\"leader\",\"definition_stable_hash\":" + std::to_string(definition_hash) +
+      ",\"gold_cost_raw\":7500000,\"opinion_delta\":35,\"minimum_gold_reserve_raw\":5000000,"
+      "\"expected_native_revision\":5}";
+  const bool second_submitted = call(ck3_11906::kFactionGiftPrivateSubmitStepV1, submit_next, 5,
+      "faction-gift-00000000000000000000000000000002");
+  if (!second_submitted) std::cerr << "second gift failure: " << failure << std::endl;
+  CheckRouter(second_submitted);
+  CheckRouter(queues == queues_after_verified + 1 && state.pending_ack &&
+      state.action_may_have_submitted && !state.verified_ack &&
+      !state.verified_receipt && !state.verified_observation);
+  WriteWire(out, "gift-second-submit-pending.command-result.json", wire);
+  Put(fixture.player_extension.data(), 0x100, std::int64_t{12'500'000});
+  gift_applied = true;
+  Put(opinion_group.data(), 0x14, std::int32_t{1});
   state = {}; empty_targeting = true;
   CheckRouter(call(ck3_11906::kFactionGiftPrivateColdRecoveryStepV1, IdPayload(4), 4));
   CheckRouter(wire.find("independent_read_complete") != std::string::npos &&

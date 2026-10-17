@@ -1,0 +1,35 @@
+# SDK38候选：自动派系送礼只处理匹配的原生危险派系
+
+2026-10-17。只读SDK37 CLEAN03及本局已完成AUTO515、531、788小回执；不读Driver/SAVE，不操作现场，不改活源码、ledger或W。Root明确授权此窄policy作为SDK38组合候选，由python_hotpath_opt与其同叶wait修正合并、统一freeze。本包未部署、未运行CK3，G2仍6/8。
+
+## 实际花费与原因
+
+AUTO515实际原plan选择private-submit-faction-gift-member-v1，原生选中派系54的直属有地leader33946：Gold25810153raw/scale100000，quote10000000raw（100gold），预期opinion+15。原观察为liberty_faction、power23.314/threshold80、discontent0、每月-3，dangerous_by_stock_rule=false/reason=non_peasant_discontent_not_increasing。prewar_force_query实际unsupported，war_entry_candidate为forecast_required，不能把它当已就绪战备。
+
+AUTO531独立receipt实际applied/mitigated：金币15810153raw，收礼人opinion -8→7，gift modifier15存在；source_faction_present=true、recipient_still_in_source_faction=true、faction_dissolved=false、threat_resolved=false。这是切实发生的100gold支出，约占此前现金38.7%；不能宣传解除派系或为第一战取得战备收益。
+
+源码准确路径：faction_gift_policy_v1.py:99–106要求power/discontent有观测，但:179–200仅按可支付的quote/opinion、leader、当前opinion、IDs排序；100gold reserve使258.10153−100=158.10153可通过。bridge/faction_gift_formal_route_v1.py:219–240对任何selected候选直接进入checkpoint/submit，没有消费危险度。已有M5 stock-danger消费仅影响gift与正收入建筑的相对优先，不能阻止这条后置private fallback对watch花钱。原版已拆gift_interaction没有直接leave/remove faction效果，材料见公共faction-selected-gift-stock-response-12004.md:100–168。本次问题是可选支出缺乏必要性过滤，不是Native扣款或opinion读回不准。
+
+AUTO788只保留原error private_faction_action_or_pending_binding_invalid与is_error=true。其Native latch执行阶段由Root/perf/finalHop独立调查；本包不由新filter推断原788未执行、执行完成或获恢复，也不清原pending。
+
+## 唯一policy改动
+
+在现有private普通规划函数的selected候选与checkpoint之间，调用已经存在的observe_faction_gift_stock_threat_v1。它复用同帧历史alert，缺失时仍仅使用现有只读observer；按actual full FactionID、recipient leader/member、current player/native revision/date及readiness匹配。仅status=observed且dangerous_response_ready=true允许新自动礼物支出。该ready还要求对应派系非at_war，不把另一派系危险或县域聚合dangerous当成当前gift理由。
+
+watch、未知、缺可用observer、frame/source/recipient不符都保留原普通plan与诊断，不新增gift或其前置SAVE，不把未知记成安全或真实noop。暂无“战备就绪”例外，尤其unsupported V2不授ready。它不退回已花的钱、不改变gift合法性/预算、不保证危险派系送礼后散伙，也不改Native/schema/API/冷却。原pending处于函数更早的分支，同PID receipt、异PID cold recovery及已submitted核验完全保留；mandatory非life-advance计划原样返回。手工typed送礼与既有M5比较器未重写。
+
+只交一个source leaf的import和小hunk，不能整叶覆盖perf同文件wait修正。实际SDK38组合叶SHA由perf最终freeze提供，不把此独立candidate SHA冒充部署树。
+
+## 有限离线验证
+
+13个planner cases最终GREEN，pytest报告13 passed in0.55s：实际515合法预算候选旧chooser仍selected、新policy保life-advance；同scope synthetic危险正例保原有/无checkpoint路径；3个frame字段拒绝；recipient/sourceFaction/atwar拒绝；unavailable保推进及unknown；同/异PID原pending核验；mandatory不改。均执行真实route与既有threat observer，没有替换policy或实际Native调用。候选/frame/metrics/531receipt是原件窄投影，root/readiness envelope、process identity及危险反事实明确为synthetic，不能把离线分支叫实机结果或已节省100gold。
+
+首次11passed/2failed是合成pending source_round_id误写fixture-only，被原ledger格式校验拒绝；仅将fixture改为合法R515后13passed，未修改产品pending校验或policy。SDK38 source不因此改版。未重跑旧矩阵、未新建原生测试或长期平台。
+
+公共portable test及fixture可直接入tests/unit与其fixtures目录。已有test_faction_gift_formal_route_v1.py的正向新gift fixture此前没有危险alert，后续solewriter集成应补显式同帧危险alert以保留其checkpoint/submit断言；不能把正向断言改成hold蒙混通过。其他旧submit/receipt/cold模型不变。本包仅交下一有限公共批，不单独触CI。
+
+## 来源、移交、时效
+
+SOURCE-PINS.json绑定SDK37 manifest ef5a2dac…、原route、单叶candidate、diff与窄实际projection。projection内分别保留515/531/788原件完整SHA/大小，未复制原102998B/92590B回执。候选diff d34fb165…；默认生产尚未采用，是否部署和实际行为归Root后续新回执，不由单测授M6/M7/30年/性能完成。
+
+本包使用N/R4既有64GiB共享reservation，0新增global reserve，峰值预算128KiB；source/fixture/报告按通用policy记录复核和保护期限，不保存视频或大trace。不引入游戏会话、录制时长或容量限制。

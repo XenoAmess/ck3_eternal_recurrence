@@ -327,3 +327,9 @@ SDK37 CLEAN03的无XAR ordinary-no-pact合同窄移植到公共binder，保持No
 ## 第15窄录制配置修复
 
 公共 `prepare_profile` 只将完整预配置后的 `FirstRun` 写为真，现有隐藏／托盘／前台守卫不改。真实259e首录在 owned OBS 改变前台后拒绝并正常关闭0；GetProfileList207随后恢复，具体窗口原因未证。官方30.0.0固定源码条件包含 `LastVersion`，旧 builder 已写该字段、启动前INI未保全，禁止把单行修复称为已证向导根因或录制实机修复完成。13项公共离线检查通过；[来源和边界](obs-preconfigured-first-run-2026-10-17.md)入库，不动Game／SDK／活动媒体。
+
+## 第16有限包：出版等待、派系 receipt 和干净局绑定
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。SDK38 相关 Service／gift 窄差分保留公共 HolySite 与现有普通规划入口，新增 pending publication 对账和等待中新 UI／战争重算；赠礼新支出必须同帧 stock danger，旧 pending／独立 receipt 不取消。Native24 既有 prewar V2 纳正式构建，终态 receipt 序列化成功才清锁，丢回复仅重读同一证据。公共32项／6子例与4类纯资格＋ledger binding 13项／56子例通过；audience／prebaseline 5项／4子例通过。Native 原闭包45 checks 与公共构建状态分别记录，不作 live 业务外推。
+
+四类 handler 不含 CAS／现场控制；788 原 submit 不是只读查询。账本 API 仅先验首 FULL 后设置新 feeder 的路径，原 bad-ledger 事件／勘误保留。audience session 与 recording SID 分开，合法 prebaseline 缺文件不造零基线，后续 progress 模块不阻本批。Root 已报告 Native24 新 Game246608，SDK38 分支实机验收另证；连续30年／<1／0.5目标均未达，旧局不计新局。第15、OBS30.0.2 勘误、73775b5c 的三个 Official 已实际 success，见[有限专题](sdk38-publication-fence-and-faction-admission.md)。

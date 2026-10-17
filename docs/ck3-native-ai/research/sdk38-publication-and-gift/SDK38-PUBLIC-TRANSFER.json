@@ -1,0 +1,53 @@
+{
+  "status": "PUBLIC_NARROW_TRANSFER_NOT_W_INTEGRATED",
+  "base_public_head_reviewed": "16b2806343660fc7823cffb9b53000a097e0d2df",
+  "service_diff_application_order": [
+    "material_service_diff",
+    "window_priority_service_diff",
+    "fresh_priority_service_diff"
+  ],
+  "gift_route_scope": "apply only actor stable ID/alive wait and postwait hunks; G2 danger is independently integrated",
+  "focused_tests": "10 portable unittest tests GREEN against frozen SDK38 final03",
+  "pins": {
+    "material_service_diff": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-material-publication-fence01\\service.py.diff",
+      "sha256": "a35d580d4375957632d671fd0e815d16c02a0dccc62ad06759d51617fe7ec4a5"
+    },
+    "window_priority_service_diff": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-window-priority-fence02\\service-final02.diff",
+      "sha256": "39eb3f05d8311758694ba1ef0ecdb2fe7f54a55533e132112795677161773556"
+    },
+    "fresh_priority_service_diff": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-publication-emergent-priority03\\service-final03.diff",
+      "sha256": "a8289c797d3e7dc154c68aef3668492e23576fb41a955e04122956ce631ac08e"
+    },
+    "gift_route_diff_including_separate_g2_danger": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-material-publication-fence01\\faction_gift_formal_route_v1.py.diff",
+      "sha256": "41b86925d72f5fb002350f22269b378fbe20a301d711de10076764c16eca985e"
+    },
+    "pending_helper": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\bridge\\pending_material_publication_v1.py",
+      "sha256": "8d3ad2b0aa6c029036e2800684ac57e1c0204d45740c47abe6ba46ed6f0ba917"
+    },
+    "final_service": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\src\\xar_autoplayer\\bridge\\service.py",
+      "sha256": "2a8e6823990f2e0af0a5ca17cc602d50f93e0357c7db635977e1a76bff5ef2ee"
+    },
+    "portable_material_tests": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-publication-emergent-priority03\\test_material_publication_portable.py",
+      "sha256": "f4aef56ed26cc605f63457af6a61b81809dcf7d1f956057d9a827097ed36d52e"
+    },
+    "portable_window_tests": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-publication-emergent-priority03\\test_window_priority_portable.py",
+      "sha256": "335efbb0263cd847161541685455e8444592835d29fb038ed54e5f2c1d2de0ec"
+    },
+    "portable_fresh_tests": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p38-publication-emergent-priority03\\test_emergent_priority_portable.py",
+      "sha256": "a424ee36fb101887b7916a0d63be98c10165686ee1a5728e76b5cfdd8ec1b01c"
+    },
+    "source_manifest": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p38-candidate-final03\\SOURCE-MANIFEST-P38-FINAL03.json",
+      "sha256": "2c0e9d673591abf4003a4242d20188bb18136e8a49d6897c7001fa03969f85f5"
+    }
+  }
+}
