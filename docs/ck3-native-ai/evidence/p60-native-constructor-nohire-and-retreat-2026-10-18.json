@@ -1,0 +1,333 @@
+{
+  "schema": "xar.ck3.p60-war-native-boundaries-archive/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "archived_at_utc": "2026-10-17T22:40:09.333665+00:00",
+  "public_source_head_at_audit": "f6f64a474e8d71695d69ab0aee709ff376baf91b",
+  "scope": "documentation only; no current SDK/App/Native/Game change, no new G2 credit",
+  "native_constructor": {
+    "audit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p60-native-constructor-audit01\\audit.json",
+      "bytes": 6986,
+      "sha256": "1513f2618162768312d6138717ec578e6e57827b824a2ad35132769d904e91dc"
+    },
+    "audit_observed_at_utc": "2026-10-17T22:23:50.667511+00:00",
+    "frozen_Native25_bridge_source_sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9",
+    "source_sha_is_not_DLL_sha": true,
+    "target": {
+      "version": "1.20.0.4",
+      "steam_build": "25734779",
+      "sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+    },
+    "actual_AUTO123": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r3-responses\\0123-1-result.json",
+      "bytes": 910,
+      "sha256": "b81ad628c1a0090fd1535f9159d9231a036da3261ad865b836bebd8dad3f8d4f"
+    },
+    "actual_AUTO123_utc": [
+      "2026-10-17T21:56:54.020575Z",
+      "2026-10-17T21:56:55.068333Z"
+    ],
+    "native_revision": 10327,
+    "native_step": "query-combat-simulation-inputs-v2-2619-ctor0-a-2-402653372-436207707-d-1-167772577",
+    "error": "combat-input query step is not canonical",
+    "actual_CAP": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r4-responses\\0002-1-result.json",
+      "bytes": 67427,
+      "sha256": "d65a9d1b8b907cb6eb2f56b8a86b55f3fe1414ce8603629470eba6ac9692ba80"
+    },
+    "actual_advertised_combat_input_capabilities": [
+      "game.command.query-combat-simulation-inputs-v2-N"
+    ],
+    "V3_callability_claimed": false,
+    "public_V3_proof": "bridge.cpp TypedQueryKind12002/IsBattleWarTypedQuery12004/early dispatch/RunTypedQuery12002 actual4 phase executor; public source proof is separate from current Native25 CAP",
+    "conclusions": {
+      "v2": "actual reachable long dispatch rejects constructor0 on .4; common software reader exists but source semantic proof of actual4 create-new native caller is not closed by inspected contact migration receipts",
+      "v3": "actual4 early typed dispatch already accepts exact4 and binds actual4 Phase; later03-only legacy branch is not the actual4 route, and Native25 does not advertiseV3",
+      "missing_source": "actual4 create-new holder/fallback defender branches -> raw0 argument6 -> wrapper -> CCombat retained+6F8 and ordered side insertion; migration contact292B prefix/callback proofs do not establish this whole separate chain",
+      "no_claim": "absence of proof is not proof that .4 native semantics differ; no guessed RVA delta, new attack permission, or business qualification"
+    },
+    "source_pins": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\bridge.cpp",
+        "bytes": 1598612,
+        "sha256": "d7f189f29a206c0b562ac10c05d2e46a17aaf2c67f146a5c69b99fc667526908"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_combat.cpp",
+        "bytes": 8994,
+        "sha256": "8340a3c01af9212b276b982ae52d4a239dd14830536d18b2225247c0103da214"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_phase.cpp",
+        "bytes": 7924,
+        "sha256": "04386ab8dcdcca904266339697eb34a5d515fd1f27ec49a8fb51fcca0567e3b5"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_contact.cpp",
+        "bytes": 2693,
+        "sha256": "5ccb73c715cec0ae61cce4954ab67d28c5def08de1bc9c6b3f4a630c805c39f5"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\existing-contact-phase-12004\\contact\\CONTACT-PROFILE-SOURCE-CLOSED.json",
+        "bytes": 9261,
+        "sha256": "8349b7645dd308c0cf413a2df48cb532ce7039c3c04dc639109a04c7c5c8206b",
+        "recorded_machine_id": "unknown",
+        "use": "source knowledge only; no target machine runtime acceptance inferred"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\battle-pursuit\\migration-steam25734779\\arrival-readonly-migration\\contact-layout-map01\\ARRIVAL-CONTACT-LAYOUT-SOURCE-CLOSED.json",
+        "bytes": 5408,
+        "sha256": "6b65b1a35176625e2c2599a086909d64cd3da4dfc574d642ba291817fa98e0ac",
+        "recorded_machine_id": "unknown",
+        "use": "source knowledge only; no target machine runtime acceptance inferred"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p26-all-lifestyle-frontier01\\jobs\\47f64e761c49\\bridge.cpp",
+        "bytes": 1600530,
+        "sha256": "55cc0bd664478f64496b219445a0b5ceeb902b386bb9e1ef076f1592f0b875e9"
+      }
+    ],
+    "gate_widened": false,
+    "NativeDLL_changed": false,
+    "MSVC_tests": "NOTRUN: no justified Native change"
+  },
+  "historical_AUTO40": {
+    "aggregation": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p58-manual-passive-defense01\\AUTO40-MERCENARY-NOHIRE-AGGREGATE.json",
+      "bytes": 10711,
+      "sha256": "c5f03da4e9d8944f084d9998b94b2a443f06fa2f3431e3cb23eebcde8d6a5158"
+    },
+    "aggregation_observed_at_utc": "2026-10-17T22:05:57.975904+00:00",
+    "source": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r3-responses\\0040-1-result.json",
+      "bytes": 2599168,
+      "sha256_from_prior_root_sealed_receipt": "1a267b715162e2d7ad5e3b2a405aeedf67d2a850582d3e55ab5fdd0fa504ba0a",
+      "same_stat_before_after": true,
+      "whole_file_rehashed_or_loaded": false
+    },
+    "timeline_projection": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p55-sdk-only-rotation01\\ACTUAL-AUTO40-TIMELINE-SHAPE01.json",
+      "bytes": 14903,
+      "sha256": "f7b22050a6cdffc6b51d15545ae97f423fe18188e2b07af75ee9e284f046adb8"
+    },
+    "source_started_at_utc": "2026-10-17T21:40:26.514812+00:00",
+    "source_ended_at_utc": "2026-10-17T21:40:29.684869+00:00",
+    "source_starting_date_raw": 53358576,
+    "source_ending_date_raw": 53358648,
+    "source_connection_generation": 14,
+    "source_actor": 40695,
+    "candidate_count": 584,
+    "selected_company_id": null,
+    "candidate_list_digest": "2a9fe5df87fa2c57adfff3d764e83b289ca30a58dfe291268e65ac75de676a75",
+    "rejection_counts_overlap": true,
+    "rejection_counts": {
+      "spawn_is_not_a_current_stationary_friendly_staging_province": 584,
+      "does_not_reverse_an_observed_own_war_headcount_deficit": 584,
+      "native_hire_or_affordability_rejected": 572,
+      "native_composition_or_hire_terms_not_ready": 565,
+      "same_frame_contract_and_military_cash_allocation_not_ready_or_not_retained": 494,
+      "company_already_employed": 71
+    },
+    "closest": [
+      {
+        "company_id": 152,
+        "gold_cost_raw": 21100000,
+        "gold_after_hire_raw": 21364323,
+        "company_current_soldiers": 856,
+        "friendly_staging_soldiers": null,
+        "reinforced_staging_soldiers": null,
+        "predicted_auto_raise_province_id": 2618,
+        "staging_army_ids": [],
+        "comparison_enemy_current_soldiers": 4783,
+        "numerical_balance_reversed_war_ids": [],
+        "rejection_reasons": [
+          "spawn_is_not_a_current_stationary_friendly_staging_province",
+          "does_not_reverse_an_observed_own_war_headcount_deficit"
+        ],
+        "finance": {
+          "status": "available",
+          "observed_treasury_raw": 42464323,
+          "contract_months": 36,
+          "maximum_monthly_military_maintenance_raw": 365400,
+          "maintenance_allocation_months": 18,
+          "required_gold_reserve_raw": 20000000,
+          "retains_military_allocation": true,
+          "gross_monthly_income_raw": 451460,
+          "complete_monthly_net_observed": false
+        }
+      },
+      {
+        "company_id": 296,
+        "gold_cost_raw": 23900000,
+        "gold_after_hire_raw": 18564323,
+        "company_current_soldiers": 837,
+        "friendly_staging_soldiers": null,
+        "reinforced_staging_soldiers": null,
+        "predicted_auto_raise_province_id": 2618,
+        "staging_army_ids": [],
+        "comparison_enemy_current_soldiers": 4783,
+        "numerical_balance_reversed_war_ids": [],
+        "rejection_reasons": [
+          "same_frame_contract_and_military_cash_allocation_not_ready_or_not_retained",
+          "spawn_is_not_a_current_stationary_friendly_staging_province",
+          "does_not_reverse_an_observed_own_war_headcount_deficit"
+        ],
+        "finance": {
+          "status": "available",
+          "observed_treasury_raw": 42464323,
+          "contract_months": 36,
+          "maximum_monthly_military_maintenance_raw": 365400,
+          "maintenance_allocation_months": 18,
+          "required_gold_reserve_raw": 20000000,
+          "retains_military_allocation": false,
+          "gross_monthly_income_raw": 451460,
+          "complete_monthly_net_observed": false
+        }
+      }
+    ],
+    "largest": {
+      "company_id": 102,
+      "gold_cost_raw": 84600000,
+      "gold_after_hire_raw": -42135677,
+      "company_current_soldiers": 2929,
+      "friendly_staging_soldiers": null,
+      "reinforced_staging_soldiers": null,
+      "predicted_auto_raise_province_id": 2618,
+      "staging_army_ids": [],
+      "comparison_enemy_current_soldiers": 4783,
+      "numerical_balance_reversed_war_ids": [],
+      "rejection_reasons": [
+        "native_composition_or_hire_terms_not_ready",
+        "native_hire_or_affordability_rejected",
+        "same_frame_contract_and_military_cash_allocation_not_ready_or_not_retained",
+        "spawn_is_not_a_current_stationary_friendly_staging_province",
+        "does_not_reverse_an_observed_own_war_headcount_deficit"
+      ],
+      "finance": {
+        "status": "available",
+        "observed_treasury_raw": 42464323,
+        "contract_months": 36,
+        "maximum_monthly_military_maintenance_raw": 365400,
+        "maintenance_allocation_months": 18,
+        "required_gold_reserve_raw": 20000000,
+        "retains_military_allocation": false,
+        "gross_monthly_income_raw": 451460,
+        "complete_monthly_net_observed": false
+      }
+    },
+    "scope": "historical AUTO40 only, not a new quote or current army/treasury claim; one-company current-headcount reversal model, not battle win probability",
+    "arrival_limits": "same-province stationary staging inference only; no guaranteed ETA, route or battle rescue",
+    "original_2599168B_response_reread_for_this_archive": false,
+    "current_quote_or_win_probability_claimed": false
+  },
+  "retreat": {
+    "source_audit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p58-manual-passive-defense01\\RETREAT-SOURCE-AUDIT.json",
+      "bytes": 5723,
+      "sha256": "8fefb08eeb083e0de8941f2a6afc2248f9948de1a5f956a4e97d72e42f1ebb00"
+    },
+    "source_observed_at_utc": "2026-10-17T22:08:58.127104+00:00",
+    "operation_card": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p58-manual-passive-defense01\\RETREAT-NATURAL-MCP-CHECKLIST.md",
+      "bytes": 8675,
+      "sha256": "ec89fa599330326a7bcd15368cadc400bc0b83e931f1de4b04d5bdbab8707547"
+    },
+    "public_SDK48_method_AST_match": {
+      "_execute_active_combat_retreat_v1_preview": true,
+      "_execute_active_combat_retreat_v1_order": true,
+      "_active_combat_retreat_source_binding": true,
+      "_active_combat_retreat_token_matches_snapshot": true,
+      "_active_combat_retreat_preview_steps": true
+    },
+    "first_natural_production_validation": "allowed under existing user authorization when actual production capabilities and all original guards hold; no new experiment approval or prior-success requirement",
+    "earlier_overstrict_first_stage_corrected": true,
+    "historical_119_live_machine_id": "unknown",
+    "historical_119_grants_current_actual4_acceptance": false,
+    "ordinary_automatic_order_consumer_added": false,
+    "MCP_calls_by_this_archive": 0,
+    "completion_rule": "fresh preview source_binding public revision/token; one order only; independent affected/unaffected army and prior full CombatID transition/terminal readback; unknown action never replayed"
+  },
+  "R5_retained_seven_day_result": {
+    "actual_source_qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p60-sdk-only-rotation01\\ACTUAL29-CONSTRUCTOR-CLASSIFIER-QUALIFIED01.json",
+      "bytes": 5531,
+      "sha256": "ca1b0ef5df1c480960f059669173a16548d5ba4921e45930af79a363037d45d5"
+    },
+    "negative_rejections": 13,
+    "runtime_epoch": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P50R5-CONSTRUCTOR29-CLASSIFIER-PROJECTION-EPOCH01.json",
+      "bytes": 4094,
+      "sha256": "c38ee491957ec5d16ebcaaedca438a5e19e6217dd757a219b1765f595771c557"
+    },
+    "settled_turn": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r5-queue\\CUMULATIVE-TURN-006210.json",
+      "bytes": 3603,
+      "sha256": "74574ca4633863799cb55f42a79972160ff2ccfa3197d4505dada8cf88367616"
+    },
+    "paired_MET35": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r5-responses\\0035-1-result.json",
+      "bytes": 1655,
+      "sha256": "8fd7e66fa3f56ad930206c0ac5a97c35d9ceb4f02be7ad433f09454f8b737037"
+    },
+    "source_AUTO29": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r5-responses\\0029-1-result.json",
+      "bytes": 83828,
+      "sha256": "c64f90091b9c51bc862210c49b39fecdf648cbe9a410b5bb51de30681cd94dc4"
+    },
+    "original_AUTO29_reread_for_this_archive": false,
+    "selected_step": "war-objective-hold-sentinel-advance-war-100663323-army-167772577-at-2623-until-53359104-speed-5",
+    "before": {
+      "snapshot_id": "native:10329",
+      "revision": 2,
+      "native_revision": 10329,
+      "date_raw": 53358936,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee"
+    },
+    "after": {
+      "snapshot_id": "native:10343",
+      "revision": 16,
+      "native_revision": 10343,
+      "date_raw": 53359104,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-40695-9cf747ffe1ee"
+    },
+    "date_delta_raw": 168,
+    "actual_days": 7,
+    "connection_generation": 16,
+    "policy_schema_adapter": {
+      "schema": "xar.ck3.constructor-hold-result-adapter/v1",
+      "policy": "native25-constructor-passive-defense-v1",
+      "original_plan_sha256": "e2b658b389f7b9ea32b6e308cc942b83b357fd6fff81de3c2ad9031d708496b5",
+      "original_plan_missing_legacy_fields": [
+        "war_id",
+        "subject_army_id",
+        "objective_province_id",
+        "timeline_speed",
+        "sentinel_scope",
+        "sentinel_mode",
+        "watch_army_ids",
+        "exact_war_terminal_watch",
+        "exact_active_war_set_watch",
+        "maximum_omitted_state_detection_lag_days",
+        "active_wars"
+      ],
+      "derived_fields_source": "selected canonical step + original policy admission + actual Native pre-arm admission/request and war_progress_before; remaining scope flags from actual Native DTO",
+      "derived_validation_view_only": true,
+      "original_plan_or_Native_DTO_changed": false,
+      "legacy_planned_war_scope_claimed": false,
+      "original_native_stop_and_action_guards_reused": true,
+      "paired_after_metrics_still_required": true,
+      "replay_allowed": false
+    },
+    "original_action_replayed": false,
+    "business_success_inferred": false,
+    "later_unsealed_progress_inferred": false,
+    "no_additional_credit": "only references Root already-settled turn6210; no duplicate time/war/G2 credit"
+  },
+  "archive_validation": {
+    "small_source_pins_checked": true,
+    "raw_source_or_full_candidates_copied": false,
+    "documentation_only": true
+  }
+}
