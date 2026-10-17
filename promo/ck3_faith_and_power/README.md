@@ -59,3 +59,11 @@ machine_id: 4-8e1c2f1861；实际补注 2026-10-17T13:16:56.756078+00:00。开�
 | [29:24.267 机制研究讲解审阅版](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/native-run/derived/direct/episode01-review.mp4) | [长版索引](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-review-build-a01/delivery/FULL-RESEARCH-REVIEW-DELIVERY.json)；95.21%为机制图及原生读回静图，[逐帧分类](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-build-candidate/FULL-VISUAL-DISTRIBUTION-a01.json)，不能称正式第一期。 |
 
 以上机器解码/PTS/字幕/声轨检查与人工听审、完整1倍观看、clean-span及签核分列；后者未完成。[正式21分钟作者方案](C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/full-build-candidate/formal-episode01-authoring-a01/formal-authoring.json)保持独立：R6/R7、Faith/Character导航及新声槽尚为null，不可渲染；等待有意义且不重复的真实raw，不能把静图高亮或暂停画面延长计作实机覆盖。
+
+## 第一期正式制作后继与本地审阅入口
+
+machine_id: 4-8e1c2f1861；实际后继读回2026-10-17T17:42:03.547494+00:00。原13:16UTC截点及旧29:24研究讲解版、3:34采用短段各自保留历史。
+
+正式一期本地审阅版已生成：105句／11章，实际19:24.821，1440p/30fps，73,514,400 B；全片解码、逐帧PTS、三套字幕及声轨检查通过。制作源d4d04956双CI成功。由[本地审阅与智能体研究入口](../../docs/ck3-native-ai/faith-and-power-episode01-review-delivery.md)观看影片、取中文稿/字幕/章节，并使用R5采用、R6准备、R7重规划/圣物、R8弃用/新建的知识；[交付索引](../../docs/ck3-native-ai/faith-and-power-episode01-review-delivery.json)保存精确SHA和来源。
+
+用户已授权本地先交，本次未上传；完整人工1倍观看、听审及clean-span签核待审，不把自动QA当成人审。D3仍有Driver绑定mismatch、restore未验，research holder及单次实证不授whole-product PASS。

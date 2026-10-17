@@ -1,0 +1,386 @@
+{
+  "schema": "ck3-faith-episode01-review-delivery-v1",
+  "schema_version": 1,
+  "machine_id": "4-8e1c2f1861",
+  "prepared_at_utc": "2026-10-17T17:21:08.677562+00:00",
+  "document_source_commit": "d4d049561266cbabd8b4c0cc31e38f9ce6fa6be0",
+  "document_status": "LOCAL_REVIEW_DELIVERED_HUMAN_SIGNOFF_PENDING",
+  "episode": {
+    "number": 1,
+    "title": "圣地不是打下来就算：谁能把它变成自己的？",
+    "ck3_version_scope": "1.20.0.4"
+  },
+  "delivery_authorization": {
+    "mode": "local_files_first",
+    "source": "User authorized local-first delivery and continued production in this conversation.",
+    "external_sync_required": false
+  },
+  "producer_source_plan": {
+    "source_commit": "d4d049561266cbabd8b4c0cc31e38f9ce6fa6be0",
+    "cue_count": 105,
+    "planned_timeline_duration": "19:24.800",
+    "planned_timeline_duration_seconds": 1164.8,
+    "source_kind": "Root parent message",
+    "phase_reported": "actual_build_exit_0_automated_QA_complete",
+    "final_artifact_observed": true,
+    "note": "Planned 1164.8 seconds is the 34944-frame video clock; measured container duration is separately recorded."
+  },
+  "formal_video": {
+    "status": "LOCAL_ENCODED_REVIEW",
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\native-run\\derived\\direct\\episode01-review.mp4",
+    "bytes": 73514400,
+    "sha256": "92e3c83641f57fb2e60eed09c583856813149b18a28813bf75c46ba7617f7071",
+    "duration_seconds": 1164.821354,
+    "video_frame_duration_seconds": 1164.8,
+    "frames": 34944,
+    "cue_count": 105,
+    "geometry": {
+      "width": 2560,
+      "height": 1440,
+      "fps": "30/1",
+      "audio_sample_rate": "48000",
+      "channels": 2
+    },
+    "production_source_commit": "d4d049561266cbabd8b4c0cc31e38f9ce6fa6be0",
+    "source_sha256": "b675ecff0a84cacdbeefb257aa86ed5645ffd61c201e9a470822ca967913da80",
+    "source_manifest_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-final-authoring-a01/formal-edit-input.json",
+    "source_manifest_sha256": "b675ecff0a84cacdbeefb257aa86ed5645ffd61c201e9a470822ca967913da80",
+    "producer_receipt_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/completed-review.json",
+    "producer_receipt_sha256": "f65fd1e6523010153e2276fa607451b1890e1c234a72a9cd26f1d7dd39e1ec27",
+    "produced_at_utc": "2026-10-17T17:37:10.826053+00:00",
+    "native_run": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\native-run\\run-manifest.json",
+      "bytes": 120180,
+      "sha256": "66044d4d23bde27ac677f888b2c2e214393ab6e41eeb851e6936d6be8d089611"
+    },
+    "qa": {
+      "status": "AUTOMATED_MEDIA_CHECKS_PASSED",
+      "receipt_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/episode01.AV-subtitle-source-QA.json",
+      "receipt_sha256": "f43e98bf53f66642a9e6e8caa7dbdd49f36508efcaa7abc2a3f79d18ff787754",
+      "decode_and_container": true,
+      "timeline_and_source_binding": true,
+      "clean_spans_certified": false,
+      "full_1x_review": false,
+      "human_audio_review": false,
+      "human_signoff": false,
+      "scope": "Full strict AV decode, all-frame PTS, exact 105 cues in all three SRTs, signal and source-span checks; human review separate."
+    },
+    "source_sha256_meaning": "Exact actual formal author input; code commit and native run are separately pinned."
+  },
+  "local_review_entry": {
+    "status": "AVAILABLE",
+    "readme_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/README.md",
+    "video_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/native-run/derived/direct/episode01-review.mp4",
+    "notes_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/episode01.zh.md",
+    "delivery_index": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/LOCAL-DELIVERY-INDEX.json",
+      "bytes": 3519,
+      "sha256": "2822e72ac2388eb2396acb148951e5702934da37034bcd68663253cd10ebdc3f"
+    },
+    "companions": [
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\native-run\\derived\\direct\\text\\episode01.zh.srt",
+        "bytes": 18281,
+        "sha256": "95fdd91b903015ef3220b298270f55c03abe0a9ecc03837d318e1df742e9e002"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\native-run\\derived\\direct\\text\\episode01.en.srt",
+        "bytes": 16273,
+        "sha256": "21b61196059a9de4444b80a9e1f646141889033ced7d1314db86d73f6891c273"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\native-run\\derived\\direct\\text\\episode01.bilingual.srt",
+        "bytes": 30988,
+        "sha256": "5e27ece0ea1406d2f27305d309d0628d00d0c5d84603bd82f275320ecd40bf7e"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\local-delivery\\episode01.zh.md",
+        "bytes": 15458,
+        "sha256": "fd465e7fd510a54434707617e10899bfceb18c240a04d0bbf02da1784022af31"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\local-delivery\\episode01.chapters.json",
+        "bytes": 2835,
+        "sha256": "61a864ee7b6e6d649b451eedfa6a7c583f469538b47bc895f19d08029c829746"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\local-delivery\\episode01.chapters.txt",
+        "bytes": 553,
+        "sha256": "463b0bff27e83559aaf96a937c866d47af402dd188fc65b5461e230f14ff2bd6"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\local-delivery\\episode01.claims-rawPTS-finalPTS.json",
+        "bytes": 353752,
+        "sha256": "87d303ee11838373743e120415b7d8c6f66a1384cf5c370bdc60182f77e5c6a3"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\local-delivery\\episode01.AV-subtitle-source-QA.json",
+        "bytes": 3663,
+        "sha256": "f43e98bf53f66642a9e6e8caa7dbdd49f36508efcaa7abc2a3f79d18ff787754"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\formal-full-review-build-a01\\raw-to-final-map.json",
+        "bytes": 366701,
+        "sha256": "7b4be7e8baeed94d6b465fd9cbe66d7c23ef3d66b2889f88723bc7eeb7d1adfb"
+      }
+    ],
+    "final_entry": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/LOCAL-REVIEW-ENTRY.json",
+      "bytes": 3212,
+      "sha256": "5b7ef22fee160417a324bdb3c6ff70ca0d418def19169bf757fbb2b6921da5c8"
+    },
+    "readme": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/local-delivery/README.md",
+      "bytes": 1724,
+      "sha256": "73f22fb7a273c6c2bbe6c3e4c337ba0b60d5d778cd64ae49befe7edeb212bd70"
+    }
+  },
+  "producer_fill_required": [],
+  "milestone_evidence": [
+    {
+      "stage": "R5采用",
+      "doc": "faith-and-power-episode01-r0005-adoption.md",
+      "scope_and_observations": "旧额外2000准备分支；采用已有32实付1000，2250→1250，普通成员和空库存独立读回。"
+    },
+    {
+      "stage": "R6准备",
+      "doc": "faith-and-power-episode01-r0006-observations.md",
+      "scope_and_observations": "从原F另开准备，累计额外5000；钱包2250→5250、奉献3000→6000/level3→4、个人rite13→15，采用后C2钱包4250。"
+    },
+    {
+      "stage": "R7重规划",
+      "doc": "faith-and-power-episode01-replanning-r7-12004.md",
+      "scope_and_observations": "从C2独立恢复；Emax拒绝后降26再升32，各1000，4250→3250→2250，各决议冷却独立。"
+    },
+    {
+      "stage": "R7圣物",
+      "doc": "faith-and-power-episode01-relic-r7-12004.md",
+      "scope_and_observations": "237供奉/撤回使32 Active false→true→false、有效稀有度0→4→0；钱包2250→2250→1750。"
+    },
+    {
+      "stage": "R8弃用",
+      "doc": "faith-and-power-episode01-r8-abandon-12004.md",
+      "scope_and_observations": "从原C2另恢复；退出32实付1000，T/E/R6/3/3→5/3/2，Faith51仍保留主要关系。"
+    },
+    {
+      "stage": "R8新建",
+      "doc": "faith-and-power-episode01-r8-create-12004.md",
+      "scope_and_observations": "接W后3250钱包；一件237/rarity4合法，新建326智慧普通圣地，实付2000至1250，Active/库存/owner后验完成。"
+    },
+    {
+      "stage": "R8保存闭场",
+      "doc": "faith-and-power-episode01-r8-closure.md",
+      "scope_and_observations": "D3保存/冻结和正常GUI OS0/CAS已验；Driver绑定仍mismatch、restore未验，public verify2/research holder。"
+    }
+  ],
+  "MCP_planning_entry": {
+    "knowledge_tool": "ck3_query_holy_site_planning_knowledge_v1",
+    "supported_actions": [
+      "adopt",
+      "create",
+      "promote",
+      "demote",
+      "abandon",
+      "enshrine_relic",
+      "remove_relic"
+    ],
+    "ck3_build": "1.20.0.4",
+    "source": "../../ck3_autonomous_player/src/xar_autoplayer/holy_site_planning_knowledge.py",
+    "qualification": "source_reviewed_static_with_scoped_historical_cases",
+    "current_state_observed": false,
+    "current_native_legality": null,
+    "action_ready": false,
+    "rules_doc": "faith-and-power-holy-sites-12004.md",
+    "early_capability_snapshot": "faith-and-power-mcp-capabilities-12004.md",
+    "native_observation_tools": [
+      "ck3_query_player_religion_context_v1",
+      "ck3_query_player_holy_site_v1",
+      "ck3_query_player_holy_site_decision_detail_v1",
+      "ck3_query_player_holy_site_decision_cooldown_v1",
+      "ck3_query_player_holy_site_relic_context_v1",
+      "ck3_query_player_holy_site_relic_action_context_v1",
+      "ck3_query_player_holy_site_creation_context_v1",
+      "ck3_take_snapshot"
+    ],
+    "guarded_action_refs": [
+      "holy-site-adoption-native12004.md",
+      "holy-site-management-native12004.md",
+      "holy-site-relic-actions-python12004.md",
+      "faith-and-power-creation-ui-public-12004.json",
+      "faith-and-power-create-once-public-12004.json",
+      "holy-site-creation-create-once12004.md"
+    ],
+    "boundary": "Historical native success is not current-world permission. Current-player typed finite operations retain active runtime admission/private opt-ins; no arbitrary actor permission is added."
+  },
+  "planning_cycle": [
+    {
+      "step": "observe",
+      "inputs": [
+        "run/process/generation/player/date",
+        "personal Rite, Faith and main Rite",
+        "complete Faith/site members and per-Faith grades",
+        "type/barony/county holder",
+        "artifact owner/inventory/equipped slots/recognition",
+        "cached Active and independent current evaluation"
+      ]
+    },
+    {
+      "step": "plan",
+      "inputs": [
+        "all normal native eligibility failures",
+        "available quote and freshness boundary",
+        "wallet and complete-chain budget",
+        "actually observed free-action count and separate cooldowns",
+        "beneficiary/territorial/political opportunity costs and unknown fields"
+      ]
+    },
+    {
+      "step": "commit_once",
+      "requirements": [
+        "fresh normal Can and bypass0 where exposed",
+        "matching selected site or full type/barony/ordered-artifact tuple",
+        "fresh applicable preview identity",
+        "unconsumed intent and current runtime admission"
+      ]
+    },
+    {
+      "step": "verify_independently",
+      "inputs": [
+        "actual wallet delta",
+        "complete ID/member/grade changes",
+        "explicit target/new instance",
+        "artifact owners/inventories/slots",
+        "independent cooldown and scoped Active evaluation"
+      ],
+      "ack_is_business_success": false
+    },
+    {
+      "step": "replan",
+      "rule": "Invalidate stale context after selection/business changes; retain unknown attempted outcomes and query rather than repeating them."
+    }
+  ],
+  "known_limits": {
+    "D3": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/scenario/saves/D3-samarra-wisdom-created.ck3",
+      "bytes": 50210947,
+      "recorded_sha256": "c6095d1dfed9b9c5df6f03e69905b16a2f365128a2ceafe7695f5ebc969c5f0a",
+      "file_saved_and_copy_recorded": true,
+      "Driver_state_binding_verified": false,
+      "reason": "save_binding_mismatch",
+      "repair_verified": false,
+      "restore_cold_load_verified": false,
+      "source": "faith-and-power-episode01-r8-closure.json",
+      "large_file_rehashed_for_index": false
+    },
+    "actual_devotion_after_R7_R8_operations": null,
+    "creation_cooldown": null,
+    "kingdom_counts": null,
+    "all_beneficiary_modifier_results": null,
+    "net_utility_optimality_proven": false,
+    "research_holder_completed": true,
+    "whole_product_business_pass": false,
+    "whole_product_release_pass": false,
+    "ordinary_campaign_credit_added": false,
+    "formal_film_completed": false,
+    "final_media_QA": "Automated checks passed; full human listening and 1x signoff pending.",
+    "formal_review_encode_completed": true
+  },
+  "fill_rules": [
+    "Fill final media values only from producer final artifact/source/QA receipts, not the planned timeline or an earlier review MP4/raw.",
+    "Keep unknown/failed QA fields; human signoff is not encoding or native business validation.",
+    "Add actual observation time and machine identity when filling final delivery.",
+    "Do not grant whole-product PASS or formal-film completion from this skeleton."
+  ],
+  "observed_at_utc": "2026-10-17T17:42:03.547494+00:00",
+  "evidence_source": "Root small receipt readback and final stat; producer full decode/PTS and SHA reused without rehashing MP4",
+  "actual_visual_distribution": {
+    "seconds": {
+      "raw": 278.19999733333304,
+      "diagram": 190.50000233333316,
+      "mechanism-motion": 481.5999983333327,
+      "native-readback": 214.50000333333276
+    },
+    "fraction": {
+      "raw": 0.2388392831515119,
+      "diagram": 0.16354739192588447,
+      "mechanism-motion": 0.41346153655739293,
+      "native-readback": 0.18415178836521062
+    },
+    "raw_includes_original_paused_UI": true,
+    "source_motion_counts_as_live_UI": false,
+    "maximum_contiguous_non_UI_seconds": 91.19999966666614,
+    "maximum_contiguous_static_graphic_seconds": 30.93333399999983
+  },
+  "root_review": {
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T17:42:03.547494+00:00",
+    "final_video_sha256": "92e3c83641f57fb2e60eed09c583856813149b18a28813bf75c46ba7617f7071",
+    "text_read_through_cues": 105,
+    "actual_frame_samples_directly_viewed": [
+      1,
+      4,
+      5,
+      7,
+      8,
+      9,
+      15,
+      16,
+      18,
+      19,
+      20
+    ],
+    "observed": "Sampled bilingual subtitles and source labels fit; W/Create delayed result text absent before onset and present after, with post-state UI.",
+    "pending_editorial_item": "A013 begins a three-account diagram with land while narration introduces the faith account; review timing at 00:32.",
+    "full_1x_review": false,
+    "human_listening": false,
+    "whole_product_business_pass": false,
+    "frame_evidence": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/final-sparse-frames-a01/FINAL-SPARSE-FRAME-AUDIT.json",
+      "bytes": 71709,
+      "sha256": "0431c998f8282713eac599209b86cf422a626bd283b19f1af7762f0c637481d1"
+    }
+  },
+  "source_CI": {
+    "commit": "d4d049561266cbabd8b4c0cc31e38f9ce6fa6be0",
+    "official_run_id": 39052902771,
+    "official_conclusion": "success",
+    "official_steps": 109,
+    "linear_run_id": 39052902734,
+    "linear_conclusion": "success",
+    "observed_at_utc": "2026-10-17T17:33:05Z",
+    "observer_machine_id": "4-8e1c2f1861",
+    "runner_machine_id": "unknown",
+    "receipt": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/ci-d4d04956/terminal-summary.json",
+      "bytes": 2212,
+      "sha256": "9bf33b2e56dfb8a255eb247bb8af0215292e088ec7b644e06ea021855b1ea653"
+    }
+  },
+  "storage_closure": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/formal-full-review-build-a01/closure-a01/FORMAL-LOCAL-CLOSURE.json",
+    "bytes": 2065,
+    "sha256": "ea6909b60def1991749ba20efc70d58d71f409a6f45b5d2fd9eb5fdf0f0665f4"
+  },
+  "R8_finite_input_protection": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/storage-review-r8-close-a01/R8-ACTIVE-INPUT-PROTECTION-REGISTRATION-SUMMARY-a01.json",
+    "bytes": 2766,
+    "sha256": "b073973f34ddf7250813107ed6da7174edeb2fd5d0dfcf32fd47bc3738d7b472"
+  },
+  "visual_sample_review": {
+    "machine_id": "4-8e1c2f1861",
+    "scope": "20 actual encoded frame samples directly viewed by media agent; Root separately viewed the 11 declared samples",
+    "index": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/final-sparse-frames-a01/FINAL-SPARSE-VISUAL-INDEX.json",
+      "bytes": 46665,
+      "sha256": "0bd63a1773b30526ab7e0784e1b45ff409d6f5a96061d0f64510b90e3f5901a9"
+    },
+    "readable": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/final-sparse-frames-a01/FINAL-SPARSE-REVIEW.md",
+      "bytes": 6226,
+      "sha256": "733c99459523b32cc9abe48140e7b0bfdc6efcc19b965fb3517b8609b28c6bd6"
+    },
+    "full_1x_review": false,
+    "human_listening": false,
+    "editorial_timing_item_retained": true
+  }
+}
