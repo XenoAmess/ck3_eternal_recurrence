@@ -2,6 +2,7 @@
 #include "xar_bridge/army_county_relation_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_position_relation_28bc250_12004.hpp"
 #include <array>
+#include <cstdio>
 #include <cstring>
 #include <map>
 #include <stdexcept>
@@ -162,15 +163,15 @@ void OwnedTrampolineUnwind() {
   constexpr std::array<std::uint8_t,15> prefix{
       0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x74,
       0x24,0x10,0x57,0x48,0x83,0xEC,0x20};
-  constexpr std::array<std::uint8_t,14> jump{
-      0xFF,0x25,0,0,0,0,0,0,0,0,0,0,0,0};
+  constexpr std::array<std::uint8_t,13> jump{
+      0x49,0xBB,0,0,0,0,0,0,0,0,0x41,0xFF,0xE3};
   constexpr std::array<std::uint8_t,16> unwind{
       0x01,0x0F,0x06,0x00,0x0F,0x64,0x07,0x00,
       0x0F,0x34,0x06,0x00,0x0F,0x32,0x0B,0x70};
   std::memcpy(owned.memory,prefix.data(),prefix.size());
   std::memcpy(owned.memory+15,jump.data(),jump.size());
   std::memcpy(owned.memory+32,unwind.data(),unwind.size());
-  owned.entry.BeginAddress=0;owned.entry.EndAddress=29;owned.entry.UnwindData=32;
+  owned.entry.BeginAddress=0;owned.entry.EndAddress=28;owned.entry.UnwindData=32;
   const auto image=reinterpret_cast<DWORD64>(owned.memory);
   owned.registered=RtlAddFunctionTable(&owned.entry,1,image)!=FALSE;
   Check(owned.registered,"register fixture-owned trampoline function table");
@@ -198,6 +199,17 @@ void OwnedTrampolineUnwind() {
     PVOID handler_data=nullptr;DWORD64 establisher=0;
     (void)RtlVirtualUnwind(UNW_FLAG_NHANDLER,image,context.Rip,found,
         &context,&handler_data,&establisher,nullptr);
+    if(context.Rip!=caller_return || context.Rsp!=entry_rsp+8 ||
+        context.Rbx!=saved_rbx || context.Rsi!=saved_rsi || context.Rdi!=saved_rdi)
+      std::fprintf(stderr,
+          "owned_unwind pc_offset=%u RIP=%llx expectedRIP=%llx RSP=%llx expectedRSP=%llx "
+          "RBX=%llx RSI=%llx RDI=%llx\n",static_cast<unsigned>(pc_offset),
+          static_cast<unsigned long long>(context.Rip),
+          static_cast<unsigned long long>(caller_return),
+          static_cast<unsigned long long>(context.Rsp),
+          static_cast<unsigned long long>(entry_rsp+8),
+          static_cast<unsigned long long>(context.Rbx),
+          static_cast<unsigned long long>(context.Rsi),static_cast<unsigned long long>(context.Rdi));
     Check(context.Rip==caller_return && context.Rsp==entry_rsp+8,
         "virtual unwind must recover caller return and caller RSP");
     Check(context.Rbx==saved_rbx && context.Rsi==saved_rsi && context.Rdi==saved_rdi,
@@ -206,14 +218,29 @@ void OwnedTrampolineUnwind() {
   exercise(0,false,false);   // Entry, before either save or push.
   exercise(10,false,false);  // Both stores complete, push not executed.
   exercise(11,true,false);  // Push complete, allocation not executed.
-  exercise(15,true,true);   // Full prologue, at absolute jump instruction.
-  exercise(28,true,true);   // Last covered byte in copied-prefix/jump range.
+  exercise(15,true,true);   // Full prologue, MOV R11 immediate instruction.
+  exercise(25,true,true);   // Actual JMP R11 instruction, ModRM mod3.
 }
 #endif
 }
-int main(){try{SameCompleteId();DifferentGenerationAndNoWar();RawWarByteAndFallback();
+int main(){
+  const char *active_case="same_complete_id";
+  try {
+  SameCompleteId();
+  active_case="different_generation_and_no_war";DifferentGenerationAndNoWar();
+  active_case="raw_war_byte_and_fallback";RawWarByteAndFallback();
+  active_case="partial_sampling_and_changed_id";
   PartialSamplingAndChangedId();
 #if defined(_WIN32) && defined(_M_X64)
+  active_case="owned_trampoline_unwind";
   OwnedTrampolineUnwind();
 #endif
-  return 0;}catch(...){return 1;}}
+  return 0;
+  } catch(const std::exception &error) {
+    std::fprintf(stderr,"county_relation_inputs_fixture case=%s: %s\n",active_case,error.what());
+    return 1;
+  } catch(...) {
+    std::fprintf(stderr,"county_relation_inputs_fixture case=%s: non_std_exception\n",active_case);
+    return 1;
+  }
+}

@@ -43,6 +43,13 @@ void Jump(std::uint8_t *at, std::uintptr_t target) noexcept {
   constexpr std::uint8_t op[6]{0xFF,0x25,0,0,0,0};
   std::memcpy(at,op,6);std::memcpy(at+6,&target,8);
 }
+void TrampolineJump(std::uint8_t *at, std::uintptr_t target) noexcept {
+  // The held complete 2C09620 body never reads R11. A register JMP with
+  // ModRM mod3 is not the memory-jump epilogue pattern of the old FF25 tail.
+  constexpr std::uint8_t move[2]{0x49,0xBB};
+  constexpr std::uint8_t jump[3]{0x41,0xFF,0xE3};
+  std::memcpy(at,move,2);std::memcpy(at+2,&target,8);std::memcpy(at+10,jump,3);
+}
 }
 extern "C" bool __fastcall XarCountyRelationInputsHook12004(void *receiver,
     void *actor, std::uintptr_t auxiliary, std::uintptr_t opaque_r9) {
@@ -77,12 +84,12 @@ bool InstallCountyRelationInputsHook12004(std::uintptr_t base,
   HMODULE module = nullptr;
   if (!GetModuleHandleExW(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_PIN,
       reinterpret_cast<LPCWSTR>(&XarCountyRelationInputsHook12004), &module)) return false;
-  // 15B copied prologue +14B jump, pad to32, then held16B UNWIND_INFO.
+  // 15B copied prologue +13B MOV R11/JMP R11, pad32, then held16B xdata.
   auto *const trampoline = static_cast<std::uint8_t *>(VirtualAlloc(nullptr,48,
       MEM_RESERVE|MEM_COMMIT,PAGE_READWRITE));
   if (!trampoline) return false;
   std::memcpy(trampoline,kPrefix.data(),kPrefix.size());
-  Jump(trampoline+15,reinterpret_cast<std::uintptr_t>(target)+15);
+  TrampolineJump(trampoline+15,reinterpret_cast<std::uintptr_t>(target)+15);
   // Exact held native xdata at5109E4C. Offsets remain valid for the copied
   // prologue (RBX/RSI saves, pushRDI, alloc32), including partial unwinds.
   constexpr std::array<std::uint8_t,16> unwind{
@@ -90,7 +97,7 @@ bool InstallCountyRelationInputsHook12004(std::uintptr_t base,
       0x0F,0x34,0x06,0x00,0x0F,0x32,0x0B,0x70};
   std::memcpy(trampoline+32,unwind.data(),unwind.size());
   g_trampoline_unwind.BeginAddress=0;
-  g_trampoline_unwind.EndAddress=29;
+  g_trampoline_unwind.EndAddress=28;
   g_trampoline_unwind.UnwindData=32;
   if (!RtlAddFunctionTable(&g_trampoline_unwind,1,reinterpret_cast<DWORD64>(trampoline))) {
     VirtualFree(trampoline,0,MEM_RELEASE);return false;
