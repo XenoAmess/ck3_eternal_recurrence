@@ -240,7 +240,7 @@ _SOURCE_REBIND_IDENTITY_KEYS = (
 )
 
 
-def _source_rebind_root_shape(capture, facts, current):
+def _source_rebind_root_shape(capture, facts, current, *, source_event_type="character_event"):
     """Admit only a fresh, bound character-event root and source option shape.
 
     Old source facts do not contain an earlier root-scope snapshot. The event
@@ -266,8 +266,8 @@ def _source_rebind_root_shape(capture, facts, current):
                 "saved_scopes_ready", "option_presentation_ready"))):
         raise ValueError("fresh event context is not fully bound")
     definition = facts.get("definition")
-    if not isinstance(definition, str) or _scalars(definition, "type") != ["character_event"]:
-        raise ValueError("source-declared character-event root unavailable")
+    if not isinstance(definition, str) or _scalars(definition, "type") != [source_event_type]:
+        raise ValueError("source-declared event root differs")
     root = context.get("root_scope")
     identity = root.get("typed_identity") if isinstance(root, dict) else None
     actor = frame.get("actor_character_id")
@@ -307,9 +307,57 @@ def _source_rebind_root_shape(capture, facts, current):
             or selection.get("option_number") != first["native_option_index"] + 1
             or selection.get("enabled") is not first.get("enabled")):
         raise ValueError("first shown enabled option is not the bound native option")
-    return {"source_event_type": "character_event", "raw_type_index": 4,
+    return {"source_event_type": source_event_type, "raw_type_index": 4,
             "type_key": "character", "subtype": 0,
             "typed_identity_kind": "character", "actor_character_id": actor}
+
+
+def _populist1001_source_rebind_shape(capture, facts, current):
+    """Reuse only the already reviewed .4 populist letter after a cold reload.
+
+    The current native definition ID is observed, never predicted from the old
+    load. All other letter events retain the generic character-only boundary.
+    """
+    from .faction_demand1001_context import recognize_faction_demand1001_projection_v1
+    from .populist1001_known_refusal_v1 import (
+        BACKEND, EVENT_KEY, OPTION_CATALOGUE_SHA256, SOURCE_REBIND_POLICY,
+        SOURCE_SHA256, _scope_id,
+    )
+
+    source_binding = facts.get("binding", {})
+    if (current.get("ck3_build") != "1.20.0.4"
+            or current.get("event_definition_key") != EVENT_KEY
+            or current.get("native_backend_id") != BACKEND
+            or current.get("native_option_count") != 4
+            or source_binding.get("source_sha256") != SOURCE_SHA256
+            or source_binding.get("option_catalogue_sha256") != OPTION_CATALOGUE_SHA256):
+        raise ValueError("reviewed populist letter source/catalogue differs")
+    shape = _source_rebind_root_shape(
+        capture, facts, current, source_event_type="letter_event")
+    context, frame = capture["window_context"], capture["binding"]
+    if (frame.get("paused") is not True or frame.get("map_ready") is not True
+            or frame.get("snapshot_id") != "native:" + str(frame.get("native_revision"))
+            or any(type(frame.get(key)) is not int or frame[key] <= 0
+                   for key in ("bridge_pid", "connection_generation"))
+            or not isinstance(frame.get("episode_run_id"), str)
+            or not frame["episode_run_id"] or context.get("window_match_count") != 1
+            or recognize_faction_demand1001_projection_v1(context,
+                played_character_id=frame.get("actor_character_id"),
+                snapshot_option_count=capture.get("snapshot_option_count"))["status"] != "recognized"):
+        raise ValueError("fresh populist letter frame/roles unavailable")
+    by_native = {row["native_option_index"]: row for row in context["options"]}
+    if (by_native[2].get("rendered_index") != 0
+            or by_native[3].get("rendered_index") != 1):
+        raise ValueError("reviewed populist letter rendered layout differs")
+    roles = {row["name"]: row for row in context["saved_scopes"]}
+    required = (("faction", "faction", "faction", "faction_id"),
+                ("target_title", "landed_title", "landed_title", "title_id"),
+                ("peasant_leader", "character", "character", "character_id"),
+                ("peasant_county", "landed_title", "landed_title", "title_id"))
+    if any(_scope_id(roles[name], kind, type_key, field) is None
+           for name, kind, type_key, field in required):
+        raise ValueError("fresh populist letter native scope identity unavailable")
+    return {**shape, "source_rebind_policy": SOURCE_REBIND_POLICY}
 
 
 def load_source_reviewed_event_v1(state_dir, capture):
@@ -355,13 +403,16 @@ def load_source_reviewed_event_v1(state_dir, capture):
             path, raw, known = source_rebind_entries[0]
             try:
                 facts, _ = read_json(known["source_facts"]["path"])
-                shape = _source_rebind_root_shape(capture, facts, current)
+                populist_letter = current["event_definition_key"] == "faction_demand.1001"
+                shape = (_populist1001_source_rebind_shape(capture, facts, current)
+                         if populist_letter else _source_rebind_root_shape(capture, facts, current))
                 old_binding = known["binding"]
                 fresh_binding = {**current,
                                  "source_sha256": old_binding["source_sha256"],
                                  "option_catalogue_sha256": old_binding["option_catalogue_sha256"]}
                 return known, {"status": "offline-source-reviewed",
-                    "binding_mode": "source_rebound", "fingerprint": path.stem,
+                    "binding_mode": ("populist1001_source_rebound" if populist_letter else "source_rebound"),
+                    "fingerprint": path.stem,
                     "entry_path": str(path), "entry_sha256": _sha(raw),
                     "fresh_binding": fresh_binding,
                     "fresh_binding_fingerprint": _fingerprint(fresh_binding),
@@ -370,6 +421,7 @@ def load_source_reviewed_event_v1(state_dir, capture):
                                      "entry_sha256": _sha(raw)},
                     "equivalent_source_fingerprints": [p.stem for p, _, _ in source_rebind_entries],
                     "root_scope_shape": shape,
+                    **({"source_rebind_policy": shape["source_rebind_policy"]} if populist_letter else {}),
                     "material_effects_verified": False, "registry_contract_accepted": False}
             except (OSError, ValueError, KeyError, TypeError) as error:
                 rejected.append({"entry": path.name, "reason": str(error)})

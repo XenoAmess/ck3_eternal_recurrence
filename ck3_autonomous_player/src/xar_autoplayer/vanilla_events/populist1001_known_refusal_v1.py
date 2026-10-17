@@ -14,18 +14,20 @@ SOURCE_SHA256 = "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104ecc
 OPTION_CATALOGUE_SHA256 = "5c76ae1a7cc44883f5d4af07e6f5c2e59986b9b0c6d6ca9cb379ac7ce298bace"
 BACKEND = "ck3-1.20.0.4-native-event-window-v1"
 REFUSE_STEP = "select-event-option-4"
+SOURCE_REBIND_MODE = "populist1001_source_rebound"
+SOURCE_REBIND_POLICY = "exact_12004_populist_letter_seven_roles_v1"
 
 
 
 def _source_known_exact(capture, audit):
     """Reuse the validated source while binding its current native definition ID.
 
-    Generic letter-event source rebinding remains outside this policy. The
-    ordinary loader must already have validated this exact registry entry.
+    The loader may bind the one reviewed populist letter to a newly observed
+    cold-load definition ID. Generic letter rebinding remains outside this policy.
     """
     if (not isinstance(capture, dict) or not isinstance(audit, dict)
             or audit.get("status") != "offline-source-reviewed"
-            or audit.get("binding_mode") != "exact"):
+            or audit.get("binding_mode") not in {"exact", SOURCE_REBIND_MODE}):
         return False
     try:
         binding = _native_binding(capture)
@@ -38,7 +40,20 @@ def _source_known_exact(capture, audit):
         return False
     binding.update(source_sha256=SOURCE_SHA256,
                    option_catalogue_sha256=OPTION_CATALOGUE_SHA256)
-    return audit.get("fingerprint") == _fingerprint(binding)
+    expected = _fingerprint(binding)
+    if audit["binding_mode"] == "exact":
+        return audit.get("fingerprint") == expected
+    adapted = audit.get("adapted_from")
+    shape = audit.get("root_scope_shape")
+    return (audit.get("source_rebind_policy") == SOURCE_REBIND_POLICY
+            and isinstance(shape, dict) and shape.get("source_event_type") == "letter_event"
+            and shape.get("source_rebind_policy") == SOURCE_REBIND_POLICY
+            and audit.get("fresh_binding") == binding
+            and audit.get("fresh_binding_fingerprint") == expected
+            and isinstance(adapted, dict)
+            and adapted.get("fingerprint") == audit.get("fingerprint")
+            and _positive(adapted.get("calculated_event_id"))
+            and adapted["calculated_event_id"] != binding["calculated_event_id"])
 
 def _positive(value):
     return type(value) is int and value > 0
@@ -53,6 +68,33 @@ def _scope_id(row, kind, type_key, field):
             or not _positive(identity.get(field))):
         return None
     return identity[field]
+
+
+def intercept_unresolved_populist_restore_target_v1(planned, *, enabled=False):
+    """Optional restore-branch before-submit hook for the owner's named target.
+
+    Ordinary unknown-event handling is unchanged. The restore entrypoint must
+    explicitly enable this hook and compose it before its existing submit hook.
+    """
+    if enabled is not True or not isinstance(planned, dict):
+        return None
+    plan = planned.get("plan")
+    capture = plan.get("unhandled_event_fallback") if isinstance(plan, dict) else None
+    if not isinstance(capture, dict) or capture.get("event_definition_key") != EVENT_KEY:
+        return None
+    audit = capture.get("source_knowledge")
+    if (plan.get("phase") == "active_event_source_reviewed_populist_refusal"
+            and planned.get("selected_step") == plan.get("selected_step") == REFUSE_STEP
+            and capture.get("registry_known") is True
+            and _source_known_exact(capture, audit)):
+        return None
+    return {"schema": "xar.populist-restore-target-interception/v1",
+            "reason": "restore_target_populist_source_or_refusal_unresolved",
+            "event_definition_key": EVENT_KEY,
+            "current_event_instance_id": capture.get("current_event_instance_id"),
+            "source_knowledge": deepcopy(audit),
+            "native_dispatch_allowed": False, "offline_followup_required": True,
+            "business_success_inferred": False}
 
 
 def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
@@ -77,7 +119,6 @@ def choose_source_reviewed_populist_refusal_v1(plan, *, snapshot, action_steps):
             and context.get("window_match_count") == 1
             and capture.get("snapshot_option_count") == 4
             and audit.get("status") == "offline-source-reviewed"
-            and audit.get("binding_mode") == "exact"
             and _source_known_exact(capture, audit)
             # The registry entry is validated by annotate_source_reviewed_event_plan_v1.
             # Its bytes may change when republished under a new evidence root.
@@ -199,7 +240,6 @@ def verify_source_reviewed_populist_refusal_result_v1(body):
             and capture.get("policy") == "exact-source-reviewed-populist-refuse-preserve-realm"
             and capture.get("event_definition_key") == EVENT_KEY
             and knowledge.get("status") == "offline-source-reviewed"
-            and knowledge.get("binding_mode") == "exact"
             and _source_known_exact(capture, knowledge)
             and capture.get("registry_known") is True
             and selection.get("selected_step") == REFUSE_STEP

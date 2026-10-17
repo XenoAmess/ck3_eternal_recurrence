@@ -1,0 +1,183 @@
+{
+  "schema": "xar.p50.populist-cold-source-rebind/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T18:45:08.592086+00:00",
+  "base_commit": "bdb7fc251f0cc1660e31133a597cdfbfbc6d7552",
+  "status": "SOURCE_READY_OFFLINE_VERIFIED_NOT_DEPLOYED",
+  "user_instruction_delta": "User explicitly requests reloading a pre-AUTO193 save and correcting the populist independence choice. Root authorizes narrowly reusing reviewed source across cold calculated-ID changes and an opt-in restore-only pre-submit interception for this target.",
+  "latest_user_instruction": "The user subsequently cancelled rollback: continue the current campaign. No restore branch or rollback was executed. The two-leaf cross-ID prevention fix remains an independent source delivery; the restore-only opt-in is not enabled or deployed to current SDK48.",
+  "rollback_cancelled": true,
+  "current_task": "Root continues the existing Game with the existing owner and SDK48 exact source knowledge; no hot patch is needed for that already-validated exact case.",
+  "source_files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+      "bytes": 27211,
+      "sha256": "7fa059549591cd37b67c54ad0114a61473052b3456eba411360a554993828a8b"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\populist1001_known_refusal_v1.py",
+      "bytes": 16959,
+      "sha256": "fca52ef02a8a7c8e7c4648bbf87a8cc5f579188be7232b5d5b2c01e92c6f975c"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_populist1001_cold_source_rebind.py",
+      "bytes": 7760,
+      "sha256": "87045ef4f7ab984dc2a65c350687ab5bc8d558182de04082d95f19e91d0cd9d6"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_populist_source.py",
+      "bytes": 5269,
+      "sha256": "18c179d709f08e2e6e7838e1b97b000df24ad7712ddca737b6df32139869bc42"
+    }
+  ],
+  "source_binding": {
+    "event_definition_key": "faction_demand.1001",
+    "build": "1.20.0.4",
+    "source_sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd",
+    "option_catalogue_sha256": "5c76ae1a7cc44883f5d4af07e6f5c2e59986b9b0c6d6ca9cb379ac7ce298bace",
+    "mode": "populist1001_source_rebound",
+    "source_rebind_policy": "exact_12004_populist_letter_seven_roles_v1",
+    "old_and_fresh_native_bindings_remain_distinct": true,
+    "generic_letter_rebinding_enabled": false
+  },
+  "focused_tests": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\TEST-COLD-REBIND.json",
+      "bytes": 1060,
+      "sha256": "4fc35c26ffb4b0a60be9c4ca326182643487ae536a0d72680015a13ff13639b5"
+    },
+    "pytest_summary": "56 passed in 13.03s",
+    "exit_code": 0,
+    "elapsed_seconds": 13.671137499855831,
+    "tests": [
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_populist1001_cold_source_rebind.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_populist1001_current_source_binding.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_populist1001_known_refusal.py",
+      "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_event_offline_analysis.py"
+    ],
+    "new_case_count": 9,
+    "source_and_receipt_scope": "Synthetic source bytes with explicit patched test anchors; no stock/live execution credit from unit cases. Actual retained stock source validation is separate."
+  },
+  "production_source_replay": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\COLD-ID-REPLAY.json",
+      "bytes": 6096,
+      "sha256": "f3360127ee8dfac1c6e5eb68ee176f6ffc11158831bdc5ef44ddc9b65366ed48"
+    },
+    "input": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\fixtures\\p43_populist_actual193_projection.json",
+      "bytes": 15220,
+      "sha256": "96f1e075797c4d1ff76c815b44d48715a663e4900523e50f1cb4dfb779bae3e9"
+    },
+    "state_dir_read_only": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state",
+    "cases": [
+      {
+        "case": "exact_original",
+        "calculated_event_id": 3571001,
+        "calculated_id_mutation_is_synthetic": false,
+        "status": "PASS",
+        "selected_step": "select-event-option-4",
+        "phase": "active_event_source_reviewed_populist_refusal",
+        "source_knowledge_status": "offline-source-reviewed",
+        "binding_mode": "exact",
+        "old_fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f",
+        "fresh_fingerprint": null
+      },
+      {
+        "case": "changed_calc",
+        "calculated_event_id": 3581001,
+        "calculated_id_mutation_is_synthetic": true,
+        "status": "PASS",
+        "selected_step": "select-event-option-4",
+        "phase": "active_event_source_reviewed_populist_refusal",
+        "source_knowledge_status": "offline-source-reviewed",
+        "binding_mode": "populist1001_source_rebound",
+        "old_fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f",
+        "fresh_fingerprint": "c0e8845bfca873a11c37b50502687b150b454faea866b09f27fdda2c2830824c"
+      },
+      {
+        "case": "roles",
+        "calculated_event_id": 3581001,
+        "calculated_id_mutation_is_synthetic": true,
+        "status": "PASS",
+        "selected_step": "select-event-option-3",
+        "phase": "active_event_unhandled_first_rendered_option",
+        "source_knowledge_status": "unknown",
+        "binding_mode": null,
+        "old_fingerprint": null,
+        "fresh_fingerprint": null
+      },
+      {
+        "case": "layout",
+        "calculated_event_id": 3581001,
+        "calculated_id_mutation_is_synthetic": true,
+        "status": "PASS",
+        "selected_step": "select-event-option-4",
+        "phase": "active_event_unhandled_first_rendered_option",
+        "source_knowledge_status": "unknown",
+        "binding_mode": null,
+        "old_fingerprint": null,
+        "fresh_fingerprint": null
+      }
+    ],
+    "current_restored_game_observed": false
+  },
+  "preparation_cli": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\QUALIFY-COLD-ID-REBIND.json",
+      "bytes": 3925,
+      "sha256": "cbd0568375e68d8ca45cb16ad1559380bd530126b7f5eefc8231c75e827654a4"
+    },
+    "status": "PASS",
+    "selected_step": "select-event-option-4",
+    "required_option": "--verify-cold-id-rebind",
+    "calculated_id_mutation_is_synthetic": true,
+    "instruction": "For a future explicitly authorized cross-ID restore, run against its actual SDK/src and new state after carrying the approved source closure. The current rollback was cancelled: do not create a restore namespace or repeat qualification for current same-Game continuation. This replay proves code and source knowledge can bind changed IDs, not an actual restored event identity."
+  },
+  "restore_only_interception": {
+    "helper": "xar_autoplayer.vanilla_events.populist1001_known_refusal_v1.intercept_unresolved_populist_restore_target_v1",
+    "suggested_config_field": "restore_populist1001_refusal_required",
+    "default_enabled": false,
+    "entry_integration": "Future authorized restore integration only: compose this helper before the existing before_auto_turn_submit callback and enable only for that independently identified branch. For named1001, require known refusal phase and API4; otherwise return typed interception before native dispatch, analyze offline, then continue. Generic unknown events remain unchanged. No restore branch exists for the cancelled rollback, and this opt-in is not enabled for current same-Game continuation.",
+    "Service_contract": "Existing GameplayBridgeService._execute_planned_turn_without_unhandled_capture invokes before_submit before native dispatch and returns status=intercepted for a mapping.",
+    "new_test": "Real Service interception seam, object without a driver; unresolved source cannot reach Native.",
+    "configured_or_deployed_here": false
+  },
+  "prevalidation": {
+    "open_kaishek": "not-applicable",
+    "reason": "No CK3 script edits or execution. Python source registry binding and Service before-submit seams have no matching finite CK3-script evaluation subset.",
+    "declared_build": "1.20.0.4",
+    "declared_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "current_executable_or_Game_observed": false
+  },
+  "boundaries": {
+    "Game_MCP_OBS_calls": 0,
+    "gameplay_commands_submitted": 0,
+    "old_state_written": false,
+    "frozen_SDK48_source_written": false,
+    "SAVE_Driver_media_read": false,
+    "restored_branch_admitted": false,
+    "live_refusal_verified": false,
+    "new_war_verified": false,
+    "title_retention_verified": false,
+    "victory_verified": false,
+    "film_continuity_verified": false,
+    "G2_credit_added": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "root_capacity_reference": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\ROOT-PATHS-CAPACITY.json",
+      "bytes": 63766,
+      "sha256": "aabba853c29f83d19b657c6cfd119c0b5ac4ff801e0d62db856e69cbb85a384f"
+    },
+    "new_heavy_write": false,
+    "deletions": 0,
+    "external_task_package_logical_bytes": 788827,
+    "volume_free_bytes": {
+      "D:/": 1010267656192,
+      "Z:/": 178685497344
+    },
+    "review": "Small derived task package: 48 hours after close, subject to current use. Canonical tracked source/evidence maintained normally. No lease or large-input protection extended."
+  }
+}

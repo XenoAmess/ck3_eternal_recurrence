@@ -1,5 +1,7 @@
 # P50：本期失地来源与续行时保留民粹知识
 
+**后续增量：** 用户曾授权从193前存档重跑并纠正授独立，随后明确取消回档，要求继续当前场次。下方前半段保留02:25前同Game续行的结论；末尾的跨load source-rebind作为通用防复发修复保留，restore专用拦截未启用、没有新restore branch，也未部署到现SDK48。旧193选择及影片历史仍不改写。
+
 本轮复核确认，P43 的一次民粹最后通牒选择本身会授独立，而且原版影响范围可以大于窗口中的单个目标头衔。已知的两个直接持有头衔 ID 在这次选择后的来源帧消失。P43 的动态绑定修复已同时存在于公共源码和交接指定的 SDK48 冻结源；本轮没有重复修改策略。续行的具体优化是保留已经学到的当前 exact registry 闭包，避免新 SDK namespace 只带初始 character-event seed、再次把该事件当作未知。
 
 本次执行 `machine_id: xenoamess-full-tower-eb9d2c1186`，实际观察为 **2026-10-17 18:18:36–18:25:14 UTC / 10月18日02:18:36–02:25:14 CST**；身份来自 `tools/ck3_live_run_id.py machine`。本轮只读取小型历史投影、源码和 source registry；Game／MCP／OBS调用、Driver／SAVE／媒体正文读取、游戏动作均为0。完整来源、机器边界、命令和摘要见[本轮小证据](evidence/p50-populist-loss-prevention-2026-10-18.json)。P43 原 AUDIT 没有 machine_id，故历史材料仍记 **`machine_id: unknown`，所属机器未核实**；这次在已知机器上读到文件不补造其历史机器身份，也不形成当前游戏状态验收。
@@ -82,3 +84,36 @@ Strategy／Service整文件有其他P48/P49差异，不宜为此整搬公共文�
 下一次自然出现该known窗口时，继续使用原生选项与现有战争流程，并独立核原实例消失、saved faction的新WarID／defender身份及直接持有集合；收到ACK不增加保地信用。若需要比较让步与抵抗的质量，优先复用现有faction alerts的same-frame `surrender_impact`、power／成员县输入与战争观测，匹配saved FullFactionID再使用；本次历史窗口缺这些同帧输入，不能补猜胜率或无条件最优。不得为该研究重放193或重开1066局。
 
 本包遵循通用存储策略1.0.0，task_start／task_close及后继闭场均有机器与实际卷读回；外置小件合计低于1MiB，0重型写入、0新重型预留、0删除。Root确认本包写入属于同160GiB共享预留范围、原复核期限为2026-10-18T11:49Z；其capacity小回执只作引用，本worker不独立授新容量准入。外置派生包闭场48小时后按用途复核，主仓小结论按record180日复核；本轮不续租共享run容量或延长原SAVE／媒体保护。
+
+## 2026-10-18 回档授权后取消；跨load防复发增量
+
+用户曾明确要求读取193前的存档重跑并纠正本次授独立；Root当时报告拟采用现存P39 SDK38 checkpoint，日期1073-04-01／raw53201640，距原193为2596日。随后用户明确说“算了，还是继续现在的这场接着跑吧。”，**回档已取消，恢复没有执行，也没有新restore branch**。这里保留曾有的恢复意图及其取消，不表示仍将回档；本worker未读取SAVE或核验checkpoint正文。当前任务由Root沿原owner继续当前Game；现SDK48对当前exact知识已验证，无需为本修复热改冻结源。
+
+这段施工定位了可复用的已知缺口：**跨load不能赌calculated ID仍为3571001**。旧公共loader只允许character-event的跨load来源复用，即使带了14b知识，新的1001 calculated ID也会因letter声明被拒绝。同ID known→API4不能证明跨ID能力；因此两叶修复作为通用防复发优化独立交付，不以继续回档为前提。
+
+本次最小修改仅在两个生产叶：
+
+- `event_offline_analysis.py` 继续以实际source文件／facts SHA及完整选项目录验证旧知识；仅对已审`.4 faction_demand.1001`允许专用 `populist1001_source_rebound`。它要求既定source／catalogue SHA、letter声明、完整fresh frame与root、七角色关系、必要原生作用域ID、双按钮固定映射与enabled状态。其他letter仍走原character-only限制。
+- `populist1001_known_refusal_v1.py` 明确消费这个专用审计：旧entry／fingerprint仍保留原calculated ID，`fresh_binding`与`fresh_binding_fingerprint`绑定当前实际观察ID，不把旧entry冒充当前exact entry。原snapshot／PID／generation／actor／选项／advertised step守卫继续检查，仍选择API4并接受派系战风险。
+
+因此可在新restore state中**预加载已验证知识闭包，再在首次当前窗口出现时用其真实ID绑定并选择拒绝**，无需猜未来ID或等待未知首项提交后再学习。加载前预置的是reviewed来源，首次窗口绑定的才是当前native身份；二者没有混称。
+
+针对当时“特定重跑窗口不能再自动授独立”的要求，同一policy叶新增opt-in `intercept_unresolved_populist_restore_target_v1`，**当前未启用，不接入同Game续行**。未来独立restore入口如获相应授权，可把配置字段 `restore_populist1001_refusal_required=true` 绑定到自身branch，组合到已有 `before_auto_turn_submit` callback：先调用该helper，再继续原decision／overlay callback。公共Service现有before-submit边界位于Native dispatch之前，helper发现目标1001未达到known refusal／API4时返回typed interception，现Service返回`status=intercepted`，当轮0Native dispatch。默认未启用和其他事件均不拦截，普通unknown仍按首可选项规则。未来实际启用必须另记branch、状态目录和callback来源；本轮没有这些部署事实。真正完成拒绝仍须沿既有selected native3＋实例advanced回执核验，不能凭配置或helper返回授开战／保地信用。
+
+```mermaid
+flowchart TD
+  P["未来另获授权时：restore state预加载已审source/facts"] --> C["首次1001：原生窗口给出当前calculated ID"]
+  C --> S["仅该.4 letter：source/catalogue/frame/七scope/layout核验"]
+  S --> K["专用known：保存old/fresh两个指纹"]
+  K --> R["既有保地策略：native3 / API4"]
+  R --> G["restore专用before-submit检查"]
+  S -. "来源或上下文未闭合" .-> B["restore目标typed interception；离线补；0Native dispatch"]
+  G --> D["原decision/overlay callback后才允许Native提交"]
+  D -. "本轮回档已取消，流程未启用" .-> U["此增量没有实机拒绝/战争/保地/影片信用"]
+```
+
+验证为**56 passed in13.03s**：9个新cold／restore例加既有exact/refusal与通用source-review必要回归。新例包括calculated ID变化、source／catalogue／布局／角色／payload不符不授known、其他letter仍不重绑，以及真实Service before-submit接缝对未闭合目标返回intercepted（没有driver，不能到达Native）。另用原14b entry／facts及本机已审stock字节运行生产loader→policy：原3571001为exact／API4，明确标注为合成变体的3581001为专用rebound／API4，角色／布局异常维持unknown。这个3581001只是离线测试输入，不是预测或宣称恢复后实际ID。
+
+准备CLI增加 `--verify-cold-id-rebind`，使用相同固定fixture的显式变更ID投影验证“知识能跨load绑定”。本机实际CLI返回PASS，回执SHA `cbd0568375e68d8ca45cb16ad1559380bd530126b7f5eefc8231c75e827654a4`。回档取消后不再要求建立新state或执行restore准入；此选项留作未来明确需要跨ID知识迁移时的定向检查，当前续行不借此重复验证。CLI本身不读取当前Game，不授真实拒绝信用。
+
+本增量 `machine_id: xenoamess-full-tower-eb9d2c1186`，实际离线验证2026-10-17 18:41–18:43 UTC，随后按用户取消回档指令补记状态；[新增小证据](evidence/p50-populist-cold-source-rebind-2026-10-18.json)分列源码SHA、56项结果、原源真实读回、合成ID与边界。旧SDK48冻结源、旧state／193回执、SAVE、Driver、媒体均未改；没有Game／MCP／OBS调用、没有业务／G2信用，没有新restore branch或入口部署。先前bdb7fc25的CI只证明先前包，不能外推为本增量CI。

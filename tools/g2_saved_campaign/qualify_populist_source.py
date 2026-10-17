@@ -32,6 +32,8 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--package-root", type=Path, required=True)
     parser.add_argument("--state-dir", type=Path, required=True)
     parser.add_argument("--fixture", type=Path, default=REPO / "ck3_autonomous_player/tests/unit/fixtures/p43_populist_actual193_projection.json")
+    parser.add_argument("--verify-cold-id-rebind", action="store_true",
+                        help="also require the reviewed source to bind a synthetic changed cold-load definition ID")
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args(argv)
     if args.output.exists():
@@ -53,13 +55,16 @@ def main(argv: list[str] | None = None) -> int:
     original["unhandled_event_fallback"].update(
         registry_known=False, source_knowledge={"status": "unknown"})
     original["event_decision"]["status"] = "unhandled"
+    if args.verify_cold_id_rebind:
+        original["unhandled_event_fallback"]["window_context"]["calculated_event_id"] += 10000
     annotated = loader.annotate_source_reviewed_event_plan_v1(original, args.state_dir)
     chosen = policy.choose_source_reviewed_populist_refusal_v1(
         annotated, snapshot=fixture["snapshot"],
         action_steps=("select-event-option-3", "select-event-option-4"))
     knowledge = chosen["unhandled_event_fallback"]["source_knowledge"]
+    expected_mode = "populist1001_source_rebound" if args.verify_cold_id_rebind else "exact"
     passed = (knowledge.get("status") == "offline-source-reviewed"
-              and knowledge.get("binding_mode") == "exact"
+              and knowledge.get("binding_mode") == expected_mode
               and knowledge.get("fingerprint") == EXPECTED_FINGERPRINT
               and chosen.get("phase") == "active_event_source_reviewed_populist_refusal"
               and chosen.get("selected_step") == "select-event-option-4")
@@ -75,6 +80,8 @@ def main(argv: list[str] | None = None) -> int:
         "production_sources": {module.__name__: pin(Path(module.__file__)) for module in (loader, policy)},
         "source_knowledge": knowledge, "selected_step": chosen.get("selected_step"),
         "phase": chosen.get("phase"), "frozen_original_unknown_step": original["selected_step"],
+        "cold_id_rebind_required": args.verify_cold_id_rebind,
+        "calculated_event_id_mutation_is_synthetic": args.verify_cold_id_rebind,
         "Game_MCP_OBS_calls": 0, "gameplay_commands_submitted": 0,
         "current_game_observed": False, "new_live_evidence": False,
         "business_success_inferred": False, "title_retention_verified": False,
