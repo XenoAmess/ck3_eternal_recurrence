@@ -73,3 +73,13 @@ Root已在SDK双退出后唯一seal Driver，保全至`N/robert30-clean-campaign
 2. 若同Game仍活，沿原supervisor与screen task接手；不重启create-only owner或已关闭SDK49。要继续时另建明确SDK namespace，携带实际source epochs、已封Driver和closed queue，再取fresh SEM严格核同PID／FT、actor／episode、paused和日期。先按新代资格重启HUD／录制及offline workers，归档精确已退出的stop markers后才FULL；不盲删未知标记。恢复是新repair窗口，不能把失败15改成功或自动造16。
 3. 若Game已真实退出，才按SAVE655身份保全／验证最新checkpoint；下次cold加载**同一干净战役最新SAVE**，不能重新选1066书签。旧CAP control4和checkpoint control653均已消费，不再当unused重复调用，未知SAVE ACK不得盲重试。
 4. 实际SDK业务源为`N/sdk-p48-candidate01/src`，manifest `9d9fcf5add16bbce68db1a4056d7c7fc4e70a6bfc79d3488bdf127ced0d23d7b`，freeze `89452c585d511612636c16c27e400e59a1ba63ca43ccc645113793a8c84e7944`；其运行Service与本次公共补丁分开留证。五个Root来源epoch见seal小清单，不能宣称原freeze覆盖后来metadata热修。当前尚无已完成并可直接执行的新namespace续行CLI；接任者沿原用户授权准备并核验后继续，不能重发旧命令。
+
+## 2026-10-18续行补注
+
+以上保留2026-10-17T17:43:26Z度假闭场的原始事实。后续用户已明确授权继续同场自动运行与录制；
+`machine_id: xenoamess-full-tower-eb9d2c1186`上的SDKP50R1已接回同Game51028，并实际自然继承31254→40695。
+三次重入问题、窗口17在219日后失败、869不重放／872两次SEM恢复、后续真实14日推进，以及
+2026-10-17T19:59:29.324518Z的cycles5776／raw53348112独立观察，见
+[P50R1同一战役续行专题](../ck3-native-ai/p50r1-same-game-continuation-2026-10-18.md)。
+该截止点首30年仍未达、节点永久MCP手动SAVE为0、完整视频未渲染、G2仍6/8；
+原闭场事实不作为当前暂停、进程存活、执行入口或已完成目标的证明。
