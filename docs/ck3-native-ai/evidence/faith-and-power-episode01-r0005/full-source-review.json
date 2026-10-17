@@ -1,0 +1,85 @@
+{
+  "schema": "faith-e01-full-source-independent-code-review-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T12:37:34.308408+00:00",
+  "reviewer": "/root/episode01_runtime/host_audit",
+  "verdict": "NO_BLOCKER",
+  "blocking_findings": [],
+  "reviewed_patch_and_five_sources": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime-audit\\full-source-review-a01\\source-pins.json",
+    "bytes": 2600,
+    "sha256": "536c1e77dd1d54232db5cb90041c5c70897336380e36fba4bef1ce92007b0fdb"
+  },
+  "actual_toolchain_version": "0.3.0",
+  "actual_toolchain_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\operations.py",
+      "bytes": 11104,
+      "sha256": "1a55356ad26b4cf566ec3e35001e14b58b4af9c8fcb6d9cfda9c40f75790523e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\render.py",
+      "bytes": 16124,
+      "sha256": "b3e5be09780881042d268d5af5e42291d6334233f402d05aa0ed1832a414d325"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\process.py",
+      "bytes": 8012,
+      "sha256": "96f56b4ef8397d04fee5d72ca4a41897b453ade49eb13ed23e699901d33387eb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\project.py",
+      "bytes": 8614,
+      "sha256": "e3b1bc309fb3bcfbc6af87ccb8542e83985afa49859e162ba8d70e54956230cf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\model.py",
+      "bytes": 22057,
+      "sha256": "91a1a75c7356e3784f1f26ded3e1e93b3142fabf91996ed8eaf7163138fcd1b3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\runlog.py",
+      "bytes": 15383,
+      "sha256": "707f683ef79a13e898e610ed49c608e1f5dd6ae7f04d3a11e84f4d7cc52048b1"
+    }
+  ],
+  "actual_toolchain_distribution": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo_toolchain-0.3.0.dist-info\\METADATA",
+      "bytes": 14939,
+      "sha256": "cc4c8239f856772dd5af6cab48bb9734bbb580c2390a9225e7ba671d29140d58"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo_toolchain-0.3.0.dist-info\\direct_url.json",
+      "bytes": 318,
+      "sha256": "955554a5b64d9ac0f4df4864db2ffbdb46bced8802c81258a9c485a061f9e8a6"
+    }
+  ],
+  "existing_integration_sources": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\integration\\src\\faith_power_promo\\production.py",
+      "bytes": 30890,
+      "sha256": "4635d2be62b3d26e0487bc1c2308c07cd82c74ddb0eba18c41b3e510f8ab23a4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\promo\\ck3_faith_and_power\\integration\\src\\faith_power_promo\\context_composer.py",
+      "bytes": 7712,
+      "sha256": "a3013f648d9895e83772bc81117eaeeb66a5bcd21897be66e5b70b2f030c29fe"
+    }
+  ],
+  "reviewed_paths": [
+    "direct_register uses actual run-relative files and no preserve/copy for media; only small producer/input/runtime receipts use preserve",
+    "actual 0.3.0 command output is last argv item; VBV/maxrate/threads/file-size options are inserted at its valid output seam",
+    "peak covers prepared visual, narrated segments, final concat, side material and explicit packet overshoot under 31min/168 limits",
+    "at most two worker tasks; sequential subprocess.run per task and executor join; actual 0.3.0 partial promotion only after subprocess success",
+    "unbound required result/visual gaps reject before build output; used inputs require path/bytes/SHA; raw interval upper bound and no overlap retained",
+    "final CFR frame count/cadence and stream geometry precede mapping; actual measured frame PTS drives cue/part boundaries and sidecar subtitles",
+    "argv lists and supplied font/tool paths; no PowerShell or desktop/game operations introduced"
+  ],
+  "scope_limit": "light source/interface review of this exact patch; no new runtime/business/human signoff or media acceptance credit",
+  "tests_rerun": false,
+  "media_encoding_performed": false,
+  "media_decode_repeated": false,
+  "main_checkout_modified": false,
+  "steam_or_desktop_operations": false
+}

@@ -53,3 +53,9 @@
 [新增知识口资格](evidence/faith-and-power-episode01-r0005/knowledge-mcp-qualification.json)在12:09:09.390120Z通过真实生产create_server与MCP Client：1项新测试、4次MCP调用，确认采用历史仅在对应action/build出现、深拷贝不受调用者修改污染，资格守卫保持。无游戏、旧native/fixture或既有静态矩阵重跑。证据绑定最终四份代码/数据SHA。
 
 采用case及MCP历史截止仍固定于C冻结时刻12:04:35.487269Z，其中normal close尚未验证是该历史截点的unknown；本段后继证据已结算正常关闭，保留原case SHA以便复现。采用后的cooldown/free/used kingdoms、真实受益、非空库存保持、C冷载/完整Driver绑定以及媒体人工审阅仍未补证。
+
+## 后继原片核验与有限保留
+
+[媒体与存储补注](evidence/faith-and-power-episode01-r0005/media-and-retention.json)记录同机后继核验：R5原片93,233,721 B，120秒/2490帧，完整解码exit0、PTS严格递增，为VFR且无原始音轨。报价前态候选12.033–32秒、确认视觉链32–44秒、纳杰夫空库存后态55.033–74秒、巴格达对照96–116秒；这些是剪辑候选，不是clean span或人工1×签核。最终CFR输出须继续披露源片帧率与时间间隙。
+
+Root已登记R5原片、C、live原始证据与F/A/B六组当前活跃输入的有限保护，统一在2026-10-24T12:17:24.991058Z人工复核、不自动续期。原片默认30日、checkpoint默认14日，真实闭场时间不因复制或扫描重置。2026-10-17T12:17:24.991058Z闭场容量核对仍满足已激活总预算；这不替具体整期编码作峰值准入。采用案例、后继生命周期与媒体证据保持分账，原case SHA不变。

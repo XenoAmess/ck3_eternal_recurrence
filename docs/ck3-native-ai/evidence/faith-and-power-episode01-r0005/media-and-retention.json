@@ -1,0 +1,92 @@
+{
+  "schema": "faith-episode01-r5-media-and-retention-followup-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T12:24:27.984879+00:00",
+  "source": "Root review of the independently decoded R5 recording and finite retention registration; successor facts do not replace the original adoption case",
+  "raw": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/captures/episode01-r5-take01/raw-gameplay.mkv",
+    "bytes": 93233721,
+    "sha256": "1718706b871571621e2b57482cdcc524ae2cc1522256d7f673d6a93d0475f762",
+    "duration_seconds": 120,
+    "decoded_frames": 2490,
+    "full_decode_exit_code": 0,
+    "decode_stderr_empty": true,
+    "strictly_increasing_frame_pts": true,
+    "constant_frame_rate_source": false,
+    "audio_track": false,
+    "clean_span_certified": false,
+    "full_1x_human_review_performed": false
+  },
+  "shot_index": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/raw-review-episode01-r5-take01-a01/r5-take01-shot-index-candidate-a01.json",
+    "bytes": 37197,
+    "sha256": "33571592b5bc91dc4fe3040114871aa29c4668772c4b52b92e3736c1975446dc",
+    "candidate_intervals_seconds": [
+      {
+        "start": 12.033,
+        "end": 32,
+        "subject": "before-state and original 1000 piety quote"
+      },
+      {
+        "start": 32,
+        "end": 44,
+        "subject": "once-only confirmation visual chain"
+      },
+      {
+        "start": 55.033,
+        "end": 74,
+        "subject": "Nadjaf empty inventory and inactive after-state"
+      },
+      {
+        "start": 96,
+        "end": 116,
+        "subject": "Baghdad comparison window"
+      }
+    ],
+    "wallet_transition_adjacent_pts": [
+      38.233,
+      38.3
+    ],
+    "confirmation_banner_readable_pts": 38.6,
+    "intervals_are_candidate_editorial_cuts_not_clean_or_human_signoff": true
+  },
+  "media_delivery": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/raw-review-episode01-r5-take01-a01/R5-MEDIA-DELIVERY-a01.json",
+    "sha256": "47bfaa0556f0ad6ea6a792992dd4fe763ef05c8bf6366d17db2096d9f564a194"
+  },
+  "finite_retention_registration": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/storage-review-r5-close-a01/R5-ACTIVE-INPUT-PROTECTION-REGISTERED.json",
+    "bytes": 84093,
+    "sha256": "be5b48a884f88bbc52285c46335a5daba0fb49ccd7c08c36cf2426333df72054",
+    "policy_version": "1.0.0",
+    "groups": [
+      "R5 raw take01",
+      "canonical C checkpoint",
+      "R5 live original evidence",
+      "canonical F checkpoint",
+      "canonical A checkpoint",
+      "canonical B checkpoint"
+    ],
+    "protected_until_utc": "2026-10-24T12:17:24.991058+00:00",
+    "automatic_renewal": false,
+    "new_current_use_registration_not_retroactive_protection": true,
+    "copies_and_metadata_scan_do_not_refresh_asset_age": true,
+    "raw_expiry_utc": "2026-11-16T12:02:56.971127+00:00",
+    "C_checkpoint_expiry_utc": "2026-10-31T12:04:07.725651+00:00",
+    "expiry_means_review_candidate_not_unconditional_deletion": true
+  },
+  "capacity_followup": {
+    "observed_at_utc": "2026-10-17T12:17:24.991058+00:00",
+    "available_bytes": 131178233856,
+    "conservative_current_project_bytes": 32043188795,
+    "all_active_future_ceilings_bytes": 15602810880,
+    "required_free_bytes": 43520098304,
+    "effective_project_quota_bytes": 51177672294,
+    "quota_headroom_after_all_future_ceilings_bytes": 3531672619,
+    "active_capacity_ledger_sha256": "90cc42c910feecb26ed906e7334a27236c8894b48650e50e7da152b9c4b2ca81",
+    "report_path": "C:/workspace/ck3-faith-and-power-20261017/episode01/storage-review-r5-close-a01/REPORT.json",
+    "report_sha256": "4165dfe928241a695f02505b3a7d13811ebac7fc55b490ea698f7ef6aaee4f3e",
+    "specific_full_episode_render_admitted_by_this_receipt": false
+  },
+  "record_review_at_utc": "2027-04-15T12:24:27.984879+00:00"
+}
