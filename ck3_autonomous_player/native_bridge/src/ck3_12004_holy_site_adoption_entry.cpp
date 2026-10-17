@@ -37,7 +37,10 @@ bool Predicates(std::uintptr_t base,void*window,bool&a,bool&r,bool&e)noexcept{
 #endif
 }
 bool Signature(const NamedGuiStandardClickBinding12004V1&b){
- if(!b.button_base_slot13||!b.primary_group||b.callbacks.size()!=2)return false;
+ // The producer already selects the original standard-mode group: +3F8
+ // when populated, otherwise +338. HolySite's stock shortcut uses fallback.
+ // Same() below still rejects a group change between the two owner reads.
+ if(!b.button_base_slot13||b.callbacks.size()!=2)return false;
  const std::array<std::uint64_t,2>targets{0xA79540,0x1031E60};
  for(std::size_t i=0;i<2;++i){const auto&c=b.callbacks[i];const auto&d=c.expression_3a9f960;
   if(c.index!=i||c.callback_slot2_rva!=0x3AA30E0||!c.indirect_target_3aa30e0||

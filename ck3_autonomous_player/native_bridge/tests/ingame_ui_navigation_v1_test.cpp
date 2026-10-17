@@ -144,11 +144,13 @@ int main(int argc,char **argv) {
       callback.expression_descriptor_3a9f960=true;callback.expression_3a9f960.final_kind_34_raw=3;
       callback.expression_3a9f960.final_target_38_rva=target;binding.callbacks.push_back(callback);
     }
-    assert(Signature(binding));auto wrong=binding;
+    assert(Signature(binding));auto fallback=binding;fallback.primary_group=false;
+    assert(Signature(fallback));assert(!Same(binding,fallback));assert(Same(fallback,fallback));
+    auto wrong=binding;
     std::swap(wrong.callbacks[0].expression_3a9f960.final_target_38_rva,wrong.callbacks[1].expression_3a9f960.final_target_38_rva);
     assert(!Signature(wrong));wrong=binding;wrong.callbacks.pop_back();assert(!Signature(wrong));
     NamedGuiTreeInspectionV1 tree{};NamedGuiWidgetInspectionV1 row{};
-    row.effective_visible=row.enabled=true;row.standard_click_binding_12004=binding;tree.widgets.push_back(row);
+    row.effective_visible=row.enabled=true;row.standard_click_binding_12004=fallback;tree.widgets.push_back(row);
     assert(Unique(tree));tree.widgets.push_back(row);assert(!Unique(tree));
     tree.widgets[1].effective_visible=false;assert(Unique(tree));tree.widgets[0].enabled=false;assert(!Unique(tree));
   }
