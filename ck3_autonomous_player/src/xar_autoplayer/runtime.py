@@ -104,6 +104,23 @@ class NativeBridgeLaunchConfig:
     injector_path: Path
 
 
+def _require_runtime_dependency_profile_bridge(
+    manifest: Mapping[str, object],
+    native_bridge: NativeBridgeLaunchConfig | None,
+) -> None:
+    """Keep a native-only prepared runtime on the actual pure-native backend."""
+    runtime = manifest.get("agent_runtime")
+    if (
+        isinstance(runtime, Mapping)
+        and runtime.get("runtime_dependency_profile") == "native-only"
+        and (native_bridge is None or native_bridge.mode != "native-headless")
+    ):
+        raise AgentError(
+            "native-only runtime dependency profile requires the actual "
+            "native-headless bridge configuration"
+        )
+
+
 @dataclass
 class SessionHandle:
     process: object
@@ -2903,6 +2920,10 @@ def launch(
         or native_bridge_injection_deadline <= time.monotonic()
     ):
         raise AgentError("saved startup delayed injection requires an exact save, bridge and original readiness deadline")
+    if spec.manifest_path.is_file():
+        prepared_manifest = json.loads(spec.manifest_path.read_text(encoding="utf-8"))
+        if isinstance(prepared_manifest, Mapping):
+            _require_runtime_dependency_profile_bridge(prepared_manifest, native_bridge)
     if verify_prepared_profile:
         verify_profile(spec, xar_enabled=prepared_xar_enabled)
     if job_name is not None and not re.fullmatch(

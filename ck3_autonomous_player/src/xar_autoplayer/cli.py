@@ -183,6 +183,10 @@ def parser() -> argparse.ArgumentParser:
         default="fullscreen",
         help="freeze a fullscreen or 1280x720 windowed display profile",
     )
+    prepare_profile_parser.add_argument(
+        "--runtime-dependency-profile", choices=("full", "native-only"), default="full",
+        help="attest full visual dependencies or an explicit native-only profile without OCR",
+    )
     verify_profile_parser = commands.add_parser(
         "verify-profile", help="verify the prepared profile contract"
     )
@@ -197,6 +201,10 @@ def parser() -> argparse.ArgumentParser:
         choices=("fullscreen", "windowed"),
         default="fullscreen",
         help="require this exact prepared display mode",
+    )
+    verify_profile_parser.add_argument(
+        "--runtime-dependency-profile", choices=("full", "native-only"), default=None,
+        help="optionally require this dependency profile; otherwise verify the recorded profile",
     )
     ordinary_seed_rebind_parser = commands.add_parser(
         "rebind-ordinary-seed-v1",
@@ -981,13 +989,15 @@ def main(argv: list[str] | None = None) -> int:
             result = doctor(spec, require_prepared=args.prepared)
         elif args.command == "prepare-profile":
             result = prepare_profile(
-                spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode
+                spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode,
+                runtime_dependency_profile=args.runtime_dependency_profile,
             )
         elif args.command == "verify-profile":
             ensure_state_path_safe(spec.state_dir)
             with exclusive_state_lock(spec.state_dir, "verify-profile"):
                 result = verify_profile(
-                    spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode
+                    spec, xar_enabled=args.xar_enabled, display_mode=args.display_mode,
+                    runtime_dependency_profile=args.runtime_dependency_profile,
                 )
         elif args.command == "rebind-ordinary-seed-v1":
             from .environment import write_json_atomic

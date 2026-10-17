@@ -45,3 +45,18 @@
 后续按依赖顺序推进：交付共享研究与实际 MCP 知识调用；核出可合法回收的容量并重做准入；为缺失的圣地读写完成 exact-build producer／caller／consumer 研究及最小 native 接线；取得新鲜 Steam 离线证据和唯一现场租约；建立可回载、明确标识准备方式的母案，再拍两条完整试拍链。每条链绑定本机、加载来源、存档、对象、帧、动作、后态与原片时码。未知引擎边留在研究记录中，不能由旁白代填。
 
 研究与记录回执按统一策略分别复核；本轮小型记录下一复核日为 2027-04-15，未完成试拍的必要输入保护必须另列用途和不超过七天的复核期限。
+
+
+## 第一期开工恢复与并行执行（2026-10-17 07:55 UTC）
+
+`machine_id: 4-8e1c2f1861`。本轮用户要求清理指定三个大型工坊项目和过期验收后，明确要求“让子线程继续清理过程”“开始并发研究以及拍摄”“从一期开始”。清理线程07:46 UTC闭场回执为 `C:/workspace/storage-reclaim-20261017/overall-cleanup-actual.json`；累计最后链接分配删除131,346,116,320 B，零失败，独立回读588,226个已删除路径不再存在、16份保留输入一致。该回执只证明本机，原低容量记录作为历史保留。
+
+统一容量准入见 `C:/workspace/ck3-faith-and-power-20261017/episode01/storage-reservations.json`，07:45左右实际卷空闲约137 GB；制作1 GiB、runtime3 GiB、捕获8 GiB、候选512 MiB及清理收据32 MiB分别登记，系统增长6 GiB、安全余量20 GiB另计，容量与项目配额均通过。此为本轮本机协调，未宣称已实现跨机自动预留器。
+
+并行拓扑：机制/规划文档、场景与准备夹具、HolySite原生查询与原版采用调用者、runtime构建与依赖、受控frontend场景选择、录制与有声字幕制作分别独立写候选；root独占CK3/桌面，源码与文档候选保留外置，实机owner checkout保持clean。第一期规划新增候选/权限/费用/不可逆退出与外交副作用，见 [第一期规划](faith-and-power-episode01-planning.md)。当前这些是source-reviewed，尚无采用或供奉实机后态。
+
+用户本轮另行明确批准“允许独立机制实验存档，明确标注准备内容（推荐）”，基于可审方案 `episode01/scenario/abbasid-nadjaf-prepared-state-review.md`。本期拟用867阿拔斯历史定义34014、Sunni与Nadjaf作准备场景，仅切个人Hanafi→Maliki礼仪，必要虔诚准备明示；不改原版采用条件/费用/效果、不预加圣地。具体live actor/faith/rite/site ID及合法性仍须实际读回。此授权限于明示的机制实验，不修改Robert29829原普通战役入口及成绩规则。
+
+现场07:48 UTC取得窗口位移与像素变化的新Steam截图，root直接审图见“离线模式”；证据 `episode01/steam-offline-preflight-01/probe-1/steam-frame-freshness.json` 和 `episode01/steam-offline-visual-review-01.json`。07:52 UTC从原1920×1080实读支持模式、测试并切换2560×1440/60Hz成功，pyautogui尺寸同为2560×1440；见 `episode01/desktop-prepare-receipt.json`。这些是现场准备，不是游戏加载或已拍镜头。
+
+native-only profile的实际准备阻点是旧环境指纹强制要求未被本次纯原生运行消费的CUDA/OCR九包；补丁保留默认full合同，显式native-only只声明实际core依赖并禁用视觉/OCR及hybrid。真实缺包RED、13个本机core包读回及7+6项聚焦验证见 [依赖合同](native-only-runtime-dependency-profile.md)。native DLL仍在冻结源码构建；测试和计划不替代本机live资格。

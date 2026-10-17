@@ -72,6 +72,26 @@ RUNTIME_DISTRIBUTIONS = (
     "six",
 )
 
+# Native-headless profiles attest the packages consumed by the native transport,
+# planning, schema validation, Windows process custody and native framebuffer.
+# Visual/OCR backends remain disabled; this list does not claim CUDA is installed.
+NATIVE_HEADLESS_RUNTIME_DISTRIBUTIONS = (
+    "attrs", "jsonschema", "jsonschema-specifications", "numpy", "Pillow",
+    "PyYAML", "pywin32", "referencing", "rpds-py", "six", "pydantic", "mcp",
+    "psutil",
+)
+RUNTIME_DEPENDENCY_PROFILES = ("full", "native-only")
+
+
+def recorded_runtime_dependency_profile(runtime: object) -> str:
+    if not isinstance(runtime, dict):
+        raise AgentError("agent runtime fingerprint is missing")
+    profile = runtime.get("runtime_dependency_profile", "full")
+    if profile not in RUNTIME_DEPENDENCY_PROFILES:
+        raise AgentError(f"unsupported runtime dependency profile: {profile!r}")
+    return str(profile)
+
+
 # ``git status`` may try to refresh the index even though this fingerprint is
 # read-only.  A concurrent worktree checkout can therefore make the command
 # briefly fail with exit 128 while its index lock is held.  Keep this retry
@@ -666,7 +686,11 @@ def _contract_digest(payload: dict[str, object]) -> str:
     return snapshot_digest(stable)
 
 
-def agent_runtime_fingerprint() -> dict[str, object]:
+def agent_runtime_fingerprint(
+    *, runtime_dependency_profile: str = "full",
+) -> dict[str, object]:
+    if runtime_dependency_profile not in RUNTIME_DEPENDENCY_PROFILES:
+        raise AgentError(f"unsupported runtime dependency profile: {runtime_dependency_profile!r}")
     root = REPO_ROOT / "ck3_autonomous_player"
     roots = [
         root / "agent.py",
@@ -702,7 +726,11 @@ def agent_runtime_fingerprint() -> dict[str, object]:
             }
         )
     distributions: dict[str, str] = {}
-    for name in RUNTIME_DISTRIBUTIONS:
+    required_distributions = (
+        NATIVE_HEADLESS_RUNTIME_DISTRIBUTIONS
+        if runtime_dependency_profile == "native-only" else RUNTIME_DISTRIBUTIONS
+    )
+    for name in required_distributions:
         try:
             distributions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError as error:
@@ -738,12 +766,16 @@ def agent_runtime_fingerprint() -> dict[str, object]:
             "status": git_status,
         },
     }
+    if runtime_dependency_profile == "native-only":
+        runtime["runtime_dependency_profile"] = "native-only"
+        runtime["disabled_capabilities"] = ["visual_ocr", "hybrid_fallback"]
     runtime["sha256"] = snapshot_digest(runtime)
     return runtime
 
 
 def prepare_profile(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen"
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen",
+    runtime_dependency_profile: str = "full",
 ) -> dict[str, object]:
     """Exclusively create/refresh the profile; refuse while any CK3 is active."""
     ensure_state_path_safe(spec.state_dir)
@@ -760,12 +792,14 @@ def prepare_profile(
                 + "; ".join(running)
             )
         return _prepare_profile_locked(
-            spec, xar_enabled=xar_enabled, display_mode=display_mode
+            spec, xar_enabled=xar_enabled, display_mode=display_mode,
+            runtime_dependency_profile=runtime_dependency_profile,
         )
 
 
 def _prepare_profile_locked(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen"
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str = "fullscreen",
+    runtime_dependency_profile: str = "full",
 ) -> dict[str, object]:
     """Create or refresh the profile without touching persistent tutorial state."""
     import build_release
@@ -859,7 +893,7 @@ def _prepare_profile_locked(
     payload: dict[str, object] = {
         "format_version": 1,
         "agent_version": __version__,
-        "agent_runtime": agent_runtime_fingerprint(),
+        "agent_runtime": agent_runtime_fingerprint(runtime_dependency_profile=runtime_dependency_profile),
         "prepared_at": datetime.now(timezone.utc).isoformat(),
         "state_dir": str(spec.state_dir),
         "profile_dir": str(spec.profile_dir),
@@ -929,7 +963,8 @@ def _prepare_profile_locked(
 
 
 def verify_profile(
-    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str | None = None
+    spec: EnvironmentSpec, *, xar_enabled: str = "xar_on", display_mode: str | None = None,
+    runtime_dependency_profile: str | None = None,
 ) -> dict[str, object]:
     """Verify the prelaunch contract without reading persistent score storage."""
     ensure_state_path_safe(spec.state_dir)
@@ -954,7 +989,13 @@ def verify_profile(
         "profile_dir"
     ) != str(spec.profile_dir.resolve()):
         raise AgentError("environment manifest belongs to a different state directory")
-    current_agent = agent_runtime_fingerprint()
+    recorded_dependency_profile = recorded_runtime_dependency_profile(manifest.get("agent_runtime"))
+    if (runtime_dependency_profile is not None
+            and runtime_dependency_profile != recorded_dependency_profile):
+        raise AgentError("runtime dependency profile differs from the prepared contract")
+    current_agent = agent_runtime_fingerprint(
+        runtime_dependency_profile=recorded_dependency_profile,
+    )
     if manifest.get("agent_runtime", {}).get("sha256") != current_agent["sha256"]:
         raise AgentError("agent runtime fingerprint differs; prepare a new environment")
 

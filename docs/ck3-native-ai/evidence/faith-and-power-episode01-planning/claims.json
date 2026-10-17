@@ -1,0 +1,1079 @@
+{
+  "schema": "xar.faith-power-episode01-planning.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T07:47:36.319053+00:00",
+  "target_build": "1.20.0.4",
+  "base_git_head": "7ba029435c54ef53ab484be86186ba45ebcad3bf",
+  "game_resource_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "frozen_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "runtime_session": null,
+  "loaded_mods": null,
+  "native_action_ready": false,
+  "live_execution_performed": false,
+  "proof_scope": "installed-resource declarations and proposed own-policy only",
+  "source_manifest_ref": "docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/source-manifest.json",
+  "source_manifest_sha256": "1b225c6e89556948ea4560e480ae7a7197c4c95d3ae35f2741d465fa5b37e566",
+  "mirror_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+  "additional_sources_mirror_compared": false,
+  "sources": [
+    {
+      "id": "S01",
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "bytes": 19759,
+      "line_count": 908,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S02",
+      "path": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "bytes": 88549,
+      "line_count": 3599,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S03",
+      "path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "bytes": 186187,
+      "line_count": 6937,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S04",
+      "path": "common/scripted_rules/02_holy_sites.txt",
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "bytes": 2090,
+      "line_count": 64,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S05",
+      "path": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "bytes": 1191,
+      "line_count": 28,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S06",
+      "path": "common/scripted_effects/00_religion_effects.txt",
+      "sha256": "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931",
+      "bytes": 41530,
+      "line_count": 1511,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S07",
+      "path": "common/on_action/religion_on_actions.txt",
+      "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+      "bytes": 59475,
+      "line_count": 2089,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S08",
+      "path": "common/scripted_costs/00_costs.txt",
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "bytes": 14914,
+      "line_count": 791,
+      "layer": "source-contract",
+      "provenance": "additional_installed_source_local_only"
+    },
+    {
+      "id": "S09",
+      "path": "common/defines/00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "bytes": 125400,
+      "line_count": 1926,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S10",
+      "path": "gui/window_holy_site_creation.gui",
+      "sha256": "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310",
+      "bytes": 23400,
+      "line_count": 900,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S11",
+      "path": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+      "sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+      "bytes": 9714,
+      "line_count": 84,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S12",
+      "path": "common/religion/faith_types/00_faith_types.txt",
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+      "bytes": 118526,
+      "line_count": 4867,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S13",
+      "path": "common/religion/religion_types/_religion_types.info",
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "bytes": 5101,
+      "line_count": 58,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S14",
+      "path": "common/modifiers/00_religion_modifiers.txt",
+      "sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "bytes": 8469,
+      "line_count": 363,
+      "layer": "source-contract",
+      "provenance": "additional_installed_source_local_only"
+    },
+    {
+      "id": "S15",
+      "path": "common/opinion_modifiers/00_religious_opinions.txt",
+      "sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "bytes": 5239,
+      "line_count": 320,
+      "layer": "source-contract",
+      "provenance": "additional_installed_source_local_only"
+    },
+    {
+      "id": "S16",
+      "path": "common/script_values/pam_values.txt",
+      "sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "bytes": 272209,
+      "line_count": 10367,
+      "layer": "source-contract",
+      "provenance": "additional_installed_source_local_only"
+    },
+    {
+      "id": "S17",
+      "path": "common/important_actions/pam_actions.txt",
+      "sha256": "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5",
+      "bytes": 40634,
+      "line_count": 1574,
+      "layer": "source-contract",
+      "provenance": "additional_installed_source_local_only"
+    },
+    {
+      "id": "S18",
+      "path": "common/artifacts/slots/01_holy_site.txt",
+      "sha256": "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df",
+      "bytes": 321,
+      "line_count": 20,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S19",
+      "path": "gui/window_faith.gui",
+      "sha256": "67924e58ccba26d95853ac48af35d91a774f5ce6d2e7f32a0a033de3b9d51521",
+      "bytes": 150682,
+      "line_count": 6086,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S20",
+      "path": "common/religion/tenet_types/00_tenet_types.txt",
+      "sha256": "d9e18a077d81f18f030d795ef45cb4aa5b7db246007043d5b0fe401baaf88abd",
+      "bytes": 130228,
+      "line_count": 5958,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S21",
+      "path": "common/religion/tenet_types/00_pam_tenets.txt",
+      "sha256": "5d57cf371aedf4d2266286b8fe30d7f0c90eb8d4079019712c907a4b954ce02a",
+      "bytes": 52920,
+      "line_count": 2494,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S22",
+      "path": "gui/window_holy_site.gui",
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "bytes": 32840,
+      "line_count": 1278,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S23",
+      "path": "common/script_values/00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "bytes": 50566,
+      "line_count": 2342,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    },
+    {
+      "id": "S24",
+      "path": "common/on_action/inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "bytes": 13630,
+      "line_count": 541,
+      "layer": "source-contract",
+      "provenance": "existing_55_file_baseline"
+    }
+  ],
+  "claims": [
+    {
+      "id": "E01-C01",
+      "statement": "Adoption widget enumerates actor realm counties then county holy sites, excluding own-faith members; item validity is weaker than final decision requirements.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 488,
+          "last_line": 534
+        },
+        {
+          "source_id": "S01",
+          "first_line": 588,
+          "last_line": 616
+        }
+      ],
+      "required_observations": [
+        "complete_candidate_ids",
+        "candidate_source_scope",
+        "partial_flag",
+        "per_requirement_native_result",
+        "effective_actor_id"
+      ],
+      "unknowns": [
+        "iterator native index/cache",
+        "full command validation",
+        "runtime legal candidates"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C02",
+      "statement": "Adoption is invisible in general decision lists; the HolySite GUI supplies selected_item to a parameterized decision. A missing generic row is not evidence of ineligibility.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 482,
+          "last_line": 486
+        },
+        {
+          "source_id": "S22",
+          "first_line": 612,
+          "last_line": 618
+        }
+      ],
+      "required_observations": [
+        "actual_parameterized_entry",
+        "selected_site_id",
+        "public_list_result_scope"
+      ],
+      "unknowns": [
+        "current ABI and command caller"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C03",
+      "statement": "Initial faith definitions mark Baghdad eminent for Nestorian and regular for Sunni. Current runtime membership and levels require independent observation.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S12",
+          "first_line": 1156,
+          "last_line": 1174
+        },
+        {
+          "source_id": "S12",
+          "first_line": 2596,
+          "last_line": 2614
+        }
+      ],
+      "required_observations": [
+        "site_id",
+        "type_key",
+        "inventory_id",
+        "all_faith_memberships_and_levels",
+        "county_and_barony_holders_faiths_rites"
+      ],
+      "unknowns": [
+        "current save membership",
+        "shared inventory identity"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C04",
+      "statement": "Adoption uses actor.rite arbitrary-adoption parameter or an existential related-faith compatibility branch; a separate existential related faith must retain county followers. Personal adaptive/adoptionism parameters omit arbitrary-adoption permission.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 521,
+          "last_line": 534
+        },
+        {
+          "source_id": "S02",
+          "first_line": 1964,
+          "last_line": 1987
+        },
+        {
+          "source_id": "S03",
+          "first_line": 1294,
+          "last_line": 1337
+        },
+        {
+          "source_id": "S20",
+          "first_line": 1753,
+          "last_line": 1780
+        },
+        {
+          "source_id": "S20",
+          "first_line": 4199,
+          "last_line": 4216
+        },
+        {
+          "source_id": "S21",
+          "first_line": 1638,
+          "last_line": 1649
+        }
+      ],
+      "required_observations": [
+        "actor_rite_parameters",
+        "personal_parameters",
+        "all_related_faiths",
+        "compatibility_witness_faith_id",
+        "followers_witness_faith_id",
+        "authority_evidence"
+      ],
+      "unknowns": [
+        "native evaluated hostility and syncretism",
+        "actual authority route"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C05",
+      "statement": "Adoption declares add_holy_site followed by free-action consumption; it does not explicitly define retained site/inventory identities or default level.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 543,
+          "last_line": 562
+        },
+        {
+          "source_id": "S23",
+          "first_line": 1131,
+          "last_line": 1136
+        }
+      ],
+      "required_observations": [
+        "before_after_faith_memberships",
+        "level",
+        "site_type_inventory_ids",
+        "all_artifact_owners",
+        "wallet_free_cooldown"
+      ],
+      "unknowns": [
+        "default adoption level",
+        "identity retention",
+        "actual transaction"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C06",
+      "statement": "Creation GUI has separate type, barony and artifact models with selection/permission callbacks. It is not the adoption setup_items workflow.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S10",
+          "first_line": 447,
+          "last_line": 463
+        },
+        {
+          "source_id": "S10",
+          "first_line": 510,
+          "last_line": 567
+        },
+        {
+          "source_id": "S10",
+          "first_line": 596,
+          "last_line": 640
+        },
+        {
+          "source_id": "S10",
+          "first_line": 704,
+          "last_line": 714
+        },
+        {
+          "source_id": "S19",
+          "first_line": 1660,
+          "last_line": 1671
+        }
+      ],
+      "required_observations": [
+        "available_types_complete",
+        "potential_baronies_complete",
+        "enshrinable_artifacts_complete",
+        "selected_tuple",
+        "native_final_terms"
+      ],
+      "unknowns": [
+        "three producer implementations",
+        "final command ABI",
+        "filter ordering and invalidation"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C07",
+      "statement": "Capital important-action producer considers only actor capital barony plus authority, kingdom, capacity and owned unequipped recognized relic combinations; it omits payment and is not the complete creation picker.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S17",
+          "first_line": 1514,
+          "last_line": 1574
+        },
+        {
+          "source_id": "S04",
+          "first_line": 28,
+          "last_line": 45
+        },
+        {
+          "source_id": "S09",
+          "first_line": 928,
+          "last_line": 932
+        },
+        {
+          "source_id": "S18",
+          "first_line": 7,
+          "last_line": 20
+        }
+      ],
+      "required_observations": [
+        "capital_prompt_identity",
+        "all_location_candidates",
+        "lease",
+        "existing_sites",
+        "artifact_equipped_recognition_rarity",
+        "actual_required_sum"
+      ],
+      "unknowns": [
+        "prompt scheduler",
+        "complete location eligibility",
+        "creation inventory transfer"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C08",
+      "statement": "Create cost declares 2000 piety with a free-action waiver. New faith sets three shared free actions. Each declared consume operation subtracts one only while available.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S08",
+          "first_line": 770,
+          "last_line": 791
+        },
+        {
+          "source_id": "S07",
+          "first_line": 228,
+          "last_line": 243
+        },
+        {
+          "source_id": "S06",
+          "first_line": 1285,
+          "last_line": 1294
+        }
+      ],
+      "required_observations": [
+        "payer_id",
+        "native_cost_quote",
+        "wallet_before_after",
+        "faith_free_before_after"
+      ],
+      "unknowns": [
+        "actual payment timing",
+        "quote versus material result"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C09",
+      "statement": "Decision cooldowns are separate action-key locks with five-year or free-action-zero formulas. Creation separately checks actor variable even with free actions; callback consumes free use or writes that variable.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 72,
+          "last_line": 72
+        },
+        {
+          "source_id": "S01",
+          "first_line": 224,
+          "last_line": 224
+        },
+        {
+          "source_id": "S01",
+          "first_line": 371,
+          "last_line": 371
+        },
+        {
+          "source_id": "S01",
+          "first_line": 553,
+          "last_line": 553
+        },
+        {
+          "source_id": "S05",
+          "first_line": 13,
+          "last_line": 27
+        },
+        {
+          "source_id": "S04",
+          "first_line": 33,
+          "last_line": 45
+        },
+        {
+          "source_id": "S07",
+          "first_line": 2048,
+          "last_line": 2064
+        }
+      ],
+      "required_observations": [
+        "each_action_key_owner_and_expiry",
+        "creation_variable_owner_expiry",
+        "free_at_quote_and_after",
+        "native_quote"
+      ],
+      "unknowns": [
+        "evaluation timing on final free action",
+        "actual actor and payer path"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C10",
+      "statement": "Kingdom recording depends on site association count; release requires no remaining holy site of that faith in the kingdom. Grade changes do not declare kingdom release.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S06",
+          "first_line": 1296,
+          "last_line": 1340
+        },
+        {
+          "source_id": "S07",
+          "first_line": 1948,
+          "last_line": 1956
+        },
+        {
+          "source_id": "S07",
+          "first_line": 1995,
+          "last_line": 2004
+        },
+        {
+          "source_id": "S07",
+          "first_line": 2022,
+          "last_line": 2037
+        }
+      ],
+      "required_observations": [
+        "used_kingdom_list_all_affected_faiths",
+        "all_sites_in_kingdom",
+        "remaining_faith_associations"
+      ],
+      "unknowns": [
+        "runtime callback order",
+        "actual list mutation"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C11",
+      "statement": "Elevation picker enumerates own-faith regular sites; final script also checks capacity, HoF/barony relation and county holder faith. It promotes grade without freeing total capacity.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 25,
+          "last_line": 100
+        },
+        {
+          "source_id": "S01",
+          "first_line": 125,
+          "last_line": 163
+        },
+        {
+          "source_id": "S09",
+          "first_line": 919,
+          "last_line": 926
+        }
+      ],
+      "required_observations": [
+        "N_E_limits",
+        "site_current_level",
+        "barony_relation",
+        "county_holder_faith",
+        "native_elevation_permission"
+      ],
+      "unknowns": [
+        "actual grade and beneficiary delta"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C12",
+      "statement": "Demotion picker enumerates own eminent sites; final script requires E above religion minimum. It lacks elevation-specific holder/faith checks and does not free total capacity.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 191,
+          "last_line": 265
+        },
+        {
+          "source_id": "S01",
+          "first_line": 282,
+          "last_line": 309
+        },
+        {
+          "source_id": "S13",
+          "first_line": 15,
+          "last_line": 18
+        },
+        {
+          "source_id": "S09",
+          "first_line": 919,
+          "last_line": 926
+        }
+      ],
+      "required_observations": [
+        "E_current_effective_min",
+        "site_grade",
+        "native_demotion_permission",
+        "actor_county_modifiers",
+        "schism_context"
+      ],
+      "unknowns": [
+        "full native final validation",
+        "actual local versus faith-wide effect retention"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C13",
+      "statement": "Abandonment requires own regular site and N above minimum. Only no other related faith plus existing county holder causes all enshrined artifacts to be assigned to that holder before removal.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 337,
+          "last_line": 413
+        },
+        {
+          "source_id": "S24",
+          "first_line": 322,
+          "last_line": 329
+        }
+      ],
+      "required_observations": [
+        "all_faith_associations_including_extinct",
+        "county_holder",
+        "all_artifact_owner_ids",
+        "N_limits",
+        "after_associations"
+      ],
+      "unknowns": [
+        "native extra side effects",
+        "object lifetime",
+        "inventory owner changes"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C14",
+      "statement": "Grade changes declare county-holder opinion and actor faction-opinion modifiers; qualifying Christian demotion also calls Great Schism progress effect with input value one. No reverse cancellation is declared on elevation.",
+      "status": "static-confirmed",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 85,
+          "last_line": 100
+        },
+        {
+          "source_id": "S01",
+          "first_line": 237,
+          "last_line": 265
+        },
+        {
+          "source_id": "S01",
+          "first_line": 398,
+          "last_line": 413
+        },
+        {
+          "source_id": "S14",
+          "first_line": 7,
+          "last_line": 16
+        },
+        {
+          "source_id": "S15",
+          "first_line": 4,
+          "last_line": 15
+        },
+        {
+          "source_id": "S03",
+          "first_line": 354,
+          "last_line": 363
+        },
+        {
+          "source_id": "S16",
+          "first_line": 9277,
+          "last_line": 9277
+        }
+      ],
+      "required_observations": [
+        "modifier_ids_values_expiries",
+        "county_holder_opinion",
+        "schism_pair_county_rite_progress_before_after"
+      ],
+      "unknowns": [
+        "modifier reapplication semantics",
+        "actual progress and diplomatic result"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-C15",
+      "statement": "If actual abandonment leaves no associated faith, adoption any-related-faith-with-county-followers predicate cannot pass; abandonment followed by adoption is not a general rollback.",
+      "status": "inference",
+      "proof_layer": "source-contract",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 377,
+          "last_line": 395
+        },
+        {
+          "source_id": "S01",
+          "first_line": 528,
+          "last_line": 534
+        }
+      ],
+      "required_observations": [
+        "after_related_faith_set",
+        "after_candidate_terms",
+        "save_restore_identity_rebinding"
+      ],
+      "unknowns": [
+        "Runtime site persistence and re-entry must be read. Logical inference does not prove a live site was removed or became unreachable."
+      ],
+      "live_status": "pending",
+      "open_question": "Runtime site persistence and re-entry must be read. Logical inference does not prove a live site was removed or became unreachable."
+    },
+    {
+      "id": "E01-C16",
+      "statement": "Own planner should solve a shortest reachable end-state chain using counts, authority, independent cooldowns, full cost vector and recovery baseline, then submit through ordinary gameplay path with independent postconditions.",
+      "status": "counter-policy",
+      "proof_layer": "own-policy-proposal",
+      "sources": [
+        {
+          "source_id": "S01",
+          "first_line": 25,
+          "last_line": 100
+        },
+        {
+          "source_id": "S01",
+          "first_line": 191,
+          "last_line": 265
+        },
+        {
+          "source_id": "S01",
+          "first_line": 337,
+          "last_line": 413
+        }
+      ],
+      "required_observations": [
+        "goal_and_beneficiaries",
+        "complete_terms",
+        "native_final_permission",
+        "operation_id",
+        "independent_after_frame"
+      ],
+      "unknowns": [
+        "not yet implemented or compared against native AI",
+        "no action or performance qualification"
+      ],
+      "live_status": "pending"
+    }
+  ],
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T00:00:00Z"
+  },
+  "shot_cases": [
+    {
+      "id": "H01-01",
+      "claim_ids": [
+        "E01-C01",
+        "E01-C02"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-02",
+      "claim_ids": [
+        "E01-C03"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-03",
+      "claim_ids": [
+        "E01-C03"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-04",
+      "claim_ids": [
+        "E01-C01",
+        "E01-C04"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-05",
+      "claim_ids": [
+        "E01-C04"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-06",
+      "claim_ids": [
+        "E01-C04"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-07",
+      "claim_ids": [
+        "E01-C05",
+        "E01-C10"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-08",
+      "claim_ids": [
+        "E01-C06",
+        "E01-C07"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-09",
+      "claim_ids": [
+        "E01-C08",
+        "E01-C09"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-10",
+      "claim_ids": [
+        "E01-C11",
+        "E01-C12",
+        "E01-C13",
+        "E01-C14"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-11",
+      "claim_ids": [
+        "E01-C13",
+        "E01-C15"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    },
+    {
+      "id": "H01-12",
+      "claim_ids": [
+        "E01-C16"
+      ],
+      "live_status": "pending",
+      "session": null,
+      "before": null,
+      "native_action_receipt": null,
+      "independent_after": null,
+      "raw_media_sha256": null,
+      "raw_pts": null
+    }
+  ],
+  "experiments": [
+    {
+      "id": "E01-A",
+      "question": "Grey requirements to one applied adoption",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    },
+    {
+      "id": "E01-B",
+      "question": "Compatibility and rite-versus-personal branches",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    },
+    {
+      "id": "E01-C",
+      "question": "Free versus paid quote and cooldown boundary",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    },
+    {
+      "id": "E01-D",
+      "question": "Eminent replacement without crossing min/max",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    },
+    {
+      "id": "E01-E",
+      "question": "Shared versus last-faith abandonment and inventory recipient",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    },
+    {
+      "id": "E01-F",
+      "question": "Creation trio candidates, rarity threshold and one legal create",
+      "status": "pending",
+      "restore": "independent arm loaded from one frozen baseline; rebind runtime identities",
+      "submit_rule": "At most one currently native-legal action per material stage; query before retry after unknown result",
+      "native_action_performed": false
+    }
+  ],
+  "unknown_native_contracts": [
+    "Current version command ABI/caller and final validators",
+    "Complete creation type/barony/artifact producers and cache invalidation",
+    "Default adopted relation level and retained runtime identities",
+    "Actual payment and cooldown evaluation timing on the last free action",
+    "Actual modifier reapplication semantics and schism progress effect",
+    "Independent membership, level, inventory, ownership and wallet postconditions"
+  ],
+  "failure_semantics": {
+    "partial_candidates": "observation_unavailable; do not infer no candidates",
+    "unknown_requirement": "preserve unknown; no action admission",
+    "ack": "received or queued only",
+    "unknown_action_result": "query existing operation/world state before any resubmission",
+    "last_faith_abandon": "no general adopt-based undo; use frozen baseline restoration"
+  }
+}

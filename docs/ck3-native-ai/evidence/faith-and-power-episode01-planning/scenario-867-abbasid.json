@@ -1,0 +1,248 @@
+{
+  "schema": "xar.faith-power-episode01-authorized-scenario.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T07:54:18.310606+00:00",
+  "build": "1.20.0.4",
+  "base_claims_path": "docs/ck3-native-ai/evidence/faith-and-power-episode01-planning/claims.json",
+  "base_claims_sha256": "114354e6cc260c2da68280667ccb0a13f37b4c46c34e0f188e357160aa5da290",
+  "authorization": {
+    "source": "Root relay of explicit user instruction during this task",
+    "scope": "Independent mechanism save with disclosed preparation; Robert ordinary campaign limits and achievements are unchanged",
+    "prepared_content_must_be_labeled": true
+  },
+  "input_proposal": {
+    "start_date": "867.1.1",
+    "history_character_id": "34014",
+    "faith_definition": "sunni",
+    "rite_a_definition": "hanafi",
+    "rite_b_definition": "maliki",
+    "target_holy_site_type": "nadjaf",
+    "county_definition": "c_kufa",
+    "barony_definition": "b_an-najaf",
+    "all_are_definition_ids_not_live_ids": true
+  },
+  "sources": [
+    {
+      "id": "H01",
+      "path": "history/characters/levantine.txt",
+      "sha256": "9872b77c23e571fcf5932308729769cc722c072e89d028c9804a10295b0d20fb",
+      "line_ranges": [
+        {
+          "first": 8581,
+          "last": 8610
+        },
+        {
+          "first": 8693,
+          "last": 8696
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    },
+    {
+      "id": "H02",
+      "path": "history/titles/00_other_titles.txt",
+      "sha256": "da859be2795690016e818b6c82072bba1d5c8062e3d778ce1b250c999f56caf5",
+      "line_ranges": [
+        {
+          "first": 1739,
+          "last": 1739
+        },
+        {
+          "first": 1833,
+          "last": 1838
+        },
+        {
+          "first": 5236,
+          "last": 5236
+        },
+        {
+          "first": 5327,
+          "last": 5332
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    },
+    {
+      "id": "H03",
+      "path": "common/religion/rite_types/00_rite_types.txt",
+      "sha256": "3123e46d154cc35a72986979d3db951accf31fdbb03bf65d54b9261a3451dbce",
+      "line_ranges": [
+        {
+          "first": 567,
+          "last": 586
+        },
+        {
+          "first": 608,
+          "last": 626
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    },
+    {
+      "id": "H04",
+      "path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "line_ranges": [
+        {
+          "first": 842,
+          "last": 865
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    },
+    {
+      "id": "H05",
+      "path": "common/religion/faith_types/00_faith_types.txt",
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+      "line_ranges": [
+        {
+          "first": 2596,
+          "last": 2642
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    },
+    {
+      "id": "H06",
+      "path": "history/titles/k_mesopotamia.txt",
+      "sha256": "4dc2a31504ae0d9fe8e9b218ba094c2a38b37b37f414cf28d2d60b769d4d8a49",
+      "line_ranges": [
+        {
+          "first": 555,
+          "last": 568
+        }
+      ],
+      "layer": "source-contract",
+      "meaning": "historical initialization or definition only; not a live runtime identity or qualification"
+    }
+  ],
+  "claims": [
+    {
+      "id": "E01-867-C01",
+      "statement": "History 34014 defines Al-Mu_tazz, Abbasid house and hanafi; title initialization makes that history character a candidate for the 867 Sunni-head and empire scenario.",
+      "status": "static-confirmed",
+      "sources": [
+        "H01",
+        "H02"
+      ],
+      "required_native_observations": [
+        "history-to-runtime mapping",
+        "current actor, titles and religious head",
+        "independence and authority"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-867-C02",
+      "statement": "Hanafi and Maliki both define Sunni faith; Maliki includes adaptive core tenet and other tenet/doctrine differences. This is not a single-variable rite comparison.",
+      "status": "static-confirmed",
+      "sources": [
+        "H03"
+      ],
+      "required_native_observations": [
+        "actual before/after faith and rite",
+        "core/personal parameters",
+        "all collateral changes",
+        "head and authority after preparation"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-867-C03",
+      "statement": "Nadjaf defines c_kufa and b_an-najaf. Sunni initial list omits it; Shia initial list marks it eminent.",
+      "status": "static-confirmed",
+      "sources": [
+        "H04",
+        "H05"
+      ],
+      "required_native_observations": [
+        "actual site/type/inventory identity",
+        "all faith memberships and grades",
+        "county followers and compatibility witnesses"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-867-C04",
+      "statement": "Kufa history names holder 34017 from 866; that character defines hanafi. Different actor and county-holder rites need not mean different faith definitions.",
+      "status": "static-confirmed",
+      "sources": [
+        "H01",
+        "H06",
+        "H03"
+      ],
+      "required_native_observations": [
+        "actual county/barony holder and realm relation",
+        "holder faith/rite",
+        "actor faith/rite"
+      ],
+      "live_status": "pending"
+    },
+    {
+      "id": "E01-867-C05",
+      "statement": "Within-Sunni rite preparation is not evidence of a newly created faith and cannot by itself prove three free holy-site actions.",
+      "status": "inference",
+      "sources": [
+        "H03"
+      ],
+      "required_native_observations": [
+        "actual free_holy_site_actions",
+        "all decision and creation locks",
+        "native quote and wallet"
+      ],
+      "live_status": "pending",
+      "base_claim_refs": [
+        "E01-C08"
+      ],
+      "open_question": "Actual current free-action variable and any initialization side effects must be observed."
+    }
+  ],
+  "preparation_contract": {
+    "baseline_save_sha256": null,
+    "method": null,
+    "operator": null,
+    "actual_actor_id": null,
+    "actual_faith_id": null,
+    "actual_rite_id": null,
+    "actual_site_id": null,
+    "rite_change": "disclose method, full before/after and all collateral changes",
+    "piety_change": "Only if actual native quote exceeds observed balance; disclose exact difference and method",
+    "original_adoption_rules_and_cost_formula": "preserved; no override used",
+    "free_actions": "must be read; no three-action allowance inferred from within-Sunni rite change"
+  },
+  "runtime_binding": {
+    "session": null,
+    "connection_generation": null,
+    "episode": null,
+    "native_revision": null,
+    "public_revision": null,
+    "steam_offline_evidence": null,
+    "native_action_ready": false
+  },
+  "experiments": [
+    {
+      "id": "E01-A-867-HANAFI",
+      "preparation": "independent baseline arm with observed hanafi",
+      "action": "read all actual requirements; submit only if native permission is actually legal, do not manufacture failure",
+      "status": "pending"
+    },
+    {
+      "id": "E01-B-867-MALIKI",
+      "preparation": "same frozen baseline, disclosed maliki preparation and conditional piety preparation",
+      "action": "re-read full requirements and quote; at most one native-legal adoption then independent postcondition",
+      "status": "pending"
+    }
+  ],
+  "live_execution_performed": false,
+  "retention": {
+    "category": "record",
+    "review_at_utc": "2027-04-15T00:00:00Z"
+  },
+  "comparison_scope": "Installed resource bytes. H04/H05 are bound to the existing 55-file manifest; history and rite additions have not been mirror-compared.",
+  "claim_freeze_status": "static_sources_and_method_frozen; all runtime outcomes pending"
+}
