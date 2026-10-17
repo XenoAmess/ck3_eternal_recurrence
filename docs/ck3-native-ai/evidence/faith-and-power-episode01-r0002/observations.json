@@ -1,0 +1,446 @@
+{
+  "schema": "xar.ck3.faith-episode01-r2-observation/v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-17T10:01:22.476466+00:00",
+  "compiler_checkout": "e380df2d6d885c88f4fb0e89d395b85dc2d60270",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0002",
+  "query_cutoff_utc": "2026-10-17T09:36:07.439944+00:00",
+  "closure_cutoff_utc": "2026-10-17T09:57:27.528005+00:00",
+  "runtime_source_head": "201606305bfb2f8ec4f4730e20d751c8ce68e288",
+  "game_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "binding": {
+    "actor_character_id": 15893,
+    "date_raw": 51394920,
+    "local_player_id": 1,
+    "snapshot_id": "native:2",
+    "revision": 3,
+    "native_revision": 2,
+    "bridge_pid": 952,
+    "connection_generation": 1,
+    "owner_tid": 20932,
+    "pump_epoch": 10885,
+    "actual_current_actor_bound": true,
+    "saved_campaign_identity_proven": true,
+    "product_acceptance_proven": false
+  },
+  "evidence": {
+    "cold_restore": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime-audit/r2-cold-restore-observation-a02.json",
+      "bytes": 2828,
+      "sha256": "fe507a68f91da5085adb726435cc989db8dd9f06243131d1be31e2c32d09cede"
+    },
+    "root": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-initial-root.json",
+      "bytes": 120094,
+      "sha256": "d1ee5b7bda279edeeea6b8904cdb6d8062e03ea68044fee5e405d445d8998e4b"
+    },
+    "religion": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-initial-religion.json",
+      "bytes": 53015,
+      "sha256": "41c5501121ca310f68cf32710b7feb8bd0d799cbb0fb3cd17af1cd7c2a73fd28"
+    },
+    "sites": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-current-holy-sites-a01.json",
+      "bytes": 89767,
+      "sha256": "0b9d5df9ddfb8a839db9b04cbe8aa94ba0851550848f6677ccf25f78c2065294"
+    },
+    "open_window": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-open-nadjaf-a01.json",
+      "bytes": 116087,
+      "sha256": "a3c27ec69279416fb82e712e5be385c3ccdd18c90578d13171d5eec5769d670a"
+    },
+    "window_after": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-nadjaf-window-a01.json",
+      "bytes": 184181,
+      "sha256": "0fb319f408f37a18a1fbbe9684a5eb14390909724517e87a0c757d4a779336ef"
+    },
+    "tree": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-nadjaf-tree-a01.json",
+      "bytes": 307930,
+      "sha256": "dccf0a6aa00b7b516ddce345430a65968b1959bf951f8a9f09f4f1a592c3a8ff"
+    },
+    "open_adoption": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-open-adoption-a01.json",
+      "bytes": 184321,
+      "sha256": "652f1c38ea3f256dbaee282d4da4f726f4ae8d1ef3f5fb2b77416a17973a4420"
+    },
+    "detail": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-native-receipts/r2-adoption-detail-a01.json",
+      "bytes": 36338,
+      "sha256": "731115d1ba3d4cc5cb76389ac2b1448ce55a869cdc6c3bf458612b096fa85af8"
+    },
+    "fallback_diagnostic": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/native-candidate/r2-adoption-entry-diagnostic-a01.json",
+      "bytes": 22779,
+      "sha256": "b1aca12a888ba242e2392d56c31add2429db2dd72c75e81137c7efdc6382069a"
+    },
+    "fallback_fix": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/native-candidate/adoption-fallback-fix-a11.json",
+      "bytes": 1664,
+      "sha256": "9fe755d757d7f6920549350d672cad01037ef1e37103fc37189c9bf4166cdfb3"
+    },
+    "vanilla_inventory": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/common-r2-a02/prepared/saved-product-inventory.json",
+      "bytes": 210,
+      "sha256": "8425e9abfce665b0586ad8458d1c0286035721d6f7f629deb1ecae39737ee067"
+    },
+    "dlc_load": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/r2-a02/state/profile/dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    "prepared": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/runtime/common-r2-a02/prepared/prepared-case.json",
+      "bytes": 6774,
+      "sha256": "d9b128ecfc5bd52daa0fc18ba1b935721fd45fe81808599bb05c8fabdbcc9588"
+    },
+    "close": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/case-output/normal-close-result.json",
+      "bytes": 11999,
+      "sha256": "c752526f594b81a34e913cebce608703c0d6e42dacd94787f3a4132ad7681b8b"
+    },
+    "public_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/public-run-r2-a01/original-exit.json",
+      "bytes": 1160,
+      "sha256": "623f0a717944b209f0220ce55b7f987674971c1f43c1c8760698617011342e4c"
+    },
+    "keeper_wait": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/keeper-actual-parent-exit.json",
+      "bytes": 2921,
+      "sha256": "27dbde89ec95345c1e8f27ee736b2d62736f023e8dd57ca6b752613db6362a66"
+    },
+    "release": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0002/root-screen-release-a01.json",
+      "bytes": 1339,
+      "sha256": "94905b6cff18798cae0bc8f991f6027cadb2e9909dc6d9908d58e96d8b912ed4"
+    },
+    "frame": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/r2-frame-20261017T093557Z.png",
+      "bytes": 4752189,
+      "sha256": "e30bef4353bb32fda0c5b16340750c595f139ddc92545348e7a787923c03db2a",
+      "review": {
+        "machine_id": "4-8e1c2f1861",
+        "reviewed_at_utc": "2026-10-17T10:01:22.476466+00:00",
+        "reviewer": "/root/faith_research",
+        "method": "direct view_image of preserved original; no desktop capture/input/OCR",
+        "observed": [
+          "HolySite panel names 纳杰夫 and 什叶派的主要圣地",
+          "adopt entry has grey illustration and red cross",
+          "three empty enshrined-artifact slots",
+          "right-side enshrinable-artifact list is visible"
+        ],
+        "not_established": [
+          "native final legality",
+          "structured costs",
+          "artifact full IDs",
+          "beneficiary/Active contract"
+        ]
+      }
+    }
+  },
+  "static_sources": [
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_holy_site.gui",
+      "bytes": 32840,
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "relative_path": "gui/window_holy_site.gui",
+      "line_ranges": [
+        [
+          611,
+          620
+        ]
+      ],
+      "source_kind": "installed_original_script_static",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T10:01:22.476466+00:00"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_decisions.gui",
+      "bytes": 24297,
+      "sha256": "97e60c33209572fa5394a7033b1b475aa439f72448a2b9c1c7441abff5029e56",
+      "relative_path": "gui/window_decisions.gui",
+      "line_ranges": [
+        [
+          384,
+          417
+        ]
+      ],
+      "source_kind": "installed_original_script_static",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T10:01:22.476466+00:00"
+    },
+    {
+      "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/gui/window_decisions_detail.gui",
+      "bytes": 7671,
+      "sha256": "9007f4ba7c67314fa24ea6acc1fc709a4b185d7830230ebff479892e6046a469",
+      "relative_path": "gui/window_decisions_detail.gui",
+      "line_ranges": [
+        [
+          211,
+          222
+        ]
+      ],
+      "source_kind": "installed_original_script_static",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T10:01:22.476466+00:00"
+    }
+  ],
+  "claims": [
+    {
+      "id": "E01-R2-O01",
+      "kind": "actual_cold_restore",
+      "statement": "新PID952/gen1从exact A存档在空mod profile冷载成功，实际暂停owner/root/角色绑定；这是R2新证据。",
+      "sources": [
+        {
+          "evidence": "cold_restore",
+          "json_pointers": [
+            "/restore_status",
+            "/restore_binding",
+            "/actual_snapshot"
+          ]
+        },
+        {
+          "evidence": "prepared",
+          "json_pointers": [
+            "/startup/saved_campaign"
+          ]
+        },
+        {
+          "evidence": "vanilla_inventory",
+          "json_pointers": [
+            "/enabled_mods",
+            "/product_files"
+          ]
+        },
+        {
+          "evidence": "dlc_load",
+          "json_pointers": [
+            "/enabled_mods"
+          ]
+        }
+      ],
+      "planner_use": "允许把A作为本次窄场景成功冷载输入，不沿用R1失败宿主或旧PID。空mod profile不抹除A在准备实验中取得的状态，也不等于任意存档恢复通过。"
+    },
+    {
+      "id": "E01-R2-O02",
+      "kind": "native_query",
+      "statement": "当前角色15893、date51394920，rite13/faith50/mainrite13；active_event为空、原生root ready且独立。",
+      "sources": [
+        {
+          "evidence": "religion",
+          "json_pointers": [
+            "/result/rite_id",
+            "/result/faith_id",
+            "/result/faith_main_rite_id",
+            "/after_snapshot/active_event"
+          ]
+        },
+        {
+          "evidence": "root",
+          "json_pointers": [
+            "/result/campaign_root_context_ready",
+            "/result/independent"
+          ]
+        }
+      ],
+      "planner_use": "身份与独立性是已读输入，管理宗教权限/兼容/县主/免费数/冷却仍需专门terms，不能以独立推出可采用。"
+    },
+    {
+      "id": "E01-R2-O03",
+      "kind": "native_query",
+      "statement": "R2自身重新读回faith网络[26,27,0,14,29]；目录仍非原生采用候选。",
+      "sources": [
+        {
+          "evidence": "sites",
+          "json_pointers": [
+            "/result/current_faith_holy_site_ids",
+            "/result/registry_roster_is_native_adoption_candidates"
+          ]
+        }
+      ],
+      "planner_use": "恢复后重建当前关联账；不得从R1内容跳过R2观察，也不得以目录搜索代替realm候选。"
+    },
+    {
+      "id": "E01-R2-O04",
+      "kind": "native_ui_postcondition",
+      "statement": "开HolySite32先返回verification_pending；独立窗口查询后effective_visible=true、subject_id_available=true/current_subject_id32。",
+      "sources": [
+        {
+          "evidence": "open_window",
+          "json_pointers": [
+            "/result/status",
+            "/result/verification_pending"
+          ]
+        },
+        {
+          "evidence": "window_after",
+          "json_pointers": [
+            "/result/status",
+            "/result/effective_visible",
+            "/result/subject_id_available",
+            "/result/current_subject_id"
+          ]
+        }
+      ],
+      "planner_use": "记录开窗ACK与可见/目标后验两层；H01现有窗口观察已达成，不计采用详情或采用结果。"
+    },
+    {
+      "id": "E01-R2-O05",
+      "kind": "pixel_observation_plus_static_semantics",
+      "statement": "直接审阅截图见灰图红叉；原版参数化决议widget用IsPossibleForPlayer控制其外观，最终确认另外由DecisionDetailView.CanConfirm控制。",
+      "sources": [],
+      "source_evidence": [
+        "frame"
+      ],
+      "static_source_indices": [
+        0,
+        1,
+        2
+      ],
+      "planner_use": "灰叉是预览线索；不转成detail native_can_confirm=false，不伪造拒绝理由/费用。也不能因按钮enabled忽略最终校验。"
+    },
+    {
+      "id": "E01-R2-O06",
+      "kind": "native_transport_refusal",
+      "statement": "采用入口adopt_visible=true，但receiver未绑定；请求在dispatch前返回receiver_not_unique。",
+      "sources": [
+        {
+          "evidence": "open_adoption",
+          "json_pointers": [
+            "/result/unavailable_reason",
+            "/result/native_dispatch_attempted",
+            "/result/holy_site_adoption_entry"
+          ]
+        }
+      ],
+      "planner_use": "归为接口绑定缺陷，不归为玩家采用条件失败；不修改信仰、领地或资源去修技术拒绝。"
+    },
+    {
+      "id": "E01-R2-O07",
+      "kind": "offline_analysis_of_preserved_native_tree",
+      "statement": "原树563控件；离线诊断显示四条原版双回调shortcut在producer选出的fallback组，只有1/3/1/3/4/0可见启用；旧primary-only过滤是绑定缺口。",
+      "sources": [
+        {
+          "evidence": "tree",
+          "json_pointers": [
+            "/result/widget_count",
+            "/result/rendered_text_available"
+          ]
+        },
+        {
+          "evidence": "fallback_diagnostic",
+          "json_pointers": [
+            "/multi_callback_rows"
+          ]
+        },
+        {
+          "evidence": "fallback_fix",
+          "json_pointers": [
+            "/live_trigger",
+            "/fix",
+            "/qualification"
+          ]
+        }
+      ],
+      "planner_use": "修复走原版producer/dispatcher并保持完整有序签名、唯一性、两读稳定；源码已合不授新DLL/live信用。GUI子路径是本帧诊断，不能硬编码为跨存档选择策略。"
+    },
+    {
+      "id": "E01-R2-O08",
+      "kind": "explicitly_unavailable",
+      "statement": "详情definition不可用或不同；native_can_confirm与普通条件can_confirm均null，报价不可用，未Confirm、未采用。",
+      "sources": [
+        {
+          "evidence": "detail",
+          "json_pointers": [
+            "/result/unavailable_reason",
+            "/result/native_can_confirm",
+            "/result/normal_requirements_legality_observed",
+            "/result/normal_requirements_can_confirm",
+            "/result/native_resource_quote_available",
+            "/result/action_ready",
+            "/result/decision_confirm_invoked",
+            "/result/adoption_completed_observed"
+          ]
+        }
+      ],
+      "planner_use": "未知保持null。下一轮先修入口，再读目标参数、actor、bypass=0、最终CanConfirm/tooltip/报价，合法时一次确认及独立关联/库存/钱包/额度/冷却后验。"
+    },
+    {
+      "id": "E01-R2-O09",
+      "kind": "normal_close_and_resource_receipts",
+      "statement": "R2正常GUI退出、原始HANDLE OS0、native process_exit0/cleanup、public Popen0、keeper0、CAS11251空资源；不改R1正常退出RED。",
+      "sources": [
+        {
+          "evidence": "close",
+          "json_pointers": [
+            "/root_normal_gui_review/normal_gui_quit",
+            "/retained_handle",
+            "/native_zero_proof/process_exit_code",
+            "/native_zero_proof/shutdown/cleanup_proven",
+            "/normal_close_qualified",
+            "/business_pass"
+          ]
+        },
+        {
+          "evidence": "public_wait",
+          "json_pointers": [
+            "/actual_original_popen_wait",
+            "/returncode"
+          ]
+        },
+        {
+          "evidence": "keeper_wait",
+          "json_pointers": [
+            "/keeper_actual_exit_code"
+          ]
+        },
+        {
+          "evidence": "release",
+          "json_pointers": [
+            "/event/sequence",
+            "/event/timestamp_utc",
+            "/task/resources"
+          ]
+        }
+      ],
+      "planner_use": "可计本场正常收尾能力；仍不能给采用/其他业务或跨机资格。"
+    },
+    {
+      "id": "E01-R2-O10",
+      "kind": "recorder_receipt",
+      "statement": "R2有ENCODED_UNREVIEWED原片、recorder NORMAL_TREE_EMPTY；clean、native business、human review均false，qualified takes仍0。",
+      "sources": [
+        {
+          "evidence": "keeper_wait",
+          "json_pointers": [
+            "/keeper_report/recording/recorder_terminal/result",
+            "/keeper_report/recording/recorder_terminal/job/state",
+            "/keeper_report/recording/recorder_terminal/clean_spans_certified",
+            "/keeper_report/recording/recorder_terminal/native_business_verified",
+            "/keeper_report/recording/recorder_terminal/human_review_performed"
+          ]
+        }
+      ],
+      "planner_use": "原片存在与可发布/合格镜头分开记账；不复制媒体，后续媒体lane独立审核。"
+    }
+  ],
+  "pointers_validated": 55,
+  "native_legality": null,
+  "adoption_completed": false,
+  "action_ready": false,
+  "normal_close_qualified": true,
+  "ordinary_campaign_credit": false,
+  "qualified_takes": 0,
+  "compiler_game_operations": false,
+  "storage": {
+    "policy_version": "1.0.0",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-17T10:01:22.476466+00:00",
+    "volume_free_bytes": 133315641344,
+    "new_output_budget_bytes": 120000,
+    "large_file_copies": false,
+    "record_review_at_utc": "2027-04-15T10:01:22.476466+00:00",
+    "derived_review": "48h after owner applies and verifies; raw evidence lifetime remains governed by shared policy"
+  }
+}

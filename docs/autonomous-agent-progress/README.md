@@ -1,5 +1,9 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17 09:57 UTC：第一期A冷载与可见窗口已证，采用仍0
+
+`machine_id: 4-8e1c2f1861`。[R2独立观察](../ck3-native-ai/faith-and-power-episode01-r0002-observations.md)确认exact A在空mod profile冷载到新PID952/gen1、rite13/faith50，HolySite32独立后查可见。灰叉不是最终许可；采用入口旧fallback绑定失败在dispatch前拒绝，详情CanConfirm/报价仍unknown、未Confirm/未采用。R2正常GUI/HANDLE/native/public/keeper均0、CAS11251释放，不改R1退出RED；原片编码未审、合格素材0。下一门为修复后的新live入口与最终terms/一次动作独立后态。
+
 ### 2026-10-17 08:57 UTC：圣地实际只读观察与R0001闭场
 
 `machine_id: 4-8e1c2f1861`。[R0001观察](../ck3-native-ai/faith-and-power-episode01-r0001-observations.md)已取得同PID/gen的宗教身份、faith五站点、显式nadjaf32及嵌入库存引用；准备事件一次选择有独立后验，F/A存档已冻结，但driver绑定仍unconfirmed、恢复加载未验。08:55正常退出context在Python库存预验被游戏改写settings阻断，原场RED/CK3 exit1；08:57:50 keeper0、CAS11222/resources[]闭场。采用0、合格素材0，下一步是修复运行期输入分类、重核恢复，再取原生候选/许可与一次动作后态；详情与SHA见专题。
