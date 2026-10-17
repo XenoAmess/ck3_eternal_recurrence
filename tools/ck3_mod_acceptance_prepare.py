@@ -102,6 +102,12 @@ def _finish(context,profile,provenance):
             'post_start':contract['post_start'],
             'required_log_markers':contract['required_startup'],
             'forbidden_log_markers':contract['forbidden_startup']}
+    scenario=contract.get('frontend_scenario')
+    if scenario is not None:
+        require(isinstance(scenario,dict) and set(scenario)=={
+            'profile_id','frontend_target','startup_event_admission'},
+            'Explicit fixture scenario requires its exact declared target and startup event admission')
+        policy.update(schema='ck3-frontend-fixture-start-policy-v2',schema_version=2,**scenario)
     policy_path=Path(context['output'])/'frontend-fixture-start-policy.json'
     write_json(policy_path,policy)
     return {'state_dir':str(profile.parent),'profile':str(profile),'preparation':pin(preparation),
@@ -114,14 +120,20 @@ def materialize_fixture_profile(context,fixture_dir,product_dir,plain_configurat
     require(set(plain_configuration)==set(CONFIG_NAMES),'Exactly four original plain configuration files required')
     profile.mkdir(parents=True)
     for relative,row in plain_configuration.items():checked_copy(row,profile/relative)
-    for name,directory in (('fixture',Path(fixture_dir)),('product',Path(product_dir))):
+    directories=[('fixture',Path(fixture_dir))]
+    if product_dir is not None:
+        directories.append(('product',Path(product_dir)))
+    for name,directory in directories:
         require((directory/'descriptor.mod').is_file(),'Original '+name+' descriptor is missing')
         target=profile/'mod-content'/name
         shutil.copytree(directory,target)
         outer=profile/'mod'/ (name+'.mod');outer.parent.mkdir(exist_ok=True)
         with outer.open('x',encoding='utf-8',newline='\n') as stream:stream.write(_outer_from_inner(target/'descriptor.mod',target))
-    write_json(profile/'dlc_load.json',{'enabled_mods':['mod/product.mod','mod/fixture.mod'],'disabled_dlcs':[]})
-    return _finish(context,profile,{'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)})
+    enabled_mods=(['mod/product.mod','mod/fixture.mod'] if product_dir is not None else ['mod/fixture.mod'])
+    write_json(profile/'dlc_load.json',{'enabled_mods':enabled_mods,'disabled_dlcs':[]})
+    provenance=({'kind':'case-emitter-and-exact-formal-staging','fixture':str(fixture_dir),'product':str(product_dir)}
+                if product_dir is not None else {'kind':'standalone-mechanism-fixture','fixture':str(fixture_dir),'product':None})
+    return _finish(context,profile,provenance)
 
 
 def restore_prepared_profile(context,beforelaunch_inventory):
