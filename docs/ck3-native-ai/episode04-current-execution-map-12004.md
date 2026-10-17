@@ -119,3 +119,9 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-18 R202正常闭场：2633遭遇战S0，非返home
 
 `machine_id: desktop-3fevhd2-1c74096080`；实际source26449/a34b。[R202专题](episode04-r202-movement-combat-checkpoint-12004.md)记录第一actor23日到2633后保存但继续运行；public82/native81 preview首边2627 Pfalse，relationfalse/war-1/ORunknown。后继同PID只换case/prefix，guard前26闭环，独立第27日53148864在2633与enemyArmy32/owner33732交战，非抵达2629。最终正常Save74,351,284B/SHA5b629e2b…5835755f，CK3/process/outer0与screen6267空资源；R203可从battle正常S0独立继续/拍摄，未预授结果。没有录像或R06 ADD，研究9/14、业务6/11、动态0/11、ABC0/3不涨。
+
+## 2026-10-18 R203：actor RED、实际一日与正常闭场分列
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际source19024/a35。[R203专题](episode04-r203-battle-logistics-12004.md)闭合加载误判：phaseb025非mailbox失败，phaseb042实际ready/时钟未动。.4 CombatWindow query实际army-only拒绝；只采用Root审过的地图战斗client，不发unsupported Open。原actor误查accepted仍RED/exit1，但composite实际postcondition+1日53148864→53148888，原生exactclock0overshoot、独立afterpaused；纯后验合同已迁入bridge供后继复用，R204冻结19024不强依赖新路径。
+
+唯一Start/Finish原片9.333秒280帧，decode/PTS完整性通过，clean/1×/人审与正式cue未新增；同worker不第二次Start。手工inline实际OFF+clear与close NOT_CONFIGURED分别记，0resource4记录≠0军事付款。正常Save74,286,185B/SHA653980a0…058359c9、CK3/bootstrap0与screen6321空资源；研究9/14、业务6/11、动态0/11、ABC0/3不涨。

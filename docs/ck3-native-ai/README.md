@@ -1519,3 +1519,7 @@ R0051 snapshot006只授地图/角色/暂停观察，007另授只读Army query pr
 - 2026-10-11 background source: [Education nonzero option command copying](education-native-option-rows-12004.md#normal-return-command-copy-source-and-a05-consumer). Existing native constructor copies N BYTE bank values/order on normal return; final same-context special payload and matching native/strict formulas connected. `research / SOURCE_ADOPTED_NOT_RUN`; no runtime dispatch credit.
 
 R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episode04-r190-window-capture-12004.md)（machine_id: desktop-3fevhd2-1c74096080，观察2026-10-16 UTC；运行源6bf/a30）。75.542529秒为暂停尾段，Native55全局3047/overflow，单事件strict positive仍0；研究6/14、业务4/11、动态0/11、ABC0/3不变。a31新增显式冷夹具target仅接线，尚未构建/运行，不追认R190。
+
+## R203实际接线知识（2026-10-18）
+
+`machine_id: desktop-3fevhd2-1c74096080`。[地图战斗/一日后验专题](episode04-r203-battle-logistics-12004.md)新增可复用纯合同：composite用progress_status与native exactclock、独立前后帧验证，不能用顶层accepted。原actor RED不重标、不重投日步；.4 CombatWindow路由仍未迁移，legacy1.19地址不能复用，当前地图客户区拍法已可执行。下一具名施工入口为exact .4 CombatWindow handler/type/subject观察口。零resource4行不授无付款，手工OFF companion与pre_resume_hook配置分别归档；源码/原件/场次资格均可沿专题索引复用。

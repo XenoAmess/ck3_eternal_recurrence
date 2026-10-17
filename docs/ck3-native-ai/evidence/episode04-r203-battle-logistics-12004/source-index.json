@@ -1,0 +1,253 @@
+{
+  "schema": "xar.e04.r203.portable-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "recorded_at_utc": "2026-10-17T19:52:31.483142+00:00",
+  "runtime_source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "integration_base": "7ccc2de7d9ab5669d5df9a5cdc7bffe25d457e8c",
+  "game_version": "1.20.0.4",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "sources": {
+    "loading": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r203-loading-diagnostic-clarification-a01\\OBSERVATION.actual-a01.json",
+      "bytes": 3211,
+      "sha256": "2a40cdd82b129525d010597feadb8e3e549eed9385f9a3bfb021e2e914f2a398",
+      "archive_member": "loading.json"
+    },
+    "scope": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-IDENTITY-SCOPE.actual-a01.json",
+      "bytes": 8753,
+      "sha256": "32b8bef1a37e82922fcbf0ca53886b2c0ce0073e0e1a307e8f6fc2ad6a340eb0",
+      "archive_member": "scope.json"
+    },
+    "identity": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\runtime-actor-identity.actual-a01.json",
+      "bytes": 7955,
+      "sha256": "39eac40a41eea3e323fc40882da4e8ebae2f778f7950b7c6396ae23c98c89be1",
+      "archive_member": "identity.json"
+    },
+    "army_verify": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-ARMY-VERIFY.actual-a02.json",
+      "bytes": 3430,
+      "sha256": "d8e40275329df3214e98456026f024bd89a939642a2c9f41b7e78ab41470d2ef",
+      "archive_member": "army_verify.json"
+    },
+    "combat_ui_error": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-combat-a01-03-ui.json",
+      "bytes": 1336,
+      "sha256": "0de1ec4e7a268fb7e2ff0efbfe54a444b0cfcc0241db6ae9feeed628169293ea",
+      "archive_member": "combat_ui_error.json"
+    },
+    "map_a05": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-MAP-FRAME.a05.json",
+      "bytes": 4012,
+      "sha256": "5893142c5f0960c1266a01ca7fa8f866fb97c9c99271b499c4e7541708b3b39c",
+      "archive_member": "map_a05.json"
+    },
+    "root_map_review": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-MAP-ROOT-REVIEW.actual.json",
+      "bytes": 1354,
+      "sha256": "3df9f9f9ead4a83d46f5bbb40e0ecd19cb026fe5b297dc8db2674817bc2e514d",
+      "archive_member": "root_map_review.json"
+    },
+    "actor_execution": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-MAP-FILM-COMMAND.actual-a01.execution.json",
+      "bytes": 1770,
+      "sha256": "77fcba36dd1ac4f1e18ecce0d1c3ebbffa8286ba7eecd9287c55acdf95908508",
+      "archive_member": "actor_execution.json"
+    },
+    "actor_stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-MAP-FILM-COMMAND.actual-a01.stderr",
+      "bytes": 1501,
+      "sha256": "0d2b404ac057161bf880480fbcbdf4e6997e1a0d756fdc36d8f34120df02f61a",
+      "archive_member": "actor_stderr.txt"
+    },
+    "started": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\research-film-a01\\STARTED.actual.json",
+      "bytes": 1846,
+      "sha256": "788709a3e72fece43004a3f74f8dd412d039bfac3d0ef8cae1356c88b4987170",
+      "archive_member": "started.json"
+    },
+    "finish": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\research-film-a01\\FINISH.actual-a01.json",
+      "bytes": 1464,
+      "sha256": "09863352cd18256250fb8050a980395b3504770f42421d6a51093491541ed677",
+      "archive_member": "finish.json"
+    },
+    "media_qa": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\media-review-a02\\MEDIA-DIAGNOSTIC-QA.actual-a02.json",
+      "bytes": 5699,
+      "sha256": "b91b0ec11188c82966d86d87df759d70fe06fa95e88a8ec4721243d5df1f5520",
+      "archive_member": "media_qa.json"
+    },
+    "visual_review": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\media-review-a02\\VISUAL-SAMPLE-REVIEW.actual-a01.json",
+      "bytes": 2163,
+      "sha256": "39bfed220269bb7334a89d006fb273adce8b26b996da6c15c592e725fec5c2ce",
+      "archive_member": "visual_review.json"
+    },
+    "inline_cleanup": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-INLINE-MANUAL-CLEANUP.collect-cleanup-a01.json",
+      "bytes": 16502,
+      "sha256": "f7dfe11584b515cd1d4802b264e944b44ff0c73d1cbc0ad60708d0c21e3c478f",
+      "archive_member": "inline_cleanup.json"
+    },
+    "inline_consumer": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-INLINE-collect-cleanup-a01\\COLLECT-CONSUMED.actual.json",
+      "bytes": 1772,
+      "sha256": "0be2e7ca1f9c5e7a9352266f5fdc082437cd03260d727e37d018592b136abe1a",
+      "archive_member": "inline_consumer.json"
+    },
+    "independent_payment_off": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-inline-collect-cleanup-a01-94-payment-independent-clear-query.json",
+      "bytes": 35776,
+      "sha256": "e69b04422847df0d0ec373fc9cc9d0955cd8b679be990ac4f9ef3088019a84d3",
+      "archive_member": "independent_payment_off.json"
+    },
+    "independent_natural_off": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-inline-collect-cleanup-a01-96-natural-independent-off-query.json",
+      "bytes": 4800,
+      "sha256": "0308c3c269390ae253a627115d3134d1fe9965c8b4963f9b52b317adeb832df6",
+      "archive_member": "independent_natural_off.json"
+    },
+    "normal_save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\r203-battle-a01-ready-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 5257,
+      "sha256": "bb5448b5b961a599e6831b818b76b0ff08239d5bc9ad8553f77d9c255108fa0c",
+      "archive_member": "normal_save.json"
+    },
+    "bootstrap_observed": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\r203-battle-a01-ready-close-a01\\BOOTSTRAP-OBSERVED.actual.json",
+      "bytes": 931,
+      "sha256": "6240056f49dd8465d3a5d9aa583837205de3679fb65134eda0b8894ff110999e",
+      "archive_member": "bootstrap_observed.json"
+    },
+    "screen_release": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\r203-battle-a01-ready-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4877,
+      "sha256": "0efe4646d8fd305286b2414ca722720678403ffba86df0d243236e5186564a37",
+      "archive_member": "screen_release.json"
+    },
+    "bootstrap": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\bootstrap-result.json",
+      "bytes": 15376,
+      "sha256": "75b1b88ba2db994171df98373e8f37e36132833c06bff291aae4c49af2cd7aef",
+      "archive_member": "bootstrap.json"
+    },
+    "original_helper": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r203-runtime-prep-a01\\r203_postcondition_contract.py",
+      "bytes": 3079,
+      "sha256": "3533bda07e3d47a4807edd8cd103afb6bca2194e0c485b7e68e5a2d66cead762",
+      "archive_member": "original_helper.py"
+    },
+    "historical_checker": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r203-runtime-prep-a01\\check_r203_postcondition_once.py",
+      "bytes": 1677,
+      "sha256": "c4c43738cbe7a5c3a4dd3f6a1829e0e6692d2b5d2ceba62d805aedffda9d3259",
+      "archive_member": "historical_checker.py"
+    },
+    "inline_a02_source_only": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r203-inline-observer-a02\\ROOT-DELIVERY.actual-a02.json",
+      "bytes": 2950,
+      "sha256": "48e0ceddd9880ccf08856711fa2fec6a90738b15dff4335f3554b2cfb361b3a8",
+      "archive_member": "inline_a02_source_only.json"
+    },
+    "day_before": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-film-d01-before.json",
+      "bytes": 392732,
+      "sha256": "ea5b62cb20e3da321d229651a901df0ec36df49b73b1a13e943de2d5cea6404d"
+    },
+    "day_step": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-film-d01-life-advance-once.json",
+      "bytes": 58253,
+      "sha256": "1f4b01f20f05953dedabbf3f4d2032d9e9e2d7c23879afcf0914be025293407c",
+      "archive_member": "day_step.json"
+    },
+    "independent_after": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-battle-a01-ready-record-cleanup-a01-before.json",
+      "bytes": 124086,
+      "sha256": "e0913dbd8f51d2dfa3fcf7bf838f9ee95dfbdc0ef88ec8ecbddb3048fd8910bd"
+    },
+    "ready": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\desktop-3fevhd2-1c74096080--vanilla--R0203\\responses\\r203-battle-a01-map-ready-phaseb-042.json",
+      "bytes": 125545,
+      "sha256": "18933d01fa4d358eee9cc8df6a7f41d3b5a66145b09dcf23bee8959e6ec3f090"
+    },
+    "portable_client_frame": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r203-battle-logistics-a01\\R203-MAP-FRAME.a05.client.png",
+      "bytes": 1526435,
+      "sha256": "7ce74aaca4daf80fbe3154df4e474061c7739767baeb2975d3172c9a738148c5",
+      "copy_scope": "Only the already-cropped1280x720 client frame; no desktop pixels or raw movie copied"
+    }
+  },
+  "source_snippets": [
+    {
+      "source_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_ui_contract.py",
+      "git_blob": "fc40f55f50659fe950d15e6e90f8b8d6d7bd0d7a",
+      "full_source_sha256": "ae44eab5630c9cef0c917c96572770350018bafe40eceabd864d881e11fd85db",
+      "line_start": 98,
+      "line_end": 126,
+      "text": "def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: str, *,\n                            army_tooltip_kind: str | None = None) -> None:\n    if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):\n        raise ValueError(\"native UI exact build has no migrated presentation route\")\n    if kind == \"holy_site_creation\":\n        from .holy_site_creation_ui_contract import OPERATIONS\n        if build != CK3_12004 or operation not in OPERATIONS | {\"query\"} or army_tooltip_kind is not None:\n            raise ValueError(\"creation presentation requires its fixed exact4 UI routes\")\n        return\n    if kind == \"holy_site\":\n        if build != CK3_12004 or operation not in {\"query\", \"open_holy_site\", \"open_holy_site_adoption\"} or army_tooltip_kind is not None:\n            raise ValueError(\"HolySite presentation requires exact 1.20.0.4\")\n        return\n    if kind == \"holy_site_adoption\":\n        if build!=CK3_12004 or operation!=\"confirm_site_adoption\" or army_tooltip_kind is not None:\n            raise ValueError(\"HolySite adoption confirmation requires exact 1.20.0.4\")\n        return\n    if kind == \"faith\":\n        if build != CK3_12004 or operation not in {\"query\", \"open_faith\"} or army_tooltip_kind is not None:\n            raise ValueError(\"Faith presentation requires exact 1.20.0.4\")\n        return\n    if army_tooltip_kind is not None:\n        if build not in _CURRENT_ARMY_BUILDS or kind != \"army\" or operation not in {\"query\", \"hover_army_tooltip\", \"leave_army_tooltip\"}:\n            raise ValueError(\"army tooltips require the exact current native Army route\")\n        return\n    if build == CK3_12004 and kind == \"character\" and operation in {\"query\", \"open_character\"}:\n        return  # Opening uses the separately opted-in exact4 typed Any producer.\n    if build in _CURRENT_ARMY_BUILDS and (kind != \"army\" or operation not in {\"query\", \"select_army\"}):\n        raise ValueError(\"current native UI supports army query and select only\")\n"
+    },
+    {
+      "source_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "git_blob": "d72c3dc41faa4094b65cbb91815157123466a2d3",
+      "full_source_sha256": "b3250b2de3361166e681cea271254edd39b927e068726b301a9b311ebcd30908",
+      "line_start": 625,
+      "line_end": 638,
+      "text": "  if(env.gui_abi_revision==GuiAbiRevisionV1::crozier12004 && kind==IngameUiWindowKindV1::character)\n    return ReadCharacterWindow12004QueryV1(env,handler,out);\n  const auto n=static_cast<std::size_t>(kind);void *window=nullptr;\n  out.tree.scope_root_name=std::string(IngameUiWindowNameV1(kind));\n  const bool actual4=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004;\n  const bool current=IsModernArmyUiV1(env.gui_abi_revision);\n  if(n>=kViewTypes.size()) {out.unavailable_reason=\"window_kind_invalid\";return false;}\n  const auto slot=actual4?ck3_12004::kUiArmyWindowHandlerSlot12004V1:current?kUiArmyWindowHandlerSlot12003V1:(0x98+kViewTypes[n]*8);\n  const auto descriptor=actual4?ck3_12004::kUiArmyWindowTypeDescriptor12004V1:current?kUiArmyWindowTypeDescriptor12003V1:kTypeDescriptors[n];\n  const auto root_offset=actual4?ck3_12004::kUiArmyWindowGuiRootOffset12004V1:kUiArmyWindowGuiRootOffset12003V1;\n  const auto handler_offset=actual4?ck3_12004::kUiArmyWindowHandlerOffset12004V1:0xA0;\n  if(n>=kViewTypes.size() || (current && kind!=IngameUiWindowKindV1::army) ||\n      !Value(handler,slot,window) || !TypedObject(env.module_base,window,descriptor,UiExactImageSizeV1(env.gui_abi_revision))) {\n    out.unavailable_reason=\"window_object_type_unverified\";return false;\n"
+    },
+    {
+      "source_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "path": "ck3_autonomous_player/native_bridge/src/ingame_ui_navigation_v1.cpp",
+      "git_blob": "d72c3dc41faa4094b65cbb91815157123466a2d3",
+      "full_source_sha256": "b3250b2de3361166e681cea271254edd39b927e068726b301a9b311ebcd30908",
+      "line_start": 843,
+      "line_end": 852,
+      "text": "  if(r.window_kind==IngameUiWindowKindV1::title_appointment)return revision==GuiAbiRevisionV1::crozier12004 && r.operation==IngameUiOperationV1::query;\n  if(r.window_kind==IngameUiWindowKindV1::faith)return revision==GuiAbiRevisionV1::crozier12004 &&\n      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::open_faith);\n  if(revision==GuiAbiRevisionV1::crozier12004 && r.window_kind==IngameUiWindowKindV1::character)\n    return r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::open_character;\n  if(revision==GuiAbiRevisionV1::legacy11906)return r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() &&\n      r.operation!=IngameUiOperationV1::hover_army_tooltip && r.operation!=IngameUiOperationV1::leave_army_tooltip;\n  return IsModernArmyUiV1(revision) && r.window_kind==IngameUiWindowKindV1::army &&\n      (r.operation==IngameUiOperationV1::query || r.operation==IngameUiOperationV1::select_army ||\n       r.operation==IngameUiOperationV1::hover_army_tooltip || r.operation==IngameUiOperationV1::leave_army_tooltip);\n"
+    },
+    {
+      "source_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "git_blob": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "full_source_sha256": "2e3e1e78bc46837903957700aec5555e31dac2564c144d33ec794fc94004f692",
+      "line_start": 24880,
+      "line_end": 24917,
+      "text": "            \"step\": result_step,\n            \"backend_id\": \"native-headless\",\n            \"source\": \"native-composite\",\n            \"starting_date\": {\"date_raw\": starting_date_raw},\n            \"ending_date\": {\"date_raw\": ending_date_raw},\n            \"starting_date_raw\": starting_date_raw,\n            \"ending_date_raw\": ending_date_raw,\n            \"elapsed_days\": max(0, (ending_date_raw - starting_date_raw) // 24),\n            \"requested_horizon_days\": horizon_days,\n            \"timeline_speed\": timeline_speed,\n            \"timeline_policy\": timeline_policy,\n            \"progress_status\": progress_status,\n            \"war_progress_before\": _war_progress_summary(starting),\n            \"war_progress_after\": _war_progress_summary(current),\n            \"ordinary_events\": ordinary_events,\n            \"event_resolution\": event_resolution,\n            \"actions\": actions,\n            \"paused\": current.get(\"paused\") is True,\n            \"active_event\": current.get(\"active_event\"),\n            \"pending_character_interaction\": current.get(\"pending_character_interaction\"),\n            \"final_screen\": (\n                \"map_hud\" if current.get(\"paused\") is True\n                and current.get(\"active_event\") is None\n                and current.get(\"pending_character_interaction\") is None\n                else None\n            ),\n            \"snapshot_id\": current[\"snapshot_id\"],\n            \"revision\": current[\"revision\"],\n        }\n        if progress_status == \"modal_interrupted\":\n            result[\"top_exclusive_modal_choice_hint\"] = modal_interrupt_hint\n        if materialization_result is not None:\n            result[\"battle_identity_materialization\"] = (\n                materialization_result\n            )\n        if sentinel_receipt is not None:\n            result[\"exact_day_native_clock\"] = sentinel_receipt\n        return result\n"
+    }
+  ],
+  "module": {
+    "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/exact_one_day_postcondition.py",
+    "bytes": 3079,
+    "sha256": "3533bda07e3d47a4807edd8cd103afb6bca2194e0c485b7e68e5a2d66cead762",
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r203-runtime-prep-a01\\r203_postcondition_contract.py",
+      "bytes": 3079,
+      "sha256": "3533bda07e3d47a4807edd8cd103afb6bca2194e0c485b7e68e5a2d66cead762",
+      "archive_member": "original_helper.py"
+    },
+    "adaptation": "CRLF to LF only; AST identical; no C/D paths, SDK or platform imports"
+  },
+  "archive": {
+    "path": "small-originals.zip",
+    "bytes": 44362,
+    "sha256": "eb49b976df4f215b9d7bc91dbdf75bf64f9375083fb9018aaa450fc3b15ec658"
+  },
+  "portable_frame": {
+    "path": "map-a05-client.png",
+    "bytes": 1526435,
+    "sha256": "7ce74aaca4daf80fbe3154df4e474061c7739767baeb2975d3172c9a738148c5",
+    "width": 1280,
+    "height": 720
+  },
+  "scope": "Selected small originals plus required-field pure-helper inputs. Original393KB/124KB snapshots are pinned, not copied. No save/Driver/EXE/raw movie/desktop screenshot/chat copy.",
+  "counts": {
+    "research": "9/14",
+    "business": "6/11",
+    "qualified_dynamic": "0/11",
+    "ABC": "0/3",
+    "formal_cue_coverage_added": 0
+  },
+  "retention": "Existing parent shared128MiB carry22; integration deadline2026-10-17T22:00:00Z. No old asset expiry extended."
+}

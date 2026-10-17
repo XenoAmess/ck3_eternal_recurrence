@@ -237,3 +237,7 @@ R183使用 source/native `20c7319b6964c80fa419540cf4e30852feff4810`、a26、CK3 
 ## 2026-10-18 R202后继交接
 
 `machine_id: desktop-3fevhd2-1c74096080`。见[R202正常战斗checkpoint交接](2026-10-18-war-episode04-r202-combat-checkpoint.md)：中途2633保存与最终battle normalS0分列；未返2629/未ADD，计数不涨。
+
+## 2026-10-18 R203正常战斗短片交接
+
+`machine_id: desktop-3fevhd2-1c74096080`。见[R203交接](2026-10-18-war-episode04-r203-battle-logistics.md)：actual19024/a35、加载ready澄清、army-only UI边界、actor RED但实际精确+1日，正常Save/exit0与手工采样OFF另证。9.333秒280帧仅基础媒体通过，计数9/14、6/11、0/11、0/3保持；R204独立现场，不把后继master模块当旧冻结actor已部署。

@@ -1,0 +1,83 @@
+{
+  "schema": "xar.e04.r203.exact-day-projected-inputs.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "evidence_level": "Required-field literal projection of three original response bodies, not reconstructed full wire",
+  "before": {
+    "date_raw": 53148864,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-31254-b17c8eb618e2"
+  },
+  "step": {
+    "step": "life-advance-one-day",
+    "backend_id": "native-headless",
+    "source": "native-composite",
+    "timeline_policy": "exact_one_day_unavoidable_contact",
+    "progress_status": "postcondition",
+    "starting_date_raw": 53148864,
+    "ending_date_raw": 53148888,
+    "elapsed_days": 1,
+    "requested_horizon_days": 1,
+    "paused": true,
+    "exact_day_native_clock": {
+      "armed": {
+        "state": "armed",
+        "generation": 1,
+        "starting_date_raw": 53148864,
+        "target_date_raw": 53148888,
+        "last_observed_date_raw": 53148864,
+        "trigger_date_raw": 0,
+        "speed": 1,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "stopped": {
+        "state": "triggered",
+        "generation": 1,
+        "starting_date_raw": 53148864,
+        "target_date_raw": 53148888,
+        "last_observed_date_raw": 53148888,
+        "trigger_date_raw": 53148888,
+        "speed": 1,
+        "mode": "terminal_or_sentinel",
+        "army_count": 0,
+        "combat_count": 0,
+        "completed_daily_ticks": 1,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      }
+    }
+  },
+  "after": {
+    "date_raw": 53148888,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-31254-b17c8eb618e2"
+  },
+  "original_sources": [
+    "day_before",
+    "day_step",
+    "independent_after"
+  ],
+  "original_body_pointer": "/body"
+}
