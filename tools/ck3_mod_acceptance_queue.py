@@ -135,7 +135,48 @@ def enqueue_deadline(deadline):
             raise TimeoutError("Original once-only queue deadline elapsed; never replay")
 
 
-def enqueue(live, plan, name, *, deadline=None):
+
+STARTUP_RECOVERY_TOOLS = frozenset({
+    "ck3_take_snapshot", "ck3_get_capabilities", "ck3_query_current_event_window_context_v1",
+    "ck3_query_campaign_root_context_v1", "ck3_query_player_religion_context_v1",
+    "ck3_query_player_holy_site_v1", "ck3_save_checkpoint", "ck3_select_event_option",
+    "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1", "ck3_observe_normal_exit_v1",
+})
+
+def validate_startup_failure_recovery(live, frozen, report, steps, expected_error, reviewer):
+    """Explicit same-process continuation; preserve the original startup failure forever."""
+    import psutil
+    manual_path = live / "case-output/manual-quit-awaiting.json"
+    manual = read_json(manual_path)
+    require(expected_error == "RuntimeError: scenario startup crossed its typed definition/root/player/frame contract"
+            and report.get("error") == expected_error and
+            report.get("frontend_diagnostic_hold", {}).get("reason") == expected_error,
+            "Only the explicit preserved typed startup error can enter recovery")
+    require(manual.get("status") == "MANUAL_QUIT_AWAITING_ORIGINAL_DEADLINE" and
+            manual.get("run_id") == frozen["run_id"] == live.name and
+            isinstance(reviewer, str) and reviewer and manual.get("reviewer") == reviewer,
+            "Recovery reviewer differs from the actual retained-session operator")
+    deadline = report.get("hold_until_utc_estimated")
+    require(type(deadline) in (int, float) and deadline == manual.get("original_hold_deadline") and
+            deadline - time.time() > 90 and not report.get("cleanup_ok") and
+            not report.get("managed_session_done") and not report.get("finished_at"),
+            "Startup recovery must retain the original live hold and quit reserve")
+    require(type(manual.get("pid")) is int and manual["pid"] > 0 and
+            type(manual.get("create_time")) in (int, float), "Retained process identity missing")
+    process = psutil.Process(manual["pid"])
+    require(process.is_running() and process.create_time() == manual["create_time"] and
+            process.name().lower() == "ck3.exe", "Original retained CK3 process changed")
+    require(all(step.get("kind", "tool") == "tool" and step.get("tool") in STARTUP_RECOVERY_TOOLS
+                for step in steps), "Recovery is limited to existing typed startup research and normal-exit tools")
+    return {"schema":"ck3-startup-failure-recovery-operation-v1", "at_utc":utc(),
+            "machine_id":frozen["run_id"].split("--", 1)[0], "run_id":frozen["run_id"],
+            "screen_task":frozen["screen_task"], "reviewer":reviewer, "preserved_error":expected_error,
+            "state_dir":report["state_dir"], "pipe":report["pipe"],
+            "same_pid":manual["pid"], "same_create_time":manual["create_time"],
+            "original_hold_deadline":deadline, "manual_quit_checkpoint":pin(manual_path),
+            "original_startup_qualified":False, "host_error_cleared":False, "business_pass":False}
+
+def enqueue(live, plan, name, *, deadline=None, startup_recovery_error=None, startup_recovery_reviewer=None):
     enqueue_deadline(deadline)
     lease_options = {"deadline": deadline} if deadline is not None else {}
     live, plan = Path(live).resolve(), Path(plan).resolve()
@@ -163,12 +204,16 @@ def enqueue(live, plan, name, *, deadline=None):
     hold_deadline = report.get("hold_until_utc_estimated")
     require(type(hold_deadline) in (int, float) and hold_deadline - time.time() > (0 if finishing else 90),
             "Original host normal Quit reserve reached")
+    recovery = None
+    if startup_recovery_error is not None or startup_recovery_reviewer is not None:
+        require(not finishing, "Recovery does not replace original finish_hold proof")
+        recovery = validate_startup_failure_recovery(live, frozen, report, steps, startup_recovery_error, startup_recovery_reviewer)
     if finishing:
         failure_shutdown = steps[0].get("failure_shutdown") is True
         require(native_zero_proof(frozen, report, failure_shutdown=failure_shutdown) is not None,
                 "Original shared native-zero predicate rejects finish_hold")
     else:
-        require(not report.get("error") and not report.get("cleanup_ok"), "Original host failed or completed cleanup")
+        require((not report.get("error") or recovery is not None) and not report.get("cleanup_ok"), "Original host failed or completed cleanup")
     argv = frozen["argv"]
     controls = Path(argv[argv.index("--control-plan-dir") + 1]).resolve()
     require(controls == live / "controls" and controls.is_dir(), "Control directory crossed actual allocation")
@@ -176,6 +221,19 @@ def enqueue(live, plan, name, *, deadline=None):
     require(not target.exists(), "Original control target already exists; never overwrite")
     enqueue_deadline(deadline)
     claims = claim_plan(live / "control-once-ledger", name, raw, ids)
+    if recovery is not None:
+        original = live / "startup-recovery-original-error.json"
+        if original.exists():
+            prior = read_json(original)
+            require(prior.get("error") == recovery["preserved_error"] and
+                    prior.get("state_dir") == report["state_dir"] and prior.get("pipe") == report["pipe"] and
+                    prior.get("hold_until_utc_estimated") == recovery["original_hold_deadline"],
+                    "Original recovery failure evidence changed")
+        else:
+            write_new(original, report)
+        recovery.update(plan=pin(plan), plan_sha256=claims["sha256"], step_ids=ids,
+                        preserved_failed_report=pin(original), frozen_argv=pin(live/"frozen-argv.json"))
+        write_new(live / ("startup-recovery-operation-" + claims["sha256"] + ".json"), recovery)
     # Hard-link a fully written private file into the observed *.json namespace.
     # os.link is atomic and refuses an existing target on Windows and POSIX.
     with tempfile.NamedTemporaryFile(mode="wb", prefix="pending-", suffix=".tmp", dir=controls, delete=False) as stream:
@@ -194,6 +252,8 @@ def enqueue(live, plan, name, *, deadline=None):
     result = {"status": "QUEUED_ONCE_ACK_NOT_BUSINESS_PASS", "at_utc": utc(), "run_id": frozen["run_id"],
               "plan": pin(plan), "published": pin(target), "step_ids": ids,
               "lease": latest["lease"], "claims": claims, "business_pass": False}
+    if recovery is not None:
+        result["startup_failure_recovery"] = recovery
     write_new(live / "control-once-ledger" / ("receipt-" + claims["sha256"] + ".json"), result)
     return result
 
@@ -204,12 +264,16 @@ def main(argv=None):
     parser.add_argument("--plan", type=Path, required=True)
     parser.add_argument("--name", required=True)
     parser.add_argument("--timeout-seconds", type=float, help="Bound this original submission; no retries")
+    parser.add_argument("--startup-recovery-error", help="Explicit original failed-startup error; default preserves ordinary guard")
+    parser.add_argument("--startup-recovery-reviewer", help="Actual retained-session operator")
     args = parser.parse_args(argv)
     try:
         if args.timeout_seconds is not None:
             require(0 < args.timeout_seconds < float("inf"), "Finite positive queue timeout required")
         deadline = None if args.timeout_seconds is None else time.monotonic() + args.timeout_seconds
-        print(json.dumps(enqueue(args.live, args.plan, args.name, deadline=deadline)), flush=True)
+        print(json.dumps(enqueue(args.live, args.plan, args.name, deadline=deadline,
+            startup_recovery_error=args.startup_recovery_error,
+            startup_recovery_reviewer=args.startup_recovery_reviewer)), flush=True)
         return 0
     except Exception as error:
         print(json.dumps({"status": "BLOCKED_NEVER_REPLAY", "error": repr(error), "business_pass": False}), flush=True)
