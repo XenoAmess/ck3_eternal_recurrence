@@ -2,6 +2,8 @@
 
 当前只交付可审阅的作者输入与只读接口。两条试拍仍是 `CAPTURE_PENDING`，未绑定原片、原生动作、音频、实际时长或最终时码。没有通过生成静态卡补足动态镜头。ProjectConfig 三章均为 `planned`，旁白 cue 留空，等待同场实验结果及实测音频。
 
+2026-10-17T05:42:56.604633Z，`machine_id: 4-8e1c2f1861` 已创建并验证一个[authoring-only run](../build-records/authoring-20261017-a01.json)：12份小型输入、270,034 B，固定源码提交`bf5d4d871f4a974339279a110693074df3aef406`和再次查询的最新0.3.0 wheel。其phase明确跳过实际试拍，不能作为capture或render资格；下文命令是此能力的可复用入口，新attempt须另选目录。
+
 `pilot-plan.json` 把 P01 采用对应到 H01-01／07，把 P02 圣物对应到 H02-04／09；四项 claim 保留固定来源、行号和来源锁中的 SHA。原来源机器只提供历史来源事实；新拍仍须重新核当前机器、EXE／build、加载内容、存档、现场与容量。智能体可消费 `required_before_and_after_fields` 和 `agent_decision_outputs`，用同一数据链产出候选拒绝理由、资源预算、单次提交记录和独立后态比较。
 
 从仓库根目录执行只读作者检查：

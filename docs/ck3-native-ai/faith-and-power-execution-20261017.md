@@ -38,6 +38,10 @@
 
 2026-10-17T05:29:39Z 实际查询[官方最新 Release API](https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest)，得到 **v0.3.0**，发布于同日 05:11:16Z。旧 latest 网页缓存曾显示 0.2.1；实际 API 与[0.3.0 Release](https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0)优先。已更新 requirements、loader 及版本锁定测试，使用当前 `tools/.venv/Scripts/python.exe` 经 `pip --require-hashes` 安装官方 wheel；SHA-256 `f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c`。实际版本／帮助、依赖检查和 loader 回归通过。旧 source-lock 的 0.2.1 来源保留历史身份。
 
+研究与 MCP 工作包已普通推送 `bf5d4d871f4a974339279a110693074df3aef406`，工具链更新为其前序 `399c9a495f2334718b69b0511ecbe4297be7d76f`。邻接原版事件知识 MCP 五项回归、Python-only 检查及提交字节核对均通过；源凭证使用精确换行保全，Git blob 与已核 SHA 一致。
+
+同一机器 2026-10-17T05:42:56.604633Z 已实际创建 **authoring-only** run `faith-source-authoring-a01`，再次读取官方 latest API 后仍为0.3.0；12份必要输入保全、`validate --profile authoring` 返回0，完整run仅 **270,034 B**。外置路径 `C:/workspace/ck3-faith-and-power-20261017/authoring-01/run-manifest.json`，SHA-256 `ce667d99f485f613a5f27d6097e14836fedc26a3b4a9d8c40329300588f48bcb`；[入库索引](../../promo/ck3_faith_and_power/build-records/authoring-20261017-a01.json)绑定创建回执、机器身份、来源提交和有限保留期。原生phase记录明确 `pilot-capture=skipped`；这不是生产拍摄、媒体plan正向通过、宗教业务或成片。05:44:01Z闭场只读进程清单中没有CK3／FFmpeg／OBS进程，来源为外置`storage-and-process-close.json`。
+
 后续按依赖顺序推进：交付共享研究与实际 MCP 知识调用；核出可合法回收的容量并重做准入；为缺失的圣地读写完成 exact-build producer／caller／consumer 研究及最小 native 接线；取得新鲜 Steam 离线证据和唯一现场租约；建立可回载、明确标识准备方式的母案，再拍两条完整试拍链。每条链绑定本机、加载来源、存档、对象、帧、动作、后态与原片时码。未知引擎边留在研究记录中，不能由旁白代填。
 
 研究与记录回执按统一策略分别复核；本轮小型记录下一复核日为 2027-04-15，未完成试拍的必要输入保护必须另列用途和不超过七天的复核期限。

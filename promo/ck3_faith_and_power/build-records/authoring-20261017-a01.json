@@ -1,0 +1,132 @@
+{
+  "schema": "ck3-faith-power-authoring-run-index-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T05:44:01.148276+00:00",
+  "evidence_source": "C:\\workspace\\ck3-faith-and-power-20261017\\authoring-run-result.json",
+  "source_commit": "bf5d4d871f4a974339279a110693074df3aef406",
+  "run_id": "faith-source-authoring-a01",
+  "status": "authoring-only-inputs-preserved-and-validated",
+  "toolchain_version": "0.3.0",
+  "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+  "run_manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\authoring-01\\run-manifest.json",
+    "bytes": 9990,
+    "sha256": "ce667d99f485f613a5f27d6097e14836fedc26a3b4a9d8c40329300588f48bcb"
+  },
+  "creation_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\authoring-run-result.json",
+    "bytes": 13191,
+    "sha256": "e83ef1ba690ac6c32a1ae0fa5e722e74c79f35973c2f5fe50ac4760f05cd46af"
+  },
+  "machine_binding": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\authoring-machine-binding.json",
+    "bytes": 1680,
+    "sha256": "264c466c71cbfdaf5bddacc98d1973189d309600d8749065ff704c7acc5af8e5"
+  },
+  "preserved_artifacts": 12,
+  "run_total_bytes": 270034,
+  "validation_profile": "authoring",
+  "validation_exit_code": 0,
+  "phase_history": [
+    {
+      "sequence": 1,
+      "id": "phase-000001",
+      "phase_id": "authoring-input-freeze",
+      "status": "succeeded",
+      "recorded_at": "2026-10-17T05:42:56.174319Z",
+      "artifacts": [
+        {
+          "artifact_id": "faith-machine-binding-v1",
+          "artifact_bytes": 1680,
+          "artifact_sha256": "264C466C71CBFDAF5BDDACC98D1973189D309600D8749065FF704C7ACC5AF8E5"
+        },
+        {
+          "artifact_id": "faith-pilot-plan-v1",
+          "artifact_bytes": 6619,
+          "artifact_sha256": "E205101885DFAC393EB3D179F2FC7C5123CA96CA0B08539DB38DBB6F4B12EBAA"
+        },
+        {
+          "artifact_id": "faith-source-lock-v1",
+          "artifact_bytes": 37385,
+          "artifact_sha256": "4A937211AACB708200945CC178970C132956C94A224BAA2E675F68B7186350ED"
+        },
+        {
+          "artifact_id": "faith-director-plan-v1",
+          "artifact_bytes": 42204,
+          "artifact_sha256": "F222465974C4849DED75F0C7226BEFEB9C7194B5BCA55193401631503B078AA9"
+        },
+        {
+          "artifact_id": "faith-shot-list-v1",
+          "artifact_bytes": 11745,
+          "artifact_sha256": "36FCEEBAF70777186E2D1F80AA55FC5BA2C6DC4C06DC02105525FEEFC8334B97"
+        },
+        {
+          "artifact_id": "faith-source-manifest-v1",
+          "artifact_bytes": 18053,
+          "artifact_sha256": "1B225C6E89556948EA4560E480AE7A7197C4C95D3AE35F2741D465FA5B37E566"
+        },
+        {
+          "artifact_id": "faith-research-plan-v1",
+          "artifact_bytes": 11011,
+          "artifact_sha256": "910531B932813B8EC03F13222068A53884C9C61D8E9044BE377209D074AC278C"
+        },
+        {
+          "artifact_id": "faith-additional-source-comparison-v1",
+          "artifact_bytes": 1895,
+          "artifact_sha256": "A5DCA35A352B2E38BCDD7B8DEEF680AB94F5939E9B387DFE972327E56FD1D780"
+        },
+        {
+          "artifact_id": "faith-research-knowledge-v1",
+          "artifact_bytes": 38007,
+          "artifact_sha256": "18312B99FFA01ECD528ED3ADE6005381E39553CCB0B975EB4D68443C4622C26F"
+        },
+        {
+          "artifact_id": "faith-mcp-capabilities-v1",
+          "artifact_bytes": 7376,
+          "artifact_sha256": "181C81EDB7A5FAC2A540881C1DE9CD22BA56203ED9C3C80FA02AE1BFF572D656"
+        },
+        {
+          "artifact_id": "faith-mcp-knowledge-source-v1",
+          "artifact_bytes": 13424,
+          "artifact_sha256": "F4825AE1008089889B6D6AC8F9E3687810C5C4D5FE2D97DD7C0E25A5E0A06528"
+        },
+        {
+          "artifact_id": "faith-authoring-verification-v1",
+          "artifact_bytes": 15151,
+          "artifact_sha256": "0B043313F910F78366C758CAB43A00ECC2E909C070DFC7F6EE717A207D68DE61"
+        }
+      ],
+      "detail": "machine_id=4-8e1c2f1861; source_commit=bf5d4d871f4a974339279a110693074df3aef406; source authoring only; no native gameplay or media qualification"
+    },
+    {
+      "sequence": 2,
+      "id": "phase-000002",
+      "phase_id": "pilot-capture",
+      "status": "skipped",
+      "recorded_at": "2026-10-17T05:42:56.204709Z",
+      "artifacts": [
+        {
+          "artifact_id": "faith-machine-binding-v1",
+          "artifact_bytes": 1680,
+          "artifact_sha256": "264C466C71CBFDAF5BDDACC98D1973189D309600D8749065FF704C7ACC5AF8E5"
+        },
+        {
+          "artifact_id": "faith-mcp-capabilities-v1",
+          "artifact_bytes": 7376,
+          "artifact_sha256": "181C81EDB7A5FAC2A540881C1DE9CD22BA56203ED9C3C80FA02AE1BFF572D656"
+        }
+      ],
+      "detail": "machine_id=4-8e1c2f1861; C capacity below repository safety margin; native HolySite action/state chain remains unqualified; P01/P02 pending"
+    }
+  ],
+  "category": "build",
+  "review_at_utc": "2026-10-31T05:44:01.149111+00:00",
+  "protected_until_utc": "2026-10-24T05:42:51.272474+00:00",
+  "protection_owner": "faith-power-root-20261017-01",
+  "protection_reason": "Minimal frozen authoring baseline for native work and two capacity-qualified pilot captures",
+  "game_started": false,
+  "native_actions_submitted": 0,
+  "pilot_captures_completed": 0,
+  "media_rendered": false,
+  "human_1x_review": false
+}
