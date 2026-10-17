@@ -1,0 +1,11 @@
+--- a/tools/ck3_obs_capture.py
++++ b/tools/ck3_obs_capture.py
+@@ -220,7 +220,7 @@
+     with (obs_root / "portable_mode.txt").open("x", encoding="utf-8") as stream:
+         stream.write("")
+     (config / "global.ini").write_text(
+-        "[General]\nFirstRun=false\nLastVersion=503382018\nEnableAutoUpdates=false\n"
++        "[General]\nFirstRun=true\nLastVersion=503382018\nEnableAutoUpdates=false\n"
+         f"[Basic]\nProfile={name}\nProfileDir={name}\nSceneCollection={name}\nSceneCollectionFile={name}\n"
+         "[BasicWindow]\nPreviewEnabled=false\nStudioMode=false\nSysTrayEnabled=true\n"
+         f"[OBSWebSocket]\nFirstLoad=false\nServerEnabled=true\nServerPort={port}\nAlertsEnabled=false\nAuthRequired=true\nServerPassword={profile['password']}\n", encoding="utf-8")

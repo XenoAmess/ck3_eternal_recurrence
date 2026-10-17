@@ -1,0 +1,65 @@
+{
+  "schema": "xar.obs-preconfigured-profile-publication-pins.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "files": [
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/actual-failed.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\259e4d82-d03d-4c15-8978-eb8329310df7\\failed.json",
+      "bytes": 191,
+      "sha256": "6a455ce5ddf575765e919f495dc6feff12ce491863385dcf39c21f3684abdc16"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/actual-cleanup.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\259e4d82-d03d-4c15-8978-eb8329310df7\\cleanup.json",
+      "bytes": 644,
+      "sha256": "c45a237580c62770ed9d195e14e5aec0d85e0ee6e1afe7a4f1f9540ea5b72429"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/actual-foreground-observation.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\259e4d82-d03d-4c15-8978-eb8329310df7\\foreground-observation.json",
+      "bytes": 246,
+      "sha256": "16a69ef5bfae307ed2abf166689b33612a659f60619bd7e34c19d857f53e3756"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/actual-obs-launch.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings\\259e4d82-d03d-4c15-8978-eb8329310df7\\obs-launch.json",
+      "bytes": 882,
+      "sha256": "c3ee549364d41e6f50d882f3c4bed6e871bb7003902a0f859d848f0a0b1301c2"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/OWNER-RETRY-READY.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-recording-retry01\\READY.json",
+      "bytes": 3093,
+      "sha256": "acf243bf1dc551fca17a434ea25b337f77c47a69e50582bb491ca39359c8ab21"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/future-builder-first-run.patch",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-recording-retry01\\future-builder-first-run.patch",
+      "bytes": 783,
+      "sha256": "698d5da7124b01d34ecc1f781caded8dad011b2ec68b523b968df8725a604196"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/PUBLIC-FOCUSED-TESTS.json",
+      "source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-public-fifteenth-prep01\\CHECK-1.json",
+      "bytes": 551,
+      "sha256": "2886d74520e2f489b2560ee5e9979bcb996aea700debafa529bb2f6f36298fbe"
+    },
+    {
+      "path": "docs/ck3-native-ai/research/obs-preconfigured-first-run/OBS30-SOURCE-REVIEW.json",
+      "bytes": 1148,
+      "sha256": "33fe068724de917d85fc243195240922566ab181755474783a65aa2f94bb7b82"
+    }
+  ],
+  "public_source_normalized": [
+    {
+      "path": "tools/ck3_obs_capture.py",
+      "sha256": "7bd98c1f4a28e47584057b14a3df7f9efb5ca48e92b4ed267eb8c426d86b8d4a"
+    },
+    {
+      "path": "tools/test_ck3_obs_capture.py",
+      "sha256": "1a4658e0b7068d72235dde242182eec0953c919bfe48a75d7f53a1171f938557"
+    }
+  ],
+  "Game_MCP_OBS_Native_operations": 0,
+  "live_Driver_SAVE_video_body_bytes_read": 0
+}

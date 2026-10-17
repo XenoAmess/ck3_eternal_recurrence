@@ -1,0 +1,9 @@
+{
+  "foreground_before": 9708842,
+  "foreground_after": 25241084,
+  "foreground_changed": true,
+  "foreground_after_pid": 100200,
+  "owned_obs_pid": 100200,
+  "foreground_after_is_owned_obs": true,
+  "focus_restoration_attempted": false
+}

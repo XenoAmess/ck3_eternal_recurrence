@@ -1,0 +1,21 @@
+{
+  "pid": 100200,
+  "creation_filetime": 134366925031094503,
+  "executable": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\bin\\64bit\\obs64.exe",
+  "executable_sha256": "3110a13a098e03ca4ebadf301969f5957d760fd85df25b71401bedcfcd91bf67",
+  "profile_name": "ManagedWindowCapture-dc18a579f2d9442fb91edfffb1c6e125",
+  "collection_name": "ManagedWindowCapture-dc18a579f2d9442fb91edfffb1c6e125",
+  "port": 4483,
+  "argv": [
+    "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\obs-portable\\bin\\64bit\\obs64.exe",
+    "--portable",
+    "--multi",
+    "--minimize-to-tray",
+    "--disable-updater",
+    "--disable-missing-files-check",
+    "--profile",
+    "ManagedWindowCapture-dc18a579f2d9442fb91edfffb1c6e125",
+    "--collection",
+    "ManagedWindowCapture-dc18a579f2d9442fb91edfffb1c6e125"
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "inputs_unbound": true,
+  "engine_close": {
+    "requested": true,
+    "actual_exit_code": 0,
+    "normal_exit_proven": true,
+    "forced_process_calls": 0
+  },
+  "unknown_or_global_stop_calls": 0,
+  "final_output_logical_bytes": 12486,
+  "within_byte_allocation": null,
+  "continuous": true,
+  "disk_at_close": {
+    "at_utc": "2026-10-17T06:35:15.375550+00:00",
+    "recording_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\recordings",
+    "available_bytes": 1038063788032,
+    "disk_reserve_bytes": 965242405868,
+    "reserve_reached": false
+  }
+}

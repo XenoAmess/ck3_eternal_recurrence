@@ -691,3 +691,6 @@ docs/ck3-native-ai/research/sdk37-verified-vanilla-lifecycle/*.patch -text white
 docs/ck3-native-ai/research/sdk37-edl-incident-identity/** -text whitespace=cr-at-eol
 docs/ck3-native-ai/research/sdk37-edl-incident-identity/*.patch -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
 tools/fixtures/edl_null_sequence_*.json -text
+
+# Preserve the small OBS failure receipts exactly as pinned.
+docs/ck3-native-ai/research/obs-preconfigured-first-run/** -text whitespace=cr-at-eol

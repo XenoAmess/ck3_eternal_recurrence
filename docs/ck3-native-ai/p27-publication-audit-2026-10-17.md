@@ -323,3 +323,7 @@ SDK37 CLEAN03的无XAR ordinary-no-pact合同窄移植到公共binder，保持No
 第12 b25c96f2／Official39007487520、第13 be658a4e／Official39009194515及各Linear均success。旧EDL collector35452 exit1已证，不能称持续healthy；缺序号误用None为legacy AUTO身份。公共adapter仅两hunk，正int＋同已知SDK代才fallback，其他按incident ID，真歧义拒绝，13项／11子例通过。保原6区间及false标签的历史事实，不将其当最终有效等待；通用promo0.3未改、无编码或媒体正文读取。
 
 私有automatic_handoff的04f798窄delta已补存，normalize／Native／PID／actor／episode／分封／零重放守卫保留，实际不import公共M7。另附M6 host-death通知与M7 Tribal市场／authority的三份静态缺口，均无新API／实机信用、G2仍6/8。[有限来源索引](research/sdk37-edl-incident-identity/README.md)。新局从主菜单起录、旧成绩／状态零继承；稳定30年第一，速度后续<1再0.5，均未达。
+
+## 第15窄录制配置修复
+
+公共 `prepare_profile` 只将完整预配置后的 `FirstRun` 写为真，现有隐藏／托盘／前台守卫不改。真实259e首录在 owned OBS 改变前台后拒绝并正常关闭0；GetProfileList207随后恢复，具体窗口原因未证。官方30.0.0固定源码条件包含 `LastVersion`，旧 builder 已写该字段、启动前INI未保全，禁止把单行修复称为已证向导根因或录制实机修复完成。13项公共离线检查通过；[来源和边界](obs-preconfigured-first-run-2026-10-17.md)入库，不动Game／SDK／活动媒体。

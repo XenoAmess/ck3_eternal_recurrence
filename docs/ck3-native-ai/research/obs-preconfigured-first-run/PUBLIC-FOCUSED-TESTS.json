@@ -1,0 +1,21 @@
+{
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tools/test_ck3_obs_capture.py",
+    "tools/test_ck3_obs_startup.py",
+    "-k",
+    "profile_is_local_authenticated or foreground or StartupReadinessTests"
+  ],
+  "returncode": 0,
+  "stdout": ".............                                                            [100%]\n13 passed, 35 deselected in 0.51s\n",
+  "stderr": "",
+  "Game_MCP_OBS_Native_operations": 0
+}

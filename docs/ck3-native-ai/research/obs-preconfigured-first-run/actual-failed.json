@@ -1,0 +1,7 @@
+{
+  "state": "failed",
+  "error": "OBS startup changed the user foreground; no restoration attempted",
+  "frame_receipts": [],
+  "file_growth_samples": [],
+  "file_growth_summary": {}
+}

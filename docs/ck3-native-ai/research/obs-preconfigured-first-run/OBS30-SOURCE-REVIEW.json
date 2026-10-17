@@ -1,0 +1,32 @@
+{
+  "schema": "xar.obs-preconfigured-profile-source-review.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T06:52:39.696875+00:00",
+  "source": {
+    "url": "https://raw.githubusercontent.com/obsproject/obs-studio/34ef67e212f24a085a63705a0ab81e3401c8eca4/UI/window-basic-main.cpp",
+    "tag": "30.0.0",
+    "commit": "34ef67e212f24a085a63705a0ab81e3401c8eca4",
+    "bytes": 308452,
+    "sha256": "d382a8fcfbdae9aa341662a43d64fb3f2b0440611f1bc4fd1858ccbea81c771e",
+    "first_run_window": {
+      "lines": [
+        2255,
+        2268
+      ],
+      "sha256": "42a8b833e1ea334480ac7e315f49517eb94b32d82dab1559530e176b6b12a06b"
+    },
+    "main_window_hide_window": {
+      "lines": [
+        2139,
+        2141
+      ],
+      "sha256": "cda379eff490a0ccafbecf50e294babc9d0ddc01425fd035f4d931afdd0f87e3"
+    }
+  },
+  "browser_text_line_numbers_not_used_for_raw_Git_source": true,
+  "actual_starting_INI_preserved": false,
+  "queued_auto_config_causality": "UNKNOWN",
+  "existing_LastVersion_in_builder": 503382018,
+  "existing_hidden_start_flags_preserved": true,
+  "runtime_calls": 0
+}

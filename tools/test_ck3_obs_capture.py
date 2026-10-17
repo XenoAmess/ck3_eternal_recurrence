@@ -1,6 +1,7 @@
 """Offline v2 custody contracts; synthetic OS and OBS boundaries only."""
 import ctypes
 import base64
+import configparser
 from contextlib import nullcontext
 from datetime import datetime, timedelta, timezone
 import hashlib
@@ -618,6 +619,15 @@ class CaptureContractTests(unittest.TestCase):
             self.assertTrue(data["profile_name"].startswith(prefix))
             self.assertEqual(uuid.UUID(hex=data["profile_name"][len(prefix):]).version, 4)
             self.assertEqual(data["collection_name"], data["profile_name"])
+            config_root = Path(data["config_root"])
+            configuration = configparser.ConfigParser(interpolation=None)
+            configuration.read(config_root / "global.ini", encoding="utf-8")
+            self.assertTrue(configuration.getboolean("General", "FirstRun"))
+            self.assertFalse(configuration.getboolean("General", "EnableAutoUpdates"))
+            self.assertEqual(configuration.get("Basic", "Profile"), data["profile_name"])
+            self.assertEqual(configuration.get("Basic", "SceneCollection"), data["collection_name"])
+            self.assertTrue((config_root / "basic/profiles" / data["profile_name"] / "basic.ini").is_file())
+            self.assertTrue((config_root / "basic/scenes" / (data["collection_name"] + ".json")).is_file())
             second_obs = self.root / "second-obs"
             second_exe = second_obs / "bin/64bit/obs64.exe"
             second_exe.parent.mkdir(parents=True)
