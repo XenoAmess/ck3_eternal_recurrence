@@ -1,0 +1,106 @@
+{
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p41-responses\\1824-1-result.json",
+    "bytes": 31077,
+    "sha256": "404b9ed375bed0650e7179c01794763a3a57abe89aafff7a53af3d166e3b91dd"
+  },
+  "actual_scope": "Prior closed living Robert, not a natural death or current estate claim",
+  "fields": {
+    "snapshot_id": "native:1519",
+    "revision": 1502,
+    "native_revision": 1519,
+    "date_raw": 53221848,
+    "episode_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30",
+    "one_life_terminal": false,
+    "one_life_terminal_reason": null,
+    "succession_lifecycle": {
+      "schema": "xar.ck3.succession-lifecycle-binding/v1",
+      "lifecycle": "ordinary_campaign_succession",
+      "xar_enabled": null,
+      "pact_contract": "absent_by_verified_xar_mod_not_loaded",
+      "source": "absent_by_verified_xar_mod_not_loaded",
+      "environment_sha256": "aa2850ed92704c1e03bff13aaed2e7d2e197070c89da833bb51efd605edd3191"
+    },
+    "succession_expectation": {
+      "schema": "xar.ck3.succession-expectation/v1",
+      "status": "available",
+      "binding": {
+        "snapshot_id": "native:586",
+        "revision": 569,
+        "native_revision": 586,
+        "date_raw": 53206464,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "episode_character_id": 31254
+      },
+      "expectation_state": "successor_expected",
+      "predecessor_character_id": 31254,
+      "expected_successor_character_id": 40695,
+      "title_expectations": [
+        {
+          "title": {
+            "title_id": 2196,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2200,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2230,
+            "tier_raw": 3,
+            "tier_key": "duchy"
+          },
+          "first_heir_character_id": 40695,
+          "primary": true
+        },
+        {
+          "title": {
+            "title_id": 2231,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        },
+        {
+          "title": {
+            "title_id": 2262,
+            "tier_raw": 2,
+            "tier_key": "county"
+          },
+          "first_heir_character_id": 40695,
+          "primary": false
+        }
+      ],
+      "risk_state": "single_successor",
+      "unavailable_reason": null
+    },
+    "succession_reconciliation": null,
+    "campaign_goal": {
+      "format_version": 1,
+      "goal_key": "dynasty_continuity",
+      "campaign_id": "native-31254-8d3a8440eb30",
+      "origin_character_id": 31254,
+      "current_character_id": 31254,
+      "progress": {
+        "reconciled_successions": 0,
+        "last_succession": null
+      }
+    }
+  },
+  "played_character": {
+    "character_id": 31254,
+    "alive": true
+  }
+}

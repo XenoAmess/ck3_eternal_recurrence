@@ -19588,6 +19588,11 @@ def _primary_defender_siege_relief_assessment(
             army_id=army_id,
             target_province_id=current_province_id,
         )
+        if arrival is None:
+            arrival = _observed_native_move_intent(
+                commands, snapshot, army_id=army_id,
+                target_province_id=current_province_id, arrived=True,
+            )
         if isinstance(arrival, dict):
             return {
                 "status": "arrived_sieging",
@@ -22424,6 +22429,189 @@ def _deferred_move_backoff(
     }
 
 
+def _observed_native_move_intent(
+    commands: list[dict[str, object]],
+    snapshot: dict[str, object],
+    *,
+    army_id: int,
+    target_province_id: int,
+    arrived: bool = False,
+) -> dict[str, object] | None:
+    """Use a separately observed route after an unknown native Move ACK.
+
+    This is route evidence only. It never turns the failed Move result into an
+    accepted command, nor does it grant a battle, safety, or date credit.
+    """
+    if not (snapshot.get("paused") is True and snapshot.get("map_ready") is True):
+        return None
+    player_armies = snapshot.get("player_armies")
+    army = next((row for row in player_armies
+                 if isinstance(row, dict) and row.get("army_id") == army_id), None) \
+        if isinstance(player_armies, list) else None
+    actor = snapshot.get("played_character")
+    diag = snapshot.get("diagnostics")
+    if not (isinstance(army, dict) and isinstance(actor, dict)
+            and isinstance(diag, dict) and actor.get("alive") is True
+            and army.get("owner_character_id") == actor.get("character_id")
+            and army.get("controllable") is True
+            and army.get("in_combat") is False and army.get("retreating") is False
+            and type(diag.get("bridge_pid")) is int and diag["bridge_pid"] > 0):
+        return None
+    current_route = army.get("route_province_ids")
+    if arrived:
+        if not (army.get("current_province_id") == target_province_id
+                and army.get("move_target_province_id") is None
+                and current_route == []):
+            return None
+    elif not (army.get("current_province_id") != target_province_id
+               and army.get("move_target_observable") is True
+               and army.get("move_target_province_id") == target_province_id
+               and army.get("route_read_status") == "complete_nonempty"
+               and isinstance(current_route, list) and current_route
+               and current_route[-1] == target_province_id
+               and all(type(v) is int and v > 0 for v in current_route)):
+        return None
+
+    evidence = None
+    scoped_commands = _history_after_latest_restore(commands)
+    for position in range(len(scoped_commands) - 1, -1, -1):
+        row = scoped_commands[position]
+        command = _effective_command(row)
+        if command == "reconcile-observed-move-intent":
+            candidate = row.get("result")
+            if (row.get("ok") is False and isinstance(candidate, dict)
+                    and candidate.get("schema") == "xar.reconciled-observed-move-intent.v1"
+                    and candidate.get("original_step")
+                    == f"move-army-{army_id}-to-{target_province_id}"):
+                original = next((previous for previous in reversed(scoped_commands[:position])
+                                 if (parsed := parse_move_army_step(
+                                     _effective_command(previous))) is not None
+                                 and parsed[0] == army_id), None)
+                if (isinstance(original, dict)
+                        and original.get("index") == candidate.get("original_failed_history_index")
+                        and _effective_command(original) == candidate["original_step"]
+                        and original.get("ok") is False
+                        and isinstance(original.get("error"), str)
+                        and "CK3 move-army state is unavailable" in original["error"]):
+                    evidence = candidate
+            break
+        parsed = parse_move_army_step(command)
+        if parsed is None or parsed[0] != army_id:
+            continue
+        candidate = _effective_command_result(row)
+        if (parsed == (army_id, target_province_id)
+                and row.get("ok") is False and isinstance(candidate, dict)
+                and candidate.get("step") == command
+                and candidate.get("status") == "observed_after_native_error"):
+            evidence = candidate
+        break
+    if not isinstance(evidence, dict):
+        return None
+    if not (evidence.get("native_ack_verified") is False
+            and evidence.get("business_submission_may_have_applied") is True
+            and evidence.get("native_error") == "CK3 move-army state is unavailable"
+            and evidence.get("accepted") is False):
+        return None
+    source = evidence.get("source_frame")
+    observed = evidence.get("observed_frame")
+    if not (isinstance(source, dict) and isinstance(observed, dict)):
+        return None
+    source_native = source.get("native_revision")
+    observed_native = observed.get("native_revision")
+    current_native = snapshot.get("native_revision")
+    current_date = snapshot.get("date_raw")
+    if not (type(source_native) is int and source_native > 0
+            and type(observed_native) is int and observed_native > source_native
+            and type(current_native) is int and current_native >= observed_native
+            and snapshot.get("snapshot_id") == f"native:{current_native}"
+            and source.get("snapshot_id") == f"native:{source_native}"
+            and observed.get("snapshot_id") == f"native:{observed_native}"
+            and type(source.get("revision")) is int
+            and type(observed.get("revision")) is int
+            and observed["revision"] > source["revision"]
+            and type(current_date) is int
+            and type(source.get("date_raw")) is int
+            and source["date_raw"] == observed.get("date_raw")
+            and source["date_raw"] <= current_date
+            and (current_date - source["date_raw"]) // 24
+            < _NATIVE_MOVE_INTENT_MAX_GAME_DAYS
+            and source.get("actor_character_id") == actor.get("character_id")
+            and observed.get("actor_character_id") == actor.get("character_id")
+            and type(actor.get("character_id")) is int
+            and actor["character_id"] > 0
+            and isinstance(snapshot.get("episode_run_id"), str)
+            and bool(snapshot["episode_run_id"])
+            and source.get("episode_run_id") == snapshot.get("episode_run_id")
+            and observed.get("episode_run_id") == snapshot.get("episode_run_id")
+            and source.get("bridge_pid") == diag.get("bridge_pid")
+            and observed.get("bridge_pid") == diag.get("bridge_pid")):
+        return None
+    observed_route = evidence.get("observed_army_route")
+    starting_route = evidence.get("starting_army_route")
+    if not (isinstance(observed_route, list) and observed_route
+            and all(type(v) is int and v > 0 for v in observed_route)
+            and observed_route[-1] == target_province_id
+            and isinstance(starting_route, list)
+            and all(type(v) is int and v > 0 for v in starting_route)
+            and starting_route != observed_route):
+        return None
+    if not arrived and observed_route[-len(current_route):] != current_route:
+        return None
+    if evidence.get("status") == "observed_after_native_error":
+        action = evidence.get("war_action")
+        raw = evidence.get("native_error_evidence")
+        request = raw.get("native_request") if isinstance(raw, dict) else None
+        response = raw.get("native_command_result") if isinstance(raw, dict) else None
+        rid = raw.get("native_request_id") if isinstance(raw, dict) else None
+        if not (isinstance(action, dict)
+                and action.get("status") == "route_intent_observed"
+                and action.get("postcondition_verified") is True
+                and action.get("original_native_ack_verified") is False
+                and action.get("army_id") == army_id
+                and action.get("target_province_id") == target_province_id
+                and action.get("submitted_date_raw") == source["date_raw"]
+                and isinstance(rid, str) and rid
+                and isinstance(request, dict) and isinstance(response, dict)
+                and request.get("type") == "execute_step"
+                and request.get("protocol_version") == 1
+                and request.get("request_id") == rid
+                and request.get("step") == f"move-army-{army_id}-to-{target_province_id}"
+                and request.get("expected_revision") == source_native
+                and response.get("type") == "command_result"
+                and response.get("protocol_version") == 1
+                and response.get("request_id") == rid
+                and response.get("ok") is False
+                and response.get("error") == evidence["native_error"]):
+            return None
+    elif evidence.get("schema") == "xar.reconciled-observed-move-intent.v1":
+        if not (evidence.get("status") == "observed_route_intent"
+                and evidence.get("recovery_kind") == "original_move_observed_route_intent"
+                and isinstance(evidence.get("original_native_request_id"), str)
+                and evidence["original_native_request_id"]
+                and isinstance(evidence.get("recovery_audit_sha256"), str)
+                and len(evidence["recovery_audit_sha256"]) == 64
+                and all(c in "0123456789abcdef" for c in evidence["recovery_audit_sha256"])
+                and isinstance(evidence.get("original_response_sha256"), str)
+                and len(evidence["original_response_sha256"]) == 64
+                and all(c in "0123456789abcdef" for c in evidence["original_response_sha256"])
+                and evidence.get("new_move_submissions") == 0
+                and evidence.get("failed_pending_business_credit") == 0
+                and evidence.get("date_credit") == 0):
+            return None
+    else:
+        return None
+    return {
+        "status": "arrived" if arrived else "active",
+        "army_id": army_id,
+        "target_province_id": target_province_id,
+        "elapsed_days": (current_date - source["date_raw"]) // 24,
+        "timeout_days": _NATIVE_MOVE_INTENT_MAX_GAME_DAYS,
+        "evidence_kind": "independently_observed_route_after_native_error",
+        "native_ack_verified": False,
+        "business_submission_may_have_applied": True,
+    }
+
+
 def _active_native_move_intent(
     commands: list[dict[str, object]],
     snapshot: dict[str, object],
@@ -22433,7 +22621,10 @@ def _active_native_move_intent(
 ) -> dict[str, object] | None:
     latest = _latest_accepted_native_move_row(commands, army_id=army_id)
     if latest is None:
-        return None
+        return _observed_native_move_intent(
+            commands, snapshot, army_id=army_id,
+            target_province_id=target_province_id,
+        )
     latest_position, latest_row = latest
     parsed = parse_move_army_step(_effective_command(latest_row))
     if parsed != (army_id, target_province_id):

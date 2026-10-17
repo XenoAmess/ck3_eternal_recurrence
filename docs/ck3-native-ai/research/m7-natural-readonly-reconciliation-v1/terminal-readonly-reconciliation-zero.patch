@@ -1,0 +1,51 @@
+--- a/root_p44_sentinel_terminal_successor_handoff.py
++++ b/root_p44_sentinel_terminal_successor_handoff.py
+@@ -108,0 +109,48 @@
++    # A raw semantic publication only projects reconciliation; the existing
++    # ordinary read-only planner prepares it from a fresh Root turn bundle.
++    # Never AUTO a dead/unmatched heir in order to discover that preparation.
++    if body.get("succession_reconciliation") is None:
++        from root_p44_automatic_natural_succession_handoff import qualified_frame, expected_transition
++        try:
++            fresh=qualified_frame(body,queue,normalize,terminal=True)
++            goal=state.get("campaign_goal_anchor")
++            probe_state={**state,"before":fresh}
++            retained=expected_transition(body,probe_state)
++            eligible=(isinstance(goal,dict) and body.get("campaign_goal")==goal
++                and goal.get("current_character_id")==before["actor_character_id"]
++                and fresh["episode_run_id"]==before["episode_run_id"]
++                and retained["predecessor_character_id"]==before["actor_character_id"]
++                and retained["expected_successor_character_id"]==fresh["actor_character_id"])
++        except (ValueError,KeyError,TypeError):
++            eligible=False
++        if eligible:
++            for tool in ("ck3_plan_turn",env["SEMANTIC"]):
++                queue.guard()
++                require(birth_reader(pid)==birth,"Game birth changed before readonly preparation")
++                number=queue.next_sequence
++                child={"sequence":number,"tool":tool,"arguments":{},
++                    "source":"ordinary heir reconciliation preparation; readonly, no clock or Continue replay"}
++                child_path=env["INBOX"]/f"{number:04d}-1-result.json"
++                response_path=env["OUTBOX"]/child_path.name
++                env["atomic"](child_path,child,limit=16384)
++                queue.consume_sequence(child)
++                env["atomic"](env["Q"]/f"INFLIGHT-{number:04d}.json",{"request":child,"read_only":True,"replay_allowed":False},limit=16384)
++                started,mono=env["now"]().isoformat(),time.monotonic()
++                reply=await session.call_tool(tool,{},read_timeout_seconds=queue.call_budget(tool))
++                row={"started_at_utc":started,"ended_at_utc":env["now"]().isoformat(),"elapsed_seconds":time.monotonic()-mono,
++                    "request":child,"result":reply.model_dump(mode="json")}
++                env["atomic"](response_path,row,limit=env["REPLY_RESERVE"])
++                require(birth_reader(pid)==birth,"Game birth changed after readonly preparation")
++                observed=env["decoded"](row)
++                audit.setdefault("reconciliation_preparation_responses",[]).append(str(response_path))
++                audit["probe_responses"].append(str(response_path))
++                env["atomic"](audit_path,audit,replace=True,limit=65536)
++                if tool=="ck3_plan_turn":
++                    plan=observed.get("plan") if isinstance(observed,dict) else None
++                    require(isinstance(plan,dict) and plan.get("selected_step")=="continue-as-reconciled-successor"
++                        and plan.get("phase")=="ordinary_successor_continuation_ready",
++                        "readonly planner did not prepare a matched ordinary successor")
++                else:
++                    qualified_frame(observed,queue,normalize,terminal=True,anchor=fresh)
++                    require(observed.get("campaign_goal")==goal,"readonly preparation changed original goal")
++                    body=observed

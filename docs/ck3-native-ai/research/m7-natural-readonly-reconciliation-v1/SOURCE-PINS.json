@@ -1,0 +1,12 @@
+{
+  "schema": "xar.research-source-pins/v1",
+  "status": "RESEARCH_PATCH_NOT_PUBLIC_RUNTIME_API_OR_LIVE_INHERITANCE",
+  "base_source_sha256": "4e86ea30334636f339e0d68e5cf88f568dd7202922fa3dda8f64812fa0798c8a",
+  "candidate_sha256": "4b580bb78b2fa8e3aac41e5a7dd6009ff9ad1dddbf5cb754afd39bb72d776d5d",
+  "original_context_patch_sha256": "493c0a54161d03ac3812aed69982e77058396b9853ebb102cac534c75700a483",
+  "public_zero_context_patch_sha256": "2a46e42f66e8290fbc274116eaa154a1727b0a42753595e9c6f7083db878fac6",
+  "delivery_sha256": "80cf9e64ab2d408779a025ec1d21ac819b8deee941827d9f3794d46378009a15",
+  "reconstruction": "Frozen P44 helper base plus git apply --unidiff-zero; namespace45 rebind and owner source epoch are separate runtime preparation, not supplied by this patch.",
+  "tests": "6 offline seam cases passed; no current natural inheritance or complete Game transaction acceptance",
+  "G2": "6/8"
+}

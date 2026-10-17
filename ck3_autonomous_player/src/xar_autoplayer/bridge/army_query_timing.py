@@ -25,6 +25,7 @@ def finish_army_timing(
     date_raw: int | None = None,
     before_snapshot: dict[str, object] | None = None,
     after_snapshot: dict[str, object] | None = None,
+    payload_bytes: int | None = None,
 ) -> None:
     if timing is None:
         return
@@ -41,6 +42,8 @@ def finish_army_timing(
         }
         if date_raw is not None:
             row["date_raw"] = date_raw
+        if type(payload_bytes) is int and payload_bytes >= 0:
+            row["payload_bytes"] = payload_bytes
         if before_snapshot is not None or after_snapshot is not None:
             # Only existing scalar clock/revision fields belong in this trace.
             # Do not copy snapshot bodies, normalize values or query the game.

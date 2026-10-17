@@ -348,10 +348,32 @@ def write_bytes_atomic(
     from .bridge.army_query_timing import finish_army_timing, start_army_timing
 
     write_timing = start_army_timing("driver.full_state_temp_write_bytes")
+    payload_size = None
     try:
-        temporary.write_bytes(payload)
+        # Match Path.write_bytes: validate the bytes-like view before opening,
+        # then open/write/close once. Close retains its implicit buffered flush.
+        # These optional phases neither add fsync nor change atomic replacement.
+        view = memoryview(payload)
+        payload_size = view.nbytes
+        open_timing = start_army_timing("driver.full_state_temp_open")
+        try:
+            stream = temporary.open("wb")
+        finally:
+            finish_army_timing(open_timing, step=timing_step, payload_bytes=payload_size)
+        try:
+            body_timing = start_army_timing("driver.full_state_temp_stream_write")
+            try:
+                stream.write(view)
+            finally:
+                finish_army_timing(body_timing, step=timing_step, payload_bytes=payload_size)
+        finally:
+            close_timing = start_army_timing("driver.full_state_temp_close")
+            try:
+                stream.close()
+            finally:
+                finish_army_timing(close_timing, step=timing_step, payload_bytes=payload_size)
     finally:
-        finish_army_timing(write_timing, step=timing_step)
+        finish_army_timing(write_timing, step=timing_step, payload_bytes=payload_size)
     replace_timing = start_army_timing("driver.full_state_replace")
     try:
         os.replace(temporary, path)

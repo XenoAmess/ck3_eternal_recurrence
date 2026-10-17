@@ -1,0 +1,25 @@
+{
+  "status": "EXISTING_READONLY_ROUTE_NO_GAMEPLAY_SUBMISSION",
+  "not_a_claim_of_pure_zero_side_effect_function": true,
+  "path": [
+    "service.plan_turn1757: retained Sway observer; terminal/alive/source guards, no current active Sway required",
+    "service._prepare_succession_transition_v1:1446-1472: query_turn_bundle + retained reconciliation + snapshot projection",
+    "service:2186-2227: terminal priority chooses existing Continue plan before normal opportunities",
+    "plan_turn returns detached data; _execute_planned_turn and camera schedule are not called"
+  ],
+  "permitted_side_effects": [
+    "Native readonly Root observation and normal query/history bookkeeping",
+    "Populate existing Driver in-memory retained reconciliation; no invented estate",
+    "Private helper writes unique request/INFLIGHT/response/audit metadata for PLAN and SEM"
+  ],
+  "forbidden_or_absent": [
+    "No AUTO during missing-reconciliation preparation",
+    "No pause/resume, date advance, Continue, modal close, save, option selection, injection or camera command",
+    "No estate/actualheir guard weakening; no credit for original failed clock"
+  ],
+  "qualification": [
+    "Current paused living actual expected heir, original episode/goal, exact same Game/build/generation",
+    "Only reconciliation is None; existing red/foreign/missing expectation is not automatically repaired",
+    "Readonly planner must return ordinary_successor_continuation_ready; fresh SEM then satisfies unchanged matched full-estate qualifier"
+  ]
+}

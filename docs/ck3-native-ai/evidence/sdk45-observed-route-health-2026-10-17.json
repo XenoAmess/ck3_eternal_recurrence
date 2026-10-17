@@ -1,0 +1,163 @@
+{
+  "schema": "xar.sdk45.actual-health-small-projection/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "evidence_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01",
+  "source_pins": [
+    {
+      "relative_to_native25_root": "ROOT-P44-OWNER-CLOSED.json",
+      "bytes": 814,
+      "sha256": "89f8596b1118dfbd5d6cebb4332ad11dd14c3cadbd6769bd2952a66c31775e44"
+    },
+    {
+      "relative_to_native25_root": "ROOT-P45-CONTINUITY-RESUME01.json",
+      "bytes": 3496,
+      "sha256": "a7ea7033f877c14c5f28796db84f57f4734dc007425236fad982b769abdbf290"
+    },
+    {
+      "relative_to_native25_root": "ROOT-P45-CONTINUITY-RESUME01-SETTLED.json",
+      "bytes": 725,
+      "sha256": "a6187348cfc9a71f9ea3911b261eeb69943f34b10729b219dca0eb10e2500475"
+    },
+    {
+      "relative_to_native25_root": "ROOT-P45-GOVERNANCE-BOOTSTRAP-ADMITTED.json",
+      "bytes": 4252,
+      "sha256": "9893fd5abc930efaf67f5e36d403660ec04181b93cf168d902a4ae043a6373cf"
+    },
+    {
+      "relative_to_native25_root": "p44-responses/0453-1-result.json",
+      "bytes": 842,
+      "sha256": "c455388b6ef2d8edfe4056095c65cb294c7d8e6143e9b8bb218c23842ce33dd0"
+    },
+    {
+      "relative_to_native25_root": "p45-responses/0001-1-result.json",
+      "bytes": 30502,
+      "sha256": "2fbfd9f4c59ceef085182411c040aa46efa77000b48368745be15f13a4c0dccd"
+    },
+    {
+      "relative_to_native25_root": "p45-responses/0006-1-result.json",
+      "bytes": 1211,
+      "sha256": "0efaf4cb4128a484c232265587021fdd973d6adc8109a451dee8ab43f930114a"
+    },
+    {
+      "relative_to_native25_root": "p45-responses/0018-1-result.json",
+      "bytes": 1645,
+      "sha256": "26b2dea45624af9dcd581d7966278f4bc2d4a83796a4456016430dd6ec9c4ee7"
+    }
+  ],
+  "projection_boundary": "Only immutable completed Root receipts, SEM1, FULL6, MET18 and original error fields. No Driver/SAVE/media/active loop body read.",
+  "prior_failure": {
+    "window": 11,
+    "window_days": 143,
+    "original_AUTO": 453,
+    "ended_at_utc": "2026-10-17T14:06:15.252605+00:00",
+    "error": {
+      "error_type": "_NativeCommandRejectedError",
+      "diagnostics": {
+        "native_command_rejection": {
+          "diagnostic_only": true,
+          "native_request_id": "step-387-649af37896fb",
+          "native_step": "move-army-167772577-to-2621",
+          "expected_native_revision": 6285,
+          "native_error": "CK3 move-army state is unavailable"
+        }
+      }
+    },
+    "ACK_verified": false,
+    "original_Move_replayed": false
+  },
+  "old_SDK_exit": {
+    "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 191708,
+        "creation_filetime": 134367186855364756,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      },
+      {
+        "role": "sdk_application",
+        "pid": 208112,
+        "creation_filetime": 134367186889399980,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      }
+    ],
+    "normal": true,
+    "launcher_exit_code": 0,
+    "Game_stopped": false,
+    "recording_stopped": false
+  },
+  "same_Game": {
+    "pid": 51028,
+    "creation_date": "20261017093524.421207+000",
+    "restarted": false
+  },
+  "new_SEM1": {
+    "snapshot_id": "native:6287",
+    "revision": 2,
+    "native_revision": 6287,
+    "date_raw": 53297328,
+    "paused": true,
+    "map_ready": true,
+    "episode_run_id": "native-31254-8d3a8440eb30"
+  },
+  "new_SEM1_actor": 31254,
+  "new_SEM1_connection_generation": 7,
+  "new_SEM1_existing_route": {
+    "army_id": 167772577,
+    "current_province_id": 8755,
+    "move_target_province_id": 2621,
+    "route_province_ids": [
+      2621
+    ]
+  },
+  "first_positive_MET18": {
+    "snapshot_id": "native:6294",
+    "revision": 9,
+    "native_revision": 6294,
+    "date_raw": 53297400,
+    "paused": true,
+    "map_ready": true,
+    "actor_character_id": 31254,
+    "connection_generation": 7
+  },
+  "first_positive_raw_difference": 72,
+  "first_bounded_batch": {
+    "actual_turns": 10,
+    "cumulative_cycles": 4376,
+    "end_frame": {
+      "snapshot_id": "native:6299",
+      "revision": 14,
+      "native_revision": 6299,
+      "date_raw": 53297472,
+      "actor_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30"
+    },
+    "calendar_days_from_SEM1": 6.0,
+    "campaign_complete_claimed": false
+  },
+  "new_window": {
+    "number": 12,
+    "start_date_raw": 53297472,
+    "completed_cycles": 4376,
+    "original_action_replayed": false,
+    "continuity_proof_sha256": "a7ea7033f877c14c5f28796db84f57f4734dc007425236fad982b769abdbf290"
+  },
+  "limits": {
+    "historical_prefix_not_live_pointer": true,
+    "future_Move_error_bounded_branch_recurred": false,
+    "original_ACK_still_unknown": true,
+    "natural_inheritance_verified": false,
+    "continuous_30years_complete": false,
+    "less_than_1_second_per_day_verified": false,
+    "half_second_per_day_verified": false,
+    "G2": "6/8"
+  }
+}

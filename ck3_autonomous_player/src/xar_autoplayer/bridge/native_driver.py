@@ -15136,6 +15136,30 @@ class NativeHeadlessGameplayDriver:
                     # error. Only an independently newer exact route can
                     # settle the view; the original ACK remains unknown.
                     current = self.take_snapshot()
+                    # Native sends command_result before its new snapshot.  A
+                    # negative ACK can therefore race the independently
+                    # published route readback.  Wait only for that already
+                    # submitted command's new paused frame; never resubmit it.
+                    starting_diag = starting.get("diagnostics") or {}
+                    current_diag = current.get("diagnostics") or {}
+                    starting_actor = starting.get("played_character") or {}
+                    current_actor = current.get("played_character") or {}
+                    if (starting.get("paused") is True and starting.get("map_ready") is True
+                            and current.get("paused") is True and current.get("map_ready") is True
+                            and current.get("date_raw") == submitted_date_raw
+                            and current.get("episode_run_id") == starting.get("episode_run_id")
+                            and current_actor.get("character_id") == starting_actor.get("character_id")
+                            and current_diag.get("bridge_pid") == starting_diag.get("bridge_pid")
+                            and current_diag.get("connection_generation") == starting_diag.get("connection_generation")
+                            and type(starting.get("native_revision")) is int
+                            and type(current.get("native_revision")) is int
+                            and current["native_revision"] == starting["native_revision"]):
+                        current = self._wait_for_snapshot(
+                            current,
+                            lambda row: (type(row.get("native_revision")) is int
+                                         and row["native_revision"] > starting["native_revision"]),
+                            timeout_seconds=min(2.0, self.command_timeout_seconds),
+                        )
                     observed_army = _army_by_id(current, army_id)
                     old_actor = starting.get("played_character") or {}
                     new_actor = current.get("played_character") or {}

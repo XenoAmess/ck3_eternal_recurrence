@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+### 2026-10-17：未知移动ACK的独立路线观察与SDK45源码
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。[移动观察专题](../ck3-native-ai/move-unknown-ack-observed-route-2026-10-17.md)保留SDK44窗口11失败143日、AUTO453原错误及后续461规划阻塞。独立新帧完整路线不改写原ACK；公共Driver只为同暂停owner的晚到快照等候最多2秒，Strategy消费实际路线意图，原命令不重放、业务／日期信用0。Root随后已实际确认SDK44双exit0、SDK45同Game首批10轮+6日，并由a7ea7033准入开窗口12；这只证明固定健康前缀，永久Move-error分支尚未复遇、旧453 ACK仍unknown，不预授稳定运行。
+
+公共真实Service→Driver→原生请求／历史测试16项通过，明确public256≠native3207；路线资格5项／11子例和可选写入分段诊断5项通过。默认无诊断分支不变，无fsync、存储迁移或性能收益声明。M7只归档既有只读planner准备缺口与六项离线研究，不授自然继承；G2仍6/8。前批87b64c85 Official39041657167及Linear39041657081均成功。目标仍稳定30年，再<1秒／日、0.5秒／日，均未达成。
+
 ### 2026-10-17：窗口11失败143日与两项未部署源码修复
 
 `machine_id: xenoamess-full-tower-eb9d2c1186`。[战果闩锁／镜头哨兵专题](../ck3-native-ai/war-results-latch-camera-sentinel-2026-10-17.md)追加Root14:15纠正：SDK44窗口11在143日后因AUTO453移动错误停止，cycles4365／raw53297328，错误不推断未提交、原命令不重放；旧planned45仅文件准备且已撤回。下方窗口11开启是历史截点。

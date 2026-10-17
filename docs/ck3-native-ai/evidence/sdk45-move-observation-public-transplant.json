@@ -1,0 +1,126 @@
+{
+  "schema": "xar.public-source-transplant/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "public_base_commit": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+  "preserved_external_commit": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+  "SDK45_source_manifest_sha256": "ca6dd70004b53cde035fc9050754bd88660921681fa982850c6c7b067fbcaa14",
+  "SDK45_source_leaf_count": 1322,
+  "production_leaves": [
+    {
+      "relative": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_query_timing.py",
+      "public_base_sha256": "c2c68af662eeee9e38a2b6e25462dd78d3ac2e76c3f2a178da9a15755f8b62d1",
+      "public_candidate_sha256": "ac75078e40f91ef6d23f21b63c4c0e049526c93686bed4c797c6fe08c78eca39",
+      "bytes": 2504
+    },
+    {
+      "relative": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "public_base_sha256": "35f3509443bce91d7e6d827bc6df5b1629b94bb9348e6244db61a63fc22e13f1",
+      "public_candidate_sha256": "73ab591793f7e6b85e38be49b5589046a00ec0a71d6c2fac581f93933a9b975b",
+      "bytes": 1582768
+    },
+    {
+      "relative": "ck3_autonomous_player/src/xar_autoplayer/environment.py",
+      "public_base_sha256": "0957df00d4edb8d08e80efcc4df7deec06ac76e8f47610cdb30dc13fa757f027",
+      "public_candidate_sha256": "5d29d19d44c83a5425fb75b97ddb118a6c51a1e1f1f98184570850ad94a6a582",
+      "bytes": 58031
+    },
+    {
+      "relative": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "public_base_sha256": "afc2c02f007a0bd2bfbf8b7c2dceb7eb70f762796c92a3884b0b8a99a0f013c9",
+      "public_candidate_sha256": "cbfcb902f7ba649338290d0af6e61fedff58eb1c4b647d3c6abf35609537566b",
+      "bytes": 1025688
+    }
+  ],
+  "source_packages": [
+    {
+      "relative_to_N": "p44-move-error-bounded-readback01/DELIVERY.json",
+      "sha256": "1fe5ab838b479c19104e49df40f64d2fbe2843eb14bd745b4b871dc9778f29af",
+      "bytes": 1877
+    },
+    {
+      "relative_to_N": "p44-move-error-bounded-readback01/native_driver.patch",
+      "sha256": "fd41851d985a85626bbffdfc7b685956b480b79e3c9c10d78188d6aa0b4c679b",
+      "bytes": 2462
+    },
+    {
+      "relative_to_N": "p44-observed-route-intent-strategy01/strategy.patch",
+      "sha256": "30e39523996ea65ebe69f43f7636854f30fa197761385d22953c7e10900996bf",
+      "bytes": 11629
+    },
+    {
+      "relative_to_N": "p44-driver-tempwrite-performance01/DELIVERY.json",
+      "sha256": "27e0d042cd05a3fcf58331419f4445e1a9d0bbc5fe95480f0be9c919e883c8d0",
+      "bytes": 6543
+    },
+    {
+      "relative_to_N": "p44-driver-tempwrite-performance01/timing-phases.patch",
+      "sha256": "b07c4e168b2deb60c058ec6ce541a1caeb7810c28315b0625bcf269d5742540b",
+      "bytes": 2594
+    },
+    {
+      "relative_to_N": "p45-m7-natural-succession-chain-audit01/DELIVERY.json",
+      "sha256": "80cf9e64ab2d408779a025ec1d21ac819b8deee941827d9f3794d46378009a15",
+      "bytes": 2757
+    }
+  ],
+  "public_semantic_review": {
+    "checks": [
+      {
+        "name": "_observed_native_move_intent",
+        "ast_sha256": "430a078dc48c04d9954b7df10a093f79a8e4bf92c63515a6f6bc8a8a2ecab64d",
+        "peer_equal": true
+      },
+      {
+        "name": "_active_native_move_intent",
+        "ast_sha256": "848cdc3074d20c7015906d6d0ec09343ab15da2d34923bb08ed3af35e0b4baaa",
+        "peer_equal": true
+      },
+      {
+        "name": "_primary_defender_siege_relief_assessment",
+        "ast_sha256": "b096d307ed73ff508e4a1987d173f0beb7ef937be5b2ee99511198730c1a3868",
+        "peer_equal": true
+      },
+      {
+        "name": "write_bytes_atomic",
+        "ast_sha256": "46aa370ecacb9767b3a90ee276772d2162150a8482cc0cc0b7e03e0b0165f199",
+        "peer_equal": true
+      },
+      {
+        "name": "finish_army_timing",
+        "ast_sha256": "cb6ecc98ab20c53994fa6d3677667308a5de2ba46c44b57c778e4b102df39c46",
+        "peer_delta_equal": true,
+        "preexisting_runtime_only_fields_not_added": [
+          "python_pid",
+          "thread_id"
+        ]
+      }
+    ],
+    "initial_full_function_review": "Full SDK finish_army_timing differs by preexisting runtime python_pid/thread_id fields; retained public prior shape and applied only payload_bytes delta. No new production change for this review assertion.",
+    "runtime_mutation": false
+  },
+  "test_summary": {
+    "public_focused": "26 passed, 11 subtests",
+    "existing_move_regression": "4 passed",
+    "formal_queue_extra": "real public Service/Driver/wire/history -> P45 canonical AST with six-field startup baseline; 3 corruption negatives",
+    "clock_boundary": "ordinary planner selects existing clock only after an explicitly synthetic complete current horizon; no actual clock executed"
+  },
+  "default_timing_step_none_branch_ast_unchanged": true,
+  "previous_CI": {
+    "commit": "87b64c8579ac3e0232c72ec3774918b23da1caaf",
+    "Official_run": 39041657167,
+    "Official_conclusion": "success",
+    "Linear_run": 39041657081,
+    "Linear_conclusion": "success",
+    "private_receipt_sha256": "b9cfd160ae9870dad3ab0fea3262bd5cfe937f08981059e17b405dfcf8f16bc0"
+  },
+  "actual_health_projection": "sdk45-observed-route-health-2026-10-17.json",
+  "limits": {
+    "original453_ACK_unknown": true,
+    "future_Move_error_branch_live_verified": false,
+    "M7_natural_live_verified": false,
+    "G2": "6/8",
+    "new_performance_benefit_verified": false,
+    "Game_SDK_OBS_operations_by_publication": 0,
+    "Driver_SAVE_media_body_reads_by_publication": 0
+  }
+}
