@@ -3795,7 +3795,7 @@ if(BUILD_TESTING)
   target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
   if(MSVC)
-    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /UNDEBUG)
+    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /UNDEBUG /utf-8)
   else()
     target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE -UNDEBUG)
   endif()

@@ -153,7 +153,7 @@ int main(int argc,char **argv) {
   if(argc==2) {
     // A real production serializer packet from the fail-closed provider path.
     // No game callback runs; transport wrapping is left explicitly synthetic.
-    game::Snapshot paused{};paused.paused=paused.map_ready=paused.has_played_character=true;
+    xar::game::Snapshot paused{};paused.paused=paused.map_ready=paused.has_played_character=true;
     paused.played_character_alive=true;paused.played_character_id=29829;paused.date_raw=53146848;
     MainThreadExecutionStampV1 stamp{};stamp.paused=true;stamp.date_raw=paused.date_raw;
     stamp.thread_id=GetCurrentThreadId();stamp.pump_epoch=14;
