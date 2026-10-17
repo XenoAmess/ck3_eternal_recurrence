@@ -303,8 +303,13 @@ class IncrementalPublisher(core.Publisher):
         if state and state['phase'] != 'expired':
             return
         health = self.session / ('automatic-recording-recovery-' + self.prefix) / 'STATUS.json'
-        current_signature = signature(health)
-        if current_signature is None or current_signature == self._recording_signature:
+        halt_path = self.session / ('ROOT-CURRENT-HALT-' + self.prefix.upper() + '.json')
+        stop_path = self.session / ('ROOT-CONTINUOUS-FEEDER-STOP-' + self.prefix.upper())
+        feeder_path = self.session / ('ROOT-CONTINUOUS-FEEDER-STATUS-' + self.prefix.upper() + '.json')
+        # A retained pause receipt can arrive while recording health is unchanged.
+        current_signature = (signature(health), signature(halt_path),
+                             signature(stop_path), signature(feeder_path))
+        if current_signature[0] is None or current_signature == self._recording_signature:
             return
         self._recording_signature = current_signature
         row = core.read(health)
@@ -318,9 +323,6 @@ class IncrementalPublisher(core.Publisher):
         # repair only when an actual retained halt or feeder-stop receipt says
         # that advancement has been suspended; never equate OBS waiting with
         # a Game failure on its own.
-        halt_path = self.session / ('ROOT-CURRENT-HALT-' + self.prefix.upper() + '.json')
-        stop_path = self.session / ('ROOT-CONTINUOUS-FEEDER-STOP-' + self.prefix.upper())
-        feeder_path = self.session / ('ROOT-CONTINUOUS-FEEDER-STATUS-' + self.prefix.upper() + '.json')
         stopped = False
         if feeder_path.is_file():
             stopped = core.read(feeder_path).get('status') == 'operator_stopped'

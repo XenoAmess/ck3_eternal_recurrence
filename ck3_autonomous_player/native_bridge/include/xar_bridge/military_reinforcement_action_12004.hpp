@@ -119,5 +119,31 @@ bool ExecuteMilitaryReinforcementAction12004(MilitaryReinforcementActionContext1
     MainThreadQueryMailboxV1 &mailbox,const MainThreadExecutionStampV1 &stamp,
     const ZhongguoScoreboardNativeEnvironmentV1 &environment,
     ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch_environment) noexcept;
-std::string SerializeMilitaryReinforcementAction12004(const MilitaryReinforcementResult12004 &result);
+inline std::string SerializeMilitaryReinforcementAction12004(const MilitaryReinforcementResult12004 &v) {
+  const auto text=[](std::string &s,std::string_view value){s+='"';for(const auto ch:value){
+    if(ch=='"'||ch=='\\')s+='\\';s+=ch;}s+='"';};
+  std::string s="{";
+  const auto str=[&](const char *key,std::string_view value){if(s.size()>1)s+=',';text(s,key);s+=':';text(s,value);};
+  const auto number=[&](const char *key,auto value){if(s.size()>1)s+=',';text(s,key);s+=':';s+=std::to_string(value);};
+  const auto boolean=[&](const char *key,bool value){if(s.size()>1)s+=',';text(s,key);s+=value?":true":":false";};
+  str("schema","ck3-military-reinforcement-set-12004-v1");
+  str("step",v.desired_enabled?kMilitaryReinforcementEnable12004Step:kMilitaryReinforcementDisable12004Step);
+  str("game_version",v.game_version);str("executable_sha256",v.executable_sha256);
+  str("source_gui_sha256",kMilitaryReinforcementSourceGuiSha12004);str("source_child_path",v.source_child_path);
+  str("status",v.status);if(v.unavailable_reason.empty())s+=",\"unavailable_reason\":null";else str("unavailable_reason",v.unavailable_reason);
+  number("native_revision",v.native_revision);number("connection_generation",v.connection_generation);number("game_pid",v.game_pid);
+  number("played_character_id",v.played_character_id);number("date_raw",v.date_raw);
+  boolean("accepted",v.accepted);boolean("desired_enabled",v.desired_enabled);
+  boolean("owner_thread_verified",v.owner_thread_verified);boolean("frame_verified",v.frame_verified);
+  boolean("source_abi_pins_verified",v.source_abi_pins_verified);boolean("gui_owner_binding_verified",v.gui_owner_binding_verified);
+  boolean("source_profile_verified",v.source_profile_verified);boolean("current_tree_complete",v.current_tree_complete);
+  boolean("no_blocking_modal_verified",v.no_blocking_modal_verified);
+  boolean("dispatch_attempted",v.dispatch_attempted);boolean("dispatch_invoked",v.dispatch_invoked);boolean("native_handled",v.native_handled);
+  boolean("postcondition_verified",false);boolean("verification_pending",true);
+  boolean("current_variable_table_observed",false);boolean("native_receiver_selected",false);boolean("provider_invoked",false);
+  boolean("native_after_tree_complete",v.native_after_tree_complete);boolean("before_after_same_source",v.before_after_same_source);
+  s+=",\"before_switch\":";game::AppendGuiRefillStaticOwnerSwitch12004(s,v.before_switch,text);
+  s+=",\"native_after_switch\":";if(v.native_after_switch)game::AppendGuiRefillStaticOwnerSwitch12004(s,*v.native_after_switch,text);else s+="null";
+  return s+'}';
+}
 } // namespace xar::ck3_11906

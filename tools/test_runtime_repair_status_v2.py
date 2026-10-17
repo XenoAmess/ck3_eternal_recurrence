@@ -167,5 +167,39 @@ class IncrementalStatusTests(unittest.TestCase):
             self.assertEqual(incidents[0][2], 'actual_recording_recovery_and_feeder_pause')
 
 
+    def test_recording_pause_refreshes_independent_retained_receipts(self):
+        sources = (
+            ('ROOT-CURRENT-HALT-P35.json', {'retained_fixture': True}),
+            ('ROOT-CONTINUOUS-FEEDER-STOP-P35', {'reason': 'automatic_recording_recovery'}),
+            ('ROOT-CONTINUOUS-FEEDER-STATUS-P35.json', {'status': 'operator_stopped'}),
+        )
+        for name, row in sources:
+            with self.subTest(source=name), tempfile.TemporaryDirectory() as root:
+                root = Path(root)
+                publisher = status.IncrementalPublisher.__new__(status.IncrementalPublisher)
+                publisher.session, publisher.prefix = root, 'p35'
+                publisher._recording_signature = None
+                publisher.state = lambda: None
+                incidents = []
+                publisher.open_source_incident = lambda *args: incidents.append(args)
+                health = root / 'automatic-recording-recovery-p35/STATUS.json'
+                write(health, {'status': 'waiting_segment'})
+                health_signature = status.signature(health)
+                with patch.object(status.core, 'read', wraps=status.core.read) as read:
+                    publisher.observe_recording_pause()
+                    self.assertEqual(incidents, [])
+                    write(root / name, row)
+                    self.assertEqual(status.signature(health), health_signature)
+                    publisher.observe_recording_pause()
+                    self.assertEqual(len(incidents), 1)
+                    self.assertEqual(incidents[0][2],
+                                     'actual_recording_recovery_and_feeder_pause')
+                    reads = read.call_count
+                    publisher.observe_recording_pause()
+                    self.assertEqual(len(incidents), 1)
+                    self.assertEqual(read.call_count, reads)
+
+
+
 if __name__ == '__main__':
     unittest.main()
