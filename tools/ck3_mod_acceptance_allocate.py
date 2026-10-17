@@ -1043,7 +1043,7 @@ def runtime_process_inventory(psutil,caller_pid):
             'python_controllers_inspected':inspected,'blockers':blockers,
             'process_absence_is_normal_exit_proof':False}
 
-def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bus_sha):
+def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bus_sha,recording=None):
     argv=[str(python),'-B','-X','utf8',str(keeper),'--repo',str(lease_repo),
         '--root',str(keeper_root.resolve()),'--task',task,'--sequence',str(sequence)]
     if hashlib.sha256(Path(keeper).read_bytes()).hexdigest()==LEGACY_KEEPER_SHA:
@@ -1051,9 +1051,14 @@ def keeper_command(python,keeper,lease_repo,keeper_root,task,sequence,bus_dir,bu
                 bus_sha.upper()==LEGACY_KEEPER_BUS_SHA,
                 'Pinned legacy keeper requires its original installed bus and SHA')
         return argv
-    return argv+[
+    argv += [
         '--bus-dir',str(bus_dir),'--bus-cli',str(lease_repo/'tools/codex_task_bus.py'),
         '--bus-cli-sha256',bus_sha.upper()]
+    if recording:
+        argv += ['--recorder-config', recording['config']['path'],
+                 '--recorder-config-sha256', recording['config']['sha256'],
+                 '--recorder-service-sha256', recording['service']['sha256']]
+    return argv
 
 def wait_for_keeper_ready(child,keeper_root,live,started,stdout,stderr):
     while not (keeper_root/'ready.json').exists():
@@ -1089,6 +1094,17 @@ def allocate_and_keep(selection,args):
     keeper_ref=configured['screen_keeper'];bus_ref=configured['task_bus']
     keeper=path_at(keeper_ref['path'],base);bus=path_at(bus_ref['path'],base)
     check_pin(keeper,keeper_ref);check_pin(bus,bus_ref)
+    recording=configured.get('recording')
+    if recording is not None:
+        require(set(recording)=={'config','service'},'Shared recording requires exactly config/service pins')
+        for recording_ref in recording.values():
+            recording_path=path_at(recording_ref['path'],base)
+            check_pin(recording_path,recording_ref)
+            recording_ref['path']=str(recording_path.resolve())
+        require(Path(recording['service']['path'])==keeper.with_name('ck3_mod_acceptance_recorder.py'),
+                'Recorder service must be the pinned shared keeper sibling')
+        require(hashlib.sha256(keeper.read_bytes()).hexdigest()!=LEGACY_KEEPER_SHA,
+                'Legacy keeper does not support explicit recording')
     check_pin(path_at(selection.runtime['reviewed_launcher']['path'],base),selection.runtime['reviewed_launcher'])
     task=configured['task_prefix']+args.attempt
     require(not (bus.parents[1]/'tasks'/(task+'.json')).exists(),'Choose a globally unused screen task')
@@ -1183,6 +1199,9 @@ def allocate_and_keep(selection,args):
         path_at(selection.runtime['reviewed_launcher']['path'],base),path_at(selection.runtime['control_queue']['path'],base),
         bus,keeper,Path(__file__),root/'tools/ck3_live_run_id.py',lease_repo/'tools/codex_task_bus.py',
         lease_repo/'promo/ck3_native_war_ai/integration/screen_bus_lease.py')})
+    if recording:
+        for row in recording.values():
+            files[Path(row['path']).resolve()]=row
     for row in selection.runtime.get('allocator_overlay',{}).values():
         if isinstance(row,dict) and {'path','bytes','sha256'}<=row.keys():
             check_pin(Path(row['path']),row);files[Path(row['path']).resolve()]=row
@@ -1246,7 +1265,7 @@ def allocate_and_keep(selection,args):
     registration=json.loads(result.stdout);sequence=registration['task']['last_sequence']
     started=time.monotonic()
     keeper_argv=keeper_command(selection.locations['python'],keeper,lease_repo,args.keeper_output,
-                               task,sequence,bus_dir,bus_ref['sha256'])
+                               task,sequence,bus_dir,bus_ref['sha256'],recording=recording)
     stdout=(live/'keeper-stdout.log').open('xb');stderr=(live/'keeper-stderr.log').open('xb')
     child=subprocess.Popen(keeper_argv,cwd=root,stdout=stdout,stderr=stderr)
     write_json(live/'keeper-process.json',{'pid':child.pid,'create_time':psutil.Process(child.pid).create_time(),'argv':keeper_argv})

@@ -171,7 +171,7 @@ def run_keeper(args):
               "at_utc": utc(), "screen_acquired_by_this_tool": False}
     write_new(root / "inputs.json", inputs)
     abort = threading.Event()
-    keeper, error = None, None
+    keeper, error, recording = None, None, None
     try:
         packet = module.call_bus(source, bus, expected_sha, "list", "--stale-after", "600",
                                  audit_dir=root / "admission-audit")
@@ -186,9 +186,35 @@ def run_keeper(args):
         keeper = module.ScreenLeaseKeeper(source=source, bus_dir=bus, expected_sha=expected_sha,
             task_id=args.task, sequence=args.sequence, repo=repo, journal=root / "journal.jsonl",
             abort=abort, interval_seconds=args.interval, audit_dir=root / "renewal-audit", on_abort=stop_required)
+        if getattr(args, 'recorder_config', None) is not None:
+            require(args.recorder_config_sha256 and args.recorder_service_sha256,
+                    "Recorder config/service must be explicitly pinned")
+            config_path = args.recorder_config.resolve()
+            require(pin(config_path)["sha256"] == args.recorder_config_sha256.lower(),
+                    "Recorder config changed after allocation")
+            service_path = Path(__file__).with_name("ck3_mod_acceptance_recorder.py")
+            require(pin(service_path)["sha256"] == args.recorder_service_sha256.lower(),
+                    "Shared recorder service changed after allocation")
+            service_spec = importlib.util.spec_from_file_location("shared_acceptance_recorder", service_path)
+            service_module = importlib.util.module_from_spec(service_spec)
+            sys.modules[service_spec.name] = service_module
+            service_spec.loader.exec_module(service_module)
+            recording = service_module.ScreenCaptureService(
+                keeper=keeper, keeper_root=root, repo=repo, config_path=config_path,
+                config_sha256=args.recorder_config_sha256, task_id=args.task)
+            previous_abort = keeper.on_abort
+            def recorder_and_owner_abort():
+                try:
+                    recording.abort_for_lease()
+                finally:
+                    if previous_abort is not None:
+                        previous_abort()
+            keeper.on_abort = recorder_and_owner_abort
         keeper.start()
         first = keeper.refresh()
         write_new(root / "ready.json", {"at_utc": utc(), "lease": first, "inputs": pin(root / "inputs.json")})
+        if recording is not None:
+            recording.start()
         print(json.dumps({"status": "READY", "root": str(root), "sequence": first["sequence"]}), flush=True)
         while not abort.wait(.25) and not (root / "STOP").exists():
             # ScreenLeaseKeeper freezes cleanliness, but its original helper
@@ -206,10 +232,18 @@ def run_keeper(args):
             write_new(root / "ROOT_STOP_REQUIRED.json", {"at_utc": utc(), "task_id": args.task,
                       "reason": "Keeper failed; stop live actions", "failure": error})
     finally:
+        if recording is not None:
+            try:
+                recording.stop()
+            except BaseException as recording_error:
+                error = error or repr(recording_error)
+                abort.set()
         if keeper is not None:
             keeper.stop()
         report = keeper.report() if keeper else {"task_id": args.task, "last_sequence": args.sequence,
                                                 "thread_exited": True, "failure": error}
+        if recording is not None:
+            report["recording"] = recording.report()
         report.update(at_utc=utc(), entry_error=error, checkout_head=head,
                       screen_released=False, game_actions=False)
         write_new(root / "report.json", report)
@@ -228,6 +262,9 @@ def main(argv=None):
     parser.add_argument("--bus-cli", type=Path)
     parser.add_argument("--bus-cli-sha256", default=BUS_SHA)
     parser.add_argument("--interval", type=int, default=180)
+    parser.add_argument("--recorder-config", type=Path)
+    parser.add_argument("--recorder-config-sha256")
+    parser.add_argument("--recorder-service-sha256")
     return run_keeper(parser.parse_args(argv))
 
 
