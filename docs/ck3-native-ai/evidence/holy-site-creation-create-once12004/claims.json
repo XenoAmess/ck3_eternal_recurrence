@@ -1,0 +1,121 @@
+{
+  "schema": "holy_site_creation_create_once_planning_v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T15:09:03.951424+00:00",
+  "ck3_build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification": "source_reviewed_static",
+  "current_state_observed": false,
+  "action_ready": false,
+  "source_contract_ref": "docs/ck3-native-ai/evidence/holy-site-creation-create-once12004/source-contract.json",
+  "source_contract_sha256": "6c7d93daa462e2fb631c1fa96f3006f7aa2785a04296aeffeb232f2a18cb0caf",
+  "native_current_main_boundary": {
+    "head": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+    "highest_creation_ui_op": 17,
+    "create_once_op18_included": false,
+    "meaning": "The op18 implementation is an isolated successor candidate; this source review does not advertise it on the frozen current DLL."
+  },
+  "claims": [
+    {
+      "id": "HC01",
+      "claim": "The narrow original callback has void(window*) ABI at image+17E9B60. Do not hand-build the queued command or invent queue ABI.",
+      "source_markers": [
+        "0017E9B6C",
+        "0017E9B99",
+        "0017E9BDD"
+      ]
+    },
+    {
+      "id": "HC02",
+      "claim": "The original builder consumes actual global actor, window Faith, type definition, barony full ID and the complete ordered artifact vector.",
+      "source_markers": [
+        "0017EABF4",
+        "0017EAC1C",
+        "0017EAC50",
+        "0017EAC7C"
+      ]
+    },
+    {
+      "id": "HC03",
+      "claim": "The callback ignores the queue AL result and resets/closes the window on its submission branch. Reset, callback return and enqueue ACK cannot prove creation.",
+      "source_markers": [
+        "0017E9BDD",
+        "0017E9C39",
+        "0017E9226",
+        "0017E9276"
+      ]
+    },
+    {
+      "id": "HC04",
+      "claim": "Execution revalidates the original command and recalculates/applies resources. The cached 10-resource UI vector is not the executed debit.",
+      "source_markers": [
+        "0029A55EA",
+        "0029A56FC",
+        "0029A5742"
+      ]
+    },
+    {
+      "id": "HC05",
+      "claim": "The created site carries a full ID, exact type and location, then receives the Faith association.",
+      "source_markers": [
+        "0029D9882",
+        "0029D988F",
+        "0029D9893",
+        "0029A5760"
+      ]
+    },
+    {
+      "id": "HC06",
+      "claim": "Existing player HolySite snapshots can supply independent after observations, but each matched Site.available and FaithRelation.available/faith_lists_site must be checked; outer.available alone is insufficient.",
+      "project_source_sha256": "e4b71513d1c5008c047fbd37a0fb026b2218a3f8ee3f886de5aa6fb2d56cd39b",
+      "project_lines": [
+        140,
+        174,
+        213,
+        248
+      ]
+    }
+  ],
+  "decision_contract": {
+    "before": [
+      "exact build/run/actor/revision and normal paused owner/modal admission",
+      "original type/barony/artifact candidates and complete selected tuple",
+      "bridge preview identity derived from actual original selection/tooltip; never an engine price attestation",
+      "fresh original CanCreate observed true and bypass observed zero",
+      "complete before Faith site IDs; actor balances; selected artifact owners/slots"
+    ],
+    "refuse_without_dispatch": [
+      "feature flags disabled",
+      "preview identity absent/invalid/drifted",
+      "native legality false or unobserved",
+      "requirements bypass missing or nonzero",
+      "actual window/owner/selection not stable and visible",
+      "same attempted revision/scope/identity or unresolved-intent capacity full"
+    ],
+    "after_success_requires": [
+      "independent callback and freshly resolved world objects",
+      "one matching new full Site ID in actual Faith list difference",
+      "Site.available and exact type/barony match",
+      "FaithRelation.available plus faith_lists_site and reverse associated Faith ID"
+    ],
+    "after_separate": [
+      "wallet debit rather than cached quote",
+      "selected artifact owners/slots and retained/replaced IDs",
+      "free action/cooldown",
+      "IsActive and actual beneficiary/effects"
+    ],
+    "unknown_is_not_retry": [
+      "callback or transport unknown",
+      "closed/reset preview",
+      "no new ID yet, multiple matches, partial Site or Faith relation",
+      "missing actual price or recipient/beneficiary observations"
+    ]
+  },
+  "unknown": [
+    "actual current legal materials and final CanCreate",
+    "fresh independently readable final creation price",
+    "queue dequeue caller and effect-handler name",
+    "barony+12C post-creation writer",
+    "current full DLL and actual Create business outcome"
+  ]
+}

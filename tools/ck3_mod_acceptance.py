@@ -161,6 +161,13 @@ class Selection:
             raise ValueError("opt_in_holy_site_creation_ui must be an explicit Boolean")
         if self.opt_in_holy_site_creation_ui and not CASE_HOLY_SITE_CREATION_UI_MCP_TOOLS <= set(self.case.get("required_mcp_tools", [])):
             raise ValueError("Creation UI opt-in must declare all four finite UI tools as required")
+        self.opt_in_holy_site_creation_create_once = self.case.get("opt_in_holy_site_creation_create_once", False)
+        if type(self.opt_in_holy_site_creation_create_once) is not bool:
+            raise ValueError("opt_in_holy_site_creation_create_once must be an explicit Boolean")
+        if self.opt_in_holy_site_creation_create_once and (
+                self.opt_in_holy_site_creation_ui is not True
+                or "ck3_create_holy_site_once_v1" not in self.case.get("required_mcp_tools", [])):
+            raise ValueError("Create once Case requires both explicit opt-ins and its required action tool")
         self.prepared_path = prepared_path.resolve() if prepared_path else None
         self.prepared = read_json(self.prepared_path) if self.prepared_path else None
         if self.prepared:
@@ -374,6 +381,8 @@ class Selection:
             raise ValueError("Only existing fixture, saved_campaign and workshop_cache startup modes are supported")
         if self.opt_in_holy_site_relic_actions:
             argv.append("--private-holy-site-relic-actions")
+        if self.opt_in_holy_site_creation_create_once:
+            argv.append("--private-player-holy-site-creation-create-once")
         if self.opt_in_holy_site_creation_ui:
             argv.append("--private-player-holy-site-creation-ui")
         for tool in self.opt_in_read_only_mcp_tools:
@@ -388,6 +397,11 @@ class Selection:
                 "opt_in_read_only_mcp_tools": self.opt_in_read_only_mcp_tools,
                 "opt_in_holy_site_relic_actions": self.opt_in_holy_site_relic_actions,
                 "opt_in_holy_site_creation_ui": self.opt_in_holy_site_creation_ui,
+                "opt_in_holy_site_creation_create_once": self.opt_in_holy_site_creation_create_once,
+                "creation_create_once_expected_state_writes": [
+                    "native-session/holy-site-creation-create-once-intents/*.pending.json",
+                    "native-session/holy-site-creation-create-once-intents/*.result.json",
+                ] if self.opt_in_holy_site_creation_create_once else [],
                 "runtime_environment": self.runtime_environment,
                 "phases": self.case.get("phases", []), "budgets": self.case["budgets"],
                 "effective_budgets": self.effective_budgets, "readiness_policy": self.readiness_policy,

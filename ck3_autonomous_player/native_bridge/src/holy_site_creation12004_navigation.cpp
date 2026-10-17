@@ -1,5 +1,7 @@
 #include "xar_bridge/holy_site_creation12004_navigation.hpp"
 #include "xar_bridge/holy_site_creation12004.hpp"
+#include "xar_bridge/holy_site_creation_create_once12004.hpp"
+#include "xar_bridge/holy_site_creation_create_once12004_pins.hpp"
 #include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include <windows.h>
 #include <algorithm>
@@ -9,12 +11,41 @@
 #define XAR_ENABLE_HOLY_SITE_CREATION_UI12004 0
 #endif
 
+#ifndef XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004
+#define XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004 0
+#endif
+namespace xar::ck3_11906 {
+bool HolySiteCreationCreateOnceEnabled12004() noexcept {
+  return XAR_ENABLE_HOLY_SITE_CREATION_UI12004 && XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004;
+}
+}
+
 #if XAR_ENABLE_HOLY_SITE_CREATION_UI12004
 namespace xar::ck3_11906 {
 namespace {
 namespace creation = ck3_12004::religion::holy_site_creation;
 using ReligionContext = ck3_12002::religion::Context;
 constexpr std::string_view root_name = "holy_site_creation_window";
+
+creation::CreateOnceLedger12004 create_once_ledger;
+bool CreatePins(const creation::Bindings& b) noexcept {
+  if(!b.native_create||reinterpret_cast<std::uintptr_t>(b.native_create)!=b.image_base+0x17E9B60)return false;
+  for(const auto& pin:creation::create_source::pins){
+    std::array<unsigned char,32> raw{};
+    if(!b.read_memory||!b.read_memory(b.read_context,reinterpret_cast<const void*>(b.image_base+pin.rva),raw.data(),raw.size())||raw!=pin.bytes)return false;
+  }
+  return true;
+}
+bool CreateCall(const creation::Bindings& b,void* window,bool& attempted) noexcept {
+#if defined(_MSC_VER)
+  __try {
+#endif
+    attempted=true;b.native_create(window);return true;
+#if defined(_MSC_VER)
+  } __except(EXCEPTION_EXECUTE_HANDLER){return false;}
+#endif
+}
+
 
 template<class T> bool Value(const void* p, std::size_t offset, T& out) noexcept {
   if (!p) return false;
@@ -65,6 +96,7 @@ bool SameModels(const creation::Snapshot& a, const creation::Snapshot& b) noexce
       a.create_tooltip != b.create_tooltip ||
       a.cached_resource_quote_available != b.cached_resource_quote_available ||
       a.cached_resource_vector_raw != b.cached_resource_vector_raw ||
+      a.preview_identity_sha256 != b.preview_identity_sha256 ||
       a.available_holy_site_types.size() != b.available_holy_site_types.size()) return false;
   for (std::size_t i = 0; i < a.available_holy_site_types.size(); ++i) {
     const auto& x = a.available_holy_site_types[i]; const auto& y = b.available_holy_site_types[i];
@@ -169,6 +201,38 @@ bool ExecuteHolySiteCreationNavigation12004(
     if (!ReadReligion(e, snapshot, stamp, immediately_before) || !SameReligion(before, immediately_before) ||
         !ReadIngameUiGuiOwnerBindingV1(e, owner) || owner != gui_binding) {
       out.unavailable_reason = "holy_site_creation_scope_changed_before_dispatch"; return true;
+    }
+
+    if(request.operation==IngameUiOperationV1::create_holy_site_once){
+      // Fresh original preview, after existing revision/TLS/modal/owner guards.
+      // No queue-accept or world-success value is returned by this callback.
+      IngameUiResultV1 fresh{};
+      if(!Capture(e,handler,binding,immediately_before,gui_binding,fresh)||
+          !SameModels(initial.holy_site_creation,fresh.holy_site_creation)||
+          !fresh.effective_visible||!fresh.enabled){
+        out.unavailable_reason="holy_site_creation_create_preview_or_owner_changed";return true;
+      }
+      out.holy_site_creation=std::move(fresh.holy_site_creation);
+      const auto why=creation::CreateOnceGuard12004(out.holy_site_creation,
+          request.holy_site_creation_expected_preview_identity_sha256,HolySiteCreationCreateOnceEnabled12004());
+      if(!why.empty()){out.unavailable_reason=std::string(why);return true;}
+      if(!CreatePins(binding)){out.unavailable_reason="holy_site_creation_create_loaded_source_pins_changed";return true;}
+      const auto claim=create_once_ledger.Claim(e.module_base,reinterpret_cast<std::uintptr_t>(handler),
+          request.native_revision,request.holy_site_creation_expected_preview_identity_sha256);
+      if(claim!=creation::OnceClaim12004::claimed){
+        out.unavailable_reason=claim==creation::OnceClaim12004::already_attempted?
+            "holy_site_creation_create_once_already_attempted":claim==creation::OnceClaim12004::capacity_exhausted?
+            "holy_site_creation_create_once_ledger_full":"holy_site_creation_create_once_ledger_unavailable";
+        return true;
+      }
+      void* const window=const_cast<void*>(out.holy_site_creation.window);
+      // Claim is retained before attempted, including any exception or unknown.
+      out.dispatch_invoked=CreateCall(binding,window,out.native_dispatch_attempted);
+      out.holy_site_creation={};out.available=false;out.verification_pending=out.native_dispatch_attempted;
+      out.status=out.native_dispatch_attempted?"verification_pending":"unavailable";
+      out.holy_site_creation_ui_postcondition_observed=false;out.holy_site_creation_ui_selection_verified=false;
+      out.unavailable_reason="holy_site_creation_create_requires_independent_world_postcondition";
+      return true;
     }
     creation::UiRequest native{}; native.action = static_cast<creation::UiAction>(request.operation);
     native.type_key = request.holy_site_creation_type_key; native.object_id = request.subject_id;

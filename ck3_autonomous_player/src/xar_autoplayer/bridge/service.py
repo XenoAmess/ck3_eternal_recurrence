@@ -1025,6 +1025,14 @@ class GameplayBridgeService:
             )
         return result
 
+    def create_holy_site_once_v1(self, *, expected_preview_identity_sha256: str,
+            expected_revision: int) -> dict[str, object]:
+        action = getattr(self.driver, "create_holy_site_once_private_v1", None)
+        if not callable(action):
+            raise UnsupportedStepError("selected backend cannot attempt holy-site creation")
+        return action(expected_preview_identity_sha256=expected_preview_identity_sha256,
+            expected_revision=expected_revision)
+
     def query_player_holy_site_creation_context_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

@@ -7,6 +7,7 @@ endif()
 get_filename_component(_native "${CMAKE_CURRENT_LIST_DIR}/../.." ABSOLUTE)
 add_executable(xar_holy_site_creation12004_test
  "${_native}/src/holy_site_creation12004.cpp"
+ "${_native}/src/holy_site_creation_create_once12004.cpp"
  "${_native}/src/holy_site_creation12004_json.cpp"
  "${_native}/tests/holy_site_creation12004_test.cpp")
 target_include_directories(xar_holy_site_creation12004_test PRIVATE
@@ -32,3 +33,5 @@ target_compile_definitions(xar_holy_site_creation12004_mailbox_compile PRIVATE
 if(MSVC)
  target_compile_options(xar_holy_site_creation12004_mailbox_compile PRIVATE /W4 /WX /permissive- /EHsc /utf-8)
 endif()
+
+target_link_libraries(xar_holy_site_creation12004_test PRIVATE bcrypt)

@@ -13,6 +13,7 @@ inline constexpr std::string_view kQueryStep="query-player-holy-site-creation-co
 inline constexpr std::string_view kDomainKey="player_holy_site_creation_context_v1";
 using ReadMemory=bool(*)(void*,const void*,void*,std::size_t) noexcept;
 using NativeEnabled=bool(__fastcall*)(void*);
+using NativeCreate=void(__fastcall*)(void*);
 using NativeTooltip=void*(__fastcall*)(void*,void*);
 using NativeDestroyString=void(__fastcall*)(void*);
 using NativeCanPick=bool(__fastcall*)(void*,const void*,void*);
@@ -27,6 +28,7 @@ struct Bindings {
  ReadMemory read_memory=nullptr;
  void*read_context=nullptr;
  NativeEnabled native_enabled=nullptr;
+ NativeCreate native_create=nullptr;
  NativeTooltip create_tooltip=nullptr;
  NativeDestroyString destroy_string=nullptr;
  NativeCanPick can_pick_type=nullptr;
@@ -68,6 +70,8 @@ struct Snapshot {
  std::string create_tooltip;
  bool cached_resource_quote_available=false;
  std::array<std::int64_t,10> cached_resource_vector_raw{};
+ // Bridge-computed SHA256 of observed native preview identity, not an engine hash.
+ std::string preview_identity_sha256;
  // These identities cannot cross the public transport or survive this callback.
  const void*handler=nullptr,*window=nullptr,*root=nullptr,*gfx=nullptr;
 };
@@ -83,7 +87,7 @@ Bindings BindImage12004(std::uintptr_t,std::string_view) noexcept;
 // not manufacture a window, context, game command, or candidate collection.
 bool ReadContext12004(const Bindings&,const void*handler,
  const ck3_12002::religion::Context&,Snapshot&) noexcept;
-// UI-only selection; no creation callback exists in this module. It must run
+// UI-only selection helper; it never invokes the creation callback. It runs
 // under the existing native UI owner/TLS/modal/revision guards. A returned
 // attempted call remains ACK until a separate selected-state observation.
 bool InvokeUi12004(const Bindings&,void*handler,

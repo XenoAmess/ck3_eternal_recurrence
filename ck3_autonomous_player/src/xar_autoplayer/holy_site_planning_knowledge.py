@@ -475,6 +475,26 @@ _KNOWLEDGE["create"]["native_read_only_context"] = {'qualification': 'source_rev
                       'qualification.',
                       'Signed native actor is preserved; the public CharacterRef entrance still '
                       'rejects negative IDs.']}
+# Source-closed original callback; the isolated successor is not live permission.
+_KNOWLEDGE["create"]["native_create_once_source"] = {
+    "qualification": "source_reviewed_static",
+    "current_state_observed": False,
+    "action_ready": False,
+    "candidate_tool": "ck3_create_holy_site_once_v1",
+    "candidate_window_kind": "holy_site_creation",
+    "candidate_operation": "create_holy_site_once",
+    "source_contract_ref": "docs/ck3-native-ai/evidence/holy-site-creation-create-once12004/source-contract.json",
+    "source_contract_sha256": "6c7d93daa462e2fb631c1fa96f3006f7aa2785a04296aeffeb232f2a18cb0caf",
+    "planning_contract_ref": "docs/ck3-native-ai/evidence/holy-site-creation-create-once12004/claims.json",
+    "explanation_ref": "docs/ck3-native-ai/holy-site-creation-create-once12004.md",
+    "source_machine_id": "4-8e1c2f1861",
+    "original_callback": "void(window*) at image+17E9B60; no hand-built command ABI",
+    "requires": ["exact current preview identity", "fresh original CanCreate=true", "observed bypass=0", "original owner/modal/revision/window guards", "unconsumed one-attempt intent"],
+    "callback_or_window_reset_is_business_success": False,
+    "cached_resource_vector_is_final_debit": False,
+    "after_requires": ["independent actual Faith complete ID difference", "unique matching Site.available/full ID/type/barony", "associated Faith and FaithRelation.available/faith_lists_site", "separate wallets/artifact owners/free actions/cooldowns/Active/beneficiaries"],
+    "unknown_result_may_be_retried": False,
+}
 _KNOWLEDGE["create"]["candidate_pipeline"][1]["native_producer_status"] = "static-confirmed-exact4-source-live-pending"
 _KNOWLEDGE["create"]["additional_unknowns"] = [
     "Actual live creation picker models, selected state and final native terms.",

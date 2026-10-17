@@ -3544,6 +3544,13 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def create_holy_site_once_private_v1(self, *, expected_preview_identity_sha256: str,
+            expected_revision: int) -> dict[str, object]:
+        from .holy_site_creation_create_once_private_transport import create_holy_site_once_private_v1
+        return create_holy_site_once_private_v1(self,
+            expected_preview_identity_sha256=expected_preview_identity_sha256,
+            expected_revision=expected_revision)
+
     def query_player_holy_site_creation_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

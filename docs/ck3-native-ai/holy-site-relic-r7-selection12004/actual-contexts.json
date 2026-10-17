@@ -1,0 +1,266 @@
+{
+  "schema": "ck3-holy-site-relic-r7-selection-diagnosis-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T15:50:52.287434+00:00",
+  "source_head": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0007",
+  "frozen_argv": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\frozen-argv.json",
+    "bytes": 22436,
+    "sha256": "9edf5a9d90a156b384fe200c01b0eb58fd0e27f556d4f066c56d112f53996e8a"
+  },
+  "frozen_native_dll_input": {
+    "bytes": 13821440,
+    "sha256": "13126d50051490c29f1c82cf2fd3f1050d8e501c727805f78daf22140a6987ef"
+  },
+  "loaded_dll_not_independently_rechecked_by_this_offline_audit": true,
+  "contexts": [
+    {
+      "raw": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-selected237-context-a01.json",
+        "bytes": 45503,
+        "sha256": "3ada992ae0958718d2b75d491e4ec0dc485d356de3922dabf3d19ddd39afa7f1"
+      },
+      "capture_epoch": 115095,
+      "date_raw": 51394920,
+      "player": 15893,
+      "holy_site_id": 32,
+      "artifact_id": 237,
+      "ownership": {
+        "available": true,
+        "object_resolved": true,
+        "artifact_id": 237,
+        "character_owner_id": 15893,
+        "holy_site_owner_id": null,
+        "rarity_level": 4,
+        "character_owner_matches_player": true,
+        "holy_site_owner_matches_requested": false,
+        "player_owned_reference_member": true,
+        "player_equipped_slot_member": {
+          "available": true,
+          "value": false,
+          "unavailable_reason": null
+        },
+        "site_equipped_slot_member": {
+          "available": true,
+          "value": false,
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      "site_slots": {
+        "available": true,
+        "slots": [
+          {
+            "slot_index": 0,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 1,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 2,
+            "artifact_id": null
+          }
+        ],
+        "unavailable_reason": null
+      },
+      "selected_artifact_id": 237,
+      "selected_slot_index": null,
+      "selected_slot_artifact_id": null,
+      "owned_ids": [
+        188,
+        189,
+        237,
+        267,
+        277
+      ],
+      "cached_candidate_ids": [
+        237,
+        267,
+        277
+      ],
+      "explicit_can_remove": {
+        "available": true,
+        "value": false,
+        "unavailable_reason": null
+      },
+      "current_remove_button": {
+        "available": true,
+        "value": false,
+        "unavailable_reason": null
+      },
+      "selected_artifact_matches_request": true,
+      "preview_identity_available": true,
+      "effect_description_unavailable_reason": null
+    },
+    {
+      "raw": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-enshrine237-once-a01-context.json",
+        "bytes": 43744,
+        "sha256": "cadcaa00b1a65680509dac3d2698ec3f58fbc691e56e4ce98d355f96962e00a1"
+      },
+      "capture_epoch": 117513,
+      "date_raw": 51394920,
+      "player": 15893,
+      "holy_site_id": 32,
+      "artifact_id": 237,
+      "ownership": {
+        "available": true,
+        "object_resolved": true,
+        "artifact_id": 237,
+        "character_owner_id": null,
+        "holy_site_owner_id": 32,
+        "rarity_level": 4,
+        "character_owner_matches_player": false,
+        "holy_site_owner_matches_requested": true,
+        "player_owned_reference_member": false,
+        "player_equipped_slot_member": {
+          "available": true,
+          "value": false,
+          "unavailable_reason": null
+        },
+        "site_equipped_slot_member": {
+          "available": true,
+          "value": true,
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      "site_slots": {
+        "available": true,
+        "slots": [
+          {
+            "slot_index": 0,
+            "artifact_id": 237
+          },
+          {
+            "slot_index": 1,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 2,
+            "artifact_id": null
+          }
+        ],
+        "unavailable_reason": null
+      },
+      "selected_artifact_id": null,
+      "selected_slot_index": null,
+      "selected_slot_artifact_id": null,
+      "owned_ids": [
+        188,
+        189,
+        267,
+        277
+      ],
+      "cached_candidate_ids": [
+        267,
+        277
+      ],
+      "explicit_can_remove": {
+        "available": true,
+        "value": true,
+        "unavailable_reason": null
+      },
+      "current_remove_button": {
+        "available": true,
+        "value": false,
+        "unavailable_reason": null
+      },
+      "selected_artifact_matches_request": false,
+      "preview_identity_available": false,
+      "effect_description_unavailable_reason": "current_selected_artifact_differs_from_request"
+    },
+    {
+      "raw": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0007\\root-native-receipts\\r7-relic-selected-slot0-context-a01.json",
+        "bytes": 43752,
+        "sha256": "0a23f1ceae5eb6804d6278054f15ac4c5dd335f1b243f7269d2e466a0b4f1f93"
+      },
+      "capture_epoch": 120105,
+      "date_raw": 51394920,
+      "player": 15893,
+      "holy_site_id": 32,
+      "artifact_id": 237,
+      "ownership": {
+        "available": true,
+        "object_resolved": true,
+        "artifact_id": 237,
+        "character_owner_id": null,
+        "holy_site_owner_id": 32,
+        "rarity_level": 4,
+        "character_owner_matches_player": false,
+        "holy_site_owner_matches_requested": true,
+        "player_owned_reference_member": false,
+        "player_equipped_slot_member": {
+          "available": true,
+          "value": false,
+          "unavailable_reason": null
+        },
+        "site_equipped_slot_member": {
+          "available": true,
+          "value": true,
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      "site_slots": {
+        "available": true,
+        "slots": [
+          {
+            "slot_index": 0,
+            "artifact_id": 237
+          },
+          {
+            "slot_index": 1,
+            "artifact_id": null
+          },
+          {
+            "slot_index": 2,
+            "artifact_id": null
+          }
+        ],
+        "unavailable_reason": null
+      },
+      "selected_artifact_id": null,
+      "selected_slot_index": 0,
+      "selected_slot_artifact_id": 237,
+      "owned_ids": [
+        188,
+        189,
+        267,
+        277
+      ],
+      "cached_candidate_ids": [
+        267,
+        277
+      ],
+      "explicit_can_remove": {
+        "available": true,
+        "value": true,
+        "unavailable_reason": null
+      },
+      "current_remove_button": {
+        "available": true,
+        "value": false,
+        "unavailable_reason": null
+      },
+      "selected_artifact_matches_request": false,
+      "preview_identity_available": false,
+      "effect_description_unavailable_reason": "current_selected_artifact_differs_from_request"
+    }
+  ],
+  "static_source": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\r7-removal-selection-source-a01\\source-review-r7-a01.json",
+    "bytes": 11977,
+    "sha256": "512ce080d4f508d5eaae399a5884190e428164e68239ec88342c0bbd2af2a3dc"
+  },
+  "conclusion": "Existing typed select_artifact is admitted from current site slots and is the next missing selection step; no source guard or native rebuild required",
+  "next_action_not_executed_by_audit": true,
+  "remove_not_executed_or_qualified_by_audit": true,
+  "game_screen_process_operations": false,
+  "source_modified": false
+}

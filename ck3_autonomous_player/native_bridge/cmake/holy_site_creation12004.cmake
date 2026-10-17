@@ -9,6 +9,7 @@ if(XAR_CK3_ENABLE_G2_PLAYER_HOLY_SITE_CREATION_CONTEXT_PRIVATE_QUERY_V1 OR
   endif()
   target_sources(xar_ck3_12002_runtime PRIVATE
     src/holy_site_creation12004.cpp
+    src/holy_site_creation_create_once12004.cpp
     src/holy_site_creation12004_json.cpp
     src/holy_site_creation12004_mailbox.cpp)
 endif()

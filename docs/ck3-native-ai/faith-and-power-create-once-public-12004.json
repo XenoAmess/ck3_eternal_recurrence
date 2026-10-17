@@ -1,0 +1,127 @@
+{
+  "schema": "ck3-create-once-public-planning-contract-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T15:30:53.248750+00:00",
+  "qualification_status": "NEW_CREATE_ONCE_PROTOCOL_AND_DURABLE_GUARDS_PASS_NO_WORLD_CREDIT",
+  "base_head": "b8be8ca6cb9cc01297a2a6bd318c9b6e09847c2c",
+  "game_version": "1.20.0.4",
+  "tool": "ck3_create_holy_site_once_v1",
+  "arguments": {
+    "expected_preview_identity_sha256": "strict lowercase64hex",
+    "expected_revision": "strict positive public revision"
+  },
+  "required_flags": [
+    "--private-player-holy-site-creation-ui",
+    "--private-player-holy-site-creation-create-once"
+  ],
+  "both_driver_permissions_must_be_exact_true": true,
+  "default_off": true,
+  "operation": "create_holy_site_once",
+  "kind": "holy_site_creation",
+  "enum": 18,
+  "subject_id": 0,
+  "preview": {
+    "new_core_key": "preview_identity_sha256",
+    "legacy_missing_value": null,
+    "meaning": "bridge-computed configuration identity; not an engine price hash or a fresh affordability guarantee",
+    "missing_cannot_authorize_create": true,
+    "old_four_selectors_contract_unchanged": true,
+    "observed_hash_is_not_eligibility": true
+  },
+  "planning_sequence": [
+    "先用 ck3_query_player_holy_site_v1 保存 available=true 的 current_faith_holy_site_ids 与当前玩家信仰；不能用全局 registry 推断本信仰已有圣地。",
+    "通过既有创建 UI 选择类型、男爵领和圣物，再查询当前创建上下文。保存 observed 配置和非空 preview_identity_sha256；缺 key/null 保持 unknown，不能生成替代 hash。",
+    "在新的公共 snapshot revision 下明确提交一次 Create；原生侧仍须现场验证 owner、窗口、普通要求、bypass=0 与配置 hash。缓存成本及 CanCreate 不推出最终费用。",
+    "ACK、void callback 返回和窗口 reset 都只记 verification_pending。原生 attempt、超时、坏包及会话变化均保留 consumed intent；不自动重试或按时间删除未决意图。",
+    "独立后读 ck3_query_player_holy_site_v1：after.current_faith_holy_site_ids 减 before IDs 必须得到唯一新完整 ID；否则无法归因，保持 unknown。",
+    "读取该新 ID，要求 Site.available=true；associated_faiths 中当前 faith 的 relation.available=true 且 faith_lists_site=true；barony_title_id/type_key 与保存配置一致后，独立观察器才可判创建成功。",
+    "圣物归属/库存和实际资源扣除另做后读。钱包/原 action 的世界结果未观察前，不把缓存 quote 记为最终成本。本工具不会自行判成功或解除未决重放守卫。"
+  ],
+  "ack_contract": {
+    "available": false,
+    "accepted": false,
+    "business_outcome_observed": false,
+    "action_ready": false,
+    "automatic_retry": false,
+    "native_attempt": "create_dispatched equals native_dispatch_attempted; dispatch_invoked only means callback returned",
+    "attempted_status": "verification_pending",
+    "unattempted_status": "unavailable",
+    "attempted_context": null,
+    "postcondition_observed": false,
+    "selection_verified": false
+  },
+  "durable_intent": {
+    "directory": "<driver.state_dir>/native-session/holy-site-creation-create-once-intents",
+    "claim": "{replay_sha256}.pending.json, exclusive create before native send",
+    "outcome": "{intent_sha256}.creation-create-{uuid32}.result.json",
+    "cross_generation_guard": "scope/date/actor/build/preview preserved; reconnect generation omitted from replay identity",
+    "release_only": "known pre-submission unsupported/revision failure or valid native result with native_dispatch_attempted=false",
+    "unknown_or_attempted": "claim retained; independent world verification required, no automatic expiry or replay"
+  },
+  "case": {
+    "explicit_booleans": [
+      "opt_in_holy_site_creation_ui",
+      "opt_in_holy_site_creation_create_once"
+    ],
+    "required_tools": "existing four UI tools plus new Create tool; neither is a read-only declaration",
+    "new_expected_writes": [
+      "native-session/holy-site-creation-create-once-intents/*.pending.json",
+      "native-session/holy-site-creation-create-once-intents/*.result.json"
+    ],
+    "existing_writes": [
+      "native-session/ingame-ui-native-results/*.json",
+      "native-session/driver-state.json"
+    ],
+    "external_inventory_note": "No CaseInventory/expected_writes implementation exists in this repo baseline; coordinator must include these exact new state writes in any external live Case inventory"
+  },
+  "qualification": {
+    "guards": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-public-a01\\qualification-create-guards-a01.json",
+      "bytes": 18104,
+      "sha256": "b02e6ebe06c8c618653e56456f42f6fe3f965ca064af8549f89bf72f592ca1db"
+    },
+    "guard_harness_packaging": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-public-a01\\guard-harness-packaging-a01.json",
+      "bytes": 1141,
+      "sha256": "f4ea63efc492896d4d80fa54121e420f56ce12633ac47eda5b6114fee49bb6f8"
+    },
+    "native_packets": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-native-a01\\packets-a01\\manifest.json",
+      "bytes": 6592,
+      "sha256": "7de07801252461d4aaa7118b5ba4201a08aa9934bc4078034df19c0adedcd986"
+    },
+    "native_execute_or_live_world_credit": false,
+    "old_query_ui_relic_matrices_repeated": false,
+    "native_sdk": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-public-a01\\qualification-create-native-a01.json",
+      "bytes": 91527,
+      "sha256": "ac8890c49eaf779de3fa3a0533e3aaf49aa51ab3ab00832eaec3f94fa9045224"
+    },
+    "native_source_extraction": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-native-a01\\qualification\\extraction-manifest-a03.json",
+      "bytes": 72349,
+      "sha256": "203053786deb5bb167d8aa299acbafa7b0dbe8e951e8f10930de3f6c8d3e4cb3"
+    },
+    "new_cli_mode_checks": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-public-a01\\qualification-create-cli-mode-a01.json",
+      "bytes": 1431,
+      "sha256": "98166558b20f3177f00a2741f248ab7a84e20dff308a5da469f752f9c63e3ed1"
+    },
+    "guards_tests": 4,
+    "new_native_tests": 2,
+    "original_production_packets": 5,
+    "primary_native_cases": 7,
+    "extra_replay_calls_checked": 4,
+    "native_boundary_sends": 7,
+    "known_native_refusal_releases_claim": true,
+    "attempted_or_unknown_claim_retained": true,
+    "prior_guard_sdk_or_old_matrices_repeated": false,
+    "scope": "Synthetic production parser/serializer packets through actual Driver/Service/MCP; no engine callback or world/visibility credit"
+  },
+  "source_hooks": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\creation-candidate-a01\\create-once-public-a01\\tools\\create-once-common-hooks-a01.json",
+    "bytes": 10638,
+    "sha256": "3ab9b4df186b70191e1538bef2456dab949d5b51418debce09248f44fb9cccf3"
+  },
+  "review_at_utc": "2027-04-15T15:30:53.248750+00:00"
+}

@@ -32,7 +32,7 @@ enum class IngameUiOperationV1 : std::uint32_t { query=0, open_character=1, sele
   hover_left_knights=5, hover_right_knights=6, fit_combat_window=7,
   hover_army_tooltip=8, leave_army_tooltip=9, open_holy_site=10, open_holy_site_adoption=11, confirm_site_adoption=12, open_faith=13,
   open_holy_site_creation=14, select_holy_site_creation_type=15,
-  select_holy_site_creation_barony=16, set_holy_site_creation_artifact_selection=17,
+  select_holy_site_creation_barony=16, set_holy_site_creation_artifact_selection=17, create_holy_site_once=18,
   select_relic_artifact=100, set_relic_slot=101, enshrine_relic=102, remove_relic=103 };
 struct UiFloat2V1 { float x=0, y=0; };
 struct UiRectV1 { float x=0, y=0, width=0, height=0; };
@@ -59,6 +59,7 @@ struct IngameUiRequestV1 {
   // UI selectors only. Current actor/Faith come from the original religion reader.
   std::string holy_site_creation_type_key;
   std::optional<bool> holy_site_creation_selected;
+  std::string holy_site_creation_expected_preview_identity_sha256;
   // Fixed semantic fields only; complete child paths stay provider-private.
   std::string army_tooltip_kind;
   std::string army_tooltip_receipt;

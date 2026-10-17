@@ -1075,6 +1075,7 @@ def native_server(args: argparse.Namespace) -> None:
     )
     bind_normal_exit_managed_profile(driver, args)
     bind_stock_grant_title_picker_permission(driver, getattr(args, "private_grant_title_picker", False))
+    driver.allow_private_player_holy_site_creation_create_once = getattr(args, "private_player_holy_site_creation_create_once", False)
     driver.allow_private_player_holy_site_creation_ui = bool(getattr(args, "private_player_holy_site_creation_ui", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
@@ -4181,6 +4182,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
                        "--normal-exit-managed-profile-sha256", args.normal_exit_managed_profile_sha256]
     if getattr(args, "private_holy_site_relic_actions", False):
         child_args.append("--private-holy-site-relic-actions")
+    if getattr(args, "private_player_holy_site_creation_create_once", False):
+        child_args.append("--private-player-holy-site-creation-create-once")
     if getattr(args, "private_player_holy_site_creation_ui", False):
         child_args.append("--private-player-holy-site-creation-ui")
     for tool in getattr(args, "case_read_only_mcp_tool", []):
@@ -4489,6 +4492,8 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--poll-interval", type=float, default=0.05)
     result.add_argument("--hold-seconds", type=float, default=0)
     result.add_argument("--control-plan-dir", type=Path, help="read new/updated JSON plans during hold")
+    result.add_argument("--private-player-holy-site-creation-create-once", action="store_true",
+        help="explicit once-only creation callback; requires independent creation UI opt-in")
     result.add_argument("--private-player-holy-site-creation-ui", action="store_true",
         help="enable four exact4 creation UI selectors, independently of read-only tools")
     result.add_argument("--private-holy-site-relic-actions", action="store_true",
@@ -4564,6 +4569,9 @@ def parser() -> argparse.ArgumentParser:
 
 def main() -> int:
     args = parser().parse_args()
+    if (args.private_player_holy_site_creation_create_once
+            and args.private_player_holy_site_creation_ui is not True):
+        raise SystemExit("creation once requires its independent creation UI opt-in")
     validate_menu_observation_options(args)
     validate_saved_campaign_options(args)
     if args.frontend_fixture_start_policy is not None and (not args.frontend_robert_bootstrap

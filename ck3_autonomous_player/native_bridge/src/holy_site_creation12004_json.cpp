@@ -31,6 +31,7 @@ std::string SerializeContext12004(const Snapshot&v){
  for(auto n:v.cached_resource_vector_raw){if(raw.size()>1)raw+=',';raw+=std::to_string(n);}raw+=']';
  return "{\"schema\":\"ck3_12004_player_holy_site_creation_context_v1\",\"game_version\":\"1.20.0.4\",\"executable_sha256\":"+Q(ck3_12004::kExecutableSha256)+
   ",\"available\":"+B(v.available)+",\"unavailable_reason\":"+(v.unavailable_reason.empty()?"null":Q(v.unavailable_reason))+
+  ",\"preview_identity_sha256\":"+(v.available&&!v.preview_identity_sha256.empty()?Q(v.preview_identity_sha256):"null")+
   ",\"capture_epoch\":"+std::to_string(v.capture_epoch)+",\"date_raw\":"+std::to_string(v.date_raw)+
   ",\"played_character_id\":"+std::to_string(v.played_character_id)+",\"player_faith_id\":"+R(v.player_faith_id)+
   ",\"window_present\":"+(v.available?B(v.window_present):"null")+",\"root_present\":"+(v.available?B(v.root_present):"null")+

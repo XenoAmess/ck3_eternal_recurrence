@@ -21,3 +21,16 @@ if(XAR_ENABLE_HOLY_SITE_CREATION_UI12004)
     "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_bridge>:XAR_ENABLE_HOLY_SITE_CREATION_UI12004=1>")
   unset(_xar_creation_native_dir)
 endif()
+
+option(XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004
+  "Exact4 original Create callback once per bound preview; independent world verification" OFF)
+if(XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004)
+  if(NOT XAR_ENABLE_HOLY_SITE_CREATION_UI12004)
+    message(FATAL_ERROR "Create once requires the independent HolySite creation UI opt-in")
+  endif()
+  get_filename_component(_xar_creation_native_dir "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+  set_property(SOURCE "${_xar_creation_native_dir}/src/holy_site_creation12004_navigation.cpp"
+    TARGET_DIRECTORY xar_ck3_12002_runtime APPEND PROPERTY COMPILE_DEFINITIONS
+    "$<$<STREQUAL:$<TARGET_PROPERTY:NAME>,xar_ck3_12002_runtime>:XAR_ENABLE_HOLY_SITE_CREATION_CREATE_ONCE12004=1>")
+  unset(_xar_creation_native_dir)
+endif()

@@ -153,3 +153,7 @@ Gameplay callback 返回后，当前 `Result` 始终 `business_outcome_observed=
 本 a02 增量只更新文档、当前实现源 SHA 和独立窄 review；原版 ABI、原始来源 pins、loaded prefix manifest 与 R5 小证据沿用 a01 的相同字节。审阅没有新增运行或 fixture 执行。canonical 绑定 faith，但未加入 rite ID；rite 在每个实际 owner callback 内前后核稳，不能把哈希解释成冻结历史 rite 的通用凭证。`NativeText` 若在原 getter 内异常退出会 fail-closed，当前没有对可能部分构造的 string 执行析构恢复；不重试该原调用，也不宣称无临时分配残留。
 
 a03 的[最终源码权威指针](holy-site-relic-native-actions12004/final-source-manifest-reference.json)明确等待控制线程封闭 `final-source-manifest.json`；本文不以正在修改的其他线程源码重冻替代最终身份。a01/a02 的 implementation-contract 与所有旧包保持原样，属于当时审阅记录。最终源码、构建和实机资格以控制线程的实际 manifest 与 qualification.json 为准。
+
+## R7 后续选择准备补充
+
+R7 供奉后原回调清空 selected artifact；所选槽不等于所选圣物。现有 typed 选择可直接选择本站真实槽中的物品，无需它仍在玩家 owned 候选列表。[原版 GUI 两个 onclick、真实原包及智能体后续规则](holy-site-relic-r7-selection12004.md)已闭合；没有放宽原版权限或预览守卫。

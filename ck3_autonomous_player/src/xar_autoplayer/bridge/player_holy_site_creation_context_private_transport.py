@@ -83,9 +83,18 @@ def normalize_player_holy_site_creation_context_v1(
         cached_quote_freshness_observed native_affordability_observed native_affordable
         rendered_visibility_observed read_only action_ready create_invoked
     """
-    if not isinstance(value, dict) or set(value) != set(keys.split()):
+    required = set(keys.split())
+    if not isinstance(value, dict) or set(value) not in (required, required | {"preview_identity_sha256"}):
         raise ValueError("native creation context root shape differs")
-    result = _availability(value, "creation context")
+    result = dict(_availability(value, "creation context"))
+    result.setdefault("preview_identity_sha256", None)
+    preview = result["preview_identity_sha256"]
+    if preview is not None:
+        import re
+        if not isinstance(preview, str) or re.fullmatch(r"[0-9a-f]{64}", preview) is None:
+            raise ValueError("creation preview identity must be lowercase SHA-256 or null")
+        if result["available"] is not True:
+            raise ValueError("unavailable creation context cannot invent a preview identity")
     if (result["schema"] != "ck3_12004_player_holy_site_creation_context_v1"
             or require_exact_native_build(result["game_version"], result["executable_sha256"]) != CK3_12004
             or private_native_build_identity(snapshot) != CK3_12004):

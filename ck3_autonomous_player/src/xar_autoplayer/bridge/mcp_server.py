@@ -3761,6 +3761,19 @@ def create_server(
         """Open one exact4 full Faith ID through the opted-in original typed route; query independently."""
         return service.open_faith_window_v1(faith_id, expected_revision=expected_revision)
 
+    if (getattr(driver, "allow_private_player_holy_site_creation_ui", False) is True
+            and getattr(driver, "allow_private_player_holy_site_creation_create_once", False) is True):
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True,
+                                               idempotentHint=False, openWorldHint=False))
+        def ck3_create_holy_site_once_v1(
+                expected_preview_identity_sha256: Annotated[str, Field(strict=True, pattern="^[0-9a-f]{64}$")],
+                expected_revision: IngameUiRevisionV1) -> dict[str, object]:
+            """Attempt the original callback once; ACK is pending and never proves world creation."""
+            return service.create_holy_site_once_v1(
+                expected_preview_identity_sha256=expected_preview_identity_sha256,
+                expected_revision=expected_revision)
+        _forbid_unknown_tool_arguments_v1(server, "ck3_create_holy_site_once_v1")
+
     if getattr(driver, "allow_private_player_holy_site_creation_ui", False) is True:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False,
                                                idempotentHint=False, openWorldHint=False))
@@ -5191,6 +5204,8 @@ def parser() -> argparse.ArgumentParser:
         "--private-prisoner-ransom-action", action="store_true",
         help="enable an explicit private ransom using the current native collection quote",
     )
+    result.add_argument("--private-player-holy-site-creation-create-once", action="store_true",
+        help="explicit once-only original creation callback; also requires creation UI opt-in")
     result.add_argument(
         "--private-player-holy-site-creation-ui", action="store_true",
         help="enable only four exact4 creation UI selectors; no create callback",
@@ -5393,6 +5408,10 @@ def main(argv: list[str] | None = None) -> int:
         )
         if all(war31_paths) else None
     )
+    if args.private_player_holy_site_creation_create_once and (
+            args.private_player_holy_site_creation_ui is not True
+            or args.driver != "native-headless" or args.transport != "stdio"):
+        raise ValueError("creation once requires independent creation UI opt-in and native-headless stdio")
     if args.private_player_holy_site_creation_ui and (
         args.driver != "native-headless" or args.transport != "stdio"
     ):
@@ -5550,6 +5569,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.private_prisoner_ransom_action:
         driver.allow_private_prisoner_collection_query = True
         driver.allow_private_prisoner_ransom_action = True
+    driver.allow_private_player_holy_site_creation_create_once = args.private_player_holy_site_creation_create_once
     if args.private_player_holy_site_creation_ui:
         driver.allow_private_player_holy_site_creation_ui = True
     if args.private_player_holy_site_creation_context_query:

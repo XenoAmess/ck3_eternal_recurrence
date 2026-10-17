@@ -1,5 +1,6 @@
 #include "xar_bridge/holy_site_creation12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/holy_site_creation_create_once12004.hpp"
 #include "xar_bridge/holy_site_creation12004_source_pins.hpp"
 #include <windows.h>
 #include <algorithm>
@@ -182,6 +183,7 @@ Bindings BindImage12004(std::uintptr_t base,std::string_view sha) noexcept {
  Bindings b{};if(!base||sha!=ck3_12004::kExecutableSha256)return b;
  b.enabled=true;b.image_base=base;b.read_memory=&ProcessRead;
  b.native_enabled=reinterpret_cast<NativeEnabled>(base+0x17E9A70);
+ b.native_create=reinterpret_cast<NativeCreate>(base+0x17E9B60);
  b.create_tooltip=reinterpret_cast<NativeTooltip>(base+0x17E9050);
  b.destroy_string=reinterpret_cast<NativeDestroyString>(base+0x856050);
  b.can_pick_type=reinterpret_cast<NativeCanPick>(base+0x17EAE10);
@@ -238,7 +240,11 @@ bool ReadContext12004(const Bindings&b,const void*handler,const ck3_12002::relig
   if(out.bypass_requirements_observed&&(!Settings(b,after_bypass)||after_bypass!=out.bypass_requirements_raw))
    return fail("holy_site_creation_requirements_setting_changed");
   out.cached_resource_vector_raw=first.quote;out.cached_resource_quote_available=true;
-  out.models_available=true;out.models_complete=true;out.selection_available=true;out.available=true;return true;
+  out.models_available=true;out.models_complete=true;out.selection_available=true;out.available=true;
+  const void*gui_first=nullptr,*gui_last=nullptr;
+  if(first.w.root&&Read(b,first.w.root,0xD8,gui_first)&&Read(b,first.w.root,0xD8,gui_last)&&gui_first==gui_last)
+   out.preview_identity_sha256=PreviewIdentitySha25612004(out,b.image_base,first.type,gui_first);
+  return true;
  }catch(...){return fail("holy_site_creation_host_read_exception");}
 }
 bool InvokeUi12004(const Bindings&b,void*handler,const ck3_12002::religion::Context&ctx,const UiRequest&request,

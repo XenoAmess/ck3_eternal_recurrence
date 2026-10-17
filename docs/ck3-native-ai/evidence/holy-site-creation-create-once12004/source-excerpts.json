@@ -1,0 +1,161 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T15:09:03.951424+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_contract_sha256": "6c7d93daa462e2fb631c1fa96f3006f7aa2785a04296aeffeb232f2a18cb0caf",
+  "purpose": "Small exact source markers retained for planning; original disassembly locations are source evidence, not runtime addresses or current world observations.",
+  "markers": [
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-callback.asm",
+      "rva_marker": "0017E9B6C",
+      "line_LF_counted": 4,
+      "byte_offset": 182,
+      "line_text": "0017E9B6C e8fffeffff                       call     0x17e9a70",
+      "source_sha256": "a7721c7ca8f4c2eb75d9b0d5124f0bc7f44de58ad8b7af290145cbad4d009231"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-callback.asm",
+      "rva_marker": "0017E9B99",
+      "line_LF_counted": 15,
+      "byte_offset": 905,
+      "line_text": "0017E9B99 41ffd0                           call     r8",
+      "source_sha256": "a7721c7ca8f4c2eb75d9b0d5124f0bc7f44de58ad8b7af290145cbad4d009231"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-callback.asm",
+      "rva_marker": "0017E9BDD",
+      "line_LF_counted": 26,
+      "byte_offset": 1682,
+      "line_text": "0017E9BDD e8ee6a0002                       call     0x37f06d0",
+      "source_sha256": "a7721c7ca8f4c2eb75d9b0d5124f0bc7f44de58ad8b7af290145cbad4d009231"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/create-callback.asm",
+      "rva_marker": "0017E9C39",
+      "line_LF_counted": 51,
+      "byte_offset": 3363,
+      "line_text": "0017E9C39 e8e2f5ffff                       call     0x17e9220",
+      "source_sha256": "a7721c7ca8f4c2eb75d9b0d5124f0bc7f44de58ad8b7af290145cbad4d009231"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/scope-builder.asm",
+      "rva_marker": "0017EABF4",
+      "line_LF_counted": 16,
+      "byte_offset": 1022,
+      "line_text": "0017EABF4 4c8b81e0000000                   mov      r8, qword ptr [rcx + 0xe0]",
+      "source_sha256": "339759c97ecd0e391f5913997dff57291b0a6d78d0ce698cbd007bb53d034cdc"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/scope-builder.asm",
+      "rva_marker": "0017EAC1C",
+      "line_LF_counted": 24,
+      "byte_offset": 1600,
+      "line_text": "0017EAC1C 8b8fd8000000                     mov      ecx, dword ptr [rdi + 0xd8]",
+      "source_sha256": "339759c97ecd0e391f5913997dff57291b0a6d78d0ce698cbd007bb53d034cdc"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/scope-builder.asm",
+      "rva_marker": "0017EAC50",
+      "line_LF_counted": 34,
+      "byte_offset": 2386,
+      "line_text": "0017EAC50 894620                           mov      dword ptr [rsi + 0x20], eax",
+      "source_sha256": "339759c97ecd0e391f5913997dff57291b0a6d78d0ce698cbd007bb53d034cdc"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/source/scope-builder.asm",
+      "rva_marker": "0017EAC7C",
+      "line_LF_counted": 45,
+      "byte_offset": 3202,
+      "line_text": "0017EAC7C 895e50                           mov      dword ptr [rsi + 0x50], ebx",
+      "source_sha256": "339759c97ecd0e391f5913997dff57291b0a6d78d0ce698cbd007bb53d034cdc"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A55EA",
+      "line_LF_counted": 18,
+      "byte_offset": 1141,
+      "line_text": "0029A55EA ff5030                           call     qword ptr [rax + 0x30]",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A564F",
+      "line_LF_counted": 43,
+      "byte_offset": 2939,
+      "line_text": "0029A564F e83c410300                       call     0x29d9790",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A56FC",
+      "line_LF_counted": 85,
+      "byte_offset": 5983,
+      "line_text": "0029A56FC e8bf777600                       call     0x310cec0",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A5742",
+      "line_LF_counted": 102,
+      "byte_offset": 7272,
+      "line_text": "0029A5742 e8697e7600                       call     0x310d5b0",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A5760",
+      "line_LF_counted": 110,
+      "byte_offset": 7842,
+      "line_text": "0029A5760 e84bbfa9ff                       call     0x24416b0",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/action_secondary.asm",
+      "rva_marker": "0029A5A33",
+      "line_LF_counted": 277,
+      "byte_offset": 19638,
+      "line_text": "0029A5A33 e8f871e200                       call     0x37ccc30",
+      "source_sha256": "3f662a0a9e110ab09cad91071aebbe1cc62f7ba0cc239a6fe9a17dffc7e1c9ac"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/create_site.asm",
+      "rva_marker": "0029D9882",
+      "line_LF_counted": 49,
+      "byte_offset": 3650,
+      "line_text": "0029D9882 899fb0000000                     mov      dword ptr [rdi + 0xb0], ebx",
+      "source_sha256": "29f0189dbb43243f25f453c1a4d649313e847ebf77beae8b18c6c05f84e447a2"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/create_site.asm",
+      "rva_marker": "0029D988F",
+      "line_LF_counted": 52,
+      "byte_offset": 3890,
+      "line_text": "0029D988F 48896f20                         mov      qword ptr [rdi + 0x20], rbp",
+      "source_sha256": "29f0189dbb43243f25f453c1a4d649313e847ebf77beae8b18c6c05f84e447a2"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/create-once-source-a01/create_site.asm",
+      "rva_marker": "0029D9893",
+      "line_LF_counted": 53,
+      "byte_offset": 3971,
+      "line_text": "0029D9893 894710                           mov      dword ptr [rdi + 0x10], eax",
+      "source_sha256": "29f0189dbb43243f25f453c1a4d649313e847ebf77beae8b18c6c05f84e447a2"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/c0-source/vslot17e9220.asm",
+      "rva_marker": "0017E9226",
+      "line_LF_counted": 3,
+      "byte_offset": 120,
+      "line_text": "0017E9226 c781c8000000ffffffff             mov      dword ptr [rcx + 0xc8], 0xffffffff",
+      "source_sha256": "58f7de9f0e397efe14ed789afec6798595fab3d20af91fdf6921cb399fa6e300"
+    },
+    {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/creation-candidate-a01/c0-source/vslot17e9220.asm",
+      "rva_marker": "0017E9276",
+      "line_LF_counted": 18,
+      "byte_offset": 1214,
+      "line_text": "0017E9276 48ff6020                         jmp      qword ptr [rax + 0x20]",
+      "source_sha256": "58f7de9f0e397efe14ed789afec6798595fab3d20af91fdf6921cb399fa6e300"
+    }
+  ]
+}

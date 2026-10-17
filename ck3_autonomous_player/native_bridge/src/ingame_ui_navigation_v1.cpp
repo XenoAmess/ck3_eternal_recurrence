@@ -791,13 +791,20 @@ bool ComputeCombatUiFitTranslationV1(const UiRectV1 &viewport,const UiRectV1 &co
 bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
   const auto k=static_cast<std::uint32_t>(r.window_kind),o=static_cast<std::uint32_t>(r.operation);
   const bool relic=ck3_12004::religion::relic_actions::IsOperation(o);
-  if(k>8 || (o>17&&!relic) || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(k>8 || (o>18&&!relic) || r.subject_id==(std::numeric_limits<std::uint32_t>::max)())return false;
+  if(o!=18&&!r.holy_site_creation_expected_preview_identity_sha256.empty())return false;
   if(!relic&&(r.relic_action_explicit||r.relic_action!=ck3_12004::religion::relic_actions::Request{}))return false;
   if(r.holy_site_decision_explicit && (ck3_12004::religion::holy_site::DecisionKey(r.holy_site_action).empty() ||
       !((k==5&&o==11)||(k==6&&o==12))))return false;
   if(k==4)return o==0 && r.subject_id==0 && r.army_tooltip_kind.empty() && r.army_tooltip_receipt.empty() && ValidateAppointmentWindowRequestV1(r.appointment);
   if(r.appointment.requested_title_id || r.appointment.candidate_offset || r.appointment.candidate_limit!=32 || r.appointment.breakdown_character_id || r.appointment.diagnostic_character_id)return false;
   if(k==8) {
+    if(o==18){
+      const auto& token=r.holy_site_creation_expected_preview_identity_sha256;
+      return r.subject_id==0&&r.holy_site_creation_type_key.empty()&&!r.holy_site_creation_selected.has_value()&&
+        r.army_tooltip_kind.empty()&&r.army_tooltip_receipt.empty()&&token.size()==64&&
+        std::all_of(token.begin(),token.end(),[](char c){return (c>='0'&&c<='9')||(c>='a'&&c<='f');});
+    }
     if(!r.army_tooltip_kind.empty() || !r.army_tooltip_receipt.empty())return false;
     if(o==0 || o==14)return r.subject_id==0 && r.holy_site_creation_type_key.empty() && !r.holy_site_creation_selected.has_value();
     if(o==15)return r.subject_id==0 && !r.holy_site_creation_type_key.empty() && r.holy_site_creation_type_key.size()<=160 && !r.holy_site_creation_selected.has_value();
@@ -825,7 +832,8 @@ bool ValidateIngameUiRequestV1(const IngameUiRequestV1 &r) noexcept {
 }
 bool IsIngameUiRequestSupportedV1(GuiAbiRevisionV1 revision,const IngameUiRequestV1 &r) noexcept {
   if(!ValidateIngameUiRequestV1(r))return false;
-  if(r.window_kind==IngameUiWindowKindV1::holy_site_creation)return revision==GuiAbiRevisionV1::crozier12004 && HolySiteCreationUiEnabled12004();
+  if(r.window_kind==IngameUiWindowKindV1::holy_site_creation)return revision==GuiAbiRevisionV1::crozier12004 && HolySiteCreationUiEnabled12004() &&
+      (r.operation!=IngameUiOperationV1::create_holy_site_once||HolySiteCreationCreateOnceEnabled12004());
   if(r.window_kind==IngameUiWindowKindV1::holy_site_adoption)return revision==GuiAbiRevisionV1::crozier12004 &&
       r.operation==IngameUiOperationV1::confirm_site_adoption;
   if(r.window_kind==IngameUiWindowKindV1::holy_site)return revision==GuiAbiRevisionV1::crozier12004 &&
@@ -878,6 +886,7 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
     else if(operation=="select_holy_site_creation_type")r.operation=IngameUiOperationV1::select_holy_site_creation_type;
     else if(operation=="select_holy_site_creation_barony")r.operation=IngameUiOperationV1::select_holy_site_creation_barony;
     else if(operation=="set_holy_site_creation_artifact_selection")r.operation=IngameUiOperationV1::set_holy_site_creation_artifact_selection;
+    else if(operation=="create_holy_site_once")r.operation=IngameUiOperationV1::create_holy_site_once;
     else if(operation=="select_relic_artifact")r.operation=IngameUiOperationV1::select_relic_artifact;
     else if(operation=="set_relic_slot")r.operation=IngameUiOperationV1::set_relic_slot;
     else if(operation=="enshrine_relic")r.operation=IngameUiOperationV1::enshrine_relic;
@@ -894,6 +903,10 @@ bool ParseIngameUiRequestV1(std::string_view json,bool query,IngameUiRequestV1 &
       !bridge::JsonStringField(json,"army_tooltip_receipt",r.army_tooltip_receipt,32))return false;
   if(json.find("\"type_key\"")!=std::string_view::npos &&
       !bridge::JsonStringField(json,"type_key",r.holy_site_creation_type_key,160))return false;
+  if(json.find("\"expected_preview_identity_sha256\"")!=std::string_view::npos){
+    if(r.operation!=IngameUiOperationV1::create_holy_site_once||
+        !bridge::JsonStringField(json,"expected_preview_identity_sha256",r.holy_site_creation_expected_preview_identity_sha256,64))return false;
+  }
   if(json.find("\"selected\"")!=std::string_view::npos){
     bool selected=false;if(!bridge::JsonBooleanField(json,"selected",selected))return false;
     r.holy_site_creation_selected=selected;
@@ -1703,7 +1716,8 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
       <<",\"business_outcome_observed\":false}";
   }
   if(r.window_kind==IngameUiWindowKindV1::holy_site_creation){
-    const std::string_view operation=r.operation==IngameUiOperationV1::open_holy_site_creation?"open_holy_site_creation":
+    const bool create=r.operation==IngameUiOperationV1::create_holy_site_once;
+    const std::string_view operation=create?"create_holy_site_once":r.operation==IngameUiOperationV1::open_holy_site_creation?"open_holy_site_creation":
       r.operation==IngameUiOperationV1::select_holy_site_creation_type?"select_holy_site_creation_type":
       r.operation==IngameUiOperationV1::select_holy_site_creation_barony?"select_holy_site_creation_barony":
       r.operation==IngameUiOperationV1::set_holy_site_creation_artifact_selection?"set_holy_site_creation_artifact_selection":"query";
@@ -1711,13 +1725,15 @@ std::string SerializeIngameUiResultV1(const IngameUiRequestV1 &r,const IngameUiR
      <<(r.holy_site_creation_type_key.empty()?"null":"\""+JsonEscape(r.holy_site_creation_type_key)+"\"")
      <<",\"selected\":"<<(r.holy_site_creation_selected.has_value()?(*r.holy_site_creation_selected?"true":"false"):"null")
      <<",\"requested_object_id\":"<<r.subject_id<<",\"postcondition_observed\":"<<v.holy_site_creation_ui_postcondition_observed
-     <<",\"selection_verified\":"<<v.holy_site_creation_ui_selection_verified<<",\"create_dispatched\":false,\"context\":";
+     <<",\"selection_verified\":"<<v.holy_site_creation_ui_selection_verified<<",\"create_dispatched\":"<<(create&&v.native_dispatch_attempted)<<",\"context\":";
 #if XAR_ENABLE_HOLY_SITE_CREATION_UI12004
     if(v.holy_site_creation.capture_epoch)o<<ck3_12004::religion::holy_site_creation::SerializeContext12004(v.holy_site_creation);
     else o<<"null";
 #else
     o<<"null";
 #endif
+    if(create)o<<",\"business_outcome_observed\":false,\"expected_preview_identity_sha256\":\""
+      <<JsonEscape(r.holy_site_creation_expected_preview_identity_sha256)<<'"';
     o<<'}';
   }
   if(v.relic_action_requested)o<<",\"holy_site_relic_action\":"<<ck3_12004::religion::relic_actions::SerializeHolySiteRelicAction12004(v.relic_action);
