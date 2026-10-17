@@ -45,7 +45,7 @@ bool ReadGuiWidgetRuntimeV1(const ZhongguoScoreboardAccessV1 &,void *root,std::s
   if(!Value(root,0,vtable) || !Value(root,0xD0,flags))return false;
   visible=(flags&8)==0;enabled=(flags&2)==0;return true;
 }
-bool InspectNamedGuiSubtreeV1(const ZhongguoScoreboardAccessV1 &,std::uintptr_t base,void *root,std::string_view name,NamedGuiTreeInspectionV1 &out) noexcept {
+bool InspectNamedGuiSubtreeV1(const ZhongguoScoreboardAccessV1 &,std::uintptr_t base,void *root,std::string_view name,NamedGuiTreeInspectionV1 &out,bool,bool) noexcept {
   if(!fixture_army_root_available || (root!=fixture_army_root&&(!fixture_tooltip_tree||root!=fixture_tooltip_root)))return false;
   if(fixture_tooltip_tree) {
     out={};out.scope_root_name=std::string(name);out.root_available=true;

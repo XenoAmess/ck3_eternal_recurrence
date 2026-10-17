@@ -3790,12 +3790,15 @@ if(BUILD_TESTING)
   add_executable(xar_ck3_ingame_ui_navigation_v1_test
     tests/ingame_ui_navigation_v1_test.cpp src/ck3_12004_holy_site_ui.cpp
     src/ck3_12004_holy_site_adoption_detail.cpp
+    src/appointment_window_snapshot_v1.cpp src/appointment_character_level12004.cpp
     src/zhongguo_scoreboard_action_v1.cpp src/protocol.cpp)
   target_include_directories(xar_ck3_ingame_ui_navigation_v1_test PRIVATE include)
+  target_link_libraries(xar_ck3_ingame_ui_navigation_v1_test PRIVATE xar_ck3_12002_runtime bcrypt)
   target_compile_definitions(xar_ck3_ingame_ui_navigation_v1_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
   if(MSVC)
-    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /UNDEBUG /utf-8)
+    target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /UNDEBUG /utf-8 /Gy)
+    target_link_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE /OPT:REF)
   else()
     target_compile_options(xar_ck3_ingame_ui_navigation_v1_test PRIVATE -UNDEBUG)
   endif()
