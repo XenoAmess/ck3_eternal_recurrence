@@ -76,3 +76,27 @@ Start ACK或同值正修正均不能推出有用终局或新增收益。阶段�
 Python/闭场JSON与已验源接缝不新增Paradox脚本语义，`open_kaishek: not-applicable`。
 本包没有读取活跃Driver/SAVE或大媒体，没有编译、启动、热装、删除或新增容量预留。
 小型派生记录按通用策略48小时复核；最终永久SAVE是用户明确指定的后续独立资产，尚未生成。
+
+## 19:18Z：真实自然边界的objective-hold合同修复
+
+同一机器2026-10-17T19:15:00Z，真实P50R1 AUTO361在既有speed5驻留sentinel内推进7日，
+从raw53338680到53338848，观察played actor31254→40695、Native9042／public509及
+`played_character_changed`。原动作已执行，FULL326随后在外层边界分类失败，不能重发AUTO361。
+Root稍后取得fresh SEM362，实际同日paused/map-ready、alive40695；这项Root转述与本包独立离线回放分开记录。
+
+具体原因是私有handoff把计划层`timeline_policy`与执行层sentinel mode作相等比较。
+真实生产策略输出前者`war_stationary_objective_hold_speed_5`，执行器输出后者`decision_epoch`。
+窄修复仅把高速度计划policy检查改成精确`war_stationary_objective_hold_speed_{speed}`；
+原执行层policy/mode、speed、AB、scope、target、完整前后身份、Native arm/stop与decision-boundary验证保持。
+
+外置COW候选对真实原361的完整分类已通过，六个变异负例均拒绝。
+首轮负例harness只捕获ValueError，漏捕Native validator的BridgeUnavailableError；修正测试捕获后通过，
+候选源码未变。小[实际回执](evidence/p50r1-objective-hold-succession-boundary-2026-10-18.json)
+保存原失败、候选SHA及真实原件SHA；没有改写原响应或live已导入模块。
+
+原handoff整个owner模块只存在外置执行树。本次仅将该typed分类函数及原显式require抽成
+[公共leaf](../../tools/g2_saved_campaign/natural_succession_sentinel_boundary_v1.py)，
+没有搬运私有队列、调度、路径或进程控制。便携回归消费原361的小型实际字段投影，
+只授`natural_succession_boundary_observed`、7日实际差量，要求fresh after-metrics，
+primitive/business/M7完成信用仍为0。Root负责单次新control恢复并进入原继承reconciliation／Close／SAVE通道；
+本包不执行恢复，也不把这次sourceerror标成继承已验收。

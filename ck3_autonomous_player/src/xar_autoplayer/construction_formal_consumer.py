@@ -519,6 +519,17 @@ def plan_construction_private(
     # admits a new expenditure; an active war itself is not a spending ban.
     if not new_action_admitted:
         return {**planned, "plan": plan}
+    from .war_reinforcement_tradeoff_v1 import observe_war_spending_priority_v1
+
+    war_priority = observe_war_spending_priority_v1(snapshot)
+    if war_priority["defer_new_economic_construction"]:
+        return {**planned, "plan": {**plan,
+            "war_spending_priority_v1": war_priority,
+            "construction_spending_deferred_v1": {
+                "reason": "protect cash for a losing own war before optional economic construction",
+                "deferred_domain": "new_economic_construction",
+                "original_selected_step": original_step,
+            }}}
     scope = same_frame_construction_scope_v1(snapshot, history)
     if scope["status"] == "root_query_needed":
         if ROOT_QUERY_STEP not in available_steps:

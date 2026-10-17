@@ -1,0 +1,74 @@
+{
+  "schema": "xar.p50-war-reinforcement-offline-qualification.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-17T19:24:32.978833+00:00",
+  "finished_at_utc": "2026-10-17T19:24:41.222805+00:00",
+  "elapsed_seconds": 8.243970600189641,
+  "command": [
+    "Z:\\ck3_mod_rewrite\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+    "ck3_autonomous_player/tests/unit/test_g2_wartime_construction_service_compound_v1.py",
+    "ck3_autonomous_player/tests/unit/test_g2_quiet_route_construction_service_compound_v1.py"
+  ],
+  "exit_code": 0,
+  "stdout": "....................                                                     [100%]\r\n20 passed in 7.34s\r\n",
+  "stderr": "",
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "bytes": 11714,
+      "sha256": "79225f0a2cc76794c9429d86b5b2b2b7c7b5661cf832f72569b1fb0bc56c4e6e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_finance_v1.py",
+      "bytes": 3780,
+      "sha256": "2bfe72a7433af86b62269e82bf3997ee7377df2a4098c02b24a349028f366d34"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "bytes": 11984,
+      "sha256": "7151ad1d95d86ed973b76bb9bdd51782054604a2843c71cbedc46e57588c0cd6"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py",
+      "bytes": 35086,
+      "sha256": "6a486e9a19176eabf4f576d9da342e873f1fb8cdbc3b9fb86d08f9d26199b8a1"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 859835,
+      "sha256": "b33189d7d050661e30e7c288b71235e3c643b299bb106fc43feb1f882b47ca33"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1584862,
+      "sha256": "6e391fbc2253eaaec0a6184aa9e6c6d34db5241a9270a25b112bd2d59798b214"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "bytes": 24067,
+      "sha256": "893aaabeab1667a24af05e2c111e8ed8a6441408942778ad62cc9765b37716b5"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 47455,
+      "sha256": "4675aa3457dc6b36bc959218182b886d82ad843a1041d0c7c96e2a5ba555ae30"
+    }
+  ],
+  "boundary": "Frozen actual operation inputs, synthetic market/finance/endpoint; real normal Service, MCP, driver and normalizers",
+  "native_provider_executed": false,
+  "game_operations": 0,
+  "real_pipe_operations": 0,
+  "frozen_runtime_modified": false,
+  "live_hire_qualified": false,
+  "open_kaishek_prevalidation": {
+    "status": "not-applicable",
+    "reason": "Python choice/driver/MCP orchestration; no new Paradox script or supported finite-runtime semantics"
+  }
+}

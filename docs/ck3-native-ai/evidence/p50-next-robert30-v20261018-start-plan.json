@@ -1,0 +1,532 @@
+{
+  "schema": "xar.ck3.next-robert30-reuse-plan.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:16:52.471180+00:00",
+  "status": "REVIEWABLE_OFFLINE_PLAN_NOT_MATERIALIZED_NOT_ARMED",
+  "episode_title": "罗贝尔的30年_v20261018",
+  "overlay_caption": "智能体实时决策",
+  "episode_title_in_overlay": false,
+  "precedence": [
+    "Current first30 target actually reached",
+    "Current target MCP manual save actually materialized and permanent-retention identity registered",
+    "Current complete film finished and required video QA completed",
+    "Then create the independent 1066 campaign"
+  ],
+  "proposed_new_namespace": {
+    "campaign_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01",
+    "runtime_root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+    "profile": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime\\state\\profile",
+    "driver": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime\\state\\native-session\\driver-state.json",
+    "pipe": "\\\\.\\pipe\\xar-g2-robert30-v20261018-campaign01",
+    "sdk_prefix": "p37 retained only inside isolated COW clean-start harness",
+    "exists_checked": true,
+    "campaign_root_exists": false,
+    "campaign_state_materialized": false,
+    "new_process_or_episode_id": null
+  },
+  "reused_success": {
+    "recording_session_id": "90e81184-8475-4053-9b83-d01c0f314e0e",
+    "recording_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-FRONTEND-RECORDING-ADMITTED.json",
+      "bytes": 2768,
+      "sha256": "a581f72d0b2e4dd4de48942d449d1239183a8dc7c89bb00d9beaa6fe29e4d4bf"
+    },
+    "menu_review": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-RECORDED-MAIN-MENU-REVIEW01.json",
+      "bytes": 1372,
+      "sha256": "15208e06fe3f8a515f7c42807c9a089df0f9782ee846bf52bdb3d7ba8bb6d725"
+    },
+    "proof_scope": "Old main-menu-before-bookmark recording only; no future admission implied"
+  },
+  "minimal_rebind_before_cli": [
+    "Use separate external COW copies of P37 clean host/profile/harness templates; never rerun the hardcoded original builders.",
+    "Replace campaign/runtime/pipe and actual build/source mappings; retained p37 local names are safe only because all files and markers are isolated in the new root.",
+    "Use current committed public SDK source after Root integrates qualified war, M6, source-learning and performance changes; record exact commit and full consumer closure.",
+    "Reconcile Native25 actual qualified DLL/export/source pins and each required frontend/war/succession/M6 consumer before adopting; no new unqualified DLL substituted.",
+    "Keep zero-mod vanilla profile, no save migration, mainmenu_only launch, new retained Game/supervisor/SDK identities, new recording UUID and empty EDL baseline.",
+    "Replace old presentation labels/body with generic status/decision/reason; episode title belongs to film metadata only.",
+    "Do not carry Driver, SAVE, history, counters, gameplay ledgers, pending interactions or material-outcome claims.",
+    "Carry only source-registry entries/facts under state/evidence/event-source-registry with exact provenance and valid fact paths; qualify the new actual SDK/state, including populist cold-ID rebind.",
+    "Amend the old clean manifest wording: old gameplay state/credits not inherited, reviewed source knowledge carried by explicit whitelist. Do not falsely retain the old blanket knowledge_inherited=false field."
+  ],
+  "shortest_reused_cli_templates": [
+    {
+      "phase": "Host/profile preparation",
+      "entry": "Rebound prepare_clean_host.py, prepare_clean_profile.py, bind_clean_launch.py",
+      "execute_now": false,
+      "reason": "Original entry constants target the completed campaign; future source/native/capacity/offline inputs not yet bound."
+    },
+    {
+      "phase": "Presentation",
+      "entry": "Rebound prepare_obs_profile.py and start_clean_presentation.py",
+      "execute_now": false,
+      "required": "New UUID/profile, generic overlay, actual MainMenu Game binding and current released promo dependency qualification."
+    },
+    {
+      "phase": "Recording admission",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_PRESENTATION/admit_frontend_recording.py",
+        "--session",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "--sdk-prefix",
+        "p37",
+        "--review",
+        "ACTUAL_NEW_MENU_REVIEW.json"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "SDK start",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime\\launch_clean_sdk.py",
+        "--launch"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Frontend query",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "frontend-query"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "New game",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "new-game"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Exact Robert start",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "robert-start"
+      ],
+      "mcp_tool": "ck3_activate_frontend_start_1066_bookmark_character_v1",
+      "arguments": {
+        "character_name_key": "bookmark_rags_to_riches_duke_robert"
+      },
+      "execute_now": false
+    },
+    {
+      "phase": "Fresh semantic",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "semantic"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Fresh capability",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "capabilities"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Initial map recording admission",
+      "entry": "Rebound admit_initial_map.py with actual new SEM/game/scene review",
+      "execute_now": false
+    },
+    {
+      "phase": "Initial save",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "save",
+        "--semantic",
+        "ACTUAL_NEW_SEM_SEQUENCE"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Zero baseline ledger",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "initialize-ledger"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "First ordinary full probe",
+      "argv": [
+        "PY",
+        "-B",
+        "-X",
+        "utf8",
+        "REBOUND_CLEAN/clean_controls.py",
+        "--root",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-v20261018-campaign01\\runtime",
+        "publish",
+        "--kind",
+        "full",
+        "--max-turns",
+        "1"
+      ],
+      "execute_now": false
+    },
+    {
+      "phase": "Continuous feeder",
+      "entry": "Publish next FULL then execute exact argv returned by clean_controls.py runner --first-control ACTUAL_NEW_FULL_SEQUENCE; use current shared bounded feeder validation",
+      "execute_now": false
+    }
+  ],
+  "fresh_runtime_facts_required": [
+    "Actual machine ID, current capacity under shared policy and unique reservation accounting",
+    "Actual current CK3 build/EXE/DLL and newly frozen consumer closure",
+    "New personally reviewed fresh Steam offline pixels; old menu/offline receipts not reused",
+    "Previous retained Game/SDK/recording normal closure; new screen task acquired only after actual release",
+    "Actual empty mod profile and actual nonempty startup-log loaded-mod review",
+    "Current 1066 bookmark Robert identity, never hardcode runtime CharacterID31254 or29829",
+    "New actor/episode/run/cycles0/counts0/window1/day0; no old campaign credit",
+    "Actual map/root after Start; ACK is not map/readiness proof; unknown Start never blindly retried"
+  ],
+  "current_game_exit": {
+    "known_native25_capability_input": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0002-1-result.json",
+      "bytes": 61855,
+      "sha256": "077eeee97493c97aa94fd2e6903140fcfde3b7559e178f02d9da8802a64b0f9c"
+    },
+    "native25_has_normal_exit_map_v1": false,
+    "public_mcp_names": [
+      "ck3_query_normal_exit_context_v1",
+      "ck3_request_normal_exit_v1",
+      "ck3_observe_normal_exit_v1"
+    ],
+    "existing_mcp_usable_with_this_native25": false,
+    "reason": "Driver _prepare requires actual bridge advertisement plus managed-source inventory; a registered SDK tool does not provide absent Native implementation.",
+    "stock_gui": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_resign_confirmation.gui",
+      "bytes": 3051,
+      "sha256": "9b8ca6d2cc17ecb575c21f5a683719d4ce6472958e3bf311e2419db09c34d1c9"
+    },
+    "known_menu": "ingame_resign_confirmation",
+    "desktop_button": {
+      "stock_name": "descktop_button",
+      "text_key": "EXIT_TO_DESKTOP",
+      "onclick": "ResignConfirmationWindow.OnDesktop",
+      "source_lines": [
+        117,
+        123
+      ],
+      "shortcut": null
+    },
+    "cancel_button": {
+      "stock_name": "cancel_button",
+      "onclick": "ResignConfirmationWindow.Cancel",
+      "shortcut": "close_window=ESCAPE"
+    },
+    "UIA_button_availability": "not proven; do not invent Invoke/Select result",
+    "fallback_permitted": "Single owned coordinate-mapped ExitDesktop click after a fresh reviewed raw screenshot proves this known stock menu and the source-bound target; only after current normal consumer drains/stops.",
+    "fallback_is_unknown_event_handling": false,
+    "unknown_event_mouse_prohibition_unchanged": true,
+    "fallback_execution_now": false,
+    "fallback_minimum": [
+      "Read back target retained Game PID/FILETIME/HWND and current screen owner; save current native-capability/source-failure evidence.",
+      "Use an actual new raw desktop PNG, directly review the fixed dialog and ExitDesktop target, record original PNG dimensions and the actual preview content rectangle.",
+      "Keep the same exact Game foreground; record pyautogui.size, independently mapped X/Y and expected HWND; no historical ratio or old click point reused.",
+      "Write a create-only once-claim before executing tools/desktop_coordinate_map.py with --click, --expected-foreground-hwnd, --receipt NEW.png and explicit full preview bounds/point.",
+      "A key is not required for the mouse-only action. Any preceding keyboard action still requires confirmed US0409 and target/control focus.",
+      "Treat click ACK/screenshot as UI evidence only; preserve retained process wait and actual exit code, supervisor cleanup and save materialization independently.",
+      "If delivery/result unknown, observe original retained process and current window; do not click again blindly, force kill or release active screen."
+    ],
+    "coordinate_cli_template": [
+      "PY",
+      "-B",
+      "-X",
+      "utf8",
+      "tools/desktop_coordinate_map.py",
+      "--source-image",
+      "ACTUAL_NEW_RAW.png",
+      "--preview-left",
+      "ACTUAL_L",
+      "--preview-top",
+      "ACTUAL_T",
+      "--preview-width",
+      "ACTUAL_W",
+      "--preview-height",
+      "ACTUAL_H",
+      "--observed-x",
+      "REVIEWED_X",
+      "--observed-y",
+      "REVIEWED_Y",
+      "--expected-foreground-hwnd",
+      "ACTUAL_GAME_HWND",
+      "--max-source-age-seconds",
+      "120",
+      "--click",
+      "--receipt",
+      "ACTUAL_NEW_AFTER.png"
+    ],
+    "coordinate_age_limit_proves_fresh_pixels": false,
+    "autosave_verified": false,
+    "current_game_exit_verified": false
+  },
+  "source_pins": {
+    "clean_bootstrap": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\BOOTSTRAP.md",
+      "bytes": 4004,
+      "sha256": "f6bff3bd08af1f555630e0f9d700c3c36c2ffd6849af93c7db7d8b4e2578e4ce"
+    },
+    "clean_controls": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\clean_controls.py",
+      "bytes": 6106,
+      "sha256": "d687b22c7867fb4a298d637809a62b176c03f9588125da5d5fee1fb61a736eeb"
+    },
+    "clean_harness_builder": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-campaign-prep01\\prepare_clean_harness.py",
+      "bytes": 12003,
+      "sha256": "53adac22ffddfe66d7b4b25d500f7222db454c8a6736e6fc87dbf3f53eae7b6c"
+    },
+    "clean_profile_api": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-host-prep01\\root_clean_profile.py",
+      "bytes": 3266,
+      "sha256": "83f3d83a194b40739715d1f1aca66a0055a5dab6804666795bbf4e6c6449e422"
+    },
+    "clean_profile_builder": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-host-prep01\\prepare_clean_profile.py",
+      "bytes": 4201,
+      "sha256": "716f28b6184e853b41e2eb5237f76b20cbf9135acfb517bb5e43be7618afd9e2"
+    },
+    "clean_host_builder": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p37-clean-host-prep01\\prepare_clean_host.py",
+      "bytes": 8183,
+      "sha256": "02d92c3bb75d5e8340237e4f4125789a4dae18dac8b954025e0a50bf03f0318c"
+    },
+    "frontend_recording_cli": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\new-campaign-frontend-recording02\\ROOT-CLI.txt",
+      "bytes": 5243,
+      "sha256": "4e682bd9db03656a8a4b6ac427592c141a583fb5824bc57973e7661a140c8210"
+    },
+    "frontend_recording_admission": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-FRONTEND-RECORDING-ADMITTED.json",
+      "bytes": 2768,
+      "sha256": "a581f72d0b2e4dd4de48942d449d1239183a8dc7c89bb00d9beaa6fe29e4d4bf"
+    },
+    "frontend_recording_review": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\runtime\\ROOT-RECORDED-MAIN-MENU-REVIEW01.json",
+      "bytes": 1372,
+      "sha256": "15208e06fe3f8a515f7c42807c9a089df0f9782ee846bf52bdb3d7ba8bb6d725"
+    },
+    "native25_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-NATIVE25-NATIVE-PIN.json",
+      "bytes": 1949,
+      "sha256": "ed1ab7e7eb56fe30b4016eb0c4edd6ccdd2de1213c3f93f1100bb78ee1f47f0e"
+    },
+    "closed_native25_cap": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0002-1-result.json",
+      "bytes": 61855,
+      "sha256": "077eeee97493c97aa94fd2e6903140fcfde3b7559e178f02d9da8802a64b0f9c"
+    },
+    "normal_exit_driver": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_map_driver_v1.py",
+      "bytes": 14312,
+      "sha256": "3c2add3cf7017acdbb7b4cdbf6034865082400f81be8464aae6c08a9e7402db9"
+    },
+    "coordinate_mapper": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\desktop_coordinate_map.py",
+      "bytes": 22870,
+      "sha256": "3ef119ae95ae9c084844bcabecc63223413e3ad06ff64d67789fe320adb70991"
+    },
+    "resign_gui": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_resign_confirmation.gui",
+      "bytes": 3051,
+      "sha256": "9b8ca6d2cc17ecb575c21f5a683719d4ce6472958e3bf311e2419db09c34d1c9"
+    },
+    "shortcuts": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shortcuts.shortcuts",
+      "bytes": 29312,
+      "sha256": "d2aa3a6f3a9de9729d778e240920e5a15f724d1f5b0adee5861ef6831797cd66"
+    }
+  },
+  "current_full_waits_for_this_plan": false,
+  "calls": {
+    "Game": 0,
+    "SDK": 0,
+    "native": 0,
+    "recording": 0,
+    "desktop": 0,
+    "SAVE_body_read_or_copy": 0
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Static reuse/desktop contract planning; no new script semantics or native sampling"
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "new_write_budget_bytes": 1048576,
+    "heavy_write": false,
+    "deletion": false,
+    "available_bytes": {
+      "D:/": 1009634267136,
+      "Z:/": 178684891136
+    },
+    "derived_review_at_utc": "2026-10-19T19:14:25.437707+00:00",
+    "close_available_bytes": {
+      "D:/": 1009545723904,
+      "Z:/": 178683314176
+    }
+  },
+  "source_only_COW_preparation": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-17T19:28:49.753786+00:00",
+    "package": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01",
+    "status": "ACTUAL_SOURCE_COW_PREPARED_FINALIZE_INPUTS_PENDING",
+    "prepared": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\PREPARED.json",
+      "bytes": 22394,
+      "sha256": "da8e60a6402c169b79f339d8804010651e5dff0ca43726447a6f8b0cf90e44c6"
+    },
+    "presentation_prepared": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\PRESENTATION-PREPARED.json",
+      "bytes": 7843,
+      "sha256": "7131b6fedb12bea03a8e2c90398ce5db9bf212673e59080297859719ad37a06f"
+    },
+    "qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\QUALIFICATION-bindings02.json",
+      "bytes": 866,
+      "sha256": "f7f09262e1312206bd17fa68f324b8ffd7fc61c8c2139b7d3b851fbb393dfae2"
+    },
+    "scripts": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\prepare.py",
+        "bytes": 22797,
+        "sha256": "37350002d073554f56bcbe0666b01096779d43f44934de84098f680d8e93e0e4"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\freeze_business_source.py",
+        "bytes": 4735,
+        "sha256": "e92657738f3ce368826efde34a6c5e893bc53ab981f5296a3cd621f282ccebda"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\import_source_knowledge.py",
+        "bytes": 3669,
+        "sha256": "fa52b09f7bc35ec671afe36d9a7583bc934d1b94055efd9bd52b9c331313d4ee"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\qualify_prepared.py",
+        "bytes": 3481,
+        "sha256": "619796cbe77bb145f96d78648e74448dbd04816911492ac5ca8c02852a6d1e9a"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p51-fresh1066-v20261018-prepare01\\prepare_presentation.py",
+        "bytes": 1834,
+        "sha256": "9f66c2a2256f85d684df04d98c56a577f41d68568f6119b0ac8d7ca315874e59"
+      }
+    ],
+    "runtime_python_leaves": 73,
+    "runtime_source_bytes": 1136848,
+    "presentation_leaves": 11,
+    "profile_Driver_SAVE_ledger_created": false,
+    "Game_SDK_OBS_desktop_calls": 0,
+    "finalize_or_install_executed": false,
+    "future_required_inputs": [
+      "Exact committed public business SDK source freeze",
+      "Retained clean runtime host repo (separately named commit, no mutation)",
+      "Explicit new SDK/Native25 consumer closure with source/test evidence",
+      "Fresh same-scope capacity admission"
+    ],
+    "bounded_next_commands": [
+      "PY -B -X utf8 PACK/freeze_business_source.py --business-source-repo COMMITTED_PUBLIC_REPO --runtime-source-repo RETAINED_CLEAN_HOST --native-pin ACTUAL_NATIVE25_PIN --capacity-admission FRESH_CAPACITY --sdk-destination NEW_SDK_SRC --output NEW_SDK_FREEZE",
+      "PY -B -X utf8 PACK/prepare.py finalize --sdk-freeze NEW_SDK_FREEZE --source-repo RETAINED_CLEAN_HOST --native-pin ACTUAL_NATIVE25_PIN --consumer-closure ACTUAL_SOURCE_AND_TEST_REVIEW --capacity-admission FRESH_CAPACITY",
+      "PY -B -X utf8 PACK/qualify_prepared.py --finalized",
+      "PY -B -X utf8 PACK/prepare.py install --capacity-admission FRESH_CAPACITY --python ACTUAL_TOOLS_PYTHON --source-registry IMMUTABLE_REVIEWED_REGISTRY",
+      "Then Root actual previous normal closure + fresh screen/offline -> new-runtime bind_clean_launch.py; supervisor; prepared presentation; menu review; launch_clean_sdk; ordered frontend; map review; initial SAVE; zero ledger; FULL"
+    ],
+    "consumer_closure_input_shape": {
+      "status": "ROOT_REVIEWED_NATIVE25_CONSUMER_CLOSURE",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "native_dll_sha256": "a1448baa860a88826cbb9ae50ab67c93506560f2772c0515e4ef51e934002f40",
+      "sdk_freeze_sha256": "REQUIRED_ACTUAL_HASH",
+      "required_consumers": [
+        "frontend",
+        "ordinary_war",
+        "succession",
+        "M6",
+        "source_knowledge",
+        "performance"
+      ],
+      "evidence": "Nonempty actual source/test receipt pins; this schema is a template, not actual review"
+    },
+    "storage": {
+      "policy": "docs/storage-retention-policy.json",
+      "small_code_metadata_budget_bytes": 16777216,
+      "actual_pack_bytes": 1390414,
+      "heavy_write": false,
+      "deletion": false,
+      "new_global_reservation_bytes": 0,
+      "purpose": "Active preparation input for explicitly requested next episode; do not collect as stale process junk",
+      "protected_until_utc": "2026-10-19T19:28:49.753786+00:00",
+      "protection_auto_renew": false,
+      "close_available_bytes": {
+        "D:/": 1009167994880,
+        "Z:/": 178680233984
+      }
+    }
+  }
+}

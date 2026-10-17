@@ -1,0 +1,92 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:05:19.837844+00:00",
+  "records": [
+    {
+      "source": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "lines": [
+        {
+          "line": 557,
+          "text": "\t\t\"mercenary_government\""
+        },
+        {
+          "line": 1267,
+          "text": "NMercenary = {"
+        },
+        {
+          "line": 1268,
+          "text": "\tLEVELS = { 0 7 14 }\t\t\t\t\t\t# Defines how many different sizes of mercenary companies are there and how many are spawned for a given culture"
+        },
+        {
+          "line": 1270,
+          "text": "\tHIRE_RANGE = 500\t\t\t\t\t\t# The maximum distance of mercenaries that can be hired (capital to mercenary location)"
+        },
+        {
+          "line": 1271,
+          "text": "\tHIRE_RANGE_SAME_CULTURE = 1500\t\t\t# The maximum distance of mercenaries with the same culture that can be hired (capital to mercenary location)"
+        },
+        {
+          "line": 1272,
+          "text": "\tLEVIES = { 400 800 1200 }\t\t\t\t# The base numbers of levies for levels of mercenary bands"
+        },
+        {
+          "line": 1273,
+          "text": "\tMAA_REGIMENTS = { 1 2 3 }\t\t\t\t# The number of MAA regiments for levels of mercenary bands"
+        },
+        {
+          "line": 1274,
+          "text": "\tNUM_KNIGHTS = { 2 3 4 }\t\t\t\t\t# The number of knights for levels of mercenary bands"
+        },
+        {
+          "line": 1275,
+          "text": "\tMAA_REGIMENT_SIZES = { 3 3 3 }\t# The base sizes of MAA regiments for levels of mercenary bands, in number of sub-regiments"
+        },
+        {
+          "line": 1277,
+          "text": "\tSIZE_INNOVATIONS_RATIO = 1.0\t\t\t# How much are mercenary companies growing with the ratio of discovered to all cultural innovations of the culture. 1.0 means +100%"
+        },
+        {
+          "line": 1278,
+          "text": "\t\t\t\t\t\t\t\t\t\t\t# if SIZE_INNOVATIONS_RATIO = 2, the mercenaries will be 3x their original size if all innovations are discovered"
+        },
+        {
+          "line": 1280,
+          "text": "\tBASE_HIRE_MONTHS = 36\t\t\t\t\t# The base length of the period mercenaries are hired for in months"
+        },
+        {
+          "line": 1281,
+          "text": "\tMIN_HIRE_MONTHS = 11 \t\t\t\t\t# Minimum length of time mercenaries can be hired for in months"
+        },
+        {
+          "line": 1282,
+          "text": "\tMAX_HIRE_MONTHS = 108 \t\t\t\t\t# Maximum length of time mercenaries can be hired for in months"
+        },
+        {
+          "line": 1284,
+          "text": "\tLEVY_COST_PER_100_SOLDIERS = 12.0\t\t# The cost of the levy regiment part of mercenary companies, per 100 soldiers for better precision"
+        },
+        {
+          "line": 1285,
+          "text": "\tMAA_COST_RATIO = 0.5\t\t\t\t\t# The cost of the MAA regiments of mercenary companies as a fraction of what those regiments cost when buying them"
+        },
+        {
+          "line": 1288,
+          "text": "\tALLOWED_DEBT_MONTHS = 24\t\t\t\t# How many months of monthly income in dept are characters allowed to have before being blocked from hiring mercenaries"
+        },
+        {
+          "line": 1290,
+          "text": "\tREINFORCEMENT_FACTOR = 3.0\t\t\t\t# How much faster do mercenary regiments reinforce than regular regiments"
+        },
+        {
+          "line": 1292,
+          "text": "\tCOUNTY_REMOVAL_FACTOR = 1.2\t\t\t\t# When removing mercenaries from shrinking cultures, first multiply culture size with this"
+        },
+        {
+          "line": 1352,
+          "text": "\tGENERATED_COMMANDERS_MERCENARY_COMPANY = 1"
+        }
+      ]
+    }
+  ]
+}

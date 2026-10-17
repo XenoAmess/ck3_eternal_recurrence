@@ -1,0 +1,222 @@
+{
+  "schema": "xar.g2.natural-sentinel-boundary.closed-projection.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_at_utc": "2026-10-17T19:15:00.653672+00:00",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0361-1-result.json",
+    "bytes": 245545,
+    "sha256": "a26e8572f2eb8ae878e0fc662fbb51cc6bf33754a59be10fd91fa1fc37f36da1"
+  },
+  "projection": "Only actual body/result/plan fields consumed by the typed classifier. Large unrelated war/resource/history fields excluded. Owner frame and goal are projections of original planning_source_frame; not a fabricated complete owner ledger.",
+  "body": {
+    "status": "executed",
+    "selected_step": "war-objective-hold-sentinel-advance-war-100663323-army-167772577-at-2623-until-53338848-speed-5",
+    "plan": {
+      "selected_step": "war-objective-hold-sentinel-advance-war-100663323-army-167772577-at-2623-until-53338848-speed-5",
+      "research_high_speed_ab": true,
+      "timeline_speed": 5,
+      "sentinel_scope": "stationary_objective_hold",
+      "sentinel_mode": "decision_epoch",
+      "timeline_policy": "war_stationary_objective_hold_speed_5",
+      "absolute_target_date_raw": 53338848
+    },
+    "result": {
+      "step": "war-objective-hold-sentinel-advance-war-100663323-army-167772577-at-2623-until-53338848-speed-5",
+      "source": "native-tactical-daily-sentinel-composite",
+      "backend_id": "native-headless",
+      "one_life_terminal": true,
+      "one_life_terminal_reason": "played_character_changed",
+      "progress_status": "postcondition",
+      "paused": true,
+      "managed_failure_cleanup": {
+        "attempted": false,
+        "error": null
+      },
+      "starting_date_raw": 53338680,
+      "ending_date_raw": 53338848,
+      "target_date_raw": 53338848,
+      "elapsed_days": 7,
+      "requested_horizon_days": 7,
+      "timeline_speed": 5,
+      "starting_date": {
+        "date_raw": 53338680
+      },
+      "ending_date": {
+        "date_raw": 53338848
+      },
+      "episode_character_id": 31254,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "played_character_id": 40695,
+      "played_character_alive": true,
+      "bridge_pid": 51028,
+      "connection_generation": 12,
+      "revision": 509,
+      "native_revision": 9042,
+      "snapshot_id": "native:9042",
+      "sentinel_scope": "stationary_objective_hold",
+      "sentinel_mode": "decision_epoch",
+      "timeline_policy": "decision_epoch",
+      "watch_army_ids": [
+        167772577
+      ],
+      "armed_tactical_daily_sentinel": {
+        "state": "armed",
+        "generation": 1085,
+        "starting_date_raw": 53338680,
+        "target_date_raw": 53338848,
+        "last_observed_date_raw": 53338680,
+        "trigger_date_raw": 0,
+        "speed": 5,
+        "mode": "decision_epoch",
+        "army_count": 1,
+        "combat_count": 0,
+        "completed_daily_ticks": 0,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 0,
+        "trigger_reasons": [],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": -1,
+        "pause_wrapper_called": false,
+        "pause_observed": false,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "tactical_daily_sentinel": {
+        "state": "triggered",
+        "generation": 1085,
+        "starting_date_raw": 53338680,
+        "target_date_raw": 53338848,
+        "last_observed_date_raw": 53338848,
+        "trigger_date_raw": 53338848,
+        "speed": 5,
+        "mode": "decision_epoch",
+        "army_count": 1,
+        "combat_count": 0,
+        "completed_daily_ticks": 7,
+        "intermediate_pause_count": 0,
+        "trigger_flags": 1,
+        "trigger_reasons": [
+          "date_deadline"
+        ],
+        "signed_date_delta_from_target_raw": 0,
+        "overshoot_days": 0,
+        "pause_wrapper_called": true,
+        "pause_observed": true,
+        "terminal_observed": false,
+        "abnormal": false
+      },
+      "player_decision_boundary": {
+        "observed_date_raw": 53338848,
+        "bridge_pid": 51028,
+        "connection_generation": 12,
+        "episode_character_id": 31254,
+        "episode_run_id": "native-31254-8d3a8440eb30",
+        "played_character_id": 40695,
+        "kind": "one_life_terminal",
+        "instance_id": null,
+        "terminal_reason": "played_character_changed",
+        "played_character_alive": true,
+        "snapshot_id": "native:9042",
+        "revision": 509,
+        "native_revision": 9042
+      },
+      "player_decision_boundary_cancel": null,
+      "stop_kind": "player_decision",
+      "terminal_reached": false,
+      "actions": [
+        {
+          "step": "set-speed-5",
+          "result": {
+            "step": "set-speed-5",
+            "accepted": true,
+            "status": "submitted",
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "research-arm-tactical-daily-sentinel-v1-53338680-to-53338848-speed-5-mode-decision-a-1-167772577",
+          "result": {
+            "step": "research-arm-tactical-daily-sentinel-v1-53338680-to-53338848-speed-5-mode-decision-a-1-167772577",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "armed",
+              "generation": 1085,
+              "starting_date_raw": 53338680,
+              "target_date_raw": 53338848,
+              "last_observed_date_raw": 53338680,
+              "trigger_date_raw": 0,
+              "speed": 5,
+              "mode": "decision_epoch",
+              "army_count": 1,
+              "combat_count": 0,
+              "completed_daily_ticks": 0,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 0,
+              "trigger_reasons": [],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": -1,
+              "pause_wrapper_called": false,
+              "pause_observed": false,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "resume-map",
+          "result": {
+            "step": "resume-map",
+            "accepted": true,
+            "status": "submitted",
+            "backend_id": "native-headless"
+          }
+        },
+        {
+          "step": "research-query-tactical-daily-sentinel-v1",
+          "result": {
+            "step": "research-query-tactical-daily-sentinel-v1",
+            "accepted": true,
+            "status": "available",
+            "tactical_daily_sentinel": {
+              "state": "triggered",
+              "generation": 1085,
+              "starting_date_raw": 53338680,
+              "target_date_raw": 53338848,
+              "last_observed_date_raw": 53338848,
+              "trigger_date_raw": 53338848,
+              "speed": 5,
+              "mode": "decision_epoch",
+              "army_count": 1,
+              "combat_count": 0,
+              "completed_daily_ticks": 7,
+              "intermediate_pause_count": 0,
+              "trigger_flags": 1,
+              "trigger_reasons": [
+                "date_deadline"
+              ],
+              "signed_date_delta_from_target_raw": 0,
+              "overshoot_days": 0,
+              "pause_wrapper_called": true,
+              "pause_observed": true,
+              "terminal_observed": false,
+              "abnormal": false
+            },
+            "backend_id": "native-headless"
+          }
+        }
+      ]
+    }
+  },
+  "arguments": {
+    "current_frame": {
+      "date_raw": 53338680,
+      "episode_run_id": "native-31254-8d3a8440eb30"
+    },
+    "goal_anchor": {
+      "current_character_id": 31254
+    },
+    "game_pid": 51028
+  }
+}

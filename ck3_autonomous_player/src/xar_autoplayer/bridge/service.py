@@ -2258,6 +2258,13 @@ class GameplayBridgeService:
                     known_mandatory_choice_backend_sha256=known_choice_backend_sha256,
                 )
             )
+            if window_priority is None and not opening_focus_first:
+                from ..war_mercenary_consumer_v1 import plan_war_mercenary_turn_v1
+
+                plan = plan_war_mercenary_turn_v1(
+                    self.driver, plan, snapshot=planning_snapshot,
+                    history=history, bridge_capabilities=set(bridge_capabilities),
+                )
             if getattr(
                 self.driver, "allow_private_lifestyle_formal_trial", False
             ) is True:
@@ -2296,6 +2303,9 @@ class GameplayBridgeService:
                 plan = {**plan, "activity_feast_lifecycle_observation": feast_lifecycle_observation}
             routable_steps = set(available_steps)
             selected_step = plan.get("selected_step")
+            if (selected_step in {"query-player-mercenary-context-v1", "hire-mercenary-v1"}
+                    and "game.command." + selected_step in bridge_capabilities):
+                routable_steps.add(selected_step)
             routable_steps = _mandatory_choice_typed_routable_steps(
                 routable_steps, selected_step, self.driver, bridge_capabilities)
             if plan.get("policy") == WAR_DECLARED_OVERVIEW_V1_POLICY and isinstance(selected_step, str):
@@ -5175,6 +5185,12 @@ class GameplayBridgeService:
                 result = executor(
                     pending=pending,
                     expected_revision=int(planned["revision"]),
+                )
+            elif selected_step == "hire-mercenary-v1":
+                from ..war_mercenary_consumer_v1 import submit_war_mercenary_v1
+
+                result = submit_war_mercenary_v1(
+                    self.driver, plan=plan, expected_revision=int(planned["revision"]),
                 )
             elif selected_step == PRIVATE_CONSTRUCTION_SUBMIT_STEP:
                 query = plan.get("construction_private_query")

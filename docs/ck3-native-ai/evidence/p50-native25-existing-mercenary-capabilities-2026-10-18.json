@@ -1,0 +1,21 @@
+{
+  "schema": "xar.p50-existing-native25-mercenary-capabilities.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:25:49.027450+00:00",
+  "source": {
+    "path": "D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/robert30-clean-campaign01/native25-cold-generation01/p50r1-responses/0002-1-result.json",
+    "bytes": 64723,
+    "sha256": "d3f93764385cd1481620f40a58a64a48a3d7cad99326ab1647d7f7f2c1470f62"
+  },
+  "source_kind": "bounded readonly inspection of an already closed capability response; no new MCP call",
+  "action_steps_contains": [
+    "query-player-mercenary-context-v1"
+  ],
+  "bridge_capabilities_contains": [
+    "game.command.query-player-mercenary-context-v1",
+    "game.command.hire-mercenary-v1"
+  ],
+  "native_version_label_from_owner": 25,
+  "new_actor_or_company_terms_observed": false,
+  "new_runtime_configuration_switch_found": false
+}

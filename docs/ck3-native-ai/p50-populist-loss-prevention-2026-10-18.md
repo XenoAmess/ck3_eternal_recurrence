@@ -117,3 +117,23 @@ flowchart TD
 准备CLI增加 `--verify-cold-id-rebind`，使用相同固定fixture的显式变更ID投影验证“知识能跨load绑定”。本机实际CLI返回PASS，回执SHA `cbd0568375e68d8ca45cb16ad1559380bd530126b7f5eefc8231c75e827654a4`。回档取消后不再要求建立新state或执行restore准入；此选项留作未来明确需要跨ID知识迁移时的定向检查，当前续行不借此重复验证。CLI本身不读取当前Game，不授真实拒绝信用。
 
 本增量 `machine_id: xenoamess-full-tower-eb9d2c1186`，实际离线验证2026-10-17 18:41–18:43 UTC，随后按用户取消回档指令补记状态；[新增小证据](evidence/p50-populist-cold-source-rebind-2026-10-18.json)分列源码SHA、56项结果、原源真实读回、合成ID与边界。旧SDK48冻结源、旧state／193回执、SAVE、Driver、媒体均未改；没有Game／MCP／OBS调用、没有业务／G2信用，没有新restore branch或入口部署。先前bdb7fc25的CI只证明先前包，不能外推为本增量CI。
+
+## 2026-10-18 P50R1重入当帧：补fresh持有集合
+
+Root已沿原owner继续当前Game，没有回档。本补注只读取其 **2026-10-17 19:06:50–19:07:27 UTC / 10月18日03:06:50–03:07:27 CST** 已完成的SEM1、campaign-root3、faction-alerts4小回执，及Root的 `ROOT-P50R1-INDEPENDENT-RETURN-STATE01.json`。后者明确绑定 `machine_id: xenoamess-full-tower-eb9d2c1186`，于19:07:51 UTC投影三个原响应；本worker核原响应SHA及内容均匹配。新本机归属来自该新记录，不追认旧P43的unknown机器身份。[原P50小证据](evidence/p50-populist-loss-prevention-2026-10-18.json)新增 `fresh_current_estate_observation`，保留原有历史结论与Root后续字段。
+
+三份响应均绑定 **native8535／public2／raw53331120／actor31254／原episode**，SEM确认当时alive、paused、map-ready。这里的fresh是**P50R1重入当帧**，不是本worker离线整理时仍在推进的最新Game／自然继承状态。
+
+| 已独立读回字段 | 重入帧结果 |
+| --- | --- |
+| fresh `campaign_root_context.held_title_partition` | 2230（duchy，主头衔）、2231（county）、2262（county） |
+| domain | 2／7 |
+| direct landed vassals | `[33946,34232,35598,35899,45464,64729]`；其主头衔为4个county、2个barony |
+| 针对玩家的派系 | 1个liberty faction67108901，leader33946；非交战 |
+| 此派系当帧指标 | power31.445%，threshold100%，discontent0、每月−3；stock dangerous=false |
+
+这次held集合来自**新鲜campaign-root原生查询**，不再借用SEM内仍绑4191的继承缓存。8535与原4191的直接持有ID集合相同，可确认重入当帧仍为这三项；这三份材料**没有证明额外失地**，也不证明期间持有从未变化。六个直属有地封臣的ID／主头衔不是全realm县集或边界，因此不能把domain2／7或三个held头衔当作全境面积，也没有补出2196／2200的新持有人查询。当前liberty派系与原193的populist派系不同，其31.445%力量不能回填原193的力量缺口。
+
+本worker没有发送新live查询或游戏动作，没有读活SAVE／Driver／媒体，也没有重复56项测试。该补注只新增Root既有真实响应的离线核对，不增加业务、G2、战争或影片信用；后续FULL与自然继承由Root另行处理。
+
+跨load源码包精确commit `23350d93d8e75c4f866a8ecbcf68a61661ed9aad` 的[Official CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39060480418)及[Linear history](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/39060480442)均已success，最终观察2026-10-17T19:21:37 UTC；本机外置 `CI-FINAL-23350d93.json` SHA `b1ff8c0d6c5809ec3c1bbbe9c997f0e9cf5be71f89e4cec16c113dd19affe2fe`。CI只绑定该源码包，不外推后继提交或运行时部署；当前SDK48的已验证exact路径继续沿用，restore opt-in仍未启用。

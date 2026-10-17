@@ -105,6 +105,8 @@ jobs:
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_ordinary_sway_service_v1.py
       - name: Test actual4 Sway receipt identity and independent instance without CK3
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_sway_actual4_start_observation.py
+      - name: Test actual natural sentinel boundary contract without CK3
+        run: python -B -X utf8 tools/g2_saved_campaign/test_natural_succession_sentinel_boundary_v1.py
       - name: Test closed owner cold evidence projection without CK3
         run: python -B -X utf8 -m unittest discover -s tools -p "test_extract_g2_owner_cold_evidence.py"
       - name: Test strict army route read-status contract
@@ -158,6 +160,11 @@ jobs:
           PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_all_lifestyle_policy_v3.py ck3_autonomous_player/tests/unit/test_lifestyle_stewardship_frontier_v2.py ck3_autonomous_player/tests/unit/test_lifestyle_min_policy.py ck3_autonomous_player/tests/unit/test_lifestyle_formal_private_consumer.py
+      - name: Test losing-war cash allocation and ordinary mercenary decisions without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }}\ck3_autonomous_player\src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py
       - name: Verify generated lifestyle catalogue and SDK resource agree
         run: python -B -X utf8 ck3_autonomous_player/native_bridge/tools/gen_lifestyle_all_catalogue_v3.py --check --python-output ck3_autonomous_player/src/xar_autoplayer/data/vanilla_lifestyle_catalog_12004.json
       - name: Test OBS delayed startup and owned close without processes or sockets

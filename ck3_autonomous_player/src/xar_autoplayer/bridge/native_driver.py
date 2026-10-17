@@ -10225,10 +10225,15 @@ class NativeHeadlessGameplayDriver:
             starting = self.take_snapshot()
             if starting.get("paused") is not True:
                 raise BridgeUnavailableError("native mercenary context query requires a paused snapshot")
-            return self._execute_primitive_step(
+            from ..m5_observed_opportunity_selector import observed_frame
+
+            source_frame = observed_frame(starting)
+            self._war_mercenary_query_frame_v1 = source_frame
+            result = self._execute_primitive_step(
                 step, expected_revision=expected_revision,
                 required_capability="game.command.query-player-mercenary-context-v1",
             )
+            return {**result, "mercenary_query_source_frame_v1": source_frame}
         if commander_subject is not None:
             starting = self.take_snapshot()
             if starting.get("paused") is not True:
@@ -17184,6 +17189,14 @@ class NativeHeadlessGameplayDriver:
         take_snapshot = (getattr(self, "take_internal_semantic_snapshot", None)
                          or self.take_snapshot)
         starting = take_snapshot()
+        from ..m5_observed_opportunity_selector import observed_frame
+
+        try:
+            self._war_mercenary_root_query_frame_v1 = observed_frame(starting)
+        except ValueError:
+            # Optional policy bookkeeping must not strengthen the public root
+            # query's own startup/identity contract.
+            self._war_mercenary_root_query_frame_v1 = None
         if starting.get("paused") is not True:
             raise BridgeUnavailableError(
                 "native campaign-root query requires a paused snapshot"

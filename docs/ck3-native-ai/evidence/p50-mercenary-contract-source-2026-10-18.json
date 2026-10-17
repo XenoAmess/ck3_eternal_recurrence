@@ -1,0 +1,27 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:15:15.400095+00:00",
+  "matches": [
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml:702: game_concept_mercenary_company_desc:0 \"[mercenaries|E] are [soldiers|E] for hire who fight in exchange for [gold|E]. Mercenary [armies|E] come in various sizes, with different types of [men_at_arms|E] and a number of [knights|E].\\n\\nMercenaries sign up for #V [GetDefine('NMercenary', 'BASE_HIRE_MONTHS')] month#! contracts that can be extended for another #V [GetDefine('NMercenary', 'BASE_HIRE_MONTHS')] months#! if you are still at [war|E]. Mercenary contracts persist even if their Regiments are dismissed \u2014 they can be raised again without further cost.\\n\\nYou are allowed to go into [debt|E] in order to hire Mercenaries #weak (up to [GetDefine('NMercenary', 'ALLOWED_DEBT_MONTHS')] months)#!.\"",
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml:705: game_concept_mercenary_contract_desc:0 \"Establishing a [mercenary|E] Contract incurs a one-time cost which allows the use of their troops for #V [GetDefine('NMercenary', 'BASE_HIRE_MONTHS')] months#!.\"",
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\tutorial_objectives_l_english.yml:70: hint_recruit_mercenaries: \"Use [gold_i][gold|E] to recruit [mercenaries|E] to strengthen your [army|E]. Go to the military window and select mercenaries tab.\\n\\n#help [mercenaries|E] will work for you based on a [mercenary_contract|E] for 3 years. You can extend it at any point by another 3 years by paying the same amount of gold when hiring.\\n\\nChoose the type based on how much [gold|E] you have (you can go into [debt|E] to hire them, however being in debt reduces [advantage|E] and blocks [men_at_arms|E] reinforcement) and which is the best [counter|E] to [holder.GetNamePossessive] [men_at_arms|E]. You can see that in [holder.GetHerHis] character window under military strength tooltip.#!\"",
+    "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\hired_troops_view_l_english.yml:20: HIRED_TROOPS_VIEW_MC_HIRE_INFO: \"[HiredTroopItem.GetMercenaryCompany.GetCostDesc] for a [HiredTroopItem.GetMercenaryCompany.GetHireDurationDesc] [Concept( 'mercenary_contract', 'Contract' )|E]\""
+  ],
+  "source_pins": [
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+      "bytes": 382068,
+      "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\tutorial_objectives_l_english.yml",
+      "bytes": 13438,
+      "sha256": "ef77012871a6bfe5912fcfd6d0b19cbd9d177f9b2a4dcd57356396f6af6ab6f4"
+    },
+    {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\hired_troops_view_l_english.yml",
+      "bytes": 9720,
+      "sha256": "2f5c466481d2ada3f074bbb039a26f0d14cdc5d85550a8d1f45933630ee7ffcb"
+    }
+  ]
+}

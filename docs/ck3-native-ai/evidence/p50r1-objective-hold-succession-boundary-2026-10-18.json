@@ -1,0 +1,148 @@
+{
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "at_utc": "2026-10-17T19:18:47.077382+00:00",
+  "status": "ACTUAL_AUTO361_OFFLINE_BOUNDARY_CONTRACT_FIXED_NO_REPLAY",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\root_p50r1_automatic_natural_succession_handoff.py",
+    "bytes": 39091,
+    "sha256": "549d47bf115c13f5646d5d1cee8fa9252ee01f230dedb58ed5277f448a1650b6"
+  },
+  "candidate": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50r1-natural-boundary-contract01\\natural_succession_handoff_policy_candidate.py",
+    "bytes": 39750,
+    "sha256": "b11d5076543b2a05c1e6ff6fbb7399a7813fe558640adcc04e9faa1944de8fdd"
+  },
+  "actual_AUTO361": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0361-1-result.json",
+    "bytes": 245545,
+    "sha256": "a26e8572f2eb8ae878e0fc662fbb51cc6bf33754a59be10fd91fa1fc37f36da1"
+  },
+  "FULL326": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0326-1-result.json",
+    "bytes": 436,
+    "sha256": "d10cd530ddeb7409b8a3e2bf4d5a699635804bf558b38b1498fb77e5b8ec6101"
+  },
+  "original_failure": "ordinary succession handoff denied: objective-hold natural boundary terms differ",
+  "patched_full_validator_result": {
+    "schema": "g2.queue.ordinary-result-credit/v1",
+    "selected_step": "war-objective-hold-sentinel-advance-war-100663323-army-167772577-at-2623-until-53338848-speed-5",
+    "category": "natural_succession_boundary_observed",
+    "natural_succession_boundary_observed": true,
+    "natural_boundary_end": {
+      "date_raw": 53338848,
+      "actor_character_id": 40695,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "native_revision": 9042
+    },
+    "actual_date_delta_raw": 168,
+    "actual_elapsed_days": 7,
+    "submitted_pending": false,
+    "primitive_accepted": false,
+    "business_success_inferred": false,
+    "business_cycle_credit": 0,
+    "paired_after_metrics_still_required": true,
+    "replay_allowed": false
+  },
+  "actual_plan_policy": "war_stationary_objective_hold_speed_5",
+  "actual_sentinel_mode": "decision_epoch",
+  "actual_sentinel_policy": "decision_epoch",
+  "actual_successor": 40695,
+  "actual_terminal_reason": "played_character_changed",
+  "mutants": [
+    {
+      "path": [
+        "plan",
+        "timeline_policy"
+      ],
+      "value": "decision_epoch",
+      "rejected": true,
+      "reason": "ordinary succession handoff denied: objective-hold natural boundary terms differ"
+    },
+    {
+      "path": [
+        "plan",
+        "timeline_policy"
+      ],
+      "value": "war_stationary_objective_hold_speed_4",
+      "rejected": true,
+      "reason": "ordinary succession handoff denied: objective-hold natural boundary terms differ"
+    },
+    {
+      "path": [
+        "plan",
+        "research_high_speed_ab"
+      ],
+      "value": false,
+      "rejected": true,
+      "reason": "ordinary succession handoff denied: objective-hold natural boundary terms differ"
+    },
+    {
+      "path": [
+        "plan",
+        "absolute_target_date_raw"
+      ],
+      "value": 53338872,
+      "rejected": true,
+      "reason": "ordinary succession handoff denied: objective-hold natural boundary terms differ"
+    },
+    {
+      "path": [
+        "result",
+        "timeline_policy"
+      ],
+      "value": "war_stationary_objective_hold_speed_5",
+      "rejected": true,
+      "reason": "ordinary succession handoff denied: sentinel policy/mode differs"
+    },
+    {
+      "path": [
+        "result",
+        "player_decision_boundary",
+        "played_character_id"
+      ],
+      "value": 31254,
+      "rejected": true,
+      "reason": "native tactical sentinel player-decision boundary failed its identity/date postcondition"
+    }
+  ],
+  "Game_MCP_Native_IO": 0,
+  "replay_original_AUTO": false,
+  "succession_accepted_or_M7_complete_claimed": false,
+  "first_harness_failure": "positive actual replay passed; negative-case BridgeUnavailableError was not captured by ValueError-only test handler, exec chunk66bb5c; handler corrected without source candidate change",
+  "public_portable_adoption": {
+    "observed_at_utc": "2026-10-17T19:21:30.274439+00:00",
+    "source_kind": "two typed classifier functions only; no private owner/queue/process code copied",
+    "classifier_and_require_AST_equal_qualified_external_candidate": true,
+    "sources": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\natural_succession_sentinel_boundary_v1.py",
+        "bytes": 8693,
+        "sha256": "f121129f21945530bc00acf524dac646192097494a1477b203d8dd3a16e8d37e"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\fixtures\\p50r1_auto361_natural_boundary_projection.json",
+        "bytes": 8068,
+        "sha256": "2c5ebdaebc8aa6f062e439abef7220d101d507cdc4e7b16b9057cc07ffc821f4"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\test_natural_succession_sentinel_boundary_v1.py",
+        "bytes": 2144,
+        "sha256": "14ef11ad57e541a68bd8dc94327a4ea14f78424e8106044b653b8e4895e92106"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+        "bytes": 47455,
+        "sha256": "4675aa3457dc6b36bc959218182b886d82ad843a1041d0c7c96e2a5ba555ae30"
+      }
+    ],
+    "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 tools\\g2_saved_campaign\\test_natural_succession_sentinel_boundary_v1.py",
+    "output_evidence": "functions.exec exec_command chunk c3f4bf in this task",
+    "passed": 1,
+    "negative_subcases": 2,
+    "elapsed_seconds": 0.973,
+    "exit_code": 0,
+    "Game_MCP_Native_IO": 0,
+    "M7_completion_credit": 0,
+    "git_diff_check_exit_code": 0
+  }
+}

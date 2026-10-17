@@ -1,0 +1,19 @@
+{
+  "schema": "xar.p50-war-construction-baseline-comparison.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "started_at_utc": "2026-10-17T19:12:19.520890+00:00",
+  "finished_at_utc": "2026-10-17T19:12:22.396182+00:00",
+  "elapsed_seconds": 2.8752877998631448,
+  "source": "git show HEAD:ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py",
+  "pytest_exit_code": 1,
+  "cases": [
+    "test_due_completion_receipt_is_consumed_during_war_turn",
+    "test_lost_ack_stays_pending_across_cold_process_and_requires_material",
+    "test_r0227_active_tuple_and_exact_spend_apply_start_receipt_only",
+    "test_r0227_cold_restore_reads_active_and_spend_without_resubmitting",
+    "test_r0227_same_day_active_without_spend_keeps_pending",
+    "test_unavailable_completed_observer_keeps_prewar_legality_and_start_source",
+    "test_wartime_construction_observes_native_choice_without_spend"
+  ],
+  "purpose": "exact seven failures rerun with unchanged HEAD construction consumer"
+}

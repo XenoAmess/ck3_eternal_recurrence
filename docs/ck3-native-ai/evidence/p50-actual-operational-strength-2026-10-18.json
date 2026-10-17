@@ -1,0 +1,226 @@
+{
+  "schema": "xar.p50-actual-operational-strength-sidecar.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "projection_created_at_utc": "2026-10-17T19:19:16.232910+00:00",
+  "sources": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0044-1-result.json",
+      "bytes": 4516,
+      "sha256": "9a8c58cc68a151175a70d35892512bb4aed48c259a5bda88e00f3bf51f58d206",
+      "ended_at_utc": "2026-10-17T19:08:26.768086+00:00"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0046-1-result.json",
+      "bytes": 186690,
+      "sha256": "86206761ce39b8161a522ca87f1bf782dc8e75bf0e1061bd0879039889504462",
+      "ended_at_utc": "2026-10-17T19:08:28.832516+00:00"
+    }
+  ],
+  "source_frame": {
+    "schema": "xar.ck3.planning-source-frame/v1",
+    "status": "complete",
+    "snapshot_id": "native:8588",
+    "revision": 55,
+    "native_revision": 8588,
+    "date_raw": 53331960,
+    "actor_character_id": 31254,
+    "episode_run_id": "native-31254-8d3a8440eb30",
+    "connection_generation": 12,
+    "bridge_pid": 51028
+  },
+  "projection_operations": [
+    "join exact public/native revision from ordinary query44 to planning frame46",
+    "derive scope_role and war_ids from actual decision balance membership",
+    "derive controllable from actual same-frame sentinel admission",
+    "preserve every SEM/war-progress soldiers:null; use independent army_strengths rows",
+    "finance and mercenary market intentionally absent; no cross-frame currentness claim"
+  ],
+  "snapshot": {
+    "snapshot_id": "native:8588",
+    "revision": 55,
+    "native_revision": 8588,
+    "date_raw": 53331960,
+    "episode_run_id": "native-31254-8d3a8440eb30",
+    "played_character": {
+      "character_id": 31254
+    },
+    "paused": true,
+    "map_ready": true,
+    "active_event": null,
+    "pending_character_interaction": null,
+    "player_armies": [
+      {
+        "army_id": 167772577,
+        "current_province_id": 2623,
+        "soldiers": null,
+        "move_target_province_id": null,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null,
+        "route_province_ids": [],
+        "controllable": true
+      }
+    ],
+    "active_wars": [
+      {
+        "war_id": 100663323,
+        "player_side": "defender",
+        "player_is_primary_war_leader": true,
+        "player_relative_war_score": -12,
+        "enemy_armies": [
+          {
+            "army_id": 218104265,
+            "current_province_id": 8752,
+            "soldiers": null,
+            "move_target_province_id": 2628,
+            "in_combat": false,
+            "retreating": true,
+            "army_state": "retreating",
+            "army_state_code": 6,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null,
+            "route_province_ids": [
+              2628
+            ]
+          },
+          {
+            "army_id": 402653372,
+            "current_province_id": 8753,
+            "soldiers": null,
+            "move_target_province_id": null,
+            "in_combat": false,
+            "retreating": false,
+            "army_state": "regular",
+            "army_state_code": 1,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null,
+            "route_province_ids": []
+          },
+          {
+            "army_id": 436207707,
+            "current_province_id": 8753,
+            "soldiers": null,
+            "move_target_province_id": null,
+            "in_combat": true,
+            "retreating": false,
+            "army_state": "combat",
+            "army_state_code": 2,
+            "siege_days_left": null,
+            "siege_province_holder_character_id": null,
+            "siege_province_in_player_subrealm": null,
+            "route_province_ids": []
+          }
+        ],
+        "actual_existing_strength_balance": {
+          "status": "available",
+          "war_id": 100663323,
+          "friendly_army_ids": [
+            167772577
+          ],
+          "enemy_army_ids": [
+            218104265,
+            402653372,
+            436207707
+          ],
+          "friendly_current_soldiers": 1351,
+          "enemy_current_soldiers": 1575,
+          "friendly_maximum_soldiers": 1385,
+          "enemy_maximum_soldiers": 2075,
+          "friendly_ai_base_power_raw": 4531500000,
+          "enemy_ai_base_power_raw": 5160100000,
+          "hostile_operational_overmatch": false,
+          "interpretation": "operational_routing_risk_not_battle_win_odds"
+        }
+      }
+    ],
+    "army_strengths": [
+      {
+        "status": "available",
+        "army_id": 167772577,
+        "native_carmy_id": 285212807,
+        "regiment_count": 23,
+        "current_soldiers": 1351,
+        "maximum_soldiers": 1385,
+        "ai_base_power_raw": 4531500000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 30000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null,
+        "scope_role": "player",
+        "war_ids": [
+          100663323
+        ]
+      },
+      {
+        "status": "available",
+        "army_id": 436207707,
+        "native_carmy_id": 134218137,
+        "regiment_count": 2,
+        "current_soldiers": 135,
+        "maximum_soldiers": 301,
+        "ai_base_power_raw": 569200000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 9800000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          100663323
+        ]
+      },
+      {
+        "status": "available",
+        "army_id": 402653372,
+        "native_carmy_id": 134218144,
+        "regiment_count": 13,
+        "current_soldiers": 1265,
+        "maximum_soldiers": 1573,
+        "ai_base_power_raw": 3817500000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 9830509,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          100663323
+        ]
+      },
+      {
+        "status": "available",
+        "army_id": 218104265,
+        "native_carmy_id": 251658642,
+        "regiment_count": 3,
+        "current_soldiers": 175,
+        "maximum_soldiers": 201,
+        "ai_base_power_raw": 773400000,
+        "ai_base_power_scale": 100000,
+        "current_supply_raw": 12000000,
+        "current_supply_scale": 100000,
+        "current_attrition_fraction_raw": 0,
+        "current_attrition_fraction_scale": 100000,
+        "unavailable_reason": null,
+        "scope_role": "active_war_enemy",
+        "war_ids": [
+          100663323
+        ]
+      }
+    ],
+    "army_strengths_status": "available",
+    "army_strengths_query_sequence": 939,
+    "army_strengths_queried_snapshot_id": "native:8588",
+    "army_strengths_queried_revision": 55
+  },
+  "production_live_hire": false
+}

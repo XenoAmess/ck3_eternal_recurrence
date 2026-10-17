@@ -961,5 +961,256 @@
       "expected_negative_result": true
     },
     "integration": "Call this CLI once after carrying source knowledge into the actual new namespace state, using the actual SDK source root; require its actual known exact -> API4 replay result, rather than only file existence. This is a targeted regression check for the observed loss of knowledge, not a new game or broad gate."
-  }
+  },
+  "fresh_current_estate_observation": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "offline_read_at_utc": "2026-10-17T19:23:01.795093+00:00",
+    "Root_source_observed_at_utc": "2026-10-17T19:07:51.604449+00:00",
+    "machine_bound_projection": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P50R1-INDEPENDENT-RETURN-STATE01.json",
+      "bytes": 26971,
+      "sha256": "7797e972ed922abb256ed6d9c39579a6022647b05a29263f97d6fd87e457352a"
+    },
+    "source_pins_verified": true,
+    "projection_matches_direct_responses": true,
+    "sources": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0001-1-result.json",
+        "bytes": 27380,
+        "sha256": "6a7b0a42e1038576bb008b9a83b11b997786619523a60c318d18ab6a866ed732",
+        "started_at_utc": "2026-10-17T19:06:50.581128+00:00",
+        "ended_at_utc": "2026-10-17T19:06:50.718644+00:00"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0003-1-result.json",
+        "bytes": 55098,
+        "sha256": "487170affae6e2144f85a6c1785cc7b893430b4dcb25200c5d889e16fe48da72",
+        "started_at_utc": "2026-10-17T19:07:18.706699+00:00",
+        "ended_at_utc": "2026-10-17T19:07:18.908800+00:00"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\0004-1-result.json",
+        "bytes": 6118,
+        "sha256": "9b0b4698b2db5b5c7c4c94ca647d340f90cc448a4ff8f5d0d2a7b35ef8935cc7",
+        "started_at_utc": "2026-10-17T19:07:27.284777+00:00",
+        "ended_at_utc": "2026-10-17T19:07:27.385318+00:00"
+      }
+    ],
+    "frame": {
+      "snapshot_id": "native:8535",
+      "revision": 2,
+      "native_revision": 8535,
+      "date_raw": 53331120,
+      "episode_run_id": "native-31254-8d3a8440eb30",
+      "paused": true,
+      "map_ready": true
+    },
+    "actor": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 41,
+      "event_trait_membership": {
+        "schema": "xar.ck3.player-event-trait-membership/v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "status": "available",
+        "snapshot_revision": 8535,
+        "date_raw": 53331120,
+        "played_character_id": 31254,
+        "traits": {
+          "lifestyle_poet": false,
+          "journaller": false
+        },
+        "unavailable_reason": null
+      },
+      "betrothed_id": null,
+      "primary_spouse_id": null,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "fresh_held_source": "campaign_root_context.held_title_partition at Native8535, not SEM succession_expectation retained Native4191",
+    "held_title_partition": [
+      {
+        "title": {
+          "title_id": 2230,
+          "tier_raw": 3,
+          "tier_key": "duchy"
+        },
+        "first_heir_character_id": 40695,
+        "capital_province_id": null,
+        "primary": true
+      },
+      {
+        "title": {
+          "title_id": 2231,
+          "tier_raw": 2,
+          "tier_key": "county"
+        },
+        "first_heir_character_id": 40695,
+        "capital_province_id": 2619,
+        "primary": false
+      },
+      {
+        "title": {
+          "title_id": 2262,
+          "tier_raw": 2,
+          "tier_key": "county"
+        },
+        "first_heir_character_id": 40695,
+        "capital_province_id": 2629,
+        "primary": false
+      }
+    ],
+    "held_title_ids": [
+      2230,
+      2231,
+      2262
+    ],
+    "primary_title": {
+      "title_id": 2230,
+      "tier_raw": 3,
+      "tier_key": "duchy"
+    },
+    "domain": {
+      "size": 2,
+      "limit": 7
+    },
+    "direct_landed_vassal_character_ids": [
+      33946,
+      34232,
+      35598,
+      35899,
+      45464,
+      64729
+    ],
+    "direct_landed_vassal_primary_titles": [
+      {
+        "character_id": 33946,
+        "primary_title": {
+          "title_id": 2240,
+          "tier_raw": 2,
+          "tier_key": "county"
+        }
+      },
+      {
+        "character_id": 34232,
+        "primary_title": {
+          "title_id": 2258,
+          "tier_raw": 2,
+          "tier_key": "county"
+        }
+      },
+      {
+        "character_id": 35598,
+        "primary_title": {
+          "title_id": 2488,
+          "tier_raw": 2,
+          "tier_key": "county"
+        }
+      },
+      {
+        "character_id": 35899,
+        "primary_title": {
+          "title_id": 2236,
+          "tier_raw": 2,
+          "tier_key": "county"
+        }
+      },
+      {
+        "character_id": 45464,
+        "primary_title": {
+          "title_id": 2265,
+          "tier_raw": 1,
+          "tier_key": "barony"
+        }
+      },
+      {
+        "character_id": 64729,
+        "primary_title": {
+          "title_id": 2233,
+          "tier_raw": 1,
+          "tier_key": "barony"
+        }
+      }
+    ],
+    "targeting_faction_count": 1,
+    "targeting_factions": [
+      {
+        "faction_id": 67108901,
+        "faction_type_key": "liberty_faction",
+        "target_character_id": 31254,
+        "leader_character_id": 33946,
+        "faction_at_war": false,
+        "power": {
+          "raw": 3144500,
+          "scale": 100000
+        },
+        "power_threshold": {
+          "raw": 10000000,
+          "scale": 100000
+        },
+        "discontent": {
+          "raw": 0,
+          "scale": 100000
+        },
+        "discontent_per_month": {
+          "raw": -300000,
+          "scale": 100000
+        },
+        "dangerous_by_stock_rule": false,
+        "danger_reason": "non_peasant_discontent_not_increasing"
+      }
+    ],
+    "current_faction_summary": {
+      "status": "available",
+      "present": true,
+      "dangerous": false,
+      "dangerous_faction_ids": [],
+      "watch_faction_ids": [
+        67108901
+      ],
+      "war_handoff_faction_ids": [],
+      "exposed_county_title_ids": [],
+      "exact_ultimatum_timing_ready": false
+    },
+    "comparison": {
+      "historical_4191_held_ids": [
+        2230,
+        2231,
+        2262
+      ],
+      "same_ID_set_at_8535": true,
+      "additional_net_direct_held_ID_loss_proven_between_these_two_endpoints": false,
+      "all_intermediate_ownership_changes_audited": false,
+      "realm_wide_county_or_border_audit": false,
+      "new_holder_of_removed_2196_2200_independently_queried": false,
+      "historical_populist193_power_reconstructed_from_current_liberty": false
+    },
+    "boundaries": {
+      "source_is_initial_P50R1_entry_frame_not_present_live_state": true,
+      "subsequent_FULL_or_natural_succession_state_not_read": true,
+      "Game_MCP_OBS_calls_by_this_worker": 0,
+      "SAVE_Driver_media_reads": 0,
+      "gameplay_actions": 0,
+      "business_credit_added": 0,
+      "G2_credit_added": 0,
+      "rollback_executed": false,
+      "SDK_source_changes": 0
+    },
+    "storage": {
+      "policy_version": "1.0.0",
+      "heavy_write": false,
+      "deletions": 0,
+      "source_byte_read_limit": 262144,
+      "volume_free_bytes": {
+        "D:/": 1009318420480,
+        "Z:/": 178682839040
+      },
+      "Root_capacity_reference": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\ROOT-PATHS-CAPACITY.json",
+      "reservation_or_protection_extended": false
+    }
+  },
+  "fresh_current_estate_added_at_utc": "2026-10-17T19:23:01.795093+00:00"
 }
