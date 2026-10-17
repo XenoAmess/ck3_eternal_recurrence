@@ -231,7 +231,7 @@ bool CallCooldownLookup(const AdoptionDetailBindings&b,const void*map,const void
 }
 bool Cooldown(const AdoptionDetailBindings&b,const Pass&p,const PlanningIdentity&identity,CooldownPass&out){
  if(!b.cooldown_lookup||!Pin(b,0x1A74790,"4c8bd90fb6c235c59d1c814c8bd24469c893010001488bc248c1e808440fb6c0")||
-    !Pin(b,0x2957F10,"48895c241048897424185557415441564157488dac24b0fdffff4881ec50030000"))return false;
+    !Pin(b,0x2957F10,"48895c241048897424185557415441564157488dac24b0fdffff4881ec500300"))return false;
  if(!Read(b,identity.actor_object,0x1C0,out.state)||!out.state||!Read(b,b.decision_clock,0,out.clock)||
     !out.clock||!Read(b,out.clock,8,out.current))return false;
  const auto*map=At(out.state,0x430);
