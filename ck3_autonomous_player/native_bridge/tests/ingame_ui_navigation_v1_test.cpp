@@ -5,12 +5,20 @@
 #include "../src/ingame_ui_navigation_v1.cpp"
 #include "../src/ck3_12004_holy_site_adoption_entry.cpp"
 #include <cassert>
+#include <cstdlib>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
 
 namespace xar::ck3_11906 {
 // Explicit offline GUI projection stubs. No CK3 function executes.
+ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
+    std::uintptr_t,bool,GuiAbiRevisionV1,std::string_view) noexcept {
+  // The unrelated war mailbox shares this source TU but is never a fixture
+  // input. Any accidental use must fail, rather than invent a native owner.
+  assert(!"war environment binder is outside this offline navigation fixture");
+  std::abort();
+}
 static void *fixture_army_root=nullptr,*fixture_cast_object=nullptr;
 static bool fixture_army_root_available=false;
 static bool fixture_tooltip_tree=false,fixture_tooltip_unstable=false;
