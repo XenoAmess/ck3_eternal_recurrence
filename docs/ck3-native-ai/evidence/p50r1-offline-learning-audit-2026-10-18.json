@@ -1,0 +1,778 @@
+{
+  "schema": "xar.p50r1.offline-learning-audit/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T20:41:09.482285+00:00",
+  "status": "COMPLETE_FOR_ALL_SEALED_P50R1_INCIDENTS",
+  "scope": {
+    "sdk_generation": "P50R1",
+    "root_reported_closed_cycles": 6029,
+    "owner_closed_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\ROOT-P50R1-OWNER-CLOSED.json",
+      "bytes": 813,
+      "sha256": "cd80b5bb6dda241147f054e21c25089f93ea5f050827f7cbf124cf85fcb62976"
+    },
+    "owner_closed_record_machine_id": "unknown",
+    "batch_directory": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches",
+    "actual_worker_output": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1",
+    "first_batch_sequence": 68,
+    "first_batch_cycles": 5424,
+    "last_batch_sequence": 1544,
+    "last_batch_cycles": 6029,
+    "boundary": "All already-sealed P50R1 batch manifests through1544, whose own cumulative_cycles is6029; Root then closed P50R1 after no-new-call cleanup1550 at6029. No Driver/large AUTO/SAVE/media read, no R2 audit, no P43 re-audit, no claim to detect incidents absent from manifests."
+  },
+  "counts": {
+    "sealed_batches": 130,
+    "nonempty_batches": 5,
+    "incidents": 9,
+    "vanilla_event_instances": 8,
+    "character_interaction_instances": 1,
+    "known_at_original_capture": 3,
+    "originally_unknown_event_instances": 5,
+    "originally_unknown_event_definitions": 4,
+    "originally_unknown_interactions": 1,
+    "production_loader_known": 9,
+    "source_review_reports": 5,
+    "source_review_unresolved": 0,
+    "missing_source_analyses": [],
+    "new_registry_writes_by_this_audit": 0
+  },
+  "source_machine_identity": {
+    "audit_and_production_readback_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "worker_owner_started_machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "original_batch_and_incident_record_machine_id": "unknown",
+    "reason": "Original native captures/manifests and SDK closed receipt omit machine_id. Their preserved identities are not rewritten or inferred from paths. This audit records the actual current machine and machine-bound worker-generation wrapper separately."
+  },
+  "worker_status_pins": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\ROOT-P50R1-OFFLINE-WORKERS-OWNER-INTENT.json",
+      "bytes": 3129,
+      "sha256": "e2adc01bbbcb241d96ef9714a337a09513ed0bcda524c9ce13e4c8c8f1851c34"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\ROOT-P50R1-OFFLINE-WORKERS-OWNER-STARTED.json",
+      "bytes": 4141,
+      "sha256": "7f148e603e986de921f93cbc3dbb2ae07543b914ddd61522759fd2fd65da0029"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\character-interactions\\STARTED.json",
+      "bytes": 533,
+      "sha256": "fc5f4b7a2ddc77ece13391108e39285e2ba8232711f34f1dfda17822a1ae6de3"
+    }
+  ],
+  "worker_status_boundary": "Pinned STARTED/INTENT are historical worker-generation receipts, not a new process-liveness claim. Business completion is proved by per-batch review, durable entry/facts hashes and production loader readback.",
+  "source_reviews": [
+    {
+      "pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\vanilla-events\\p50r1-offline-batches-0068-a60c50f2a711\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 758,
+        "sha256": "913dc6b09c67bdf29edf95e2a0b0ce8c466fc61780096a3a3d5fecd9ea5cdfef"
+      },
+      "completed_control_sequence": 68,
+      "manifest": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches\\0068.json",
+        "sha256": "a60c50f2a711becda24016acea2ce02f3ef4a435b47c9b9cea9f0005ef4f453d"
+      },
+      "entries": 0,
+      "already_known": 1,
+      "unresolved": 0
+    },
+    {
+      "pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\vanilla-events\\p50r1-offline-batches-0597-ae75375e7812\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 2242,
+        "sha256": "409d92852c2c1c790bb2f4285e11bed86bddfd3cc0e985dd391afafde5c8807f"
+      },
+      "completed_control_sequence": 597,
+      "manifest": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches\\0597.json",
+        "sha256": "ae75375e7812a0f34025ae4af5cc8143c11c302f277cfee485fe52f55c604168"
+      },
+      "entries": 1,
+      "already_known": 0,
+      "unresolved": 0
+    },
+    {
+      "pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\vanilla-events\\p50r1-offline-batches-0721-a62bcf1bff70\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 2525,
+        "sha256": "893fbf5d84846a12ed641bc610798d1848aeea3bb893972652056202a4f680ed"
+      },
+      "completed_control_sequence": 721,
+      "manifest": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches\\0721.json",
+        "sha256": "a62bcf1bff70d672581f211dd98256f60e7bb1e1e44417109f99951fe42a6cac"
+      },
+      "entries": 1,
+      "already_known": 1,
+      "unresolved": 0
+    },
+    {
+      "pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\vanilla-events\\p50r1-offline-batches-0785-625d83777603\\EVENT-SOURCE-REVIEW.json",
+        "bytes": 6070,
+        "sha256": "aa6985b9889d03aaed255a52bf6b10c51eda7e71fc661904082b5a62f2daecee"
+      },
+      "completed_control_sequence": 785,
+      "manifest": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches\\0785.json",
+        "sha256": "625d837776037aaf917f0952783a2baea4bee9fc7423287fff7f215f19e07da6"
+      },
+      "entries": 3,
+      "already_known": 1,
+      "unresolved": 0
+    },
+    {
+      "pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\offline-learning\\p50r1\\character-interactions\\p50r1-offline-batches-0907-a9531aec4de9\\SOURCE-REVIEW.json",
+        "bytes": 2266,
+        "sha256": "456ae47834e1b3334a8e807c22ae485702768f01c28d859c668f12cbbb77526d"
+      },
+      "completed_control_sequence": 907,
+      "manifest": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-offline-batches\\0907.json",
+        "sha256": "a9531aec4de9b533c3fd53242bbfb3f98780846c018273764c24ae41968371c8"
+      },
+      "entries": 1,
+      "already_known": 0,
+      "unresolved": 0
+    }
+  ],
+  "incidents": [
+    {
+      "key": "pam_bull_events.0004",
+      "incident_id": "93c411c9f3724dc7b39cba68ab03d374",
+      "completed_control_sequence": 68,
+      "cumulative_cycles": 5424,
+      "known_at_original_capture": true,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa.json",
+        "bytes": 1300,
+        "sha256": "3baa5479ff33b3c07197d704125abbcdd3e767412e9a901e6f729d6632ff4d67"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\c7027e14f7a918bafb3cff960bd2359ee2ac075d00fa8b610130070c4ac0e5aa.json",
+        "bytes": 3511,
+        "sha256": "c208572d7839e822cacb56855fc8f2084d56572a47b311ecbf2b20e017d1b802"
+      },
+      "source_relative": "events/dlc/pam/pam_bull_events.txt",
+      "source_sha256": "596a8f4ce0c9e64119b2e65917ec56f984c58882e5ccb0adbd2e56893d89f937",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\93c411c9f3724dc7b39cba68ab03d374.before.json",
+        "bytes": 7800,
+        "sha256": "ad8c26e9f49f10e095e97f472d7fd40b10690b90ebf2b949404b240947adc1db"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\93c411c9f3724dc7b39cba68ab03d374.after.json",
+        "bytes": 3555,
+        "sha256": "457b0ea9135d221ebeff502174a959fff924b22d074a13a331edf679f62687f6"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "option_number": 1,
+        "resolved_name": "就这样吧。",
+        "enabled": true,
+        "selected_step": "select-event-option-1",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected source option 0 is an acknowledgement with no direct option effect.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 72,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:8640",
+          "ending_snapshot_id": "native:8641"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "bp1_house_feud.0840",
+      "incident_id": "71cc632310c04567b77ff761b5bb21bf",
+      "completed_control_sequence": 597,
+      "cumulative_cycles": 5664,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65.json",
+        "bytes": 1298,
+        "sha256": "0869fe8c8aff616a2b930cf8df60d3a5b57d720d1e5dc10874b0373b48994ec1"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\18f4161cbf9a02914bd4e89a05fd2c45ef6a806d8e176991c2bf4a7ccb259b65.json",
+        "bytes": 7226,
+        "sha256": "9efc9bc10871946e5a2cf6e4af0a4829cc0329ccfd9a8e81436c44870d216c43"
+      },
+      "source_relative": "events/dlc/bp1/bp1_house_feud.txt",
+      "source_sha256": "8e0d1d0014692de2a9cd4afe3fa0f21ba7d25572a6e0a08701734704aa0632a8",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\71cc632310c04567b77ff761b5bb21bf.before.json",
+        "bytes": 6821,
+        "sha256": "60034028a0dbd76857e2721722f75bc5235bfbd78a1e7faac160a8a9803e53c9"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\71cc632310c04567b77ff761b5bb21bf.after.json",
+        "bytes": 3553,
+        "sha256": "06b75ad7a6f2d5815ea44c1533bae3aff0c9f7be845699bf75746ec79614e6af"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "option_number": 1,
+        "resolved_name": "\u0015EMP 没什么\u0015!改变！兰特佩特家族的恶狗都一个样！",
+        "enabled": true,
+        "selected_step": "select-event-option-1",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected source option 0 sets the scoped house-feud rival and calls house_feud_forgiving_stress_effect; AI base 25 also consumes vengefulness/boldness. No rivalry/stress material result is inferred.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 74,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:9199",
+          "ending_snapshot_id": "native:9200"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "birth.9002",
+      "incident_id": "63e97c1e6ded40f9894dd64cf3495c56",
+      "completed_control_sequence": 721,
+      "cumulative_cycles": 5724,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915.json",
+        "bytes": 1277,
+        "sha256": "5482dbd29570c04d4d9431aa950fafc6565f09c472803bc12fdfa3788c9165c0"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\cb374a33e527779e98ce8af43ec595e53cb3278e55968c8dcbbf352ef4f80915.json",
+        "bytes": 66964,
+        "sha256": "8e3516b4e3bbb99eaa76a9edbc4bb10ac6b99a8419e425347b5ec330e16d6486"
+      },
+      "source_relative": "events/birth_events.txt",
+      "source_sha256": "d2dc5b2a7b7f42e356ddbd0ba7b708aaef2603033ea07d2ff0becb46bbd436d5",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\63e97c1e6ded40f9894dd64cf3495c56.before.json",
+        "bytes": 9942,
+        "sha256": "1678ad59cc6bbfcfe83a1a87fefd393fd181f863e2d4f880c0e152324d28cb66"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\63e97c1e6ded40f9894dd64cf3495c56.after.json",
+        "bytes": 3553,
+        "sha256": "2c88a250e93977907c220a536f3852e7e26b8a3187d70f01d415bbc2cf5dc075"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "option_number": 1,
+        "resolved_name": "美妙的主意。名字就叫做帕尔维好了。",
+        "enabled": true,
+        "selected_step": "select-event-option-1",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected source option 0 accepts the namesake/name suggestion, grants scoped grateful_opinion +15 and invokes the childbirth piety helper; a living namesake_official adds conditional opinion branches. Name-setting tooltip and nested helper are retained as authored; no name/piety/opinion outcome is inferred.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 75,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:9437",
+          "ending_snapshot_id": "native:9438"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "bp2_yearly.8040",
+      "incident_id": "74d6f990dde7468dafa30fe8d5163985",
+      "completed_control_sequence": 721,
+      "cumulative_cycles": 5724,
+      "known_at_original_capture": true,
+      "production_loader_now_known": true,
+      "binding_mode": "source_rebound",
+      "fingerprint": "6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2.json",
+        "bytes": 1290,
+        "sha256": "ca6f5c3ad0ab3bba0b6a5a27cf7c66768984305fa4f4150edc6424a7ad9bbb1f"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\6f19f6e232f7ebeaad2bb53d7f240bfc312b225efab0c25fe8a875eed06118e2.json",
+        "bytes": 11374,
+        "sha256": "d15b02b37d4057055c32814e2c55b5481138e85c8a4535a80764db207cd41800"
+      },
+      "source_relative": "events/dlc/bp2/bp2_yearly.txt",
+      "source_sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\74d6f990dde7468dafa30fe8d5163985.before.json",
+        "bytes": 7945,
+        "sha256": "1d9f4904faf4ece63b0263c4bef7a7d4b212922128c33f61baf68dfa4d9c4fc3"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\74d6f990dde7468dafa30fe8d5163985.after.json",
+        "bytes": 3553,
+        "sha256": "ab94fce4bf96d68b3f8c9f20d0f87223c79f47bb847b660f3ede297d77563dd0"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "option_number": 1,
+        "resolved_name": "我会坦白我的爱！",
+        "enabled": true,
+        "selected_step": "select-event-option-1",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected source option 0 schedules bp2_yearly.8041 for scope:crush after two days. AI chance has zeal/sin/relationship/partner conditions; these are not evaluated offline.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 76,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:9486",
+          "ending_snapshot_id": "native:9487"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "secrets.0110",
+      "incident_id": "0193b4fdca5b43da8e61f12408ae6304",
+      "completed_control_sequence": 785,
+      "cumulative_cycles": 5754,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 1296,
+        "sha256": "39e7b5fb58b1d352b021e1533053218b2a778e7382e319cfe23ca83387bc8eb5"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 17614,
+        "sha256": "3a8efe78ff955125cdf492f7b4e138f522ca0a560197756ae7e85041fb1463a7"
+      },
+      "source_relative": "events/secret_events/secrets_events.txt",
+      "source_sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\0193b4fdca5b43da8e61f12408ae6304.before.json",
+        "bytes": 10695,
+        "sha256": "1ee00f196bc08183b5acaeca8188bc7da0d0c21e2430ec422b4771b66e7a12e5"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\0193b4fdca5b43da8e61f12408ae6304.after.json",
+        "bytes": 3552,
+        "sha256": "1e98f40d42e8073b342e6dde0a9f19548c3d84c9dd71f5b8b604e4e7187c8fe7"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 2,
+        "option_number": 3,
+        "resolved_name": "我真希望我从未知道这些……",
+        "enabled": true,
+        "selected_step": "select-event-option-3",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected native option 2 (API 3, first shown) requires consort_bastard_parent and has no direct option effect; AI chance base 20 adds 180 for trusting. The full immediate/after/source definition remains in pinned facts.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 81,
+          "new_event_instance_id": 80,
+          "selected_option_number": 3,
+          "selected_native_option_index": 2,
+          "starting_snapshot_id": "native:9509",
+          "ending_snapshot_id": "native:9510"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "secrets.0110",
+      "incident_id": "0eb157c421b342e28214915dcbbe59d9",
+      "completed_control_sequence": 785,
+      "cumulative_cycles": 5754,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 1296,
+        "sha256": "39e7b5fb58b1d352b021e1533053218b2a778e7382e319cfe23ca83387bc8eb5"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\d039c3022d8308fa856bbd16fb080e9e92bb20db95a9a9a788e6d2a485c61f1e.json",
+        "bytes": 17614,
+        "sha256": "3a8efe78ff955125cdf492f7b4e138f522ca0a560197756ae7e85041fb1463a7"
+      },
+      "source_relative": "events/secret_events/secrets_events.txt",
+      "source_sha256": "17e31688436eda16af4fe2c4b18122a2c227a8acd9010c6238a223e33ccdea64",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\0eb157c421b342e28214915dcbbe59d9.before.json",
+        "bytes": 10686,
+        "sha256": "96d23f4bbed27a7ae4bf632bcd41fe6ab08b9182dfe7fbb3dd35d8d0599a3631"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\0eb157c421b342e28214915dcbbe59d9.after.json",
+        "bytes": 3554,
+        "sha256": "7b34d026af798af3c9c13fd3c6ead91334a3bfb2877089986d2a7996d6c52ba7"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 2,
+        "option_number": 3,
+        "resolved_name": "我真希望我从未知道这些……",
+        "enabled": true,
+        "selected_step": "select-event-option-3",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected native option 2 (API 3, first shown) requires consort_bastard_parent and has no direct option effect; AI chance base 20 adds 180 for trusting. The full immediate/after/source definition remains in pinned facts.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 79,
+          "new_event_instance_id": null,
+          "selected_option_number": 3,
+          "selected_native_option_index": 2,
+          "starting_snapshot_id": "native:9511",
+          "ending_snapshot_id": "native:9512"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "bp2_yearly.8042",
+      "incident_id": "817c8795b0094ede81d3ce3382fb2549",
+      "completed_control_sequence": 785,
+      "cumulative_cycles": 5754,
+      "known_at_original_capture": true,
+      "production_loader_now_known": true,
+      "binding_mode": "source_rebound",
+      "fingerprint": "304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60.json",
+        "bytes": 1290,
+        "sha256": "c07029a0fc5e85152d7bb18bb93883057eb0a814d8b93b26211e3ba67688a6c5"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\304e3350d0ac22a3dd2f4973002fea6d6962a957ef744b357c871051c0bb6c60.json",
+        "bytes": 3176,
+        "sha256": "b956a9170191df9804f01a74e55dece8471f2b312556ffb9104f94f94184625d"
+      },
+      "source_relative": "events/dlc/bp2/bp2_yearly.txt",
+      "source_sha256": "67df046bf1a6b2fe6186e26d9eb9586c6346dbaeb78f0e5b46baaede4c385332",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\817c8795b0094ede81d3ce3382fb2549.before.json",
+        "bytes": 7136,
+        "sha256": "bb33c2905773763550f503ad4d73708c99a3847e27db4dde0bd9673826be83e7"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\817c8795b0094ede81d3ce3382fb2549.after.json",
+        "bytes": 3553,
+        "sha256": "249f505e686db597db917687e16e7ec49d7d04aa5cf08f7161f9c234a6e44bcd"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "option_number": 1,
+        "resolved_name": "太好了。",
+        "enabled": true,
+        "selected_step": "select-event-option-1",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected source option 0 invokes bp2_yearly_8040_marriage_effect if its variable exists; otherwise sets a lover relation with scope:crush. Branch execution is not established by ACK.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 77,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:9494",
+          "ending_snapshot_id": "native:9495"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "adultery.4001",
+      "incident_id": "c07c3ac023bf4a1f9ccf488bdf4a07b7",
+      "completed_control_sequence": 785,
+      "cumulative_cycles": 5754,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "exact",
+      "fingerprint": "a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76.json",
+        "bytes": 1301,
+        "sha256": "2a26e546597893f8a95ebf7db67e4292f5c4d1ecb1e3e7c4aa0a34457d3ce871"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\a9404439f14b7cc3fd922a82e79e37854a770fd6219c28b92dcce44de0cecf76.json",
+        "bytes": 17478,
+        "sha256": "b6551284257766e5e2dc2ebe093c841e587aab87aa32c617c8b60dfcf31f98fc"
+      },
+      "source_relative": "events/relations_events/adultery_events.txt",
+      "source_sha256": "af8de94001cdba23fd385ee6b4672415461a828a004344bf3e30b146fafd46bd",
+      "gui_sha256": null,
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\c07c3ac023bf4a1f9ccf488bdf4a07b7.before.json",
+        "bytes": 10717,
+        "sha256": "0477d07802a91e30f289d0aabe0f248a833364a87a9d4926f485f226f7489c51"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\c07c3ac023bf4a1f9ccf488bdf4a07b7.after.json",
+        "bytes": 3552,
+        "sha256": "b78d6dd6bcb7be56aae49379ec188fa2b6ad1f1b0f33431738c63f0cff91a35a"
+      },
+      "selection": {
+        "rendered_index": 0,
+        "native_option_index": 1,
+        "option_number": 2,
+        "resolved_name": "卫兵！逮捕这个卑鄙的妓女！",
+        "enabled": true,
+        "selected_step": "select-event-option-2",
+        "selection_order": "native_rendered_index_after_shown_enabled_filter",
+        "excluded_disabled_rendered_indices": []
+      },
+      "effect_summary": "Selected native option 1 (API 2, first shown) conditionally imprisons the adulterous spouse and/or partner, subject to liege/imprisonment/crime/unsuccessful-attempt checks; includes forgiving stress impact. Imprisonment and stress are not proven material results.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "event_instance_advanced_verified": true,
+        "result_status": "executed",
+        "error": null,
+        "replay_allowed": false,
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 80,
+          "new_event_instance_id": 79,
+          "selected_option_number": 2,
+          "selected_native_option_index": 1,
+          "starting_snapshot_id": "native:9510",
+          "ending_snapshot_id": "native:9511"
+        }
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    },
+    {
+      "key": "sway_ruler_to_my_rite_interaction",
+      "incident_id": "2518edd79eaf44c089ec203f9f4e66e5",
+      "completed_control_sequence": 907,
+      "cumulative_cycles": 5806,
+      "known_at_original_capture": false,
+      "production_loader_now_known": true,
+      "binding_mode": "interaction_exact_source_gui",
+      "fingerprint": "707943ceb652af95209bf14fbcc96e2fee46710a875ef62d2673afff940e9ea3",
+      "entry_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\interaction-source-registry\\707943ceb652af95209bf14fbcc96e2fee46710a875ef62d2673afff940e9ea3.json",
+        "bytes": 1453,
+        "sha256": "a9dedd74d99a56dd54a5daf85b02752a153746e2e219b403be747c6d3201b3e0"
+      },
+      "facts_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\interaction-source-registry\\facts\\707943ceb652af95209bf14fbcc96e2fee46710a875ef62d2673afff940e9ea3.json",
+        "bytes": 20868,
+        "sha256": "05ee21073c0a970a953953b60d559e21c0342f299e63f746bb03589314f556f1"
+      },
+      "source_relative": "common/character_interactions/pam_interactions.txt",
+      "source_sha256": "2db73b0da8572e218f1a677a91ff4281a890ade115e6dc40e696ecb59c0b1049",
+      "gui_sha256": "a3c946a98346de2f57c5c3408a24bf298329df24a6ab25ec88d893befa1fe6e0",
+      "before_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2518edd79eaf44c089ec203f9f4e66e5.before.json",
+        "bytes": 25061,
+        "sha256": "e0eeabb83f3f55bb0c984b4b23749d245b7097636057ab345407d9c03a1b3eaa"
+      },
+      "after_pin": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-interactions\\2518edd79eaf44c089ec203f9f4e66e5.after.json",
+        "bytes": 1178,
+        "sha256": "f0249aa09cabfdfba359de83f48e88fd2f16349787dd17bf0b1bf02cb55e9f81"
+      },
+      "selection": {
+        "position": "left",
+        "rendered_index": 0,
+        "button": "reject_button",
+        "action": "reject",
+        "onclick": "CharacterInteractionNotificationWindow.Reject",
+        "enabled": "CharacterInteractionNotificationWindow.CanReject",
+        "step": "reject-pending-character-interaction",
+        "native_legal": true,
+        "action_reachable": true
+      },
+      "effect_summary": "Actual authored-left native reject was selected; on_decline calls pam_sway_to_rite_on_decline_effect. Full interaction, on_accept/on_decline and GUI source SHA are retained; no conversion/opinion effect is inferred.",
+      "after_outcome": {
+        "command_acknowledged": true,
+        "original_pending_advanced_verified": true,
+        "interaction_result": {
+          "status": "rejected",
+          "instance_id": -1761607550,
+          "sender_character_id": 59833
+        },
+        "remaining_pending_character_interaction": null,
+        "error": null,
+        "replay_allowed": false
+      },
+      "material_effects_verified": false,
+      "semantic_optimal": false,
+      "native_ai_equivalent": false
+    }
+  ],
+  "production_replay": {
+    "pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P50R1-LEARNING-PRODUCTION-REPLAY.json",
+      "bytes": 76065,
+      "sha256": "b6f376bc178c0b4ff1d96842b4f1680033ea7a1a370377d08e773646ebd20ce9"
+    },
+    "sdk_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src",
+    "loader_pins": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+        "bytes": 23884,
+        "sha256": "c752420a6973a49faca81deb76d6aac605e9e0456dbcd3d3f11b474d5b0b7376"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\pending_interaction_source_registry.py",
+        "bytes": 4325,
+        "sha256": "b38a7c242809f551e527848053ba0cd07785417a7be3155d898bb595b039cf32"
+      }
+    ],
+    "result": "9/9 source-reviewed-known",
+    "method": "Read actual closed before/after captures and existing shared state with retained SDK48 production loaders; exact stock source and facts are validated by the loader. No service instantiated, no submit or registry publication."
+  },
+  "bounded_audit_inputs": {
+    "inventory": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P50R1-LEARNING-INPUT-INVENTORY.json",
+      "bytes": 158958,
+      "sha256": "36badf431457b6a9e9dedfbbd1f3732fdf64f2df2d986d77e50c579e0de9b5ed"
+    },
+    "review_readback": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P50R1-LEARNING-REVIEWS-READBACK.json",
+      "bytes": 137159,
+      "sha256": "b5d75980f75d7f5095ad801d3417f1ff5a84523f9574f3829f0ee76310b9327d"
+    },
+    "single_larger_primary_source": {
+      "relative_path": "common/character_interactions/pam_interactions.txt",
+      "bytes": 724542,
+      "reason": "Existing interaction entry exact source; bounded under1MiB and under production loader2MiB limit. No live state/large runtime evidence."
+    }
+  },
+  "actions": {
+    "Game_MCP_SDK_OBS_calls": 0,
+    "source_code_changes": 0,
+    "registry_writes": 0,
+    "live_state_edits": 0,
+    "R2_changes": 0,
+    "test_reruns": 0
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "capacity_receipt_pin": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\ROOT-PATHS-CAPACITY.json",
+      "bytes": 63766,
+      "sha256": "aabba853c29f83d19b657c6cfd119c0b5ac4ff801e0d62db856e69cbb85a384f"
+    },
+    "reservation": "Root-owned same-scope160GiB capacity review; only small audit artifacts, no additional heavy reservation.",
+    "derived_review": "48h after task close, retain only necessary final pins; canonical small Git record reviewed at180d.",
+    "deletions": 0
+  },
+  "limits": [
+    "Known means source-reviewed user-first-rendered/authored-left behavior; it does not certify optimality or native AI equivalence.",
+    "Action ACK and original-window advance are read separately from material effects; no gameplay stat/relation/faith effect is certified here.",
+    "Historical incident offline_analysis_pending flags remain historical; successful worker publication and current loader readback close their follow-up without rewriting old captures.",
+    "No new runtime instance was requested, and no R2 knowledge migration/deployment was evaluated."
+  ]
+}

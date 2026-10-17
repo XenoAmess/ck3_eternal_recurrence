@@ -7914,6 +7914,7 @@ def choose_one_life_turn(
         if fallback is not None:
             plan = fallback
 
+    ordinary_siege_baseline = plan
     plan = _primary_defender_siege_forecast_ingress(
         plan,
         commands=_expanded_command_rows(commands),
@@ -7921,6 +7922,20 @@ def choose_one_life_turn(
         action_steps=set(steps),
         bridge_capabilities=set(capabilities),
     )
+    if plan.get("phase") in {
+        "native_war_siege_forecast_inputs_query",
+        "native_war_siege_forecast_inputs_observed",
+        "native_war_siege_forecast_observation_blocked",
+    }:
+        from .siege_research_hold_continuation_v1 import retain_stationary_siege_research_hold_v1
+
+        plan = retain_stationary_siege_research_hold_v1(
+            ordinary_siege_baseline, plan, snapshot=snapshot,
+            bridge_capabilities=set(capabilities),
+            action_steps=set(steps),
+            army_tactical_state=_army_tactical_state,
+            one_day_contact_free=_r0321_one_day_contact_free,
+        )
     plan = _general_battle_forecast_ingress(
         plan,
         commands=_expanded_command_rows(commands),
@@ -18804,6 +18819,14 @@ def _provisional_defense_research_assessment(
     diagnostics = snapshot.get("diagnostics")
     hello = diagnostics.get("hello") if isinstance(diagnostics, dict) else None
     lifecycle = snapshot.get("succession_lifecycle")
+    from .combat_profile_research_v1 import is_verified_vanilla_research_profile_v1
+
+    legacy_canary_profile = bool(
+        isinstance(lifecycle, dict)
+        and lifecycle.get("lifecycle") == ORDINARY_CAMPAIGN_SUCCESSION
+        and lifecycle.get("xar_enabled") == "xar_off"
+    )
+    verified_vanilla_profile = is_verified_vanilla_research_profile_v1(snapshot)
     if not (
         isinstance(hello, dict)
         and hello.get("ck3_build_match") is True
@@ -18812,9 +18835,7 @@ def _provisional_defense_research_assessment(
             if input_query_version == 2 else
             "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
         )
-        and isinstance(lifecycle, dict)
-        and lifecycle.get("lifecycle") == ORDINARY_CAMPAIGN_SUCCESSION
-        and lifecycle.get("xar_enabled") == "xar_off"
+        and (legacy_canary_profile or verified_vanilla_profile)
     ):
         return {"status": "exact_build_or_profile_unavailable"}
     if input_query_version == 2:
@@ -18890,12 +18911,14 @@ def _provisional_defense_research_assessment(
         and p90_hard_loss <= hard_loss_budget_raw
     )
     multi_defender_research_only = len(defender_army_ids) > 1
+    vanilla_profile_research_only = verified_vanilla_profile and not legacy_canary_profile
     return {
         "status": (
             "multi_defender_research_only" if multi_defender_research_only
+            else "vanilla_profile_research_only" if vanilla_profile_research_only
             else "provisional_admissible" if admitted else "model_risk_budget_exceeded"
         ),
-        **({"planner_usable": False} if multi_defender_research_only else {}),
+        **({"planner_usable": False} if multi_defender_research_only or vanilla_profile_research_only else {}),
         "model_fidelity": "research_only_phase_events_disabled",
         "calibrated_win_probability_available": False,
         "input_sha256": forecast["input_sha256"],

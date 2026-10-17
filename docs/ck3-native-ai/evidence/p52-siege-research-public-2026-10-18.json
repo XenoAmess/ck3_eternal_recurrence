@@ -1,0 +1,146 @@
+{
+  "schema": "xar.ck3.p52-siege-research-public.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T20:50:45.028661+00:00",
+  "source_baseline": "81fe511570fa65589d887f4b8502b35d08184d4e",
+  "status": "public_source_ready_not_committed_or_live_deployed",
+  "files": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1028373,
+      "sha256": "713501cbd5fef3545c826b29fdd70b663c1fff0482eb052d6f43cf5abbdf56e8"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\siege_research_hold_continuation_v1.py",
+      "bytes": 10586,
+      "sha256": "29598a5dbe5f74848f6171b0bddfe2b87ffb725ceb1570c0770495e1017d3c7d"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\combat_profile_research_v1.py",
+      "bytes": 2348,
+      "sha256": "5bb5a12640bcdacd6b50b9135f74e9226e52868bb6eb663ed77dbb77b9566f9f"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_siege_research_hold_continuation_v1.py",
+      "bytes": 14343,
+      "sha256": "59098790e6f7b8a66fc5c9c0ec0d1da635f6be4455710ecf45e3b8b9d5fbd4d7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_combat_profile_research_v1.py",
+      "bytes": 2301,
+      "sha256": "b7638c1da5d191765000e0f5228b469bc4ebf490610038f649c5939b6ab6d6fc"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\fixtures\\p52_actual1548_1549_projection.json",
+      "bytes": 55834,
+      "sha256": "70bd6e7aaecee35b6802a3b5230b99e0ad75eb8bdbe80517616ec6c0abaf3173"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\fixtures\\p53_actual_r2_antirepeat_projection.json",
+      "bytes": 59366,
+      "sha256": "34eb9a9f95e8fa0c31ae5ce9870e6213881314f4ff98f6dbec3175a2375106e7"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\p52-siege-research-continuation-2026-10-18.md",
+      "bytes": 7408,
+      "sha256": "9ddd285ddab5a9e853dc53670dfd7be2807a8647112905a3391563bf2746ed52"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\p50-war-reinforcement-tradeoff-2026-10-18.md",
+      "bytes": 17214,
+      "sha256": "24386f3f9b631f859af2dd610546b0e3b4ea79652301969ca2098ceb02b72c12"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+      "bytes": 48603,
+      "sha256": "b9d65c9e584a7c0abac0671d53d8a4eb33a1629ffa4eb53d6f6897429f8b0e6c"
+    }
+  ],
+  "source_strategy_ast_changed_functions": [
+    "_provisional_defense_research_assessment",
+    "choose_one_life_turn"
+  ],
+  "source_strategy_primary_siege_ingress_and_attack_guards_unchanged": true,
+  "source_strategy_old_native_postguards_absent_in_baseline": [
+    "remote_ghost_day_v1",
+    "tactical_sentinel_native_armies_v1"
+  ],
+  "public_hold_requires_sameframe_native_CArmy_locally": true,
+  "actual_fixture_provenance": {
+    "snapshot_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\1549-1-result.json",
+    "source_bytes": 47151959,
+    "prefix_bytes": 262144,
+    "prefix_sha256": "325a2e11dcf0da9e35462e87f8a8956fbc2f1562edf470235505ae93442c4d34",
+    "source_body_not_loaded": true,
+    "first_incomplete_top_level_key": "combat_simulation_inputs",
+    "plan_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50r1-responses\\1548-1-result.json",
+    "plan_bytes": 24314,
+    "plan_sha256": "afac8307038d163b83fb0207e0a4f3749a152d41e2f30a9528aab97ed073354e",
+    "capture_is_prefix_not_full_snapshot": true
+  },
+  "local_R2_observation_sidecar": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p52-siege-research-continuation01\\ACTUAL-R2-SEM1-HOLD-FIELDS.json",
+    "bytes": 2880,
+    "sha256": "00b783211d67478fbd41a6f1ebbdf5f2f086a72b1b1b65f8ccc7775f88573c43"
+  },
+  "verification": {
+    "command_harness": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p52-siege-research-continuation01\\run_public_tests.py",
+      "bytes": 222,
+      "sha256": "b7fda14a45c521bb98ef807106df479258ee5c345bdd8b38cd5fe5d7362f8c98"
+    },
+    "tests": 38,
+    "subtests": 17,
+    "pytest_seconds": 5.47,
+    "process_seconds": 6.1515621,
+    "tool_chunk_id": "38d556",
+    "files_and_cells": [
+      "test_siege_research_hold_continuation_v1.py",
+      "test_combat_profile_research_v1.py",
+      "test_war_reinforcement_tradeoff_v1.py",
+      "test_war_spending_epoch_v2.py",
+      "GameplayBridgeTests.test_stationary_objective_hold_production_replaces_same_baseline_step",
+      "GameplayBridgeTests.test_stationary_objective_hold_respects_existing_query_lease_expiry"
+    ],
+    "full_real_ordinary_core_executed_not_mocked": true,
+    "native_readonly_observation_seams": "actual bounded route/contact replay; synthetic typed strength sidecars declared in test",
+    "profile_single_defender_remains_research_only_even_contact_admission_true": true,
+    "git_diff_check": "pass",
+    "tool_diff_check_chunk": "3ab1c7",
+    "initial_collection_failure": "direct pytest missing src path, 0 collected; explicit src harness fixes environment only",
+    "initial_component_fixture_difference": "SDK48 private postguards absent in public81fe; test targets actual public chain; new hold locally enforces CArmy",
+    "baseline_canary_failures": {
+      "count": 2,
+      "current_tool_chunk": "d2b3d9",
+      "baseline_tool_chunk": "e69c7a",
+      "baseline_exact_git_strategy_loaded_in_memory": true,
+      "cells": [
+        "test_two_defender_one_day_contact_cannot_consume_research_canary",
+        "test_immediate_contact_needs_current_model_and_exact_target_conflict"
+      ],
+      "same_failure_on_baseline": true,
+      "baseline_test_harness": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p52-siege-research-continuation01\\run_baseline_81fe_tests.py",
+        "bytes": 728,
+        "sha256": "4cd32b2c0675050825793acbaf5e016593f2e0816dc08d7445e29ce45cf0a7c9"
+      },
+      "changed_old_fixtures": false
+    },
+    "synthetic_camera_stderr": "camera outside synthetic Service fixture; no actual Game/camera operation"
+  },
+  "boundaries": {
+    "frozen_SDK48_SDK02_Native25_F_modified": false,
+    "mcp_calls": 0,
+    "live_game_or_capture_touched": false,
+    "single_or_multiple_unadmitted_V2_can_hold_one_day_if_strictly_admitted": true,
+    "formal_producer_query_not_pruned": true,
+    "attack_permission_increased": false,
+    "new_profile_xar_enabled_mutated": false,
+    "M6_or_M7_credit": false,
+    "full_actual_snapshot_replan_or_business_success_claimed": false,
+    "repeated_research_query_suppression_is_not_relief_or_victory": true,
+    "exact_actual_R2_anti_repeat_reason_covered_without_query_replay": true,
+    "R2_real_original_ingress_executes_then_block_phase_consumed": true,
+    "future_joint_roster_model_and_actual_calibration_required": true
+  }
+}
