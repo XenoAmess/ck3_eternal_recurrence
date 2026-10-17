@@ -1,0 +1,33 @@
+{
+  "schema": "xar.recording-stall-edit-persistent-policy/v1",
+  "enabled": true,
+  "default_mode": "speedup",
+  "keep_error_head_seconds": 2.0,
+  "keep_recovery_tail_seconds": 2.0,
+  "max_recorded_middle_seconds": 4.0,
+  "speed_factor_upper_bound": null,
+  "decision_overlay_required": true,
+  "only_real_waiting_is_compressed": true,
+  "wait_end": "first_actual_calendar_advance",
+  "late_repair_notice": "separate_uncompressed_marker",
+  "originals": "unchanged; retention follows the shared storage policy, not indefinite retention",
+  "live_operation": "metadata_only_EDL_collection",
+  "final_render_requires": [
+    "all_sources_actually_closed",
+    "fresh_owner_render_quota_admission",
+    "actual_PTS_boundary_alignment",
+    "Root_reviewed_boundary_pixels"
+  ],
+  "estimated_EDL_or_candidate_filter_is_not_final_render_authorization": true,
+  "future_integration": {
+    "generic_engine_owner": "XenoAmess/xar_promo_toolchain",
+    "CK3_binding_owner": "main repository recording launch adapter",
+    "hook": "ck3_recording_stall_hook.start_collector after actual started.json",
+    "current_private_live_provider_modified": false,
+    "formal_launch_hook_deployed_by_this_file": false,
+    "public_launch_hook_implemented": true,
+    "runtime_deployment_verified": false
+  },
+  "recording_duration_limit": null,
+  "recording_session_limit": null
+}

@@ -1,0 +1,49 @@
+{
+  "assets": [
+    {
+      "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611806",
+      "contentType": "application/octet-stream",
+      "createdAt": "2026-10-17T05:11:14Z",
+      "digest": "sha256:42fb20111ae5c210b88aa530a6c946d736b9b2ced483542d8f4bacc956ce2e45",
+      "downloadCount": 0,
+      "id": "RA_kwDOULD9e84muEoe",
+      "label": "",
+      "name": "SHA256SUMS",
+      "size": 208,
+      "state": "uploaded",
+      "updatedAt": "2026-10-17T05:11:14Z",
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/SHA256SUMS"
+    },
+    {
+      "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611805",
+      "contentType": "application/octet-stream",
+      "createdAt": "2026-10-17T05:11:14Z",
+      "digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+      "downloadCount": 0,
+      "id": "RA_kwDOULD9e84muEod",
+      "label": "",
+      "name": "xar_promo_toolchain-0.3.0-py3-none-any.whl",
+      "size": 194037,
+      "state": "uploaded",
+      "updatedAt": "2026-10-17T05:11:14Z",
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+    },
+    {
+      "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611807",
+      "contentType": "application/x-gtar",
+      "createdAt": "2026-10-17T05:11:14Z",
+      "digest": "sha256:dad847f5049a6cae3a6742fbdd3a426700aacd97dcebd5926495599d80fdd7ca",
+      "downloadCount": 0,
+      "id": "RA_kwDOULD9e84muEof",
+      "label": "",
+      "name": "xar_promo_toolchain-0.3.0.tar.gz",
+      "size": 13294313,
+      "state": "uploaded",
+      "updatedAt": "2026-10-17T05:11:15Z",
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0.tar.gz"
+    }
+  ],
+  "publishedAt": "2026-10-17T05:11:16Z",
+  "tagName": "v0.3.0",
+  "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0"
+}

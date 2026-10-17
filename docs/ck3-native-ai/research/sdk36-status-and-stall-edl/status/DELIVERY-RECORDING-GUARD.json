@@ -1,0 +1,24 @@
+{
+  "schema": "xar.runtime-repair-recording-stop-guard-delivery/v1",
+  "status": "FILE_ONLY_FINAL_NOT_DEPLOYED",
+  "files": {
+    "runtime_repair_status_recording_guard.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_recording_guard.py",
+      "sha256": "799d089e8857264a52283b901337dc6da272379730efbaa9c7567ff7bfd79847",
+      "bytes": 11212
+    },
+    "test_recording_pause_guard.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_recording_pause_guard.py",
+      "sha256": "a48cda8d83013e030127e501455ea75e6c7c5ad7428ab865179c039bb638d031",
+      "bytes": 4860
+    }
+  },
+  "actual_cases_tests_passed": 5,
+  "false_incident": "4bdec35c56524a4e9dbaccc5f8ef2b3f",
+  "old_recovered_halt": "1836/1875 recovered1876 before falseopening",
+  "qualifier": "current matching unrecovered pending HALT OR actual operator_stopped plus recording recovery stop marker; history pointer alone rejects",
+  "withdrawal": "create-only exact CURRENT archive+correction audit; phase expired not recovered; zero credit; EDL waiting forbidden; redisplay prior real decision field projection",
+  "inherited_autoapplied_and_ordered_positive_clock_guard_retained": true,
+  "Game_MCP_OBS_Desktop_or_process_mutation_calls": 0,
+  "media_Driver_SAVE_body_reads": 0
+}

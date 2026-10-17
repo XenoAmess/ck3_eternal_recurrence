@@ -1,0 +1,30 @@
+{
+  "schema": "xar.runtime-repair-auto-applied-delivery/v1",
+  "status": "FILE_ONLY_FINAL_NOT_DEPLOYED",
+  "files": {
+    "runtime_repair_status_auto_applied.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_auto_applied.py",
+      "sha256": "e7a5224f59909f3d4e5f9181a54dba8f6287c5bb4ea1a6d00e19ff40ac97d0fe",
+      "bytes": 13061
+    },
+    "test_auto_applied.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_auto_applied.py",
+      "sha256": "4bdcb9bf0a21d2fffe6197a560d99dfc355dbfc046926768a5a85af40cfffa49",
+      "bytes": 4374
+    }
+  },
+  "tests_passed": 5,
+  "actual_production_method_chain": "original1875 +halt1836 -> exactrecover1876/audit/SEM1877 -> ordered TURN13510..13526 -> AUTO1911/MET1912",
+  "first_actual_progress_at_utc": "2026-10-17T04:47:06.511988+00:00",
+  "first_actual_date_delta_raw": 216,
+  "zero_date_AUTOs_read_by_resolver": 0,
+  "bounds": {
+    "core_read_unchanged_bytes": 65536,
+    "positive_clock_envelope_max_bytes": 4194304,
+    "positive_clock_decoded_body_max_bytes": 2097152,
+    "actual1911_envelope_bytes": 2781241
+  },
+  "actual_test_native_process_observation": "fake retained handles; exact actual published metadata values, no live process API",
+  "Game_MCP_OBS_Desktop_calls": 0,
+  "Driver_SAVE_video_body_reads": 0
+}

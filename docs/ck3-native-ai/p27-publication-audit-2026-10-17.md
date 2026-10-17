@@ -303,3 +303,13 @@ AUTO50实际一天＋event110的消费者只放宽合法暂停弹窗读回，完
 窗口31随后在AUTO349 counterpolicy_hold失败，raw53484480→53484768仅12日／12597周期，SDK35正常0/0退出；不把先前6日前缀写成持续running。Root随后以83745edd准入窗口32／SDK36，基线53484792／12603周期；04:36:34Z报告63日／12813周期／53486304、runner76027及采集健康，同Game263980／OBS56104／原42cd录像不变。近期45秒小样本约2.58秒／日，非整场均速。失败窗口不拼接；连续30年稳定第一，再<1秒／日、0.5秒／日，均未达。
 
 Army146／148只证明同帧比较和use配置，未来AUTO选用及收益仍需指标。等待段默认头尾各2秒、中段快进最多4秒；通用EDL归独立promo仓，CK3绑定／正式启动metadata收集另批接入，不复制通用engine进主仓。render-plan目前仅估算，真实PTS映射与像素复验后才可授最终编码资格，本批未读取或编码活动媒体。
+
+## 第十二批：跨 SDK 提示、当前故障去重与默认停顿元数据
+
+第十一1af385fc Official39003837013及Linear39003836974实际success。SDK36 transfer保留原349停止时间／source binding，新19／20已结算推进才恢复；当前readonly1876／SEM1877仅识别修复已应用，按小TURN顺序找到真实首正向1911／1912，不读零日期大AUTO。专用4MiB／2MiB上限与普通core1MiB分开，公开正常import不覆盖v5全局函数。旧watcher32513 exit1及误报4b／0c撤回保留；最新当前pending／feeder／terminal原故障去重守卫一起收口，不把历史HALT误当新停顿，也不称全部异常已验。
+
+Root较新报告SDK36窗口32已383日，旧31仍失败12日；当前Game／SDK／录像不由本包切换。稳定30年第一，再<1秒／日、0.5秒／日，均未达。Family仅修未定义child-focus submit_step，技术负缓存完整窄包仍研究未部署。
+
+纯EDL在独立promo12ecaf98／正式v0.3.0发布，275项正常及275项-O通过、Release39005285835 success；wheel真实SHA f59c4b62…核验后主仓同步精确依赖。主仓仅CK3 adapter／collector／默认2/2/4 policy和future actual-started hook：一个hidden metadata child，cleanup写自有STOP，错误不请求停止录像。CURRENT先不可变快照；撤回误报没有等待编辑，不覆盖真实已闭区间。当前私有provider／collector未改；最终PTS／素材／mapping／像素绑定尚需独立合格入口，旧不完整render candidate只保研究，0encode／无成片信用。[第十二有限源包](research/sdk36-status-and-stall-edl/README.md)。
+
+用户随后明确干净重开1066罗贝尔、重录／重跑，至少主菜单起录，公开视频《罗贝尔的三十年》伪一镜到底；阻塞中段<5秒、默认4秒并保留原因／修复。旧carry37取消（未现场drain），Source37／缓存／focus-present仅源码复用，新局天数／战果／Driver／goal零继承，旧945日等不能转记。新局和成片未由此文档或离线测试完成；正式hook不要求已有地图／actor，实际主菜单录制资格另记。第12修改CI入口174项／91子例及loader1项实际通过；最终PTS与像素校准渲染归独立promo，当前D2和D视频不限长合同保持。

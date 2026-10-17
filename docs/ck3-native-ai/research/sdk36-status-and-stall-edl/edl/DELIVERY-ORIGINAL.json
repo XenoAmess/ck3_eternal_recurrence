@@ -1,0 +1,73 @@
+{
+  "schema": "xar.recording-stall-edit-delivery/v1",
+  "status": "FILE_ONLY_FINAL",
+  "at_utc": "2026-10-17T04:23:33.033308+00:00",
+  "files": {
+    "stall_edl.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\stall_edl.py",
+      "sha256": "23259e941045bde6e8d495b7da7160ef78f0086e84bf5bb1fa59264c2653c878",
+      "bytes": 24784
+    },
+    "prepare_actual_edl.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\prepare_actual_edl.py",
+      "sha256": "c1270615d3b780698417f30ef830f4cd9fdab3aa141f485dbdc324f6ed367a1f",
+      "bytes": 7152
+    },
+    "test_stall_edl.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\test_stall_edl.py",
+      "sha256": "2e56fa62519cbc86670a798d5cd83384c1fc57b80b58d5f0c00f43d9ef2c92df",
+      "bytes": 8795
+    },
+    "ACTUAL-STALLS-INPUT-REV1.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\ACTUAL-STALLS-INPUT-REV1.json",
+      "sha256": "560770186dc555ac7358c13fc5ffb3a884e96dc1dfd778e1c3e8cbe3f61f3e2c",
+      "bytes": 14995
+    },
+    "ACTUAL-STALLS-EDL-REV1.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\ACTUAL-STALLS-EDL-REV1.json",
+      "sha256": "e28e1e9e30aa22543bb98f3fbce15b0f1147eea18f537f52fb56243b0072f156",
+      "bytes": 26207
+    },
+    "ROOT-CLI.txt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\ROOT-CLI.txt",
+      "sha256": "55c9b668dc3d0677f2476e8751193f7022b9834cc20661327579c3885451b8ee",
+      "bytes": 2993
+    }
+  },
+  "meaningful_tests_passed": 9,
+  "actual_intervals": {
+    "closed_waits": 4,
+    "open_waits": 1,
+    "first_progress_uses_original_AUTO_dates": true,
+    "cross_recording_gap_explicit": true,
+    "late_repair_notice_not_wait_end": true
+  },
+  "default": {
+    "mode": "speedup",
+    "keep_head_seconds": 2,
+    "keep_tail_seconds": 2,
+    "max_middle_seconds": 4,
+    "speed_factor_max": null
+  },
+  "media_access": {
+    "active_ffprobe_calls": 0,
+    "media_hash_calls": 0,
+    "video_body_bytes_read": 0,
+    "encoder_executed": false,
+    "Game_MCP_OBS_Desktop_calls": 0
+  },
+  "precision": "UNVERIFIED_WALLCLOCK_TO_PTS_ESTIMATE_NOT_FRAME_EXACT",
+  "rendering": "Root only after all sources closed, fresh owner render quota allocation, explicit estimate acceptance; no final render acceptance claimed",
+  "storage": {
+    "existing_parent_admission": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\STORAGE-ADMISSION.json",
+    "parent_admission_sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+    "new_reservation_bytes": 0,
+    "package_budget_bytes": 16777216,
+    "actual_package_bytes": 84926,
+    "policy_version": "1.0.0",
+    "review_at_utc": "2026-10-19T04:23:33.033308+00:00",
+    "protection_until_utc": "2026-10-24T04:23:33.033308+00:00",
+    "protection_reason": "Active final-film editing recipe and original evidence pins; no automatic renewal"
+  },
+  "public_boundary": "Generic parameterized engine belongs xar_promo_toolchain; CK3 receipt producer stays adapter; no W/index/source changes"
+}

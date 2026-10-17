@@ -1,0 +1,51 @@
+{
+  "schema": "xar.runtime-repair-current-fault-guard-delivery/v1",
+  "at_utc": "2026-10-17T05:23:06.988765+00:00",
+  "status": "FINAL_FILE_ONLY_CANDIDATE",
+  "source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_current_fault_guard.py",
+    "sha256": "498b37eeb5def29e8537bdc8219be9fe9e54dc54b116ac8079fda751d398e9ec",
+    "bytes": 12808
+  },
+  "tests": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_current_fault_guard.py",
+    "sha256": "277810730ba966ee35336bc299ee1e0a129361dc846c9dda092ec178877cc538",
+    "bytes": 5768
+  },
+  "offline_result": {
+    "tests": 7,
+    "passed": 7,
+    "runtime_calls": 0
+  },
+  "frozen_parent": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_recording_guard.py",
+    "sha256": "799d089e8857264a52283b901337dc6da272379730efbaa9c7567ff7bfd79847",
+    "bytes": 11212
+  },
+  "actual_false_reopen": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\0c9cea99edba4bcab01f5436862f12fe-OPENED.json",
+    "sha256": "0698cbe5a743b103be6e0af0d0cf3a01b6bf13f3eb9dbcdcd180dfddcca6aa80",
+    "bytes": 1463
+  },
+  "prior_actual_resolved": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\931274e4050546a784a08d2e36bd538d-RESOLVED-SETTLED-PAIR.json",
+    "sha256": "45756e32adccf2b53bd322bb815a14480d2ea7e502334fe59bdcaf1bfb0e34c8",
+    "bytes": 8188
+  },
+  "qualification": "exact source HALT raw bytes + original AUTO pin + session/Game/SDK fingerprint; current pending or stopped matching FULL required; terminal fingerprint veto",
+  "withdrawal": {
+    "immutable_before_and_audit": true,
+    "recovery_claimed": false,
+    "business_credit": 0,
+    "EDL_wait_interval_allowed": false
+  },
+  "live_deployment_claimed": false,
+  "storage": {
+    "parent_admission_sha256": "1307f839b655e76595096a2fb6afd6555b2ac3e0a19e47a02f69feb886428a09",
+    "new_reservation_bytes": 0,
+    "review_before_utc": "2026-10-17T11:49:00.265518Z",
+    "packet_max_bytes": 16777216,
+    "derived_retention_hours": 48
+  },
+  "runtime_Game_MCP_OBS_Desktop_calls": 0
+}

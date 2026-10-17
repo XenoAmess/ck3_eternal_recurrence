@@ -816,6 +816,31 @@ def _publish_capture_closed_and_finalize(root, job, completed_payload, cleanup):
     finalizer.start()
 
 
+def _start_stall_edl_metadata(job, root):
+    try:
+        if __package__:
+            from .ck3_recording_stall_hook import start_collector
+        else:
+            from ck3_recording_stall_hook import start_collector
+        return start_collector(job, _read(root / "started.json"))
+    except Exception as metadata_error:
+        _write_new(root / "stall-edl-start-failed.json", {
+            "metadata_only_failure": True, "error": str(metadata_error)[:2048],
+            "recording_stop_requested_by_metadata_failure": False})
+        return None
+
+
+def _stop_stall_edl_metadata(job, root):
+    try:
+        if __package__:
+            from .ck3_recording_stall_hook import request_stop
+        else:
+            from ck3_recording_stall_hook import request_stop
+        request_stop(job)
+    except Exception as metadata_error:
+        _write_new(root / "stall-edl-stop-failed.json", {"error": str(metadata_error)[:2048]})
+
+
 def run_worker(path):
     job = _read(path)
     validate_job(job)
@@ -1017,6 +1042,7 @@ def run_worker(path):
                 "video": _response_data(video), "runtime_freshness_qualified": False,
                 "continuous": continuous, "duration_seconds": job["duration_seconds"],
                 "max_output_bytes": job["max_output_bytes"], "deadline_utc": job["deadline_utc"]})
+            _start_stall_edl_metadata(job, root)
             end = None if continuous else start_monotonic + job["duration_seconds"]
             reconnect_at, screenshot_at = time.monotonic() + 20, time.monotonic() + 30
             last_bytes, last_growth, peak = 0, time.monotonic(), 0
@@ -1143,6 +1169,7 @@ def run_worker(path):
                     cleanup["independent_file_growth_summary"] = watch.sample_summary
                     cleanup["watcher_last_disk_observation"] = watch.last_disk_observation
             _write_new(root / "cleanup.json", cleanup)
+            _stop_stall_edl_metadata(job, root)
             if engine.generation:
                 engine.generation.close()
     if primary:

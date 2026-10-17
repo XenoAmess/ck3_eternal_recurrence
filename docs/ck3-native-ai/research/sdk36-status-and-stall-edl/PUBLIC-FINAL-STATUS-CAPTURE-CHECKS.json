@@ -1,0 +1,27 @@
+{
+  "schema": "xar.public-twelfth-focused-checks.v1",
+  "tests": [
+    {
+      "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_ck3_obs_startup.py tools/test_ck3_obs_capture.py tools/test_ck3_obs_capture_finalize.py tools/test_ck3_capture_closed_receipt.py tools/test_ck3_stall_edl.py",
+      "returncode": 0,
+      "stdout": "................................................... [ 66%]\n..........................                       [100%]\n77 passed, 45 subtests passed in 11.35s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider tools/test_runtime_repair_status.py tools/test_runtime_repair_status_v2.py tools/test_repair_all_stops.py tools/test_runtime_repair_overlay_view.py tools/test_campaign_root_paused_boundary_readonly.py tools/test_repair_reason_v4.py tools/test_repair_v5.py tools/test_runtime_repair_sdk_transfer.py tools/test_runtime_repair_auto_applied.py tools/test_runtime_repair_current_fault_guard.py tests/test_shared_harness_reads.py",
+      "returncode": 0,
+      "stdout": "...................................... [ 62%]\n.......................                                        [100%]\n61 passed, 44 subtests passed in 2.89s\n",
+      "stderr": ""
+    },
+    {
+      "command": "python -B -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_construction_material_unavailable.py ck3_autonomous_player/tests/unit/test_council_planning_technical_defer.py ck3_autonomous_player/tests/unit/test_optional_check_service_cadence_v1.py ck3_autonomous_player/tests/unit/test_family_wartime_rolling_portable.py ck3_autonomous_player/tests/unit/test_family_peace_cadence_portable.py ck3_autonomous_player/tests/unit/test_family_history_free_marriage_portable.py ck3_autonomous_player/tests/unit/test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unobserved_completed_slots_cannot_prove_rollback_after_restore ck3_autonomous_player/tests/unit/test_child_focus_selected_step.py",
+      "returncode": 0,
+      "stdout": "....................................                                   [100%]\n36 passed, 2 subtests passed in 5.09s\n",
+      "stderr": ""
+    }
+  ],
+  "wheel_source": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p36-public-twelfth-prep01\\promo-verify-venv\\Lib\\site-packages",
+  "wheel_version": "0.3.0",
+  "recording_Game_OBS_MCP_processes_started": 0,
+  "current_runtime_sources_changed": false
+}

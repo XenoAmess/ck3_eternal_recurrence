@@ -1,0 +1,79 @@
+{
+  "schema": "xar.promo-v0.3.0-release-verification.v1",
+  "release": {
+    "assets": [
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611806",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-10-17T05:11:14Z",
+        "digest": "sha256:42fb20111ae5c210b88aa530a6c946d736b9b2ced483542d8f4bacc956ce2e45",
+        "downloadCount": 0,
+        "id": "RA_kwDOULD9e84muEoe",
+        "label": "",
+        "name": "SHA256SUMS",
+        "size": 208,
+        "state": "uploaded",
+        "updatedAt": "2026-10-17T05:11:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/SHA256SUMS"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611805",
+        "contentType": "application/octet-stream",
+        "createdAt": "2026-10-17T05:11:14Z",
+        "digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+        "downloadCount": 0,
+        "id": "RA_kwDOULD9e84muEod",
+        "label": "",
+        "name": "xar_promo_toolchain-0.3.0-py3-none-any.whl",
+        "size": 194037,
+        "state": "uploaded",
+        "updatedAt": "2026-10-17T05:11:14Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+      },
+      {
+        "apiUrl": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/assets/649611807",
+        "contentType": "application/x-gtar",
+        "createdAt": "2026-10-17T05:11:14Z",
+        "digest": "sha256:dad847f5049a6cae3a6742fbdd3a426700aacd97dcebd5926495599d80fdd7ca",
+        "downloadCount": 0,
+        "id": "RA_kwDOULD9e84muEof",
+        "label": "",
+        "name": "xar_promo_toolchain-0.3.0.tar.gz",
+        "size": 13294313,
+        "state": "uploaded",
+        "updatedAt": "2026-10-17T05:11:15Z",
+        "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0.tar.gz"
+      }
+    ],
+    "publishedAt": "2026-10-17T05:11:16Z",
+    "tagName": "v0.3.0",
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0"
+  },
+  "wheel_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+  "python": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p36-public-twelfth-prep01\\promo-verify-venv\\Scripts\\python.exe",
+  "checks": [
+    {
+      "args": [
+        "--version"
+      ],
+      "stdout": "xar-promo 0.3.0\n"
+    },
+    {
+      "args": [
+        "--help"
+      ],
+      "stdout": "usage: xar-promo [-h] [--version]\n                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...\n\nCreate, verify, and preserve reusable promotional-video project metadata.\n\npositional arguments:\n  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}\n    init                create a ProjectConfig and its first bound run without\n                        overwriting files\n    start-run           create another run bound to the current exact\n                        ProjectConfig bytes\n    validate            validate a ProjectConfig, RunManifest, or legacy\n                        showcase v1 manifest\n    preserve            copy a file to immutable content-addressed storage and\n                        append its run record\n    signoff             append an explicit human decision bound to preserved\n                        artifact bytes\n    plan                compose and validate a pipeline plan without invoking\n                        providers or writing\n    build               run a composed pipeline and preserve success or\n                        failure material in its run\n    audit               write and preserve an automated audit without creating\n                        human approval\n    review              plan or create a pending human-review package without\n                        recording sign-off\n    export              validate or create an offline release bundle from an\n                        explicit policy\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n"
+    },
+    {
+      "args": [
+        "plan",
+        "--help"
+      ],
+      "stdout": "usage: xar-promo plan [-h] --workdir WORKDIR --composer COMPOSER\n                      [--validate-only]\n                      document\n\npositional arguments:\n  document             native ProjectConfig or RunManifest\n\noptions:\n  -h, --help           show this help message and exit\n  --workdir WORKDIR    fresh attempt path to validate without creating\n  --composer COMPOSER  project PipelineComposer as MODULE:ATTRIBUTE\n  --validate-only      explicitly request the command's always-read-only\n                       validation mode\n"
+    }
+  ],
+  "live_interpreters_upgraded": false,
+  "no_media_or_runtime_calls": true,
+  "private_package_bytes": 2455137,
+  "storage_free_bytes": 1041371234304
+}

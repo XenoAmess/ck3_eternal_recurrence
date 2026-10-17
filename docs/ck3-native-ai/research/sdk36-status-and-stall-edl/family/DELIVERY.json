@@ -1,0 +1,30 @@
+{
+  "base_sdk35_service_sha256": "38f715455115e42a3e50fa8eb65f6dfca70235e37cf4ba4adb9a40d2d5884a51",
+  "candidate_sdk35_service_sha256": "242cb56196aa3eeb46a8b23febdda38bad14ec3d4b8e25a7cea30de5c2084c52",
+  "focused_tests": {
+    "exact_base_patch_integrity": "1 passed",
+    "latent_submit_step": "1 passed",
+    "local_process_birth_winapi": "1 passed",
+    "negative_cache": "6 passed, including six malformed receipt mutations"
+  },
+  "latent_submit_fix": "independent one-line fix for undefined submit_step on real legal child focus",
+  "negative_cache_contract": {
+    "activation": "two separate game dates with exact same-frame native read receipts",
+    "current_game_capability": "does not fix Native education definition lookup or assign a focus",
+    "effect": "technical_unavailable_cached observation only; native_legal remains null",
+    "expiry": "30 game days, then real Native retry",
+    "observed_native_error": "education_definition_missing",
+    "scope": "same game PID and full kernel process birth FILETIME, bridge generation, CK3 build/exe, adapter, actor, episode and target"
+  },
+  "pins": {
+    "candidate\\src\\xar_autoplayer\\bridge\\family_focus_definition_negative_v1.py": "94bde9f82abb05c07b2ec792f47d75aabd58464c2781dfba76825bb636eb88bc",
+    "candidate\\src\\xar_autoplayer\\bridge\\service.py": "242cb56196aa3eeb46a8b23febdda38bad14ec3d4b8e25a7cea30de5c2084c52",
+    "latent_submit_step_fix.patch": "21aead339ff7459ad64ced9960451ad3248c3196ffca75039a5d975d8f716156",
+    "service.patch": "16b13f44957e6cd3e4a857446e716d511b697016c4b1da868d8187a17cd32fbb",
+    "test_birth_winapi.py": "53ae017b8dd590ebb03afb7dd63141ad7c22ad5b61255ff1e3137d6831aacd97",
+    "test_negative_cache.py": "29ed12e57623a7270d01df362270710a8ac4bdf4724c5ea4dae8832ee924678c",
+    "test_patch_integrity.py": "9be662c3d60fa425617bd9f1d485c2070a524891bb693b2784d37b665f56e031",
+    "test_submit_step_binding.py": "cb7a2115f9b94b8a789343dc818755b98dbfb97301b5d04cf6985ca60965f6e3"
+  },
+  "status": "offline_research_not_deployed"
+}

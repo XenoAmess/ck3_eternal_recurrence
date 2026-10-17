@@ -1,0 +1,53 @@
+--- a/xar_autoplayer/bridge/service.py
++++ b/xar_autoplayer/bridge/service.py
+@@ -3319,8 +3319,13 @@
+         if (not all(callable(method) for method in methods) or not callable(history_view)
+                 or getattr(self.driver, "allow_private_lifestyle_formal_trial", False) is not True):
+             return planned
+         pending = history_view(snapshot, self._unresolved_family_child_focus_v1)["pending"]
++        from . import family_focus_definition_negative_v1 as focus_definition_negative
++        negative_cache = getattr(self, "_family_focus_definition_negative_v1", None)
++        if not isinstance(negative_cache, dict):
++            negative_cache = {}
++            self._family_focus_definition_negative_v1 = negative_cache
+         observations = []
+         state = {"policy": "source_informed_childhood_focus_preference_12004.v1",
+                  "observations": observations, "pending": pending, "receipt": None}
+         planned = {**planned, "plan": {**planned["plan"],
+@@ -3371,19 +3376,34 @@
+                            "ordered_target_keys": [record["target_key"] for record in ordered],
+                            "queries": []}
+             observations.append(observation)
+             for preference in ordered:
+-                query = methods[0](child_full_id=child_id, target_key=preference["target_key"],
++                target_key = preference["target_key"]
++                focus_state = child_needs.get("focus_management")
++                if (isinstance(focus_state, dict)
++                        and focus_state.get("available") is True
++                        and focus_state.get("state") == "known_absent"
++                        and focus_state.get("focus_absent") is True):
++                    cached = focus_definition_negative.cached_unavailable(
++                        negative_cache, snapshot, target_key)
++                    if cached is not None:
++                        # Keep technical unavailability explicit. This is not
++                        # a current native query, legal verdict or family NOOP.
++                        observation.setdefault("technical_unavailable_cached", []).append(cached)
++                        continue
++                query = methods[0](child_full_id=child_id, target_key=target_key,
+                                    expected_revision=int(planned["revision"]))
+                 observation["queries"].append(query)
++                focus_definition_negative.remember(
++                    negative_cache, snapshot, target_key, query)
+                 focus = query["current_focus"]
+                 if focus["available"] is True and focus["presence"] == "present":
+                     observation["current_focus_present"] = True
+                     break
+                 if (query["status"] == "available" and query["native_legal"] is True
+                         and focus["available"] is True and focus["presence"] == "absent"):
+                     return {**planned, "plan": {**planned["plan"],
+-                        "selected_step": submit_step,
++                        "selected_step": "private-select-child-education-focus-v1",
+                         "phase": "family_child_education_focus_submission",
+                         "family_child_education_focus_query": query,
+                         "reason": "select the preferred native-legal focus for the observed child",
+                     }}

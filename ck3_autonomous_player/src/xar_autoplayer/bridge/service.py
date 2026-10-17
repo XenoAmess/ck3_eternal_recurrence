@@ -3296,7 +3296,7 @@ class GameplayBridgeService:
                 if (query["status"] == "available" and query["native_legal"] is True
                         and focus["available"] is True and focus["presence"] == "absent"):
                     return {**planned, "plan": {**planned["plan"],
-                        "selected_step": submit_step,
+                        "selected_step": "private-select-child-education-focus-v1",
                         "phase": "family_child_education_focus_submission",
                         "family_child_education_focus_query": query,
                         "reason": "select the preferred native-legal focus for the observed child",

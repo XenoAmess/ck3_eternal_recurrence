@@ -1,0 +1,52 @@
+{
+  "schema": "xar.recording-stall-edit-persistent-policy-delivery/v2",
+  "status": "FILE_ONLY_FINAL_NOT_DEPLOYED",
+  "files": {
+    "recording-edit-policy.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\recording-edit-policy.json",
+      "sha256": "498bb97cd3978355adc2c09e668284b975b4c3a6866c0c4fd9432eef34a9d8c5",
+      "bytes": 1300
+    },
+    "collect_stall_edl.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\collect_stall_edl.py",
+      "sha256": "8c56f406072238500a59d4f9a308442fd496e8192853d2749449f02af7ca8e45",
+      "bytes": 8153
+    },
+    "qualified_render_plan.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\qualified_render_plan.py",
+      "sha256": "48339aa468c3e145f215fb64f2798467f1929ef8df4cd278761ca8bc9e11daf9",
+      "bytes": 4517
+    },
+    "test_persistent_collector.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\test_persistent_collector.py",
+      "sha256": "be787e2178f88582eeab0b2dcda0311f6c06b5b1e5eaa64d6b33cf64e27dd06e",
+      "bytes": 3970
+    },
+    "ACTUAL-STALLS-EDL-REV2.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\recording-stall-edit01\\ACTUAL-STALLS-EDL-REV2.json",
+      "sha256": "09bd304ee0d7b0ce4e7a349177b00fd472638ff09eb3d8a6dafcb936003ac6a4",
+      "bytes": 28807
+    }
+  },
+  "persistent_collector_tests_passed": 4,
+  "preserves_user_default": {
+    "head_seconds": 2,
+    "tail_seconds": 2,
+    "middle_max_seconds": 4,
+    "speed_factor_cap": null,
+    "decision_overlay": true
+  },
+  "single_incident_crossSDK_supported": true,
+  "newSDK_same_number_failure_is_new_wait": true,
+  "mutable_CURRENT_snapshotted_immutable_before_pin": true,
+  "final_render_requires": [
+    "closed source",
+    "fresh allocated quota",
+    "actual PTS boundaries",
+    "Root pixel boundary acceptance"
+  ],
+  "current_estimate_only_engine_is_not_final_render_authorization": true,
+  "formal_future_hook": "collect_stall_edl.launch_spec called after actual recording started; mainrepo adapter integrating through sole public writer",
+  "formal_hook_deployed": false,
+  "runtime_API_or_media_body_calls": 0
+}

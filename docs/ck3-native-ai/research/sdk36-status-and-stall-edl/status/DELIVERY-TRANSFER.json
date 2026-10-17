@@ -1,0 +1,24 @@
+{
+  "schema": "xar.runtime-repair-sdk-transfer-hint-delivery/v2",
+  "status": "FILE_ONLY_FINAL_NOT_DEPLOYED",
+  "files": {
+    "runtime_repair_status_sdk_transfer_v2.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\runtime_repair_status_sdk_transfer_v2.py",
+      "sha256": "d3a6dbf4bff6c51258aa5ad8a7c53e5151652ecd50b63d063026e4242b0bfb11"
+    },
+    "test_sdk_transfer_v2.py": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\test_sdk_transfer_v2.py",
+      "sha256": "216895f25505cb7cbcc56295bb805e2c632fc70a5d29210b9bacfaf07767eb20"
+    },
+    "ACTUAL-P35-P36-TRANSFER-19-20.PORTABLE.json": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\runtime-repair-status01\\ACTUAL-P35-P36-TRANSFER-19-20.PORTABLE.json",
+      "sha256": "60813539af29c147e0c820bf8714900066af904e75854f7653fff21bf196b4a4"
+    }
+  },
+  "combined_v2_tests_passed": 7,
+  "current_count12944_first_actual_turn12603_AUTO19_MET20_verified": true,
+  "hint_is_not_recovery_proof": true,
+  "runtimecalls": 0,
+  "supersedes_transfer_v1_runtime_entry_only": true,
+  "v1_source_preserved": true
+}

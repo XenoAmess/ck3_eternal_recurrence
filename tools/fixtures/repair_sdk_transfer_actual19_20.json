@@ -1,0 +1,419 @@
+{
+  "state": {
+    "schema": "xar.runtime-repair-status/v1",
+    "binding": {
+      "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+      "sdk_prefix": "p35",
+      "game_pid": 263980,
+      "game_creation_filetime": 134366781612159835,
+      "game_creation_date": "20261017023601.215983+000"
+    },
+    "incident_id": "68b891df455f4960941513b894b8f267",
+    "phase": "repairing",
+    "pause_reason": "自动推进受阻：auto-turn was not confirmed executed; stop with no replay",
+    "halt_receipt": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-queue\\ROOT-REQUEST-HALTED-0314.json",
+      "sha256": "66cea511e99dac7e0a8b1b6f7376c98b723317396379445489c150cd7ab12a97"
+    },
+    "original_request": {
+      "sequence": 349,
+      "tool": "ck3_auto_turn",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "raw_pause_reason": "auto-turn was not confirmed executed; stop with no replay",
+    "repair_message": null,
+    "observed_frame": {
+      "snapshot_id": "native:222",
+      "revision": 223,
+      "native_revision": 222,
+      "date_raw": 53484768,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    },
+    "opened_at_utc": "2026-10-17T04:04:17.585509+00:00",
+    "expires_at_utc": null,
+    "resolving_requires": "actual post-repair semantic receipt and successful progressing FULL",
+    "Game_action_submitted": false,
+    "business_credit": 0,
+    "last_decision": {
+      "source": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p35-responses\\0347-1-result.json",
+        "sha256": "4c7bb3090808b37931f4505c5299eed1599a99bb57ccef355c3cd6eee6b1ca18"
+      },
+      "summary": "query-army-strengths-v1"
+    },
+    "updated_at_utc": "2026-10-17T04:04:17.697738+00:00",
+    "last_overlay_relay": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\responses\\zz-runtime-repair-20261017T040417697760Z-283a0447.json",
+      "sha256": "db278f5c7f9ce7fb82c95d5298e6494937b8d14a2eeba8a253f3375b0d91fbf8"
+    }
+  },
+  "old_pair": {
+    "at_utc": "2026-10-17T03:00:03.630580+00:00",
+    "status": "SDK_PAIR_HANDLES_RETAINED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 243932,
+        "creation_filetime": 134366796000699187,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 237856,
+        "creation_filetime": 134366796028033296,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "observer": "owned_Game_supervisor_retained_handles",
+    "rpc_started": false
+  },
+  "old_exit": {
+    "status": "ACTUAL_BOTH_SDK_EXITS_OBSERVED",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 243932,
+        "creation_filetime": 134366796000699187,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      },
+      {
+        "role": "sdk_application",
+        "pid": 237856,
+        "creation_filetime": 134366796028033296,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "kernel_exit_observed": true,
+        "wait_result": 0,
+        "exit_code": 0,
+        "observation_error": null
+      }
+    ],
+    "normal": true,
+    "at_utc": "2026-10-17T04:13:00.436447+00:00",
+    "observer": "independent_original_P35_handles_before_exit",
+    "Game_stopped": false,
+    "recording_stopped": false
+  },
+  "new_pair": {
+    "status": "SDK_PAIR_HANDLES_RETAINED",
+    "at_utc": "2026-10-17T04:30:57.774129+00:00",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 252660,
+        "creation_filetime": 134366850550748866,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 180676,
+        "creation_filetime": 134366850577216556,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "observer": "separate_P36_owner_retained_handles",
+    "rpc_started": false
+  },
+  "published": {
+    "at_utc": "2026-10-17T04:30:57.731112+00:00",
+    "processes": [
+      {
+        "role": "sdk_queue",
+        "pid": 252660,
+        "creation_filetime": 134366850550748866,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      },
+      {
+        "role": "sdk_application",
+        "pid": 180676,
+        "creation_filetime": 134366850577216556,
+        "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe"
+      }
+    ],
+    "application_creator": "actual_mcp_stdio_factory_return",
+    "rpc_started": false
+  },
+  "semantic": {
+    "request": {
+      "sequence": 1,
+      "tool": "ck3_take_semantic_snapshot_private_v1",
+      "arguments": {}
+    },
+    "ended_at_utc": "2026-10-17T04:31:21.808295+00:00",
+    "result": {
+      "structured_content": {
+        "played_character": {
+          "character_id": 39979,
+          "alive": true
+        },
+        "date_raw": 53484768,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "paused": true,
+        "map_ready": true,
+        "revision": 2,
+        "native_revision": 223,
+        "diagnostics": {
+          "bridge_pid": 263980,
+          "connection_generation": 2
+        }
+      }
+    }
+  },
+  "caps": {
+    "request": {
+      "sequence": 2,
+      "tool": "ck3_get_capabilities",
+      "arguments": {}
+    },
+    "ended_at_utc": "2026-10-17T04:31:38.769935+00:00",
+    "result": {
+      "structured_content": {
+        "native_session_control": {
+          "configured": true,
+          "queue_dir": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\state\\native-session\\bridge",
+          "restore_checkpoint": true,
+          "driver_state_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\state\\native-session\\driver-state.json",
+          "driver_state_restored": true,
+          "driver_state_error": null,
+          "driver_state_restore_kind": "same_pid_hot",
+          "episode_binding_state": "active_resumed",
+          "cold_candidate_rejection": null,
+          "episode_transition": null,
+          "episode_transition_error": null
+        },
+        "diagnostics": {
+          "bridge_pid": 263980,
+          "connection_generation": 2
+        }
+      }
+    }
+  },
+  "freeze": {
+    "status": "FINAL_SOURCE_FROZEN",
+    "sdk_generation": "P36",
+    "same_Game_hot_rotation": true
+  },
+  "turn": {
+    "global_turn": 12603,
+    "before": {
+      "snapshot_id": "native:223",
+      "revision": 2,
+      "native_revision": 223,
+      "date_raw": 53484768,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    },
+    "before_metrics_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0017-1-result.json",
+    "auto_sequence": 19,
+    "stage": "auto_verified",
+    "auto_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0019-1-result.json",
+    "observation": {
+      "schema": "g2.queue.ordinary-result-credit/v1",
+      "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2630-h-1-369099275",
+      "service_status": "executed",
+      "result_status": "postcondition",
+      "category": "route_contact_horizon_exact_one_day_observed",
+      "actual_date_delta_raw": 24,
+      "actual_elapsed_days": 1,
+      "date_advance_observed": true,
+      "paired_after_metrics_still_required": true,
+      "submitted_pending": false,
+      "primitive_accepted": false,
+      "typed_nonmaterial_observation": false,
+      "material_verified": false,
+      "ui_action_credit": false,
+      "action_credit": false,
+      "lifestyle_material_verified": false,
+      "council_material_verified": false,
+      "construction_material_verified": false,
+      "construction_start_verified": false,
+      "construction_completion_verified": false,
+      "crown_material_verified": false,
+      "existing_typed_material_verified": false,
+      "business_success_inferred": false,
+      "replay_allowed": false
+    },
+    "phase": "native_war_stationary_contact_horizon_progress",
+    "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2630-h-1-369099275",
+    "checkpoint_context": null,
+    "after": {
+      "snapshot_id": "native:227",
+      "revision": 6,
+      "native_revision": 227,
+      "date_raw": 53484792,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    },
+    "after_metrics_response": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0020-1-result.json",
+    "date_delta_raw": 24,
+    "business_success_inferred": false,
+    "cumulative_observation_counts": {
+      "submitted_pending_turns": 67,
+      "lifestyle_material_verified_turns": 10,
+      "existing_focus_verified_turns": 85,
+      "primitive_accepted_turns": 6527,
+      "council_material_verified_turns": 13,
+      "construction_material_verified_turns": 248,
+      "construction_start_verified_turns": 21,
+      "construction_completion_verified_turns": 17,
+      "crown_material_verified_turns": 2,
+      "crown_receipt_nonmaterial_turns": 0,
+      "existing_typed_material_verified_turns": 8,
+      "typed_nonmaterial_observation_turns": 4918,
+      "date_advanced_turns": 3330,
+      "checkpoint_saved": 732,
+      "checkpoint_deferred": 21,
+      "checkpoint_readonly_skipped": 286,
+      "checkpoint_siege_interval_deferred": 100,
+      "checkpoint_calendar_deferred": 1576
+    }
+  },
+  "auto": {
+    "request": {
+      "sequence": 19,
+      "tool": "ck3_auto_turn",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "ended_at_utc": "2026-10-17T04:33:02.129193+00:00",
+    "result": {
+      "structured_content": {
+        "status": "executed",
+        "selected_step": "advance-route-contact-horizon-v1-1023410456-to-2630-h-1-369099275",
+        "planning_source_frame": {
+          "schema": "xar.ck3.planning-source-frame/v1",
+          "status": "complete",
+          "snapshot_id": "native:223",
+          "revision": 2,
+          "native_revision": 223,
+          "date_raw": 53484768,
+          "actor_character_id": 39979,
+          "episode_run_id": "native-39979-5ee2d59fcb51",
+          "connection_generation": 2,
+          "bridge_pid": 263980
+        },
+        "result": {
+          "starting_date_raw": 53484768,
+          "ending_date_raw": 53484792
+        }
+      }
+    }
+  },
+  "metrics": {
+    "request": {
+      "sequence": 20,
+      "tool": "root_current_runtime_metrics",
+      "arguments": {},
+      "source": "Root's bounded full_loop; unique new request"
+    },
+    "ended_at_utc": "2026-10-17T04:33:02.150630+00:00",
+    "result": {
+      "structured_content": {
+        "snapshot_id": "native:227",
+        "revision": 6,
+        "native_revision": 227,
+        "date_raw": 53484792,
+        "actor_character_id": 39979,
+        "episode_run_id": "native-39979-5ee2d59fcb51",
+        "paused": true,
+        "map_ready": true,
+        "actor_alive": true,
+        "connection_generation": 2
+      }
+    }
+  },
+  "active": {
+    "session": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04",
+    "sdk_prefix": "p36",
+    "game_pid": 263980,
+    "game_creation_filetime": 134366781612159835,
+    "game_creation_date": "20261017023601.215983+000"
+  },
+  "loop": {
+    "completed_cycles": 12603,
+    "before": {
+      "snapshot_id": "native:227",
+      "revision": 6,
+      "native_revision": 227,
+      "date_raw": 53484792,
+      "actor_character_id": 39979,
+      "episode_run_id": "native-39979-5ee2d59fcb51"
+    }
+  },
+  "observed": [
+    {
+      "role": "sdk_queue",
+      "pid": 252660,
+      "creation_filetime": 134366850550748866,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": false
+    },
+    {
+      "role": "sdk_application",
+      "pid": 180676,
+      "creation_filetime": 134366850577216556,
+      "executable": "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "kernel_exit_observed": false
+    }
+  ],
+  "source_pins": {
+    "state": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\runtime-repair-status\\CURRENT.json",
+      "sha256": "36c17f67e872b6ed8b9fb2715beac7439959d9ac1bb2ef6e1649f6a68a44eb6c"
+    },
+    "old_pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P35.json",
+      "sha256": "433a6709672c07fca835cb046a37432198be64c3d7c77e9790cfe912b2f7513a"
+    },
+    "old_exit": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-P35-HOT-ROTATION-EXIT-OBSERVED.json",
+      "sha256": "a30f3c0b37d636a91666224943462cbe589083a0f79af81e4316832e113adb62"
+    },
+    "new_pair": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESSES-PINNED-P36.json",
+      "sha256": "08e3a8e7e3c4cdd98369dee86a2dc065f24a7cb352b65334e3b7dfbd76d20f93"
+    },
+    "published": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-ACTUAL-SDK-PROCESS-GENERATIONS-P36.json",
+      "sha256": "4d325813f09dc996577ed215dc3a8acb9643f4c99eb5786c2fbfffdda3ffe7ed"
+    },
+    "semantic": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0001-1-result.json",
+      "sha256": "0bbdaaa0d7cf9ef84aaeaa7f0b4b40d1cef1a23335b5b0e594953d1e4ff6619a"
+    },
+    "caps": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0002-1-result.json",
+      "sha256": "990534c4dd63575156852584a553dc061d42b160d41f1aeefd3c3393dfc1c958"
+    },
+    "freeze": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\ROOT-FINAL-SDK-FREEZE-P36.json",
+      "sha256": "108af13627ee7b82afd807afddb172fb6ae6b7212993ed6d1ed2196761e7f6b9"
+    },
+    "turn": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-queue\\CUMULATIVE-TURN-012603.json",
+      "sha256": "076348d090952c2d786fac72bf18da2a13e0802c265c5d578deb38acae85a37e"
+    },
+    "auto": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0019-1-result.json",
+      "sha256": "510371739511928f32394f5feb79a1e32bb8f04d1229e980fc7b34d08b008b60"
+    },
+    "metrics": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\native22-cold-generation04\\p36-responses\\0020-1-result.json",
+      "sha256": "fc214000d09f9c2eac33c4fb328c223c858189f0cdb7760b23ce4dcfc03c5798"
+    }
+  },
+  "disclosure": {
+    "actual_receipt_values_preserved": true,
+    "decoded_wrapper_normalized": true,
+    "synthetic": [
+      "loop minimal settled projection",
+      "observed handle alive boundary"
+    ],
+    "process_observation_or_Game_calls_performed": false
+  }
+}
