@@ -1,0 +1,236 @@
+{
+  "schema": "xar.ck3.p50-root-history-lookup-source-candidate.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:04:45.526163+00:00",
+  "status": "OFFLINE_SOURCE_CANDIDATE_NOT_DEPLOYED",
+  "lookup_ab": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-root-lookup-performance01\\LOOKUP-AB.json",
+    "bytes": 7597,
+    "sha256": "e8a9797bdcdd798a9236c9f30030773fe32487dec8d617964c0a35208dee3e28"
+  },
+  "actual_frozen_root": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0010-1-result.json",
+    "bytes": 152433,
+    "sha256": "fd2f3dab9088b82009f49278641c616bd32d08fb451d1667201a6c51cb3740c6",
+    "json_pointer": "/result/structured_content/result/campaign_root_context"
+  },
+  "exact_input_build": "1.20.0.4",
+  "exact_input_exe_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "function": {
+    "name": "_same_frame_campaign_root_context",
+    "baseline_sha256": "b4ddeb3c06e5027e22c1f635dc66bf72e4464582eb4e8175f2b8d77eba45638a",
+    "candidate_sha256": "757b2f2e60d86fd2e44496e95ecdd904a34f82ffe778abcaeb9747c8d59463fd"
+  },
+  "evidence_kind": "actual closed root payload plus synthetic 8853-row scaling histories",
+  "contract_cases": [
+    {
+      "case": "empty",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    },
+    {
+      "case": "snapshot_only",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "latest_history_priority",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "auto_envelope_latest",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "invalid_suffix",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "snapshot_fallback",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "optional_rule_fallback",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": true
+    },
+    {
+      "case": "missing_required_component",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    },
+    {
+      "case": "actor_change",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    },
+    {
+      "case": "date_change",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    },
+    {
+      "case": "native_revision_change",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    },
+    {
+      "case": "no_snapshot",
+      "same_result_object": true,
+      "input_unchanged": true,
+      "available": false
+    }
+  ],
+  "measurements": [
+    {
+      "case": "recent_current_root",
+      "history_rows": 8853,
+      "same_result_object": true,
+      "baseline_helper_calls": {
+        "_effective_command": 8853,
+        "_effective_command_result": 242
+      },
+      "candidate_helper_calls": {
+        "_effective_command": 4,
+        "_effective_command_result": 2
+      },
+      "native_evaluations_baseline": 0,
+      "native_evaluations_candidate": 0,
+      "median_seconds_per_lookup": {
+        "baseline": 0.0005006240005604923,
+        "candidate": 1.1939997784793376e-06
+      },
+      "candidate_to_baseline_ratio": 0.002385023045524287
+    },
+    {
+      "case": "no_current_root",
+      "history_rows": 8853,
+      "same_result_object": true,
+      "baseline_helper_calls": {
+        "_effective_command": 8853,
+        "_effective_command_result": 240
+      },
+      "candidate_helper_calls": {
+        "_effective_command": 8853,
+        "_effective_command_result": 240
+      },
+      "native_evaluations_baseline": 0,
+      "native_evaluations_candidate": 0,
+      "median_seconds_per_lookup": {
+        "baseline": 0.0005521959997713565,
+        "candidate": 0.0005947579978965223
+      },
+      "candidate_to_baseline_ratio": 1.0770777009300847
+    },
+    {
+      "case": "snapshot_fallback",
+      "history_rows": 8853,
+      "same_result_object": true,
+      "baseline_helper_calls": {
+        "_effective_command": 8853,
+        "_effective_command_result": 240
+      },
+      "candidate_helper_calls": {
+        "_effective_command": 8853,
+        "_effective_command_result": 240
+      },
+      "native_evaluations_baseline": 0,
+      "native_evaluations_candidate": 0,
+      "median_seconds_per_lookup": {
+        "baseline": 0.0005495689995586872,
+        "candidate": 0.0005549349985085428
+      },
+      "candidate_to_baseline_ratio": 1.0097640131706203
+    }
+  ],
+  "validation": {
+    "candidate_targeted": {
+      "command": "tools/.venv/Scripts/python.exe -B -X utf8 -m pytest -q --tb=short --basetemp=D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-root-lookup-performance01/candidate-pytest-temp ck3_autonomous_player/tests/unit/test_campaign_root_optional_rules_service_v1.py ck3_autonomous_player/tests/unit/test_prewar_surrogate_authority_regression.py",
+      "exit_code": 0,
+      "passed": 25,
+      "subtests_passed": 21,
+      "pytest_seconds": 3.2,
+      "source_pins": [
+        {
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+          "bytes": 1027237,
+          "sha256": "b6fd6f0e8f4e07d047dcbc3ba3bd114166ac4e5a1351e6dfe06fce1d02bb455f"
+        },
+        {
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_campaign_root_optional_rules_service_v1.py",
+          "bytes": 9572,
+          "sha256": "d73cb923bc834f6c33b2c3e588132268e40651ff05171556c3ae77f7434a7df5"
+        }
+      ]
+    },
+    "existing_nonwar_fixture": {
+      "candidate_failed": 4,
+      "candidate_passed": 1,
+      "baseline_failed": 4,
+      "baseline_passed": 1,
+      "baseline_receipt": {
+        "machine_id": "xenoamess-full-tower-eb9d2c1186",
+        "observed_at_utc": "2026-10-17T19:02:05.829535+00:00",
+        "baseline_function_restored_in_process_only": true,
+        "exit_code": 1,
+        "output": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-root-lookup-performance01\\BASELINE-NONWAR-REGRESSION.txt"
+      },
+      "baseline_log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-root-lookup-performance01\\BASELINE-NONWAR-REGRESSION.txt",
+        "bytes": 5748,
+        "sha256": "f4ff958786d6ebc397a30edcd9492f7e9a2e305b8daf64a346747220a33f8e75"
+      },
+      "causes": [
+        "Existing _PlanningDriver mock lacks position_key keyword.",
+        "Existing relationship reply lacks current sidecar completion evidence."
+      ],
+      "production_changes_for_existing_fixture_failures": false
+    },
+    "initial_new_test_failure": {
+      "cause": "New test used the wrong auto-turn envelope shape.",
+      "correction": "Moved result into auto_turn.result matching the existing producer.",
+      "production_change_for_fixture_failure": false
+    },
+    "open_kaishek": {
+      "status": "not-applicable",
+      "reason": "Python transcript lookup only; no script parser/runtime semantics changed"
+    }
+  },
+  "limits": [
+    "Only root material is actual closed P49; 8853-row histories are synthetic scaling projections.",
+    "Not deployed into running SDK; no Game/native/MCP/recording operations.",
+    "End-to-end game days/minute and plan-wall benefit remain unmeasured.",
+    "Lookup miss retains the full scan; no war-entry/continuation/termination policy change.",
+    "No whole campaign speedup claimed from the lookup-only timing.",
+    "No-current-root miss was 7.7 percent slower, about 0.043 ms per lookup in this run.",
+    "Existing SDK48/P50R1 frozen source remains unchanged."
+  ],
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "new_write_budget_bytes": 1048576,
+    "heavy_write": false,
+    "deletion": false,
+    "closed_pack_bytes": 86723,
+    "free_bytes": {
+      "D:/": 1010105520128,
+      "Z:/": 178677571584
+    },
+    "external_derived_review_at_utc": "2026-10-19T19:04:45.526163+00:00",
+    "protection_auto_renew": false
+  }
+}

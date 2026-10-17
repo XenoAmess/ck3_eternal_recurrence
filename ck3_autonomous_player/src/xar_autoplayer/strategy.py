@@ -713,20 +713,21 @@ def _same_frame_campaign_root_context(
         and not isinstance(date_raw, bool)
     ):
         return None
-    payloads: list[object] = [snapshot.get("campaign_root_context")]
-    for row in rows:
-        if (
-            _effective_command(row) != "query-campaign-root-context-v1"
-            or row.get("ok") is not True
-        ):
-            continue
-        result = _effective_command_result(row)
-        payloads.append(
-            result.get("campaign_root_context")
-            if isinstance(result, dict)
-            else None
-        )
-    for payload in reversed(payloads):
+    def newest_payloads():
+        # Preserve history-over-snapshot priority while stopping as soon as a
+        # current root is found; older transcript rows cannot change that choice.
+        for row in reversed(rows):
+            if (
+                _effective_command(row) != "query-campaign-root-context-v1"
+                or row.get("ok") is not True
+            ):
+                continue
+            result = _effective_command_result(row)
+            yield (result.get("campaign_root_context")
+                   if isinstance(result, dict) else None)
+        yield snapshot.get("campaign_root_context")
+
+    for payload in newest_payloads():
         if not isinstance(payload, dict):
             continue
         readiness = payload.get("readiness")

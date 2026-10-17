@@ -517,7 +517,7 @@ def main():
             if pending:
                 item = json.loads(sorted(pending)[-1].read_text(encoding="utf-8"))
                 pending_text = "\n请求处理中：" + item.get("tool", "") + "（结果尚未确认）"
-            content = "本局：" + args.campaign_label + "\n" + current + pending_text
+            content = "智能体实时决策\n" + current + pending_text
             if camera_text:
                 content += "\n" + camera_text
             if blocker:

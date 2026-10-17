@@ -92,6 +92,34 @@ class _OptionalRuleDriver(_ServiceDriver):
 
 
 class CampaignRootOptionalRulesServiceTests(unittest.TestCase):
+    def test_newest_valid_history_root_precedes_snapshot_and_skips_invalid_suffix(self):
+        driver = _OptionalRuleDriver()
+        service = GameplayBridgeService(driver)
+        root = service.query_campaign_root_context_v1(
+            expected_revision=PUBLIC_REVISION)["campaign_root_context"]
+        snapshot = {**service.snapshot(), "campaign_root_context": copy.deepcopy(root)}
+        older = copy.deepcopy(root)
+        newest = copy.deepcopy(root)
+        stale = copy.deepcopy(root)
+        stale["snapshot_revision"] += 1
+        incomplete = copy.deepcopy(root)
+        incomplete["readiness"]["player_domain_ready"] = False
+        rows = [
+            {"command": STEP, "ok": True, "result": {"campaign_root_context": older}},
+            {"command": "auto-turn", "ok": True, "result": {
+                "auto_turn": {"selected_step": STEP,
+                              "result": {"campaign_root_context": newest}}}},
+            {"command": STEP, "ok": True, "result": {"campaign_root_context": stale}},
+            {"command": STEP, "ok": True, "result": {"campaign_root_context": incomplete}},
+            {"command": STEP, "ok": False, "result": {"campaign_root_context": root}},
+            {"command": "query-army-strengths-v1", "ok": True},
+        ]
+        retained = copy.deepcopy(rows)
+        self.assertIs(_same_frame_campaign_root_context(rows, snapshot), newest)
+        self.assertEqual(rows, retained)
+        self.assertIs(_same_frame_campaign_root_context(rows[2:], snapshot),
+                      snapshot["campaign_root_context"])
+
     def test_available_components_continue_ordinary_service_planning(self):
         driver = _OptionalRuleDriver()
         service = GameplayBridgeService(driver)

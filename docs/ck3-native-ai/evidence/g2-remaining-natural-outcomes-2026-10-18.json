@@ -1,0 +1,173 @@
+{
+  "schema": "xar.g2.remaining-natural-outcomes.offline-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T19:03:52.083928+00:00",
+  "G2": {
+    "complete": 6,
+    "total": 8,
+    "M6": "in_progress",
+    "M7": "in_progress"
+  },
+  "authorization": "2026-10-18 user requested parallel M6/M7 research without interrupting active Robert30 autoplay and recording",
+  "new_Game_Native_MCP_SDK_recording_operations": 0,
+  "live_Driver_SAVE_media_reads": 0,
+  "current_runtime_source_modified": false,
+  "source_adoption": {
+    "public_files": [
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\sway_formal_consumer.py",
+        "bytes": 26102,
+        "sha256": "36011b8a5129805a654b9e8cd2d17450eb05cc410d6220b3e1c4a4fcba52dccd"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\sway_start_typed_classifier_v1.py",
+        "bytes": 8597,
+        "sha256": "98463e8d62dbec1df8b4a7d2f1e6210430e6823f6b2a6767f7ee42ab26b60c75"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_sway_actual4_start_observation.py",
+        "bytes": 9825,
+        "sha256": "c5c9a8a9f779daee9c5e0c4e708d7a0a57eca14f216b584811d637744247c3a5"
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+        "bytes": 46929,
+        "sha256": "eb177cbc5527f9360eba0c2ab3549034ea8aafe1a71067adf42498c0f3ce406b"
+      }
+    ],
+    "formal_preimage_git_head": "23350d93d8e75c4f866a8ecbcf68a61661ed9aad",
+    "formal_preimage_sha256": "2b1be46ebeb15363c235c0588ea9aa049ad45b251019966dbb8ed1db0a48a612",
+    "qualified_candidate": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-sway-hotplug-terminal-contract01\\candidate\\xar_autoplayer\\sway_formal_consumer.py",
+      "bytes": 26102,
+      "sha256": "36011b8a5129805a654b9e8cd2d17450eb05cc410d6220b3e1c4a4fcba52dccd"
+    },
+    "formal_AST_equals_existing_candidate": true,
+    "classifier_bytes_equal_original_P44": true,
+    "old68_and_P49_three_cases_replayed": false
+  },
+  "new_verification": {
+    "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 -m pytest ck3_autonomous_player/tests/unit/test_sway_actual4_start_observation.py -q -p no:cacheprovider",
+    "execution_output_evidence": "functions.exec exec_command chunk dc51c1 in this task turn",
+    "exit_code": 0,
+    "passed": 3,
+    "passed_subtests": 3,
+    "pytest_elapsed_seconds": 2.68,
+    "source_layers": [
+      "public Service full planner",
+      "actual Python query/action transports",
+      "public formal ledger",
+      "lifecycle observer",
+      "ordinary following consumer",
+      "strict primitive-only classifier"
+    ],
+    "synthetic_layers": [
+      "Native envelopes",
+      "OS boundary",
+      "world state"
+    ],
+    "new_native_Start_terminal_benefit_or_cold_credit": false,
+    "git_diff_check": {
+      "command": "git diff --check",
+      "exit_code": 0
+    },
+    "open_kaishek": {
+      "status": "not-applicable",
+      "reason": "Python transport/consumer composition and closed JSON only; no new Paradox script semantics"
+    }
+  },
+  "existing_source_inputs": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-sway-hotplug-terminal-contract01\\DELIVERY.json",
+      "bytes": 2470,
+      "sha256": "cb110e5ffcad2bdc7c2a80758a17df930a5e49ac31be9e9de3541738ea0d1c47"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-sway-hotplug-terminal-contract01\\SOURCE-QUALIFICATION.json",
+      "bytes": 12532,
+      "sha256": "e731f6685f1c6a46fb99c1ec0f5288b38fb9bda1459d3571e98a6f38ff514312"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p49-sway-hotplug-terminal-contract01\\TEST-RESULT.json",
+      "bytes": 1372,
+      "sha256": "91c8151d07bf587870120da72b7a9b95d9af4478c8970d193a9cf3e6d32ccccc"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p44-sway-typed-start-credit-candidate01\\sway_start_typed_classifier_v1.py",
+      "bytes": 8597,
+      "sha256": "98463e8d62dbec1df8b4a7d2f1e6210430e6823f6b2a6767f7ee42ab26b60c75"
+    }
+  ],
+  "runtime_preparation_observation": {
+    "classification": "failed P50 startup argv metadata and prepared source only; not an active SDK qualification",
+    "actual_argv": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p50-queue\\ROOT-FRESH-SDK-ARGV.json",
+      "bytes": 3496,
+      "sha256": "c37ef02b4741b2bac0fcf20b2f4c5ed154b47f3200cb35b709bb784b29431823"
+    },
+    "Sway_flags_present": [
+      "--private-active-scheme-sway-query",
+      "--private-active-scheme-sway-action",
+      "--private-active-scheme-sway-completion-query",
+      "--private-active-scheme-sway-completion-execution-query",
+      "--private-active-scheme-sway-completion-termination-query",
+      "--private-active-scheme-sway-completion-invalidation-reason-query",
+      "--private-active-scheme-sway-outcome-opinion-query"
+    ],
+    "flags_missing_claim": false,
+    "SDK48_ordinary_scheduler_present": false,
+    "SDK48_ordinary_adapter_present": false,
+    "prepared_M7_handoff": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\root_p50_automatic_natural_succession_handoff.py",
+      "bytes": 39081,
+      "sha256": "1d8e913ec7e8177e92554a0d12d5918595d0c2d803116ad6e6d5654cd4ed4d81"
+    },
+    "M7_natural_result_observed_by_this_package": false
+  },
+  "M7_existing_public_sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\m7_ordinary_successor_async_queue.py",
+      "bytes": 7765,
+      "sha256": "ebfa9a2416e05db6cc7fd6f5b58848bf36734173d369be05def1ebb90df28a54"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\m7_ordinary_successor_queue.py",
+      "bytes": 29912,
+      "sha256": "307757300555b397c676d9106fb7a20288b34e6c74230f1dae7c6aa94eb0e0b2"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\succession_transition_contract.py",
+      "bytes": 29634,
+      "sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+    }
+  ],
+  "MCP_save_source": {
+    "tool": "ck3_save_checkpoint",
+    "arguments": [
+      "expected_revision"
+    ],
+    "fixed_filename": "xar_checkpoint.ck3",
+    "user_filename_argument_supported": false,
+    "materialization_hash_size_date_history": true,
+    "source": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py:2957 and native_driver.py:12395",
+    "permanent_file_created": false,
+    "permanent_retention_scope": "Only the future explicitly requested first30 manual MCP SAVE artifact; preserve after actual Game exit with exact MCP receipt/hash chain",
+    "authorization": "2026-10-18 user: 到30年这个时间节点后，你做一次mcp手动保存存档，这个存档以后不要删除的那种"
+  },
+  "storage": {
+    "policy": "docs/storage-retention-policy.json",
+    "policy_version": "1.0.0",
+    "new_reservation_bytes": 0,
+    "bounded_new_source_record_peak_bytes": 131072,
+    "heavy_write": false,
+    "deleted_files": 0,
+    "free_bytes_by_volume": {
+      "Z:/": 178677665792,
+      "D:/": 1010138148864,
+      "C:/": 20946927616
+    },
+    "scratch_classification": "derived",
+    "scratch_review_at_utc": "2026-10-19T19:03:52.083928+00:00",
+    "permanent_SAVE_exception_is_user_specific_and_not_general_policy_change": true
+  }
+}

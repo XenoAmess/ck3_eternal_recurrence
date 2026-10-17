@@ -12,6 +12,7 @@ from collections.abc import Mapping
 from pathlib import Path
 
 from .bridge.driver import BridgeUnavailableError
+from .bridge.version_identity import CK3_12004
 from .environment import write_json_atomic
 
 
@@ -134,6 +135,35 @@ def _read_now(driver: object, target: int) -> tuple[dict[str, object], dict[str,
 def _resolved_instance_identity(resolved: Mapping[str, object]) -> Mapping[str, object] | None:
     receipt = resolved.get("native_receipt")
     if isinstance(receipt, Mapping):
+        # Current .4 native applied receipts bind the original action and full
+        # instance, but do not serialize actor/target. Project those identities
+        # from the already persisted formal result; never alter the raw receipt.
+        if (receipt.get("exact_ck3_build") == "1.20.0.4"
+                and "actor_character_id" not in receipt
+                and "target_character_id" not in receipt):
+            actor, target = resolved.get("actor_character_id"), resolved.get("target_character_id")
+            full_id, generation = receipt.get("scheme_instance_id"), receipt.get("scheme_instance_generation")
+            if (not isinstance(receipt.get("exe_sha256"), str)
+                    or receipt["exe_sha256"].upper() != CK3_12004.executable_sha256
+                    or resolved.get("status") != "applied" or resolved.get("postcondition_verified") is not True
+                    or receipt.get("schema") != "active-scheme-sway-formal-private-v1"
+                    or receipt.get("stage") != "applied" or receipt.get("postcondition_verified") is not True
+                    or not isinstance(resolved.get("action_id"), str)
+                    or receipt.get("action_id") != resolved["action_id"]
+                    or type(actor) is not int or not 0 < actor <= 0xFFFFFFFF
+                    or type(target) is not int or not 0 < target <= 0xFFFFFFFF or actor == target
+                    or type(full_id) is not int or not 0 < full_id < 0xFFFFFFFF
+                    or type(generation) is not int or generation != full_id >> 24
+                    or type(receipt.get("post_capture_epoch")) is not int
+                    or type(resolved.get("pre_capture_epoch")) is not int
+                    or type(resolved.get("post_capture_epoch")) is not int
+                    or not 0 < resolved["pre_capture_epoch"] < receipt["post_capture_epoch"] <= resolved["post_capture_epoch"]
+                    or type(receipt.get("post_date_raw")) is not int or receipt["post_date_raw"] <= 0
+                    or type(resolved.get("post_date_raw")) is not int
+                    or receipt["post_date_raw"] != resolved["post_date_raw"]):
+                return None
+            return {**receipt, "actor_character_id": actor, "target_character_id": target,
+                    "identity_binding_source": "persisted_original_action_and_native_applied_receipt"}
         return receipt
     if receipt is not None:
         return None
@@ -182,6 +212,37 @@ def _resolved(ledger: Mapping[str, object], pending: Mapping[str, object],
         "native_receipt": dict(receipt) if receipt is not None else None,
         "next_turn_consumed": False,
     }
+    if isinstance(receipt, Mapping) and receipt.get("exact_ck3_build") == "1.20.0.4":
+        # Retain the already completed independent read. A Native Start receipt
+        # and a matching target alone must not credit a different scheme slot.
+        rows = read.get("active_sway_instances")
+        instance_id, generation = receipt.get("scheme_instance_id"), receipt.get("scheme_instance_generation")
+        matching = [row for row in rows if isinstance(row, Mapping)
+                    and row.get("scheme_instance_id") == instance_id
+                    and row.get("scheme_instance_generation") == generation
+                    and row.get("target_character_id") == pending["target_character_id"]] if isinstance(rows, list) else []
+        if (type(instance_id) is not int or not 0 < instance_id < 0xFFFFFFFF
+                or type(generation) is not int or generation != instance_id >> 24
+                or len(matching) != 1
+                or read.get("actor_character_id") != pending["actor_character_id"]
+                or read.get("target_character_id") != pending["target_character_id"]
+                or read.get("exact_ck3_build") != "1.20.0.4"
+                or read.get("exe_sha256") != receipt.get("exe_sha256")
+                or type(receipt.get("post_capture_epoch")) is not int
+                or read["capture_epoch"] <= receipt["post_capture_epoch"]
+                or read["date_raw"] != receipt.get("post_date_raw")):
+            raise BridgeUnavailableError("private Sway receipt lacks the exact independent active instance")
+        result["applied_instance_observation"] = {
+            "schema": "xar.ck3.sway-applied-instance-observation.v1",
+            "source_kind": "independent_active_read_after_native_receipt",
+            **{key: result[key] for key in ("action_id", "actor_character_id", "target_character_id")},
+            "scheme_instance_id": instance_id, "scheme_instance_generation": generation,
+            "active_instance": dict(matching[0]),
+            "source_read": {key: read.get(key) for key in (
+                "schema", "exact_ck3_build", "exe_sha256", "queried_snapshot_id", "queried_revision",
+                "queried_native_revision", "snapshot_revision", "date_raw", "capture_epoch",
+                "container_generation", "post_snapshot_id")},
+        }
     if receipt is None:
         rows = read.get("active_sway_instances")
         if isinstance(rows, list) and all(isinstance(row, Mapping) for row in rows):
