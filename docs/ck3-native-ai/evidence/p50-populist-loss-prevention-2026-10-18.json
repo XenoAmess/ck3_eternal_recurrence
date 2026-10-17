@@ -1,0 +1,965 @@
+{
+  "schema": "xar.p50.populist-loss-prevention/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-17T18:21:15.688644+00:00",
+  "git_head_observed": "2a035ed087a2309d526a5c15fe63737494674f21",
+  "status": "EXISTING_FIX_PRESENT_IN_PUBLIC_AND_SDK48_OFFLINE_VERIFIED_NO_NEW_RUNTIME_PATCH",
+  "scope": {
+    "Game_MCP_OBS_calls": 0,
+    "gameplay_commands": 0,
+    "live_Driver_SAVE_media_reads": 0,
+    "runtime_source_changes": 0,
+    "public_policy_changes": 0,
+    "external_peak_new_bytes_limit": 1048576,
+    "public_preparation_tool_added": "tools/g2_saved_campaign/qualify_populist_source.py"
+  },
+  "historical_evidence": {
+    "audit": {
+      "path": "Z:\\ck3_mod_rewrite\\docs\\ck3-native-ai\\evidence\\p43-populist-current-source-and-natural-audit-2026-10-17.json",
+      "bytes": 61435,
+      "sha256": "4c65c1ba58e7cddebdd99e5a049fba05ec28d4af7af22d0c0abfa6af913a1eed"
+    },
+    "machine_id": "unknown",
+    "machine_scope": "Historical audit omits machine identity; source-machine identity remains unverified. Current offline source and registry readability are newly observed on this machine and do not authenticate historical gameplay provenance.",
+    "observed_actual_event": {
+      "event_key": "faction_demand.1001",
+      "current_calculated_event_id": 3571001,
+      "actual_native_option_index": 2,
+      "option_number": 3,
+      "direct_held_ids_removed": [
+        2196,
+        2200
+      ],
+      "post_estate_binding_matches_actual_event_post": true,
+      "causal_limit": "Direct holdings really shrink at the event post source frame and two wars disappear. No independent new-holder query or unique full causal claim; first-war win and then-owned2200 remain true historical facts."
+    },
+    "actual_before": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\ac9347759ab54489946b5be5e0cf7343.before.json",
+      "bytes": 9051,
+      "sha256": "3103ce0360c707063996cebec33142ee68e70cce31824fcc44ee94fbd0ce737c"
+    },
+    "actual_after": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\ac9347759ab54489946b5be5e0cf7343.after.json",
+      "bytes": 3551,
+      "sha256": "83d9b563fea3c21c2d64aca71feb44e282958520f61070765cdb917db70c9f04"
+    },
+    "before_titles": [
+      2196,
+      2200,
+      2230,
+      2231,
+      2262
+    ],
+    "after_titles": [
+      2230,
+      2231,
+      2262
+    ]
+  },
+  "stock_sources": {
+    "event": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+      "bytes": 102190,
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+    },
+    "effect": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\00_faction_effects.txt",
+      "bytes": 49855,
+      "sha256": "c7f853b9c8cf836cfc6b635c58bfa3c31a686528e99f5628e320a1d97a5efc70"
+    },
+    "faction_caller": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\factions\\00_populist_faction.txt",
+      "bytes": 48187,
+      "sha256": "c67853a56bcea26ed90427cdba7ed4a51968ee085ec88e34fe2976ce5437dd4d"
+    }
+  },
+  "source_closure": [
+    {
+      "relative_path": "xar_autoplayer/vanilla_events/populist1001_known_refusal_v1.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\populist1001_known_refusal_v1.py",
+        "bytes": 14717,
+        "sha256": "6e8a57777c042bdc77ecac12a31cd526993470ecdd94fcbe507c7598c7abb66c"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\vanilla_events\\populist1001_known_refusal_v1.py",
+        "bytes": 14717,
+        "sha256": "6e8a57777c042bdc77ecac12a31cd526993470ecdd94fcbe507c7598c7abb66c"
+      },
+      "identical": true
+    },
+    {
+      "relative_path": "xar_autoplayer/vanilla_events/faction_demand1001_context.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\faction_demand1001_context.py",
+        "bytes": 12005,
+        "sha256": "24032c2a96b0ffe49a334ff188ad4ee5fda6addfa48e3e9db3620a89620ef04b"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\vanilla_events\\faction_demand1001_context.py",
+        "bytes": 12005,
+        "sha256": "24032c2a96b0ffe49a334ff188ad4ee5fda6addfa48e3e9db3620a89620ef04b"
+      },
+      "identical": true
+    },
+    {
+      "relative_path": "xar_autoplayer/vanilla_events/event_offline_analysis.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+        "bytes": 23884,
+        "sha256": "c752420a6973a49faca81deb76d6aac605e9e0456dbcd3d3f11b474d5b0b7376"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\vanilla_events\\event_offline_analysis.py",
+        "bytes": 23884,
+        "sha256": "c752420a6973a49faca81deb76d6aac605e9e0456dbcd3d3f11b474d5b0b7376"
+      },
+      "identical": true
+    },
+    {
+      "relative_path": "xar_autoplayer/strategy.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+        "bytes": 1027061,
+        "sha256": "1868ea5559c8224df579b13b4c766162187074018cb09aeaa150c83f7c021c6f"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\strategy.py",
+        "bytes": 1069539,
+        "sha256": "b83bdceb0fe3c4ff5177f60296f43c484510f1710a43c603fd0f6ccfd3ab5119"
+      },
+      "identical": false
+    },
+    {
+      "relative_path": "xar_autoplayer/bridge/service.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 858949,
+        "sha256": "170caa5a2460c3cd9cb699b73f1b300b01896e230675201d29a0cb7fad83d993"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 854328,
+        "sha256": "50ae356b6f5aa77b624417cc3dbe3e8fb5d787fe98b15f2886c70b2f1998b93f"
+      },
+      "identical": false
+    },
+    {
+      "relative_path": "xar_autoplayer/vanilla_events/builds.py",
+      "public": {
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\vanilla_events\\builds.py",
+        "bytes": 1859,
+        "sha256": "afd7f9fb5abf7ea91fb4888767135027db9f9390151e5df6edaa719d19e73712"
+      },
+      "sdk48": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\vanilla_events\\builds.py",
+        "bytes": 1859,
+        "sha256": "afd7f9fb5abf7ea91fb4888767135027db9f9390151e5df6edaa719d19e73712"
+      },
+      "identical": true
+    }
+  ],
+  "hook_closure": {
+    "xar_autoplayer/strategy.py": {
+      "identical": true,
+      "sources": [
+        {
+          "source": "public",
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\strategy.py",
+          "first_line": 7893,
+          "last_line": 7902,
+          "sha256": "67835b25a827f8d3f7a4540cc8a75580fc51283e776879b36ec8a7ecebc2def5"
+        },
+        {
+          "source": "sdk48",
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\strategy.py",
+          "first_line": 8128,
+          "last_line": 8137,
+          "sha256": "67835b25a827f8d3f7a4540cc8a75580fc51283e776879b36ec8a7ecebc2def5"
+        }
+      ]
+    },
+    "xar_autoplayer/bridge/service.py": {
+      "identical": true,
+      "sources": [
+        {
+          "source": "public",
+          "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+          "first_line": 4959,
+          "last_line": 4971,
+          "sha256": "735195ae019b2f890b8b55e6751cd09d6dd03191d9661aa76338986a01f5ede2"
+        },
+        {
+          "source": "sdk48",
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\service.py",
+          "first_line": 4990,
+          "last_line": 5002,
+          "sha256": "735195ae019b2f890b8b55e6751cd09d6dd03191d9661aa76338986a01f5ede2"
+        }
+      ]
+    }
+  },
+  "minimum_registry_closure_for_continuation": {
+    "entry": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f.json",
+      "bytes": 1299,
+      "sha256": "2127e8163fcbd9232572cb26b24d7f95c22191aba8a4b13e058f640b89bb225d"
+    },
+    "facts": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\facts\\14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f.json",
+      "bytes": 45102,
+      "sha256": "4564f0f8af65591708ab8f9b580250d71084b091c44cc06e97775462e243a5cd"
+    },
+    "source": {
+      "path": "Z:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\events\\factions\\faction_demands.txt",
+      "bytes": 102190,
+      "sha256": "eb17720ca9d48acfb8cc24e5f61edc62fd2d4d2d599561c92854fc762104eccd"
+    },
+    "entry_absolute_paths_unchanged": true,
+    "entry_and_facts_read_only": true
+  },
+  "registry_carry_requirement": "Use the current state directory or migrate validated entry plus source_facts and readable source path to new state. A new SDK namespace does not itself require clearing durable event knowledge. Do not fabricate current IDs or broadly enable letter-event source rebind.",
+  "replay": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\REPLAY-SDK48.json",
+      "bytes": 3712,
+      "sha256": "51624c6df1af13053a211e8ac51668e78451f1b768953eb66433c935a79caadd"
+    },
+    "status": "PASS",
+    "fixture": {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\fixtures\\p43_populist_actual193_projection.json",
+      "bytes": 15220,
+      "sha256": "96f1e075797c4d1ff76c815b44d48715a663e4900523e50f1cb4dfb779bae3e9"
+    },
+    "source_knowledge": {
+      "status": "offline-source-reviewed",
+      "binding_mode": "exact",
+      "fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f",
+      "entry_path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\event-source-registry\\14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f.json",
+      "entry_sha256": "2127e8163fcbd9232572cb26b24d7f95c22191aba8a4b13e058f640b89bb225d",
+      "material_effects_verified": false,
+      "registry_contract_accepted": false
+    },
+    "original_unknown_step": "select-event-option-3",
+    "unknown_fallback_step_preserved": "select-event-option-3",
+    "production_loader_then_policy_step": "select-event-option-4",
+    "production_phase": "active_event_source_reviewed_populist_refusal",
+    "prevalidation": {
+      "open_kaishek": "not-applicable",
+      "reason": "No CK3 script is edited or executed. This check replays Python source-registry validation and policy over an existing frozen event; open_kaishek does not cover native runtime event-window identity or Python planner/service seams.",
+      "ck3_build": "1.20.0.4",
+      "ck3_exe_sha256_declared_by_registry": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+      "current_game_or_executable_observed": false
+    }
+  },
+  "verification": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\TEST-SDK48.json",
+      "bytes": 985,
+      "sha256": "50e04a173196806d97765e93f5bc78c9afe2d16dec8aa278ccbd454590cd8675"
+    },
+    "test_count": 29,
+    "pytest_summary": "29 passed in 4.40s",
+    "exit_code": 0,
+    "elapsed_seconds": 4.998912199866027,
+    "command": "python -X utf8 D:/codex-ck3-demos/2026-10-14-robert-30year/continuation42-cold-prep/p50-populist-loss01/inspect.py tests",
+    "initial_harness_failures": "Private script named inspect.py shadowed Python stdlib inspect before test collection/import; removing its directory from sys.path corrected the harness. No product test or gameplay action ran on those import failures."
+  },
+  "limits": {
+    "first_seen_letter_binding_without_exact_registry": "Still follows owner first-rendered fallback; no newly broadened source-rebind policy",
+    "same_frame_faction_strength": "Not present in historical bound event; no claim that refusal is unconditionally optimal",
+    "all_campaign_territory_losses_explained": false,
+    "new_holder_independently_read": false,
+    "live_refusal_verified": false,
+    "title_retention_verified": false,
+    "victory_verified": false,
+    "G2_credit_added": 0
+  },
+  "storage": {
+    "start": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\STORAGE-START.json",
+      "bytes": 819,
+      "sha256": "3906166ff7806a772e036751e3faacb946f62451ae00462cf2db1035a5399846"
+    },
+    "close": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\STORAGE-CLOSE.json",
+      "bytes": 841,
+      "sha256": "3267ef5d6f8e82981cefd4fc98607f50dbe34090caa4f4ecd99588892fd7ed3b"
+    },
+    "policy_version": "1.0.0",
+    "deletions": 0,
+    "root_capacity_reference": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-capacity-review01\\ROOT-PATHS-CAPACITY.json",
+      "bytes": 63766,
+      "sha256": "aabba853c29f83d19b657c6cfd119c0b5ac4ff801e0d62db856e69cbb85a384f"
+    },
+    "root_coordination_message": "Root reports the current package is within the same 160GiB run scope, valid before 2026-10-18T11:49Z; this worker neither renews that lease nor independently grants heavy admission.",
+    "followup_close": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\STORAGE-FOLLOWUP-CLOSE.json",
+      "bytes": 1083,
+      "sha256": "7a4bcef80b3a397f2bc938e3734f42998dad21947be90a996d4cdcd786b30ab1"
+    }
+  },
+  "revised_at_utc": "2026-10-17T18:25:14.511081+00:00",
+  "bounded_successor_audit": {
+    "report": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\SUCCESSOR-AUDIT.json",
+      "bytes": 157163,
+      "sha256": "3193d0089b745cd2a76cdb3637131cab4e4be26a6afcaac8dbf0681425f198ba"
+    },
+    "historical_source_machine_id": "unknown",
+    "SEM_read": 74,
+    "stage_counts": {
+      "43": 27,
+      "44": 7,
+      "45": 12,
+      "46": 0,
+      "47": 13,
+      "48": 0,
+      "49": 15
+    },
+    "stage_first_last": [
+      {
+        "stage": 43,
+        "first": {
+          "stage": 43,
+          "sequence": 1,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\0001-1-result.json",
+            "bytes": 30625,
+            "sha256": "c7bfae47fef611a9862d8bb8b7c286bbff4a77080a526d60050bf8b31e7b990e"
+          },
+          "ended_at_utc": "2026-10-17T12:45:41.511880+00:00",
+          "snapshot_id": "native:4103",
+          "date_raw": 53263296,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:586",
+            "revision": 569,
+            "native_revision": 586,
+            "date_raw": 53206464,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2196,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2200,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        },
+        "last": {
+          "stage": 43,
+          "sequence": 1779,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p43-responses\\1779-1-result.json",
+            "bytes": 33107,
+            "sha256": "ab55ab652a9166fc591a94bcb29e9fcd41aadc7627734fb015ef182b0583403f"
+          },
+          "ended_at_utc": "2026-10-17T13:32:54.751806+00:00",
+          "snapshot_id": "native:5983",
+          "date_raw": 53293416,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        }
+      },
+      {
+        "stage": 44,
+        "first": {
+          "stage": 44,
+          "sequence": 1,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0001-1-result.json",
+            "bytes": 27963,
+            "sha256": "0da411788be74047fbd57fac0f1254a8c0d284c659e1d10ef93b012c9dd5d565"
+          },
+          "ended_at_utc": "2026-10-17T13:51:56.248143+00:00",
+          "snapshot_id": "native:5984",
+          "date_raw": 53293416,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        },
+        "last": {
+          "stage": 44,
+          "sequence": 462,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p44-responses\\0462-1-result.json",
+            "bytes": 34578,
+            "sha256": "dff10c51831cb377a99fdcc83be6430e8e421c822f37c9efb7acce5dbf580961"
+          },
+          "ended_at_utc": "2026-10-17T14:47:45.996691+00:00",
+          "snapshot_id": "native:6286",
+          "date_raw": 53297328,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        }
+      },
+      {
+        "stage": 45,
+        "first": {
+          "stage": 45,
+          "sequence": 1,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p45-responses\\0001-1-result.json",
+            "bytes": 30502,
+            "sha256": "2fbfd9f4c59ceef085182411c040aa46efa77000b48368745be15f13a4c0dccd"
+          },
+          "ended_at_utc": "2026-10-17T15:06:21.019336+00:00",
+          "snapshot_id": "native:6287",
+          "date_raw": 53297328,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        },
+        "last": {
+          "stage": 45,
+          "sequence": 696,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p45-responses\\0696-1-result.json",
+            "bytes": 36748,
+            "sha256": "271e96f716f8ed0d9e07f404cc9bb8a6f91b1d7caf35c58bf126576c61614737"
+          },
+          "ended_at_utc": "2026-10-17T15:38:55.970605+00:00",
+          "snapshot_id": "native:6681",
+          "date_raw": 53302224,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        }
+      },
+      {
+        "stage": 46,
+        "first": null,
+        "last": null
+      },
+      {
+        "stage": 47,
+        "first": {
+          "stage": 47,
+          "sequence": 1,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p47-responses\\0001-1-result.json",
+            "bytes": 30340,
+            "sha256": "ea959bb37335de14943c5bbdeb5c0ee8ebc3937c616db25b8fe330b885b4edc2"
+          },
+          "ended_at_utc": "2026-10-17T15:59:50.687839+00:00",
+          "snapshot_id": "native:6682",
+          "date_raw": 53302224,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        },
+        "last": {
+          "stage": 47,
+          "sequence": 787,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p47-responses\\0787-1-result.json",
+            "bytes": 27552,
+            "sha256": "dffb7d9655a77a38167ae730e7886a806317d973306c2b5adc30e5ce980ee821"
+          },
+          "ended_at_utc": "2026-10-17T16:34:07.098333+00:00",
+          "snapshot_id": "native:7681",
+          "date_raw": 53317032,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        }
+      },
+      {
+        "stage": 48,
+        "first": null,
+        "last": null
+      },
+      {
+        "stage": 49,
+        "first": {
+          "stage": 49,
+          "sequence": 1,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0001-1-result.json",
+            "bytes": 27033,
+            "sha256": "a20b0d49f0c6ed4fa39be46dd3ac8e98025e3735a4f7b3cd7f26e18b2a1195fa"
+          },
+          "ended_at_utc": "2026-10-17T16:50:41.525305+00:00",
+          "snapshot_id": "native:7683",
+          "date_raw": 53317032,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        },
+        "last": {
+          "stage": 49,
+          "sequence": 656,
+          "source": {
+            "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\p49-responses\\0656-1-result.json",
+            "bytes": 27347,
+            "sha256": "cecdd22b77071e5a772bb0e3a66170d019c2344f7d6795014f899713f9e80784"
+          },
+          "ended_at_utc": "2026-10-17T17:31:49.438029+00:00",
+          "snapshot_id": "native:8533",
+          "date_raw": 53331120,
+          "actor_character_id": 31254,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "estate_binding": {
+            "snapshot_id": "native:4191",
+            "revision": 90,
+            "native_revision": 4191,
+            "date_raw": 53263944,
+            "episode_run_id": "native-31254-8d3a8440eb30",
+            "episode_character_id": 31254
+          },
+          "title_expectations": [
+            {
+              "title": {
+                "title_id": 2230,
+                "tier_raw": 3,
+                "tier_key": "duchy"
+              },
+              "first_heir_character_id": 40695,
+              "primary": true
+            },
+            {
+              "title": {
+                "title_id": 2231,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            },
+            {
+              "title": {
+                "title_id": 2262,
+                "tier_raw": 2,
+                "tier_key": "county"
+              },
+              "first_heir_character_id": 40695,
+              "primary": false
+            }
+          ],
+          "estate_status": "available"
+        }
+      }
+    ],
+    "before_capture_count": 25,
+    "faction_demand1001_capture_count": 1,
+    "faction_demand1001_captures": [
+      {
+        "before": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\ac9347759ab54489946b5be5e0cf7343.before.json",
+          "bytes": 9051,
+          "sha256": "3103ce0360c707063996cebec33142ee68e70cce31824fcc44ee94fbd0ce737c"
+        },
+        "after": {
+          "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\robert30-clean-campaign01\\native25-cold-generation01\\state\\evidence\\unhandled-events\\ac9347759ab54489946b5be5e0cf7343.after.json",
+          "bytes": 3551,
+          "sha256": "83d9b563fea3c21c2d64aca71feb44e282958520f61070765cdb917db70c9f04"
+        },
+        "incident_id": "ac9347759ab54489946b5be5e0cf7343",
+        "binding": {
+          "snapshot_id": "native:4190",
+          "revision": 89,
+          "native_revision": 4190,
+          "date_raw": 53263944,
+          "episode_run_id": "native-31254-8d3a8440eb30",
+          "connection_generation": 5,
+          "bridge_pid": 51028,
+          "paused": true,
+          "map_ready": true,
+          "actor_character_id": 31254
+        },
+        "current_event_instance_id": 41,
+        "selection": {
+          "rendered_index": 0,
+          "native_option_index": 2,
+          "option_number": 3,
+          "resolved_name": "行吧，我要你们这些聒噪的刁民也没用！",
+          "enabled": true,
+          "selected_step": "select-event-option-3",
+          "selection_order": "native_rendered_index_after_shown_enabled_filter",
+          "excluded_disabled_rendered_indices": []
+        },
+        "registry_known": false
+      }
+    ],
+    "excluded_count": 0,
+    "limitation": "SEM succession_expectation is a retained projection; source binding age must be inspected. No current holder/realm-wide truth, no exhaustive AUTO or command-history audit, no absence inference from stale held-estate cache.",
+    "conclusion": "Only the known AUTO193 populist concession is captured. SEM held expectations after P43 retain native4191/raw53263944 through P49 SEM656 native8533/raw53331120. These are retained cache identities, not a fresh post-P43 holder or realm audit; further actual losses/causes remain unestablished."
+  },
+  "preparation_qualification_tool": {
+    "source": {
+      "path": "Z:\\ck3_mod_rewrite\\tools\\g2_saved_campaign\\qualify_populist_source.py",
+      "bytes": 4707,
+      "sha256": "76aea3943aba0ba1b6ce29dff4ac8cb8a2dacb3984d23e9b0ce659101e4002ea"
+    },
+    "actual_state_positive": {
+      "report": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\QUALIFY-ACTUAL-STATE.json",
+        "bytes": 2577,
+        "sha256": "162209888c343a7ed0cb7a1bd60ae493febec9706f4472fbdbf214d022610640"
+      },
+      "status": "PASS",
+      "selected_step": "select-event-option-4",
+      "fingerprint": "14b787d272428d83ecbf6e7e9e13389b6b3857688c4e0e7fb007a851cd61b17f",
+      "exit_code": 0
+    },
+    "absent_state_negative": {
+      "report": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\QUALIFY-MISSING-STATE.json",
+        "bytes": 2024,
+        "sha256": "e39cd0194415cd6dc94b2866175ce5b0a80cdc28caf5259064323a6f9edbf48b"
+      },
+      "status": "FAIL",
+      "selected_step": "select-event-option-3",
+      "source_knowledge": {
+        "status": "unknown",
+        "rejected_entries": []
+      },
+      "exit_code": 1,
+      "expected_negative_result": true
+    },
+    "integration": "Call this CLI once after carrying source knowledge into the actual new namespace state, using the actual SDK source root; require its actual known exact -> API4 replay result, rather than only file existence. This is a targeted regression check for the observed loss of knowledge, not a new game or broad gate."
+  }
+}
