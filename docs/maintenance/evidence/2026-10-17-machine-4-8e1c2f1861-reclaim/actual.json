@@ -1,0 +1,363 @@
+{
+  "schema": "ck3.machine-local.storage-reclaim.portable-summary.v1",
+  "machine_id": "4-8e1c2f1861",
+  "documentation_created_at_utc": "2026-10-17T10:46:59.965675+00:00",
+  "documentation_basis": "Retained same-machine receipts only; no new scan, deletion, guard probe or Steam observation",
+  "actual_observed_at_utc": "2026-10-17T07:46:05.799854+00:00",
+  "actual_status": "COMPLETE_WITH_INDEPENDENT_READBACK",
+  "totals": {
+    "deleted_files": 568980,
+    "deleted_directories": 19246,
+    "logical_deleted_bytes": 155934089847,
+    "last_link_allocation_deleted_bytes": 131346116320,
+    "failure_count": 0
+  },
+  "allocation_credit_basis": "Native original handle identity/mtime/type plus nlink at successful delete; credit allocation only when the deleted handle had one remaining link. Compression/sparse allocation measured, no candidate plan or file-count ACK counted as release.",
+  "volume_observations": {
+    "volume_path_on_source_machine": "C:/",
+    "total_bytes": 511776722944,
+    "before_first_execution_at_utc": "2026-10-17T07:28:16.715244+00:00",
+    "before_first_execution_free_bytes": 5890617344,
+    "final_report_at_utc": "2026-10-17T07:46:05.799854+00:00",
+    "final_report_free_bytes": 136997740544,
+    "free_delta_is_not_exclusive_attribution": true,
+    "not_a_current_free_space_observation": true
+  },
+  "execution_receipts": [
+    {
+      "name": "workshop-execution",
+      "started_at_utc": "2026-10-17T07:28:16.715244+00:00",
+      "finished_at_utc": "2026-10-17T07:31:20.172683+00:00",
+      "deleted_files": 68534,
+      "deleted_directories": 7125,
+      "logical_deleted_bytes": 41183044996,
+      "last_link_allocation_deleted_bytes": 41327444072,
+      "failure_count": 0,
+      "summary": {
+        "path": "C:/workspace/storage-reclaim-20261017/workshop-execution/summary.json",
+        "bytes": 2294,
+        "sha256": "e0aeb1c49b627088af919866359dcd29ed94db66bdb0293c61624737b30c1f5b"
+      },
+      "exact_deleted_path_ledger": {
+        "path": "C:/workspace/storage-reclaim-20261017/workshop-execution/items.jsonl.gz",
+        "sha256": "3b1ad58a0b1a3ad9bc1869536a6ee4424fac6aed4bbc04dbbe1e4f2c1c0e89d9",
+        "hash_source": "Original independent readback; ledger not reread during documentation"
+      },
+      "qualification": {
+        "path": "C:/workspace/storage-reclaim-20261017/workshop-qualification.json",
+        "bytes": 3985,
+        "sha256": "27144fd867ab315715a08196a616ec945cbb78732b3d3212a8caf32929514ab5"
+      }
+    },
+    {
+      "name": "dameng-execution",
+      "started_at_utc": "2026-10-17T07:32:20.856872+00:00",
+      "finished_at_utc": "2026-10-17T07:35:46.871418+00:00",
+      "deleted_files": 293697,
+      "deleted_directories": 681,
+      "logical_deleted_bytes": 19408521469,
+      "last_link_allocation_deleted_bytes": 14436216688,
+      "failure_count": 0,
+      "summary": {
+        "path": "C:/workspace/storage-reclaim-20261017/dameng-execution/summary.json",
+        "bytes": 33776,
+        "sha256": "04175d48f6e91dcadf350f9faee23710bd7b79a4233409b1800b7e931ab4ba9f"
+      },
+      "exact_deleted_path_ledger": {
+        "path": "C:/workspace/storage-reclaim-20261017/dameng-execution/items.jsonl.gz",
+        "sha256": "1853d9df8940d9667ec7a80bba2ec8c4f6ece1b71c1b2be352a944ff39e0fcfb",
+        "hash_source": "Original independent readback; ledger not reread during documentation"
+      },
+      "qualification": {
+        "path": "C:/workspace/storage-reclaim-20261017/dameng-qualification.json",
+        "bytes": 62240,
+        "sha256": "325566998a9c83b0edea44785e0e56b288097ec91bc05fe1594505883a1153fa"
+      }
+    },
+    {
+      "name": "uuii-main-execution",
+      "started_at_utc": "2026-10-17T07:36:14.989558+00:00",
+      "finished_at_utc": "2026-10-17T07:38:43.987153+00:00",
+      "deleted_files": 162446,
+      "deleted_directories": 9045,
+      "logical_deleted_bytes": 73671525135,
+      "last_link_allocation_deleted_bytes": 57930146793,
+      "failure_count": 0,
+      "summary": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-main-execution/summary.json",
+        "bytes": 18459,
+        "sha256": "d72242f421a546ab87eeda5bda0d46275f4acfb0ddbce232c745b0f18a97b721"
+      },
+      "exact_deleted_path_ledger": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-main-execution/items.jsonl.gz",
+        "sha256": "02990fd33d5acf44504f851e581029a6bfb546453e51d4e29e6440035a51886d",
+        "hash_source": "Original independent readback; ledger not reread during documentation"
+      },
+      "qualification": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii/qualification.json",
+        "bytes": 86422,
+        "sha256": "a48ac523301cc1dc1364cad8486af782031926e08caad5456af7e2f624918fc7"
+      }
+    },
+    {
+      "name": "uuii-extra-execution",
+      "started_at_utc": "2026-10-17T07:41:35.004290+00:00",
+      "finished_at_utc": "2026-10-17T07:41:35.087902+00:00",
+      "deleted_files": 44,
+      "deleted_directories": 0,
+      "logical_deleted_bytes": 2915464115,
+      "last_link_allocation_deleted_bytes": 2915553280,
+      "failure_count": 0,
+      "summary": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-extra-execution/summary.json",
+        "bytes": 10313,
+        "sha256": "4a39aebd7144c252ed18671fa05fb7f9b0bb0eca8ae2b36bd013639d3c45bff6"
+      },
+      "exact_deleted_path_ledger": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-extra-execution/items.jsonl.gz",
+        "sha256": "2edc84434d9a0c9cfbf3c5143aca40111419d28ecfd9ce0f5c245fcf930e07f7",
+        "hash_source": "Original independent readback; ledger not reread during documentation"
+      },
+      "qualification": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii/extra-checkpoints-qualification.json",
+        "bytes": 19054,
+        "sha256": "f4bb51559dfb1bc22393104721c3aa4010ea7096065dc10802ed293139c9b1e9"
+      }
+    },
+    {
+      "name": "uuii-extended-execution",
+      "started_at_utc": "2026-10-17T07:41:39.407175+00:00",
+      "finished_at_utc": "2026-10-17T07:42:23.265068+00:00",
+      "deleted_files": 44259,
+      "deleted_directories": 2395,
+      "logical_deleted_bytes": 18755534132,
+      "last_link_allocation_deleted_bytes": 14736755487,
+      "failure_count": 0,
+      "summary": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-extended-execution/summary.json",
+        "bytes": 8267,
+        "sha256": "5bdeed668466d7ce5a520ccc59302d58cf3429ce3b416c4486cf800e3eebf422"
+      },
+      "exact_deleted_path_ledger": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii-extended-execution/items.jsonl.gz",
+        "sha256": "860fbadb8a47ade6f57574aa4689acce6c4c67bc8c065f2ad0fa5cb2a2460457",
+        "hash_source": "Original independent readback; ledger not reread during documentation"
+      },
+      "qualification": {
+        "path": "C:/workspace/storage-reclaim-20261017/uuii/extended-qualification.json",
+        "bytes": 19501,
+        "sha256": "983426b682b2da2f05143419975354c0b9a2bc4b417f4b6933660e12b735033c"
+      }
+    }
+  ],
+  "independent_readback": {
+    "observed_at_utc": "2026-10-17T07:43:53.903033+00:00",
+    "deleted_paths_verified_absent": 588226,
+    "reappeared_paths": 0,
+    "protected_inputs_sha_verified": 16,
+    "protected_input_categories": {
+      "uuii_current_and_minimum_unresolved_evidence": 14,
+      "dameng_required_inputs": 2
+    },
+    "protected_identity_list_canonical_json_sha256": "46fc7aa6ec9e79cabc598ce2fdc4fbf13553305036ba53b75b0e680fe671a394",
+    "protected_identity_hash_encoding": "UTF-8 json.dumps(original protected_verified,ensure_ascii=False,sort_keys=True,separators=(comma,colon))",
+    "missing_protected_inputs": 0,
+    "changed_protected_inputs": 0
+  },
+  "persistent_local_workshop_policy": {
+    "app_id": 1158310,
+    "item_ids": [
+      "2291024373",
+      "2993056101",
+      "2962333032"
+    ],
+    "installed_at_utc": "2026-10-17T07:32:04.532106+00:00",
+    "persisted_at_utc": "2026-10-17T07:36:06.670184+00:00",
+    "independently_verified_at_utc": "2026-10-17T07:44:09.579102+00:00",
+    "exact_item_paths": 12,
+    "all_create_file_mkdir_marker_unlink_item_rmdir_denied": true,
+    "item_and_marker_dacls_unchanged": true,
+    "policy_path": "C:/ProgramData/CK3WorkshopLocalPolicy/blocked-items.json",
+    "account_subscription_mutated": false,
+    "steam_online_transition_performed": false,
+    "steam_current_online_offline_state": "NOT_QUERIED_BY_CLEANUP_SUBTHREAD",
+    "other_machines_deployed": "NOT_CLAIMED",
+    "future_real_steam_download_attempt_tested": false,
+    "scope": "Only the 12 exact item paths in this Steam library; no parent ACL change or polling deletion service",
+    "override_boundary": "Administrator or explicit ACL replacement can override; other libraries and machines require their own measures",
+    "rollback_identity": {
+      "full_original_and_applied_sddl_source": "sources.persistent_machine_policy_with_full_restore_dacls",
+      "full_original_and_applied_sddl_key": "guards_and_restore_dacls",
+      "field_hash_encoding": "SHA-256 of the exact UTF-8 JSON string value without quotes or added newline",
+      "rows": [
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/2291024373",
+          "item_id": "2291024373",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/downloads/1158310/2291024373",
+          "item_id": "2291024373",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/1158310/2291024373",
+          "item_id": "2291024373",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/2291024373",
+          "item_id": "2291024373",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/2993056101",
+          "item_id": "2993056101",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/downloads/1158310/2993056101",
+          "item_id": "2993056101",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/1158310/2993056101",
+          "item_id": "2993056101",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/2993056101",
+          "item_id": "2993056101",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/content/1158310/2962333032",
+          "item_id": "2962333032",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/downloads/1158310/2962333032",
+          "item_id": "2962333032",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/1158310/2962333032",
+          "item_id": "2962333032",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/workshop/temp/2962333032",
+          "item_id": "2962333032",
+          "marker_name": ".ck3-local-download-block.json",
+          "original_sddl_utf8_sha256": "18c324c10d7b7424a987ad30f2a24d9f52d394582e9fcb2b122c7c7961e4a7bd",
+          "marker_original_sddl_utf8_sha256": "93f01f4deded5489b533107f569066989d26e272579ee544c2ad04c8ab75dbde",
+          "applied_sddl_utf8_sha256": "c9b0a18fe2e68793ef0fe227ac31e134e438bfe886d56964e3d6859a4398bfdd",
+          "marker_applied_sddl_utf8_sha256": "e7080dd194606bc08bd91a11e733c10c87c64bf2eeac484605d88db06609b3f2"
+        }
+      ],
+      "restore_scope": "Only each exact item path and marker original_sddl/marker_original_sddl after explicit user revocation; no whole-Steam parent reset",
+      "rollback_executed": false
+    },
+    "lifetime": "Until explicitly revoked; review does not automatically remove the user setting",
+    "review_at_utc": "2027-04-15T00:00:00Z"
+  },
+  "originals_availability": "DELETED for each exact original status=deleted entry in the five ledgers; no same-named replacement evidence created. Historical GREEN/RED/UNKNOWN results were not rewritten.",
+  "retention": {
+    "policy_version": "1.0.0",
+    "detailed_ledger_review_at_utc": "2026-11-16T00:00:00Z",
+    "small_receipt_review_at_utc": "2027-04-15T00:00:00Z",
+    "retained_input_next_review_at_utc": "2026-10-24T07:46:05.799854+00:00",
+    "auto_renew": false
+  },
+  "sources": {
+    "overall_actual": {
+      "path": "C:/workspace/storage-reclaim-20261017/overall-cleanup-actual.json",
+      "bytes": 10615,
+      "sha256": "671d74f7cbd1dd0a31fd74c5fe6f51c2085077a876afa7b3880e59d301aeb190"
+    },
+    "independent_deleted_paths_and_protected_inputs": {
+      "path": "C:/workspace/storage-reclaim-20261017/independent-asset-readback.json",
+      "bytes": 6258,
+      "sha256": "836f421078b3d06ce5dd341949ada32696846e819684943f61fa896353eb4fc0"
+    },
+    "local_barrier_installation_and_original_dacls": {
+      "path": "C:/workspace/storage-reclaim-20261017/local-guards-installed.json",
+      "bytes": 16184,
+      "sha256": "c71e4012dd6db2512abf900b0ed7946da7e81b8e348364bd41f079b11f2b777c"
+    },
+    "local_barrier_independent_readback": {
+      "path": "C:/workspace/storage-reclaim-20261017/local-guards-independent-readback.json",
+      "bytes": 6247,
+      "sha256": "d4df0dd1198ae8b0d7cd1fa634c3d8166d750bb241a0bcfeb5833a0c5e6198c8"
+    },
+    "persistent_policy_creation_receipt": {
+      "path": "C:/workspace/storage-reclaim-20261017/persistent-policy-receipt.json",
+      "bytes": 537,
+      "sha256": "3570b6cc251a895795e81b1ba0c6770fa93a5175c94a6288aa33b5c4f7595983"
+    },
+    "persistent_machine_policy_with_full_restore_dacls": {
+      "path": "C:/ProgramData/CK3WorkshopLocalPolicy/blocked-items.json",
+      "bytes": 16262,
+      "sha256": "4ed439b33a2c83506fd12dc97a129c88c36435632dedf9e0467750cabbfe11bb"
+    },
+    "persistent_policy_readme": {
+      "path": "C:/ProgramData/CK3WorkshopLocalPolicy/README.txt",
+      "bytes": 780,
+      "sha256": "3314635b41fcfdaed5e42e4827a5d75b6e1b8d0326b25bc775c167a9d67fe1c9"
+    },
+    "uuii_local_availability_index": {
+      "path": "C:/workspace/ck3_uuii/_runtime/storage-retirement-20261017.json",
+      "bytes": 47988,
+      "sha256": "1416c0d183fa46a2ab1340085afedf30d504677ccf85ec9f86aab8c27f39f79a"
+    },
+    "storage_policy_parameters": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    }
+  }
+}

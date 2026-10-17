@@ -1080,6 +1080,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_player_holy_site_relic_context_query = "ck3_query_player_holy_site_relic_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_query = "ck3_query_player_holy_site_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_holy_site_adoption_detail_query = "ck3_query_player_holy_site_adoption_detail_v1" in driver.case_declared_read_only_mcp_tools
+    driver.allow_private_player_religion_numeric_special_parameters_query = "ck3_query_player_religion_numeric_special_parameters_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_personal_parameters_query = "ck3_query_player_religion_personal_parameters_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_doctrines_query = "ck3_query_player_religion_doctrines_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_religion_tenets_query = "ck3_query_player_religion_tenets_v1" in driver.case_declared_read_only_mcp_tools
@@ -4479,6 +4480,7 @@ def parser() -> argparse.ArgumentParser:
         "ck3_query_player_holy_site_relic_context_v1",
         "ck3_query_player_holy_site_v1",
         "ck3_query_player_holy_site_adoption_detail_v1",
+        "ck3_query_player_religion_numeric_special_parameters_v1",
         "ck3_query_player_religion_context_v1", "ck3_query_player_religion_personal_parameters_v1",
         "ck3_query_player_religion_doctrines_v1", "ck3_query_player_religion_tenets_v1",
         "ck3_query_player_religion_reform_context_v1", "ck3_query_player_religion_draft_groups_v1",
