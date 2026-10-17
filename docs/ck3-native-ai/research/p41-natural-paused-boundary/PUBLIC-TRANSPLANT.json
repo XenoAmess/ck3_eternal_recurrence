@@ -1,0 +1,60 @@
+{
+  "schema": "xar.public-natural-paused-boundary-transplant/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "base_head": "2cc1c676477a7189800605b3725da8b88832f54f",
+  "base_driver_sha256": "e610e95f935b3c9ec1d9b35c0ccdcf76496184cb4f18c7b1ffa39f8129513a59",
+  "public_driver_sha256": "6eee467bd4b4edb3fe6cdd88273fabb88e858742fbb460570863a9d50ec9b1c9",
+  "changed_existing_functions": [
+    "NativeHeadlessGameplayDriver._execute_battle_sentinel_advance"
+  ],
+  "added_functions": [
+    "_verified_battle_sentinel_paused_decision_boundary"
+  ],
+  "peer_helper_ast_equal": true,
+  "all_other_existing_functions_ast_equal": true,
+  "only_two_reviewed_hunks": true,
+  "line_endings": "LF",
+  "observed_at_utc": "2026-10-17T11:19:08.686537+00:00",
+  "source_root_id": "continuation42-cold-prep",
+  "source_delivery": {
+    "relative_path": "p41-natural-paused-decision-boundary-driver01/DELIVERY.json",
+    "sha256": "f6a8453446c46f8a4695a6c5f7b3cdf7bee979bab4caa5faecf00c7c6712ba0e"
+  },
+  "tests": {
+    "public_helper_methods": 2,
+    "rejecting_subtests": 9,
+    "with_existing_sentinel_contract_methods": 5,
+    "with_existing_sentinel_contract_subtests": 31,
+    "native_io_calls": 0,
+    "complete_driver_composite_tested": false,
+    "live_verified": false
+  },
+  "fixture_boundary": "Actual SEM1732 paused projection; running/start frames and mutants synthetic. Original AUTO1731 error does not identify its failed subpredicate.",
+  "standby": {
+    "source_delivery_relative_path": "sdk-p42-standby-candidate01/DELIVERY.json",
+    "delivery_sha256": "a2619fd60f8031a094b1542e494d37844f0b4dd43436f94d5e8f96b18f5b6038",
+    "status": "PREPARED_UNARMED_STANDBY",
+    "leaves": 1320,
+    "unchanged_hardlinks": 1319,
+    "changed_leaf": "xar_autoplayer/bridge/native_driver.py",
+    "driver_lf_sha256": "535fc3dde9714515fd3d4cfdf455ebe9b20e24cd96fe3406bdd8b07910446dd9",
+    "runtime_transition_performed": false
+  },
+  "runtime_or_control_install_performed_by_publication": false,
+  "public_test_files": {
+    "ck3_autonomous_player/tests/unit/test_natural_paused_decision_boundary.py": {
+      "bytes": 4037,
+      "sha256": "ba5f9fc0c85218bd620c3eeae90198d0b83a2e7bdb10e4744d4037ae63c876ed",
+      "source_raw_sha256": "632e58e903ac98221090ae0ef4325a5be7c8f760c5ca86d989c1dfad22c22ded",
+      "source_raw_bytes": 4121,
+      "hash_basis": "published Git blob; source raw pin retained separately"
+    },
+    "ck3_autonomous_player/tests/unit/fixtures/actual_sem1732_paused_interaction.json.gz": {
+      "bytes": 4482,
+      "sha256": "b7bc59499d43e710261c61f23b3798da27bbd6bd9fb45443c09626217ae4cd7a",
+      "source_raw_sha256": "b7bc59499d43e710261c61f23b3798da27bbd6bd9fb45443c09626217ae4cd7a",
+      "source_raw_bytes": 4482,
+      "hash_basis": "published Git blob; source raw pin retained separately"
+    }
+  }
+}

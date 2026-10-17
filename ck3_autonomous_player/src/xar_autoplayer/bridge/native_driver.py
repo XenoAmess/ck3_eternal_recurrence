@@ -24058,17 +24058,13 @@ class NativeHeadlessGameplayDriver:
                         paused_inspection
                     )
                 )
-                boundary_confirmed = bool(
-                    len(boundary_pause_actions) == 1
-                    and inspected_boundary is not None
-                    and _fresh_battle_sentinel_player_decision_boundary(
-                        before_pause_inspection,
-                        paused_inspection,
-                        expected_boundary=running_boundary,
-                    )
-                    and _battle_sentinel_player_decision_is_new(
-                        starting, paused_inspection
-                    )
+                boundary_confirmed = _verified_battle_sentinel_paused_decision_boundary(
+                    starting=starting,
+                    before_pause=before_pause_inspection,
+                    after_pause=paused_inspection,
+                    pause_actions=boundary_pause_actions,
+                    inspected_boundary=inspected_boundary,
+                    expected_boundary=running_boundary,
                 )
                 purpose = (
                     "player_decision_boundary_stabilization"
@@ -28219,6 +28215,42 @@ def _battle_sentinel_player_decision_is_new(
             starting_binding.get(field) == current_binding.get(field)
             for field in owner_fields
         )
+    )
+
+
+def _verified_battle_sentinel_paused_decision_boundary(
+    *, starting: dict[str, object], before_pause: dict[str, object],
+    after_pause: dict[str, object], pause_actions: list[dict[str, object]],
+    inspected_boundary: dict[str, object] | None,
+    expected_boundary: dict[str, object] | None,
+) -> bool:
+    """Accept one explicit pause or a separately observed CK3 self-pause.
+
+    A player decision may pause CK3 between the running observation and our
+    idempotent pause request. In that case _pause_life_advance returns a fresh
+    already-paused frame without submitting pause-map. Require the same
+    running boundary and the original fresh frame/owner checks; no date or
+    action credit is inferred here.
+    """
+    if len(pause_actions) == 0:
+        if not (
+            isinstance(expected_boundary, dict)
+            and before_pause.get("paused") is False
+            and after_pause.get("paused") is True
+            and _same_battle_sentinel_player_decision_boundary(
+                expected_boundary,
+                _battle_sentinel_player_decision_boundary(before_pause),
+            )
+        ):
+            return False
+    elif len(pause_actions) != 1:
+        return False
+    return bool(
+        inspected_boundary is not None
+        and _fresh_battle_sentinel_player_decision_boundary(
+            before_pause, after_pause, expected_boundary=expected_boundary,
+        )
+        and _battle_sentinel_player_decision_is_new(starting, after_pause)
     )
 
 

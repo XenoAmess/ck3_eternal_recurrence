@@ -15,3 +15,5 @@
 原 P39 故障及零动作清理保留。P40 首启另因 audience 指针已经存在，Windows `pending.rename` 在发请求前失败；[该次失败投影](research/p41-retreating-only-committed-route/P40-AUDIENCE-COLLISION-PROJECTION.json)明确保留 queue1／app0、非正常闭场、零新 RPC，不能改写成两端正常退出或游戏动作失败。公共 audience 绑定 API 已采用显式受管写者及 replace 边界，不复制场次 queue 脚本作为通用实现。
 
 P41 在同 Game51028、同录像下接入，原单日结果配对结算后，Root 的 `d0ef55eb…` 续接证明为 window7 建立新基线 `53201832`。Root 本次交接截点回报该窗口已连续约44日；战争33554541仍在进行，尚未胜利。旧窗口失败与这一天启动资格不累加为连续稳定成绩。连续稳定30年第一，之后低于1秒／日、再0.5秒／日，均未宣称达成。
+
+2026-10-17 后补：上段是最初44日的历史截点。窗口7后来在786日因 AUTO1731 的玩家决策暂停边界校验失败，SEM1732实际观察到6日变化与待处理交互；原结果不重放。新的[自行暂停读回窄修复](natural-player-decision-pause-boundary.md)与部分推进恢复分开记录，不把该窗口写成仍持续运行。
