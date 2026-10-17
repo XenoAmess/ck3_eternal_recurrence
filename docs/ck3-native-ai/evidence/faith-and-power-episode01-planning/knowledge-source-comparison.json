@@ -1,0 +1,51 @@
+{
+  "schema": "xar.holy-site-additional-knowledge-source-comparison.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-17T08:03:12.910912+00:00",
+  "mirror_commit": "074429b3f6d9352a3cf4c5671725fee2f41267ba",
+  "comparisons": [
+    {
+      "path": "common/scripted_costs/00_costs.txt",
+      "bytes": 14914,
+      "local_sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "mirror_sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/scripted_costs/00_costs.txt",
+      "byte_identical": true
+    },
+    {
+      "path": "common/modifiers/00_religion_modifiers.txt",
+      "bytes": 8469,
+      "local_sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "mirror_sha256": "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/modifiers/00_religion_modifiers.txt",
+      "byte_identical": true
+    },
+    {
+      "path": "common/opinion_modifiers/00_religious_opinions.txt",
+      "bytes": 5239,
+      "local_sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "mirror_sha256": "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/opinion_modifiers/00_religious_opinions.txt",
+      "byte_identical": true
+    },
+    {
+      "path": "common/script_values/pam_values.txt",
+      "bytes": 272209,
+      "local_sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "mirror_sha256": "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/script_values/pam_values.txt",
+      "byte_identical": true
+    },
+    {
+      "path": "common/important_actions/pam_actions.txt",
+      "bytes": 40634,
+      "local_sha256": "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5",
+      "mirror_sha256": "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5",
+      "url": "https://raw.githubusercontent.com/jesec/ck3-mod-base/074429b3f6d9352a3cf4c5671725fee2f41267ba/base/game/common/important_actions/pam_actions.txt",
+      "byte_identical": true
+    }
+  ],
+  "all_identical": true,
+  "raw_source_bytes_written": false,
+  "scope": "Only five exact paths already reviewed for episode01, no game resource traversal"
+}

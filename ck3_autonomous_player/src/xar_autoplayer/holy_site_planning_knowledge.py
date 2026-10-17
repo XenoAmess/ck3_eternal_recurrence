@@ -10,7 +10,7 @@ from copy import deepcopy
 from typing import Literal
 
 
-HolySitePlanningAction = Literal["adopt", "enshrine_relic", "remove_relic"]
+HolySitePlanningAction = Literal["adopt", "create", "promote", "demote", "abandon", "enshrine_relic", "remove_relic"]
 HOLY_SITE_KNOWLEDGE_BUILD = "1.20.0.4"
 _SOURCE_COMMIT = "074429b3f6d9352a3cf4c5671725fee2f41267ba"
 _SOURCE_REPOSITORY = "https://github.com/jesec/ck3-mod-base"
@@ -41,7 +41,7 @@ _COMMON_OBSERVATIONS = [
     "holy_site_full_instance_id_type_id_county_id_and_barony_id",
     "county_holder_top_liege_clerical_region_holder_and_their_faith_rite_ids",
     "all_associated_faith_ids_and_each_faith_site_level",
-    "same_site_inventory_id_and_artifact_full_ids_owners_slots_recognition_sets",
+    "same_site_inventory_owner_binding_and_artifact_full_ids_owners_slots_recognition_sets",
     "native_final_permission_literal_failure_reasons_and_actual_resource_quote",
 ]
 _COMMON_POSTCONDITIONS = [
@@ -54,7 +54,7 @@ _COMMON_POSTCONDITIONS = [
 _COMMON_UNKNOWNS = [
     "The engine's complete final command validator and holy-site action ABI.",
     "HolySite.IsActive implementation, effective rarity calculation and actual beneficiaries.",
-    "Whether different Faith views share the same inventory; join by actual site/inventory IDs.",
+    "Whether different Faith views share the same site-bound inventory; do not invent an independent inventory ID.",
     "Native owner/slot/replacement legality and final costs for this actor/artifact/site.",
 ]
 
@@ -215,6 +215,225 @@ _KNOWLEDGE: dict[str, dict[str, object]] = {
 }
 
 
+_RELIGION_ACTIONS = "common/on_action/religion_on_actions.txt"
+_RELIGION_ACTIONS_SHA = "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d"
+_RELIGION_EFFECTS = "common/scripted_effects/00_religion_effects.txt"
+_RELIGION_EFFECTS_SHA = "5bf6b0df3316f72f711507c310a349d508a3b83aef99373ea6440de20e4e4931"
+_PLANNING_CONTRACT = "docs/ck3-native-ai/faith-and-power-episode01-planning.md"
+_DEFAULT_LIMITS = {
+    "total_max": 9, "eminent_max": 3, "total_min": 1, "eminent_min": 1,
+    "runtime_limits_must_be_observed": True,
+    "sources": [_source("common/defines/00_defines.txt",
+                        "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982", 919, 926)],
+}
+
+
+def _decision_cost(decision: str, first: int, last: int) -> dict[str, object]:
+    return {
+        "script_base_piety": 1000,
+        "decision_cooldown_key": decision,
+        "free_action_branch": "Piety and this decision cooldown are zero while the Faith has a free action.",
+        "otherwise_script_cooldown_years": 5,
+        "actual_native_quote": None,
+        "boundary": "Separate decision keys; observe the last free action's actual charge and cooldown timing.",
+        "sources": [_source(_DECISIONS, _DECISIONS_SHA, first, last),
+                    _source(_VALUES, _VALUES_SHA, 13, 27)],
+    }
+
+
+def _grade_social_effects(elevated: bool) -> dict[str, object]:
+    return {
+        "non_actor_county_holder_opinion": 50 if elevated else -50,
+        "opinion_decays_over_years": 10,
+        "actor_modifier_years": 10,
+        "actor_same_faith_opinion": {"zealot": 30} if elevated else {"zealot": -20, "parochial": -20},
+        "actual_opinion_and_modifier_reapplication": None,
+        "sources": [
+            _source("common/opinion_modifiers/00_religious_opinions.txt",
+                    "7d99ff4ca1b0808337c78e452c7253497c158f0fc39c8db9ecd1791485c025be", 4, 15),
+            _source("common/modifiers/00_religion_modifiers.txt",
+                    "47379ec300977d1fbd7371424b6d623d215d3175bd83b81cc79ea8551851d9b9", 7, 16),
+        ],
+    }
+
+
+_KNOWLEDGE.update({
+    "create": {
+        "planning_contract": _PLANNING_CONTRACT,
+        "entrypoint": {
+            "gui": "HolySiteCreationWindow.OnCreateButtonClicked",
+            "native_command_abi_verified": False,
+            "sources": [_source("gui/window_holy_site_creation.gui",
+                                "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310", 704, 714)],
+        },
+        "candidate_pipeline": [
+            {
+                "stage": "capital_opportunity_hint",
+                "enumeration": ["actor.capital_barony", "actor.character_artifacts"],
+                "filter": "Landed, no creation lock, unleased non-site capital, authority, total/kingdom room and unequipped recognized relic combinations.",
+                "is_complete_candidate_directory": False,
+                "payment_checked_by_this_hint": False,
+                "sources": [_source("common/important_actions/pam_actions.txt",
+                                    "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5", 1514, 1574)],
+            },
+            {
+                "stage": "gui_candidate_models",
+                "models": ["GetAvailableHolySiteTypes", "GetPotentialBaronyTitles", "GetEnshrinableArtifacts"],
+                "native_producer_status": "unknown",
+                "is_complete_native_validator": False,
+                "boundary": "Do not substitute the adoption realm-county enumeration or the capital hint for these complete models.",
+                "sources": [_source("gui/window_holy_site_creation.gui",
+                                    "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310", 447, 607)],
+            },
+        ],
+        "management_permission": _KNOWLEDGE["adopt"]["management_permission"],
+        "script_requirements": {
+            "expression": "can_manage_faith_holy_sites_trigger AND no actor.holy_site_creation_cooldown AND faith_can_use_holy_site_kingdom_trigger for selected barony",
+            "free_action_does_not_bypass_existing_creation_lock": True,
+            "is_complete_native_validator": False,
+            "sources": [_source(_RULES, _RULES_SHA, 28, 45)],
+        },
+        "creation_relic_budget": {
+            "script_required_rarity": 3,
+            "defined_holy_site_slots": 3,
+            "native_selected_artifacts_validated": False,
+            "sources": [_source("common/defines/00_defines.txt",
+                                "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982", 928, 932),
+                        _source("common/artifacts/slots/01_holy_site.txt",
+                                "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df", 7, 20)],
+        },
+        "default_limits": _DEFAULT_LIMITS,
+        "cost_and_cooldown": {
+            "script_base_piety": 2000,
+            "free_action_branch": "Target Faith free action waives scripted cost; creation callback consumes one instead of setting its new lock.",
+            "creation_cooldown_variable": "holy_site_creation_cooldown",
+            "otherwise_script_cooldown_years": 5,
+            "actual_native_quote": None,
+            "sources": [_source("common/scripted_costs/00_costs.txt",
+                                "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0", 770, 791),
+                        _source(_RELIGION_ACTIONS, _RELIGION_ACTIONS_SHA, 2048, 2064),
+                        _source(_VALUES, _VALUES_SHA, 13, 16)],
+        },
+        "declared_effect": {
+            "script": "Creation callback consumes free action or sets actor creation lock, and adds only a missing fallback special-building slot.",
+            "actual_created_site_id_and_level": None,
+            "sources": [_source(_RELIGION_ACTIONS, _RELIGION_ACTIONS_SHA, 2048, 2064),
+                        _source(_RELIGION_EFFECTS, _RELIGION_EFFECTS_SHA, 1343, 1358)],
+        },
+        "base_observations": _COMMON_OBSERVATIONS[:2],
+        "additional_observations": [
+            "complete_native_type_barony_artifact_candidates_and_each_refusal_reason",
+            "selected_barony_county_kingdom_holder_lease_and_existing_sites",
+            "target_faith_memberships_types_effective_limits_free_actions_and_used_kingdoms",
+            "selected_artifact_ids_owners_equipped_recognition_rarity_count_and_native_sum",
+            "effective_actor_payer_actual_quote_and_creation_variable_expiry",
+        ],
+        "postconditions": [
+            "Read the newly created full site ID/type/barony and its actual Faith membership/level.",
+            "Read selected artifact IDs, destination inventory owner binding and actual owner kind/ID.",
+            "Read balances, Faith free actions, actor creation lock, used kingdoms and special-building slot.",
+            "Read Active, effective rarity and actual beneficiary effects independently.",
+            "Retain native request and independent material state; an ACK is not a completed action.",
+        ],
+        "additional_unknowns": ["Complete native model producers, selection invalidation and final creation command.",
+                                "Runtime creation ordering, site level, ownership transfer and actual cost."],
+    },
+    "promote": {
+        "planning_contract": _PLANNING_CONTRACT,
+        "decision_key": "elevate_holy_site_decision",
+        "entrypoint": {"is_invisible": True, "keyed_decision_list_reachability_verified": False,
+                       "meaning": "Use the original parameterized HolySite-window caller; a generic keyed row is not guaranteed.",
+                       "sources": [_source(_DECISIONS, _DECISIONS_SHA, 19, 19)]},
+        "candidate_pipeline": [{"stage": "decision_widget", "enumeration": ["actor.faith.every_holy_site(is_eminent=no)"],
+                                "is_final_permission": False, "sources": [_source(_DECISIONS, _DECISIONS_SHA, 125, 163)]}],
+        "management_permission": _KNOWLEDGE["adopt"]["management_permission"],
+        "script_requirements": {
+            "expression": "Own regular site, authority, eminent count below maximum; actor is HoF OR site barony holder in actor hierarchy; county holder has actor.faith.",
+            "is_complete_native_validator": False,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 25, 59)],
+        },
+        "default_limits": _DEFAULT_LIMITS,
+        "declared_count_delta": {"total": 0, "eminent": 1, "regular": -1, "is_runtime_observation": False},
+        "cost_and_cooldown": _decision_cost("elevate_holy_site_decision", 62, 84),
+        "declared_effect": {"script": "make_holy_site_eminent; consume free action; apply county-holder/actor social modifiers.",
+                            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 74, 100)]},
+        "social_effects": _grade_social_effects(True),
+        "additional_observations": ["complete_own_regular_sites_and_each_native_final_permission", "effective_total_eminent_counts_limits_free_actions_and_elevation_cooldown", "actual_county_holder_opinion_actor_modifiers_and_beneficiary_changes"],
+        "additional_unknowns": ["Actual modifier reapplication and actual grade/beneficiary result."],
+    },
+    "demote": {
+        "planning_contract": _PLANNING_CONTRACT,
+        "decision_key": "demote_holy_site_decision",
+        "entrypoint": {"is_invisible": True, "keyed_decision_list_reachability_verified": False,
+                       "meaning": "Use the original parameterized HolySite-window caller; a generic keyed row is not guaranteed.",
+                       "sources": [_source(_DECISIONS, _DECISIONS_SHA, 185, 185)]},
+        "candidate_pipeline": [{"stage": "decision_widget", "enumeration": ["actor.faith.every_eminent_holy_site"],
+                                "is_final_permission": False, "sources": [_source(_DECISIONS, _DECISIONS_SHA, 282, 309)]}],
+        "management_permission": _KNOWLEDGE["adopt"]["management_permission"],
+        "script_requirements": {
+            "expression": "Own eminent site, authority, eminent count strictly above Religion minimum; this script does not add elevation's holder/faith checks.",
+            "is_complete_native_validator": False,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 191, 211)],
+        },
+        "default_limits": _DEFAULT_LIMITS,
+        "declared_count_delta": {"total": 0, "eminent": -1, "regular": 1, "is_runtime_observation": False},
+        "frees_total_capacity_or_kingdom_record": False,
+        "cost_and_cooldown": _decision_cost("demote_holy_site_decision", 214, 235),
+        "declared_effect": {"script": "make_holy_site_not_eminent; consume free action; social penalties; qualifying Christian schism progress effect.",
+                            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 226, 265)]},
+        "social_effects": _grade_social_effects(False),
+        "schism_side_effect": {
+            "condition": "actor.faith == christian_faith and site county rite is in current schism pair",
+            "declared_effect_input": 1, "actual_progress_delta": None,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 253, 265),
+                        _source("common/script_values/pam_values.txt",
+                                "458d1bd882e8854005e3158339fca343177cff13eac7f83cb5877a8a37171965", 9277, 9277)],
+        },
+        "additional_observations": ["complete_own_eminent_sites_and_effective_minimum", "this_demotion_cooldown_and_shared_faith_free_actions", "actual_social_modifiers_county_rite_schism_pair_and_progress"],
+        "additional_unknowns": ["Actual social stacking and schism progress; reverse elevation is not a world-state rollback."],
+    },
+    "abandon": {
+        "planning_contract": _PLANNING_CONTRACT,
+        "decision_key": "abandon_holy_site_decision",
+        "entrypoint": {"is_invisible": True, "keyed_decision_list_reachability_verified": False,
+                       "meaning": "Use the original parameterized HolySite-window caller; a generic keyed row is not guaranteed.",
+                       "sources": [_source(_DECISIONS, _DECISIONS_SHA, 331, 331)]},
+        "candidate_pipeline": [{"stage": "decision_widget", "enumeration": ["actor.faith.every_holy_site(is_eminent=no)"],
+                                "is_final_permission": False, "sources": [_source(_DECISIONS, _DECISIONS_SHA, 430, 459)]}],
+        "management_permission": _KNOWLEDGE["adopt"]["management_permission"],
+        "script_requirements": {
+            "expression": "Own regular site, authority, total site count strictly above Religion minimum.",
+            "is_complete_native_validator": False,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 337, 358)],
+        },
+        "default_limits": _DEFAULT_LIMITS,
+        "declared_count_delta": {"total": -1, "eminent": 0, "regular": -1, "is_runtime_observation": False},
+        "cost_and_cooldown": _decision_cost("abandon_holy_site_decision", 361, 396),
+        "declared_effect": {
+            "script": "If county holder exists and no other associated Faith remains, assign all enshrined artifacts to county holder; then remove actor.faith membership and consume free action.",
+            "inventory_recipient": "county holder, possibly the actor; not universally the actor",
+            "other_faith_follower_count_checked_by_return_branch": False,
+            "uses_explicit_remove_relic_effect": False,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 373, 413), _source(_INVENTORY, _INVENTORY_SHA, 322, 329)],
+        },
+        "social_effects": _grade_social_effects(False),
+        "kingdom_release": {
+            "expression": "Release only if this Faith has no holy site remaining anywhere in that de jure kingdom; other remaining associated Faith may acquire its own record.",
+            "sources": [_source(_RELIGION_EFFECTS, _RELIGION_EFFECTS_SHA, 1312, 1340),
+                        _source(_RELIGION_ACTIONS, _RELIGION_ACTIONS_SHA, 1995, 2004)],
+        },
+        "recovery_boundary": {
+            "re_adoption_is_general_undo": False,
+            "reason": "If no associated Faith remains, adoption's any-related-Faith-with-followers requirement cannot pass. Use an independently frozen baseline branch.",
+            "is_runtime_observation": False,
+            "sources": [_source(_DECISIONS, _DECISIONS_SHA, 377, 395), _source(_DECISIONS, _DECISIONS_SHA, 528, 534)],
+        },
+        "additional_observations": ["complete_own_regular_sites_total_count_minimum_free_actions_and_abandon_cooldown", "all_associated_faiths_including_extinct_and_all_artifact_owner_destinations", "all_remaining_faith_sites_in_kingdom_and_all_affected_faith_record_lists", "actual_social_modifiers_and_site_reentry_terms_on_recoverable_branch"],
+        "additional_unknowns": ["Site lifetime, artifact return, actual kingdom-list callback order and non-generic native side effects."],
+    },
+})
+
+
 def query_holy_site_planning_knowledge_v1(
     action: HolySitePlanningAction, *, ck3_build: str = HOLY_SITE_KNOWLEDGE_BUILD,
 ) -> dict[str, object]:
@@ -238,15 +457,16 @@ def query_holy_site_planning_knowledge_v1(
         "qualification": "unsupported_build",
         "source_manifest": "docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/source-manifest.json",
         "source_kind": "versioned_game_resource_scripts_and_gui_not_engine_cpp",
+        "source_manifest_additions": "docs/ck3-native-ai/evidence/faith-and-power-episode01-planning/knowledge-source-comparison.json",
         "knowledge": None,
     }
     if ck3_build != HOLY_SITE_KNOWLEDGE_BUILD:
         result["reason"] = "Revalidate the source rules for the requested build; 1.20.0.4 rules are not a new-build permission."
         return result
     knowledge = deepcopy(_KNOWLEDGE[action])
-    fields = _COMMON_OBSERVATIONS + knowledge.pop("additional_observations")
+    fields = knowledge.pop("base_observations", _COMMON_OBSERVATIONS) + knowledge.pop("additional_observations")
     knowledge["required_observations"] = [{"field": field, "status": "unknown"} for field in fields]
-    knowledge["postconditions"] = list(_COMMON_POSTCONDITIONS)
+    knowledge["postconditions"] = knowledge.pop("postconditions", list(_COMMON_POSTCONDITIONS))
     knowledge["unknowns"] = _COMMON_UNKNOWNS + knowledge.pop("additional_unknowns")
     knowledge["rarity_source_boundary"] = {
         "declaration": "The resource describes the controlling Faith's recognized relic rarity sum, only when that Faith also has the site; tiers contribute 1/2/3/4.",
