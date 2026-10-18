@@ -9999,6 +9999,7 @@ include(cmake/military_reinforcement_action_12004.cmake)
 
 # Exact4 typed presentation candidate, default off.
 include(cmake/religion_ui12004.cmake)
+include(cmake/rite_creation_actions12004.cmake)
 
 # Exact4 typed relic UI; selection and original buttons have explicit separate opt-ins.
 include(cmake/holy_site_relic_typed_ui12004.cmake)

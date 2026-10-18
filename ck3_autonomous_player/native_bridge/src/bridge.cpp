@@ -160,6 +160,9 @@
 #include "xar_bridge/frontend_bookmark_model_result_v1.hpp"
 #include "xar_bridge/frontend_gui_result_v1.hpp"
 #include "xar_bridge/ingame_ui_mailbox_v1.hpp"
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+#include "xar_bridge/rite_creation_actions12004_mailbox.hpp"
+#endif
 #include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
@@ -18452,6 +18455,25 @@ void RunConnectedSession(
                     ";result_reason=" + query.result.unavailable_reason;
                 response = CommandResultFrame(request_id, step, false, reason);
               }
+            }
+            connected = write_frame(pipe, response);
+          } else
+#endif
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+          if (step == xar::ck3_12004::religion::rite_creation_actions::step) {
+            namespace rite = xar::ck3_12004::religion::rite_creation_actions;
+            rite::MailboxContext query{};
+            const auto admission_error = rite::PrepareMailbox12004(
+                game, previous_snapshot ? &previous_snapshot.value() : nullptr,
+                incoming.payload, state_revision, connection_generation,
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                g_main_thread_query_mailbox_v1, query);
+            std::string response, failure;
+            if (!admission_error.empty()) {
+              response = CommandResultFrame(request_id, step, false, admission_error);
+            } else if (!rite::RunMailbox12004(query, request_id, response, failure)) {
+              response = CommandResultFrame(request_id, step, false,
+                  failure.empty() ? "rite_creation_result_unavailable_do_not_retry" : failure);
             }
             connected = write_frame(pipe, response);
           } else
