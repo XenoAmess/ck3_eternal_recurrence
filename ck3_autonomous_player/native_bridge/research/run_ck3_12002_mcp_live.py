@@ -1078,6 +1078,7 @@ def native_server(args: argparse.Namespace) -> None:
     driver.allow_private_player_holy_site_creation_create_once = getattr(args, "private_player_holy_site_creation_create_once", False)
     driver.allow_private_player_holy_site_creation_ui = bool(getattr(args, "private_player_holy_site_creation_ui", False))
     driver.case_declared_read_only_mcp_tools = frozenset(getattr(args, "case_read_only_mcp_tool", []))
+    driver.allow_private_war_cash_query = bool(getattr(args, "private_war_cash_queries", False))
     driver.allow_private_holy_site_relic_actions = args.private_holy_site_relic_actions
     driver.allow_private_player_religion_context_query = "ck3_query_player_religion_context_v1" in driver.case_declared_read_only_mcp_tools
     driver.allow_private_player_holy_site_creation_context_query = "ck3_query_player_holy_site_creation_context_v1" in driver.case_declared_read_only_mcp_tools
@@ -4204,6 +4205,8 @@ async def run(args: argparse.Namespace) -> dict[str, object]:
         child_args.append("--private-confucian-challenger-readonly")
     if getattr(args, "private_grant_title_picker", False):
         child_args.append("--private-grant-title-picker")
+    if getattr(args, "private_war_cash_queries", False):
+        child_args.append("--private-war-cash-queries")
     if getattr(args, "frontend_mod_load_observation", False):
         child_args += ["--frontend-mod-load-observation", "--fixture-profile"]
     parameters = StdioServerParameters(command=sys.executable, args=child_args,
@@ -4535,6 +4538,8 @@ def parser() -> argparse.ArgumentParser:
                         help="Explicit shared admission of the existing complete Faith challenger/sponsor graph query; default off")
     result.add_argument("--private-grant-title-picker", action="store_true",
                         help="Explicit shared admission of existing stock grant Title query/prepare/select/send; default off")
+    result.add_argument("--private-war-cash-queries", action="store_true",
+                        help="Reuse existing private cash queries and explicit sampling controls; default off, no debugger or sampling enabled automatically")
     result.add_argument("--frontend-mod-load-observation", action="store_true",
                         help="Observe a prepared mod profile at the main menu with read-only MCP diagnostics; no New Game/Start/campaign")
     result.add_argument("--frontend-robert-bootstrap", action="store_true",

@@ -890,3 +890,5 @@ docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/PARSE.raw.
 docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/script-preflight-province1506.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-18-r05-stationary-target-parser/TARGET-WITNESS.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r206-william-exactday-12004/READY-T0-NEUTRAL-FOCUSED.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-shared-cash-query-opt-in-12004/FOCUSED.original.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-shared-cash-query-opt-in-12004/SOURCE-DELIVERY.original.json -text whitespace=cr-at-eol

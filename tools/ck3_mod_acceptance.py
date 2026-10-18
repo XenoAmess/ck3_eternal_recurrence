@@ -321,7 +321,7 @@ class Selection:
                 "--state-dir", str(state), "--plan", str(self.case_path(self.case["initial_plan"])),
                 "--control-plan-dir", str(self.run_dir / "controls")]
         features = self.manifest.get("host_features", {})
-        if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "confucian_challenger_readonly", "stock_grant_title_picker", "saved_campaign_inject_after_load", "saved_campaign_debug_mode"}:
+        if not isinstance(features, dict) or set(features) - {"succession_title_readonly", "confucian_challenger_readonly", "stock_grant_title_picker", "war_cash_queries", "saved_campaign_inject_after_load", "saved_campaign_debug_mode"}:
             raise ValueError("Unknown shared host feature")
         if any(type(value) is not bool for value in features.values()):
             raise ValueError("Shared host features require explicit booleans")
@@ -331,6 +331,8 @@ class Selection:
             argv += ["--private-confucian-challenger-readonly"]
         if features.get("stock_grant_title_picker"):
             argv += ["--private-grant-title-picker"]
+        if features.get("war_cash_queries"):
+            argv += ["--private-war-cash-queries"]
         if features.get("saved_campaign_inject_after_load") and startup["mode"] == "saved_campaign":
             argv += ["--saved-campaign-inject-after-load"]
         if features.get("saved_campaign_debug_mode") and startup["mode"] == "saved_campaign":

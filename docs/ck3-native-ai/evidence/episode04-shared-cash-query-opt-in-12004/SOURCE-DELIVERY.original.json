@@ -1,0 +1,170 @@
+{
+  "schema": "xar.e04.r207-shared-cash-common-binder-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T05:10:18.287109+00:00",
+  "base_head": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "status": "SOURCE_CANDIDATE_FOCUSED_OFFLINE_PASS_NOT_CURRENT_HOST_REGISTRATION",
+  "patch": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\shared-cash-opt-in.relative.patch",
+    "bytes": 4243,
+    "sha256": "ab11dc14289bbb9f164649c39346e49710463d1d6d23204fdf08e9f19b9cc974"
+  },
+  "patch_targets": [
+    {
+      "target": "tools/ck3_mod_acceptance.py",
+      "before_git_blob_bytes": 48735,
+      "before_git_blob_sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a",
+      "after_git_blob_bytes": 48851,
+      "after_git_blob_sha256": "5b05681a595769200e6d097d7d5d9bfca2bf170e62e7ce06b53d43d69de83b13",
+      "actual_raw_bytes": 48735,
+      "actual_raw_sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a"
+    },
+    {
+      "target": "ck3_autonomous_player/native_bridge/research/run_ck3_12002_mcp_live.py",
+      "before_git_blob_bytes": 312611,
+      "before_git_blob_sha256": "b1c8ef06733f3a351160b05beb1617caa13809e05240de7f2c22fd97964d081f",
+      "after_git_blob_bytes": 313055,
+      "after_git_blob_sha256": "e283fc0828e80be9dc2b660a2efa2b6bba0f8e027ccb14ca3a5a6c9ea070cde9",
+      "actual_raw_bytes": 312611,
+      "actual_raw_sha256": "b1c8ef06733f3a351160b05beb1617caa13809e05240de7f2c22fd97964d081f"
+    }
+  ],
+  "explicit_copy": [
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\r08_writer_common_adapter.py",
+        "bytes": 9364,
+        "sha256": "a2c000a9bdf29e827cf068fd63d120aa5e716752653f09e172a949cc346187ed"
+      },
+      "target": "tools/ck3_mod_acceptance_cases/r08_writer_common_adapter.py"
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\test_r08_writer_common_adapter.py",
+        "bytes": 11094,
+        "sha256": "ddf5ff6868f74e1c1575d4a44d99cf677e7c025bcd1a43dc473efee19f3430a1"
+      },
+      "target": "tools/test_r08_writer_common_adapter.py"
+    }
+  ],
+  "focused": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\FOCUSED.actual.json",
+    "bytes": 1674,
+    "sha256": "200715f916de7fd67260e2da8abb35e1d83395ed4eab2c8473fb83080b334c87"
+  },
+  "focused_case_count": 1,
+  "source_builder": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\build_candidate.py",
+    "bytes": 4346,
+    "sha256": "fd8ec1e7dfb831b0df25aa1257dd8c0137579a3307a549f4cd018b8fa9eec8ca"
+  },
+  "usage": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\ROOT-USE.md",
+    "bytes": 6992,
+    "sha256": "71e529c286a7fa36306bb8f9586a08575a27160e31f9fc611515c42d82257ad5"
+  },
+  "canonical_smoke_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "tools/test_r08_writer_common_adapter.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--scratch-root",
+    "<new external scratch>"
+  ],
+  "existing_root_writer_dependency": {
+    "path": "C:/ck3-e04-resume-20261015-a01/r206-cd-writer-root-driver-a01/writer_root_driver.py",
+    "bytes": 29902,
+    "sha256": "a1d2cd48085b66c132f07f0fc96ae8b30909505bdf326fcd7019b266f9460b74",
+    "old_R206_runtime_reused": false
+  },
+  "registration": {
+    "manifest_feature": "host_features.war_cash_queries=true",
+    "default": false,
+    "current_R207_host_can_hot_register": false,
+    "existing_MCP_tool": "ck3_query_war_cash_current_resources_private_v1",
+    "sampling_or_debugger_automatically_enabled": false
+  },
+  "qualification_limits": [
+    "AST source-fragment registration and fake common transport only",
+    "No current/future live host, observer, payment or R08 business qualification",
+    "Existing separate Root DR-window guard required; R06 mutually exclusive",
+    "No native flag, build, SDK, debugger, process handle or desktop execution"
+  ],
+  "main_mutated": false,
+  "native_changed": false,
+  "SDK_calls": 0,
+  "observer_starts": 0,
+  "files_before_delivery": [
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\build_candidate.py",
+      "bytes": 4346,
+      "sha256": "fd8ec1e7dfb831b0df25aa1257dd8c0137579a3307a549f4cd018b8fa9eec8ca"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\FOCUSED.actual.json",
+      "bytes": 1674,
+      "sha256": "200715f916de7fd67260e2da8abb35e1d83395ed4eab2c8473fb83080b334c87"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\focused.stderr.txt",
+      "bytes": 241,
+      "sha256": "947e6285c10fc7cf35b8a01b22028d57ede26a9fa46e7c83c74f83e78bc7c481"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\focused.stdout.txt",
+      "bytes": 97,
+      "sha256": "9acce50b671ee604b0912f197091c1dd6324669fbe1f6e5e84c94b6fa25372b6"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\PATCH-PINS.actual.json",
+      "bytes": 1410,
+      "sha256": "fbb3d81ad7a3e0ca15acd08d7b8227716301e838be165c2d120fa5238d2a57a0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\r08_writer_common_adapter.py",
+      "bytes": 9364,
+      "sha256": "a2c000a9bdf29e827cf068fd63d120aa5e716752653f09e172a949cc346187ed"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\ROOT-USE.md",
+      "bytes": 6992,
+      "sha256": "71e529c286a7fa36306bb8f9586a08575a27160e31f9fc611515c42d82257ad5"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\run_focused.py",
+      "bytes": 1652,
+      "sha256": "f18a207579afc539a150093a51c35e8b6c918a306226e31545a461d203f68bb0"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\seal.py",
+      "bytes": 4066,
+      "sha256": "d42f086adcd559eac21c71cad762fde480d76f9fb40a7fbeaf1f673fd39a1d17"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\shared-cash-opt-in.relative.patch",
+      "bytes": 4243,
+      "sha256": "ab11dc14289bbb9f164649c39346e49710463d1d6d23204fdf08e9f19b9cc974"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\test_r08_writer_common_adapter.py",
+      "bytes": 11094,
+      "sha256": "ddf5ff6868f74e1c1575d4a44d99cf677e7c025bcd1a43dc473efee19f3430a1"
+    }
+  ],
+  "storage": {
+    "new_package_limit_bytes": 98304,
+    "bytes_before_delivery": 45179,
+    "category": "derived",
+    "policy": "docs/storage-retention-policy.json",
+    "auto_renew": false,
+    "review": "Parent shared offline pool deadline; no capacity or retention extension granted",
+    "free_bytes_at_seal": {
+      "C": 26645475328,
+      "D": 42556874752
+    }
+  }
+}

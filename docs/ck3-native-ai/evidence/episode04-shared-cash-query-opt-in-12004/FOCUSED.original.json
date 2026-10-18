@@ -1,0 +1,41 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-18T05:08:59.249762+00:00",
+  "finished_at_utc": "2026-10-18T05:09:00.673775+00:00",
+  "producer_interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "producer_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\test_r08_writer_common_adapter.py",
+    "--repo",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--candidate-builder",
+    "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\build_candidate.py",
+    "--adapter",
+    "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\r08_writer_common_adapter.py",
+    "--scratch-root",
+    "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01"
+  ],
+  "returncode": 0,
+  "stdio": {
+    "focused.stdout.txt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\focused.stdout.txt",
+      "bytes": 97,
+      "sha256": "9acce50b671ee604b0912f197091c1dd6324669fbe1f6e5e84c94b6fa25372b6"
+    },
+    "focused.stderr.txt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-writer-common-seam-a01\\focused.stderr.txt",
+      "bytes": 241,
+      "sha256": "947e6285c10fc7cf35b8a01b22028d57ede26a9fa46e7c83c74f83e78bc7c481"
+    }
+  },
+  "SDK_calls": 0,
+  "host_launches": 0,
+  "native_build_or_execution": 0,
+  "test_count": 1,
+  "business_or_live_qualification": false
+}
