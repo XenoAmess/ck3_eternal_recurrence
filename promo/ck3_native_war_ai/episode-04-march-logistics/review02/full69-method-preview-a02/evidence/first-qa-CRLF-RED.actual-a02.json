@@ -1,0 +1,65 @@
+{
+  "schema": "xar.e04.review02-typography-a02-deadline-supervisor.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head_for_media_inputs": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "stage": "qa",
+  "started_at_utc": "2026-10-18T07:34:47.208309+00:00",
+  "ended_at_utc": "2026-10-18T07:34:49.220683+00:00",
+  "quota_review_at_utc": "2026-10-18T08:00:00Z",
+  "deadline_stop_margin_seconds": 120,
+  "effective_owned_process_stop_at_utc": "2026-10-18T07:58:00+00:00",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-review02-typography-a02\\REVIEW02-TYPOGRAPHY-A02-MEDIA-CAPACITY.actual-root-a01.json",
+    "bytes": 11002,
+    "sha256": "9d4929837e129df3a57ede6bda01008af722b2f365ee0cc7de63ffeb62abc40e"
+  },
+  "supervisor_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\deadline_supervisor_a02.py",
+    "bytes": 5999,
+    "sha256": "9cacc5ab37b91ef4869b1fb4c3138e67fb69742619b9277f3bcfd7c622812e3b"
+  },
+  "stage_source": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\audit_typography_a02.py",
+    "bytes": 7903,
+    "sha256": "870ac2d77c70f8b4ca5f8f9b3f16c66154382915c953b556352a2979bdf3971a"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\audit_typography_a02.py",
+    "--capacity",
+    "C:\\ck3-e04-resume-20261015-a01\\capacity-review02-typography-a02\\REVIEW02-TYPOGRAPHY-A02-MEDIA-CAPACITY.actual-root-a01.json",
+    "--capacity-sha",
+    "9d4929837e129df3a57ede6bda01008af722b2f365ee0cc7de63ffeb62abc40e",
+    "--capacity-status",
+    "ROOT_ADOPTED_REVIEW02_FULL69_TYPOGRAPHY_A02",
+    "--release-probe",
+    "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\PROMO-RELEASE-TYPOGRAPHY.actual-a02.json",
+    "--release-probe-sha",
+    "95c044dad65c2e587f5e38314c14c16a1c39ca1f3d5c76773d4ac90d2a5325e3",
+    "--source-head",
+    "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+    "--machine-id",
+    "desktop-3fevhd2-1c74096080"
+  ],
+  "owned_root_pid": 30452,
+  "owned_root_pid_created_epoch": 1792308887.2104652,
+  "owned_root_process_exit_code": 1,
+  "owned_process_tree_deadline_killed": false,
+  "taskkill_exit_code": null,
+  "taskkill_stdout_sha256": null,
+  "taskkill_stderr_sha256": null,
+  "stdout": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-qa.stdout-a02.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-qa.stderr-a02.txt",
+    "bytes": 792,
+    "sha256": "37eb1dc47a9b1715c9fdbe0395aeefdc83c97ec9d6aa9fbafb185d18b4c6bfc4"
+  },
+  "status": "STAGE_RED"
+}

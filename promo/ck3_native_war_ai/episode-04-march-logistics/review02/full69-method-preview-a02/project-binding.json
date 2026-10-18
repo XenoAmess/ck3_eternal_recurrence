@@ -1,0 +1,30 @@
+{
+  "schema": "xar.e04.review02-full69-method-preview-project-binding.v1",
+  "selection_kind": "69-cue-method-review-actual-preview-not-final-film",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "project_input_archive_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/production-inputs-a03/review02-bilingual-inputs-a03.zip",
+  "project_materializer_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/production-inputs-a03/materialize_inputs.py",
+  "source_machine_materialized_project_config": {
+    "bytes": 86060,
+    "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140",
+    "machine_bound_path_in_final_receipt": true
+  },
+  "composer_entrypoint": "war_ai_promo.episode04_reuse_three_corrections:compose",
+  "composer_package_dir": "war_ai_promo",
+  "source_index_env": "XAR_E04_REUSE_INDEX",
+  "source_index_in_package": "evidence/source-index.machine-bound.json",
+  "source_index_requires_target_machine_rebinding": true,
+  "cue_count": 69,
+  "duration_frames": 58406,
+  "frame_rate": [30, 1],
+  "exact_encoded_segment_reuse": 66,
+  "reencode_cues": ["C05-09", "C05-10", "C05-14"],
+  "narration_rewritten": false,
+  "subtitle_source_rewritten_except_display_annotations": false,
+  "formal_dynamic_credit": 0,
+  "pending_key_footage_cues": 45,
+  "human_1x_review": false,
+  "signoff": false,
+  "export": false,
+  "upload": false
+}

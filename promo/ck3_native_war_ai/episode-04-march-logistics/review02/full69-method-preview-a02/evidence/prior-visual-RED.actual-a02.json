@@ -1,0 +1,53 @@
+{
+  "schema": "xar.e04.review02-full69-focused-typography-three-sample-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T07:13:39.091640+00:00",
+  "status": "AI_THREE_SAMPLE_RED_PENDING_HUMAN_1X",
+  "native_build_source_commit": "40b331653107ec40ba410ce791cfd7b737e96c3b",
+  "head_observed_at_review": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "movie_sha256": "3018f627d914d43ce49495f320f27a6b6e6ad2e3132b63efdaa657342fcb3af0",
+  "automated_media_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a01\\audit\\focused-typography-a02\\AUTO-MEDIA-CHECK.actual-a02.json",
+    "bytes": 3925,
+    "sha256": "87a0cdaf1293875ebd889a164326225560cb5f49f630f9e70778f92c8297c301"
+  },
+  "samples": {
+    "C05-09": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a01\\audit\\focused-typography-a02\\C05-09.png",
+        "bytes": 475411,
+        "sha256": "9abb166a69b84881cbd12d740da776e5440678135d3ce659a7baba7cb59bbef0"
+      },
+      "direct_ai_single_frame_observation": "New correction renders near y650 over the lower left panel edge; not in clear footer gap.",
+      "new_correction_typography_pass": false
+    },
+    "C05-10": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a01\\audit\\focused-typography-a02\\C05-10.png",
+        "bytes": 535576,
+        "sha256": "a71d117734a09723c5ee4403933df0aa0decd9d52831bf9274b286fa75876976"
+      },
+      "direct_ai_single_frame_observation": "New method note near y650 overlaps the lower row of the static card; existing top review watermark also crosses card micro-header.",
+      "new_correction_typography_pass": false
+    },
+    "C05-14": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a01\\audit\\focused-typography-a02\\C05-14.png",
+        "bytes": 428065,
+        "sha256": "31d21e0424dfc1c4ee238bd78f9d68dd7e30bc6afd85e25c8240169983355de6"
+      },
+      "direct_ai_single_frame_observation": "New correction near y650 overlaps the card's existing bottom explanatory line.",
+      "new_correction_typography_pass": false
+    }
+  },
+  "sample_count": 3,
+  "specific_blocker": "ASS PlayResY1440 to output1080 scales pos(48,850) to roughly output y638; move dedicated correction to clear lower gutter in a new immutable attempt.",
+  "method_preview_old_a01_media_integrity_green": true,
+  "current_visual_sample_pass": false,
+  "continuous_clean_span_review": false,
+  "full_human_1x_review": false,
+  "signoff": false,
+  "formal_dynamic_credit": 0,
+  "export": false,
+  "upload": false
+}

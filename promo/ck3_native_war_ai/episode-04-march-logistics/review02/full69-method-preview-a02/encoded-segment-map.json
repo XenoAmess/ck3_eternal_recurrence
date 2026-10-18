@@ -1,0 +1,980 @@
+{
+  "schema": "xar.e04.review02-full69-encoded-segment-map.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T08:11:51.888984+00:00",
+  "source_head_for_media_inputs": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "original_full69_source_commit": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "cue_count": 69,
+  "duration_frames": 58406,
+  "movie_sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b",
+  "original_manifest_sha256": "a8401d1709c8afdaa165f3721b8507fbde982dacc7d3c00858b88bdc72b5cfb8",
+  "current_manifest_sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1",
+  "cues": [
+    {
+      "cue_id": "C01-01",
+      "duration_frames": 612,
+      "original_encoded_segment": {
+        "bytes": 2628441,
+        "sha256": "5769277581c496c386a6069deb3a0006f26214f01f29d066a15c99e99d36eebb"
+      },
+      "actual_encoded_segment": {
+        "bytes": 2628441,
+        "sha256": "5769277581c496c386a6069deb3a0006f26214f01f29d066a15c99e99d36eebb"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "1f14b9fecc66d43a5216ec2a7b2677841ca21cb2af09a57642db72d2f1c1e2af"
+    },
+    {
+      "cue_id": "C01-02",
+      "duration_frames": 653,
+      "original_encoded_segment": {
+        "bytes": 869357,
+        "sha256": "1a66010c468eee6f590f79401ed3a08ee704d8d0e2ef6e027b049a1a46dfbfae"
+      },
+      "actual_encoded_segment": {
+        "bytes": 869357,
+        "sha256": "1a66010c468eee6f590f79401ed3a08ee704d8d0e2ef6e027b049a1a46dfbfae"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "f256c2171863b1fa76da8283a1a464e727e383a555cfc238b149c71c99cbf875"
+    },
+    {
+      "cue_id": "C01-03",
+      "duration_frames": 862,
+      "original_encoded_segment": {
+        "bytes": 1046392,
+        "sha256": "f34bdbddda41c8ccc88eb78449c408222d9124978d1750674906ae38db4f2887"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1046392,
+        "sha256": "f34bdbddda41c8ccc88eb78449c408222d9124978d1750674906ae38db4f2887"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "90717933c3d588dcfd93acf1d65a0b300dc75a6ea9829d9a43b61cf5f1b9802c"
+    },
+    {
+      "cue_id": "C01-04",
+      "duration_frames": 856,
+      "original_encoded_segment": {
+        "bytes": 1180872,
+        "sha256": "0a4ff39ee86dca201ef804250c79720dfff6ff7026fb9df84a8213c0d55955a2"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1180872,
+        "sha256": "0a4ff39ee86dca201ef804250c79720dfff6ff7026fb9df84a8213c0d55955a2"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2a87586f64aa690b242c64254953fad2c300ed7cbb58b589b7f8838e169179dc"
+    },
+    {
+      "cue_id": "C01-05",
+      "duration_frames": 948,
+      "original_encoded_segment": {
+        "bytes": 1136748,
+        "sha256": "2212c9372347a56dd457823d80ed514dc36f1f50ece5458695d72222223ba5dd"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1136748,
+        "sha256": "2212c9372347a56dd457823d80ed514dc36f1f50ece5458695d72222223ba5dd"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "eb89c37b4d954cf5245ede502d5daff91da370a7e5879ac027c3b869661a5f20"
+    },
+    {
+      "cue_id": "C01-06",
+      "duration_frames": 866,
+      "original_encoded_segment": {
+        "bytes": 1214111,
+        "sha256": "d70676c227baeb9e5bcd7d59f4926ee10fd2f42d0a4293736e8ef7b71a315fb3"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1214111,
+        "sha256": "d70676c227baeb9e5bcd7d59f4926ee10fd2f42d0a4293736e8ef7b71a315fb3"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "02f924515771b68aa6b31c33d31015de09a9a1c1b1c3d08954e4e437273e618a"
+    },
+    {
+      "cue_id": "C01-07",
+      "duration_frames": 751,
+      "original_encoded_segment": {
+        "bytes": 913600,
+        "sha256": "be64c9eb4a9f54406b91aba9d584517167b9526ce69feb95010de726c2f743fc"
+      },
+      "actual_encoded_segment": {
+        "bytes": 913600,
+        "sha256": "be64c9eb4a9f54406b91aba9d584517167b9526ce69feb95010de726c2f743fc"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a63a1dacdda97232bfa8096b2be504cc201546163396dd0ab8889698b9ac84b3"
+    },
+    {
+      "cue_id": "C01-08",
+      "duration_frames": 884,
+      "original_encoded_segment": {
+        "bytes": 1161365,
+        "sha256": "52acd038d9d09fc8c65aa49534fc7d19a2e1b5a129b254396ca84579d90bb256"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1161365,
+        "sha256": "52acd038d9d09fc8c65aa49534fc7d19a2e1b5a129b254396ca84579d90bb256"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2768a3f77a99d5ea2e944c73ec86a3f77e1a24857e6a6e6e3969a1274080dca2"
+    },
+    {
+      "cue_id": "C02-01",
+      "duration_frames": 890,
+      "original_encoded_segment": {
+        "bytes": 1211384,
+        "sha256": "a0b6b422dfd423c88f5ce1f1689a5376b390c92b0443b09272d23eb615c72dbb"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1211384,
+        "sha256": "a0b6b422dfd423c88f5ce1f1689a5376b390c92b0443b09272d23eb615c72dbb"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "987846f336af892e02108b1e4944666aeb7fcf88ac64f6e0d68bd2fc05ba8e4a"
+    },
+    {
+      "cue_id": "C02-02",
+      "duration_frames": 797,
+      "original_encoded_segment": {
+        "bytes": 1099709,
+        "sha256": "f4842e8efbe193b9e7c59ac40f707eb01e5a6824b27ec6503db3edf4008e9a18"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1099709,
+        "sha256": "f4842e8efbe193b9e7c59ac40f707eb01e5a6824b27ec6503db3edf4008e9a18"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "581959a71910d9ddb1e24b7a0dcf20a2440cd0d07046f5844bda74c0f756c828"
+    },
+    {
+      "cue_id": "C02-03",
+      "duration_frames": 682,
+      "original_encoded_segment": {
+        "bytes": 822634,
+        "sha256": "d020e4c76d7f1706e920caaeca49019e9c60a69ad3474601a326ea37a8f50cc2"
+      },
+      "actual_encoded_segment": {
+        "bytes": 822634,
+        "sha256": "d020e4c76d7f1706e920caaeca49019e9c60a69ad3474601a326ea37a8f50cc2"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "abc0dbc2ca02dc79a2ab6e058e617ae943b618a3b4fd8cf936adacd138aff539"
+    },
+    {
+      "cue_id": "C02-04",
+      "duration_frames": 908,
+      "original_encoded_segment": {
+        "bytes": 1127886,
+        "sha256": "50c46a4f661531652fc32dd9ff1c015e01da1a33dcd09cf056d7b5ff31f995f7"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1127886,
+        "sha256": "50c46a4f661531652fc32dd9ff1c015e01da1a33dcd09cf056d7b5ff31f995f7"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "ab132e5b1d6e92536f76f4bc9f3b4f814fd686ee6118c5d0d77bc840d9696685"
+    },
+    {
+      "cue_id": "C02-05",
+      "duration_frames": 872,
+      "original_encoded_segment": {
+        "bytes": 1203879,
+        "sha256": "10cd8ddab988e7905b67f572b611367cf2872c482b644547613731a9fdbbe7db"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1203879,
+        "sha256": "10cd8ddab988e7905b67f572b611367cf2872c482b644547613731a9fdbbe7db"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "9c69ae5f80bcfb3458ca88ac5fd321f4492d312b19795e9cf3aca7a8fc969879"
+    },
+    {
+      "cue_id": "C02-06",
+      "duration_frames": 977,
+      "original_encoded_segment": {
+        "bytes": 1306423,
+        "sha256": "210ad597f7b252505b7dbf561c1790f1f32e7a8fde1ad88cd00c1d1984542f54"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1306423,
+        "sha256": "210ad597f7b252505b7dbf561c1790f1f32e7a8fde1ad88cd00c1d1984542f54"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "852f6abe5259750488bc656be5298cde28534f6123df7b438eb69d671db28679"
+    },
+    {
+      "cue_id": "C02-07",
+      "duration_frames": 955,
+      "original_encoded_segment": {
+        "bytes": 1289844,
+        "sha256": "65b50499f354a0c98fe21ccad3ae396cddebfb5c49d607f15f4615e2e125effe"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1289844,
+        "sha256": "65b50499f354a0c98fe21ccad3ae396cddebfb5c49d607f15f4615e2e125effe"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "77ff218ebcecd55fffd1545d5eb179e700c6b0603c24be96eaaa28a2b70cbce2"
+    },
+    {
+      "cue_id": "C02-08",
+      "duration_frames": 970,
+      "original_encoded_segment": {
+        "bytes": 1304834,
+        "sha256": "dbfaebac3a4c20e78428a1908041919b5e7809f80e4dc42bc54838d698bf8252"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1304834,
+        "sha256": "dbfaebac3a4c20e78428a1908041919b5e7809f80e4dc42bc54838d698bf8252"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "87604a52afc88baa7bd3cd39d1e672adcc5a01b1afa48045043f11b9c34d1c61"
+    },
+    {
+      "cue_id": "C02-09",
+      "duration_frames": 895,
+      "original_encoded_segment": {
+        "bytes": 3103203,
+        "sha256": "3ccd25c91e9ce3950f27a1f35bbc49fd066a92800d7e69ab82c17f87be010ebe"
+      },
+      "actual_encoded_segment": {
+        "bytes": 3103203,
+        "sha256": "3ccd25c91e9ce3950f27a1f35bbc49fd066a92800d7e69ab82c17f87be010ebe"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "4af41b392ff479fdf6efc7042ab3a25abd56b7726ea5cd04b537ee2de2c780d4"
+    },
+    {
+      "cue_id": "C02-10",
+      "duration_frames": 717,
+      "original_encoded_segment": {
+        "bytes": 953689,
+        "sha256": "ec0a1ae1fd897b89ec60c87723815ce20038e034b477a9bec9a885502843af81"
+      },
+      "actual_encoded_segment": {
+        "bytes": 953689,
+        "sha256": "ec0a1ae1fd897b89ec60c87723815ce20038e034b477a9bec9a885502843af81"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "74eaef44ecd6a70e40ad4a13f7bb09413cf30de5dadceed4b158e4e17bec82e5"
+    },
+    {
+      "cue_id": "C02-11",
+      "duration_frames": 1013,
+      "original_encoded_segment": {
+        "bytes": 1418942,
+        "sha256": "1edb942218bda6c54e8c42937468a35d7adc10c0b933f041c6b70e334ab53baa"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1418942,
+        "sha256": "1edb942218bda6c54e8c42937468a35d7adc10c0b933f041c6b70e334ab53baa"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a0b8be6d9d43d07e49a520c8c0ce7d344c2850c4735ec0785f27617cdbe2dd69"
+    },
+    {
+      "cue_id": "C02-12",
+      "duration_frames": 1051,
+      "original_encoded_segment": {
+        "bytes": 1444150,
+        "sha256": "236abdc64f099db3305a47fac7cb05ed7fbed1125a1c415251073b3dd30f9728"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1444150,
+        "sha256": "236abdc64f099db3305a47fac7cb05ed7fbed1125a1c415251073b3dd30f9728"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a7cbc9fd656dd9256fdad10828e5e6a17f9f2fc8a3308a96f303a5b2bf0bab72"
+    },
+    {
+      "cue_id": "C03-01",
+      "duration_frames": 972,
+      "original_encoded_segment": {
+        "bytes": 3471544,
+        "sha256": "5eb93dd33761491956e2ba64cb0e5454bbc96771ffe627fb2078c886937e9672"
+      },
+      "actual_encoded_segment": {
+        "bytes": 3471544,
+        "sha256": "5eb93dd33761491956e2ba64cb0e5454bbc96771ffe627fb2078c886937e9672"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2c6c8ee3b23b949987b2e4b4d6f5665bd0ea0907b15616562716378b770e3df7"
+    },
+    {
+      "cue_id": "C03-02",
+      "duration_frames": 846,
+      "original_encoded_segment": {
+        "bytes": 1044037,
+        "sha256": "96cfbc54ea59ad030511f5052a3292a01e8ac0c539a93651b5ca47ee051e5212"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1044037,
+        "sha256": "96cfbc54ea59ad030511f5052a3292a01e8ac0c539a93651b5ca47ee051e5212"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a55629ba40a02cd540e411dcd6f9dca34832912f1aae11d6f12f65a96fd35cd9"
+    },
+    {
+      "cue_id": "C03-03",
+      "duration_frames": 818,
+      "original_encoded_segment": {
+        "bytes": 1028589,
+        "sha256": "60e736b016371c09c1d89e92d9d6d114844c9fdcaf754a01f0aae05d5afa9a11"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1028589,
+        "sha256": "60e736b016371c09c1d89e92d9d6d114844c9fdcaf754a01f0aae05d5afa9a11"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "baa221c863e6a7aba0969a561ca07eb146d174cc1b595485db48d288b2cce00e"
+    },
+    {
+      "cue_id": "C03-04",
+      "duration_frames": 881,
+      "original_encoded_segment": {
+        "bytes": 1063882,
+        "sha256": "932ae06fed78cd1918be350ee78d3fc17da641fbb4e3158c2802a039608a9871"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1063882,
+        "sha256": "932ae06fed78cd1918be350ee78d3fc17da641fbb4e3158c2802a039608a9871"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "f57d49925a02dc046612cb4d84dcd4eb3a79622b84f9abf3080338ee81fc241f"
+    },
+    {
+      "cue_id": "C03-05",
+      "duration_frames": 800,
+      "original_encoded_segment": {
+        "bytes": 1016231,
+        "sha256": "ccc953bdc6d25d258362f565ce3359502ea227526df4faf4a939c8b79c6a241f"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1016231,
+        "sha256": "ccc953bdc6d25d258362f565ce3359502ea227526df4faf4a939c8b79c6a241f"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "76d15c60ff8e6217e3ae36b6f372c223be7fa452d05c21c26cdaa195b5412be2"
+    },
+    {
+      "cue_id": "C03-06",
+      "duration_frames": 829,
+      "original_encoded_segment": {
+        "bytes": 1056071,
+        "sha256": "98c81482c9d1dae1c7f2a9b2ac09cad5a758c8aeaa7bd98c0e2367e1cd1fded7"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1056071,
+        "sha256": "98c81482c9d1dae1c7f2a9b2ac09cad5a758c8aeaa7bd98c0e2367e1cd1fded7"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "9b26ba017868e2da900a90e768ff256bad5601ef10ae924644c29b441a7f4106"
+    },
+    {
+      "cue_id": "C03-07",
+      "duration_frames": 881,
+      "original_encoded_segment": {
+        "bytes": 1139484,
+        "sha256": "1aa0e9ed98cd8138ae133d9746a5cf89ebb05299a8de67b651e5f0a7310a3090"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1139484,
+        "sha256": "1aa0e9ed98cd8138ae133d9746a5cf89ebb05299a8de67b651e5f0a7310a3090"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "760e3f869836ffc70c2a53e5d99ede97fb143f7a7b82e8d7eb3da5566f3b605a"
+    },
+    {
+      "cue_id": "C03-08",
+      "duration_frames": 1005,
+      "original_encoded_segment": {
+        "bytes": 3849401,
+        "sha256": "638ee7f43a8b962fcc8410ad5d7f2b08f451fb3447440953db51362e395837d8"
+      },
+      "actual_encoded_segment": {
+        "bytes": 3849401,
+        "sha256": "638ee7f43a8b962fcc8410ad5d7f2b08f451fb3447440953db51362e395837d8"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "7068e74503e9f80df2ee4125cf8d26652f337e77c20d2e5d9535bbea5a89e205"
+    },
+    {
+      "cue_id": "C03-09",
+      "duration_frames": 821,
+      "original_encoded_segment": {
+        "bytes": 1049122,
+        "sha256": "a04e345f237c59efe1a5a5bdfcf93a3ecae1bf2cd599069be25e743277147f00"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1049122,
+        "sha256": "a04e345f237c59efe1a5a5bdfcf93a3ecae1bf2cd599069be25e743277147f00"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "7b1ae4be6152dff877b04c4b25fb54b0543847b08836936a3fa945ded3fbd2c3"
+    },
+    {
+      "cue_id": "C03-10",
+      "duration_frames": 797,
+      "original_encoded_segment": {
+        "bytes": 1032490,
+        "sha256": "0d152a399d25b7121ad290ff4b5c18120d415c98f759be9e4199ac83abd61cac"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1032490,
+        "sha256": "0d152a399d25b7121ad290ff4b5c18120d415c98f759be9e4199ac83abd61cac"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "7eba1767f7251dbb48f63618d71f346040d6006347b6c62a759b7e1c3b050e4c"
+    },
+    {
+      "cue_id": "C03-11",
+      "duration_frames": 859,
+      "original_encoded_segment": {
+        "bytes": 1093868,
+        "sha256": "a7387a66470624e09aaabbf3152cbef1582145a250eec42274d48a6135477f42"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1093868,
+        "sha256": "a7387a66470624e09aaabbf3152cbef1582145a250eec42274d48a6135477f42"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "d51cf197a319555406dac40daa723b754680bf987d8f7fb4c5208cc42d505357"
+    },
+    {
+      "cue_id": "C03-12",
+      "duration_frames": 874,
+      "original_encoded_segment": {
+        "bytes": 1071947,
+        "sha256": "34a77e63004ef2ec01e663007bcdc6eef7b8eff64b45e742eadd0479037b570f"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1071947,
+        "sha256": "34a77e63004ef2ec01e663007bcdc6eef7b8eff64b45e742eadd0479037b570f"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2b9ee97498ca1bfbf499cf0fe41a1f36d9f7d661c5a2aced2c0c93537a28f97e"
+    },
+    {
+      "cue_id": "C04-01",
+      "duration_frames": 895,
+      "original_encoded_segment": {
+        "bytes": 1242020,
+        "sha256": "ced10123c76965c7429eda9a0bd7e5337d3a43afb0438f05e6b3a4b85c853814"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1242020,
+        "sha256": "ced10123c76965c7429eda9a0bd7e5337d3a43afb0438f05e6b3a4b85c853814"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "7d374bd743af34c758265ad22cd5c16ca68fddbb3ad519f1d7c52a8b0ca1cb36"
+    },
+    {
+      "cue_id": "C04-02",
+      "duration_frames": 905,
+      "original_encoded_segment": {
+        "bytes": 1249821,
+        "sha256": "1625b30add7b25aafc58468d05117e8d20294f4293c07f25090d7aaf649f4999"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1249821,
+        "sha256": "1625b30add7b25aafc58468d05117e8d20294f4293c07f25090d7aaf649f4999"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "47ecb179a02f953cd93a58c99937760fea399ad67e50671dd5597e55b1429bbb"
+    },
+    {
+      "cue_id": "C04-03",
+      "duration_frames": 957,
+      "original_encoded_segment": {
+        "bytes": 1296325,
+        "sha256": "d5781e45048f37b0681f8cec466308fcbe88ac845921901f351774ac05932fc8"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1296325,
+        "sha256": "d5781e45048f37b0681f8cec466308fcbe88ac845921901f351774ac05932fc8"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a9c8446945bc4f695d9edad663f9a0383088e86a5e37b94c130656d6bd82b1b0"
+    },
+    {
+      "cue_id": "C04-04",
+      "duration_frames": 909,
+      "original_encoded_segment": {
+        "bytes": 1246667,
+        "sha256": "e1de8e098b782701a5b62d506b38f326e1c4a5a366452bc8a93130aab2de712e"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1246667,
+        "sha256": "e1de8e098b782701a5b62d506b38f326e1c4a5a366452bc8a93130aab2de712e"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "4505af10bd857d1941c3459a239432ff81277a88aebd37c91769f7aabf52e4e6"
+    },
+    {
+      "cue_id": "C04-05",
+      "duration_frames": 926,
+      "original_encoded_segment": {
+        "bytes": 1261985,
+        "sha256": "b8ad90b37dffe4e987781225285accd5b67205bd8bc77fecbbd8f374a17e79d1"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1261985,
+        "sha256": "b8ad90b37dffe4e987781225285accd5b67205bd8bc77fecbbd8f374a17e79d1"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "09d26c4b6f32c421303188b4384dc13e6fbdb0450008ae3c10659ef994f2026d"
+    },
+    {
+      "cue_id": "C04-06",
+      "duration_frames": 954,
+      "original_encoded_segment": {
+        "bytes": 1292250,
+        "sha256": "e54ff9a61c7b8ac7877ee3d6a83fc55ea6171ce6b178b3c937ce283ecf549849"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1292250,
+        "sha256": "e54ff9a61c7b8ac7877ee3d6a83fc55ea6171ce6b178b3c937ce283ecf549849"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "3a66ad402c7fb1c9a5aa5fc1924671e9c3d7e44778c8ea5df77dcaf1d9ea6c81"
+    },
+    {
+      "cue_id": "C04-07",
+      "duration_frames": 1011,
+      "original_encoded_segment": {
+        "bytes": 1439082,
+        "sha256": "687f12fc475da17c54d18be8ffe6ae94d44ba8b38dff6ed9970d3aa931994166"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1439082,
+        "sha256": "687f12fc475da17c54d18be8ffe6ae94d44ba8b38dff6ed9970d3aa931994166"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "6dd3b91e1049ec09388c6ffa65a5ef97c4284867b8b2ce2a140b16397484ccaf"
+    },
+    {
+      "cue_id": "C04-08",
+      "duration_frames": 942,
+      "original_encoded_segment": {
+        "bytes": 1276155,
+        "sha256": "80b9eb730823d974849f21bcd60cddf7693fcb547c0d0d25af56f34145462d91"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1276155,
+        "sha256": "80b9eb730823d974849f21bcd60cddf7693fcb547c0d0d25af56f34145462d91"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "204d43ef3727c7aa28a593e5b41dfa41246d5804c38ce4a8a5ea0e2bc74eed3a"
+    },
+    {
+      "cue_id": "C04-09",
+      "duration_frames": 895,
+      "original_encoded_segment": {
+        "bytes": 1223818,
+        "sha256": "7e379da195f8dca6ff2dd3f9c918324fc1d8fb00fd200d996ad893b1685197c7"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1223818,
+        "sha256": "7e379da195f8dca6ff2dd3f9c918324fc1d8fb00fd200d996ad893b1685197c7"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2a21a92ecb12db849a955d0c25a4fa9e788ccf453ad2d2cdf3a906e614c98f41"
+    },
+    {
+      "cue_id": "C04-10",
+      "duration_frames": 703,
+      "original_encoded_segment": {
+        "bytes": 2740139,
+        "sha256": "64094aee2e2a34bac4719438c4b627a8886a20fe4dea6a1a19cf4205ac01a434"
+      },
+      "actual_encoded_segment": {
+        "bytes": 2740139,
+        "sha256": "64094aee2e2a34bac4719438c4b627a8886a20fe4dea6a1a19cf4205ac01a434"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "5fbefdedb1739b30465739aea3b441fa18e853c733b69c7353082aa4c227be55"
+    },
+    {
+      "cue_id": "C04-11",
+      "duration_frames": 813,
+      "original_encoded_segment": {
+        "bytes": 1012773,
+        "sha256": "fc121ba703dd703d8085dedfcd778b64eb2d3a3e401ead5db981a31db3b95015"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1012773,
+        "sha256": "fc121ba703dd703d8085dedfcd778b64eb2d3a3e401ead5db981a31db3b95015"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "8ded225e94625abc34b023807d8475fe364103ce73c71292a38325092d53bd6a"
+    },
+    {
+      "cue_id": "C05-01",
+      "duration_frames": 660,
+      "original_encoded_segment": {
+        "bytes": 893980,
+        "sha256": "a10bcb90a210c5375366c164e1a4d487b10fc20868c9e058e4872b021690f79f"
+      },
+      "actual_encoded_segment": {
+        "bytes": 893980,
+        "sha256": "a10bcb90a210c5375366c164e1a4d487b10fc20868c9e058e4872b021690f79f"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "91eaaa895a009ee069b45a3a4becabf7493e8b686b74477b3d48145f1de67c46"
+    },
+    {
+      "cue_id": "C05-02",
+      "duration_frames": 708,
+      "original_encoded_segment": {
+        "bytes": 880703,
+        "sha256": "fc82e13bc681a3cf0971002e61e8e35c9afb54d65d674008495a3f8141d3e4ed"
+      },
+      "actual_encoded_segment": {
+        "bytes": 880703,
+        "sha256": "fc82e13bc681a3cf0971002e61e8e35c9afb54d65d674008495a3f8141d3e4ed"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "2755a4707b7c89239a3a00dfa16f4b356fab5a12425aceaca6fe7d6c4ca90f1b"
+    },
+    {
+      "cue_id": "C05-03",
+      "duration_frames": 677,
+      "original_encoded_segment": {
+        "bytes": 826861,
+        "sha256": "36c71130c0be7c05a79e1ef7049d4f286d1ce209b19a7e2947ba3a800f22754c"
+      },
+      "actual_encoded_segment": {
+        "bytes": 826861,
+        "sha256": "36c71130c0be7c05a79e1ef7049d4f286d1ce209b19a7e2947ba3a800f22754c"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "a34c7ce248f53ab706d7993ac89396049917c58bbac69e9fc4ee4d33b16cc249"
+    },
+    {
+      "cue_id": "C05-04",
+      "duration_frames": 700,
+      "original_encoded_segment": {
+        "bytes": 888028,
+        "sha256": "b076f4f1ed458e704b7482dcbb12b25ff6ec4d2e49c8bb6760bbd427bacfaa19"
+      },
+      "actual_encoded_segment": {
+        "bytes": 888028,
+        "sha256": "b076f4f1ed458e704b7482dcbb12b25ff6ec4d2e49c8bb6760bbd427bacfaa19"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "d20f028d56b9c3a02c5db1375bd38b64a08c78c1444dbc0b6238ef1c994e2880"
+    },
+    {
+      "cue_id": "C05-05",
+      "duration_frames": 617,
+      "original_encoded_segment": {
+        "bytes": 778078,
+        "sha256": "90e865c78df59d74ad47ef3ab0fd6cbe381bfa1b25c7fdb54e73251b68123c20"
+      },
+      "actual_encoded_segment": {
+        "bytes": 778078,
+        "sha256": "90e865c78df59d74ad47ef3ab0fd6cbe381bfa1b25c7fdb54e73251b68123c20"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "d911d2f063303e8543f9b4cbd5f08178ec6dece7cdadc160801024b278f24d4e"
+    },
+    {
+      "cue_id": "C05-06",
+      "duration_frames": 857,
+      "original_encoded_segment": {
+        "bytes": 3398956,
+        "sha256": "28eb7e8404c839f2d1c9e4ff30c0a978b97c432798d957699472acd3dc36b933"
+      },
+      "actual_encoded_segment": {
+        "bytes": 3398956,
+        "sha256": "28eb7e8404c839f2d1c9e4ff30c0a978b97c432798d957699472acd3dc36b933"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "9716358122d6a1ad391f0b15ac2eb1c8fa19cdee4847205d725313f5b7052564"
+    },
+    {
+      "cue_id": "C05-07",
+      "duration_frames": 864,
+      "original_encoded_segment": {
+        "bytes": 1060338,
+        "sha256": "c6c721ec009df0749a0dec30e449eee88dfe5e906e4c615fc7a1d19ccbea1225"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1060338,
+        "sha256": "c6c721ec009df0749a0dec30e449eee88dfe5e906e4c615fc7a1d19ccbea1225"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "5efbf789821a095b1d1a7977a5811508b380c279ae0cf2c5ce9133a6a3481de0"
+    },
+    {
+      "cue_id": "C05-08",
+      "duration_frames": 645,
+      "original_encoded_segment": {
+        "bytes": 882837,
+        "sha256": "d39d60f943be281c873cf1d93cc6ead1a6f645bd3de7186f90c1a2dd4e86a0fc"
+      },
+      "actual_encoded_segment": {
+        "bytes": 882837,
+        "sha256": "d39d60f943be281c873cf1d93cc6ead1a6f645bd3de7186f90c1a2dd4e86a0fc"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "e6d529cc3bb7c54266366fccfc3deaad0a6cfc5f1afca6d504b4f360470b2fe7"
+    },
+    {
+      "cue_id": "C05-09",
+      "duration_frames": 735,
+      "original_encoded_segment": {
+        "bytes": 943853,
+        "sha256": "fd55c91a231bb262d9e2f86396eee23b5183847ec97478896788b313cbf48715"
+      },
+      "actual_encoded_segment": {
+        "bytes": 942072,
+        "sha256": "6a4ef7508093512a3ba390a7ed50e4b81e5d97d39905b6439f7bebdddc8f0120"
+      },
+      "exact_encoded_reuse": false,
+      "actual_subtitle_sha256": "5092abf095820ad8f7d94ea93f1a6c960ff3d666d121c0cf8c838ebc81505c1d"
+    },
+    {
+      "cue_id": "C05-10",
+      "duration_frames": 832,
+      "original_encoded_segment": {
+        "bytes": 1201082,
+        "sha256": "68285a7fd018daff20e1c3bd67bcf2121d65af8dc5d83fba68d77d3a0ad3c7da"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1208616,
+        "sha256": "05d52731bc5f2bf7f193d53fb3bfbbb36895734e08ffa38f1695722b542d2788"
+      },
+      "exact_encoded_reuse": false,
+      "actual_subtitle_sha256": "86f877383df8958d2e6317fe7cb5232031a98808cd5bbd0d3f2f369d12f13ef5"
+    },
+    {
+      "cue_id": "C05-11",
+      "duration_frames": 882,
+      "original_encoded_segment": {
+        "bytes": 1219063,
+        "sha256": "18d96aac4f74eb83ab5e886765e4b12f936ef6ae23dcbd37f745f9a513d7eefc"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1219063,
+        "sha256": "18d96aac4f74eb83ab5e886765e4b12f936ef6ae23dcbd37f745f9a513d7eefc"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "28b860f4b129cf9542b4992e70d8a87afde424c97500bded3a66a7f564aa494d"
+    },
+    {
+      "cue_id": "C05-12",
+      "duration_frames": 943,
+      "original_encoded_segment": {
+        "bytes": 1283032,
+        "sha256": "11f21ed7b9d2fd58189e889fecee4a5b4008674d22a5c03464a5d61dd7e6cc24"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1283032,
+        "sha256": "11f21ed7b9d2fd58189e889fecee4a5b4008674d22a5c03464a5d61dd7e6cc24"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "71bbebfa695bc20b497c248860fe17c1a0c8cb34dfb9b3a33ee101362f83fb35"
+    },
+    {
+      "cue_id": "C05-13",
+      "duration_frames": 707,
+      "original_encoded_segment": {
+        "bytes": 930894,
+        "sha256": "3e131aa919ed094d9bcd01c553a6239a7169cda38103f37c1767956d50becccb"
+      },
+      "actual_encoded_segment": {
+        "bytes": 930894,
+        "sha256": "3e131aa919ed094d9bcd01c553a6239a7169cda38103f37c1767956d50becccb"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "8f995a5d8eb7ff392b5a19e36982d54a5be10d7aec2fd72791ef8faac04625eb"
+    },
+    {
+      "cue_id": "C05-14",
+      "duration_frames": 745,
+      "original_encoded_segment": {
+        "bytes": 930140,
+        "sha256": "8540904ee88752ccc003f57937922850c764ed9a2c7929567ef082ccb9d2ac53"
+      },
+      "actual_encoded_segment": {
+        "bytes": 929111,
+        "sha256": "e3f9546f7bad9d47eea104c807c3a8f64e0e29dc54fe15389133d364cd6089e6"
+      },
+      "exact_encoded_reuse": false,
+      "actual_subtitle_sha256": "3bfcaed69a51a01610f744158f7a00775ac2d36f7a2bf1aa981d8782c919fb44"
+    },
+    {
+      "cue_id": "C05-15",
+      "duration_frames": 736,
+      "original_encoded_segment": {
+        "bytes": 943981,
+        "sha256": "82db9d2d0a4a153c38a573f8719a8ff16485964479cc2d0ef51a1fc20732d8d5"
+      },
+      "actual_encoded_segment": {
+        "bytes": 943981,
+        "sha256": "82db9d2d0a4a153c38a573f8719a8ff16485964479cc2d0ef51a1fc20732d8d5"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "0d42f14cd907e5f04b3978fc65b8a48a8b5583d56e1ea6564e32ead2f3eb8c4d"
+    },
+    {
+      "cue_id": "C05-16",
+      "duration_frames": 858,
+      "original_encoded_segment": {
+        "bytes": 1109980,
+        "sha256": "bd11fc8f8fea77e70ac79fd110418e9309bc9e34f1dcdf0dc393f99f1e31fe26"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1109980,
+        "sha256": "bd11fc8f8fea77e70ac79fd110418e9309bc9e34f1dcdf0dc393f99f1e31fe26"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "196ef0f97902dee3e1deb9d5b539e067cfa1755efdc0201c7b0fbcab4deddcc6"
+    },
+    {
+      "cue_id": "C06-01",
+      "duration_frames": 790,
+      "original_encoded_segment": {
+        "bytes": 1008861,
+        "sha256": "73440590d28a289d097d9026df898fc262729864184ec318a0e73a746468bb33"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1008861,
+        "sha256": "73440590d28a289d097d9026df898fc262729864184ec318a0e73a746468bb33"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "bde06657bf5d6d962853ac2c7517584fd00539ff290f36e46c0b6c961f2f0d67"
+    },
+    {
+      "cue_id": "C06-02",
+      "duration_frames": 779,
+      "original_encoded_segment": {
+        "bytes": 1002082,
+        "sha256": "2ff091d54565ef8a9e943a84667befcb2c2473ed51b6ee149db7e42305589d7b"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1002082,
+        "sha256": "2ff091d54565ef8a9e943a84667befcb2c2473ed51b6ee149db7e42305589d7b"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "ab61041b1c482d76318ee04ae0022d6ae8e2dad0d44d23502b905909da6f32ed"
+    },
+    {
+      "cue_id": "C06-03",
+      "duration_frames": 918,
+      "original_encoded_segment": {
+        "bytes": 1258539,
+        "sha256": "aa34e7bede6ff74b739e44ea9db5e8006007e0d11827e798c7c5c90b77b029e6"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1258539,
+        "sha256": "aa34e7bede6ff74b739e44ea9db5e8006007e0d11827e798c7c5c90b77b029e6"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "ce8cb04423f3e65bd23ce8813fb5b4d922d3ae7f8a698ba585531ee580a4982c"
+    },
+    {
+      "cue_id": "C06-04",
+      "duration_frames": 935,
+      "original_encoded_segment": {
+        "bytes": 1152878,
+        "sha256": "a8b991cb5c774f45c67a8643694b64f6816fe9877129a011aafb651484b79c6f"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1152878,
+        "sha256": "a8b991cb5c774f45c67a8643694b64f6816fe9877129a011aafb651484b79c6f"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "036f485ae5b8f4b210c81fabb86ca21d8883a70a266be866260650ac5772fc06"
+    },
+    {
+      "cue_id": "C06-05",
+      "duration_frames": 1068,
+      "original_encoded_segment": {
+        "bytes": 1500650,
+        "sha256": "3e5e3545251bc5aca18a528f1f807199208820bfa431cb5cee58539d5c5e12b4"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1500650,
+        "sha256": "3e5e3545251bc5aca18a528f1f807199208820bfa431cb5cee58539d5c5e12b4"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "51581279053db24b1cf056538432fa1215b572d27f065870306b6bcd9d3dc944"
+    },
+    {
+      "cue_id": "C06-06",
+      "duration_frames": 932,
+      "original_encoded_segment": {
+        "bytes": 1220883,
+        "sha256": "ccc4459a48d6986d1d79ae3f2207f4426e2f6dcd76941c0aafcebf0786f7e409"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1220883,
+        "sha256": "ccc4459a48d6986d1d79ae3f2207f4426e2f6dcd76941c0aafcebf0786f7e409"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "e12a139d0ba4bbaaaa4060ea18f2ae62ccdd0104c2f40a72ef10888338bf4cb1"
+    },
+    {
+      "cue_id": "C06-07",
+      "duration_frames": 837,
+      "original_encoded_segment": {
+        "bytes": 1169143,
+        "sha256": "1beebf026c748e10865c0cd1433846bac34c92484fa2ec3d7a5891f39489fae8"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1169143,
+        "sha256": "1beebf026c748e10865c0cd1433846bac34c92484fa2ec3d7a5891f39489fae8"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "0989501ad92c3a24c1299e721ef4335439be65b74a46f47f0f4b8db4969ebdf4"
+    },
+    {
+      "cue_id": "C06-08",
+      "duration_frames": 737,
+      "original_encoded_segment": {
+        "bytes": 973955,
+        "sha256": "26e4e24031168a23791e32c5c08f1957e81c387327f16ae8f63802f55595ff27"
+      },
+      "actual_encoded_segment": {
+        "bytes": 973955,
+        "sha256": "26e4e24031168a23791e32c5c08f1957e81c387327f16ae8f63802f55595ff27"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "84eeca27031bf9310fbfa0cf590ced0f375d4f5be585e1142c6c12a460147f45"
+    },
+    {
+      "cue_id": "C06-09",
+      "duration_frames": 918,
+      "original_encoded_segment": {
+        "bytes": 1225310,
+        "sha256": "a2dc6289f5076d62a2a5929e86b7919d981ab8ba6c793fff635ec9ad1dff44f6"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1225310,
+        "sha256": "a2dc6289f5076d62a2a5929e86b7919d981ab8ba6c793fff635ec9ad1dff44f6"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "f60fce1a4bdd480a0e08da7ce42de3c49131448f87e4e8a308aaeec804f2bbe3"
+    },
+    {
+      "cue_id": "C06-10",
+      "duration_frames": 874,
+      "original_encoded_segment": {
+        "bytes": 1209588,
+        "sha256": "63b9446355e94e1c28cbf1b8ddabc7a5f94d855bdeb689b96253a1d1cd91de31"
+      },
+      "actual_encoded_segment": {
+        "bytes": 1209588,
+        "sha256": "63b9446355e94e1c28cbf1b8ddabc7a5f94d855bdeb689b96253a1d1cd91de31"
+      },
+      "exact_encoded_reuse": true,
+      "actual_subtitle_sha256": "5435ff464c4c61458dac67c0ea2ff461dd36c41eaaadf92665d4fc0f3d362186"
+    }
+  ]
+}

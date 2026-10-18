@@ -915,3 +915,24 @@ docs/ck3-native-ai/evidence/episode04-shared-cash-query-opt-in-12004/SOURCE-DELI
 docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/actual-R209-pre-snapshot-red.json.gz -text whitespace=cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/source-index.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/acceptance/2026-10-18-r209-r05-pre-snapshot-recovery/TIMING.actual.json -text whitespace=cr-at-eol,-blank-at-eof
+
+# Exact full69 method preview package, not media signoff.
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/encoded-segment-map.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/AUTO-MEDIA-CHECK.actual-a03.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/first-qa-CRLF-RED.actual-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/MEDIA-PURPOSE-CLOSED.actual-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/original-full69-run-manifest.machine-bound.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/prior-visual-RED.actual-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/PROMO-RELEASE-TYPOGRAPHY.actual-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/ROOT-DELIVERY.final-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/source-index.machine-bound.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/typography-a02-run-manifest.machine-bound.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/evidence/VISUAL-SAMPLES.actual-a02.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/PACKAGE-FILES.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/project-binding.json -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/README.md -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/verify_portable.py -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/war_ai_promo/__init__.py -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/war_ai_promo/episode04_reuse_three_corrections.py -text whitespace=cr-at-eol
+promo/ck3_native_war_ai/episode-04-march-logistics/review02/full69-method-preview-a02/war_ai_promo/reuse_exact_segment.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/episode04-review02-full69-method-preview-12004.md -text whitespace=cr-at-eol

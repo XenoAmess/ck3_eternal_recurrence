@@ -1,0 +1,2441 @@
+{
+  "schema": "xar.e04.review02-full69-focused-typography-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T06:30:55.686774+00:00",
+  "source_run_manifest": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-method-a01\\runs\\review02-full69-method-a02\\run-manifest.json",
+    "bytes": 270078,
+    "sha256": "a8401d1709c8afdaa165f3721b8507fbde982dacc7d3c00858b88bdc72b5cfb8"
+  },
+  "source_commit": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "candidate_corrections": [
+    "C05-09",
+    "C05-10",
+    "C05-14"
+  ],
+  "unchanged_segment_reuse_count": 66,
+  "new_render_count": 3,
+  "total_cue_count": 69,
+  "total_frames": 58406,
+  "method_review_partial": true,
+  "formal_dynamic_credit": 0,
+  "human_signoff": false,
+  "source_data_retention_dependency": "Closed a02 native CAS source must remain readable until focused candidate and its own retention review are complete.",
+  "cues": [
+    {
+      "cue_id": "C01-01",
+      "duration_frames": 612,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/57/5769277581C496C386A6069DEB3A0006F26214F01F29D066A15C99E99D36EEBB.mp4",
+          "bytes": 2628441,
+          "sha256": "5769277581c496c386a6069deb3a0006f26214f01f29d066a15c99e99d36eebb",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1C/1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3",
+          "bytes": 119088,
+          "sha256": "1cca8c798679e0b5affc0bd1590b873c6dcd8b939cc834e008617a71f06bef9b",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/66/665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2.mkv",
+          "bytes": 15441657,
+          "sha256": "665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1F/1F14B9FECC66D43A5216EC2A7B2677841CA21CB2AF09A57642DB72D2F1C1E2AF.ass",
+          "bytes": 2215,
+          "sha256": "1f14b9fecc66d43a5216ec2a7b2677841ca21cb2af09a57642db72d2f1c1e2af",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-02",
+      "duration_frames": 653,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1A/1A66010C468EEE6F590F79401ED3A08EE704D8D0E2EF6E027B049A1A46DFBFAE.mp4",
+          "bytes": 869357,
+          "sha256": "1a66010c468eee6f590f79401ed3a08ee704d8d0e2ef6e027b049a1a46dfbfae",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/36/3683CBA9A4278A65404E894F57CC5C3D400B0582A9483931D463B9E8DDBF2028.mp3",
+          "bytes": 127152,
+          "sha256": "3683cba9a4278a65404e894f57cc5c3d400b0582a9483931d463b9e8ddbf2028",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/424F4A024104B5D0181E6E6A0C66B7C7CD955B413317633533F9C5926E771D16.png",
+          "bytes": 338601,
+          "sha256": "424f4a024104b5d0181e6e6a0c66b7c7cd955b413317633533f9c5926e771d16",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F2/F256C2171863B1FA76DA8283A1A464E727E383A555CFC238B149C71C99CBF875.ass",
+          "bytes": 2276,
+          "sha256": "f256c2171863b1fa76da8283a1a464e727e383a555cfc238b149c71c99cbf875",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-03",
+      "duration_frames": 862,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F3/F34BDBDDDA41C8CCC88EB78449C408222D9124978D1750674906AE38DB4F2887.mp4",
+          "bytes": 1046392,
+          "sha256": "f34bdbddda41c8ccc88eb78449c408222d9124978d1750674906ae38db4f2887",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/FF/FF4A18AF932D33D0E129766378D9BBA1E7DBAFE221AAAEB20271BA62CFFC5DC8.mp3",
+          "bytes": 169056,
+          "sha256": "ff4a18af932d33d0e129766378d9bba1e7dbafe221aaaeb20271ba62cffc5dc8",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E1/E1511AF31208D19EFE7E414367F012441A34BD7EA3FEB0CD7F61B0960F2B1F17.png",
+          "bytes": 227901,
+          "sha256": "e1511af31208d19efe7e414367f012441a34bd7ea3feb0cd7f61b0960f2b1f17",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/90/90717933C3D588DCFD93ACF1D65A0B300DC75A6EA9829D9A43B61CF5F1B9802C.ass",
+          "bytes": 2857,
+          "sha256": "90717933c3d588dcfd93acf1d65a0b300dc75a6ea9829d9a43b61cf5f1b9802c",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-04",
+      "duration_frames": 856,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/0A/0A4FF39EE86DCA201EF804250C79720DFFF6FF7026FB9DF84A8213C0D55955A2.mp4",
+          "bytes": 1180872,
+          "sha256": "0a4ff39ee86dca201ef804250c79720dfff6ff7026fb9df84a8213c0d55955a2",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/99/9920DB84777586E3E40640CFAA253C88FEC2CCC2FF32753681A35270E1EF4ECF.mp3",
+          "bytes": 167760,
+          "sha256": "9920db84777586e3e40640cfaa253c88fec2ccc2ff32753681a35270e1ef4ecf",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2A/2A87586F64AA690B242C64254953FAD2C300ED7CBB58B589B7F8838E169179DC.ass",
+          "bytes": 2713,
+          "sha256": "2a87586f64aa690b242c64254953fad2c300ed7cbb58b589b7f8838e169179dc",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-05",
+      "duration_frames": 948,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/22/2212C9372347A56DD457823D80ED514DC36F1F50ECE5458695D72222223BA5DD.mp4",
+          "bytes": 1136748,
+          "sha256": "2212c9372347a56dd457823d80ed514dc36f1f50ece5458695d72222223ba5dd",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D7/D75C1BB895A40AE53411D539CBBCE1CF70ACD9621A13D0FA825869A149E70585.mp3",
+          "bytes": 186192,
+          "sha256": "d75c1bb895a40ae53411d539cbbce1cf70acd9621a13d0fa825869a149e70585",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9A/9A36DA510A816F61B992D2ECEE90F6027EDF22180731F2999A6132743A3AB553.png",
+          "bytes": 214179,
+          "sha256": "9a36da510a816f61b992d2ecee90f6027edf22180731f2999a6132743a3ab553",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/EB/EB89C37B4D954CF5245EDE502D5DAFF91DA370A7E5879AC027C3B869661A5F20.ass",
+          "bytes": 2816,
+          "sha256": "eb89c37b4d954cf5245ede502d5daff91da370a7e5879ac027c3b869661a5f20",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-06",
+      "duration_frames": 866,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D7/D70676C227BAEB9E5BCD7D59F4926EE10FD2F42D0A4293736E8EF7B71A315FB3.mp4",
+          "bytes": 1214111,
+          "sha256": "d70676c227baeb9e5bcd7d59f4926ee10fd2f42d0a4293736e8ef7b71a315fb3",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/51/515F7E16BE10C474DBCF96199B82BC5FAE37352EC1847CD6E883B502718D4BE3.mp3",
+          "bytes": 169776,
+          "sha256": "515f7e16be10c474dbcf96199b82bc5fae37352ec1847cd6e883b502718d4be3",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/02/02F924515771B68AA6B31C33D31015DE09A9A1C1B1C3D08954E4E437273E618A.ass",
+          "bytes": 2629,
+          "sha256": "02f924515771b68aa6b31c33d31015de09a9a1c1b1c3d08954e4e437273e618a",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-07",
+      "duration_frames": 751,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BE/BE64C9EB4A9F54406B91ABA9D584517167B9526CE69FEB95010DE726C2F743FC.mp4",
+          "bytes": 913600,
+          "sha256": "be64c9eb4a9f54406b91aba9d584517167b9526ce69feb95010de726c2f743fc",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/95/95A0F9273FD9619F0BC0569A9653B5DEFA4A7E671EEBA69925F882C88DD4E7D5.mp3",
+          "bytes": 146880,
+          "sha256": "95a0f9273fd9619f0bc0569a9653b5defa4a7e671eeba69925f882c88dd4e7d5",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BF/BF228423763FA7AB75D57F3A8929AC64947A9FF2BCD9E5B8748574B82AB7F469.png",
+          "bytes": 202079,
+          "sha256": "bf228423763fa7ab75d57f3a8929ac64947a9ff2bcd9e5b8748574b82ab7f469",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A6/A63A1DACDDA97232BFA8096B2BE504CC201546163396DD0AB8889698B9AC84B3.ass",
+          "bytes": 2522,
+          "sha256": "a63a1dacdda97232bfa8096b2be504cc201546163396dd0ab8889698b9ac84b3",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C01-08",
+      "duration_frames": 884,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C01-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/52/52ACD038D9D09FC8C65AA49534FC7D19A2E1B5A129B254396CA84579D90BB256.mp4",
+          "bytes": 1161365,
+          "sha256": "52acd038d9d09fc8c65aa49534fc7d19a2e1b5a129b254396ca84579d90bb256",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C01-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/99/994DA80B10551F94DCC943AD733691839D06E8B51CEA52D335641AC8034246AC.mp3",
+          "bytes": 167040,
+          "sha256": "994da80b10551f94dcc943ad733691839d06e8b51cea52d335641ac8034246ac",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C01-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/424F4A024104B5D0181E6E6A0C66B7C7CD955B413317633533F9C5926E771D16.png",
+          "bytes": 338601,
+          "sha256": "424f4a024104b5d0181e6e6a0c66b7c7cd955b413317633533f9c5926e771d16",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C01-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/27/2768A3F77A99D5EA2E944C73EC86A3F77E1A24857E6A6E6E3969A1274080DCA2.ass",
+          "bytes": 2610,
+          "sha256": "2768a3f77a99d5ea2e944c73ec86a3f77e1a24857e6a6e6e3969a1274080dca2",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-01",
+      "duration_frames": 890,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A0/A0B6B422DFD423C88F5CE1F1689A5376B390C92B0443B09272D23EB615C72DBB.mp4",
+          "bytes": 1211384,
+          "sha256": "a0b6b422dfd423c88f5ce1f1689a5376b390c92b0443b09272d23eb615c72dbb",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/B8/B8B52925C663FFAF15347EADC3D6DEAF6D6A3273DFB40C839F9353766074C512.mp3",
+          "bytes": 174528,
+          "sha256": "b8b52925c663ffaf15347eadc3d6deaf6d6a3273dfb40c839f9353766074c512",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CA/CA04D87769D0CC880B173AF89D6C6F929E65624CF0EC1C43784990BDAB8E2411.png",
+          "bytes": 348438,
+          "sha256": "ca04d87769d0cc880b173af89d6c6f929e65624cf0ec1c43784990bdab8e2411",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/98/987846F336AF892E02108B1E4944666AEB7FCF88AC64F6E0D68BD2FC05BA8E4A.ass",
+          "bytes": 2609,
+          "sha256": "987846f336af892e02108b1e4944666aeb7fcf88ac64f6e0d68bd2fc05ba8e4a",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-02",
+      "duration_frames": 797,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F4/F4842E8EFBE193B9E7C59AC40F707EB01E5A6824B27EC6503DB3EDF4008E9A18.mp4",
+          "bytes": 1099709,
+          "sha256": "f4842e8efbe193b9e7c59ac40f707eb01e5a6824b27ec6503db3edf4008e9a18",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A3/A3D91A203D1518E689640A5EE1284FEECD8B7AD0E1BB9F28B2237F81C6FD4A73.mp3",
+          "bytes": 156096,
+          "sha256": "a3d91a203d1518e689640a5ee1284feecd8b7ad0e1bb9f28b2237f81c6fd4a73",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/424F4A024104B5D0181E6E6A0C66B7C7CD955B413317633533F9C5926E771D16.png",
+          "bytes": 338601,
+          "sha256": "424f4a024104b5d0181e6e6a0c66b7c7cd955b413317633533f9c5926e771d16",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/58/581959A71910D9DDB1E24B7A0DCF20A2440CD0D07046F5844BDA74C0F756C828.ass",
+          "bytes": 2413,
+          "sha256": "581959a71910d9ddb1e24b7a0dcf20a2440cd0d07046f5844bda74c0f756c828",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-03",
+      "duration_frames": 682,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D0/D020E4C76D7F1706E920CAAECA49019E9C60A69AD3474601A326EA37A8F50CC2.mp4",
+          "bytes": 822634,
+          "sha256": "d020e4c76d7f1706e920caaeca49019e9c60a69ad3474601a326ea37a8f50cc2",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/6E/6E855BC3BD3B5C6CF393B9785D174501A774EAF900E4A9B0B85D99B4A4AFA634.mp3",
+          "bytes": 133056,
+          "sha256": "6e855bc3bd3b5c6cf393b9785d174501a774eaf900e4a9b0b85d99b4a4afa634",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/82/827004C4C037FEEB4B9B7D725FA469D6F2BFE5706522C6692C840D5EAB76A93D.png",
+          "bytes": 210706,
+          "sha256": "827004c4c037feeb4b9b7d725fa469d6f2bfe5706522c6692c840d5eab76a93d",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/AB/ABC0DBC2CA02DC79A2AB6E058E617AE943B618A3B4FD8CF936ADACD138AFF539.ass",
+          "bytes": 2402,
+          "sha256": "abc0dbc2ca02dc79a2ab6e058e617ae943b618a3b4fd8cf936adacd138aff539",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-04",
+      "duration_frames": 908,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/50/50C46A4F661531652FC32DD9FF1C015E01DA1A33DCD09CF056D7B5FF31F995F7.mp4",
+          "bytes": 1127886,
+          "sha256": "50c46a4f661531652fc32dd9ff1c015e01da1a33dcd09cf056d7b5ff31f995f7",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7A/7A66ABBB77AD80314A6036410E7BDD1B1FDDC3BAED70073298E28653F9EE0104.mp3",
+          "bytes": 178128,
+          "sha256": "7a66abbb77ad80314a6036410e7bdd1b1fddc3baed70073298e28653f9ee0104",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/24/2422A4FB281641A03BEA123281EAB83E6D51ECF35032A759823EA340DABE559A.png",
+          "bytes": 240702,
+          "sha256": "2422a4fb281641a03bea123281eab83e6d51ecf35032a759823ea340dabe559a",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/AB/AB132E5B1D6E92536F76F4BC9F3B4F814FD686EE6118C5D0D77BC840D9696685.ass",
+          "bytes": 2833,
+          "sha256": "ab132e5b1d6e92536f76f4bc9f3b4f814fd686ee6118c5d0d77bc840d9696685",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-05",
+      "duration_frames": 872,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/10/10CD8DDAB988E7905B67F572B611367CF2872C482B644547613731A9FDBBE7DB.mp4",
+          "bytes": 1203879,
+          "sha256": "10cd8ddab988e7905b67f572b611367cf2872c482b644547613731a9fdbbe7db",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/15/150500691D5CD4DF259169DF432B8A173C5C06162B0CBEAA61971880BD7664B6.mp3",
+          "bytes": 171072,
+          "sha256": "150500691d5cd4df259169df432b8a173c5c06162b0cbeaa61971880bd7664b6",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9C/9C69AE5F80BCFB3458CA88AC5FD321F4492D312B19795E9CF3ACA7A8FC969879.ass",
+          "bytes": 2703,
+          "sha256": "9c69ae5f80bcfb3458ca88ac5fd321f4492d312b19795e9cf3aca7a8fc969879",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-06",
+      "duration_frames": 977,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/21/210AD597F7B252505B7DBF561C1790F1F32E7A8FDE1AD88CD00C1D1984542F54.mp4",
+          "bytes": 1306423,
+          "sha256": "210ad597f7b252505b7dbf561c1790f1f32e7a8fde1ad88cd00c1d1984542f54",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A7/A757C77EE1BA8C4F8CB67CEAA56ED6E26E9BB178EE062D0D154F49BCE409F863.mp3",
+          "bytes": 191952,
+          "sha256": "a757c77ee1ba8c4f8cb67ceaa56ed6e26e9bb178ee062d0d154f49bce409f863",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/85/852F6ABE5259750488BC656BE5298CDE28534F6123DF7B438EB69D671DB28679.ass",
+          "bytes": 2914,
+          "sha256": "852f6abe5259750488bc656be5298cde28534f6123df7b438eb69d671db28679",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-07",
+      "duration_frames": 955,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/65/65B50499F354A0C98FE21CCAD3AE396CDDEBFB5C49D607F15F4615E2E125EFFE.mp4",
+          "bytes": 1289844,
+          "sha256": "65b50499f354a0c98fe21ccad3ae396cddebfb5c49d607f15f4615e2e125effe",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/4F/4F72ED567FB12DA9946BFCBA703DC2578636341D97567ACE6202A9C2E70B1130.mp3",
+          "bytes": 187632,
+          "sha256": "4f72ed567fb12da9946bfcba703dc2578636341d97567ace6202a9c2e70b1130",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/77/77FF218EBCECD55FFFD1545D5EB179E700C6B0603C24BE96EAAA28A2B70CBCE2.ass",
+          "bytes": 2934,
+          "sha256": "77ff218ebcecd55fffd1545d5eb179e700c6b0603c24be96eaaa28a2b70cbce2",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-08",
+      "duration_frames": 970,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/DB/DBFAEBAC3A4C20E78428A1908041919B5E7809F80E4DC42BC54838D698BF8252.mp4",
+          "bytes": 1304834,
+          "sha256": "dbfaebac3a4c20e78428a1908041919b5e7809f80e4dc42bc54838d698bf8252",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/98/98CDB11CA3DFE7E3359F3F9E073DD20B58554CA4D1270F1D5B13877E609E616B.mp3",
+          "bytes": 190656,
+          "sha256": "98cdb11ca3dfe7e3359f3f9e073dd20b58554ca4d1270f1d5b13877e609e616b",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/87/87604A52AFC88BAA7BD3CD39D1E672ADCC5A01B1AFA48045043F11B9C34D1C61.ass",
+          "bytes": 2740,
+          "sha256": "87604a52afc88baa7bd3cd39d1e672adcc5a01b1afa48045043f11b9c34d1c61",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-09",
+      "duration_frames": 895,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/3C/3CCD25C91E9CE3950F27A1F35BBC49FD066A92800D7E69AB82C17F87BE010EBE.mp4",
+          "bytes": 3103203,
+          "sha256": "3ccd25c91e9ce3950f27a1f35bbc49fd066a92800d7e69ab82c17f87be010ebe",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/4D/4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7.mp3",
+          "bytes": 175536,
+          "sha256": "4d28268ce1c99576f59a2a8182dcae35085d68ffe7b45af9016682827d4eebd7",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/73/73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472.mkv",
+          "bytes": 32908524,
+          "sha256": "73ba63f6a249addf7ced95d54001f7b338e4be091bd5bb90491cab627eb62472",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/4A/4AF41B392FF479FDF6EFC7042AB3A25ABD56B7726EA5CD04B537EE2DE2C780D4.ass",
+          "bytes": 2906,
+          "sha256": "4af41b392ff479fdf6efc7042ab3a25abd56b7726ea5cd04b537ee2de2c780d4",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-10",
+      "duration_frames": 717,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/EC/EC0A1AE1FD897B89EC60C87723815CE20038E034B477A9BEC9A885502843AF81.mp4",
+          "bytes": 953689,
+          "sha256": "ec0a1ae1fd897b89ec60c87723815ce20038e034b477a9bec9a885502843af81",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/B8/B8C184D4DF88FC956A919975481D35CC945676D8B0EA9679DD960DE4E063EF87.mp3",
+          "bytes": 139968,
+          "sha256": "b8c184d4df88fc956a919975481d35cc945676d8b0ea9679dd960de4e063ef87",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/74/74EAEF44ECD6A70E40AD4A13F7BB09413CF30DE5DADCEED4B158E4E17BEC82E5.ass",
+          "bytes": 2498,
+          "sha256": "74eaef44ecd6a70e40ad4a13f7bb09413cf30de5dadceed4b158e4e17bec82e5",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-11",
+      "duration_frames": 1013,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1E/1EDB942218BDA6C54E8C42937468A35D7ADC10C0B933F041C6B70E334AB53BAA.mp4",
+          "bytes": 1418942,
+          "sha256": "1edb942218bda6c54e8c42937468a35d7adc10c0b933f041c6b70e334ab53baa",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/42A481C02E4571AE45CFEDAF9B267D77856DDF9D594BB2F5B39E609FA3AA3138.mp3",
+          "bytes": 199296,
+          "sha256": "42a481c02e4571ae45cfedaf9b267d77856ddf9d594bb2f5b39e609fa3aa3138",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CA/CA04D87769D0CC880B173AF89D6C6F929E65624CF0EC1C43784990BDAB8E2411.png",
+          "bytes": 348438,
+          "sha256": "ca04d87769d0cc880b173af89d6c6f929e65624cf0ec1c43784990bdab8e2411",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A0/A0B8BE6D9D43D07E49A520C8C0CE7D344C2850C4735EC0785F27617CDBE2DD69.ass",
+          "bytes": 2936,
+          "sha256": "a0b8be6d9d43d07e49a520c8c0ce7d344c2850c4735ec0785f27617cdbe2dd69",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C02-12",
+      "duration_frames": 1051,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C02-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/23/236ABDC64F099DB3305A47FAC7CB05ED7FBED1125A1C415251073B3DD30F9728.mp4",
+          "bytes": 1444150,
+          "sha256": "236abdc64f099db3305a47fac7cb05ed7fbed1125a1c415251073b3dd30f9728",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C02-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C1/C1871A706EC5D74F54F517878B4AB5F8ECBF397E887F9AD900CDA4366AA5ABE7.mp3",
+          "bytes": 200448,
+          "sha256": "c1871a706ec5d74f54f517878b4ab5f8ecbf397e887f9ad900cda4366aa5abe7",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C02-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A9/A9F2442F33184DBE0264DF5CFBEBF97B951C152B17E020E4B225A3E8E7328881.png",
+          "bytes": 366545,
+          "sha256": "a9f2442f33184dbe0264df5cfbebf97b951c152b17e020e4b225a3e8e7328881",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C02-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A7/A7CBC9FD656DD9256FDAD10828E5E6A17F9F2FC8A3308A96F303A5B2BF0BAB72.ass",
+          "bytes": 3197,
+          "sha256": "a7cbc9fd656dd9256fdad10828e5e6a17f9f2fc8a3308a96f303a5b2bf0bab72",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-01",
+      "duration_frames": 972,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/5E/5EB93DD33761491956E2BA64CB0E5454BBC96771FFE627FB2078C886937E9672.mp4",
+          "bytes": 3471544,
+          "sha256": "5eb93dd33761491956e2ba64cb0e5454bbc96771ffe627fb2078c886937e9672",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E0/E05CA7BC1C0F0C7020083E93E126C5F68EB97AF3F050D96F064EB7597227937F.mp3",
+          "bytes": 190944,
+          "sha256": "e05ca7bc1c0f0c7020083e93e126c5f68eb97af3f050d96f064eb7597227937f",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/72/7234E5B34C05ED47A4022864485B2C89E1229BE33008DBB06177C7EDC0D4D872.mkv",
+          "bytes": 66574010,
+          "sha256": "7234e5b34c05ed47a4022864485b2c89e1229be33008dbb06177c7edc0d4d872",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2C/2C6C8EE3B23B949987B2E4B4D6F5665BD0EA0907B15616562716378B770E3DF7.ass",
+          "bytes": 3026,
+          "sha256": "2c6c8ee3b23b949987b2e4b4d6f5665bd0ea0907b15616562716378b770e3df7",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-02",
+      "duration_frames": 846,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/96/96CFBC54EA59AD030511F5052A3292A01E8AC0C539A93651B5CA47EE051E5212.mp4",
+          "bytes": 1044037,
+          "sha256": "96cfbc54ea59ad030511f5052a3292a01e8ac0c539a93651b5ca47ee051e5212",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/33/33FAAB11F8B9E210612031D8CCE73E9AC1861EF1B46EF40F2ACB3AE2C9E2538B.mp3",
+          "bytes": 165744,
+          "sha256": "33faab11f8b9e210612031d8cce73e9ac1861ef1b46ef40f2acb3ae2c9e2538b",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9A/9A36DA510A816F61B992D2ECEE90F6027EDF22180731F2999A6132743A3AB553.png",
+          "bytes": 214179,
+          "sha256": "9a36da510a816f61b992d2ecee90f6027edf22180731f2999a6132743a3ab553",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A5/A55629BA40A02CD540E411DCD6F9DCA34832912F1AAE11D6F12F65A96FD35CD9.ass",
+          "bytes": 2700,
+          "sha256": "a55629ba40a02cd540e411dcd6f9dca34832912f1aae11d6f12f65a96fd35cd9",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-03",
+      "duration_frames": 818,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/60/60E736B016371C09C1D89E92D9D6D114844C9FDCAF754A01F0AAE05D5AFA9A11.mp4",
+          "bytes": 1028589,
+          "sha256": "60e736b016371c09c1d89e92d9d6d114844c9fdcaf754a01f0aae05d5afa9a11",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1F/1FE2919BD05931D6B14BA099E7770A1C830A434278514F57A3424DDF57C82B24.mp3",
+          "bytes": 160128,
+          "sha256": "1fe2919bd05931d6b14ba099e7770a1c830a434278514f57a3424ddf57c82b24",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9A/9A36DA510A816F61B992D2ECEE90F6027EDF22180731F2999A6132743A3AB553.png",
+          "bytes": 214179,
+          "sha256": "9a36da510a816f61b992d2ecee90f6027edf22180731f2999a6132743a3ab553",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BA/BAA221C863E6A7ABA0969A561CA07EB146D174CC1B595485DB48D288B2CCE00E.ass",
+          "bytes": 2548,
+          "sha256": "baa221c863e6a7aba0969a561ca07eb146d174cc1b595485db48d288b2cce00e",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-04",
+      "duration_frames": 881,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/93/932AE06FED78CD1918BE350EE78D3FC17DA641FBB4E3158C2802A039608A9871.mp4",
+          "bytes": 1063882,
+          "sha256": "932ae06fed78cd1918be350ee78d3fc17da641fbb4e3158c2802a039608a9871",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/0A/0A6BCC9048A57DA760BD2C3968D29FE565366692537CDAE8FFE84D802C59D691.mp3",
+          "bytes": 172800,
+          "sha256": "0a6bcc9048a57da760bd2c3968d29fe565366692537cdae8ffe84d802c59d691",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9A/9A36DA510A816F61B992D2ECEE90F6027EDF22180731F2999A6132743A3AB553.png",
+          "bytes": 214179,
+          "sha256": "9a36da510a816f61b992d2ecee90f6027edf22180731f2999a6132743a3ab553",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F5/F57D49925A02DC046612CB4D84DCD4EB3A79622B84F9ABF3080338EE81FC241F.ass",
+          "bytes": 2706,
+          "sha256": "f57d49925a02dc046612cb4d84dcd4eb3a79622b84f9abf3080338ee81fc241f",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-05",
+      "duration_frames": 800,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CC/CCC953BDC6D25D258362F565CE3359502EA227526DF4FAF4A939C8B79C6A241F.mp4",
+          "bytes": 1016231,
+          "sha256": "ccc953bdc6d25d258362f565ce3359502ea227526df4faf4a939c8b79c6a241f",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7C/7CBD6C6BED74218A1B5C7A2DE398AA3C726182444F82E10A506FF17367CF6F8F.mp3",
+          "bytes": 156528,
+          "sha256": "7cbd6c6bed74218a1b5c7a2de398aa3c726182444f82e10a506ff17367cf6f8f",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/93/934A82499844C7DD8DADA78E0FDD4ED9F8F6890078DD0466F1C8DB2745A9BCDC.png",
+          "bytes": 223036,
+          "sha256": "934a82499844c7dd8dada78e0fdd4ed9f8f6890078dd0466f1c8db2745a9bcdc",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/76/76D15C60FF8E6217E3AE36B6F372C223BE7FA452D05C21C26CDAA195B5412BE2.ass",
+          "bytes": 2544,
+          "sha256": "76d15c60ff8e6217e3ae36b6f372c223be7fa452d05c21c26cdaa195b5412be2",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-06",
+      "duration_frames": 829,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/98/98C81482C9D1DAE1C7F2A9B2AC09CAD5A758C8AEAA7BD98C0E2367E1CD1FDED7.mp4",
+          "bytes": 1056071,
+          "sha256": "98c81482c9d1dae1c7f2a9b2ac09cad5a758c8aeaa7bd98c0e2367e1cd1fded7",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/05/0599ABB0AFEE8F93D8877E8A0D1EB562EC44E845D959538112DD115170E0CBAA.mp3",
+          "bytes": 162432,
+          "sha256": "0599abb0afee8f93d8877e8a0d1eb562ec44e845d959538112dd115170e0cbaa",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/93/934A82499844C7DD8DADA78E0FDD4ED9F8F6890078DD0466F1C8DB2745A9BCDC.png",
+          "bytes": 223036,
+          "sha256": "934a82499844c7dd8dada78e0fdd4ed9f8f6890078dd0466f1c8db2745a9bcdc",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9B/9B26BA017868E2DA900A90E768FF256BAD5601EF10AE924644C29B441A7F4106.ass",
+          "bytes": 2518,
+          "sha256": "9b26ba017868e2da900a90e768ff256bad5601ef10ae924644c29b441a7f4106",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-07",
+      "duration_frames": 881,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1A/1AA0E9ED98CD8138AE133D9746A5CF89EBB05299A8DE67B651E5F0A7310A3090.mp4",
+          "bytes": 1139484,
+          "sha256": "1aa0e9ed98cd8138ae133d9746a5cf89ebb05299a8de67b651e5f0a7310a3090",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F7/F78D36976533A226370D5FCA1BEE0242856E9A126E7930C5B050CB80201BF5FF.mp3",
+          "bytes": 172800,
+          "sha256": "f78d36976533a226370d5fca1bee0242856e9a126e7930c5b050cb80201bf5ff",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/0B/0B566670582C5D51E66C5CD0AC5D8E4B73F4189E232E93F9ADD5570536852464.png",
+          "bytes": 267613,
+          "sha256": "0b566670582c5d51e66c5cd0ac5d8e4b73f4189e232e93f9add5570536852464",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/76/760E3F869836FFC70C2A53E5D99EDE97FB143F7A7B82E8D7EB3DA5566F3B605A.ass",
+          "bytes": 2680,
+          "sha256": "760e3f869836ffc70c2a53e5d99ede97fb143f7a7b82e8d7eb3da5566f3b605a",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-08",
+      "duration_frames": 1005,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/638EE7F43A8B962FCC8410AD5D7F2B08F451FB3447440953DB51362E395837D8.mp4",
+          "bytes": 3849401,
+          "sha256": "638ee7f43a8b962fcc8410ad5d7f2b08f451fb3447440953db51362e395837d8",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/8D/8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB.mp3",
+          "bytes": 197568,
+          "sha256": "8d83f662f51974604e67e511320d95a8d7c4a30eb7e9b7aa34d316b7716cdbdb",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/83/8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05.mkv",
+          "bytes": 110560976,
+          "sha256": "8394c5e177752d4493ab8e93507855efc056c8353b7cc2e69345078da23d6f05",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/70/7068E74503E9F80DF2EE4125CF8D26652F337E77C20D2E5D9535BBEA5A89E205.ass",
+          "bytes": 2919,
+          "sha256": "7068e74503e9f80df2ee4125cf8d26652f337e77c20d2e5d9535bbea5a89e205",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-09",
+      "duration_frames": 821,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A0/A04E345F237C59EFE1A5A5BDFCF93A3ECAE1BF2CD599069BE25E743277147F00.mp4",
+          "bytes": 1049122,
+          "sha256": "a04e345f237c59efe1a5a5bdfcf93a3ecae1bf2cd599069be25e743277147f00",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/EA/EAF7DF6E679433283867F18311963230F3CFE7283549A1E7AC026D3A83AF9D34.mp3",
+          "bytes": 160848,
+          "sha256": "eaf7df6e679433283867f18311963230f3cfe7283549a1e7ac026d3a83af9d34",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C2/C24F275136422DE0265279739673FFF78E940D777B6922CEDE1926CB9A3E1CA6.png",
+          "bytes": 226092,
+          "sha256": "c24f275136422de0265279739673fff78e940d777b6922cede1926cb9a3e1ca6",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7B/7B1AE4BE6152DFF877B04C4B25FB54B0543847B08836936A3FA945DED3FBD2C3.ass",
+          "bytes": 2614,
+          "sha256": "7b1ae4be6152dff877b04c4b25fb54b0543847b08836936a3fa945ded3fbd2c3",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-10",
+      "duration_frames": 797,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/0D/0D152A399D25B7121AD290FF4B5C18120D415C98F759BE9E4199AC83ABD61CAC.mp4",
+          "bytes": 1032490,
+          "sha256": "0d152a399d25b7121ad290ff4b5c18120d415c98f759be9e4199ac83abd61cac",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7D/7DF709032CA3E88BD86C349F38D5E0DE1DED07C602836EDEC1C37413A69DD039.mp3",
+          "bytes": 155952,
+          "sha256": "7df709032ca3e88bd86c349f38d5e0de1ded07c602836edec1c37413a69dd039",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/24/2422A4FB281641A03BEA123281EAB83E6D51ECF35032A759823EA340DABE559A.png",
+          "bytes": 240702,
+          "sha256": "2422a4fb281641a03bea123281eab83e6d51ecf35032a759823ea340dabe559a",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7E/7EBA1767F7251DBB48F63618D71F346040D6006347B6C62A759B7E1C3B050E4C.ass",
+          "bytes": 2526,
+          "sha256": "7eba1767f7251dbb48f63618d71f346040d6006347b6c62a759b7e1c3b050e4c",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-11",
+      "duration_frames": 859,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A7/A7387A66470624E09AAABBF3152CBEF1582145A250EEC42274D48A6135477F42.mp4",
+          "bytes": 1093868,
+          "sha256": "a7387a66470624e09aaabbf3152cbef1582145a250eec42274d48a6135477f42",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/AA/AA454B3567FC604B09CE91574CD8D42681C6A4D7C4329C6E528B4C7196CD7ABA.mp3",
+          "bytes": 168480,
+          "sha256": "aa454b3567fc604b09ce91574cd8d42681c6a4d7c4329c6e528b4c7196cd7aba",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/5A/5A2EE978C3CBACDB47156397D34D23A4451A5FBAD4C66E08A14E691B49DEE984.png",
+          "bytes": 233005,
+          "sha256": "5a2ee978c3cbacdb47156397d34d23a4451a5fbad4c66e08a14e691b49dee984",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D5/D51CF197A319555406DAC40DAA723B754680BF987D8F7FB4C5208CC42D505357.ass",
+          "bytes": 2591,
+          "sha256": "d51cf197a319555406dac40daa723b754680bf987d8f7fb4c5208cc42d505357",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C03-12",
+      "duration_frames": 874,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C03-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/34/34A77E63004EF2EC01E663007BCDC6EEF7B8EFF64B45E742EADD0479037B570F.mp4",
+          "bytes": 1071947,
+          "sha256": "34a77e63004ef2ec01e663007bcdc6eef7b8eff64b45e742eadd0479037b570f",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C03-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/65/65FB7514DB6C222F8BCF9CF48037A7946A0AF7957E60BEB25E3F24073BCAE7FF.mp3",
+          "bytes": 165168,
+          "sha256": "65fb7514db6c222f8bcf9cf48037a7946a0af7957e60beb25e3f24073bcae7ff",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C03-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C2/C24F275136422DE0265279739673FFF78E940D777B6922CEDE1926CB9A3E1CA6.png",
+          "bytes": 226092,
+          "sha256": "c24f275136422de0265279739673fff78e940d777b6922cede1926cb9a3e1ca6",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C03-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2B/2B9EE97498CA1BFBF499CF0FE41A1F36D9F7D661C5A2ACED2C0C93537A28F97E.ass",
+          "bytes": 2610,
+          "sha256": "2b9ee97498ca1bfbf499cf0fe41a1f36d9f7d661c5a2aced2c0c93537a28f97e",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-01",
+      "duration_frames": 895,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CED10123C76965C7429EDA9A0BD7E5337D3A43AFB0438F05E6B3A4B85C853814.mp4",
+          "bytes": 1242020,
+          "sha256": "ced10123c76965c7429eda9a0bd7e5337d3a43afb0438f05e6b3a4b85c853814",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/40/40CBFBEE5845520C6AFFCB077EFC7D15AC88791BD3209F7D16B1A7DF1C639975.mp3",
+          "bytes": 175680,
+          "sha256": "40cbfbee5845520c6affcb077efc7d15ac88791bd3209f7d16b1a7df1c639975",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7D/7D374BD743AF34C758265AD22CD5C16CA68FDDBB3AD519F1D7C52A8B0CA1CB36.ass",
+          "bytes": 2693,
+          "sha256": "7d374bd743af34c758265ad22cd5c16ca68fddbb3ad519f1d7c52a8b0ca1cb36",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-02",
+      "duration_frames": 905,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/16/1625B30ADD7B25AAFC58468D05117E8D20294F4293C07F25090D7AAF649F4999.mp4",
+          "bytes": 1249821,
+          "sha256": "1625b30add7b25aafc58468d05117e8d20294f4293c07f25090d7aaf649f4999",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/35/355C3F9930E773605C675A307F9B3822BF5D296BD3E934A1BD3124571521EB9F.mp3",
+          "bytes": 177696,
+          "sha256": "355c3f9930e773605c675a307f9b3822bf5d296bd3e934a1bd3124571521eb9f",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/47/47ECB179A02F953CD93A58C99937760FEA399AD67E50671DD5597E55B1429BBB.ass",
+          "bytes": 2762,
+          "sha256": "47ecb179a02f953cd93a58c99937760fea399ad67e50671dd5597e55b1429bbb",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-03",
+      "duration_frames": 957,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D5/D5781E45048F37B0681F8CEC466308FCBE88AC845921901F351774AC05932FC8.mp4",
+          "bytes": 1296325,
+          "sha256": "d5781e45048f37b0681f8cec466308fcbe88ac845921901f351774ac05932fc8",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C1/C1FC6CE20BC4710044475B10CD7DDDC163EAA11649541AC3FF50EB5E37F4251B.mp3",
+          "bytes": 188064,
+          "sha256": "c1fc6ce20bc4710044475b10cd7dddc163eaa11649541ac3ff50eb5e37f4251b",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A9/A9C8446945BC4F695D9EDAD663F9A0383088E86A5E37B94C130656D6BD82B1B0.ass",
+          "bytes": 2829,
+          "sha256": "a9c8446945bc4f695d9edad663f9a0383088e86a5e37b94c130656d6bd82b1b0",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-04",
+      "duration_frames": 909,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E1/E1DE8E098B782701A5B62D506B38F326E1C4A5A366452BC8A93130AAB2DE712E.mp4",
+          "bytes": 1246667,
+          "sha256": "e1de8e098b782701a5b62d506b38f326e1c4a5a366452bc8a93130aab2de712e",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/32/326BA6EEE2CAEA1C34793073CD4C351B1D5FC1626E2C7CC02C411358F495F475.mp3",
+          "bytes": 178416,
+          "sha256": "326ba6eee2caea1c34793073cd4c351b1d5fc1626e2c7cc02c411358f495f475",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/45/4505AF10BD857D1941C3459A239432FF81277A88AEBD37C91769F7AABF52E4E6.ass",
+          "bytes": 2775,
+          "sha256": "4505af10bd857d1941c3459a239432ff81277a88aebd37c91769f7aabf52e4e6",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-05",
+      "duration_frames": 926,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/B8/B8AD90B37DFFE4E987781225285ACCD5B67205BD8BC77FECBBD8F374A17E79D1.mp4",
+          "bytes": 1261985,
+          "sha256": "b8ad90b37dffe4e987781225285accd5b67205bd8bc77fecbbd8f374a17e79d1",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F9/F9472EA4B79D08AE33D5497E8EBE15922D2EDC2217FE4378C1EB27CD154EB1DD.mp3",
+          "bytes": 181728,
+          "sha256": "f9472ea4b79d08ae33d5497e8ebe15922d2edc2217fe4378c1eb27cd154eb1dd",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/09/09D26C4B6F32C421303188B4384DC13E6FBDB0450008AE3C10659EF994F2026D.ass",
+          "bytes": 2859,
+          "sha256": "09d26c4b6f32c421303188b4384dc13e6fbdb0450008ae3c10659ef994f2026d",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-06",
+      "duration_frames": 954,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E5/E54FF9A61C7B8AC7877EE3D6A83FC55EA6171CE6B178B3C937CE283ECF549849.mp4",
+          "bytes": 1292250,
+          "sha256": "e54ff9a61c7b8ac7877ee3d6a83fc55ea6171ce6b178b3c937ce283ecf549849",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/25/259187DDE886DCE249BA33A34A4DB03C514D7D34A26ABEBF2AE37B27B9F53F40.mp3",
+          "bytes": 187488,
+          "sha256": "259187dde886dce249ba33a34a4db03c514d7d34a26abebf2ae37b27b9f53f40",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/3A/3A66AD402C7FB1C9A5AA5FC1924671E9C3D7E44778C8EA5DF77DCAF1D9EA6C81.ass",
+          "bytes": 2968,
+          "sha256": "3a66ad402c7fb1c9a5aa5fc1924671e9c3d7e44778c8ea5df77dcaf1d9ea6c81",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-07",
+      "duration_frames": 1011,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/68/687F12FC475DA17C54D18BE8FFE6AE94D44BA8B38DFF6ED9970D3AA931994166.mp4",
+          "bytes": 1439082,
+          "sha256": "687f12fc475da17c54d18be8ffe6ae94d44ba8b38dff6ed9970d3aa931994166",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1E/1E78CFE8290BEEC6BC4A492C2F0C6430F3A59BCEB68ECD9587BC8B3936A7312C.mp3",
+          "bytes": 198720,
+          "sha256": "1e78cfe8290beec6bc4a492c2f0c6430f3a59bceb68ecd9587bc8b3936a7312c",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/6D/6DD3B91E1049EC09388C6FFA65A5EF97C4284867B8B2CE2A140B16397484CCAF.ass",
+          "bytes": 3075,
+          "sha256": "6dd3b91e1049ec09388c6ffa65a5ef97c4284867b8b2ce2a140b16397484ccaf",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-08",
+      "duration_frames": 942,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/80/80B9EB730823D974849F21BCD60CDDF7693FCB547C0D0D25AF56F34145462D91.mp4",
+          "bytes": 1276155,
+          "sha256": "80b9eb730823d974849f21bcd60cddf7693fcb547c0d0d25af56f34145462d91",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BF/BF3F4E31FD85BD3837069DE69C7C50D72826B3E889055DA0C4FCE45C778C765E.mp3",
+          "bytes": 185040,
+          "sha256": "bf3f4e31fd85bd3837069de69c7c50d72826b3e889055da0c4fce45c778c765e",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/20/204D43EF3727C7AA28A593E5B41DFA41246D5804C38CE4A8A5EA0E2BC74EED3A.ass",
+          "bytes": 2847,
+          "sha256": "204d43ef3727c7aa28a593e5b41dfa41246d5804c38ce4a8a5ea0e2bc74eed3a",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-09",
+      "duration_frames": 895,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7E/7E379DA195F8DCA6FF2DD3F9C918324FC1D8FB00FD200D996AD893B1685197C7.mp4",
+          "bytes": 1223818,
+          "sha256": "7e379da195f8dca6ff2dd3f9c918324fc1d8fb00fd200d996ad893b1685197c7",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BA/BA75242D39005951D96A08C63539A67B7189B7D2B863B3F3496A57F303FE3AFC.mp3",
+          "bytes": 175680,
+          "sha256": "ba75242d39005951d96a08c63539a67b7189b7d2b863b3f3496a57f303fe3afc",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/43/43B3A51F6A00DE6E962786D0D577905663CB232E449588CC510FF529A6A80048.png",
+          "bytes": 354015,
+          "sha256": "43b3a51f6a00de6e962786d0d577905663cb232e449588cc510ff529a6a80048",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2A/2A21A92ECB12DB849A955D0C25A4FA9E788CCF453AD2D2CDF3A906E614C98F41.ass",
+          "bytes": 2716,
+          "sha256": "2a21a92ecb12db849a955d0c25a4fa9e788ccf453ad2d2cdf3a906e614c98f41",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-10",
+      "duration_frames": 703,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/64/64094AEE2E2A34BAC4719438C4B627A8886A20FE4DEA6A1A19CF4205AC01A434.mp4",
+          "bytes": 2740139,
+          "sha256": "64094aee2e2a34bac4719438c4b627a8886a20fe4dea6a1a19cf4205ac01a434",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/B6/B69CF506A4CF35D41A02C15D9BB65ADD6C880B3DBBDBA4CCE9A293E8691C4958.mp3",
+          "bytes": 137232,
+          "sha256": "b69cf506a4cf35d41a02c15d9bb65add6c880b3dbbdba4cce9a293e8691c4958",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7A/7A302E9B674504C0705CAA8FBAEDF99ABB349EE279BCF79825C916ECBE4831E9.mkv",
+          "bytes": 49062501,
+          "sha256": "7a302e9b674504c0705caa8fbaedf99abb349ee279bcf79825c916ecbe4831e9",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/5F/5FBEFDEDB1739B30465739AEA3B441FA18E853C733B69C7353082AA4C227BE55.ass",
+          "bytes": 2287,
+          "sha256": "5fbefdedb1739b30465739aea3b441fa18e853c733b69c7353082aa4c227be55",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C04-11",
+      "duration_frames": 813,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C04-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/FC/FC121BA703DD703D8085DEDFCD778B64EB2D3A3E401EAD5DB981A31DB3B95015.mp4",
+          "bytes": 1012773,
+          "sha256": "fc121ba703dd703d8085dedfcd778b64eb2d3a3e401ead5db981a31db3b95015",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C04-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/76/768FDC9328A9FEC0FC67AA3E7636B685EAA71CA719A44596302F535ECF3127FA.mp3",
+          "bytes": 152928,
+          "sha256": "768fdc9328a9fec0fc67aa3e7636b685eaa71ca719a44596302f535ecf3127fa",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C04-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/93/934A82499844C7DD8DADA78E0FDD4ED9F8F6890078DD0466F1C8DB2745A9BCDC.png",
+          "bytes": 223036,
+          "sha256": "934a82499844c7dd8dada78e0fdd4ed9f8f6890078dd0466f1c8db2745a9bcdc",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C04-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/8D/8DED225E94625ABC34B023807D8475FE364103CE73C71292A38325092D53BD6A.ass",
+          "bytes": 2644,
+          "sha256": "8ded225e94625abc34b023807d8475fe364103ce73c71292a38325092d53bd6a",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-01",
+      "duration_frames": 660,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A1/A10BCB90A210C5375366C164E1A4D487B10FC20868C9E058E4872B021690F79F.mp4",
+          "bytes": 893980,
+          "sha256": "a10bcb90a210c5375366c164e1a4d487b10fc20868c9e058e4872b021690f79f",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/12/128B4FFC27C6A2CAFB2A836502244EF4CDD3F3BA4E8B13DF1E7236D393C06813.mp3",
+          "bytes": 128592,
+          "sha256": "128b4ffc27c6a2cafb2a836502244ef4cdd3f3ba4e8b13df1e7236d393c06813",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/424F4A024104B5D0181E6E6A0C66B7C7CD955B413317633533F9C5926E771D16.png",
+          "bytes": 338601,
+          "sha256": "424f4a024104b5d0181e6e6a0c66b7c7cd955b413317633533f9c5926e771d16",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/91/91EAAA895A009EE069B45A3A4BECABF7493E8B686B74477B3D48145F1DE67C46.ass",
+          "bytes": 2235,
+          "sha256": "91eaaa895a009ee069b45a3a4becabf7493e8b686b74477b3d48145f1de67c46",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-02",
+      "duration_frames": 708,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/FC/FC82E13BC681A3CF0971002E61E8E35C9AFB54D65D674008495A3F8141D3E4ED.mp4",
+          "bytes": 880703,
+          "sha256": "fc82e13bc681a3cf0971002e61e8e35c9afb54d65d674008495a3f8141d3e4ed",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7F/7FEEBB0A1461FDA0C74FBC890BD8881BB1A6DAD1FF3892C086295E6AB3158340.mp3",
+          "bytes": 138240,
+          "sha256": "7feebb0a1461fda0c74fbc890bd8881bb1a6dad1ff3892c086295e6ab3158340",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2C/2C3C1ED2A40A92209A5678E2F6D9154C418EE26B1B6EC1618A65711C2360F5F0.png",
+          "bytes": 280491,
+          "sha256": "2c3c1ed2a40a92209a5678e2f6d9154c418ee26b1b6ec1618a65711c2360f5f0",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/27/2755A4707B7C89239A3A00DFA16F4B356FAB5A12425ACEACA6FE7D6C4CA90F1B.ass",
+          "bytes": 2347,
+          "sha256": "2755a4707b7c89239a3a00dfa16f4b356fab5a12425aceaca6fe7d6c4ca90f1b",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-03",
+      "duration_frames": 677,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/36/36C71130C0BE7C05A79E1EF7049D4F286D1CE209B19A7E2947BA3A800F22754C.mp4",
+          "bytes": 826861,
+          "sha256": "36c71130c0be7c05a79e1ef7049d4f286d1ce209b19a7e2947ba3a800f22754c",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/34/34F6B48B228BA70EF716F0E2E2030408F9F8FBAFB38038A69B78995163D3C7A8.mp3",
+          "bytes": 132048,
+          "sha256": "34f6b48b228ba70ef716f0e2e2030408f9f8fbafb38038a69b78995163d3c7a8",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/5B/5B00090DF3849FD6ED9AE897CCBAD109C0AFC1EFC7AD150A8BCC30F7E56FC4A5.png",
+          "bytes": 220292,
+          "sha256": "5b00090df3849fd6ed9ae897ccbad109c0afc1efc7ad150a8bcc30f7e56fc4a5",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A3/A34C7CE248F53AB706D7993AC89396049917C58BBAC69E9FC4EE4D33B16CC249.ass",
+          "bytes": 2388,
+          "sha256": "a34c7ce248f53ab706d7993ac89396049917c58bbac69e9fc4ee4d33b16cc249",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-04",
+      "duration_frames": 700,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/B0/B076F4F1ED458E704B7482DCBB12B25FF6EC4D2E49C8BB6760BBD427BACFAA19.mp4",
+          "bytes": 888028,
+          "sha256": "b076f4f1ed458e704b7482dcbb12b25ff6ec4d2e49c8bb6760bbd427bacfaa19",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/40/40E1AA6ACCFED79FD497EEA33A0EE8205A993EF1963C38382CCF150234DB605F.mp3",
+          "bytes": 136656,
+          "sha256": "40e1aa6accfed79fd497eea33a0ee8205a993ef1963c38382ccf150234db605f",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F2/F21C52C7E181A747C2ECEAB8EA5797E6054E16F23E42B3856F23E426A8492BD7.png",
+          "bytes": 267903,
+          "sha256": "f21c52c7e181a747c2eceab8ea5797e6054e16f23e42b3856f23e426a8492bd7",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D2/D20F028D56B9C3A02C5DB1375BD38B64A08C78C1444DBC0B6238EF1C994E2880.ass",
+          "bytes": 2555,
+          "sha256": "d20f028d56b9c3a02c5db1375bd38b64a08c78c1444dbc0b6238ef1c994e2880",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-05",
+      "duration_frames": 617,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/90/90E865C78DF59D74AD47EF3AB0FD6CBE381BFA1B25C7FDB54E73251B68123C20.mp4",
+          "bytes": 778078,
+          "sha256": "90e865c78df59d74ad47ef3ab0fd6cbe381bfa1b25c7fdb54e73251b68123c20",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D2/D2C47031ACB2B16710419B6D456BEB0D91D70238621C81E63BA3D85C749E721B.mp3",
+          "bytes": 120096,
+          "sha256": "d2c47031acb2b16710419b6d456beb0d91d70238621c81e63ba3d85c749e721b",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D5/D5B13C6D8DBF1DDCC8D4F5E775BD35B367988A450328EF423CC336352F3A1326.png",
+          "bytes": 233736,
+          "sha256": "d5b13c6d8dbf1ddcc8d4f5e775bd35b367988a450328ef423cc336352f3a1326",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D9/D911D2F063303E8543F9B4CBD5F08178EC6DECE7CDADC160801024B278F24D4E.ass",
+          "bytes": 2457,
+          "sha256": "d911d2f063303e8543f9b4cbd5f08178ec6dece7cdadc160801024b278f24d4e",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-06",
+      "duration_frames": 857,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/28/28EB7E8404C839F2D1C9E4FF30C0A978B97C432798D957699472ACD3DC36B933.mp4",
+          "bytes": 3398956,
+          "sha256": "28eb7e8404c839f2d1c9e4ff30c0a978b97c432798d957699472acd3dc36b933",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/93/930FBB4DFF9B4E343F3810E13949EBE4BA0B1AA8B14AF548453633ABC27AACFE.mp3",
+          "bytes": 167904,
+          "sha256": "930fbb4dff9b4e343f3810e13949ebe4ba0b1aa8b14af548453633abc27aacfe",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/76/763BBBEC18149543F7ED4D36DC761AA8FE258366037D2727390A25F64D18F1E4.mkv",
+          "bytes": 71202833,
+          "sha256": "763bbbec18149543f7ed4d36dc761aa8fe258366037d2727390a25f64d18f1e4",
+          "media_type": "video/mp4"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/97/9716358122D6A1AD391F0B15AC2EB1C8FA19CDEE4847205D725313F5B7052564.ass",
+          "bytes": 2678,
+          "sha256": "9716358122d6a1ad391f0b15ac2eb1c8fa19cdee4847205d725313f5b7052564",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-07",
+      "duration_frames": 864,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C6/C6C721EC009DF0749A0DEC30E449EEE88DFE5E906E4C615FC7A1D19CCBEA1225.mp4",
+          "bytes": 1060338,
+          "sha256": "c6c721ec009df0749a0dec30e449eee88dfe5e906e4c615fc7a1d19ccbea1225",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2D/2D99B864B11E8013CAD283B27EFB263111B74BCBC6452942A1FCC4689680AD21.mp3",
+          "bytes": 169344,
+          "sha256": "2d99b864b11e8013cad283b27efb263111b74bcbc6452942a1fcc4689680ad21",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/82/827004C4C037FEEB4B9B7D725FA469D6F2BFE5706522C6692C840D5EAB76A93D.png",
+          "bytes": 210706,
+          "sha256": "827004c4c037feeb4b9b7d725fa469d6f2bfe5706522c6692c840d5eab76a93d",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/5E/5EFBF789821A095B1D1A7977A5811508B380C279AE0CF2C5CE9133A6A3481DE0.ass",
+          "bytes": 2927,
+          "sha256": "5efbf789821a095b1d1a7977a5811508b380c279ae0cf2c5ce9133a6a3481de0",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-08",
+      "duration_frames": 645,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D3/D39D60F943BE281C873CF1D93CC6EAD1A6F645BD3DE7186F90C1A2DD4E86A0FC.mp4",
+          "bytes": 882837,
+          "sha256": "d39d60f943be281c873cf1d93cc6ead1a6f645bd3de7186f90c1a2dd4e86a0fc",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/4F/4F7ACA9C552317DA257168AA350783A9B3444B9AF1EF08A676D4DD07360100A4.mp3",
+          "bytes": 125568,
+          "sha256": "4f7aca9c552317da257168aa350783a9b3444b9af1ef08a676d4dd07360100a4",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A9/A9F2442F33184DBE0264DF5CFBEBF97B951C152B17E020E4B225A3E8E7328881.png",
+          "bytes": 366545,
+          "sha256": "a9f2442f33184dbe0264df5cfbebf97b951c152b17e020e4b225a3e8e7328881",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E6/E6D529CC3BB7C54266366FCCFC3DEAAD0A6CFC5F1AFCA6D504B4F360470B2FE7.ass",
+          "bytes": 2286,
+          "sha256": "e6d529cc3bb7c54266366fccfc3deaad0a6cfc5f1afca6d504b4f360470b2fe7",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-09",
+      "duration_frames": 735,
+      "reuse_exact_encoded_segment": false,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/FD/FD55C91A231BB262D9E2F86396EEE23B5183847EC97478896788B313CBF48715.mp4",
+          "bytes": 943853,
+          "sha256": "fd55c91a231bb262d9e2f86396eee23b5183847ec97478896788b313cbf48715",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A2/A2965B5CCC543E74B53A9D962AA40A8589ECA65B24A3BF5B595CC657A516D593.mp3",
+          "bytes": 143568,
+          "sha256": "a2965b5ccc543e74b53a9d962aa40a8589eca65b24a3bf5b595cc657a516d593",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/30/30189C4F9BF0029A6E98F5877E63AA515417CEDA30674AF0972D5E24F219188B.png",
+          "bytes": 294580,
+          "sha256": "30189c4f9bf0029a6e98f5877e63aa515417ceda30674af0972d5e24f219188b",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/6C/6CECC91A0FA3B52AFB74B09F978BE29C44124080BE984131D07BF1F3AD1D6C90.ass",
+          "bytes": 2672,
+          "sha256": "6cecc91a0fa3b52afb74b09f978be29c44124080be984131d07bf1f3ad1d6c90",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-10",
+      "duration_frames": 832,
+      "reuse_exact_encoded_segment": false,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/68/68285A7FD018DAFF20E1C3BD67BCF2121D65AF8DC5D83FBA68D77D3A0AD3C7DA.mp4",
+          "bytes": 1201082,
+          "sha256": "68285a7fd018daff20e1c3bd67bcf2121d65af8dc5d83fba68d77d3a0ad3c7da",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/25/259F99183775C7DA8A593F1DC5F6F5D7F328989F4CE86C331296AC9D32914867.mp3",
+          "bytes": 163008,
+          "sha256": "259f99183775c7da8a593f1dc5f6f5d7f328989f4ce86c331296ac9d32914867",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A9/A9F2442F33184DBE0264DF5CFBEBF97B951C152B17E020E4B225A3E8E7328881.png",
+          "bytes": 366545,
+          "sha256": "a9f2442f33184dbe0264df5cfbebf97b951c152b17e020e4b225a3e8e7328881",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C1/C1D21F59D2E769A80FB7E387A4EA85585CFDD83D279B5EC308D3E5D65B68E1F5.ass",
+          "bytes": 2815,
+          "sha256": "c1d21f59d2e769a80fb7e387a4ea85585cfdd83d279b5ec308d3e5d65b68e1f5",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-11",
+      "duration_frames": 882,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/18/18D96AAC4F74EB83AB5E886765E4B12F936EF6AE23DCBD37F745F9A513D7EEFC.mp4",
+          "bytes": 1219063,
+          "sha256": "18d96aac4f74eb83ab5e886765e4b12f936ef6ae23dcbd37f745f9a513d7eefc",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D4/D487439856F363DCD7E5845ED4F393FF38E0E4BD7BC9FBE72BAEB5FBDAAA965E.mp3",
+          "bytes": 173088,
+          "sha256": "d487439856f363dcd7e5845ed4f393ff38e0e4bd7bc9fbe72baeb5fbdaaa965e",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/43/43B3A51F6A00DE6E962786D0D577905663CB232E449588CC510FF529A6A80048.png",
+          "bytes": 354015,
+          "sha256": "43b3a51f6a00de6e962786d0d577905663cb232e449588cc510ff529a6a80048",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-11",
+          "path_relative_to_source_run": "artifacts/derived/sha256/28/28B860F4B129CF9542B4992E70D8A87AFDE424C97500BDED3A66A7F564AA494D.ass",
+          "bytes": 2714,
+          "sha256": "28b860f4b129cf9542b4992e70d8a87afde424c97500bded3a66a7f564aa494d",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-12",
+      "duration_frames": 943,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/11/11F21ED7B9D2FD58189E889FECEE4A5B4008674D22A5C03464A5D61DD7E6CC24.mp4",
+          "bytes": 1283032,
+          "sha256": "11f21ed7b9d2fd58189e889fecee4a5b4008674d22a5c03464a5d61dd7e6cc24",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/3B/3BD6BF21953DD978084F8986B9741793250433F285E5AD10C805386B29AF0A4A.mp3",
+          "bytes": 185184,
+          "sha256": "3bd6bf21953dd978084f8986b9741793250433f285e5ad10c805386b29af0a4a",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/43/43B3A51F6A00DE6E962786D0D577905663CB232E449588CC510FF529A6A80048.png",
+          "bytes": 354015,
+          "sha256": "43b3a51f6a00de6e962786d0d577905663cb232e449588cc510ff529a6a80048",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-12",
+          "path_relative_to_source_run": "artifacts/derived/sha256/71/71BBEBFA695BC20B497C248860FE17C1A0C8CB34DFB9B3A33EE101362F83FB35.ass",
+          "bytes": 2906,
+          "sha256": "71bbebfa695bc20b497c248860fe17c1a0c8cb34dfb9b3a33ee101362f83fb35",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-13",
+      "duration_frames": 707,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-13",
+          "path_relative_to_source_run": "artifacts/derived/sha256/3E/3E131AA919ED094D9BCD01C553A6239A7169CDA38103F37C1767956D50BECCCB.mp4",
+          "bytes": 930894,
+          "sha256": "3e131aa919ed094d9bcd01c553a6239a7169cda38103f37c1767956d50becccb",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-13",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D0/D05B1ED66E02C8030DF2305C56645655EAB6E11761998A9F147D10611F10BE4C.mp3",
+          "bytes": 137952,
+          "sha256": "d05b1ed66e02c8030df2305c56645655eab6e11761998a9f147d10611f10be4c",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-13",
+          "path_relative_to_source_run": "artifacts/derived/sha256/43/43B3A51F6A00DE6E962786D0D577905663CB232E449588CC510FF529A6A80048.png",
+          "bytes": 354015,
+          "sha256": "43b3a51f6a00de6e962786d0d577905663cb232e449588cc510ff529a6a80048",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-13",
+          "path_relative_to_source_run": "artifacts/derived/sha256/8F/8F995A5D8EB7FF392B5A19E36982D54A5BE10D7AEC2FD72791EF8FAAC04625EB.ass",
+          "bytes": 2339,
+          "sha256": "8f995a5d8eb7ff392b5a19e36982d54a5be10d7aec2fd72791ef8faac04625eb",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-14",
+      "duration_frames": 745,
+      "reuse_exact_encoded_segment": false,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-14",
+          "path_relative_to_source_run": "artifacts/derived/sha256/85/8540904EE88752CCC003F57937922850C764ED9A2C7929567EF082CCB9D2AC53.mp4",
+          "bytes": 930140,
+          "sha256": "8540904ee88752ccc003f57937922850c764ed9a2c7929567ef082ccb9d2ac53",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-14",
+          "path_relative_to_source_run": "artifacts/derived/sha256/25/2583E7F5DDF753D25D45E43C18FBB839436D10669607668FD8ABFFE0DAAED8CC.mp3",
+          "bytes": 145584,
+          "sha256": "2583e7f5ddf753d25d45e43c18fbb839436d10669607668fd8abffe0daaed8cc",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-14",
+          "path_relative_to_source_run": "artifacts/derived/sha256/C6/C6C608DAD059E9AA3E48D3B0D3F77724CCB3FA90F1937E135AD6E2EF949AA2E2.png",
+          "bytes": 248921,
+          "sha256": "c6c608dad059e9aa3e48d3b0d3f77724ccb3fa90f1937e135ad6e2ef949aa2e2",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-14",
+          "path_relative_to_source_run": "artifacts/derived/sha256/83/83B1B96151C668233ECBFDD78E20512594BCACCF6EF44E2C4C9B32F1F9E76E30.ass",
+          "bytes": 2593,
+          "sha256": "83b1b96151c668233ecbfdd78e20512594bcaccf6ef44e2c4c9b32f1f9e76e30",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-15",
+      "duration_frames": 736,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-15",
+          "path_relative_to_source_run": "artifacts/derived/sha256/82/82DB9D2D0A4A153C38A573F8719A8FF16485964479CC2D0EF51A1FC20732D8D5.mp4",
+          "bytes": 943981,
+          "sha256": "82db9d2d0a4a153c38a573f8719a8ff16485964479cc2d0ef51a1fc20732d8d5",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-15",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CA/CABF01C7671ED5E95C239E1B8BA8DDD5B7097D3A9C3716A207FB817DC53AB266.mp3",
+          "bytes": 143856,
+          "sha256": "cabf01c7671ed5e95c239e1b8ba8ddd5b7097d3a9c3716a207fb817dc53ab266",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-15",
+          "path_relative_to_source_run": "artifacts/derived/sha256/07/076F55A28B54BD600ECD41D48D3A6F6C0186F2C42EE181542D1EB208A75C6C94.png",
+          "bytes": 225512,
+          "sha256": "076f55a28b54bd600ecd41d48d3a6f6c0186f2c42ee181542d1eb208a75c6c94",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-15",
+          "path_relative_to_source_run": "artifacts/derived/sha256/0D/0D42F14CD907E5F04B3978FC65B8A48A8B5583D56E1EA6564E32EAD2F3EB8C4D.ass",
+          "bytes": 2759,
+          "sha256": "0d42f14cd907e5f04b3978fc65b8a48a8b5583d56e1ea6564e32ead2f3eb8c4d",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C05-16",
+      "duration_frames": 858,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C05-16",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BD/BD11FC8F8FEA77E70AC79FD110418E9309BC9E34F1DCDF0DC393F99F1E31FE26.mp4",
+          "bytes": 1109980,
+          "sha256": "bd11fc8f8fea77e70ac79fd110418e9309bc9e34f1dcdf0dc393f99f1e31fe26",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C05-16",
+          "path_relative_to_source_run": "artifacts/derived/sha256/86/8656AC9E796A72364CCCF03412C02C5D0ECC5ECA836C13BCAA149262C2628AD3.mp3",
+          "bytes": 162000,
+          "sha256": "8656ac9e796a72364cccf03412c02c5d0ecc5eca836c13bcaa149262c2628ad3",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C05-16",
+          "path_relative_to_source_run": "artifacts/derived/sha256/76/760CD74D109DD088C41FA774719A79C336E904FF7E034E0C19C940005256B0E1.png",
+          "bytes": 297924,
+          "sha256": "760cd74d109dd088c41fa774719a79c336e904ff7e034e0c19c940005256b0e1",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C05-16",
+          "path_relative_to_source_run": "artifacts/derived/sha256/19/196EF0F97902DEE3E1DEB9D5B539E067CFA1755EFDC0201C7B0FBCAB4DEDDCC6.ass",
+          "bytes": 2729,
+          "sha256": "196ef0f97902dee3e1deb9d5b539e067cfa1755efdc0201c7b0fbcab4deddcc6",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-01",
+      "duration_frames": 790,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/73/73440590D28A289D097D9026DF898FC262729864184EC318A0E73A746468BB33.mp4",
+          "bytes": 1008861,
+          "sha256": "73440590d28a289d097d9026df898fc262729864184ec318a0e73a746468bb33",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/91/9177256EFE9278323818AE8F2824EC960BC470AEE0A6AD3BDD6AFE98A8945290.mp3",
+          "bytes": 154656,
+          "sha256": "9177256efe9278323818ae8f2824ec960bc470aee0a6ad3bdd6afe98a8945290",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/9A/9A36DA510A816F61B992D2ECEE90F6027EDF22180731F2999A6132743A3AB553.png",
+          "bytes": 214179,
+          "sha256": "9a36da510a816f61b992d2ecee90f6027edf22180731f2999a6132743a3ab553",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-01",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BD/BDE06657BF5D6D962853AC2C7517584FD00539FF290F36E46C0B6C961F2F0D67.ass",
+          "bytes": 2632,
+          "sha256": "bde06657bf5d6d962853ac2c7517584fd00539ff290f36e46c0b6c961f2f0d67",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-02",
+      "duration_frames": 779,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/2F/2FF091D54565EF8A9E943A84667BEFCB2C2473ED51B6EE149DB7E42305589D7B.mp4",
+          "bytes": 1002082,
+          "sha256": "2ff091d54565ef8a9e943a84667befcb2c2473ed51b6ee149db7e42305589d7b",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/4E/4E52D11AF3F6644FD0A065BC21C5A9247A21061A3826F5C32FC01581C633AABA.mp3",
+          "bytes": 152352,
+          "sha256": "4e52d11af3f6644fd0a065bc21c5a9247a21061a3826f5c32fc01581c633aaba",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/24/2422A4FB281641A03BEA123281EAB83E6D51ECF35032A759823EA340DABE559A.png",
+          "bytes": 240702,
+          "sha256": "2422a4fb281641a03bea123281eab83e6d51ecf35032a759823ea340dabe559a",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-02",
+          "path_relative_to_source_run": "artifacts/derived/sha256/AB/AB61041B1C482D76318EE04AE0022D6AE8E2DAD0D44D23502B905909DA6F32ED.ass",
+          "bytes": 2639,
+          "sha256": "ab61041b1c482d76318ee04ae0022d6ae8e2dad0d44d23502b905909da6f32ed",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-03",
+      "duration_frames": 918,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/AA/AA34E7BEDE6FF74B739E44EA9DB5E8006007E0D11827E798C7C5C90B77B029E6.mp4",
+          "bytes": 1258539,
+          "sha256": "aa34e7bede6ff74b739e44ea9db5e8006007e0d11827e798c7c5c90b77b029e6",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/95/9530119C3CC4A45FECE0CC24147E3D320FD90904A926C3CB5DB6AEF947A265F8.mp3",
+          "bytes": 180288,
+          "sha256": "9530119c3cc4a45fece0cc24147e3d320fd90904a926c3cb5db6aef947a265f8",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-03",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE8CB04423F3E65BD23CE8813FB5B4D922D3AE7F8A698BA585531EE580A4982C.ass",
+          "bytes": 3003,
+          "sha256": "ce8cb04423f3e65bd23ce8813fb5b4d922d3ae7f8a698ba585531ee580a4982c",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-04",
+      "duration_frames": 935,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A8/A8B991CB5C774F45C67A8643694B64F6816FE9877129A011AAFB651484B79C6F.mp4",
+          "bytes": 1152878,
+          "sha256": "a8b991cb5c774f45c67a8643694b64f6816fe9877129a011aafb651484b79c6f",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D7/D7F585E8B7BFA730AAC3DE6263E23A370D107283F34476719E87C26A5F30515A.mp3",
+          "bytes": 183600,
+          "sha256": "d7f585e8b7bfa730aac3de6263e23a370d107283f34476719e87c26a5f30515a",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/24/2422A4FB281641A03BEA123281EAB83E6D51ECF35032A759823EA340DABE559A.png",
+          "bytes": 240702,
+          "sha256": "2422a4fb281641a03bea123281eab83e6d51ecf35032a759823ea340dabe559a",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-04",
+          "path_relative_to_source_run": "artifacts/derived/sha256/03/036F485AE5B8F4B210C81FABB86CA21D8883A70A266BE866260650AC5772FC06.ass",
+          "bytes": 2868,
+          "sha256": "036f485ae5b8f4b210c81fabb86ca21d8883a70a266be866260650ac5772fc06",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-05",
+      "duration_frames": 1068,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/3E/3E5E3545251BC5ACA18A528F1F807199208820BFA431CB5CEE58539D5C5E12B4.mp4",
+          "bytes": 1500650,
+          "sha256": "3e5e3545251bc5aca18a528f1f807199208820bfa431cb5cee58539d5c5e12b4",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/D5/D5CF312525B5FE3FDCF1CFB4516566EC95273B425DD7FBC1FCB77C0341311333.mp3",
+          "bytes": 210240,
+          "sha256": "d5cf312525b5fe3fdcf1cfb4516566ec95273b425dd7fbc1fcb77c0341311333",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CA/CA04D87769D0CC880B173AF89D6C6F929E65624CF0EC1C43784990BDAB8E2411.png",
+          "bytes": 348438,
+          "sha256": "ca04d87769d0cc880b173af89d6c6f929e65624cf0ec1c43784990bdab8e2411",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-05",
+          "path_relative_to_source_run": "artifacts/derived/sha256/51/51581279053DB24B1CF056538432FA1215B572D27F065870306B6BCD9D3DC944.ass",
+          "bytes": 3071,
+          "sha256": "51581279053db24b1cf056538432fa1215b572d27f065870306b6bcd9d3dc944",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-06",
+      "duration_frames": 932,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CC/CCC4459A48D6986D1D79AE3F2207F4426E2F6DCD76941C0AAFCEBF0786F7E409.mp4",
+          "bytes": 1220883,
+          "sha256": "ccc4459a48d6986d1d79ae3f2207f4426e2f6dcd76941c0aafcebf0786f7e409",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/BC/BC011A06056634159158F798F58BD2BAE03E2A1EDE9CC18DE4C0F63828F2A259.mp3",
+          "bytes": 183024,
+          "sha256": "bc011a06056634159158f798f58bd2bae03e2a1ede9cc18de4c0f63828f2a259",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/30/30189C4F9BF0029A6E98F5877E63AA515417CEDA30674AF0972D5E24F219188B.png",
+          "bytes": 294580,
+          "sha256": "30189c4f9bf0029a6e98f5877e63aa515417ceda30674af0972d5e24f219188b",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-06",
+          "path_relative_to_source_run": "artifacts/derived/sha256/E1/E12A139D0BA4BBAAAA4060EA18F2AE62CCDD0104C2F40A72EF10888338BF4CB1.ass",
+          "bytes": 2988,
+          "sha256": "e12a139d0ba4bbaaaa4060ea18f2ae62ccdd0104c2f40a72ef10888338bf4cb1",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-07",
+      "duration_frames": 837,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/1B/1BEEBF026C748E10865C0CD1433846BAC34C92484FA2EC3D7A5891F39489FAE8.mp4",
+          "bytes": 1169143,
+          "sha256": "1beebf026c748e10865c0cd1433846bac34c92484fa2ec3d7a5891f39489fae8",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/7C/7C71ACFBD5C94FAD95C176835EB1D410DDECD33DF174E1F5CEB881BE1F6436EA.mp3",
+          "bytes": 164016,
+          "sha256": "7c71acfbd5c94fad95c176835eb1d410ddecd33df174e1f5ceb881be1f6436ea",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/637D06A8C28594333864B2AA9F2C6FCDAA659299B43AAC7889817D1425752C5E.png",
+          "bytes": 362355,
+          "sha256": "637d06a8c28594333864b2aa9f2c6fcdaa659299b43aac7889817d1425752c5e",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-07",
+          "path_relative_to_source_run": "artifacts/derived/sha256/09/0989501AD92C3A24C1299E721EF4335439BE65B74A46F47F0F4B8DB4969EBDF4.ass",
+          "bytes": 2745,
+          "sha256": "0989501ad92c3a24c1299e721ef4335439be65b74a46f47f0f4b8db4969ebdf4",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-08",
+      "duration_frames": 737,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/26/26E4E24031168A23791E32C5C08F1957E81C387327F16AE8F63802F55595FF27.mp4",
+          "bytes": 973955,
+          "sha256": "26e4e24031168a23791e32c5c08f1957e81c387327f16ae8f63802f55595ff27",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/6A/6A5532B8F92FDB7D8EE387475F65FEF99BE7DC23AC9DD0A502C850347FAF3FA5.mp3",
+          "bytes": 144000,
+          "sha256": "6a5532b8f92fdb7d8ee387475f65fef99be7dc23ac9dd0a502c850347faf3fa5",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/43/43B3A51F6A00DE6E962786D0D577905663CB232E449588CC510FF529A6A80048.png",
+          "bytes": 354015,
+          "sha256": "43b3a51f6a00de6e962786d0d577905663cb232e449588cc510ff529a6a80048",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-08",
+          "path_relative_to_source_run": "artifacts/derived/sha256/84/84EECA27031BF9310FBFA0CF590CED0F375D4F5BE585E1142C6C12A460147F45.ass",
+          "bytes": 2438,
+          "sha256": "84eeca27031bf9310fbfa0cf590ced0f375d4f5be585e1142c6c12a460147f45",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-09",
+      "duration_frames": 918,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/A2/A2DC6289F5076D62A2A5929E86B7919D981AB8BA6C793FFF635EC9AD1DFF44F6.mp4",
+          "bytes": 1225310,
+          "sha256": "a2dc6289f5076d62a2a5929e86b7919d981ab8ba6c793fff635ec9ad1dff44f6",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/75/75AC56E88EC4D4640A9F931A29964CF5341F16FC421F837A98D6C001582776B5.mp3",
+          "bytes": 180288,
+          "sha256": "75ac56e88ec4d4640a9f931a29964cf5341f16fc421f837a98d6c001582776b5",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/42/424F4A024104B5D0181E6E6A0C66B7C7CD955B413317633533F9C5926E771D16.png",
+          "bytes": 338601,
+          "sha256": "424f4a024104b5d0181e6e6a0c66b7c7cd955b413317633533f9c5926e771d16",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-09",
+          "path_relative_to_source_run": "artifacts/derived/sha256/F6/F60FCE1A4BDD480A0E08DA7CE42DE3C49131448F87E4E8A308AAEEC804F2BBE3.ass",
+          "bytes": 2838,
+          "sha256": "f60fce1a4bdd480a0e08da7ce42de3c49131448f87e4e8a308aaeec804f2bbe3",
+          "media_type": "text/x-ass"
+        }
+      }
+    },
+    {
+      "cue_id": "C06-10",
+      "duration_frames": 874,
+      "reuse_exact_encoded_segment": true,
+      "refs": {
+        "segment": {
+          "artifact_id": "segment.C06-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/63/63B9446355E94E1C28CBF1B8DDABC7A5F94D855BDEB689B96253A1D1CD91DE31.mp4",
+          "bytes": 1209588,
+          "sha256": "63b9446355e94e1c28cbf1b8ddabc7a5f94d855bdeb689b96253a1d1cd91de31",
+          "media_type": "video/mp4"
+        },
+        "narration": {
+          "artifact_id": "narration.C06-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/DF/DF5D7989A187F0A41A93E41DA5C65E01B544778EECEBE6AB2A1D9B9A2F8E7717.mp3",
+          "bytes": 165168,
+          "sha256": "df5d7989a187f0a41a93e41da5c65e01b544778eecebe6ab2a1d9b9a2f8e7717",
+          "media_type": "audio/mpeg"
+        },
+        "visual": {
+          "artifact_id": "visual.C06-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/CE/CE12B5EFA013B219E901A2E8C4908F8CCC9158662586A7D9806D04AB9164820F.png",
+          "bytes": 359495,
+          "sha256": "ce12b5efa013b219e901a2e8c4908f8ccc9158662586a7d9806d04ab9164820f",
+          "media_type": "image/png"
+        },
+        "subtitle": {
+          "artifact_id": "subtitle.C06-10",
+          "path_relative_to_source_run": "artifacts/derived/sha256/54/5435FF464C4C61458DAC67C0EA2FF461DD36C41EAAADF92665D4FC0F3D362186.ass",
+          "bytes": 2808,
+          "sha256": "5435ff464c4c61458dac67c0ea2ff461dd36c41eaaadf92665d4fc0f3d362186",
+          "media_type": "text/x-ass"
+        }
+      }
+    }
+  ]
+}

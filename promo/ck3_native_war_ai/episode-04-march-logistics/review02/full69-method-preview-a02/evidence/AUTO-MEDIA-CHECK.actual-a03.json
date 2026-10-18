@@ -1,0 +1,125 @@
+{
+  "schema": "xar.e04.review02-full69-focused-typography-auto-media-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T07:42:30.581388+00:00",
+  "source_commit": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "status": "GREEN_AUTOMATED_MEDIA_ONLY_PENDING_3FRAME_VISUAL_REVIEW_AND_HUMAN_1X",
+  "run_manifest": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\run-manifest.json",
+    "bytes": 197888,
+    "sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1"
+  },
+  "artifact_id": "episode04-review02-full69-method-typography-partial-no-signoff",
+  "native_deliverable": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+    "bytes": 89450267,
+    "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+  },
+  "reused_exact_segment_count": 66,
+  "newly_encoded_corrected_segment_cues": [
+    "C05-09",
+    "C05-10",
+    "C05-14"
+  ],
+  "corrected_ass_candidate_source_bytes": {
+    "C05-09": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\annotation-preflight-a01\\C05-09.ass",
+      "bytes": 2654,
+      "sha256": "5092abf095820ad8f7d94ea93f1a6c960ff3d666d121c0cf8c838ebc81505c1d"
+    },
+    "C05-10": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\annotation-preflight-a02\\C05-10.ass",
+      "bytes": 2844,
+      "sha256": "6172a91ef2456ad875b4a11a55bd85895a5f0133cb4994032f23f513b4cd69b9"
+    },
+    "C05-14": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\annotation-preflight-a01\\C05-14.ass",
+      "bytes": 2583,
+      "sha256": "3bfcaed69a51a01610f744158f7a00775ac2d36f7a2bf1aa981d8782c919fb44"
+    }
+  },
+  "corrected_ass_native_lf_expected_sha256": {
+    "C05-09": "5092abf095820ad8f7d94ea93f1a6c960ff3d666d121c0cf8c838ebc81505c1d",
+    "C05-10": "86f877383df8958d2e6317fe7cb5232031a98808cd5bbd0d3f2f369d12f13ef5",
+    "C05-14": "3bfcaed69a51a01610f744158f7a00775ac2d36f7a2bf1aa981d8782c919fb44"
+  },
+  "first_qa_attempt_red_preserved": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-qa.actual-a02.json",
+    "bytes": 2951,
+    "sha256": "2b406c4292bc46bf1adadccab249ffc5c95bcfe18047ce012cbae2ef43ec9ab2"
+  },
+  "bound_probe": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\bound-media-probe.actual-a01.json",
+    "bytes": 4185,
+    "sha256": "60d9d42da44e62a869516fe79813d4363260640a4c1475ec344c18eb978c51b9"
+  },
+  "media_info": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_type": "video",
+        "width": 1920,
+        "height": 1080,
+        "r_frame_rate": "30/1",
+        "duration": "1946.866667"
+      },
+      {
+        "index": 1,
+        "codec_name": "aac",
+        "codec_type": "audio",
+        "sample_rate": "48000",
+        "channels": 2,
+        "r_frame_rate": "0/0",
+        "duration": "1946.888000"
+      }
+    ],
+    "format": {
+      "duration": "1946.888021"
+    }
+  },
+  "frame_pts": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\video-frames-pts.actual-a01.json",
+    "bytes": 4645350,
+    "sha256": "58f8aa1c849ae2dcc803a5caa671e7ad45dafa166c9a1f1637e9f008d44f9a36"
+  },
+  "frame_count": 58406,
+  "first_pts_seconds": "0.021354",
+  "last_pts_seconds": "1946.854687",
+  "strict_decode_stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\strict-decode.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "strict_decode_stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\strict-decode.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "visual_samples": {
+    "C05-09": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-09.png",
+      "bytes": 482324,
+      "sha256": "8cb1db354fa3a868bac02cc01270c798cd08f5c8087febadb1c93039d3c1ecd0"
+    },
+    "C05-10": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-10.png",
+      "bytes": 545910,
+      "sha256": "2d6014bee5c4d42632f9c6dcbbc9cac15ab50c36c8f646eb2b06ca971a50247f"
+    },
+    "C05-14": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-14.png",
+      "bytes": 449174,
+      "sha256": "1a79e96bf9dc648ed248b001c73738a110216391770d45be8ea19247655ce1fb"
+    }
+  },
+  "formal_dynamic_credit": 0,
+  "pending_key_footage_cues": 45,
+  "full_human_1x_review": false,
+  "signoff": false,
+  "export": false,
+  "upload": false,
+  "root_used_bytes": 405402410
+}

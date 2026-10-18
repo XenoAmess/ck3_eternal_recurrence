@@ -1,0 +1,56 @@
+{
+  "schema": "xar.e04.review02-full69-focused-typography-three-sample-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T07:43:21.228769+00:00",
+  "status": "AI_THREE_SAMPLE_PASS_PENDING_HUMAN_1X",
+  "native_build_source_commit": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "movie_sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b",
+  "automated_media_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\AUTO-MEDIA-CHECK.actual-a03.json",
+    "bytes": 5369,
+    "sha256": "5246d4f0b030ad8bbad2e7ba34667812dab74cee21f2ef8fc60eea84dfa3c8a9"
+  },
+  "earlier_visual_RED_preserved": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a01\\audit\\focused-typography-a02\\VISUAL-SAMPLES.actual-a02.json",
+    "bytes": 2726,
+    "sha256": "96b5fa951d03df24bb0d98ec39d46e5483ed54feee722c33d36fe0a208fcfa28"
+  },
+  "samples": {
+    "C05-09": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-09.png",
+        "bytes": 482324,
+        "sha256": "8cb1db354fa3a868bac02cc01270c798cd08f5c8087febadb1c93039d3c1ecd0"
+      },
+      "direct_ai_single_frame_observation": "Actual encoded frame: bottom correction at output y875 clear of card body, narration near y920 remains readable.",
+      "new_correction_typography_pass": true
+    },
+    "C05-10": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-10.png",
+        "bytes": 545910,
+        "sha256": "2d6014bee5c4d42632f9c6dcbbc9cac15ab50c36c8f646eb2b06ca971a50247f"
+      },
+      "direct_ai_single_frame_observation": "Actual encoded frame: top PARTIAL label is separated from D15 microheader and title; bottom method note is clear of source card and narration.",
+      "new_correction_typography_pass": true
+    },
+    "C05-14": {
+      "frame": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\C05-14.png",
+        "bytes": 449174,
+        "sha256": "1a79e96bf9dc648ed248b001c73738a110216391770d45be8ea19247655ce1fb"
+      },
+      "direct_ai_single_frame_observation": "Actual encoded frame: bottom correction is separate from source explanatory line and narration.",
+      "new_correction_typography_pass": true
+    }
+  },
+  "sample_count": 3,
+  "sampled_movie_pixels_not_still_mockups": true,
+  "current_visual_sample_pass": true,
+  "continuous_clean_span_review": false,
+  "full_human_1x_review": false,
+  "signoff": false,
+  "formal_dynamic_credit": 0,
+  "export": false,
+  "upload": false
+}

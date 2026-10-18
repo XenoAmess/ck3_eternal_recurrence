@@ -1,0 +1,63 @@
+{
+  "schema": "xar.e04.review02-full69-focused-typography-media-purpose-closed.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T07:43:41.030754+00:00",
+  "source_commit": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "status": "PURPOSE_CLOSED_MEDIA_WRITES_STOPPED",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-review02-typography-a02\\REVIEW02-TYPOGRAPHY-A02-MEDIA-CAPACITY.actual-root-a01.json",
+    "bytes": 11002,
+    "sha256": "9d4929837e129df3a57ede6bda01008af722b2f365ee0cc7de63ffeb62abc40e"
+  },
+  "run_manifest": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\run-manifest.json",
+    "bytes": 197888,
+    "sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1"
+  },
+  "native_build_stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\logs\\22-build.stdout",
+    "bytes": 234324,
+    "sha256": "08af2637b539a0b0aa1a13d5bbc280dc9bb309b78af3532a2152c1c52da5858c"
+  },
+  "native_postbuild_validate_stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\logs\\23-postbuild-validate.stdout",
+    "bytes": 290,
+    "sha256": "a019e107df6f9aed10b1d05f43c2ab901c48fe9e3173484105054b31c5efd76d"
+  },
+  "automated_media_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\AUTO-MEDIA-CHECK.actual-a03.json",
+    "bytes": 5369,
+    "sha256": "5246d4f0b030ad8bbad2e7ba34667812dab74cee21f2ef8fc60eea84dfa3c8a9"
+  },
+  "visual_samples": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\VISUAL-SAMPLES.actual-a02.json",
+    "bytes": 2877,
+    "sha256": "e08cef291e839056040a282c8a7e067b7f61bee8ed04ec3c7650b5ce840fab5a"
+  },
+  "native_deliverable": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+    "bytes": 89450267,
+    "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+  },
+  "exact_reused_encoded_segments": 66,
+  "newly_encoded_corrections": [
+    "C05-09",
+    "C05-10",
+    "C05-14"
+  ],
+  "owned_media_build_processes_active": [],
+  "future_media_writes_under_this_purpose": 0,
+  "root_used_bytes_before_closure": 405410656,
+  "root_used_bytes_after_closure": 405413726,
+  "media_root_limit_bytes": 536870912,
+  "method_review_duration_seconds": 1946.8666666666666,
+  "cue_count": 69,
+  "formal_dynamic_credit": 0,
+  "pending_key_footage_cues": 45,
+  "full_human_1x_review": false,
+  "signoff": false,
+  "export": false,
+  "upload": false,
+  "retention_review_needed_at_utc": "2026-11-18T07:00:00+00:00",
+  "retention_reason": "Current focused typography method review and exact source segment/audit evidence."
+}

@@ -1,0 +1,92 @@
+{
+  "schema": "xar.e04.review02-full69-small-package-files.v1",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T08:11:51.919072+00:00",
+  "files": [
+    {
+      "relative_path": "encoded-segment-map.json",
+      "bytes": 37031,
+      "sha256": "2928073c90920ce7ce8eaa75ad6f5d15167a8262ff4dde699838723be0bd628a"
+    },
+    {
+      "relative_path": "evidence/AUTO-MEDIA-CHECK.actual-a03.json",
+      "bytes": 5369,
+      "sha256": "5246d4f0b030ad8bbad2e7ba34667812dab74cee21f2ef8fc60eea84dfa3c8a9"
+    },
+    {
+      "relative_path": "evidence/first-qa-CRLF-RED.actual-a02.json",
+      "bytes": 2951,
+      "sha256": "2b406c4292bc46bf1adadccab249ffc5c95bcfe18047ce012cbae2ef43ec9ab2"
+    },
+    {
+      "relative_path": "evidence/MEDIA-PURPOSE-CLOSED.actual-a02.json",
+      "bytes": 3070,
+      "sha256": "575a34180c1f12bb9e9413ece4d7cb17c0b0c92174f438090dbe1e89f4642d20"
+    },
+    {
+      "relative_path": "evidence/original-full69-run-manifest.machine-bound.json",
+      "bytes": 270078,
+      "sha256": "a8401d1709c8afdaa165f3721b8507fbde982dacc7d3c00858b88bdc72b5cfb8"
+    },
+    {
+      "relative_path": "evidence/prior-visual-RED.actual-a02.json",
+      "bytes": 2726,
+      "sha256": "96b5fa951d03df24bb0d98ec39d46e5483ed54feee722c33d36fe0a208fcfa28"
+    },
+    {
+      "relative_path": "evidence/PROMO-RELEASE-TYPOGRAPHY.actual-a02.json",
+      "bytes": 3235,
+      "sha256": "95c044dad65c2e587f5e38314c14c16a1c39ca1f3d5c76773d4ac90d2a5325e3"
+    },
+    {
+      "relative_path": "evidence/ROOT-DELIVERY.final-a02.json",
+      "bytes": 5178,
+      "sha256": "34a7413a28d79a1f135c8ffae133471511615c98699f2d2634c5346568ad128d"
+    },
+    {
+      "relative_path": "evidence/source-index.machine-bound.json",
+      "bytes": 111931,
+      "sha256": "731f962d7c873f9be91edd9b6f0bbafdda414b32881a92f1a27bfabc2511eb07"
+    },
+    {
+      "relative_path": "evidence/typography-a02-run-manifest.machine-bound.json",
+      "bytes": 197888,
+      "sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1"
+    },
+    {
+      "relative_path": "evidence/VISUAL-SAMPLES.actual-a02.json",
+      "bytes": 2877,
+      "sha256": "e08cef291e839056040a282c8a7e067b7f61bee8ed04ec3c7650b5ce840fab5a"
+    },
+    {
+      "relative_path": "project-binding.json",
+      "bytes": 1423,
+      "sha256": "46682bcf07b5006da2320f774106c2a8a57f223b262e9366a000accf5bcf2085"
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2677,
+      "sha256": "bb1cfff449efb2f0fd0d7f78c49cc841203d5caa7ed3b33cb6bc14be328d9cf7"
+    },
+    {
+      "relative_path": "verify_portable.py",
+      "bytes": 4666,
+      "sha256": "9a56e49c7c6a5f6329a4de5cc687e8a1e82362d1c2eae890e48d07ea1c50e498"
+    },
+    {
+      "relative_path": "war_ai_promo/__init__.py",
+      "bytes": 144,
+      "sha256": "f66eb77fb3584a068f779f6dbd4a159bcd7e3e9a63b28af680314696b0f1b09a"
+    },
+    {
+      "relative_path": "war_ai_promo/episode04_reuse_three_corrections.py",
+      "bytes": 9049,
+      "sha256": "d2c055e9aa10143041cd80a3ecc535a10d9435f136a2a40a3f664e00785b0b8e"
+    },
+    {
+      "relative_path": "war_ai_promo/reuse_exact_segment.py",
+      "bytes": 1583,
+      "sha256": "953d2e11e19b0f489a15fae464558621db16abd23a537bdec7ed2e9ca1438a64"
+    }
+  ]
+}

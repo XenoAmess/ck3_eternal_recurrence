@@ -1,0 +1,101 @@
+{
+  "schema": "xar.e04.review02-full69-typography-a02-root-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T07:44:29.803764+00:00",
+  "status": "69_CUE_METHOD_PREVIEW_BUILT_AUTO_QA_GREEN_THREE_SAMPLES_PASS_NO_SIGNOFF",
+  "source_head_for_media_inputs": "65ce6ae5e55c0e8a855bebb6da3a1ccef08a711f",
+  "original_full69_source_commit": "6a5a42eb563aa12951f9a0d16141146a9fdeec1d",
+  "prior_visual_RED_build_source_commit": "40b331653107ec40ba410ce791cfd7b737e96c3b",
+  "original_full69_source_run_manifest": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-review02-full69-method-a01/runs/review02-full69-method-a02/run-manifest.json",
+    "bytes": 270078,
+    "sha256": "a8401d1709c8afdaa165f3721b8507fbde982dacc7d3c00858b88bdc72b5cfb8"
+  },
+  "cue_count": 69,
+  "duration_frames": 58406,
+  "duration_seconds_video": "1946.866667",
+  "reused_exact_encoded_segments": 66,
+  "newly_encoded_cues": [
+    "C05-09",
+    "C05-10",
+    "C05-14"
+  ],
+  "native_deliverable_cas": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\artifacts\\derived\\sha256\\8F\\8F7496F357B392504EE18C842B7A6B29F31EAE81E8475FF8EC7C31AD3BED946B.mp4",
+    "bytes": 89450267,
+    "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+  },
+  "work_movie": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\work\\build-a02\\episode04-review02-FULL69-METHOD-TYPOGRAPHY-PARTIAL-NO-SIGNOFF.mp4",
+    "bytes": 89450267,
+    "sha256": "8f7496f357b392504ee18c842b7a6b29f31eae81e8475ff8ec7c31ad3bed946b"
+  },
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-review02-typography-a02\\REVIEW02-TYPOGRAPHY-A02-MEDIA-CAPACITY.actual-root-a01.json",
+    "bytes": 11002,
+    "sha256": "9d4929837e129df3a57ede6bda01008af722b2f365ee0cc7de63ffeb62abc40e"
+  },
+  "fresh_official_promo_probe": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\PROMO-RELEASE-TYPOGRAPHY.actual-a02.json",
+    "bytes": 3235,
+    "sha256": "95c044dad65c2e587f5e38314c14c16a1c39ca1f3d5c76773d4ac90d2a5325e3"
+  },
+  "source_candidate": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SOURCE-ONLY-CANDIDATE.prepared-a02.json",
+    "bytes": 4023,
+    "sha256": "ab367cf17462c3ab69973c91f900f7495f5cbd0d7d02133828e1005883b1f6e8"
+  },
+  "native_run_manifest": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\runs\\review02-full69-typography-a02\\run-manifest.json",
+    "bytes": 197888,
+    "sha256": "91289ed9517fde5cbc840a6c4f4998d73ff35bcdf6c89e0dbbbd61f8b2336cc1"
+  },
+  "native_prepare_supervisor": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-prepare.actual-a02.json",
+    "bytes": 2990,
+    "sha256": "6a007646d47ac9cf91d241b280544e2d1ef0928e565195c46728ded637c72b52"
+  },
+  "native_build_supervisor": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-build.actual-a02.json",
+    "bytes": 2982,
+    "sha256": "6855614c93c0bcd4b00f069cb2da8e7bd330604c2c19fc90c4f55c70b3f56b27"
+  },
+  "first_qa_attempt_RED_preserved": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-qa.actual-a02.json",
+    "bytes": 2951,
+    "sha256": "2b406c4292bc46bf1adadccab249ffc5c95bcfe18047ce012cbae2ef43ec9ab2"
+  },
+  "final_qa_supervisor": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-full69-typography-prep-a01\\SUPERVISOR-qa3.actual-a03.json",
+    "bytes": 2957,
+    "sha256": "578fb673112eb95437c728b999be17de6c6f3d4874fa41a2a7d1d8fd648c3a91"
+  },
+  "automated_media_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\AUTO-MEDIA-CHECK.actual-a03.json",
+    "bytes": 5369,
+    "sha256": "5246d4f0b030ad8bbad2e7ba34667812dab74cee21f2ef8fc60eea84dfa3c8a9"
+  },
+  "sampled_visual_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\focused-typography-a03\\VISUAL-SAMPLES.actual-a02.json",
+    "bytes": 2877,
+    "sha256": "e08cef291e839056040a282c8a7e067b7f61bee8ed04ec3c7650b5ce840fab5a"
+  },
+  "purpose_closed": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-full69-typo-repair-a02\\audit\\MEDIA-PURPOSE-CLOSED.actual-a02.json",
+    "bytes": 3070,
+    "sha256": "575a34180c1f12bb9e9413ece4d7cb17c0b0c92174f438090dbe1e89f4642d20"
+  },
+  "root_actual_bytes": 405413726,
+  "future_owned_media_writes_bytes": 0,
+  "formal_dynamic_credit": 0,
+  "pending_key_footage_cues": 45,
+  "full_human_1x_review": false,
+  "signoff": false,
+  "export": false,
+  "upload": false,
+  "machine_bound_paths_not_portable_protocol": true,
+  "next_steps": [
+    "film and qualify remaining research-specific dynamic cues",
+    "perform continuous 1x editorial and native artifact review before any signoff"
+  ]
+}
