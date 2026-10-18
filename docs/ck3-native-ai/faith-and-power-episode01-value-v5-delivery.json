@@ -1,0 +1,218 @@
+{
+  "schema": "faith-power-episode01-v5-permanent-delivery-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_at_utc": "2026-10-18T18:42:48.581656+00:00",
+  "delivery_local_only": true,
+  "delivery_index_source_pin": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/full-focus-repair-a01/local-delivery-a01/LOCAL-DELIVERY-INDEX.json",
+    "bytes": 7912,
+    "sha256": "690859da5446f9e98f27ee3aa232afcbdc728d1fe0e0c2bcbdeb5f8de9cfaf86"
+  },
+  "delivery": {
+    "schema": "faith-power-v5-local-delivery-v1",
+    "machine_id": "4-8e1c2f1861",
+    "observed_at_utc": "2026-10-18T18:40:12.982924+00:00",
+    "entry": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\local-delivery-a01\\README.md",
+      "bytes": 2083,
+      "sha256": "72bd58ab6ce0ba8dfbb75594e38d7ab892614db672a109c3db038271f7f60dc0"
+    },
+    "final": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\derived\\direct\\episode01-review.mp4",
+      "bytes": 132140565,
+      "sha256": "dc47eacf07126ff0bfa533106575740bb5581b6aeb929781b9494955d2d60dae"
+    },
+    "completed": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\completed-review.json",
+      "bytes": 6434,
+      "sha256": "1924c00e62177eac7b9c4b6e66ade929a816f7da5367f26abfbd4e9b98bcedd8"
+    },
+    "QA": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\review-qa-a01\\AV-subtitle-source-QA.json",
+      "bytes": 3738,
+      "sha256": "83996c90f3818295e20c676af3a68f2461700bc1e24338b71c05d1604ef5b3d5"
+    },
+    "chapters": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\local-delivery-a01\\chapters.md",
+      "bytes": 1025,
+      "sha256": "cd4ec6d6b5da8a408d511c0c229f543e85236fb76dbfcd8c182653cdfeae52fa"
+    },
+    "chinese_narration": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\authoring\\final-ready-a01\\narration-final.zh.md",
+      "bytes": 43613,
+      "sha256": "ee3d239d71bf9c1d5ed14eb84b41a6ad769496690b05c271e69efb48feee9b8b"
+    },
+    "english_narration": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\authoring\\final-ready-a01\\narration-final.en.md",
+      "bytes": 50147,
+      "sha256": "b75b0c5f43000eb06f79b8bdd73c9a936c8025b533353d03137c9ab872b06959"
+    },
+    "input": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\authoring\\focus-crop-repair-a01\\formal-input.focus-repair-a01.json",
+      "bytes": 1280439,
+      "sha256": "b02b374794377ac56df61ff912cbdcb4539d48078cbaae5dccf9fd98775a64e9"
+    },
+    "native_run": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\run-manifest.json",
+      "bytes": 9284,
+      "sha256": "8535ead8143b5dbc3447ef9d9e0be21bffad36b3a08bd3cf5601c4fecc6148fd"
+    },
+    "map": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\raw-to-final-map.json",
+      "bytes": 1850008,
+      "sha256": "6b30a6cd27cb942f47db84b09d47cebc5bf16b87ac3ed2fe0db1857ca07fbf14"
+    },
+    "strict_AV_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\audit\\full-decode\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    "actual_geometry_probe": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\audit\\final-probe\\stdout.txt",
+      "bytes": 4521,
+      "sha256": "199ce50739fb01e332af1edc2ef85f8405c9a3d82a3892c2f64123ddfc2a5ca2"
+    },
+    "all_frame_PTS_receipt": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\audit\\final-pts\\result.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    "all_frame_PTS_metadata_output": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\audit\\final-pts\\stdout.txt",
+      "bytes": 7262405,
+      "sha256": "94dd9c847d9b1edd1972b6d399375ed12df0034f926c21a9c22d93e85385ff97"
+    },
+    "actual_music_presence": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\music-presence.json",
+      "bytes": 3528,
+      "sha256": "9e7b84fb5f47ef037c1f19f5f23957b89c3b12a4306edd02ae2608d5ddb0d500"
+    },
+    "actual_audio_signal": {
+      "mean_volume_db": -22.4,
+      "max_volume_db": -2.8,
+      "human_listening_performed": false
+    },
+    "production_source_commit": "c1f73ad6a5f215e45d9284afdd5e27928048cd8f",
+    "continuation": {
+      "original_session": "56111",
+      "original_exit_code": 1,
+      "original_failure": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-final-a01\\failure.json",
+        "bytes": 330,
+        "sha256": "f5052f2513aea2703524db388b227da65615eb23dc111c3a37fcb37e75278433"
+      },
+      "previous_session": "16169",
+      "previous_exit_code": 0,
+      "previous_completed": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-continuation-a01\\completed-review.json",
+        "bytes": 6044,
+        "sha256": "eadbcb84d4e014c074fde5fcb1096b483872a667871e7fc20516b1177fa5c884"
+      },
+      "previous_review_limit": "Two row-focus crops cut lower text edges; both corrected in this distinct run",
+      "reuse_catalog": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\authoring\\focus-crop-repair-a01\\READONLY-REUSE-CATALOG-a01.json",
+        "bytes": 376712,
+        "sha256": "36b06ff289861678805eeba4d53c4adb47d7a543b4eec5b572ee527d9b3b2c38"
+      },
+      "reused_narrated_count": 142,
+      "reused_prepared_count": 0,
+      "new_narrated_count": 2,
+      "new_prepared_count": 2,
+      "old_outputs_modified": false
+    },
+    "original_failed_session": "56111",
+    "original_failed_exit_code": 1,
+    "continuation_session": "8044",
+    "continuation_exit_code": 0,
+    "previous_successful_session": "16169",
+    "previous_successful_exit_code": 0,
+    "focus_repair_source_commit": "4094f6e267fdc8c7cb69b2963d71e888ec317cd5",
+    "text": [
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\derived\\direct\\text\\episode01.zh.srt",
+        "bytes": 58313,
+        "sha256": "a79fe849c256c4b4c5eb8eab1b1f404d767dd132991e094bafa5bcb4d3c00e6b"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\derived\\direct\\text\\episode01.en.srt",
+        "bytes": 64847,
+        "sha256": "934da93ebfa025ff10d078bca06d72a36192f571fe272c1a81b8d410d3c8da04"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\derived\\direct\\text\\episode01.bilingual.srt",
+        "bytes": 106119,
+        "sha256": "308bd11c692f10c72f7cf5e5c152be7da527d0bc00d6a08ea5ae1c271e4b8e83"
+      },
+      {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\full-focus-repair-a01\\native-run\\derived\\direct\\text\\episode01-script.md",
+        "bytes": 90682,
+        "sha256": "d47dee1ea5d217fcc715449c806a41f268733e00d9ef88935878860f189bd777"
+      }
+    ],
+    "source_class_seconds": {
+      "diagram": 2870.8666666666645,
+      "native-readback": 167.20000000000002,
+      "raw": 114.99999999999999
+    },
+    "obsolete_blueprint_note_errata": {
+      "scope": "Historical blueprint commentary only; actual result objects and files govern this delivery.",
+      "obsolete_source_notes": [
+        "Inherited evidence_unknowns/source_claim_limits saying XA/XB remain null",
+        "Inherited blueprint statement that graphic assets were not generated"
+      ],
+      "superseding_facts": {
+        "actual_result_slots": [
+          "XA",
+          "XB"
+        ],
+        "new_result_voice_count": 12,
+        "total_cues": 144,
+        "all_selected_graphic_assets_exist_and_were_bound_by_original_builder": true
+      },
+      "frozen_input_and_plan_modified": false,
+      "continuation_CLI_pointer_errata": "Frozen CLI metadata says /cues/114; actual subtitle delta pointer is /cues/113 and execution selects stable ID V5-C10-05. This descriptive index never controls execution."
+    },
+    "human_full_1x_signoff": false,
+    "human_listening_performed": false,
+    "extra_movie_copy_or_encode": false
+  },
+  "media_writer_closure": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/full-focus-repair-a01/PRODUCTION-CLOSED-a01.json",
+    "bytes": 6225,
+    "sha256": "c4d52a610d8a8291754d0fe8072422857a78d800fc351747397ccc1e98d22d24"
+  },
+  "two_target_frame_closure": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/final-focus-frames-a01/QA-CLOSE.json",
+    "bytes": 1597,
+    "sha256": "a40ce7ec81dff3fd7d867b7a468dd7ca60b4756009459ca3158d88a54fa3b981"
+  },
+  "two_target_frame_visual_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\final-focus-frames-a01\\VISUAL-REVIEW-a01.json",
+    "bytes": 5718,
+    "sha256": "6e10c44f9936a9273adbe281ab0b1ee35f0804cd1d9de9fae8cc97f2e951ac03"
+  },
+  "two_target_frame_extraction": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\final-focus-frames-a01\\SPARSE-FRAMES.json",
+    "bytes": 10855,
+    "sha256": "a047f7ae03993d8f2187b18c5f405b553fc2e54f8fafdd8750ab64e237720f6b"
+  },
+  "storage_closure": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v5-20261018/root/FINAL-FOCUS-CAPACITY-CLOSED-a01.json",
+    "bytes": 2596,
+    "sha256": "cee26c5576ea329a42021fe341368a243ec53c8898c7b9806fdfbd9e5fcbf08d"
+  },
+  "storage_final_project_upper_bytes": 43771676144,
+  "storage_free_bytes_at_close": 118459240448,
+  "review_by_utc": "2026-10-25T18:41:56.984766+00:00",
+  "checks": {
+    "strict_AV_decode_exit_code": 0,
+    "all_frame_PTS_exit_code": 0,
+    "frames": 94592,
+    "subtitle_groups": 490,
+    "new_target_frames_directly_viewed_by_Root": 2,
+    "previous_other_six_points_only_apply_to_unchanged_segments": true,
+    "human_full_1x_signoff": false,
+    "human_listening_performed": false
+  },
+  "media_rehashed_or_encoded_by_this_projection": false
+}

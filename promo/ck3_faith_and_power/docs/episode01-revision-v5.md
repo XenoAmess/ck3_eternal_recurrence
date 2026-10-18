@@ -1,5 +1,7 @@
 # 第一期当前重排：以玩家取得和经营圣地的决策为主线
 
+**2026-10-19后继入口：[v5本地视频与研究交付](../../../docs/ck3-native-ai/faith-and-power-episode01-value-v5-delivery.md)。** 双方向独立机制实验、144句声音与142张来源图已完成；实际片长52:33。下列早期空槽、配音计划与施工状态保留各自时间截点，现行实机结果分别见[R19](../../../docs/ck3-native-ai/faith-and-power-r0019-agent-experience-12004.md)、[R21失败经验](../../../docs/ck3-native-ai/faith-and-power-r0021-agent-experience-12004.md)与[R22](../../../docs/ck3-native-ai/faith-and-power-r0022-agent-experience-12004.md)，最终媒体与审阅范围另按交付页记录。
+
 2026-10-18本会话决策与执行记录。用户已选择：**基督教采用伊斯兰教圣地、伊斯兰教采用基督教圣地，两条完整路线纳入一期主线，整体重排。** 已有v4是历史审阅输入，不能把它的片长、全文审读或媒体检查沿用为新版完成事实。
 
 用户再次要求：其指导与制作期间的经验持续入docs，归纳可迁移的方法，避免下次发生同类问题。本轮落实到[系列方法](production-lessons.md)和[制作经验](production-experience.md)，并用于本次全文修订。
