@@ -191,6 +191,7 @@ class ClockTests(unittest.TestCase):
                 self.index = 0; self.commands = []; self.pauses = 0; self.state = self
             def take_internal_semantic_snapshot(self): return frames[self.index]
             def capabilities(self): return {'snapshot': True}
+            def snapshot_supported(self): return True
             def wait_for_public_change(self, *args):
                 if fail_wait: raise RuntimeError('original-native-wait-failure')
                 self.index += 1

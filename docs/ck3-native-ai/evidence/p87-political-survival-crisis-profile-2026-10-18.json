@@ -1,0 +1,172 @@
+{
+  "schema": "xar.p87-political-survival-crisis-profile-source.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "source_reviewed_at_utc": "2026-10-18T07:27:16Z",
+  "public_baseline_observed": "fd598a657f85fdeb60998bd495c68a6822d86250",
+  "phase": "public_source_qualified_not_deployed",
+  "install_root": "Z:/SteamLibrary/steamapps/common/Crusader Kings III/game",
+  "stock_sources": [
+    {
+      "path": "common/casus_belli_types/00_civil_war.txt",
+      "bytes": 61252,
+      "sha256": "a9f5d844413bd7acfd4d4b1611877ac34e78eb293f309c0e7a41f27aca3a0047",
+      "definition": "refused_liege_demand_war",
+      "lines": [
+        1366,
+        1657
+      ],
+      "defeat_effect_lines": [
+        1595,
+        1630
+      ],
+      "fact": "on_defeat calls on_lost_request_revolt_war; liege-role validity is explicit, and no automatic all-title transfer is established"
+    },
+    {
+      "path": "common/scripted_effects/00_war_effects.txt",
+      "bytes": 75993,
+      "sha256": "f811d12ccb11f3aae2f61b234e930e20880be9b7c065bb9f4557400bd711722b",
+      "definition": "on_lost_request_revolt_war",
+      "lines": [
+        1190,
+        1216
+      ],
+      "fact": "every attacker still under defender: conditionally imprison if not imprisoned; direct liege branch adds faction cooldown; defender gains the lost-faction-revolt opinion"
+    },
+    {
+      "path": "common/opinion_modifiers/00_war_opinions.txt",
+      "bytes": 2095,
+      "sha256": "750864482d2d6c5d268424a1e03cba24301dedf853722d7fc12cb6f9fbcc68dc",
+      "definition": "vassal_lost_faction_revolt_war",
+      "lines": [
+        27,
+        35
+      ],
+      "fact": "-30 decaying opinion over15years; revoke_title_reason, imprisonment_reason, banish_reason and execute_reason are true; this does not itself execute those actions"
+    }
+  ],
+  "source_budget": {
+    "reuses_existing_p87_reviewed_stock_leaves": true,
+    "peer_p87_unused_75559_bytes_not_claimed": true,
+    "new_heavy_inputs_or_writers": 0,
+    "small_external_receipts_scope": "existing N42/p50-populist-loss01 admission; review2026-10-18T11:49:00.265518Z"
+  },
+  "existing_observation_seams": {
+    "native_driver": "_war_termination_cache_for_snapshot binds snapshot/native revision, connection, episode, side, primary role and score; source lines shifted during unrelated public updates",
+    "native_query": "war_contract.normalize_war_termination_options returns active native CB database_index/canonical_key plus side, primary role, score and surrender outcome",
+    "campaign_root": "same-frame player/lieges readiness plus exact1.20.0.4 provenance; immediate/top-liege identity can prove the bounded defender relation",
+    "ordinary_consumer": "GameplayBridgeService -> plan_war_mercenary_turn_v1 -> assess_mercenary_reinforcement_v1"
+  },
+  "required_profile_boundary": {
+    "separate_from_title_targeted": true,
+    "only_current_primary_rebel_attacker": true,
+    "exact_cb_key": "refused_liege_demand_war",
+    "same_frame_defender_liege_relation_required": true,
+    "existing_deterioration_cash_count_quote_arrival_epoch_and_unknown_guards_preserved": true,
+    "automatic_all_title_loss_claim": false,
+    "actual_defeat_or_penalty_observed": false
+  },
+  "implementation": {
+    "status": "implemented_in_public_worktree_for_root_review",
+    "qualified_public_modules": [
+      {
+        "module": "xar_autoplayer.war_political_survival_stakes_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_political_survival_stakes_v1.py",
+        "sha256": "f3046fcdfca99a7e4039c76348452cb4152df0e4f0accb8ad405b99d41b676a8"
+      },
+      {
+        "module": "xar_autoplayer.war_emergency_budget_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_emergency_budget_v1.py",
+        "sha256": "e85888d3167c8069c78812a1fad644b9d9f7400e349b191453f3cc16714b8614"
+      },
+      {
+        "module": "xar_autoplayer.war_reinforcement_tradeoff_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+        "sha256": "c27266b60a80e7b18a38c22bdc8a076a79f351eb0b3b976c367ddc3dc90299ac"
+      },
+      {
+        "module": "xar_autoplayer.war_strategic_reserve_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+        "sha256": "9c86a5f0fc82e292fc3baa553d128978b8b53f74ac7dae067bf86d8344b7a703"
+      },
+      {
+        "module": "xar_autoplayer.war_mercenary_consumer_v1",
+        "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+        "sha256": "2a242a63b768d3d03df7dbe983300bb8749357e5da71a2f2d16ea0e5aa504376"
+      }
+    ],
+    "test_path": "ck3_autonomous_player/tests/unit/test_war_political_survival_stakes_v1.py",
+    "test_sha256": "57a44d417600229199503977b252786edc937388e985b7da672c6c3ea01c179c",
+    "profile": "refused-liege-demand-primary-rebel-political-survival-v1",
+    "new_spend_down_policy": "political-survival-conditional-count-reversal-spend-down-v1",
+    "target_stakes_unchanged": true,
+    "conditions": [
+      "same-frame paused native CB query and exact1.20.0.4 root provenance",
+      "current active war; player primary attacker; refused_liege_demand_war",
+      "defender explicitly equals observed immediate or top liege",
+      "political emergency only at original level2 score<=-75 and corroborated deterioration; no political level1 override",
+      "conditional observed count reversal and immediate complete quote affordability",
+      "known other commitments protected; future funding zero; original same-epoch ceiling"
+    ],
+    "unknown_handling": "Return unavailable/normal existing action; no assert-based production verifier failure, no new live reader or forced query route",
+    "shared_ci_file_contains_other_agent_changes": true,
+    "our_ci_edit": "Only insert the new test token after test_war_crisis_spend_down_v1.py in the existing group"
+  },
+  "validation": {
+    "status": "23_passed",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_at_utc": "2026-10-18T07:39:02.725296+00:00",
+    "ended_at_utc": "2026-10-18T07:39:09.905516+00:00",
+    "cli": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "--tb=short",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player\\tests\\unit\\test_war_political_survival_stakes_v1.py",
+      "--basetemp",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P87-POLITICAL-QUALIFICATION-e7bf1d979c\\pytest-temp"
+    ],
+    "pytest_seconds": 5.95,
+    "process_elapsed_seconds": 7.1723547000437975,
+    "exit_code": 0,
+    "tests": 23,
+    "failed": 0,
+    "qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P87-POLITICAL-QUALIFICATION-e7bf1d979c\\QUALIFICATION.json",
+      "bytes": 2724,
+      "sha256": "192c93bf25b1d4535d4ad4ed2608ce80b4bb760dc9767d66a5b87739a805643d"
+    },
+    "scope": "Only new focused tests, including existing production cache and registered MCP ordinary consumer with synthetic Native inputs",
+    "synthetic_camera_log": "The synthetic camera-unavailable fixture logs a failed camera request; no real camera call or Game outcome is credited.",
+    "original36matrix_rerun": false,
+    "attempt_history": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P87-POLITICAL-QUALIFICATION-337c1fc105\\QUALIFICATION.json",
+        "sha256": "d1f02b161787ce6ac0cd9565226f36c2f111c8d7c35b743321d3a47ec6adb3f7",
+        "result": "19failed/1passed: new fixture used an incorrect cache method name; retained as failure history"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P87-POLITICAL-QUALIFICATION-3d2cad044e\\QUALIFICATION.json",
+        "sha256": "15859c449d93bcac63677cbcdfc76f6918b8620ddae1f0f89b6b1b42646782a0",
+        "result": "20passed before strengthening complete persisted political-profile source binding"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p50-populist-loss01\\P87-POLITICAL-QUALIFICATION-e20bd6e4ac\\QUALIFICATION.json",
+        "sha256": "32b8f21ab4ee15cd66fcc11cf92c55ab630b2f26af617c0870a1c4d3a497d7c6",
+        "result": "21passed before explicitly restricting every new political emergency purchase to minus75 deterioration and a conditional count reversal"
+      }
+    ],
+    "remote_ci": "not_yet_observed_for_this_unpublished_packet"
+  },
+  "deployment": {
+    "current_sdk49_changed": false,
+    "future_sdk06_changed": false,
+    "Game_calls": 0,
+    "new_EXE_or_native_load": 0
+  }
+}

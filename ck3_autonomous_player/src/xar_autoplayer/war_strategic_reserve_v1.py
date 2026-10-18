@@ -19,6 +19,7 @@ from .war_emergency_budget_v1 import (
     emergency_quote_budget_v1, observe_emergency_policy_v1,
     priority_emergency_level_v1, valid_saved_emergency_revision_v1,
 )
+from .war_political_survival_stakes_v1 import political_survival_stakes_qualified_v1
 
 
 def _recoverable_wars(priority):
@@ -129,6 +130,8 @@ def _strategic_need(war):
     defensive = war.get("player_side") == "defender"
     primary = defensive and losing and stakes.get("primary_title_targeted") is True
     reasons = []
+    if losing and political_survival_stakes_qualified_v1(war.get("political_survival_stakes_v1")):
+        reasons.append("losing_primary_rebel_war_has_source_reviewed_political_survival_stakes")
     if primary:
         reasons.append("losing_defence_targets_current_primary_title")
     if defensive and losing and stakes.get("directly_held_target_title_ids"):

@@ -7,10 +7,15 @@ import json
 
 from .m5_observed_opportunity_selector import observed_frame
 from .war_reinforcement_finance_v1 import observe_reinforcement_finance_v1
+from .war_political_survival_stakes_v1 import (
+    observe_political_survival_stakes_v1, political_survival_stakes_qualified_v1,
+)
+
+POLITICAL_SPEND_DOWN_POLICY = "political-survival-conditional-count-reversal-spend-down-v1"
 
 
 def priority_emergency_level_v1(war):
-    """Require identified major defensive stakes and corroborated deterioration."""
+    """Require identified major title or rebel survival stakes and deterioration."""
     stakes = war.get("target_stakes_v1", {})
     major = (stakes.get("current_root_available") is True
              and (stakes.get("primary_title_targeted") is True or war.get("major_direct_title_targeted") is True))
@@ -18,14 +23,18 @@ def priority_emergency_level_v1(war):
     occupied = bool(war.get("observed_primary_opponent_objective_occupation_province_ids"))
     siege = bool(war.get("observed_hostile_siege_in_player_subrealm_army_ids"))
     deficit = war.get("raised_force_deficit") is True
-    if (war.get("primary_player_war") is not True or war.get("player_side") != "defender"
-            or not major or type(score) is not int):
+    political = (war.get("player_side") == "attacker"
+                 and political_survival_stakes_qualified_v1(war.get("political_survival_stakes_v1")))
+    if (war.get("primary_player_war") is not True or type(score) is not int
+            or not (war.get("player_side") == "defender" and major or political)):
         return 0
     # Policy values, not native thresholds: an isolated bad score is insufficient.
     deadline = war.get("observed_risk_deadline_days")
     imminent_siege = siege and type(deadline) is int and deadline <= 7
     if score <= -75 and (occupied and (deficit or siege) or imminent_siege and deficit):
         return 2
+    if political:
+        return 0
     return int((score <= -50 and (deficit or occupied or siege))
                or (score <= -25 and occupied and siege))
 
@@ -62,6 +71,7 @@ def observe_emergency_policy_v1(snapshot, priority, root, spending):
         war = dict(original)
         live_war = next((row for row in _armies(snapshot.get("active_wars"))
                          if row.get("war_id") == war.get("war_id")), {})
+        war["political_survival_stakes_v1"] = observe_political_survival_stakes_v1(snapshot, live_war, current_root)
         enemies = {row.get("army_id") for row in _armies(live_war.get("enemy_armies"))}
         deadlines = [{"province_id": row.get("province_id"), "days_left": row["active_siege"]["days_left"]}
                      for row in _armies(live_war.get("objective_province_states"))
@@ -80,7 +90,9 @@ def observe_emergency_policy_v1(snapshot, priority, root, spending):
         return normal
     level, war = max(candidates, key=lambda item: (item[0], -item[1]["player_relative_war_score"]))
     return {"level": level, "eligible": True, "war_id": war["war_id"],
-            "policy": "major-defence-emergency-funding-candidate-v1",
+            "policy": ("political-survival-emergency-funding-candidate-v1"
+                       if political_survival_stakes_qualified_v1(war.get("political_survival_stakes_v1"))
+                       else "major-defence-emergency-funding-candidate-v1"),
             "maintenance_window_months": 3 if level == 2 else 6,
             "fixed_gold_floor_raw": 0, "other_reserved_gold_raw": reserved["gold"],
             "source_frame": observed_frame(snapshot), "trigger_evidence": war,
@@ -110,7 +122,7 @@ def valid_saved_emergency_revision_v1(selected, source_frame, snapshot):
     if revision["level"] == 3:
         crisis = revision.get("crisis_spend_down_v1")
         if (not isinstance(crisis, Mapping)
-                or crisis.get("policy") != "major-defence-conditional-count-reversal-spend-down-v1"
+                or crisis.get("policy") not in ("major-defence-conditional-count-reversal-spend-down-v1", POLITICAL_SPEND_DOWN_POLICY)
                 or crisis.get("future_funding_credited_raw") != 0
                 or crisis.get("ordinary_military_allocation_retained") is not False
                 or crisis.get("future_debt_occurrence_verified") is not False
@@ -118,6 +130,15 @@ def valid_saved_emergency_revision_v1(selected, source_frame, snapshot):
                        ("current_treasury_raw", "complete_contract_gold_raw", "other_reserved_gold_raw"))
                 or crisis["current_treasury_raw"] < crisis["complete_contract_gold_raw"] + crisis["other_reserved_gold_raw"]):
             return None
+        if crisis.get("policy") == POLITICAL_SPEND_DOWN_POLICY:
+            political = crisis.get("political_survival_stakes_v1")
+            if not political_survival_stakes_qualified_v1(political):
+                return None
+            political_frame = political["source_frame"]
+            if (political_frame["episode_run_id"] != binding["episode_run_id"]
+                    or political_frame["played_character_id"] != binding["played_character_id"]
+                    or political_frame["native_revision"] > binding["native_revision"]):
+                return None
     return dict(revision)
 
 
@@ -133,6 +154,15 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
     if (type(own) is not int or type(enemy) is not int or enemy <= own
             or type(troops) is not int or troops <= 0 or troops * 2 < enemy - own):
         return inactive
+    live_war = next((war for war in (snapshot.get("active_wars") or [])
+                     if isinstance(war, Mapping) and war.get("war_id") == policy.get("war_id")), {})
+    political = observe_political_survival_stakes_v1(snapshot, live_war, root)
+    political_qualified = political_survival_stakes_qualified_v1(political)
+    if (live_war.get("player_side") == "attacker"
+            and (not political_qualified or policy.get("level") != 2
+                 or type(live_war.get("player_relative_war_score")) is not int
+                 or live_war["player_relative_war_score"] > -75 or own + troops <= enemy)):
+        return inactive
     finance = observe_reinforcement_finance_v1(snapshot, root, contract_gold_raw=price,
         contract_months=contract_months, gold_floor_raw=policy["fixed_gold_floor_raw"],
         other_reserved_gold_raw=policy["other_reserved_gold_raw"],
@@ -143,18 +173,18 @@ def emergency_quote_budget_v1(snapshot, *, policy, focus, local, troops, price, 
     # cash buffer is not retained. Only the strongest existing major-defence
     # crisis may accept that later cash-flow risk, and only for a conditional
     # count reversal. This does not forecast arrival, victory or an actual debt.
-    live_war = next((war for war in (snapshot.get("active_wars") or [])
-                     if isinstance(war, Mapping) and war.get("war_id") == policy.get("war_id")), {})
     crisis = (policy.get("level") == 2
               and live_war.get("player_is_primary_war_leader") is True
-              and live_war.get("player_side") == "defender"
+              and (live_war.get("player_side") == "defender" or political_qualified)
               and live_war.get("player_relative_war_score") == focus.get("player_relative_war_score")
               and finance.get("retains_military_allocation") is False
               and own + troops > enemy
               and normal_finance["observed_treasury_raw"] >= price + policy["other_reserved_gold_raw"])
     spend_down = None
     if crisis:
-        spend_down = {"policy": "major-defence-conditional-count-reversal-spend-down-v1",
+        spend_down = {"policy": (POLITICAL_SPEND_DOWN_POLICY if political_qualified
+                                 else "major-defence-conditional-count-reversal-spend-down-v1"),
+            **({"political_survival_stakes_v1": political} if political_qualified else {}),
             "current_treasury_raw": normal_finance["observed_treasury_raw"],
             "complete_contract_gold_raw": price,
             "other_reserved_gold_raw": policy["other_reserved_gold_raw"],

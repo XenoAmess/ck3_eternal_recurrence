@@ -10,6 +10,9 @@ from collections.abc import Mapping
 
 from .bridge.domain_construction_private_transport_v1 import RESERVE_RAW
 from .war_reinforcement_finance_v1 import observe_reinforcement_finance_v1
+from .war_political_survival_stakes_v1 import (
+    observe_political_survival_stakes_v1, political_survival_stakes_qualified_v1,
+)
 
 
 def _armies(value: object) -> list[Mapping[str, object]]:
@@ -76,6 +79,7 @@ def observe_war_spending_priority_v1(
             if isinstance(row.get("title"), Mapping) and type(row["title"].get("title_id")) is int}
     wars = []
     for war in active:
+        political = observe_political_survival_stakes_v1(snapshot, war, root)
         score = war.get("player_relative_war_score")
         primary = war.get("player_is_primary_war_leader") is True
         targets = war.get("targeted_title_ids")
@@ -103,6 +107,8 @@ def observe_war_spending_priority_v1(
             operational = _same_frame_army_strength_balance(dict(snapshot), war.get("war_id"))
         losing = type(score) is int and score < 0
         reasons = []
+        if primary and losing and political_survival_stakes_qualified_v1(political):
+            reasons.append("losing_primary_rebel_war_exposes_political_survival")
         if primary and losing and exposed:
             reasons.append("losing_primary_defence_exposes_target_titles")
         if primary and losing and deficit:
@@ -120,6 +126,7 @@ def observe_war_spending_priority_v1(
         wars.append({
             "war_id": war.get("war_id"), "primary_player_war": primary,
             "player_side": war.get("player_side"), "player_relative_war_score": score,
+            "political_survival_stakes_v1": political,
             "possible_defensive_target_title_ids": targets if exposed else [],
             "target_stakes_v1": {
                 "current_root_available": bool(root),

@@ -243,7 +243,13 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
                  "战略备兵；原生预计出生省已观测，抵达时间未知，不能保证救急。")
         emergency = chosen.get("emergency_budget_revision_v1")
         if isinstance(emergency, Mapping):
-            text += (f"防御危机资金等级{emergency.get('level')}，同包总上限"
+            evidence = emergency.get("policy_evidence")
+            trigger = evidence.get("trigger_evidence") if isinstance(evidence, Mapping) else None
+            political = trigger.get("political_survival_stakes_v1") if isinstance(trigger, Mapping) else None
+            label = "政治生存危机" if isinstance(political, Mapping) and political.get("status") == "available" else "防御危机"
+            if label == "政治生存危机":
+                text += "拒绝领主要求叛乱败战存在条件监禁与处罚权风险，并非自动失去全部头衔。"
+            text += (f"{label}资金等级{emergency.get('level')}，同包总上限"
                      f"{money(emergency.get('total_package_limit_raw'))}金；缩减现金缓冲承担救援不及时的风险。")
         if isinstance(chosen.get("crisis_spend_down_v1"), Mapping):
             text += ("绝境消耗现金缓冲：现款足付完整合同并保留已知其他承诺，"

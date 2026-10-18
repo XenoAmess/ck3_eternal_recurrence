@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 import json
+import copy
 from pathlib import Path
 import sys
 import threading
@@ -14,7 +15,8 @@ SOURCE = Path(os.environ.get('XAR_EVENT_TEST_SOURCE',
                              str(Path(__file__).resolve().parents[2] / 'src')))
 sys.path.insert(0, str(SOURCE))
 
-from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver
+from xar_autoplayer.bridge import native_driver
+from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, NativeProtocolState
 from xar_autoplayer.bridge.service import GameplayBridgeService
 from xar_autoplayer.bridge.driver import BridgeUnavailableError
 
@@ -87,7 +89,7 @@ def test_semantic_wait_observes_later_event_revision_without_history():
     calls = []
     frames = iter([_frame(11, 5), _frame(12, None)])
     state = SimpleNamespace(
-        capabilities=lambda: {'snapshot': True},
+        snapshot_supported=lambda: True,
         wait_for_public_change=lambda revision, timeout: calls.append(('wait', revision, timeout)),
     )
     fake = SimpleNamespace(
@@ -136,7 +138,7 @@ def test_public_change_timing_reuses_clock_frames_without_extra_reads(
 
     fake = SimpleNamespace(
         state=SimpleNamespace(
-            capabilities=lambda: {'snapshot': snapshot_supported},
+            snapshot_supported=lambda: snapshot_supported,
             wait_for_public_change=wait,
         ),
         take_internal_semantic_snapshot=lambda: calls.append(('semantic',)) or after,
@@ -172,6 +174,100 @@ def test_public_change_timing_reuses_clock_frames_without_extra_reads(
         'after_public_revision': None if wait_raises else 12,
     }
     assert 'unrelated_body' not in path.read_text()
+
+
+def test_snapshot_ready_matches_full_capabilities_without_building_unused_evidence(monkeypatch):
+    hellos = [None, {}, {'capabilities': None}, {'capabilities': ('game.state.snapshot',)},
+              {'capabilities': []}, {'capabilities': ['other']},
+              {'capabilities': ['game.state.snapshot']},
+              {'capabilities': [None, '', 1, 'game.state.snapshot', 'game.state.snapshot']}]
+    string_list = native_driver._string_list
+    for connected in (False, True):
+        for semantic in (False, True):
+            for hello in hellos:
+                state = NativeProtocolState('offline-snapshot-ready-test')
+                state._connected = connected
+                state._semantic_snapshot = {} if semantic else None
+                state._hello = hello
+                expected = state.capabilities()['snapshot']
+                before = copy.deepcopy({key: value for key, value in vars(state).items()
+                                        if key != '_condition'})
+
+                def locked_string_list(value):
+                    assert state._condition._is_owned()
+                    return string_list(value)
+
+                with monkeypatch.context() as local:
+                    local.setattr(native_driver, '_string_list', locked_string_list)
+                    local.setattr(native_driver, '_action_steps',
+                                  lambda *a, **kw: pytest.fail('unused action list constructed'))
+                    local.setattr(NativeProtocolState, '_diagnostics_locked',
+                                  lambda self: pytest.fail('unused diagnostics constructed'))
+                    assert state.snapshot_supported() is expected
+                assert before == {key: value for key, value in vars(state).items()
+                                  if key != '_condition'}
+
+
+@pytest.mark.parametrize('ready,failure', [
+    (True, None), (False, None), (True, 'wait'), (True, 'snapshot'),
+    (True, 'revision'), (True, 'timeout'),
+])
+def test_private_wait_keeps_validation_fresh_frame_clock_and_finally(monkeypatch, ready, failure):
+    from xar_autoplayer.bridge import clock_observation_timing_v1 as clock
+
+    calls = []
+    before, after = _frame(10, 5), _frame(11, None)
+    state = NativeProtocolState('offline-snapshot-ready-test')
+    state._connected = ready
+    state._semantic_snapshot = {}
+    state._hello = {'capabilities': ['game.state.snapshot']}
+    state._public_revision = 11
+    original_wait = state.wait_for_public_change
+    original_error = RuntimeError('original offline failure')
+
+    def wait(revision, timeout):
+        calls.append(('wait', revision, timeout))
+        if failure == 'wait':
+            raise original_error
+        return original_wait(revision, timeout)
+
+    def snapshot():
+        calls.append(('semantic',))
+        if failure == 'snapshot':
+            raise original_error
+        return after
+
+    monkeypatch.setattr(state, 'capabilities', lambda: pytest.fail('full capabilities used'))
+    monkeypatch.setattr(state, 'wait_for_public_change', wait)
+    monkeypatch.setattr(native_driver, 'start_army_timing', lambda stage: stage)
+    monkeypatch.setattr(native_driver, 'finish_army_timing',
+                        lambda token, **kw: calls.append(('finally', kw)))
+    monkeypatch.setattr(clock, 'observe_clock_snapshot_v1',
+                        lambda driver, frame: calls.append(('clock', frame)))
+    fake = SimpleNamespace(state=state, take_internal_semantic_snapshot=snapshot,
+                           _exact_clock_observation_v1=object())
+    revision = True if failure == 'revision' else 10
+    timeout = 0 if failure == 'timeout' else .01
+    if failure is not None:
+        with pytest.raises(ValueError if failure in ('revision', 'timeout') else RuntimeError) as raised:
+            NativeHeadlessGameplayDriver._wait_for_life_advance_change(
+                fake, revision, timeout_seconds=timeout, before_snapshot=before)
+        if failure in ('wait', 'snapshot'):
+            assert raised.value is original_error
+    else:
+        assert NativeHeadlessGameplayDriver._wait_for_life_advance_change(
+            fake, revision, timeout_seconds=timeout, before_snapshot=before) is after
+    expected = []
+    if failure not in ('revision', 'timeout'):
+        if ready:
+            expected.append(('wait', 10, .01))
+        if failure != 'wait':
+            expected.append(('semantic',))
+        if failure is None:
+            expected.append(('clock', after))
+    expected.append(('finally', {'step': 'life-advance', 'before_snapshot': before,
+                                 'after_snapshot': after if failure is None else None}))
+    assert calls == expected
 
 
 def test_service_selects_same_event_and_revision_with_lean_snapshot():

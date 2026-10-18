@@ -1234,6 +1234,17 @@ class NativeProtocolState:
                 self._public_revision += 1
                 self._condition.notify_all()
 
+    def snapshot_supported(self) -> bool:
+        with self._condition:
+            raw_capabilities = _string_list(
+                self._hello.get("capabilities") if self._hello else None
+            )
+            return (
+                self._connected
+                and self._semantic_snapshot is not None
+                and "game.state.snapshot" in raw_capabilities
+            )
+
     def capabilities(self) -> dict[str, object]:
         with self._condition:
             raw_capabilities = _string_list(
@@ -25497,7 +25508,7 @@ class NativeHeadlessGameplayDriver:
         try:
             _validate_revision(after_revision, "after_revision")
             timeout = _positive_seconds(timeout_seconds, "timeout_seconds")
-            if self.state.capabilities()["snapshot"]:
+            if self.state.snapshot_supported():
                 self.state.wait_for_public_change(after_revision, timeout)
             changed = self.take_internal_semantic_snapshot()
             if getattr(self, "_exact_clock_observation_v1", None) is not None:
