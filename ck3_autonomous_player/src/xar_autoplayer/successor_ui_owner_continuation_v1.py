@@ -13,7 +13,7 @@ from .bridge.driver import BridgeUnavailableError, UnsupportedStepError
 
 def continue_verified_successor_ui_v1(service, *, transition, snapshot, attempt,
                                     classify_timeline, close_issue, capture_failure,
-                                    previous_observation=None, durability=None):
+                                    previous_observation=None, durability=None, before_close=None, allow_close=True):
     """Return (current snapshot, player-decision pending, date advanced, UI pending)."""
     prior = transition.get("timeline_blocker_continuation")
     if isinstance(prior, dict) and prior.get("close_attempted") is True:
@@ -55,6 +55,8 @@ def continue_verified_successor_ui_v1(service, *, transition, snapshot, attempt,
                 state = None
         elif observation["ui_clearance"] != "modal_present" or state != "close_required":
             state = None
+    if isinstance(snapshot.get("pending_character_interaction"), dict):
+        state = "deferred_player_decision"
     if state is None:
         capture_failure(stage="ordinary_successor_timeline_query",
                         kind="natural_succession_timeline_state_ambiguous",
@@ -79,6 +81,23 @@ def continue_verified_successor_ui_v1(service, *, transition, snapshot, attempt,
             durability.resolve(transition, snapshot)
         return snapshot, pending, False, False
     attempt["stage"] = "ordinary_successor_timeline_close"
+    if allow_close is not True:
+        if durability is not None:
+            durability.update(transition, snapshot)
+        return snapshot, False, False, True
+    if before_close is not None:
+        intercepted = before_close({"plan": {"selected_step": "continue-death-succession-modal-v1",
+            "phase": "ordinary_successor_timeline_close",
+            "reason": "Verified natural successor; current native modal requires one typed Close."},
+            "selected_step": "continue-death-succession-modal-v1",
+            "snapshot_id": snapshot.get("snapshot_id"), "revision": revision})
+        if intercepted is not None:
+            if not isinstance(intercepted, dict):
+                raise TypeError("successor Close before_submit must return a mapping or None")
+            continuation.update(status="deferred_owner_interception", owner_interception=deepcopy(intercepted))
+            if durability is not None:
+                durability.update(transition, snapshot)
+            return snapshot, False, False, True
     # Set before calling the original typed route. An exception, ACK-only or
     # failed independent postcondition must never arm another invocation.
     continuation["close_attempted"] = True

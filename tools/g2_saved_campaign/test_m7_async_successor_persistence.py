@@ -151,7 +151,7 @@ class TimelineFailureQueue:
         if tool == "ck3_get_capabilities":
             return (copy.deepcopy(self.fixture["capabilities"]),
                     self.fixture["capabilities_path"])
-        if tool == "ck3_query_current_timeline_blocker_context_v1":
+        if tool == "ck3_resume_successor_ui_v1":
             raise RuntimeError("timeline unavailable after completed continuation")
         raise AssertionError(f"unexpected queue call: {tool}")
 
@@ -181,7 +181,7 @@ class AsyncSuccessorPersistenceTests(unittest.IsolatedAsyncioTestCase):
                 ("call", "ck3_take_snapshot"),
                 ("call", "ck3_get_capabilities"),
                 ("thin", "m7-natural-transition-pending"),
-                ("call", "ck3_query_current_timeline_blocker_context_v1"),
+                ("call", "ck3_resume_successor_ui_v1"),
             ],
         )
         self.assertEqual(len(queue.retained), 1)

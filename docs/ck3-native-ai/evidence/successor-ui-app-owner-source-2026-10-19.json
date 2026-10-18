@@ -1,0 +1,295 @@
+{
+  "schema": "xar.ck3.successor-ui-App-owner-software-qualification/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_evidence": "tools/ck3_live_run_id.py machine; actual 2026-10-18T19:13:15Z readback",
+  "started_at_utc": "2026-10-18T19:19:37.433349+00:00",
+  "finished_at_utc": "2026-10-18T19:19:58.377412+00:00",
+  "command": [
+    "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+    "ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py",
+    "ck3_autonomous_player/tests/unit/test_verified_successor_ui_service_v1.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_owner.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_modal.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_adoption.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_persistence.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_per_title.py",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_freezes_no_heir_as_observed_risk",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_reports_successor_and_title_mismatches_without_inventing_holders",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_mismatched_reconciliation_blocks_seed_replay_fallback",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_rogue_and_unknown_lifecycles_remain_fail_closed"
+  ],
+  "actual_child_exit_code": 0,
+  "stdout": "....................................           [100%]\n36 passed, 26 subtests passed in 19.60s\n",
+  "stderr": "",
+  "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+  "pyc_disabled": true,
+  "pytest_cache_disabled": true,
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 14976,
+      "sha256": "48694bea0a8e48e97ad59605904080117487ed9c0fee834af1aaae94529387b4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 863707,
+      "sha256": "e9a6f46b2a9542c4f11f291da7a3f9880f912cec98a731fafc2fb79998a6da87"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 258315,
+      "sha256": "62e3442676b45a31bd952b4b452e55e6ea26e8ea152dd57a9a9ae1028fad0e73"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_owner_continuation_v1.py",
+      "bytes": 8516,
+      "sha256": "7b8d49d16bee5d60d604c20d7aef3679ffeb697fe98bef9d0bb72e1400909cfd"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21392,
+      "sha256": "b9b4296794d3666504104cdffe4722ee5d92f54abf4e9455e6dcaf4c71ad98fc"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ck3_live_run_identity_v1.py",
+      "bytes": 2248,
+      "sha256": "b81c2a1f1e7c562981a1cc001ef65d454a52f4993b2783d3a5a468db84ced43b"
+    },
+    {
+      "path": "tools/gen_ck3_live_run_identity_package.py",
+      "bytes": 1678,
+      "sha256": "93917c20d5f2f26a463d415f71c42737d64df756f6ac7b429914c8caeac9a2ae"
+    },
+    {
+      "path": "tools/g2_saved_campaign/m7_ordinary_successor_queue.py",
+      "bytes": 38801,
+      "sha256": "3edbbf47d34523758736917378149155e23bc4ff78469f75652c54ee3283f256"
+    },
+    {
+      "path": "tools/g2_saved_campaign/ordinary_loop_root_checkpoint_stop.py",
+      "bytes": 45585,
+      "sha256": "df15636c8fbc7c9a6e309231cc8e68dbba2135719c0fc38787952a062ff99d68"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 53505,
+      "sha256": "faf0f9d6eb9e3b500c5c2f97f52516631be4a515d48e53d861f33c3730e1f53c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+      "bytes": 27881,
+      "sha256": "131e4fd18bbbf5cfe85dba6cbfee19cdf21eca6e1c06db040cfe4aff44d56257"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py",
+      "bytes": 19773,
+      "sha256": "75efadb1d18fb170f2b4b8b2e3ecba099171f316bbd5a7153cc1bbc73d02d77c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_verified_successor_ui_service_v1.py",
+      "bytes": 14719,
+      "sha256": "157b41adca88e83621b27ec7dc89001aaa9e30eaaf14d73d87cb456b0a047dc6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_owner.py",
+      "bytes": 4204,
+      "sha256": "cfcc0b9b860fc57657258516544670a87dc29ddd7ec12287434b8895ad97aa14"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_modal.py",
+      "bytes": 6388,
+      "sha256": "2b496b8315de1de8335a6f378a62373942bd976f308c9d6fcc2dbd7e51e4669a"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_adoption.py",
+      "bytes": 5994,
+      "sha256": "8cf285562b27fdbc7f6a1adb1f9c218eb37a981d548ae096d71ab49cd6f34c8e"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_persistence.py",
+      "bytes": 8203,
+      "sha256": "7a41e678e0db5a56160104096a398b3a41e21d9a914a5bbb286036886afeb7af"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_per_title.py",
+      "bytes": 10120,
+      "sha256": "0479e477a99fd2e6974a51000b10779ecde3beb73f4ef8f4aac3629b747c4c3a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+      "bytes": 458599,
+      "sha256": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/verified_successor_ui_service_v1.py",
+      "bytes": 6674,
+      "sha256": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_ui_observation_v1.py",
+      "bytes": 5090,
+      "sha256": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1596131,
+      "sha256": "4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031722,
+      "sha256": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+    },
+    {
+      "path": "tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "path": "ck3_autonomous_player/pyproject.toml",
+      "bytes": 1622,
+      "sha256": "b8e3b6d68d8901ec35f2012bd9842c643f3be3b0fa039f9bef5ea761cdeec90e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+      "bytes": 29634,
+      "sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+    }
+  ],
+  "early_actual_failures": [
+    {
+      "chunk_id": "03abb2",
+      "actual_outer_exit_code": 1,
+      "stdout_visible": false,
+      "scope": "first draft; subprocess stdout not captured; no success claimed"
+    },
+    {
+      "chunk_id": "5a7ef7",
+      "actual_outer_exit_code": 1,
+      "reason": "two draft defects: owner binding annotations differed from Queue; exception object in JSON diagnostic",
+      "corrected": true
+    },
+    {
+      "chunk_id": "9e6daa",
+      "actual_outer_exit_code": 1,
+      "reason": "new consume_completed synthetic fixture omitted predecessor_binding; production gate unchanged",
+      "corrected": true
+    }
+  ],
+  "prior_successful_qualification": [
+    {
+      "chunk_id": "ee60d2",
+      "actual_outer_exit_code": 0,
+      "tests": 6,
+      "body_seconds": 5.141
+    },
+    {
+      "chunk_id": "130de3",
+      "actual_outer_exit_code": 0,
+      "tests": 18,
+      "body_seconds": 7.08
+    },
+    {
+      "chunk_id": "38df2f",
+      "actual_outer_exit_code": 0,
+      "tests": 29,
+      "subtests": 26,
+      "body_seconds": 17.81
+    },
+    {
+      "chunk_id": "07ff36",
+      "actual_outer_exit_code": 0,
+      "tests": 30,
+      "subtests": 26,
+      "body_seconds": 18.75
+    },
+    {
+      "chunk_id": "933413",
+      "actual_outer_exit_code": 0,
+      "tests": 35,
+      "subtests": 26,
+      "body_seconds": 19.84,
+      "receipt_sha256_before_final_refinement": "aa7463b90d2e183889d999323dd22091b04250c7156391e0ef46eab558f5d84d"
+    }
+  ],
+  "boundary": {
+    "synthetic_driver_frames_and_process_identity": true,
+    "planner_choice_synthetic_existing_unknown_event_policy_and_full_validators_real": true,
+    "registered_MCP_Client_Service_dispatcher_and_Queue_real": true,
+    "same_App_two_successions_software_only": true,
+    "actual_Game_Native_Steam_desktop_MEDIA_SAVE_calls": 0,
+    "current_frozen_Host06_adoption": false,
+    "new_Game_SAVE_reload_lineage_qualified": false,
+    "G2_completed": 6,
+    "G2_total": 8,
+    "same_Game_new_connection_App_rebuild_real_Queue_Close_SAVE_software_only": true,
+    "Queue_cold_binding_used_as_evidence_only_not_App_authorization": true
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "output_kind": "small_tracked_source_record_and_ephemeral_test_JSON_only",
+    "heavy_writes": 0,
+    "media_input_reads": 0,
+    "large_hash_passes": 0,
+    "permanent_asset_touched": false
+  },
+  "source_epoch": "3fa0a84094879862780216b6db57882d3947fe3c34782a0d62a8ea1f68a69bc5",
+  "source_epoch_inputs": {
+    "native_auto_run.py": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04",
+    "successor_ui_pending_ledger_v1.py": "b9b4296794d3666504104cdffe4722ee5d92f54abf4e9455e6dcaf4c71ad98fc",
+    "successor_ui_owner_continuation_v1.py": "7b8d49d16bee5d60d604c20d7aef3679ffeb697fe98bef9d0bb72e1400909cfd",
+    "bridge/service.py": "e9a6f46b2a9542c4f11f291da7a3f9880f912cec98a731fafc2fb79998a6da87",
+    "bridge/verified_successor_ui_service_v1.py": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3",
+    "bridge/succession_ui_observation_v1.py": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973",
+    "bridge/successor_ui_app_owner_v1.py": "48694bea0a8e48e97ad59605904080117487ed9c0fee834af1aaae94529387b4",
+    "bridge/mcp_server.py": "62e3442676b45a31bd952b4b452e55e6ea26e8ea152dd57a9a9ae1028fad0e73",
+    "ck3_live_run_identity_v1.py": "b81c2a1f1e7c562981a1cc001ef65d454a52f4993b2783d3a5a468db84ced43b",
+    "bridge/native_driver.py": "4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e",
+    "strategy.py": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+  },
+  "post_verification_format_only_change": {
+    "path": "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+    "executed_raw_pin": {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+      "bytes": 28437,
+      "sha256": "8ce172b8bd829cfb79392bb621f94443c2db6e39aa422874c9f065e836f42f60"
+    },
+    "current_raw_pin": {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+      "bytes": 27881,
+      "sha256": "131e4fd18bbbf5cfe85dba6cbfee19cdf21eca6e1c06db040cfe4aff44d56257"
+    },
+    "comments_and_repeated_blank_lines_only": true,
+    "AST_dump_before_equals_after": true,
+    "assertion_executed_normally": true,
+    "test_functions_assertions_and_executable_logic_changed": false
+  },
+  "source_test_added_bytes": 66204,
+  "Root_final_verification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-18T19:29:28.168894+00:00",
+    "retained_session_id": 72054,
+    "actual_outer_exit_code": 0,
+    "actual_child_exit_code": 0,
+    "actual_completion_chunk_id": "80c255",
+    "same_command_as_recorded": true,
+    "tests": 36,
+    "subtests": 26,
+    "test_body_seconds": "19.03",
+    "source_review_chunks": [
+      "92279e",
+      "4c7446",
+      "95ed60"
+    ],
+    "no_Game_Native_or_media_execution": true
+  }
+}

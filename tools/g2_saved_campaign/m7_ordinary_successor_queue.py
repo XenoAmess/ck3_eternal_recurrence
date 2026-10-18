@@ -6,6 +6,8 @@ Raw Queue responses remain the authority.
 from __future__ import annotations
 
 import copy
+import hashlib
+import json
 import re
 
 CONTINUE_AS_RECONCILED_SUCCESSOR_STEP = "continue-as-reconciled-successor"
@@ -120,6 +122,16 @@ def require_current_successor(snapshot, transition):
     predecessor = transition.get("predecessor_binding", {})
     successor = transition.get("successor_episode_binding", {})
     observed = snapshot.get("diagnostics", {})
+    cold = transition.get("_app_successor_ui_cold_binding_v1")
+    if isinstance(cold, dict):
+        resumed = cold["resumed_frame"]
+        if (observed.get("bridge_pid") != predecessor.get("bridge_pid")
+                or observed.get("bridge_pid") != cold["game_identity"]["pid"]
+                or observed.get("connection_generation") != resumed["connection_generation"]
+                or any(type(snapshot.get(key)) is not int or snapshot[key] < resumed[key]
+                       for key in ("revision", "native_revision", "date_raw"))):
+            raise ValueError("successor UI no longer matches its App-observed same-Game reconnect")
+        return
     if any(type(successor.get(key)) is not int or successor[key] <= 0
            or predecessor.get(key) != successor[key]
            or observed.get(key) != successor[key]
@@ -291,32 +303,7 @@ def consume_completed(queue, turn, response_path, source_snapshot, source_path,
 def finish_transition(queue, after, after_path, transition, transitions):
     # Retain the actual new episode even if a later timeline call fails.
     transitions.append(transition)
-    query, query_path = queue.call("ck3_query_current_timeline_blocker_context_v1",
-                                  {"expected_revision": after["revision"]}, "m7-timeline")
-    state = _ordinary_succession_timeline_state(query)
-    continuation = {"status": state, "initial_query_response": str(query_path),
-                    "close_result_response": None}
-    transition["timeline_blocker_continuation"] = continuation
-    if state == "close_required":
-        close, close_path = queue.call("ck3_continue_death_succession_modal_v1", {
-            "expected_revision": after["revision"],
-            "expected_played_character_id": transition["successor_character_id"],
-            "expected_episode_run_id": transition["episode_run_id"],
-        }, "m7-modal-close")
-        continuation["close_result_response"] = str(close_path)
-        issue = _ordinary_succession_close_issue(
-            close, starting_date_raw=after["date_raw"],
-            successor_character_id=transition["successor_character_id"])
-        if issue is not None:
-            raise ValueError("retain original single Close result: " + issue)
-        after, after_path = snapshot_once(queue, "m7-cleared-successor-snapshot")
-        if any(after.get(left) != close.get(right) for left, right in (
-                ("date_raw", "ending_date_raw"), ("revision", "ending_revision"),
-                ("native_revision", "ending_native_revision"))):
-            raise ValueError("independent successor snapshot disagrees with typed Close")
-        continuation["status"] = "materially_cleared"
-    elif state != "already_clear":
-        raise ValueError("retain ambiguous/unavailable actual timeline; no invented modal action")
+    after, after_path, _ = resume_successor_ui(queue, after, transition)
     require_current_successor(after, transition)
     transition["current_date_raw"] = after["date_raw"]
     transition["current_snapshot_response"] = str(after_path)
@@ -324,11 +311,150 @@ def finish_transition(queue, after, after_path, transition, transitions):
     return after, after_path, transition
 
 
+def _retain_app_ui_evidence(transition, resumed):
+    retained = resumed.get("transition")
+    if retained is not None:
+        for key in ("status", "predecessor_character_id", "successor_character_id", "source_episode_run_id",
+                    "episode_run_id", "same_campaign_frame", "ck3_command_submitted", "process_restarted",
+                    "succession_lifecycle", "reconciliation"):
+            if retained.get(key) != transition.get(key):
+                raise ValueError("App successor UI differs from the Queue's original full handoff proof")
+        # Each owner independently runs the original full verifier. Its public
+        # binding may additionally carry runner-specific annotations; compare
+        # every actual identity/frame field, never those incidental annotations.
+        for name in ("predecessor_binding", "successor_episode_binding"):
+            for key in ("bridge_pid", "connection_generation", "snapshot_id", "revision", "native_revision", "date_raw"):
+                if retained.get(name, {}).get(key) != transition.get(name, {}).get(key):
+                    raise ValueError("App successor UI differs from the Queue's original handoff frame")
+        for key in ("successor_ui_observation", "timeline_blocker_continuation"):
+            if key in retained:
+                transition[key] = copy.deepcopy(retained[key])
+        cold = resumed.get("cold_resume_binding")
+        if cold is not None:
+            digest = lambda value: hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+            proof_keys = ("status", "predecessor_character_id", "successor_character_id", "source_episode_run_id",
+                "episode_run_id", "same_campaign_frame", "ck3_command_submitted", "process_restarted",
+                "succession_lifecycle", "reconciliation", "predecessor_binding", "successor_episode_binding")
+            frame = cold.get("resumed_frame", {}) if isinstance(cold, dict) else {}
+            current = resumed.get("snapshot", {})
+            if (not isinstance(cold, dict) or cold.get("schema") != "xar.ck3.successor-ui-cold-binding/v1"
+                    or cold.get("binding_sha256") != digest({key: value for key, value in cold.items() if key != "binding_sha256"})
+                    or cold.get("transition_sha256") != digest({key: retained.get(key) for key in proof_keys})
+                    or not cold.get("machine_id") or len(cold.get("source_epoch", "")) != 64
+                    or not cold.get("game_identity", {}).get("creation_date")
+                    or cold.get("game_identity", {}).get("pid") != transition["predecessor_binding"]["bridge_pid"]
+                    or any(type(frame.get(key)) is not int for key in ("bridge_pid", "connection_generation", "revision", "native_revision", "date_raw"))
+                    or frame.get("actor_character_id") != transition["successor_character_id"]
+                    or frame.get("episode_run_id") != transition["episode_run_id"]
+                    or any(current.get("diagnostics", {}).get(key) != frame.get(key) for key in ("bridge_pid", "connection_generation"))):
+                raise ValueError("App successor UI reconnect evidence differs from its retained full proof")
+            # Evidence from this actual App response only. No queue-supplied
+            # object is passed back to register/authorize the App ledger.
+            transition["_app_successor_ui_cold_binding_v1"] = copy.deepcopy(cold)
+
+
+def resume_successor_ui(queue, current, transition):
+    """App owns durable intent/Close; Queue keeps independent post checks.
+
+    Missing App adoption is an honest unsupported-tool error. Never fall back
+    to an unretained modal action, rewrite an event root, or infer clearance
+    from the disappearance of the event alone.
+    """
+    resumed, response_path = queue.call("ck3_resume_successor_ui_v1",
+        {"expected_revision": current["revision"]}, "m7-successor-ui-resume")
+    _retain_app_ui_evidence(transition, resumed)
+    fresh, fresh_path = snapshot_once(queue, "m7-successor-ui-independent-post")
+    require_current_successor(fresh, transition)
+    claimed = resumed.get("snapshot", {})
+    if any(fresh.get(key) != claimed.get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id", "episode_character_id")):
+        raise ValueError("Queue's independent post disagrees with App successor UI")
+    pending = resumed.get("pending")
+    if type(pending) is not bool or resumed.get("status") not in {"clear", "deferred_player_decision", "ui_unresolved", "close_required"}:
+        raise ValueError("App successor UI lacks an explicit current clearance result")
+    if resumed["status"] == "close_required":
+        if pending is not True:
+            raise ValueError("App Close request contradicts its pending obligation")
+        # Keep the typed action separate from the observation RPC: the existing
+        # async queue cancellation guard can stop before this one submission.
+        close, close_path = queue.call("ck3_continue_death_succession_modal_v1", {
+            "expected_revision": fresh["revision"], "expected_played_character_id": transition["successor_character_id"],
+            "expected_episode_run_id": transition["episode_run_id"]}, "m7-modal-close")
+        issue = _ordinary_succession_close_issue(close, starting_date_raw=fresh["date_raw"],
+            successor_character_id=transition["successor_character_id"])
+        if issue is not None:
+            raise ValueError("App Close failed the original Queue validator: " + issue)
+        fresh, fresh_path = snapshot_once(queue, "m7-cleared-successor-snapshot")
+        require_current_successor(fresh, transition)
+        if any(fresh.get(left) != close.get(right) for left, right in (
+                ("date_raw", "ending_date_raw"), ("revision", "ending_revision"),
+                ("native_revision", "ending_native_revision"))):
+            raise ValueError("Queue's independent successor post disagrees with App Close")
+        transition["timeline_blocker_continuation"].update(status="materially_cleared",
+            close_result=copy.deepcopy(close), close_result_response=str(close_path))
+        pending = False
+    if not pending:
+        continuation = transition.get("timeline_blocker_continuation", {})
+        state = continuation.get("status")
+        if state == "materially_cleared":
+            close = continuation.get("close_result")
+            issue = _ordinary_succession_close_issue(close,
+                starting_date_raw=close.get("starting_date_raw") if isinstance(close, dict) else None,
+                successor_character_id=transition["successor_character_id"])
+            if issue is not None:
+                raise ValueError("App Close lacks the original Queue verification: " + issue)
+        elif state != "already_clear":
+            raise ValueError("App successor UI clear result lacks its original timeline proof")
+        if _player_decision_pending(fresh):
+            raise ValueError("App clearance still has a pending player decision")
+    transition["successor_ui_resume_response"] = str(response_path)
+    transition["successor_ui_pending"] = pending
+    return fresh, fresh_path, pending
+
+
+def completed_ui_resume(turn):
+    return isinstance(turn, dict) and turn.get("status") in {"successor_ui_resumed", "successor_ui_pending"}
+
+
+def consume_completed_ui_resume(queue, turn, response_path, transition):
+    """Consume an App AUTO UI result without another Continue or ordinary credit."""
+    if not completed_ui_resume(turn) or not isinstance(transition, dict):
+        raise ValueError("App UI resume needs the Queue's retained original transition")
+    resumed = turn.get("successor_ui_obligation_v1")
+    if not isinstance(resumed, dict):
+        raise ValueError("App UI resume lost its original response")
+    _retain_app_ui_evidence(transition, resumed)
+    current, path = snapshot_once(queue, "m7-auto-ui-independent-post")
+    require_current_successor(current, transition)
+    if any(current.get(key) != resumed.get("snapshot", {}).get(key) for key in (
+            "snapshot_id", "revision", "native_revision", "date_raw", "episode_run_id", "episode_character_id")):
+        raise ValueError("App AUTO UI result differs from the independent Queue post")
+    if turn["status"] == "successor_ui_resumed":
+        close = turn.get("result")
+        continuation = transition.get("timeline_blocker_continuation", {})
+        if (resumed.get("pending") is not False or resumed.get("date_advanced") is not True
+                or continuation.get("status") != "materially_cleared" or continuation.get("close_result") != close):
+            raise ValueError("App AUTO UI result lacks its original material Close")
+        issue = _ordinary_succession_close_issue(close,
+            starting_date_raw=close.get("starting_date_raw") if isinstance(close, dict) else None,
+            successor_character_id=transition["successor_character_id"])
+        if issue is not None or any(current.get(left) != close.get(right) for left, right in (
+                ("date_raw", "ending_date_raw"), ("revision", "ending_revision"),
+                ("native_revision", "ending_native_revision"))):
+            raise ValueError("App AUTO Close failed original Queue/independent post verification")
+    elif resumed.get("pending") is not True:
+        raise ValueError("App pending UI result is contradictory")
+    transition["successor_ui_pending"] = resumed["pending"]
+    queue.thin("m7-auto-ui-result", {"response": str(response_path), "snapshot": str(path),
+        "status": turn["status"], "new_natural_succession_credit": 0, "ordinary_cycle_credit": 0})
+    return current, path
+
+
 def checkpoint_if_clear(queue, transition):
     current, current_path = snapshot_once(queue, "m7-save-readback")
-    require_current_successor(current, transition)
-    if _player_decision_pending(current):
-        transition["successor_checkpoint"] = {"status": "deferred_player_decision"}
+    current, current_path, pending = resume_successor_ui(queue, current, transition)
+    if pending or _player_decision_pending(current):
+        transition["successor_checkpoint"] = {"status": "deferred_successor_ui_or_player_decision"}
         return current, current_path, None
     saved, save_path = queue.call("ck3_save_checkpoint",
                                   {"expected_revision": current["revision"]}, "m7-successor-save")

@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 from tools.g2_saved_campaign.m7_ordinary_successor_async_queue import AsyncOrdinarySuccessorQueue
 
-QUERY = "ck3_query_current_timeline_blocker_context_v1"
+QUERY = "ck3_resume_successor_ui_v1"
 
 def typed(value):
     return {"status": "available", "value": value, "unavailable_reason": None}
@@ -43,9 +43,18 @@ class TimelineQueue:
 
     async def call(self, tool, arguments, kind):
         self.calls.append((tool, copy.deepcopy(arguments), kind))
+        if tool == "ck3_take_snapshot" and len(self.calls) == 2:
+            return inputs()[:2]
         if tool != QUERY or len(self.calls) != 1:
             raise AssertionError("unexpected action or repeated timeline query")
-        return ({"current_timeline_blocker_context": copy.deepcopy(self.context)},
+        after, _, transition = inputs()
+        clear = self.context["status"] == "available"
+        transition["timeline_blocker_continuation"] = {
+            "status": "already_clear" if clear else None,
+            "initial_query": {"current_timeline_blocker_context": copy.deepcopy(self.context)},
+            "initial_query_response": "fixture-timeline-query.json", "close_result_response": None}
+        return ({"status": "clear" if clear else "ui_unresolved", "pending": not clear,
+                 "snapshot": after, "transition": transition},
                 Path("fixture-timeline-query.json"))
 
     def thin(self, kind, payload):
@@ -64,7 +73,8 @@ class AsyncSuccessorModalTests(unittest.IsolatedAsyncioTestCase):
             after, path, transition, transitions)
         self.assertEqual(result, (after, path, transition))
         self.assertEqual(transitions, [transition])
-        self.assertEqual(queue.calls, [(QUERY, {"expected_revision": 12}, "m7-timeline")])
+        self.assertEqual(queue.calls, [(QUERY, {"expected_revision": 12}, "m7-successor-ui-resume"),
+                                      ("ck3_take_snapshot", {"include_native_command_history": False}, "m7-successor-ui-independent-post")])
         continuation = transition["timeline_blocker_continuation"]
         self.assertEqual(continuation["status"], "already_clear")
         self.assertIsNone(continuation["close_result_response"])
@@ -83,17 +93,15 @@ class AsyncSuccessorModalTests(unittest.IsolatedAsyncioTestCase):
             "blocks_simulation": unavailable, "has_open_succession": unavailable,
             "can_continue": unavailable})
         transitions = []
-        with self.assertRaisesRegex(ValueError, "ambiguous/unavailable"):
-            await AsyncOrdinarySuccessorQueue(queue).finish_transition(
-                after, path, transition, transitions)
+        await AsyncOrdinarySuccessorQueue(queue).finish_transition(after, path, transition, transitions)
         self.assertEqual(transitions, [transition])
-        self.assertEqual(queue.calls, [(QUERY, {"expected_revision": 12}, "m7-timeline")])
+        self.assertEqual([row[0] for row in queue.calls], [QUERY, "ck3_take_snapshot"])
         continuation = transition["timeline_blocker_continuation"]
         self.assertIsNone(continuation["status"])
         self.assertEqual(continuation["initial_query_response"], "fixture-timeline-query.json")
         self.assertIsNone(continuation["close_result_response"])
-        self.assertNotIn("current_date_raw", transition)
-        self.assertEqual(len(queue.receipts), 1)
+        self.assertTrue(transition["successor_ui_pending"])
+        self.assertEqual(len(queue.receipts), 2)
         kind, pending = queue.receipts[0]
         self.assertEqual(kind, "m7-natural-transition-pending")
         self.assertEqual(pending["successor_character_id"], 301)

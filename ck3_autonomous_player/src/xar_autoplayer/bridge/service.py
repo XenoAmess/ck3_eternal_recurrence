@@ -4751,6 +4751,14 @@ class GameplayBridgeService:
                     "planning_source_frame": planned["planning_source_frame"],
                     "plan": planned["plan"], "result": unavailable}
         outcome = self._execute_planned_turn(planned, before_submit=before_submit)
+        successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
+        if successor_owner is not None:
+            outcome = successor_owner.after_continue(planned, outcome)
+            if outcome.get("successor_ui_obligation_v1", {}).get("status") == "handoff_unverified":
+                # The original dispatch result is already applied/unknown.
+                # Do not let an unrelated following consumer hide that receipt
+                # or produce further work before the owner can retain evidence.
+                return {**outcome, "planning_source_frame": planned.get("planning_source_frame")}
         following_plan = outcome.pop("_ordinary_sway_following_plan_v1", None)
         if isinstance(following_plan, dict):
             # Attribute the ordinary command to its actual fresh frame; the
@@ -5054,6 +5062,9 @@ class GameplayBridgeService:
                     "revision": planned.get("revision"),
                     "interception": copy.deepcopy(interception),
                 }
+        successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
+        if successor_owner is not None:
+            successor_owner.before_continue(planned)
         from .ordinary_retreat_service_v1 import STEPS as ordinary_retreat_steps
         if selected_step in ordinary_retreat_steps:
             from .ordinary_retreat_service_v1 import execute_ordinary_retreat_v1
@@ -6080,7 +6091,11 @@ class GameplayBridgeService:
             if step == QUERY_ARMY_STRENGTHS_STEP else None
         )
         try:
-            result = self.driver.execute_step(step, expected_revision=expected_revision)
+            successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
+            if successor_owner is None:
+                result = self.driver.execute_step(step, expected_revision=expected_revision)
+            else:
+                result = successor_owner.driver_step(step, expected_revision=expected_revision)
         finally:
             finish_army_timing(army_driver_timing)
         if step == QUERY_ARMY_STRENGTHS_STEP and isinstance(result.get("army_strengths"), list):
@@ -6114,6 +6129,9 @@ class GameplayBridgeService:
         self, *, expected_revision: int | None = None
     ) -> dict[str, object]:
         """Execute the shared checkpoint step and return its materialization."""
+        successor_owner = getattr(self, "_successor_ui_app_owner_v1", None)
+        if successor_owner is not None:
+            successor_owner.require_save()
         if "save-checkpoint" not in action_step_set(self.capabilities()):
             raise UnsupportedStepError(
                 "selected backend does not implement gameplay step save-checkpoint"

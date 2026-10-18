@@ -1658,6 +1658,8 @@ def create_server(
         ) from error
 
     service = GameplayBridgeService(driver)
+    from .successor_ui_app_owner_v1 import install_successor_ui_app_owner_v1
+    successor_owner = install_successor_ui_app_owner_v1(service, before_submit=before_auto_turn_submit)
     artifact_inspector = (
         Ck3ProfileArtifactInspector(profile_dir)
         if profile_dir is not None
@@ -1682,6 +1684,14 @@ def create_server(
             "Use ck3_plan_turn unless a specific gameplay step is requested."
         ),
     )
+
+    if successor_owner is not None:
+        @server.tool()
+        def ck3_resume_successor_ui_v1(expected_revision: int | None = None) -> dict[str, object]:
+            """Observe the App's retained inheritance UI; never submit Continue or Close."""
+            return successor_owner.resume(expected_revision=expected_revision, allow_close=False)
+
+        _forbid_unknown_tool_arguments_v1(server, "ck3_resume_successor_ui_v1")
 
     @server.tool()
     def ck3_get_capabilities() -> dict[str, object]:
@@ -2842,6 +2852,10 @@ def create_server(
             expected_episode_run_id: str,
         ) -> dict[str, object]:
             """Close once, observe material clearance, and prove successor time advance."""
+            if successor_owner is not None:
+                return successor_owner.public_close(dict(expected_revision=expected_revision,
+                    expected_played_character_id=expected_played_character_id,
+                    expected_episode_run_id=expected_episode_run_id))
             return _ck3_continue_death_succession_modal_v1(
                 service, expected_revision, expected_played_character_id, expected_episode_run_id,
             )
@@ -2868,7 +2882,9 @@ def create_server(
         """Plan and execute exactly one supported one-life gameplay turn."""
         army_service_timing = start_army_timing("mcp.auto_turn_service")
         try:
-            if before_auto_turn_submit is None:
+            if successor_owner is not None:
+                payload = successor_owner.auto_turn(before_submit=before_auto_turn_submit)
+            elif before_auto_turn_submit is None:
                 payload = service.auto_turn()
             else:
                 payload = service.auto_turn(before_submit=before_auto_turn_submit)
@@ -2927,6 +2943,15 @@ def create_server(
                     },
                 },
             )
+        obligation = payload.get("successor_ui_obligation_v1")
+        if isinstance(obligation, dict) and obligation.get("status") == "handoff_unverified":
+            from mcp.types import CallToolResult, TextContent
+            return CallToolResult(
+                content=[TextContent(type="text", text="Natural Continue result retained; successor UI handoff "
+                                    "is unverified; collect the original result, do not resend Continue")],
+                is_error=True, structured_content={"error_type": "NaturalSuccessorUIRetentionUnverified",
+                    "diagnostics": {"successor_ui_obligation_v1": {
+                        "obligation": obligation, "original_turn": payload}}})
         if (
             isinstance(plan, dict)
             and plan.get("selected_step") == "query-army-strengths-v1"

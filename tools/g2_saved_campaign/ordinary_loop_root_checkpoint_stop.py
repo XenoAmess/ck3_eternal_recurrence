@@ -616,6 +616,14 @@ def run(args) -> int:
             if plan_before_action("ordinary-plan"):
                 continue
             turn, turn_path = queue.call("ck3_auto_turn", {}, "normal")
+            if m7.completed_ui_resume(turn):
+                snapshot, path = m7.consume_completed_ui_resume(queue, turn, turn_path, pending_successor)
+                frame, current_date = m7.frame(snapshot), snapshot["date_raw"]
+                source_snapshot, source_snapshot_path = snapshot, path
+                latest_successor_snapshot = path
+                # UI recovery is a retained inheritance obligation, not another
+                # ordinary cycle or a second natural successor. No replay.
+                continue
             turns += 1
             last_successor_save_is_loop_endpoint = False
             observed = ending_frame(turn)

@@ -52,15 +52,18 @@ class _AdoptedQueue:
             return copy.deepcopy(self.fixture["capabilities"]), (
                 "offline-adopted-queue/" + kind + ".json"
             )
-        if tool == "ck3_query_current_timeline_blocker_context_v1":
-            return {
+        if tool == "ck3_resume_successor_ui_v1":
+            retained = copy.deepcopy(next(value for kind, value in reversed(self.observations)
+                                          if kind == "m7-natural-transition-pending"))
+            retained["timeline_blocker_continuation"] = {"status": "already_clear", "initial_query": {
                 "current_timeline_blocker_context": {
                     "status": "available",
                     "identity": "none",
                     "blocks_simulation": _available_boolean(False),
                     "has_open_succession": _available_boolean(False),
-                }
-            }, "offline-adopted-queue/already-clear-timeline.json"
+                }}, "close_result": None}
+            return {"status": "clear", "pending": False, "transition": retained,
+                    "snapshot": copy.deepcopy(self.fixture["successor_snapshot"])}, "offline-adopted-queue/already-clear-timeline.json"
         if tool == "ck3_save_checkpoint":
             return {"checkpoint": copy.deepcopy(self.checkpoint)}, self.save_response
         raise AssertionError("unexpected request after explicit adoption: " + tool)

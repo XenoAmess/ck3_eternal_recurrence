@@ -54,3 +54,29 @@ Root最终独立跑新旧两模块12测试通过（chunk521b2c，body0.953秒／
 原结果已提供 `reconciliation`、新旧角色/episode、自然继承标记及 `driver_state_persistence_diagnostic`，应原样复用；这些不是独立 post snapshot。App result hook 可在 `:4753` 后、原结果仍保全时，用实际 post 与原 `_verify_natural_succession_transition(result, *, snapshot, binding, before, succession_lifecycle)` 验证，再 `ledger.retain(transition, snapshot, *, verification)`。goal 可复用 SDK `strategy.py:6226 continue_ordinary_campaign_goal_v1(pre_goal, reconciliation)` 算期望，和真实 post normalized goal 全文相等；queue 原 `goal_matches` 仍独立保留，不跨进程回调、不移门。retain失败必须保原 AUTO/失败诊断及 once 锁；不得遮蔽原已应用动作或改变 `mcp_server.py:2899` persistence-failed 分支。后继 deferred UI仍需上一节 queue/Close/SAVE采用，不能靠这一小补丁称完整 READY。
 
 代表软件测试只需实际 App/registered MCP 的一次 Continue：原callback先运行、唯一 preintent先于原executor、原完整验证后retain、返回原结果；再拒绝缺pre/混合四元组、callback拦截零意图、pre写失败零执行、post/goal错误保原已执行回执且禁止重发；普通step断言0新增 snapshot/caps/ledger写。此轮仅建议，**未运行这些测试**。来源实际 SHA256：service.py `912eed9b61d2879a82c78bc9602ef6fb8efb9c86bfea1def4fc1d98fcd48a116`；mcp_server.py `979303fcdd4dee9811dc748a289a16091d65def4521596737b1180eb9f0a078a`。Host06仍未采用，实局自然收益/跨格继承与新Game冷恢复仍缺，G2保持 **6/8**。
+
+## 2026-10-19：常驻 App 与实际 Queue 采用已实现，尚未部署实机
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`。机器身份于 `2026-10-18T19:13:15Z` 由 `tools/ck3_live_run_id.py machine` 实际读回；最终软件验证的精确 UTC、命令、源码 SHA、早期失败及边界见 [机读回执](evidence/successor-ui-app-owner-source-2026-10-19.json)。以下追加实现事实，不将上文历史建议改写为当时已完成。
+
+结论：已经有合法原生继承和角色重绑；此前完整 App/Queue 对继承后窗口及持久义务的采用不完整。本次补的是常驻采用链。**采用新源码的同一个 App/driver 可处理多次自然继承，不要求每次死亡改代码或重启智能体。** 当前已录素材使用的冻结 Host06/SDK 不会因此热更新；本次没有改冻结运行树、重启真实智能体、启动下一局或进行实机复验。
+
+继承人先由 CK3 的合法继承规则决定。`continue-as-reconciled-successor` 对 CK3 已经切换的真实玩家核对原期待与每项头衔，随后重绑 episode 和既有 campaign goal；该逻辑步骤不是任意指定角色，也不发出更换统治者命令。后续 death modal 的 typed Close 是另一项动作，必须独立证明清窗及日期结果。真正无合法后继、对账不匹配或 game over 继续保留真实终局，不伪造续行或另开局。
+
+实际采用路径为 `create_server` → 同一个 Service 的 [App owner](../../ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py) → 原 dispatcher/driver → [Queue consumer](../../tools/g2_saved_campaign/m7_ordinary_successor_queue.py)。只有既有 ordinary lifecycle 且原 successor 原生通道已合法启用的 driver 自动安装此 owner；没有新增 opt-in，也不替未资格 experimental 能力开门。已有 pending 却缺合格 owner 时在变更前拒绝，保留只读诊断。
+
+1. 原完整 planner、所有原拦截和原显示/ACK 回调先运行。只有实际选中合法 Continue 才额外取得提交前的 history-free snapshot/capabilities，逐项核原计划八字段、前代、真实 OS Game birth/image、生命周期和 goal，随后 fsync/读回唯一 preintent，再执行原逻辑步骤。
+2. 使用独立 post snapshot/capabilities 跑原完整继承验证，并以原 `continue_ordinary_campaign_goal_v1` 算出的期望全文比对实际 goal；原 driver persistence 门仍在。通过后登记 canonical ledger 的 pending。失败保全原已执行/未知回执和防重锁，MCP 返回包含原完整 turn 的错误诊断；不因留存失败重发 Continue。原 persistence-failed 分支仍优先。
+3. 旧 root 事件仍交完整普通 planner；陌生事件沿原采集和第一显示可用选项策略，角色交互通知继续使用原策略。未解决的 UI 义务跨普通事件处理保留。事件消失之后必须重新查询 timeline；`identity=none` 同时 open/blocked 为 true 仍不能 Close 或 SAVE。含 pending interaction 时先延后 UI 清窗，不能越过通知。
+4. `ck3_resume_successor_ui_v1` 是观察入口，不隐含提交 Close。实际 Queue 保持观察 RPC 与 typed Close 分离，保留原 async 取消在动作前的阻断。Close 同样先执行原显示/ACK 回调，落唯一 UNKNOWN 意图，执行原 typed 通道与完整 validator，独立 post 通过才 resolve。ACK、异常、留存失败都不会重新武装动作。公共 SAVE 和 generic save step 都受同一 ledger 门禁。
+5. App 自己的 AUTO 也能继续处理 pending：普通事件继续走普通 planner；合法 modal 则完成一次 Close，原回执随 `successor_ui_resumed` 返回。实际 Queue/ordinary loop 对这个结果单独消费，不把它当另一场自然继承或另一个普通 cycle。SAVE 仍使用独立当前帧。
+
+同一个 Game 的 SDK/App owner 重建可重新加载义务：核机器、源码 epoch、实际 OS birth/image、原完整继承证明和当前 goal，由实际 App 的 canonical ledger 签发新 connection binding。Queue 只保留这次实际 App 响应作为读回证据，不改旧 successor proof，也不把客户端 JSON 传回注册或授权 Service。新 Game、载 SAVE 导致 birth 改变、来源改变或 UNKNOWN Close 均拒此 same-Game 恢复，不提供通用迁移捷径。
+
+包内新增机器身份叶由 [生成器](../../tools/gen_ck3_live_run_identity_package.py) 从 `tools/ck3_live_run_id.py` 的原 AST 精确投影，算法保持单一来源；不再假设外置 SDK 存在 `../tools`。当前 setuptools 自动发现 `xar_autoplayer` 包的 `.py` 叶；未来 COW/freeze producer 必须包含新 owner、生成身份叶以及 epoch 所需的全部源码，缺失即拒绝 bootstrap。隔离 cwd、Python `-I`、仅提供 package src 路径的完整 registered MCP bootstrap 已通过；这不是某份冻结 SDK 已实际部署的证明。
+
+最终实际子进程与外层均 0：**36 tests / 26 subtests，19.60 秒，chunk `7e17db`**。测试穿真实 registered MCP Client、Service/dispatcher 和同步/异步 Queue；driver、planner 的当前选择、过程身份与所有游戏帧均为合成。覆盖同 App 两次继承 `19→23→29`，原 origin 不变、goal progress 精确 `+2`、同 driver/ledger；完整旧 root 陌生事件→fresh timeline→唯一 Close→SAVE→后续普通 turn；同 birth 新 connection 的 App 重建后真实 Queue 完成旧事件/Close/SAVE；原 completed 逻辑 Continue 和 AUTO 清窗回执各自消费且不重放；拦截、混帧、缺 goal、错误 post/goal、原 persistence/retain 失败、none+open、UNKNOWN ACK、异 birth、无合格 owner及真终局。无 pending 的普通 turn 断言没有新增 snapshot/capabilities RPC。原 full/title/Close validators 没有改写。早期两项实现缺陷和一次合成 fixture 缺字段的失败保留在回执。
+
+已有历史实机来源仅在此精确复用一条：[AUTO368 子链](evidence/p50r1-natural-successor-actual-2026-10-18.json)，同机器 `2026-10-17T19:27:31.655608Z`、Game51028/birth FILETIME134367033244212072，`31254/native-31254-8d3a8440eb30 → 40695/native-40695-9cf747ffe1ee`，titles2230/2231/2262 matched；一次 Close372、SAVE374、SEM375 保原 campaign/origin31254、current40695/progress1，随后 FULL376 十轮普通游玩。其前置 AUTO361 曾需要保留原回执的元数据恢复，不能用该成功子链宣传整场没有维修。永久存档中的 actor82925 不单独证明第二次继承完整闭环；本次第二次继承是软件代表，不补实机信用。
+
+本包只有小型源码、临时 JSON 和精简记录；无媒体读写、全盘扫描、大文件哈希或永久存档操作。仍须在后续用户允许的新运行中建立实际 source tuple/Game birth/preintent，并自然取得全后验和普通玩法。新 Game/SAVE lineage、更多 ruler/seed/government 与 M6 自然收益终态仍未由本补丁验收，**G2 继续 6/8**。

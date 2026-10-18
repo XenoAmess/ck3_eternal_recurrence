@@ -19,7 +19,7 @@ class _HeldTimelineQueue(_AdoptedQueue):
         self.timeline_calls = 0
 
     async def call(self, tool, arguments, kind):
-        if tool != "ck3_query_current_timeline_blocker_context_v1":
+        if tool != "ck3_resume_successor_ui_v1":
             return await super().call(tool, arguments, kind)
         self.calls.append((tool, dict(arguments), kind))
         self.timeline_calls += 1
@@ -32,7 +32,12 @@ class _HeldTimelineQueue(_AdoptedQueue):
             "has_open_succession": typed(self.close_required),
             "can_continue": typed(self.close_required),
         }
-        return {"current_timeline_blocker_context": context}, "held-timeline.json"
+        retained = next(value for kind, value in reversed(self.observations)
+                        if kind == "m7-natural-transition-pending").copy()
+        retained["timeline_blocker_continuation"] = {"status": "close_required" if self.close_required else "already_clear",
+            "initial_query": {"current_timeline_blocker_context": context}, "close_result": None}
+        return {"status": "close_required" if self.close_required else "clear", "pending": self.close_required,
+                "transition": retained, "snapshot": self.fixture["successor_snapshot"]}, "held-timeline.json"
 
 
 class AsyncSuccessorOwnerTests(unittest.IsolatedAsyncioTestCase):
@@ -41,6 +46,7 @@ class AsyncSuccessorOwnerTests(unittest.IsolatedAsyncioTestCase):
         adapter = AsyncOrdinarySuccessorQueue(queue)
         first_after, first_path, first_transition = inputs()
         second_after, second_path, second_transition = inputs()
+        queue.fixture["successor_snapshot"] = first_after
         first = asyncio.create_task(adapter.finish_transition(
             first_after, first_path, first_transition, [],
         ))
@@ -54,8 +60,8 @@ class AsyncSuccessorOwnerTests(unittest.IsolatedAsyncioTestCase):
         await asyncio.gather(first, second)
         self.assertEqual(queue.timeline_calls, 2)
         self.assertEqual([row[0] for row in queue.calls], [
-            "ck3_query_current_timeline_blocker_context_v1",
-            "ck3_query_current_timeline_blocker_context_v1",
+            "ck3_resume_successor_ui_v1", "ck3_take_snapshot",
+            "ck3_resume_successor_ui_v1", "ck3_take_snapshot",
         ])
 
     async def test_cancel_collects_original_query_and_starts_no_close_or_save(self):
@@ -75,7 +81,7 @@ class AsyncSuccessorOwnerTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(len(transitions), 1)
         self.assertEqual([row[0] for row in queue.calls], [
             "ck3_take_snapshot", "ck3_get_capabilities",
-            "ck3_query_current_timeline_blocker_context_v1",
+            "ck3_resume_successor_ui_v1",
         ])
         self.assertEqual([kind for kind, _ in queue.observations], [
             "m7-natural-transition-pending",

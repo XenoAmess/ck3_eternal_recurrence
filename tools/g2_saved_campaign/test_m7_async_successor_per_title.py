@@ -161,12 +161,14 @@ class _ReadOnlyAsyncQueue:
                     "driver_state_restore_kind": "natural_succession",
                 },
             }
-        elif tool == "ck3_query_current_timeline_blocker_context_v1":
-            body = {"current_timeline_blocker_context": {
+        elif tool == "ck3_resume_successor_ui_v1":
+            retained = copy.deepcopy(self.thin_rows[-1][1])
+            retained["timeline_blocker_continuation"] = {"status": "already_clear", "initial_query": {"current_timeline_blocker_context": {
                 "status": "available", "identity": "none",
                 "blocks_simulation": _available(False),
                 "has_open_succession": _available(False),
-            }}
+            }}, "close_result": None}
+            body = {"status": "clear", "pending": False, "snapshot": copy.deepcopy(self.successor), "transition": retained}
         else:
             raise AssertionError("completed continuation must not submit " + tool)
         return body, Path(kind + ".json")
@@ -198,7 +200,7 @@ class AsyncSuccessorPerTitleRetentionTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(expected["expected_without_heir_title_ids"], [13])
         self.assertEqual(expected["observed_additional_successor_title_ids"], [99])
         self.assertEqual(after, successor)
-        self.assertEqual(after_path, Path("m7-completed-successor-snapshot.json"))
+        self.assertEqual(after_path, Path("m7-successor-ui-independent-post.json"))
         self.assertEqual(transitions, [transition])
         self.assertIs(transitions[0], transition)
         self.assertEqual(transition["reconciliation"], expected)
@@ -207,9 +209,9 @@ class AsyncSuccessorPerTitleRetentionTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual([tool for tool, _, _ in queue.calls], [
             "ck3_take_snapshot", "ck3_get_capabilities",
-            "ck3_query_current_timeline_blocker_context_v1",
+            "ck3_resume_successor_ui_v1", "ck3_take_snapshot",
         ])
-        self.assertEqual(queue.calls[-1][1], {"expected_revision": 8})
+        self.assertEqual(queue.calls[-2][1], {"expected_revision": 8})
         self.assertEqual([kind for kind, _ in queue.thin_rows], [
             "m7-natural-transition-pending", "m7-natural-transition",
         ])
@@ -217,7 +219,7 @@ class AsyncSuccessorPerTitleRetentionTests(unittest.IsolatedAsyncioTestCase):
         final = queue.thin_rows[1][1]
         self.assertLess(
             queue.events.index(("thin", "m7-natural-transition-pending")),
-            queue.events.index(("call", "m7-timeline")),
+            queue.events.index(("call", "m7-successor-ui-resume")),
         )
         self.assertEqual(pending["reconciliation"], expected)
         self.assertEqual(final["reconciliation"], expected)
