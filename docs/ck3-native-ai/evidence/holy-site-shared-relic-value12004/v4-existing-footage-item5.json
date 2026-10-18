@@ -1,0 +1,201 @@
+{
+  "schema": "faith-v4-existing-footage-coverage-item5-v1",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-18T02:34:52.099100+00:00",
+  "analysis_source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "historical_live_source_commit": "e23f9de04018b638c62e0b72d39d88b56f0010cb",
+  "scope": "User item5 shared holy sites only; not a review of all ten user items.",
+  "delivery_mode": "Retained R0010/R0011 sources; future Sinai plans remain unexecuted and are not required footage.",
+  "evidence": {
+    "r9retry-swap267-context": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0010\\root-native-receipts\\r9retry-swap267-context.json",
+        "bytes": 51415,
+        "sha256": "294fc6f6113454985b483e22bfa46273197d22080f8faef0288b96e479f027d4"
+      },
+      "started_at": "2026-10-17T20:08:28.781024+00:00",
+      "finished_at": "2026-10-17T20:08:29.223043+00:00"
+    },
+    "r9retry-after-swap-relic32": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0010\\root-native-receipts\\r9retry-after-swap-relic32.json",
+        "bytes": 45164,
+        "sha256": "b692926c73981347af9d15dd28ad71ac9bb55c5a47deb4d61e0c1c2735891ab3"
+      },
+      "started_at": "2026-10-17T20:10:21.234503+00:00",
+      "finished_at": "2026-10-17T20:10:21.581242+00:00"
+    },
+    "r9retry-shared14-before-context": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0010\\root-native-receipts\\r9retry-shared14-before-context.json",
+        "bytes": 47168,
+        "sha256": "e99629c9235eae51adaadae35a88c872738f4dbf926274827735979b428fc262"
+      },
+      "started_at": "2026-10-17T20:11:33.451931+00:00",
+      "finished_at": "2026-10-17T20:11:33.877140+00:00"
+    },
+    "r9retry-shared14-after-context": {
+      "receipt": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0010\\root-native-receipts\\r9retry-shared14-after-context.json",
+        "bytes": 44856,
+        "sha256": "6fa2a6460e8fd6e930d78bac7503bd95cc4d7bee6313c9b7fc7c85aee060cbec"
+      },
+      "started_at": "2026-10-17T20:12:44.770137+00:00",
+      "finished_at": "2026-10-17T20:12:45.418977+00:00"
+    }
+  },
+  "tracked_observations": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r9-r0010-observations.md",
+      "bytes": 3598,
+      "sha256": "23ab61b8c6d5ae97190f2ba407536ba233403472101a82a99fea6c3e05167000"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\faith-and-power-episode01-r0011-last-faith-exit.md",
+      "bytes": 4165,
+      "sha256": "bc95d725a64011e05164b27cc9467cea9930e56ba4030c017650385bcf63949d"
+    }
+  ],
+  "rows": [
+    {
+      "topic": "same global inventory and perFaith grade",
+      "cues": [
+        "N057",
+        "N058",
+        "N059",
+        "N060"
+      ],
+      "run": "R0010",
+      "site_ids": [
+        32,
+        14
+      ],
+      "observed": true,
+      "actual": "Site32 has associated Faith51/50 and one physical inventory. Site14 has Faith26/27/36/49/50 and physical64 in slot0.",
+      "unobserved": [
+        "All associated-Faith members actual named net benefits"
+      ],
+      "proof_keys": [
+        "r9retry-after-swap-relic32",
+        "r9retry-shared14-before-context"
+      ],
+      "visual_asset_selection": null
+    },
+    {
+      "topic": "same artifact recognized differently by different Faith",
+      "cues": [
+        "N061",
+        "N062",
+        "N063"
+      ],
+      "run": "R0010",
+      "site_ids": [
+        14
+      ],
+      "observed": true,
+      "actual": "Physical64 is recognized by49/50 and rejected by26/27/36. Outside candidate237/277 share the same vector at this frame.",
+      "unobserved": [
+        "Two artifacts with different recognition vectors",
+        "Actual holder conversion",
+        "Hypothetical r4-unrecognized replaced by r3-recognized"
+      ],
+      "proof_keys": [
+        "r9retry-shared14-before-context"
+      ],
+      "visual_asset_selection": null,
+      "narration_guard": "Keep hypothetical arithmetic explicitly hypothetical; use64 across Faiths for actual example."
+    },
+    {
+      "topic": "filled-slot swap and original recipient",
+      "cues": [
+        "N065",
+        "N066",
+        "N067",
+        "N068",
+        "L068-01",
+        "L068-02",
+        "L068-03"
+      ],
+      "run": "R0010",
+      "site_ids": [
+        32
+      ],
+      "observed": true,
+      "actual": "237 replaced by267; both r4 and both recognized by50/51.267 owner32;237 returned to actor15893 while county holder15436 differs; wallet2250 unchanged.",
+      "unobserved": [
+        "Inter-artifact recognition tradeoff",
+        "Preview opinions/CB actually applied to all named recipients"
+      ],
+      "proof_keys": [
+        "r9retry-swap267-context",
+        "r9retry-after-swap-relic32"
+      ],
+      "visual_asset_selection": null
+    },
+    {
+      "topic": "ordinary nonempty shared exit",
+      "cues": [
+        "N081",
+        "L083-01",
+        "L083-02",
+        "L083-03"
+      ],
+      "run": "R0010",
+      "site_ids": [
+        14
+      ],
+      "observed": true,
+      "actual": "Faith50 exits;26/27/36/49 remain.64 stays owner14/slot0. Holder still50; current R2→0 and Active→false, cache stays Active/R2 at sampled aftertime.",
+      "unobserved": [
+        "Cache later refresh",
+        "Two different-recognition physical items retained together",
+        "Actual otherFaith payouts"
+      ],
+      "proof_keys": [
+        "r9retry-shared14-before-context",
+        "r9retry-shared14-after-context"
+      ],
+      "visual_asset_selection": null
+    },
+    {
+      "topic": "lastFaith exit and return",
+      "cues": [
+        "N082",
+        "N083",
+        "L083-04",
+        "L083-05"
+      ],
+      "run": "R0011",
+      "site_ids": [
+        326
+      ],
+      "observed": true,
+      "actual": "Created ordinary soleFaith50 site326 with237; lastFaith exit leaves association/inventory empty, independent receipt confirms237 owner15893.",
+      "unobserved": [
+        "Successful exit action raw footage",
+        "Actor/holder receiver distinction because both15893"
+      ],
+      "proof_doc": "docs/ck3-native-ai/faith-and-power-episode01-r0011-last-faith-exit.md",
+      "visual_asset_selection": null,
+      "narration_guard": "Successful world result is evidence-backed, but action recording ended earlier. Label evidence/readback rather than invent footage."
+    },
+    {
+      "topic": "native AI chooses the action",
+      "cues": [],
+      "run": null,
+      "site_ids": [],
+      "observed": false,
+      "actual": null,
+      "unobserved": [
+        "Native AI candidate generation/weights/ShouldDo/probability"
+      ],
+      "proof_keys": [],
+      "visual_asset_selection": null,
+      "narration_guard": "Root chose a controlled research goal. Normal Can is only the final legality guard."
+    }
+  ],
+  "numeric_ID_human_names_verified_here": false,
+  "new_media_or_game_calls": 0,
+  "current_state_observed": false,
+  "business_pass": false
+}

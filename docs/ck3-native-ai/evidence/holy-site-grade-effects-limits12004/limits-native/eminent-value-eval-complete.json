@@ -1,0 +1,19 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:24:04.768261+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "begin_rva": 45266240,
+  "end_rva": 45266346,
+  "raw_sha256": "ec0103151c06353fa25dd4583c9257eb4b1d1b4c900ef1988bbd3bf9c2bbe973",
+  "bytes_hex": "488b026683380f7506448b4008eb0641b8ffffffff488b052c291f034885c07512488b0598281f03488b48208b81f4090000c3418bc881e1ffffff003b482c7317488b40204803c9488b54c8084885d27406443942087407488b1561281f03488b4a208b81f4090000c3",
+  "cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+  "cache_offset": 45262144,
+  "asm_sha256": "3deb68c436d1bcc06b7295162717947acdebba896042ba9baaaa8f54868d2041",
+  "boundary": null,
+  "scope": "whole runtime function when exact boundary present; otherwise bounded locator",
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

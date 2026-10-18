@@ -1,0 +1,233 @@
+{
+  "schema": "ck3-v4-clerical-region-stance-bilingual-terms-a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:51:36.019886+00:00",
+  "interpreter": "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "head": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1",
+  "dirty_entries": 23,
+  "version_metadata": {
+    "path": "../launcher/launcher-settings.json",
+    "rawVersion": "1.20.0.4",
+    "sha256": "5d2e824196d28103246c1fc26e5da9ea0edb8cea3898e73d3d2db0f910fe5b25",
+    "lines": [
+      6,
+      7
+    ]
+  },
+  "scope": "literal official localization and existing management doc only; no EXE/native/game/recording access, no main or frozen cue changes",
+  "sources": [
+    {
+      "relative_to_game": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "bytes": 43748,
+      "entries": [
+        {
+          "key": "game_concept_clerical_title",
+          "line": 32,
+          "original": " game_concept_clerical_title: \"圣职头衔\""
+        },
+        {
+          "key": "game_concept_clerical_title_desc",
+          "line": 34,
+          "original": " game_concept_clerical_title_desc: \"$game_concept_clerical_title$是管理[faith|E]内[clerical_region|E]的[clergy|E]持有的[ecclesiastical|E][title|E]。对于[christian|E]信仰，它以[archdiocese|E]的形式出现。\\n\\n它的持有者是圣职区内[clergy|E]的[religious_superior|E]，通常由[head_of_faith|E]授予。\""
+        },
+        {
+          "key": "game_concept_clerical_region",
+          "line": 96,
+          "original": " game_concept_clerical_region: \"圣职区\""
+        },
+        {
+          "key": "game_concept_clerical_region_desc",
+          "line": 100,
+          "original": " game_concept_clerical_region_desc: \"圣职区是归属于某一[clerical_title|E]辖区的地理区域。区域内任何神职人员都是该区域相关[title|E]持有者的[subordinate|E]。\\n\\n一名[ruler|E]属于包含其[capital|E][county|E]的圣职区，而新圣职区会在其建立者[primary_title|E]的[capital|E]建立。圣职区可以覆盖多个[realms|E]，并拥有位于不同领地的下属。\\n\\n一名$game_concept_ruler$同一时间只能持有一个$game_concept_clerical_region$。若被授予新的区域，该统治者将失去其在前一个区域内持有的所有土地。\""
+        },
+        {
+          "key": "game_concept_archdiocese",
+          "line": 105,
+          "original": " game_concept_archdiocese: \"总主教区\""
+        },
+        {
+          "key": "game_concept_archdiocese_desc",
+          "line": 107,
+          "original": " game_concept_archdiocese_desc: \"总主教区是[christian|E]下的[clerical_region|E]形式——一种由[archbishop|E]通过其[clerical_title|E]持有的教会领地，以首府[county|E]为驻地，并可在该地可修建[grand_cathedral|E]。\\n\\n[christian|E][ruler|E]在属灵事务上须听命于其[capital|E][county|E]所属总主教区的[archbishop|E]，而所有总主教区所辖领土共同构成了[the_christian_church|E][situation|E]。\""
+        },
+        {
+          "key": "game_concept_enshrined_desc",
+          "line": 202,
+          "original": " game_concept_enshrined_desc: \"供奉于[holy_site|E]的[holy_relic|E]能激活并提高圣地给予的增益，效果取决于所有供奉的宝物的总[rarity|E]。\\n\\n供奉的宝物不再由角色拥有，但可以由圣地的[holder|E]、[top_liege|E]或[clerical_region|E]持有者与其互动。宝物将不再破损。你只能供奉自己[faith|E]的圣物，其他信仰的圣物不提供增益。\\n\\n供奉或移除供奉的宝物可能会有奖励或消耗。\""
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/simp_chinese/vassal_stances_l_simp_chinese.yml",
+      "sha256": "327d3c0f1e2e56d50c3d6a011c04de9ae022b7de5d18572e005158fa1e955f9d",
+      "bytes": 24244,
+      "entries": [
+        {
+          "key": "zealot",
+          "line": 47,
+          "original": " zealot: \"宗教狂热\""
+        },
+        {
+          "key": "zealot_opinion",
+          "line": 53,
+          "original": " zealot_opinion: \"$zealot_vassal$好感\""
+        },
+        {
+          "key": "zealot_same_faith_opinion",
+          "line": 54,
+          "original": " zealot_same_faith_opinion: \"$zealot_opinion$#weak （相同[faith|E]）#!\""
+        },
+        {
+          "key": "minority",
+          "line": 62,
+          "original": " minority: \"少数族群\""
+        },
+        {
+          "key": "minority_opinion",
+          "line": 68,
+          "original": " minority_opinion: \"$minority_vassal$好感\""
+        },
+        {
+          "key": "minority_same_faith_opinion",
+          "line": 69,
+          "original": " minority_same_faith_opinion: \"$minority_opinion$#weak （相同[faith|E]）#!\""
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/english/dlc/pam/pam_game_concepts_l_english.yml",
+      "sha256": "46a618caa266a7a3bb2cbdf38734e24971bd4e5f334f32af58a202e4713f5121",
+      "bytes": 47822,
+      "entries": [
+        {
+          "key": "game_concept_clerical_title",
+          "line": 35,
+          "original": " game_concept_clerical_title: \"Clerical Title\""
+        },
+        {
+          "key": "game_concept_clerical_title_desc",
+          "line": 37,
+          "original": " game_concept_clerical_title_desc: \"A $game_concept_clerical_title$ is an [ecclesiastical|E] [title|E] of the [clergy|E] governing a [clerical_region|E] within a [faith|E]. Among the [christian|E] faiths this is an [archdiocese|E].\\n\\nThe holder is the [religious_superior|E] of the [clergy|E] in that region, and is usually appointed by the [head_of_faith|E].\""
+        },
+        {
+          "key": "game_concept_clerical_region",
+          "line": 115,
+          "original": " game_concept_clerical_region: \"Clerical Region\""
+        },
+        {
+          "key": "game_concept_clerical_region_desc",
+          "line": 119,
+          "original": " game_concept_clerical_region_desc: \"A Clerical Region is a geographical region that falls under the jurisdiction of a [clerical_title|E]. Any member of the clergy within the region will be a [subordinate|E] to the holder of the [title|E] associated with the region.\\n\\nA [ruler|E] belongs to the Clerical Region that contains their [capital|E] [county|E], and a new region is founded upon the [capital|E] of its founder's [primary_title|E]. The region may cover multiple [realms|E] and have subordinates that are in different realms.\\n\\nA $game_concept_ruler$ may only hold one $game_concept_clerical_region$ at a time. If granted a new Region, the Ruler forfeits all their held land within the previous one.\""
+        },
+        {
+          "key": "game_concept_archdiocese",
+          "line": 127,
+          "original": " game_concept_archdiocese: \"Archdiocese\""
+        },
+        {
+          "key": "game_concept_archdiocese_desc",
+          "line": 129,
+          "original": " game_concept_archdiocese_desc: \"An Archdiocese is the [christian|E] form of a [clerical_region|E], an ecclesiastical domain held by an [archbishop|E] through its [clerical_title|E] and seated in a capital [county|E], where a [grand_cathedral|E] may be raised.\\n\\nA [christian|E] [ruler|E] answers in spiritual matters to the [archbishop|E] of the Archdiocese that contains their [capital|E] [county|E], and the territory subject to Archdioceses collectively constitutes [the_christian_church|E] [situation|E].\""
+        },
+        {
+          "key": "game_concept_enshrined_desc",
+          "line": 248,
+          "original": " game_concept_enshrined_desc: \"An enshrined [holy_relic|E] at a [holy_site|E] activates holy site bonuses and improves the bonuses it grants, scaled by the total [rarity|E] levels of all enshrined artifacts.\\n\\nAn enshrined artifact is no longer owned by a character, but may be interacted with by the [holder|E], [top_liege|E], or [clerical_region|E] holder of the holy site. The artifact will no longer decay. You can enshrine only holy relics for your own [faith|E]; enshrined holy relics of other faiths will provide no benefits.\\n\\nThere may be rewards or costs associated with enshrining or removing an enshrined artifact.\""
+        }
+      ]
+    },
+    {
+      "relative_to_game": "localization/english/vassal_stances_l_english.yml",
+      "sha256": "0c440066180d6644a32ca8a61b69fd39c23fbe9c232e458299238b8f3a3ed265",
+      "bytes": 24919,
+      "entries": [
+        {
+          "key": "zealot",
+          "line": 50,
+          "original": " zealot: \"Zealot\""
+        },
+        {
+          "key": "zealot_opinion",
+          "line": 56,
+          "original": " zealot_opinion: \"$zealot_vassal$ Opinion\""
+        },
+        {
+          "key": "zealot_same_faith_opinion",
+          "line": 57,
+          "original": " zealot_same_faith_opinion: \"$zealot_opinion$ #weak (Same [faith|E])#!\""
+        },
+        {
+          "key": "minority",
+          "line": 66,
+          "original": " minority:0 \"Minority\""
+        },
+        {
+          "key": "minority_opinion",
+          "line": 72,
+          "original": " minority_opinion:0 \"$minority_vassal$ Opinion\""
+        },
+        {
+          "key": "minority_same_faith_opinion",
+          "line": 73,
+          "original": " minority_same_faith_opinion:0 \"$minority_opinion$ #weak (Same [faith|E])#!\""
+        }
+      ]
+    }
+  ],
+  "existing_management_doc": {
+    "repo_relative_path": "docs/ck3-native-ai/holy-site-relic-management-ai-opinion-12004.md",
+    "sha256": "bb54c30a88fab5b80134c755fce9724a802d3879c790e67c283e7673d93054e4",
+    "entries": [
+      {
+        "line": 9,
+        "original": "谁有这个管理资格？原版规则列了三个身份：圣地所在伯爵领的持有者，这个伯爵领持有者的最高领主，以及这个地方所属教务辖区头衔的持有者。只做中间一层领主，或者只是全教信仰领袖，并不会凭这个身份自动获得这里的权限；还要看他是否同时符合上面三个地方身份之一。"
+      },
+      {
+        "line": 38,
+        "original": "| 地域规则 | 伯爵领持有者、伯爵领持有者最高领主、教务辖区头衔持有者三者 OR | 相同三者 OR |"
+      }
+    ]
+  },
+  "findings": {
+    "official_bilingual_terms": {
+      "clerical_region": {
+        "zh_hans": "圣职区",
+        "en": "Clerical Region"
+      },
+      "clerical_title": {
+        "zh_hans": "圣职头衔",
+        "en": "Clerical Title"
+      },
+      "archdiocese": {
+        "zh_hans": "总主教区",
+        "en": "Archdiocese"
+      },
+      "zealot": {
+        "zh_hans": "宗教狂热",
+        "en": "Zealot"
+      },
+      "minority": {
+        "zh_hans": "少数族群",
+        "en": "Minority"
+      }
+    },
+    "third_management_identity": "Official enshrined_desc explicitly lists holder, top_liege and clerical_region holder; clerical_region_desc links the region to the holder of its associated clerical title. This supports the existing doc third identity without new reverse engineering.",
+    "christian_boundary": "Archdiocese is specifically the Christian form of a Clerical Region. Do not replace the generic third identity with Archbishop, Diocese or Archdiocese for every faith.",
+    "author_phrase": "教务辖区 is an explanatory wording in the existing Chinese management doc, rather than the official clerical_region label 圣职区. No full combined role label is quoted as an official single key.",
+    "recommended_subtitle": {
+      "en": "the holder of the clerical title governing this area",
+      "zh_reference": "这个地方所属圣职区的头衔持有者",
+      "status": "composed explanatory wording using official concept terms; not a verbatim official single-key label; no frozen cue edits"
+    },
+    "short_alternative_en": "the holder of this area’s Clerical Region",
+    "stance_boundary": "Zealot and Minority are vassal stance names. Do not replace Zealot with the zealous personality-trait label; Minority officially corresponds to 少数族群 rather than an invented 少数派 label."
+  },
+  "storage": {
+    "output_cap_bytes": 16384,
+    "category": "record",
+    "parent_scope": "existing county-faith-child; new supplemental JSON only",
+    "free_bytes": 124126195712,
+    "review_at_utc": "2027-04-16T02:51:36.019886+00:00"
+  }
+}

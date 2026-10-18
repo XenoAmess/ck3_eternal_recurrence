@@ -1,0 +1,34 @@
+{
+  "schema": "ck3-12004-dynamic-capacity-source-validation-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:47:04.736026+00:00",
+  "result": "PASS",
+  "proof_layer": "static authored corpus and source relationships; not native fixture/live",
+  "executed_under_python_optimized_mode": true,
+  "checks": [
+    "full original/DLC authored corpus read and SHA-matched",
+    "all seven membership/owner mutation names checked throughout complete corpus",
+    "positive displacement hit counts bounded before decode",
+    "complete relevant null-terminated ASCII name inventory counted",
+    "all literal identifier-shaped holy-site/eminent names counted",
+    "no literal named holy-site maximum/capacity mutation interface found (names-only scope)",
+    "only authored add_holy_site assignment is guarded Adopt decision557",
+    "only authored make_holy_site_eminent assignment is guarded Promote decision79",
+    "registered add_eminent_holy_site has zero authored occurrences",
+    "no original event references any of the seven direct membership/creation/owner mutation names",
+    "sole authored create_holy_site is named scripted cost, not an effect invocation",
+    "Promote ordinary is_valid E<Emax guard at38",
+    "Promote AI still has E<Emax guard107",
+    "Adopt ordinary is_valid T<Tmax guard499",
+    "Adopt AI reserve-one threshold at571/573",
+    "only artifact owner assignment at starting relic finalizer1594",
+    "set_holy_site_owner1594 actual source scope is newly created artifact",
+    "full broad-token inventory independently agrees with exact add scan",
+    "full broad-token inventory independently agrees with exact promote scan"
+  ],
+  "source_contract": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+    "bytes": 21089,
+    "sha256": "b8f1243bb45ded54420e0d614fbab584a4345f22c146a1c00829c7967f4440f3"
+  }
+}

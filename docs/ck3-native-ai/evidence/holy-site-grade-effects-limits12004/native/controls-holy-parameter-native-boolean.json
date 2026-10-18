@@ -1,0 +1,23 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:16:58.398522+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x2b2a2f0",
+  "end_rva": "0x2b2a453",
+  "boundary_kind": "exact .pdata primary boundary",
+  "raw_sha256": "39b10ef025c317597c06c52ab84aba10152e2f612c677f73f59ae0f85a73a34d",
+  "bytes_hex": "405357415541564883ec28488b024c8be96683380d75058b5008eb05baffffffff4c8b05e83f1f034d85c074268bc225ffffff00413b402c73198bc8498b40204803c94c8b74c8084d85f674064139560874074c8b35963f1f03498b9e900800004963869c08000048896c245048897424584c89642460488d3c834c897c2420483bdf0f84b5000000488b2d003b1f034c8b25993a1f034885ed74278b138bc225ffffff003b452c73198bc8488b45204803c94c8b5cc8084d85db74064139531074034d8bdc41807b18007464498b4b20418b45404c63514c488b7140488bce4e8d3c964d85d27e240f1f80000000004d8bca49d1e94d2bd1423904894e8d04914d8bd1490f4cc84d85c975e3493bcf741f3b017c1b482bce48c1f90283f9ff740f498bd3498bcee8137b91ff84c0752e4883c304483bdf0f8559ffffff32c04c8b7c24204c8b642460488b742458488b6c24504883c428415e415d5f5bc3b001ebdd",
+  "assembly": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-native-boolean.asm",
+    "bytes": 7239,
+    "sha256": "023c90f488fb1ddeef425cb3948d73fb168d95a3e3ff001f2f9e454cbcd089f4"
+  },
+  "cache_offset": 45257456
+}

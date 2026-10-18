@@ -1,0 +1,38 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:16:07.878611+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x47bbc88",
+  "raw_sha256": "afc6fcc16d5f630b4b40e3499eb274a08c44050b7745cc45e3f0715650c4c94c",
+  "bytes_hex": "d03ba0400100000070f7b24201000000b05a854001000000a026e74401000000",
+  "rows": [
+    {
+      "index": 0,
+      "VA": "0x140a03bd0",
+      "RVA_if_image_pointer": "0xa03bd0"
+    },
+    {
+      "index": 1,
+      "VA": "0x142b2f770",
+      "RVA_if_image_pointer": "0x2b2f770"
+    },
+    {
+      "index": 2,
+      "VA": "0x140855ab0",
+      "RVA_if_image_pointer": "0x855ab0"
+    },
+    {
+      "index": 3,
+      "VA": "0x144e726a0",
+      "RVA_if_image_pointer": "0x4e726a0"
+    }
+  ],
+  "semantic_level": "raw pointer locators, not callback semantics"
+}

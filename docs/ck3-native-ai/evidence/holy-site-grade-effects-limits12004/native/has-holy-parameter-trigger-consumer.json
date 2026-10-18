@@ -1,0 +1,23 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:16:15.282421+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x2b2f770",
+  "end_rva": "0x2b2f7c0",
+  "boundary_kind": "exact .pdata primary boundary",
+  "raw_sha256": "f708cce8748e3320eaf1cb6e19454b844c1af432dd73c7015cabf99020983abc",
+  "bytes_hex": "48895c2410574883ec20488bf9b948000000e80d446f01488bc84889442430488bd8e8d9d2bf00c7434000000000488d0513b0c801488903488bc38b4f10894b08c6430c00488b5c24384883c4205fc3",
+  "assembly": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-trigger-consumer.asm",
+    "bytes": 1476,
+    "sha256": "1fa39dabf2063c7d06504ce4a29092611e55e5205a04f0036fdd5d51200cd1dd"
+  },
+  "cache_offset": 45279088
+}

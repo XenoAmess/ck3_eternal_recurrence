@@ -1,0 +1,688 @@
+{
+  "schema": "holy-site-grade-native-selected-excerpts-v1",
+  "machine_id": "4-8e1c2f1861",
+  "recorded_utc": "2026-10-17T18:34:22.454462+00:00",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "full_packet_root": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child",
+  "source_contract_sha256": "9a5eeb18664f134dfb52b9d94b94589340dd24518cf76a3b9895cd82dce83d79",
+  "selected_lines_do_not_replace_full_function_negative_review": true,
+  "sources": [
+    {
+      "path": "actual-faithwide-producer.asm",
+      "sha256": "74ec5333603b9f001fced08fc6bdcda9e2de4f3324ef90a7a7cd13e66d404706",
+      "raw_sha256": "0a54a83a220b7d24fd9858f4f9870d773a4c7f3e79c08c055296482ec936cd10",
+      "begin_rva": "0x24fb270",
+      "end_rva": "0x24fb8e0",
+      "selected_lines": [
+        18,
+        89,
+        93,
+        112,
+        146,
+        153,
+        161,
+        168,
+        176,
+        181,
+        303,
+        330,
+        350
+      ],
+      "meaning": "Actual persistent Rite modifier-list rebuild: input RCX=Rite+18, RDX=Rite. Output pointer list Rite+20/+2C. Holy-site loop only: Faith+890; eminent membership; county-holder Faith equality; fixed type+58; scaled type+3D8 with a HolySite scope. Entire primary runtime row retained; no Site+18 Active check in this function.",
+      "selected_text": [
+        {
+          "line": 18,
+          "text": "0024FB2A9 498d7508                         lea      rsi, [r13 + 8]"
+        },
+        {
+          "line": 89,
+          "text": "0024FB3CC 4d8d7570                         lea      r14, [r13 + 0x70]"
+        },
+        {
+          "line": 93,
+          "text": "0024FB3DD 418b87b8040000                   mov      eax, dword ptr [r15 + 0x4b8]"
+        },
+        {
+          "line": 112,
+          "text": "0024FB42B 488b9990080000                   mov      rbx, qword ptr [rcx + 0x890]"
+        },
+        {
+          "line": 146,
+          "text": "0024FB4C4 4881c1a8080000                   add      rcx, 0x8a8"
+        },
+        {
+          "line": 153,
+          "text": "0024FB4E9 e8426af4ff                       call     0x2441f30"
+        },
+        {
+          "line": 161,
+          "text": "0024FB50C 488d4858                         lea      rcx, [rax + 0x58]"
+        },
+        {
+          "line": 168,
+          "text": "0024FB528 48898d20040000                   mov      qword ptr [rbp + 0x420], rcx"
+        },
+        {
+          "line": 176,
+          "text": "0024FB556 e8951c0000                       call     0x24fd1f0"
+        },
+        {
+          "line": 181,
+          "text": "0024FB56B e8b0723700                       call     0x2872820"
+        },
+        {
+          "line": 303,
+          "text": "0024FB7BC 498b3e                           mov      rdi, qword ptr [r14]"
+        },
+        {
+          "line": 330,
+          "text": "0024FB820 48893cc8                         mov      qword ptr [rax + rcx*8], rdi"
+        },
+        {
+          "line": 350,
+          "text": "0024FB863 48893cc8                         mov      qword ptr [rax + rcx*8], rdi"
+        }
+      ]
+    },
+    {
+      "path": "actual-faithwide-rebuild-caller.asm",
+      "sha256": "98410ea2b0b4ddccf528793d603d4fdd906e2808334d85feca21c240681c4a47",
+      "raw_sha256": "f1d596635a0d813d7afb65dda3cebd80e216b6575a1d04cdeacc1ddb65cfb139",
+      "begin_rva": "0x29cc520",
+      "end_rva": "0x29cc545",
+      "selected_lines": [
+        5,
+        7,
+        9,
+        10
+      ],
+      "meaning": "29CC520 passes Rite receiver as RDX and Rite+18 as RCX to producer24FB270. This is a rebuild caller, never invoke it for read-only observation.",
+      "selected_text": [
+        {
+          "line": 5,
+          "text": "0029CC52D 488bd1                           mov      rdx, rcx"
+        },
+        {
+          "line": 7,
+          "text": "0029CC534 e877ecb2ff                       call     0x24fb1b0"
+        },
+        {
+          "line": 9,
+          "text": "0029CC53C 488d4f18                         lea      rcx, [rdi + 0x18]"
+        },
+        {
+          "line": 10,
+          "text": "0029CC540 e82bedb2ff                       call     0x24fb270"
+        }
+      ]
+    },
+    {
+      "path": "actual-controller-faith-gate.asm",
+      "sha256": "3584cc1f560662a0c0f187e69578521e168e51b29523ea6860e0f148ef1ba51f",
+      "raw_sha256": "a7f3d8d13fc68c2bada6148f5310542cce2a07b939a0c9cbeec66931c6cf2988",
+      "begin_rva": "0x2441f30",
+      "end_rva": "0x2442049",
+      "selected_lines": [
+        6,
+        22,
+        41,
+        57,
+        71,
+        72,
+        74
+      ],
+      "meaning": "2441F30(Faith,Site) resolves Site+B0 barony, barony+108 county, county+128 holder, holder+B4 Rite; compares Rite+4B8 to Faith fullID+8. No Active or eminent check within this leaf.",
+      "selected_text": [
+        {
+          "line": 6,
+          "text": "002441F44 448b8ab0000000                   mov      r9d, dword ptr [rdx + 0xb0]"
+        },
+        {
+          "line": 22,
+          "text": "002441F7F 448b8a08010000                   mov      r9d, dword ptr [rdx + 0x108]"
+        },
+        {
+          "line": 41,
+          "text": "002441FC4 448b8228010000                   mov      r8d, dword ptr [rdx + 0x128]"
+        },
+        {
+          "line": 57,
+          "text": "002442003 448b80b4000000                   mov      r8d, dword ptr [rax + 0xb4]"
+        },
+        {
+          "line": 71,
+          "text": "002442037 8b4308                           mov      eax, dword ptr [rbx + 8]"
+        },
+        {
+          "line": 72,
+          "text": "00244203A 3981b8040000                     cmp      dword ptr [rcx + 0x4b8], eax"
+        },
+        {
+          "line": 74,
+          "text": "002442045 0f94c0                           sete     al"
+        }
+      ]
+    },
+    {
+      "path": "actual-faithwide-recipient.asm",
+      "sha256": "37f25bc5aa4303a1e6d8d87b6d1043a3b7b1458a759bdeb4a6f48ee7ef9e9d5e",
+      "raw_sha256": "6cc7b709725eaa5314267a460642184673b9c31a3a55315d42e27dc13db7546b",
+      "begin_rva": "0x291f080",
+      "end_rva": "0x291f10a",
+      "selected_lines": [
+        12,
+        26,
+        28,
+        31,
+        36
+      ],
+      "meaning": "291F080 actual actor aggregate contribution: actor+B4 resolves current Rite; ordered pointer list Rite+20/count2C; each modifier collection added to actor model+10 by2438830 at scale100000.",
+      "selected_text": [
+        {
+          "line": 12,
+          "text": "00291F0A4 8b92b4000000                     mov      edx, dword ptr [rdx + 0xb4]"
+        },
+        {
+          "line": 26,
+          "text": "00291F0D6 488b5d20                         mov      rbx, qword ptr [rbp + 0x20]"
+        },
+        {
+          "line": 28,
+          "text": "00291F0DE 4863452c                         movsxd   rax, dword ptr [rbp + 0x2c]"
+        },
+        {
+          "line": 31,
+          "text": "00291F0E9 741f                             je       0x291f10a"
+        },
+        {
+          "line": 36,
+          "text": "00291F0FC e82f97b1ff                       call     0x2438830"
+        }
+      ]
+    },
+    {
+      "path": "character-aggregate-rebuild.asm",
+      "sha256": "e6e889d6eea11c796a5f14265d9737d14804ee1795d3b2027d84a0278eeb9570",
+      "raw_sha256": "85f59ff0703ec83357f8ca9503a20776349c4bc16233808f6862b10d3f2c4917",
+      "begin_rva": "0x291c0b0",
+      "end_rva": "0x291cf2f",
+      "selected_lines": [
+        12,
+        13,
+        15,
+        166,
+        846
+      ],
+      "meaning": "Actual291C0B0 owns aggregate receiver; owner Character at receiver+8. It calls291F080 and291E3A0. This actual writer is not a permitted read-only API.",
+      "selected_text": [
+        {
+          "line": 12,
+          "text": "00291C0D0 4c8be9                           mov      r13, rcx"
+        },
+        {
+          "line": 13,
+          "text": "00291C0D3 4c8b7108                         mov      r14, qword ptr [rcx + 8]"
+        },
+        {
+          "line": 15,
+          "text": "00291C0DC 498d7510                         lea      rsi, [r13 + 0x10]"
+        },
+        {
+          "line": 166,
+          "text": "00291C357 e8242d0000                       call     0x291f080"
+        },
+        {
+          "line": 846,
+          "text": "00291CE7B e820150000                       call     0x291e3a0"
+        }
+      ]
+    },
+    {
+      "path": "actual-local-entry.asm",
+      "sha256": "ab5988789f7564813ded45c8f25a5342498cf1b8515b7193c2423fcc15b2ef8b",
+      "raw_sha256": "a1921e7c6d553d6886b4026edec2ddc6a6116ae9ee0e8657f24343e5e26ed5de",
+      "begin_rva": "0x291e3a0",
+      "end_rva": "0x291e480",
+      "selected_lines": [
+        12,
+        13,
+        14,
+        47,
+        48,
+        49
+      ],
+      "meaning": "291E3A0 local composite: model RCX, Character RDX; first family from2B986B0(Character,temporary pointer vector).",
+      "selected_text": [
+        {
+          "line": 12,
+          "text": "00291E3BE 4881ec88040000                   sub      rsp, 0x488"
+        },
+        {
+          "line": 13,
+          "text": "00291E3C5 4c8bfa                           mov      r15, rdx"
+        },
+        {
+          "line": 14,
+          "text": "00291E3C8 4c8be9                           mov      r13, rcx"
+        },
+        {
+          "line": 47,
+          "text": "00291E46E 488d542440                       lea      rdx, [rsp + 0x40]"
+        },
+        {
+          "line": 48,
+          "text": "00291E473 498bcf                           mov      rcx, r15"
+        },
+        {
+          "line": 49,
+          "text": "00291E476 e835a22700                       call     0x2b986b0"
+        }
+      ]
+    },
+    {
+      "path": "actual-local-fixed-gate.asm",
+      "sha256": "0e28b1c96bb84541d95b58558267d8a555b190cf68313f4a8582ce3d152e6b60",
+      "raw_sha256": "94de5874007bd172605c555547932d6bd040c3c8f03b711ea9b8511dd85180f0",
+      "begin_rva": "0x291e537",
+      "end_rva": "0x291e71b",
+      "selected_lines": [
+        7,
+        30,
+        31,
+        33,
+        55,
+        104,
+        105,
+        106,
+        108
+      ],
+      "meaning": "First family county-tier title supplemental fixed block: selected countyTitle+1E0/+1EC site IDs; type+224 nonempty, Site+18 true, actor Faith in Site+98/+A4; append type+218 with100000. No eminent requirement.",
+      "selected_text": [
+        {
+          "line": 7,
+          "text": "00291E550 488b9fe0010000                   mov      rbx, qword ptr [rdi + 0x1e0]"
+        },
+        {
+          "line": 30,
+          "text": "00291E5B1 498b4620                         mov      rax, qword ptr [r14 + 0x20]"
+        },
+        {
+          "line": 31,
+          "text": "00291E5B5 83b82402000000                   cmp      dword ptr [rax + 0x224], 0"
+        },
+        {
+          "line": 33,
+          "text": "00291E5C2 41807e1800                       cmp      byte ptr [r14 + 0x18], 0"
+        },
+        {
+          "line": 55,
+          "text": "00291E623 448ba0b8040000                   mov      r12d, dword ptr [rax + 0x4b8]"
+        },
+        {
+          "line": 104,
+          "text": "00291E6E6 498b5620                         mov      rdx, qword ptr [r14 + 0x20]"
+        },
+        {
+          "line": 105,
+          "text": "00291E6EA 4881c218020000                   add      rdx, 0x218"
+        },
+        {
+          "line": 106,
+          "text": "00291E6F1 41b8a0860100                     mov      r8d, 0x186a0"
+        },
+        {
+          "line": 108,
+          "text": "00291E6FB e8004a9eff                       call     0x2303100"
+        }
+      ]
+    },
+    {
+      "path": "actual-local-own-title-root.asm",
+      "sha256": "b0159638fbdd9e9052d53987345b29158784d77f377500e316c1f932f0d04242",
+      "raw_sha256": "050ab3ac531ebf2a15515270d110cefb3e2f286eae86bae14e9744ec70e941d6",
+      "begin_rva": "0x291e73a",
+      "end_rva": "0x291e7ea",
+      "selected_lines": [
+        1,
+        4,
+        7,
+        8,
+        35,
+        37
+      ],
+      "meaning": "Second family starts actor+1C0 land-state +1E0/+1EC full Title IDs, preserves ordering. Title+130 nonzero or Title+12C!=-1 excludes row. It is not every actor with matching Faith.",
+      "selected_text": [
+        {
+          "line": 1,
+          "text": "00291E73A 498b87c0010000                   mov      rax, qword ptr [r15 + 0x1c0]"
+        },
+        {
+          "line": 4,
+          "text": "00291E746 4805e0010000                     add      rax, 0x1e0"
+        },
+        {
+          "line": 7,
+          "text": "00291E752 4898                             cdqe     "
+        },
+        {
+          "line": 8,
+          "text": "00291E754 488d3c87                         lea      rdi, [rdi + rax*4]"
+        },
+        {
+          "line": 35,
+          "text": "00291E7C5 4180be3001000000                 cmp      byte ptr [r14 + 0x130], 0"
+        },
+        {
+          "line": 37,
+          "text": "00291E7D3 4183be2c010000ff                 cmp      dword ptr [r14 + 0x12c], -1"
+        }
+      ]
+    },
+    {
+      "path": "actual-local-own-title-gate.asm",
+      "sha256": "3abc806f6848f1801f29fd3af641f7835f1ae8f23b62da99603eac7ed5461e8e",
+      "raw_sha256": "9bd464d1ad89d094e5ad466a80c40b00a03328c43853a7fdb3805b4efac47aae",
+      "begin_rva": "0x291e8e1",
+      "end_rva": "0x291e971",
+      "selected_lines": [
+        1,
+        4,
+        26
+      ],
+      "meaning": "Second family repeats same nonempty fixed-local type and Site+18/actorFaith association gate. Remaining membership and append instructions are structurally duplicated in first family; only the exact saved range is claimed here.",
+      "selected_text": [
+        {
+          "line": 1,
+          "text": "00291E8E1 498b4520                         mov      rax, qword ptr [r13 + 0x20]"
+        },
+        {
+          "line": 4,
+          "text": "00291E8F2 41807d1800                       cmp      byte ptr [r13 + 0x18], 0"
+        },
+        {
+          "line": 26,
+          "text": "00291E953 448b80b8040000                   mov      r8d, dword ptr [rax + 0x4b8]"
+        }
+      ]
+    },
+    {
+      "path": "actual-local-append.asm",
+      "sha256": "4e7240b5ecc85a25c2eb1b078f34ae66138df07e48f5db82ba1950b317c09436",
+      "raw_sha256": "a342f9b16d8733b52499b62c510faee336a2b7377f309427c4404beec2713b04",
+      "begin_rva": "0x291ebe3",
+      "end_rva": "0x291ec37",
+      "selected_lines": [
+        1,
+        2,
+        3
+      ],
+      "meaning": "The accumulated local composite is handed to291B3B0; this excerpt does not invent an outer wrapper weight or a separate holder-equals-actor check.",
+      "selected_text": [
+        {
+          "line": 1,
+          "text": "00291EBE3 488d5510                         lea      rdx, [rbp + 0x10]"
+        },
+        {
+          "line": 2,
+          "text": "00291EBE7 488bcf                           mov      rcx, rdi"
+        },
+        {
+          "line": 3,
+          "text": "00291EBEA e8c1c7ffff                       call     0x291b3b0"
+        }
+      ]
+    },
+    {
+      "path": "actual-county-scaled-producer.asm",
+      "sha256": "f8f2ebf887248b3b8ac7142b82f8d9a675d8b6b988b853de49ee9a3ff4e2ff40",
+      "raw_sha256": "5672a1e3acdceb94eef67018b6f09ca1cc808e78ad9aa86341074513118416d0",
+      "begin_rva": "0x2864e40",
+      "end_rva": "0x2865302",
+      "selected_lines": [
+        15,
+        19,
+        20,
+        37,
+        39,
+        41,
+        43,
+        63,
+        77,
+        96,
+        97,
+        123,
+        126,
+        130,
+        139,
+        143,
+        271
+      ],
+      "meaning": "Actual2864E40 receiver+298 points to owner with Title fullID at+18; resolve county Title, holder/current Faith; iterate its site IDs. Require valid Site, Active18, scaled count3FC, same2441F30 gate. Evaluate type+3F0 with HolySite scope into receiver+268 temporary collection, append into receiver+8 via2438830. No eminent requirement. Receiver runtime root/identity getter remains the narrow next binding gap.",
+      "selected_text": [
+        {
+          "line": 15,
+          "text": "002864E6D 4c8db968020000                   lea      r15, [rcx + 0x268]"
+        },
+        {
+          "line": 19,
+          "text": "002864E83 488b8698020000                   mov      rax, qword ptr [rsi + 0x298]"
+        },
+        {
+          "line": 20,
+          "text": "002864E8A 8b4018                           mov      eax, dword ptr [rax + 0x18]"
+        },
+        {
+          "line": 37,
+          "text": "002864EC7 41817814646e614c                 cmp      dword ptr [r8 + 0x14], 0x4c616e64"
+        },
+        {
+          "line": 39,
+          "text": "002864ED5 41837810ff                       cmp      dword ptr [r8 + 0x10], -1"
+        },
+        {
+          "line": 41,
+          "text": "002864EE0 4539a8ec010000                   cmp      dword ptr [r8 + 0x1ec], r13d"
+        },
+        {
+          "line": 43,
+          "text": "002864EED 418b8028010000                   mov      eax, dword ptr [r8 + 0x128]"
+        },
+        {
+          "line": 63,
+          "text": "002864F39 448b89b4000000                   mov      r9d, dword ptr [rcx + 0xb4]"
+        },
+        {
+          "line": 77,
+          "text": "002864F6D 8b80b8040000                     mov      eax, dword ptr [rax + 0x4b8]"
+        },
+        {
+          "line": 96,
+          "text": "002864FBB 498b98e0010000                   mov      rbx, qword ptr [r8 + 0x1e0]"
+        },
+        {
+          "line": 97,
+          "text": "002864FC2 496380ec010000                   movsxd   rax, dword ptr [r8 + 0x1ec]"
+        },
+        {
+          "line": 123,
+          "text": "00286502B 807e1800                         cmp      byte ptr [rsi + 0x18], 0"
+        },
+        {
+          "line": 126,
+          "text": "002865039 4183bffc03000000                 cmp      dword ptr [r15 + 0x3fc], 0"
+        },
+        {
+          "line": 130,
+          "text": "00286504D e8decebdff                       call     0x2441f30"
+        },
+        {
+          "line": 139,
+          "text": "002865075 498d97f0030000                   lea      rdx, [r15 + 0x3f0]"
+        },
+        {
+          "line": 143,
+          "text": "002865089 e892d70000                       call     0x2872820"
+        },
+        {
+          "line": 271,
+          "text": "0028652DD e84e35bdff                       call     0x2438830"
+        }
+      ]
+    },
+    {
+      "path": "actual-county-scaled-caller.asm",
+      "sha256": "7824b471fc4ad5d5d967b00a02f8c3812c1e9518f642f4b14d01b581b5e8e433",
+      "raw_sha256": "d78b345bc1fdf18e9a9000cd4b94c1b74098dd170521d191d12bce2861c8e426",
+      "begin_rva": "0x2864d90",
+      "end_rva": "0x2864d98",
+      "selected_lines": [
+        1,
+        2
+      ],
+      "meaning": "Only direct E8 caller found:2864D93 passes R15 to2864E40. Caller root identity not guessed.",
+      "selected_text": [
+        {
+          "line": 1,
+          "text": "002864D90 498bcf                           mov      rcx, r15"
+        },
+        {
+          "line": 2,
+          "text": "002864D93 e8a8000000                       call     0x2864e40"
+        }
+      ]
+    },
+    {
+      "path": "actual-scaled-context.asm",
+      "sha256": "5472e08be5e696bb750a54ae108a0cd35cc530919e595479d9c50e5670aa1db7",
+      "raw_sha256": "8647be9232bf4e0c45b1a5e5572b9038ed9d7626d4d3cc7b4c856c3b81d0208d",
+      "begin_rva": "0x24fd1f0",
+      "end_rva": "0x24fd2d0",
+      "selected_lines": [
+        35,
+        37
+      ],
+      "meaning": "24FD1F0 constructs scope from exact Site fullID+10, not a copied rarity scalar.2872820 evaluates loaded scaled expressions against this scope; no guessed numeric scale.",
+      "selected_text": [
+        {
+          "line": 35,
+          "text": "0024FD2B1 8b4310                           mov      eax, dword ptr [rbx + 0x10]"
+        },
+        {
+          "line": 37,
+          "text": "0024FD2B9 48894708                         mov      qword ptr [rdi + 8], rax"
+        }
+      ]
+    },
+    {
+      "path": "character-aggregator.asm",
+      "sha256": "f941e9aede88ab148b2d455a6c7d38c5a2a868d68eb6c3d5697f7c9825905d85",
+      "raw_sha256": "439110c6b4bfac57e4eb90d4a299c06ad16e68374b1be3d73da7804363eafa12",
+      "begin_rva": "0x28c3ac0",
+      "end_rva": "0x28c3be0",
+      "selected_lines": [
+        2,
+        4,
+        6,
+        8,
+        10
+      ],
+      "meaning": "28C3AC0 resolves Character+1B0 -> cache+258, verifies cache owner backlink+8, returns cache+10. Default fallback is not actual cache observation.",
+      "selected_text": [
+        {
+          "line": 2,
+          "text": "0028C3AC4 488b81b0010000                   mov      rax, qword ptr [rcx + 0x1b0]"
+        },
+        {
+          "line": 4,
+          "text": "0028C3ACE 741b                             je       0x28c3aeb"
+        },
+        {
+          "line": 6,
+          "text": "0028C3AD7 4885c0                           test     rax, rax"
+        },
+        {
+          "line": 8,
+          "text": "0028C3ADC 48394808                         cmp      qword ptr [rax + 8], rcx"
+        },
+        {
+          "line": 10,
+          "text": "0028C3AE2 4883c010                         add      rax, 0x10"
+        }
+      ]
+    },
+    {
+      "path": "character-modifier-read.asm",
+      "sha256": "020b08083b90b82d71f4cbd66ec827e69d85987148a3de9a23ad9614af9c8ee6",
+      "raw_sha256": "71cb3e8464cca1a04e9d63ecf2d822287915a7f684b69d633d2c64bb471fd0de",
+      "begin_rva": "0x23036e0",
+      "end_rva": "0x2303800",
+      "selected_lines": [
+        1,
+        2,
+        3
+      ],
+      "meaning": "23036E0 uses u16 modifier key, sorted key/value map and Q64 result; read exact source-derived key enum, not an arbitrary array index.",
+      "selected_text": [
+        {
+          "line": 1,
+          "text": "0023036E0 4057                             push     rdi"
+        },
+        {
+          "line": 2,
+          "text": "0023036E2 b8ffff0000                       mov      eax, 0xffff"
+        },
+        {
+          "line": 3,
+          "text": "0023036E7 450fb7d8                         movzx    r11d, r8w"
+        }
+      ]
+    },
+    {
+      "path": "actual-beneficiary-update.asm",
+      "sha256": "ea48dfaf3c21ced3d052ff797883012b37a3ed865a6c54d83fb74d4d7203af04",
+      "raw_sha256": "180dac4b8e7e41c2fc7bed007594019f05e188a381d2666bd9fb722fb7daf709",
+      "begin_rva": "0x2659880",
+      "end_rva": "0x2659ce0",
+      "selected_lines": [
+        11,
+        20,
+        32,
+        37,
+        55,
+        61,
+        74
+      ],
+      "meaning": "EXPLORATORY FILENAME:2659880 is GetActiveEffectsDesc. Active=false returns empty text; eminent controls description only. Never treat this packet as actual attribute application.",
+      "selected_text": [
+        {
+          "line": 11,
+          "text": "00265989D 40387118                         cmp      byte ptr [rcx + 0x18], sil"
+        },
+        {
+          "line": 20,
+          "text": "0026598BF e920010000                       jmp      0x26599e4"
+        },
+        {
+          "line": 32,
+          "text": "0026598F0 488b4d20                         mov      rcx, qword ptr [rbp + 0x20]"
+        },
+        {
+          "line": 37,
+          "text": "002659908 e8237fc000                       call     0x3261830"
+        },
+        {
+          "line": 55,
+          "text": "002659945 8b4510                           mov      eax, dword ptr [rbp + 0x10]"
+        },
+        {
+          "line": 61,
+          "text": "002659965 746c                             je       0x26599d3"
+        },
+        {
+          "line": 74,
+          "text": "0026599A7 e88485c000                       call     0x3261f30"
+        }
+      ]
+    }
+  ]
+}

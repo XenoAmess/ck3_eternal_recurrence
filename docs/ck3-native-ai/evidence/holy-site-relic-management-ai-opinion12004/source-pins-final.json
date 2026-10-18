@@ -1,0 +1,57 @@
+{
+  "schema": "faith-e01-v4-permission-opinion-final-source-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:28:59.549604+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "final_document": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4-final.md",
+    "bytes": 22123,
+    "sha256": "f02ec54ff1fb01220fde9c7034bb234684a92b754960c78d8e30939c869916e7"
+  },
+  "a01_preserved": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4.md",
+    "bytes": 17151,
+    "sha256": "8d9d02089bc519348b2eaf3572ed7d7ae8cbb949ad79b391e8bb50f9d5d28d15"
+  },
+  "stock_source_packet": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\stock-source-excerpts-a01.json",
+    "bytes": 73389,
+    "sha256": "1bef5466f3b088c4f6d18b7eecbc51347230681d0fc53751c45841c970678e35"
+  },
+  "reused_native_and_stock_pins": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\source-pins-a01.json",
+    "bytes": 9252,
+    "sha256": "85ece381f921088d643435b794e58c1750ea2c322664ab3cd61f8b6106712bd5"
+  },
+  "ai_source_contract": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\source-contract.json",
+    "bytes": 30578,
+    "sha256": "99a4c2cf6f5e9417f5d343f28c9a3c818bc456b2a156dc02ec7d46f2142c89ae"
+  },
+  "ai_source_pins": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\source-pins.json",
+    "bytes": 24768,
+    "sha256": "472e5b30c4de99d1b694d095782871194546a5d908b8114e4611b099885fb225"
+  },
+  "ai_review": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-callgraph-review.md",
+    "bytes": 12806,
+    "sha256": "5fa36b1bc1ba265f1168bce06c94ca3dbf1912018090e6844571923d93965f5a"
+  },
+  "human_final_plan": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\research-plan-final.json",
+    "bytes": 6591,
+    "sha256": "9de74de846a9eb9ffa97fae327ecc8c6f9e0f0e327eff515b8de1d49b16ff3ad"
+  },
+  "source_ready": true,
+  "new_live_evidence": false,
+  "natural_ai_execution_observed": false,
+  "unknowns": [
+    "exact native AI scheduler to natural decision invocation",
+    "actual selected natural pair and independent world poststate",
+    "full add_piety positive/negative devotion consumer; explicit removal experience component is separate",
+    "complete current per-person opinion/CB qualification outside present matrix",
+    "siege.0032 upstream natural caller/probability and full theft-effect consumer"
+  ],
+  "scope": "Reviewed original definitions and exact-build cached native consumers; no new business or whole-product qualification"
+}

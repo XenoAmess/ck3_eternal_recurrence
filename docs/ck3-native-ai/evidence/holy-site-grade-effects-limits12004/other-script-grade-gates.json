@@ -1,0 +1,2564 @@
+{
+  "schema": "ck3-12004-other-script-grade-gates-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:34:15.586911+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "manifest": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\authored-scan-manifest.json",
+    "sha256": "2e2b2f49bd99e468230c53ab1550cfe2d1739806823caad444dd9cc1eff1d3e4"
+  },
+  "scope": "All common/events/history txt/info in already complete installed corpus, except separately enumerated common/religion definitions; matches include comments and script names, not automatic effect semantics.",
+  "decoding": "UTF-8-sig strict; Latin1 exact byte-preserving fallback for ASCII identifier search only",
+  "latin1_fallbacks": [
+    "history/provinces/k_angara.txt",
+    "history/provinces/k_buryatia.txt",
+    "history/provinces/k_croatia.txt",
+    "history/provinces/k_cuman.txt",
+    "history/provinces/k_epirus.txt",
+    "history/provinces/k_hungary.txt",
+    "history/provinces/k_kipchak.txt",
+    "history/provinces/k_lotharingia.txt",
+    "history/provinces/k_ob.txt",
+    "history/provinces/k_pomerania.txt",
+    "history/provinces/k_qara_dala.txt",
+    "history/provinces/k_sapmi.txt",
+    "history/provinces/k_saryarka.txt",
+    "history/provinces/k_serbia.txt",
+    "history/provinces/k_sweden.txt",
+    "history/provinces/k_thessalonika.txt",
+    "history/titles/k_amdo.txt",
+    "history/titles/k_bashkiria.txt",
+    "history/titles/k_brittany.txt",
+    "history/titles/k_castille.txt",
+    "history/titles/k_dzungaria.txt",
+    "history/titles/k_esthonia.txt",
+    "history/titles/k_finland.txt",
+    "history/titles/k_france.txt",
+    "history/titles/k_ghana.txt",
+    "history/titles/k_guge.txt",
+    "history/titles/k_ireland.txt",
+    "history/titles/k_khakassia.txt",
+    "history/titles/k_kham.txt",
+    "history/titles/k_leon.txt",
+    "history/titles/k_lhomon.txt",
+    "history/titles/k_lithuania.txt",
+    "history/titles/k_maghreb.txt",
+    "history/titles/k_maryul.txt",
+    "history/titles/k_mordvinia.txt",
+    "history/titles/k_navarra.txt",
+    "history/titles/k_norway.txt",
+    "history/titles/k_novgorod.txt",
+    "history/titles/k_romagna.txt",
+    "history/titles/k_scotland.txt",
+    "history/titles/k_sweden.txt",
+    "history/titles/k_tsang.txt",
+    "history/titles/k_tuva.txt",
+    "history/titles/k_volga_bulgaria.txt",
+    "history/titles/k_zhetysu.txt"
+  ],
+  "prior_attempt": "Initial strict UTF-8 read raised UnicodeDecodeError before output creation; no partial result used.",
+  "pattern": "\\b(?:[A-Za-z0-9_]*eminent_holy_site[A-Za-z0-9_]*|[A-Za-z0-9_]*holy_site[A-Za-z0-9_]*eminent[A-Za-z0-9_]*|is_eminent)\\b",
+  "matching_files": 7,
+  "matching_lines": 35,
+  "files": [
+    {
+      "path": "common/activities/activity_types/pilgrimage.txt",
+      "bytes": 111931,
+      "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+      "hits": [
+        {
+          "line": 428,
+          "text": "\t\t\t\t\tany_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 421,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 422,
+              "text": "\t\t\tdesc = activity_pilgrimage_province_unique_desc"
+            },
+            {
+              "line": 423,
+              "text": "\t\t}"
+            },
+            {
+              "line": 424,
+              "text": "\t\t# Is it an eminent holy site?"
+            },
+            {
+              "line": 425,
+              "text": "\t\ttriggered_desc = {"
+            },
+            {
+              "line": 426,
+              "text": "\t\t\ttrigger = {"
+            },
+            {
+              "line": 427,
+              "text": "\t\t\t\tscope:host.faith = {"
+            },
+            {
+              "line": 428,
+              "text": "\t\t\t\t\tany_eminent_holy_site = {"
+            },
+            {
+              "line": 429,
+              "text": "\t\t\t\t\t\tholy_site_county =  root.county"
+            },
+            {
+              "line": 430,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 431,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 432,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 433,
+              "text": "\t\t\tdesc = activity_pilgrimage_eminent_holy_site_desc"
+            },
+            {
+              "line": 434,
+              "text": "\t\t}"
+            },
+            {
+              "line": 435,
+              "text": "\t\t# Inspection modifier"
+            },
+            {
+              "line": 436,
+              "text": "\t\ttriggered_desc = {"
+            }
+          ]
+        },
+        {
+          "line": 433,
+          "text": "\t\t\tdesc = activity_pilgrimage_eminent_holy_site_desc",
+          "context": [
+            {
+              "line": 426,
+              "text": "\t\t\ttrigger = {"
+            },
+            {
+              "line": 427,
+              "text": "\t\t\t\tscope:host.faith = {"
+            },
+            {
+              "line": 428,
+              "text": "\t\t\t\t\tany_eminent_holy_site = {"
+            },
+            {
+              "line": 429,
+              "text": "\t\t\t\t\t\tholy_site_county =  root.county"
+            },
+            {
+              "line": 430,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 431,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 432,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 433,
+              "text": "\t\t\tdesc = activity_pilgrimage_eminent_holy_site_desc"
+            },
+            {
+              "line": 434,
+              "text": "\t\t}"
+            },
+            {
+              "line": 435,
+              "text": "\t\t# Inspection modifier"
+            },
+            {
+              "line": 436,
+              "text": "\t\ttriggered_desc = {"
+            },
+            {
+              "line": 437,
+              "text": "\t\t\ttrigger = {"
+            },
+            {
+              "line": 438,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 439,
+              "text": "\t\t\t\t\thas_province_modifier = inspection_protected_holy_site_levy_modifier"
+            },
+            {
+              "line": 440,
+              "text": "\t\t\t\t\thas_province_modifier = inspection_protected_holy_poi_levy_modifier"
+            },
+            {
+              "line": 441,
+              "text": "\t\t\t\t\thas_province_modifier = inspection_protected_holy_site_gold_modifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "hits": [
+        {
+          "line": 34,
+          "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }",
+          "context": [
+            {
+              "line": 27,
+              "text": "\t\texists = scope:selected_item"
+            },
+            {
+              "line": 28,
+              "text": ""
+            },
+            {
+              "line": 29,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 30,
+              "text": ""
+            },
+            {
+              "line": 31,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 32,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 33,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            },
+            {
+              "line": 34,
+              "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }"
+            },
+            {
+              "line": 35,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 36,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 37,
+              "text": "\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max"
+            },
+            {
+              "line": 38,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max"
+            },
+            {
+              "line": 39,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 40,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 41,
+              "text": "\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 42,
+              "text": "\t\t\t\ttext = elevate_holy_site_decision_target_in_realm_or_head_of_faith"
+            }
+          ]
+        },
+        {
+          "line": 37,
+          "text": "\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max",
+          "context": [
+            {
+              "line": 30,
+              "text": ""
+            },
+            {
+              "line": 31,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 32,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 33,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            },
+            {
+              "line": 34,
+              "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }"
+            },
+            {
+              "line": 35,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 36,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 37,
+              "text": "\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max"
+            },
+            {
+              "line": 38,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max"
+            },
+            {
+              "line": 39,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 40,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 41,
+              "text": "\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 42,
+              "text": "\t\t\t\ttext = elevate_holy_site_decision_target_in_realm_or_head_of_faith"
+            },
+            {
+              "line": 43,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 44,
+              "text": "\t\t\t\t\troot.faith.religious_head ?= root"
+            },
+            {
+              "line": 45,
+              "text": "\t\t\t\t\tholy_site_barony.holder = {"
+            }
+          ]
+        },
+        {
+          "line": 38,
+          "text": "\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max",
+          "context": [
+            {
+              "line": 31,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 32,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 33,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            },
+            {
+              "line": 34,
+              "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }"
+            },
+            {
+              "line": 35,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 36,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 37,
+              "text": "\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max"
+            },
+            {
+              "line": 38,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max"
+            },
+            {
+              "line": 39,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 40,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 41,
+              "text": "\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 42,
+              "text": "\t\t\t\ttext = elevate_holy_site_decision_target_in_realm_or_head_of_faith"
+            },
+            {
+              "line": 43,
+              "text": "\t\t\t\tOR = {"
+            },
+            {
+              "line": 44,
+              "text": "\t\t\t\t\troot.faith.religious_head ?= root"
+            },
+            {
+              "line": 45,
+              "text": "\t\t\t\t\tholy_site_barony.holder = {"
+            },
+            {
+              "line": 46,
+              "text": "\t\t\t\t\t\ttarget_is_same_character_or_above = root"
+            }
+          ]
+        },
+        {
+          "line": 79,
+          "text": "\t\t\tmake_holy_site_eminent = {",
+          "context": [
+            {
+              "line": 72,
+              "text": "\tcooldown = { years = holy_site_decision_cooldown_value }"
+            },
+            {
+              "line": 73,
+              "text": ""
+            },
+            {
+              "line": 74,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 75,
+              "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+            },
+            {
+              "line": 76,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 77,
+              "text": "\t\t}"
+            },
+            {
+              "line": 78,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 79,
+              "text": "\t\t\tmake_holy_site_eminent = {"
+            },
+            {
+              "line": 80,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 81,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 82,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 83,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 84,
+              "text": "\t\t}"
+            },
+            {
+              "line": 85,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 86,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 87,
+              "text": "\t\t\t\texists = scope:county_holder"
+            }
+          ]
+        },
+        {
+          "line": 107,
+          "text": "\t\t\tlist_size:eminent_holy_site < religion.eminent_holy_sites_max",
+          "context": [
+            {
+              "line": 100,
+              "text": "\t\t}"
+            },
+            {
+              "line": 101,
+              "text": "\t}"
+            },
+            {
+              "line": 102,
+              "text": ""
+            },
+            {
+              "line": 103,
+              "text": "\tai_potential = {"
+            },
+            {
+              "line": 104,
+              "text": "\t\tis_independent_ruler = yes"
+            },
+            {
+              "line": 105,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 106,
+              "text": "\t\tfaith = {"
+            },
+            {
+              "line": 107,
+              "text": "\t\t\tlist_size:eminent_holy_site < religion.eminent_holy_sites_max"
+            },
+            {
+              "line": 108,
+              "text": "\t\t}"
+            },
+            {
+              "line": 109,
+              "text": "\t\tOR = {"
+            },
+            {
+              "line": 110,
+              "text": "\t\t\thighest_held_title_tier >= tier_kingdom"
+            },
+            {
+              "line": 111,
+              "text": "\t\t\tfaith.religious_head = this"
+            },
+            {
+              "line": 112,
+              "text": "\t\t}"
+            },
+            {
+              "line": 113,
+              "text": "\t}"
+            },
+            {
+              "line": 114,
+              "text": ""
+            },
+            {
+              "line": 115,
+              "text": "\tai_will_do = {"
+            }
+          ]
+        },
+        {
+          "line": 129,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 122,
+              "text": "\t\tshow_from_start = yes"
+            },
+            {
+              "line": 123,
+              "text": "\t\tdecision_to_second_step_button = \"SELECT_HOLY_SITE\""
+            },
+            {
+              "line": 124,
+              "text": ""
+            },
+            {
+              "line": 125,
+              "text": "\t\tsetup_items = {"
+            },
+            {
+              "line": 126,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 127,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 128,
+              "text": "\t\t\t\t\tevery_holy_site = {"
+            },
+            {
+              "line": 129,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 130,
+              "text": "\t\t\t\t\t\tadd_to_list = item_list"
+            },
+            {
+              "line": 131,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 132,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 133,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 134,
+              "text": "\t\t}"
+            },
+            {
+              "line": 135,
+              "text": ""
+            },
+            {
+              "line": 136,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 137,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 140,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 133,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 134,
+              "text": "\t\t}"
+            },
+            {
+              "line": 135,
+              "text": ""
+            },
+            {
+              "line": 136,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 137,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 138,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 139,
+              "text": "\t\t\t\t\trandom_holy_site = {"
+            },
+            {
+              "line": 140,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 141,
+              "text": "\t\t\t\t\t\tsave_scope_as = selected_item"
+            },
+            {
+              "line": 142,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 143,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 144,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 145,
+              "text": "\t\t}"
+            },
+            {
+              "line": 146,
+              "text": ""
+            },
+            {
+              "line": 147,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 148,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 151,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 144,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 145,
+              "text": "\t\t}"
+            },
+            {
+              "line": 146,
+              "text": ""
+            },
+            {
+              "line": 147,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 148,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 149,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 150,
+              "text": "\t\t\t\t\trandom_holy_site = {"
+            },
+            {
+              "line": 151,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 152,
+              "text": "\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 153,
+              "text": "\t\t\t\t\t\t\tOR = {"
+            },
+            {
+              "line": 154,
+              "text": "\t\t\t\t\t\t\t\tscope:actor.faith.religious_head =  scope:actor"
+            },
+            {
+              "line": 155,
+              "text": "\t\t\t\t\t\t\t\tholy_site_barony.holder = {"
+            },
+            {
+              "line": 156,
+              "text": "\t\t\t\t\t\t\t\t\ttarget_is_same_character_or_above = scope:actor"
+            },
+            {
+              "line": 157,
+              "text": "\t\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 158,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 159,
+              "text": "\t\t\t\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 199,
+          "text": "\t\t\t\tis_faith_eminent_holy_site = prev",
+          "context": [
+            {
+              "line": 192,
+              "text": "\t\tsave_temporary_scope_as = root"
+            },
+            {
+              "line": 193,
+              "text": "\t\texists = scope:selected_item"
+            },
+            {
+              "line": 194,
+              "text": ""
+            },
+            {
+              "line": 195,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 198,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 199,
+              "text": "\t\t\t\tis_faith_eminent_holy_site = prev"
+            },
+            {
+              "line": 200,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 201,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 202,
+              "text": "\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min"
+            },
+            {
+              "line": 203,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min"
+            },
+            {
+              "line": 204,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 205,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 206,
+              "text": "\t\t}"
+            },
+            {
+              "line": 207,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line": 202,
+          "text": "\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min",
+          "context": [
+            {
+              "line": 195,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 198,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 199,
+              "text": "\t\t\t\tis_faith_eminent_holy_site = prev"
+            },
+            {
+              "line": 200,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 201,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 202,
+              "text": "\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min"
+            },
+            {
+              "line": 203,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min"
+            },
+            {
+              "line": 204,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 205,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 206,
+              "text": "\t\t}"
+            },
+            {
+              "line": 207,
+              "text": ""
+            },
+            {
+              "line": 208,
+              "text": "\t\t# Show usage of free holy site action, if appropriate"
+            },
+            {
+              "line": 209,
+              "text": "\t\tfaith = {"
+            },
+            {
+              "line": 210,
+              "text": "\t\t\tholy_site_free_action_show_usage_trigger = yes"
+            }
+          ]
+        },
+        {
+          "line": 203,
+          "text": "\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min",
+          "context": [
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 198,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 199,
+              "text": "\t\t\t\tis_faith_eminent_holy_site = prev"
+            },
+            {
+              "line": 200,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 201,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 202,
+              "text": "\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min"
+            },
+            {
+              "line": 203,
+              "text": "\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min"
+            },
+            {
+              "line": 204,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 205,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 206,
+              "text": "\t\t}"
+            },
+            {
+              "line": 207,
+              "text": ""
+            },
+            {
+              "line": 208,
+              "text": "\t\t# Show usage of free holy site action, if appropriate"
+            },
+            {
+              "line": 209,
+              "text": "\t\tfaith = {"
+            },
+            {
+              "line": 210,
+              "text": "\t\t\tholy_site_free_action_show_usage_trigger = yes"
+            },
+            {
+              "line": 211,
+              "text": "\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 231,
+          "text": "\t\t\tmake_holy_site_not_eminent = {",
+          "context": [
+            {
+              "line": 224,
+              "text": "\tcooldown = { years = holy_site_decision_cooldown_value }"
+            },
+            {
+              "line": 225,
+              "text": ""
+            },
+            {
+              "line": 226,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 227,
+              "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+            },
+            {
+              "line": 228,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 229,
+              "text": "\t\t}"
+            },
+            {
+              "line": 230,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 231,
+              "text": "\t\t\tmake_holy_site_not_eminent = {"
+            },
+            {
+              "line": 232,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 233,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 234,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 235,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 236,
+              "text": "\t\t}"
+            },
+            {
+              "line": 237,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 238,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 239,
+              "text": "\t\t\t\texists = scope:county_holder"
+            }
+          ]
+        },
+        {
+          "line": 285,
+          "text": "\t\t\t\t\tevery_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 278,
+              "text": "\t\tcontroller = select_scope_object"
+            },
+            {
+              "line": 279,
+              "text": "\t\tshow_from_start = yes"
+            },
+            {
+              "line": 280,
+              "text": "\t\tdecision_to_second_step_button = \"SELECT_HOLY_SITE\""
+            },
+            {
+              "line": 281,
+              "text": ""
+            },
+            {
+              "line": 282,
+              "text": "\t\tsetup_items = {"
+            },
+            {
+              "line": 283,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 284,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 285,
+              "text": "\t\t\t\t\tevery_eminent_holy_site = {"
+            },
+            {
+              "line": 286,
+              "text": "\t\t\t\t\t\tadd_to_list = item_list"
+            },
+            {
+              "line": 287,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 288,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 289,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 290,
+              "text": "\t\t}"
+            },
+            {
+              "line": 291,
+              "text": ""
+            },
+            {
+              "line": 292,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 293,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 295,
+          "text": "\t\t\t\t\trandom_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 288,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 289,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 290,
+              "text": "\t\t}"
+            },
+            {
+              "line": 291,
+              "text": ""
+            },
+            {
+              "line": 292,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 293,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 294,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 295,
+              "text": "\t\t\t\t\trandom_eminent_holy_site = {"
+            },
+            {
+              "line": 296,
+              "text": "\t\t\t\t\t\tsave_scope_as = selected_item"
+            },
+            {
+              "line": 297,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 298,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 299,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 300,
+              "text": "\t\t}"
+            },
+            {
+              "line": 301,
+              "text": ""
+            },
+            {
+              "line": 302,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 303,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 305,
+          "text": "\t\t\t\t\trandom_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 298,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 299,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 300,
+              "text": "\t\t}"
+            },
+            {
+              "line": 301,
+              "text": ""
+            },
+            {
+              "line": 302,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 303,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 304,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 305,
+              "text": "\t\t\t\t\trandom_eminent_holy_site = {"
+            },
+            {
+              "line": 306,
+              "text": "\t\t\t\t\t\tsave_scope_as = selected_item"
+            },
+            {
+              "line": 307,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 308,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 309,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 310,
+              "text": "\t\t}"
+            },
+            {
+              "line": 311,
+              "text": "\t}"
+            },
+            {
+              "line": 312,
+              "text": "}"
+            },
+            {
+              "line": 313,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line": 347,
+          "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }",
+          "context": [
+            {
+              "line": 340,
+              "text": ""
+            },
+            {
+              "line": 341,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 342,
+              "text": ""
+            },
+            {
+              "line": 343,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 344,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 345,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 346,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            },
+            {
+              "line": 347,
+              "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }"
+            },
+            {
+              "line": 348,
+              "text": "\t\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 349,
+              "text": "\t\t\t\t\ttext = abandon_holy_site_decision_above_holy_sites_min"
+            },
+            {
+              "line": 350,
+              "text": "\t\t\t\t\tlist_size:holy_site > root.faith.religion.holy_sites_min"
+            },
+            {
+              "line": 351,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 352,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 353,
+              "text": "\t\t}"
+            },
+            {
+              "line": 354,
+              "text": ""
+            },
+            {
+              "line": 355,
+              "text": "\t\t# Show usage of free holy site action, if appropriate"
+            }
+          ]
+        },
+        {
+          "line": 434,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 427,
+              "text": "\t\tshow_from_start = yes"
+            },
+            {
+              "line": 428,
+              "text": "\t\tdecision_to_second_step_button = \"SELECT_HOLY_SITE\""
+            },
+            {
+              "line": 429,
+              "text": ""
+            },
+            {
+              "line": 430,
+              "text": "\t\tsetup_items = {"
+            },
+            {
+              "line": 431,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 432,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 433,
+              "text": "\t\t\t\t\tevery_holy_site = {"
+            },
+            {
+              "line": 434,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 435,
+              "text": "\t\t\t\t\t\tadd_to_list = item_list"
+            },
+            {
+              "line": 436,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 437,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 438,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 439,
+              "text": "\t\t}"
+            },
+            {
+              "line": 440,
+              "text": ""
+            },
+            {
+              "line": 441,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 442,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 445,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 438,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 439,
+              "text": "\t\t}"
+            },
+            {
+              "line": 440,
+              "text": ""
+            },
+            {
+              "line": 441,
+              "text": "\t\tdefault_item = {"
+            },
+            {
+              "line": 442,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 443,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 444,
+              "text": "\t\t\t\t\trandom_holy_site = {"
+            },
+            {
+              "line": 445,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 446,
+              "text": "\t\t\t\t\t\tsave_scope_as = selected_item"
+            },
+            {
+              "line": 447,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 448,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 449,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 450,
+              "text": "\t\t}"
+            },
+            {
+              "line": 451,
+              "text": ""
+            },
+            {
+              "line": 452,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 453,
+              "text": "\t\t\tscope:actor = {"
+            }
+          ]
+        },
+        {
+          "line": 456,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 449,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 450,
+              "text": "\t\t}"
+            },
+            {
+              "line": 451,
+              "text": ""
+            },
+            {
+              "line": 452,
+              "text": "\t\tai_select_item = {"
+            },
+            {
+              "line": 453,
+              "text": "\t\t\tscope:actor = {"
+            },
+            {
+              "line": 454,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 455,
+              "text": "\t\t\t\t\trandom_holy_site = {"
+            },
+            {
+              "line": 456,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 457,
+              "text": "\t\t\t\t\t\tsave_scope_as = selected_item"
+            },
+            {
+              "line": 458,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 459,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 460,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 461,
+              "text": "\t\t}"
+            },
+            {
+              "line": 462,
+              "text": "\t}"
+            },
+            {
+              "line": 463,
+              "text": "}"
+            },
+            {
+              "line": 464,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line": 693,
+          "text": "\t\t\t\trandom_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 686,
+              "text": "\t\t}"
+            },
+            {
+              "line": 687,
+              "text": ""
+            },
+            {
+              "line": 688,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 689,
+              "text": "\t\t\tlimit = { exists = scope:artifact_to_enshrine }"
+            },
+            {
+              "line": 690,
+              "text": ""
+            },
+            {
+              "line": 691,
+              "text": "\t\t\t# Empty Eminent site preferred"
+            },
+            {
+              "line": 692,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 693,
+              "text": "\t\t\t\trandom_eminent_holy_site = {"
+            },
+            {
+              "line": 694,
+              "text": "\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 695,
+              "text": "\t\t\t\t\t\ttotal_active_artifact_rarity_sum = 0"
+            },
+            {
+              "line": 696,
+              "text": "\t\t\t\t\t\troot = {"
+            },
+            {
+              "line": 697,
+              "text": "\t\t\t\t\t\t\tcan_enshrine_holy_site_artifact = {"
+            },
+            {
+              "line": 698,
+              "text": "\t\t\t\t\t\t\t\tholy_site = prev"
+            },
+            {
+              "line": 699,
+              "text": "\t\t\t\t\t\t\t\tartifact = scope:artifact_to_enshrine"
+            },
+            {
+              "line": 700,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 701,
+              "text": "\t\t\t\t\t\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/game_concepts/pam_game_concepts.txt",
+      "bytes": 11857,
+      "sha256": "e1447382b383f0c8bf986d3d95be5273f5220d9e54e7c1708e4bf8663293ffe0",
+      "hits": [
+        {
+          "line": 273,
+          "text": "eminent_holy_site = {",
+          "context": [
+            {
+              "line": 266,
+              "text": ""
+            },
+            {
+              "line": 267,
+              "text": "sanctified = {"
+            },
+            {
+              "line": 268,
+              "text": "\talias = { sanctify sanctifying }"
+            },
+            {
+              "line": 269,
+              "text": "\tparent = holy_site"
+            },
+            {
+              "line": 270,
+              "text": "\ttexture = \"gfx/interface/icons/event_types/type_faith.dds\""
+            },
+            {
+              "line": 271,
+              "text": "}"
+            },
+            {
+              "line": 272,
+              "text": ""
+            },
+            {
+              "line": 273,
+              "text": "eminent_holy_site = {"
+            },
+            {
+              "line": 274,
+              "text": "\talias = { eminent_holy_sites eminent_holy_site_short }"
+            },
+            {
+              "line": 275,
+              "text": "\tparent = holy_site"
+            },
+            {
+              "line": 276,
+              "text": "\ttexture = \"gfx/interface/icons/event_types/type_faith.dds\""
+            },
+            {
+              "line": 277,
+              "text": "}"
+            },
+            {
+              "line": 278,
+              "text": ""
+            },
+            {
+              "line": 279,
+              "text": "holy_relic = {"
+            },
+            {
+              "line": 280,
+              "text": "\talias = { holy_relics }"
+            },
+            {
+              "line": 281,
+              "text": "\tparent = holy_site"
+            }
+          ]
+        },
+        {
+          "line": 274,
+          "text": "\talias = { eminent_holy_sites eminent_holy_site_short }",
+          "context": [
+            {
+              "line": 267,
+              "text": "sanctified = {"
+            },
+            {
+              "line": 268,
+              "text": "\talias = { sanctify sanctifying }"
+            },
+            {
+              "line": 269,
+              "text": "\tparent = holy_site"
+            },
+            {
+              "line": 270,
+              "text": "\ttexture = \"gfx/interface/icons/event_types/type_faith.dds\""
+            },
+            {
+              "line": 271,
+              "text": "}"
+            },
+            {
+              "line": 272,
+              "text": ""
+            },
+            {
+              "line": 273,
+              "text": "eminent_holy_site = {"
+            },
+            {
+              "line": 274,
+              "text": "\talias = { eminent_holy_sites eminent_holy_site_short }"
+            },
+            {
+              "line": 275,
+              "text": "\tparent = holy_site"
+            },
+            {
+              "line": 276,
+              "text": "\ttexture = \"gfx/interface/icons/event_types/type_faith.dds\""
+            },
+            {
+              "line": 277,
+              "text": "}"
+            },
+            {
+              "line": 278,
+              "text": ""
+            },
+            {
+              "line": 279,
+              "text": "holy_relic = {"
+            },
+            {
+              "line": 280,
+              "text": "\talias = { holy_relics }"
+            },
+            {
+              "line": 281,
+              "text": "\tparent = holy_site"
+            },
+            {
+              "line": 282,
+              "text": "\ttexture = \"gfx/interface/icons/event_types/type_faith.dds\""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "bytes": 40713,
+      "sha256": "4374f9917e58a98e7b51ece5848d3540534f39fe60152f48342a79c3b2dc6f80",
+      "hits": [
+        {
+          "line": 614,
+          "text": "\t\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 607,
+              "text": "\t\t\tmultiply = 1.5"
+            },
+            {
+              "line": 608,
+              "text": "\t\t}"
+            },
+            {
+              "line": 609,
+              "text": "\t\t# Regular Holy Sites give less 50% less"
+            },
+            {
+              "line": 610,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 611,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 612,
+              "text": "\t\t\t\troot.faith = {"
+            },
+            {
+              "line": 613,
+              "text": "\t\t\t\t\tany_holy_site = {"
+            },
+            {
+              "line": 614,
+              "text": "\t\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 615,
+              "text": "\t\t\t\t\t\tholy_site_county = root.involved_activity.activity_location.county"
+            },
+            {
+              "line": 616,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 617,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 618,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 619,
+              "text": "\t\t\tmultiply = 0.5"
+            },
+            {
+              "line": 620,
+              "text": "\t\t}"
+            },
+            {
+              "line": 621,
+              "text": "\t\t# Final multipliers"
+            },
+            {
+              "line": 622,
+              "text": "\t\tif = {"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/script_values/02_religion_values.txt",
+      "bytes": 118720,
+      "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+      "hits": [
+        {
+          "line": 4098,
+          "text": "create_hof_no_eminent_holy_site_cost_mult = 1.5",
+          "context": [
+            {
+              "line": 4091,
+              "text": ""
+            },
+            {
+              "line": 4092,
+              "text": "reincarnation_chance = 4"
+            },
+            {
+              "line": 4093,
+              "text": ""
+            },
+            {
+              "line": 4094,
+              "text": "holy_sites_to_create_temporal_head_of_faith = 1"
+            },
+            {
+              "line": 4095,
+              "text": "holy_sites_to_create_spiritual_head_of_faith = 1 "
+            },
+            {
+              "line": 4096,
+              "text": ""
+            },
+            {
+              "line": 4097,
+              "text": "create_hof_non_mainline_rite_cost_mult = 2"
+            },
+            {
+              "line": 4098,
+              "text": "create_hof_no_eminent_holy_site_cost_mult = 1.5"
+            },
+            {
+              "line": 4099,
+              "text": "create_hof_ai_cost_mult = 0"
+            },
+            {
+              "line": 4100,
+              "text": ""
+            },
+            {
+              "line": 4101,
+              "text": "# ROOT = the character establishing the Head of Faith"
+            },
+            {
+              "line": 4102,
+              "text": "create_hof_piety_cost = {"
+            },
+            {
+              "line": 4103,
+              "text": "\tvalue = 0"
+            },
+            {
+              "line": 4104,
+              "text": "\tif = {"
+            },
+            {
+              "line": 4105,
+              "text": "\t\tlimit = {"
+            },
+            {
+              "line": 4106,
+              "text": "\t\t\tfaith = { has_doctrine_parameter = temporal_head_of_faith }"
+            }
+          ]
+        },
+        {
+          "line": 4143,
+          "text": "\t\t\t\t\t\tany_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 4136,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 4137,
+              "text": "\t\t\tmultiply = create_hof_non_mainline_rite_cost_mult"
+            },
+            {
+              "line": 4138,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4139,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 4140,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 4141,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 4142,
+              "text": "\t\t\t\t\tNOT = {"
+            },
+            {
+              "line": 4143,
+              "text": "\t\t\t\t\t\tany_eminent_holy_site = {"
+            },
+            {
+              "line": 4144,
+              "text": "\t\t\t\t\t\t\tholy_site_county = {"
+            },
+            {
+              "line": 4145,
+              "text": "\t\t\t\t\t\t\t\tis_holy_site_controlled_by = root"
+            },
+            {
+              "line": 4146,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = root.faith"
+            },
+            {
+              "line": 4147,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4148,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4149,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 4150,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 4151,
+              "text": "\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 4152,
+          "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult",
+          "context": [
+            {
+              "line": 4145,
+              "text": "\t\t\t\t\t\t\t\tis_holy_site_controlled_by = root"
+            },
+            {
+              "line": 4146,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = root.faith"
+            },
+            {
+              "line": 4147,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4148,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4149,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 4150,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 4151,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 4152,
+              "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult"
+            },
+            {
+              "line": 4153,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4154,
+              "text": "\t}"
+            },
+            {
+              "line": 4155,
+              "text": "\tif = {"
+            },
+            {
+              "line": 4156,
+              "text": "\t\tlimit = { is_ai = yes }"
+            },
+            {
+              "line": 4157,
+              "text": "\t\tmultiply = create_hof_ai_cost_mult"
+            },
+            {
+              "line": 4158,
+              "text": "\t}"
+            },
+            {
+              "line": 4159,
+              "text": "}"
+            },
+            {
+              "line": 4160,
+              "text": ""
+            }
+          ]
+        },
+        {
+          "line": 4174,
+          "text": "\t\t\t\t\t\tany_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 4167,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4168,
+              "text": "\t\tadd = medium_gold_max_value"
+            },
+            {
+              "line": 4169,
+              "text": "\t\tmultiply = 0.5"
+            },
+            {
+              "line": 4170,
+              "text": "\t\tif = {"
+            },
+            {
+              "line": 4171,
+              "text": "\t\t\tlimit = {"
+            },
+            {
+              "line": 4172,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 4173,
+              "text": "\t\t\t\t\tNOT = {"
+            },
+            {
+              "line": 4174,
+              "text": "\t\t\t\t\t\tany_eminent_holy_site = {"
+            },
+            {
+              "line": 4175,
+              "text": "\t\t\t\t\t\t\tholy_site_county = {"
+            },
+            {
+              "line": 4176,
+              "text": "\t\t\t\t\t\t\t\tis_holy_site_controlled_by = root"
+            },
+            {
+              "line": 4177,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = root.faith"
+            },
+            {
+              "line": 4178,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4179,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4180,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 4181,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 4182,
+              "text": "\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 4183,
+          "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult",
+          "context": [
+            {
+              "line": 4176,
+              "text": "\t\t\t\t\t\t\t\tis_holy_site_controlled_by = root"
+            },
+            {
+              "line": 4177,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = root.faith"
+            },
+            {
+              "line": 4178,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4179,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 4180,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 4181,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 4182,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 4183,
+              "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult"
+            },
+            {
+              "line": 4184,
+              "text": "\t\t}"
+            },
+            {
+              "line": 4185,
+              "text": "\t}"
+            },
+            {
+              "line": 4186,
+              "text": "\tif = {"
+            },
+            {
+              "line": 4187,
+              "text": "\t\tlimit = { is_ai = yes }"
+            },
+            {
+              "line": 4188,
+              "text": "\t\tmultiply = create_hof_ai_cost_mult"
+            },
+            {
+              "line": 4189,
+              "text": "\t}"
+            },
+            {
+              "line": 4190,
+              "text": "}"
+            },
+            {
+              "line": 4191,
+              "text": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/travel/point_of_interest_types/travel_point_of_interest_types.txt",
+      "bytes": 48937,
+      "sha256": "1e549ffa1a98dd75d460cd4f3da2ba98d830bc597eb5c9a9deeb41fff8262470",
+      "hits": [
+        {
+          "line": 488,
+          "text": "\t\t\t\t\t\t\tNOT = { is_faith_eminent_holy_site = scope:holy_site }",
+          "context": [
+            {
+              "line": 481,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 482,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 483,
+              "text": "\t\t\t\tif = {\t# Regular Holy Site"
+            },
+            {
+              "line": 484,
+              "text": "\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 485,
+              "text": "\t\t\t\t\t\texists = scope:holy_site"
+            },
+            {
+              "line": 486,
+              "text": "\t\t\t\t\t\troot.faith = {"
+            },
+            {
+              "line": 487,
+              "text": "\t\t\t\t\t\t\tis_faith_holy_site = scope:holy_site"
+            },
+            {
+              "line": 488,
+              "text": "\t\t\t\t\t\t\tNOT = { is_faith_eminent_holy_site = scope:holy_site }"
+            },
+            {
+              "line": 489,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 490,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 491,
+              "text": "\t\t\t\t\tadd_piety = point_of_interest_minor_piety_value"
+            },
+            {
+              "line": 492,
+              "text": "\t\t\t\t\tif = { # Bonuses from Zeal Phases"
+            },
+            {
+              "line": 493,
+              "text": "\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 494,
+              "text": "\t\t\t\t\t\t\ttop_participant_group:the_christian_church ?=  {"
+            },
+            {
+              "line": 495,
+              "text": "\t\t\t\t\t\t\t\thas_participant_group_parameter = the_christian_church_holy_site_poi_bonus"
+            },
+            {
+              "line": 496,
+              "text": "\t\t\t\t\t\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 506,
+          "text": "\t\t\t\t\t\t\tis_faith_eminent_holy_site = scope:holy_site",
+          "context": [
+            {
+              "line": 499,
+              "text": "\t\t\t\t\t\tadd_scholar_trait_or_xp_effect = { VALUE = 5 }"
+            },
+            {
+              "line": 500,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 501,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 502,
+              "text": "\t\t\t\tif = { # Eminent Holy Site"
+            },
+            {
+              "line": 503,
+              "text": "\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 504,
+              "text": "\t\t\t\t\t\texists = scope:holy_site"
+            },
+            {
+              "line": 505,
+              "text": "\t\t\t\t\t\troot.faith = {"
+            },
+            {
+              "line": 506,
+              "text": "\t\t\t\t\t\t\tis_faith_eminent_holy_site = scope:holy_site"
+            },
+            {
+              "line": 507,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 508,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 509,
+              "text": "\t\t\t\t\tadd_piety = point_of_interest_piety_value"
+            },
+            {
+              "line": 510,
+              "text": "\t\t\t\t\tif = { # Bonuses from Zeal Phases"
+            },
+            {
+              "line": 511,
+              "text": "\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 512,
+              "text": "\t\t\t\t\t\t\ttop_participant_group:the_christian_church ?= {"
+            },
+            {
+              "line": 513,
+              "text": "\t\t\t\t\t\t\t\thas_participant_group_parameter = the_christian_church_holy_site_poi_bonus"
+            },
+            {
+              "line": 514,
+              "text": "\t\t\t\t\t\t\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "events/artifacts/historical_artifacts_events.txt",
+      "bytes": 29930,
+      "sha256": "6d706e9f7f7bbd64d625af5dea72231c30ccba4c4b2b24ee25017bdf3fd82194",
+      "hits": [
+        {
+          "line": 1096,
+          "text": "\t\t\t\tevery_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 1089,
+              "text": "\thidden = yes"
+            },
+            {
+              "line": 1090,
+              "text": ""
+            },
+            {
+              "line": 1091,
+              "text": "\timmediate = {"
+            },
+            {
+              "line": 1092,
+              "text": "\t\tevery_religion_global = {"
+            },
+            {
+              "line": 1093,
+              "text": "\t\t\tevery_faith = {"
+            },
+            {
+              "line": 1094,
+              "text": "\t\t\t\tsave_scope_as = relic_faith"
+            },
+            {
+              "line": 1095,
+              "text": "\t\t\t\t# Eminent holy sites get the higher-rarity dispatcher."
+            },
+            {
+              "line": 1096,
+              "text": "\t\t\t\tevery_eminent_holy_site = {"
+            },
+            {
+              "line": 1097,
+              "text": "\t\t\t\t\tsave_scope_as = relic_site"
+            },
+            {
+              "line": 1098,
+              "text": "\t\t\t\t\tholy_site_county = {"
+            },
+            {
+              "line": 1099,
+              "text": "\t\t\t\t\t\tif = {"
+            },
+            {
+              "line": 1100,
+              "text": "\t\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 1101,
+              "text": "\t\t\t\t\t\t\t\texists = holder"
+            },
+            {
+              "line": 1102,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = scope:relic_faith"
+            },
+            {
+              "line": 1103,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 1104,
+              "text": "\t\t\t\t\t\t\tholder = { save_scope_as = relic_owner }"
+            }
+          ]
+        },
+        {
+          "line": 1111,
+          "text": "\t\t\t\t\tis_eminent = no",
+          "context": [
+            {
+              "line": 1104,
+              "text": "\t\t\t\t\t\t\tholder = { save_scope_as = relic_owner }"
+            },
+            {
+              "line": 1105,
+              "text": "\t\t\t\t\t\t\tcreate_starting_holy_relic_eminent_effect = yes"
+            },
+            {
+              "line": 1106,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 1107,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 1108,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1109,
+              "text": "\t\t\t\t# Regular holy sites get the lower-rarity dispatcher."
+            },
+            {
+              "line": 1110,
+              "text": "\t\t\t\tevery_holy_site = {"
+            },
+            {
+              "line": 1111,
+              "text": "\t\t\t\t\tis_eminent = no"
+            },
+            {
+              "line": 1112,
+              "text": "\t\t\t\t\tsave_scope_as = relic_site"
+            },
+            {
+              "line": 1113,
+              "text": "\t\t\t\t\tholy_site_county = {"
+            },
+            {
+              "line": 1114,
+              "text": "\t\t\t\t\t\tif = {"
+            },
+            {
+              "line": 1115,
+              "text": "\t\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 1116,
+              "text": "\t\t\t\t\t\t\t\texists = holder"
+            },
+            {
+              "line": 1117,
+              "text": "\t\t\t\t\t\t\t\tholder.faith = scope:relic_faith"
+            },
+            {
+              "line": 1118,
+              "text": "\t\t\t\t\t\t\t}"
+            },
+            {
+              "line": 1119,
+              "text": "\t\t\t\t\t\t\tholder = { save_scope_as = relic_owner }"
+            }
+          ]
+        },
+        {
+          "line": 1134,
+          "text": "\t\t\t\t\tevery_eminent_holy_site = {",
+          "context": [
+            {
+              "line": 1127,
+              "text": "\t\tevery_religion_global = {"
+            },
+            {
+              "line": 1128,
+              "text": "\t\t\tevery_faith = {"
+            },
+            {
+              "line": 1129,
+              "text": "\t\t\t\tsave_scope_as = relic_faith"
+            },
+            {
+              "line": 1130,
+              "text": "\t\t\t\tif = {"
+            },
+            {
+              "line": 1131,
+              "text": "\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 1132,
+              "text": "\t\t\t\t\t\tnum_county_followers >= 3 # only check for faiths that are somewhat alive"
+            },
+            {
+              "line": 1133,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 1134,
+              "text": "\t\t\t\t\tevery_eminent_holy_site = {"
+            },
+            {
+              "line": 1135,
+              "text": "\t\t\t\t\t\tlimit = {"
+            },
+            {
+              "line": 1136,
+              "text": "\t\t\t\t\t\t\tholy_site_has_artifact = no"
+            },
+            {
+              "line": 1137,
+              "text": "\t\t\t\t\t\t}"
+            },
+            {
+              "line": 1138,
+              "text": "\t\t\t\t\t\tsave_scope_as = relic_site"
+            },
+            {
+              "line": 1139,
+              "text": ""
+            },
+            {
+              "line": 1140,
+              "text": "\t\t\t\t\t\tholy_site_county = {"
+            },
+            {
+              "line": 1141,
+              "text": "\t\t\t\t\t\t\tif = {"
+            },
+            {
+              "line": 1142,
+              "text": "\t\t\t\t\t\t\t\tlimit = {"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

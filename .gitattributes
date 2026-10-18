@@ -14,6 +14,13 @@ tools/g2_saved_campaign/tests/readonly_progress/fixtures/** -text whitespace=cr-
 
 # Holy-site source plans and receipts retain their exact original SHA bindings.
 docs/ck3-native-ai/evidence/faith-and-power-holy-sites-12004/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/holy-site-grade-effects-limits12004/** -text whitespace=-blank-at-eol,-blank-at-eof,cr-at-eol
+docs/ck3-native-ai/evidence/holy-site-piety-experience-consumer12004/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/holy-site-v4-integration12004/** -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/holy-site-relic-management-ai-opinion12004/** -text whitespace=-blank-at-eof,cr-at-eol
+docs/ck3-native-ai/faith-and-power-episode01-v4-official-terminology-12004.evidence.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/faith-and-power-episode01-v4-terminology.knowledge.json -text whitespace=cr-at-eol
 
 # Exact prospective review patches retain their original evidence pins.
 ck3_autonomous_player/experimental/battle_reader_diagnostic_v1/*.patch -text whitespace=-blank-at-eol,cr-at-eol

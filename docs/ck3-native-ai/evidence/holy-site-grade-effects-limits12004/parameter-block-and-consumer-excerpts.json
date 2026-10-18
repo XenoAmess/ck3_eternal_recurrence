@@ -1,0 +1,404 @@
+{
+  "parameter_blocks": [
+    {
+      "type_key": "jerusalem",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 9,
+          "text": ""
+        },
+        {
+          "line": 10,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 11,
+          "text": "\t\tjerusalem_conversion_bonus # +20% County Conversion"
+        },
+        {
+          "line": 12,
+          "text": "\t}"
+        },
+        {
+          "line": 13,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "type_key": "kerala",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 410,
+          "text": ""
+        },
+        {
+          "line": 411,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 412,
+          "text": "\t\tkerala_conversion_bonus # +50% County Conversion Speed"
+        },
+        {
+          "line": 413,
+          "text": "\t}"
+        },
+        {
+          "line": 414,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "type_key": "iona",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 466,
+          "text": ""
+        },
+        {
+          "line": 467,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 468,
+          "text": "\t\tiona_conversion_bonus # +20% County Conversion Speed in the British Isles"
+        },
+        {
+          "line": 469,
+          "text": "\t}"
+        },
+        {
+          "line": 470,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "type_key": "visoki",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 498,
+          "text": ""
+        },
+        {
+          "line": 499,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 500,
+          "text": "\t\tvisoki_conversion_resistance_bonus # 50% County Conversion Resistance"
+        },
+        {
+          "line": 501,
+          "text": "\t}"
+        },
+        {
+          "line": 502,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "type_key": "cordoba",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 740,
+          "text": ""
+        },
+        {
+          "line": 741,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 742,
+          "text": "\t\tcordoba_conversion_bonus # +20% county conversion speed"
+        },
+        {
+          "line": 743,
+          "text": "\t}"
+        },
+        {
+          "line": 744,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "type_key": "wadi_el_milk",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\holy_site_types\\00_holy_site_types.txt",
+      "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40",
+      "lines": [
+        {
+          "line": 4966,
+          "text": ""
+        },
+        {
+          "line": 4967,
+          "text": "\tparameters = {"
+        },
+        {
+          "line": 4968,
+          "text": "\t\twadi_el_milk_conversion_resistance_bonus # 50% County Conversion Resistance"
+        },
+        {
+          "line": 4969,
+          "text": "\t}"
+        },
+        {
+          "line": 4970,
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "consumers": [
+    {
+      "relative": "common/religion/holy_site_types/_holy_site_types.info",
+      "line": 22,
+      "text": "\t# Trigger (barony scope): 'has_holy_site_parameter' where $TITLE$ inserts localized named of barony",
+      "context": [
+        "",
+        "\t### Brief: parameters ( parameter list )",
+        "\t# Arbitrary parameters to be checked in applying various effects.",
+        "\t# Localization: \"holy_site_parameter_<parameter_name>\" where $PARAMETER_NAME$ inserts localized named of parameter",
+        "\t# Trigger (barony scope): 'has_holy_site_parameter' where $TITLE$ inserts localized named of barony",
+        "\t# Trigger (faith scope): 'controls_holy_site_with_parameter' where $FAITH$ inserts localized named of faith",
+        "\t# ",
+        "\t# Note: The above trigger just checks for existence, so it does not",
+        "\t# matter if the value is set to 'yes' or 'no'."
+      ]
+    },
+    {
+      "relative": "common/religion/holy_site_types/_holy_site_types.info",
+      "line": 23,
+      "text": "\t# Trigger (faith scope): 'controls_holy_site_with_parameter' where $FAITH$ inserts localized named of faith",
+      "context": [
+        "\t### Brief: parameters ( parameter list )",
+        "\t# Arbitrary parameters to be checked in applying various effects.",
+        "\t# Localization: \"holy_site_parameter_<parameter_name>\" where $PARAMETER_NAME$ inserts localized named of parameter",
+        "\t# Trigger (barony scope): 'has_holy_site_parameter' where $TITLE$ inserts localized named of barony",
+        "\t# Trigger (faith scope): 'controls_holy_site_with_parameter' where $FAITH$ inserts localized named of faith",
+        "\t# ",
+        "\t# Note: The above trigger just checks for existence, so it does not",
+        "\t# matter if the value is set to 'yes' or 'no'.",
+        "\t#"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 948,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus",
+      "context": [
+        "\t#Conversion bonuses from certain Holy Sites.",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_jerusalem = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 962,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus",
+      "context": [
+        "\t}",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_mahoyadapuram = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 977,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus",
+      "context": [
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\texists = scope:county",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_islay = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 995,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus",
+      "context": [
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\texists = scope:county",
+        "\t\t\tscope:county.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_wadi_el-milk = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 1009,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus",
+      "context": [
+        "\t}",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_cordoba = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 1024,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus",
+      "context": [
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\texists = scope:county",
+        "\t\t\tscope:county.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus",
+        "\t\t\t}",
+        "\t\t\ttitle:b_visoki = {",
+        "\t\t\t\tis_holy_site_of = scope:councillor.faith",
+        "\t\t\t}"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2000,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = 0.20"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2013,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = 0.50"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2026,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = 0.30"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2039,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = -0.50"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2052,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = -0.50"
+      ]
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "line": 2065,
+      "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus",
+      "context": [
+        "\tvalue = 0",
+        "\tif = {",
+        "\t\tlimit = {",
+        "\t\t\tscope:councillor.faith = {",
+        "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus",
+        "\t\t\t}",
+        "\t\t}",
+        "\t\tadd = court_chaplain_conversion_base_total",
+        "\t\tmultiply = 0.20"
+      ]
+    }
+  ],
+  "consumer_sources": [
+    {
+      "relative": "common/religion/holy_site_types/_holy_site_types.info",
+      "bytes": 3329,
+      "sha256": "b7f321911c857a5214eb2681d48a700020c125377df0d7d4936928a500b6f33e"
+    },
+    {
+      "relative": "common/script_values/99_court_chaplain_values.txt",
+      "bytes": 60594,
+      "sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3"
+    }
+  ]
+}

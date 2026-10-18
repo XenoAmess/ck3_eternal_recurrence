@@ -1,0 +1,42 @@
+{
+  "schema": "ck3_holy_site_relic_signed_piety_planning_clarification_v4",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:47:56.371343+00:00",
+  "source_head": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_contract": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/piety-consumer-a01/SOURCE-CONTRACT.piety-consumer-a01.json",
+    "bytes": 170653,
+    "sha256": "609ba43f90a374bd66652c1289ad17d06a8c7b63edf3bcb7dfbb21a40cc23f54"
+  },
+  "facts": {
+    "negative_plain_add_piety_experience_delta": 0,
+    "positive_plain": "Wallet nonnegative: experience gains full adjusted delta. Wallet negative: only positive adjusted delta exceeding wallet debt becomes experience.",
+    "forced_add_piety_and_experience": "Adds adjusted signed delta to both wallet and devotion experience, including negative.",
+    "experience_only": "Adds adjusted signed delta only to devotion experience.",
+    "resource_adjustment": "Both original effect executors apply28BC6D0 before writes; negative property0x5A, positive0x59; native names are not assigned here."
+  },
+  "conditional_raw_base_4to3": {
+    "preconditions": [
+      "old rarity4 and new rarity3",
+      "both artifacts recognized by actor current Faith",
+      "normal original same-command swap admitted",
+      "both existing stock on-action branches enter"
+    ],
+    "authored_plain_input": -250,
+    "authored_forced_both_input": -500,
+    "base_wallet_sum": -750,
+    "base_experience_sum": -500,
+    "negative_plain_experience_component": 0,
+    "assume_for_exact_base_example": "both original resource adjustment multipliers=1; no independent/cascading changes",
+    "classification": "source arithmetic, not new live observation"
+  },
+  "do_not_claim": [
+    "All negative piety costs lower devotion",
+    "All positive add_piety gains full devotion despite a negative wallet",
+    "Authored -750/-500 is the measured actual command result",
+    "No later level-change or other effects can change the final total"
+  ],
+  "evidence_kind": "fresh static native closure, no new live qualification"
+}

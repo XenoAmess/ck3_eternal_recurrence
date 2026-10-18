@@ -1,0 +1,236 @@
+{
+  "schema": "ck3_12004_holy_site_rarity_planning_knowledge_v4",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:38:40.783892+00:00",
+  "source_head": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "qualification": "fresh bounded static EXE review plus separately identified retained R0010 live readbacks; no new game execution",
+  "portable_mechanism": {
+    "scope": "one shared HolySite world object; association and eminent grade are per Faith; cached Active and rarity are per HolySite",
+    "subject_faith": "actual county holder character current Rite Faith fullID",
+    "early_zero_guard": "site inventory owned-reference count == 0; distinct from actual slot count",
+    "per_slot_contribution": "For each actual slot in order: empty -> 0; if holderFaith is not associated -> 0; otherwise original IsHolyRelicFor(artifact,holderFaith) true -> signed int32 artifact rarity, false -> 0.",
+    "recognition": "dynamic sanctified Faith membership OR template compiled trigger; null-tooltip dynamic true short-circuits; a template can recognize a Faith absent from the dynamic list",
+    "sum": "sum per actual slot, no deduplication, no eminent-grade multiplier; native int32 addition keeps low32 bits",
+    "current_active": "signed current sum > 0",
+    "owned_only_item_contribution": 0,
+    "do_not_substitute": [
+      "playerFaith",
+      "county populationFaith",
+      "topLiegeFaith",
+      "original donorFaith",
+      "eminent Faith",
+      "all associated Faith sums"
+    ],
+    "unresolved_bridge_identity": "unknown; do not represent a failed fullID resolver by a default artifact, empty slot or zero contribution",
+    "source_rvas": [
+      "265A3F0",
+      "2531320",
+      "2530EF0"
+    ]
+  },
+  "three_slot_static_examples": {
+    "kind": "counterfactual arithmetic from source; not an executed save or an admitted player command",
+    "shared_slots": [
+      "X",
+      "Y",
+      "Z"
+    ],
+    "items": {
+      "X": {
+        "rarity": 4,
+        "recognized_A": true,
+        "recognized_B": false
+      },
+      "Y": {
+        "rarity": 3,
+        "recognized_A": false,
+        "recognized_B": true
+      },
+      "Z": {
+        "rarity": 2,
+        "recognized_A": true,
+        "recognized_B": true
+      }
+    },
+    "cases": [
+      {
+        "associated": [
+          "A",
+          "B"
+        ],
+        "holder": "A",
+        "contributions": [
+          4,
+          0,
+          2
+        ],
+        "current_sum": 6,
+        "current_active": true
+      },
+      {
+        "associated": [
+          "A",
+          "B"
+        ],
+        "holder": "B",
+        "contributions": [
+          0,
+          3,
+          2
+        ],
+        "current_sum": 5,
+        "current_active": true
+      },
+      {
+        "associated": [
+          "B"
+        ],
+        "holder": "A",
+        "contributions": [
+          0,
+          0,
+          0
+        ],
+        "current_sum": 0,
+        "current_active": false
+      },
+      {
+        "associated": [
+          "B"
+        ],
+        "holder": "B",
+        "contributions": [
+          0,
+          3,
+          2
+        ],
+        "current_sum": 5,
+        "current_active": true
+      }
+    ],
+    "assumptions": [
+      "valid stable fullIDs",
+      "positive owned-reference count",
+      "unchanged slots are specified counterfactual inputs",
+      "recognition inputs are hypotheses, not observed IDs",
+      "actual available slot count must be read for the chosen site",
+      "no assertion of legal conversion or adoption action"
+    ],
+    "cached_sum": null,
+    "benefits_observed": false
+  },
+  "cache": {
+    "current_query_writes_cache": false,
+    "normal_valid_inventory_paths": [
+      {
+        "current_call": "22E57F1",
+        "cache_sum_write": "22E57F8",
+        "cache_active_write": "22E57FB..57FE"
+      },
+      {
+        "current_call": "22E4F2B",
+        "cache_sum_write": "22E4F30",
+        "cache_active_write": "22E4F33..4F38"
+      }
+    ],
+    "manager_evaluate": "29D8890 secondary interface+8 records changed(siteID,newSum), does not write cache",
+    "manager_apply": "29D8DD0 secondary interface+18; writes site+1C at29D8FF9, site+18 at29D8FFC..9001",
+    "actual_normal_date_apply": "22A0D60 increments GameState raw date by24 at22A0E6D, calls ReligionManager secondary interface+18 at22A1564",
+    "evaluate_upstream_invocation_and_cadence": "unknown; do not infer daily/monthly or next-query refresh",
+    "last_refresh_time": "unknown",
+    "scaled_property": "holy_site_total_artifact_rarity -> root.total_active_artifact_rarity_sum -> cached site+1C; not automatic current recomputation",
+    "planning_use": "Preserve cached and current as separate observations. On disagreement, explain both and retain capture_epoch/fullID/holderFaith/association; do not substitute current sum for actually consumed cached state.",
+    "native_revision_alone_proves_domain_freshness": false
+  },
+  "retained_live_R0010": {
+    "machine_id": "4-8e1c2f1861",
+    "source_head": "e23f9de04018b638c62e0b72d39d88b56f0010cb",
+    "site_id": 14,
+    "artifact_id": 64,
+    "artifact_rarity": 2,
+    "holder_faith_id": 50,
+    "before": {
+      "associated_faith_ids": [
+        26,
+        27,
+        36,
+        49,
+        50
+      ],
+      "capture_epoch": 49264,
+      "current_sum": 2,
+      "cached_sum": 2
+    },
+    "after_shared_abandon": {
+      "associated_faith_ids": [
+        26,
+        27,
+        36,
+        49
+      ],
+      "capture_epoch": 54778,
+      "slot_artifact_id": 64,
+      "current_sum": 0,
+      "cached_sum": 2,
+      "current_active": false,
+      "cached_active": true
+    },
+    "meaning": "holder Faith exits association while relic remains at shared site; original recognition of artifact64 for Faith50 remains true, yet current global sum becomes0. Paused same-date cache remains2.",
+    "does_not_prove": [
+      "conversion effect in a multi-item differing-recognition live save",
+      "exact subsequent cache refresh time",
+      "all actual modifier benefits become0"
+    ],
+    "same_vector_warning": "R0010 Nadjaf32 artifacts237/267 were both rarity4 and both recognized by Faith50 and51; their swap does not demonstrate cross-Faith recognition tradeoffs.",
+    "evidence": "history-r0010-a02.json"
+  },
+  "existing_mcp_projection": {
+    "tool": "ck3_query_player_holy_site_relic_context_v1",
+    "new_tool_or_parameter_or_optin": false,
+    "added_native_calls": 0,
+    "optional_field": "rarity_decomposition",
+    "mode": "independent_matrix_projection",
+    "same_native_evaluation_as_total": false,
+    "original_total_call": "265A3F0, before independent matrix calls to2530EF0",
+    "required_inputs": [
+      "original current sum",
+      "raw owned-reference count",
+      "actual slots and stable resolved artifact rarity",
+      "actual holderFaith and association",
+      "existing recognition matrix relevant equipped cells",
+      "existing input bookends/refusal state"
+    ],
+    "knownness": "Known early owned-reference-count zero and known holder-unassociated are independent zero reasons. Unknown identity/rarity/relevant matrix cell remains unknown. Relevant subset may be complete even when unrelated candidate cells are unavailable, without overriding matrix refusal or source drift.",
+    "integer_projection": "checked int32; outside-range -> projected_sum null with projected_sum_outside_int32; does not claim native wrap reproduction",
+    "original_total_preserved": true,
+    "numerical_equality_proves_same_evaluation": false,
+    "action_context_unchanged": "not extended; complete all-slot object rarities are not guaranteed and action preview hash is preserved",
+    "implementation_owner": "/root/v4_rarity_mcp",
+    "runtime_qualification": "pending actual newly loaded code; this research does not claim native/MCP live qualification"
+  },
+  "benefit_boundary": {
+    "global_active_does_not_mean_all_associated_faiths_receive_all_benefits": true,
+    "actual_faithwide_source": "24FB270 requires requested Faith eminent list contains site and actual county-holder Faith == requested Faith; no site+18 gate in the complete reviewed primary. Fixed and scaled contributions are distinct.",
+    "local_fixed_source": "291E3A0 checks site Active and actorFaith association, plus original local title/recipient conditions",
+    "county_scaled_source": "2864E40 checks site Active and actual county-holder Faith; no eminent gate in reviewed body",
+    "do_not_infer": "Active false is not a universal all-fixed-Faithwide-off switch; recognition matrix and current sum are not recipient net modifier readbacks",
+    "source_topic": "../../../holy-site-shared-relic-value12004.md"
+  },
+  "minimal_pending_observations": [
+    "One legal shared site with at least two actual slots holding artifacts whose native recognition vectors differ across two associated Faiths; independent owner/slot/current/cache before and after.",
+    "If a legal prepared comparison can change actual county-holder current Faith while retaining associations/slots, re-read both original current total and matrix; no assumed conversion command.",
+    "After an association-only change, observe a permitted normal date boundary and re-read current/cache with date and capture_epoch; do not promise one-tick convergence before observed.",
+    "Read actual recipient modifier sources/values separately from global rarity and UI descriptions."
+  ],
+  "source_contract": {
+    "file": "rarity-source-contract-v4.json",
+    "sha256": "bf20ada972a837e855b4ebb225850696d3068aa4eef6ae94de749cda8344e146"
+  },
+  "retention": {
+    "purpose": "active episode01 planning and source review; small source/evidence package",
+    "review_by_utc": "2026-10-25T02:40:00Z",
+    "new_runtime_or_large_assets": false
+  }
+}

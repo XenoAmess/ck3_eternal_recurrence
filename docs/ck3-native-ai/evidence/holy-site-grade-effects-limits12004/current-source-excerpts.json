@@ -1,0 +1,967 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:30:25.948342+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "scope": "Read-only installed original definitions and current repository source. No process, build, gameplay or inferred live qualification.",
+  "sources": [
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt",
+        "bytes": 212712,
+        "sha256": "33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4"
+      },
+      "lines": [
+        {
+          "line": 36,
+          "text": "\t\tname = \"cp6_building_special_grand_cathedral_mesh\""
+        },
+        {
+          "line": 37,
+          "text": "\t\trequires_dlc_flag = holy_buildings"
+        },
+        {
+          "line": 38,
+          "text": "\t}"
+        },
+        {
+          "line": 39,
+          "text": "\tasset = {"
+        },
+        {
+          "line": 40,
+          "text": "\t\ttype = pdxmesh"
+        },
+        {
+          "line": 41,
+          "text": "\t\tname = \"building_special_cathedral_generic_mesh\""
+        },
+        {
+          "line": 42,
+          "text": "\t}"
+        },
+        {
+          "line": 43,
+          "text": ""
+        },
+        {
+          "line": 44,
+          "text": "\tconstruction_time = very_slow_construction_time"
+        },
+        {
+          "line": 45,
+          "text": ""
+        },
+        {
+          "line": 46,
+          "text": "\ttype_icon = \"icon_structure_cologne_cathedral.dds\""
+        },
+        {
+          "line": 47,
+          "text": "\t"
+        },
+        {
+          "line": 48,
+          "text": "\tcan_construct_potential = {"
+        },
+        {
+          "line": 49,
+          "text": "\t\tbuilding_requirement_tribal = no"
+        },
+        {
+          "line": 50,
+          "text": "\t}"
+        },
+        {
+          "line": 51,
+          "text": "\t"
+        },
+        {
+          "line": 52,
+          "text": "\tcan_construct = {"
+        },
+        {
+          "line": 53,
+          "text": "\t\tcustom_description = {"
+        },
+        {
+          "line": 54,
+          "text": "\t\t\ttext = holy_site_building_trigger"
+        },
+        {
+          "line": 55,
+          "text": "\t\t\tbarony = {"
+        },
+        {
+          "line": 56,
+          "text": "\t\t\t\tis_holy_site_of = scope:holder.faith"
+        },
+        {
+          "line": 57,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 58,
+          "text": "\t\t}"
+        },
+        {
+          "line": 59,
+          "text": "\t\tscope:holder = {"
+        },
+        {
+          "line": 60,
+          "text": "\t\t\tculture = {"
+        },
+        {
+          "line": 61,
+          "text": "\t\t\t\thas_innovation = innovation_crop_rotation"
+        },
+        {
+          "line": 62,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 63,
+          "text": "\t\t}"
+        },
+        {
+          "line": 64,
+          "text": "\t}"
+        },
+        {
+          "line": 65,
+          "text": "\t"
+        },
+        {
+          "line": 66,
+          "text": "\tis_enabled = {"
+        },
+        {
+          "line": 67,
+          "text": "\t\tcustom_description = {"
+        },
+        {
+          "line": 68,
+          "text": "\t\t\ttext = holy_site_building_trigger"
+        },
+        {
+          "line": 69,
+          "text": "\t\t\tbarony = {"
+        },
+        {
+          "line": 70,
+          "text": "\t\t\t\tis_holy_site_of = scope:holder.faith"
+        },
+        {
+          "line": 71,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 72,
+          "text": "\t\t}"
+        },
+        {
+          "line": 73,
+          "text": "\t}"
+        },
+        {
+          "line": 74,
+          "text": "\t"
+        },
+        {
+          "line": 75,
+          "text": "\tcost_gold = 1000"
+        },
+        {
+          "line": 76,
+          "text": ""
+        },
+        {
+          "line": 77,
+          "text": "\tcharacter_modifier = {"
+        },
+        {
+          "line": 78,
+          "text": "\t\tmonthly_piety = 0.25"
+        },
+        {
+          "line": 79,
+          "text": "\t\tmonthly_dynasty_prestige_mult = 0.05"
+        },
+        {
+          "line": 80,
+          "text": "\t\tholy_order_hire_cost_mult = -0.15"
+        },
+        {
+          "line": 81,
+          "text": "\t\tclergy_opinion = 5"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt",
+        "bytes": 212712,
+        "sha256": "33322505fa7f79ca1a61fdc2682d3e0c36ec0a063cbafe95ba615479b5e3f8b4"
+      },
+      "lines": [
+        {
+          "line": 50,
+          "text": "\t}"
+        },
+        {
+          "line": 51,
+          "text": "\t"
+        },
+        {
+          "line": 52,
+          "text": "\tcan_construct = {"
+        },
+        {
+          "line": 53,
+          "text": "\t\tcustom_description = {"
+        },
+        {
+          "line": 54,
+          "text": "\t\t\ttext = holy_site_building_trigger"
+        },
+        {
+          "line": 55,
+          "text": "\t\t\tbarony = {"
+        },
+        {
+          "line": 56,
+          "text": "\t\t\t\tis_holy_site_of = scope:holder.faith"
+        },
+        {
+          "line": 57,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 58,
+          "text": "\t\t}"
+        },
+        {
+          "line": 59,
+          "text": "\t\tscope:holder = {"
+        },
+        {
+          "line": 60,
+          "text": "\t\t\tculture = {"
+        },
+        {
+          "line": 61,
+          "text": "\t\t\t\thas_innovation = innovation_crop_rotation"
+        },
+        {
+          "line": 62,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 63,
+          "text": "\t\t}"
+        },
+        {
+          "line": 64,
+          "text": "\t}"
+        },
+        {
+          "line": 65,
+          "text": "\t"
+        },
+        {
+          "line": 66,
+          "text": "\tis_enabled = {"
+        },
+        {
+          "line": 67,
+          "text": "\t\tcustom_description = {"
+        },
+        {
+          "line": 68,
+          "text": "\t\t\ttext = holy_site_building_trigger"
+        },
+        {
+          "line": 69,
+          "text": "\t\t\tbarony = {"
+        },
+        {
+          "line": 70,
+          "text": "\t\t\t\tis_holy_site_of = scope:holder.faith"
+        },
+        {
+          "line": 71,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 72,
+          "text": "\t\t}"
+        },
+        {
+          "line": 73,
+          "text": "\t}"
+        },
+        {
+          "line": 74,
+          "text": "\t"
+        },
+        {
+          "line": 75,
+          "text": "\tcost_gold = 1000"
+        },
+        {
+          "line": 76,
+          "text": ""
+        },
+        {
+          "line": 77,
+          "text": "\tcharacter_modifier = {"
+        },
+        {
+          "line": 78,
+          "text": "\t\tmonthly_piety = 0.25"
+        },
+        {
+          "line": 79,
+          "text": "\t\tmonthly_dynasty_prestige_mult = 0.05"
+        },
+        {
+          "line": 80,
+          "text": "\t\tholy_order_hire_cost_mult = -0.15"
+        },
+        {
+          "line": 81,
+          "text": "\t\tclergy_opinion = 5"
+        },
+        {
+          "line": 82,
+          "text": "\t\tmonthly_county_control_growth_factor = 0.05"
+        },
+        {
+          "line": 83,
+          "text": "\t}"
+        },
+        {
+          "line": 84,
+          "text": "\t"
+        },
+        {
+          "line": 85,
+          "text": "\tcounty_modifier = {"
+        },
+        {
+          "line": 86,
+          "text": "\t\ttax_mult = 0.2"
+        },
+        {
+          "line": 87,
+          "text": "\t\tdevelopment_growth_factor = 0.2"
+        },
+        {
+          "line": 88,
+          "text": "\t\tdevelopment_growth = 0.15"
+        },
+        {
+          "line": 89,
+          "text": "\t}"
+        },
+        {
+          "line": 90,
+          "text": "\t"
+        },
+        {
+          "line": 91,
+          "text": "\tprovince_modifier = {"
+        },
+        {
+          "line": 92,
+          "text": "\t\tmonthly_income = 2"
+        },
+        {
+          "line": 93,
+          "text": "\t}"
+        },
+        {
+          "line": 94,
+          "text": ""
+        },
+        {
+          "line": 95,
+          "text": "\ton_complete = {"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+        "bytes": 1191,
+        "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7"
+      },
+      "lines": [
+        {
+          "line": 1,
+          "text": "# Scope: holy_site"
+        },
+        {
+          "line": 2,
+          "text": "# Returns: the sum of Artifact Rarity values of every artifact enshrined in"
+        },
+        {
+          "line": 3,
+          "text": "# the holy site whose is_holy_relic trigger passes for the controlling faith."
+        },
+        {
+          "line": 4,
+          "text": "# (And the controlling faith also has this holy site as one of their own)"
+        },
+        {
+          "line": 5,
+          "text": "# Each artifact contributes 1=Common, 2=Masterwork, 3=Famed, 4=Illustrious."
+        },
+        {
+          "line": 6,
+          "text": "# 0 if nothing qualifies."
+        },
+        {
+          "line": 7,
+          "text": "# Backed by the `total_active_artifact_rarity_sum` trigger registered in"
+        },
+        {
+          "line": 8,
+          "text": "# holy_site_artifact_trigger_impl.cpp."
+        },
+        {
+          "line": 9,
+          "text": "holy_site_total_artifact_rarity = {"
+        },
+        {
+          "line": 10,
+          "text": "\tvalue = root.total_active_artifact_rarity_sum"
+        },
+        {
+          "line": 11,
+          "text": "}"
+        },
+        {
+          "line": 12,
+          "text": ""
+        },
+        {
+          "line": 13,
+          "text": "# How long a ruler must wait between holy site actions, shared by the decisions and by holy site creation."
+        },
+        {
+          "line": 14,
+          "text": "holy_site_action_cooldown_years = {"
+        },
+        {
+          "line": 15,
+          "text": "\tvalue = 5"
+        },
+        {
+          "line": 16,
+          "text": "}"
+        },
+        {
+          "line": 17,
+          "text": ""
+        },
+        {
+          "line": 18,
+          "text": "# Scope: character taking one of the holy site decisions."
+        },
+        {
+          "line": 19,
+          "text": "# Cooldown in years, waived while the faith still has a free holy site action left. Decision cooldowns"
+        },
+        {
+          "line": 20,
+          "text": "# are evaluated with only the taking character in scope - no saved scopes - so this can read the faith"
+        },
+        {
+          "line": 21,
+          "text": "# but nothing about the selected holy site."
+        },
+        {
+          "line": 22,
+          "text": "holy_site_decision_cooldown_value = {"
+        },
+        {
+          "line": 23,
+          "text": "\tvalue = holy_site_action_cooldown_years"
+        },
+        {
+          "line": 24,
+          "text": "\tif = {"
+        },
+        {
+          "line": 25,
+          "text": "\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }"
+        },
+        {
+          "line": 26,
+          "text": "\t\tvalue = 0"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_relic_context.cpp",
+        "bytes": 15789,
+        "sha256": "9655d619270dbfe10736182a35a77e967985463d41571717794342d467383611"
+      },
+      "lines": [
+        {
+          "line": 230,
+          "text": "    } else {out.inventory.artifact_ids.clear();out.inventory.slots.clear();out.inventory.unavailable_reason=\"inventory_reference_or_slot_array_unavailable\";}"
+        },
+        {
+          "line": 231,
+          "text": "    EvaluateCurrent(b,site,out);"
+        },
+        {
+          "line": 232,
+          "text": "    if (jomini_owner) {"
+        },
+        {
+          "line": 233,
+          "text": "      RecognitionMatrix matrix{};"
+        },
+        {
+          "line": 234,
+          "text": "      (void)ReadHolySiteRelicRecognitionMatrix12004(b,jomini_owner,c,requested,std::nullopt,&out,matrix);"
+        },
+        {
+          "line": 235,
+          "text": "      out.recognition_matrix=std::move(matrix);"
+        },
+        {
+          "line": 236,
+          "text": "      ModifierAggregateObservation modifiers{};"
+        },
+        {
+          "line": 237,
+          "text": "      (void)ReadHolySiteModifierAggregate12004(b,c,requested,modifiers);"
+        },
+        {
+          "line": 238,
+          "text": "      out.modifier_aggregate_observation=std::move(modifiers);"
+        },
+        {
+          "line": 239,
+          "text": "    }"
+        },
+        {
+          "line": 240,
+          "text": "    // The legacy counter keeps its original scope. Matrix calls are disclosed"
+        },
+        {
+          "line": 241,
+          "text": "    // separately, and all original post-evaluation identity/cache checks follow."
+        },
+        {
+          "line": 242,
+          "text": "    std::vector<std::uint32_t> after_ids,after_faiths;std::vector<Slot> after_slots;"
+        },
+        {
+          "line": 243,
+          "text": "    CountyContext after_county{};County(b,site,after_county);"
+        },
+        {
+          "line": 244,
+          "text": "    const bool county_same=after_county.available==out.county_context.available &&"
+        },
+        {
+          "line": 245,
+          "text": "        after_county.barony_title_id==out.county_context.barony_title_id &&"
+        },
+        {
+          "line": 246,
+          "text": "        after_county.county_title_id==out.county_context.county_title_id &&"
+        },
+        {
+          "line": 247,
+          "text": "        after_county.county_holder_id==out.county_context.county_holder_id &&"
+        },
+        {
+          "line": 248,
+          "text": "        after_county.county_holder_rite_id==out.county_context.county_holder_rite_id &&"
+        },
+        {
+          "line": 249,
+          "text": "        after_county.county_holder_faith_id==out.county_context.county_holder_faith_id;"
+        },
+        {
+          "line": 250,
+          "text": "    if (Resolve(b,b.holy_site_storage,requested,0x10)!=site||!county_same)"
+        },
+        {
+          "line": 251,
+          "text": "      return fail(\"holy_site_or_county_identity_changed\");"
+        },
+        {
+          "line": 252,
+          "text": "    if (out.associated_faith_ids_available&&(!Ids(b,site,0x98,after_faiths)||after_faiths!=out.associated_faith_ids))"
+        },
+        {
+          "line": 253,
+          "text": "      return fail(\"associated_faith_ids_changed\");"
+        },
+        {
+          "line": 254,
+          "text": "    if (out.inventory.available) {"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_holy_site_modifier_aggregate.hpp",
+        "bytes": 2339,
+        "sha256": "fcc92a8ebb7e57502593d055ef288e9df8ab8ffb64f4782d5441b94110e40a84"
+      },
+      "lines": [
+        {
+          "line": 10,
+          "text": "struct FixedModifierEntry {"
+        },
+        {
+          "line": 11,
+          "text": "  std::uint16_t key_raw_u16=0;"
+        },
+        {
+          "line": 12,
+          "text": "  std::int64_t definition_raw_q64=0;"
+        },
+        {
+          "line": 13,
+          "text": "  bool operator==(const FixedModifierEntry &)const=default;"
+        },
+        {
+          "line": 14,
+          "text": "};"
+        },
+        {
+          "line": 15,
+          "text": "struct FixedModifierBlock {"
+        },
+        {
+          "line": 16,
+          "text": "  std::string kind;"
+        },
+        {
+          "line": 17,
+          "text": "  bool available=false;"
+        },
+        {
+          "line": 18,
+          "text": "  std::optional<std::int32_t> count_raw;"
+        },
+        {
+          "line": 19,
+          "text": "  std::vector<FixedModifierEntry> entries;"
+        },
+        {
+          "line": 20,
+          "text": "  std::string unavailable_reason=\"site_type_fixed_pc_not_read\";"
+        },
+        {
+          "line": 21,
+          "text": "};"
+        },
+        {
+          "line": 22,
+          "text": "struct AggregateModifierValue {"
+        },
+        {
+          "line": 23,
+          "text": "  std::uint16_t key_raw_u16=0;"
+        },
+        {
+          "line": 24,
+          "text": "  bool available=false;"
+        },
+        {
+          "line": 25,
+          "text": "  std::optional<std::int64_t> aggregate_raw_q64;"
+        },
+        {
+          "line": 26,
+          "text": "  std::string unavailable_reason=\"character_aggregate_key_not_read\";"
+        },
+        {
+          "line": 27,
+          "text": "  bool operator==(const AggregateModifierValue &)const=default;"
+        },
+        {
+          "line": 28,
+          "text": "};"
+        },
+        {
+          "line": 29,
+          "text": "struct ModifierRecipient {"
+        },
+        {
+          "line": 30,
+          "text": "  std::uint32_t character_id=0xFFFFFFFFU;"
+        },
+        {
+          "line": 31,
+          "text": "  bool source_player=false,source_county_holder=false;"
+        },
+        {
+          "line": 32,
+          "text": "  std::optional<std::uint32_t> rite_id,faith_id;"
+        },
+        {
+          "line": 33,
+          "text": "  bool available=false,owned_aggregate_observed=false;"
+        },
+        {
+          "line": 34,
+          "text": "  std::vector<AggregateModifierValue> values;"
+        },
+        {
+          "line": 35,
+          "text": "  std::string unavailable_reason=\"character_aggregate_not_read\";"
+        },
+        {
+          "line": 36,
+          "text": "  bool operator==(const ModifierRecipient &)const=default;"
+        },
+        {
+          "line": 37,
+          "text": "};"
+        },
+        {
+          "line": 38,
+          "text": "struct ModifierAggregateObservation {"
+        },
+        {
+          "line": 39,
+          "text": "  bool available=false,complete=false,source_arrays_stable=false;"
+        },
+        {
+          "line": 40,
+          "text": "  std::uint64_t capture_epoch=0;"
+        },
+        {
+          "line": 41,
+          "text": "  std::int32_t date_raw=0,played_character_id=-1;"
+        },
+        {
+          "line": 42,
+          "text": "  std::uint32_t holy_site_id=0xFFFFFFFFU;"
+        },
+        {
+          "line": 43,
+          "text": "  std::optional<std::uint32_t> county_holder_character_id;"
+        },
+        {
+          "line": 44,
+          "text": "  std::vector<FixedModifierBlock> definition_blocks;"
+        },
+        {
+          "line": 45,
+          "text": "  std::vector<ModifierRecipient> recipients;"
+        },
+        {
+          "line": 46,
+          "text": "  static constexpr std::uint32_t max_definition_entries_per_block=32,max_unique_keys=64,max_recipients=2;"
+        },
+        {
+          "line": 47,
+          "text": "  std::string unavailable_reason=\"site_type_modifier_aggregate_not_read\";"
+        },
+        {
+          "line": 48,
+          "text": "};"
+        },
+        {
+          "line": 49,
+          "text": "// Pure guarded copies. Keys come only from this site's actual Type fixed PCs;"
+        },
+        {
+          "line": 50,
+          "text": "// recipients are only current player and this site's resolved county holder."
+        },
+        {
+          "line": 51,
+          "text": "// No key-name guess, native getter/rebuild, default aggregate or attribution."
+        },
+        {
+          "line": 52,
+          "text": "bool ReadHolySiteModifierAggregate12004(const Bindings &,"
+        },
+        {
+          "line": 53,
+          "text": "    const ck3_12002::religion::Context &,std::uint32_t holy_site_id,"
+        },
+        {
+          "line": 54,
+          "text": "    ModifierAggregateObservation &) noexcept;"
+        },
+        {
+          "line": 55,
+          "text": "std::string SerializeHolySiteModifierAggregate12004(const ModifierAggregateObservation &);"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 255799,
+        "sha256": "96e4b50b97f6a0bb0eaa9ca4faa5953a56818cd83bd3b9fb06ee9d2fc507359a"
+      },
+      "lines": [
+        {
+          "line": 2064,
+          "text": "    if getattr(driver, \"allow_private_player_holy_site_relic_action_context_query\", False) is True:"
+        },
+        {
+          "line": 2065,
+          "text": "        @server.tool(annotations=ToolAnnotations("
+        },
+        {
+          "line": 2066,
+          "text": "            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))"
+        },
+        {
+          "line": 2067,
+          "text": "        def ck3_query_player_holy_site_relic_action_context_v1("
+        },
+        {
+          "line": 2068,
+          "text": "            expected_revision: Annotated[int, Field(strict=True, gt=0)],"
+        },
+        {
+          "line": 2069,
+          "text": "            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],"
+        },
+        {
+          "line": 2070,
+          "text": "            artifact_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],"
+        },
+        {
+          "line": 2071,
+          "text": "        ) -> dict[str, object]:"
+        },
+        {
+          "line": 2072,
+          "text": "            \"\"\"Read native relic action context for two explicit full IDs; no selection or command.\"\"\""
+        },
+        {
+          "line": 2073,
+          "text": "            return service.query_player_holy_site_relic_action_context_v1("
+        },
+        {
+          "line": 2074,
+          "text": "                expected_revision=expected_revision, holy_site_id=holy_site_id,"
+        },
+        {
+          "line": 2075,
+          "text": "                artifact_id=artifact_id)"
+        },
+        {
+          "line": 2076,
+          "text": "        _forbid_unknown_tool_arguments_v1(server, \"ck3_query_player_holy_site_relic_action_context_v1\")"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+        "bytes": 255799,
+        "sha256": "96e4b50b97f6a0bb0eaa9ca4faa5953a56818cd83bd3b9fb06ee9d2fc507359a"
+      },
+      "lines": [
+        {
+          "line": 2121,
+          "text": "    if getattr(driver, \"allow_private_player_holy_site_relic_context_query\", False) is True:"
+        },
+        {
+          "line": 2122,
+          "text": "        @server.tool(annotations=ToolAnnotations("
+        },
+        {
+          "line": 2123,
+          "text": "            readOnlyHint=True, destructiveHint=False, idempotentHint=False, openWorldHint=False))"
+        },
+        {
+          "line": 2124,
+          "text": "        def ck3_query_player_holy_site_relic_context_v1("
+        },
+        {
+          "line": 2125,
+          "text": "            expected_revision: Annotated[int, Field(strict=True, gt=0)],"
+        },
+        {
+          "line": 2126,
+          "text": "            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],"
+        },
+        {
+          "line": 2127,
+          "text": "        ) -> dict[str, object]:"
+        },
+        {
+          "line": 2128,
+          "text": "            \"\"\"Read exact4 native Active/relic recognition context; no enshrine/remove/create action.\"\"\""
+        },
+        {
+          "line": 2129,
+          "text": "            return service.query_player_holy_site_relic_context_v1("
+        },
+        {
+          "line": 2130,
+          "text": "                expected_revision=expected_revision, holy_site_id=holy_site_id)"
+        },
+        {
+          "line": 2131,
+          "text": "        _forbid_unknown_tool_arguments_v1(server, \"ck3_query_player_holy_site_relic_context_v1\")"
+        },
+        {
+          "line": 2132,
+          "text": ""
+        },
+        {
+          "line": 2133,
+          "text": "    if getattr(driver, \"allow_private_player_holy_site_query\", False) is True:"
+        },
+        {
+          "line": 2134,
+          "text": "        @server.tool(annotations=read_only_tool)"
+        },
+        {
+          "line": 2135,
+          "text": "        def ck3_query_player_holy_site_v1("
+        },
+        {
+          "line": 2136,
+          "text": "            expected_revision: Annotated[int, Field(strict=True, gt=0)],"
+        },
+        {
+          "line": 2137,
+          "text": "            holy_site_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)] | None = None,"
+        },
+        {
+          "line": 2138,
+          "text": "        ) -> dict[str, object]:"
+        },
+        {
+          "line": 2139,
+          "text": "            \"\"\"Read exact4 HolySite type, Faith relations/eminent status and inventory IDs; no adoption permission.\"\"\""
+        },
+        {
+          "line": 2140,
+          "text": "            return driver.query_player_holy_site_private_v1("
+        },
+        {
+          "line": 2141,
+          "text": "                expected_revision=expected_revision, holy_site_id=holy_site_id)"
+        },
+        {
+          "line": 2142,
+          "text": "        _forbid_unknown_tool_arguments_v1(server, \"ck3_query_player_holy_site_v1\")"
+        }
+      ]
+    }
+  ]
+}

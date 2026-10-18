@@ -1,0 +1,23 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:17:06.390361+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x2b29f00",
+  "end_rva": "0x2b2a020",
+  "boundary_kind": "bounded fragment; not a whole-function assertion",
+  "raw_sha256": "0b5191548432beea161c9ec6776adb11c4e7eb2141d060ea73bffe09d6d5adde",
+  "bytes_hex": "415641574883ec284c8bf9e8204c00004c8b98e0010000486380ec0100004d8d34834d3bde0f84db0000004889742450488b35e93e1f0348897c2420488b3d3d3f1f0348895c244048896c24480f1f004885ff7427418b138bc225ffffff003b472c73188bc8488b47204803c9488b4cc8084885c974053951107403488bce807918007460488b4920418b47404c63514c488b59404c8bcb488bcb4a8d2c934d85d27e2c0f1f40000f1f8400000000004d8bc249d1e84d2bd0433904814b8d14914d8bd04c0f4cca498bc94d85c075e0483bcd74103b017c0c482bcb48c1f90283f9ff750d4983c3044d3bde0f855effffff488b6c2448488b5c2440488b742450488b7c242033c04d3bde4c0f44d84d85db0f95c04883c428415f415ec3cccc",
+  "assembly": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-native-boolean-full.asm",
+    "bytes": 5663,
+    "sha256": "eba82f188b176a92236792047d0f6f29e64b5abbc97e93d259faeb3e650be067"
+  },
+  "cache_offset": 45256448
+}

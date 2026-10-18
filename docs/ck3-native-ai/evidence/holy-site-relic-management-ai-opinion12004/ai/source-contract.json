@@ -1,0 +1,909 @@
+{
+  "schema": "holy-site-relic-npc-choice-source-contract-v4-a01",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:27:49.601345+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "version": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "current_identity_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+    "bytes": 21681,
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+  },
+  "source_mode": "Exact stock text plus retained exact-build bounded section cache. No new EXE reads/hash/copy, process/game/Steam/SDK/build or runtime observation.",
+  "manual_semantic_review": {
+    "author_task": "/root/episode01_frontend/relic_ai_callgraph_v4",
+    "source_text": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\stock-ai-decision-excerpts-a01.json",
+      "bytes": 17030,
+      "sha256": "d0623d613a2f5070617eabbdc9356a7bb7acb9797469602447de146a371d2d4d"
+    },
+    "decision_documentation": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\decision-info-excerpts-a01.json",
+      "bytes": 7234,
+      "sha256": "4ca4bd77ebfd90769d072c9a89087e442d738bf40ec82d22f949ac0448db8a69"
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-callgraph-review.md",
+      "bytes": 12806,
+      "sha256": "5fa36b1bc1ba265f1168bce06c94ca3dbf1912018090e6844571923d93965f5a"
+    },
+    "script_sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+  },
+  "npc_choice": {
+    "enshrine": {
+      "key": "ai_enshrine_artifact_decision",
+      "lines": [
+        636,
+        736
+      ],
+      "actor": "is_ai, is_available_ai_adult, has_any_artifact",
+      "validity_candidates": "Any owned artifact with is_holy_relic=yes and recognized for actor faith, crossed with any actor-faith HolySite, must admit at least one native can_enshrine pair.",
+      "effect_candidates": "Regenerate owned recognized-for-actor artifacts; order_by=artifact_rarity, max=1; developer comment highest rarity. The effect does not prefilter each artifact by all target native guards.",
+      "ordered_default_direction_native_verified": false,
+      "rarity_ties_verified": false,
+      "target_choice": "random eminent site with total_active_artifact_rarity_sum=0 and native pair legality; else random legal associated site. Random distribution not measured.",
+      "zero_active_sum_means_physically_empty": false,
+      "slot_parameter_supplied": false,
+      "replacement_condition": "If actual native picker returns occupied compatible slot and final new/old guards pass, single enshrine command replaces old; not a guarantee of improvement or selection of a human item.",
+      "human_top_liege_or_faith_head_exception_in_this_definition": false,
+      "original_donor_filter_in_reviewed_definition": false,
+      "natural_execution_observed": false
+    },
+    "remove": {
+      "key": "ai_remove_enshrined_artifact_decision",
+      "lines": [
+        738,
+        908
+      ],
+      "potential": "zealous OR ai_zeal>=25",
+      "political_gates": "actor.faith=top_liege.faith; top_liege.is_ai; actor faith religious_head absent or is_ai",
+      "actor": "is_ai and is_available_ai_adult",
+      "candidate_scope": "AI actor directly held counties, each physical HolySite and actual enshrined artifacts; not whole realm",
+      "validity_case_a": "Associated actor faith + artifact not recognized for actor faith + native CanRemove",
+      "validity_case_b": "Other associated faith has county followers>0, actor faith hostility>=faith_hostile_level, artifact recognized for target faith + native CanRemove",
+      "effect": "Sweep directly held counties/sites/faiths/artifacts, own-faith unrecognized branch or hostile-faith recognized branch, then native script effect re-checks guard per object.",
+      "effect_only_extra_block": "NOT { is_holy_relic_for = root.faith; scope:target_holy_site = { any_holy_site_faith = { this = root.faith } } }",
+      "extra_block_developer_comment_intent": "Avoid removing an own-faith-recognized relic from an own-faith site merely because a hostile faith also likes it.",
+      "extra_block_multi_clause_NOT_native_semantics_verified_here": false,
+      "validity_and_effect_have_different_filters": true,
+      "original_donor_filter_in_reviewed_definition": false,
+      "natural_execution_observed": false
+    },
+    "schedule": {
+      "by_top_title_tier_months": {
+        "barony": 0,
+        "county": 24,
+        "duchy": 12,
+        "kingdom": 12,
+        "empire": 12,
+        "hegemony": 12
+      },
+      "zero_means_never_considered_source": "_decisions.info 154-176",
+      "ai_will_do_base": 100,
+      "documented_semantics": "_decisions.info267-268: percentage chance to execute when considered and otherwise eligible;100 always at this configured choice layer. Not observed firing or world success.",
+      "exact_native_scheduler_actor_invocation_edge_closed": false,
+      "next_check_time_observed": false,
+      "natural_frequency_or_probability_measured": false
+    }
+  },
+  "native_script_chain": [
+    {
+      "operation": "enshrine predicate",
+      "token": "can_enshrine_holy_site_artifact",
+      "registrar": "0x588E70",
+      "entry_vtable": "0x47A2E80",
+      "entry_factory": "0x2B0D800",
+      "object_vtable": "0x47A2F00",
+      "class": "CCanEnshrineHolySiteArtifactTrigger",
+      "consumer_vslot": "0xC8",
+      "body": [
+        "0x2B0CDA0",
+        "0x2B0D009"
+      ],
+      "command_vtable": "0x4770930",
+      "guard_vslot": "0x30",
+      "guard": "0x29AB4F0",
+      "guard_call": "0x2B0CEFF indirect through constant vtable+30",
+      "effect_or_submit": false
+    },
+    {
+      "operation": "remove predicate",
+      "token": "can_remove_holy_site_artifact",
+      "registrar": "0x588F10",
+      "entry_vtable": "0x47A37D0",
+      "entry_factory_rtti_vslot_only": "0x2B0D8A0",
+      "factory_body_not_reviewed": true,
+      "object_vtable": "0x47A2FE0",
+      "class": "CCanRemoveHolySiteArtifactTrigger",
+      "consumer_vslot": "0xC8",
+      "body": [
+        "0x2B0D040",
+        "0x2B0D259"
+      ],
+      "command_vtable": "0x47707D0",
+      "guard_vslot": "0x30",
+      "guard": "0x29ABB20",
+      "guard_call": "0x2B0D14D indirect through constant vtable+30",
+      "effect_or_submit": false
+    },
+    {
+      "operation": "enshrine script effect",
+      "token": "enshrine_holy_site_artifact",
+      "registrar": "0x5C5160",
+      "entry_vtable": "0x4835280",
+      "entry_factory": "0x2CC4640",
+      "object_vtable": "0x48366B0",
+      "class": "CEnshrineHolySiteArtifactEffect",
+      "consumer_vslot": "0xB0",
+      "body": [
+        "0x2CC31B0",
+        "0x2CC346B"
+      ],
+      "guard_call": [
+        "0x2CC3352",
+        "0x29AB4F0"
+      ],
+      "if_guard_true_direct_receiver": [
+        "0x2CC3360",
+        "0x29AADE0"
+      ],
+      "receiver_this": "primary command+0x18",
+      "uses_gui_queue_path": false
+    },
+    {
+      "operation": "remove script effect",
+      "token": "remove_holy_site_artifact",
+      "registrar": "0x5C5210",
+      "entry_vtable": "0x4835298",
+      "entry_factory": "0x2CC46E0",
+      "object_vtable": "0x48365E8",
+      "class": "CRemoveHolySiteArtifactEffect",
+      "consumer_vslot": "0xB0",
+      "body": [
+        "0x2CC34A0",
+        "0x2CC36FB"
+      ],
+      "guard_call": [
+        "0x2CC35F0",
+        "0x29ABB20"
+      ],
+      "if_guard_true_direct_receiver": [
+        "0x2CC35FE",
+        "0x29AB8A0"
+      ],
+      "receiver_this": "primary command+0x18",
+      "uses_gui_queue_path": false
+    }
+  ],
+  "native_actor_source": "Root script scope tag4 Character fullID, not GUI global current player.",
+  "boundary_verification": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\static-packet-boundary-check-a01.json",
+    "bytes": 17862,
+    "sha256": "d45b45e3047ec470c551ecf8fa6cde046770f81c840a5c866e7a8baeba6d8f14"
+  },
+  "finite_segments": [
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-trigger-body-aligned-a01.json",
+        "bytes": 20883,
+        "sha256": "e1c8101ec52c11570e4cbf5a6a910b0dda996186457d7644ecf4f2040a1a35ec"
+      },
+      "begin_rva": "0x2b0cda0",
+      "end_exclusive": "0x2b0d009",
+      "body_bytes": 617,
+      "body_sha256": "3355787be6f3cbdd5fe354c63df508c75fc012b7aeeb4e4b57fbfe3a4ec57ec5",
+      "instruction_count": 144,
+      "direct_branch_targets_verified_at_decoded_boundaries": [
+        {
+          "rva": "0x2b0cdd0",
+          "target": "0x2b0cdd7"
+        },
+        {
+          "rva": "0x2b0cdd5",
+          "target": "0x2b0cddc"
+        },
+        {
+          "rva": "0x2b0cde6",
+          "target": "0x2b0ce0d"
+        },
+        {
+          "rva": "0x2b0cdf3",
+          "target": "0x2b0ce0d"
+        },
+        {
+          "rva": "0x2b0ce06",
+          "target": "0x2b0ce0d"
+        },
+        {
+          "rva": "0x2b0ce0b",
+          "target": "0x2b0ce14"
+        },
+        {
+          "rva": "0x2b0ce2e",
+          "target": "0x2b0cf6b"
+        },
+        {
+          "rva": "0x2b0ce38",
+          "target": "0x2b0cf6b"
+        },
+        {
+          "rva": "0x2b0ce5b",
+          "target": "0x2b0cf07"
+        },
+        {
+          "rva": "0x2b0ce69",
+          "target": "0x2b0cf07"
+        },
+        {
+          "rva": "0x2b0ce84",
+          "target": "0x2b0ce8d"
+        },
+        {
+          "rva": "0x2b0ce94",
+          "target": "0x2b0ceaf"
+        },
+        {
+          "rva": "0x2b0cf02",
+          "target": "0x2b0cfec"
+        },
+        {
+          "rva": "0x2b0cf0b",
+          "target": "0x2b0cfea"
+        },
+        {
+          "rva": "0x2b0cf67",
+          "target": "0x2b0cf60"
+        },
+        {
+          "rva": "0x2b0cf69",
+          "target": "0x2b0cfc9"
+        },
+        {
+          "rva": "0x2b0cf6f",
+          "target": "0x2b0cfea"
+        },
+        {
+          "rva": "0x2b0cfc7",
+          "target": "0x2b0cfc0"
+        }
+      ],
+      "calls": [
+        {
+          "rva": "0x2b0ce1f",
+          "target": "0x2b0d4a0"
+        },
+        {
+          "rva": "0x2b0ce4c",
+          "target": "0x2b0d3d0"
+        },
+        {
+          "rva": "0x2b0ce9a",
+          "target": "0x22e4240"
+        },
+        {
+          "rva": "0x2b0cea6",
+          "target": "0x22e42f0"
+        },
+        {
+          "rva": "0x2b0ceff",
+          "target": "rax"
+        },
+        {
+          "rva": "0x2b0cf33",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2b0cf93",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2b0cfe5",
+          "target": "0x3710d30"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-trigger-body-aligned-a01.json",
+        "bytes": 18719,
+        "sha256": "a03a9b3a483046b71c6a7faab3e7d75ed38f67a9994860a7543f9ab6ce9c2819"
+      },
+      "begin_rva": "0x2b0d040",
+      "end_exclusive": "0x2b0d259",
+      "body_bytes": 537,
+      "body_sha256": "73626f43d8c4a9dcfcecdcf67e6190324461eacb41a11246d5d91fe13ab694fd",
+      "instruction_count": 129,
+      "direct_branch_targets_verified_at_decoded_boundaries": [
+        {
+          "rva": "0x2b0d070",
+          "target": "0x2b0d077"
+        },
+        {
+          "rva": "0x2b0d075",
+          "target": "0x2b0d07c"
+        },
+        {
+          "rva": "0x2b0d086",
+          "target": "0x2b0d0ad"
+        },
+        {
+          "rva": "0x2b0d093",
+          "target": "0x2b0d0ad"
+        },
+        {
+          "rva": "0x2b0d0a6",
+          "target": "0x2b0d0ad"
+        },
+        {
+          "rva": "0x2b0d0ab",
+          "target": "0x2b0d0b4"
+        },
+        {
+          "rva": "0x2b0d0ce",
+          "target": "0x2b0d1bb"
+        },
+        {
+          "rva": "0x2b0d0d8",
+          "target": "0x2b0d1bb"
+        },
+        {
+          "rva": "0x2b0d0f8",
+          "target": "0x2b0d155"
+        },
+        {
+          "rva": "0x2b0d100",
+          "target": "0x2b0d155"
+        },
+        {
+          "rva": "0x2b0d150",
+          "target": "0x2b0d23c"
+        },
+        {
+          "rva": "0x2b0d159",
+          "target": "0x2b0d23a"
+        },
+        {
+          "rva": "0x2b0d1b7",
+          "target": "0x2b0d1b0"
+        },
+        {
+          "rva": "0x2b0d1b9",
+          "target": "0x2b0d219"
+        },
+        {
+          "rva": "0x2b0d1bf",
+          "target": "0x2b0d23a"
+        },
+        {
+          "rva": "0x2b0d217",
+          "target": "0x2b0d210"
+        }
+      ],
+      "calls": [
+        {
+          "rva": "0x2b0d0bf",
+          "target": "0x2b0d4a0"
+        },
+        {
+          "rva": "0x2b0d0ec",
+          "target": "0x2b0d3d0"
+        },
+        {
+          "rva": "0x2b0d14d",
+          "target": "rax"
+        },
+        {
+          "rva": "0x2b0d181",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2b0d1e3",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2b0d235",
+          "target": "0x3710d30"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-effect-body-aligned-a01.json",
+        "bytes": 22967,
+        "sha256": "f7c0c2f80a8772e017a7e13004d1c56a9404ceec3ee0831e63740e840db973a0"
+      },
+      "begin_rva": "0x2cc31b0",
+      "end_exclusive": "0x2cc346b",
+      "body_bytes": 699,
+      "body_sha256": "fcb8efd059db74e508510090566e2c1c0f2d98e1f9d2b48ffe0279b5110e7c25",
+      "instruction_count": 158,
+      "direct_branch_targets_verified_at_decoded_boundaries": [
+        {
+          "rva": "0x2cc31e5",
+          "target": "0x2cc31ed"
+        },
+        {
+          "rva": "0x2cc31eb",
+          "target": "0x2cc31f3"
+        },
+        {
+          "rva": "0x2cc31fd",
+          "target": "0x2cc3225"
+        },
+        {
+          "rva": "0x2cc320a",
+          "target": "0x2cc3225"
+        },
+        {
+          "rva": "0x2cc321d",
+          "target": "0x2cc3225"
+        },
+        {
+          "rva": "0x2cc3223",
+          "target": "0x2cc322c"
+        },
+        {
+          "rva": "0x2cc3233",
+          "target": "0x2cc344a"
+        },
+        {
+          "rva": "0x2cc323d",
+          "target": "0x2cc344a"
+        },
+        {
+          "rva": "0x2cc3250",
+          "target": "0x2cc344a"
+        },
+        {
+          "rva": "0x2cc3269",
+          "target": "0x2cc344a"
+        },
+        {
+          "rva": "0x2cc3289",
+          "target": "0x2cc33cb"
+        },
+        {
+          "rva": "0x2cc3293",
+          "target": "0x2cc33cb"
+        },
+        {
+          "rva": "0x2cc32b6",
+          "target": "0x2cc336b"
+        },
+        {
+          "rva": "0x2cc32c4",
+          "target": "0x2cc336b"
+        },
+        {
+          "rva": "0x2cc32df",
+          "target": "0x2cc32e8"
+        },
+        {
+          "rva": "0x2cc32ef",
+          "target": "0x2cc330a"
+        },
+        {
+          "rva": "0x2cc3359",
+          "target": "0x2cc3366"
+        },
+        {
+          "rva": "0x2cc3366",
+          "target": "0x2cc344a"
+        },
+        {
+          "rva": "0x2cc33c7",
+          "target": "0x2cc33c0"
+        },
+        {
+          "rva": "0x2cc33c9",
+          "target": "0x2cc3429"
+        },
+        {
+          "rva": "0x2cc3427",
+          "target": "0x2cc3420"
+        }
+      ],
+      "calls": [
+        {
+          "rva": "0x2cc324b",
+          "target": "qword ptr [rax + 0x30]"
+        },
+        {
+          "rva": "0x2cc3264",
+          "target": "qword ptr [rax + 0x30]"
+        },
+        {
+          "rva": "0x2cc327a",
+          "target": "0x2b0d4a0"
+        },
+        {
+          "rva": "0x2cc32a7",
+          "target": "0x2b0d3d0"
+        },
+        {
+          "rva": "0x2cc32f5",
+          "target": "0x22e4240"
+        },
+        {
+          "rva": "0x2cc3301",
+          "target": "0x22e42f0"
+        },
+        {
+          "rva": "0x2cc3352",
+          "target": "0x29ab4f0"
+        },
+        {
+          "rva": "0x2cc3360",
+          "target": "0x29aade0"
+        },
+        {
+          "rva": "0x2cc338d",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2cc33ed",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2cc3445",
+          "target": "0x3710e30"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-effect-body-aligned-a01.json",
+        "bytes": 20577,
+        "sha256": "38d14a55ba06c79d43c1fecd5d91564e1909b06ebc4b1149d12d781698bb0b9a"
+      },
+      "begin_rva": "0x2cc34a0",
+      "end_exclusive": "0x2cc36fb",
+      "body_bytes": 603,
+      "body_sha256": "a2d35f02220f4adb895d4615c29dc9ec0f501fa1018985198044e72ed90fa01b",
+      "instruction_count": 142,
+      "direct_branch_targets_verified_at_decoded_boundaries": [
+        {
+          "rva": "0x2cc34d5",
+          "target": "0x2cc34dd"
+        },
+        {
+          "rva": "0x2cc34db",
+          "target": "0x2cc34e3"
+        },
+        {
+          "rva": "0x2cc34ed",
+          "target": "0x2cc3515"
+        },
+        {
+          "rva": "0x2cc34fa",
+          "target": "0x2cc3515"
+        },
+        {
+          "rva": "0x2cc350d",
+          "target": "0x2cc3515"
+        },
+        {
+          "rva": "0x2cc3513",
+          "target": "0x2cc351c"
+        },
+        {
+          "rva": "0x2cc3523",
+          "target": "0x2cc36da"
+        },
+        {
+          "rva": "0x2cc352d",
+          "target": "0x2cc36da"
+        },
+        {
+          "rva": "0x2cc3540",
+          "target": "0x2cc36da"
+        },
+        {
+          "rva": "0x2cc3559",
+          "target": "0x2cc36da"
+        },
+        {
+          "rva": "0x2cc3579",
+          "target": "0x2cc3661"
+        },
+        {
+          "rva": "0x2cc3583",
+          "target": "0x2cc3661"
+        },
+        {
+          "rva": "0x2cc35a3",
+          "target": "0x2cc3609"
+        },
+        {
+          "rva": "0x2cc35ab",
+          "target": "0x2cc3609"
+        },
+        {
+          "rva": "0x2cc35f7",
+          "target": "0x2cc3604"
+        },
+        {
+          "rva": "0x2cc3604",
+          "target": "0x2cc36da"
+        },
+        {
+          "rva": "0x2cc365d",
+          "target": "0x2cc3656"
+        },
+        {
+          "rva": "0x2cc365f",
+          "target": "0x2cc36b9"
+        },
+        {
+          "rva": "0x2cc36b7",
+          "target": "0x2cc36b0"
+        }
+      ],
+      "calls": [
+        {
+          "rva": "0x2cc353b",
+          "target": "qword ptr [rax + 0x30]"
+        },
+        {
+          "rva": "0x2cc3554",
+          "target": "qword ptr [rax + 0x30]"
+        },
+        {
+          "rva": "0x2cc356a",
+          "target": "0x2b0d4a0"
+        },
+        {
+          "rva": "0x2cc3597",
+          "target": "0x2b0d3d0"
+        },
+        {
+          "rva": "0x2cc35f0",
+          "target": "0x29abb20"
+        },
+        {
+          "rva": "0x2cc35fe",
+          "target": "0x29ab8a0"
+        },
+        {
+          "rva": "0x2cc362b",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2cc3683",
+          "target": "0x87c8c0"
+        },
+        {
+          "rva": "0x2cc36d5",
+          "target": "0x3710e30"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\slot-eligibility-helper-bounded-a02.json",
+        "bytes": 25333,
+        "sha256": "ad4bb70d88bc6ee713fce5762d8af529f0dda906d053601c089a52c0676d208d"
+      },
+      "begin_rva": "0x30fe7b0",
+      "end_exclusive": "0x30fe882",
+      "body_bytes": 210,
+      "body_sha256": "566b3bd1bbd7a1387edb52126b6ebfc7f4a825fec68dafc05dc6209bc8a57297",
+      "instruction_count": 47,
+      "direct_branch_targets_verified_at_decoded_boundaries": [
+        {
+          "rva": "0x30fe7ca",
+          "target": "0x30fe7df"
+        },
+        {
+          "rva": "0x30fe816",
+          "target": "0x30fe84f"
+        },
+        {
+          "rva": "0x30fe857",
+          "target": "0x30fe86e"
+        }
+      ],
+      "calls": [
+        {
+          "rva": "0x30fe7e4",
+          "target": "0x24fd1f0"
+        },
+        {
+          "rva": "0x30fe7f7",
+          "target": "0x37998d0"
+        },
+        {
+          "rva": "0x30fe807",
+          "target": "0x889700"
+        },
+        {
+          "rva": "0x30fe820",
+          "target": "0x889780"
+        },
+        {
+          "rva": "0x30fe83c",
+          "target": "qword ptr [r9 + 0x10]"
+        },
+        {
+          "rva": "0x30fe86b",
+          "target": "qword ptr [rax + 0x10]"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-factories-a01.json",
+        "bytes": 12128,
+        "sha256": "27f0b9ceb5ad3877f0206cc34b2ce3c4e6257ab63a4d463eb73073c6dbf04104"
+      },
+      "begin_rva": "0x2cc4640",
+      "end_exclusive": "0x2cc46e0",
+      "body_bytes": 160,
+      "body_sha256": "cfc0f8d35e460cc70597cf8a4f78bafc5791aa638abcc585b244008941c8763f",
+      "instruction_count": 34,
+      "direct_branch_targets_verified_at_decoded_boundaries": [],
+      "calls": [
+        {
+          "rva": "0x2cc4657",
+          "target": "0x4223b94"
+        },
+        {
+          "rva": "0x2cc4667",
+          "target": "0x3764150"
+        },
+        {
+          "rva": "0x2cc467a",
+          "target": "0xa04230"
+        },
+        {
+          "rva": "0x2cc4691",
+          "target": "0xa04230"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-factories-a01.json",
+        "bytes": 12128,
+        "sha256": "27f0b9ceb5ad3877f0206cc34b2ce3c4e6257ab63a4d463eb73073c6dbf04104"
+      },
+      "begin_rva": "0x2cc46e0",
+      "end_exclusive": "0x2cc4761",
+      "body_bytes": 129,
+      "body_sha256": "45f451733faecb2a44ecf0ecba2974dc99a0bcbe1838b1e4f34208bc32fd4e85",
+      "instruction_count": 30,
+      "direct_branch_targets_verified_at_decoded_boundaries": [],
+      "calls": [
+        {
+          "rva": "0x2cc46f7",
+          "target": "0x4223b94"
+        },
+        {
+          "rva": "0x2cc4707",
+          "target": "0x3764150"
+        },
+        {
+          "rva": "0x2cc471a",
+          "target": "0xa04230"
+        },
+        {
+          "rva": "0x2cc4731",
+          "target": "0xa04230"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    },
+    {
+      "packet": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-factory-aligned-a02.json",
+        "bytes": 6307,
+        "sha256": "c595c5fcf273ed40af3fbc327afa08c433f6ffe143706a1a2ed09c3b588cd757"
+      },
+      "begin_rva": "0x2b0d800",
+      "end_exclusive": "0x2b0d8a0",
+      "body_bytes": 160,
+      "body_sha256": "657648359616cd4fa9a9e350d6f6f9bc916b5ddd2e4cb334658c77fad1a4b9c2",
+      "instruction_count": 34,
+      "direct_branch_targets_verified_at_decoded_boundaries": [],
+      "calls": [
+        {
+          "rva": "0x2b0d817",
+          "target": "0x4223b94"
+        },
+        {
+          "rva": "0x2b0d827",
+          "target": "0x372ca70"
+        },
+        {
+          "rva": "0x2b0d83a",
+          "target": "0xa04230"
+        },
+        {
+          "rva": "0x2b0d851",
+          "target": "0xa04230"
+        }
+      ],
+      "semantic_scope": "Only byte coverage, instruction boundaries and explicitly expected calls checked; manual source interpretation remains separate."
+    }
+  ],
+  "excluded_similar_or_unclosed_sources": [
+    {
+      "candidate": "GUI17D7580/17D76C0,29AC540/29AC640,37F06D0",
+      "reason": "Human GUI submit, clone and queue acceptance; not AI scheduling. No AI claim based on GUI Can or ACK."
+    },
+    {
+      "candidate": "0x2B0CE*/2B0D1*",
+      "reason": "Resolved as script trigger consumers, not standalone AI scheduler."
+    },
+    {
+      "candidate": "0x2CC33*/2CC35*",
+      "reason": "Resolved as script effect consumers. Their caller can be AI decisions, but actual scheduler invocation remains unobserved."
+    },
+    {
+      "candidate": "0x1A2C902 ai_decision.cpp name load",
+      "reason": "Bounded locator in an error-report branch; surrounding function start/pdata not closed (missing cached record85458). Not accepted as natural invocation proof."
+    },
+    {
+      "candidate": "0x1ABF6A6 logs/ai_decisions.csv;0x1ABF81D passed_ai_potential",
+      "reason": "CSV timing/header output, not the actual scheduling consumer. Missing cached pdata89754; no complete-function claim."
+    },
+    {
+      "candidate": "initial non-gui-command-builders-bounded-a01 and effect-entry/debug/timing registration probes",
+      "reason": "May begin inside prior instruction/data; only locator/exploration. Aligned packets replace these for semantic call edges."
+    }
+  ],
+  "minimal_mcp_gap": {
+    "reuse_existing_tool_preferred": "Optional ai_risk_observation in existing relic-context, not a new tool by default.",
+    "small_first_scope": "Physical site county-holder AI actor only, explicit coverage; facts of actor faith/top-liege/head, AI status, actual direct-held county, availability and artifact recognition/hostility/followers.",
+    "missing_for_enshrine": "Actual AI-owned Inventory and effect-stage artifact/site candidate choice plus actual picker; never substitute player Inventory.",
+    "native_guard_binding": "Must be actor-aware and guarded under legal owner thread; existing HolySiteWindow helpers bind current player globals, insufficient for arbitrary AI.",
+    "no_write_or_sampling_authority": "No actor switching/global writes, forced decision or world refresh. Passive natural trace requires a separately authorized run window.",
+    "separate_layers": [
+      "legal_action",
+      "ai_candidate",
+      "configured_choice",
+      "natural_invocation_observed",
+      "world_postcondition_observed"
+    ]
+  },
+  "unknowns": [
+    "Exact native AI scheduler->actor decision invocation and next check time",
+    "Natural selection, count, randomness distribution or probability",
+    "Default ordered-list direction and ties independently in native engine",
+    "Effect-only multi-clause NOT logic engine semantics beyond frozen source/comment intent",
+    "Full expansion of nested is_available_quick and illness triggers",
+    "World owner/slot/resources/opinion result after a naturally selected AI action",
+    "Siege0032 trigger caller and its natural rates; separate war event, not this AI decision"
+  ],
+  "live_qualified": false,
+  "action_ready": false,
+  "source_contract_semantics_author_declared": true,
+  "picker": {
+    "source": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\effective-slot-picker-complete.json",
+      "bytes": 9496,
+      "sha256": "de1ae8c7c82e3ef19713ea1c41b7a227a0b7682f1b0f9a60cd30a07f18faca4b"
+    },
+    "source_observed_at_utc": "2026-10-17T13:18:26.706948+00:00",
+    "machine_id": "4-8e1c2f1861",
+    "begin_rva": "0x2c805e0",
+    "end_exclusive": "0x2c806cb",
+    "body_bytes": 235,
+    "body_sha256": "999b28796ed5ae9586d73243fdadccd83083a2099c0417c70a6ab9f6a3cd4223",
+    "scope": "complete pure original picker, no calls",
+    "meaning": "First compatible empty; else lowest occupied artifact+B0 rarity, earliest index on ties. No faith/recognition scoring.",
+    "current_readback": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\effective-slot-picker-complete.json",
+      "bytes": 9496,
+      "sha256": "de1ae8c7c82e3ef19713ea1c41b7a227a0b7682f1b0f9a60cd30a07f18faca4b"
+    },
+    "review_result": "First compatible empty else lowest occupied rarity; strict lower updates mean ties preserve original slot order; no calls, faith or donor read. Not AI strategic scoring."
+  }
+}

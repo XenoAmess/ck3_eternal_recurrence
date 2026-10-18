@@ -1,0 +1,432 @@
+{
+  "schema": "ck3_rarity_exact_finite_probe_v4",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:19:36.870552+00:00",
+  "source_head": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "fresh_EXE_identity_source": {
+    "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/ROOT-TASK-START-PREFLIGHT.json",
+    "bytes": 21681,
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+  },
+  "EXE_stat_stable": true,
+  "mode": "rtti",
+  "result": {
+    "interfaces": [
+      {
+        "vtable": "0x4774888",
+        "col_rva": "0x4e2e600",
+        "col_fields": [
+          1,
+          0,
+          0,
+          94481920,
+          81977440,
+          81978880
+        ],
+        "receiver_offset_from_complete_object": 0,
+        "class_name": ".?AVCReligionManager@@",
+        "hierarchy": [
+          {
+            "name": ".?AVCReligionManager@@",
+            "descriptor_rva": "0x4e2dab0",
+            "fields": [
+              94481920,
+              3,
+              0,
+              4294967295,
+              0,
+              64,
+              81977440
+            ]
+          },
+          {
+            "name": ".?AVCPersistent@@",
+            "descriptor_rva": "0x4a01b08",
+            "fields": [
+              90434360,
+              0,
+              0,
+              4294967295,
+              0,
+              64,
+              77601600
+            ]
+          },
+          {
+            "name": ".?AVCLegacyGameManagerInterface@@",
+            "descriptor_rva": "0x4bf0828",
+            "fields": [
+              92384928,
+              1,
+              8,
+              4294967295,
+              0,
+              64,
+              79629712
+            ]
+          },
+          {
+            "name": ".?AVCManagerInterface@@",
+            "descriptor_rva": "0x4bf0878",
+            "fields": [
+              92384984,
+              0,
+              8,
+              4294967295,
+              0,
+              64,
+              79629664
+            ]
+          }
+        ],
+        "vtable_bytes_hex": "70819d4201000000b0e2f74301000000c0839d420100000030e3f7430100000000839d420100000040859d420100000028e6e2440100000028069e420100000090889d4201000000f0099d4001000000d08d9d420100000010e1a24101000000",
+        "entries": [
+          {
+            "slot": "0x0",
+            "target_rva_or_metadata": "0x29d8170"
+          },
+          {
+            "slot": "0x8",
+            "target_rva_or_metadata": "0x3f7e2b0"
+          },
+          {
+            "slot": "0x10",
+            "target_rva_or_metadata": "0x29d83c0"
+          },
+          {
+            "slot": "0x18",
+            "target_rva_or_metadata": "0x3f7e330"
+          },
+          {
+            "slot": "0x20",
+            "target_rva_or_metadata": "0x29d8300"
+          },
+          {
+            "slot": "0x28",
+            "target_rva_or_metadata": "0x29d8540"
+          },
+          {
+            "slot": "0x30",
+            "target_rva_or_metadata": "0x4e2e628"
+          },
+          {
+            "slot": "0x38",
+            "target_rva_or_metadata": "0x29e0628"
+          },
+          {
+            "slot": "0x40",
+            "target_rva_or_metadata": "0x29d8890"
+          },
+          {
+            "slot": "0x48",
+            "target_rva_or_metadata": "0x9d09f0"
+          },
+          {
+            "slot": "0x50",
+            "target_rva_or_metadata": "0x29d8dd0"
+          },
+          {
+            "slot": "0x58",
+            "target_rva_or_metadata": "0x1a2e110"
+          }
+        ]
+      },
+      {
+        "vtable": "0x47748c0",
+        "col_rva": "0x4e2e628",
+        "col_fields": [
+          1,
+          8,
+          0,
+          94481920,
+          81977440,
+          81978920
+        ],
+        "receiver_offset_from_complete_object": 8,
+        "class_name": ".?AVCReligionManager@@",
+        "hierarchy": [
+          {
+            "name": ".?AVCReligionManager@@",
+            "descriptor_rva": "0x4e2dab0",
+            "fields": [
+              94481920,
+              3,
+              0,
+              4294967295,
+              0,
+              64,
+              81977440
+            ]
+          },
+          {
+            "name": ".?AVCPersistent@@",
+            "descriptor_rva": "0x4a01b08",
+            "fields": [
+              90434360,
+              0,
+              0,
+              4294967295,
+              0,
+              64,
+              77601600
+            ]
+          },
+          {
+            "name": ".?AVCLegacyGameManagerInterface@@",
+            "descriptor_rva": "0x4bf0828",
+            "fields": [
+              92384928,
+              1,
+              8,
+              4294967295,
+              0,
+              64,
+              79629712
+            ]
+          },
+          {
+            "name": ".?AVCManagerInterface@@",
+            "descriptor_rva": "0x4bf0878",
+            "fields": [
+              92384984,
+              0,
+              8,
+              4294967295,
+              0,
+              64,
+              79629664
+            ]
+          }
+        ],
+        "vtable_bytes_hex": "28069e420100000090889d4201000000f0099d4001000000d08d9d420100000010e1a24101000000b05a854001000000c022854001000000c02285400100000090c4904101000000408a9d420100000000fffc400100000020edb14001000000",
+        "entries": [
+          {
+            "slot": "0x0",
+            "target_rva_or_metadata": "0x29e0628"
+          },
+          {
+            "slot": "0x8",
+            "target_rva_or_metadata": "0x29d8890"
+          },
+          {
+            "slot": "0x10",
+            "target_rva_or_metadata": "0x9d09f0"
+          },
+          {
+            "slot": "0x18",
+            "target_rva_or_metadata": "0x29d8dd0"
+          },
+          {
+            "slot": "0x20",
+            "target_rva_or_metadata": "0x1a2e110"
+          },
+          {
+            "slot": "0x28",
+            "target_rva_or_metadata": "0x855ab0"
+          },
+          {
+            "slot": "0x30",
+            "target_rva_or_metadata": "0x8522c0"
+          },
+          {
+            "slot": "0x38",
+            "target_rva_or_metadata": "0x8522c0"
+          },
+          {
+            "slot": "0x40",
+            "target_rva_or_metadata": "0x190c490"
+          },
+          {
+            "slot": "0x48",
+            "target_rva_or_metadata": "0x29d8a40"
+          },
+          {
+            "slot": "0x50",
+            "target_rva_or_metadata": "0xfcff00"
+          },
+          {
+            "slot": "0x58",
+            "target_rva_or_metadata": "0xb1ed20"
+          }
+        ]
+      }
+    ]
+  },
+  "reads": [
+    {
+      "rva": "0x4774880",
+      "bytes": 8,
+      "why": "actual interface COL pointer",
+      "sha256": "6c2dd55d5f55b31e57be2bae4fc3acd7d425c495df1ce3fe836f1a198680f342"
+    },
+    {
+      "rva": "0x4e2e600",
+      "bytes": 24,
+      "why": "actual x64 CompleteObjectLocator",
+      "sha256": "d5a0f7af146f895be7e219c2b031aaa57647d172090413c672dabc160929a8f1"
+    },
+    {
+      "rva": "0x5a1ae10",
+      "bytes": 128,
+      "why": "type descriptor name",
+      "sha256": "4ce7de8acc7f076267dd6c9701c62550ffee961470da5899882348255adb0130"
+    },
+    {
+      "rva": "0x4e2e060",
+      "bytes": 16,
+      "why": "class hierarchy descriptor",
+      "sha256": "cbc615387e93f24b0680f603e351a5dfdb6cabc492b896fb7c74f8ca24720cae"
+    },
+    {
+      "rva": "0x4e2dbb0",
+      "bytes": 16,
+      "why": "base class RVA array",
+      "sha256": "80176f7153d89255ff07883aeda0dd43f62efbc3f2a16500d6a78f3811fad67f"
+    },
+    {
+      "rva": "0x4e2dab0",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "77cdef575bfd9bf354a1c1341973bb126c091a9b499965513b62bdf166ed3e5c"
+    },
+    {
+      "rva": "0x5a1ae10",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "4ce7de8acc7f076267dd6c9701c62550ffee961470da5899882348255adb0130"
+    },
+    {
+      "rva": "0x4a01b08",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "b91e63977959d3bcf2e6d131df4ccde40c40b1bec0f926966b5ddbf37eb6b16e"
+    },
+    {
+      "rva": "0x563eb48",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "2dd62847a8cd87ffd6deb1e841468a0be1fb7f6d647f3b76c776be1c40649373"
+    },
+    {
+      "rva": "0x4bf0828",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "326d980a4778da20995535e1aa7e545af8978694e8ec01362456f5fd291f0e78"
+    },
+    {
+      "rva": "0x581aeb0",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "fd2b6d78e2248bff36d8e360c0d19eb473ef3b693c90f4f6381d5778749e8e01"
+    },
+    {
+      "rva": "0x4bf0878",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "7edaea5154e5890ebd21ca2a3381193e462c8a68e9eb734cc2d099db2381a33d"
+    },
+    {
+      "rva": "0x581aee8",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "94a5612c43b187586758af4713d05c93797a85c3ee97d8eb4ccf210d609e9a99"
+    },
+    {
+      "rva": "0x4774888",
+      "bytes": 96,
+      "why": "bounded actual vtable entries, do not assume all qwords are methods",
+      "sha256": "2255ce13f03c7e0bd79b0564f68db0dd40d663e9bb13f1b84b376c8c2a9990b4"
+    },
+    {
+      "rva": "0x47748b8",
+      "bytes": 8,
+      "why": "actual interface COL pointer",
+      "sha256": "b3987560fcfce31680d5990528837d6e85f56c343c655f7eaa516942bbdb89f3"
+    },
+    {
+      "rva": "0x4e2e628",
+      "bytes": 24,
+      "why": "actual x64 CompleteObjectLocator",
+      "sha256": "90c3502b12fc58a19598504217d6d4e0966ed3b08646db02b3e97061e8b59316"
+    },
+    {
+      "rva": "0x5a1ae10",
+      "bytes": 128,
+      "why": "type descriptor name",
+      "sha256": "4ce7de8acc7f076267dd6c9701c62550ffee961470da5899882348255adb0130"
+    },
+    {
+      "rva": "0x4e2e060",
+      "bytes": 16,
+      "why": "class hierarchy descriptor",
+      "sha256": "cbc615387e93f24b0680f603e351a5dfdb6cabc492b896fb7c74f8ca24720cae"
+    },
+    {
+      "rva": "0x4e2dbb0",
+      "bytes": 16,
+      "why": "base class RVA array",
+      "sha256": "80176f7153d89255ff07883aeda0dd43f62efbc3f2a16500d6a78f3811fad67f"
+    },
+    {
+      "rva": "0x4e2dab0",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "77cdef575bfd9bf354a1c1341973bb126c091a9b499965513b62bdf166ed3e5c"
+    },
+    {
+      "rva": "0x5a1ae10",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "4ce7de8acc7f076267dd6c9701c62550ffee961470da5899882348255adb0130"
+    },
+    {
+      "rva": "0x4a01b08",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "b91e63977959d3bcf2e6d131df4ccde40c40b1bec0f926966b5ddbf37eb6b16e"
+    },
+    {
+      "rva": "0x563eb48",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "2dd62847a8cd87ffd6deb1e841468a0be1fb7f6d647f3b76c776be1c40649373"
+    },
+    {
+      "rva": "0x4bf0828",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "326d980a4778da20995535e1aa7e545af8978694e8ec01362456f5fd291f0e78"
+    },
+    {
+      "rva": "0x581aeb0",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "fd2b6d78e2248bff36d8e360c0d19eb473ef3b693c90f4f6381d5778749e8e01"
+    },
+    {
+      "rva": "0x4bf0878",
+      "bytes": 28,
+      "why": "base class descriptor",
+      "sha256": "7edaea5154e5890ebd21ca2a3381193e462c8a68e9eb734cc2d099db2381a33d"
+    },
+    {
+      "rva": "0x581aee8",
+      "bytes": 128,
+      "why": "base class type descriptor name",
+      "sha256": "94a5612c43b187586758af4713d05c93797a85c3ee97d8eb4ccf210d609e9a99"
+    },
+    {
+      "rva": "0x47748c0",
+      "bytes": 96,
+      "why": "bounded actual vtable entries, do not assume all qwords are methods",
+      "sha256": "15a7d33577bde4f1051d254090896702c666f91836357dee6b6536b1ab5299bb"
+    }
+  ],
+  "actual_EXE_bytes_read": 1824,
+  "full_image_or_section_export": false,
+  "new_game_or_process_access": false,
+  "build_executed": false,
+  "small_output_budget_source": "Root explicit16MiB v4task; new84MiB research allocation being frozen, no oldv5 renewal claimed"
+}

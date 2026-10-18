@@ -1,0 +1,1415 @@
+{
+  "schema": "ck3-12004-installed-script-corpus-dlc-scope-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:23:08.753310+00:00",
+  "scope": "All installed game paths metadata (no links), DLC .dlc descriptor text; no opaque asset bodies read. All file suffixes enumerated, archive candidates listed. Does not assert purchase entitlement or enabled DLC state in a running save.",
+  "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "all_game_suffix_file_counts": {
+    ".anim": 2280,
+    ".asset": 2464,
+    ".audio2": 1,
+    ".bank": 38,
+    ".bk2": 25,
+    ".bmp": 1,
+    ".compound": 4,
+    ".csv": 2,
+    ".cur": 12,
+    ".dat": 1,
+    ".dds": 20958,
+    ".disabled": 1,
+    ".dlc": 30,
+    ".dll": 11,
+    ".dylib": 7,
+    ".editordata": 115,
+    ".fnt": 5,
+    ".font": 1,
+    ".fxh": 32,
+    ".gfx": 2,
+    ".gui": 417,
+    ".heightmap": 1,
+    ".info": 183,
+    ".ini": 2,
+    ".json": 11,
+    ".lines": 1,
+    ".lookup": 3,
+    ".map": 1,
+    ".mesh": 8499,
+    ".meta": 1,
+    ".modifierpack": 1,
+    ".otf": 13,
+    ".particle": 1,
+    ".particle2": 112,
+    ".pdf": 1,
+    ".png": 463,
+    ".settings": 12,
+    ".shader": 31,
+    ".shortcuts": 1,
+    ".skin": 7,
+    ".terrain": 1,
+    ".tga": 18,
+    ".ttf": 14,
+    ".txt": 4442,
+    ".vertical_borders": 1,
+    ".yml": 11271
+  },
+  "archive_candidates": [],
+  "dlc_root_files": [
+    {
+      "path": "dlc/dlc001_preorder/dlc001.dlc",
+      "bytes": 264,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc001_preorder/thumbnail.png",
+      "bytes": 84584,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc002_sp_day1/dlc002.dlc",
+      "bytes": 256,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc002_sp_day1/thumbnail.png",
+      "bytes": 65072,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc003_fp1/dlc003.dlc",
+      "bytes": 234,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc003_fp1/thumbnail.png",
+      "bytes": 71686,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc003_fp1/gfx/interface/illustrations/loading_screens/fp1_loadscreens.txt",
+      "bytes": 36,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc003_fp1/gfx/interface/illustrations/loading_screens/runestone.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc003_fp1/music/in_game/fp1_music.txt",
+      "bytes": 747,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc003_fp1/music/music_player_categories/fp1_music_categories.txt",
+      "bytes": 155,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc003_fp1/sound/banks/fp1Music.bank",
+      "bytes": 20854272,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc004_ep1/dlc004.dlc",
+      "bytes": 231,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc004_ep1/thumbnail.png",
+      "bytes": 60640,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc004_ep1/gfx/interface/illustrations/loading_screens/court.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc004_ep1/gfx/interface/illustrations/loading_screens/ep1_loadscreens.txt",
+      "bytes": 32,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc004_ep1/music/in_game/ep1_music.txt",
+      "bytes": 1375,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc004_ep1/music/main_themes/roco_music.txt",
+      "bytes": 252,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc004_ep1/music/music_player_categories/ep1_music_categories.txt",
+      "bytes": 174,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc004_ep1/sound/banks/ep1Music.bank",
+      "bytes": 19149760,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc005_fp2/dlc005.dlc",
+      "bytes": 234,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc005_fp2/thumbnail.png",
+      "bytes": 72662,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc005_fp2/gfx/interface/illustrations/loading_screens/chess.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc005_fp2/gfx/interface/illustrations/loading_screens/fp2_loadscreens.txt",
+      "bytes": 32,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc005_fp2/music/in_game/fp2_music.txt",
+      "bytes": 1394,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc005_fp2/music/music_player_categories/fp2_music_categories.txt",
+      "bytes": 183,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc005_fp2/sound/banks/fp2Music.bank",
+      "bytes": 5632544,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc006_bp1/dlc006.dlc",
+      "bytes": 232,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc006_bp1/thumbnail.png",
+      "bytes": 77987,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc006_bp1/music/in_game/bp1_music.txt",
+      "bytes": 1285,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc006_bp1/music/music_player_categories/bp1_music_categories.txt",
+      "bytes": 180,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc006_bp1/sound/banks/bp1Music.bank",
+      "bytes": 9120256,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc007_ep2/dlc007.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc007_ep2/thumbnail.png",
+      "bytes": 79750,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc007_ep2/gfx/interface/illustrations/loading_screens/ep2_loadscreens.txt",
+      "bytes": 37,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc007_ep2/gfx/interface/illustrations/loading_screens/tournament.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc007_ep2/music/in_game/ep2_music.txt",
+      "bytes": 6912,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc007_ep2/music/main_themes/toto_music.txt",
+      "bytes": 249,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc007_ep2/music/music_player_categories/ep2_music_categories.txt",
+      "bytes": 174,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc007_ep2/sound/banks/ep2Music.bank",
+      "bytes": 26324672,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc008_sp2/dlc008.dlc",
+      "bytes": 238,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc008_sp2/thumbnail.png",
+      "bytes": 80177,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc009_bp2/dlc009.dlc",
+      "bytes": 233,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc009_bp2/thumbnail.png",
+      "bytes": 85487,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc009_bp2/music/in_game/bp2_music.txt",
+      "bytes": 881,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc009_bp2/music/music_player_categories/bp2_music_categories.txt",
+      "bytes": 174,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc009_bp2/sound/banks/bp2Music.bank",
+      "bytes": 6620512,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc010_fp3/dlc010.dlc",
+      "bytes": 232,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc010_fp3/thumbnail.png",
+      "bytes": 91677,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc010_fp3/gfx/interface/illustrations/loading_screens/fp3_loadscreens.txt",
+      "bytes": 33,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc010_fp3/gfx/interface/illustrations/loading_screens/persia.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc010_fp3/music/in_game/fp3_music.txt",
+      "bytes": 1509,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc010_fp3/music/music_player_categories/fp3_music_categories.txt",
+      "bytes": 192,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc010_fp3/sound/banks/fp3Music.bank",
+      "bytes": 11449504,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc011_ce1/dlc011.dlc",
+      "bytes": 235,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc011_ce1/thumbnail.png",
+      "bytes": 84243,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc011_ce1/gfx/interface/illustrations/loading_screens/ce1_loadscreens.txt",
+      "bytes": 39,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc011_ce1/gfx/interface/illustrations/loading_screens/lady_shalott.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc011_ce1/music/in_game/ce1_music.txt",
+      "bytes": 1462,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc011_ce1/music/music_player_categories/ce1_music_categories.txt",
+      "bytes": 274,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc011_ce1/sound/banks/ce1Music.bank",
+      "bytes": 11664960,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc012_afr/dlc012.dlc",
+      "bytes": 236,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc012_afr/thumbnail.png",
+      "bytes": 100246,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc013_sp3/dlc013.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc013_sp3/thumbnail.png",
+      "bytes": 64179,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc014_ep3/dlc014.dlc",
+      "bytes": 230,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc014_ep3/thumbnail.png",
+      "bytes": 90732,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc014_ep3/gfx/interface/illustrations/loading_screens/ep3_loadscreens.txt",
+      "bytes": 39,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc014_ep3/gfx/interface/illustrations/loading_screens/new_basileus.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc014_ep3/music/in_game/ep3_music.txt",
+      "bytes": 2079,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc014_ep3/music/main_themes/rtp_music.txt",
+      "bytes": 248,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc014_ep3/music/music_player_categories/ep3_music_categories.txt",
+      "bytes": 288,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc014_ep3/sound/banks/ep3Music.bank",
+      "bytes": 16832128,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc015_bp3/dlc015.dlc",
+      "bytes": 232,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc015_bp3/thumbnail.png",
+      "bytes": 82623,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc016_cp2/dlc016.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc016_cp2/thumbnail.png",
+      "bytes": 98823,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc017_cp3/dlc017.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc017_cp3/thumbnail.png",
+      "bytes": 98120,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/al-qarawiyyin/al_qarawiyyin_university_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/al-qarawiyyin/building_special_al_qarawiyyin_university_01.asset",
+      "bytes": 1506,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/al-qarawiyyin/building_special_al_qarawiyyin_university_01.mesh",
+      "bytes": 304760,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/building_special_cluny_abbey_01.asset",
+      "bytes": 2712,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/building_special_cluny_abbey_01.mesh",
+      "bytes": 362713,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/building_special_cluny_abbey_02.mesh",
+      "bytes": 444757,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/cluny_abbey_02_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/cluny_abbey_decal_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/cluny_abbey_decal_normal.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/cluny abbey/cluny_abbey_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/damascus mosque/building_special_damascus_mosque_01.asset",
+      "bytes": 1425,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/damascus mosque/building_special_damascus_mosque_01.mesh",
+      "bytes": 346549,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/damascus mosque/damascus_mosque_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/drassanes/building_special_drassanes_01.asset",
+      "bytes": 1648,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/drassanes/building_special_drassanes_01.mesh",
+      "bytes": 292270,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/drassanes/drassanes_decal_diffuse.dds",
+      "bytes": 239744,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/drassanes/drassanes_decal_normal.dds",
+      "bytes": 239744,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/drassanes/drassanes_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/building_special_duomo_florence_01.asset",
+      "bytes": 9384,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/building_special_duomo_florence_01.mesh",
+      "bytes": 82415,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/building_special_duomo_florence_02.mesh",
+      "bytes": 291199,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/building_special_duomo_florence_03.mesh",
+      "bytes": 836257,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/building_special_duomo_florence_04.mesh",
+      "bytes": 909381,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/duomo_florence_decal.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/duomo florence/duomo_florence_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/ghana palace/building_special_ghana_palace_01.asset",
+      "bytes": 1410,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/ghana palace/building_special_ghana_palace_01.mesh",
+      "bytes": 173684,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/ghana palace/ghana_palace_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/holy wisdom/building_special_holy_wisdom_01.asset",
+      "bytes": 1456,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/holy wisdom/building_special_holy_wisdom_01.mesh",
+      "bytes": 396041,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/holy wisdom/holy_wisdom_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jaisalmer fort/building_special_jaisalmer_fort_01.asset",
+      "bytes": 1406,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jaisalmer fort/building_special_jaisalmer_fort_01.mesh",
+      "bytes": 334506,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jaisalmer fort/jaisalmer_fort_decal_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jaisalmer fort/jaisalmer_fort_decal_normal.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jaisalmer fort/jaisalmer_fort_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jokhang/building_special_jokhang_01.asset",
+      "bytes": 1317,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jokhang/building_special_jokhang_01.mesh",
+      "bytes": 328661,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jokhang/jokhang_decal_diffuse.dds",
+      "bytes": 215168,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jokhang/jokhang_decal_normal.dds",
+      "bytes": 215168,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/jokhang/jokhang_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kairouan basins/building_special_kairouan_basins_01.asset",
+      "bytes": 1732,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kairouan basins/building_special_kairouan_basins_01.mesh",
+      "bytes": 446823,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kairouan basins/kairouan_basins_decal_diffuse.dds",
+      "bytes": 184448,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kairouan basins/kairouan_basins_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kano earthworks/building_special_kano_walls_01.asset",
+      "bytes": 1214,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kano earthworks/building_special_kano_walls_01.mesh",
+      "bytes": 78836,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kano earthworks/kano_walls_decal_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kano earthworks/kano_walls_decal_normal.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/konark temple/building_special_konark_temple_01.asset",
+      "bytes": 1452,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/konark temple/building_special_konark_temple_01.mesh",
+      "bytes": 299815,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/konark temple/konark_temple_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kyz kala/building_special_kyz_kala_01.asset",
+      "bytes": 1395,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kyz kala/building_special_kyz_kala_01.mesh",
+      "bytes": 466128,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kyz kala/kyz_kala_decal_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/kyz kala/kyz_kala_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/lalibela/beta_giyorgis_decal_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/lalibela/beta_giyorgis_decal_normal.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/lalibela/beta_giyorgis_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/lalibela/building_special_beta_giyorgis_01.asset",
+      "bytes": 1395,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/lalibela/building_special_beta_giyorgis_01.mesh",
+      "bytes": 200631,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/somapura/building_special_somapura_university_01.asset",
+      "bytes": 1493,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/somapura/building_special_somapura_university_01.mesh",
+      "bytes": 352257,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/somapura/somapura_university_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/vatapi caves/building_special_vatapi_caves_01.asset",
+      "bytes": 1664,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/vatapi caves/building_special_vatapi_caves_01.mesh",
+      "bytes": 280750,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/vatapi caves/vatapi_caves_diffuse.dds",
+      "bytes": 262272,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/vatapi caves/vatapi_caves_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/visegrad castle/building_special_visegrad_castle_01.asset",
+      "bytes": 1404,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/visegrad castle/building_special_visegrad_castle_01.mesh",
+      "bytes": 281737,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/visegrad castle/visegrad_castle_decal.dds",
+      "bytes": 123008,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/visegrad castle/visegrad_castle_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wartburg/building_special_wartburg_01.asset",
+      "bytes": 1467,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wartburg/building_special_wartburg_01.mesh",
+      "bytes": 203224,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wartburg/wartburg_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wawel cathedral/building_special_wawel_cathedral_01.asset",
+      "bytes": 1483,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wawel cathedral/building_special_wawel_cathedral_01.mesh",
+      "bytes": 308813,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/wawel cathedral/wawel_cathedral_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/york walls/building_special_york_walls_01.asset",
+      "bytes": 1382,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/york walls/building_special_york_walls_01.mesh",
+      "bytes": 211374,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/york walls/york_walls_decal_diffuse.dds",
+      "bytes": 258176,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/york walls/york_walls_decal_normal.dds",
+      "bytes": 258176,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc017_cp3/gfx/models/buildings/special/ccp3/york walls/york_walls_unique.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc018_cp4/dlc018.dlc",
+      "bytes": 232,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc018_cp4/thumbnail.png",
+      "bytes": 98587,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc018_cp4/music/in_game/cp4_music.txt",
+      "bytes": 370,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc018_cp4/music/music_player_categories/cp4_music_categories.txt",
+      "bytes": 129,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc018_cp4/sound/banks/ccp4Music.bank",
+      "bytes": 1753248,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc019_sp4/dlc019.dlc",
+      "bytes": 238,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc019_sp4/thumbnail.png",
+      "bytes": 71876,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc020_ce2/dlc020.dlc",
+      "bytes": 238,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc020_ce2/thumbnail.png",
+      "bytes": 88526,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc020_ce2/gfx/interface/illustrations/loading_screens/ce2_loadscreens.txt",
+      "bytes": 38,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc020_ce2/gfx/interface/illustrations/loading_screens/mpo_mongols.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc020_ce2/music/in_game/ce2_music.txt",
+      "bytes": 1512,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc020_ce2/music/music_player_categories/ce2_music_categories.txt",
+      "bytes": 257,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc020_ce2/sound/banks/ce2Music.bank",
+      "bytes": 14020864,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc021_bp4/dlc021.dlc",
+      "bytes": 230,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc021_bp4/thumbnail.png",
+      "bytes": 83830,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc022_ep4/dlc022.dlc",
+      "bytes": 232,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc022_ep4/thumbnail.png",
+      "bytes": 85448,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc022_ep4/gfx/interface/illustrations/loading_screens/ep4_loadscreens.txt",
+      "bytes": 105,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc022_ep4/gfx/interface/illustrations/loading_screens/kaifeng.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc022_ep4/gfx/interface/illustrations/loading_screens/literati.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc022_ep4/music/in_game/ep4_music.txt",
+      "bytes": 6787,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc022_ep4/music/main_themes/tgp_music.txt",
+      "bytes": 246,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc022_ep4/music/music_player_categories/ep4_music_categories.txt",
+      "bytes": 999,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc022_ep4/sound/banks/ep4Music.bank",
+      "bytes": 82334912,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc023_cp5/dlc023.dlc",
+      "bytes": 247,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc023_cp5/thumbnail.png",
+      "bytes": 98496,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc024_cp6/dlc024.dlc",
+      "bytes": 233,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc024_cp6/thumbnail.png",
+      "bytes": 98501,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc025_cp7/dlc025.dlc",
+      "bytes": 239,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc025_cp7/thumbnail.png",
+      "bytes": 95305,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/atlas/building_emishi_atlas_diffuse.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/atlas/building_emishi_atlas_normal.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/atlas/building_emishi_atlas_properties.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_herder.asset",
+      "bytes": 1225,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_herder.mesh",
+      "bytes": 96925,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_temple.asset",
+      "bytes": 3185,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_temple_01.mesh",
+      "bytes": 204957,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_temple_02.mesh",
+      "bytes": 315196,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_tribal_01.asset",
+      "bytes": 2522,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_tribal_01.mesh",
+      "bytes": 253400,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_tribal_02.asset",
+      "bytes": 2522,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_tribal_02.mesh",
+      "bytes": 309120,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_wall.asset",
+      "bytes": 6538,
+      "suffix": ".asset"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_wall_01.mesh",
+      "bytes": 154260,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_wall_02.mesh",
+      "bytes": 185076,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_wall_03.mesh",
+      "bytes": 358356,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/building_emishi_wall_04.mesh",
+      "bytes": 384949,
+      "suffix": ".mesh"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/ccp7_herder_01_unique_diffuse.dds",
+      "bytes": 11064,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/ccp7_temple_01_unique_diffuse.dds",
+      "bytes": 11064,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/ccp7_temple_02_unique_diffuse.dds",
+      "bytes": 43832,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/ccp7_tribal_01_unique_diffuse.dds",
+      "bytes": 43832,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/ccp7_tribal_02_unique_diffuse.dds",
+      "bytes": 43832,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/emishi_walls_01_diffuse.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/emishi_walls_01_normal.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc025_cp7/gfx/models/buildings/holdings/cp7/emishi_walls_01_properties.dds",
+      "bytes": 349680,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc026_cp8/dlc026.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc026_cp8/thumbnail.png",
+      "bytes": 94658,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc027_cp9/dlc027.dlc",
+      "bytes": 241,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc027_cp9/thumbnail.png",
+      "bytes": 95818,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc028_sp5/dlc028.dlc",
+      "bytes": 239,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc028_sp5/thumbnail.png",
+      "bytes": 69745,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc029_mp1/dlc029.dlc",
+      "bytes": 237,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc029_mp1/thumbnail.png",
+      "bytes": 80942,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc029_mp1/music/in_game/mp1_music.txt",
+      "bytes": 2949,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc029_mp1/music/music_player_categories/mp1_music_categories.txt",
+      "bytes": 528,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc029_mp1/sound/banks/mp1Music.bank",
+      "bytes": 35743712,
+      "suffix": ".bank"
+    },
+    {
+      "path": "dlc/dlc030_ce3/dlc030.dlc",
+      "bytes": 231,
+      "suffix": ".dlc"
+    },
+    {
+      "path": "dlc/dlc030_ce3/thumbnail.png",
+      "bytes": 81392,
+      "suffix": ".png"
+    },
+    {
+      "path": "dlc/dlc030_ce3/gfx/interface/illustrations/loading_screens/ce3_loadscreens.txt",
+      "bytes": 60,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc030_ce3/gfx/interface/illustrations/loading_screens/thomas_becket.dds",
+      "bytes": 4147328,
+      "suffix": ".dds"
+    },
+    {
+      "path": "dlc/dlc030_ce3/music/in_game/ce3_music.txt",
+      "bytes": 1241,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc030_ce3/music/music_player_categories/ce3_music_categories.txt",
+      "bytes": 173,
+      "suffix": ".txt"
+    },
+    {
+      "path": "dlc/dlc030_ce3/sound/banks/ce3Music.bank",
+      "bytes": 9875520,
+      "suffix": ".bank"
+    }
+  ],
+  "dlc_descriptors": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc001_preorder\\dlc001.dlc",
+      "bytes": 264,
+      "sha256": "26f0300c05a0f13600c7affc6637f623cdf130050cadb009c081aa9787d6ed09",
+      "text": "name = \"Garments of the Holy Roman Empire\"\npath = \"dlc/dlc001_preorder\"\nsteam_id = \"1296730\"\npops_id = \"ck3_dlc001_preorder\"\nmsgr_id = \"9NMFCFSZSHQT\"\naffects_checksum = yes\nlocalizable_name = \"DLC001_PREORDER\"\nchecksum = \"629598a5a0314cefa28e263d04c6e96d\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc002_sp_day1\\dlc002.dlc",
+      "bytes": 256,
+      "sha256": "6cf462a73b11f17508b17475b77989d751ec67a4c7c790be5899dee24e28ee8c",
+      "text": "name = \"Fashion of the Abbasid Court\"\npath = \"dlc/dlc002_sp_day1\"\nsteam_id = \"1296731\"\npops_id = \"ck3_dlc002_sp_day1\"\nmsgr_id = \"9NSL78KTTM4X\"\naffects_checksum = yes\nlocalizable_name = \"DLC002_SP_DAY1\"\nchecksum = \"2c7446d3aa4e4975fac3b350b82642c9\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc003_fp1\\dlc003.dlc",
+      "bytes": 234,
+      "sha256": "b36c37b70e11f52affc6d22458c6654a59033d6757a690b211f1e1cb45cd7e02",
+      "text": "name = \"The Northern Lords\"\npath = \"dlc/dlc003_fp1\"\nsteam_id = \"1303183\"\npops_id = \"ck3_dlc003_fp1\"\nmsgr_id = \"9MTWRN8XTRN0\"\naffects_checksum = yes\nlocalizable_name = \"DLC003_FP1\"\nchecksum = \"995bb20b30c63134400da268c6d6eab2\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc004_ep1\\dlc004.dlc",
+      "bytes": 231,
+      "sha256": "d39d0c95be092a99850dcafae90316e457b9059d7a77ee8a9c79c7aa484a4f4a",
+      "text": "name = \"The Royal Court\"\npath = \"dlc/dlc004_ep1\"\nsteam_id = \"1303182\"\npops_id = \"ck3_dlc004_ep1\"\nmsgr_id = \"9PDMBMV4J906\"\naffects_checksum = yes\nlocalizable_name = \"DLC004_EP1\"\nchecksum = \"cf7f82f7b3514c9831240e8791b13465\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc005_fp2\\dlc005.dlc",
+      "bytes": 234,
+      "sha256": "c045849a8b71d22ba766e5ce9061aa7509bcbc10c8bd5b02d22a8a9680b4eb6a",
+      "text": "name = \"The Fate of Iberia\"\npath = \"dlc/dlc005_fp2\"\nsteam_id = \"1303184\"\npops_id = \"ck3_dlc005_fp2\"\nmsgr_id = \"9PBZ92STFNS0\"\naffects_checksum = yes\nlocalizable_name = \"DLC005_FP2\"\nchecksum = \"82a8615d2264f573d13e45ea186e7aca\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc006_bp1\\dlc006.dlc",
+      "bytes": 232,
+      "sha256": "11debd589ca63cf5661ca3319aa321f35c77a34f441047445cbf932ee93dc901",
+      "text": "name = \"Friends and Foes\"\npath = \"dlc/dlc006_bp1\"\nsteam_id = \"2114760\"\npops_id = \"ck3_dlc006_bp1\"\nmsgr_id = \"9P37T515L87H\"\naffects_checksum = yes\nlocalizable_name = \"DLC006_BP1\"\nchecksum = \"57fb2b964213aacb8afed31632ddc7e2\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc007_ep2\\dlc007.dlc",
+      "bytes": 237,
+      "sha256": "a7f6cf8d6af1aa0ca2d3ede352100b1df64215ecc2d23c94088ed5dedc0f20e5",
+      "text": "name = \"Tours and Tournaments\"\npath = \"dlc/dlc007_ep2\"\nsteam_id = \"2311920\"\nmsgr_id = \"9P7968TT3H8H\"\npops_id = \"ck3_dlc007_ep2\"\naffects_checksum = yes\nlocalizable_name = \"DLC007_EP2\"\nchecksum = \"1d1bacd8d8452ff7e5599295c7ed9dbd\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc008_sp2\\dlc008.dlc",
+      "bytes": 238,
+      "sha256": "7b4620389d7c5cfda699b3d4fe8dc249cfcb9edcd887e47e6814099df9a16eb7",
+      "text": "name = \"Elegance of the Empire\"\npath = \"dlc/dlc008_sp2\"\nsteam_id = \"2311930\"\npops_id = \"ck3_dlc008_sp2\"\nmsgr_id = \"9P712ZX7MR5W\"\naffects_checksum = yes\nlocalizable_name = \"DLC008_SP2\"\nchecksum = \"cdd82ede219570033473d3d4b1995445\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc009_bp2\\dlc009.dlc",
+      "bytes": 233,
+      "sha256": "0572eec211b1833410900ca29915c4b177ee4c12b41970428a1c6cd70700d6e0",
+      "text": "name = \"Wards and Wardens\"\npath = \"dlc/dlc009_bp2\"\nsteam_id = \"2313541\"\npops_id = \"ck3_dlc009_bp2\"\nmsgr_id = \"9PC73D79KLQR\"\naffects_checksum = yes\nlocalizable_name = \"DLC009_BP2\"\nchecksum = \"f9f5bce5098817554d9f3f548bb5c95f\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc010_fp3\\dlc010.dlc",
+      "bytes": 232,
+      "sha256": "b40f928e3fe8d7b4b303cb7f75710c2afaa404f6a6d274438396c4e9606cc9af",
+      "text": "name = \"Legacy of Persia\"\npath = \"dlc/dlc010_fp3\"\nsteam_id = \"2313540\"\npops_id = \"ck3_dlc010_fp3\"\nmsgr_id = \"9PG5DD1TCXRQ\"\naffects_checksum = yes\nlocalizable_name = \"DLC010_FP3\"\nchecksum = \"bcc1f37de1bcaa475ffa52fae1f9b17e\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc011_ce1\\dlc011.dlc",
+      "bytes": 235,
+      "sha256": "60b7007815a0e75c3476001e52a9f81e06f3ccfec54bf0959445c2eadc8d826b",
+      "text": "name = \"Legends of the Dead\"\npath = \"dlc/dlc011_ce1\"\nsteam_id = \"2671060\"\npops_id = \"ck3_dlc011_ce1\"\nmsgr_id = \"9PLN9MJ85ZG1\"\naffects_checksum = yes\nlocalizable_name = \"DLC011_CE1\"\nchecksum = \"22f064f1dde85241fe7a2b2062675466\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc012_afr\\dlc012.dlc",
+      "bytes": 236,
+      "sha256": "16362178852dc4018f8bb28c7ec4ce50793e04757088d3d7eef2e90a0b5fafbe",
+      "text": "name = \"North African Attire\"\npath = \"dlc/dlc012_afr\"\nsteam_id = \"2671030\"\npops_id = \"ck3_dlc012_afr\"\nmsgr_id = \"9N73QK2KCHBZ\"\naffects_checksum = yes\nlocalizable_name = \"DLC012_AFR\"\nchecksum = \"271ba1f0d6eb682575bb9553c1fd24bf\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc013_sp3\\dlc013.dlc",
+      "bytes": 237,
+      "sha256": "0fc9eb18a059c30b73df2b8edf88c5138b2f11b9f8cf81a676b1a07a5cd4a295",
+      "text": "name = \"Couture of the Capets\"\npath = \"dlc/dlc013_sp3\"\nsteam_id = \"2671040\"\npops_id = \"ck3_dlc013_sp3\"\nmsgr_id = \"9N5WGH141BNT\"\naffects_checksum = yes\nlocalizable_name = \"DLC013_SP3\"\nchecksum = \"295593dbc74cd3e77c322f8a38459552\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc014_ep3\\dlc014.dlc",
+      "bytes": 230,
+      "sha256": "cf896a36a257b0da28b6a8f44896f001ff11c9f28c34a70916a478e8440a24b2",
+      "text": "name = \"Roads to Power\"\npath = \"dlc/dlc014_ep3\"\nsteam_id = \"2671070\"\npops_id = \"ck3_dlc014_ep3\"\nmsgr_id = \"9PHT1PQ17BJ1\"\naffects_checksum = yes\nlocalizable_name = \"DLC014_EP3\"\nchecksum = \"a6cb87f66066287d6f6e71160b7a869e\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc015_bp3\\dlc015.dlc",
+      "bytes": 232,
+      "sha256": "233032883ef251102892ebfbc0be6f6ac1d728d993ed6ff50a6dfcfcec57b9ea",
+      "text": "name = \"Wandering Nobles\"\npath = \"dlc/dlc015_bp3\"\nsteam_id = \"2671080\"\npops_id = \"ck3_dlc015_bp3\"\nmsgr_id = \"9N753L0KX15Q\"\naffects_checksum = yes\nlocalizable_name = \"DLC015_BP3\"\nchecksum = \"2f58b896c8b1387cf2729a0bef12f618\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc016_cp2\\dlc016.dlc",
+      "bytes": 237,
+      "sha256": "3762ae8efb5d3a2ba4d22ba1dbff619e44297960337d4bc16d5ebc27906dd725",
+      "text": "name = \"West Slavic Attire\"\npath = \"dlc/dlc016_cp2\"\nsteam_id = \"3275760\"\npops_id = \"ck3_dlc016_cp2\"\nmsgr_id = \"9PJN5DZV3LPV\"\naffects_checksum = yes\nlocalizable_name = \"DLC016_CP2\"\nchecksum = \"c5c9f7db3fe2169940b02b56993f853f\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc017_cp3\\dlc017.dlc",
+      "bytes": 237,
+      "sha256": "63a96e92b626e52b2b3045625cee55bfff12a85ec3a75be062cda94410538ba1",
+      "text": "name = \"Medieval Monuments\"\npath = \"dlc/dlc017_cp3\"\nsteam_id = \"3315540\"\npops_id = \"ck3_dlc017_cp3\"\nmsgr_id = \"9NPLZP3B7LRD\"\naffects_checksum = yes\nlocalizable_name = \"DLC017_CP3\"\nchecksum = \"1e6b0ec4724b1d5da07dacc3977b3aa2\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc018_cp4\\dlc018.dlc",
+      "bytes": 232,
+      "sha256": "bac8befdd772ae72d00c9613e2e114dcba84f48f51b57dc82247c39791403442",
+      "text": "name = \"Arctic Attire\"\npath = \"dlc/dlc018_cp4\"\nsteam_id = \"3315550\"\npops_id = \"ck3_dlc018_cp4\"\nmsgr_id = \"9MVZH373KV81\"\naffects_checksum = yes\nlocalizable_name = \"DLC018_CP4\"\nchecksum = \"207eaa96e5a808990987f0c16d3a26e7\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc019_sp4\\dlc019.dlc",
+      "bytes": 238,
+      "sha256": "9f81f2d0ec72421a3c1027e81befe56a81aad3e0d4ad79351ebd42f4ff9aa6aa",
+      "text": "name = \"Crowns of the World\"\npath = \"dlc/dlc019_sp4\"\nsteam_id = \"3315500\"\npops_id = \"ck3_dlc019_sp4\"\nmsgr_id = \"9N2Q6NJDG6B5\"\naffects_checksum = yes\nlocalizable_name = \"DLC019_SP4\"\nchecksum = \"d393c2182171092b6a9e960152034854\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc020_ce2\\dlc020.dlc",
+      "bytes": 238,
+      "sha256": "7502af9c7d1520604c7c5b97cd3bf1cb6b460f74d029aaa030a0654a8f4d2c7a",
+      "text": "name = \"Khans of the Steppe\"\npath = \"dlc/dlc020_ce2\"\nsteam_id = \"3315510\"\npops_id = \"ck3_dlc020_ce2\"\nmsgr_id = \"9PB62QJPCVDB\"\naffects_checksum = yes\nlocalizable_name = \"DLC020_CE2\"\nchecksum = \"d7998c1b62a6cef6412fa9f66b221c3c\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc021_bp4\\dlc021.dlc",
+      "bytes": 230,
+      "sha256": "d8a63874a4e76d995e8f76c07a1b87e2e5ecd375dcbb50369167235e1caad309",
+      "text": "name = \"Coronations\"\npath = \"dlc/dlc021_bp4\"\nsteam_id = \"3315520\"\npops_id = \"ck3_dlc021_bp4\"\nmsgr_id = \"9PL549QHNPXP\"\naffects_checksum = yes\nlocalizable_name = \"DLC021_BP4\"\nchecksum = \"f1c989547f0a250c6c059795087033f2\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc022_ep4\\dlc022.dlc",
+      "bytes": 232,
+      "sha256": "f5bd99a3a131854b205841e296fbc623e61cc58f0486aa3b4e8f8ef477eec6a8",
+      "text": "name = \"All Under Heaven\"\npath = \"dlc/dlc022_ep4\"\nsteam_id = \"3315530\"\npops_id = \"ck3_dlc022_ep4\"\nmsgr_id = \"9P7BZ0J4XZN7\"\naffects_checksum = yes\nlocalizable_name = \"DLC022_EP4\"\nchecksum = \"32a51223198eb06f35446e46bf7a5b68\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc023_cp5\\dlc023.dlc",
+      "bytes": 247,
+      "sha256": "22297c4b24d2465574257d7a9c474d0bce7e761b4685f1d377922963a8a57222",
+      "text": "name = \"High Medieval Warfare Attire\"\npath = \"dlc/dlc023_cp5\"\nsteam_id = \"3315560\"\npops_id = \"ck3_dlc023_cp5\"\nmsgr_id = \"9P3286R4T0MG\"\naffects_checksum = yes\nlocalizable_name = \"DLC023_CP5\"\nchecksum = \"62c0f112f420ea5be55c1c0d2c97dda8\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc024_cp6\\dlc024.dlc",
+      "bytes": 233,
+      "sha256": "069258ca5b9de766c581f5de6e04622a8b6d2738cec1bad28e8cf3a7f9adbcd9",
+      "text": "name = \"Holy Buildings\"\npath = \"dlc/dlc024_cp6\"\nsteam_id = \"3315570\"\npops_id = \"ck3_dlc024_cp6\"\nmsgr_id = \"9N6PD3WNVT1M\"\naffects_checksum = yes\nlocalizable_name = \"DLC024_CP6\"\nchecksum = \"1bce9a2876d0791e268d247abde6faf1\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc025_cp7\\dlc025.dlc",
+      "bytes": 239,
+      "sha256": "45e6f78aab704312695435e7c049800f4126b904b3f9573695b1c1fd063d8d35",
+      "text": "name = \"North Pacific Attire\"\npath = \"dlc/dlc025_cp7\"\nsteam_id = \"3315580\"\npops_id = \"ck3_dlc025_cp7\"\nmsgr_id = \"9N29T8J88W5J\"\naffects_checksum = yes\nlocalizable_name = \"DLC025_CP7\"\nchecksum = \"099b6169463b8d9b9999e9830ef440f0\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc026_cp8\\dlc026.dlc",
+      "bytes": 237,
+      "sha256": "480691694eacc216ca6920c3f2baf11f45be39814b276e1b6257abe0faf8128f",
+      "text": "name = \"East Asian Wonders\"\npath = \"dlc/dlc026_cp8\"\nsteam_id = \"4232860\"\npops_id = \"ck3_dlc026_cp8\"\nmsgr_id = \"9MWL2RFJV38J\"\naffects_checksum = yes\nlocalizable_name = \"DLC026_CP8\"\nchecksum = \"d228b7c41e015ec7321cd80f9d26cec2\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc027_cp9\\dlc027.dlc",
+      "bytes": 241,
+      "sha256": "c27ac10ef013ce7299a55b0495a30f3c08d4472194d7d9524fc2fae79bf83a45",
+      "text": "name = \"Celestial Court Attire\"\npath = \"dlc/dlc027_cp9\"\nsteam_id = \"4232870\"\npops_id = \"ck3_dlc027_cp9\"\nmsgr_id = \"9P5NCSDS5VD4\"\naffects_checksum = yes\nlocalizable_name = \"DLC027_CP9\"\nchecksum = \"54cf59eef7bd0e3ce17d248819628d0a\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc028_sp5\\dlc028.dlc",
+      "bytes": 239,
+      "sha256": "a213d547083a719049fde8ea819179ba35eab1ae5774f003141e5cb4ab04a128",
+      "text": "name = \"Symbols of Authority\"\npath = \"dlc/dlc028_sp5\"\nsteam_id = \"4232890\"\npops_id = \"ck3_dlc028_sp5\"\nmsgr_id = \"9PNMKF1QMD01\"\naffects_checksum = yes\nlocalizable_name = \"DLC028_SP5\"\nchecksum = \"b6f988318dc2bbfa0f47d799b20b9a90\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc029_mp1\\dlc029.dlc",
+      "bytes": 237,
+      "sha256": "0cee0c8d76dbb0a4fa686523340bd207d2bd166becc0d5f4aca3075b88bbd64c",
+      "text": "name = \"Songs of the Realm\"\npath = \"dlc/dlc029_mp1\"\nsteam_id = \"3315590\"\npops_id = \"ck3_dlc029_mp1\"\nmsgr_id = \"9N89HZBM8Z5S\"\naffects_checksum = yes\nlocalizable_name = \"DLC029_MP1\"\nchecksum = \"f8ce1e91f39282ce563b1482405015b1\"\n"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\dlc\\dlc030_ce3\\dlc030.dlc",
+      "bytes": 231,
+      "sha256": "e4adb9562c81613699fd6f3223c68bec4fc1ac0a8a0f25f6f684882c7be4af3e",
+      "text": "name = \"By God Alone\"\npath = \"dlc/dlc030_ce3\"\nsteam_id = \"4232900\"\npops_id = \"ck3_dlc030_ce3\"\nmsgr_id = \"9PHZC0PS79S5\"\naffects_checksum = yes\nlocalizable_name = \"DLC030_CE3\"\nchecksum = \"50a417d4c4e27d33d34ecdf47e954a99\"\n"
+    }
+  ]
+}

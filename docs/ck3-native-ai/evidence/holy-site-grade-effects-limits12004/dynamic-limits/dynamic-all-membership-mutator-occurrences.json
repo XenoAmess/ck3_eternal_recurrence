@@ -1,0 +1,448 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:44:06.594898+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_or_process_reads": 0,
+  "schema": "ck3-12004-all-authored-holy-site-mutation-occurrences-v1",
+  "scope": "All previous 7536 original/DLC corpus files re-read and SHA-verified; every occurrence of seven native membership/creation/owner mutation names, including comments/localization keys, retained with context.",
+  "files_checked": 7536,
+  "bytes_read": 222428209,
+  "names": [
+    "add_holy_site",
+    "add_eminent_holy_site",
+    "make_holy_site_eminent",
+    "make_holy_site_not_eminent",
+    "remove_holy_site",
+    "create_holy_site",
+    "set_holy_site_owner"
+  ],
+  "files": [
+    {
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "hits": [
+        {
+          "line": 79,
+          "text": "\t\t\tmake_holy_site_eminent = {",
+          "tokens": [
+            "make_holy_site_eminent"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 74,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 75,
+              "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+            },
+            {
+              "line": 76,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 77,
+              "text": "\t\t}"
+            },
+            {
+              "line": 78,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 79,
+              "text": "\t\t\tmake_holy_site_eminent = {"
+            },
+            {
+              "line": 80,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 81,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 82,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 83,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 84,
+              "text": "\t\t}"
+            },
+            {
+              "line": 85,
+              "text": "\t\tif = {"
+            }
+          ]
+        },
+        {
+          "line": 231,
+          "text": "\t\t\tmake_holy_site_not_eminent = {",
+          "tokens": [
+            "make_holy_site_not_eminent"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 226,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 227,
+              "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+            },
+            {
+              "line": 228,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 229,
+              "text": "\t\t}"
+            },
+            {
+              "line": 230,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 231,
+              "text": "\t\t\tmake_holy_site_not_eminent = {"
+            },
+            {
+              "line": 232,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 233,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 234,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 235,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 236,
+              "text": "\t\t}"
+            },
+            {
+              "line": 237,
+              "text": "\t\tif = {"
+            }
+          ]
+        },
+        {
+          "line": 392,
+          "text": "\t\t\tremove_holy_site = {",
+          "tokens": [
+            "remove_holy_site"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 387,
+              "text": "\t\t\t\t\t}"
+            },
+            {
+              "line": 388,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 389,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 390,
+              "text": "\t\t}"
+            },
+            {
+              "line": 391,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 392,
+              "text": "\t\t\tremove_holy_site = {"
+            },
+            {
+              "line": 393,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 394,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 395,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 396,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 397,
+              "text": "\t\t}"
+            },
+            {
+              "line": 398,
+              "text": "\t\tif = {"
+            }
+          ]
+        },
+        {
+          "line": 557,
+          "text": "\t\t\tadd_holy_site = {",
+          "tokens": [
+            "add_holy_site"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 552,
+              "text": ""
+            },
+            {
+              "line": 553,
+              "text": "\tcooldown = { years = holy_site_decision_cooldown_value }"
+            },
+            {
+              "line": 554,
+              "text": ""
+            },
+            {
+              "line": 555,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 556,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 557,
+              "text": "\t\t\tadd_holy_site = {"
+            },
+            {
+              "line": 558,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 559,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 560,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 561,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 562,
+              "text": "\t\t}"
+            },
+            {
+              "line": 563,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_costs/00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "hits": [
+        {
+          "line": 777,
+          "text": "create_holy_site = {",
+          "tokens": [
+            "create_holy_site"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 772,
+              "text": "# scope:title - barony title of location where holy site is created"
+            },
+            {
+              "line": 773,
+              "text": "# scope:holy_site - holy site being added (warning! may not be set, if generating description, and holy site is new)"
+            },
+            {
+              "line": 774,
+              "text": "# scope:holy_site_type - holy site type being created"
+            },
+            {
+              "line": 775,
+              "text": "# scope:faith - Faith the holy site is created for"
+            },
+            {
+              "line": 776,
+              "text": "# scope:artifacts - List of artifacts being enshrined"
+            },
+            {
+              "line": 777,
+              "text": "create_holy_site = {"
+            },
+            {
+              "line": 778,
+              "text": "\tpiety = {"
+            },
+            {
+              "line": 779,
+              "text": "\t\tvalue = {"
+            },
+            {
+              "line": 780,
+              "text": "\t\t\tvalue = 2000"
+            },
+            {
+              "line": 781,
+              "text": "\t\t\tdesc = \"BASE\""
+            },
+            {
+              "line": 782,
+              "text": "\t\t}"
+            },
+            {
+              "line": 783,
+              "text": "\t\tif = {"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/02_starting_holy_site_relics_effects.txt",
+      "bytes": 50787,
+      "sha256": "1a4012823cfc44808ca113b786713ca387230a397ba54bab4245627618e9092a",
+      "hits": [
+        {
+          "line": 17,
+          "text": "#                       (the finalizer's set_holy_site_owner transfers",
+          "tokens": [
+            "set_holy_site_owner"
+          ],
+          "comment_only": true,
+          "context": [
+            {
+              "line": 12,
+              "text": "# Expected scopes on entry to any create_starting_relic_*_effect:"
+            },
+            {
+              "line": 13,
+              "text": "#   scope:relic_faith = the faith the relic is for (may not be the"
+            },
+            {
+              "line": 14,
+              "text": "#                       controller's faith in pass 2)"
+            },
+            {
+              "line": 15,
+              "text": "#   scope:relic_site  = the holy site scope"
+            },
+            {
+              "line": 16,
+              "text": "#   scope:relic_owner = the temporary artifact-creation-scope owner"
+            },
+            {
+              "line": 17,
+              "text": "#                       (the finalizer's set_holy_site_owner transfers"
+            },
+            {
+              "line": 18,
+              "text": "#                       ownership to the holy site itself)"
+            },
+            {
+              "line": 19,
+              "text": "#"
+            },
+            {
+              "line": 20,
+              "text": "# Dispatchers route on (relic_site, relic_faith.religion) to either a"
+            },
+            {
+              "line": 21,
+              "text": "# curated named-relic block or a per-religion generic block."
+            },
+            {
+              "line": 22,
+              "text": ""
+            },
+            {
+              "line": 23,
+              "text": "###########################"
+            }
+          ]
+        },
+        {
+          "line": 1594,
+          "text": "\t\t\tset_holy_site_owner = {",
+          "tokens": [
+            "set_holy_site_owner"
+          ],
+          "comment_only": false,
+          "context": [
+            {
+              "line": 1589,
+              "text": "\t\t\tadd_artifact_modifier = artifact_monthly_prestige_penalty_modifier # overwrite default creation modifier"
+            },
+            {
+              "line": 1590,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1591,
+              "text": ""
+            },
+            {
+              "line": 1592,
+              "text": "\t\tscope:newly_created_artifact = {"
+            },
+            {
+              "line": 1593,
+              "text": "\t\t\t# Enshrine without history (setting owner & equipping = enshrining), skipping 'can_enshrine_artifact' rules)"
+            },
+            {
+              "line": 1594,
+              "text": "\t\t\tset_holy_site_owner = {"
+            },
+            {
+              "line": 1595,
+              "text": "\t\t\t\ttarget = scope:relic_site"
+            },
+            {
+              "line": 1596,
+              "text": "\t\t\t\tgenerate_history = no"
+            },
+            {
+              "line": 1597,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1598,
+              "text": "\t\t\tequip_artifact_to_owner = yes"
+            },
+            {
+              "line": 1599,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1600,
+              "text": "\t}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

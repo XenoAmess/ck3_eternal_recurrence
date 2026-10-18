@@ -1,0 +1,182 @@
+{
+  "schema": "faith-e01-v4-permission-opinion-source-pins-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:22:59.833664+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "root_fresh_exact_identity": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+    "bytes": 21681,
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+  },
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stock_excerpt_packet": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\stock-source-excerpts-a01.json",
+    "bytes": 73389,
+    "sha256": "1bef5466f3b088c4f6d18b7eecbc51347230681d0fc53751c45841c970678e35"
+  },
+  "fresh_stock_hash_comparison": [
+    {
+      "id": "rights",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_rules\\02_holy_sites.txt",
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "on_actions",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\on_action\\inventory_on_actions.txt",
+      "sha256": "fcab2d2e740d32f3e8b5cb4058196dd3592153343ea3ae7a41c980fc0a334f67",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "cb",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\casus_belli_types\\01_ep1_wars.txt",
+      "sha256": "21c1ab2e4fef36b869469bcc0d28b9c18efc026d63de62af708642cde289eb95",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": false
+    },
+    {
+      "id": "gui_loc",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\holy_site_window_l_english.yml",
+      "sha256": "7c0929203d6019e80607ab7cc57641e7eb649726de6c686678d0b4b37978fdf5",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "opinions",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\opinion_modifiers\\pam_opinions.txt",
+      "sha256": "68cdfc641a32a38daf6e9de6651634278b522b26c2886fbf6b55341ce7e09b52",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "piety_values",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_basic_values.txt",
+      "sha256": "c379cc0c58ed1574033f0e07a58697dfc6f8475c26aa4b117f2332008d4a27ef",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "cb_trigger",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\00_artifact_triggers.txt",
+      "sha256": "ab6ae5dcb1db9e05574b9f635ba62a3303f307df5d0401cbd7d4672684170aeb",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": false
+    },
+    {
+      "id": "ai_decisions",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "slot_definition",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\artifacts\\slots\\01_holy_site.txt",
+      "sha256": "748a4c2f87bfea5959843c88456f38851eb968e507ef376bff0a725a6ac425df",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    },
+    {
+      "id": "gui_controls",
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_holy_site.gui",
+      "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+      "matches_existing_source_manifest": true,
+      "existing_manifest_had_file": true
+    }
+  ],
+  "reviewed_native_packets": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029ab4f0.json",
+      "bytes": 22263,
+      "sha256": "f26581e44422eeb1bcc0bde9df6b43b65f65562c8ec1d73b36c3ae50646742f3",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T09:18:21.600522+00:00",
+      "begin_rva": 43693296,
+      "end_rva": 43693869,
+      "bytes_sha256": "fc26280105134894cc86771afc831361a7207a7912183c1ada56ebebf374da17",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-029abb20.json",
+      "bytes": 9673,
+      "sha256": "fc6b29620eacd48e11ff108242d2133324605e288640010c318174e8a8d17711",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T09:18:21.605944+00:00",
+      "begin_rva": 43694880,
+      "end_rva": 43695119,
+      "bytes_sha256": "2880241fe59a8b539952e97dc129813ae1ab8fa6aee9873bfc4b71b84c94a4a4",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d64fd0.json",
+      "bytes": 17885,
+      "sha256": "5aa38029fbafa0744705d406e8197dd5a0280048686d4520867cf768581d0ca5",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T09:18:29.602066+00:00",
+      "begin_rva": 30822352,
+      "end_rva": 30822896,
+      "bytes_sha256": "bae18eeb7a8e5fae0b9bf83718b3ce8b0fede6571271950084f4aa03604f8b3d",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\native-source\\function-01d651f0.json",
+      "bytes": 17885,
+      "sha256": "47d5a58bc094cf226723df2b6c9cfc1697af054fe3f7e266f1b1a5ae8ad54204",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T09:18:29.608364+00:00",
+      "begin_rva": 30822896,
+      "end_rva": 30823440,
+      "bytes_sha256": "b7dc1048fdd91668cbd15fcf6005bbd4f8060900104d3f20871e458d874bfbd5",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\inventory-enshrine-guard-complete.json",
+      "bytes": 30371,
+      "sha256": "70177be1f301a2b28c29db84b0f064850c6536aff675ec5e1c3485627e070df2",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:47:51.753132+00:00",
+      "begin_rva": 36586656,
+      "end_rva": 36587466,
+      "bytes_sha256": "67a0073fcbd9d204c4e3b5f0050231222f3fcfcd90c755b8d864ff821a36c21d",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-receiver-complete.json",
+      "bytes": 59797,
+      "sha256": "75bfef0b1094973fc64e639108f749b770af0e742ebabcb6871e6482396c8681",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.051934+00:00",
+      "begin_rva": 43691488,
+      "end_rva": 43693291,
+      "bytes_sha256": "6c900e0c7f46a45a1c7dba6b4fe7e0304808cccc22512439e6d23bc4555e3673",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-receiver-complete.json",
+      "bytes": 21337,
+      "sha256": "1d7e43c648b574a4a83f0776e7921d6cb82bedb13f8e1d8b2d75379baf436a09",
+      "machine_id": "4-8e1c2f1861",
+      "observed_at_utc": "2026-10-17T12:49:40.046718+00:00",
+      "begin_rva": 43694240,
+      "end_rva": 43694866,
+      "bytes_sha256": "80cc3c7e4b63404ce1a78c5f192fd244137db1d3b8c5238116fd18f84e98a7eb",
+      "activity": "new read/review of existing bounded packet, no new EXE read"
+    }
+  ],
+  "research_doc": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4.md",
+    "bytes": 17151,
+    "sha256": "8d9d02089bc519348b2eaf3572ed7d7ae8cbb949ad79b391e8bb50f9d5d28d15"
+  },
+  "activity": {
+    "game_calls": 0,
+    "sdk_calls": 0,
+    "game_actions": 0,
+    "builds": 0,
+    "new_exe_reads": 0,
+    "main_writes": 0
+  },
+  "scope": "source-contract; source hash matches and manual branch review do not prove a natural AI execution or current business outcome"
+}

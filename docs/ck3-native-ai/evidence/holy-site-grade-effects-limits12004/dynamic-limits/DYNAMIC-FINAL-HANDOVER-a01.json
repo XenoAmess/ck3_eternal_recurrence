@@ -1,0 +1,97 @@
+{
+  "schema": "ck3-12004-holy-site-dynamic-limit-research-handover-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:47:41.878682+00:00",
+  "source_baseline_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exact_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "result": "STATIC_DYNAMIC_RESEARCH_COMPLETE_WITH_NATIVE_ALIAS_BOUNDARY",
+  "old_handover": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\FINAL-HANDOVER.json",
+    "bytes": 23753,
+    "sha256": "b062aa225385d7eff3159ef645299fabf9c0309a45ef076856769464d351f956"
+  },
+  "old_pinned_files_checked": 82,
+  "old_pinned_bytes_preserved": true,
+  "main_game_build_MCP_screen_bus_mutations": false,
+  "new_EXE_or_process_reads": 0,
+  "dynamic_validation_checks": 19,
+  "dynamic_plan_result": "plan-consistent",
+  "positive_raw_displacement_hits": 229,
+  "possible_write_locator_locations": 64,
+  "every_other_native_write_typed_or_excluded": false,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "new_files": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-all-membership-mutator-occurrences.json",
+      "bytes": 12696,
+      "sha256": "2979cf77795c033f36cdc0dfaf267efd0ec0203c8e8668f79ab31c2f7fb903e1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-authored-capacity-scan.json",
+      "bytes": 32028,
+      "sha256": "1965b880325a98874b76016b2064bf2e700c89f4dd38e8a0c177ebab6d32ce9e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\DYNAMIC-LIMITS-RESEARCH.md",
+      "bytes": 4889,
+      "sha256": "51679ecaea906f0f4b71d2c683076c686b51465fc588aaa4b48a1bcaa318234e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-name-corpus.json",
+      "bytes": 25197,
+      "sha256": "9cd5b5f417288da7888bad43eba15ec26aa18bcf7f8ea50c8f85aa5a6a811d74"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-write-locators.json",
+      "bytes": 49243,
+      "sha256": "9524256427c571873f02d4973e2b4d434d382159d63ff22d2fa183503178457e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan-check.json",
+      "bytes": 1064,
+      "sha256": "c55c424609a197b9742efd81e8ecb5f02f726f5a6c5fb743e2c974dda3d4340b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan.json",
+      "bytes": 4264,
+      "sha256": "4a69d99718ba6410f2cf9d64100f348b91167563128c87b151f03443137de4b8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan.md",
+      "bytes": 4094,
+      "sha256": "679f6884f464a64a40cc43197b1e75bb8f9a975b053ac20dd14c0bdd95536637"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-source-validation-a01.json",
+      "bytes": 1993,
+      "sha256": "76dadd062c0337c6c46c58d8049e5973df1285d4419a3cc720ceb74ae86dc7c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic_probe.py",
+      "bytes": 8147,
+      "sha256": "b0050ea88dbffc5b18299559b898d9c220a584b86b177dd0041670743d51c64d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic_summarize.py",
+      "bytes": 610,
+      "sha256": "66414d7ad0b959b414446150406c52c25b63005c1fa47c60e26d211f8a53109d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\finish_dynamic.py",
+      "bytes": 2562,
+      "sha256": "38674588aedfff2487c0609417e002330a97f93444d51cfc9cc5cdb7b4cd885c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\freeze_dynamic.py",
+      "bytes": 20769,
+      "sha256": "7e377b58acbf960672b7676584ff3449d496caffcf1f5c9a6ae069398e341e08"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+      "bytes": 21089,
+      "sha256": "b8f1243bb45ded54420e0d614fbab584a4345f22c146a1c00829c7967f4440f3"
+    }
+  ],
+  "directory_bytes_before_this_receipt": 2374656,
+  "cap_bytes": 8388608
+}

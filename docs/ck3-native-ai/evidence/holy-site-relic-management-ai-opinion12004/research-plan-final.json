@@ -1,0 +1,146 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "faith-e01-v4-relic-permissions-opinion",
+  "question": "Who may enshrine, directly replace or remove an enshrined artifact, where is it returned, and which per-person opinion/resource/CB branches follow? AI choice is separately researched in ai/.",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "human",
+    "owner_scope": "actual current player HolySite window guard; source rules bind actor, county-holder Faith and site Inventory distinctly",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "native site/artifact/character fullrefs require the same process object generation; no current object claimed in this offline study",
+    "producer_trigger": "not-applicable",
+    "producer": "original command field binding and original script definition; native guard code read from preexisting exact-build cache",
+    "caller": "player GUI handlers 17D5DD0/17D62F0 and compiled script bridges 1D64FD0/1D651F0; AI scheduler is outside this human plan",
+    "consumer": "29AB4F0/29ABB20 guards, 29AADE0/29AB8A0 receivers, inventory_on_actions opinion/resource callbacks",
+    "cache_lifetime": "stock/script and native packets exact-byte bound; no freshness claim for window candidate cache or current game state",
+    "expected_signal": "explicit region/faith/slot/inventory conditions, actual receiver artifact recipient, and scoped add_opinion target/filters",
+    "zero_sample_meaning": "No runtime sample was requested; zero game/AI rows cannot establish absence of permission, AI candidates, or a natural action",
+    "stop_condition": "one bounded source/branch review; no game, SDK, build, tick, broad dump or second EXE read",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "exact",
+      "layer": "exact-build",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+      "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Root fresh machine, source, EXE hash and Steam build identity, not branch semantics"
+    },
+    {
+      "id": "stock",
+      "layer": "source-contract",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\stock-source-excerpts-a01.json",
+      "sha256": "1bef5466f3b088c4f6d18b7eecbc51347230681d0fc53751c45841c970678e35",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Fresh numbered original rules, on-actions, values, opinion modifiers and CB; manually reviewed scope/branch order"
+    },
+    {
+      "id": "review",
+      "layer": "source-contract",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\permissions-opinion-v4-final.md",
+      "sha256": "f02ec54ff1fb01220fde9c7034bb234684a92b754960c78d8e30939c869916e7",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Manual native guard, original slot trigger, receiver and script branch review; unknown engine/AI/runtime edges remain explicit"
+    },
+    {
+      "id": "pins",
+      "layer": "exact-build",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\source-pins-a01.json",
+      "sha256": "85ece381f921088d643435b794e58c1750ea2c322664ab3cd61f8b6106712bd5",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Exact reused packet and fresh stock file hashes, not a runtime outcome"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "gui",
+      "label": "Actual player selection / inventory"
+    },
+    {
+      "id": "guard",
+      "label": "Native guard and scoped script rules"
+    },
+    {
+      "id": "receiver",
+      "label": "Command receiver / actor recipient"
+    },
+    {
+      "id": "callback",
+      "label": "Original on-action resource and opinion branches"
+    },
+    {
+      "id": "poststate",
+      "label": "Independent current business poststate"
+    }
+  ],
+  "edges": [
+    {
+      "id": "player-check",
+      "from": "gui",
+      "to": "guard",
+      "label": "Selected-button guard differs from explicit artifact Can",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "review"
+      ]
+    },
+    {
+      "id": "permission-execution",
+      "from": "guard",
+      "to": "receiver",
+      "label": "Permission and receiver are distinct; queue ACK not poststate",
+      "status": "static-confirmed",
+      "evidence": [
+        "review"
+      ]
+    },
+    {
+      "id": "callbacks",
+      "from": "receiver",
+      "to": "callback",
+      "label": "Direct replace emits both new and old scoped callbacks; remove returns to actor",
+      "status": "static-confirmed",
+      "evidence": [
+        "stock",
+        "review"
+      ]
+    },
+    {
+      "id": "outcome",
+      "from": "callback",
+      "to": "poststate",
+      "label": "Current resource/opinion/ownership results not sampled",
+      "status": "unknown",
+      "evidence": [
+        "review"
+      ],
+      "open_question": "What are the actual same-process independent artifact/resource/devotion/opinion postreads for this exact action?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "new-live",
+      "question": "Was any new human action or natural AI execution performed by this study?",
+      "status": "not-applicable",
+      "evidence": [
+        "review"
+      ],
+      "reason": "Read-only offline source study; no runtime window authorized in this work package"
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:28:59.549604+00:00",
+  "related_ai_question_plan": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\research-plan.json",
+    "bytes": 9871,
+    "sha256": "d9fb2831fe77d7035c600ac8996ab440f2319a792415fe32a8fb11745a02011b"
+  },
+  "related_ai_scope": "separate npc-choice plan; source closed, natural scheduler/action poststate unknown; not merged into human legality observation"
+}

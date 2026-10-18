@@ -1,0 +1,1271 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:19:42.111040+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "source": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt",
+    "bytes": 60594,
+    "sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3"
+  },
+  "excerpts": [
+    {
+      "range": [
+        1,
+        30
+      ],
+      "lines": [
+        {
+          "line": 1,
+          "text": ""
+        },
+        {
+          "line": 2,
+          "text": "##########"
+        },
+        {
+          "line": 3,
+          "text": "# Religious Relations"
+        },
+        {
+          "line": 4,
+          "text": "##########"
+        },
+        {
+          "line": 5,
+          "text": ""
+        },
+        {
+          "line": 6,
+          "text": "# Piety:"
+        },
+        {
+          "line": 7,
+          "text": ""
+        },
+        {
+          "line": 8,
+          "text": "# The base modifier"
+        },
+        {
+          "line": 9,
+          "text": "court_chaplain_religious_relations_modifier = {"
+        },
+        {
+          "line": 10,
+          "text": "\tadd = learning"
+        },
+        {
+          "line": 11,
+          "text": "\tdivide = 20"
+        },
+        {
+          "line": 12,
+          "text": "}"
+        },
+        {
+          "line": 13,
+          "text": ""
+        },
+        {
+          "line": 14,
+          "text": "# Bonus from Clerical Justifications Perk"
+        },
+        {
+          "line": 15,
+          "text": "court_chaplain_religious_relations_perk_bonus_modifier = {"
+        },
+        {
+          "line": 16,
+          "text": "\tif = {"
+        },
+        {
+          "line": 17,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 18,
+          "text": "\t\t\tscope:councillor_liege = { has_perk = clerical_justifications_perk }"
+        },
+        {
+          "line": 19,
+          "text": "\t\t}"
+        },
+        {
+          "line": 20,
+          "text": "\t\t# Set up the base value"
+        },
+        {
+          "line": 21,
+          "text": "\t\tadd = court_chaplain_religious_relations_modifier"
+        },
+        {
+          "line": 22,
+          "text": "\t\t# Calculate the final value"
+        },
+        {
+          "line": 23,
+          "text": "\t\tmultiply = {"
+        },
+        {
+          "line": 24,
+          "text": "\t\t\tadd = clerical_justifications_percentage"
+        },
+        {
+          "line": 25,
+          "text": "\t\t\tdivide = 100"
+        },
+        {
+          "line": 26,
+          "text": "\t\t}"
+        },
+        {
+          "line": 27,
+          "text": "\t}"
+        },
+        {
+          "line": 28,
+          "text": "}"
+        },
+        {
+          "line": 29,
+          "text": ""
+        },
+        {
+          "line": 30,
+          "text": "# Bonus from Bureaucrats"
+        }
+      ]
+    },
+    {
+      "range": [
+        920,
+        1045
+      ],
+      "lines": [
+        {
+          "line": 920,
+          "text": "\tif = {"
+        },
+        {
+          "line": 921,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 922,
+          "text": "\t\t\tscope:county ?= { has_county_modifier = petition_liege_county_convert_modifier }"
+        },
+        {
+          "line": 923,
+          "text": "\t\t}"
+        },
+        {
+          "line": 924,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 925,
+          "text": "\t\t\tvalue = scope:councillor.petition_liege_county_convert_modifier_value"
+        },
+        {
+          "line": 926,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_LOCAL_COUNTY_MODIFIERS"
+        },
+        {
+          "line": 927,
+          "text": "\t\t}"
+        },
+        {
+          "line": 928,
+          "text": "\t}"
+        },
+        {
+          "line": 929,
+          "text": "\tif = {"
+        },
+        {
+          "line": 930,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 931,
+          "text": "\t\t\tscope:county ?= { has_county_modifier = pam_cardinal_order_convert_faith_modifier }"
+        },
+        {
+          "line": 932,
+          "text": "\t\t}"
+        },
+        {
+          "line": 933,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 934,
+          "text": "\t\t\tvalue = cardinal_order_convert_faith"
+        },
+        {
+          "line": 935,
+          "text": "\t\t\tdesc = pam_cardinal_order_convert_faith_modifier"
+        },
+        {
+          "line": 936,
+          "text": "\t\t}"
+        },
+        {
+          "line": 937,
+          "text": "\t}"
+        },
+        {
+          "line": 938,
+          "text": "\t#Baptistery domicile buildings, evaluated from the councillor doing the task"
+        },
+        {
+          "line": 939,
+          "text": "\tadd = {"
+        },
+        {
+          "line": 940,
+          "text": "\t\tvalue = scope:councillor.estate_increase_conversion_speed"
+        },
+        {
+          "line": 941,
+          "text": "\t\tdesc = estate_increase_conversion_speed_desc"
+        },
+        {
+          "line": 942,
+          "text": "\t}"
+        },
+        {
+          "line": 943,
+          "text": ""
+        },
+        {
+          "line": 944,
+          "text": "\t#Conversion bonuses from certain Holy Sites."
+        },
+        {
+          "line": 945,
+          "text": "\tif = {"
+        },
+        {
+          "line": 946,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 947,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 948,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus"
+        },
+        {
+          "line": 949,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 950,
+          "text": "\t\t\ttitle:b_jerusalem = {"
+        },
+        {
+          "line": 951,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 952,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 953,
+          "text": "\t\t}"
+        },
+        {
+          "line": 954,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 955,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_jerusalem"
+        },
+        {
+          "line": 956,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_JERUSALEM"
+        },
+        {
+          "line": 957,
+          "text": "\t\t}"
+        },
+        {
+          "line": 958,
+          "text": "\t}"
+        },
+        {
+          "line": 959,
+          "text": "\tif = {"
+        },
+        {
+          "line": 960,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 961,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 962,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus"
+        },
+        {
+          "line": 963,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 964,
+          "text": "\t\t\ttitle:b_mahoyadapuram = {"
+        },
+        {
+          "line": 965,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 966,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 967,
+          "text": "\t\t}"
+        },
+        {
+          "line": 968,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 969,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_kerala"
+        },
+        {
+          "line": 970,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_KERALA"
+        },
+        {
+          "line": 971,
+          "text": "\t\t}"
+        },
+        {
+          "line": 972,
+          "text": "\t}"
+        },
+        {
+          "line": 973,
+          "text": "\tif = {"
+        },
+        {
+          "line": 974,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 975,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 976,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 977,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus"
+        },
+        {
+          "line": 978,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 979,
+          "text": "\t\t\ttitle:b_islay = {"
+        },
+        {
+          "line": 980,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 981,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 982,
+          "text": "\t\t\tscope:county.title_province = {"
+        },
+        {
+          "line": 983,
+          "text": "\t\t\t\tgeographical_region = world_europe_west_britannia"
+        },
+        {
+          "line": 984,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 985,
+          "text": "\t\t}"
+        },
+        {
+          "line": 986,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 987,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_iona"
+        },
+        {
+          "line": 988,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_IONA"
+        },
+        {
+          "line": 989,
+          "text": "\t\t}"
+        },
+        {
+          "line": 990,
+          "text": "\t}"
+        },
+        {
+          "line": 991,
+          "text": "\tif = {"
+        },
+        {
+          "line": 992,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 993,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 994,
+          "text": "\t\t\tscope:county.faith = {"
+        },
+        {
+          "line": 995,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus"
+        },
+        {
+          "line": 996,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 997,
+          "text": "\t\t\ttitle:b_wadi_el-milk = {"
+        },
+        {
+          "line": 998,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 999,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1000,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1001,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1002,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_wadi_el_milk"
+        },
+        {
+          "line": 1003,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_WADI_EL_MILK"
+        },
+        {
+          "line": 1004,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1005,
+          "text": "\t}"
+        },
+        {
+          "line": 1006,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1007,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1008,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 1009,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus"
+        },
+        {
+          "line": 1010,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1011,
+          "text": "\t\t\ttitle:b_cordoba = {"
+        },
+        {
+          "line": 1012,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 1013,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1014,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1015,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1016,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_cordoba"
+        },
+        {
+          "line": 1017,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_CORDOBA"
+        },
+        {
+          "line": 1018,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1019,
+          "text": "\t}"
+        },
+        {
+          "line": 1020,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1021,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1022,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 1023,
+          "text": "\t\t\tscope:county.faith = {"
+        },
+        {
+          "line": 1024,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus"
+        },
+        {
+          "line": 1025,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1026,
+          "text": "\t\t\ttitle:b_visoki = {"
+        },
+        {
+          "line": 1027,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 1028,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1029,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1030,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1031,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_visoki"
+        },
+        {
+          "line": 1032,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_VISOKI"
+        },
+        {
+          "line": 1033,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1034,
+          "text": "\t}"
+        },
+        {
+          "line": 1035,
+          "text": ""
+        },
+        {
+          "line": 1036,
+          "text": "\t#Tradition modifiers"
+        },
+        {
+          "line": 1037,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1038,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1039,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 1040,
+          "text": "\t\t\tscope:county.culture = {"
+        },
+        {
+          "line": 1041,
+          "text": "\t\t\t\thas_cultural_parameter = more_easily_converted"
+        },
+        {
+          "line": 1042,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1043,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1044,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1045,
+          "text": "\t\t\tvalue = conversion_culture_more_easily_converted"
+        }
+      ]
+    },
+    {
+      "range": [
+        1987,
+        2080
+      ],
+      "lines": [
+        {
+          "line": 1987,
+          "text": ""
+        },
+        {
+          "line": 1988,
+          "text": "court_6090_almoners_modifier_value = {"
+        },
+        {
+          "line": 1989,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 1990,
+          "text": "\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 1991,
+          "text": "\tmultiply = 0.10"
+        },
+        {
+          "line": 1992,
+          "text": "}"
+        },
+        {
+          "line": 1993,
+          "text": ""
+        },
+        {
+          "line": 1994,
+          "text": "### Various Holy Site bonuses"
+        },
+        {
+          "line": 1995,
+          "text": "conversion_holy_site_jerusalem = {"
+        },
+        {
+          "line": 1996,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 1997,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1998,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1999,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2000,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus"
+        },
+        {
+          "line": 2001,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2002,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2003,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2004,
+          "text": "\t\tmultiply = 0.20"
+        },
+        {
+          "line": 2005,
+          "text": "\t}"
+        },
+        {
+          "line": 2006,
+          "text": "}"
+        },
+        {
+          "line": 2007,
+          "text": ""
+        },
+        {
+          "line": 2008,
+          "text": "conversion_holy_site_kerala = {"
+        },
+        {
+          "line": 2009,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2010,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2011,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2012,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2013,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus"
+        },
+        {
+          "line": 2014,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2015,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2016,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2017,
+          "text": "\t\tmultiply = 0.50"
+        },
+        {
+          "line": 2018,
+          "text": "\t}"
+        },
+        {
+          "line": 2019,
+          "text": "}"
+        },
+        {
+          "line": 2020,
+          "text": ""
+        },
+        {
+          "line": 2021,
+          "text": "conversion_holy_site_iona = {"
+        },
+        {
+          "line": 2022,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2023,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2024,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2025,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2026,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus"
+        },
+        {
+          "line": 2027,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2028,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2029,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2030,
+          "text": "\t\tmultiply = 0.30"
+        },
+        {
+          "line": 2031,
+          "text": "\t}"
+        },
+        {
+          "line": 2032,
+          "text": "}"
+        },
+        {
+          "line": 2033,
+          "text": ""
+        },
+        {
+          "line": 2034,
+          "text": "conversion_holy_site_visoki = {"
+        },
+        {
+          "line": 2035,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2036,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2037,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2038,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2039,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus"
+        },
+        {
+          "line": 2040,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2041,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2042,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2043,
+          "text": "\t\tmultiply = -0.50"
+        },
+        {
+          "line": 2044,
+          "text": "\t}"
+        },
+        {
+          "line": 2045,
+          "text": "}"
+        },
+        {
+          "line": 2046,
+          "text": ""
+        },
+        {
+          "line": 2047,
+          "text": "conversion_holy_site_wadi_el_milk = {"
+        },
+        {
+          "line": 2048,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2049,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2050,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2051,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2052,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus"
+        },
+        {
+          "line": 2053,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2054,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2055,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2056,
+          "text": "\t\tmultiply = -0.50"
+        },
+        {
+          "line": 2057,
+          "text": "\t}"
+        },
+        {
+          "line": 2058,
+          "text": "}"
+        },
+        {
+          "line": 2059,
+          "text": ""
+        },
+        {
+          "line": 2060,
+          "text": "conversion_holy_site_cordoba = {"
+        },
+        {
+          "line": 2061,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2062,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2063,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2064,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2065,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus"
+        },
+        {
+          "line": 2066,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2067,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2068,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2069,
+          "text": "\t\tmultiply = 0.20"
+        },
+        {
+          "line": 2070,
+          "text": "\t}"
+        },
+        {
+          "line": 2071,
+          "text": "}"
+        },
+        {
+          "line": 2072,
+          "text": ""
+        },
+        {
+          "line": 2073,
+          "text": "### Various trait bonuses"
+        },
+        {
+          "line": 2074,
+          "text": "conversion_savior_liege = {"
+        },
+        {
+          "line": 2075,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2076,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2077,
+          "text": "\t\t\tscope:councillor.liege = {"
+        },
+        {
+          "line": 2078,
+          "text": "\t\t\t\thas_trait = savior"
+        },
+        {
+          "line": 2079,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2080,
+          "text": "\t\t}"
+        }
+      ]
+    }
+  ],
+  "enclosing_definitions": [
+    {
+      "line": 540,
+      "key": "court_chaplain_conversion_contextual_bonuses"
+    },
+    {
+      "line": 1982,
+      "key": "population_fled_persecution_modifier_value"
+    },
+    {
+      "line": 1988,
+      "key": "court_6090_almoners_modifier_value"
+    },
+    {
+      "line": 1995,
+      "key": "conversion_holy_site_jerusalem"
+    },
+    {
+      "line": 2008,
+      "key": "conversion_holy_site_kerala"
+    },
+    {
+      "line": 2021,
+      "key": "conversion_holy_site_iona"
+    },
+    {
+      "line": 2034,
+      "key": "conversion_holy_site_visoki"
+    },
+    {
+      "line": 2047,
+      "key": "conversion_holy_site_wadi_el_milk"
+    },
+    {
+      "line": 2060,
+      "key": "conversion_holy_site_cordoba"
+    },
+    {
+      "line": 2074,
+      "key": "conversion_savior_liege"
+    }
+  ],
+  "callers": [
+    {
+      "key": "court_chaplain_conversion_contextual_bonuses",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bcourt_chaplain_conversion_contextual_bonuses\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\council_tasks\\00_court_chaplain_tasks.txt:453:\t\tadd = court_chaplain_conversion_contextual_bonuses",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:540:court_chaplain_conversion_contextual_bonuses = {",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1575:\t\tadd = scope:councillor.court_chaplain_conversion_contextual_bonuses"
+      ]
+    },
+    {
+      "key": "population_fled_persecution_modifier_value",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bpopulation_fled_persecution_modifier_value\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:878:\t\t\tvalue = scope:councillor.population_fled_persecution_modifier_value",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1982:population_fled_persecution_modifier_value = {"
+      ]
+    },
+    {
+      "key": "court_6090_almoners_modifier_value",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bcourt_6090_almoners_modifier_value\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:906:\t\t\tvalue = scope:councillor.court_6090_almoners_modifier_value",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1988:court_6090_almoners_modifier_value = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_jerusalem",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_jerusalem\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:955:\t\t\tvalue = scope:councillor.conversion_holy_site_jerusalem",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1995:conversion_holy_site_jerusalem = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_kerala",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_kerala\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:969:\t\t\tvalue = scope:councillor.conversion_holy_site_kerala",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2008:conversion_holy_site_kerala = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_iona",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_iona\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:987:\t\t\tvalue = scope:councillor.conversion_holy_site_iona",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2021:conversion_holy_site_iona = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_visoki",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_visoki\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1031:\t\t\tvalue = scope:councillor.conversion_holy_site_visoki",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2034:conversion_holy_site_visoki = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_wadi_el_milk",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_wadi_el_milk\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1002:\t\t\tvalue = scope:councillor.conversion_holy_site_wadi_el_milk",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2047:conversion_holy_site_wadi_el_milk = {"
+      ]
+    },
+    {
+      "key": "conversion_holy_site_cordoba",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_holy_site_cordoba\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1016:\t\t\tvalue = scope:councillor.conversion_holy_site_cordoba",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2060:conversion_holy_site_cordoba = {"
+      ]
+    },
+    {
+      "key": "conversion_savior_liege",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "--glob",
+        "*.gui",
+        "\\bconversion_savior_liege\\b",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common"
+      ],
+      "exit": 0,
+      "matches": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:1128:\t\t\tvalue = scope:councillor.conversion_savior_liege",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt:2074:conversion_savior_liege = {"
+      ]
+    }
+  ]
+}

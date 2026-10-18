@@ -1,0 +1,83 @@
+{
+  "schema": "faith-v4-frozen-fixture-targeted-test-once-v1",
+  "machine_id": "4-8e1c2f1861",
+  "started_at_utc": "2026-10-18T02:52:02.004568+00:00",
+  "completed_at_utc": "2026-10-18T02:52:09.928827+00:00",
+  "source_commit": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1",
+  "command_args": [
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\candidate\\ck3_autonomous_player\\tests\\unit\\test_holy_site_relic_rarity_decomposition.py"
+  ],
+  "cwd": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\candidate",
+  "environment": {
+    "PYTHONPATH": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "exit_code": 0,
+  "test_copy": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\candidate\\ck3_autonomous_player\\tests\\unit\\test_holy_site_relic_rarity_decomposition.py",
+    "bytes": 15652,
+    "sha256": "f2fd41f604dfcef8ae724e5e6fc967af1bfaf7bf75455d066f3f841b77ec0590"
+  },
+  "test_source": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\unit\\test_holy_site_relic_rarity_decomposition.py",
+    "bytes": 15652,
+    "sha256": "f2fd41f604dfcef8ae724e5e6fc967af1bfaf7bf75455d066f3f841b77ec0590"
+  },
+  "restored_fixture": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\candidate\\ck3_autonomous_player\\tests\\fixtures\\holy_site_relic_rarity\\context-integration.json",
+    "bytes": 6706,
+    "sha256": "1a863e1a1baaa538cec35162d01c100e3c6034f5879bae9a11689f5401c4c9d1"
+  },
+  "immutable_original": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\religion-candidate-a07\\native-packets-a01\\context-integration.json",
+    "bytes": 6706,
+    "sha256": "1a863e1a1baaa538cec35162d01c100e3c6034f5879bae9a11689f5401c4c9d1"
+  },
+  "stdout": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\targeted-test.stdout.original.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\targeted-test.stderr.original.log",
+    "bytes": 3224,
+    "sha256": "a43ab0ec0c191d508078ee76870fd962085f32ecc2daf375325b473f280e6a00"
+  },
+  "corruption_tail": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ci-fix\\corruption-tail.original.txt",
+    "bytes": 171,
+    "sha256": "56e8e803a76cddfeadef9547e26ca1f4062a34831dc1ce3ccd715ca88f968e8d"
+  },
+  "production_inputs": [
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\holy_site_relic_rarity_decomposition.py",
+      "bytes": 6135,
+      "sha256": "ecc59553889d3fb7fa5e4cb1554e6da707887398aa4768ff340e182e893d984a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\player_holy_site_relic_context_private_transport.py",
+      "bytes": 13325,
+      "sha256": "074da5fe5d0c726fe76112e6f08625e88219844727fe53658b442fbfb68c7ff6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1588658,
+      "sha256": "8499794e9ddf67fda16ca6682e366159d035f2e5acf5d3042b2872674a035d98"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 860861,
+      "sha256": "c8cc2228c73efb3875003242cab05edaa4b2e9b1a9df23c37dc7c644e7f869b2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+      "bytes": 256040,
+      "sha256": "ff328ec35e485911c877e76c793bec21bac2355960880e77bc60a135d3f02d31"
+    }
+  ],
+  "scope": "Exact unchanged test module copied only to give its REPO-relative fixture an external root. Production modules import from explicit main source PYTHONPATH; only frozen fixture bytes differ. No main writes, native/build/game calls or rerun of recognition21."
+}

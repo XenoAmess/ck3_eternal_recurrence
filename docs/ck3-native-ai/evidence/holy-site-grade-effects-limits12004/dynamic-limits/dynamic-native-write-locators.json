@@ -1,0 +1,1564 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:40:49.486193+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_or_process_reads": 0,
+  "schema": "ck3-12004-holy-site-limit-write-displacement-locators-v1",
+  "scope": "All four positive raw field-displacement locations in exact cached .text; <=256 each pre-counted. Possible write decodings are conservative locators, may overlap/misalign and do not bind a typed Religion owner. Negative/variable/indexed aliases or generic object copy are not excluded.",
+  "raw_hit_counts": {
+    "0x9e8": 109,
+    "0x9ec": 18,
+    "0x9f0": 86,
+    "0x9f4": 16
+  },
+  "possible_write_location_count": 64,
+  "rows": [
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x16774c9",
+      "near_start_rva": "0x16774b9",
+      "near_bytes": "88aeb80900004889aed80900004889aee80900004889aef0090000410f1086d80900000f",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774c6",
+          "bytes": "4889aee8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsi + 0x9e8], rbp",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x16774c7",
+          "bytes": "89aee8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9e8], ebp",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x16774e7",
+      "near_start_rva": "0x16774d7",
+      "near_bytes": "86d80900000f1186d8090000410f108ee80900000f118ee80900004989aee809000049c7",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774e5",
+          "bytes": "108ee8090000",
+          "mnemonic": "adc",
+          "operands": "byte ptr [rsi + 0x9e8], cl",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 1
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x16774ee",
+      "near_start_rva": "0x16774de",
+      "near_bytes": "86d8090000410f108ee80900000f118ee80900004989aee809000049c786f00900000f00",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774ec",
+          "bytes": "118ee8090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rsi + 0x9e8], ecx",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x16774f5",
+      "near_start_rva": "0x16774e5",
+      "near_bytes": "108ee80900000f118ee80900004989aee809000049c786f00900000f0000004188aed809",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774f2",
+          "bytes": "4989aee8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [r14 + 0x9e8], rbp",
+          "base": "r14",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x16774f3",
+          "bytes": "89aee8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9e8], ebp",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x246c447",
+      "near_start_rva": "0x246c437",
+      "near_bytes": "8dbdf00900004c89bde00900004c89b5e8090000498bc448d1f8488985401a00004c2be0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x246c444",
+          "bytes": "4c89b5e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], r14",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x246c445",
+          "bytes": "89b5e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], esi",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x254a08a",
+      "near_start_rva": "0x254a07a",
+      "near_bytes": "0300000f85c4000000458b4508448985e8090000410fb6c035c59d1c8169d09301000141",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x254a087",
+          "bytes": "448985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], r8d",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x254a088",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x254a0ec",
+      "near_start_rva": "0x254a0dc",
+      "near_bytes": "10010000e8bb2366fe448b4708448985e8090000410fb6c035c59d1c8169d09301000141",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x254a0e9",
+          "bytes": "448985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], r8d",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x254a0ea",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x27b9b96",
+      "near_start_rva": "0x27b9b86",
+      "near_bytes": "00000f0000004889bed80900004889bee809000048c786f00900000f0000004088bed809",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x27b9b93",
+          "bytes": "4889bee8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsi + 0x9e8], rdi",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x27b9b94",
+          "bytes": "89bee8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9e8], edi",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x27ba07f",
+      "near_start_rva": "0x27ba06f",
+      "near_bytes": "00107207488b8bd809000033d2488993e809000088118893f8090000488993fc09000088",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x27ba07c",
+          "bytes": "488993e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbx + 0x9e8], rdx",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x27ba07d",
+          "bytes": "8993e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbx + 0x9e8], edx",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3283bc9",
+      "near_start_rva": "0x3283bb9",
+      "near_bytes": "004889b7e0090000488b74244848c787e8090000ffffffff48c787f0090000ffffffff48",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3283bc5",
+          "bytes": "4848c787e8090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9e8], 0xffffffffffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3283bc6",
+          "bytes": "48c787e8090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9e8], 0xffffffffffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3283bc7",
+          "bytes": "c787e8090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9e8], 0xffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x34c118b",
+      "near_start_rva": "0x34c117b",
+      "near_bytes": "1185c80900000f1185d80900000f1185e8090000488d8dc8090000e895e765fd904c89bd",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x34c1189",
+          "bytes": "1185e8090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39a0147",
+      "near_start_rva": "0x39a0137",
+      "near_bytes": "e009000066448981e409000066448981e809000066448981ec09000066448981f0090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39a0143",
+          "bytes": "66448981e8090000",
+          "mnemonic": "mov",
+          "operands": "word ptr [rcx + 0x9e8], r8w",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 2
+        },
+        {
+          "instruction_rva": "0x39a0144",
+          "bytes": "448981e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9e8], r8d",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x39a0145",
+          "bytes": "8981e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9e8], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bf5a8",
+      "near_start_rva": "0x39bf598",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d95b0010000488bc8e8b5d71dfd48",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bf5a5",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bf5a6",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bf70d",
+      "near_start_rva": "0x39bf6fd",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d95b0010000488bc8e850d61dfdc7",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bf70a",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bf70b",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bf85d",
+      "near_start_rva": "0x39bf84d",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d95b0010000488bc8e800d51dfdc7",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bf85a",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bf85b",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bf9ad",
+      "near_start_rva": "0x39bf99d",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d95b0010000488bc8e8b0d31dfdc7",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bf9aa",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bf9ab",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bfd8f",
+      "near_start_rva": "0x39bfd7f",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d542470488bc8e8d0cf1dfdc785e0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bfd8c",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bfd8d",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bfe7e",
+      "near_start_rva": "0x39bfe6e",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d542470488bc8e8e1ce1dfdc785e0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bfe7b",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bfe7c",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39bff6d",
+      "near_start_rva": "0x39bff5d",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d542470488bc8e8f2cd1dfdc785e0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39bff6a",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39bff6b",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39c005c",
+      "near_start_rva": "0x39c004c",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d542470488bc8e803cd1dfdc785e0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39c0059",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39c005a",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x39c013a",
+      "near_start_rva": "0x39c012a",
+      "near_bytes": "204c8978284c8978304c897838488985e8090000488d542470488bc8e825cc1dfdc785e0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39c0137",
+          "bytes": "488985e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x39c0138",
+          "bytes": "8985e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3ab4399",
+      "near_start_rva": "0x3ab4389",
+      "near_bytes": "488d8d60060000e88b6249fd9048899de8090000f00fba2b00731c0f1f40000f1f840000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ab4396",
+          "bytes": "48899de8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], rbx",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3ab4397",
+          "bytes": "899de8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], ebx",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3acaa88",
+      "near_start_rva": "0x3acaa78",
+      "near_bytes": "89a5d80900004c89a5e009000048c785e80900000000000041bdffffffffc785f0090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3acaa85",
+          "bytes": "48c785e809000000000000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9e8], 0",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3acaa86",
+          "bytes": "c785e809000000000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], 0",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3e72402",
+      "near_start_rva": "0x3e723f2",
+      "near_bytes": "090000ff50104c89b5e00900004489b5e809000066660f1f840000000000488b95401200",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3e723ff",
+          "bytes": "4489b5e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], r14d",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x3e72400",
+          "bytes": "89b5e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9e8], esi",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3ecdc90",
+      "near_start_rva": "0x3ecdc80",
+      "near_bytes": "000048c787e0090000ffffffff4889b7e809000048c787f0090000ffffffff4889b7f809",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ecdc8d",
+          "bytes": "4889b7e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9e8], rsi",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3ecdc8e",
+          "bytes": "89b7e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9e8], esi",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3ee88f8",
+      "near_start_rva": "0x3ee88e8",
+      "near_bytes": "8981d8090000488981e0090000488981e8090000488981f0090000488981f80900004889",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ee88f5",
+          "bytes": "488981e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rcx + 0x9e8], rax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3ee88f6",
+          "bytes": "8981e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9e8], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3eeb1cb",
+      "near_start_rva": "0x3eeb1bb",
+      "near_bytes": "50488d150541ac00488bcbffd0488987e80900004883bf00050000007507488987000500",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3eeb1c8",
+          "bytes": "488987e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9e8], rax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3eeb1c9",
+          "bytes": "8987e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9e8], eax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9e8",
+      "displacement_rva": "0x3eee31c",
+      "near_start_rva": "0x3eee30c",
+      "near_bytes": "48488d15b40fac00488bcbffd0488987e80900004883bf00050000007507488987000500",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3eee319",
+          "bytes": "488987e8090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9e8], rax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3eee31a",
+          "bytes": "8987e8090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9e8], eax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9ec",
+      "displacement_rva": "0x88d857",
+      "near_start_rva": "0x88d847",
+      "near_bytes": "86e409000002000000b8040000008986ec090000c786f009000005000000c786f4090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x88d855",
+          "bytes": "8986ec090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9ec], eax",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9ec",
+      "displacement_rva": "0x39a014f",
+      "near_start_rva": "0x39a013f",
+      "near_bytes": "e409000066448981e809000066448981ec09000066448981f009000066448981f4090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39a014b",
+          "bytes": "66448981ec090000",
+          "mnemonic": "mov",
+          "operands": "word ptr [rcx + 0x9ec], r8w",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 2
+        },
+        {
+          "instruction_rva": "0x39a014c",
+          "bytes": "448981ec090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9ec], r8d",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x39a014d",
+          "bytes": "8981ec090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9ec], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9ec",
+      "displacement_rva": "0x3e723da",
+      "near_start_rva": "0x3e723ca",
+      "near_bytes": "74448b95ec090000e8b92d4eff4489b5ec090000488b8df0090000488b0141b808000000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3e723d7",
+          "bytes": "4489b5ec090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9ec], r14d",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x3e723d8",
+          "bytes": "89b5ec090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9ec], esi",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x88d85d",
+      "near_start_rva": "0x88d84d",
+      "near_bytes": "000000b8040000008986ec090000c786f009000005000000c786f409000006000000c786",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x88d85b",
+          "bytes": "c786f009000005000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f0], 5",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0xa8b967",
+      "near_start_rva": "0xa8b957",
+      "near_bytes": "1185d00900000f1185e00900000f1185f0090000488985000a0000488d8dd0090000e812",
+      "decode_variants": [
+        {
+          "instruction_rva": "0xa8b965",
+          "bytes": "1185f0090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x106c119",
+      "near_start_rva": "0x106c109",
+      "near_bytes": "0089b3fc090000488b01ff50104889b3f009000089b3f8090000488bbbd80800004885ff",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x106c116",
+          "bytes": "4889b3f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbx + 0x9f0], rsi",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x106c117",
+          "bytes": "89b3f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbx + 0x9f0], esi",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x16774d0",
+      "near_start_rva": "0x16774c0",
+      "near_bytes": "89aed80900004889aee80900004889aef0090000410f1086d80900000f1186d809000041",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774cd",
+          "bytes": "4889aef0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsi + 0x9f0], rbp",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x16774ce",
+          "bytes": "89aef0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f0], ebp",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x16774fc",
+      "near_start_rva": "0x16774ec",
+      "near_bytes": "118ee80900004989aee809000049c786f00900000f0000004188aed8090000410fb686f8",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x16774f9",
+          "bytes": "49c786f00900000f000000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [r14 + 0x9f0], 0xf",
+          "base": "r14",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x16774fa",
+          "bytes": "c786f00900000f000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f0], 0xf",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x171b945",
+      "near_start_rva": "0x171b935",
+      "near_bytes": "488d8bc8010000e8af028cff904889b3f00900004889b3f80900004889b3000a0000488d",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x171b942",
+          "bytes": "4889b3f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbx + 0x9f0], rsi",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x171b943",
+          "bytes": "89b3f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbx + 0x9f0], esi",
+          "base": "rbx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x171be4e",
+      "near_start_rva": "0x171be3e",
+      "near_bytes": "4885d27405488b02eb03498bc6488986f00900004c8db6f80900004c637e244963460c44",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x171be4b",
+          "bytes": "488986f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsi + 0x9f0], rax",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x171be4c",
+          "bytes": "8986f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f0], eax",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x1e5778e",
+      "near_start_rva": "0x1e5777e",
+      "near_bytes": "e0090000660f6f0556f7b902660f7f85f0090000c685e00900000041b813000000488d15",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x1e5778a",
+          "bytes": "660f7f85f0090000",
+          "mnemonic": "movdqa",
+          "operands": "xmmword ptr [rbp + 0x9f0], xmm0",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 16
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x24a6621",
+      "near_start_rva": "0x24a6611",
+      "near_bytes": "f1448b25bf1f7c038b05a51f7c038985f0090000488b81c0010000488d3d0537fb024885",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x24a661f",
+          "bytes": "8985f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x268ade7",
+      "near_start_rva": "0x268add7",
+      "near_bytes": "1185d00900000f1185e0090000488985f0090000488d8dc0090000e899ed1ffe488bd848",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x268ade4",
+          "bytes": "488985f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9f0], rax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x268ade5",
+          "bytes": "8985f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x27b9b9d",
+      "near_start_rva": "0x27b9b8d",
+      "near_bytes": "89bed80900004889bee809000048c786f00900000f0000004088bed80900004088bef809",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x27b9b9a",
+          "bytes": "48c786f00900000f000000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rsi + 0x9f0], 0xf",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x27b9b9b",
+          "bytes": "c786f00900000f000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f0], 0xf",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3102028",
+      "near_start_rva": "0x3102018",
+      "near_bytes": "89b720090000488d0583527b01488987f00900004c89aff80900004c89af000a00004489",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3102025",
+          "bytes": "488987f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9f0], rax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3102026",
+          "bytes": "8987f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9f0], eax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x320d832",
+      "near_start_rva": "0x320d822",
+      "near_bytes": "8985e8050000488d1d89132d0248899df0090000488b058bac310133d2448d4208488d8d",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x320d82f",
+          "bytes": "48899df0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9f0], rbx",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x320d830",
+          "bytes": "899df0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f0], ebx",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3283bd4",
+      "near_start_rva": "0x3283bc4",
+      "near_bytes": "244848c787e8090000ffffffff48c787f0090000ffffffff4883c4305fc3cccccccccccc",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3283bd1",
+          "bytes": "48c787f0090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9f0], 0xffffffffffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3283bd2",
+          "bytes": "c787f0090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9f0], 0xffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x32d78de",
+      "near_start_rva": "0x32d78ce",
+      "near_bytes": "1185d00900000f1185e00900000f1185f00900008d5302488d8dc0090000e82f2dc7fd90",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x32d78dc",
+          "bytes": "1185f0090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3352a76",
+      "near_start_rva": "0x3352a66",
+      "near_bytes": "1185d00900000f1185e00900000f1185f00900008d5702488d8dc0090000e8977bbffd90",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3352a74",
+          "bytes": "1185f0090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3893a69",
+      "near_start_rva": "0x3893a59",
+      "near_bytes": "90090000e8be6b6bfd900f57c00f1185f00900000f1185000a00004889b5f00900004889",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3893a67",
+          "bytes": "1185f0090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3893a77",
+      "near_start_rva": "0x3893a67",
+      "near_bytes": "1185f00900000f1185000a00004889b5f00900004889b5000a000048c785080a00000f00",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3893a74",
+          "bytes": "4889b5f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rbp + 0x9f0], rsi",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3893a75",
+          "bytes": "89b5f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f0], esi",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3893a8f",
+      "near_start_rva": "0x3893a7f",
+      "near_bytes": "0a000048c785080a00000f000000c685f0090000004889b5100a00004889b5180a000048",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3893a8d",
+          "bytes": "c685f009000000",
+          "mnemonic": "mov",
+          "operands": "byte ptr [rbp + 0x9f0], 0",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 1
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x39a0157",
+      "near_start_rva": "0x39a0147",
+      "near_bytes": "e809000066448981ec09000066448981f009000066448981f409000066448981f8090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39a0153",
+          "bytes": "66448981f0090000",
+          "mnemonic": "mov",
+          "operands": "word ptr [rcx + 0x9f0], r8w",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 2
+        },
+        {
+          "instruction_rva": "0x39a0154",
+          "bytes": "448981f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9f0], r8d",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x39a0155",
+          "bytes": "8981f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9f0], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3acaa98",
+      "near_start_rva": "0x3acaa88",
+      "near_bytes": "e80900000000000041bdffffffffc785f0090000ffff0000664489a5f4090000488d8df8",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3acaa96",
+          "bytes": "c785f0090000ffff0000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f0], 0xffff",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3addc12",
+      "near_start_rva": "0x3addc02",
+      "near_bytes": "d7fc900f57c00f1185e00900000f1185f00900000f1185000a00000f1185100a0000ba02",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3addc10",
+          "bytes": "1185f0090000",
+          "mnemonic": "adc",
+          "operands": "dword ptr [rbp + 0x9f0], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3ecdc97",
+      "near_start_rva": "0x3ecdc87",
+      "near_bytes": "0000ffffffff4889b7e809000048c787f0090000ffffffff4889b7f80900004889b7000a",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ecdc94",
+          "bytes": "48c787f0090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9f0], 0xffffffffffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3ecdc95",
+          "bytes": "c787f0090000ffffffff",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9f0], 0xffffffff",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3ed506f",
+      "near_start_rva": "0x3ed505f",
+      "near_bytes": "00010000000f288550030000660f7f85f00900000f288d60030000660f7f8d000a00004c",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ed506b",
+          "bytes": "660f7f85f0090000",
+          "mnemonic": "movdqa",
+          "operands": "xmmword ptr [rbp + 0x9f0], xmm0",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 16
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3ee88ff",
+      "near_start_rva": "0x3ee88ef",
+      "near_bytes": "8981e0090000488981e8090000488981f0090000488981f8090000488981000a00004889",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3ee88fc",
+          "bytes": "488981f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rcx + 0x9f0], rax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3ee88fd",
+          "bytes": "8981f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9f0], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3eeb1f3",
+      "near_start_rva": "0x3eeb1e3",
+      "near_bytes": "50488d15bd40ac00488bcbffd0488987f0090000488b4750488d153e40ac00488bcbffd0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3eeb1f0",
+          "bytes": "488987f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9f0], rax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3eeb1f1",
+          "bytes": "8987f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9f0], eax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x3eee344",
+      "near_start_rva": "0x3eee334",
+      "near_bytes": "48488d156c0fac00488bcbffd0488987f0090000488b4748488d153d0fac00488bcbffd0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3eee341",
+          "bytes": "488987f0090000",
+          "mnemonic": "mov",
+          "operands": "qword ptr [rdi + 0x9f0], rax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 8
+        },
+        {
+          "instruction_rva": "0x3eee342",
+          "bytes": "8987f0090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rdi + 0x9f0], eax",
+          "base": "rdi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f0",
+      "displacement_rva": "0x423b64a",
+      "near_start_rva": "0x423b63a",
+      "near_bytes": "c1e93d010000663bd80f8239010000b8f0090000663bd8730d0fb7c32de6090000e91d01",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x423b648",
+          "bytes": "00b8f0090000",
+          "mnemonic": "add",
+          "operands": "byte ptr [rax + 0x9f0], bh",
+          "base": "rax",
+          "index": null,
+          "write_size_bytes": 1
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f4",
+      "displacement_rva": "0x88d867",
+      "near_start_rva": "0x88d857",
+      "near_bytes": "ec090000c786f009000005000000c786f409000006000000c786f809000007000000c786",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x88d865",
+          "bytes": "c786f409000006000000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rsi + 0x9f4], 6",
+          "base": "rsi",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f4",
+      "displacement_rva": "0x33aeebd",
+      "near_start_rva": "0x33aeead",
+      "near_bytes": "fd413bc5410f4fc5898500160000899df40900004c8d8d001200004c8d05096c5301ba00",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x33aeebb",
+          "bytes": "899df4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f4], ebx",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f4",
+      "displacement_rva": "0x33aeee9",
+      "near_start_rva": "0x33aeed9",
+      "near_bytes": "0000e8e0d94cfd413bc5410f4fc58985f409000048897c2478488bcfff1595b70201c645",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x33aeee7",
+          "bytes": "8985f4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f4], eax",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f4",
+      "displacement_rva": "0x39a015f",
+      "near_start_rva": "0x39a014f",
+      "near_bytes": "ec09000066448981f009000066448981f409000066448981f809000066448981fc090000",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x39a015b",
+          "bytes": "66448981f4090000",
+          "mnemonic": "mov",
+          "operands": "word ptr [rcx + 0x9f4], r8w",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 2
+        },
+        {
+          "instruction_rva": "0x39a015c",
+          "bytes": "448981f4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9f4], r8d",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x39a015d",
+          "bytes": "8981f4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rcx + 0x9f4], eax",
+          "base": "rcx",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    },
+    {
+      "field_displacement": "0x9f4",
+      "displacement_rva": "0x3acaaa4",
+      "near_start_rva": "0x3acaa94",
+      "near_bytes": "ffffc785f0090000ffff0000664489a5f4090000488d8df8090000e89c200000488d8da0",
+      "decode_variants": [
+        {
+          "instruction_rva": "0x3acaaa0",
+          "bytes": "664489a5f4090000",
+          "mnemonic": "mov",
+          "operands": "word ptr [rbp + 0x9f4], r12w",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 2
+        },
+        {
+          "instruction_rva": "0x3acaaa1",
+          "bytes": "4489a5f4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f4], r12d",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        },
+        {
+          "instruction_rva": "0x3acaaa2",
+          "bytes": "89a5f4090000",
+          "mnemonic": "mov",
+          "operands": "dword ptr [rbp + 0x9f4], esp",
+          "base": "rbp",
+          "index": null,
+          "write_size_bytes": 4
+        }
+      ]
+    }
+  ]
+}

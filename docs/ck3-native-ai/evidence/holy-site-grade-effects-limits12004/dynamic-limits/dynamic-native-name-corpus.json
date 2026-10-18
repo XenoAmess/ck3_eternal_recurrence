@@ -1,0 +1,1055 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:40:49.447775+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_or_process_reads": 0,
+  "schema": "ck3-12004-holy-site-dynamic-native-names-v1",
+  "scope": "Complete null-terminated ASCII strings len>=4 from retained exact-image .rdata only; literal name locator, not a guarantee of all constructed/hashed/alias registrations. All matching strings retained.",
+  "row_count": 261,
+  "rows": [
+    {
+      "rva": "0x443b2c0",
+      "text": "HOLY_SITE"
+    },
+    {
+      "rva": "0x443b32f",
+      "text": "?HOLY_SITE_TYPE"
+    },
+    {
+      "rva": "0x448aad0",
+      "text": "SCOPE_HOLY_SITE"
+    },
+    {
+      "rva": "0x448aae0",
+      "text": "SCOPE_HOLY_SITE_TYPE"
+    },
+    {
+      "rva": "0x449f448",
+      "text": "old_holy_site"
+    },
+    {
+      "rva": "0x449f458",
+      "text": "holy_site"
+    },
+    {
+      "rva": "0x449f4a0",
+      "text": "holy_site_type"
+    },
+    {
+      "rva": "0x449f508",
+      "text": "is_new_holy_site"
+    },
+    {
+      "rva": "0x449f520",
+      "text": "is_eminent_site"
+    },
+    {
+      "rva": "0x44b1fd0",
+      "text": "Holy Sites"
+    },
+    {
+      "rva": "0x44b1fe0",
+      "text": "holy_sites"
+    },
+    {
+      "rva": "0x44b2068",
+      "text": "Holy Site Types"
+    },
+    {
+      "rva": "0x44b2078",
+      "text": "holy_site_types"
+    },
+    {
+      "rva": "0x44da120",
+      "text": "doctrine_parameter_fervor_per_holy_site"
+    },
+    {
+      "rva": "0x44dcaa0",
+      "text": "GetNumberOfControlledHolySites"
+    },
+    {
+      "rva": "0x44e8d08",
+      "text": "HOLY_SITE,"
+    },
+    {
+      "rva": "0x44fb848",
+      "text": "HOLY_SITE"
+    },
+    {
+      "rva": "0x4500e28",
+      "text": "GetFaithsWithHolySiteInHoldingDesc"
+    },
+    {
+      "rva": "0x4500e50",
+      "text": "holy_site_for_faith_entry"
+    },
+    {
+      "rva": "0x4500e78",
+      "text": "HolySite"
+    },
+    {
+      "rva": "0x4500e88",
+      "text": "holy_site_for_faith_header"
+    },
+    {
+      "rva": "0x4501450",
+      "text": "GetHolySite"
+    },
+    {
+      "rva": "0x4501470",
+      "text": "IsEminent"
+    },
+    {
+      "rva": "0x4501490",
+      "text": "HolySiteItem"
+    },
+    {
+      "rva": "0x45014b8",
+      "text": "HOLY_SITE_NOT_UNDER_CONTROL"
+    },
+    {
+      "rva": "0x45014d8",
+      "text": "HOLY_SITE_UNDER_CONTROL"
+    },
+    {
+      "rva": "0x45107a0",
+      "text": "HolySiteIcon"
+    },
+    {
+      "rva": "0x45107b0",
+      "text": "holy_site_widget"
+    },
+    {
+      "rva": "0x45107e8",
+      "text": "GetHolySiteItem"
+    },
+    {
+      "rva": "0x4562708",
+      "text": "GetSelectedRiteHolySiteItems"
+    },
+    {
+      "rva": "0x4562768",
+      "text": "HasAnyHolySites"
+    },
+    {
+      "rva": "0x4562778",
+      "text": "GetOtherFaithHolySiteItems"
+    },
+    {
+      "rva": "0x4562798",
+      "text": "GetOtherRiteHolySiteItems"
+    },
+    {
+      "rva": "0x458e888",
+      "text": "controlled_holy_sites"
+    },
+    {
+      "rva": "0x45919f8",
+      "text": "holy_site_window"
+    },
+    {
+      "rva": "0x4591a10",
+      "text": "gui/window_holy_site.gui"
+    },
+    {
+      "rva": "0x4591a30",
+      "text": "HOLY_SITE_FAITH_CHARACTER_MODIFIER_CHANGE_HEADER"
+    },
+    {
+      "rva": "0x4591a68",
+      "text": "HOLY_SITE_BECOMES_ACTIVE"
+    },
+    {
+      "rva": "0x4591a98",
+      "text": "HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER"
+    },
+    {
+      "rva": "0x4591ac0",
+      "text": "HOLY_SITE_BECOMES_INACTIVE"
+    },
+    {
+      "rva": "0x4591ae0",
+      "text": "HOLY_SITE_INVENTORY_BULLET_ENSHRINE"
+    },
+    {
+      "rva": "0x4591b08",
+      "text": "HOLY_SITE_REMOVE_BUTTON_NOT_ENSHRINED_TT"
+    },
+    {
+      "rva": "0x4591b40",
+      "text": "HOLY_SITE_INVENTORY_BULLET_REMOVE"
+    },
+    {
+      "rva": "0x4591b68",
+      "text": "REMOVE_FROM_HOLY_SITE_TT_INFO"
+    },
+    {
+      "rva": "0x4591b88",
+      "text": "REMOVE_FROM_HOLY_SITE_TT"
+    },
+    {
+      "rva": "0x4591ba8",
+      "text": "HOLY_SITE_ENSHRINE_BUTTON_ALREADY_ENSHRINED_TT"
+    },
+    {
+      "rva": "0x4591bd8",
+      "text": "HOLY_SITE_ACTION_BUTTON_NO_SELECTION_TT"
+    },
+    {
+      "rva": "0x4591c38",
+      "text": "ENSHRINE_TO_HOLY_SITE_TT_INFO"
+    },
+    {
+      "rva": "0x4591c58",
+      "text": "ENSHRINE_TO_HOLY_SITE_TT"
+    },
+    {
+      "rva": "0x4591dc0",
+      "text": "GetInactiveHolySiteFaiths"
+    },
+    {
+      "rva": "0x4591e28",
+      "text": "GetActiveHolySiteFaiths"
+    },
+    {
+      "rva": "0x4591e58",
+      "text": "HolySiteWindow"
+    },
+    {
+      "rva": "0x4592e48",
+      "text": "HOLY_SITE_CREATION_TYPE_ALREADY_TAKEN"
+    },
+    {
+      "rva": "0x4592e70",
+      "text": "HOLY_SITE_INVENTORY_BULLET_CREATE_ENSHRINE"
+    },
+    {
+      "rva": "0x4592ea0",
+      "text": "HolySiteType"
+    },
+    {
+      "rva": "0x4592eb0",
+      "text": "HOLY_SITE_CREATION_CLEAR_ARTIFACT_TT"
+    },
+    {
+      "rva": "0x4592ed8",
+      "text": "HOLY_SITE_CREATE_HOLY_SITE"
+    },
+    {
+      "rva": "0x4592ef8",
+      "text": "HOLY_SITE_CREATION_ARTIFACT_REPLACES_TT"
+    },
+    {
+      "rva": "0x4592f20",
+      "text": "HOLY_SITE_CREATION_CANNOT_CLEAR_ARTIFACT_TT"
+    },
+    {
+      "rva": "0x4592f68",
+      "text": "HOLY_SITE_CREATION_ARTIFACT_TT"
+    },
+    {
+      "rva": "0x4592fb8",
+      "text": "GetHolySiteTypeTooltip"
+    },
+    {
+      "rva": "0x4592fe0",
+      "text": "GetAvailableHolySiteTypes"
+    },
+    {
+      "rva": "0x4593000",
+      "text": "CanPickHolySiteType"
+    },
+    {
+      "rva": "0x4593110",
+      "text": "SelectHolySiteType"
+    },
+    {
+      "rva": "0x4593128",
+      "text": "IsHolySiteTypeSelected"
+    },
+    {
+      "rva": "0x4593140",
+      "text": "HolySiteCreationWindow"
+    },
+    {
+      "rva": "0x4593158",
+      "text": "GetHolySiteType"
+    },
+    {
+      "rva": "0x4593168",
+      "text": "holy_site_creation_window"
+    },
+    {
+      "rva": "0x4593188",
+      "text": "gui/window_holy_site_creation.gui"
+    },
+    {
+      "rva": "0x45ad290",
+      "text": "EXTRA_CB_SCORE_FOR_HOLY_SITES"
+    },
+    {
+      "rva": "0x45ebdb8",
+      "text": "holy_site_county"
+    },
+    {
+      "rva": "0x45ebdd0",
+      "text": "Get the county of the scoped holy site."
+    },
+    {
+      "rva": "0x45ebe00",
+      "text": "Get the active holy site attached to the scoped barony. Active holy sites are controlled by the correct faith on the county level and have an enshrined holy relic."
+    },
+    {
+      "rva": "0x45ebeb0",
+      "text": "Trying to use 'barony_active_holy_site' on non-barony landed title"
+    },
+    {
+      "rva": "0x45ebef8",
+      "text": "barony_active_holy_site"
+    },
+    {
+      "rva": "0x45ebf10",
+      "text": "Trying to use 'county_active_holy_site' on non-county landed title"
+    },
+    {
+      "rva": "0x45ebf60",
+      "text": "Global link to holy site scope of given static holy site type key"
+    },
+    {
+      "rva": "0x45ebfa8",
+      "text": "county_active_holy_site"
+    },
+    {
+      "rva": "0x45ebfc0",
+      "text": "Get the first active holy site of the scoped county (unset if none). Active holy sites are controlled by the correct faith on the county level and have an enshrined holy relic."
+    },
+    {
+      "rva": "0x45ec078",
+      "text": "Failed to scope to holy site '{}' at {}"
+    },
+    {
+      "rva": "0x45ec0a0",
+      "text": "Failed to fetch a valid holy site '%s'"
+    },
+    {
+      "rva": "0x45ec0c8",
+      "text": "Failed to scope to holy site '{}'"
+    },
+    {
+      "rva": "0x45ec0f0",
+      "text": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\holy_site_links.cpp"
+    },
+    {
+      "rva": "0x45ec128",
+      "text": "holy_site_barony"
+    },
+    {
+      "rva": "0x45ec140",
+      "text": "Get the barony of the scoped holy site."
+    },
+    {
+      "rva": "0x45ec168",
+      "text": "holy_site_controller"
+    },
+    {
+      "rva": "0x45ec180",
+      "text": "Get the controller of the scoped holy site. (county holder)"
+    },
+    {
+      "rva": "0x45ec490",
+      "text": "Iterate through all faiths that have the scoped holy site as one of theirs"
+    },
+    {
+      "rva": "0x45ec4e0",
+      "text": "holy_site_enshrined_artifact"
+    },
+    {
+      "rva": "0x45ec500",
+      "text": "holy_site_faith"
+    },
+    {
+      "rva": "0x45ec510",
+      "text": "Iterate through all enshrined artifacts in a holy site"
+    },
+    {
+      "rva": "0x45f5a38",
+      "text": "main_holy_site"
+    },
+    {
+      "rva": "0x45f5a70",
+      "text": "Get the barony of the scoped religion's main holy site (if set)"
+    },
+    {
+      "rva": "0x4652820",
+      "text": "Iterate through all active eminent holy sites of a faith. Equivalent to holy_site with is_eminent = yes, and the list list_size: counts eminent sites by"
+    },
+    {
+      "rva": "0x465299d",
+      "text": "For the eminent ones prefer the dedicated eminent_holy_site list, which list_size: also works with."
+    },
+    {
+      "rva": "0x4652a08",
+      "text": "Iterate through all active holy site baronies of a faith"
+    },
+    {
+      "rva": "0x4652a48",
+      "text": "eminent_holy_site"
+    },
+    {
+      "rva": "0x4652a60",
+      "text": "county_holy_site"
+    },
+    {
+      "rva": "0x4652a78",
+      "text": "Iterate through all holy sites in the county"
+    },
+    {
+      "rva": "0x4652aa8",
+      "text": "barony_holy_site"
+    },
+    {
+      "rva": "0x4652ac0",
+      "text": "Iterate through all holy sites located in the scoped barony"
+    },
+    {
+      "rva": "0x46c9f90",
+      "text": "fervor_per_holy_site"
+    },
+    {
+      "rva": "0x46ca100",
+      "text": "holy_site_template"
+    },
+    {
+      "rva": "0x46cfab0",
+      "text": "eminent"
+    },
+    {
+      "rva": "0x46d31d0",
+      "text": "holy_sites_domain"
+    },
+    {
+      "rva": "0x46d31e8",
+      "text": "holy_sites_realm"
+    },
+    {
+      "rva": "0x46dafd0",
+      "text": "holy_site_owner"
+    },
+    {
+      "rva": "0x46dda18",
+      "text": "update_faith_window_holy_sites_and_orders"
+    },
+    {
+      "rva": "0x46df7d8",
+      "text": "eminent_holy_sites_min"
+    },
+    {
+      "rva": "0x46df7f0",
+      "text": "holy_sites_max"
+    },
+    {
+      "rva": "0x46df800",
+      "text": "eminent_holy_sites"
+    },
+    {
+      "rva": "0x46df818",
+      "text": "eminent_holy_sites_max"
+    },
+    {
+      "rva": "0x46df9a8",
+      "text": "holy_sites_min"
+    },
+    {
+      "rva": "0x46df9b8",
+      "text": "can_create_dynamic_holy_site"
+    },
+    {
+      "rva": "0x46dfa88",
+      "text": "major_holy_sites"
+    },
+    {
+      "rva": "0x46dfaa0",
+      "text": "minor_holy_sites"
+    },
+    {
+      "rva": "0x46dfaf8",
+      "text": "enshrine_holy_site_artifact"
+    },
+    {
+      "rva": "0x46dfb18",
+      "text": "remove_holy_site_artifact"
+    },
+    {
+      "rva": "0x46dfb58",
+      "text": "removed_from_holy_site"
+    },
+    {
+      "rva": "0x46dfb90",
+      "text": "available_holy_site"
+    },
+    {
+      "rva": "0x46dfc80",
+      "text": "is_eminent"
+    },
+    {
+      "rva": "0x46dfca0",
+      "text": "holy_site_creation"
+    },
+    {
+      "rva": "0x4710310",
+      "text": "HOLY_SITE_HAS_NO_VALID_SLOT"
+    },
+    {
+      "rva": "0x4711d88",
+      "text": "GetActiveHolySite"
+    },
+    {
+      "rva": "0x47191e8",
+      "text": "CREATE_HOLY_SITE_RARITY_REQUIRED"
+    },
+    {
+      "rva": "0x4719210",
+      "text": "MAX_HOLY_SITE_RARITY_TOTAL"
+    },
+    {
+      "rva": "0x4719258",
+      "text": "FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT"
+    },
+    {
+      "rva": "0x4719280",
+      "text": "FAITH_HOLY_SITES_MAX_DEFAULT"
+    },
+    {
+      "rva": "0x47192a0",
+      "text": "FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT"
+    },
+    {
+      "rva": "0x47192c8",
+      "text": "FAITH_HOLY_SITES_MIN_DEFAULT"
+    },
+    {
+      "rva": "0x472fb30",
+      "text": "GetNumberOfHolySites"
+    },
+    {
+      "rva": "0x472fc30",
+      "text": "GetEminentHolySites"
+    },
+    {
+      "rva": "0x472fc48",
+      "text": "IsEminentHolySite"
+    },
+    {
+      "rva": "0x472fc80",
+      "text": "GetHolySites"
+    },
+    {
+      "rva": "0x472fdb0",
+      "text": "AddHolySite"
+    },
+    {
+      "rva": "0x472fef8",
+      "text": "FERVOR_GAIN_FROM_HOLY_SITES"
+    },
+    {
+      "rva": "0x472ff98",
+      "text": "RemoveHolySite"
+    },
+    {
+      "rva": "0x472ffa8",
+      "text": "SetHolySiteEminent"
+    },
+    {
+      "rva": "0x4730198",
+      "text": "IsHolySite"
+    },
+    {
+      "rva": "0x4737d98",
+      "text": "HOLY_SITE_CHARACTER_MODIFIER_NAME"
+    },
+    {
+      "rva": "0x473a1b8",
+      "text": "SetHolySiteOwner"
+    },
+    {
+      "rva": "0x473a370",
+      "text": "HOLY_SITE_ARTIFACTS_SINGLE"
+    },
+    {
+      "rva": "0x473a930",
+      "text": "IsOwnedByHolySite"
+    },
+    {
+      "rva": "0x473a948",
+      "text": "GetHolySiteOwner"
+    },
+    {
+      "rva": "0x473fba8",
+      "text": "on_faith_holy_site_eminence_changed"
+    },
+    {
+      "rva": "0x473fbd0",
+      "text": "on_faith_holy_site_removed"
+    },
+    {
+      "rva": "0x473fc10",
+      "text": "on_character_holy_site_created"
+    },
+    {
+      "rva": "0x473fde8",
+      "text": "on_faith_holy_site_added"
+    },
+    {
+      "rva": "0x473fe20",
+      "text": "on_artifact_changed_holy_site_owner"
+    },
+    {
+      "rva": "0x473fe58",
+      "text": "on_holy_site_artifact_removed"
+    },
+    {
+      "rva": "0x473fe78",
+      "text": "on_holy_site_artifact_enshrined"
+    },
+    {
+      "rva": "0x4745e50",
+      "text": "HOLY_SITE_SCALED_COUNTY_MODIFIER_HEADER"
+    },
+    {
+      "rva": "0x4745e78",
+      "text": "HOLY_SITE_SCALED_FAITH_CHARACTER_MODIFIER_HEADER"
+    },
+    {
+      "rva": "0x4745eb0",
+      "text": "HOLY_SITE_TYPE_EFFECT_NOT_ACTIVE_WRAPPER"
+    },
+    {
+      "rva": "0x4745ef8",
+      "text": "HOLY_SITE_ARTIFACT_SLOT_BULLET_FILLED"
+    },
+    {
+      "rva": "0x4745f20",
+      "text": "HOLY_SITE_ARTIFACT_SLOTS_HEADER"
+    },
+    {
+      "rva": "0x4745fb8",
+      "text": "IsHolySiteType"
+    },
+    {
+      "rva": "0x4745fd8",
+      "text": "game_holy_site_struct"
+    },
+    {
+      "rva": "0x4752680",
+      "text": "HasRecipientHolySite"
+    },
+    {
+      "rva": "0x47526c8",
+      "text": "GetRecipientHolySite"
+    },
+    {
+      "rva": "0x475c918",
+      "text": "HOLY_SITE_COUNTY_MODIFIER_NAME"
+    },
+    {
+      "rva": "0x476fb48",
+      "text": "HOLY_SITES_MAX"
+    },
+    {
+      "rva": "0x476fba0",
+      "text": "holy_site_creation_faith_already_has_holy_site_type"
+    },
+    {
+      "rva": "0x476fbd8",
+      "text": "holy_site_creation_barony_already_has_holy_site"
+    },
+    {
+      "rva": "0x476fc08",
+      "text": "HOLY_SITES"
+    },
+    {
+      "rva": "0x476fc18",
+      "text": "holy_site_creation_faith_has_too_many_holy_sites"
+    },
+    {
+      "rva": "0x476fcf0",
+      "text": "holy_site_creation_too_many_artifacts"
+    },
+    {
+      "rva": "0x476fd18",
+      "text": "holy_site_creation_county_already_has_holy_site_of_faith"
+    },
+    {
+      "rva": "0x476fd68",
+      "text": "holy_site_creation_rarity_level_too_low"
+    },
+    {
+      "rva": "0x47a1f37",
+      "text": "holy_site_has_artifact_in_slot = slot_key"
+    },
+    {
+      "rva": "0x47a1f90",
+      "text": "Sum of rarity level values (Common = 1, etc) across artifacts enshrined in the scoped holy site whose is_holy_trigger trigger passes. Holy Site needs to be appropriate for county controlling faith."
+    },
+    {
+      "rva": "0x47a2058",
+      "text": "holy_site_artifact_count"
+    },
+    {
+      "rva": "0x47a215a",
+      "text": "is_active_holy_relic_for = scope:holy_site"
+    },
+    {
+      "rva": "0x47a2188",
+      "text": "holy_site_has_artifact_in_slot"
+    },
+    {
+      "rva": "0x47a21a8",
+      "text": "can_enshrine_holy_site_artifact"
+    },
+    {
+      "rva": "0x47a22e8",
+      "text": "is_faith_holy_site"
+    },
+    {
+      "rva": "0x47a2348",
+      "text": "scope:faith = { is_faith_holy_site = scope:holy_site }"
+    },
+    {
+      "rva": "0x47a2380",
+      "text": "can_remove_holy_site_artifact"
+    },
+    {
+      "rva": "0x47a2430",
+      "text": "compare the number of artifacts in the scoped holy site's inventory"
+    },
+    {
+      "rva": "0x47a2478",
+      "text": "holy_site_has_artifact"
+    },
+    {
+      "rva": "0x47a2490",
+      "text": "does the scoped holy site have any artifacts in its inventory?"
+    },
+    {
+      "rva": "0x47a24d0",
+      "text": "is_holy_site_type"
+    },
+    {
+      "rva": "0x47a2525",
+      "text": "is_holy_site_type = holy_site_rome"
+    },
+    {
+      "rva": "0x47a2548",
+      "text": "is_faith_eminent_holy_site"
+    },
+    {
+      "rva": "0x47a25b1",
+      "text": "scope:faith = { is_faith_eminent_holy_site = scope:holy_site }"
+    },
+    {
+      "rva": "0x47a3f3c",
+      "text": "Note: artifacts owned by a holy site do not decay."
+    },
+    {
+      "rva": "0x47b7c60",
+      "text": "holy_sites_controlled"
+    },
+    {
+      "rva": "0x47b7d00",
+      "text": "'%s' is not a holy site"
+    },
+    {
+      "rva": "0x47b7d20",
+      "text": "Does the faith control a holy site? controls_holy_site = key_of_holy_site"
+    },
+    {
+      "rva": "0x47b7d70",
+      "text": "controls_holy_site"
+    },
+    {
+      "rva": "0x47b7d90",
+      "text": "How many holy sites does the faith control? holy_sites_controlled > 1"
+    },
+    {
+      "rva": "0x47b8577",
+      "text": "religion = { eminent_holy_sites_max > 3 }"
+    },
+    {
+      "rva": "0x47b85f7",
+      "text": "religion = { holy_sites_max > 5 }"
+    },
+    {
+      "rva": "0x47b8667",
+      "text": "religion = { eminent_holy_sites_min > 0 }"
+    },
+    {
+      "rva": "0x47b8867",
+      "text": "religion = { holy_sites_min > 0 }"
+    },
+    {
+      "rva": "0x47b9420",
+      "text": "Title of invalid tier, only baronies are allowed for holy site script but title is '%s'"
+    },
+    {
+      "rva": "0x47b9e48",
+      "text": "Is the barony a holy site of any faith? is_holy_site = yes"
+    },
+    {
+      "rva": "0x47b9e88",
+      "text": "is_holy_site"
+    },
+    {
+      "rva": "0x47b9fda",
+      "text": "scope:barony = { has_holy_site_parameter = some_parameter }"
+    },
+    {
+      "rva": "0x47ba018",
+      "text": "has_holy_site_parameter"
+    },
+    {
+      "rva": "0x47ba074",
+      "text": "scope:faith = { controls_holy_site_with_parameter = some_parameter }"
+    },
+    {
+      "rva": "0x47ba0c0",
+      "text": "controls_holy_site_with_parameter"
+    },
+    {
+      "rva": "0x47ba100",
+      "text": "Is the barony a holy site of the given faith? is_holy_site_of = some faith"
+    },
+    {
+      "rva": "0x47ba150",
+      "text": "is_holy_site_of"
+    },
+    {
+      "rva": "0x47ba160",
+      "text": "holy_site_parameter_"
+    },
+    {
+      "rva": "0x47d2e68",
+      "text": "is_holy_site_controlled_by"
+    },
+    {
+      "rva": "0x47d2ed3",
+      "text": "is_holy_site_controlled_by = root"
+    },
+    {
+      "rva": "0x481bad8",
+      "text": "make_holy_site_not_eminent"
+    },
+    {
+      "rva": "0x481bb95",
+      "text": "<faith_scope> = { make_holy_site_not_eminent = { target = <holy_site_scope> actor = <character_scope> } }"
+    },
+    {
+      "rva": "0x481bc00",
+      "text": "Faith '%s' already has a holy site of type '%s'"
+    },
+    {
+      "rva": "0x481bc30",
+      "text": "create_holy_site: invalid holy site type"
+    },
+    {
+      "rva": "0x481bc60",
+      "text": "remove_holy_site"
+    },
+    {
+      "rva": "0x481bce3",
+      "text": "<faith_scope> = { remove_holy_site = { target = <holy_site_scope> actor = <character_scope> } }"
+    },
+    {
+      "rva": "0x481bd48",
+      "text": "make_holy_site_eminent"
+    },
+    {
+      "rva": "0x481bdeb",
+      "text": "<faith_scope> = { make_holy_site_eminent = { target = <holy_site_scope> actor = <character_scope> } }"
+    },
+    {
+      "rva": "0x481be58",
+      "text": "add_eminent_holy_site"
+    },
+    {
+      "rva": "0x481bf14",
+      "text": "<faith_scope> = { add_eminent_holy_site = { target = <holy_site_scope> actor = <character_scope> } }"
+    },
+    {
+      "rva": "0x481bf80",
+      "text": "Faith '%s' does not have holy site '%s'"
+    },
+    {
+      "rva": "0x481bfa8",
+      "text": "Holy site target is invalid"
+    },
+    {
+      "rva": "0x481bfc8",
+      "text": "add_holy_site"
+    },
+    {
+      "rva": "0x481c079",
+      "text": "<faith_scope> = { add_holy_site = { target = <holy_site_scope> actor = <character_scope> } }"
+    },
+    {
+      "rva": "0x481c0d8",
+      "text": "Faith '%s' already has holy site '%s'"
+    },
+    {
+      "rva": "0x481c100",
+      "text": "Holy site '%s' is already %s"
+    },
+    {
+      "rva": "0x481c120",
+      "text": "not eminent"
+    },
+    {
+      "rva": "0x481c130",
+      "text": "create_holy_site"
+    },
+    {
+      "rva": "0x481c3f8",
+      "text": "create_holy_site: resolved target '%s' is not a barony"
+    },
+    {
+      "rva": "0x481c430",
+      "text": "create_holy_site: no location provided and holy site type '%s' does not define one"
+    },
+    {
+      "rva": "0x481c488",
+      "text": "create_holy_site: '%s' is not a county"
+    },
+    {
+      "rva": "0x481c4b0",
+      "text": "create_holy_site: there is already a holy site at barony '%s'"
+    },
+    {
+      "rva": "0x4833ce0",
+      "text": "set_holy_site_owner"
+    },
+    {
+      "rva": "0x4834a98",
+      "text": "Trying to perform action on invalid holy site owner."
+    },
+    {
+      "rva": "0x4834bbf",
+      "text": "enshrine_holy_site_artifact = { holy_site = X  artifact = Y  slot = Z (optional) }"
+    },
+    {
+      "rva": "0x4834cd9",
+      "text": "remove_holy_site_artifact = { holy_site = X  artifact = Y }"
+    },
+    {
+      "rva": "0x488aef0",
+      "text": "common/religion/holy_site_types"
+    },
+    {
+      "rva": "0x488b0e0",
+      "text": "CHolySiteTypeDatabase"
+    },
+    {
+      "rva": "0x48c46e0",
+      "text": "'{}' is listed in both holy_sites and eminent_holy_sites of '{}' at '{}'; keeping it eminent"
+    },
+    {
+      "rva": "0x48d3458",
+      "text": "HOLDER_OF_HOLY_SITE_MODIFIER"
+    },
+    {
+      "rva": "0x48d3480",
+      "text": "holy_site_%s_effects"
+    },
+    {
+      "rva": "0x48d3498",
+      "text": "CHARACTERS_OF_FAITH_HOLY_SITE_MODIFIER"
+    },
+    {
+      "rva": "0x48d34c0",
+      "text": "HOLY_SITE_TYPE_SCALED_FAITH_CHARACTER_MODIFIER_HEADER_RANGE"
+    },
+    {
+      "rva": "0x48d3500",
+      "text": "HOLY_SITE_TYPE_SCALED_FAITH_CHARACTER_MODIFIER_HEADER"
+    },
+    {
+      "rva": "0x48d3538",
+      "text": "HOLY_SITE_TYPE_SCALED_COUNTY_MODIFIER_HEADER_RANGE"
+    },
+    {
+      "rva": "0x48d3570",
+      "text": "HOLY_SITE_TYPE_SCALED_COUNTY_MODIFIER_HEADER"
+    },
+    {
+      "rva": "0x48d35b0",
+      "text": "In holy site '{}' barony override '{}' must be a de jure vassal of '{}', it is a de jure vassal of '{}', ignoring barony override."
+    },
+    {
+      "rva": "0x48d3638",
+      "text": "(no holy site type)"
+    },
+    {
+      "rva": "0x48d3650",
+      "text": "C:\\mnt\\gsg\\ck3\\titus\\source\\logic\\holy_site_type.cpp"
+    },
+    {
+      "rva": "0x48d3688",
+      "text": "No county found for holy site '{}'"
+    },
+    {
+      "rva": "0x48d36b0",
+      "text": "holy_site_%s_dynamic_name"
+    },
+    {
+      "rva": "0x48d36d0",
+      "text": "HOLY_SITE_TYPE_SCALING_MODIFIER_DESCRIPTION"
+    },
+    {
+      "rva": "0x48d3700",
+      "text": "holy_site_%s_name"
+    },
+    {
+      "rva": "0x48d3718",
+      "text": "holy_site_%s_desc"
+    },
+    {
+      "rva": "0x48d3730",
+      "text": "GetEminentEffectDesc"
+    },
+    {
+      "rva": "0x48d3790",
+      "text": "HOLY_SITE_HOLDER_CHARACTER_MODIFIER_NAME"
+    },
+    {
+      "rva": "0x48d37c0",
+      "text": "Holy Site type %s has both `is_dynamic` and `county` or `barony` defined. (dynamic holy sites have no location)"
+    },
+    {
+      "rva": "0x48d3850",
+      "text": "GetEminentScaledEffectDesc"
+    },
+    {
+      "rva": "0x48d4f88",
+      "text": "GetEminentHolySitesMax"
+    },
+    {
+      "rva": "0x48d4fa0",
+      "text": "GetHolySitesMin"
+    },
+    {
+      "rva": "0x48d4fb0",
+      "text": "GetMainHolySite"
+    },
+    {
+      "rva": "0x48d4fc0",
+      "text": "GetEminentHolySitesMin"
+    },
+    {
+      "rva": "0x48d5030",
+      "text": "GetHolySitesMax"
+    },
+    {
+      "rva": "0x49f4620",
+      "text": "HOLY_SITE_TYPE"
+    }
+  ]
+}

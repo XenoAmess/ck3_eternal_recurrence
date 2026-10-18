@@ -1,0 +1,4015 @@
+{
+  "schema": "ck3-12004-authored-faith-cap-enumeration-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:22:59.644633+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "definition_file_count": 50,
+  "religion_count": 49,
+  "faith_count": 103,
+  "scope": "Every .txt Religion and Faith definition in installed common/religion; inventory independently exhaustive game text scan; authored lists are definitions, not assertions about current saves or historical date-specific spawned state.",
+  "religions": [
+    {
+      "religion": "akom_religion",
+      "source": "common/religion/religion_types/00_akom.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "aluk_religion",
+      "source": "common/religion/religion_types/00_aluk.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "baltic_religion",
+      "source": "common/religion/religion_types/00_baltic.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "basque_religion",
+      "source": "common/religion/religion_types/00_basque_paganism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "biliku_religion",
+      "source": "common/religion/religion_types/00_bilikuism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "bimoism_religion",
+      "source": "common/religion/religion_types/00_bimoism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "bon_religion",
+      "source": "common/religion/religion_types/00_bon.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "buddhism_religion",
+      "source": "common/religion/religion_types/00_buddhism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "christianity_religion",
+      "source": "common/religion/religion_types/00_christianity.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "confucianism_religion",
+      "source": "common/religion/religion_types/00_confucianism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "dayawism_religion",
+      "source": "common/religion/religion_types/00_dayawism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "tani_religion",
+      "source": "common/religion/religion_types/00_donyipoloism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "dualism_religion",
+      "source": "common/religion/religion_types/00_dualism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "finno_ugric_religion",
+      "source": "common/religion/religion_types/00_finno_ugric.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "germanic_religion",
+      "source": "common/religion/religion_types/00_germanic.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "hantuism_religion",
+      "source": "common/religion/religion_types/00_hantuism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "hellenism_religion",
+      "source": "common/religion/religion_types/00_hellenism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "hinduism_religion",
+      "source": "common/religion/religion_types/00_hinduism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "dab_qhuas_religion",
+      "source": "common/religion/religion_types/00_hmongism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "islam_religion",
+      "source": "common/religion/religion_types/00_islam.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "jainism_religion",
+      "source": "common/religion/religion_types/00_jainism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "judaism_religion",
+      "source": "common/religion/religion_types/00_judaism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "kaharingan_religion",
+      "source": "common/religion/religion_types/00_kaharingan.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "kamuyism_religion",
+      "source": "common/religion/religion_types/00_kamuyism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "kushitism_religion",
+      "source": "common/religion/religion_types/00_kushitism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "magyar_religion",
+      "source": "common/religion/religion_types/00_magyarism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "moism_religion",
+      "source": "common/religion/religion_types/00_moism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "muism_religion",
+      "source": "common/religion/religion_types/00_muism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "mundhum_religion",
+      "source": "common/religion/religion_types/00_mundhumism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "north_african_religion",
+      "source": "common/religion/religion_types/00_north_african.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "paganism_religion",
+      "source": "common/religion/religion_types/00_paganism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "qiangic_religion",
+      "source": "common/religion/religion_types/00_qiangic.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "satsana_phi_religion",
+      "source": "common/religion/religion_types/00_satsana_phi.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "shamanism_religion",
+      "source": "common/religion/religion_types/00_shamanism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "shintoism_religion",
+      "source": "common/religion/religion_types/00_shintoism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "siberian_religion",
+      "source": "common/religion/religion_types/00_siberian.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "slavic_religion",
+      "source": "common/religion/religion_types/00_slavic.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "taoism_religion",
+      "source": "common/religion/religion_types/00_taoism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "tengrism_religion",
+      "source": "common/religion/religion_types/00_tengrism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "tolotang_religion",
+      "source": "common/religion/religion_types/00_tolotang.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "utaki_religion",
+      "source": "common/religion/religion_types/00_utaki.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "waaqism_religion",
+      "source": "common/religion/religion_types/00_waaqism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "west_african_religion",
+      "source": "common/religion/religion_types/00_west_african.txt",
+      "line": 2,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "west_african_bori_religion",
+      "source": "common/religion/religion_types/00_west_african_bori.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "west_african_orisha_religion",
+      "source": "common/religion/religion_types/00_west_african_orisha.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "west_african_roog_religion",
+      "source": "common/religion/religion_types/00_west_african_roog.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "yazidi_religion",
+      "source": "common/religion/religion_types/00_yazidi.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/religion_types/00_zoroastrianism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    },
+    {
+      "religion": "zunism_religion",
+      "source": "common/religion/religion_types/00_zunism.txt",
+      "line": 1,
+      "authored_overrides": {
+        "holy_sites_max": null,
+        "eminent_holy_sites_max": null,
+        "holy_sites_min": null,
+        "eminent_holy_sites_min": null
+      },
+      "effective_defaults_when_absent": {
+        "holy_sites_max": 9,
+        "eminent_holy_sites_max": 3,
+        "holy_sites_min": 1,
+        "eminent_holy_sites_min": 1
+      }
+    }
+  ],
+  "faiths": [
+    {
+      "faith": "akom_pagan",
+      "religion": "akom_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "bono",
+        "kumasi",
+        "ife"
+      ],
+      "ordinary": [
+        "nikki",
+        "jenne"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "aluk",
+      "religion": "aluk_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 33,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "wenang",
+        "siang"
+      ],
+      "ordinary": [
+        "sonba_i",
+        "kepala_burung",
+        "buru-sula"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "baltic_pagan",
+      "religion": "baltic_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 65,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "pokaini",
+        "torun"
+      ],
+      "ordinary": [
+        "hiiumaa",
+        "braslau",
+        "rugen"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "basque_pagan",
+      "religion": "basque_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 96,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "viscaya",
+        "aneto"
+      ],
+      "ordinary": [
+        "bordeaux",
+        "santiago",
+        "cordoba"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "bilikuism",
+      "religion": "biliku_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 129,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ar_kol",
+        "nakkavaram"
+      ],
+      "ordinary": [
+        "dagon",
+        "kanchipuram",
+        "atamasthana"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "pulugaism",
+      "religion": "biliku_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 161,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ar_kol",
+        "nakkavaram"
+      ],
+      "ordinary": [
+        "dagon",
+        "kanchipuram",
+        "atamasthana"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "bimoism",
+      "religion": "bimoism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 222,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "zhaotong",
+        "dali"
+      ],
+      "ordinary": [
+        "tengchong",
+        "jinglong",
+        "xuhen"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "bon_faith",
+      "religion": "bon_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 253,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "lhasa",
+        "purang"
+      ],
+      "ordinary": [
+        "khotan",
+        "balkh",
+        "gilgit"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "theravada_faith",
+      "religion": "buddhism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 276,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "bodh_gaya",
+        "atamasthana",
+        "dagon"
+      ],
+      "ordinary": [
+        "bupaya",
+        "sarnath"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "mahayana_faith",
+      "religion": "buddhism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 298,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "borobudur",
+        "bodh_gaya",
+        "amaravati"
+      ],
+      "ordinary": [
+        "bayon",
+        "sanchi",
+        "luoyang",
+        "wutai",
+        "nara"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 5,
+      "total_unique_count": 8,
+      "total_authored_count": 8,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "maitreya_faith",
+      "religion": "buddhism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 327,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "vaishali",
+        "chang_an",
+        "bodh_gaya"
+      ],
+      "ordinary": [
+        "mount_lu",
+        "sikong"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "vajrayana_faith",
+      "religion": "buddhism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 356,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "lhasa",
+        "bodh_gaya",
+        "kalasan"
+      ],
+      "ordinary": [
+        "muara_takus",
+        "sarnath",
+        "ajanta",
+        "dali",
+        "pagan"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 5,
+      "total_unique_count": 8,
+      "total_authored_count": 8,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "christian_faith",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 453,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "rome",
+        "constantinople"
+      ],
+      "ordinary": [
+        "santiago",
+        "antioch",
+        "alexandria",
+        "cologne",
+        "kent"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 5,
+      "total_unique_count": 8,
+      "total_authored_count": 8,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "catholic",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 535,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "rome",
+        "santiago"
+      ],
+      "ordinary": [
+        "cologne",
+        "kent"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "orthodox",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 656,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "constantinople",
+        "jerusalem"
+      ],
+      "ordinary": [
+        "rome",
+        "antioch",
+        "alexandria"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "miaphysitism",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 741,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "alexandria",
+        "jerusalem",
+        "antioch"
+      ],
+      "ordinary": [
+        "aksum"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 1,
+      "total_unique_count": 4,
+      "total_authored_count": 4,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "armenian_apostolic",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 817,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "dvin",
+        "jerusalem"
+      ],
+      "ordinary": [
+        "antioch",
+        "ani"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 2,
+      "total_unique_count": 4,
+      "total_authored_count": 4,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "conversos",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 893,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "rome",
+        "toledo"
+      ],
+      "ordinary": [
+        "santiago",
+        "cordoba"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "cathar",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 930,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "albi"
+      ],
+      "ordinary": [
+        "rome",
+        "cologne",
+        "kent"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "waldensian",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 962,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "rome"
+      ],
+      "ordinary": [
+        "cologne",
+        "santiago",
+        "kent"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "lollard",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 985,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "kent"
+      ],
+      "ordinary": [
+        "rome",
+        "cologne",
+        "santiago"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "hussite",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1009,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "kent"
+      ],
+      "ordinary": [
+        "rome",
+        "cologne",
+        "santiago"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "joachimite",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1033,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "rome"
+      ],
+      "ordinary": [
+        "cologne",
+        "santiago",
+        "kent"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "iconoclast",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1056,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "constantinople"
+      ],
+      "ordinary": [
+        "rome",
+        "alexandria",
+        "antioch"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "bogomilist",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1086,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "constantinople"
+      ],
+      "ordinary": [
+        "rome",
+        "alexandria",
+        "antioch"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "paulician",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1123,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "antioch"
+      ],
+      "ordinary": [
+        "constantinople",
+        "rome",
+        "alexandria"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "nestorian",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1156,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "baghdad",
+        "kerala"
+      ],
+      "ordinary": [
+        "farz",
+        "antioch"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "messalian",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1201,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "antioch"
+      ],
+      "ordinary": [
+        "constantinople",
+        "baghdad",
+        "farz"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "adamites",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1234,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "carthage"
+      ],
+      "ordinary": [
+        "rome",
+        "fes",
+        "alexandria"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "bosnian_church",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1287,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "visoki"
+      ],
+      "ordinary": [
+        "rome",
+        "ragusa",
+        "esztergom"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "adoptionist",
+      "religion": "christianity_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1368,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "toledo_mozarabic",
+        "santiago"
+      ],
+      "ordinary": [
+        "lyon",
+        "rome",
+        "carthage_adoptionist"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "confucian_faith",
+      "religion": "confucianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1398,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "qufu",
+        "chang_an"
+      ],
+      "ordinary": [
+        "luoyang",
+        "bianliang",
+        "mount_qingcheng"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "dayawism",
+      "religion": "dayawism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1419,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "pinatubo",
+        "mantalingajan"
+      ],
+      "ordinary": [
+        "cotabato",
+        "ivatan",
+        "biri_larosa"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "donyipoloism",
+      "religion": "tani_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1450,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "itanagar",
+        "pemako"
+      ],
+      "ordinary": [
+        "rima",
+        "tezu",
+        "ilam"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "sedism",
+      "religion": "tani_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1482,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "itanagar",
+        "pemako"
+      ],
+      "ordinary": [
+        "rima",
+        "tezu",
+        "ilam"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "manichaean_faith",
+      "religion": "dualism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1544,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ahvaz",
+        "khotan",
+        "samarkand"
+      ],
+      "ordinary": [
+        "yijinai",
+        "udabhanda"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "mandaean_faith",
+      "religion": "dualism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1672,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "farz",
+        "basra"
+      ],
+      "ordinary": [
+        "baghdad",
+        "damascus",
+        "jerusalem"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "gnostic_faith",
+      "religion": "dualism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1795,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "alexandria"
+      ],
+      "ordinary": [
+        "rome",
+        "sijilmasa",
+        "sinai"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "sethianism",
+      "religion": "dualism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 1917,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "alexandria",
+        "sinai"
+      ],
+      "ordinary": [
+        "jerusalem",
+        "rome",
+        "sijilmasa"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "finnish_pagan",
+      "religion": "finno_ugric_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2053,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "raivola",
+        "hiiumaa"
+      ],
+      "ordinary": [
+        "akkel",
+        "perm",
+        "torun"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "norse_pagan",
+      "religion": "germanic_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2089,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "uppsala",
+        "ranaheim"
+      ],
+      "ordinary": [
+        "jorvik",
+        "paderborn",
+        "konugardr"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "hantuism",
+      "religion": "hantuism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2132,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "gangganegara",
+        "riak_nan_berbedur"
+      ],
+      "ordinary": [
+        "hoanya",
+        "qiongzhou",
+        "sonba_i"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "hellenic_pagan",
+      "religion": "hellenism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2163,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "athens",
+        "olympus"
+      ],
+      "ordinary": [
+        "rome",
+        "alexandria",
+        "carthage"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "vaishnava_faith",
+      "religion": "hinduism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2199,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "varanasi",
+        "ayodhya",
+        "mathura"
+      ],
+      "ordinary": [
+        "bantey_srei",
+        "kanchipuram",
+        "ujjayini",
+        "khao_khlang_nai"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 4,
+      "total_unique_count": 7,
+      "total_authored_count": 7,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shaiva_faith",
+      "religion": "hinduism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2269,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "varanasi",
+        "ujjayini",
+        "my_son"
+      ],
+      "ordinary": [
+        "angkor",
+        "mathura",
+        "haridwar",
+        "kanchipuram"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 4,
+      "total_unique_count": 7,
+      "total_authored_count": 7,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shakta_faith",
+      "religion": "hinduism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2353,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "varanasi",
+        "kanchipuram",
+        "ujjayini"
+      ],
+      "ordinary": [
+        "ayodhya",
+        "mathura",
+        "haridwar",
+        "dwarka"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 4,
+      "total_unique_count": 7,
+      "total_authored_count": 7,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "smartism",
+      "religion": "hinduism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2393,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "varanasi",
+        "kanchipuram",
+        "dwarka"
+      ],
+      "ordinary": [
+        "ayodhya",
+        "mathura",
+        "haridwar",
+        "ujjayini"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 4,
+      "total_unique_count": 7,
+      "total_authored_count": 7,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "saura",
+      "religion": "hinduism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2463,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "multan",
+        "bodh_gaya",
+        "konarak"
+      ],
+      "ordinary": [
+        "varanasi",
+        "ayodhya",
+        "mathura",
+        "kanchipuram"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 4,
+      "total_unique_count": 7,
+      "total_authored_count": 7,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "dab_qhuas",
+      "religion": "dab_qhuas_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2542,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "yangtze",
+        "zunyi"
+      ],
+      "ordinary": [
+        "haripunjaya",
+        "nguu_hong",
+        "anlong"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "sadr_al_islam",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2574,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina",
+        "jerusalem"
+      ],
+      "ordinary": [
+        "baghdad",
+        "sinai"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "sunni",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2596,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina",
+        "jerusalem"
+      ],
+      "ordinary": [
+        "baghdad",
+        "sinai"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shia",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2623,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina",
+        "nadjaf"
+      ],
+      "ordinary": [
+        "jerusalem",
+        "damascus"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kharijite",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2661,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina",
+        "nizwa"
+      ],
+      "ordinary": [
+        "jerusalem",
+        "basra"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "masmudi",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2702,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina",
+        "tinmallal"
+      ],
+      "ordinary": [
+        "jerusalem",
+        "fes"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "quranist",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2740,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mecca",
+        "medina"
+      ],
+      "ordinary": [
+        "jerusalem",
+        "kufa",
+        "sinai"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "druze",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2777,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "beirut",
+        "zozan"
+      ],
+      "ordinary": [
+        "mecca",
+        "medina",
+        "jerusalem"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "qarmatian",
+      "religion": "islam_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2829,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "bahrein",
+        "kufa",
+        "mecca"
+      ],
+      "ordinary": [
+        "medina",
+        "basra"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "jain_faith",
+      "religion": "jainism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2866,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "palitana",
+        "shikharj"
+      ],
+      "ordinary": [
+        "ranakpur",
+        "ellora",
+        "sittannavasal"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "rabbinic_faith",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2888,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "sinai",
+        "babylon"
+      ],
+      "ordinary": [
+        "sufed",
+        "alexandria"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "karaism",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2916,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "sinai",
+        "alexandria"
+      ],
+      "ordinary": [
+        "sufed",
+        "hamadan"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "haymanot",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 2950,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "semien"
+      ],
+      "ordinary": [
+        "sufed",
+        "sinai",
+        "alexandria"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "malabarism",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3012,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "kochi",
+        "kerala"
+      ],
+      "ordinary": [
+        "sinai",
+        "manipur"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "samaritan",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3047,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "gerizim",
+        "sinai"
+      ],
+      "ordinary": [
+        "sufed",
+        "alexandria",
+        "hamadan"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kabarism",
+      "religion": "judaism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3090,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "jerusalem",
+        "itil",
+        "panticapaeum"
+      ],
+      "ordinary": [
+        "samarkand",
+        "sinai"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kaharingan",
+      "religion": "kaharingan_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3128,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "iban",
+        "kutai"
+      ],
+      "ordinary": [
+        "kudat",
+        "taiao",
+        "sukadana"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kamuyism_pagan",
+      "religion": "kamuyism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3164,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kamuykotan",
+        "tarayka"
+      ],
+      "ordinary": [
+        "nutapkauspe",
+        "makkarinupuri",
+        "hitakami"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kushitism_pagan",
+      "religion": "kushitism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3200,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "aswan",
+        "naqis"
+      ],
+      "ordinary": [
+        "wadi_el_milk",
+        "sennar",
+        "el_fasher"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "magyar_pagan",
+      "religion": "magyar_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3231,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "pest",
+        "sarysyn"
+      ],
+      "ordinary": [
+        "kerch",
+        "olvia",
+        "poszony"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "moism",
+      "religion": "moism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3262,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "nanning",
+        "anlong"
+      ],
+      "ordinary": [
+        "muze",
+        "sizhou",
+        "daozhou"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "mu",
+      "religion": "muism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3293,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "baekdu",
+        "mani"
+      ],
+      "ordinary": [
+        "taebaek",
+        "halla",
+        "seorak"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "kiratism",
+      "religion": "mundhum_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3319,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kathmandu",
+        "ilam"
+      ],
+      "ordinary": [
+        "garwhal",
+        "jumla",
+        "varanasi"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "yumaism",
+      "religion": "mundhum_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3350,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kathmandu",
+        "ilam"
+      ],
+      "ordinary": [
+        "garwhal",
+        "jumla",
+        "varanasi"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "north_african_acham_pagan",
+      "religion": "north_african_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3427,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "tenerife",
+        "madiera"
+      ],
+      "ordinary": [
+        "carthage",
+        "alexandria",
+        "cartagena"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "pagan",
+      "religion": "paganism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3459,
+      "historical": "yes",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "paderborn",
+        "hiiumaa"
+      ],
+      "ordinary": [
+        "khotan",
+        "sinai",
+        "haridwar"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "rrmeaism",
+      "religion": "qiangic_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3494,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "maowun",
+        "ngawa"
+      ],
+      "ordinary": [
+        "chakla",
+        "gyaitang",
+        "rebgong"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "melieism",
+      "religion": "qiangic_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3525,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "xingqing",
+        "yijinai"
+      ],
+      "ordinary": [
+        "alxa",
+        "ngawa",
+        "rebgong"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "satsana_phi",
+      "religion": "satsana_phi_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3689,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "vien_chan",
+        "sukhothai"
+      ],
+      "ordinary": [
+        "cao_bang",
+        "hsenwi",
+        "qufu"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shamanism",
+      "religion": "shamanism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3720,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "tarayka",
+        "yam_alin"
+      ],
+      "ordinary": [
+        "molihewen",
+        "chupka",
+        "yizhou"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shinto_faith",
+      "religion": "shintoism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3756,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ise_jingu",
+        "kizuki",
+        "kashima"
+      ],
+      "ordinary": [
+        "itsukushima",
+        "hachimangu"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "siberian_pagan",
+      "religion": "siberian_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3778,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ob",
+        "olkhon"
+      ],
+      "ordinary": [
+        "perm",
+        "tyumen",
+        "surgut"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "slavic_pagan",
+      "religion": "slavic_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3809,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kiev",
+        "rugen"
+      ],
+      "ordinary": [
+        "novgorod",
+        "barlad",
+        "plock"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "shangqing_faith",
+      "religion": "taoism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3840,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mount_wudang",
+        "mount_qingcheng"
+      ],
+      "ordinary": [
+        "mount_mian",
+        "mount_qiyung",
+        "mount_heng"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "zhengyi",
+      "religion": "taoism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3862,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mount_longhu",
+        "mount_qingcheng",
+        "luyi"
+      ],
+      "ordinary": [
+        "mount_wudang",
+        "mount_tai"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "tengri_pagan",
+      "religion": "tengrism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3900,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kara_khorum",
+        "tavan_bogd"
+      ],
+      "ordinary": [
+        "qayaliq",
+        "kerch",
+        "preslav"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "tolotang",
+      "religion": "tolotang_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3931,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "amparita",
+        "sonba_i"
+      ],
+      "ordinary": [
+        "buru-sula",
+        "papua_selatan",
+        "kepala_burung"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "utaki",
+      "religion": "utaki_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3962,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "amandee",
+        "sefa_utaki"
+      ],
+      "ordinary": [
+        "fuji",
+        "itsukushima",
+        "hachimangu"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "waaqism_pagan",
+      "religion": "waaqism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 3988,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kaffa",
+        "harar"
+      ],
+      "ordinary": [
+        "danakil",
+        "makhir",
+        "mogadishu"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "ngaiism_pagan",
+      "religion": "waaqism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4019,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kirinyaga",
+        "kilimanjaro"
+      ],
+      "ordinary": [
+        "mangea",
+        "makhir",
+        "mogadishu"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "west_african_pagan",
+      "religion": "west_african_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4208,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "awkar",
+        "niani"
+      ],
+      "ordinary": [
+        "jenne",
+        "kukiya",
+        "kisi"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "west_african_bidu_pagan",
+      "religion": "west_african_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4239,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "awkar",
+        "niani"
+      ],
+      "ordinary": [
+        "jenne",
+        "kukiya",
+        "wadan"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "west_african_bori_pagan",
+      "religion": "west_african_bori_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4367,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "daura",
+        "garumele"
+      ],
+      "ordinary": [
+        "igbo",
+        "el_fasher",
+        "wandala"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "west_african_orisha_pagan",
+      "religion": "west_african_orisha_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4398,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "ife",
+        "igbo"
+      ],
+      "ordinary": [
+        "kumasi",
+        "bono",
+        "kukiya"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "west_african_roog_pagan",
+      "religion": "west_african_roog_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4429,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kayor",
+        "kasa"
+      ],
+      "ordinary": [
+        "kisi",
+        "sherbro",
+        "wadan"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "yazidi_faith",
+      "religion": "yazidi_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4460,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "sinjar",
+        "lalish"
+      ],
+      "ordinary": [
+        "baalbek",
+        "nishapur",
+        "dashtestan"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "mazdayasna",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4482,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "adur_farnbag",
+        "adur_burzen_mihr",
+        "takht-e_soleyman"
+      ],
+      "ordinary": [
+        "takht-i-sangin",
+        "yazd"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "zurvanism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4515,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "nishapur",
+        "takht-e_soleyman"
+      ],
+      "ordinary": [
+        "ushi-darena",
+        "takht-i-sangin",
+        "yazd"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "gayomarthianism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4550,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "adur_farnbag",
+        "adur_burzen_mihr"
+      ],
+      "ordinary": [
+        "ushi-darena",
+        "nok_kundi",
+        "takht-e_soleyman"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "khurmazta",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4583,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mizdahqan",
+        "takht-i-sangin",
+        "dunhuang"
+      ],
+      "ordinary": [
+        "adur_farnbag",
+        "takht-e_soleyman"
+      ],
+      "eminent_count": 3,
+      "ordinary_count": 2,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "mazdakism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4643,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "balkh",
+        "ctesiphon"
+      ],
+      "ordinary": [
+        "ushi-darena",
+        "nok_kundi",
+        "takht-e_soleyman"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "khurramism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4679,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mount_damavand",
+        "badd"
+      ],
+      "ordinary": [
+        "nok_kundi",
+        "takht-i-sangin",
+        "takht-e_soleyman"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "urartuism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4726,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "dvin",
+        "ani"
+      ],
+      "ordinary": [
+        "ushi-darena",
+        "takht-i-sangin",
+        "takht-e_soleyman"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "afridunism",
+      "religion": "zoroastrianism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4785,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "mount_damavand",
+        "takht-e_soleyman"
+      ],
+      "ordinary": [
+        "ani",
+        "adur_burzen_mihr",
+        "adur_farnbag"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    },
+    {
+      "faith": "zun_pagan",
+      "religion": "zunism_religion",
+      "source": "common/religion/faith_types/00_faith_types.txt",
+      "line": 4838,
+      "historical": "no",
+      "has_holy_sites_field": true,
+      "has_eminent_holy_sites_field": true,
+      "eminent": [
+        "kabul",
+        "bost"
+      ],
+      "ordinary": [
+        "multan",
+        "nishapur",
+        "memphis"
+      ],
+      "eminent_count": 2,
+      "ordinary_count": 3,
+      "total_unique_count": 5,
+      "total_authored_count": 5,
+      "cross_grade_overlap": [],
+      "duplicates": false,
+      "total_cap": 9,
+      "eminent_cap": 3,
+      "starts_above_total_cap": false,
+      "starts_above_eminent_cap": false
+    }
+  ],
+  "above_total_cap": [],
+  "above_eminent_cap": [],
+  "overlap_or_duplicates": [],
+  "count_distribution": {
+    "4/2": 1,
+    "4/3": 1,
+    "5/2": 72,
+    "5/3": 21,
+    "7/3": 5,
+    "8/3": 3
+  },
+  "faith_definition_count_before_any_field_filter": 103,
+  "faiths_without_holy_sites_field": [],
+  "faiths_without_eminent_holy_sites_field": [],
+  "duplicate_definition_policy": "Explicit require rejects duplicate Religion and Faith top-level keys; zero duplicates found. No roster-field filter is applied before collecting top-level Faith definitions.",
+  "definition_files": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_akom.txt",
+      "bytes": 28078,
+      "sha256": "4abf0acd135469cccfa1df70a5111ad505ad61acfc619632c99934e8fb8fc9fb"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_aluk.txt",
+      "bytes": 28017,
+      "sha256": "ad7c6839770042f160291e382eed5fd71f394a98d35c4a85ca67623e24f3582c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_baltic.txt",
+      "bytes": 28311,
+      "sha256": "4d8c9f93f35e0f408e5e2275fc777d5b6c724e7c56c98df1609b3b1aa7df519b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_basque_paganism.txt",
+      "bytes": 28742,
+      "sha256": "b28a22b1e75604a71a4ea681064ed5cd7b5d41f2670fb75d97631c26e781d99c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_bilikuism.txt",
+      "bytes": 29889,
+      "sha256": "1bfc65b124a2844e772fb3fbd8c644fb68af44e9b83280ee2d727bcde5f58e45"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_bimoism.txt",
+      "bytes": 28374,
+      "sha256": "56186e30800960f23e9db0c669a9912bfe29caff621abd9257675da83564a6f4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_bon.txt",
+      "bytes": 28012,
+      "sha256": "959dec99e97f10e4394172386fbaf5b3536977e3194cecec2f23c3066727399e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_buddhism.txt",
+      "bytes": 28769,
+      "sha256": "86733136bd3140978e4703cfddbcacf187e4885babbe87b440f9e9b7875d9aa2"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_christianity.txt",
+      "bytes": 29656,
+      "sha256": "d3f521850ab6aa7643bbb4e5c644ac5a70b8e5a8d1184a20aee7f9a509a9ae02"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_confucianism.txt",
+      "bytes": 28527,
+      "sha256": "aec90b9dde7890a38454b2333f069f327df5824508417c29dde300c84476c507"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_dayawism.txt",
+      "bytes": 28382,
+      "sha256": "69cf4634fb93835ef5af86a023e3e44395703981c294d45c0fbe0ce8ed07853d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_donyipoloism.txt",
+      "bytes": 28409,
+      "sha256": "81da4ff4baa795091a76975b655fa2cf808156b8cdba52b304c9ddc82bdb5e1a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_dualism.txt",
+      "bytes": 28954,
+      "sha256": "2b115091db0a8ce78562e625ae949a3941c0c31a5d681f3d495df2244a52f348"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_finno_ugric.txt",
+      "bytes": 28632,
+      "sha256": "4d20024aa36f97ba079a70ab37320d50bd2d8eeac0544e5190016f8792efca95"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_germanic.txt",
+      "bytes": 29345,
+      "sha256": "0e69d55bf13bdcbce9d11e4ccae5eb871bdd012b9df971abed5de736f7f4ca72"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_hantuism.txt",
+      "bytes": 27974,
+      "sha256": "b26d09410756abb5ff3c9e36815539d1504e50e1609ed122debfc13189988f9b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_hellenism.txt",
+      "bytes": 28689,
+      "sha256": "1c0004bb31708d45247662c90f04c346a4368d25bd2d3a6bde456558aac090de"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_hinduism.txt",
+      "bytes": 28728,
+      "sha256": "32a2c2237c86b8b6aa0ad12643e881d826cb5f823a364dfe9ea47796a9d9dc72"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_hmongism.txt",
+      "bytes": 28055,
+      "sha256": "f9ee9aef44c7b010184b91a0ba996722ef302640ea881e6be68f2a539a439332"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_islam.txt",
+      "bytes": 29384,
+      "sha256": "5da426ce2fb3680536f31b2272d129438e13c781d89936a9250b88eba4df52fe"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_jainism.txt",
+      "bytes": 28590,
+      "sha256": "6ce7d96dd4cfe683e4c4568d04d6f6b4a03a337cb0e27b57866e9cde34942e31"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_judaism.txt",
+      "bytes": 29070,
+      "sha256": "cc467f4534c8d33f8816939fc3da622c7691092ae2a2027290491faf91328e60"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_kaharingan.txt",
+      "bytes": 28445,
+      "sha256": "ae659fa927e0d30b14354263380b1c359ba5778ea59bf6193f7a489084c91b7a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_kamuyism.txt",
+      "bytes": 28556,
+      "sha256": "6b7b3d45b7b592a37c1ad4fd36e0afca3fca431fb71e5ddf8f0326c556ac072d"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_kushitism.txt",
+      "bytes": 28624,
+      "sha256": "6ec20905d06bd59be36dff6d0457b86117bf9627d343456ae2294fea6d4d4914"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_magyarism.txt",
+      "bytes": 28152,
+      "sha256": "bc6fd166490d0828f4d16e634e77f3824d719260d2866f4c32b173d8d7bb71e0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_moism.txt",
+      "bytes": 28019,
+      "sha256": "3d92423cbcfbfd926668ded673e572b463d08b45b4c92bb77048f7cb9f2e5929"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_muism.txt",
+      "bytes": 27869,
+      "sha256": "968c589df1946066d91b6739ea5961d8804d688bea3c36d9dbfe3e75be1bbd80"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_mundhumism.txt",
+      "bytes": 28706,
+      "sha256": "50dc22c40e3a82d359c2995d1613531ac957ee604702edff127462d1179305ec"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_north_african.txt",
+      "bytes": 29488,
+      "sha256": "28142f228771ef70c3c48aeaa924e2c7268091785ad5cbf55216ae83816f32ca"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_paganism.txt",
+      "bytes": 28300,
+      "sha256": "c4db4599f1417607ed4499bb5e5c2b88e3f709a05fc0436b1bb2721a832020bc"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_qiangic.txt",
+      "bytes": 28311,
+      "sha256": "1b4753f98a71fdbc62363a0ea7584239e566e690bc3819963d2a5ee9af5db5fb"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_satsana_phi.txt",
+      "bytes": 28634,
+      "sha256": "51c7a22cee268ebbf918aad8450579658d10efe13e6add3e1655868caa87f2b3"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_shamanism.txt",
+      "bytes": 28062,
+      "sha256": "2b2786107ebc5ac333590cac4363e26af4e76fe0a57c43d9e24e5e554165e311"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_shintoism.txt",
+      "bytes": 28212,
+      "sha256": "a8df8921093c6aa3464e7cc31bfbd43b9419ac7d8a5d6d75572a0c332b9c0272"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_siberian.txt",
+      "bytes": 28939,
+      "sha256": "bf7b2a1f884957238483b4b41aef253919a56b3ce5c834283eee33e8815c407b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_slavic.txt",
+      "bytes": 28207,
+      "sha256": "1022772f975b68b7e5790612e6b267d1c8579be123d5de27bec11c3823d0329c"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_taoism.txt",
+      "bytes": 28317,
+      "sha256": "ce01bff5eae37b30f531da9ab33510a41d55c63bf2ae37abf6959b830226349e"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_tengrism.txt",
+      "bytes": 28421,
+      "sha256": "a3d18f019f439c2a691ddd294c2cb2245e7fa734b8a01ffcc5e60b3f51ca2560"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_tolotang.txt",
+      "bytes": 28329,
+      "sha256": "b41a93d2d3ad1b2fa544bc6055dc24461e531ecc6863bcd3e7b3f628e7cb6870"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_utaki.txt",
+      "bytes": 28209,
+      "sha256": "040b17ededba1931eb825806ac0a929b38077ee6d054fdb7b2ad50d652f621dd"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_waaqism.txt",
+      "bytes": 28285,
+      "sha256": "90779e99bd404e5efaf35c83a18f8b31fe992a61cbcd4e0657d5904e16bf9149"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_west_african.txt",
+      "bytes": 28539,
+      "sha256": "a70e074cebd19c75818f624e693557f406395551d031b71669c613e9356d0053"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_west_african_bori.txt",
+      "bytes": 28874,
+      "sha256": "d46020ef6008ad6d46d3630251be5a49c720d6029391e66302fce4d8e8ba8ef8"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_west_african_orisha.txt",
+      "bytes": 28324,
+      "sha256": "2996cf265eecad1aec534d28fcdd7f029bb70eea802be42f6bb913a6d87bd82b"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_west_african_roog.txt",
+      "bytes": 28948,
+      "sha256": "c8c97985a5cc81ba02b17cce22a693fe96bd7798fe58cde060882ef157a800c0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_yazidi.txt",
+      "bytes": 29016,
+      "sha256": "132ba1c5234d7464eb801033f11144438c475bd5efbd5b7c4b30731d7623e07f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_zoroastrianism.txt",
+      "bytes": 29692,
+      "sha256": "db9b07a5f87b32c9d2237b67cdb282d6c490899930128172c3f36cb2e3f19573"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\00_zunism.txt",
+      "bytes": 28280,
+      "sha256": "27f1059cf7d03f0daeeb0d2cf0802186bf61ecd42f93937e6394ad807a85084f"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\faith_types\\00_faith_types.txt",
+      "bytes": 118526,
+      "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df"
+    }
+  ]
+}

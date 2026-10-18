@@ -1,0 +1,23 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:25:21.220898+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x5914c0",
+  "end_rva": "0x591558",
+  "boundary_kind": "exact .pdata primary boundary",
+  "raw_sha256": "682d089c019fe009ab9f4fdc3c5f88d1604348151c46026cc2ec2ddd9df3ee4a",
+  "bytes_hex": "48895c2410574883ec30488b0d17d97205488d05788c22044889442420c74424280f000000c644242c004885c97508e8ece29b03488bc80f28442420488d542420660f7f442420e874dd9b038bf8e8eda21903488b1d9e8f6d05b918000000e87026c903488d0dd58b220448894424404c8bc08bd748894808488d0d28a72204488908488bcb897810488b5c24484883c4305fe9b8a71903",
+  "assembly": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-predicate-registration.asm",
+    "bytes": 2520,
+    "sha256": "6853f5ba2211b9641e89fec94d7271c8479605806dd85ec920f42bb39027c4ab"
+  },
+  "cache_offset": 5833920
+}

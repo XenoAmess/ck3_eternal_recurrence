@@ -1,0 +1,88 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:28:16.615003+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x47a2bf0",
+  "raw_sha256": "b5c6b0670d29ab3ad0a5456e79c81d6b3caf39ba25b04234a3c11167d3bacf25",
+  "bytes_hex": "c02285400100000040eda0400100000090eaa040010000007015a14001000000c023854001000000c022854001000000c02285400100000040efa0400100000040c7b0420100000090f4e54401000000c0e9724301000000c022854001000000300ca140010000008082a04001000000",
+  "rows": [
+    {
+      "index": 0,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 1,
+      "VA": "0x140a0ed40",
+      "RVA_if_image_pointer": "0xa0ed40"
+    },
+    {
+      "index": 2,
+      "VA": "0x140a0ea90",
+      "RVA_if_image_pointer": "0xa0ea90"
+    },
+    {
+      "index": 3,
+      "VA": "0x140a11570",
+      "RVA_if_image_pointer": "0xa11570"
+    },
+    {
+      "index": 4,
+      "VA": "0x1408523c0",
+      "RVA_if_image_pointer": "0x8523c0"
+    },
+    {
+      "index": 5,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 6,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 7,
+      "VA": "0x140a0ef40",
+      "RVA_if_image_pointer": "0xa0ef40"
+    },
+    {
+      "index": 8,
+      "VA": "0x142b0c740",
+      "RVA_if_image_pointer": "0x2b0c740"
+    },
+    {
+      "index": 9,
+      "VA": "0x144e5f490",
+      "RVA_if_image_pointer": "0x4e5f490"
+    },
+    {
+      "index": 10,
+      "VA": "0x14372e9c0",
+      "RVA_if_image_pointer": "0x372e9c0"
+    },
+    {
+      "index": 11,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 12,
+      "VA": "0x140a10c30",
+      "RVA_if_image_pointer": "0xa10c30"
+    },
+    {
+      "index": 13,
+      "VA": "0x140a08280",
+      "RVA_if_image_pointer": "0xa08280"
+    }
+  ],
+  "semantic_level": "raw pointer locators, not callback semantics"
+}

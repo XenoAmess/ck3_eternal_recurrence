@@ -1,0 +1,1119 @@
+{
+  "schema": "ck3_rarity_v4_reuse_same_machine_R0010_observation",
+  "machine_id": "4-8e1c2f1861",
+  "compiled_at_utc": "2026-10-18T02:31:09.369143+00:00",
+  "source_mode": "read retained actual native receipts; no new engine calls, date advance or runtime qualification",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0010",
+  "narrative_source": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r9-r0010-observations.md",
+    "bytes": 3598,
+    "sha256": "23ab61b8c6d5ae97190f2ba407536ba233403472101a82a99fea6c3e05167000"
+  },
+  "tracked_evidence": {
+    "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/faith-and-power-episode01-r9-r0010-observations.evidence.json",
+    "bytes": 27032,
+    "sha256": "216d7788252fd4953cdd56ceaab4d10112584ad7dabc2a2fa8c2e5ffce4a741d"
+  },
+  "receipts": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0010/root-native-receipts/r9retry-shared14-before-context.json",
+        "bytes": 47168,
+        "sha256": "e99629c9235eae51adaadae35a88c872738f4dbf926274827735979b428fc262"
+      },
+      "top_level_identity": {},
+      "result_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "available",
+        "unavailable_reason",
+        "capture_epoch",
+        "date_raw",
+        "played_character_id",
+        "player_rite_id",
+        "player_faith_id",
+        "requested_holy_site_id",
+        "holy_site_id",
+        "associated_faith_ids_available",
+        "associated_faith_ids",
+        "cached_world_state",
+        "county_context",
+        "inventory",
+        "current_relic_evaluation",
+        "evaluation_context",
+        "beneficiaries_observed",
+        "beneficiaries",
+        "can_enshrine_observed",
+        "can_enshrine",
+        "window_candidates_observed",
+        "recognition_matrix",
+        "modifier_aggregate_observation",
+        "read_only",
+        "exact_ck3_build",
+        "exe_sha256",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "snapshot_revision",
+        "backend_id",
+        "domain_key",
+        "status",
+        "advertised"
+      ],
+      "projection": {
+        "schema": "ck3_12004_player_holy_site_relic_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "capture_epoch": 49264,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "holy_site_id": 14,
+        "player_faith_id": 50,
+        "county_context": {
+          "available": true,
+          "barony_title_id": 6687,
+          "county_title_id": 6686,
+          "county_holder_id": 15893,
+          "county_holder_rite_id": 15,
+          "county_holder_faith_id": 50,
+          "unavailable_reason": null
+        },
+        "associated_faith_ids": [
+          26,
+          27,
+          36,
+          49,
+          50
+        ],
+        "cached_world_state": {
+          "available": true,
+          "is_active": true,
+          "total_active_artifact_rarity": 2,
+          "refresh_time_known": false,
+          "world_effects_applied_observed": false,
+          "unavailable_reason": null
+        },
+        "current_relic_evaluation": {
+          "available": true,
+          "inventory_artifact_count_raw": 1,
+          "county_holder_faith_associated": true,
+          "active_artifact_rarity_sum": 2,
+          "is_active": true,
+          "cache_evaluation_disagreement": false,
+          "method": "original_native_rarity_producer",
+          "unavailable_reason": null
+        },
+        "evaluation_context": {
+          "native_getter_calls": 3,
+          "getter_backend": "source_bound_native_getter",
+          "owner_thread_requirement": "existing_religion_owner_callback",
+          "gameplay_command_submitted": false,
+          "world_cache_written": false,
+          "script_evaluation_allocates_and_uses_tls": true,
+          "script_rng_effects_verified": false,
+          "script_rng_effects": "unknown"
+        },
+        "inventory": {
+          "available": true,
+          "artifact_ids": [
+            64
+          ],
+          "slots": [
+            {
+              "slot_index": 0,
+              "artifact_id": 64
+            },
+            {
+              "slot_index": 1,
+              "artifact_id": null
+            },
+            {
+              "slot_index": 2,
+              "artifact_id": null
+            }
+          ],
+          "artifact_objects": [
+            {
+              "artifact_id": 64,
+              "available": true,
+              "rarity_level": 2,
+              "native_holy_site_owner_id": 14,
+              "sanctified_faith_ids_available": true,
+              "sanctified_faith_ids": [],
+              "template_trigger_evaluated_separately": false,
+              "recognition_semantics": "native_dynamic_sanctification_or_template_trigger",
+              "recognition_for_player_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "recognition_for_county_holder_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "unavailable_reason": null
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "queried_revision": 5,
+        "queried_native_revision": 4,
+        "queried_snapshot_id": "native:4",
+        "recognition_matrix": {
+          "available": true,
+          "complete": true,
+          "source_arrays_stable": true,
+          "capture_epoch": 49264,
+          "date_raw": 51394920,
+          "holy_site_id": 14,
+          "faith_sources": {
+            "associated_available": true,
+            "associated_faith_ids": [
+              26,
+              27,
+              36,
+              49,
+              50
+            ],
+            "player_faith_id": 50,
+            "county_holder_faith_id": 50
+          },
+          "artifact_sources": {
+            "slots_available": true,
+            "slot_artifact_ids": [
+              64,
+              null,
+              null
+            ],
+            "window_candidates_available": true,
+            "window_candidate_artifact_ids": [
+              237,
+              277
+            ],
+            "requested_action_artifact_id": null
+          },
+          "cells": [
+            {
+              "artifact_id": 64,
+              "faith_id": 26,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 27,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 36,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 49,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 26,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 27,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 36,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 49,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 26,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 27,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 36,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 49,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            }
+          ],
+          "native_getter_calls": 15
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0010/root-native-receipts/r9retry-shared14-after-context.json",
+        "bytes": 44856,
+        "sha256": "6fa2a6460e8fd6e930d78bac7503bd95cc4d7bee6313c9b7fc7c85aee060cbec"
+      },
+      "top_level_identity": {},
+      "result_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "available",
+        "unavailable_reason",
+        "capture_epoch",
+        "date_raw",
+        "played_character_id",
+        "player_rite_id",
+        "player_faith_id",
+        "requested_holy_site_id",
+        "holy_site_id",
+        "associated_faith_ids_available",
+        "associated_faith_ids",
+        "cached_world_state",
+        "county_context",
+        "inventory",
+        "current_relic_evaluation",
+        "evaluation_context",
+        "beneficiaries_observed",
+        "beneficiaries",
+        "can_enshrine_observed",
+        "can_enshrine",
+        "window_candidates_observed",
+        "recognition_matrix",
+        "modifier_aggregate_observation",
+        "read_only",
+        "exact_ck3_build",
+        "exe_sha256",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "snapshot_revision",
+        "backend_id",
+        "domain_key",
+        "status",
+        "advertised"
+      ],
+      "projection": {
+        "schema": "ck3_12004_player_holy_site_relic_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "capture_epoch": 54778,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "holy_site_id": 14,
+        "player_faith_id": 50,
+        "county_context": {
+          "available": true,
+          "barony_title_id": 6687,
+          "county_title_id": 6686,
+          "county_holder_id": 15893,
+          "county_holder_rite_id": 15,
+          "county_holder_faith_id": 50,
+          "unavailable_reason": null
+        },
+        "associated_faith_ids": [
+          26,
+          27,
+          36,
+          49
+        ],
+        "cached_world_state": {
+          "available": true,
+          "is_active": true,
+          "total_active_artifact_rarity": 2,
+          "refresh_time_known": false,
+          "world_effects_applied_observed": false,
+          "unavailable_reason": null
+        },
+        "current_relic_evaluation": {
+          "available": true,
+          "inventory_artifact_count_raw": 1,
+          "county_holder_faith_associated": false,
+          "active_artifact_rarity_sum": 0,
+          "is_active": false,
+          "cache_evaluation_disagreement": true,
+          "method": "original_native_rarity_producer",
+          "unavailable_reason": null
+        },
+        "evaluation_context": {
+          "native_getter_calls": 3,
+          "getter_backend": "source_bound_native_getter",
+          "owner_thread_requirement": "existing_religion_owner_callback",
+          "gameplay_command_submitted": false,
+          "world_cache_written": false,
+          "script_evaluation_allocates_and_uses_tls": true,
+          "script_rng_effects_verified": false,
+          "script_rng_effects": "unknown"
+        },
+        "inventory": {
+          "available": true,
+          "artifact_ids": [
+            64
+          ],
+          "slots": [
+            {
+              "slot_index": 0,
+              "artifact_id": 64
+            },
+            {
+              "slot_index": 1,
+              "artifact_id": null
+            },
+            {
+              "slot_index": 2,
+              "artifact_id": null
+            }
+          ],
+          "artifact_objects": [
+            {
+              "artifact_id": 64,
+              "available": true,
+              "rarity_level": 2,
+              "native_holy_site_owner_id": 14,
+              "sanctified_faith_ids_available": true,
+              "sanctified_faith_ids": [],
+              "template_trigger_evaluated_separately": false,
+              "recognition_semantics": "native_dynamic_sanctification_or_template_trigger",
+              "recognition_for_player_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "recognition_for_county_holder_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "unavailable_reason": null
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "queried_revision": 6,
+        "queried_native_revision": 5,
+        "queried_snapshot_id": "native:5",
+        "recognition_matrix": {
+          "available": true,
+          "complete": false,
+          "source_arrays_stable": true,
+          "capture_epoch": 54778,
+          "date_raw": 51394920,
+          "holy_site_id": 14,
+          "faith_sources": {
+            "associated_available": true,
+            "associated_faith_ids": [
+              26,
+              27,
+              36,
+              49
+            ],
+            "player_faith_id": 50,
+            "county_holder_faith_id": 50
+          },
+          "artifact_sources": {
+            "slots_available": true,
+            "slot_artifact_ids": [
+              64,
+              null,
+              null
+            ],
+            "window_candidates_available": false,
+            "window_candidate_artifact_ids": null,
+            "requested_action_artifact_id": null
+          },
+          "cells": [
+            {
+              "artifact_id": 64,
+              "faith_id": 26,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 27,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 36,
+              "available": true,
+              "value": false,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 49,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 64,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            }
+          ],
+          "native_getter_calls": 5
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0010/root-native-receipts/r9retry-after-enshrine-relic32.json",
+        "bytes": 45172,
+        "sha256": "4787d14eb028f648fb04d0a7d5e558c02ad802480e5a5440763df9f08081299c"
+      },
+      "top_level_identity": {},
+      "result_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "available",
+        "unavailable_reason",
+        "capture_epoch",
+        "date_raw",
+        "played_character_id",
+        "player_rite_id",
+        "player_faith_id",
+        "requested_holy_site_id",
+        "holy_site_id",
+        "associated_faith_ids_available",
+        "associated_faith_ids",
+        "cached_world_state",
+        "county_context",
+        "inventory",
+        "current_relic_evaluation",
+        "evaluation_context",
+        "beneficiaries_observed",
+        "beneficiaries",
+        "can_enshrine_observed",
+        "can_enshrine",
+        "window_candidates_observed",
+        "recognition_matrix",
+        "modifier_aggregate_observation",
+        "read_only",
+        "exact_ck3_build",
+        "exe_sha256",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "snapshot_revision",
+        "backend_id",
+        "domain_key",
+        "status",
+        "advertised"
+      ],
+      "projection": {
+        "schema": "ck3_12004_player_holy_site_relic_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "capture_epoch": 27916,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "holy_site_id": 32,
+        "player_faith_id": 50,
+        "county_context": {
+          "available": true,
+          "barony_title_id": 6650,
+          "county_title_id": 6649,
+          "county_holder_id": 15436,
+          "county_holder_rite_id": 13,
+          "county_holder_faith_id": 50,
+          "unavailable_reason": null
+        },
+        "associated_faith_ids": [
+          51,
+          50
+        ],
+        "cached_world_state": {
+          "available": true,
+          "is_active": true,
+          "total_active_artifact_rarity": 4,
+          "refresh_time_known": false,
+          "world_effects_applied_observed": false,
+          "unavailable_reason": null
+        },
+        "current_relic_evaluation": {
+          "available": true,
+          "inventory_artifact_count_raw": 1,
+          "county_holder_faith_associated": true,
+          "active_artifact_rarity_sum": 4,
+          "is_active": true,
+          "cache_evaluation_disagreement": false,
+          "method": "original_native_rarity_producer",
+          "unavailable_reason": null
+        },
+        "evaluation_context": {
+          "native_getter_calls": 3,
+          "getter_backend": "source_bound_native_getter",
+          "owner_thread_requirement": "existing_religion_owner_callback",
+          "gameplay_command_submitted": false,
+          "world_cache_written": false,
+          "script_evaluation_allocates_and_uses_tls": true,
+          "script_rng_effects_verified": false,
+          "script_rng_effects": "unknown"
+        },
+        "inventory": {
+          "available": true,
+          "artifact_ids": [
+            237
+          ],
+          "slots": [
+            {
+              "slot_index": 0,
+              "artifact_id": 237
+            },
+            {
+              "slot_index": 1,
+              "artifact_id": null
+            },
+            {
+              "slot_index": 2,
+              "artifact_id": null
+            }
+          ],
+          "artifact_objects": [
+            {
+              "artifact_id": 237,
+              "available": true,
+              "rarity_level": 4,
+              "native_holy_site_owner_id": 32,
+              "sanctified_faith_ids_available": true,
+              "sanctified_faith_ids": [],
+              "template_trigger_evaluated_separately": false,
+              "recognition_semantics": "native_dynamic_sanctification_or_template_trigger",
+              "recognition_for_player_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "recognition_for_county_holder_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "unavailable_reason": null
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "queried_revision": 5,
+        "queried_native_revision": 4,
+        "queried_snapshot_id": "native:4",
+        "recognition_matrix": {
+          "available": true,
+          "complete": true,
+          "source_arrays_stable": true,
+          "capture_epoch": 27916,
+          "date_raw": 51394920,
+          "holy_site_id": 32,
+          "faith_sources": {
+            "associated_available": true,
+            "associated_faith_ids": [
+              51,
+              50
+            ],
+            "player_faith_id": 50,
+            "county_holder_faith_id": 50
+          },
+          "artifact_sources": {
+            "slots_available": true,
+            "slot_artifact_ids": [
+              237,
+              null,
+              null
+            ],
+            "window_candidates_available": true,
+            "window_candidate_artifact_ids": [
+              267,
+              277
+            ],
+            "requested_action_artifact_id": null
+          },
+          "cells": [
+            {
+              "artifact_id": 237,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 267,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 267,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            }
+          ],
+          "native_getter_calls": 6
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0010/root-native-receipts/r9retry-after-swap-relic32.json",
+        "bytes": 45164,
+        "sha256": "b692926c73981347af9d15dd28ad71ac9bb55c5a47deb4d61e0c1c2735891ab3"
+      },
+      "top_level_identity": {},
+      "result_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "available",
+        "unavailable_reason",
+        "capture_epoch",
+        "date_raw",
+        "played_character_id",
+        "player_rite_id",
+        "player_faith_id",
+        "requested_holy_site_id",
+        "holy_site_id",
+        "associated_faith_ids_available",
+        "associated_faith_ids",
+        "cached_world_state",
+        "county_context",
+        "inventory",
+        "current_relic_evaluation",
+        "evaluation_context",
+        "beneficiaries_observed",
+        "beneficiaries",
+        "can_enshrine_observed",
+        "can_enshrine",
+        "window_candidates_observed",
+        "recognition_matrix",
+        "modifier_aggregate_observation",
+        "read_only",
+        "exact_ck3_build",
+        "exe_sha256",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "snapshot_revision",
+        "backend_id",
+        "domain_key",
+        "status",
+        "advertised"
+      ],
+      "projection": {
+        "schema": "ck3_12004_player_holy_site_relic_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "capture_epoch": 43496,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "holy_site_id": 32,
+        "player_faith_id": 50,
+        "county_context": {
+          "available": true,
+          "barony_title_id": 6650,
+          "county_title_id": 6649,
+          "county_holder_id": 15436,
+          "county_holder_rite_id": 13,
+          "county_holder_faith_id": 50,
+          "unavailable_reason": null
+        },
+        "associated_faith_ids": [
+          51,
+          50
+        ],
+        "cached_world_state": {
+          "available": true,
+          "is_active": true,
+          "total_active_artifact_rarity": 4,
+          "refresh_time_known": false,
+          "world_effects_applied_observed": false,
+          "unavailable_reason": null
+        },
+        "current_relic_evaluation": {
+          "available": true,
+          "inventory_artifact_count_raw": 1,
+          "county_holder_faith_associated": true,
+          "active_artifact_rarity_sum": 4,
+          "is_active": true,
+          "cache_evaluation_disagreement": false,
+          "method": "original_native_rarity_producer",
+          "unavailable_reason": null
+        },
+        "evaluation_context": {
+          "native_getter_calls": 3,
+          "getter_backend": "source_bound_native_getter",
+          "owner_thread_requirement": "existing_religion_owner_callback",
+          "gameplay_command_submitted": false,
+          "world_cache_written": false,
+          "script_evaluation_allocates_and_uses_tls": true,
+          "script_rng_effects_verified": false,
+          "script_rng_effects": "unknown"
+        },
+        "inventory": {
+          "available": true,
+          "artifact_ids": [
+            267
+          ],
+          "slots": [
+            {
+              "slot_index": 0,
+              "artifact_id": 267
+            },
+            {
+              "slot_index": 1,
+              "artifact_id": null
+            },
+            {
+              "slot_index": 2,
+              "artifact_id": null
+            }
+          ],
+          "artifact_objects": [
+            {
+              "artifact_id": 267,
+              "available": true,
+              "rarity_level": 4,
+              "native_holy_site_owner_id": 32,
+              "sanctified_faith_ids_available": true,
+              "sanctified_faith_ids": [],
+              "template_trigger_evaluated_separately": false,
+              "recognition_semantics": "native_dynamic_sanctification_or_template_trigger",
+              "recognition_for_player_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "recognition_for_county_holder_faith": {
+                "available": true,
+                "faith_id": 50,
+                "value": true,
+                "unavailable_reason": null
+              },
+              "unavailable_reason": null
+            }
+          ],
+          "unavailable_reason": null
+        },
+        "queried_revision": 5,
+        "queried_native_revision": 4,
+        "queried_snapshot_id": "native:4",
+        "recognition_matrix": {
+          "available": true,
+          "complete": true,
+          "source_arrays_stable": true,
+          "capture_epoch": 43496,
+          "date_raw": 51394920,
+          "holy_site_id": 32,
+          "faith_sources": {
+            "associated_available": true,
+            "associated_faith_ids": [
+              51,
+              50
+            ],
+            "player_faith_id": 50,
+            "county_holder_faith_id": 50
+          },
+          "artifact_sources": {
+            "slots_available": true,
+            "slot_artifact_ids": [
+              267,
+              null,
+              null
+            ],
+            "window_candidates_available": true,
+            "window_candidate_artifact_ids": [
+              237,
+              277
+            ],
+            "requested_action_artifact_id": null
+          },
+          "cells": [
+            {
+              "artifact_id": 267,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 267,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            }
+          ],
+          "native_getter_calls": 6
+        }
+      }
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/live/4-8e1c2f1861--faith-and-power--R0010/root-native-receipts/r9retry-swap267-context.json",
+        "bytes": 51415,
+        "sha256": "294fc6f6113454985b483e22bfa46273197d22080f8faef0288b96e479f027d4"
+      },
+      "top_level_identity": {},
+      "result_keys": [
+        "schema",
+        "game_version",
+        "executable_sha256",
+        "available",
+        "unavailable_reason",
+        "capture_epoch",
+        "date_raw",
+        "played_character_id",
+        "requested_holy_site_id",
+        "requested_artifact_id",
+        "loaded_source_pins_verified",
+        "permissions",
+        "artifact_ownership",
+        "destination",
+        "selected_artifact_matches_request",
+        "selected_action_effect_description",
+        "enshrine_disabled_tooltip",
+        "remove_disabled_tooltip",
+        "preview_identity_available",
+        "preview_identity_sha256",
+        "evaluation_context",
+        "action_ready",
+        "business_outcome_observed",
+        "beneficiaries_observed",
+        "beneficiaries",
+        "read_only",
+        "recognition_matrix",
+        "exact_ck3_build",
+        "exe_sha256",
+        "queried_snapshot_id",
+        "queried_revision",
+        "queried_native_revision",
+        "snapshot_revision",
+        "backend_id",
+        "domain_key",
+        "status",
+        "advertised"
+      ],
+      "projection": {
+        "schema": "ck3_12004_player_holy_site_relic_action_context_v1",
+        "game_version": "1.20.0.4",
+        "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+        "capture_epoch": 34440,
+        "date_raw": 51394920,
+        "played_character_id": 15893,
+        "evaluation_context": {
+          "getter_backend": "source_bound_native_getter",
+          "native_getter_calls": 7,
+          "owner_thread_requirement": "existing_religion_owner_callback",
+          "gameplay_command_submitted": false,
+          "window_selection_written": false,
+          "world_cache_written": false,
+          "original_effect_description_evaluates_script_context": true,
+          "script_rng_effects_verified": false,
+          "script_rng_effects": "unknown"
+        },
+        "queried_revision": 5,
+        "queried_native_revision": 4,
+        "queried_snapshot_id": "native:4",
+        "recognition_matrix": {
+          "available": true,
+          "complete": true,
+          "source_arrays_stable": true,
+          "capture_epoch": 34440,
+          "date_raw": 51394920,
+          "holy_site_id": 32,
+          "faith_sources": {
+            "associated_available": true,
+            "associated_faith_ids": [
+              51,
+              50
+            ],
+            "player_faith_id": 50,
+            "county_holder_faith_id": 50
+          },
+          "artifact_sources": {
+            "slots_available": true,
+            "slot_artifact_ids": [
+              237,
+              null,
+              null
+            ],
+            "window_candidates_available": true,
+            "window_candidate_artifact_ids": [
+              267,
+              277
+            ],
+            "requested_action_artifact_id": 267
+          },
+          "cells": [
+            {
+              "artifact_id": 237,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 237,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 267,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 267,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 51,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            },
+            {
+              "artifact_id": 277,
+              "faith_id": 50,
+              "available": true,
+              "value": true,
+              "unavailable_reason": null
+            }
+          ],
+          "native_getter_calls": 6
+        }
+      }
+    }
+  ]
+}

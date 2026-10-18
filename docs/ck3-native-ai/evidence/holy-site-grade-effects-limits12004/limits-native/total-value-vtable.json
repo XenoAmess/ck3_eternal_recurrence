@@ -1,0 +1,187 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:18:03.611338+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "begin_rva": 75215208,
+  "end_rva": 75215480,
+  "raw_sha256": "0d291d9aeca056cf2ff036828d4ff897c0412c4e4856d8eb6ae14b1ea1224da3",
+  "bytes_hex": "c0e9724301000000c022854001000000f00ca14001000000c02385400100000090dca0400100000000ce724301000000c022854001000000e043d9400100000030eda0400100000040e672430100000010e8724301000000e0c0b941010000005068b94101000000b05a85400100000000ec724301000000c023854001000000c023854001000000a05a854001000000c023854001000000c023854001000000a05a854001000000c022854001000000a05a854001000000c020a14001000000c02285400100000040eda0400100000090eaa040010000007015a14001000000c023854001000000c022854001000000c02285400100000040efa04001000000b0b5b24201000000201fe74401000000",
+  "cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+  "rows": [
+    {
+      "rva": "0x47bb168",
+      "value": "0x14372e9c0",
+      "possible_target": "0x372e9c0"
+    },
+    {
+      "rva": "0x47bb170",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb178",
+      "value": "0x140a10cf0",
+      "possible_target": "0xa10cf0"
+    },
+    {
+      "rva": "0x47bb180",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb188",
+      "value": "0x140a0dc90",
+      "possible_target": "0xa0dc90"
+    },
+    {
+      "rva": "0x47bb190",
+      "value": "0x14372ce00",
+      "possible_target": "0x372ce00"
+    },
+    {
+      "rva": "0x47bb198",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb1a0",
+      "value": "0x140d943e0",
+      "possible_target": "0xd943e0"
+    },
+    {
+      "rva": "0x47bb1a8",
+      "value": "0x140a0ed30",
+      "possible_target": "0xa0ed30"
+    },
+    {
+      "rva": "0x47bb1b0",
+      "value": "0x14372e640",
+      "possible_target": "0x372e640"
+    },
+    {
+      "rva": "0x47bb1b8",
+      "value": "0x14372e810",
+      "possible_target": "0x372e810"
+    },
+    {
+      "rva": "0x47bb1c0",
+      "value": "0x141b9c0e0",
+      "possible_target": "0x1b9c0e0"
+    },
+    {
+      "rva": "0x47bb1c8",
+      "value": "0x141b96850",
+      "possible_target": "0x1b96850"
+    },
+    {
+      "rva": "0x47bb1d0",
+      "value": "0x140855ab0",
+      "possible_target": "0x855ab0"
+    },
+    {
+      "rva": "0x47bb1d8",
+      "value": "0x14372ec00",
+      "possible_target": "0x372ec00"
+    },
+    {
+      "rva": "0x47bb1e0",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb1e8",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb1f0",
+      "value": "0x140855aa0",
+      "possible_target": "0x855aa0"
+    },
+    {
+      "rva": "0x47bb1f8",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb200",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb208",
+      "value": "0x140855aa0",
+      "possible_target": "0x855aa0"
+    },
+    {
+      "rva": "0x47bb210",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb218",
+      "value": "0x140855aa0",
+      "possible_target": "0x855aa0"
+    },
+    {
+      "rva": "0x47bb220",
+      "value": "0x140a120c0",
+      "possible_target": "0xa120c0"
+    },
+    {
+      "rva": "0x47bb228",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb230",
+      "value": "0x140a0ed40",
+      "possible_target": "0xa0ed40"
+    },
+    {
+      "rva": "0x47bb238",
+      "value": "0x140a0ea90",
+      "possible_target": "0xa0ea90"
+    },
+    {
+      "rva": "0x47bb240",
+      "value": "0x140a11570",
+      "possible_target": "0xa11570"
+    },
+    {
+      "rva": "0x47bb248",
+      "value": "0x1408523c0",
+      "possible_target": "0x8523c0"
+    },
+    {
+      "rva": "0x47bb250",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb258",
+      "value": "0x1408522c0",
+      "possible_target": "0x8522c0"
+    },
+    {
+      "rva": "0x47bb260",
+      "value": "0x140a0ef40",
+      "possible_target": "0xa0ef40"
+    },
+    {
+      "rva": "0x47bb268",
+      "value": "0x142b2b5b0",
+      "possible_target": "0x2b2b5b0"
+    },
+    {
+      "rva": "0x47bb270",
+      "value": "0x144e71f20",
+      "possible_target": "0x4e71f20"
+    }
+  ],
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

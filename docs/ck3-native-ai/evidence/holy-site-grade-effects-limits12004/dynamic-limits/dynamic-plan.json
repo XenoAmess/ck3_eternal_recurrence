@@ -1,0 +1,112 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "holy-site-dynamic-capacity-changes",
+  "question": "Do any original CK3 1.20.0.4 decision/event/effect/parameter/modifier mechanisms increase loaded total/eminent HolySite maximums, versus merely modifying membership?",
+  "purpose": "player-legality",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "Player-derived Faith Religion definition capacity and original authored mutation routes",
+    "identity_kind": "definition-key",
+    "identity_lifetime": "Exact-image and installed-script source byte lifetime",
+    "producer_trigger": "not-applicable",
+    "producer": "Previously closed ReligionType constructor/finalizer; exhaustive original authored mechanics scan",
+    "caller": "Native script-value registered leafs, ordinary decision legality and CanCreate",
+    "consumer": "Current total/eminent capacity comparisons",
+    "cache_lifetime": "Existing immutable exact-image cache; no live model refresh or sampling",
+    "expected_signal": "No authored capacity-mutating progression; list mutation routes independently identified; explicit unknown for hidden native writes",
+    "zero_sample_meaning": "Zero setters in the enumerated authored/literal-name scope only, not absolute absence of every native alias/write",
+    "stop_condition": "Complete authored mutation/capacity scan plus exact getter dependency closure and bounded same-displacement locator report; unknown indirect native paths separated",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "dynamic",
+      "layer": "source-contract",
+      "path": "SOURCE-CONTRACT-DYNAMIC-a01.json",
+      "sha256": "b8f1243bb45ded54420e0d614fbab584a4345f22c146a1c00829c7967f4440f3",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Enumerated original progression routes, exact getter dependency and explicit native-write boundary"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "scripts",
+      "label": "All original/DLC authored mechanics"
+    },
+    {
+      "id": "limits",
+      "label": "Loaded Religion definition min/max"
+    },
+    {
+      "id": "getters",
+      "label": "Registered direct-field getters and action gates"
+    },
+    {
+      "id": "membership",
+      "label": "Faith total/eminent membership lists"
+    },
+    {
+      "id": "unknown",
+      "label": "Unexhausted indirect/native write aliases"
+    }
+  ],
+  "edges": [
+    {
+      "id": "authored",
+      "from": "scripts",
+      "to": "membership",
+      "label": "Only ordinary guarded Adopt/Promote additions found; creation named cost is not effect",
+      "status": "static-confirmed",
+      "evidence": [
+        "dynamic"
+      ]
+    },
+    {
+      "id": "getter",
+      "from": "limits",
+      "to": "getters",
+      "label": "Four leafs directly read definition fields without flag/modifier/type callbacks",
+      "status": "static-confirmed",
+      "evidence": [
+        "dynamic"
+      ]
+    },
+    {
+      "id": "not-increment",
+      "from": "membership",
+      "to": "limits",
+      "label": "A count or grade change is not a maximum increment",
+      "status": "static-confirmed",
+      "evidence": [
+        "dynamic"
+      ]
+    },
+    {
+      "id": "all-writes",
+      "from": "unknown",
+      "to": "limits",
+      "label": "Absolute exclusion of every hidden/native indirect field write not proved",
+      "status": "unknown",
+      "evidence": [
+        "dynamic"
+      ],
+      "open_question": "Other owner aliases, generic reflection and bulk-copy paths were not fully typed; no absolute runtime write invariant claimed."
+    }
+  ],
+  "cases": [
+    {
+      "id": "source-only",
+      "question": "Authored dynamic capacity and natural full-cap overflow routes",
+      "status": "not-applicable",
+      "reason": "Completed as offline source research; observed status requires live evidence, and no live execution occurred.",
+      "evidence": [
+        "dynamic"
+      ]
+    }
+  ]
+}

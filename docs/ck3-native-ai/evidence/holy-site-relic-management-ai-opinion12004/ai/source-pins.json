@@ -1,0 +1,451 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:27:49.607795+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "external_reused_sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+      "bytes": 21681,
+      "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\storage\\RESEARCH-STORAGE-ACTIVE-a01.json",
+      "bytes": 9807,
+      "sha256": "6ca7961c7f3b02eb7aeed8578e6e2266de8c193d1bbdee5d594e39a6d16d0961"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\storage-retention-policy.json",
+      "bytes": 4022,
+      "sha256": "ca60e36bef8e59ffafa939689a6ba4106420f20b7c2db19a1199d6408b3131e5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\research-tooling-workflow.md",
+      "bytes": 12917,
+      "sha256": "8ae953332b7dc0fdc584d3f77972f25bd08ea4991aedf8f327d9e5e2e1c10254"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-relic-native-permissions12004.md",
+      "bytes": 6576,
+      "sha256": "28ce322e1207a6982510048fa6e20087a080ac59412269d86d7481ad6435e59c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-relic-native-permissions12004\\guard-contract.md",
+      "bytes": 11450,
+      "sha256": "e881270ab552e84f57db9af0f9df3747d05c1824e9e24998ac81ae1f2cf5722c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\holy-site-shared-relic-value12004.md",
+      "bytes": 23147,
+      "sha256": "11305aadc0eb47fd03778127dab15e97d58c4149e2bfd589f3d11ea1fff31656"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\holy-site-shared-relic-value12004\\native-sharing.evidence.json",
+      "bytes": 16949,
+      "sha256": "380879161940dcbaf3d447cd0633a1347f0b4ba431e351b0ed64c1343a5ac19a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\action-candidate-a01\\source-slot\\effective-slot-picker-complete.json",
+      "bytes": 9496,
+      "sha256": "de1ae8c7c82e3ef19713ea1c41b7a227a0b7682f1b0f9a60cd30a07f18faca4b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-command-vtable.json",
+      "bytes": 5811,
+      "sha256": "7ee557623c3fa0e5199de957e9acd2d194dfbbb2ea219def23f857ed769eeeec"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-command-vtable.json",
+      "bytes": 5811,
+      "sha256": "cca094333080b57b6f1f9f2a88ca79bf6e43700addf085eeca51fec02ba9c359"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\enshrine-receiver-complete.json",
+      "bytes": 59797,
+      "sha256": "75bfef0b1094973fc64e639108f749b770af0e742ebabcb6871e6482396c8681"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\relic-candidate\\permission-candidate-a01\\source-guard\\remove-receiver-complete.json",
+      "bytes": 21337,
+      "sha256": "1d7e43c648b574a4a83f0776e7921d6cb82bedb13f8e1d8b2d75379baf436a09"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+      "bytes": 1719,
+      "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+    }
+  ],
+  "owned_sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-artifact-cache-strings-a01.json",
+      "bytes": 1489,
+      "sha256": "c8a0838a52f78088d166aa8da277d7493c9463051d5ac06925cc1b17f303d1b5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-callgraph-review.md",
+      "bytes": 12806,
+      "sha256": "5fa36b1bc1ba265f1168bce06c94ca3dbf1912018090e6844571923d93965f5a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-decision-debug-entry-probe-a01.asm",
+      "bytes": 21094,
+      "sha256": "7c2d2d2fad22abdb45ef55bd7a48e47d0148be4b436f0c32091fd72ed59c97c6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-decision-debug-entry-probe-a01.json",
+      "bytes": 42642,
+      "sha256": "c64d56153249f095a4c2929e92af5d1c9e0ae977b958195b48094d9a851baa24"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-decision-scheduler-name-locators-a01.json",
+      "bytes": 2777,
+      "sha256": "2e2a8e845cf4d2fec7b4b2c3df44fb03b9306109278216b2dd6285a495f2f21c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-decision-timing-probe-a01.asm",
+      "bytes": 12165,
+      "sha256": "d820cb6506e12721489ea6a3618df8e0e0346b877a10959b7376270bea2780c3"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-decision-timing-probe-a01.json",
+      "bytes": 25238,
+      "sha256": "bdecdc3239816f046d9edd6c28bf70a75b666d35af7bfe30f56ecba3b55ec8dd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-relic-name-locators.json",
+      "bytes": 30900,
+      "sha256": "18f7095babb5aeab9c6a6acd541cf3fc5465396a76900e514428cf09a5073e67"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\ai-scheduler-token-xrefs-a01.json",
+      "bytes": 1636,
+      "sha256": "c41f14dd169ef31b4900d16726fbb3e9b13aa8836b7403943547aa7079708645"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\available-ai-adult-trigger-excerpt-a01.json",
+      "bytes": 1463,
+      "sha256": "6467cd10120622b0045684240e901e76f43ff2b18e67f0fb31571b88ee83bed1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\available-ai-definition-search-a01.json",
+      "bytes": 440655,
+      "sha256": "ef293ff87a78be7101f4729c5f086f15a99f382f4cf385d59ef2f41df668f22a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\command-builders-entry-probe-a01.asm",
+      "bytes": 15560,
+      "sha256": "2fc5854f699cd3063c39230d57055e68ad2d2ea3c9d0c63450ee0b55309476aa"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\command-builders-entry-probe-a01.json",
+      "bytes": 31991,
+      "sha256": "20e72439303996a7239f33459cd9916488ec60174daf8a2138753e53034cb207"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\command-xrefs-a01.json",
+      "bytes": 7280,
+      "sha256": "45440ca54edc42364cb2fe441f896fd340034321bb2baefe536985ee2ca62f37"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\decision-info-excerpts-a01.json",
+      "bytes": 7234,
+      "sha256": "4ca4bd77ebfd90769d072c9a89087e442d738bf40ec82d22f949ac0448db8a69"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\effect-entry-probe-a01.asm",
+      "bytes": 4533,
+      "sha256": "683c02155468ca02b1890506bd79b6b04ef0d96d7d0a6310c2ece0646dfd999f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\effect-entry-probe-a01.json",
+      "bytes": 9826,
+      "sha256": "0f90478586d9f6c4edb053d4e93fd4b5b2b4a4f33c145a4187c74862dd6c9a35"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-effect-entry-vtable-a01.json",
+      "bytes": 2785,
+      "sha256": "711f98b80248d519990516e568e2190040b371663b1f17a496487ad160f6d70f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-effect-registration-probe-a01.asm",
+      "bytes": 6577,
+      "sha256": "3181fbf3dd526e9ce6419a0f3a838772da3e6ad30cee9b9a7b86830cfa11ef85"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-effect-registration-probe-a01.json",
+      "bytes": 13911,
+      "sha256": "3f962d7320652fae46667ad75d26105a4daaef4349f9c117e52f5560eb8f21a6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-entry-vtable-a01.json",
+      "bytes": 3265,
+      "sha256": "1dad876b71ec956540acd929e62081fa51bcb8ffae9d940b168b7117a18019fd"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-factory-aligned-a02.asm",
+      "bytes": 2721,
+      "sha256": "8db18c645edfb095acdbf5a1ef7069b3f7dcaa963928d3139cd0df78fe047347"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-factory-aligned-a02.json",
+      "bytes": 6307,
+      "sha256": "c595c5fcf273ed40af3fbc327afa08c433f6ffe143706a1a2ed09c3b588cd757"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-registration-probe-a01.asm",
+      "bytes": 6675,
+      "sha256": "07c688b274f2263370f1575a078603b1234742a9503523f10624ea8567ad9e62"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\enshrine-trigger-registration-probe-a01.json",
+      "bytes": 14099,
+      "sha256": "1827158b7aae58607ad8fc5e5edc3ac6fc14093d95c1faf213b7ea56e09cc79a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\extract_available_trigger.py",
+      "bytes": 1016,
+      "sha256": "ed221c0b66b6752e4aecfbb96f321cbc85bf41a451b91bee6925cf7df5aca961"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\extract_stock_sections.py",
+      "bytes": 1143,
+      "sha256": "f9959211f599f0fb06ffbc4782b9e0f93f9620533dd10cef92a0b1dd6e3ab238"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\fill_research_plan.py",
+      "bytes": 4937,
+      "sha256": "b47d57522eed8b67899a5d08558b1ddb9db6f972a4bafba63086f78f8f476b78"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\non-gui-command-builders-bounded-a01.asm",
+      "bytes": 14500,
+      "sha256": "6b5ce9f1720f5fa7f901e0cb1c2a871aa61ef09258f5cf77586a9548daac637f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\non-gui-command-builders-bounded-a01.json",
+      "bytes": 29531,
+      "sha256": "4e9e15fe4f335b4f97a27c5fd7331ab89f442553c67f861236cdc68aae7a062e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\non-gui-validator-builders-bounded-a01.asm",
+      "bytes": 19569,
+      "sha256": "50bd68e64d473f1f987344b65d277e6fd2f56d245de7666ebfc0b8c44dc22827"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\non-gui-validator-builders-bounded-a01.json",
+      "bytes": 39680,
+      "sha256": "a0c17534e57ab6967460e2fff7bccd9e8d92e079ae05a8edc66e71a136e609bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\read_picker_origin.py",
+      "bytes": 532,
+      "sha256": "9ac4a3c02f8b0c02205a0e9049496d73caf6dacdb30c056f47df24560c66954c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\read_sources.py",
+      "bytes": 1110,
+      "sha256": "b2621e0335ae0171caa5ac7cd4cadffb1bf0f6d147a9d7690960da36f2bc18cc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\read_stock_info.py",
+      "bytes": 1216,
+      "sha256": "20f5aa221d48daa4ac670704758b9af4f3cc9384ed1b2c5221ce55dc19d8f2d5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\relevant-cache-strings-a01.json",
+      "bytes": 719,
+      "sha256": "db47a0e70a444d5886f0dec2df73afab1750dbc8a399bc7d962034b7c0caea17"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\relevant-cache-strings-a02.json",
+      "bytes": 10999,
+      "sha256": "5b97dd1632273a0735ae7db0dcf90f51229000c08a41acf920f7318cc7b41470"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\remove-effect-entry-vtable-a01.json",
+      "bytes": 1586,
+      "sha256": "f3abf5e9733065709ddef5455b65719f2b2da69ae80f7901ae00cc04de1f1c8b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\remove-script-registration-names-a01.json",
+      "bytes": 1633,
+      "sha256": "c43ad289b936c7a8223ad0d5d1a3dc6fe458c7100254ad1f5ed12ae5c2387621"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\remove-trigger-entry-vtable-a01.json",
+      "bytes": 1709,
+      "sha256": "0204a107659ddc002c4b121159fe8d8869d46320701560b17e0454489b9ca00e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-body-entry-refs-a01.json",
+      "bytes": 2095,
+      "sha256": "dae1d6ad5f7e5c1ef535e86bee06884e56be82abc72a62cdad7fb2de7342f836"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-factories-a01.asm",
+      "bytes": 5649,
+      "sha256": "072296343b0fa3dc446e96b18c493d7baaa539ebeb5f1d50f5100f0d57ed045d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-factories-a01.json",
+      "bytes": 12128,
+      "sha256": "27f0b9ceb5ad3877f0206cc34b2ce3c4e6257ab63a4d463eb73073c6dbf04104"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-registrars-aligned-a01.asm",
+      "bytes": 5882,
+      "sha256": "23f112643769746cba46e0616516e976787506c50ae2cff693be595e5af0355e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-effect-registrars-aligned-a01.json",
+      "bytes": 12518,
+      "sha256": "0ff3caf01ce43251a3e672ca1a3f9a8ad23856eb5d6b248f74dc5b644bda637d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-effect-body-aligned-a01.asm",
+      "bytes": 11153,
+      "sha256": "3cd270be7e18e232d14785a5385a5c90e56688208a78a8ddc81fb77e74f7a75d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-effect-body-aligned-a01.json",
+      "bytes": 22967,
+      "sha256": "f7c0c2f80a8772e017a7e13004d1c56a9404ceec3ee0831e63740e840db973a0"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-effect-rtti-a01.json",
+      "bytes": 4445,
+      "sha256": "6aefd682ec2446adb027be407d620e20f733cf08b2a5f5ff6ed468229dd2c94f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-effect-vtable-a01.json",
+      "bytes": 4206,
+      "sha256": "4a04e54f28a1552a6855bed54a10c43bafd64ddd4dfa202fe15df0db7334e64f"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-trigger-body-aligned-a01.asm",
+      "bytes": 10113,
+      "sha256": "133977a59b5191b304ac0a8ff38db64263f3a9976e5979774d89937f5da7e973"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-trigger-body-aligned-a01.json",
+      "bytes": 20883,
+      "sha256": "e1c8101ec52c11570e4cbf5a6a910b0dda996186457d7644ecf4f2040a1a35ec"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-trigger-rtti-a01.json",
+      "bytes": 4440,
+      "sha256": "53be2f2b00f589669faccb81b7dd0438bdcc5646742e4ad9e26e6412dabd8ce5"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-enshrine-trigger-vtable-a01.json",
+      "bytes": 4563,
+      "sha256": "c2ac499bfc4d6f2955fba3521423c231195208172b8f12da7d3a1cd53fdfd9bc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-effect-body-aligned-a01.asm",
+      "bytes": 9965,
+      "sha256": "738bd3aef49d2dd09e8376aefce360b1b16d5af0b5b22ab62f974bb59ede8656"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-effect-body-aligned-a01.json",
+      "bytes": 20577,
+      "sha256": "38d14a55ba06c79d43c1fecd5d91564e1909b06ebc4b1149d12d781698bb0b9a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-effect-vtable-a01.json",
+      "bytes": 4202,
+      "sha256": "3c584484c87af0494dc0e655bccf0f1e970aaf1bf350a271048ed4b57b549864"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-trigger-body-aligned-a01.asm",
+      "bytes": 9036,
+      "sha256": "48ec349ce07b5108b4d13608515caffe00b9c2580f1969f8d7cdf3f820f5609e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-trigger-body-aligned-a01.json",
+      "bytes": 18719,
+      "sha256": "a03a9b3a483046b71c6a7faab3e7d75ed38f67a9994860a7543f9ab6ce9c2819"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-remove-trigger-vtable-a01.json",
+      "bytes": 4559,
+      "sha256": "f6bc933bf047d29750ac45f3c875ed6ad8c510ced79a5f3f224a98e177fe42c4"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-tokens-xrefs-a01.json",
+      "bytes": 2075,
+      "sha256": "9b72a57a3b7e2889a41ad4962afebc15b2b9b5492cfcb6766fde2d2fe207a6fc"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-trigger-factories-a01.asm",
+      "bytes": 4490,
+      "sha256": "fcfbb7287decc51df69ae55e1ba1dc8bd286fd84c06d5ab6e699bd65a604c4d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-trigger-factories-a01.json",
+      "bytes": 9877,
+      "sha256": "12de915f4119c0e7e8e9e4ed5619f3c4ed68bc32c34c39b94c16440df1a5bb9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-trigger-registrars-aligned-a01.asm",
+      "bytes": 5246,
+      "sha256": "2968a2b58e0cec560d43e7d76534faf11031a8afbb7770455bef901e6d4b2e5a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\script-trigger-registrars-aligned-a01.json",
+      "bytes": 11264,
+      "sha256": "6e83b909206131f7bb86a6eb30e17204efa26015ccb2d8c55c5ce7f39ec17ea9"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\seal_ai_research.py",
+      "bytes": 18156,
+      "sha256": "eb6ec4a32693ed8d43aba4d407f47c2551f785fb37bdcb7702ef6be9053345bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\search_stock.py",
+      "bytes": 2325,
+      "sha256": "a84989869815aa71f4eed3dd9e9a8302dbd90c53c22c87179fa8d0901d4e7432"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\slot-eligibility-helper-bounded-a02.asm",
+      "bytes": 12420,
+      "sha256": "20e796bc23d8a3d7130063dd94e1616240ee51e3012ff15751522c1932921d57"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\slot-eligibility-helper-bounded-a02.json",
+      "bytes": 25333,
+      "sha256": "ad4bb70d88bc6ee713fce5762d8af529f0dda906d053601c089a52c0676d208d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\source-contract.json",
+      "bytes": 30578,
+      "sha256": "99a4c2cf6f5e9417f5d343f28c9a3c818bc456b2a156dc02ec7d46f2142c89ae"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\static-packet-boundary-check-a01.json",
+      "bytes": 17862,
+      "sha256": "d45b45e3047ec470c551ecf8fa6cde046770f81c840a5c866e7a8baeba6d8f14"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\stock-ai-decision-excerpts-a01.json",
+      "bytes": 17030,
+      "sha256": "d0623d613a2f5070617eabbdc9356a7bb7acb9797469602447de146a371d2d4d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\stock-script-term-search-a01.json",
+      "bytes": 6904,
+      "sha256": "38a6bf802dbc09462c5d4e04b8fddece3d0e2b4a46a8a82d71853c84063b0958"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\trace_cache.py",
+      "bytes": 9780,
+      "sha256": "b44f79158bb291c50217225c0a4c7038518a6579c5583362a4b9af06f4f67b58"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\permissions-ai-opinion\\ai\\verify_static_packets.py",
+      "bytes": 2925,
+      "sha256": "62df47b8de60af18581b9895d168eba782360c626b23a01c64896b8a4005e6b9"
+    }
+  ],
+  "section_cache_full_hash_or_copy_performed": false
+}

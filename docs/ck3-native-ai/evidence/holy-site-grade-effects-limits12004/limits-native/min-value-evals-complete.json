@@ -1,0 +1,19 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:22:10.416660+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "begin_rva": 45266464,
+  "end_rva": 45266682,
+  "raw_sha256": "8fd8a1f09e4bd528639b99c792ccd025e6a0d9b1293bc092370d11bdeca40fb9",
+  "bytes_hex": "488b026683380f7506448b4008eb0641b8ffffffff488b054c281f034885c07512488b05b8271f03488b48208b81f0090000c3418bc881e1ffffff003b482c7317488b40204803c9488b54c8084885d27406443942087407488b1581271f03488b4a208b81f0090000c3cccccccccccc488b026683380f7506448b4008eb0641b8ffffffff488b05dc271f034885c07512488b0548271f03488b48208b81e8090000c3418bc881e1ffffff003b482c7317488b40204803c9488b54c8084885d27406443942087407488b1511271f03488b4a208b81e8090000c3",
+  "cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+  "cache_offset": 45262368,
+  "asm_sha256": "bf68ca77b2bff819f83d3fe35a6e319331fd43dee3db8bfc1bb9ecaa03a9158f",
+  "boundary": null,
+  "scope": "whole runtime function when exact boundary present; otherwise bounded locator",
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

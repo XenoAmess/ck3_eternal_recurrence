@@ -1,0 +1,539 @@
+{
+  "schema": "ck3-12004-holy-site-limits-dynamic-source-append-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:47:04.736026+00:00",
+  "source_baseline_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "later_main_HEAD_observed_read_only": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1",
+  "later_HEAD_meaning": "Other lanes evolved main. Exact image/static native chain is the prior exact-build cache; no assertion all later working-tree files are clean. No new main guard/rebuild/requalification performed.",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_EXE_or_process_reads": 0,
+  "new_build_or_game_operation": false,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "prior_contract_unchanged": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT.json",
+    "bytes": 32307,
+    "sha256": "2eef0f1698db3a847669c7c64a7ee0cd59ba6c387e2528c60d928b3cacf55e9b"
+  },
+  "answer": {
+    "supported_original_progression_mechanism_that_increases_total_max_or_eminent_max_found": false,
+    "known_authored_set_add_change_max_calls_found": 0,
+    "known_capacity_modifiers_found": 0,
+    "no_claim_of_absolute_native_write_impossibility": true,
+    "maximum_field_value_changes_distinct_from_membership_overflow": true,
+    "original_natural_count_10_or_eminent_count_4_source_example_proven": false,
+    "practical_conclusion": "In the complete enumerated original/DLC authored corpus and identified exact-build interfaces, no decision/event/effect or modifier progression increases max. Ordinary player/AI add/promote paths are guarded. Do not claim the engine cannot be changed through any hidden, indirect, debug, reload, mod or save-edit path."
+  },
+  "author_scope": {
+    "files_checked": 7536,
+    "bytes_checked": 222428209,
+    "includes": "Every previously enumerated original/DLC txt/gui/info/asset/dlc file, including all installed decisions/events/scripted effects/on_actions/doctrine/tenet/trait/tradition/government/modifier definitions. Each file SHA matches the earlier 7536 manifest.",
+    "related_distinct_token_count": 514,
+    "capacity_related_tokens": {
+      "elevate_holy_site_decision_under_eminent_holy_sites_max": 1,
+      "eminent_holy_sites_max": 3,
+      "adopt_holy_site_decision_under_holy_sites_max": 1,
+      "holy_sites_max": 4,
+      "faith_eminent_holy_sites_max_default": 2,
+      "faith_holy_sites_max_default": 2,
+      "max_holy_site_rarity_total": 3
+    },
+    "notes": "holy_sites_max/eminent_holy_sites_max occurrences are ordinary threshold reads, optional Religion-format documentation, and define fallbacks. MAX_HOLY_SITE_RARITY_TOTAL is material rarity sum, not Faith membership capacity. Free holy-site actions change payment, not count max."
+  },
+  "native_interface_scope": {
+    "complete_cached_rdata_relevant_ASCII_strings": 261,
+    "identifier_shaped_rows": 183,
+    "native_named_capacity_mutators_found": [],
+    "registered_or_located_membership_actions": [
+      "add_holy_site",
+      "add_eminent_holy_site",
+      "make_holy_site_eminent",
+      "make_holy_site_not_eminent",
+      "remove_holy_site",
+      "create_holy_site"
+    ],
+    "known_read_only_capacity_interfaces": [
+      "holy_sites_max",
+      "eminent_holy_sites_max",
+      "GetHolySitesMax",
+      "GetEminentHolySitesMax"
+    ],
+    "not_a_full_registry_proof": "Null-terminated literal inventory alone cannot exclude constructed names, hashes or generic aliases. Known registered script-value leafs were already bound to actual field reads; no new native registry callbacks invoked."
+  },
+  "dependency_closure": {
+    "actual_values": "Every complete limit leaf2B2B540/5B0/620/690 resolves Religion->Definition+20 and reads one signed int32 field. No Faith/Rite parameter, variable, flag, trait, doctrine, government, modifier aggregate or HolySite Type getter is called.",
+    "consequence": "Those components themselves do not add to these limit values. allow_adopt_any_holy_site broadens adoptability outside the independent capacity check. Changing Faith/Religion changes the referenced definition, not max by increment; all 49 authored Religion definitions use the same9/3 defaults.",
+    "dynamic_new_faith_boundary": "Current dynamic Faith must be resolved afresh through actual Religion fullID; authored103 is not a runtime Faith census or a proof that every native dynamic-construction path can never allocate a changed definition.",
+    "typed_writes_confirmed": "Prior constructor32838C0 initializes four fields -1 and typed finalizer3283FD0 conditionally copies defaults; no runtime capacity-mutating writer was newly identified."
+  },
+  "natural_mutation_paths": {
+    "all_exact_occurrences": [
+      {
+        "path": "common/decisions/50_holy_site_decisions.txt",
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+        "line": 79,
+        "text": "\t\t\tmake_holy_site_eminent = {",
+        "tokens": [
+          "make_holy_site_eminent"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 74,
+            "text": "\teffect = {"
+          },
+          {
+            "line": 75,
+            "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+          },
+          {
+            "line": 76,
+            "text": "\t\t\tsave_scope_as = county_holder"
+          },
+          {
+            "line": 77,
+            "text": "\t\t}"
+          },
+          {
+            "line": 78,
+            "text": "\t\troot.faith = {"
+          },
+          {
+            "line": 79,
+            "text": "\t\t\tmake_holy_site_eminent = {"
+          },
+          {
+            "line": 80,
+            "text": "\t\t\t\ttarget = scope:selected_item"
+          },
+          {
+            "line": 81,
+            "text": "\t\t\t\tactor = root"
+          },
+          {
+            "line": 82,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 83,
+            "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+          },
+          {
+            "line": 84,
+            "text": "\t\t}"
+          },
+          {
+            "line": 85,
+            "text": "\t\tif = {"
+          }
+        ]
+      },
+      {
+        "path": "common/decisions/50_holy_site_decisions.txt",
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+        "line": 231,
+        "text": "\t\t\tmake_holy_site_not_eminent = {",
+        "tokens": [
+          "make_holy_site_not_eminent"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 226,
+            "text": "\teffect = {"
+          },
+          {
+            "line": 227,
+            "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+          },
+          {
+            "line": 228,
+            "text": "\t\t\tsave_scope_as = county_holder"
+          },
+          {
+            "line": 229,
+            "text": "\t\t}"
+          },
+          {
+            "line": 230,
+            "text": "\t\troot.faith = {"
+          },
+          {
+            "line": 231,
+            "text": "\t\t\tmake_holy_site_not_eminent = {"
+          },
+          {
+            "line": 232,
+            "text": "\t\t\t\ttarget = scope:selected_item"
+          },
+          {
+            "line": 233,
+            "text": "\t\t\t\tactor = root"
+          },
+          {
+            "line": 234,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 235,
+            "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+          },
+          {
+            "line": 236,
+            "text": "\t\t}"
+          },
+          {
+            "line": 237,
+            "text": "\t\tif = {"
+          }
+        ]
+      },
+      {
+        "path": "common/decisions/50_holy_site_decisions.txt",
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+        "line": 392,
+        "text": "\t\t\tremove_holy_site = {",
+        "tokens": [
+          "remove_holy_site"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 387,
+            "text": "\t\t\t\t\t}"
+          },
+          {
+            "line": 388,
+            "text": "\t\t\t\t}"
+          },
+          {
+            "line": 389,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 390,
+            "text": "\t\t}"
+          },
+          {
+            "line": 391,
+            "text": "\t\troot.faith = {"
+          },
+          {
+            "line": 392,
+            "text": "\t\t\tremove_holy_site = {"
+          },
+          {
+            "line": 393,
+            "text": "\t\t\t\ttarget = scope:selected_item"
+          },
+          {
+            "line": 394,
+            "text": "\t\t\t\tactor = root"
+          },
+          {
+            "line": 395,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 396,
+            "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+          },
+          {
+            "line": 397,
+            "text": "\t\t}"
+          },
+          {
+            "line": 398,
+            "text": "\t\tif = {"
+          }
+        ]
+      },
+      {
+        "path": "common/decisions/50_holy_site_decisions.txt",
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+        "line": 557,
+        "text": "\t\t\tadd_holy_site = {",
+        "tokens": [
+          "add_holy_site"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 552,
+            "text": ""
+          },
+          {
+            "line": 553,
+            "text": "\tcooldown = { years = holy_site_decision_cooldown_value }"
+          },
+          {
+            "line": 554,
+            "text": ""
+          },
+          {
+            "line": 555,
+            "text": "\teffect = {"
+          },
+          {
+            "line": 556,
+            "text": "\t\troot.faith = {"
+          },
+          {
+            "line": 557,
+            "text": "\t\t\tadd_holy_site = {"
+          },
+          {
+            "line": 558,
+            "text": "\t\t\t\ttarget = scope:selected_item"
+          },
+          {
+            "line": 559,
+            "text": "\t\t\t\tactor = root"
+          },
+          {
+            "line": 560,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 561,
+            "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+          },
+          {
+            "line": 562,
+            "text": "\t\t}"
+          },
+          {
+            "line": 563,
+            "text": "\t}"
+          }
+        ]
+      },
+      {
+        "path": "common/scripted_costs/00_costs.txt",
+        "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+        "line": 777,
+        "text": "create_holy_site = {",
+        "tokens": [
+          "create_holy_site"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 772,
+            "text": "# scope:title - barony title of location where holy site is created"
+          },
+          {
+            "line": 773,
+            "text": "# scope:holy_site - holy site being added (warning! may not be set, if generating description, and holy site is new)"
+          },
+          {
+            "line": 774,
+            "text": "# scope:holy_site_type - holy site type being created"
+          },
+          {
+            "line": 775,
+            "text": "# scope:faith - Faith the holy site is created for"
+          },
+          {
+            "line": 776,
+            "text": "# scope:artifacts - List of artifacts being enshrined"
+          },
+          {
+            "line": 777,
+            "text": "create_holy_site = {"
+          },
+          {
+            "line": 778,
+            "text": "\tpiety = {"
+          },
+          {
+            "line": 779,
+            "text": "\t\tvalue = {"
+          },
+          {
+            "line": 780,
+            "text": "\t\t\tvalue = 2000"
+          },
+          {
+            "line": 781,
+            "text": "\t\t\tdesc = \"BASE\""
+          },
+          {
+            "line": 782,
+            "text": "\t\t}"
+          },
+          {
+            "line": 783,
+            "text": "\t\tif = {"
+          }
+        ]
+      },
+      {
+        "path": "common/scripted_effects/02_starting_holy_site_relics_effects.txt",
+        "sha256": "1a4012823cfc44808ca113b786713ca387230a397ba54bab4245627618e9092a",
+        "line": 1594,
+        "text": "\t\t\tset_holy_site_owner = {",
+        "tokens": [
+          "set_holy_site_owner"
+        ],
+        "comment_only": false,
+        "context": [
+          {
+            "line": 1589,
+            "text": "\t\t\tadd_artifact_modifier = artifact_monthly_prestige_penalty_modifier # overwrite default creation modifier"
+          },
+          {
+            "line": 1590,
+            "text": "\t\t}"
+          },
+          {
+            "line": 1591,
+            "text": ""
+          },
+          {
+            "line": 1592,
+            "text": "\t\tscope:newly_created_artifact = {"
+          },
+          {
+            "line": 1593,
+            "text": "\t\t\t# Enshrine without history (setting owner & equipping = enshrining), skipping 'can_enshrine_artifact' rules)"
+          },
+          {
+            "line": 1594,
+            "text": "\t\t\tset_holy_site_owner = {"
+          },
+          {
+            "line": 1595,
+            "text": "\t\t\t\ttarget = scope:relic_site"
+          },
+          {
+            "line": 1596,
+            "text": "\t\t\t\tgenerate_history = no"
+          },
+          {
+            "line": 1597,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 1598,
+            "text": "\t\t\tequip_artifact_to_owner = yes"
+          },
+          {
+            "line": 1599,
+            "text": "\t\t}"
+          },
+          {
+            "line": 1600,
+            "text": "\t}"
+          }
+        ]
+      }
+    ],
+    "adopt": {
+      "effect_line": 557,
+      "ordinary_is_valid_capacity_line": 499,
+      "AI_lines": [
+        570,
+        571,
+        572,
+        573,
+        574
+      ],
+      "AI_behavior": "T < Tmax-1, stricter than ordinary, no full-cap exception"
+    },
+    "promote": {
+      "effect_line": 79,
+      "ordinary_is_valid_capacity_line": 38,
+      "AI_capacity_line": 107,
+      "AI_behavior": "E<Emax, no stage allowing E>=Emax"
+    },
+    "create": {
+      "scripted_cost_name_at777_is_not_effect": true,
+      "ordinary_native_validator": "29A5AD0..29A646B,29A5C56/61 currentT<Def9EC",
+      "capacity_limit_is_independent_of_scripted_cost": true
+    },
+    "starting_artifacts": "set_holy_site_owner1594 runs in scope:newly_created_artifact1592; inventory owner and equip, not Faith site-list mutation. No event membership additions found.",
+    "normal_stage_bypass_source_example_found": false,
+    "bypass_boundary": "Native debug/requirements bypass and forced arbitrary effect execution are outside a normal legal player/AI route; even if count changes, max field is not thereby incremented. No natural full-cap overflow example was proved."
+  },
+  "write_locator_audit": {
+    "raw_positive_displacement_counts": {
+      "0x9e8": 109,
+      "0x9ec": 18,
+      "0x9f0": 86,
+      "0x9f4": 16
+    },
+    "raw_total": 229,
+    "maximum_allowed_per_field_before_decode": 256,
+    "possible_write_location_count": 64,
+    "typed_Religion_owner_required": true,
+    "known_typed_model_writes": "Constructor pair stores Def9E8/9F0=-1; finalizer writes Def9EC/9F4 via adjusted RBX negative offsets, already closed in prior SOURCE-CONTRACT.",
+    "unresolved": "Other same-displacement candidates were not typed to Religion; their instruction starts can overlap/misalign. Existing caches lacked exact whole-function boundaries for three max-write candidates88D865/39A015B/33AEEBB. This branch did not make new EXE metadata reads. Negative aliases, alternative bases, index writes, generic reflection deserialization/copy and bulk copies are not exhaustively excluded.",
+    "absolute_runtime_write_exclusion_claimed": false
+  },
+  "source_files": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_costs\\00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\02_starting_holy_site_relics_effects.txt",
+      "bytes": 50787,
+      "sha256": "1a4012823cfc44808ca113b786713ca387230a397ba54bab4245627618e9092a"
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\modifier_definition_formats\\00_religion_definitions.txt",
+      "bytes": 715,
+      "sha256": "9a82d927cefa1660d1e24000302c0b4047f828aa2406d13c261f1c0acd92401c"
+    }
+  ],
+  "source_excerpt": {
+    "common/scripted_costs/00_costs.txt": [
+      {
+        "first_line": 770,
+        "last_line": 791,
+        "text": "770: # Determines the cost of creating a new regular holy site for a faith\n771: # Root scope: Character creating holy site\n772: # scope:title - barony title of location where holy site is created\n773: # scope:holy_site - holy site being added (warning! may not be set, if generating description, and holy site is new)\n774: # scope:holy_site_type - holy site type being created\n775: # scope:faith - Faith the holy site is created for\n776: # scope:artifacts - List of artifacts being enshrined\n777: create_holy_site = {\n778: \tpiety = {\n779: \t\tvalue = {\n780: \t\t\tvalue = 2000\n781: \t\t\tdesc = \"BASE\"\n782: \t\t}\n783: \t\tif = {\n784: \t\t\tlimit = { scope:faith = { faith_has_free_holy_site_action_trigger = yes } }\n785: \t\t\tmultiply = {\n786: \t\t\t\tvalue = 0\n787: \t\t\t\tdesc = \"holy_site_creation_free_action_cost\"\n788: \t\t\t}\n789: \t\t}\n790: \t}\n791: }"
+      }
+    ],
+    "common/scripted_effects/02_starting_holy_site_relics_effects.txt": [
+      {
+        "first_line": 1592,
+        "last_line": 1599,
+        "text": "1592: \t\tscope:newly_created_artifact = {\n1593: \t\t\t# Enshrine without history (setting owner & equipping = enshrining), skipping 'can_enshrine_artifact' rules)\n1594: \t\t\tset_holy_site_owner = {\n1595: \t\t\t\ttarget = scope:relic_site\n1596: \t\t\t\tgenerate_history = no\n1597: \t\t\t}\n1598: \t\t\tequip_artifact_to_owner = yes\n1599: \t\t}"
+      }
+    ]
+  },
+  "evidence": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-authored-capacity-scan.json",
+      "bytes": 32028,
+      "sha256": "1965b880325a98874b76016b2064bf2e700c89f4dd38e8a0c177ebab6d32ce9e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-name-corpus.json",
+      "bytes": 25197,
+      "sha256": "9cd5b5f417288da7888bad43eba15ec26aa18bcf7f8ea50c8f85aa5a6a811d74"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-write-locators.json",
+      "bytes": 49243,
+      "sha256": "9524256427c571873f02d4973e2b4d434d382159d63ff22d2fa183503178457e"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-all-membership-mutator-occurrences.json",
+      "bytes": 12696,
+      "sha256": "2979cf77795c033f36cdc0dfaf267efd0ec0203c8e8668f79ab31c2f7fb903e1"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\source-validation.json",
+      "bytes": 3120,
+      "sha256": "a458c79b327a7651478b72204fba2a587cc5105a80872e7eecfb4f83785a9c74"
+    }
+  ],
+  "requirements_for_agent": "Treat9/3 as source-bound defaults; read actual current limits and membership counts independently. Never infer capacity gain from an added site, grade change, free action, changed flag/modifier or action ACK. Preserve genuine over-cap counts without truncating, then inspect actual max and legality."
+}

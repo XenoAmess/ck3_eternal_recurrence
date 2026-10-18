@@ -1,0 +1,117 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "holy-site-add-piety-negative-experience-12004",
+  "question": "Exact1.20.0.4 add_piety versus add_piety_and_experience: which signed branch writes wallet and devotion experience, and what remains unknown about adjusted net totals?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "original character resource effects, piety and piety experience native consumers",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "session/fullID generation for game objects; exact EXE build for code; no cross-reload pointer reuse",
+    "producer_trigger": "unknown",
+    "producer": "Exact effect registration and factory to compiled+B0 execute; normal negative callback closed",
+    "caller": "2D52F60->28BDB70->28D6FE0->28CDCD0;2D52AF0->28D6FE0->28CDC70",
+    "consumer": "wallet extension+110; experience extension+118 read by26979D0 kind0 and existing bound progress provider",
+    "cache_lifetime": "Callback directly writes owned raw resource fields; common wrapper may trigger level-change effects; no runtime observation or total poststate claim",
+    "expected_signal": "Complete exact body/branch/source pins, actual callsites on instruction boundaries, per-slot contribution/zero reasons, and explicit cache write/read sites; numerical examples separately static/pending/live history",
+    "zero_sample_meaning": "No process/runtime samples are taken. No new callsite found in bounded static set does not prove the engine never refreshes or refreshes on a calendar cadence.",
+    "stop_condition": "at most24 small primary bodies, 64 string locators, 2MiB new outputs; no broad exports; report remaining unknown",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "baseline-native",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/ck3-native-ai/holy-site-relic-management-ai-opinion-12004.md",
+      "sha256": "595eda1e4b2b4b56b573bb5efb08fa493da2458ad2f52252fc9bddf65efad5cd",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "existing conditional4to3 callbacks, -750 wallet sum and total devotion uncertainty"
+    },
+    {
+      "id": "consumer",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/piety-consumer-a01/SOURCE-CONTRACT.piety-consumer-a01.json",
+      "sha256": "609ba43f90a374bd66652c1289ad17d06a8c7b63edf3bcb7dfbb21a40cc23f54",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Fresh exact registration->factory->compiled execute->signed callback->wallet/experience field and consumer closure; actual net pending"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "registration",
+      "label": "registration"
+    },
+    {
+      "id": "effect_execute",
+      "label": "effect_execute"
+    },
+    {
+      "id": "wallet",
+      "label": "wallet"
+    },
+    {
+      "id": "experience",
+      "label": "experience"
+    }
+  ],
+  "edges": [
+    {
+      "id": "register_execute",
+      "from": "registration",
+      "to": "effect_execute",
+      "label": "Find exact registered implementation rather than effect name inference",
+      "status": "static-confirmed",
+      "evidence": [
+        "consumer"
+      ]
+    },
+    {
+      "id": "execute_wallet",
+      "from": "effect_execute",
+      "to": "wallet",
+      "label": "Close signed resource execution",
+      "status": "static-confirmed",
+      "evidence": [
+        "consumer"
+      ]
+    },
+    {
+      "id": "execute_experience",
+      "from": "effect_execute",
+      "to": "experience",
+      "label": "Close positive/negative branch and forced experience behavior",
+      "status": "static-confirmed",
+      "evidence": [
+        "consumer"
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "negative_plain",
+      "question": "add_piety=-250 experience mutation?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "negative_forced",
+      "question": "add_piety_and_experience=-500?",
+      "status": "pending",
+      "evidence": []
+    },
+    {
+      "id": "positive_plain",
+      "question": "positive plain add_piety differs?",
+      "status": "pending",
+      "evidence": []
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:47:56.371343+00:00",
+  "source_head": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1"
+}

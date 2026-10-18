@@ -1,0 +1,1206 @@
+{
+  "schema": "xar.faith-power.v4.terminology.sources.v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:24:55.115886+00:00",
+  "source_head": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "game_version_context": "1.20.0.4",
+  "installed_game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+  "exact_exe_sha256_context_only": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "exe_provenance": {
+    "path": "../ROOT-TASK-START-PREFLIGHT.json",
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504",
+    "boundary": "Reused Root fresh preflight; this lane does not rehash EXE or infer game version from generic PE 1.0.0.0."
+  },
+  "sources": [
+    {
+      "id": "SC-CONCEPT",
+      "relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+      "bytes": 350826,
+      "selected_entries": [
+        {
+          "key": "game_concept_holder",
+          "line": 29,
+          "original_line": " game_concept_holder: \"持有者\"",
+          "official_value": "持有者"
+        },
+        {
+          "key": "game_concept_holder_desc",
+          "line": 35,
+          "original_line": " game_concept_holder_desc: \"一个[title|E]的$game_concept_holder$是拥有该头衔的角色。[barony|E]和[county|E]头衔一旦确立就永远会有其$game_concept_holders$，但[duchy|E]、[kingdom|E]和[empire|E]头衔有可能尚未创建。进一步声明，高级别头衔的$game_concept_holder$不一定实际控制头衔[de_jure|E]地区内的任何领土。\\n\\n拥有更高级别的头衔可以让你拥有更高级别的[vassals|E]。例如，公爵可以拥有伯爵封臣，国王可以拥有公爵封臣。\"",
+          "official_value": "一个[title|E]的$game_concept_holder$是拥有该头衔的角色。[barony|E]和[county|E]头衔一旦确立就永远会有其$game_concept_holders$，但[duchy|E]、[kingdom|E]和[empire|E]头衔有可能尚未创建。进一步声明，高级别头衔的$game_concept_holder$不一定实际控制头衔[de_jure|E]地区内的任何领土。\n\n拥有更高级别的头衔可以让你拥有更高级别的[vassals|E]。例如，公爵可以拥有伯爵封臣，国王可以拥有公爵封臣。"
+        },
+        {
+          "key": "game_concept_barony",
+          "line": 260,
+          "original_line": " game_concept_barony: \"男爵领\"",
+          "official_value": "男爵领"
+        },
+        {
+          "key": "game_concept_county",
+          "line": 266,
+          "original_line": " game_concept_county: \"伯爵领\"",
+          "official_value": "伯爵领"
+        },
+        {
+          "key": "game_concept_count",
+          "line": 268,
+          "original_line": " game_concept_count: \"伯爵\"",
+          "official_value": "伯爵"
+        },
+        {
+          "key": "game_concept_count_desc",
+          "line": 271,
+          "original_line": " game_concept_count_desc: \"$game_concept_count$是[primary_title|E]为[county|E]的[ruler|E]。\\n\\n他们的[rank|E]只高于[barons|E]，直接低于[dukes|E]，因此他们可以拥有$game_concept_barons$[vassals|E]，$game_concept_duke$或更高级的统治者可以成为他们的[liege|E]。\"",
+          "official_value": "$game_concept_count$是[primary_title|E]为[county|E]的[ruler|E]。\n\n他们的[rank|E]只高于[barons|E]，直接低于[dukes|E]，因此他们可以拥有$game_concept_barons$[vassals|E]，$game_concept_duke$或更高级的统治者可以成为他们的[liege|E]。"
+        },
+        {
+          "key": "game_concept_religion",
+          "line": 302,
+          "original_line": " game_concept_religion: \"宗教\"",
+          "official_value": "宗教"
+        },
+        {
+          "key": "game_concept_religion_desc",
+          "line": 304,
+          "original_line": " game_concept_religion_desc: \"一种$game_concept_religion$可以包含许多不同的宗派，称为[faiths|E]。宗教又转而属于四大[religious_families|E]之一；[GetReligionFamily('rf_abrahamic').GetName]、[GetReligionFamily('rf_eastern').GetName]、[GetReligionFamily('rf_sinitic').GetName]或[GetReligionFamily('rf_pagan').GetName]。\"",
+          "official_value": "一种$game_concept_religion$可以包含许多不同的宗派，称为[faiths|E]。宗教又转而属于四大[religious_families|E]之一；[GetReligionFamily('rf_abrahamic').GetName]、[GetReligionFamily('rf_eastern').GetName]、[GetReligionFamily('rf_sinitic').GetName]或[GetReligionFamily('rf_pagan').GetName]。"
+        },
+        {
+          "key": "game_concept_faith",
+          "line": 309,
+          "original_line": " game_concept_faith: \"信仰\"",
+          "official_value": "信仰"
+        },
+        {
+          "key": "game_concept_faith_desc",
+          "line": 312,
+          "original_line": " game_concept_faith_desc: \"信仰是某个较大[religion|E]下的具体宗派。所有角色和[counties|E]都有一种信仰，正如他们有一种[culture|E]，并遵循信仰内的一种[rites|E]。\\n\\n信仰由其[mainline_rite|E]定义，主流礼仪的[core_tenets|E]和[doctrines|E]代表了整个信仰的信念。其他[rites|E]可以支持不同信念，与主流礼仪的差别越大越是[rite_divergent|E]\\n\\n每种信仰也有一项[fervor|E]值，控制该信仰在[rite_divergent|E][rites|E]脱离并建立自己的信仰时有多容易受到[heresy|E]影响。\"",
+          "official_value": "信仰是某个较大[religion|E]下的具体宗派。所有角色和[counties|E]都有一种信仰，正如他们有一种[culture|E]，并遵循信仰内的一种[rites|E]。\n\n信仰由其[mainline_rite|E]定义，主流礼仪的[core_tenets|E]和[doctrines|E]代表了整个信仰的信念。其他[rites|E]可以支持不同信念，与主流礼仪的差别越大越是[rite_divergent|E]\n\n每种信仰也有一项[fervor|E]值，控制该信仰在[rite_divergent|E][rites|E]脱离并建立自己的信仰时有多容易受到[heresy|E]影响。"
+        },
+        {
+          "key": "game_concept_piety",
+          "line": 410,
+          "original_line": " game_concept_piety: \"虔诚\"",
+          "official_value": "虔诚"
+        },
+        {
+          "key": "game_concept_piety_experience",
+          "line": 414,
+          "original_line": " game_concept_piety_experience: \"奉献\"",
+          "official_value": "奉献"
+        },
+        {
+          "key": "game_concept_piety_experience_desc",
+          "line": 415,
+          "original_line": " game_concept_piety_experience_desc: \"角色获得的每一点奉献都增加到下一[piety_level|E]的进展上。每当角色获得[piety|E]，也会获得同样数量的奉献。\"",
+          "official_value": "角色获得的每一点奉献都增加到下一[piety_level|E]的进展上。每当角色获得[piety|E]，也会获得同样数量的奉献。"
+        },
+        {
+          "key": "game_concept_piety_level",
+          "line": 419,
+          "original_line": " game_concept_piety_level: \"奉献等级\"",
+          "official_value": "奉献等级"
+        },
+        {
+          "key": "game_concept_head_of_faith",
+          "line": 941,
+          "original_line": " game_concept_head_of_faith: \"信仰领袖\"",
+          "official_value": "信仰领袖"
+        },
+        {
+          "key": "game_concept_development",
+          "line": 1193,
+          "original_line": " game_concept_development: \"发展度\"",
+          "official_value": "发展度"
+        },
+        {
+          "key": "game_concept_development_growth",
+          "line": 1196,
+          "original_line": " game_concept_development_growth: \"发展度成长值\"",
+          "official_value": "发展度成长值"
+        },
+        {
+          "key": "game_concept_holy_site",
+          "line": 1296,
+          "original_line": " game_concept_holy_site: \"圣地\"",
+          "official_value": "圣地"
+        },
+        {
+          "key": "game_concept_holy_site_desc",
+          "line": 1298,
+          "original_line": " game_concept_holy_site_desc: \"一个$game_concept_holy_site$指的是对某一[faith|E]有着宗教意义的[county|E]。当它被正确信仰的角色所掌控时，便会为该信仰的所有信徒带来增益，同时还能解锁[special_buildings|E]或[holy_orders|E]的创建。每个信仰所拥有的$game_concept_holy_sites$各不相同。\\n\\n普通的$game_concept_holy_site$仅能提供局部增益，而不会带来全局性的信仰加成。一个信仰中最为尊崇的$game_concept_holy_sites$，则被指定为[eminent_holy_sites|E]。每个信仰所能拥有的各类圣地数量都是有限的。\"",
+          "official_value": "一个$game_concept_holy_site$指的是对某一[faith|E]有着宗教意义的[county|E]。当它被正确信仰的角色所掌控时，便会为该信仰的所有信徒带来增益，同时还能解锁[special_buildings|E]或[holy_orders|E]的创建。每个信仰所拥有的$game_concept_holy_sites$各不相同。\n\n普通的$game_concept_holy_site$仅能提供局部增益，而不会带来全局性的信仰加成。一个信仰中最为尊崇的$game_concept_holy_sites$，则被指定为[eminent_holy_sites|E]。每个信仰所能拥有的各类圣地数量都是有限的。"
+        },
+        {
+          "key": "game_concept_eminent_holy_site",
+          "line": 1299,
+          "original_line": " game_concept_eminent_holy_site: \"主要圣地\"",
+          "official_value": "主要圣地"
+        },
+        {
+          "key": "game_concept_eminent_holy_site_short",
+          "line": 1301,
+          "original_line": " game_concept_eminent_holy_site_short: \"主要\"",
+          "official_value": "主要"
+        },
+        {
+          "key": "game_concept_county_opinion",
+          "line": 1340,
+          "original_line": " game_concept_county_opinion: \"民众好感度\"",
+          "official_value": "民众好感度"
+        },
+        {
+          "key": "game_concept_clergy",
+          "line": 1379,
+          "original_line": " game_concept_clergy: \"神职人员\"",
+          "official_value": "神职人员"
+        },
+        {
+          "key": "game_concept_knight_effectiveness",
+          "line": 1482,
+          "original_line": " game_concept_knight_effectiveness: \"骑士战斗力\"",
+          "official_value": "骑士战斗力"
+        },
+        {
+          "key": "game_concept_clergy_opinion",
+          "line": 1518,
+          "original_line": " game_concept_clergy_opinion: \"神职人员好感\"",
+          "official_value": "神职人员好感"
+        },
+        {
+          "key": "game_concept_clergy_opinion_desc",
+          "line": 1519,
+          "original_line": " game_concept_clergy_opinion_desc: \"这类[opinion|E]只影响你自身[faith|E]的[clergy|E]。\"",
+          "official_value": "这类[opinion|E]只影响你自身[faith|E]的[clergy|E]。"
+        },
+        {
+          "key": "game_concept_artifact_rarity",
+          "line": 1967,
+          "original_line": " game_concept_artifact_rarity: \"宝物稀有度\"",
+          "official_value": "宝物稀有度"
+        },
+        {
+          "key": "game_concept_rarity",
+          "line": 1968,
+          "original_line": " game_concept_rarity: \"稀有度\"",
+          "official_value": "稀有度"
+        },
+        {
+          "key": "game_concept_piety_level_impact",
+          "line": 2341,
+          "original_line": " game_concept_piety_level_impact: \"奉献等级影响\"",
+          "official_value": "奉献等级影响"
+        },
+        {
+          "key": "game_concept_piety_level_impact_desc",
+          "line": 2342,
+          "original_line": " game_concept_piety_level_impact_desc: \"奉献等级影响提高或降低你当前[piety_level|E]提供的[modifiers|E]。\"",
+          "official_value": "奉献等级影响提高或降低你当前[piety_level|E]提供的[modifiers|E]。"
+        }
+      ]
+    },
+    {
+      "id": "SC-GUI",
+      "relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+      "sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+      "bytes": 9714,
+      "selected_entries": [
+        {
+          "key": "HOLY_SITE_TOTAL_RARITY_LEVELS",
+          "line": 4,
+          "original_line": " HOLY_SITE_TOTAL_RARITY_LEVELS: \"总[artifact|E][rarity|E]等级：\"",
+          "official_value": "总[artifact|E][rarity|E]等级："
+        },
+        {
+          "key": "HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE",
+          "line": 12,
+          "original_line": " HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE: \"#weak @warning_icon!该[holy_site|E]未生效#!\"",
+          "official_value": "#weak @warning_icon!该[holy_site|E]未生效#!"
+        },
+        {
+          "key": "HOLY_SITE_ACTION_BUTTON_ENSHRINE",
+          "line": 35,
+          "original_line": " HOLY_SITE_ACTION_BUTTON_ENSHRINE: \"供奉圣物\"",
+          "official_value": "供奉圣物"
+        },
+        {
+          "key": "HOLY_SITE_ACTION_BUTTON_REMOVE",
+          "line": 36,
+          "original_line": " HOLY_SITE_ACTION_BUTTON_REMOVE: \"移除圣物\"",
+          "official_value": "移除圣物"
+        },
+        {
+          "key": "HOLY_SITE_ACTION_BUTTON_SWAP",
+          "line": 37,
+          "original_line": " HOLY_SITE_ACTION_BUTTON_SWAP: \"更换圣物\"",
+          "official_value": "更换圣物"
+        },
+        {
+          "key": "HOLY_SITE_REMOVE_REQUIRES_HOLDER",
+          "line": 34,
+          "original_line": " HOLY_SITE_REMOVE_REQUIRES_HOLDER: \"@warning_icon!#X 你必须持有该圣地的伯爵领才能移除供奉的圣遗物。#!\"",
+          "official_value": "@warning_icon!#X 你必须持有该圣地的伯爵领才能移除供奉的圣遗物。#!"
+        },
+        {
+          "key": "HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER",
+          "line": 44,
+          "original_line": " HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER: \"\\n#bold [holy_site|E]伯爵领：#!#weak （[holy_relic|E]总稀有度变化：#high $CURRENT_SUM$#!变为#high $NEW_SUM$#!）#!\\n\"",
+          "official_value": "\n#bold [holy_site|E]伯爵领：#!#weak （[holy_relic|E]总稀有度变化：#high $CURRENT_SUM$#!变为#high $NEW_SUM$#!）#!\n"
+        },
+        {
+          "key": "HOLY_SITE_BECOMES_ACTIVE",
+          "line": 51,
+          "original_line": " HOLY_SITE_BECOMES_ACTIVE: \"$MODIFIER_BULLET$[holy_site|E]生效\"",
+          "official_value": "$MODIFIER_BULLET$[holy_site|E]生效"
+        },
+        {
+          "key": "HOLY_SITE_BECOMES_INACTIVE",
+          "line": 52,
+          "original_line": " HOLY_SITE_BECOMES_INACTIVE: \"$MODIFIER_BULLET$@warning_icon!#X [holy_site|E]失效#!\"",
+          "official_value": "$MODIFIER_BULLET$@warning_icon!#X [holy_site|E]失效#!"
+        },
+        {
+          "key": "CONTROLLER_FAITH_IS_NOT_HOLY_SITE_FAITH",
+          "line": 53,
+          "original_line": " CONTROLLER_FAITH_IS_NOT_HOLY_SITE_FAITH: \"@warning_icon!#X [holy_site|E]不是控制者的[Faith.GetName][faith|E]的圣地#!\"",
+          "official_value": "@warning_icon!#X [holy_site|E]不是控制者的[Faith.GetName][faith|E]的圣地#!"
+        },
+        {
+          "key": "HOLY_SITE_CREATE_SELECT_LOCATION",
+          "line": 67,
+          "original_line": " HOLY_SITE_CREATE_SELECT_LOCATION: \"选择你的[domain|E]内的地点\"",
+          "official_value": "选择你的[domain|E]内的地点"
+        },
+        {
+          "key": "holy_site_creation_faith_already_has_holy_site_type",
+          "line": 74,
+          "original_line": " holy_site_creation_faith_already_has_holy_site_type: \"@warning_icon!#X [Faith.GetName]已经拥有[HolySiteType.GetName]类型的[holy_site|E]#!\"",
+          "official_value": "@warning_icon!#X [Faith.GetName]已经拥有[HolySiteType.GetName]类型的[holy_site|E]#!"
+        },
+        {
+          "key": "holy_site_creation_county_already_has_holy_site_of_faith",
+          "line": 76,
+          "original_line": " holy_site_creation_county_already_has_holy_site_of_faith: \"@warning_icon!#X [Title.GetDeJureLiege.GetName]的[county|E]已经拥有[holy_site|E]：[HolySite.GetName]#!\"",
+          "official_value": "@warning_icon!#X [Title.GetDeJureLiege.GetName]的[county|E]已经拥有[holy_site|E]：[HolySite.GetName]#!"
+        },
+        {
+          "key": "holy_site_creation_faith_has_too_many_holy_sites",
+          "line": 79,
+          "original_line": " holy_site_creation_faith_has_too_many_holy_sites: \"@warning_icon!#X [Faith.GetName]拥有太多[holy_sites|E]：当前为$HOLY_SITES|V0$，上限为$HOLY_SITES_MAX|V0$#!\"",
+          "official_value": "@warning_icon!#X [Faith.GetName]拥有太多[holy_sites|E]：当前为$HOLY_SITES|V0$，上限为$HOLY_SITES_MAX|V0$#!"
+        }
+      ]
+    },
+    {
+      "id": "SC-WISDOM",
+      "relative_to_game": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+      "sha256": "1ba3f480f5255d3def8e9c968544daa2f5f4ee4ff40a9e214e60d623cc461d5c",
+      "bytes": 93589,
+      "selected_entries": [
+        {
+          "key": "holy_site_site_of_wisdom_name",
+          "line": 531,
+          "original_line": " holy_site_site_of_wisdom_name: \"智慧之地\"",
+          "official_value": "智慧之地"
+        },
+        {
+          "key": "holy_site_site_of_wisdom_desc",
+          "line": 532,
+          "original_line": " holy_site_site_of_wisdom_desc: \"一座纪念[faith.GetName]知识与智慧的圣地。\"",
+          "official_value": "一座纪念[faith.GetName]知识与智慧的圣地。"
+        }
+      ]
+    },
+    {
+      "id": "SC-ACTIONS",
+      "relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+      "sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+      "bytes": 4517,
+      "selected_entries": [
+        {
+          "key": "adopt_holy_site_decision",
+          "line": 18,
+          "original_line": " adopt_holy_site_decision: \"采用圣地\"",
+          "official_value": "采用圣地"
+        },
+        {
+          "key": "adopt_holy_site_decision_desc",
+          "line": 19,
+          "original_line": " adopt_holy_site_decision_desc: \"将你[realm|E]中现有的一个[holy_site|E]纳入[ROOT.Char.GetFaith.GetName]。\"",
+          "official_value": "将你[realm|E]中现有的一个[holy_site|E]纳入[ROOT.Char.GetFaith.GetName]。"
+        },
+        {
+          "key": "adopt_holy_site_decision_confirm",
+          "line": 21,
+          "original_line": " adopt_holy_site_decision_confirm: \"采用圣地\"",
+          "official_value": "采用圣地"
+        },
+        {
+          "key": "elevate_holy_site_decision",
+          "line": 2,
+          "original_line": " elevate_holy_site_decision: \"升格圣地\"",
+          "official_value": "升格圣地"
+        },
+        {
+          "key": "demote_holy_site_decision",
+          "line": 9,
+          "original_line": " demote_holy_site_decision: \"降级圣地\"",
+          "official_value": "降级圣地"
+        },
+        {
+          "key": "demote_holy_site_decision_desc",
+          "line": 10,
+          "original_line": " demote_holy_site_decision_desc: \"将[ROOT.Char.GetFaith.GetName]的一个[eminent_holy_site|E]降级为普通[holy_site|E]。\"",
+          "official_value": "将[ROOT.Char.GetFaith.GetName]的一个[eminent_holy_site|E]降级为普通[holy_site|E]。"
+        },
+        {
+          "key": "abandon_holy_site_decision",
+          "line": 14,
+          "original_line": " abandon_holy_site_decision: \"放弃圣地\"",
+          "official_value": "放弃圣地"
+        },
+        {
+          "key": "holy_site_kingdom_already_used_tt",
+          "line": 31,
+          "original_line": " holy_site_kingdom_already_used_tt: \"你的[faith|E]不能已经在此[barony|E]的法理[kingdom|E]中创建或采纳了[holy_site|E]\"",
+          "official_value": "你的[faith|E]不能已经在此[barony|E]的法理[kingdom|E]中创建或采纳了[holy_site|E]"
+        }
+      ]
+    },
+    {
+      "id": "SC-EFFECT-WORDING",
+      "relative_to_game": "localization/simp_chinese/effects/holy_site_effects_l_simp_chinese.yml",
+      "sha256": "60eac0fee3d55f5c06acf90f113a105743d495d5aa22ef418813bbb4dd50221b",
+      "bytes": 1668,
+      "selected_entries": [
+        {
+          "key": "add_holy_site_global",
+          "line": 14,
+          "original_line": " add_holy_site_global: \"[HolySite.GetName]被采纳为[FAITH.GetName]的[holy_site|E]\"",
+          "official_value": "[HolySite.GetName]被采纳为[FAITH.GetName]的[holy_site|E]"
+        },
+        {
+          "key": "add_holy_site_global_past",
+          "line": 16,
+          "original_line": " add_holy_site_global_past: \"[HolySite.GetName]被采纳为了[FAITH.GetName]的[holy_site|E]\"",
+          "official_value": "[HolySite.GetName]被采纳为了[FAITH.GetName]的[holy_site|E]"
+        }
+      ]
+    },
+    {
+      "id": "SC-ARTIFACT",
+      "relative_to_game": "localization/simp_chinese/dlc/ep1/dlc_ep1_game_concepts_l_simp_chinese.yml",
+      "sha256": "a67d9d5803855155140cc6b717baf8d165745d44535f3bfa83f19d17f67bf08f",
+      "bytes": 13676,
+      "selected_entries": [
+        {
+          "key": "game_concept_artifact",
+          "line": 41,
+          "original_line": " game_concept_artifact: \"宝物\"",
+          "official_value": "宝物"
+        }
+      ]
+    },
+    {
+      "id": "SC-RELIC",
+      "relative_to_game": "localization/simp_chinese/dlc/pam/pam_game_concepts_l_simp_chinese.yml",
+      "sha256": "930338fd47cf6495748b403bbded34eda444c7cfecce6ac02f0858c111f29c3b",
+      "bytes": 43748,
+      "selected_entries": [
+        {
+          "key": "game_concept_holy_relic",
+          "line": 203,
+          "original_line": " game_concept_holy_relic: \"圣物\"",
+          "official_value": "圣物"
+        }
+      ]
+    },
+    {
+      "id": "SC-MODIFIER",
+      "relative_to_game": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+      "sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+      "bytes": 160863,
+      "selected_entries": [
+        {
+          "key": "MOD_MONTHLY_DEVELOPMENT_GROWTH",
+          "line": 917,
+          "original_line": " MOD_MONTHLY_DEVELOPMENT_GROWTH: \"[development|E]增长\"",
+          "official_value": "[development|E]增长"
+        },
+        {
+          "key": "MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR",
+          "line": 921,
+          "original_line": " MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR: \"[development|E]增长\"",
+          "official_value": "[development|E]增长"
+        },
+        {
+          "key": "MOD_CLERGY_OPINION",
+          "line": 1030,
+          "original_line": " MOD_CLERGY_OPINION: \"[clergy|E]好感度\"",
+          "official_value": "[clergy|E]好感度"
+        },
+        {
+          "key": "MOD_KNIGHT_EFFECTIVENESS_MULT",
+          "line": 1153,
+          "original_line": " MOD_KNIGHT_EFFECTIVENESS_MULT: \"[knight_effectiveness|E]\"",
+          "official_value": "[knight_effectiveness|E]"
+        }
+      ]
+    },
+    {
+      "id": "SC-RARITY-RULE",
+      "relative_to_game": "common/script_values/00_holy_site_values.txt",
+      "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7",
+      "bytes": 1191,
+      "selected_entries": [
+        {
+          "line_start": 1,
+          "line_end": 11,
+          "original_lines": [
+            "# Scope: holy_site",
+            "# Returns: the sum of Artifact Rarity values of every artifact enshrined in",
+            "# the holy site whose is_holy_relic trigger passes for the controlling faith.",
+            "# (And the controlling faith also has this holy site as one of their own)",
+            "# Each artifact contributes 1=Common, 2=Masterwork, 3=Famed, 4=Illustrious.",
+            "# 0 if nothing qualifies.",
+            "# Backed by the `total_active_artifact_rarity_sum` trigger registered in",
+            "# holy_site_artifact_trigger_impl.cpp.",
+            "holy_site_total_artifact_rarity = {",
+            "\tvalue = root.total_active_artifact_rarity_sum",
+            "}"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SC-WISDOM-TYPE",
+      "relative_to_game": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc",
+      "bytes": 5129,
+      "selected_entries": [
+        {
+          "line_start": 72,
+          "line_end": 73,
+          "original_lines": [
+            "site_of_wisdom = {",
+            "\tis_dynamic = yes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "SC-LOCATION-RULE",
+      "relative_to_game": "common/scripted_triggers/00_religious_triggers.txt",
+      "sha256": "e9d0b56130464eabdcd670fa6cf814534d11c99da1e8b3fc1e69e9c3e36d2bb2",
+      "bytes": 88549,
+      "selected_entries": [
+        {
+          "line_start": 1994,
+          "line_end": 2023,
+          "original_lines": [
+            "\t}",
+            "\ttrigger_else = {",
+            "\t\talways = no",
+            "\t}",
+            "}",
+            "",
+            "# BARONY = the candidate holy site's barony title, in faith scope",
+            "# One created or adopted holy site per de jure kingdom",
+            "faith_holy_site_kingdom_unused_trigger = {",
+            "\ttrigger_if = {",
+            "\t\tlimit = {",
+            "\t\t\thas_variable_list = dynamic_holy_site_kingdoms",
+            "\t\t\texists = $BARONY$.kingdom",
+            "\t\t}",
+            "\t\tNOT = {",
+            "\t\t\tis_target_in_variable_list = {",
+            "\t\t\t\tname = dynamic_holy_site_kingdoms",
+            "\t\t\t\ttarget = $BARONY$.kingdom",
+            "\t\t\t}",
+            "\t\t}",
+            "\t}",
+            "}",
+            "",
+            "# As above, with the player-facing requirement line. Root must be the acting character.",
+            "faith_can_use_holy_site_kingdom_trigger = {",
+            "\tcustom_tooltip = {",
+            "\t\ttext = holy_site_kingdom_already_used_tt",
+            "\t\tfaith_holy_site_kingdom_unused_trigger = { BARONY = $BARONY$ }",
+            "\t}",
+            "}"
+          ]
+        }
+      ]
+    }
+  ],
+  "negative_literal_search": {
+    "argv": [
+      "rg",
+      "-n",
+      "-F",
+      "-e",
+      "县主",
+      "-e",
+      "有效稀有度",
+      "-e",
+      "有效总量",
+      "-e",
+      "占用的网络",
+      "-e",
+      "宗教网络",
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese"
+    ],
+    "returncode": 1,
+    "terms": [
+      "县主",
+      "有效稀有度",
+      "有效总量",
+      "占用的网络",
+      "宗教网络"
+    ],
+    "stdout": "",
+    "stderr": "",
+    "boundary": "Only no literal matches in this installed official simp_chinese tree; not a proof that no equivalent mechanic or historical/cultural wording exists."
+  },
+  "terms": [
+    {
+      "id": "T-COUNTY",
+      "old": [
+        "县",
+        "县里"
+      ],
+      "use": "伯爵领",
+      "kind": "official_generic_concept",
+      "keys": [
+        "game_concept_county"
+      ],
+      "instruction": "本机制的通用 county 译为伯爵领；不声称其他文化语境绝无县字。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_county",
+          "line": 266,
+          "original_line": " game_concept_county: \"伯爵领\"",
+          "official_value": "伯爵领"
+        }
+      ]
+    },
+    {
+      "id": "T-HOLDER",
+      "old": [
+        "县主",
+        "当地领主",
+        "持有人"
+      ],
+      "use": "伯爵领持有者；男爵领持有者；持有者",
+      "kind": "official_concepts_composed_for_scope",
+      "keys": [
+        "game_concept_holder",
+        "game_concept_county",
+        "game_concept_barony",
+        "game_concept_count_desc"
+      ],
+      "instruction": "county holder 用伯爵领持有者，建筑的 holding/barony holder 按原对象写地产或男爵领持有者；不可把所有持有者叫伯爵，也不可与最高领主混用。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_holder",
+          "line": 29,
+          "original_line": " game_concept_holder: \"持有者\"",
+          "official_value": "持有者"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_county",
+          "line": 266,
+          "original_line": " game_concept_county: \"伯爵领\"",
+          "official_value": "伯爵领"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_barony",
+          "line": 260,
+          "original_line": " game_concept_barony: \"男爵领\"",
+          "official_value": "男爵领"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_count_desc",
+          "line": 271,
+          "original_line": " game_concept_count_desc: \"$game_concept_count$是[primary_title|E]为[county|E]的[ruler|E]。\\n\\n他们的[rank|E]只高于[barons|E]，直接低于[dukes|E]，因此他们可以拥有$game_concept_barons$[vassals|E]，$game_concept_duke$或更高级的统治者可以成为他们的[liege|E]。\"",
+          "official_value": "$game_concept_count$是[primary_title|E]为[county|E]的[ruler|E]。\n\n他们的[rank|E]只高于[barons|E]，直接低于[dukes|E]，因此他们可以拥有$game_concept_barons$[vassals|E]，$game_concept_duke$或更高级的统治者可以成为他们的[liege|E]。"
+        }
+      ]
+    },
+    {
+      "id": "T-RARITY",
+      "old": [
+        "有效稀有度",
+        "有效总量",
+        "有效圣物总量"
+      ],
+      "use": "总宝物稀有度等级（官方界面字段）；参与计算的圣物稀有度总和（解释句）",
+      "kind": "official_label_plus_explicit_explanation",
+      "keys": [
+        "HOLY_SITE_TOTAL_RARITY_LEVELS",
+        "game_concept_artifact",
+        "game_concept_rarity",
+        "HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER"
+      ],
+      "script_source": "SC-RARITY-RULE",
+      "instruction": "总宝物稀有度等级是概念展开后的字段名称；圣物稀有度总和是完整解释性说法，不宣称另有一个官方有效总量属性。必须说清只加当前符合条件的已供奉圣物，并区分物品稀有度与其本次贡献。",
+      "exact_entries": [
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_TOTAL_RARITY_LEVELS",
+          "line": 4,
+          "original_line": " HOLY_SITE_TOTAL_RARITY_LEVELS: \"总[artifact|E][rarity|E]等级：\"",
+          "official_value": "总[artifact|E][rarity|E]等级："
+        },
+        {
+          "source_id": "SC-ARTIFACT",
+          "source_relative_to_game": "localization/simp_chinese/dlc/ep1/dlc_ep1_game_concepts_l_simp_chinese.yml",
+          "source_sha256": "a67d9d5803855155140cc6b717baf8d165745d44535f3bfa83f19d17f67bf08f",
+          "key": "game_concept_artifact",
+          "line": 41,
+          "original_line": " game_concept_artifact: \"宝物\"",
+          "official_value": "宝物"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_rarity",
+          "line": 1968,
+          "original_line": " game_concept_rarity: \"稀有度\"",
+          "official_value": "稀有度"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER",
+          "line": 44,
+          "original_line": " HOLY_SITE_COUNTY_MODIFIER_CHANGE_HEADER: \"\\n#bold [holy_site|E]伯爵领：#!#weak （[holy_relic|E]总稀有度变化：#high $CURRENT_SUM$#!变为#high $NEW_SUM$#!）#!\\n\"",
+          "official_value": "\n#bold [holy_site|E]伯爵领：#!#weak （[holy_relic|E]总稀有度变化：#high $CURRENT_SUM$#!变为#high $NEW_SUM$#!）#!\n"
+        }
+      ]
+    },
+    {
+      "id": "T-WISDOM",
+      "old": [
+        "智慧",
+        "智慧圣地"
+      ],
+      "use": "智慧之地",
+      "kind": "official_type_name",
+      "keys": [
+        "holy_site_site_of_wisdom_name"
+      ],
+      "script_source": "SC-WISDOM-TYPE",
+      "instruction": "依用户2026-10-18明确要求，本轮所有新旁白与图注统一完整智慧之地，不提供首现声明后简称的选项。物品描述或官方原文中的普通智慧二字不篡改。",
+      "exact_entries": [
+        {
+          "source_id": "SC-WISDOM",
+          "source_relative_to_game": "localization/simp_chinese/religion/religion_l_simp_chinese.yml",
+          "source_sha256": "1ba3f480f5255d3def8e9c968544daa2f5f4ee4ff40a9e214e60d623cc461d5c",
+          "key": "holy_site_site_of_wisdom_name",
+          "line": 531,
+          "original_line": " holy_site_site_of_wisdom_name: \"智慧之地\"",
+          "official_value": "智慧之地"
+        }
+      ]
+    },
+    {
+      "id": "T-GRADE",
+      "old": [
+        "高级",
+        "主要名额"
+      ],
+      "use": "主要圣地；主要（官方短形）；主要圣地名额（解释性配额说法）",
+      "kind": "official_grade_with_explanatory_quota",
+      "keys": [
+        "game_concept_eminent_holy_site",
+        "game_concept_eminent_holy_site_short"
+      ],
+      "instruction": "主要圣地是某一信仰对同一地点的等级，不另造一处地点或一种类型；主要名额首次展开为主要圣地名额。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_eminent_holy_site",
+          "line": 1299,
+          "original_line": " game_concept_eminent_holy_site: \"主要圣地\"",
+          "official_value": "主要圣地"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_eminent_holy_site_short",
+          "line": 1301,
+          "original_line": " game_concept_eminent_holy_site_short: \"主要\"",
+          "official_value": "主要"
+        }
+      ]
+    },
+    {
+      "id": "T-ACTIONS",
+      "old": [
+        "采纳圣地（当作按钮名）",
+        "降格"
+      ],
+      "use": "采用圣地；升格圣地；降级圣地；放弃圣地",
+      "kind": "official_decision_titles",
+      "keys": [
+        "adopt_holy_site_decision",
+        "elevate_holy_site_decision",
+        "demote_holy_site_decision",
+        "abandon_holy_site_decision",
+        "add_holy_site_global"
+      ],
+      "instruction": "按钮引用用采用；效果叙述中被采纳为也有官方原文。降级是本版按钮名，正文统一降级；升格沿官方按钮。",
+      "exact_entries": [
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "adopt_holy_site_decision",
+          "line": 18,
+          "original_line": " adopt_holy_site_decision: \"采用圣地\"",
+          "official_value": "采用圣地"
+        },
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "elevate_holy_site_decision",
+          "line": 2,
+          "original_line": " elevate_holy_site_decision: \"升格圣地\"",
+          "official_value": "升格圣地"
+        },
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "demote_holy_site_decision",
+          "line": 9,
+          "original_line": " demote_holy_site_decision: \"降级圣地\"",
+          "official_value": "降级圣地"
+        },
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "abandon_holy_site_decision",
+          "line": 14,
+          "original_line": " abandon_holy_site_decision: \"放弃圣地\"",
+          "official_value": "放弃圣地"
+        },
+        {
+          "source_id": "SC-EFFECT-WORDING",
+          "source_relative_to_game": "localization/simp_chinese/effects/holy_site_effects_l_simp_chinese.yml",
+          "source_sha256": "60eac0fee3d55f5c06acf90f113a105743d495d5aa22ef418813bbb4dd50221b",
+          "key": "add_holy_site_global",
+          "line": 14,
+          "original_line": " add_holy_site_global: \"[HolySite.GetName]被采纳为[FAITH.GetName]的[holy_site|E]\"",
+          "official_value": "[HolySite.GetName]被采纳为[FAITH.GetName]的[holy_site|E]"
+        }
+      ]
+    },
+    {
+      "id": "T-FAITH",
+      "old": [
+        "宗教版本",
+        "全宗教（实际指faith）"
+      ],
+      "use": "信仰",
+      "kind": "official_scope_distinction",
+      "keys": [
+        "game_concept_faith",
+        "game_concept_religion",
+        "game_concept_religion_desc",
+        "game_concept_faith_desc"
+      ],
+      "instruction": "faith=信仰，religion=宗教。信仰清单、主要关系及认可不能扩大为整个宗教。宗教政治作为一般话题可保留。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_faith",
+          "line": 309,
+          "original_line": " game_concept_faith: \"信仰\"",
+          "official_value": "信仰"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_religion",
+          "line": 302,
+          "original_line": " game_concept_religion: \"宗教\"",
+          "official_value": "宗教"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_religion_desc",
+          "line": 304,
+          "original_line": " game_concept_religion_desc: \"一种$game_concept_religion$可以包含许多不同的宗派，称为[faiths|E]。宗教又转而属于四大[religious_families|E]之一；[GetReligionFamily('rf_abrahamic').GetName]、[GetReligionFamily('rf_eastern').GetName]、[GetReligionFamily('rf_sinitic').GetName]或[GetReligionFamily('rf_pagan').GetName]。\"",
+          "official_value": "一种$game_concept_religion$可以包含许多不同的宗派，称为[faiths|E]。宗教又转而属于四大[religious_families|E]之一；[GetReligionFamily('rf_abrahamic').GetName]、[GetReligionFamily('rf_eastern').GetName]、[GetReligionFamily('rf_sinitic').GetName]或[GetReligionFamily('rf_pagan').GetName]。"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_faith_desc",
+          "line": 312,
+          "original_line": " game_concept_faith_desc: \"信仰是某个较大[religion|E]下的具体宗派。所有角色和[counties|E]都有一种信仰，正如他们有一种[culture|E]，并遵循信仰内的一种[rites|E]。\\n\\n信仰由其[mainline_rite|E]定义，主流礼仪的[core_tenets|E]和[doctrines|E]代表了整个信仰的信念。其他[rites|E]可以支持不同信念，与主流礼仪的差别越大越是[rite_divergent|E]\\n\\n每种信仰也有一项[fervor|E]值，控制该信仰在[rite_divergent|E][rites|E]脱离并建立自己的信仰时有多容易受到[heresy|E]影响。\"",
+          "official_value": "信仰是某个较大[religion|E]下的具体宗派。所有角色和[counties|E]都有一种信仰，正如他们有一种[culture|E]，并遵循信仰内的一种[rites|E]。\n\n信仰由其[mainline_rite|E]定义，主流礼仪的[core_tenets|E]和[doctrines|E]代表了整个信仰的信念。其他[rites|E]可以支持不同信念，与主流礼仪的差别越大越是[rite_divergent|E]\n\n每种信仰也有一项[fervor|E]值，控制该信仰在[rite_divergent|E][rites|E]脱离并建立自己的信仰时有多容易受到[heresy|E]影响。"
+        }
+      ]
+    },
+    {
+      "id": "T-NETWORK",
+      "old": [
+        "宗教网络",
+        "占用的网络和位置资源",
+        "接入已有地点"
+      ],
+      "use": "本信仰的圣地名单；占用一个圣地总数名额；类型和选址限制",
+      "kind": "editorial_explanation_no_official_key",
+      "keys": [
+        "adopt_holy_site_decision_desc",
+        "holy_site_creation_faith_has_too_many_holy_sites",
+        "HOLY_SITE_CREATE_SELECT_LOCATION",
+        "holy_site_creation_faith_already_has_holy_site_type",
+        "holy_site_kingdom_already_used_tt"
+      ],
+      "instruction": "不把关联、名额、类型限制与土地持有合称一种网络资源。口播说清实际改变哪一项；规则细节由机制lane确认，不在术语审计中凭空扩充。",
+      "exact_entries": [
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "adopt_holy_site_decision_desc",
+          "line": 19,
+          "original_line": " adopt_holy_site_decision_desc: \"将你[realm|E]中现有的一个[holy_site|E]纳入[ROOT.Char.GetFaith.GetName]。\"",
+          "official_value": "将你[realm|E]中现有的一个[holy_site|E]纳入[ROOT.Char.GetFaith.GetName]。"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "holy_site_creation_faith_has_too_many_holy_sites",
+          "line": 79,
+          "original_line": " holy_site_creation_faith_has_too_many_holy_sites: \"@warning_icon!#X [Faith.GetName]拥有太多[holy_sites|E]：当前为$HOLY_SITES|V0$，上限为$HOLY_SITES_MAX|V0$#!\"",
+          "official_value": "@warning_icon!#X [Faith.GetName]拥有太多[holy_sites|E]：当前为$HOLY_SITES|V0$，上限为$HOLY_SITES_MAX|V0$#!"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_CREATE_SELECT_LOCATION",
+          "line": 67,
+          "original_line": " HOLY_SITE_CREATE_SELECT_LOCATION: \"选择你的[domain|E]内的地点\"",
+          "official_value": "选择你的[domain|E]内的地点"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "holy_site_creation_faith_already_has_holy_site_type",
+          "line": 74,
+          "original_line": " holy_site_creation_faith_already_has_holy_site_type: \"@warning_icon!#X [Faith.GetName]已经拥有[HolySiteType.GetName]类型的[holy_site|E]#!\"",
+          "official_value": "@warning_icon!#X [Faith.GetName]已经拥有[HolySiteType.GetName]类型的[holy_site|E]#!"
+        },
+        {
+          "source_id": "SC-ACTIONS",
+          "source_relative_to_game": "localization/simp_chinese/decisions/holy_site_decisions_l_simp_chinese.yml",
+          "source_sha256": "716da1f2a1b6163eefe62750102b0580de254d8bffb1f16503efff3e7246fd26",
+          "key": "holy_site_kingdom_already_used_tt",
+          "line": 31,
+          "original_line": " holy_site_kingdom_already_used_tt: \"你的[faith|E]不能已经在此[barony|E]的法理[kingdom|E]中创建或采纳了[holy_site|E]\"",
+          "official_value": "你的[faith|E]不能已经在此[barony|E]的法理[kingdom|E]中创建或采纳了[holy_site|E]"
+        }
+      ]
+    },
+    {
+      "id": "T-ACTIVE",
+      "old": [
+        "激活",
+        "未激活"
+      ],
+      "use": "生效；未生效；失效",
+      "kind": "official_window_wording",
+      "keys": [
+        "HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE",
+        "HOLY_SITE_BECOMES_ACTIVE",
+        "HOLY_SITE_BECOMES_INACTIVE"
+      ],
+      "instruction": "这是圣地状态的用词，不代表所有修正统一使用同一门槛；当前条件计算与已保存状态不一致时必须分开说。",
+      "exact_entries": [
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE",
+          "line": 12,
+          "original_line": " HOLY_SITE_WINDOW_HOLY_SITE_INACTIVE: \"#weak @warning_icon!该[holy_site|E]未生效#!\"",
+          "official_value": "#weak @warning_icon!该[holy_site|E]未生效#!"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_BECOMES_ACTIVE",
+          "line": 51,
+          "original_line": " HOLY_SITE_BECOMES_ACTIVE: \"$MODIFIER_BULLET$[holy_site|E]生效\"",
+          "official_value": "$MODIFIER_BULLET$[holy_site|E]生效"
+        },
+        {
+          "source_id": "SC-GUI",
+          "source_relative_to_game": "localization/simp_chinese/gui/holy_site_window_l_simp_chinese.yml",
+          "source_sha256": "8def6ac874fd2bd63998a0cc372030d73770e4db853bdd48a9b33da870132a30",
+          "key": "HOLY_SITE_BECOMES_INACTIVE",
+          "line": 52,
+          "original_line": " HOLY_SITE_BECOMES_INACTIVE: \"$MODIFIER_BULLET$@warning_icon!#X [holy_site|E]失效#!\"",
+          "official_value": "$MODIFIER_BULLET$@warning_icon!#X [holy_site|E]失效#!"
+        }
+      ]
+    },
+    {
+      "id": "T-KNIGHT",
+      "old": [
+        "骑士效能"
+      ],
+      "use": "骑士战斗力",
+      "kind": "official_concept",
+      "keys": [
+        "game_concept_knight_effectiveness",
+        "MOD_KNIGHT_EFFECTIVENESS_MULT"
+      ],
+      "instruction": "使用当前官方概念名。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_knight_effectiveness",
+          "line": 1482,
+          "original_line": " game_concept_knight_effectiveness: \"骑士战斗力\"",
+          "official_value": "骑士战斗力"
+        },
+        {
+          "source_id": "SC-MODIFIER",
+          "source_relative_to_game": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+          "source_sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+          "key": "MOD_KNIGHT_EFFECTIVENESS_MULT",
+          "line": 1153,
+          "original_line": " MOD_KNIGHT_EFFECTIVENESS_MULT: \"[knight_effectiveness|E]\"",
+          "official_value": "[knight_effectiveness|E]"
+        }
+      ]
+    },
+    {
+      "id": "T-CLERGY",
+      "old": [
+        "教士好感",
+        "教士关系",
+        "宗教领袖"
+      ],
+      "use": "神职人员好感；与神职人员的关系；信仰领袖",
+      "kind": "official_concepts",
+      "keys": [
+        "game_concept_clergy",
+        "game_concept_clergy_opinion",
+        "MOD_CLERGY_OPINION",
+        "game_concept_head_of_faith"
+      ],
+      "instruction": "概念名神职人员好感；修正行把clergy展开为神职人员好感度。选用相同对象的完整说法，不扩大到其他信仰全体角色。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_clergy",
+          "line": 1379,
+          "original_line": " game_concept_clergy: \"神职人员\"",
+          "official_value": "神职人员"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_clergy_opinion",
+          "line": 1518,
+          "original_line": " game_concept_clergy_opinion: \"神职人员好感\"",
+          "official_value": "神职人员好感"
+        },
+        {
+          "source_id": "SC-MODIFIER",
+          "source_relative_to_game": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+          "source_sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+          "key": "MOD_CLERGY_OPINION",
+          "line": 1030,
+          "original_line": " MOD_CLERGY_OPINION: \"[clergy|E]好感度\"",
+          "official_value": "[clergy|E]好感度"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_head_of_faith",
+          "line": 941,
+          "original_line": " game_concept_head_of_faith: \"信仰领袖\"",
+          "official_value": "信仰领袖"
+        }
+      ]
+    },
+    {
+      "id": "T-DEVELOPMENT",
+      "old": [
+        "发展增长",
+        "民众好感"
+      ],
+      "use": "发展度成长值；发展度增长（官方修正行）；民众好感度",
+      "kind": "official_labels_with_arithmetic_explanation",
+      "keys": [
+        "game_concept_development",
+        "game_concept_development_growth",
+        "MOD_MONTHLY_DEVELOPMENT_GROWTH",
+        "MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR",
+        "game_concept_county_opinion"
+      ],
+      "instruction": "两个发展修正key都显示发展度增长，文字本身区分不了加法与倍率；解说须保留加法项或百分比修正说明，不能只凭显示名判断。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_development",
+          "line": 1193,
+          "original_line": " game_concept_development: \"发展度\"",
+          "official_value": "发展度"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_development_growth",
+          "line": 1196,
+          "original_line": " game_concept_development_growth: \"发展度成长值\"",
+          "official_value": "发展度成长值"
+        },
+        {
+          "source_id": "SC-MODIFIER",
+          "source_relative_to_game": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+          "source_sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+          "key": "MOD_MONTHLY_DEVELOPMENT_GROWTH",
+          "line": 917,
+          "original_line": " MOD_MONTHLY_DEVELOPMENT_GROWTH: \"[development|E]增长\"",
+          "official_value": "[development|E]增长"
+        },
+        {
+          "source_id": "SC-MODIFIER",
+          "source_relative_to_game": "localization/simp_chinese/modifiers/modifiers_l_simp_chinese.yml",
+          "source_sha256": "c4b669dff52effa52412c52746845d4879f012e22b122e81e10ab19833650ada",
+          "key": "MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR",
+          "line": 921,
+          "original_line": " MOD_MONTHLY_DEVELOPMENT_GROWTH_FACTOR: \"[development|E]增长\"",
+          "official_value": "[development|E]增长"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_county_opinion",
+          "line": 1340,
+          "original_line": " game_concept_county_opinion: \"民众好感度\"",
+          "official_value": "民众好感度"
+        }
+      ]
+    },
+    {
+      "id": "T-DEVOTION",
+      "old": [
+        "奉献经验"
+      ],
+      "use": "奉献；奉献等级",
+      "kind": "official_concepts",
+      "keys": [
+        "game_concept_piety_experience",
+        "game_concept_piety_experience_desc",
+        "game_concept_piety_level",
+        "game_concept_piety_level_impact_desc"
+      ],
+      "instruction": "钱包是虔诚；通向下一奉献等级的进度官方叫奉献。奉献等级影响放大当前等级已有修正，不直接发虔诚、奉献、等级或名额。",
+      "exact_entries": [
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_piety_experience",
+          "line": 414,
+          "original_line": " game_concept_piety_experience: \"奉献\"",
+          "official_value": "奉献"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_piety_experience_desc",
+          "line": 415,
+          "original_line": " game_concept_piety_experience_desc: \"角色获得的每一点奉献都增加到下一[piety_level|E]的进展上。每当角色获得[piety|E]，也会获得同样数量的奉献。\"",
+          "official_value": "角色获得的每一点奉献都增加到下一[piety_level|E]的进展上。每当角色获得[piety|E]，也会获得同样数量的奉献。"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_piety_level",
+          "line": 419,
+          "original_line": " game_concept_piety_level: \"奉献等级\"",
+          "official_value": "奉献等级"
+        },
+        {
+          "source_id": "SC-CONCEPT",
+          "source_relative_to_game": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+          "source_sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+          "key": "game_concept_piety_level_impact_desc",
+          "line": 2342,
+          "original_line": " game_concept_piety_level_impact_desc: \"奉献等级影响提高或降低你当前[piety_level|E]提供的[modifiers|E]。\"",
+          "official_value": "奉献等级影响提高或降低你当前[piety_level|E]提供的[modifiers|E]。"
+        }
+      ]
+    }
+  ],
+  "official_source_boundary": "Localization establishes wording; script excerpt explains the defined sum. No current game state, modifier receipt or engine transition is newly qualified.",
+  "child_evidence": [
+    {
+      "path": "type-action-child/official-terms-a01.json",
+      "sha256": "164d64b884acbd464b14ab7ef9bedd09c52016a72783a1e9186c8c34140cd20b",
+      "override": "Child suggested optional 智慧 shorthand before Root relayed user preference; final lane policy rejects that option and always uses 智慧之地."
+    },
+    {
+      "path": "county-faith-child/official-county-faith-terms-a01.json",
+      "sha256": "2a874534f11a59586bab480069e49d1cdb21dc73503b31ce1d42f62684aa4744"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:26:37.686587+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "begin_rva": 48313372,
+  "end_rva": 48313384,
+  "raw_sha256": "2f3cca1fb7ed7c0fe3a7cfe8a6489d41d3371af46d319b103b0abaa7c5a0e9f2",
+  "bytes_hex": "486341fc482bc8e9a80b4700",
+  "cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\text.bin",
+  "cache_offset": 48309276,
+  "asm_sha256": "68ffa50a896127a1147031f7866557b2a71569854ce2525c3c426331f84eb1b6",
+  "boundary": null,
+  "scope": "whole runtime function when exact boundary present; otherwise bounded locator",
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

@@ -1,0 +1,97 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:17:31.149874+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "begin_rva": 75219208,
+  "end_rva": 75219336,
+  "raw_sha256": "7f4bc2e0d20766d078c8911e1a0977fe357eff009d30722bd4b46f2c3b0987b3",
+  "bytes_hex": "d03ba04001000000b0fcb24201000000b0fcb24201000000e829e74401000000d03ba04001000000c0fcb24201000000c0fcb24201000000102ae74401000000d03ba04001000000d0fcb24201000000d0fcb242010000002826e74401000000d03ba0400100000090fbb2420100000090fbb242010000005026e74401000000",
+  "cache": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\rdata.bin",
+  "rows": [
+    {
+      "rva": "0x47bc108",
+      "value": "0x140a03bd0",
+      "possible_target": "0xa03bd0"
+    },
+    {
+      "rva": "0x47bc110",
+      "value": "0x142b2fcb0",
+      "possible_target": "0x2b2fcb0"
+    },
+    {
+      "rva": "0x47bc118",
+      "value": "0x142b2fcb0",
+      "possible_target": "0x2b2fcb0"
+    },
+    {
+      "rva": "0x47bc120",
+      "value": "0x144e729e8",
+      "possible_target": "0x4e729e8"
+    },
+    {
+      "rva": "0x47bc128",
+      "value": "0x140a03bd0",
+      "possible_target": "0xa03bd0"
+    },
+    {
+      "rva": "0x47bc130",
+      "value": "0x142b2fcc0",
+      "possible_target": "0x2b2fcc0"
+    },
+    {
+      "rva": "0x47bc138",
+      "value": "0x142b2fcc0",
+      "possible_target": "0x2b2fcc0"
+    },
+    {
+      "rva": "0x47bc140",
+      "value": "0x144e72a10",
+      "possible_target": "0x4e72a10"
+    },
+    {
+      "rva": "0x47bc148",
+      "value": "0x140a03bd0",
+      "possible_target": "0xa03bd0"
+    },
+    {
+      "rva": "0x47bc150",
+      "value": "0x142b2fcd0",
+      "possible_target": "0x2b2fcd0"
+    },
+    {
+      "rva": "0x47bc158",
+      "value": "0x142b2fcd0",
+      "possible_target": "0x2b2fcd0"
+    },
+    {
+      "rva": "0x47bc160",
+      "value": "0x144e72628",
+      "possible_target": "0x4e72628"
+    },
+    {
+      "rva": "0x47bc168",
+      "value": "0x140a03bd0",
+      "possible_target": "0xa03bd0"
+    },
+    {
+      "rva": "0x47bc170",
+      "value": "0x142b2fb90",
+      "possible_target": "0x2b2fb90"
+    },
+    {
+      "rva": "0x47bc178",
+      "value": "0x142b2fb90",
+      "possible_target": "0x2b2fb90"
+    },
+    {
+      "rva": "0x47bc180",
+      "value": "0x144e72650",
+      "possible_target": "0x4e72650"
+    }
+  ],
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

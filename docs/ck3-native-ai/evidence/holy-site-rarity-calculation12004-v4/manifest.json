@@ -1,0 +1,124 @@
+{
+  "schema": "ck3_12004_rarity_docs_v4_evidence_manifest",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:38:40.783892+00:00",
+  "source_head": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "inputs": {
+    "rarity-source-contract-v4.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/rarity-source-contract-v4.json",
+      "bytes": 45767,
+      "sha256": "bf20ada972a837e855b4ebb225850696d3068aa4eef6ae94de749cda8344e146"
+    },
+    "history-r0010-a02.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/history-r0010-a02.json",
+      "bytes": 34631,
+      "sha256": "512aba0818b6972a0052556ebcb86f7f4cc6df4c6cc819f6ba76719e8d678e65"
+    },
+    "script-consumer-a01.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/script-consumer-a01.json",
+      "bytes": 7601,
+      "sha256": "c885231af5075918112c3eb53c03d25b2c5af4088c6fe19bd4345dbc023f1349"
+    },
+    "exact-probe-rtti-a01.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/exact-probe-rtti-a01.json",
+      "bytes": 12201,
+      "sha256": "f60ed6740e5994fbc6316da4b89974e30b2b07320882bc225bb8e34d0285b130"
+    },
+    "research-plan.a02.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/research-plan.a02.json",
+      "bytes": 10073,
+      "sha256": "e14adaa398b010bbe0b356d0d141b59309d7d01ec1a9081f44b424c03181c6e3"
+    },
+    "research-plan.a02.check.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/research-plan.a02.check.json",
+      "bytes": 1065,
+      "sha256": "1137d8a1bc8defa87af394f763e20135b26d4f601b54c8fef2382b379a508582"
+    },
+    "research-graph.a02.md": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/research-graph.a02.md",
+      "bytes": 7446,
+      "sha256": "4700b82b422ea4a595ff3d4071c0d5edd0089641419727b4c942739d691e95c6"
+    },
+    "constructor-02adc3b0.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/finite-source-a01/caller-02adc3b0.json",
+      "bytes": 233462,
+      "sha256": "0d647ce90d62b5e99eeaa2f183ef5e3ecce891609bde8561ebc5c72704583aec"
+    },
+    "manager-registration-02adb760.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/finite-source-a01/manager-offset-caller-02adb760.json",
+      "bytes": 74282,
+      "sha256": "425c09d2e2e36a8cf1705a158db82702c3db4d407cc4541cd0389516ffc870b0"
+    },
+    "date-outer-wrapper-02988150.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/finite-source-a01/tick-outer-caller-02988150.json",
+      "bytes": 10347,
+      "sha256": "0447f4eef0630cc199711cdad3aa974eefd07758bb28fc73eecc932a9331c9d7"
+    }
+  },
+  "packaged_files": {
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/constructor-02adc3b0.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/constructor-02adc3b0.json",
+      "bytes": 233462,
+      "sha256": "0d647ce90d62b5e99eeaa2f183ef5e3ecce891609bde8561ebc5c72704583aec"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/date-outer-wrapper-02988150.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/date-outer-wrapper-02988150.json",
+      "bytes": 10347,
+      "sha256": "0447f4eef0630cc199711cdad3aa974eefd07758bb28fc73eecc932a9331c9d7"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/exact-probe-rtti-a01.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/exact-probe-rtti-a01.json",
+      "bytes": 12201,
+      "sha256": "f60ed6740e5994fbc6316da4b89974e30b2b07320882bc225bb8e34d0285b130"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/history-r0010-a02.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/history-r0010-a02.json",
+      "bytes": 34631,
+      "sha256": "512aba0818b6972a0052556ebcb86f7f4cc6df4c6cc819f6ba76719e8d678e65"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/manager-registration-02adb760.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/manager-registration-02adb760.json",
+      "bytes": 74282,
+      "sha256": "425c09d2e2e36a8cf1705a158db82702c3db4d407cc4541cd0389516ffc870b0"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/planning-knowledge-v4.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/planning-knowledge-v4.json",
+      "bytes": 9897,
+      "sha256": "50e0927d549b833f9cee6884a74dac27daabaac31d343314c5b36001d1e7b436"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/rarity-source-contract-v4.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/rarity-source-contract-v4.json",
+      "bytes": 45767,
+      "sha256": "bf20ada972a837e855b4ebb225850696d3068aa4eef6ae94de749cda8344e146"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-graph.a02.md": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-graph.a02.md",
+      "bytes": 7446,
+      "sha256": "4700b82b422ea4a595ff3d4071c0d5edd0089641419727b4c942739d691e95c6"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-plan.a02.check.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-plan.a02.check.json",
+      "bytes": 1065,
+      "sha256": "1137d8a1bc8defa87af394f763e20135b26d4f601b54c8fef2382b379a508582"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-plan.a02.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/research-plan.a02.json",
+      "bytes": 10073,
+      "sha256": "e14adaa398b010bbe0b356d0d141b59309d7d01ec1a9081f44b424c03181c6e3"
+    },
+    "docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/script-consumer-a01.json": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/evidence/holy-site-rarity-calculation12004-v4/script-consumer-a01.json",
+      "bytes": 7601,
+      "sha256": "c885231af5075918112c3eb53c03d25b2c5af4088c6fe19bd4345dbc023f1349"
+    },
+    "docs/ck3-native-ai/holy-site-rarity-calculation12004-v4.md": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/docs-candidate/docs/ck3-native-ai/holy-site-rarity-calculation12004-v4.md",
+      "bytes": 10731,
+      "sha256": "aa552e6e8ae4fa7d59a4e3453edc01f1ed5cab6499be5ce01706c0b64df8d6aa"
+    }
+  },
+  "no_new_game_or_process_or_build": true,
+  "prior_child_note": "examples-analysis arithmetic fixture remains external; its obsolete nonempty-abandon-unobserved qualifier is superseded by retained R0010 readback and canonical three_slot_static_examples here",
+  "review_by_utc": "2026-10-25T02:40:00Z"
+}

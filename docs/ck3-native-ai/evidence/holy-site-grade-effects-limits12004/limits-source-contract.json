@@ -1,0 +1,476 @@
+{
+  "schema": "ck3-12004-holy-site-limits-source-contract-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:31:09.116197+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "build_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "exe_identity_scope": "Exact-image cache metadata and prior installed source manifest; this task did not rehash the EXE or launch a process/game. Fresh .pdata reads are individually recorded and size-gated; no fresh code bytes read.",
+  "source_only": true,
+  "live_execution_performed": false,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "conclusion": {
+    "all_authored_original_and_installed_DLC_faiths_inherit_total_max": 9,
+    "all_authored_original_and_installed_DLC_faiths_inherit_eminent_max": 3,
+    "native_engine_limits_are_configurable_per_religion": true,
+    "these_are_ordinary_action_limits_not_a_universal_model_invariant": true,
+    "authored_starting_over_cap_total": [],
+    "authored_starting_over_cap_eminent": [],
+    "arbitrary_save_or_dynamic_runtime_never_over_cap_proven": false
+  },
+  "scope": {
+    "game_root": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game",
+    "script_scan_files": 7536,
+    "script_scan_bytes": 222428209,
+    "faith_definitions_before_any_roster_filter": 103,
+    "religion_definitions": 49,
+    "faith_definition_duplicates": 0,
+    "religion_definition_duplicates": 0,
+    "faiths_without_holy_sites_field": [],
+    "faiths_without_eminent_holy_sites_field": [],
+    "game_metadata_files": 51498,
+    "dlc_files": 235,
+    "dlc_descriptors": 30,
+    "archive_candidates": [],
+    "category_scan_file_counts": {
+      "religion_definitions": 50,
+      "faith_definitions": 2,
+      "doctrines": 0,
+      "traditions": 17,
+      "modifiers": 141,
+      "script_values": 123,
+      "governments": 4,
+      "DLC_root": 97
+    },
+    "entitlement_or_current_enabled_DLC_observed": false
+  },
+  "defaults": {
+    "define_file": "common/defines/00_defines.txt",
+    "NReligion.FAITH_HOLY_SITES_MAX_DEFAULT": {
+      "value": 9,
+      "line": 922,
+      "global_rva": "0x5C69750"
+    },
+    "NReligion.FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT": {
+      "value": 3,
+      "line": 920,
+      "global_rva": "0x5C69754"
+    },
+    "NReligion.FAITH_HOLY_SITES_MIN_DEFAULT": {
+      "value": 1,
+      "line": 926,
+      "global_rva": "0x5C69730"
+    },
+    "NReligion.FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT": {
+      "value": 1,
+      "line": 924,
+      "global_rva": "0x5C69728"
+    }
+  },
+  "default_native_producer": {
+    "constructor": [
+      "0x32838C0",
+      "0x3283BE2"
+    ],
+    "initialization": "3283BC6/3283BD1 initialize Definition+9E8 and +9F0 qwords to -1, i.e. all four signed int32 fields -1",
+    "virtual_base_binding": "ctor vbtable4888700 contains signed int32[-8,0x9F8]; stored at Definition+8, so virtualbase=Definition+A00. Vtordisp Definition+9FC=0. Secondary vtable48D50A0 +28 slot48D50C8 points2E1341C; adjustor subtracts vtordisp then jumps3283FD0.",
+    "finalizer": [
+      "0x3283FD0",
+      "0x3284156"
+    ],
+    "fallback_only_when_minus_one": true,
+    "writes": {
+      "total_max": "3284109 cmp [RBX-14],-1; 3284117 read5C69750; 328411D write Def+9EC",
+      "eminent_max": "3284120 cmp [RBX-C],-1; 3284126 read5C69754; 328412C write Def+9F4",
+      "total_min": "328412F cmp [RBX-18],-1; 3284135 read5C69730; 328413B write Def+9E8",
+      "eminent_min": "328413E cmp [RBX-10],-1; 3284144 read5C69728; 328414A write Def+9F0"
+    },
+    "important_boundary": "2392AA0/2392DE0 are define registration/access proxies, not the Religion finalizer. Finalizer is a chained-unwind function with multiple pdata ranges; whole physical source is retained separately."
+  },
+  "identity_and_fields": {
+    "current_faith": "Existing player/actual Rite->Faith identity route; Faith storage5D1E300, object+8 fullID",
+    "faith_to_religion_full_id_offset": "0x8C; original CanCreate29A5C12",
+    "religion_storage_global_rva": "0x5D1DE88",
+    "religion_resolution": "storage pointer -> +20 slots, +2C count; slot stride16, +8 object pointer; low24 index, object+8 fullID must match",
+    "borrowed_definition_pointer": "Religion+0x20",
+    "definition_fields_signed_int32": {
+      "total_min": "0x9E8",
+      "total_max": "0x9EC",
+      "eminent_min": "0x9F0",
+      "eminent_max": "0x9F4"
+    },
+    "membership_arrays": {
+      "total": "Faith+890 pointer/+89C count",
+      "eminent": "Faith+8A8 pointer/+8B4 count"
+    },
+    "default_fallback_must_not_be_used_for_observation": "Native script evaluators use default Religion global5D1DE00 on failed identity; actual observer must reject unresolved identity and retain null."
+  },
+  "native_consumers": {
+    "script_registration": "592140 Emax /5921E0 Tmax /592280 Emin /592320 Tmin; factories2B30FA0/2B31010/2B31080/2B310F0",
+    "script_value_leafs": {
+      "eminent_max": [
+        "0x2B2B540",
+        "0x2B2B5AA"
+      ],
+      "total_max": [
+        "0x2B2B5B0",
+        "0x2B2B61A"
+      ],
+      "eminent_min": [
+        "0x2B2B620",
+        "0x2B2B68A"
+      ],
+      "total_min": [
+        "0x2B2B690",
+        "0x2B2B6FA"
+      ]
+    },
+    "no_modifier_doctrine_government_or_DLC_dynamic_calls_in_complete_limit_leafs": true,
+    "create_validator": [
+      "0x29A5AD0",
+      "0x29A646B"
+    ],
+    "create_comparison": "29A5C56 reads current Faith count+89C;29A5C61 compares signed count with resolved ReligionDef+9EC; jl29A5D42 passes this capacity gate, count>=cap follows reject path. Other native requirements/bypass remain independent."
+  },
+  "authored_consumers": {
+    "promote": "50_holy_site_decisions.txt38 E<religion.Emax;107 AI same threshold",
+    "adopt": "same499 T<religion.Tmax;571 AI uses Tmax-1 to reserve one slot for player, not a different global cap",
+    "demote": "same203 E>religion.Emin",
+    "abandon": "same350 T>religion.Tmin",
+    "create": "Native29A5AD0 plus scripted rule can_create_dynamic_holy_site; important_actions/pam_actions1530 T<Tmax hints independently",
+    "government": "pam_scripted_triggers1331 government_is_theocracy supplies authority fallback; does not add capacity",
+    "adopt_rite_parameter": "50_holy_site_decisions522 allow_adopt_any_holy_site broadens adoptability; capacity499 remains outside that OR"
+  },
+  "authored_overrides": {
+    "49_religion_definition_overrides": 0,
+    "additional_faith_doctrine_tradition_modifier_government_DLC_cap_overrides_found": 0,
+    "zero_match_boundary": "Complete enumerated txt/gui/info/asset/dlc original installation corpus. Info documents optional fields but is not an active override. No assertion about mods, arbitrary saves, future versions, or nonmatching unknown native mechanics."
+  },
+  "initial_counts": {
+    "distribution": {
+      "4/2": 1,
+      "4/3": 1,
+      "5/2": 72,
+      "5/3": 21,
+      "7/3": 5,
+      "8/3": 3
+    },
+    "non_five_total_definitions": [
+      {
+        "faith": "mahayana_faith",
+        "line": 298,
+        "T": 8,
+        "E": 3,
+        "religion": "buddhism_religion"
+      },
+      {
+        "faith": "vajrayana_faith",
+        "line": 356,
+        "T": 8,
+        "E": 3,
+        "religion": "buddhism_religion"
+      },
+      {
+        "faith": "christian_faith",
+        "line": 453,
+        "T": 8,
+        "E": 3,
+        "religion": "christianity_religion"
+      },
+      {
+        "faith": "miaphysitism",
+        "line": 741,
+        "T": 4,
+        "E": 3,
+        "religion": "christianity_religion"
+      },
+      {
+        "faith": "armenian_apostolic",
+        "line": 817,
+        "T": 4,
+        "E": 2,
+        "religion": "christianity_religion"
+      },
+      {
+        "faith": "vaishnava_faith",
+        "line": 2199,
+        "T": 7,
+        "E": 3,
+        "religion": "hinduism_religion"
+      },
+      {
+        "faith": "shaiva_faith",
+        "line": 2269,
+        "T": 7,
+        "E": 3,
+        "religion": "hinduism_religion"
+      },
+      {
+        "faith": "shakta_faith",
+        "line": 2353,
+        "T": 7,
+        "E": 3,
+        "religion": "hinduism_religion"
+      },
+      {
+        "faith": "smartism",
+        "line": 2393,
+        "T": 7,
+        "E": 3,
+        "religion": "hinduism_religion"
+      },
+      {
+        "faith": "saura",
+        "line": 2463,
+        "T": 7,
+        "E": 3,
+        "religion": "hinduism_religion"
+      }
+    ],
+    "data": "authored-faith-counts.json",
+    "meaning": "All 103 authored top-level Faiths, including historical definitions; initial ordinary and eminent lists are disjoint. Eminent is included in total. Definitions are not a fresh read of every bookmark/save.",
+    "T_formula": "len(ordinary)+len(eminent); this entire authored corpus has no duplicates or overlap, so it also equals union count. The 9 total includes the 3 eminent; never 9+3."
+  },
+  "force_mutation_boundary": {
+    "low_level_eminent_setter": "2441990 admission segment first checks membership in Faith+890, then for eminent=true checks/append to Faith+8A8 via9E3410/B02D10 before later notifications; no Religion/loaded max check before the edit. Therefore the 3 limit is not an invariant enforced by this model setter.",
+    "source": "Original retained parent native-child/faith-grade-setter.asm lines28-58; no game invocation",
+    "add_holy_site_full_script_dispatch_and_all_low_level_paths_closed": false,
+    "all_script_effect_paths_can_overflow_proven": false,
+    "unresolved": "Do not claim every force/script add path or dynamic Faith creation has been exhausted at native level. Authored mechanics scan found mutation spells only in ordinary holy-site decisions; no authored event/history add_holy_site/make_holy_site_eminent overrides found."
+  },
+  "mcp_gap": {
+    "existing_tool": "ck3_query_player_holy_site_v1",
+    "structured_current_limits_exposed_in_current_snapshot_DTO": false,
+    "minimal_additive_candidate": "Player-derived current Faith only -> actual resolved Religion -> borrowed definition four int32 fields plus full current T/E arrays/counts and complete actual identity/frame. Same callback twice-stable reads; no arbitrary Faith parameter/new action/tool. Missing or changed source => unavailable/null.",
+    "not_equivalent": "Remaining slots is a planning input; current cap/CanCreate or CanConfirm alone does not prove all action permissions or business success. Eminence, total membership, Active and material capacity remain separate."
+  },
+  "native_sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-definition-limit-constructor.json",
+      "bytes": 2656,
+      "sha256": "7305aa4c7654c68ea3179d73e6fbcdec510a6e651b44932b6340dd2edcba6b71"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-limit-default-finalizer.json",
+      "bytes": 1694,
+      "sha256": "e5ec36fe8b3f6a70cb6790095da135bad435029cc735bc208d57856132e1db6b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-vbtable.json",
+      "bytes": 973,
+      "sha256": "49282413c4a082f9f7265f0f415267436520b610585806bf9807adaccc603a7b"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-definition-vtable.json",
+      "bytes": 2795,
+      "sha256": "0c72057aeb897856407169d44d4ec8bf1cd41e134ca2bdffe75d94c4e74f39e8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-finalizer-adjustor.json",
+      "bytes": 938,
+      "sha256": "28f86a325b8dc1dcb3fce009df5555cf701a35aa0328190f26b9635cf95a952d"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\limit-define-storage-xrefs-corrected-a02.json",
+      "bytes": 6990,
+      "sha256": "8854862b34f097ea4d9914c1df39c74c6c6dcd4d1564e20510a6d67cde8c90c7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-value-eval-complete.json",
+      "bytes": 1126,
+      "sha256": "6d8683cef127dcfcc6b052c20518c837f1f506d0b141992f98fd2e355396a290"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-value-eval-complete.json",
+      "bytes": 1126,
+      "sha256": "02d8ae566d416081d386ced66b6f0185ca273cec5447c8f878d3e2259ac221cf"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\min-value-evals-complete.json",
+      "bytes": 1350,
+      "sha256": "6f194f1119bcb0bc3acf898277e75f3abbe0474d05601bc0657d632c26f227b8"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\script-limit-registration-locator.json",
+      "bytes": 2447,
+      "sha256": "1446fdb68e044947e6f2f1aae832e382e611a8ba09f7144448ba2c1e27807e72"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-script-vtable.json",
+      "bytes": 2733,
+      "sha256": "b917ae6b14397aa8f9a669ff6987fd83ad75ed0e86b63bbfeade584ea8b802da"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-value-vtable.json",
+      "bytes": 5757,
+      "sha256": "6a7423ab302f402b8751ea92a24b7c2c34c70664d85b8432ef1c14c96fac6a9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-value-vtable.json",
+      "bytes": 4998,
+      "sha256": "71d42caf1c650ff2595bb823f525353ae290f991a457ae77218d9775eb9288e7"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-min-eval-slot.json",
+      "bytes": 832,
+      "sha256": "6971cd1907d9cbda3b5d45f2076f29dfb0bcf32c7f23db4556123fff611f8bd6"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-min-eval-slot.json",
+      "bytes": 832,
+      "sha256": "f95500c3a8260a3759aa44c5086e352fbd225490a99813537f3f58511bb1a764"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\creation-cap-consumer.json",
+      "bytes": 5972,
+      "sha256": "e71dd6a62526f9d657ce38dd18e918872c55fee69980924befc6f018eabe5a38"
+    }
+  ],
+  "original_sources": [
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+      "bytes": 125400,
+      "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+      "source_relative_path": "common/defines/00_defines.txt",
+      "excerpts": [
+        {
+          "first_line": 907,
+          "last_line": 935,
+          "text": "907: \tFAITH_CORE_TENETS_CAP = 3\n908: \t# stress gain due to traits is going to be multiplied by tenet weight and divided by this number to yield the Spiritual Fulfillment change.\n909: \tSPIRITUAL_FULFILLMENT_FOR_STRESS_DIVIDE_FACTOR = 100\n910: \t# Threshold is on the final fulfillment change from negative stress, not the raw stress impact\n911: \tMIN_FULFILLMENT_CHANGE_FOR_EFFECT = 5\n912: \n913: \t# Monthly percent progress for same-faith rite spread in a clerical region, per neighbor\n914: \tMONTHLY_RITE_CONVERSION_PROCESS_PER_NEIGHBORING_COUNTY = 2\n915: \n916: \t# if set to yes, clerical region will not convert counties held by a ruler with a chaplain of a different rite than the region holder.\n917: \tREQUIRE_SAME_CHAPLAIN_RITE_FOR_REGION_CONVERSION = no\n918: \n919: \t# How many eminent holy sites can a Faith have? (unless overridden by Religion)\n920: \tFAITH_EMINENT_HOLY_SITES_MAX_DEFAULT = 3\n921: \t# How many holy sites in total, eminent ones included, can a Faith have? (unless overridden by Religion)\n922: \tFAITH_HOLY_SITES_MAX_DEFAULT = 9\n923: \t# Minimum number of eminent holy sites a Faith must retain (unless overridden by Religion)\n924: \tFAITH_EMINENT_HOLY_SITES_MIN_DEFAULT = 1\n925: \t# Minimum number of holy sites in total a Faith must retain (unless overridden by Religion)\n926: \tFAITH_HOLY_SITES_MIN_DEFAULT = 1\n927: \n928: \t# How many rarity levels are required for a Ruler to create a holy site\n929: \tCREATE_HOLY_SITE_RARITY_REQUIRED = 3\n930: \n931: \t# How many rarity levels can be used to scale holy site effects (should match with holy site slots)\n932: \tMAX_HOLY_SITE_RARITY_TOTAL = 12\n933: }\n934: \n935: NTitle = {"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\religion\\religion_types\\_religion_types.info",
+      "bytes": 5101,
+      "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+      "source_relative_path": "common/religion/religion_types/_religion_types.info",
+      "excerpts": [
+        {
+          "first_line": 1,
+          "last_line": 24,
+          "text": "1: At game start, the religions and faiths defined in this folder will exist.\n2: \n3: == structure ==\n4: religion_name = {\n5: \n6: \treligion_details = {\n7: \t\tfamily = family_name\t\t\t# What religion family the religion belongs to\n8: \t\tgraphical_faith = catholic_gfx \t# All faiths in this religion default to this 3D model (currently used for temple assets). Order of precedence is the lowest level scripted in: faith > religion > family.\n9: \t\tpiety_icon_group = christian\t# All faiths in this religion default to this set of piety icons. Order of precedence is the lowest level scripted in: faith > religion > family.\n10: \t\ttenet_background_icon = \"\"\t# All faiths in this religion default to this doctrine background icon. Order of precedence is the lowest level scripted in: faith > religion > family.\n11: \t\ttheocracy_government_type = government_type_key # Which government type should theocratic rulers of this religion have? (falls back to default theocracy government type if not defined)\n12: \t}\n13: \n14: \tmain_holy_site = key\t\t# Optional. Key of a holy_site_type that represents this religion's main / principal site. That site cannot be removed from any faith of the religion.\n15: \teminent_holy_sites_max = 3\t# Optional. How many eminent holy sites can Faiths of this Religion have? Default is define FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT\n16: \tholy_sites_max = 9\t\t\t# Optional. How many holy sites in total, eminent ones included, can Faiths of this Religion have? Default is define FAITH_HOLY_SITES_MAX_DEFAULT\n17: \teminent_holy_sites_min = 0\t# Optional. Minimum number of eminent holy sites a Faith must retain - blocks demote when reached. Default is define FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT\n18: \tholy_sites_min = 1\t\t\t# Optional. Minimum number of holy sites in total a Faith must retain - blocks abandon when reached. Default is define FAITH_HOLY_SITES_MIN_DEFAULT\n19: \n20: \tpagan_roots = yes\t\t\t# if yes, then faiths without the unreformed doctrine are considered reformed by the interface\n21: \tdoctrine = name\n22: \tdoctrine = another_name # Doctrines defined in a religion will be applied to all faiths within it. This is only at game start; it is purely for script convenience, and would be equivalent to putting the doctrine in all the faiths. It can be overridden by putting a different doctrine in the group in the specific faith. Note that doctrines that allow more than one pick can *not* be defined on a religion level, as there's no obvious override system that would work then\n23: \n24: \ttraits = {"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "source_relative_path": "common/decisions/50_holy_site_decisions.txt",
+      "excerpts": [
+        {
+          "first_line": 25,
+          "last_line": 53,
+          "text": "25: \tis_valid = {\n26: \t\tsave_temporary_scope_as = root\n27: \t\texists = scope:selected_item\n28: \n29: \t\tcan_manage_faith_holy_sites_trigger = yes\n30: \n31: \t\tscope:selected_item ?= {\n32: \t\t\troot.faith = {\n33: \t\t\t\tis_faith_holy_site = prev\n34: \t\t\t\tNOT = { is_faith_eminent_holy_site = prev }\n35: \t\t\t\tsave_temporary_scope_as = faith\n36: \t\t\t\tcustom_tooltip = {\n37: \t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max\n38: \t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max\n39: \t\t\t\t}\n40: \t\t\t}\n41: \t\t\tcustom_tooltip = {\n42: \t\t\t\ttext = elevate_holy_site_decision_target_in_realm_or_head_of_faith\n43: \t\t\t\tOR = {\n44: \t\t\t\t\troot.faith.religious_head ?= root\n45: \t\t\t\t\tholy_site_barony.holder = {\n46: \t\t\t\t\t\ttarget_is_same_character_or_above = root\n47: \t\t\t\t\t}\n48: \t\t\t\t}\n49: \t\t\t}\n50: \t\t\tcustom_tooltip = {\n51: \t\t\t\ttext = elevate_holy_site_decision_county_holder_correct_faith\n52: \t\t\t\tholy_site_county.holder.faith = root.faith\n53: \t\t\t}"
+        },
+        {
+          "first_line": 103,
+          "last_line": 112,
+          "text": "103: \tai_potential = {\n104: \t\tis_independent_ruler = yes\n105: \t\tcan_manage_faith_holy_sites_trigger = yes\n106: \t\tfaith = {\n107: \t\t\tlist_size:eminent_holy_site < religion.eminent_holy_sites_max\n108: \t\t}\n109: \t\tOR = {\n110: \t\t\thighest_held_title_tier >= tier_kingdom\n111: \t\t\tfaith.religious_head = this\n112: \t\t}"
+        },
+        {
+          "first_line": 193,
+          "last_line": 207,
+          "text": "193: \t\texists = scope:selected_item\n194: \n195: \t\tcan_manage_faith_holy_sites_trigger = yes\n196: \n197: \t\tscope:selected_item ?= {\n198: \t\t\troot.faith = {\n199: \t\t\t\tis_faith_eminent_holy_site = prev\n200: \t\t\t\tsave_temporary_scope_as = faith\n201: \t\t\t\tcustom_tooltip = {\n202: \t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min\n203: \t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min\n204: \t\t\t\t}\n205: \t\t\t}\n206: \t\t}\n207: "
+        },
+        {
+          "first_line": 341,
+          "last_line": 353,
+          "text": "341: \t\tcan_manage_faith_holy_sites_trigger = yes\n342: \n343: \t\tscope:selected_item ?= {\n344: \t\t\troot.faith = {\n345: \t\t\t\tsave_temporary_scope_as = faith\n346: \t\t\t\tis_faith_holy_site = prev\n347: \t\t\t\tNOT = { is_faith_eminent_holy_site = prev }\n348: \t\t\t\tcustom_tooltip = {\n349: \t\t\t\t\ttext = abandon_holy_site_decision_above_holy_sites_min\n350: \t\t\t\t\tlist_size:holy_site > root.faith.religion.holy_sites_min\n351: \t\t\t\t}\n352: \t\t\t}\n353: \t\t}"
+        },
+        {
+          "first_line": 488,
+          "last_line": 535,
+          "text": "488: \tis_valid = {\n489: \t\tsave_temporary_scope_as = root\n490: \n491: \t\tis_independent_ruler = yes\n492: \n493: \t\tcan_manage_faith_holy_sites_trigger = yes\n494: \n495: \t\troot.faith = {\n496: \t\t\tsave_temporary_scope_as = faith # used by loc below\n497: \t\t\tcustom_tooltip = {\n498: \t\t\t\ttext = adopt_holy_site_decision_under_holy_sites_max\n499: \t\t\t\tlist_size:holy_site < root.faith.religion.holy_sites_max\n500: \t\t\t}\n501: \t\t}\n502: \t\texists = scope:selected_item\n503: \t\tscope:selected_item ?= {\n504: \t\t\tholy_site_county.holder = {\n505: \t\t\t\tcustom_tooltip = {\n506: \t\t\t\t\ttext = adopt_holy_site_in_realm\n507: \t\t\t\t\ttarget_is_same_character_or_above = root\n508: \t\t\t\t}\n509: \t\t\t\tfaith = root.faith\n510: \t\t\t}\n511: \n512: \t\t\tcustom_tooltip = {\n513: \t\t\t\ttext = adopt_holy_site_decision_not_already_a_holy_site\n514: \t\t\t\troot.faith = {\n515: \t\t\t\t\tNOT = { is_faith_holy_site = prev }\n516: \t\t\t\t}\n517: \t\t\t}\n518: \t\t\troot.faith = {\n519: \t\t\t\tfaith_can_use_holy_site_kingdom_trigger = { BARONY = scope:selected_item.holy_site_barony }\n520: \t\t\t}\n521: \t\t\tOR = {\n522: \t\t\t\troot.rite = { rite_has_parameter = allow_adopt_any_holy_site }\n523: \t\t\t\tcustom_tooltip = {\n524: \t\t\t\t\ttext = adopt_holy_site_decision_shared_or_syncretic_faith\n525: \t\t\t\t\tholy_site_adoptable_by_character_trigger = { CHARACTER = root }\n526: \t\t\t\t}\n527: \t\t\t}\n528: \t\t\t# This is just to make the player requirements a bit clearer\n529: \t\t\tcustom_tooltip = {\n530: \t\t\t\ttext = adopt_holy_site_decision_active_site\n531: \t\t\t\tany_holy_site_faith = {\n532: \t\t\t\t\tnum_county_followers > 0\n533: \t\t\t\t}\n534: \t\t\t}\n535: \t\t}"
+        },
+        {
+          "first_line": 555,
+          "last_line": 575,
+          "text": "555: \teffect = {\n556: \t\troot.faith = {\n557: \t\t\tadd_holy_site = {\n558: \t\t\t\ttarget = scope:selected_item\n559: \t\t\t\tactor = root\n560: \t\t\t}\n561: \t\t\tconsume_free_holy_site_action_effect = yes\n562: \t\t}\n563: \t}\n564: \n565: \tai_potential = {\n566: \t\tis_independent_ruler = yes\n567: \t\tcan_manage_faith_holy_sites_trigger = yes\n568: \t\tpiety >= monumental_piety_value\n569: \t\tfaith = {\n570: \t\t\tlist_size:holy_site < {\n571: \t\t\t\tvalue = root.faith.religion.holy_sites_max\n572: \t\t\t\t# always leave one slot for a player to adopt/create\n573: \t\t\t\tsubtract = 1\n574: \t\t\t}\n575: \t\t}"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_rules\\02_holy_sites.txt",
+      "bytes": 2090,
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "source_relative_path": "common/scripted_rules/02_holy_sites.txt",
+      "excerpts": [
+        {
+          "first_line": 28,
+          "last_line": 45,
+          "text": "28: # Whether a character can create a new dynamic holy site.\n29: # root                 = the character creating the holy site\n30: # scope:title          = the barony the holy site would be placed in\n31: # scope:holy_site_type = the holy site type being created\n32: # scope:faith          = the faith the holy site is created for\n33: can_create_dynamic_holy_site = {\n34: \tcan_manage_faith_holy_sites_trigger = yes\n35: \n36: \t# This is a command, not a decision, so the variable cooldown is set in on_character_holy_site_created\n37: \tcustom_description = {\n38: \t\ttext = holy_site_creation_on_cooldown_tt\n39: \t\tNOT = { has_variable = holy_site_creation_cooldown }\n40: \t}\n41: \n42: \tscope:faith = {\n43: \t\tfaith_can_use_holy_site_kingdom_trigger = { BARONY = scope:title }\n44: \t}\n45: }"
+        }
+      ]
+    },
+    {
+      "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "source_relative_path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "excerpts": [
+        {
+          "first_line": 1294,
+          "last_line": 1337,
+          "text": "1294: can_manage_faith_holy_sites_trigger = {\n1295: \ttrigger_if = {\n1296: \t\tlimit = { exists = faith.religious_head }\n1297: \t\tcustom_tooltip = {\n1298: \t\t\ttext = manage_holy_sites_hof_or_puppet_tt\n1299: \t\t\tOR = {\n1300: \t\t\t\tfaith.religious_head ?= this\n1301: \t\t\t\tpuppet:theological_agent_puppet ?= faith.religious_head\n1302: \t\t\t\tpuppet:external_theological_agent_puppet ?= faith.religious_head\n1303: \t\t\t}\n1304: \t\t}\n1305: \t}\n1306: \ttrigger_else = {\n1307: \t\ttrigger_if = {\n1308: \t\t\tlimit = { exists = puppeteer }\n1309: \t\t\tpuppeteer = { can_manage_faith_holy_sites_without_hof_trigger = yes }\n1310: \t\t}\n1311: \t\ttrigger_else = {\n1312: \t\t\tcan_manage_faith_holy_sites_without_hof_trigger = yes\n1313: \t\t}\n1314: \t}\n1315: }\n1316: \n1317: # Substitute authority for a faith with no head of faith: a realm priest puppet plus piety standing.\n1318: can_manage_faith_holy_sites_without_hof_trigger = {\n1319: \tOR = {\n1320: \t\tcustom_tooltip = {\n1321: \t\t\ttext = manage_holy_sites_realm_priest_puppet_tt\n1322: \t\t\t# puppet: errors on non-playable characters, so we only check playable ones and tooltips never run it\n1323: \t\t\ttrigger_if = {\n1324: \t\t\t\tlimit = { is_playable_character = yes }\n1325: \t\t\t\texists = puppet:theological_agent_puppet\n1326: \t\t\t}\n1327: \t\t\ttrigger_else = {\n1328: \t\t\t\talways = no\n1329: \t\t\t}\n1330: \t\t}\n1331: \t\tgovernment_has_flag = government_is_theocracy\n1332: \t}\n1333: \tcustom_tooltip = {\n1334: \t\ttext = manage_holy_sites_piety_level_tt\n1335: \t\tpiety_level >= 4\n1336: \t}\n1337: }"
+        }
+      ]
+    }
+  ],
+  "existing_production_or_prior_sources": [
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child\\faith-grade-setter.asm",
+      "bytes": 11565,
+      "sha256": "2d52ea61cda158c3f5052481807820543d18c81c1afb2eff6342fef19d54761a"
+    },
+    {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\research\\major-grade-value-a01\\native-child\\faith-grade-setter.json",
+      "bytes": 2153,
+      "sha256": "003d7c470aa96afd3a374029d719738e399e3ff09b9c453b31d792b8fd1cb08a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\src\\ck3_12004_holy_site_snapshot.cpp",
+      "bytes": 11688,
+      "sha256": "e4b71513d1c5008c047fbd37a0fb026b2218a3f8ee3f886de5aa6fb2d56cd39b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12004_holy_site_snapshot.hpp",
+      "bytes": 3573,
+      "sha256": "14a056e6a55b15854f2d57b8c841fd5d45fada140502fb484b4efe5f16ab32a6"
+    }
+  ],
+  "research_metadata_reads": {
+    "count": 17,
+    "bytes": 204,
+    "ledger": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\owned-pdata-read-ledger.json",
+      "bytes": 6001,
+      "sha256": "f8f1fb3665ebde8262e2c143e878992011067a2ce84c4f20fcebb7240ae6dd17"
+    },
+    "whole_EXE_read": false,
+    "process_or_game_access": false
+  },
+  "preliminary_annotation_corrections": [
+    "limit-define-storage-xrefs.json originally guessed MIN labels at5C69748/4C while MAX refs were correct; final source only cites corrected-a02 exact MIN globals5C69730/28 and raw addresses.",
+    "Native code packets now explicitly say cached code bytes; bounded fresh pdata reads are separately recorded instead of ambiguous zero EXE-read wording."
+  ],
+  "budget_receipt": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\storage\\RESEARCH-STORAGE-ACTIVE-a01.json",
+    "bytes": 9807,
+    "sha256": "6ca7961c7f3b02eb7aeed8578e6e2266de8c193d1bbdee5d594e39a6d16d0961"
+  },
+  "source_working_tree_state_at_close": {
+    "observed_utc": "2026-10-18T02:32:09.619996+00:00",
+    "HEAD": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+    "whole_tree_clean_claimed": false,
+    "other_lane_tracked_dirty_files": [
+      "docs/ck3-native-ai/live-decision-overlay-2026-10-12.md",
+      "promo/ck3_faith_and_power/shooting-handover.md",
+      "tools/ck3_mod_acceptance_recorder.py",
+      "tools/g2_saved_campaign/decision_overlay_window.py",
+      "tools/g2_saved_campaign/live_decision_overlay.py"
+    ],
+    "method": "actual git status --short --untracked-files=no readback; this worker wrote only limits/"
+  }
+}

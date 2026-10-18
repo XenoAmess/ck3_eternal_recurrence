@@ -1,0 +1,1626 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:47:48.695383+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "finalization_observed_head": "2ac64cc39f7adf5a50f2e3096dac43599658ffd1",
+  "relevant_source_delta_since_start": [],
+  "other_commit_changed_paths": [
+    ".gitattributes",
+    ".github/workflows/static-ci.yml",
+    "AGENTS.md",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/army_observed_phase_query_12004.hpp",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/army_regular_core_passive_12004.hpp",
+    "ck3_autonomous_player/native_bridge/include/xar_bridge/refill_core_carrier_12004.hpp",
+    "ck3_autonomous_player/native_bridge/research/refill_add_hwprobe_12004.cpp",
+    "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py",
+    "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+    "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+    "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/refill_core_carrier_reader_12004.hpp",
+    "ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/mercenary_query_mcp_result.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py",
+    "ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py",
+    "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_emergency_budget_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_forced_retreat_observation_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_finance_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_safe_rendezvous_v1.py",
+    "ck3_autonomous_player/src/xar_autoplayer/war_strategic_reserve_v1.py",
+    "ck3_autonomous_player/tests/fixtures/p79_actual1118_forced_retreat.json",
+    "ck3_autonomous_player/tests/fixtures/p79_actual658_separated_armies.json",
+    "ck3_autonomous_player/tests/unit/test_mercenary_query_mcp_result.py",
+    "ck3_autonomous_player/tests/unit/test_refill_carrier_launcher_ready_scope_12004.py",
+    "ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py",
+    "ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py",
+    "ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py",
+    "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+    "ck3_autonomous_player/tests/unit/test_war_forced_retreat_observation_v1.py",
+    "ck3_autonomous_player/tests/unit/test_war_safe_rendezvous_v1.py",
+    "docs/autonomous-agent-progress/daily/2026-10-18.md",
+    "docs/autonomous-agent-progress/weekly/2026-W42.md",
+    "docs/ck3-native-ai/README.md",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/COPYPLAN.original.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/INTEGRATION.md",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/PREFLIGHT.raw.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/ROOT-DELIVERY.original.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/VALIDATE.raw.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/candidate-source.exact.zip",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stderr.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stdout.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/common/decisions/xar_r05_low_supply_fixture.txt",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/descriptor.mod",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/fixture-manifest.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/english/xar_r05_low_supply_fixture_l_english.yml",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/offline-checks.actual.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-documentation-source.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-preflight.actual.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/source-index.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/verify_candidate_a01.py",
+    "docs/ck3-native-ai/episode04-r05-controlled-low-supply-fixture-12004.md",
+    "docs/ck3-native-ai/episode04-refill-core-carrier-12004.md",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/DELIVERY.final.json",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/PORTABLE-VERIFY.final.json",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/README.md",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/SOURCE.final.json",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/portable-source-a01.zip",
+    "docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/verify_portable.py",
+    "docs/ck3-native-ai/evidence/p77-combat-query-mcp-serialization-2026-10-18.json",
+    "docs/ck3-native-ai/evidence/p79-safe-rendezvous-source-2026-10-18.json",
+    "docs/ck3-native-ai/evidence/p80-emergency-war-budget-candidate-2026-10-18.json",
+    "docs/ck3-native-ai/live-decision-overlay-2026-10-12.md",
+    "docs/ck3-native-ai/p77-combat-query-mcp-serialization-2026-10-18.md",
+    "docs/ck3-native-ai/p79-separated-army-safe-rendezvous-2026-10-18.md",
+    "docs/ck3-native-ai/p80-emergency-war-budget-candidate-2026-10-18.md",
+    "promo/ck3_faith_and_power/integration/legacy-decision-panel-retirement.md",
+    "promo/ck3_faith_and_power/shooting-handover.md",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply.json",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply_adapter.py",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
+    "tools/ck3_mod_acceptance_r05_products.json",
+    "tools/ck3_mod_acceptance_recorder.py",
+    "tools/g2_saved_campaign/decision_overlay_window.py",
+    "tools/g2_saved_campaign/live_decision_overlay.py",
+    "tools/prepare_r05_low_supply_fixture.py",
+    "tools/run_r05_low_supply_initializer_once.py",
+    "tools/test_legacy_decision_overlay_retirement.py",
+    "tools/test_r05_low_supply_fixture.py"
+  ],
+  "three_selected_mcp_ASTs_equal_research_start": true,
+  "current_mcp_file": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py",
+    "bytes": 256040,
+    "sha256": "ff328ec35e485911c877e76c793bec21bac2355960880e77bc60a135d3f02d31"
+  },
+  "build_version": "1.20.0.4",
+  "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "new_live_evidence": false,
+  "no_build": true,
+  "no_game_or_process_memory_access": true,
+  "review_by_utc": "2026-10-24T00:00:00Z",
+  "schema": "ck3-12004-holy-site-grade-effect-conditions-v1",
+  "proof_layer": "exact-build-static-producer-caller-consumer-and-authored-definition-census",
+  "preflight": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\ROOT-TASK-START-PREFLIGHT.json",
+    "bytes": 21681,
+    "sha256": "31454a0cc17a43f1dc4cfb8434521b558289138087b45bf5f59958891ea15504"
+  },
+  "research_storage": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\storage\\RESEARCH-STORAGE-ACTIVE-a01.json",
+    "bytes": 9807,
+    "sha256": "6ca7961c7f3b02eb7aeed8578e6e2266de8c193d1bbdee5d594e39a6d16d0961"
+  },
+  "conditions": [
+    {
+      "domain": "faith_character_modifier",
+      "eminent_required": true,
+      "cached_active_gate_in_verified_producer": false,
+      "same_controller_faith_required": true,
+      "association_required": true,
+      "producer": "29CC520 -> 24FB270",
+      "definition_offset": "type+58",
+      "recipient": "actor current Rite modifier list, 291C0B0 -> 291F080 -> 2438830"
+    },
+    {
+      "domain": "faith_character_modifier_scaled",
+      "eminent_required": true,
+      "cached_active_gate_in_verified_producer": false,
+      "same_controller_faith_required": true,
+      "association_required": true,
+      "producer": "29CC520 -> 24FB270",
+      "definition_offset": "type+3D8",
+      "recipient": "actor current Rite modifier list",
+      "scale": "HolySite script scope; shipped rarity alias reads cached Site+1C"
+    },
+    {
+      "domain": "county_holder_character_modifier",
+      "eminent_required": false,
+      "cached_active_gate_in_verified_producer": true,
+      "same_controller_faith_required": null,
+      "association_required": true,
+      "producer": "291C0B0 -> 291E3A0",
+      "definition_offset": "type+218",
+      "recipient": "two actual title input families with recipient Faith association; do not generalize to all co-Faith characters or universal holder==actor"
+    },
+    {
+      "domain": "county_modifier_scaled",
+      "eminent_required": false,
+      "cached_active_gate_in_verified_producer": true,
+      "same_controller_faith_required": true,
+      "association_required": null,
+      "producer": "2864D93 -> 2864E40",
+      "definition_offset": "type+3F0",
+      "recipient": "county receiver+268 temporary -> receiver+8 aggregate; safe observer root binding incomplete",
+      "association_boundary": "Verified county receiver enumerates its Title+1E0 Site IDs and uses Active/2441F30; no separate requested Faith membership test is established in this branch. Do not infer one from other modifier families."
+    },
+    {
+      "domain": "has_holy_site_parameter",
+      "eminent_required": false,
+      "cached_active_gate_in_verified_producer": true,
+      "same_controller_faith_required": false,
+      "association_required": false,
+      "scope": "barony resolves county; county+1E0/+1EC site list",
+      "producer": "registration591560 -> factory2B2F770 -> bool2B29F00",
+      "definition_offset": "type+40/count4C; uint32 parameter token membership, no yes/no value"
+    },
+    {
+      "domain": "controls_holy_site_with_parameter",
+      "eminent_required": false,
+      "cached_active_gate_in_verified_producer": true,
+      "same_controller_faith_required": true,
+      "association_required": true,
+      "scope": "Faith+890 all associated sites, not8A8 eminent",
+      "producer": "registration591600 -> factory2B2F7C0 -> bool2B2A2F0",
+      "definition_offset": "type+40/count4C parameter token membership"
+    },
+    {
+      "domain": "is_holy_site_of",
+      "eminent_required": false,
+      "cached_active_gate_in_verified_producer": false,
+      "same_controller_faith_required": false,
+      "association_required": true,
+      "scope": "barony -> county; requested Faith all sites intersects county sites",
+      "producer": "registration5914C0 -> factory2B2F6F0 -> bool2B29C70"
+    }
+  ],
+  "controller_faith_path": "2441F30: Site+B0 barony -> barony+108 county -> county+128 holder -> holder+B4 Rite -> Rite+4B8 Faith fullID equals requested Faith+8; not top liege/county populace",
+  "cache_boundaries": {
+    "actual_rebuild_timing_proven": false,
+    "rank_readback_is_not_aggregate_refresh_proof": true,
+    "GUI2659880_is_not_actual_benefit_consumer": true,
+    "rarity_alias": "holy_site_total_artifact_rarity -> root.total_active_artifact_rarity_sum",
+    "rarity_value_registration": "588B50, factoryVT47A2E20 -> 2B0D600 tailjmp2B0DE50 -> instanceVT47A2B30 slot100 -> 2B0C740",
+    "rarity_value_semantics": "Valid HolySite scope fullID -> cached int32 Site+1C; does not call265A3F0; no separate eminent/Active branch within evaluator",
+    "native_default_object_fallback": "Original evaluators may use fallback; any future observer must not report fallback as actual current object."
+  },
+  "other_script_grade_consumers": [
+    {
+      "source": "common/scripted_effects/00_pilgrimage_effects.txt",
+      "lines": [
+        609,
+        620
+      ],
+      "meaning": "give_piety_reward_effect ordinary destination county for root Faith multiplies0.5; other activity multipliers still apply"
+    },
+    {
+      "source": "common/travel/point_of_interest_types/travel_point_of_interest_types.txt",
+      "lines": [
+        465,
+        519
+      ],
+      "meaning": "ordinary/eminent different piety script values and phase-specific XP branches; not HolySiteType modifier"
+    },
+    {
+      "source": "common/script_values/02_religion_values.txt",
+      "lines": [
+        4139,
+        4183
+      ],
+      "meaning": "spiritual HoF piety/gold cost mult1.5 if no controlled same-holder-Faith eminent site; not blanket temporal HoF rule"
+    },
+    {
+      "source": "events/artifacts/historical_artifacts_events.txt",
+      "lines": [
+        1086,
+        1148
+      ],
+      "meaning": "initial relic seeding dispatch and tolerated eminent second pass; rank mutation does not rerun startup"
+    },
+    {
+      "source": "common/activities/activity_types/pilgrimage.txt",
+      "lines": [
+        424,
+        433
+      ],
+      "meaning": "eminent destination description only; not reward producer"
+    },
+    {
+      "source": "common/buildings/00_special_buildings.txt",
+      "lines": [
+        52,
+        73
+      ],
+      "meaning": "building construct/enable uses association predicate plus other building requirements, not universal eminent rule"
+    }
+  ],
+  "limits": {
+    "source_contract": "limits-source-contract.json",
+    "category_correction": "corpus-category-correction.json",
+    "property_scope": "Religion definition, not arbitrary Faith modifier",
+    "all49_authored_religions_use_defaults": true,
+    "total_max": 9,
+    "eminent_max": 3,
+    "total_min": 1,
+    "eminent_min": 1,
+    "total_includes_eminent": true,
+    "faith_definition_count": 103,
+    "count_is": "all authored top-level Faith definitions before roster field filtering; not current saved runtime Faith count",
+    "all_authored_start_counts_within_cap": true,
+    "universal_model_invariant_proven": false
+  },
+  "current_mcp": {
+    "holy_site_tool": "ck3_query_player_holy_site_v1(expected_revision,holy_site_id=None)",
+    "relic_tool": "ck3_query_player_holy_site_relic_context_v1(expected_revision,holy_site_id)",
+    "action_context_tool": "ck3_query_player_holy_site_relic_action_context_v1(expected_revision,holy_site_id,artifact_id)",
+    "new_opt_parameters": false,
+    "recognition_and_fixed_PC_domains": "Owner-derived attached output domains in current source, not extra tool arguments",
+    "limits_current_implemented": false,
+    "limits_current_proposal": "current player Faith+8C Religion fullID -> exact generation resolve5D1DE88 -> Religion+20 definition -> four int32+current arrays, before/after stable; null/unavailable on missing identity, no default9/3",
+    "fixed_PC_values": "definition raw Q64 and all-source actual aggregate at u16 keys; name null, no site attribution",
+    "missing": [
+      "actual per-site scaled contribution",
+      "bound county aggregate observer",
+      "parameter current loaded token/predicate output",
+      "cache generation/freshness time"
+    ]
+  },
+  "corrections": [
+    {
+      "original": "parameter-consumer-census-a01.json",
+      "reason": "Initial extractor incorrectly required key=value for bare-token parameter list; zero not evidence",
+      "superseded_by": "parameter-consumer-census-a02.json"
+    },
+    {
+      "original": "limits-source-contract.json scope.category_scan_file_counts.doctrines=0",
+      "reason": "Obsolete directory prefix category; all actual doctrine_types7/category_types2/group_types2/tenet_types3 already in exhaustive manifest",
+      "append_only_correction": "corpus-category-correction.json"
+    },
+    {
+      "reason": "Exploratory functions without pdata are leaf/tailjmp; bound raw fragments retained instead. Constructor or formatter filenames are not Boolean semantic evidence; actual bool functions explicitly identified above."
+    },
+    {
+      "field": "county_modifier_scaled.association_required",
+      "previous": true,
+      "now": null,
+      "reason": "The actual county branch proves county Site enumeration/Active/controller gates, not an independent requested-Faith association check. No helper adds an invented gate."
+    }
+  ],
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Static native model/consumer ABI and authored definition census; no CK3 script execution or finite-runtime claim; old parser samples would not qualify these branches."
+  },
+  "evidence_files": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\holy-site-major-grade-value12004\\native-consumer-contract.json",
+        "bytes": 13380,
+        "sha256": "9a5eeb18664f134dfb52b9d94b94589340dd24518cf76a3b9895cd82dce83d79"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/prior-native-consumer-contract.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\prior-native-consumer-contract.json",
+      "bytes": 13380,
+      "sha256": "9a5eeb18664f134dfb52b9d94b94589340dd24518cf76a3b9895cd82dce83d79",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\prior-native-consumer-contract.json",
+        "bytes": 13380,
+        "sha256": "9a5eeb18664f134dfb52b9d94b94589340dd24518cf76a3b9895cd82dce83d79"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT.json",
+        "bytes": 32307,
+        "sha256": "2eef0f1698db3a847669c7c64a7ee0cd59ba6c387e2528c60d928b3cacf55e9b"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-source-contract.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-source-contract.json",
+      "bytes": 31831,
+      "sha256": "79e2fdc232b90ca6a11de0c5c15e430d3a5db7378a08d8ac9b218bf004cbb628",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-source-contract.json",
+        "bytes": 32307,
+        "sha256": "2eef0f1698db3a847669c7c64a7ee0cd59ba6c387e2528c60d928b3cacf55e9b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\authored-faith-counts.json",
+        "bytes": 118169,
+        "sha256": "afd4347b7ab317d6f1aa04e6884d156f233133fd09c4d1ae00aab92a0c674df3"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/authored-faith-counts.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-faith-counts.json",
+      "bytes": 114154,
+      "sha256": "56b1c476e0297b2d8ec1c30e31149321de15ef9b98bc2fa4fc163d2c9deaeaef",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-faith-counts.json",
+        "bytes": 118169,
+        "sha256": "afd4347b7ab317d6f1aa04e6884d156f233133fd09c4d1ae00aab92a0c674df3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\authored-scan-manifest.json",
+        "bytes": 1494121,
+        "sha256": "2e2b2f49bd99e468230c53ab1550cfe2d1739806823caad444dd9cc1eff1d3e4"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/authored-scan-manifest.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-scan-manifest.json",
+      "bytes": 1456389,
+      "sha256": "0ed35b5aa113cb5de6f21a46470516836ce2b6b47df3b1aea950815357822a7e",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-scan-manifest.json",
+        "bytes": 1494121,
+        "sha256": "2e2b2f49bd99e468230c53ab1550cfe2d1739806823caad444dd9cc1eff1d3e4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\authored-limit-hits.json",
+        "bytes": 33170,
+        "sha256": "98080d983dca7c301d7705a501251af84ca1d6763f5da40e1326eee4e795cf54"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/authored-limit-hits.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-limit-hits.json",
+      "bytes": 31907,
+      "sha256": "3cd91d87043579c6467d729404c2fbfda5c62e53db57927738843ae2fa353070",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-limit-hits.json",
+        "bytes": 33170,
+        "sha256": "98080d983dca7c301d7705a501251af84ca1d6763f5da40e1326eee4e795cf54"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\authored-mutator-hits.json",
+        "bytes": 18643,
+        "sha256": "771f050817bc5503ce6f5bd5e763e5041b05b6efc50405cef1878e6e22520ee5"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/authored-mutator-hits.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-mutator-hits.json",
+      "bytes": 17972,
+      "sha256": "a892775befc00969638845f9a4fedea8c5b196616411398a641b8834cfe44c66",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\authored-mutator-hits.json",
+        "bytes": 18643,
+        "sha256": "771f050817bc5503ce6f5bd5e763e5041b05b6efc50405cef1878e6e22520ee5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\corpus-dlc-scope.json",
+        "bytes": 51216,
+        "sha256": "9515cf5ff6a40f6b4f1262bc7e01d098932d02500b25184e35adde9486ef0c58"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/corpus-dlc-scope.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\corpus-dlc-scope.json",
+      "bytes": 49801,
+      "sha256": "1c58d9173e03a8ed030cb60c72ef7a84fc3a13f3ab2443f07b5e7a1026b09d2e",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\corpus-dlc-scope.json",
+        "bytes": 51216,
+        "sha256": "9515cf5ff6a40f6b4f1262bc7e01d098932d02500b25184e35adde9486ef0c58"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\CORPUS-CATEGORY-CORRECTION-a01.json",
+        "bytes": 21269,
+        "sha256": "e9e55173bb4dd87847d57e7a57ea66b7500db04b6af49f1da01c621565e4a572"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/corpus-category-correction.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\corpus-category-correction.json",
+      "bytes": 20925,
+      "sha256": "bb329f861caa1ef7f4ca8a0a8790bdddd1631d4a33fbfa48903d1d71149bdaf6",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\corpus-category-correction.json",
+        "bytes": 21269,
+        "sha256": "e9e55173bb4dd87847d57e7a57ea66b7500db04b6af49f1da01c621565e4a572"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\parameter-consumer-census-a02.json",
+        "bytes": 286787,
+        "sha256": "54de8d8c36416c0d7b30dca1d1ce231b89f4d70b5057c17a92e2b96e47733b64"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/parameter-consumer-census.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-consumer-census.json",
+      "bytes": 286787,
+      "sha256": "54de8d8c36416c0d7b30dca1d1ce231b89f4d70b5057c17a92e2b96e47733b64",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-consumer-census.json",
+        "bytes": 286787,
+        "sha256": "54de8d8c36416c0d7b30dca1d1ce231b89f4d70b5057c17a92e2b96e47733b64"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\parameter-block-and-consumer-excerpts-a01.json",
+        "bytes": 13203,
+        "sha256": "7a7406149a9185f36e75ec0ee5d1646588c42f06a29691974a3460140a49f9c6"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/parameter-block-and-consumer-excerpts.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-block-and-consumer-excerpts.json",
+      "bytes": 13203,
+      "sha256": "7a7406149a9185f36e75ec0ee5d1646588c42f06a29691974a3460140a49f9c6",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-block-and-consumer-excerpts.json",
+        "bytes": 13203,
+        "sha256": "7a7406149a9185f36e75ec0ee5d1646588c42f06a29691974a3460140a49f9c6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\parameter-script-callers-and-excerpts-a01.json",
+        "bytes": 31554,
+        "sha256": "d11f916e510ff624c7dc086fd188a71e43f55e2cfe1ff1487e641080e1a774e1"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/parameter-script-callers-and-excerpts.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-script-callers-and-excerpts.json",
+      "bytes": 31554,
+      "sha256": "d11f916e510ff624c7dc086fd188a71e43f55e2cfe1ff1487e641080e1a774e1",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\parameter-script-callers-and-excerpts.json",
+        "bytes": 31554,
+        "sha256": "d11f916e510ff624c7dc086fd188a71e43f55e2cfe1ff1487e641080e1a774e1"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\auxiliary-current-source-excerpts-a02.json",
+        "bytes": 26166,
+        "sha256": "2de4567eaa06198eb637ae4c4a1035e5c56c42d1a1968b187b9424582c34c3f9"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/current-source-excerpts.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\current-source-excerpts.json",
+      "bytes": 26166,
+      "sha256": "2de4567eaa06198eb637ae4c4a1035e5c56c42d1a1968b187b9424582c34c3f9",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\current-source-excerpts.json",
+        "bytes": 26166,
+        "sha256": "2de4567eaa06198eb637ae4c4a1035e5c56c42d1a1968b187b9424582c34c3f9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\auxiliary-condition-examples-a01.json",
+        "bytes": 51101,
+        "sha256": "d7f5db55fba29d9823af759459b181ed8d40fd6ab7a9c70ebb2e2fa6507ffc1b"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/auxiliary-condition-examples.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\auxiliary-condition-examples.json",
+      "bytes": 51101,
+      "sha256": "d7f5db55fba29d9823af759459b181ed8d40fd6ab7a9c70ebb2e2fa6507ffc1b",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\auxiliary-condition-examples.json",
+        "bytes": 51101,
+        "sha256": "d7f5db55fba29d9823af759459b181ed8d40fd6ab7a9c70ebb2e2fa6507ffc1b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\other-script-grade-gates-a02.json",
+        "bytes": 68408,
+        "sha256": "05f77b25818217ce32f02653e2e4842aa9317ff5424478931c62bc754d9b152c"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/other-script-grade-gates.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\other-script-grade-gates.json",
+      "bytes": 68408,
+      "sha256": "05f77b25818217ce32f02653e2e4842aa9317ff5424478931c62bc754d9b152c",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\other-script-grade-gates.json",
+        "bytes": 68408,
+        "sha256": "05f77b25818217ce32f02653e2e4842aa9317ff5424478931c62bc754d9b152c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-definition-limit-constructor.json",
+        "bytes": 2656,
+        "sha256": "7305aa4c7654c68ea3179d73e6fbcdec510a6e651b44932b6340dd2edcba6b71"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/religion-definition-limit-constructor.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-definition-limit-constructor.json",
+      "bytes": 2632,
+      "sha256": "0ebf5875607a4cfc2f9f714b48dbf3da46aceb78161c8e52d751d1048c150a3a",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-definition-limit-constructor.json",
+        "bytes": 2656,
+        "sha256": "7305aa4c7654c68ea3179d73e6fbcdec510a6e651b44932b6340dd2edcba6b71"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-limit-default-finalizer.json",
+        "bytes": 1694,
+        "sha256": "e5ec36fe8b3f6a70cb6790095da135bad435029cc735bc208d57856132e1db6b"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/religion-limit-default-finalizer.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-limit-default-finalizer.json",
+      "bytes": 1675,
+      "sha256": "65ed30bfb1b48888da6c56cb7e4900e4226390b71f662a6f56fda104fb1ac24b",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-limit-default-finalizer.json",
+        "bytes": 1694,
+        "sha256": "e5ec36fe8b3f6a70cb6790095da135bad435029cc735bc208d57856132e1db6b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-vbtable.json",
+        "bytes": 973,
+        "sha256": "49282413c4a082f9f7265f0f415267436520b610585806bf9807adaccc603a7b"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/religion-vbtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-vbtable.json",
+      "bytes": 946,
+      "sha256": "e82167b200b8a12aa4a65817241f81403280b714517cff31e395ac824e3e384a",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-vbtable.json",
+        "bytes": 973,
+        "sha256": "49282413c4a082f9f7265f0f415267436520b610585806bf9807adaccc603a7b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-definition-vtable.json",
+        "bytes": 2795,
+        "sha256": "0c72057aeb897856407169d44d4ec8bf1cd41e134ca2bdffe75d94c4e74f39e8"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/religion-definition-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-definition-vtable.json",
+      "bytes": 2698,
+      "sha256": "de3b08741f602b3a36ba4a6b9e191ea928651f87db0f7e500165001c01f8b7c4",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-definition-vtable.json",
+        "bytes": 2795,
+        "sha256": "0c72057aeb897856407169d44d4ec8bf1cd41e134ca2bdffe75d94c4e74f39e8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\religion-finalizer-adjustor.json",
+        "bytes": 938,
+        "sha256": "28f86a325b8dc1dcb3fce009df5555cf701a35aa0328190f26b9635cf95a952d"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/religion-finalizer-adjustor.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-finalizer-adjustor.json",
+      "bytes": 919,
+      "sha256": "1fdbe31915186b45fca79e60bcca29e825a531e59ae3b823b15c920bec430f4b",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\religion-finalizer-adjustor.json",
+        "bytes": 938,
+        "sha256": "28f86a325b8dc1dcb3fce009df5555cf701a35aa0328190f26b9635cf95a952d"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\limit-define-storage-xrefs-corrected-a02.json",
+        "bytes": 6990,
+        "sha256": "8854862b34f097ea4d9914c1df39c74c6c6dcd4d1564e20510a6d67cde8c90c7"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/limit-define-storage-xrefs-corrected-a02.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\limit-define-storage-xrefs-corrected-a02.json",
+      "bytes": 6781,
+      "sha256": "d08eb9e2c7e0eaa2b5f431c220aa3c633e2cb06fa4a029dfcdefdd5d0a28de52",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\limit-define-storage-xrefs-corrected-a02.json",
+        "bytes": 6990,
+        "sha256": "8854862b34f097ea4d9914c1df39c74c6c6dcd4d1564e20510a6d67cde8c90c7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-value-eval-complete.json",
+        "bytes": 1126,
+        "sha256": "6d8683cef127dcfcc6b052c20518c837f1f506d0b141992f98fd2e355396a290"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/eminent-value-eval-complete.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-value-eval-complete.json",
+      "bytes": 1107,
+      "sha256": "221fe03daf6e0cb6c3e4d4c42918e9d62189fd719b8f60b151d808a8431ee9c9",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-value-eval-complete.json",
+        "bytes": 1126,
+        "sha256": "6d8683cef127dcfcc6b052c20518c837f1f506d0b141992f98fd2e355396a290"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-value-eval-complete.json",
+        "bytes": 1126,
+        "sha256": "02d8ae566d416081d386ced66b6f0185ca273cec5447c8f878d3e2259ac221cf"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/total-value-eval-complete.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-value-eval-complete.json",
+      "bytes": 1107,
+      "sha256": "a14d19e73b29cda67b34192e0990c0de1485b7a03b6671861071c9a1017763a6",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-value-eval-complete.json",
+        "bytes": 1126,
+        "sha256": "02d8ae566d416081d386ced66b6f0185ca273cec5447c8f878d3e2259ac221cf"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\min-value-evals-complete.json",
+        "bytes": 1350,
+        "sha256": "6f194f1119bcb0bc3acf898277e75f3abbe0474d05601bc0657d632c26f227b8"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/min-value-evals-complete.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\min-value-evals-complete.json",
+      "bytes": 1331,
+      "sha256": "d2613fd9e9205f8679c638df0c766904959079a4aa5b89a569c1d90be3f0c4c0",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\min-value-evals-complete.json",
+        "bytes": 1350,
+        "sha256": "6f194f1119bcb0bc3acf898277e75f3abbe0474d05601bc0657d632c26f227b8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\script-limit-registration-locator.json",
+        "bytes": 2447,
+        "sha256": "1446fdb68e044947e6f2f1aae832e382e611a8ba09f7144448ba2c1e27807e72"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/script-limit-registration-locator.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\script-limit-registration-locator.json",
+      "bytes": 2428,
+      "sha256": "9c500734ffd1c274dac60ffe1c0bfee60dc302263e5e3bc6aaca8d35c3ae0f92",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\script-limit-registration-locator.json",
+        "bytes": 2447,
+        "sha256": "1446fdb68e044947e6f2f1aae832e382e611a8ba09f7144448ba2c1e27807e72"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-script-vtable.json",
+        "bytes": 2733,
+        "sha256": "b917ae6b14397aa8f9a669ff6987fd83ad75ed0e86b63bbfeade584ea8b802da"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/eminent-script-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-script-vtable.json",
+      "bytes": 2636,
+      "sha256": "177a458cf2e1956fa0497f59b0e3eba4ce1171bef55c9062c49331964c5e2856",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-script-vtable.json",
+        "bytes": 2733,
+        "sha256": "b917ae6b14397aa8f9a669ff6987fd83ad75ed0e86b63bbfeade584ea8b802da"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-value-vtable.json",
+        "bytes": 5757,
+        "sha256": "6a7423ab302f402b8751ea92a24b7c2c34c70664d85b8432ef1c14c96fac6a9c"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/eminent-value-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-value-vtable.json",
+      "bytes": 5540,
+      "sha256": "f65f703cafc88be6d2650dace7b2308b31ea77f2c373da1c709c83fcc4738e12",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-value-vtable.json",
+        "bytes": 5757,
+        "sha256": "6a7423ab302f402b8751ea92a24b7c2c34c70664d85b8432ef1c14c96fac6a9c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-value-vtable.json",
+        "bytes": 4998,
+        "sha256": "71d42caf1c650ff2595bb823f525353ae290f991a457ae77218d9775eb9288e7"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/total-value-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-value-vtable.json",
+      "bytes": 4811,
+      "sha256": "c08f97a271a277b627df3f927c028a9262adc1b6c1d3dd01782f87b69684b5e0",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-value-vtable.json",
+        "bytes": 4998,
+        "sha256": "71d42caf1c650ff2595bb823f525353ae290f991a457ae77218d9775eb9288e7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\eminent-min-eval-slot.json",
+        "bytes": 832,
+        "sha256": "6971cd1907d9cbda3b5d45f2076f29dfb0bcf32c7f23db4556123fff611f8bd6"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/eminent-min-eval-slot.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-min-eval-slot.json",
+      "bytes": 810,
+      "sha256": "6110bf704b0c4f034c0a9190ecabbcd4d520558d653ce4d2a7d9564473b3639f",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\eminent-min-eval-slot.json",
+        "bytes": 832,
+        "sha256": "6971cd1907d9cbda3b5d45f2076f29dfb0bcf32c7f23db4556123fff611f8bd6"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\total-min-eval-slot.json",
+        "bytes": 832,
+        "sha256": "f95500c3a8260a3759aa44c5086e352fbd225490a99813537f3f58511bb1a764"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/total-min-eval-slot.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-min-eval-slot.json",
+      "bytes": 810,
+      "sha256": "a3198f5867daeb04f688c728c0b702961582c3a5f9bde155acf73b517e7fc9d9",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\total-min-eval-slot.json",
+        "bytes": 832,
+        "sha256": "f95500c3a8260a3759aa44c5086e352fbd225490a99813537f3f58511bb1a764"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\creation-cap-consumer.json",
+        "bytes": 5972,
+        "sha256": "e71dd6a62526f9d657ce38dd18e918872c55fee69980924befc6f018eabe5a38"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/limits-native/creation-cap-consumer.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\creation-cap-consumer.json",
+      "bytes": 5948,
+      "sha256": "05a4bfc01d47d45dc8937bd3a63b2013d99459d8a3371b26d06144ca1a2a674b",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\limits-native\\creation-cap-consumer.json",
+        "bytes": 5972,
+        "sha256": "e71dd6a62526f9d657ce38dd18e918872c55fee69980924befc6f018eabe5a38"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\parameter-trigger-registration.json",
+        "bytes": 1942,
+        "sha256": "e1afd26089b00465205b2e02b483111c494dc2282f35c6c23e964cbf9e406c57"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/parameter-trigger-registration.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\parameter-trigger-registration.json",
+      "bytes": 1942,
+      "sha256": "e1afd26089b00465205b2e02b483111c494dc2282f35c6c23e964cbf9e406c57",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\parameter-trigger-registration.json",
+        "bytes": 1942,
+        "sha256": "e1afd26089b00465205b2e02b483111c494dc2282f35c6c23e964cbf9e406c57"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\parameter-trigger-registration.asm",
+        "bytes": 7980,
+        "sha256": "b2247878c2207191105e72e7291be23492211523695802a9a72311a9136104ed"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/parameter-trigger-registration.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\parameter-trigger-registration.asm",
+      "bytes": 7980,
+      "sha256": "b2247878c2207191105e72e7291be23492211523695802a9a72311a9136104ed",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\parameter-trigger-registration.asm",
+        "bytes": 7980,
+        "sha256": "b2247878c2207191105e72e7291be23492211523695802a9a72311a9136104ed"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-trigger-consumer.json",
+        "bytes": 1259,
+        "sha256": "857ac26b1bdc3c72c927bd35c073a747782eebd3e0bb22ebaa82ef98d66919f9"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-trigger-consumer.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-consumer.json",
+      "bytes": 1259,
+      "sha256": "857ac26b1bdc3c72c927bd35c073a747782eebd3e0bb22ebaa82ef98d66919f9",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-consumer.json",
+        "bytes": 1259,
+        "sha256": "857ac26b1bdc3c72c927bd35c073a747782eebd3e0bb22ebaa82ef98d66919f9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-trigger-consumer.asm",
+        "bytes": 1476,
+        "sha256": "1fa39dabf2063c7d06504ce4a29092611e55e5205a04f0036fdd5d51200cd1dd"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-trigger-consumer.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-consumer.asm",
+      "bytes": 1476,
+      "sha256": "1fa39dabf2063c7d06504ce4a29092611e55e5205a04f0036fdd5d51200cd1dd",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-consumer.asm",
+        "bytes": 1476,
+        "sha256": "1fa39dabf2063c7d06504ce4a29092611e55e5205a04f0036fdd5d51200cd1dd"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-trigger-consumer.json",
+        "bytes": 1264,
+        "sha256": "4ed8dfdd6e1e4f294930dca5163e4615a550950f42f8e1894de7a73272e582b8"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-trigger-consumer.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-consumer.json",
+      "bytes": 1264,
+      "sha256": "4ed8dfdd6e1e4f294930dca5163e4615a550950f42f8e1894de7a73272e582b8",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-consumer.json",
+        "bytes": 1264,
+        "sha256": "4ed8dfdd6e1e4f294930dca5163e4615a550950f42f8e1894de7a73272e582b8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-trigger-consumer.asm",
+        "bytes": 1476,
+        "sha256": "4ab9d207bf741b5182f9510feeba4bd0796ef057c448ba4591068b823bbd86b8"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-trigger-consumer.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-consumer.asm",
+      "bytes": 1476,
+      "sha256": "4ab9d207bf741b5182f9510feeba4bd0796ef057c448ba4591068b823bbd86b8",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-consumer.asm",
+        "bytes": 1476,
+        "sha256": "4ab9d207bf741b5182f9510feeba4bd0796ef057c448ba4591068b823bbd86b8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-native-boolean-full.json",
+        "bytes": 1697,
+        "sha256": "eadb1931739f21a06471e050cb39f4716fd524bae2fd52f0b12b026401fc9645"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-native-boolean-full.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-native-boolean-full.json",
+      "bytes": 1697,
+      "sha256": "eadb1931739f21a06471e050cb39f4716fd524bae2fd52f0b12b026401fc9645",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-native-boolean-full.json",
+        "bytes": 1697,
+        "sha256": "eadb1931739f21a06471e050cb39f4716fd524bae2fd52f0b12b026401fc9645"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-native-boolean-full.asm",
+        "bytes": 5663,
+        "sha256": "eba82f188b176a92236792047d0f6f29e64b5abbc97e93d259faeb3e650be067"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-native-boolean-full.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-native-boolean-full.asm",
+      "bytes": 5663,
+      "sha256": "eba82f188b176a92236792047d0f6f29e64b5abbc97e93d259faeb3e650be067",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-native-boolean-full.asm",
+        "bytes": 5663,
+        "sha256": "eba82f188b176a92236792047d0f6f29e64b5abbc97e93d259faeb3e650be067"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-native-boolean.json",
+        "bytes": 1812,
+        "sha256": "ef1117d1c4235b3773f6b9e3ec97e3455f383263bf9cba89a3c81121a59f4612"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-native-boolean.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-native-boolean.json",
+      "bytes": 1812,
+      "sha256": "ef1117d1c4235b3773f6b9e3ec97e3455f383263bf9cba89a3c81121a59f4612",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-native-boolean.json",
+        "bytes": 1812,
+        "sha256": "ef1117d1c4235b3773f6b9e3ec97e3455f383263bf9cba89a3c81121a59f4612"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-native-boolean.asm",
+        "bytes": 7239,
+        "sha256": "023c90f488fb1ddeef425cb3948d73fb168d95a3e3ff001f2f9e454cbcd089f4"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-native-boolean.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-native-boolean.asm",
+      "bytes": 7239,
+      "sha256": "023c90f488fb1ddeef425cb3948d73fb168d95a3e3ff001f2f9e454cbcd089f4",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-native-boolean.asm",
+        "bytes": 7239,
+        "sha256": "023c90f488fb1ddeef425cb3948d73fb168d95a3e3ff001f2f9e454cbcd089f4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-trigger-constructor.json",
+        "bytes": 1321,
+        "sha256": "99af2c3e403ce209b87b6e7344185f3af078c23da96467603b4c671b97fcb4ce"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-trigger-constructor.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-constructor.json",
+      "bytes": 1321,
+      "sha256": "99af2c3e403ce209b87b6e7344185f3af078c23da96467603b4c671b97fcb4ce",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-constructor.json",
+        "bytes": 1321,
+        "sha256": "99af2c3e403ce209b87b6e7344185f3af078c23da96467603b4c671b97fcb4ce"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-trigger-constructor.asm",
+        "bytes": 2038,
+        "sha256": "264413b316e0cb085db1b47cba6450c9a714227159ca120eccda63b8542627a5"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-trigger-constructor.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-constructor.asm",
+      "bytes": 2038,
+      "sha256": "264413b316e0cb085db1b47cba6450c9a714227159ca120eccda63b8542627a5",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-constructor.asm",
+        "bytes": 2038,
+        "sha256": "264413b316e0cb085db1b47cba6450c9a714227159ca120eccda63b8542627a5"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-instance-bool-vtable.json",
+        "bytes": 1265,
+        "sha256": "501d1ab18d9ecf40d5829ee1888c7b58dc57109bdc63ef1fa6b364bc6ed23e10"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-instance-bool-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-instance-bool-vtable.json",
+      "bytes": 1265,
+      "sha256": "501d1ab18d9ecf40d5829ee1888c7b58dc57109bdc63ef1fa6b364bc6ed23e10",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-instance-bool-vtable.json",
+        "bytes": 1265,
+        "sha256": "501d1ab18d9ecf40d5829ee1888c7b58dc57109bdc63ef1fa6b364bc6ed23e10"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-native-boolean-full.json",
+        "bytes": 2427,
+        "sha256": "209e26046efae2d844c0eb45b120f159470b609f0a1d2505d435fa069562a536"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-native-boolean-full.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-native-boolean-full.json",
+      "bytes": 2427,
+      "sha256": "209e26046efae2d844c0eb45b120f159470b609f0a1d2505d435fa069562a536",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-native-boolean-full.json",
+        "bytes": 2427,
+        "sha256": "209e26046efae2d844c0eb45b120f159470b609f0a1d2505d435fa069562a536"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-native-boolean-full.asm",
+        "bytes": 11268,
+        "sha256": "9909f8e60189f69c2d00e90a3fb9f8210df5338146f5ded1098cc575a11a6293"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-native-boolean-full.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-native-boolean-full.asm",
+      "bytes": 11268,
+      "sha256": "9909f8e60189f69c2d00e90a3fb9f8210df5338146f5ded1098cc575a11a6293",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-native-boolean-full.asm",
+        "bytes": 11268,
+        "sha256": "9909f8e60189f69c2d00e90a3fb9f8210df5338146f5ded1098cc575a11a6293"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-registration.json",
+        "bytes": 1394,
+        "sha256": "8cdaa0f0d668ce9e82191060622ff6ec3632dc77004a038e51c7f97be929849d"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-registration.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-registration.json",
+      "bytes": 1394,
+      "sha256": "8cdaa0f0d668ce9e82191060622ff6ec3632dc77004a038e51c7f97be929849d",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-registration.json",
+        "bytes": 1394,
+        "sha256": "8cdaa0f0d668ce9e82191060622ff6ec3632dc77004a038e51c7f97be929849d"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-registration.asm",
+        "bytes": 2521,
+        "sha256": "c465d392b91a5238ad8a76b3348ea201719f9a610465a7489c94c54c715daaf8"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-registration.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-registration.asm",
+      "bytes": 2521,
+      "sha256": "c465d392b91a5238ad8a76b3348ea201719f9a610465a7489c94c54c715daaf8",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-registration.asm",
+        "bytes": 2521,
+        "sha256": "c465d392b91a5238ad8a76b3348ea201719f9a610465a7489c94c54c715daaf8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-factory-vtable.json",
+        "bytes": 1148,
+        "sha256": "c82d3287cf6d909022b88b695dbfd7a3fef386a0f58cfd8950591a3b912245b4"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-factory-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-vtable.json",
+      "bytes": 1148,
+      "sha256": "c82d3287cf6d909022b88b695dbfd7a3fef386a0f58cfd8950591a3b912245b4",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-vtable.json",
+        "bytes": 1148,
+        "sha256": "c82d3287cf6d909022b88b695dbfd7a3fef386a0f58cfd8950591a3b912245b4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-factory-leaf.json",
+        "bytes": 1304,
+        "sha256": "3a91f76baf8210ba1eb0f99f1c2d74d3a682c15830a66598cf2ec5c859b18950"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-factory-leaf.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-leaf.json",
+      "bytes": 1304,
+      "sha256": "3a91f76baf8210ba1eb0f99f1c2d74d3a682c15830a66598cf2ec5c859b18950",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-leaf.json",
+        "bytes": 1304,
+        "sha256": "3a91f76baf8210ba1eb0f99f1c2d74d3a682c15830a66598cf2ec5c859b18950"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-factory-leaf.asm",
+        "bytes": 1986,
+        "sha256": "c8f453ab4274ed5fb4611f705e449428a01874247a283696183c7112d6aae8c4"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-factory-leaf.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-leaf.asm",
+      "bytes": 1986,
+      "sha256": "c8f453ab4274ed5fb4611f705e449428a01874247a283696183c7112d6aae8c4",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-leaf.asm",
+        "bytes": 1986,
+        "sha256": "c8f453ab4274ed5fb4611f705e449428a01874247a283696183c7112d6aae8c4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-factory-constructor.json",
+        "bytes": 1298,
+        "sha256": "c180fe5d0ed37d0e550b81a87fb3bbfdea2f097ffbbcd6969f0c475ae999472e"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-factory-constructor.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-constructor.json",
+      "bytes": 1298,
+      "sha256": "c180fe5d0ed37d0e550b81a87fb3bbfdea2f097ffbbcd6969f0c475ae999472e",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-constructor.json",
+        "bytes": 1298,
+        "sha256": "c180fe5d0ed37d0e550b81a87fb3bbfdea2f097ffbbcd6969f0c475ae999472e"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-factory-constructor.asm",
+        "bytes": 1784,
+        "sha256": "c474d505166e1af06b443b567cab14b9d25aba389f42ea17e373364c4649cd14"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-factory-constructor.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-constructor.asm",
+      "bytes": 1784,
+      "sha256": "c474d505166e1af06b443b567cab14b9d25aba389f42ea17e373364c4649cd14",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-factory-constructor.asm",
+        "bytes": 1784,
+        "sha256": "c474d505166e1af06b443b567cab14b9d25aba389f42ea17e373364c4649cd14"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-instance-vtable.json",
+        "bytes": 3582,
+        "sha256": "66fca5a22f952e4e4197df284f8a50095f78f337de75a704397ba806789b99f7"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-instance-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-instance-vtable.json",
+      "bytes": 3582,
+      "sha256": "66fca5a22f952e4e4197df284f8a50095f78f337de75a704397ba806789b99f7",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-instance-vtable.json",
+        "bytes": 3582,
+        "sha256": "66fca5a22f952e4e4197df284f8a50095f78f337de75a704397ba806789b99f7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-instance-value-vtable.json",
+        "bytes": 2418,
+        "sha256": "65673d268355d29e82c8ce1d869a07161e471921ce9b4258f9e172dd8d26494f"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-instance-value-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-instance-value-vtable.json",
+      "bytes": 2418,
+      "sha256": "65673d268355d29e82c8ce1d869a07161e471921ce9b4258f9e172dd8d26494f",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-instance-value-vtable.json",
+        "bytes": 2418,
+        "sha256": "65673d268355d29e82c8ce1d869a07161e471921ce9b4258f9e172dd8d26494f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-native-leaf.json",
+        "bytes": 1399,
+        "sha256": "3df95a636de1d26f356dc50d61e8220fb59b8fffc312f5a2c4166c828ed6b183"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-native-leaf.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-native-leaf.json",
+      "bytes": 1399,
+      "sha256": "3df95a636de1d26f356dc50d61e8220fb59b8fffc312f5a2c4166c828ed6b183",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-native-leaf.json",
+        "bytes": 1399,
+        "sha256": "3df95a636de1d26f356dc50d61e8220fb59b8fffc312f5a2c4166c828ed6b183"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\rarity-sum-value-native-leaf.asm",
+        "bytes": 3053,
+        "sha256": "4a54268aaa8a3811a8b8e2f7e5c41654dcb62ddb3615177e9764d0685b3e3b66"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/rarity-sum-value-native-leaf.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-native-leaf.asm",
+      "bytes": 3053,
+      "sha256": "4a54268aaa8a3811a8b8e2f7e5c41654dcb62ddb3615177e9764d0685b3e3b66",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\rarity-sum-value-native-leaf.asm",
+        "bytes": 3053,
+        "sha256": "4a54268aaa8a3811a8b8e2f7e5c41654dcb62ddb3615177e9764d0685b3e3b66"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-predicate-registration.json",
+        "bytes": 1399,
+        "sha256": "c8a559e2636d3911ab67b3073074ccd80c62f708e6ed501236d2e23e374d4434"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-predicate-registration.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-predicate-registration.json",
+      "bytes": 1399,
+      "sha256": "c8a559e2636d3911ab67b3073074ccd80c62f708e6ed501236d2e23e374d4434",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-predicate-registration.json",
+        "bytes": 1399,
+        "sha256": "c8a559e2636d3911ab67b3073074ccd80c62f708e6ed501236d2e23e374d4434"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-predicate-registration.asm",
+        "bytes": 2520,
+        "sha256": "6853f5ba2211b9641e89fec94d7271c8479605806dd85ec920f42bb39027c4ab"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-predicate-registration.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-predicate-registration.asm",
+      "bytes": 2520,
+      "sha256": "6853f5ba2211b9641e89fec94d7271c8479605806dd85ec920f42bb39027c4ab",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-predicate-registration.asm",
+        "bytes": 2520,
+        "sha256": "6853f5ba2211b9641e89fec94d7271c8479605806dd85ec920f42bb39027c4ab"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\association-trigger-factory-vtable.json",
+        "bytes": 1147,
+        "sha256": "d011c3f3b8249a55b344d298330746ea746c8f30222a852d47a29407dba020e3"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/association-trigger-factory-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-factory-vtable.json",
+      "bytes": 1147,
+      "sha256": "d011c3f3b8249a55b344d298330746ea746c8f30222a852d47a29407dba020e3",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\association-trigger-factory-vtable.json",
+        "bytes": 1147,
+        "sha256": "d011c3f3b8249a55b344d298330746ea746c8f30222a852d47a29407dba020e3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-trigger-vtable.json",
+        "bytes": 1263,
+        "sha256": "3ba1a14e6464791eaa83fe7c20da257160e36e19efb8d7ec1e221ed0ba65771e"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-trigger-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-vtable.json",
+      "bytes": 1263,
+      "sha256": "3ba1a14e6464791eaa83fe7c20da257160e36e19efb8d7ec1e221ed0ba65771e",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-trigger-vtable.json",
+        "bytes": 1263,
+        "sha256": "3ba1a14e6464791eaa83fe7c20da257160e36e19efb8d7ec1e221ed0ba65771e"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-trigger-vtable.json",
+        "bytes": 1263,
+        "sha256": "d33e839a2dd1ce31f6fa477ece92851fc489e2e04411e5a99c457fa17e02438d"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-trigger-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-vtable.json",
+      "bytes": 1263,
+      "sha256": "d33e839a2dd1ce31f6fa477ece92851fc489e2e04411e5a99c457fa17e02438d",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-trigger-vtable.json",
+        "bytes": 1263,
+        "sha256": "d33e839a2dd1ce31f6fa477ece92851fc489e2e04411e5a99c457fa17e02438d"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-instance-vtable.json",
+        "bytes": 2656,
+        "sha256": "8279e1e732a5a396fc992962d970c0e5055a756ad3d0ecfb59a759bf431eab7a"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-instance-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-instance-vtable.json",
+      "bytes": 2656,
+      "sha256": "8279e1e732a5a396fc992962d970c0e5055a756ad3d0ecfb59a759bf431eab7a",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-instance-vtable.json",
+        "bytes": 2656,
+        "sha256": "8279e1e732a5a396fc992962d970c0e5055a756ad3d0ecfb59a759bf431eab7a"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-instance-vtable.json",
+        "bytes": 2656,
+        "sha256": "6302f6be92743d79e7c56b183e45177dd809cae548986dcb8484fbd55549e317"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-instance-vtable.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-instance-vtable.json",
+      "bytes": 2656,
+      "sha256": "6302f6be92743d79e7c56b183e45177dd809cae548986dcb8484fbd55549e317",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-instance-vtable.json",
+        "bytes": 2656,
+        "sha256": "6302f6be92743d79e7c56b183e45177dd809cae548986dcb8484fbd55549e317"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-instance-vtable-tail.json",
+        "bytes": 3584,
+        "sha256": "9bcb239fe7fa9b3a280f4ee1e75c864507a651348da8d857b25f4b2ed24ceee3"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-instance-vtable-tail.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-instance-vtable-tail.json",
+      "bytes": 3584,
+      "sha256": "9bcb239fe7fa9b3a280f4ee1e75c864507a651348da8d857b25f4b2ed24ceee3",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-instance-vtable-tail.json",
+        "bytes": 3584,
+        "sha256": "9bcb239fe7fa9b3a280f4ee1e75c864507a651348da8d857b25f4b2ed24ceee3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-instance-vtable-tail.json",
+        "bytes": 3583,
+        "sha256": "a8497c2e6ceaa6a055de2cde69d6ffc47e082672817a874979965582e1090bca"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-instance-vtable-tail.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-instance-vtable-tail.json",
+      "bytes": 3583,
+      "sha256": "a8497c2e6ceaa6a055de2cde69d6ffc47e082672817a874979965582e1090bca",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-instance-vtable-tail.json",
+        "bytes": 3583,
+        "sha256": "a8497c2e6ceaa6a055de2cde69d6ffc47e082672817a874979965582e1090bca"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-scope-title-resolver.json",
+        "bytes": 2288,
+        "sha256": "5a4a821aca65874984aebb5a0659c156e2437806bb4303c1576767635b552903"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-scope-title-resolver.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-scope-title-resolver.json",
+      "bytes": 2288,
+      "sha256": "5a4a821aca65874984aebb5a0659c156e2437806bb4303c1576767635b552903",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-scope-title-resolver.json",
+        "bytes": 2288,
+        "sha256": "5a4a821aca65874984aebb5a0659c156e2437806bb4303c1576767635b552903"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-scope-title-resolver.asm",
+        "bytes": 10251,
+        "sha256": "410884a3516ad738397d07dd367866b41b9754c668906f177176cdab83e1eaf4"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-scope-title-resolver.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-scope-title-resolver.asm",
+      "bytes": 10251,
+      "sha256": "410884a3516ad738397d07dd367866b41b9754c668906f177176cdab83e1eaf4",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-scope-title-resolver.asm",
+        "bytes": 10251,
+        "sha256": "410884a3516ad738397d07dd367866b41b9754c668906f177176cdab83e1eaf4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-registration-exact-start.json",
+        "bytes": 1443,
+        "sha256": "4d96a88c0fcac9b2c3ae3140ef9cb90c72eed820450598a5cca8e412fa104c2b"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-registration-exact-start.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-registration-exact-start.json",
+      "bytes": 1443,
+      "sha256": "4d96a88c0fcac9b2c3ae3140ef9cb90c72eed820450598a5cca8e412fa104c2b",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-registration-exact-start.json",
+        "bytes": 1443,
+        "sha256": "4d96a88c0fcac9b2c3ae3140ef9cb90c72eed820450598a5cca8e412fa104c2b"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\has-holy-parameter-registration-exact-start.asm",
+        "bytes": 2961,
+        "sha256": "8d43605f506dff3de565928b469cfb4f12c0c5160cdeacd2ceaaf28050c95de9"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/has-holy-parameter-registration-exact-start.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-registration-exact-start.asm",
+      "bytes": 2961,
+      "sha256": "8d43605f506dff3de565928b469cfb4f12c0c5160cdeacd2ceaaf28050c95de9",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\has-holy-parameter-registration-exact-start.asm",
+        "bytes": 2961,
+        "sha256": "8d43605f506dff3de565928b469cfb4f12c0c5160cdeacd2ceaaf28050c95de9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-registration-exact-start.json",
+        "bytes": 1448,
+        "sha256": "56c6ca298ad3d0b8d491c481ef96cc1d3463953338d53b88b7108b9a71712bc3"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-registration-exact-start.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-registration-exact-start.json",
+      "bytes": 1448,
+      "sha256": "56c6ca298ad3d0b8d491c481ef96cc1d3463953338d53b88b7108b9a71712bc3",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-registration-exact-start.json",
+        "bytes": 1448,
+        "sha256": "56c6ca298ad3d0b8d491c481ef96cc1d3463953338d53b88b7108b9a71712bc3"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\native\\controls-holy-parameter-registration-exact-start.asm",
+        "bytes": 2961,
+        "sha256": "c302ca2c972f5f0c3d3e8aaa6d16c10b0a9d07b712f21889dc1288c8e4ac0b86"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/native/controls-holy-parameter-registration-exact-start.asm",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-registration-exact-start.asm",
+      "bytes": 2961,
+      "sha256": "c302ca2c972f5f0c3d3e8aaa6d16c10b0a9d07b712f21889dc1288c8e4ac0b86",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\native\\controls-holy-parameter-registration-exact-start.asm",
+        "bytes": 2961,
+        "sha256": "c302ca2c972f5f0c3d3e8aaa6d16c10b0a9d07b712f21889dc1288c8e4ac0b86"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\evidence\\holy-site-major-grade-value12004\\native-source-excerpts.json",
+        "bytes": 23806,
+        "sha256": "c51f78f381944e8187cb9f83716c0bc4c0d930bc09cdc03558efac0bc7c03a08"
+      },
+      "package_path": "evidence/holy-site-grade-effects-limits12004/prior-native-source-excerpts.json",
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\prior-native-source-excerpts.json",
+      "bytes": 23806,
+      "sha256": "c51f78f381944e8187cb9f83716c0bc4c0d930bc09cdc03558efac0bc7c03a08",
+      "previous_package_file": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\prior-native-source-excerpts.json",
+        "bytes": 23806,
+        "sha256": "c51f78f381944e8187cb9f83716c0bc4c0d930bc09cdc03558efac0bc7c03a08"
+      }
+    }
+  ],
+  "supersedes": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-source\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\effect-condition-contract-a02.json",
+    "bytes": 72744,
+    "sha256": "a33e5b2792c88c4bd07029304ecb93c92acd8ee516797f62052f0f497ab4f7aa"
+  },
+  "runtime_effect_can_change_maximum": {
+    "status": "no-original-authored-cap-increase-mechanism-found",
+    "dynamic_source_contract": "dynamic-limits/SOURCE-CONTRACT-DYNAMIC-a01.json",
+    "published_dynamic_contract": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+      "bytes": 20550,
+      "sha256": "7b5bebd62a94bdedc5d36e8e3b94da3f389101da7ab51c8f3f71967602fb43c0"
+    },
+    "maximum_is_not_list_membership_count": true,
+    "authored_natural_over_cap_example_found": false,
+    "no_native_field_write_ever_under_any_alias_proven": false,
+    "summary": "All original authored decisions/events/effects checked; no maximum increment/setter mechanism found. Normal membership-adding decisions retain max guards. Bare model membership setter is not a natural capped-state execution example. Full native alias/generic-copy impossibility is not claimed."
+  },
+  "publication_normalization": "UTF-8/LF packaging only; original file pins retained separately. Exact native raw bytes_hex and raw_sha256 are not changed; installed source SHA refers to original source, not reformatted excerpt JSON.",
+  "dynamic_publication_files": [
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-all-membership-mutator-occurrences.json",
+        "bytes": 12696,
+        "sha256": "2979cf77795c033f36cdc0dfaf267efd0ec0203c8e8668f79ab31c2f7fb903e1"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-all-membership-mutator-occurrences.json",
+        "bytes": 12248,
+        "sha256": "7691ff1556eae6526c2636954bcddba08558adb2a1141a524449257074d783ae"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-authored-capacity-scan.json",
+        "bytes": 32028,
+        "sha256": "1965b880325a98874b76016b2064bf2e700c89f4dd38e8a0c177ebab6d32ce9e"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-authored-capacity-scan.json",
+        "bytes": 31202,
+        "sha256": "f9663c7fd43dd5232bb023f7ccc4eb5b21d2f11b7f0f29cccd38d631a78bc332"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\DYNAMIC-FINAL-HANDOVER-a01.json",
+        "bytes": 4926,
+        "sha256": "767d424048ecfc921bca06032324aff154abf6d25bd9a1a257a76e8395b87556"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\DYNAMIC-FINAL-HANDOVER-a01.json",
+        "bytes": 4829,
+        "sha256": "b1df026829057e82a553cf56564ecd1e1c1ab883efbeb96df00d51b0d14e3995"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\DYNAMIC-LIMITS-RESEARCH.md",
+        "bytes": 4889,
+        "sha256": "51679ecaea906f0f4b71d2c683076c686b51465fc588aaa4b48a1bcaa318234e"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\DYNAMIC-LIMITS-RESEARCH.md",
+        "bytes": 4855,
+        "sha256": "ea809340cb404959b85d00962d99071c98b5bdd873be1aba6c76dbb5ec55b3d5"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-name-corpus.json",
+        "bytes": 25197,
+        "sha256": "9cd5b5f417288da7888bad43eba15ec26aa18bcf7f8ea50c8f85aa5a6a811d74"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-native-name-corpus.json",
+        "bytes": 24142,
+        "sha256": "f9939a461ab5d2f0817aebd5f8d8d8aceceead63a878498879f47fe562a10fce"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-native-write-locators.json",
+        "bytes": 49243,
+        "sha256": "9524256427c571873f02d4973e2b4d434d382159d63ff22d2fa183503178457e"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-native-write-locators.json",
+        "bytes": 47679,
+        "sha256": "c35b800641b6d3574e4fcfe5b7658f57dff8b1b068e9d0136a8a5bb6394ce0b4"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan-check.json",
+        "bytes": 1064,
+        "sha256": "c55c424609a197b9742efd81e8ecb5f02f726f5a6c5fb743e2c974dda3d4340b"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-plan-check.json",
+        "bytes": 1064,
+        "sha256": "c55c424609a197b9742efd81e8ecb5f02f726f5a6c5fb743e2c974dda3d4340b"
+      },
+      "utf8_LF_normalized": false
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan.json",
+        "bytes": 4264,
+        "sha256": "4a69d99718ba6410f2cf9d64100f348b91167563128c87b151f03443137de4b8"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-plan.json",
+        "bytes": 4152,
+        "sha256": "5f3aec658dbee88faf5a6d5ce9074988dba3e1ba5b3043dfafacd44971f072ff"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-plan.md",
+        "bytes": 4094,
+        "sha256": "679f6884f464a64a40cc43197b1e75bb8f9a975b053ac20dd14c0bdd95536637"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-plan.md",
+        "bytes": 4094,
+        "sha256": "679f6884f464a64a40cc43197b1e75bb8f9a975b053ac20dd14c0bdd95536637"
+      },
+      "utf8_LF_normalized": false
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\dynamic-source-validation-a01.json",
+        "bytes": 1993,
+        "sha256": "76dadd062c0337c6c46c58d8049e5973df1285d4419a3cc720ceb74ae86dc7c5"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\dynamic-source-validation-a01.json",
+        "bytes": 1959,
+        "sha256": "8fcbc7e2b3c73e44c6400099e80cc66801b5773b5ae46dc6ce3081ef657216e4"
+      },
+      "utf8_LF_normalized": true
+    },
+    {
+      "original": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+        "bytes": 21089,
+        "sha256": "b8f1243bb45ded54420e0d614fbab584a4345f22c146a1c00829c7967f4440f3"
+      },
+      "published": {
+        "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v4-20261018\\grade-limits\\patch-final\\docs\\ck3-native-ai\\evidence\\holy-site-grade-effects-limits12004\\dynamic-limits\\SOURCE-CONTRACT-DYNAMIC-a01.json",
+        "bytes": 20550,
+        "sha256": "7b5bebd62a94bdedc5d36e8e3b94da3f389101da7ab51c8f3f71967602fb43c0"
+      },
+      "utf8_LF_normalized": true
+    }
+  ]
+}

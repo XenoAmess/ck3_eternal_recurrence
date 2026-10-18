@@ -1,0 +1,138 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:16:48.287883+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x47ba838",
+  "raw_sha256": "d9f5bc62cc3c39f11b6c8ecc3d3df01e487e0252ca007a4f853705407842d34a",
+  "bytes_hex": "c023854001000000c023854001000000c023854001000000c023854001000000a05a854001000000c022854001000000a05a8540010000000066a04001000000c022854001000000009fb24201000000a06fb44201000000d02de74401000000c0e9724301000000c022854001000000e00ba14001000000b09dae420100000070e977430100000000ce724301000000c022854001000000e043d94001000000c02285400100000040e672430100000010e8724301000000002da04001000000",
+  "rows": [
+    {
+      "index": 0,
+      "VA": "0x1408523c0",
+      "RVA_if_image_pointer": "0x8523c0"
+    },
+    {
+      "index": 1,
+      "VA": "0x1408523c0",
+      "RVA_if_image_pointer": "0x8523c0"
+    },
+    {
+      "index": 2,
+      "VA": "0x1408523c0",
+      "RVA_if_image_pointer": "0x8523c0"
+    },
+    {
+      "index": 3,
+      "VA": "0x1408523c0",
+      "RVA_if_image_pointer": "0x8523c0"
+    },
+    {
+      "index": 4,
+      "VA": "0x140855aa0",
+      "RVA_if_image_pointer": "0x855aa0"
+    },
+    {
+      "index": 5,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 6,
+      "VA": "0x140855aa0",
+      "RVA_if_image_pointer": "0x855aa0"
+    },
+    {
+      "index": 7,
+      "VA": "0x140a06600",
+      "RVA_if_image_pointer": "0xa06600"
+    },
+    {
+      "index": 8,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 9,
+      "VA": "0x142b29f00",
+      "RVA_if_image_pointer": "0x2b29f00"
+    },
+    {
+      "index": 10,
+      "VA": "0x142b46fa0",
+      "RVA_if_image_pointer": "0x2b46fa0"
+    },
+    {
+      "index": 11,
+      "VA": "0x144e72dd0",
+      "RVA_if_image_pointer": "0x4e72dd0"
+    },
+    {
+      "index": 12,
+      "VA": "0x14372e9c0",
+      "RVA_if_image_pointer": "0x372e9c0"
+    },
+    {
+      "index": 13,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 14,
+      "VA": "0x140a10be0",
+      "RVA_if_image_pointer": "0xa10be0"
+    },
+    {
+      "index": 15,
+      "VA": "0x142ae9db0",
+      "RVA_if_image_pointer": "0x2ae9db0"
+    },
+    {
+      "index": 16,
+      "VA": "0x14377e970",
+      "RVA_if_image_pointer": "0x377e970"
+    },
+    {
+      "index": 17,
+      "VA": "0x14372ce00",
+      "RVA_if_image_pointer": "0x372ce00"
+    },
+    {
+      "index": 18,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 19,
+      "VA": "0x140d943e0",
+      "RVA_if_image_pointer": "0xd943e0"
+    },
+    {
+      "index": 20,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 21,
+      "VA": "0x14372e640",
+      "RVA_if_image_pointer": "0x372e640"
+    },
+    {
+      "index": 22,
+      "VA": "0x14372e810",
+      "RVA_if_image_pointer": "0x372e810"
+    },
+    {
+      "index": 23,
+      "VA": "0x140a02d00",
+      "RVA_if_image_pointer": "0xa02d00"
+    }
+  ],
+  "semantic_level": "raw pointer locators, not callback semantics"
+}

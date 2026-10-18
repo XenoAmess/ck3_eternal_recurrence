@@ -1,0 +1,262 @@
+{
+  "schema": "xar.native-research-plan.v1",
+  "topic": "faith-e01-rarity-decomposition-v4",
+  "question": "Exact1.20.0.4: how do actual slots, full artifact identities, county-holder Faith association and per-Faith recognition produce each rarity contribution/current sum, which actual callers update global caches, and which consumers read cache rather than recompute?",
+  "purpose": "engine-transition",
+  "build": {
+    "version": "1.20.0.4",
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "observation": {
+    "mode": "offline-only",
+    "actor_kind": "engine",
+    "owner_scope": "One shared fullID HolySite and embedded Inventory; actual slot artifact IDs, county holder/current Rite Faith, associated Faith edges; no CK3 process access",
+    "identity_kind": "generation-id",
+    "identity_lifetime": "session/fullID generation for game objects; exact EXE build for code; no cross-reload pointer reuse",
+    "producer_trigger": "unknown",
+    "producer": "Freshly rechecked265A3F0 per-slot producer; manager secondary+8 evaluation and+18 apply; exact evaluate cadence remains unknown.",
+    "caller": "Fresh inventory22E57F1/22E4F2B and actual date-path22A1564 -> secondary47748C0+18; complete upstream evaluation invocation remains unresolved.",
+    "consumer": "site+18/+1C getters and scaled HolySite expression inputs, distinct from live beneficiary aggregate; no assumption that Active gates every consumer",
+    "cache_lifetime": "Read-only current calculation never writes. Valid inventory paths recalc/write immediately; normal +24-date path calls manager apply. Existing R0010 shows association change can leave old cache on paused date. Last refresh and evaluate cadence remain unknown.",
+    "expected_signal": "Complete exact body/branch/source pins, actual callsites on instruction boundaries, per-slot contribution/zero reasons, and explicit cache write/read sites; numerical examples separately static/pending/live history",
+    "zero_sample_meaning": "No process/runtime samples are taken. No new callsite found in bounded static set does not prove the engine never refreshes or refreshes on a calendar cadence.",
+    "stop_condition": "At most128 finite function bodies/64 caller candidates, only focused byte windows, no full EXE copy or full disassembly; output16MiB total ceiling; stop caller expansion when an exact scheduler boundary or explicit unknown is recorded.",
+    "runtime_window_ref": null
+  },
+  "evidence": [
+    {
+      "id": "new-contract",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/rarity-source-contract-v4.json",
+      "sha256": "bf20ada972a837e855b4ebb225850696d3068aa4eef6ae94de749cda8344e146",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "New manually reviewed exact algorithm, primary/secondary interface correction, actual date-path apply and cache consumers"
+    },
+    {
+      "id": "fresh-byte-comparison",
+      "layer": "exact-build",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/exact-probe-baseline-a01.json",
+      "sha256": "8087bb926e57adbb0c99f78be080d9846151083c90ef508a4d9a5aea627bd13b",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual current EXE finite9body byte matches to retained exact source, not standalone semantics"
+    },
+    {
+      "id": "scripts",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/script-consumer-a01.json",
+      "sha256": "c885231af5075918112c3eb53c03d25b2c5af4088c6fe19bd4345dbc023f1349",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Actual installed scale definition and cached integer callback contract"
+    },
+    {
+      "id": "history-after",
+      "layer": "action-postcondition",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/history-r0010-a02.json",
+      "sha256": "512aba0818b6972a0052556ebcb86f7f4cc6df4c6cc819f6ba76719e8d678e65",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Existing same-machine R0010 shared14 departure changes current sum2->0 but cache remains2",
+      "session": "4-8e1c2f1861--faith-and-power--R0010",
+      "frame": "before capture_epoch=49264;after=54778;date_raw=51394920",
+      "identity": "player15893;HolySite14;artifact64;holderFaith50"
+    },
+    {
+      "id": "examples",
+      "layer": "source-contract",
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/rarity/examples-analysis/static-examples.json",
+      "sha256": "179deeec9cd62c42151fcf406057464a19bb258f2f679f53f3104d14e54c7bed",
+      "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+      "supports": "Declared static arithmetic examples only; no engine fixture/live observation"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "slots",
+      "label": "Actual slots and full artifact IDs"
+    },
+    {
+      "id": "holder",
+      "label": "County holder actual Faith"
+    },
+    {
+      "id": "recognition",
+      "label": "Original per-artifact recognition"
+    },
+    {
+      "id": "sum",
+      "label": "Original current rarity sum"
+    },
+    {
+      "id": "writes",
+      "label": "Actual cache-writing callers"
+    },
+    {
+      "id": "cache",
+      "label": "Global cached Active/rarity"
+    },
+    {
+      "id": "readers",
+      "label": "Cache getters and expressions"
+    },
+    {
+      "id": "observer",
+      "label": "Existing MCP decomposition gap"
+    },
+    {
+      "id": "date_path",
+      "label": "Actual +24 raw-date update path"
+    },
+    {
+      "id": "holder_exit",
+      "label": "R0010 holderFaith50 exits shared14 association"
+    }
+  ],
+  "edges": [
+    {
+      "id": "slots_to_sum",
+      "from": "slots",
+      "to": "sum",
+      "label": "Recheck producer early guards, fullID resolution, per-slot order/addition",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "faith_to_recognition",
+      "from": "holder",
+      "to": "recognition",
+      "label": "County holder Faith association then explicit recognition",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "recognition_to_sum",
+      "from": "recognition",
+      "to": "sum",
+      "label": "Effective slot object rarity contributes",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "sum_to_write",
+      "from": "sum",
+      "to": "writes",
+      "label": "Two actual inventory writers and separate manager evaluation/apply; full evaluate cadence remains unresolved",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "write_to_cache",
+      "from": "writes",
+      "to": "cache",
+      "label": "Known immediate and manager apply writes; new source-bound caller closure pending",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "cache_to_consumer",
+      "from": "cache",
+      "to": "readers",
+      "label": "Cache leaf and actual loaded scaled-expression use",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "sum_to_observer",
+      "from": "sum",
+      "to": "observer",
+      "label": "Independent projection reuses matrix/objects without extra calls; not same native execution trace",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": null
+    },
+    {
+      "id": "date_to_apply",
+      "from": "date_path",
+      "to": "writes",
+      "label": "Actual secondary+18 apply call22A1564; source only",
+      "status": "static-confirmed",
+      "evidence": [
+        "new-contract"
+      ]
+    },
+    {
+      "id": "exit_cache_lag",
+      "from": "holder_exit",
+      "to": "cache",
+      "label": "Existing current0/cache2 after shared exit on same paused date",
+      "status": "live-confirmed",
+      "evidence": [
+        "history-after"
+      ]
+    },
+    {
+      "id": "evaluation_clock",
+      "from": "date_path",
+      "to": "sum",
+      "label": "Complete upstream manager evaluation trigger not yet closed",
+      "status": "unknown",
+      "evidence": [
+        "new-contract"
+      ],
+      "open_question": "Where exactly is registered interface+8 evaluated, with which update cadence/list lifetime?"
+    }
+  ],
+  "cases": [
+    {
+      "id": "two_items",
+      "question": "Two real slots with different rarity and different recognition forFaithA/B",
+      "status": "pending",
+      "evidence": [
+        "new-contract",
+        "examples"
+      ]
+    },
+    {
+      "id": "holder_changes",
+      "question": "Holding the same inventory fixed, changing associated holderFaithA toB changes valid contributions",
+      "status": "pending",
+      "evidence": [
+        "new-contract",
+        "examples"
+      ]
+    },
+    {
+      "id": "holder_faith_exits",
+      "question": "HolderFaith ceases association while another Faith and same items remain: current sum becomes0",
+      "status": "observed",
+      "evidence": [
+        "history-after"
+      ]
+    },
+    {
+      "id": "cache_window",
+      "question": "Current sum versus persisted cache when caller phases differ",
+      "status": "observed",
+      "evidence": [
+        "history-after"
+      ]
+    }
+  ],
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:34:17.613349+00:00",
+  "source_head": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f"
+}

@@ -141,6 +141,8 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
       - name: Test new holy-site value knowledge through MCP without CK3
         run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_value_analysis_mcp.py
+      - name: Test v4 holy-site source clarifications through MCP without CK3
+        run: python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_v4_clarifications_mcp.py
       - name: Test observed holy-site history and devotion semantics without CK3
         run: |
           python -B -X utf8 ck3_autonomous_player/tests/unit/test_holy_site_r0010_historical_planning.py

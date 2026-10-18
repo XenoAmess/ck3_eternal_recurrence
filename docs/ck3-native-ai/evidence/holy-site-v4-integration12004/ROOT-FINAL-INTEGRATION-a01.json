@@ -1,0 +1,13 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:53:18.601665+00:00",
+  "source": "Original 6706-byte owned packet restored byte for byte after official CI caught malformed text-patch delimiter appended to JSON; expected SHA unchanged",
+  "damaged_sha256": "d06a60bee6f0030d23fef8e51c76fb1af39dcd384354bf63d3d998d740cd851c",
+  "restored_sha256": "1a863e1a1baaa538cec35162d01c100e3c6034f5879bae9a11689f5401c4c9d1",
+  "removed_appended_bytes": 171,
+  "test_source": "Independent ci-fix exact module replay: eleven tests including four actual MCP boundary calls; no game",
+  "official_term_supplement": {
+    "path": "docs\\ck3-native-ai\\evidence\\holy-site-relic-management-ai-opinion12004\\official-clerical-region-stances-bilingual-a01.json",
+    "sha256": "c234a769f35e487d72abbbd3aefebf852bc36cec8089372ce3bb859329d6350b"
+  }
+}

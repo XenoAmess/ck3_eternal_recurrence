@@ -1,0 +1,98 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:16:22.215923+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "pe_metadata": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\native-candidate\\shared-source\\pe-metadata.json",
+    "bytes": 1719,
+    "sha256": "6d2f72f28745ddb27918a3df2cdd67844a6c704ac58df0a990b7d399365745fe"
+  },
+  "scope": "Static exact cached section bytes, no native execution; bounded12B pdata reads if missing.",
+  "begin_rva": "0x47bb5a8",
+  "raw_sha256": "82d1ab0f84a399b81314c636cca439e162d9b5476730af64b01b4b01e079d8f9",
+  "bytes_hex": "c0e972430100000060a4b24201000000e00ba14001000000c091ae420100000070e977430100000000ce724301000000c022854001000000e043d94001000000c02285400100000040e672430100000010e872430100000040a8a040010000006080b24201000000b05a85400100000000ec724301000000a05a854001000000",
+  "rows": [
+    {
+      "index": 0,
+      "VA": "0x14372e9c0",
+      "RVA_if_image_pointer": "0x372e9c0"
+    },
+    {
+      "index": 1,
+      "VA": "0x142b2a460",
+      "RVA_if_image_pointer": "0x2b2a460"
+    },
+    {
+      "index": 2,
+      "VA": "0x140a10be0",
+      "RVA_if_image_pointer": "0xa10be0"
+    },
+    {
+      "index": 3,
+      "VA": "0x142ae91c0",
+      "RVA_if_image_pointer": "0x2ae91c0"
+    },
+    {
+      "index": 4,
+      "VA": "0x14377e970",
+      "RVA_if_image_pointer": "0x377e970"
+    },
+    {
+      "index": 5,
+      "VA": "0x14372ce00",
+      "RVA_if_image_pointer": "0x372ce00"
+    },
+    {
+      "index": 6,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 7,
+      "VA": "0x140d943e0",
+      "RVA_if_image_pointer": "0xd943e0"
+    },
+    {
+      "index": 8,
+      "VA": "0x1408522c0",
+      "RVA_if_image_pointer": "0x8522c0"
+    },
+    {
+      "index": 9,
+      "VA": "0x14372e640",
+      "RVA_if_image_pointer": "0x372e640"
+    },
+    {
+      "index": 10,
+      "VA": "0x14372e810",
+      "RVA_if_image_pointer": "0x372e810"
+    },
+    {
+      "index": 11,
+      "VA": "0x140a0a840",
+      "RVA_if_image_pointer": "0xa0a840"
+    },
+    {
+      "index": 12,
+      "VA": "0x142b28060",
+      "RVA_if_image_pointer": "0x2b28060"
+    },
+    {
+      "index": 13,
+      "VA": "0x140855ab0",
+      "RVA_if_image_pointer": "0x855ab0"
+    },
+    {
+      "index": 14,
+      "VA": "0x14372ec00",
+      "RVA_if_image_pointer": "0x372ec00"
+    },
+    {
+      "index": 15,
+      "VA": "0x140855aa0",
+      "RVA_if_image_pointer": "0x855aa0"
+    }
+  ],
+  "semantic_level": "raw pointer locators, not callback semantics"
+}

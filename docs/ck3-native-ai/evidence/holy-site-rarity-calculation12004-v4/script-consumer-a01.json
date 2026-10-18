@@ -1,0 +1,297 @@
+{
+  "schema": "ck3_rarity_script_cache_consumer_v4",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:28:42.076494+00:00",
+  "build": "1.20.0.4",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "scope": "fresh original installed script reads, no mod/game changes or new live expression execution",
+  "sources": [
+    {
+      "source": {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/script_values/00_holy_site_values.txt",
+        "bytes": 1191,
+        "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7"
+      },
+      "game_relative_path": "common/script_values/00_holy_site_values.txt",
+      "excerpt": [
+        {
+          "line": 1,
+          "text": "# Scope: holy_site"
+        },
+        {
+          "line": 2,
+          "text": "# Returns: the sum of Artifact Rarity values of every artifact enshrined in"
+        },
+        {
+          "line": 3,
+          "text": "# the holy site whose is_holy_relic trigger passes for the controlling faith."
+        },
+        {
+          "line": 4,
+          "text": "# (And the controlling faith also has this holy site as one of their own)"
+        },
+        {
+          "line": 5,
+          "text": "# Each artifact contributes 1=Common, 2=Masterwork, 3=Famed, 4=Illustrious."
+        },
+        {
+          "line": 6,
+          "text": "# 0 if nothing qualifies."
+        },
+        {
+          "line": 7,
+          "text": "# Backed by the `total_active_artifact_rarity_sum` trigger registered in"
+        },
+        {
+          "line": 8,
+          "text": "# holy_site_artifact_trigger_impl.cpp."
+        },
+        {
+          "line": 9,
+          "text": "holy_site_total_artifact_rarity = {"
+        },
+        {
+          "line": 10,
+          "text": "\tvalue = root.total_active_artifact_rarity_sum"
+        },
+        {
+          "line": 11,
+          "text": "}"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/religion/holy_site_types/00_holy_site_types.txt",
+        "bytes": 169446,
+        "sha256": "0824df55d4cd0a7c6d2c2d8b45bf577cca9ec0e5e1b4a6f699848b8661b17b40"
+      },
+      "game_relative_path": "common/religion/holy_site_types/00_holy_site_types.txt",
+      "excerpt": [
+        {
+          "line": 842,
+          "text": "nadjaf = {"
+        },
+        {
+          "line": 843,
+          "text": "\tcounty = c_kufa"
+        },
+        {
+          "line": 844,
+          "text": "\tbarony = b_an-najaf"
+        },
+        {
+          "line": 845,
+          "text": ""
+        },
+        {
+          "line": 846,
+          "text": "\tcounty_holder_character_modifier = {"
+        },
+        {
+          "line": 847,
+          "text": "\t\tclergy_opinion = 3"
+        },
+        {
+          "line": 848,
+          "text": "\t}"
+        },
+        {
+          "line": 849,
+          "text": ""
+        },
+        {
+          "line": 850,
+          "text": "\tcounty_modifier_scaled = {"
+        },
+        {
+          "line": 851,
+          "text": "\t\tscale = holy_site_total_artifact_rarity"
+        },
+        {
+          "line": 852,
+          "text": "\t\tdevelopment_growth_factor = 0.01"
+        },
+        {
+          "line": 853,
+          "text": "\t\tcounty_opinion_add = 1"
+        },
+        {
+          "line": 854,
+          "text": "\t}"
+        },
+        {
+          "line": 855,
+          "text": ""
+        },
+        {
+          "line": 856,
+          "text": "\tfaith_character_modifier = {"
+        },
+        {
+          "line": 857,
+          "text": "\t\tdiplomacy_per_piety_level = 1"
+        },
+        {
+          "line": 858,
+          "text": "\t\tclergy_opinion = 5"
+        },
+        {
+          "line": 859,
+          "text": "\t}"
+        },
+        {
+          "line": 860,
+          "text": ""
+        },
+        {
+          "line": 861,
+          "text": "\tfaith_character_modifier_scaled = {"
+        },
+        {
+          "line": 862,
+          "text": "\t\tscale = holy_site_total_artifact_rarity"
+        },
+        {
+          "line": 863,
+          "text": "\t\tmonthly_piety_gain_mult = 0.01"
+        },
+        {
+          "line": 864,
+          "text": "\t}"
+        },
+        {
+          "line": 865,
+          "text": "}"
+        },
+        {
+          "line": 866,
+          "text": ""
+        },
+        {
+          "line": 867,
+          "text": "damascus = {"
+        },
+        {
+          "line": 868,
+          "text": "\tcounty = c_damascus"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/game/common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+        "bytes": 5129,
+        "sha256": "30cac0199fb08edccfb6b4e96f505efa20ba0adb897846f121db80e51511e6bc"
+      },
+      "game_relative_path": "common/religion/holy_site_types/01_dynamic_holy_site_types.txt",
+      "excerpt": [
+        {
+          "line": 72,
+          "text": "site_of_wisdom = {"
+        },
+        {
+          "line": 73,
+          "text": "\tis_dynamic = yes"
+        },
+        {
+          "line": 74,
+          "text": ""
+        },
+        {
+          "line": 75,
+          "text": "\tcounty_holder_character_modifier = {"
+        },
+        {
+          "line": 76,
+          "text": "\t\tlearning = 2"
+        },
+        {
+          "line": 77,
+          "text": "\t}"
+        },
+        {
+          "line": 78,
+          "text": ""
+        },
+        {
+          "line": 79,
+          "text": "\tcounty_modifier_scaled = {"
+        },
+        {
+          "line": 80,
+          "text": "\t\tscale = holy_site_total_artifact_rarity"
+        },
+        {
+          "line": 81,
+          "text": "\t\tbuild_gold_cost = -0.01"
+        },
+        {
+          "line": 82,
+          "text": "\t\tbuild_prestige_cost = -0.01"
+        },
+        {
+          "line": 83,
+          "text": "\t\tbuild_piety_cost = -0.01"
+        },
+        {
+          "line": 84,
+          "text": "\t\tdevelopment_growth = 0.01"
+        },
+        {
+          "line": 85,
+          "text": "\t}"
+        },
+        {
+          "line": 86,
+          "text": ""
+        },
+        {
+          "line": 87,
+          "text": "\tfaith_character_modifier = {"
+        },
+        {
+          "line": 88,
+          "text": "\t\tdiplomacy_per_piety_level = 1"
+        },
+        {
+          "line": 89,
+          "text": "\t}"
+        },
+        {
+          "line": 90,
+          "text": ""
+        },
+        {
+          "line": 91,
+          "text": "\tfaith_character_modifier_scaled = {"
+        },
+        {
+          "line": 92,
+          "text": "\t\tscale = holy_site_total_artifact_rarity"
+        },
+        {
+          "line": 93,
+          "text": "\t\tmonthly_learning_lifestyle_xp_gain_mult = 0.01"
+        },
+        {
+          "line": 94,
+          "text": "\t\tmonthly_diplomacy_lifestyle_xp_gain_mult = 0.01"
+        },
+        {
+          "line": 95,
+          "text": "\t}"
+        },
+        {
+          "line": 96,
+          "text": "}"
+        },
+        {
+          "line": 97,
+          "text": ""
+        }
+      ]
+    }
+  ],
+  "source_contract": "holy_site_total_artifact_rarity reads root.total_active_artifact_rarity_sum. Exact callback24FC1F0 reads EDDB90 site+1C cache; evaluating the authored scale is not a forced265A3F0 recomputation. Dynamic values follow the actual consumer and loaded script; actual net recipient/cache refresh remains independently observed."
+}

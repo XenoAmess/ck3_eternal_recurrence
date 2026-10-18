@@ -1,0 +1,671 @@
+{
+  "regex": "\\b(?:add_holy_site|remove_holy_site|make_holy_site_eminent|make_holy_site_not_eminent|create_holy_site|can_manage_faith_holy_sites_trigger|can_create_holy_site|holy_site_creation)\\b",
+  "manifest_sha256": "2e2b2f49bd99e468230c53ab1550cfe2d1739806823caad444dd9cc1eff1d3e4",
+  "files": [
+    {
+      "path": "common/decisions/50_holy_site_decisions.txt",
+      "bytes": 19759,
+      "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+      "hits": [
+        {
+          "line": 29,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 26,
+              "text": "\t\tsave_temporary_scope_as = root"
+            },
+            {
+              "line": 27,
+              "text": "\t\texists = scope:selected_item"
+            },
+            {
+              "line": 28,
+              "text": ""
+            },
+            {
+              "line": 29,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 30,
+              "text": ""
+            },
+            {
+              "line": 31,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 32,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 33,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            },
+            {
+              "line": 34,
+              "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }"
+            }
+          ]
+        },
+        {
+          "line": 79,
+          "text": "\t\t\tmake_holy_site_eminent = {",
+          "context": [
+            {
+              "line": 76,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 77,
+              "text": "\t\t}"
+            },
+            {
+              "line": 78,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 79,
+              "text": "\t\t\tmake_holy_site_eminent = {"
+            },
+            {
+              "line": 80,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 81,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 82,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 83,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 84,
+              "text": "\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 105,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 102,
+              "text": ""
+            },
+            {
+              "line": 103,
+              "text": "\tai_potential = {"
+            },
+            {
+              "line": 104,
+              "text": "\t\tis_independent_ruler = yes"
+            },
+            {
+              "line": 105,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 106,
+              "text": "\t\tfaith = {"
+            },
+            {
+              "line": 107,
+              "text": "\t\t\tlist_size:eminent_holy_site < religion.eminent_holy_sites_max"
+            },
+            {
+              "line": 108,
+              "text": "\t\t}"
+            },
+            {
+              "line": 109,
+              "text": "\t\tOR = {"
+            },
+            {
+              "line": 110,
+              "text": "\t\t\thighest_held_title_tier >= tier_kingdom"
+            }
+          ]
+        },
+        {
+          "line": 195,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 192,
+              "text": "\t\tsave_temporary_scope_as = root"
+            },
+            {
+              "line": 193,
+              "text": "\t\texists = scope:selected_item"
+            },
+            {
+              "line": 194,
+              "text": ""
+            },
+            {
+              "line": 195,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 196,
+              "text": ""
+            },
+            {
+              "line": 197,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 198,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 199,
+              "text": "\t\t\t\tis_faith_eminent_holy_site = prev"
+            },
+            {
+              "line": 200,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            }
+          ]
+        },
+        {
+          "line": 231,
+          "text": "\t\t\tmake_holy_site_not_eminent = {",
+          "context": [
+            {
+              "line": 228,
+              "text": "\t\t\tsave_scope_as = county_holder"
+            },
+            {
+              "line": 229,
+              "text": "\t\t}"
+            },
+            {
+              "line": 230,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 231,
+              "text": "\t\t\tmake_holy_site_not_eminent = {"
+            },
+            {
+              "line": 232,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 233,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 234,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 235,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 236,
+              "text": "\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 341,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 338,
+              "text": "\t\tsave_temporary_scope_as = root"
+            },
+            {
+              "line": 339,
+              "text": "\t\texists = scope:selected_item"
+            },
+            {
+              "line": 340,
+              "text": ""
+            },
+            {
+              "line": 341,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 342,
+              "text": ""
+            },
+            {
+              "line": 343,
+              "text": "\t\tscope:selected_item ?= {"
+            },
+            {
+              "line": 344,
+              "text": "\t\t\troot.faith = {"
+            },
+            {
+              "line": 345,
+              "text": "\t\t\t\tsave_temporary_scope_as = faith"
+            },
+            {
+              "line": 346,
+              "text": "\t\t\t\tis_faith_holy_site = prev"
+            }
+          ]
+        },
+        {
+          "line": 392,
+          "text": "\t\t\tremove_holy_site = {",
+          "context": [
+            {
+              "line": 389,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 390,
+              "text": "\t\t}"
+            },
+            {
+              "line": 391,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 392,
+              "text": "\t\t\tremove_holy_site = {"
+            },
+            {
+              "line": 393,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 394,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 395,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 396,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 397,
+              "text": "\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 493,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 490,
+              "text": ""
+            },
+            {
+              "line": 491,
+              "text": "\t\tis_independent_ruler = yes"
+            },
+            {
+              "line": 492,
+              "text": ""
+            },
+            {
+              "line": 493,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 494,
+              "text": ""
+            },
+            {
+              "line": 495,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 496,
+              "text": "\t\t\tsave_temporary_scope_as = faith # used by loc below"
+            },
+            {
+              "line": 497,
+              "text": "\t\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 498,
+              "text": "\t\t\t\ttext = adopt_holy_site_decision_under_holy_sites_max"
+            }
+          ]
+        },
+        {
+          "line": 557,
+          "text": "\t\t\tadd_holy_site = {",
+          "context": [
+            {
+              "line": 554,
+              "text": ""
+            },
+            {
+              "line": 555,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 556,
+              "text": "\t\troot.faith = {"
+            },
+            {
+              "line": 557,
+              "text": "\t\t\tadd_holy_site = {"
+            },
+            {
+              "line": 558,
+              "text": "\t\t\t\ttarget = scope:selected_item"
+            },
+            {
+              "line": 559,
+              "text": "\t\t\t\tactor = root"
+            },
+            {
+              "line": 560,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 561,
+              "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+            },
+            {
+              "line": 562,
+              "text": "\t\t}"
+            }
+          ]
+        },
+        {
+          "line": 567,
+          "text": "\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 564,
+              "text": ""
+            },
+            {
+              "line": 565,
+              "text": "\tai_potential = {"
+            },
+            {
+              "line": 566,
+              "text": "\t\tis_independent_ruler = yes"
+            },
+            {
+              "line": 567,
+              "text": "\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 568,
+              "text": "\t\tpiety >= monumental_piety_value"
+            },
+            {
+              "line": 569,
+              "text": "\t\tfaith = {"
+            },
+            {
+              "line": 570,
+              "text": "\t\t\tlist_size:holy_site < {"
+            },
+            {
+              "line": 571,
+              "text": "\t\t\t\tvalue = root.faith.religion.holy_sites_max"
+            },
+            {
+              "line": 572,
+              "text": "\t\t\t\t# always leave one slot for a player to adopt/create"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/important_actions/pam_actions.txt",
+      "bytes": 40634,
+      "sha256": "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5",
+      "hits": [
+        {
+          "line": 1528,
+          "text": "\t\t\t\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 1525,
+              "text": "\t\t\t\t\tis_leased_out = no"
+            },
+            {
+              "line": 1526,
+              "text": "\t\t\t\t\tis_holy_site = no"
+            },
+            {
+              "line": 1527,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1528,
+              "text": "\t\t\t\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 1529,
+              "text": "\t\t\t\tfaith = {"
+            },
+            {
+              "line": 1530,
+              "text": "\t\t\t\t\tlist_size:holy_site < religion.holy_sites_max"
+            },
+            {
+              "line": 1531,
+              "text": "\t\t\t\t\tfaith_holy_site_kingdom_unused_trigger = { BARONY = root.capital_barony }"
+            },
+            {
+              "line": 1532,
+              "text": "\t\t\t\t}"
+            },
+            {
+              "line": 1533,
+              "text": "\t\t\t\tOR = {"
+            }
+          ]
+        },
+        {
+          "line": 1569,
+          "text": "\t\t\t\tview = holy_site_creation",
+          "context": [
+            {
+              "line": 1566,
+              "text": "\teffect = {"
+            },
+            {
+              "line": 1567,
+              "text": "\t\tscope:actor.faith = {"
+            },
+            {
+              "line": 1568,
+              "text": "\t\t\topen_view_data = {"
+            },
+            {
+              "line": 1569,
+              "text": "\t\t\t\tview = holy_site_creation"
+            },
+            {
+              "line": 1570,
+              "text": "\t\t\t\tplayer = scope:actor"
+            },
+            {
+              "line": 1571,
+              "text": "\t\t\t}"
+            },
+            {
+              "line": 1572,
+              "text": "\t\t}"
+            },
+            {
+              "line": 1573,
+              "text": "\t}"
+            },
+            {
+              "line": 1574,
+              "text": "}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_costs/00_costs.txt",
+      "bytes": 14914,
+      "sha256": "8c5f429b0c89b90a0aba29cb7420567db9f3cf18a644b8e85866065600d600d0",
+      "hits": [
+        {
+          "line": 777,
+          "text": "create_holy_site = {",
+          "context": [
+            {
+              "line": 774,
+              "text": "# scope:holy_site_type - holy site type being created"
+            },
+            {
+              "line": 775,
+              "text": "# scope:faith - Faith the holy site is created for"
+            },
+            {
+              "line": 776,
+              "text": "# scope:artifacts - List of artifacts being enshrined"
+            },
+            {
+              "line": 777,
+              "text": "create_holy_site = {"
+            },
+            {
+              "line": 778,
+              "text": "\tpiety = {"
+            },
+            {
+              "line": 779,
+              "text": "\t\tvalue = {"
+            },
+            {
+              "line": 780,
+              "text": "\t\t\tvalue = 2000"
+            },
+            {
+              "line": 781,
+              "text": "\t\t\tdesc = \"BASE\""
+            },
+            {
+              "line": 782,
+              "text": "\t\t}"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_rules/02_holy_sites.txt",
+      "bytes": 2090,
+      "sha256": "02dafa910b976b6428725775cfb14fdcfc345032fd2fdf77a5bbec0dd42e6054",
+      "hits": [
+        {
+          "line": 34,
+          "text": "\tcan_manage_faith_holy_sites_trigger = yes",
+          "context": [
+            {
+              "line": 31,
+              "text": "# scope:holy_site_type = the holy site type being created"
+            },
+            {
+              "line": 32,
+              "text": "# scope:faith          = the faith the holy site is created for"
+            },
+            {
+              "line": 33,
+              "text": "can_create_dynamic_holy_site = {"
+            },
+            {
+              "line": 34,
+              "text": "\tcan_manage_faith_holy_sites_trigger = yes"
+            },
+            {
+              "line": 35,
+              "text": ""
+            },
+            {
+              "line": 36,
+              "text": "\t# This is a command, not a decision, so the variable cooldown is set in on_character_holy_site_created"
+            },
+            {
+              "line": 37,
+              "text": "\tcustom_description = {"
+            },
+            {
+              "line": 38,
+              "text": "\t\ttext = holy_site_creation_on_cooldown_tt"
+            },
+            {
+              "line": 39,
+              "text": "\t\tNOT = { has_variable = holy_site_creation_cooldown }"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/pam_scripted_triggers.txt",
+      "bytes": 186187,
+      "sha256": "0ad98f123b6739593b9ab2c170d0e8c9b3d9d941baa9d3580296dd2139b2ea6e",
+      "hits": [
+        {
+          "line": 1294,
+          "text": "can_manage_faith_holy_sites_trigger = {",
+          "context": [
+            {
+              "line": 1291,
+              "text": ""
+            },
+            {
+              "line": 1292,
+              "text": "# The acting character is the scope, and on the puppet action path that is the puppet"
+            },
+            {
+              "line": 1293,
+              "text": "# A puppet standing in for a missing Head of Faith defers to its puppeteer"
+            },
+            {
+              "line": 1294,
+              "text": "can_manage_faith_holy_sites_trigger = {"
+            },
+            {
+              "line": 1295,
+              "text": "\ttrigger_if = {"
+            },
+            {
+              "line": 1296,
+              "text": "\t\tlimit = { exists = faith.religious_head }"
+            },
+            {
+              "line": 1297,
+              "text": "\t\tcustom_tooltip = {"
+            },
+            {
+              "line": 1298,
+              "text": "\t\t\ttext = manage_holy_sites_hof_or_puppet_tt"
+            },
+            {
+              "line": 1299,
+              "text": "\t\t\tOR = {"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

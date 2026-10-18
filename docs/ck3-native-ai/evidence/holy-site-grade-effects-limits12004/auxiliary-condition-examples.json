@@ -1,0 +1,1569 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T02:24:49.688816+00:00",
+  "source_commit": "d1c2bc7eb568a4eab3f55c065adb645a9dbace6f",
+  "queries": [
+    {
+      "label": "rarity_scale_alias",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "holy_site_total_artifact_rarity",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values"
+      ],
+      "exit": 0,
+      "output": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt:9:holy_site_total_artifact_rarity = {"
+      ]
+    },
+    {
+      "label": "building_association",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "is_holy_site_of",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings"
+      ],
+      "exit": 0,
+      "output": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:87:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:144:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:239:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:369:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:416:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:547:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:589:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:634:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:680:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:939:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:994:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\ccp3_special_buildings.txt:1049:\t\t\t\tcustom_description = { text = holy_site_building_trigger barony = { is_holy_site_of = scope:holder.faith } }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:40:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:60:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:208:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:297:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:387:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:543:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:623:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:640:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:760:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:780:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:856:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:873:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:947:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp6_special_buildings.txt:964:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:56:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:70:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:136:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:150:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:222:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:236:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:307:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:321:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:395:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:409:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:496:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:510:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:579:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:593:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:662:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:676:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:745:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:759:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:828:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:842:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:916:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:987:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1063:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1143:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1222:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1236:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1312:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1326:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1403:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1422:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1502:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1521:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1598:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1617:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1694:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1713:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1789:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:1803:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3203:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3384:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3462:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3523:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3594:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:3607:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4459:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4478:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4545:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4564:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4625:\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:4644:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:5042:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:5119:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:5415:\t\t\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:6128:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:9623:\t\t\t\t\tbarony = { is_holy_site_of = scope:holder.faith }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:9679:\t\t\t\t\tbarony = { is_holy_site_of = scope:holder.faith }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:9744:\t\t\t\t\tbarony = { is_holy_site_of = scope:holder.faith }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\00_special_buildings.txt:10213:\t\t\tbarony = { is_holy_site_of = scope:holder.faith }",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp8_special_buildings.txt:728:\t\t\t\tis_holy_site_of = scope:holder.faith",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\buildings\\cp8_special_buildings.txt:908:\t\t\t\tis_holy_site_of = scope:holder.faith"
+      ]
+    },
+    {
+      "label": "council_value_caller",
+      "argv": [
+        "rg",
+        "-n",
+        "--no-heading",
+        "--glob",
+        "*.txt",
+        "court_chaplain_conversion_contextual_bonuses",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\council_tasks"
+      ],
+      "exit": 0,
+      "output": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\council_tasks\\00_court_chaplain_tasks.txt:453:\t\tadd = court_chaplain_conversion_contextual_bonuses"
+      ]
+    }
+  ],
+  "source_excerpts": [
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\council_tasks\\00_court_chaplain_tasks.txt",
+        "bytes": 32936,
+        "sha256": "ddd7e89eb6bd27e485ce254dbe14e63d129fad4e98dc2c6dc13ba39ce6b95661"
+      },
+      "line_range": [
+        420,
+        470
+      ],
+      "lines": [
+        {
+          "line": 420,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_PROGRESS_BASE"
+        },
+        {
+          "line": 421,
+          "text": "\t\t}"
+        },
+        {
+          "line": 422,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 423,
+          "text": "\t\t\tvalue = scope:councillor.court_chaplain_conversion_monthly_increase"
+        },
+        {
+          "line": 424,
+          "text": "\t\t\tdesc = SCALED_COUNCILLOR_LEARNING_VALUE"
+        },
+        {
+          "line": 425,
+          "text": "\t\t}"
+        },
+        {
+          "line": 426,
+          "text": "\t\t#Fervor of Court Chaplain's Faith"
+        },
+        {
+          "line": 427,
+          "text": "\t\tif = {"
+        },
+        {
+          "line": 428,
+          "text": "\t\t\tlimit = { # Conditional in order to not mess up the preview-tooltip"
+        },
+        {
+          "line": 429,
+          "text": "\t\t\t\texists = scope:county"
+        },
+        {
+          "line": 430,
+          "text": "\t\t\t\texists = scope:councillor.faith\t"
+        },
+        {
+          "line": 431,
+          "text": "\t\t\t\texists = scope:county.faith"
+        },
+        {
+          "line": 432,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 433,
+          "text": "\t\t\tadd = {"
+        },
+        {
+          "line": 434,
+          "text": "\t\t\t\tadd = {"
+        },
+        {
+          "line": 435,
+          "text": "\t\t\t\t\tadd = scope:councillor.court_chaplain_progress_percentage"
+        },
+        {
+          "line": 436,
+          "text": "\t\t\t\t\tmultiply = scope:councillor.faith.fervor"
+        },
+        {
+          "line": 437,
+          "text": "\t\t\t\t\tmultiply = convert_faith_fervor_modifier_scale"
+        },
+        {
+          "line": 438,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 439,
+          "text": "\t\t\t\tsubtract = {"
+        },
+        {
+          "line": 440,
+          "text": "\t\t\t\t\tadd = scope:councillor.court_chaplain_progress_percentage"
+        },
+        {
+          "line": 441,
+          "text": "\t\t\t\t\tmultiply = scope:county.faith.fervor"
+        },
+        {
+          "line": 442,
+          "text": "\t\t\t\t\tmultiply = convert_faith_fervor_modifier_scale"
+        },
+        {
+          "line": 443,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 444,
+          "text": "\t\t\t\tif = {"
+        },
+        {
+          "line": 445,
+          "text": "\t\t\t\t\tlimit = {"
+        },
+        {
+          "line": 446,
+          "text": "\t\t\t\t\t\tscope:councillor_liege = { has_perk = religious_icon_perk }"
+        },
+        {
+          "line": 447,
+          "text": "\t\t\t\t\t}"
+        },
+        {
+          "line": 448,
+          "text": "\t\t\t\t\tmin = 0"
+        },
+        {
+          "line": 449,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 450,
+          "text": "\t\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_FERVOR_IMPACT"
+        },
+        {
+          "line": 451,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 452,
+          "text": "\t\t}"
+        },
+        {
+          "line": 453,
+          "text": "\t\tadd = court_chaplain_conversion_contextual_bonuses"
+        },
+        {
+          "line": 454,
+          "text": ""
+        },
+        {
+          "line": 455,
+          "text": "\t\t# Development reduces the speed. Should be the last non-multiply modifier applied to avoid negative values"
+        },
+        {
+          "line": 456,
+          "text": "\t\tif = {"
+        },
+        {
+          "line": 457,
+          "text": "\t\t\tlimit = {"
+        },
+        {
+          "line": 458,
+          "text": "\t\t\t\texists = scope:county"
+        },
+        {
+          "line": 459,
+          "text": "\t\t\t\tscope:county = {"
+        },
+        {
+          "line": 460,
+          "text": "\t\t\t\t\tdevelopment_level > 0"
+        },
+        {
+          "line": 461,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 462,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 463,
+          "text": "\t\t\tadd = {"
+        },
+        {
+          "line": 464,
+          "text": "\t\t\t\tvalue = scope:county.convert_faith_development_penalty"
+        },
+        {
+          "line": 465,
+          "text": "\t\t\t\tdesc = STEWARD_PROMOTE_CULTURE_DEVELOPMENT_PENALTY"
+        },
+        {
+          "line": 466,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 467,
+          "text": "\t\t}"
+        },
+        {
+          "line": 468,
+          "text": ""
+        },
+        {
+          "line": 469,
+          "text": "\t\tmultiply = court_chaplain_conversion_factors"
+        },
+        {
+          "line": 470,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt",
+        "bytes": 60594,
+        "sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3"
+      },
+      "line_range": [
+        940,
+        1040
+      ],
+      "lines": [
+        {
+          "line": 940,
+          "text": "\t\tvalue = scope:councillor.estate_increase_conversion_speed"
+        },
+        {
+          "line": 941,
+          "text": "\t\tdesc = estate_increase_conversion_speed_desc"
+        },
+        {
+          "line": 942,
+          "text": "\t}"
+        },
+        {
+          "line": 943,
+          "text": ""
+        },
+        {
+          "line": 944,
+          "text": "\t#Conversion bonuses from certain Holy Sites."
+        },
+        {
+          "line": 945,
+          "text": "\tif = {"
+        },
+        {
+          "line": 946,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 947,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 948,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus"
+        },
+        {
+          "line": 949,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 950,
+          "text": "\t\t\ttitle:b_jerusalem = {"
+        },
+        {
+          "line": 951,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 952,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 953,
+          "text": "\t\t}"
+        },
+        {
+          "line": 954,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 955,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_jerusalem"
+        },
+        {
+          "line": 956,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_JERUSALEM"
+        },
+        {
+          "line": 957,
+          "text": "\t\t}"
+        },
+        {
+          "line": 958,
+          "text": "\t}"
+        },
+        {
+          "line": 959,
+          "text": "\tif = {"
+        },
+        {
+          "line": 960,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 961,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 962,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus"
+        },
+        {
+          "line": 963,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 964,
+          "text": "\t\t\ttitle:b_mahoyadapuram = {"
+        },
+        {
+          "line": 965,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 966,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 967,
+          "text": "\t\t}"
+        },
+        {
+          "line": 968,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 969,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_kerala"
+        },
+        {
+          "line": 970,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_KERALA"
+        },
+        {
+          "line": 971,
+          "text": "\t\t}"
+        },
+        {
+          "line": 972,
+          "text": "\t}"
+        },
+        {
+          "line": 973,
+          "text": "\tif = {"
+        },
+        {
+          "line": 974,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 975,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 976,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 977,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus"
+        },
+        {
+          "line": 978,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 979,
+          "text": "\t\t\ttitle:b_islay = {"
+        },
+        {
+          "line": 980,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 981,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 982,
+          "text": "\t\t\tscope:county.title_province = {"
+        },
+        {
+          "line": 983,
+          "text": "\t\t\t\tgeographical_region = world_europe_west_britannia"
+        },
+        {
+          "line": 984,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 985,
+          "text": "\t\t}"
+        },
+        {
+          "line": 986,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 987,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_iona"
+        },
+        {
+          "line": 988,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_IONA"
+        },
+        {
+          "line": 989,
+          "text": "\t\t}"
+        },
+        {
+          "line": 990,
+          "text": "\t}"
+        },
+        {
+          "line": 991,
+          "text": "\tif = {"
+        },
+        {
+          "line": 992,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 993,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 994,
+          "text": "\t\t\tscope:county.faith = {"
+        },
+        {
+          "line": 995,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus"
+        },
+        {
+          "line": 996,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 997,
+          "text": "\t\t\ttitle:b_wadi_el-milk = {"
+        },
+        {
+          "line": 998,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 999,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1000,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1001,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1002,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_wadi_el_milk"
+        },
+        {
+          "line": 1003,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_WADI_EL_MILK"
+        },
+        {
+          "line": 1004,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1005,
+          "text": "\t}"
+        },
+        {
+          "line": 1006,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1007,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1008,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 1009,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus"
+        },
+        {
+          "line": 1010,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1011,
+          "text": "\t\t\ttitle:b_cordoba = {"
+        },
+        {
+          "line": 1012,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 1013,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1014,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1015,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1016,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_cordoba"
+        },
+        {
+          "line": 1017,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_CORDOBA"
+        },
+        {
+          "line": 1018,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1019,
+          "text": "\t}"
+        },
+        {
+          "line": 1020,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1021,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1022,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 1023,
+          "text": "\t\t\tscope:county.faith = {"
+        },
+        {
+          "line": 1024,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus"
+        },
+        {
+          "line": 1025,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1026,
+          "text": "\t\t\ttitle:b_visoki = {"
+        },
+        {
+          "line": 1027,
+          "text": "\t\t\t\tis_holy_site_of = scope:councillor.faith"
+        },
+        {
+          "line": 1028,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 1029,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1030,
+          "text": "\t\tadd = {"
+        },
+        {
+          "line": 1031,
+          "text": "\t\t\tvalue = scope:councillor.conversion_holy_site_visoki"
+        },
+        {
+          "line": 1032,
+          "text": "\t\t\tdesc = COURT_CHAPLAIN_CONVERSION_HOLY_SITE_VISOKI"
+        },
+        {
+          "line": 1033,
+          "text": "\t\t}"
+        },
+        {
+          "line": 1034,
+          "text": "\t}"
+        },
+        {
+          "line": 1035,
+          "text": ""
+        },
+        {
+          "line": 1036,
+          "text": "\t#Tradition modifiers"
+        },
+        {
+          "line": 1037,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1038,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1039,
+          "text": "\t\t\texists = scope:county"
+        },
+        {
+          "line": 1040,
+          "text": "\t\t\tscope:county.culture = {"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\99_court_chaplain_values.txt",
+        "bytes": 60594,
+        "sha256": "216f07c8b65800faf373691a9247c913fbccd933161c8e2cebe3a37bf144e3f3"
+      },
+      "line_range": [
+        1995,
+        2072
+      ],
+      "lines": [
+        {
+          "line": 1995,
+          "text": "conversion_holy_site_jerusalem = {"
+        },
+        {
+          "line": 1996,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 1997,
+          "text": "\tif = {"
+        },
+        {
+          "line": 1998,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 1999,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2000,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = jerusalem_conversion_bonus"
+        },
+        {
+          "line": 2001,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2002,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2003,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2004,
+          "text": "\t\tmultiply = 0.20"
+        },
+        {
+          "line": 2005,
+          "text": "\t}"
+        },
+        {
+          "line": 2006,
+          "text": "}"
+        },
+        {
+          "line": 2007,
+          "text": ""
+        },
+        {
+          "line": 2008,
+          "text": "conversion_holy_site_kerala = {"
+        },
+        {
+          "line": 2009,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2010,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2011,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2012,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2013,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = kerala_conversion_bonus"
+        },
+        {
+          "line": 2014,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2015,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2016,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2017,
+          "text": "\t\tmultiply = 0.50"
+        },
+        {
+          "line": 2018,
+          "text": "\t}"
+        },
+        {
+          "line": 2019,
+          "text": "}"
+        },
+        {
+          "line": 2020,
+          "text": ""
+        },
+        {
+          "line": 2021,
+          "text": "conversion_holy_site_iona = {"
+        },
+        {
+          "line": 2022,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2023,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2024,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2025,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2026,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = iona_conversion_bonus"
+        },
+        {
+          "line": 2027,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2028,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2029,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2030,
+          "text": "\t\tmultiply = 0.30"
+        },
+        {
+          "line": 2031,
+          "text": "\t}"
+        },
+        {
+          "line": 2032,
+          "text": "}"
+        },
+        {
+          "line": 2033,
+          "text": ""
+        },
+        {
+          "line": 2034,
+          "text": "conversion_holy_site_visoki = {"
+        },
+        {
+          "line": 2035,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2036,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2037,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2038,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2039,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = visoki_conversion_resistance_bonus"
+        },
+        {
+          "line": 2040,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2041,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2042,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2043,
+          "text": "\t\tmultiply = -0.50"
+        },
+        {
+          "line": 2044,
+          "text": "\t}"
+        },
+        {
+          "line": 2045,
+          "text": "}"
+        },
+        {
+          "line": 2046,
+          "text": ""
+        },
+        {
+          "line": 2047,
+          "text": "conversion_holy_site_wadi_el_milk = {"
+        },
+        {
+          "line": 2048,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2049,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2050,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2051,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2052,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = wadi_el_milk_conversion_resistance_bonus"
+        },
+        {
+          "line": 2053,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2054,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2055,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2056,
+          "text": "\t\tmultiply = -0.50"
+        },
+        {
+          "line": 2057,
+          "text": "\t}"
+        },
+        {
+          "line": 2058,
+          "text": "}"
+        },
+        {
+          "line": 2059,
+          "text": ""
+        },
+        {
+          "line": 2060,
+          "text": "conversion_holy_site_cordoba = {"
+        },
+        {
+          "line": 2061,
+          "text": "\tvalue = 0"
+        },
+        {
+          "line": 2062,
+          "text": "\tif = {"
+        },
+        {
+          "line": 2063,
+          "text": "\t\tlimit = {"
+        },
+        {
+          "line": 2064,
+          "text": "\t\t\tscope:councillor.faith = {"
+        },
+        {
+          "line": 2065,
+          "text": "\t\t\t\tcontrols_holy_site_with_parameter = cordoba_conversion_bonus"
+        },
+        {
+          "line": 2066,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 2067,
+          "text": "\t\t}"
+        },
+        {
+          "line": 2068,
+          "text": "\t\tadd = court_chaplain_conversion_base_total"
+        },
+        {
+          "line": 2069,
+          "text": "\t\tmultiply = 0.20"
+        },
+        {
+          "line": 2070,
+          "text": "\t}"
+        },
+        {
+          "line": 2071,
+          "text": "}"
+        },
+        {
+          "line": 2072,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\script_values\\00_holy_site_values.txt",
+        "bytes": 1191,
+        "sha256": "946bf28d0c1f1a7966596dc8ba11772f98425e1007a63eb24a197506593182b7"
+      },
+      "line_range": [
+        1,
+        85
+      ],
+      "lines": [
+        {
+          "line": 1,
+          "text": "# Scope: holy_site"
+        },
+        {
+          "line": 2,
+          "text": "# Returns: the sum of Artifact Rarity values of every artifact enshrined in"
+        },
+        {
+          "line": 3,
+          "text": "# the holy site whose is_holy_relic trigger passes for the controlling faith."
+        },
+        {
+          "line": 4,
+          "text": "# (And the controlling faith also has this holy site as one of their own)"
+        },
+        {
+          "line": 5,
+          "text": "# Each artifact contributes 1=Common, 2=Masterwork, 3=Famed, 4=Illustrious."
+        },
+        {
+          "line": 6,
+          "text": "# 0 if nothing qualifies."
+        },
+        {
+          "line": 7,
+          "text": "# Backed by the `total_active_artifact_rarity_sum` trigger registered in"
+        },
+        {
+          "line": 8,
+          "text": "# holy_site_artifact_trigger_impl.cpp."
+        },
+        {
+          "line": 9,
+          "text": "holy_site_total_artifact_rarity = {"
+        },
+        {
+          "line": 10,
+          "text": "\tvalue = root.total_active_artifact_rarity_sum"
+        },
+        {
+          "line": 11,
+          "text": "}"
+        },
+        {
+          "line": 12,
+          "text": ""
+        },
+        {
+          "line": 13,
+          "text": "# How long a ruler must wait between holy site actions, shared by the decisions and by holy site creation."
+        },
+        {
+          "line": 14,
+          "text": "holy_site_action_cooldown_years = {"
+        },
+        {
+          "line": 15,
+          "text": "\tvalue = 5"
+        },
+        {
+          "line": 16,
+          "text": "}"
+        },
+        {
+          "line": 17,
+          "text": ""
+        },
+        {
+          "line": 18,
+          "text": "# Scope: character taking one of the holy site decisions."
+        },
+        {
+          "line": 19,
+          "text": "# Cooldown in years, waived while the faith still has a free holy site action left. Decision cooldowns"
+        },
+        {
+          "line": 20,
+          "text": "# are evaluated with only the taking character in scope - no saved scopes - so this can read the faith"
+        },
+        {
+          "line": 21,
+          "text": "# but nothing about the selected holy site."
+        },
+        {
+          "line": 22,
+          "text": "holy_site_decision_cooldown_value = {"
+        },
+        {
+          "line": 23,
+          "text": "\tvalue = holy_site_action_cooldown_years"
+        },
+        {
+          "line": 24,
+          "text": "\tif = {"
+        },
+        {
+          "line": 25,
+          "text": "\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }"
+        },
+        {
+          "line": 26,
+          "text": "\t\tvalue = 0"
+        },
+        {
+          "line": 27,
+          "text": "\t}"
+        },
+        {
+          "line": 28,
+          "text": "}"
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+        "bytes": 19759,
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+      },
+      "line_range": [
+        60,
+        102
+      ],
+      "lines": [
+        {
+          "line": 60,
+          "text": "\t}"
+        },
+        {
+          "line": 61,
+          "text": ""
+        },
+        {
+          "line": 62,
+          "text": "\tcost = {"
+        },
+        {
+          "line": 63,
+          "text": "\t\tpiety = {"
+        },
+        {
+          "line": 64,
+          "text": "\t\t\tvalue = 1000"
+        },
+        {
+          "line": 65,
+          "text": "\t\t\tif = {"
+        },
+        {
+          "line": 66,
+          "text": "\t\t\t\tlimit = { faith = { faith_has_free_holy_site_action_trigger = yes } }"
+        },
+        {
+          "line": 67,
+          "text": "\t\t\t\tmultiply = 0"
+        },
+        {
+          "line": 68,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 69,
+          "text": "\t\t}"
+        },
+        {
+          "line": 70,
+          "text": "\t}"
+        },
+        {
+          "line": 71,
+          "text": ""
+        },
+        {
+          "line": 72,
+          "text": "\tcooldown = { years = holy_site_decision_cooldown_value }"
+        },
+        {
+          "line": 73,
+          "text": ""
+        },
+        {
+          "line": 74,
+          "text": "\teffect = {"
+        },
+        {
+          "line": 75,
+          "text": "\t\tscope:selected_item.holy_site_county.holder = {"
+        },
+        {
+          "line": 76,
+          "text": "\t\t\tsave_scope_as = county_holder"
+        },
+        {
+          "line": 77,
+          "text": "\t\t}"
+        },
+        {
+          "line": 78,
+          "text": "\t\troot.faith = {"
+        },
+        {
+          "line": 79,
+          "text": "\t\t\tmake_holy_site_eminent = {"
+        },
+        {
+          "line": 80,
+          "text": "\t\t\t\ttarget = scope:selected_item"
+        },
+        {
+          "line": 81,
+          "text": "\t\t\t\tactor = root"
+        },
+        {
+          "line": 82,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 83,
+          "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+        },
+        {
+          "line": 84,
+          "text": "\t\t}"
+        },
+        {
+          "line": 85,
+          "text": "\t\tif = {"
+        },
+        {
+          "line": 86,
+          "text": "\t\t\tlimit = {"
+        },
+        {
+          "line": 87,
+          "text": "\t\t\t\texists = scope:county_holder"
+        },
+        {
+          "line": 88,
+          "text": "\t\t\t\tNOT = { scope:county_holder = root }"
+        },
+        {
+          "line": 89,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 90,
+          "text": "\t\t\tscope:county_holder = {"
+        },
+        {
+          "line": 91,
+          "text": "\t\t\t\tadd_opinion = {"
+        },
+        {
+          "line": 92,
+          "text": "\t\t\t\t\tmodifier = holy_site_elevated_county_holder_opinion"
+        },
+        {
+          "line": 93,
+          "text": "\t\t\t\t\ttarget = root"
+        },
+        {
+          "line": 94,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 95,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 96,
+          "text": "\t\t}"
+        },
+        {
+          "line": 97,
+          "text": "\t\tadd_character_modifier = {"
+        },
+        {
+          "line": 98,
+          "text": "\t\t\tmodifier = holy_site_elevated_modifier"
+        },
+        {
+          "line": 99,
+          "text": "\t\t\tyears = 10"
+        },
+        {
+          "line": 100,
+          "text": "\t\t}"
+        },
+        {
+          "line": 101,
+          "text": "\t}"
+        },
+        {
+          "line": 102,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "source": {
+        "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\decisions\\50_holy_site_decisions.txt",
+        "bytes": 19759,
+        "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4"
+      },
+      "line_range": [
+        234,
+        269
+      ],
+      "lines": [
+        {
+          "line": 234,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 235,
+          "text": "\t\t\tconsume_free_holy_site_action_effect = yes"
+        },
+        {
+          "line": 236,
+          "text": "\t\t}"
+        },
+        {
+          "line": 237,
+          "text": "\t\tif = {"
+        },
+        {
+          "line": 238,
+          "text": "\t\t\tlimit = {"
+        },
+        {
+          "line": 239,
+          "text": "\t\t\t\texists = scope:county_holder"
+        },
+        {
+          "line": 240,
+          "text": "\t\t\t\tNOT = { scope:county_holder = root }"
+        },
+        {
+          "line": 241,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 242,
+          "text": "\t\t\tscope:county_holder = {"
+        },
+        {
+          "line": 243,
+          "text": "\t\t\t\tadd_opinion = {"
+        },
+        {
+          "line": 244,
+          "text": "\t\t\t\t\tmodifier = holy_site_demoted_county_holder_opinion"
+        },
+        {
+          "line": 245,
+          "text": "\t\t\t\t\ttarget = root"
+        },
+        {
+          "line": 246,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 247,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 248,
+          "text": "\t\t}"
+        },
+        {
+          "line": 249,
+          "text": "\t\tadd_character_modifier = {"
+        },
+        {
+          "line": 250,
+          "text": "\t\t\tmodifier = holy_site_demoted_modifier"
+        },
+        {
+          "line": 251,
+          "text": "\t\t\tyears = 10"
+        },
+        {
+          "line": 252,
+          "text": "\t\t}"
+        },
+        {
+          "line": 253,
+          "text": "\t\t# Demoting a schism-rite holy site feeds Great Schism progress"
+        },
+        {
+          "line": 254,
+          "text": "\t\thidden_effect = {"
+        },
+        {
+          "line": 255,
+          "text": "\t\t\tif = {"
+        },
+        {
+          "line": 256,
+          "text": "\t\t\t\tlimit = {"
+        },
+        {
+          "line": 257,
+          "text": "\t\t\t\t\troot.faith = faith:christian_faith"
+        },
+        {
+          "line": 258,
+          "text": "\t\t\t\t\tpam_schism_county_rite_in_pair_trigger = { COUNTY = scope:selected_item.holy_site_county }"
+        },
+        {
+          "line": 259,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 260,
+          "text": "\t\t\t\tpam_change_great_schism_progress_effect = {"
+        },
+        {
+          "line": 261,
+          "text": "\t\t\t\t\tVALUE = pam_great_schism_progress_holy_site_value"
+        },
+        {
+          "line": 262,
+          "text": "\t\t\t\t\tTT = pam_great_schism_progress_holy_site_tt"
+        },
+        {
+          "line": 263,
+          "text": "\t\t\t\t}"
+        },
+        {
+          "line": 264,
+          "text": "\t\t\t}"
+        },
+        {
+          "line": 265,
+          "text": "\t\t}"
+        },
+        {
+          "line": 266,
+          "text": "\t}"
+        },
+        {
+          "line": 267,
+          "text": ""
+        },
+        {
+          "line": 268,
+          "text": "\tai_potential = {"
+        },
+        {
+          "line": 269,
+          "text": "\t\talways = no"
+        }
+      ]
+    }
+  ],
+  "qualification": "Static source evidence only; no script runtime or game performed"
+}

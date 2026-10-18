@@ -1,0 +1,209 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_utc": "2026-10-18T02:28:10.619830+00:00",
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "source_kind": "existing immutable exact-image cache only; static evidence",
+  "rows": [
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392aa5",
+      "near_start_rva": "0x2392a9d",
+      "near_bytes": "cccccc488bca4c8d0daa6c8d03488d15874b38024c8d05a0"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392bfa",
+      "near_start_rva": "0x2392bf2",
+      "near_bytes": "cfe85859c001488d05556b8d0348894708c7878000000000"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392c45",
+      "near_start_rva": "0x2392c3d",
+      "near_bytes": "766202488907488d050a6b8d034889470848896f1048896f"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392d3d",
+      "near_start_rva": "0x2392d35",
+      "near_bytes": "c24889442428488d15126a8d03488d4c2420e8845a7bfe48"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392d8a",
+      "near_start_rva": "0x2392d82",
+      "near_bytes": "3f4efe4c8bc0488d15c5698d03488bcbe8f9654efe90488b"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x2392dbf",
+      "near_start_rva": "0x2392db7",
+      "near_bytes": "83ec20488bda488d0590698d03488bcb4889442438488d54"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x2392de5",
+      "near_start_rva": "0x2392ddd",
+      "near_bytes": "5bc3cc488bca4c8d0d66698d03488d15474838024c8d0588"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x2392f3a",
+      "near_start_rva": "0x2392f32",
+      "near_bytes": "cfe81856c001488d0511688d0348894708c7878000000000"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x2392f85",
+      "near_start_rva": "0x2392f7d",
+      "near_bytes": "736202488907488d05c6678d034889470848896f1048896f"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x239307d",
+      "near_start_rva": "0x2393075",
+      "near_bytes": "c24889442428488d15ce668d03488d4c2420e844577bfe48"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x23930ca",
+      "near_start_rva": "0x23930c2",
+      "near_bytes": "3c4efe4c8bc0488d1581668d03488bcbe8b9624efe90488b"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x23930ff",
+      "near_start_rva": "0x23930f7",
+      "near_bytes": "83ec20488bda488d054c668d03488bcb4889442438488d54"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x2393125",
+      "near_start_rva": "0x239311d",
+      "near_bytes": "5bc3cc488bca4c8d0dfe658d03488d15074538024c8d0568"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x239327a",
+      "near_start_rva": "0x2393272",
+      "near_bytes": "cfe8d852c001488d05a9648d0348894708c7878000000000"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x23932c5",
+      "near_start_rva": "0x23932bd",
+      "near_bytes": "706202488907488d055e648d034889470848896f1048896f"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x23933bd",
+      "near_start_rva": "0x23933b5",
+      "near_bytes": "c24889442428488d1566638d03488d4c2420e804547bfe48"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x239340a",
+      "near_start_rva": "0x2393402",
+      "near_bytes": "394efe4c8bc0488d1519638d03488bcbe8795f4efe90488b"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x239343f",
+      "near_start_rva": "0x2393437",
+      "near_bytes": "83ec20488bda488d05e4628d03488bcb4889442438488d54"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x2393465",
+      "near_start_rva": "0x239345d",
+      "near_bytes": "5bc3cc488bca4c8d0dc6628d03488d15c74138024c8d0550"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x23935ba",
+      "near_start_rva": "0x23935b2",
+      "near_bytes": "cfe8984fc001488d0571618d0348894708c7878000000000"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x2393605",
+      "near_start_rva": "0x23935fd",
+      "near_bytes": "6d6202488907488d0526618d034889470848896f1048896f"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x23936fd",
+      "near_start_rva": "0x23936f5",
+      "near_bytes": "c24889442428488d152e608d03488d4c2420e8c4507bfe48"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x239374a",
+      "near_start_rva": "0x2393742",
+      "near_bytes": "354efe4c8bc0488d15e15f8d03488bcbe8395c4efe90488b"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x239377f",
+      "near_start_rva": "0x2393777",
+      "near_bytes": "83ec20488bda488d05ac5f8d03488bcb4889442438488d54"
+    },
+    {
+      "name": "Tmax-default-global",
+      "target_rva": "0x5c69750",
+      "modrm_rva": "0x3284118",
+      "near_start_rva": "0x3284110",
+      "near_bytes": "246802000075098b0533569e028943ec837bf4ff75098b05"
+    },
+    {
+      "name": "Emax-default-global",
+      "target_rva": "0x5c69754",
+      "modrm_rva": "0x3284127",
+      "near_start_rva": "0x328411f",
+      "near_bytes": "ec837bf4ff75098b0528569e028943f4837be8ff75098b05"
+    },
+    {
+      "name": "Tmin-default-global",
+      "target_rva": "0x5c69730",
+      "modrm_rva": "0x3284136",
+      "near_start_rva": "0x328412e",
+      "near_bytes": "f4837be8ff75098b05f5559e028943e8837bf0ff75098b05"
+    },
+    {
+      "name": "Emin-default-global",
+      "target_rva": "0x5c69728",
+      "modrm_rva": "0x3284145",
+      "near_start_rva": "0x328413d",
+      "near_bytes": "e8837bf0ff75098b05de559e028943f04881c4500200005b"
+    }
+  ],
+  "scope": "all RIP ModRM locator patterns in exact immutable text cache; requires instruction boundary review",
+  "new_EXE_code_bytes_read": 0,
+  "new_process_reads": 0,
+  "code_source_kind": "existing immutable exact-image cache",
+  "boundary_metadata_ledger": null
+}

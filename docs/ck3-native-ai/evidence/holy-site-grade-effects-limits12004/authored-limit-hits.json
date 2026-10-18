@@ -1,0 +1,1263 @@
+[
+  {
+    "path": "common/activities/activity_types/pilgrimage.txt",
+    "bytes": 111931,
+    "sha256": "24153043485b035cb0477de7306649027cb68c039e4a9d903776eddd870d8b9f",
+    "hits": [
+      {
+        "line": 428,
+        "text": "\t\t\t\t\tany_eminent_holy_site = {",
+        "matched_tokens": [
+          "any_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 433,
+        "text": "\t\t\tdesc = activity_pilgrimage_eminent_holy_site_desc",
+        "matched_tokens": [
+          "activity_pilgrimage_eminent_holy_site_desc"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/decisions/50_holy_site_decisions.txt",
+    "bytes": 19759,
+    "sha256": "80ad6a6045bdafdce514cbccf59a9cd1370eaef6749d510adcec759468065fb4",
+    "hits": [
+      {
+        "line": 34,
+        "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }",
+        "matched_tokens": [
+          "is_faith_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 37,
+        "text": "\t\t\t\t\ttext = elevate_holy_site_decision_under_eminent_holy_sites_max",
+        "matched_tokens": [
+          "elevate_holy_site_decision_under_eminent_holy_sites_max"
+        ]
+      },
+      {
+        "line": 38,
+        "text": "\t\t\t\t\tlist_size:eminent_holy_site < root.faith.religion.eminent_holy_sites_max",
+        "matched_tokens": [
+          "eminent_holy_site",
+          "eminent_holy_sites_max"
+        ]
+      },
+      {
+        "line": 79,
+        "text": "\t\t\tmake_holy_site_eminent = {",
+        "matched_tokens": [
+          "make_holy_site_eminent"
+        ]
+      },
+      {
+        "line": 107,
+        "text": "\t\t\tlist_size:eminent_holy_site < religion.eminent_holy_sites_max",
+        "matched_tokens": [
+          "eminent_holy_site",
+          "eminent_holy_sites_max"
+        ]
+      },
+      {
+        "line": 199,
+        "text": "\t\t\t\tis_faith_eminent_holy_site = prev",
+        "matched_tokens": [
+          "is_faith_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 202,
+        "text": "\t\t\t\t\ttext = demote_holy_site_decision_above_eminent_holy_sites_min",
+        "matched_tokens": [
+          "demote_holy_site_decision_above_eminent_holy_sites_min"
+        ]
+      },
+      {
+        "line": 203,
+        "text": "\t\t\t\t\tlist_size:eminent_holy_site > root.faith.religion.eminent_holy_sites_min",
+        "matched_tokens": [
+          "eminent_holy_site",
+          "eminent_holy_sites_min"
+        ]
+      },
+      {
+        "line": 231,
+        "text": "\t\t\tmake_holy_site_not_eminent = {",
+        "matched_tokens": [
+          "make_holy_site_not_eminent"
+        ]
+      },
+      {
+        "line": 285,
+        "text": "\t\t\t\t\tevery_eminent_holy_site = {",
+        "matched_tokens": [
+          "every_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 295,
+        "text": "\t\t\t\t\trandom_eminent_holy_site = {",
+        "matched_tokens": [
+          "random_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 305,
+        "text": "\t\t\t\t\trandom_eminent_holy_site = {",
+        "matched_tokens": [
+          "random_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 347,
+        "text": "\t\t\t\tNOT = { is_faith_eminent_holy_site = prev }",
+        "matched_tokens": [
+          "is_faith_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 349,
+        "text": "\t\t\t\t\ttext = abandon_holy_site_decision_above_holy_sites_min",
+        "matched_tokens": [
+          "abandon_holy_site_decision_above_holy_sites_min"
+        ]
+      },
+      {
+        "line": 350,
+        "text": "\t\t\t\t\tlist_size:holy_site > root.faith.religion.holy_sites_min",
+        "matched_tokens": [
+          "holy_sites_min"
+        ]
+      },
+      {
+        "line": 498,
+        "text": "\t\t\t\ttext = adopt_holy_site_decision_under_holy_sites_max",
+        "matched_tokens": [
+          "adopt_holy_site_decision_under_holy_sites_max"
+        ]
+      },
+      {
+        "line": 499,
+        "text": "\t\t\t\tlist_size:holy_site < root.faith.religion.holy_sites_max",
+        "matched_tokens": [
+          "holy_sites_max"
+        ]
+      },
+      {
+        "line": 571,
+        "text": "\t\t\t\tvalue = root.faith.religion.holy_sites_max",
+        "matched_tokens": [
+          "holy_sites_max"
+        ]
+      },
+      {
+        "line": 693,
+        "text": "\t\t\t\trandom_eminent_holy_site = {",
+        "matched_tokens": [
+          "random_eminent_holy_site"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/defines/00_defines.txt",
+    "bytes": 125400,
+    "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+    "hits": [
+      {
+        "line": 920,
+        "text": "\tFAITH_EMINENT_HOLY_SITES_MAX_DEFAULT = 3",
+        "matched_tokens": [
+          "FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT"
+        ]
+      },
+      {
+        "line": 922,
+        "text": "\tFAITH_HOLY_SITES_MAX_DEFAULT = 9",
+        "matched_tokens": [
+          "FAITH_HOLY_SITES_MAX_DEFAULT"
+        ]
+      },
+      {
+        "line": 924,
+        "text": "\tFAITH_EMINENT_HOLY_SITES_MIN_DEFAULT = 1",
+        "matched_tokens": [
+          "FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT"
+        ]
+      },
+      {
+        "line": 926,
+        "text": "\tFAITH_HOLY_SITES_MIN_DEFAULT = 1",
+        "matched_tokens": [
+          "FAITH_HOLY_SITES_MIN_DEFAULT"
+        ]
+      },
+      {
+        "line": 932,
+        "text": "\tMAX_HOLY_SITE_RARITY_TOTAL = 12",
+        "matched_tokens": [
+          "MAX_HOLY_SITE_RARITY_TOTAL"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/game_concepts/pam_game_concepts.txt",
+    "bytes": 11857,
+    "sha256": "e1447382b383f0c8bf986d3d95be5273f5220d9e54e7c1708e4bf8663293ffe0",
+    "hits": [
+      {
+        "line": 273,
+        "text": "eminent_holy_site = {",
+        "matched_tokens": [
+          "eminent_holy_site"
+        ]
+      },
+      {
+        "line": 274,
+        "text": "\talias = { eminent_holy_sites eminent_holy_site_short }",
+        "matched_tokens": [
+          "eminent_holy_sites",
+          "eminent_holy_site_short"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/important_actions/pam_actions.txt",
+    "bytes": 40634,
+    "sha256": "ec8d868ee521618220ab019d8c488d4c14bc44e8509c820f090ef880941fbea5",
+    "hits": [
+      {
+        "line": 1530,
+        "text": "\t\t\t\t\tlist_size:holy_site < religion.holy_sites_max",
+        "matched_tokens": [
+          "holy_sites_max"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/on_action/religion_on_actions.txt",
+    "bytes": 59475,
+    "sha256": "ef9367ddf5f89c912b895743f8b72441e88af3a5b03a5c1a9eddea0e5681ee2d",
+    "hits": [
+      {
+        "line": 2022,
+        "text": "on_faith_holy_site_eminence_changed = {",
+        "matched_tokens": [
+          "on_faith_holy_site_eminence_changed"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/religion/faith_types/00_faith_types.txt",
+    "bytes": 118526,
+    "sha256": "c1b94cd6cf2cc47824a43112965e9a1e1a669530090b44b1cd702245914e84df",
+    "hits": [
+      {
+        "line": 11,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 43,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 74,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 107,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 138,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 175,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 231,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 263,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 285,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 307,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 335,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 365,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 463,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 595,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 667,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 752,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 828,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 902,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 940,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 972,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 995,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1019,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1043,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1067,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1096,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1133,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1165,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1212,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1245,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1296,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1379,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1406,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1428,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1459,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1491,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1555,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1684,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1807,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 1928,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2062,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2098,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2141,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2174,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2208,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2278,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2362,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2401,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2471,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2551,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2583,
+        "text": "    eminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2606,
+        "text": "    eminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2633,
+        "text": "    eminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2670,
+        "text": "    eminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2711,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2748,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2785,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2841,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2875,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2897,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2925,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 2959,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3021,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3065,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3100,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3137,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3173,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3209,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3240,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3271,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3301,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3328,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3359,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3436,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3469,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3503,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3534,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3698,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3729,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3765,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3787,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3818,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3849,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3870,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3909,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3940,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3970,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 3997,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4181,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4217,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4248,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4376,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4407,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4438,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4469,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4491,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4524,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4559,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4592,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4652,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4688,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4735,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4793,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      },
+      {
+        "line": 4847,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/religion/faith_types/_faith_types.info",
+    "bytes": 4481,
+    "sha256": "55696aa5d3ac818fbd68d2b21be51213f02ef5ed4260627e2fbd8b5e321c9e42",
+    "hits": [
+      {
+        "line": 25,
+        "text": "\teminent_holy_sites = {",
+        "matched_tokens": [
+          "eminent_holy_sites"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/religion/religion_types/_religion_types.info",
+    "bytes": 5101,
+    "sha256": "c9b5b04166c1d8020230dd858f7e0e364d9488e89873fc9376a1fdf19b7b5d14",
+    "hits": [
+      {
+        "line": 15,
+        "text": "\teminent_holy_sites_max = 3\t# Optional. How many eminent holy sites can Faiths of this Religion have? Default is define FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT",
+        "matched_tokens": [
+          "eminent_holy_sites_max",
+          "FAITH_EMINENT_HOLY_SITES_MAX_DEFAULT"
+        ]
+      },
+      {
+        "line": 16,
+        "text": "\tholy_sites_max = 9\t\t\t# Optional. How many holy sites in total, eminent ones included, can Faiths of this Religion have? Default is define FAITH_HOLY_SITES_MAX_DEFAULT",
+        "matched_tokens": [
+          "holy_sites_max",
+          "FAITH_HOLY_SITES_MAX_DEFAULT"
+        ]
+      },
+      {
+        "line": 17,
+        "text": "\teminent_holy_sites_min = 0\t# Optional. Minimum number of eminent holy sites a Faith must retain - blocks demote when reached. Default is define FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT",
+        "matched_tokens": [
+          "eminent_holy_sites_min",
+          "FAITH_EMINENT_HOLY_SITES_MIN_DEFAULT"
+        ]
+      },
+      {
+        "line": 18,
+        "text": "\tholy_sites_min = 1\t\t\t# Optional. Minimum number of holy sites in total a Faith must retain - blocks abandon when reached. Default is define FAITH_HOLY_SITES_MIN_DEFAULT",
+        "matched_tokens": [
+          "holy_sites_min",
+          "FAITH_HOLY_SITES_MIN_DEFAULT"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/script_values/02_religion_values.txt",
+    "bytes": 118720,
+    "sha256": "9e55618b00b463589af310bd17511b4f260fea4d3acb43e512e209cfc1517ded",
+    "hits": [
+      {
+        "line": 4098,
+        "text": "create_hof_no_eminent_holy_site_cost_mult = 1.5",
+        "matched_tokens": [
+          "create_hof_no_eminent_holy_site_cost_mult"
+        ]
+      },
+      {
+        "line": 4143,
+        "text": "\t\t\t\t\t\tany_eminent_holy_site = {",
+        "matched_tokens": [
+          "any_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 4152,
+        "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult",
+        "matched_tokens": [
+          "create_hof_no_eminent_holy_site_cost_mult"
+        ]
+      },
+      {
+        "line": 4174,
+        "text": "\t\t\t\t\t\tany_eminent_holy_site = {",
+        "matched_tokens": [
+          "any_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 4183,
+        "text": "\t\t\tmultiply = create_hof_no_eminent_holy_site_cost_mult",
+        "matched_tokens": [
+          "create_hof_no_eminent_holy_site_cost_mult"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "common/travel/point_of_interest_types/travel_point_of_interest_types.txt",
+    "bytes": 48937,
+    "sha256": "1e549ffa1a98dd75d460cd4f3da2ba98d830bc597eb5c9a9deeb41fff8262470",
+    "hits": [
+      {
+        "line": 488,
+        "text": "\t\t\t\t\t\t\tNOT = { is_faith_eminent_holy_site = scope:holy_site }",
+        "matched_tokens": [
+          "is_faith_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 506,
+        "text": "\t\t\t\t\t\t\tis_faith_eminent_holy_site = scope:holy_site",
+        "matched_tokens": [
+          "is_faith_eminent_holy_site"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "events/artifacts/historical_artifacts_events.txt",
+    "bytes": 29930,
+    "sha256": "6d706e9f7f7bbd64d625af5dea72231c30ccba4c4b2b24ee25017bdf3fd82194",
+    "hits": [
+      {
+        "line": 1096,
+        "text": "\t\t\t\tevery_eminent_holy_site = {",
+        "matched_tokens": [
+          "every_eminent_holy_site"
+        ]
+      },
+      {
+        "line": 1134,
+        "text": "\t\t\t\t\tevery_eminent_holy_site = {",
+        "matched_tokens": [
+          "every_eminent_holy_site"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "gui/map_icon_layer.gui",
+    "bytes": 158755,
+    "sha256": "b6dae8583b043134a04d09dec1aaf92ac7a8c7154a58858eff55d01b4b27ea8a",
+    "hits": [
+      {
+        "line": 713,
+        "text": "\t\t\tsize = \"[Select_CVector2f( HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ), '(CVector2f)60,60', '(CVector2f)40,40' )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 724,
+        "text": "\t\t\tsize = \"[Select_CVector2f( HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ), '(CVector2f)60,60', '(CVector2f)40,40' )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 735,
+        "text": "\t\t\tsize = \"[Select_CVector2f( HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ), '(CVector2f)60,60', '(CVector2f)40,40' )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 744,
+        "text": "\t\tsize = \"[Select_CVector2f( HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ), '(CVector2f)60,60', '(CVector2f)40,40' )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 766,
+        "text": "\t\t\t\tframe = \"[Select_int32( HolySiteItem.GetFaith.IsEminentHolySite( HolySiteItem.GetHolySite.Self ), '(int32)1', '(int32)4') ]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 800,
+        "text": "\t\t\t\tframe = \"[Select_int32( HolySiteItem.GetFaith.IsEminentHolySite( HolySiteItem.GetHolySite.Self ), '(int32)1', '(int32)4') ]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "gui/window_holy_site.gui",
+    "bytes": 32840,
+    "sha256": "23542c54dd73b0c349e008649f201b1459ef833070fb6071e089dcd210642fb2",
+    "hits": [
+      {
+        "line": 239,
+        "text": "\t\t\t\t\t\t\t\ttext = \"FAITH_HOLY_SITE_EMINENCE_SUBSCRIPT\"",
+        "matched_tokens": [
+          "FAITH_HOLY_SITE_EMINENCE_SUBSCRIPT"
+        ]
+      },
+      {
+        "line": 437,
+        "text": "\t\t\t\t\t\t\t\tdatamodel = \"[GetSegmentedProgressTargetBar( GetDefine( 'NReligion','MAX_HOLY_SITE_RARITY_TOTAL' ), HolySite.GetTotalActiveArtifactRarity, HolySite.GetTotalActiveArtifactRarity)]\"",
+        "matched_tokens": [
+          "MAX_HOLY_SITE_RARITY_TOTAL"
+        ]
+      },
+      {
+        "line": 1101,
+        "text": "\t\t\t\t\t\ttext = \"HOLY_SITE_FAITH_EMINENCE\"",
+        "matched_tokens": [
+          "HOLY_SITE_FAITH_EMINENCE"
+        ]
+      },
+      {
+        "line": 1202,
+        "text": "\t\t\t\t\tvisible = \"[And( HolySiteItem.IsHeldByFaith, Faith.IsEminentHolySite( HolySite.Self ) )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 1208,
+        "text": "\t\t\t\t\tvisible = \"[Or( Not( Faith.IsEminentHolySite( HolySite.Self ) ), Not( HolySiteItem.IsHeldByFaith ) )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 1225,
+        "text": "\t\t\t\t\talpha = \"[Select_float( And( Faith.IsEminentHolySite( HolySite.Self ), HolySiteItem.IsHeldByFaith), '(float)1.0', '(float)0.6' )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 1260,
+        "text": "\t\tvisible = \"[And3( HolySiteItem.GetHolySite.IsActive, HolySiteItem.IsHeldByFaith, HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ) )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 1267,
+        "text": "\t\tvisible = \"[And( Not(HolySiteItem.IsHeldByFaith ), HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ) )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      },
+      {
+        "line": 1274,
+        "text": "\t\tvisible = \"[And( And( Not( HolySiteItem.GetHolySite.IsActive), HolySiteItem.IsHeldByFaith ), HolySiteItem.GetFaith.IsEminentHolySite( HolySite.Self ) )]\"",
+        "matched_tokens": [
+          "IsEminentHolySite"
+        ]
+      }
+    ]
+  },
+  {
+    "path": "gui/window_holy_site_creation.gui",
+    "bytes": 23400,
+    "sha256": "7e6cd0cf6cc70616fa1f3137dca1c229f60c68a7f18bb3d43cd44dd9bf367310",
+    "hits": [
+      {
+        "line": 293,
+        "text": "\t\t\t\t\t\t\t\tdatamodel = \"[GetSegmentedProgressTargetBar( GetDefine( 'NReligion','MAX_HOLY_SITE_RARITY_TOTAL' ), FixedPointToInt( HolySiteCreationWindow.GetSelectedArtifactsRaritySum ), FixedPointToInt( HolySiteCreationWindow.GetSelectedArtifactsRaritySum ) )]\"",
+        "matched_tokens": [
+          "MAX_HOLY_SITE_RARITY_TOTAL"
+        ]
+      },
+      {
+        "line": 881,
+        "text": "\t\t\t\t\t\ttext = \"[SelectLocalization( ObjectsEqual(HolySiteCreationWindow.GetFaith.Self, Faith.Self ), 'HOLY_SITE_FAITH_REGULAR_NEW', 'HOLY_SITE_FAITH_EMINENCE' )]\"",
+        "matched_tokens": [
+          "HOLY_SITE_FAITH_EMINENCE"
+        ]
+      }
+    ]
+  }
+]
