@@ -1068,3 +1068,8 @@ docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/SOURCE
 docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/FOCUSED.actual.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/actual-native-null-cuts.zip -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r213-regular-core-null-export-12004/FOCUSED.a02.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-inline-payment-control-12004/SOURCE-FACTS.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-inline-payment-control-12004/REQUESTS.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/SOURCE-FRONTIER.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/verify_frontier.py -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/FOCUSED.actual.json -text whitespace=cr-at-eol

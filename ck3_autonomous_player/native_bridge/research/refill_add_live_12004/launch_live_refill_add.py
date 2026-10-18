@@ -23,7 +23,8 @@ def validate_prepared_ready_scope(prepared):
     need(type(prepared) is dict, 'PREPARED object')
     schema=prepared.get('schema')
     need(schema in ('xar.ck3.refill_ADD_12004.prepared_live_argv.v1',
-                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v2'), 'PREPARED schema')
+                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v2',
+                    'xar.ck3.refill_ADD_12004.prepared_live_argv.v3'), 'PREPARED schema')
     need(prepared.get('observer_launched') is False and prepared.get('actual_ADD_observed') is False,'unlaunched preparation')
     argv=prepared['native_argv']; consume=prepared['consume_argv']
     need(type(argv) is list and len(argv)==20 and all(type(x) is str and x for x in argv),'structured native argv')
@@ -31,12 +32,12 @@ def validate_prepared_ready_scope(prepared):
     need(Path(argv[0]).name=='refill_add_hwprobe_12004.exe' and argv[13]=='30000','live target and 30s native window')
     values=dict(zip(argv[2::2],argv[3::2])); expected=prepared['ready_must_match']
     ready_schema=('xar.ck3.refill_ADD_12004.hwprobe_ready.v3'
-                  if schema.endswith('.v2') else 'xar.ck3.refill_ADD_12004.hwprobe_ready.v2')
+                  if schema.endswith(('.v2','.v3')) else 'xar.ck3.refill_ADD_12004.hwprobe_ready.v2')
     need(type(expected) is dict and expected.get('schema')==ready_schema,'production ready contract')
     for flag,key in [('--pid','pid'),('--thread','thread_id'),('--regiment','regi_full_id_u32'),('--slot','physical_slot'),('--created','process_created_filetime')]:
         need(type(expected.get(key)) is int and str(expected[key])==values[flag],'same prepared '+key)
     need(expected.get('machine_id')==prepared.get('machine_id')==values['--machine-id'],'same prepared machine')
-    if schema.endswith('.v2'):
+    if schema.endswith(('.v2','.v3')):
         module=prepared.get('carrier_module_path'); epoch=prepared.get('carrier_source_epoch')
         need(type(module) is str and Path(module).is_absolute()
              and Path(module).name.lower()=='xar_ck3_bridge.dll', 'prepared actual carrier module path')

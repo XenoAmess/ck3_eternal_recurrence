@@ -1,0 +1,36 @@
+{
+  "schema": "xar.e04.r214.inline-payment-same-clock-card.v1",
+  "execution_status": "SOURCE_ONLY_ROOT_DECISION_REQUIRED",
+  "tool": "ck3_query_war_cash_current_resources_private_v1",
+  "host_feature": {"war_cash_queries": true},
+  "strict_schema": {
+    "expected_revision": "fresh public integer revision for each call",
+    "payment_sampling": ["enable", "query", "disable"],
+    "payment_window_contract": "same_owned_process_no_load_v1 on enable only; absent/None otherwise"
+  },
+  "before_same_existing_exact_day": [
+    "Keep the actual all-OFF/clear and R06 full baseline; preserve existing month/q gates.",
+    "Same owner explicitly enables regular_core with regular_core_full_carmy_ids=[0].",
+    "Same owner explicitly enables natural_phase WITHOUT regular_core_full_carmy_ids, then independently queries all families.",
+    "Require regular_core and natural_phase installed/available/ON/nonbusy and all other families OFF.",
+    "Fresh snapshot, then unique cash enable with expected_revision from that snapshot and exact window contract. Preserve complete original response and enforce existing production normalizer.",
+    "Only after actual admitted readback, use the actor's one existing exact_day. No extra Arm, Resume, clock or game action."
+  ],
+  "after_same_existing_exact_day_before_any_OFF_or_Save": [
+    "Preserve the existing after full + independent sampling-all readback and regular-core classifier.",
+    "Fresh paused snapshot, then unique cash query with payment_sampling=query and no window contract. Preserve complete original response before any clearing.",
+    "Consume with xar_autoplayer.bridge.war_payment_observations_v1.normalize_payment_extras; strict claims are recomputed by expected_debits.",
+    "Fresh snapshot, then unique payment_sampling=disable with no window contract; require accepted disabled, controlled_window_admitted false, capture_enabled false, busy false and clear_completed true.",
+    "Only then existing actor all-OFF/clear/readback and fresh terminal native Save. Unknown actions are preserved without replay."
+  ],
+  "current_actor_required_sparse_deltas": [
+    "Session.sampling: append regular_core_full_carmy_ids only when enabled is True AND family == regular_core.",
+    "core_day ON guard: exact allowed set regular_core + natural_phase instead of regular_core only.",
+    "Add enable/query/disable calls through the same existing Session.io.call and fresh snapshots; preserve cleanup ordering and primary errors."
+  ],
+  "time_budget": "Existing cash worker may wait 30000 ms per submitted query, with already-running waits continued. Do not promise instant controls; preserve same owner room/deadline/cleanup reserves.",
+  "external_debugger": false,
+  "extra_natural_days": 0,
+  "automatically_enable": false,
+  "maintenance_paid_payer_cadence_qualified": false
+}

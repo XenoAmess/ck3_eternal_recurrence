@@ -36,7 +36,8 @@ def _i32(x: int) -> int:
     return struct.unpack('<i', struct.pack('<I', x))[0]
 
 
-def _normalize_instruction_local_refill_add_v2_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
+def _normalize_instruction_local_refill_add_v2_12004(raw: bytes, binding: Mapping[str, object], *,
+                                                       _native_campaign_null: bool = False) -> dict[str, object]:
     """Normalize exactly one selected native ADD after the owner verified admission.
 
     Binding contains actual owner evidence hashes, not self-asserted success flags.
@@ -56,7 +57,10 @@ def _normalize_instruction_local_refill_add_v2_12004(raw: bytes, binding: Mappin
         _need(_int(binding[key], 1, 0xFFFFFFFF), 'owner '+key)
     for key in ('process_created_filetime', 'connection_generation'):
         _need(_int(binding[key], 1), 'owner '+key)
-    _need(type(binding['episode_run_id']) is str and 0 < len(binding['episode_run_id']) <= 256, 'owner episode')
+    if _native_campaign_null:
+        _need(binding['episode_run_id'] is None, 'ordinary owner preserves null game episode')
+    else:
+        _need(type(binding['episode_run_id']) is str and 0 < len(binding['episode_run_id']) <= 256, 'owner episode')
     _need(_int(binding['regi_full_id_u32'], 0, 0xFFFFFFFE) and _int(binding['physical_slot'], 0, 6), 'selected full Regi/physical slot')
     for key in ('arrg_full_id_i32', 'army_full_id_i32'):
         _need(_int(binding[key], -(1 << 31), (1 << 31)-1) and binding[key] != -1, 'selected full '+key)
@@ -151,7 +155,8 @@ def _normalize_instruction_local_refill_add_v2_12004(raw: bytes, binding: Mappin
             'toggle_effect_proven':False,'refill_business_qualification_granted':False}
 
 
-def _normalize_stack_q_source_v3_12004(raw: bytes, binding: Mapping[str, object]) -> dict[str, object]:
+def _normalize_stack_q_source_v3_12004(raw: bytes, binding: Mapping[str, object], *,
+                                     _native_campaign_null: bool = False) -> dict[str, object]:
     """Validate extra actual B84 load evidence, then reuse every v2 ADD guard.
 
     The 28-byte window is an independently read native stack copy. Its selected
@@ -179,7 +184,8 @@ def _normalize_stack_q_source_v3_12004(raw: bytes, binding: Mapping[str, object]
     for hit in rows[1:3]:
         del hit['stack_q_source_complete']; del hit['stack_q_window_28_hex']
     projection = ('\n'.join(json.dumps(row, separators=(',', ':')) for row in rows)+'\n').encode()
-    item = _normalize_instruction_local_refill_add_v2_12004(projection, binding)
+    item = _normalize_instruction_local_refill_add_v2_12004(
+        projection, binding, _native_campaign_null=_native_campaign_null)
     item['raw_sha256'] = hashlib.sha256(raw).hexdigest()
     item['raw_schema'] = 'xar.ck3.refill_ADD_12004.hwprobe_raw.v3'
     item['instruction_stack_q_source_v1'] = {
@@ -208,6 +214,7 @@ _CARRIER_HEADER_HEX = struct.pack('<8Q', 0x3152303643524158, 1, _CARRIER_EPOCH,
                                   16, 21, 8, 0x98702F88A547CDE2, 0).hex()
 _V4_SCHEMA = 'xar.ck3.refill_ADD_12004.hwprobe_raw.v4'
 _BINDING_V2_SCHEMA = 'xar.ck3.refill_ADD_12004.owner_binding.v2'
+_BINDING_V3_SCHEMA = 'xar.ck3.refill_ADD_12004.owner_binding.v3'
 
 
 def _unique_json_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
@@ -475,9 +482,15 @@ def _join_actual_core(frame: dict, observation: object, binding: Mapping[str, ob
 
 
 def _normalize_core_carrier_v4_12004(raw: bytes, binding: Mapping[str, object], core_observation: object) -> dict[str, object]:
-    _need(isinstance(binding, Mapping) and binding.get('schema') == _BINDING_V2_SCHEMA,
-          'v4 exact owner binding v2')
+    _need(isinstance(binding, Mapping) and binding.get('schema') in (_BINDING_V2_SCHEMA, _BINDING_V3_SCHEMA),
+          'v4 exact owner binding v2 or explicit ordinary v3')
+    native_campaign_null = binding['schema'] == _BINDING_V3_SCHEMA
     old_binding = dict(binding)
+    if native_campaign_null:
+        _need(old_binding.get('episode_projection') == 'native_campaign' and
+              'episode_run_id' in old_binding and old_binding['episode_run_id'] is None,
+              'v3 owner requires actual ordinary projection and null game episode')
+        del old_binding['episode_projection']
     for key in ('carrier_module_path', 'carrier_source_epoch', 'source_dir'):
         _need(key in old_binding, 'owner carrier binding ' + key)
         del old_binding[key]
@@ -526,7 +539,8 @@ def _normalize_core_carrier_v4_12004(raw: bytes, binding: Mapping[str, object], 
         del hit['core_carrier_v1']; hit['native_core_token'] = None
     del pair['carrier_pair_same_token']; del pair['native_core_token']
     projection = ('\n'.join(json.dumps(row, separators=(',', ':')) for row in rows) + '\n').encode()
-    item = _normalize_stack_q_source_v3_12004(projection, old_binding)
+    item = _normalize_stack_q_source_v3_12004(
+        projection, old_binding, _native_campaign_null=native_campaign_null)
     item.update(raw_sha256=hashlib.sha256(raw).hexdigest(), raw_schema=_V4_SCHEMA,
                 owner_binding=dict(binding), native_core_token=frames[0]['invocation_token'],
                 native_event_date_raw=frames[0]['date_raw'], same_core_invocation_join_ready=True,

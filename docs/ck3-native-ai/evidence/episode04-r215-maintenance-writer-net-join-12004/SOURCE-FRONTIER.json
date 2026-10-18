@@ -1,0 +1,300 @@
+{
+  "schema": "xar.e04.r215.maintenance-writer-net-frontier.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+  "native_build_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "exact_game": {
+    "version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"
+  },
+  "retained_bodies": {
+    "parent": {
+      "begin_rva": 42956864,
+      "bytes": 1118,
+      "sha256": "c115401592983d13238154255b9b2583fe85222089d71fde10f0e8aae6c9753c",
+      "raw_hex": "488bc453554881ec980000004c8970e0488bea488b92c00100004c8bf14c8978d8488b41084d63c84c8b004f8d3cc84885d20f84b900000033c03882a30000007410488b0dc723370348018ae8030000eb45488b8ae80300004885c97e39482b0ddb23370348898ae8030000488d8c24b0000000488b95c00100004881c2e803000048898424b0000000483902480f4dca488b0948890a488b95c00100003882a4000000743b488b0d9b23370348018af00300004c8b85c0010000488b1596233703498b88f00300004885c9780a483bca488bc1480f4fc2498980f0030000eb10483982f00300007e07488982f0030000488bcde8d7f3faff488b9dc00100004885db0f845d0100004889b424b8000000488bb3e00200004889bc2490000000488bbbd0020000482bfe0f84260100004885ff0f8ebe0000004883bdb0010000000f840f010000488bcde8f1832b0084c00f84ff000000488b85c00100004885c0741483b8ec010000007425488b80e00100008b08eb1f488b85d00100004885c0740e837874007408488b40688b08eb05b9ffffffff898c24c0000000488d8c24c0000000e806f40dfe817814646e614c0f859f000000837810ff0f8495000000488d88100300004c8bc5488bd7e84d75f6ff488b85b0010000488b88780200004883792000746e4c8bc7ba03000000e84b340fffeb5f488b5b38488d8c24b000000048f7df4c8bc3488bd74c8bcee8fcf0faff41b901000000488bcd4c8b00418d5102e8e71efcff4c8bc6488d8c24b00000004c2bc34c8bce488bd7e8cef0faff41b903000000488bcd418bd14c8b00e8ba1efcff488bb424b8000000488bbc2490000000488b85c00100004885c07472488bd5488bc8e833160600488b85c00100004885c0745b80b8aa040000007552488bcde8a682fcff8b4818e80e2c2b0084c07524488bcde86281fcff8b4818e8fa2b2b0084c07510488b85c0010000c680aa04000001eb1a488bcde89e342b0084c0488b85c00100000f94c18888aa040000488b9dc0010000498b164c8bb424880000004885db747a488b9b580400004885db746e488b05aa0c3c03f680b002000020745e0f100b488d8bd00000004c8bcd0f105310448b41280f105b204c897c2420f20f1043300f11090f1151100f115920f20f114130e87135d0ff488d53384c8bc5488d8b08010000e86e6a9700488d9380000000488d8b50010000e8dbb6cfff488b8db80100004c8bbc24800000004885c9740e488b81b800000048898130010000488bcde871f3faff4883bdc0010000000f84a7000000488bcde8fbb1fcff8178384f6244470f8592000000488b404048c1e829a8010f84820000004533c9488d8c24b0000000488bd5e8fbb62d004533c0488d4c2430488bd5e82bc33100488b9c24b0000000488b4048482bd84885db7e2e4883bdb0010000007441488bcde8d5822b0084c07435488b85c0010000480198a00400004881c4980000005d5bc34885c0741841b90300000048f7db4c8bc3488bcd418d5101e8bc1cfcff4881c4980000005d5bc3",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\PARENT-ORDER-SOURCE.actual.json",
+        "bytes": 16523,
+        "sha256": "225e299acfa16f158407a0a1d63bbfc7a6d6d24f044e7c33d4334305fb5d378b"
+      }
+    },
+    "settlement": {
+      "begin_rva": 42626320,
+      "bytes": 574,
+      "sha256": "f2e377a5e4948042852a95bd5b4e0fe3d38159defb8eb5f823ec0fabb33fe348",
+      "raw_hex": "41574883ec40488b81c00100004c8bf94885c00f841e0200004c8b402848895c2458488b98c0020000482b98c80200004889742438488b703048897c2430498d3c30482bdf4885db7e4a488b89b00100004885c90f84ce0100004881c1f80000004d8bc7488bd3e8c480fbff498b87b0010000488b887802000048837920000f84a30100004c8bc333d2e8e14014ffe9940100004885ff0f848b01000048896c2460488d4c245048f7db4c89642428488bd34c897424204c8bcfe881fdffff498b8fb00100004533e4488b28458d7424034885c90f84960000004885ed0f848d0000004881c1f80000004d8bc7488bd5e8cb80fbff498b87b0010000488b8878020000488b49204885c974644885ed785f4881c1600100007456488b4108483bc57c09482bc548894108eb444c896108458bc6498bd6482be80f1f8000000000488b04d1483bc57d1b482be84c8924d141ffc84883ea0179e74885ed7e1248296918eb0c4963c048292cc10f1f4400004c8bcf488d4c24504c8bc6488bd3e8bdfcffff498b8fb0010000488b6c2460488b184885c90f84830000004885db747e4881c1f80000004d8bc7488bd3e80e80fbff498b87b0010000488b8878020000488b49204885c974554885db78504881c1600100007447488b5118483bd37c09482bd348895118eb354c896118498bc6482bda488b14c1483bd37d1b482bda4c8924c141ffce4883e80179e74885db7e0d48295918eb074963c648291cc14c8b6424284c8b742420488b742438488b5c2458488b7c24304883c440415fc3",
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-15-maintenance-cache-source\\inputs\\saved-settlement-source.json",
+        "bytes": 10616,
+        "sha256": "31f8c9e1f35fa82bcbd1fe6a81be05d934a9de9ca1a900a8ce566a319600b79b"
+      }
+    },
+    "gold_add": {
+      "begin_rva": 42331712,
+      "bytes": 131,
+      "sha256": "4a8c83ef8536cdad09b6b5706995a2991aaf361eb0140f14573ea4101695a4e0",
+      "raw_hex": "48895c240848896c24104889742418574883ec20488bda488bf933d2498bc8498be8e899b7360048015f0833d2488bcd8bf0e889b736003bf07433817d1c72616843752a8b4d1883f9ff74224883bdd0010000007518e855b83400488bcd84c07407e8794e0600eb05e8224e0600488b5c2430488b6c2438488b7424404883c4205fc3",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a03\\gold_add.bin",
+        "bytes": 131,
+        "sha256": "4a8c83ef8536cdad09b6b5706995a2991aaf361eb0140f14573ea4101695a4e0"
+      },
+      "original_read_receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a03\\READ-RECEIPT.actual.json",
+        "bytes": 38319,
+        "sha256": "626e90b803c0be98b8786a51df7c7ae754f23628f805b6a2d83619446829987d"
+      }
+    },
+    "gold_sub": {
+      "begin_rva": 42331856,
+      "bytes": 131,
+      "sha256": "366d182ef9881970d1a6e8cc5e2ee854cc0a2c31fcab163a2153c3d69fade4c5",
+      "raw_hex": "48895c240848896c24104889742418574883ec20488bda488bf933d2498bc8498be8e809b7360048295f0833d2488bcd8bf0e8f9b636003bf07433817d1c72616843752a8b4d1883f9ff74224883bdd0010000007518e8c5b73400488bcd84c07407e8e94d0600eb05e8924d0600488b5c2430488b6c2438488b7424404883c4205fc3",
+      "source": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a03\\gold_sub.bin",
+        "bytes": 131,
+        "sha256": "366d182ef9881970d1a6e8cc5e2ee854cc0a2c31fcab163a2153c3d69fade4c5"
+      },
+      "original_read_receipt": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\payment-settlement-branch-b-a01\\source-read-a03\\READ-RECEIPT.actual.json",
+        "bytes": 38319,
+        "sha256": "626e90b803c0be98b8786a51df7c7ae754f23628f805b6a2d83619446829987d"
+      }
+    }
+  },
+  "opcode_edges": [
+    {
+      "body": "parent",
+      "rva": 42957105,
+      "bytes_hex": "488bcd",
+      "assembly": "MOV RCX,RBP",
+      "meaning": "Pass actual Character to settlement"
+    },
+    {
+      "body": "parent",
+      "rva": 42957108,
+      "bytes_hex": "e8d7f3faff",
+      "assembly": "CALL 28A6D10",
+      "meaning": "Known actual settlement caller; return28F7939",
+      "relative_call_target": 42626320
+    },
+    {
+      "body": "settlement",
+      "rva": 42626326,
+      "bytes_hex": "488b81c0010000",
+      "assembly": "MOV RAX,[RCX+1C0]",
+      "meaning": "Load secondary context pointer"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626345,
+      "bytes_hex": "4c8b4028",
+      "assembly": "MOV R8,[RAX+28]",
+      "meaning": "Read c; no store"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626354,
+      "bytes_hex": "488b98c0020000",
+      "assembly": "MOV RBX,[RAX+2C0]",
+      "meaning": "Read a"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626361,
+      "bytes_hex": "482b98c8020000",
+      "assembly": "SUB RBX,[RAX+2C8]",
+      "meaning": "a-b"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626373,
+      "bytes_hex": "488b7030",
+      "assembly": "MOV RSI,[RAX+30]",
+      "meaning": "Read d; no store"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626382,
+      "bytes_hex": "498d3c30",
+      "assembly": "LEA RDI,[R8+RSI]",
+      "meaning": "c+d"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626386,
+      "bytes_hex": "482bdf",
+      "assembly": "SUB RBX,RDI",
+      "meaning": "NET=a-b-(c+d), wrap64"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626417,
+      "bytes_hex": "4d8bc7",
+      "assembly": "MOV R8,R15",
+      "meaning": "Original Character forwarded to wallet"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626420,
+      "bytes_hex": "488bd3",
+      "assembly": "MOV RDX,RBX",
+      "meaning": "Actual positive NET amount"
+    },
+    {
+      "body": "settlement",
+      "rva": 42626423,
+      "bytes_hex": "e8c480fbff",
+      "assembly": "CALL 285EE40",
+      "meaning": "Personal wallet ADD; return28A6D7C",
+      "relative_call_target": 42331712
+    },
+    {
+      "body": "settlement",
+      "rva": 42626560,
+      "bytes_hex": "e8cb80fbff",
+      "assembly": "CALL 285EED0",
+      "meaning": "First negative-share SUB; return28A6E05",
+      "relative_call_target": 42331856
+    },
+    {
+      "body": "settlement",
+      "rva": 42626749,
+      "bytes_hex": "e80e80fbff",
+      "assembly": "CALL 285EED0",
+      "meaning": "Second negative-share SUB; return28A6EC2",
+      "relative_call_target": 42331856
+    },
+    {
+      "body": "gold_add",
+      "rva": 42331732,
+      "bytes_hex": "488bda",
+      "assembly": "MOV RBX,RDX",
+      "meaning": "Preserve exact amount"
+    },
+    {
+      "body": "gold_add",
+      "rva": 42331735,
+      "bytes_hex": "488bf9",
+      "assembly": "MOV RDI,RCX",
+      "meaning": "Preserve actual wrapper"
+    },
+    {
+      "body": "gold_add",
+      "rva": 42331743,
+      "bytes_hex": "498be8",
+      "assembly": "MOV RBP,R8",
+      "meaning": "Preserve actual Character"
+    },
+    {
+      "body": "gold_add",
+      "rva": 42331751,
+      "bytes_hex": "48015f08",
+      "assembly": "ADD qword [RDI+8],RBX",
+      "meaning": "Actual wallet write; post-PC285EE6B"
+    },
+    {
+      "body": "gold_sub",
+      "rva": 42331895,
+      "bytes_hex": "48295f08",
+      "assembly": "SUB qword [RDI+8],RBX",
+      "meaning": "Actual wallet write; post-PC285EEFB"
+    }
+  ],
+  "a07_actual_compiled_source": {
+    "frozen_source_pin": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\maintenance-writer-cold-a01\\source-a08\\cold_observer.cpp",
+      "bytes": 23688,
+      "sha256": "24b9d584ee451ef822c6386484efcda2578072cb5569ce1740b910e3bbadd0ee"
+    },
+    "build_done": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\docs\\ck3-native-ai\\acceptance\\2026-10-16-maintenance-writer-watch\\BUILD-DONE.a07.actual.json",
+      "bytes": 2294,
+      "sha256": "0ba6af5a46e17e6c305a143a923ceebd16d3eb0af564ee891548ac50fb302d11"
+    },
+    "parser_line": "    auto v=[&](const char*k){return std::stoull(meta.at(k),nullptr,0);};Config x;x.fixture=std::wstring(argv[1])==L\"--enable-cold-fixture\";if(!x.fixture){if(meta.at(\"qualified_exe_sha256\")!=\"98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518\"||meta.at(\"game_version\")!=\"1.20.0.4\"||v(\"steam_build_id\")!=25734779||!v(\"controlled_window_id\")||!v(\"payment_epoch\")||!v(\"connection_generation\")||meta.at(\"source_observation_kind\")!=\"paused_current_raw_context\")return 2;}if(!x.fixture){x.window=v(\"controlled_window_id\");x.epoch=v(\"payment_epoch\");x.generation=v(\"connection_generation\");x.revision=v(\"native_revision\");x.admission_date=std::stoll(meta.at(\"date_raw\"));x.episode=meta.at(\"episode_id\");x.packet_sha=meta.at(\"source_cash_sha256\");if(x.packet_sha.size()!=64||x.packet_sha.find_first_not_of(\"0123456789abcdef\")!=std::string::npos||x.episode.empty()||x.episode.find_first_not_of(\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.\")!=std::string::npos)return 2;}x.pid=DWORD(v(\"pid\"));x.initial_tid=DWORD(v(\"tid\"));if(x.fixture)x.cold_stale_tid_guard=v(\"cold_stale_tid_guard\")!=0;x.created=v(\"created\");x.character=v(\"character\");x.secondary=v(\"context\");x.full_id=std::uint32_t(v(\"full_id\"));x.base=v(\"module_base\");x.module_size=v(\"module_size\");x.timeout=DWORD(std::stoul(argv[5]));x.raw=argv[7];x.ready=argv[9];x.expected_hits=std::stoull(argv[11]);const std::wstring machine=argv[13];if(machine.empty()||machine.find_first_not_of(L\"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.\")!=std::wstring::npos)return 2;x.machine.assign(machine.begin(),machine.end());return Probe(x);",
+    "terminal_line": "  output<<\"{\\\"kind\\\":\\\"terminal\\\",\\\"reason\\\":\\\"\"<<reason<<\"\\\",\\\"restored\\\":\"<<(cleared?\"true\":\"false\")<<\",\\\"detached\\\":\"<<(detached?\"true\":\"false\")<<\",\\\"pending_event\\\":\"<<(pending?\"true\":\"false\")<<\",\\\"cleanup_complete\\\":\"<<(clean?\"true\":\"false\")<<\",\\\"hit_count\\\":\"<<hits<<\",\\\"data_event_count\\\":\"<<data_events<<\",\\\"writer_thread_count\\\":\"<<writer_tids.size()<<\",\\\"created_thread_events\\\":\"<<created_threads<<\",\\\"restore_readback_rows\\\":\"<<restored_threads<<\",\\\"process_exited\\\":\"<<(exited?\"true\":\"false\")<<\",\\\"observation_thread_admission_complete\\\":\"<<(observation_admission_complete?\"true\":\"false\")<<\",\\\"full_window_all_writes_covered\\\":false,\\\"CK3_observed\\\":\"<<(!x.fixture&&attached?\"true\":\"false\")<<\",\\\"known_producer\\\":false,\\\"military_attribution\\\":\\\"unclosed\\\"}\\n\";output.flush();CloseHandle(process);SetConsoleCtrlHandler(OnConsoleControl,FALSE);",
+    "observer_historical_pin": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/maintenance-writer-cold-a01/build-a07/maintenance_writer_cold_observer.exe",
+      "bytes": 102912,
+      "sha256": "67e5f6c0bb43ff0c00116be7356da25d792d1eb275a85fe719bf0b7bff32cce9"
+    },
+    "binary_read_or_executed_this_task": false
+  },
+  "focused_guard_check": {
+    "status": "PASS_ACTUAL_PRODUCTION_NULL_EP_REJECTION",
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\build_card.py",
+      "bytes": 5684,
+      "sha256": "f646e20883ecfe844220df99dedcb2204fdae6b7075d86839bd4d8a823c1f11f"
+    },
+    "synthetic_identity": true,
+    "actual_future_identity": false,
+    "exception": "Independent Root identity missing: episode",
+    "observer_or_SDK_called": false,
+    "output_created": false,
+    "old_matrix_runs": 0
+  },
+  "existing_probe": {
+    "offsets": [
+      704,
+      712,
+      40,
+      48
+    ],
+    "c_d_slots": [
+      2,
+      3
+    ],
+    "native_timeout_ms": 30000,
+    "total_Root_window_seconds": 45,
+    "max_all_slot_hits": 128,
+    "actual_writer_game_date": null,
+    "full_window_all_writes_covered": false
+  },
+  "actual_c_d_writer_pc": null,
+  "same_NET_invocation_qualified": false,
+  "maintenance_paid_qualified": false,
+  "payer_cadence_qualified": false,
+  "reuse_source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_cases\\r08_writer_common_adapter.py",
+      "bytes": 9364,
+      "sha256": "a2c000a9bdf29e827cf068fd63d120aa5e716752653f09e172a949cc346187ed"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\prepare_writer_admission.py",
+      "bytes": 13811,
+      "sha256": "3f3478da1562da09299ae10edf93674acba95a3540aa6c10257ee8842d410e00"
+    },
+    {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\research\\maintenance_writer_cold_12004\\consume_writer_actual.py",
+      "bytes": 22992,
+      "sha256": "7ce91eab8da071f26538993944a6ce868f935e17c3cb3c9735eb51a7e1687829"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r206-cd-writer-root-driver-a01\\writer_root_driver.py",
+      "bytes": 29902,
+      "sha256": "a1d2cd48085b66c132f07f0fc96ae8b30909505bdf326fcd7019b266f9460b74"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r212-r08-source-and-rebind-a01\\bound-a02\\root_r212_writer.py",
+      "bytes": 25323,
+      "sha256": "aafd1623621288289319f9898101afafb62c88b68f8e9d382f79c3682d761492"
+    }
+  ],
+  "new_EXE_bytes_read": 0,
+  "SDK_calls": 0,
+  "debugger_starts": 0,
+  "builds": 0,
+  "main_changes": 0,
+  "storage": {
+    "parent_subgrant_bytes": 262144,
+    "shared_pool_new_bytes": 0,
+    "quota_review_at_utc": "2026-10-18T21:30:00Z",
+    "category": "record",
+    "review_under_policy_days": 180
+  }
+}

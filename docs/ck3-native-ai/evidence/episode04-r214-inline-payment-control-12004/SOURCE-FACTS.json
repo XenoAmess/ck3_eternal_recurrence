@@ -1,0 +1,423 @@
+{
+  "schema": "xar.e04.r214.inline-payment-source-proof.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+  "native_build_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "source_only": true,
+  "SDK_calls": 0,
+  "DR_calls": 0,
+  "game_or_desktop_calls": 0,
+  "builds": 0,
+  "tests": 0,
+  "native_qualification": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\ROOT-A36-PRODUCTION-BYTES.json",
+    "bytes": 18411,
+    "sha256": "62375edbf38e8449ecb264dabf4dc0f3d3d42deaab87b4156fdf0f4cc37088f9",
+    "all_feature_flags": {
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON",
+      "XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004": "ON",
+      "XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004": "ON",
+      "XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004": "ON",
+      "XAR_NATIVE71_ARMY_NATURAL_PHASE_12004": "ON"
+    },
+    "actual_live_install_readback": false
+  },
+  "fragments": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "bdce8c08aa7a178f0e17226495bf0219e8ea46a9",
+      "lines": [
+        2015,
+        2031
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "    if getattr(driver, \"allow_private_war_cash_query\", False) is True:\n        @server.tool()\n        def ck3_query_war_cash_current_resources_private_v1(\n            expected_revision: int,\n            payment_sampling: Literal[\"enable\", \"disable\", \"query\"] | None = None,\n            payment_window_contract: Literal[\"same_owned_process_no_load_v1\"] | None = None,\n        ) -> dict[str, object]:\n            \"\"\"Read cash and raw payment evidence; optional explicit observer gate control.\n\n            Enable requires a paused same-process window without save/load, and\n            natural-phase sampling already enabled. No gameplay payment is sent.\n            \"\"\"\n            if payment_sampling is None and payment_window_contract is None:\n                return driver.query_war_cash_current_resources_private_v1(expected_revision=expected_revision)\n            return driver.query_war_cash_current_resources_private_v1(\n                expected_revision=expected_revision, payment_sampling=payment_sampling,\n                payment_window_contract=payment_window_contract)\n",
+      "text_bytes": 1081,
+      "text_sha256": "0bc9882e4012eb88dbc50e565533d17e1a081b85adfd8b5e0885d5d77b07a2d4"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "be5a0aed4f41bcbe544cc8457c35fa49a8a9b321",
+      "lines": [
+        4154,
+        4165
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "    def query_war_cash_current_resources_private_v1(\n        self, *, expected_revision: int, payment_sampling: str | None = None,\n        payment_window_contract: str | None = None,\n    ) -> dict[str, object]:\n        \"\"\"Read actual treasury and actor-global military expenses once.\"\"\"\n        from .war_cash_private_transport_v1 import query_war_cash_current_resources_private_v1\n\n        return query_war_cash_current_resources_private_v1(\n            self, expected_revision=expected_revision,\n            timeout_seconds=self.command_timeout_seconds,\n            payment_sampling=payment_sampling, payment_window_contract=payment_window_contract,\n        )\n",
+      "text_bytes": 662,
+      "text_sha256": "376df7c0333e19fa653d54ccd8e91b20c2f928a1945e9aef229d9a08555f7b5a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_cash_private_transport_v1.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "39d8ab0a1ad25884d50e736f7852eb8864817c50",
+      "lines": [
+        160,
+        181
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "def query_war_cash_current_resources_private_v1(driver: object, *, expected_revision: int,\n                                               timeout_seconds: float = 30.0,\n                                               payment_sampling: str | None = None,\n                                               payment_window_contract: str | None = None) -> dict[str, object]:\n    from .war_payment_observations_v1 import normalize_payment_extras, payment_request_fields\n    request_fields = payment_request_fields(payment_sampling, payment_window_contract)\n    if request_fields is not None:\n        source = private_g2_query_snapshot_v1(driver, include_native_command_history=False)\n        if private_native_build_identity(source) != CK3_12004:\n            raise BridgeUnavailableError(\"payment observer control requires exact CK3 1.20.0.4\")\n    snapshot, result = read_private_g2_native_query_v1(\n        driver, permission=\"allow_private_war_cash_query\", step=CURRENT_STEP,\n        expected_revision=expected_revision, timeout_seconds=timeout_seconds,\n        include_native_command_history=False, request_fields=request_fields)\n    try:\n        value = normalize_war_cash_current_resources_v1(result.get(\"war_cash_current_resources\"), snapshot=snapshot)\n        extras = normalize_payment_extras(result, snapshot=snapshot, payment_sampling=payment_sampling)\n    except ValueError as error:\n        raise BridgeUnavailableError(str(error)) from error\n    return {**value, **private_g2_query_metadata_v1(snapshot), **extras}\n\n\n",
+      "text_bytes": 1520,
+      "text_sha256": "de5c921fdf4fc80c23eb6770688d631c792828d620e82d17c84e63f6f561d0ea"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "c514ba7de2ac03d36b4894a6dedb918320697f05",
+      "lines": [
+        236,
+        296
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "def expected_debits(j):\n    \"\"\"Rejoin raw entry/return evidence; native qualification flags are not proof.\"\"\"\n    current,sampling,ns = j['current_session'],j['sampling'],j['natural_journal_status']\n    if not (j['installed'] and not j['install_failure_flags'] and j['machine_id']\n            and (current['loaded_game_epoch'] is not None or j['controlled_window_admitted'])\n            and same_session(current,current) and j['read_complete'] and sampling['available']\n            and sampling['capture_enabled'] and not sampling['busy'] and not sampling['active_captures']\n            and not j['overwritten'] and not j['publication_failures'] and ns['read_complete']\n            and not ns['overwritten_records'] and not ns['failed_appends']):\n        return []\n    result=[]\n    for w in j['records']:\n        personal,land = w['kind'] == 3,w['kind'] == 4\n        a,b = w['before'],w['after']\n        if not ((personal or land) and w['amount_raw'] > 0 and complete(w,current) and same_character(a,b)\n                and a['character_id'] == current['player_character_full_id']\n                and a['wrapper'] and a['wrapper'] == b['wrapper'] == w['receiver']\n                and w['second_pointer'] == a['character']\n                and a['wrapper_balance_bits'] is not None and b['wrapper_balance_bits'] is not None\n                and w['caller_return_rva'] == (0x28b99b2 if personal else 0x28b9a6d)):\n            continue\n        if personal and (a['character_extension'] > U64-0xf8 or a['wrapper'] != a['character_extension']+0xf8):\n            continue\n        if land and not (a['land_id'] is not None and a['land_id'] != 0xffffffff and a['land_id'] == b['land_id']\n                         and a['land_magic'] == b['land_magic'] == 0x4c616e64):\n            continue\n        gateways=[r for r in j['records'] if r['kind']==1 and same_event(r['entry_event'],w['parent_gateway_entry'])]\n        transitions=[r for r in j['records'] if r['kind']==0 and same_event(r['entry_event'],w['parent_transition_entry'])]\n        if len(gateways) != 1 or len(transitions) != 1:\n            continue\n        g,t = gateways[0],transitions[0]\n        c,d = t['before'],t['after']\n        if not (complete(g,current) and complete(t,current) and g['caller_return_rva']==0x24e8f40\n                and t['caller_return_rva']==0x2a9a8c5 and same_character(g['before'],g['after'])\n                and all(g['before'][k]==a[k] for k in ('character','character_id','character_extension'))\n                and g['receiver']==a['character'] and g['resource_kind_raw']==(0 if personal else 3)\n                and g['component_raw']==3 and g['amount_raw']==w['amount_raw']\n                and all(w[dest]==g[src] for dest,src in (\n                    ('parent_gateway_character','receiver'),('parent_gateway_caller','caller_return_rva'),\n                    ('parent_gateway_resource','resource_kind_raw'),('parent_gateway_component','component_raw'),\n                    ('parent_gateway_amount','amount_raw')))\n                and w['parent_transition_army']==g['parent_transition_army']==t['receiver']\n                and w['parent_transition_caller']==g['parent_transition_caller']==t['caller_return_rva']\n                and same_event(g['parent_transition_entry'],t['entry_event'])\n                and before(t['entry_event'],g['entry_event']) and before(g['entry_event'],w['entry_event'])\n                and before(w['returned_event'],g['returned_event']) and before(g['returned_event'],t['returned_event'])\n                and c['army_id'] is not None and c['army_id'] != 0xffffffff and c['army_id']==d['army_id']\n                and c['army_magic'] is not None and c['army_magic']==d['army_magic']\n                and c['requested_unit_id'] is not None and c['requested_unit_id']==d['requested_unit_id']\n                and c['province_id'] is not None and c['province_id']==d['province_id']\n                and c['province_magic']==d['province_magic']==0x50726f76 and c['army_1d4']==0):\n            continue\n        if not any(all(natural_matches(r,n,current) for r in (w,g,t)) for n in j['natural_parent_returns']):\n            continue\n        if (a['wrapper_balance_bits']-w['amount_raw']) & U64 != b['wrapper_balance_bits']:\n            continue\n        result.append(dict(writer_sequence=w['journal_sequence'],transition_sequence=t['journal_sequence'],\n            gateway_sequence=g['journal_sequence'],account_kind=0 if personal else 3,payer_character_id=a['character_id'],\n            land_id=a['land_id'] if land else None,requested_amount_raw=w['amount_raw'],\n            entry_balance_bits=a['wrapper_balance_bits'],returned_balance_bits=b['wrapper_balance_bits'],\n            returned_balance_matches_requested_sub=True))\n",
+      "text_bytes": 4728,
+      "text_sha256": "5f1eadb69e7a4fb745981251f975ed8d34427d560b2281c6b3cd2f9a2ef45a2f"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "c514ba7de2ac03d36b4894a6dedb918320697f05",
+      "lines": [
+        300,
+        359
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "def normalize_journal(value, *, snapshot: Mapping[str,object], machine_id: str):\n    raw4_key = \"raw_resource4_getter_v1\"\n    has_raw4 = isinstance(value, dict) and raw4_key in value\n    fields(value, u32='schema_version steam_build_id install_failure_flags',\n           boolean='installed controlled_window_admitted read_complete',\n           unsigned='latest_sequence oldest_sequence overwritten publication_failures',\n           strings='machine_id executable_sha256 game_version session_basis balance_boundary maintenance_attribution',\n           nested='current_session sampling natural_journal_status records natural_parent_returns qualified_boarding_debits'\n                  + (' '+raw4_key if has_raw4 else ''))\n    need(value['schema_version']==1 and value['steam_build_id']==25734779\n         and require_exact_native_build(value['game_version'],value['executable_sha256']) == CK3_12004\n         and private_native_build_identity(snapshot)==CK3_12004,'journal lacks the exact .4 source')\n    need(value['machine_id'] in ('',machine_id),'journal belongs to another machine')\n    need(value['balance_boundary']=='whole_original_callback_entry_return' and value['maintenance_attribution']=='unclosed',\n         'callback balances were promoted into maintenance attribution')\n    session(value['current_session']);s=value['sampling'];ns=value['natural_journal_status']\n    fields(s,boolean='available capture_enabled busy clear_completed',unsigned='epoch active_captures retained_records qualified_records')\n    need(s['busy']==bool(s['active_captures']) and s['qualified_records']<=s['retained_records']\n         and s['retained_records']<=512,'sampling counters are inconsistent')\n    need(not s['clear_completed'] or (not s['capture_enabled'] and not s['busy'] and not s['retained_records']),\n         'cleared sampling still retains evidence')\n    fields(ns,boolean='read_complete',unsigned='retained_records overwritten_records failed_appends')\n    need(isinstance(value['records'],list) and len(value['records'])<=512,'journal exceeds bounded record capacity')\n    for r in value['records']:record(r)\n    seq=[r['journal_sequence'] for r in value['records']]\n    need(all(n>0 for n in seq) and seq==sorted(set(seq)),'journal retention ordinals are invalid')\n    need(not seq or (0<value['oldest_sequence']<=seq[0]<=seq[-1]<=value['latest_sequence']),\n         'journal sequence bounds are inconsistent')\n    parents=value['natural_parent_returns']\n    need(isinstance(parents,list) and len(parents)<=64,'natural journal exceeds bounded record capacity')\n    for n in parents:\n        fields(n,boolean='original_called original_returned',unsigned='raw_return_bits',\n               optional_u64='returned_date_raw',optional_u32='returned_absolute_day_raw',nested='metadata returned_event')\n        natural(n['metadata']);event(n['returned_event'])\n    claims=value['qualified_boarding_debits']\n    need(isinstance(claims,list) and len(claims)<=512,'qualified debit vector is malformed')\n    for q in claims:\n        fields(q,unsigned='writer_sequence transition_sequence gateway_sequence entry_balance_bits returned_balance_bits',\n               u32='payer_character_id',i32='account_kind',signed='requested_amount_raw',optional_u32='land_id',\n               boolean='returned_balance_matches_requested_sub')\n    current=value['current_session']\n    basis=('source_proved_epoch' if current['loaded_game_epoch'] is not None else\n           'same_owned_process_no_load_window' if value['controlled_window_admitted'] else 'unqualified')\n    need(value['session_basis']==basis,'session basis was relabeled')\n    if value['controlled_window_admitted'] or current['loaded_game_epoch'] is not None or claims:\n        actor=snapshot.get('played_character');need(isinstance(actor,Mapping),'current actor is absent')\n        diagnostics=snapshot.get('diagnostics') or {}\n        pid=diagnostics.get('bridge_pid');generation=diagnostics.get('connection_generation')\n        need(type(pid) is int and type(generation) is int and current['pid']==pid and current['connection_generation']==generation\n             and current['player_character_full_id']==actor.get('character_id')\n             and current['snapshot_revision']==snapshot.get('native_revision')\n             and current['native_date_raw'] is not None and type(snapshot.get('date_raw')) is int\n             and (current['native_date_raw'] & 0xffffffff)==(snapshot['date_raw'] & 0xffffffff)\n             and value['machine_id']==machine_id and same_session(current,current),\n             'admitted journal does not match this paused process/player/frame')\n    need(claims==expected_debits(value),'qualified debit vector disagrees with complete raw parent/amount/return evidence')\n    if has_raw4:\n        from .war_payment_raw4_getter_v1 import validate_child\n        validate_child(value[raw4_key],value)\n    return deepcopy(value)\n",
+      "text_bytes": 4892,
+      "text_sha256": "e5686f6ed5bb48ae7be81e38a0ce9ceb73f008834ab5e660fda6c93c0fef3714"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_payment_observations_v1.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "c514ba7de2ac03d36b4894a6dedb918320697f05",
+      "lines": [
+        362,
+        400
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "def payment_request_fields(payment_sampling, payment_window_contract):\n    if payment_sampling is None:\n        need(payment_window_contract is None,'window contract requires explicit enable')\n        return None\n    need(type(payment_sampling) is str and payment_sampling in MODES,'sampling mode must be enable, disable or query')\n    need(payment_window_contract == (WINDOW_CONTRACT if payment_sampling=='enable' else None),\n         'enable alone requires the exact no-load window contract')\n    from tools.ck3_live_run_id import current_machine_id\n    result={'war_payment_sampling':payment_sampling,'war_payment_machine_id':current_machine_id()}\n    if payment_sampling=='enable':result['war_payment_window_contract']=WINDOW_CONTRACT\n    return result\n\n\ndef normalize_payment_extras(result, *, snapshot, payment_sampling):\n    if JOURNAL_KEY not in result and CONTROL_KEY not in result:\n        need(payment_sampling is None,'explicit observer control returned no evidence')\n        return {}\n    from tools.ck3_live_run_id import current_machine_id\n    need(JOURNAL_KEY in result,'observer control returned no raw journal')\n    output={JOURNAL_KEY:normalize_journal(result[JOURNAL_KEY],snapshot=snapshot,machine_id=current_machine_id())}\n    if payment_sampling is None:\n        need(CONTROL_KEY not in result,'unsolicited observer control result')\n    else:\n        c=result.get(CONTROL_KEY)\n        fields(c,strings='requested reason',boolean='accepted')\n        need(c['requested']==payment_sampling and bool(c['reason']),'control result belongs to another request')\n        if c['accepted'] and payment_sampling=='enable':\n            j=output[JOURNAL_KEY];s=j['sampling']\n            need(c['reason'] in ('enabled_controlled_no_load_window','already_enabled')\n                 and j['controlled_window_admitted'] and j['installed'] and not j['install_failure_flags']\n                 and s['available'] and s['capture_enabled'] and s['epoch']>0,\n                 'accepted enable lacks its actual admitted window')\n        if c['accepted'] and payment_sampling=='disable':\n            j=output[JOURNAL_KEY];s=j['sampling']\n            need(c['reason']=='disabled' and not j['controlled_window_admitted'] and s['available']\n                 and not s['capture_enabled'] and not s['busy'] and s['clear_completed'],\n                 'accepted disable did not finish clearing')\n        output[CONTROL_KEY]=deepcopy(c)\n    return output\n",
+      "text_bytes": 2443,
+      "text_sha256": "7c987429a84aaff179996e35ded9a810181587f6ac65464d0d571a7dd315d943"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observer_research_sampling_control.py",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "87caaa74ffea40094c35718d8ad0a3e52364ad6b",
+      "lines": [
+        93,
+        105
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "\ndef normalize_regular_core_subject_ids(value: object, *, step: str,\n                                       observer_family: str) -> list[int] | None:\n    if value is None:\n        return None\n    require(step == ENABLE_STEP and observer_family == \"regular_core\",\n            \"regular_core_full_carmy_ids requires enabling only regular_core\")\n    require(type(value) is list and 1 <= len(value) <= 64,\n            \"regular_core_full_carmy_ids must contain 1..64 full CArmy IDs\")\n    require(all(type(item) is int and -(2**31) <= item <= 2**31 - 1 and item != -1\n                for item in value), \"regular_core_full_carmy_ids must be signed32 IDs excluding -1\")\n    require(len(set(value)) == len(value), \"regular_core_full_carmy_ids must be unique\")\n    return list(value)\n",
+      "text_bytes": 775,
+      "text_sha256": "a5f8d1f09843c46d849c5db06a44d614b2bc7d35edd2ae2692ac56ee3d585995"
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "e72786a2ff8bb67a2507be2d99ff02d2253b98bc",
+      "lines": [
+        9500,
+        9526
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "// Explicit research retention controls. Installation never enables sampling.\nxar::ck3_12004::ArmyResearchFamilyStates12004 ArmyObserverResearchControl12004(\n    std::string_view family, std::string_view mode) {\n  using namespace xar::ck3_12004;\n  ArmyResearchFamilyStates12004 out{};\n  const auto selected=[&](std::size_t index) {\n    return family==\"all\" || family==kArmyResearchFamilies12004[index];\n  };\n  const auto apply=[&](std::size_t index,bool installed,auto read,auto set) {\n    out[index].installed=installed;\n    if(installed && selected(index) && mode!=\"query\") (void)set(mode==\"enable\");\n    // Always read back separately; the setter return is not a completion claim.\n    out[index].sampling=read();\n  };\n#if defined(XAR_NATIVE71_ARMY_NATURAL_PHASE_12004)\n  apply(0,g_army_natural_phase_observer_12004.installed,\n    &ReadArmyNaturalPhaseResearchSampling12004,&SetArmyNaturalPhaseResearchSampling12004);\n  apply(2,g_actual_army_daily_assault_preparation_12004.installed.load(),\n    &ReadActualArmyDailyAssaultPreparationResearchSampling12004,&SetActualArmyDailyAssaultPreparationResearchSampling12004);\n  apply(4,g_actual_assault_consumer_12004.installed.load(),\n    &ReadActualAssaultConsumerResearchSampling12004,&SetActualAssaultConsumerResearchSampling12004);\n  apply(7,g_army_actual_monthfirst_cleanup_12004.installed.load(),\n    &ReadArmyActualMonthfirstCleanupResearchSampling12004,&SetArmyActualMonthfirstCleanupResearchSampling12004);\n#endif\n#if defined(XAR_ENABLE_ARMY_REGULAR_CORE_PASSIVE_12004)\n  apply(1,g_army_regular_core_passive_12004.installed.load(),\n    &ReadArmyRegularCoreResearchSampling12004,&SetArmyRegularCoreResearchSampling12004);\n",
+      "text_bytes": 1674,
+      "text_sha256": "1ea2469ae65de83952b66292150c75a2092eb71db87c3ab0b85d23d1f3b15a40",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "e72786a2ff8bb67a2507be2d99ff02d2253b98bc",
+      "lines": [
+        14333,
+        14347
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "  std::string payment_sampling,payment_contract,payment_machine;\n  const bool payment_control_requested=payload.find(\"\\\"war_payment_sampling\\\"\")!=std::string_view::npos;\n  if(payment_control_requested &&\n     (!actual4 || !xar::bridge::JsonStringField(payload,\"war_payment_sampling\",payment_sampling,16) ||\n      (payment_sampling!=\"enable\"&&payment_sampling!=\"disable\"&&payment_sampling!=\"query\") ||\n      !xar::bridge::JsonStringField(payload,\"war_payment_machine_id\",payment_machine,128))) {\n    return CommandResultFrame(request_id,step,false,\"war_payment_control_invalid\");\n  }\n  if(payment_sampling==\"enable\" &&\n     !xar::bridge::JsonStringField(payload,\"war_payment_window_contract\",payment_contract,64))\n    return CommandResultFrame(request_id,step,false,\"war_payment_explicit_window_contract_required\");\n#if !defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)\n  if(payment_control_requested)\n    return CommandResultFrame(request_id,step,false,\"war_payment_observer_not_compiled\");\n#endif\n",
+      "text_bytes": 995,
+      "text_sha256": "666b24b03a1005767a814b8618e19bbf05b44660ee494fc89e4ccc4e10498df3",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "e72786a2ff8bb67a2507be2d99ff02d2253b98bc",
+      "lines": [
+        14404,
+        14420
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)\n  if(actual4) {\n    const auto current=PaymentFrame12004(snapshot,state.connection_generation,state.state_revision);\n    xar::ck3_12004::ObserveWarPaymentWindowFrame12004(g_war_payment_window_12004,current);\n    const auto control=xar::ck3_12004::ControlWarPaymentWindow12004(g_war_payment_window_12004,\n      payment_control_requested?payment_sampling:\"query\",payment_contract,payment_machine,current);\n    const auto envelope=xar::ck3_12004::ReadWarPaymentWindowEnvelope12004(\n      g_war_payment_window_12004,g_war_payment_detours_12004);\n    if(payment_control_requested||envelope.controlled_window_admitted) {\n      const auto journal=g_war_payment_journal_12004.Copy();\n      const auto natural=xar::ck3_12004::ReadArmyNaturalPhaseJournal12004();\n      const auto natural_status=xar::ck3_12004::ReadArmyNaturalPhaseJournalStatus12004();\n      result=xar::ck3_12004::AppendWarPaymentJournal12004(std::move(result),journal,envelope,natural,natural_status);\n      if(payment_control_requested) {\n        result.pop_back();result+=\",\\\"war_payment_control_v1\\\":\";\n        result+=xar::ck3_12004::SerializeWarPaymentWindowControl12004(control);result+='}';\n      }\n",
+      "text_bytes": 1215,
+      "text_sha256": "dca19385ab931bd936376b791a1d43adabfeaebe73ad09cd34debbf020a9445d",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "e72786a2ff8bb67a2507be2d99ff02d2253b98bc",
+      "lines": [
+        30113,
+        30132
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "#if defined(XAR_ENABLE_WAR_PAYMENT_PASSIVE_12004)\n    xar::ck3_12004::ConfigureWarPaymentWindow12004(g_war_payment_window_12004,\n        base,&ReadMarriageCurrentProcessMemory,nullptr,g_war_payment_journal_12004);\n    xar::ck3_12004::WarPaymentInstallEnvironment12004 payment_environment{};\n    payment_environment.primary_thread_suspended_proven=true;\n    payment_environment.module_base=base;payment_environment.executable_sha256=sha;\n    auto &payment_bindings=payment_environment.bindings;\n    payment_bindings.read=&ReadMarriageCurrentProcessMemory;\n    payment_bindings.next_event=&xar::ck3_12004::NextArmyNaturalPhaseEvent12004;\n    payment_bindings.session=&xar::ck3_12004::ReadWarPaymentWindowSession12004;\n    payment_bindings.session_context=&g_war_payment_window_12004;\n    payment_bindings.natural_metadata=+[](void *) noexcept {\n      return xar::ck3_12004::CopyActiveArmyNaturalPhaseMetadata12004();\n    };\n    payment_bindings.journal=&g_war_payment_journal_12004;\n    payment_bindings.retain_actor=&xar::ck3_12004::RetainWarPaymentWindowActor12004;\n    payment_bindings.retain_actor_context=&g_war_payment_window_12004;\n    if(!xar::ck3_12004::InstallWarPaymentPassive12004(\n        g_war_payment_detours_12004,payment_environment))return FALSE;\n#endif\n",
+      "text_bytes": 1270,
+      "text_sha256": "bdd5fd00ed5cd8ba70aede93789ec555cd2b7fb65279a99dad93403684544ec8",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "418e62019dc6001df0e20625fb76a3a7f776ebf6",
+      "lines": [
+        23,
+        82
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "void StopLocked(WarPaymentWindow12004 &w,std::string_view reason) {\n  w.admitted=false;w.session.same_owned_process_no_load_window=false;\n  w.session.controlled_window_id=0;w.reason=reason;\n  if(w.journal)(void)w.journal->SetEnabled(false);\n}\nbool CheckLocked(WarPaymentWindow12004 &w) {\n  if(!w.admitted)return false;\n  if(!ReadArmyNaturalPhaseResearchSampling12004().enabled) {StopLocked(w,\"natural_phase_sampling_disabled\");return false;}\n  std::uintptr_t state=0;std::uint64_t date=0;std::uint32_t day=0;\n  if(!State(w,state,date,day)) {StopLocked(w,\"game_state_read_failed\");return false;}\n  if(state!=w.session.game_state_identity_witness) {StopLocked(w,\"game_state_identity_changed\");return false;}\n  if(w.session.native_date_raw&&static_cast<std::uint32_t>(date)<static_cast<std::uint32_t>(*w.session.native_date_raw)) {StopLocked(w,\"native_date_rollback\");return false;}\n  if(w.session.absolute_day_raw&&day<*w.session.absolute_day_raw) {StopLocked(w,\"absolute_day_rollback\");return false;}\n  w.session.native_date_raw=date;w.session.absolute_day_raw=day;return true;\n}\n} // namespace\nvoid ConfigureWarPaymentWindow12004(WarPaymentWindow12004 &w,std::uintptr_t base,\n  ArmyNaturalPhaseRead12004 read,void *context,WarPaymentJournal12004 &journal) noexcept {\n  try {const std::lock_guard lock(w.mutex);w.module_base=base;w.read=read;w.read_context=context;w.journal=&journal;StopLocked(w,\"not_enabled\");}catch(...){}\n}\nWarPaymentWindowControl12004 ControlWarPaymentWindow12004(WarPaymentWindow12004 &w,std::string_view mode,\n  std::string_view contract,std::string_view machine,const WarPaymentCurrentFrame12004 &f) noexcept {\n  try {\n    const std::lock_guard lock(w.mutex);WarPaymentWindowControl12004 out{};out.requested=mode;\n    if(mode!=\"query\"&&mode!=\"enable\"&&mode!=\"disable\") {out.reason=\"invalid_control\";return out;}\n    if(!w.journal) {out.reason=\"observer_not_configured\";return out;}\n    if(MachineId(machine)) {\n      if(!w.machine_id.empty()&&w.machine_id!=machine) {StopLocked(w,\"machine_binding_changed\");out.reason=w.reason;return out;}\n      w.machine_id=machine;\n    }\n    if(mode==\"disable\") {\n      StopLocked(w,\"explicitly_disabled\");const auto state=w.journal->SetEnabled(false);\n      out.accepted=state.available&&!state.enabled&&!state.busy&&state.clear_completed;\n      out.reason=out.accepted?\"disabled\":\"clear_pending\";return out;\n    }\n    if(mode==\"query\") {if(w.machine_id.empty()&&MachineId(machine))w.machine_id=machine;out.accepted=true;if(w.admitted)(void)CheckLocked(w);out.reason=w.reason;return out;}\n    if(contract!=\"same_owned_process_no_load_v1\"||!MachineId(machine)) {out.reason=\"explicit_no_load_window_and_machine_id_required\";return out;}\n    if(!f.connection_generation||!f.snapshot_revision||!f.player_character_full_id||f.player_character_full_id==0xFFFFFFFFU||\n       !f.paused||!f.map_ready||!f.alive) {out.reason=\"current_paused_player_frame_required\";return out;}\n    const auto natural=ReadArmyNaturalPhaseResearchSampling12004();\n    if(!natural.available||!natural.enabled||natural.busy) {out.reason=\"natural_phase_sampling_must_be_enabled\";return out;}\n    std::uintptr_t state=0;std::uint64_t date=0;std::uint32_t day=0;const auto created=CreateTime();\n    if(!created||!State(w,state,date,day)||static_cast<std::uint32_t>(date)!=static_cast<std::uint32_t>(f.native_date_raw)) {out.reason=\"actual_process_and_game_state_binding_unavailable\";return out;}\n    if(w.admitted) {\n      if(w.machine_id!=machine||w.session.connection_generation!=f.connection_generation||\n         w.session.player_character_full_id!=f.player_character_full_id||w.session.process_create_time_100ns!=created||\n         w.session.game_state_identity_witness!=state) {StopLocked(w,\"existing_window_binding_changed\");out.reason=w.reason;return out;}\n      if(!CheckLocked(w)) {out.reason=w.reason;return out;}\n      w.session.snapshot_revision=f.snapshot_revision;out.accepted=true;out.reason=\"already_enabled\";return out;\n    }\n    const auto sampling=w.journal->SetEnabled(true);\n    if(!sampling.available||!sampling.enabled||!sampling.epoch) {out.reason=\"sampling_enable_incomplete\";return out;}\n    w.machine_id=machine;w.session={};w.session.pid=GetCurrentProcessId();w.session.process_create_time_100ns=created;\n    w.session.connection_generation=f.connection_generation;w.session.player_character_full_id=f.player_character_full_id;\n    w.session.controlled_window_id=sampling.epoch;w.session.same_owned_process_no_load_window=true;\n    w.session.game_state_identity_witness=state;w.session.snapshot_revision=f.snapshot_revision;\n    w.session.native_date_raw=date;w.session.absolute_day_raw=day;\n    // loaded_game_epoch deliberately remains null. The window is an explicit\n    // operator contract; a pointer, process clock or journal epoch is not a load epoch.\n    w.admitted=true;w.reason=\"enabled_controlled_no_load_window\";out.accepted=true;out.reason=w.reason;return out;\n",
+      "text_bytes": 4930,
+      "text_sha256": "3daf26d9a49aff0cd9c6c84379db76028f730c1607e2f0906b7c11268b854797",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "418e62019dc6001df0e20625fb76a3a7f776ebf6",
+      "lines": [
+        85,
+        106
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "void ObserveWarPaymentWindowFrame12004(WarPaymentWindow12004 &w,const WarPaymentCurrentFrame12004 &f) noexcept {\n  try {\n    const std::lock_guard lock(w.mutex);if(!w.admitted)return;\n    if(!f.map_ready||!f.alive||!f.player_character_full_id||f.player_character_full_id==0xFFFFFFFFU||\n       f.connection_generation!=w.session.connection_generation||f.player_character_full_id!=w.session.player_character_full_id||\n       (w.session.native_date_raw&&static_cast<std::uint32_t>(f.native_date_raw)<static_cast<std::uint32_t>(*w.session.native_date_raw))) {StopLocked(w,\"current_frame_or_owner_or_connection_changed\");return;}\n    if(CheckLocked(w))w.session.snapshot_revision=f.snapshot_revision;\n  }catch(...) {InvalidateWarPaymentWindow12004(w,\"frame_observation_exception\");}\n}\nbool RefreshWarPaymentIdentityAfterSnapshotUnavailable12004(WarPaymentWindow12004 &w,\n  WarPaymentIdentityFrameReader12004 read_frame,void *context) noexcept {\n  // This existing check independently validates natural sampling, actual\n  // GameState identity and non-rollback clocks. Inactive windows stay inactive.\n  if(!ReadWarPaymentWindowSession12004(&w).same_owned_process_no_load_window)return false;\n  WarPaymentCurrentFrame12004 identity{};\n  if(!read_frame||!read_frame(context,identity)) {\n    InvalidateWarPaymentWindow12004(w,\"identity_core_read_failed\");return false;\n  }\n  // Keep owner/map/alive/connection/date checks in the same production path as\n  // successful full publications. Pause/resume itself is not identity change.\n  ObserveWarPaymentWindowFrame12004(w,identity);\n  return ReadWarPaymentWindowSession12004(&w).same_owned_process_no_load_window;\n",
+      "text_bytes": 1653,
+      "text_sha256": "4a7578b9991a3ddc843347fd482b5766cf5be3b129f8e37313a7d05dde070b2b",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_window_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "418e62019dc6001df0e20625fb76a3a7f776ebf6",
+      "lines": [
+        131,
+        135
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "WarPaymentEnvelope12004 ReadWarPaymentWindowEnvelope12004(WarPaymentWindow12004 &w,const WarPaymentDetourState12004 &state) {\n  const std::lock_guard lock(w.mutex);if(w.admitted)(void)CheckLocked(w);\n  WarPaymentEnvelope12004 out{};out.machine_id=w.machine_id;out.executable_sha256=kExecutableSha256;\n  out.current_session=w.session;out.installed=state.installed.load(std::memory_order_acquire);\n  out.install_failure_flags=state.failure_flags.load(std::memory_order_acquire);out.controlled_window_admitted=w.admitted;return out;\n",
+      "text_bytes": 530,
+      "text_sha256": "7306c4f9e9246f457d7e2346be689e4b13cf81cab91f03350a2dd05912143fc6",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_runtime_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "2273b4c52f322a01e944f8b4273e556cd8f17348",
+      "lines": [
+        16,
+        26
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "const std::array<WarPaymentHookDescription12004,kWarPaymentHookCount12004> kDescriptions{{\n  {0x24E8DB0,16,{0x40,0x53,0x48,0x83,0xEC,0x30,0x81,0xBA,0x5C,0x08,0,0,0x76,0x6F,0x72,0x50}},\n  {0x28B9950,15,{0x48,0x89,0x5C,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xEC,0x20}},\n  {0x285EE40,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}},\n  {0x285EED0,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}},\n  {0x285EFF0,15,{0x48,0x89,0x5C,0x24,0x08,0x48,0x89,0x6C,0x24,0x10,0x48,0x89,0x74,0x24,0x18}}\n#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)\n  // Whole 4+7+3 byte instructions; no RIP-relative operand in this prefix.\n  ,{0x28B9490,14,{0x48,0x83,0xEC,0x28,0x4C,0x8B,0x91,0xB0,0x01,0,0,0x4C,0x8B,0xCA}}\n#endif\n}};\n",
+      "text_bytes": 789,
+      "text_sha256": "b663e18a35964d016f9b89347d50304133d9773cd1c49bba8b2a0984e5065f64",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_runtime_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "2273b4c52f322a01e944f8b4273e556cd8f17348",
+      "lines": [
+        55,
+        63
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)\nstd::uint32_t GenericStackDefault(void *,std::uintptr_t *out,std::size_t capacity) noexcept {\n  if(!out||!capacity||capacity>kWarPaymentGenericStackCapacity12004)return 0;\n#if defined(_MSC_VER)\n  __try {\n    return static_cast<std::uint32_t>(RtlCaptureStackBackTrace(0,\n      static_cast<DWORD>(capacity),reinterpret_cast<void **>(out),nullptr));\n  } __except(EXCEPTION_EXECUTE_HANDLER) {return 0;}\n#else\n",
+      "text_bytes": 463,
+      "text_sha256": "cee8b2288887eb829c310239a992ed5d5bb05f38ce2c5fcf9dc8d246885994e8",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_runtime_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "2273b4c52f322a01e944f8b4273e556cd8f17348",
+      "lines": [
+        195,
+        221
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "bool InstallWarPaymentPassive12004(WarPaymentDetourState12004 &state,const WarPaymentInstallEnvironment12004 &input) noexcept {\n  try {\n    const std::lock_guard lock(g_install_mutex);\n    if(!input.primary_thread_suspended_proven||!EqualSha(input.executable_sha256)||!input.module_base||\n       !input.bindings.read||!input.bindings.next_event||!input.bindings.session||!input.bindings.journal||\n       state.installed.load(std::memory_order_acquire)||g_owned.load(std::memory_order_acquire)) {state.failure_flags.fetch_or(kBinding);return false;}\n    for(std::size_t i=0;i<state.hooks.size();++i) {\n      if(state.hooks[i].trampoline||state.hooks[i].patch_may_be_present||\n         (!input.fixture_targets&&input.target_overrides[i]) ||\n         (input.fixture_targets&&!input.target_overrides[i])) {state.failure_flags.fetch_or(kBinding);return false;}\n    }\n    state.environment=input;auto &e=state.environment;\n#if defined(XAR_ENABLE_WAR_PAYMENT_GENERIC_CONTEXT_12004)\n    e.bindings.generic_context_capture_enabled=true;\n    e.bindings.generic_module_base=e.module_base;\n    e.bindings.generic_module_image_size=GenericImageSize(e);\n    e.bindings.capture_stack_frames=e.bindings.capture_stack_frames?e.bindings.capture_stack_frames:&GenericStackDefault;\n#else\n    e.bindings.generic_context_capture_enabled=false;\n    e.bindings.generic_module_base=0;e.bindings.generic_module_image_size=0;\n    e.bindings.capture_stack_frames=nullptr;e.bindings.capture_stack_context=nullptr;\n#endif\n#if defined(XAR_ENABLE_WAR_PAYMENT_RAW4_GETTER_12004)\n    e.bindings.raw4_getter_capture_enabled=true;e.bindings.raw4_module_base=e.module_base;\n#else\n    e.bindings.raw4_getter_capture_enabled=false;e.bindings.raw4_module_base=0;\n#endif\n",
+      "text_bytes": 1730,
+      "text_sha256": "15958e90ddeb92f8f098a4e8151f7a1140e9fd1082ae4aace4539a7eae47e938",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_runtime_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "2273b4c52f322a01e944f8b4273e556cd8f17348",
+      "lines": [
+        243,
+        265
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "    if(!e.pin_module(e.memory_context)) {state.failure_flags.fetch_or(kPin);AbortUnpublished(state);return false;}\n    state.module_pinned=true;e.bindings.exact_build_and_prefixes_verified=true;\n    (void)e.bindings.journal->SetEnabled(false);\n    for(std::size_t i=0;i<state.hooks.size();++i)g_original[i].store(reinterpret_cast<std::uintptr_t>(state.hooks[i].trampoline),std::memory_order_release);\n    g_owned.store(&state,std::memory_order_release);\n    for(std::size_t i=0;i<state.hooks.size();++i) {\n      auto &slot=state.hooks[i];DWORD old=0,ignored=0;\n      if(!e.protect(e.memory_context,reinterpret_cast<void *>(slot.target),slot.size,PAGE_EXECUTE_READWRITE,old)) {\n        state.failure_flags.fetch_or(kProtection);\n        const bool restored=RestoreAll(state,true);if(restored&&FreeAll(state))g_owned.store(nullptr,std::memory_order_release);\n        state.installed.store(!restored,std::memory_order_release);return false;\n      }\n      slot.original_protection=old;slot.patch_may_be_present=true;const auto patch=Patch(i,slot.size);\n      const bool copied=e.write(e.memory_context,slot.target,patch.data(),slot.size);\n      const bool flushed=e.flush(e.memory_context,reinterpret_cast<const void *>(slot.target),slot.size);\n      const bool protected_again=e.protect(e.memory_context,reinterpret_cast<void *>(slot.target),slot.size,old,ignored);\n      if(!copied||!flushed||!protected_again) {\n        state.failure_flags.fetch_or(kPublish);const bool restored=RestoreAll(state,true);\n        if(restored&&FreeAll(state))g_owned.store(nullptr,std::memory_order_release);\n        state.installed.store(!restored,std::memory_order_release);return false;\n      }\n    }\n    state.installed.store(true,std::memory_order_release);return true;\n",
+      "text_bytes": 1754,
+      "text_sha256": "3afb27566e626f21fb346b41ecba7754bfe9b043766e5817abcea11965f1bbb2",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_passive_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "404cff5a5fd55d1fd5555157e556bf7f9371272f",
+      "lines": [
+        148,
+        178
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "template<class Call> std::uintptr_t Invoke(const WarPaymentBindings12004 &b,\n    WarPaymentRecord12004 &r, Call call) noexcept {\n  if (!Ready(b)) return call();\n  if (b.retain_actor && !b.retain_actor(b.retain_actor_context,r.kind,r.receiver,r.second_pointer))\n    return call();\n  army_observer_research_detail_12004::Permit permit(b.journal->mutex,b.journal->policy);\n  if (!permit.admitted()) return call();\n  Parent(r);\n  r.entry_event = b.next_event(b.event_context);\n  r.session_entry = b.session(b.session_context);\n  r.natural_parent_metadata = Natural(b);\n  r.before = Capture(b,r);\n  if(r.kind==WarPaymentKind12004::gateway&&r.resource_kind_raw==4)\n    r.resource4_wallet_context.emplace().before=Raw4Frame(b,r.before.character);\n  if(b.generic_context_capture_enabled&&r.kind==WarPaymentKind12004::personal_add&&\n      r.caller_return_rva==kWarPaymentGenericReturn12004) {\n    auto &g=r.generic_wallet_context.emplace();\n    g.before=ReadWarPaymentGenericValues12004(b.read,b.read_context,r.before.character);g.parent_trace=GenericParent(b);\n    if(g.before.capture_complete) {\n      const auto bits=static_cast<std::uint64_t>(*g.before.value_2c0)-\n        static_cast<std::uint64_t>(*g.before.value_2c8)-\n        (static_cast<std::uint64_t>(*g.before.value_28)+static_cast<std::uint64_t>(*g.before.value_30));\n      g.before_computed_add_raw=std::bit_cast<std::int64_t>(bits);\n      g.before_formula_matches_amount=*g.before_computed_add_raw==r.amount_raw;\n    }\n  }\n  {\n    Scope scope(r);\n    r.original_called = true;\n    r.raw_return_bits = call(); // exactly one original; no getter or replay\n    r.original_returned = true;\n",
+      "text_bytes": 1642,
+      "text_sha256": "6f9414b112ab4f4da27c5f4ce8a6346fb37c4801cedb993b9f935b06910f4fa3",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_passive_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "404cff5a5fd55d1fd5555157e556bf7f9371272f",
+      "lines": [
+        218,
+        240
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "  const bool personal = r.kind == WarPaymentKind12004::personal_sub &&\n      r.parent_gateway_resource == 0 && r.caller_return_rva == 0x28B99B2 && r.personal_wrapper_matches_character;\n  const bool land = r.kind == WarPaymentKind12004::land_sub &&\n      r.parent_gateway_resource == 3 && r.caller_return_rva == 0x28B9A6D;\n  r.source_boarding_call_chain_matches = (personal || land) &&\n      r.parent_transition_caller == 0x2A9A8C5 && r.parent_gateway_caller == 0x24E8F40 &&\n      r.parent_gateway_character == r.before.character && r.parent_gateway_amount == r.amount_raw &&\n      r.parent_gateway_component == 3 &&\n      Before(r.parent_transition_entry,r.parent_gateway_entry) && Before(r.parent_gateway_entry,r.entry_event);\n  // This is source-call matching only. Parent returns, natural phase, account\n  // identity, session, failure and retention fences must be joined at query.\n  Publish(b,r,permit);\n  return r.raw_return_bits;\n}\nvoid Clear(WarPaymentJournal12004 &j) noexcept {for(auto &r:j.records)r={};j.latest=j.publication_failures=0;\n  for(auto &r:j.raw4_records)r={};j.raw4_latest=j.raw4_publication_failures=0;}\nArmyObserverResearchSamplingState12004 Sampling(WarPaymentJournal12004 &j) noexcept {\n  return j.policy.StateLocked(true,(std::min<std::uint64_t>)(j.latest,j.capacity),0);\n}\n} // namespace\nArmyObserverResearchSamplingState12004 WarPaymentJournal12004::SetEnabled(bool enabled) noexcept {\n  try {const std::lock_guard lock(mutex);policy.SetLocked(enabled,[&]{Clear(*this);});return Sampling(*this);}\n  catch (...) {return {};}\n",
+      "text_bytes": 1554,
+      "text_sha256": "cab08ce0209f8c23b8035a2eeadfcbc8a2875a25920225990304eb1b019f7a57",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_json_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "76917a5eecf38245cb80854189ff07ef0f887262",
+      "lines": [
+        124,
+        133
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "std::string GenericContextJson(const WarPaymentGenericContext12004 &g) {\n  Object o;o.Num(\"schema_version\",1);o.Num(\"source_entry_rva\",kWarPaymentGenericSource12004);\n  o.Num(\"source_wallet_return_rva\",kWarPaymentGenericReturn12004);\n  o.Str(\"attribution_scope\",\"raw_source_context_and_unwind_parent_only\");o.Str(\"maintenance_attribution\",\"unclosed\");\n  o.Raw(\"before\",GenericValuesJson(g.before));o.Raw(\"after\",GenericValuesJson(g.after));\n  o.Raw(\"parent_trace\",GenericParentJson(g.parent_trace));\n  o.Opt(\"before_computed_add_raw\",g.before_computed_add_raw);\n  if(g.before_formula_matches_amount)o.Bool(\"before_formula_matches_amount\",*g.before_formula_matches_amount);\n  else o.Raw(\"before_formula_matches_amount\",\"null\");\n  o.Bool(\"context_values_stable\",g.context_values_stable);return o.Done();\n",
+      "text_bytes": 802,
+      "text_sha256": "f133429574d97fd8620305b3f76dd80808a74cd3bbe3829b1a107fddb7291177",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_json_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "76917a5eecf38245cb80854189ff07ef0f887262",
+      "lines": [
+        193,
+        207
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "std::vector<WarPaymentQualifiedDebit12004> QualifyWarPaymentDebits12004(const WarPaymentJournalSnapshot12004 &j,\n    const WarPaymentEnvelope12004 &e,const std::vector<ArmyNaturalPhaseRecord12004> &natural,const ArmyNaturalPhaseJournalStatus12004 &ns) {\n  std::vector<WarPaymentQualifiedDebit12004> out;\n  if(!e.installed||e.install_failure_flags||e.machine_id.empty()||!ExactSha(e.executable_sha256)||\n     (!e.current_session.loaded_game_epoch&&!e.controlled_window_admitted)||\n     !Session(e.current_session,e.current_session)||!j.read_complete||!j.sampling.available||!j.sampling.enabled||j.sampling.busy||\n     j.sampling.active_captures||j.overwritten||j.publication_failures||!ns.read_complete||ns.overwritten_records||ns.failed_appends)return out;\n  for(const auto &w:j.records) {\n    const bool personal=w.kind==WarPaymentKind12004::personal_sub;\n    const bool land=w.kind==WarPaymentKind12004::land_sub;\n    if((!personal&&!land)||w.amount_raw<=0||!Complete(w,e.current_session)||!SameCharacter(w.before,w.after)||\n       w.before.character_id!=e.current_session.player_character_full_id||\n       !w.before.wrapper||w.before.wrapper!=w.after.wrapper||w.receiver!=w.before.wrapper||\n       w.second_pointer!=w.before.character||!w.before.wrapper_balance_bits||!w.after.wrapper_balance_bits||\n       (personal&&w.caller_return_rva!=0x28B99B2)||(land&&w.caller_return_rva!=0x28B9A6D))continue;\n",
+      "text_bytes": 1403,
+      "text_sha256": "d20ad424e842e75efa0731e151b02261a5df2f87719f1a114b42714729090ecc",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    },
+    {
+      "path": "ck3_autonomous_player/native_bridge/src/war_payment_json_12004.cpp",
+      "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+      "git_blob": "76917a5eecf38245cb80854189ff07ef0f887262",
+      "lines": [
+        234,
+        259
+      ],
+      "text_encoding": "utf-8; splitlines joined by LF plus terminal LF",
+      "text": "    // These are full callback entry/return balances, not instruction-local store\n    // values. Keep mismatches raw and do not promote them as an exact debit.\n    const auto expected=*w.before.wrapper_balance_bits-static_cast<std::uint64_t>(w.amount_raw);\n    if(expected!=*w.after.wrapper_balance_bits)continue;\n    out.push_back({w.journal_sequence,t->journal_sequence,g->journal_sequence,personal?0:3,\n      *w.before.character_id,land?w.before.land_id:std::nullopt,w.amount_raw,*w.before.wrapper_balance_bits,*w.after.wrapper_balance_bits,true});\n  }\n  return out;\n}\nstd::string SerializeWarPaymentJournal12004(const WarPaymentJournalSnapshot12004 &j,const WarPaymentEnvelope12004 &e,\n    const std::vector<ArmyNaturalPhaseRecord12004> &natural,const ArmyNaturalPhaseJournalStatus12004 &ns) {\n  Object o;o.Num(\"schema_version\",1);o.Str(\"machine_id\",e.machine_id);o.Str(\"executable_sha256\",e.executable_sha256);\n  o.Str(\"game_version\",\"1.20.0.4\");o.Num(\"steam_build_id\",25734779);o.Bool(\"installed\",e.installed);o.Num(\"install_failure_flags\",e.install_failure_flags);\n  o.Bool(\"controlled_window_admitted\",e.controlled_window_admitted);o.Str(\"session_basis\",e.current_session.loaded_game_epoch?\"source_proved_epoch\":e.controlled_window_admitted?\"same_owned_process_no_load_window\":\"unqualified\");\n  o.Str(\"balance_boundary\",\"whole_original_callback_entry_return\");o.Str(\"maintenance_attribution\",\"unclosed\");\n  o.Raw(\"current_session\",SessionJson(e.current_session));o.Raw(\"sampling\",SamplingJson(j.sampling));o.Bool(\"read_complete\",j.read_complete);\n  o.Num(\"latest_sequence\",j.latest_sequence);o.Num(\"oldest_sequence\",j.oldest_sequence);o.Num(\"overwritten\",j.overwritten);o.Num(\"publication_failures\",j.publication_failures);\n  Object n;n.Bool(\"read_complete\",ns.read_complete);n.Num(\"retained_records\",ns.retained_records);n.Num(\"overwritten_records\",ns.overwritten_records);n.Num(\"failed_appends\",ns.failed_appends);o.Raw(\"natural_journal_status\",n.Done());\n  std::string records=\"[\";bool first=true;for(const auto &r:j.records) {if(!first)records+=',';first=false;records+=RecordJson(r);}records+=']';o.Raw(\"records\",std::move(records));\n  std::string parents=\"[\";first=true;for(const auto &p:natural) {if(!first)parents+=',';first=false;Object v;const auto &s=p.scope;\n    v.Raw(\"metadata\",NaturalJson({s.observed,s.phase,s.actual_entry_rva,s.primary_manager_identity,s.game_state_identity,s.session_identity,s.entry_event,s.date_raw,s.absolute_day_raw}));\n    v.Bool(\"original_called\",p.original_called);v.Bool(\"original_returned\",p.original_returned);v.Num(\"raw_return_bits\",p.raw_return_bits);v.Raw(\"returned_event\",EventJson(p.returned_event));\n    v.Opt(\"returned_date_raw\",p.returned_date_raw);v.Opt(\"returned_absolute_day_raw\",p.returned_absolute_day_raw);parents+=v.Done();}parents+=']';o.Raw(\"natural_parent_returns\",std::move(parents));\n  const auto qualified=QualifyWarPaymentDebits12004(j,e,natural,ns);std::string debits=\"[\";first=true;\n  for(const auto &q:qualified) {if(!first)debits+=',';first=false;Object v;v.Num(\"writer_sequence\",q.writer_sequence);v.Num(\"transition_sequence\",q.transition_sequence);v.Num(\"gateway_sequence\",q.gateway_sequence);v.Num(\"account_kind\",q.account_kind);v.Num(\"payer_character_id\",q.payer_character_id);v.Opt(\"land_id\",q.land_id);v.Num(\"requested_amount_raw\",q.requested_amount_raw);v.Num(\"entry_balance_bits\",q.entry_balance_bits);v.Num(\"returned_balance_bits\",q.returned_balance_bits);v.Bool(\"returned_balance_matches_requested_sub\",q.returned_balance_matches_requested_sub);debits+=v.Done();}debits+=']';o.Raw(\"qualified_boarding_debits\",std::move(debits));\n  if(j.raw4.compiled)o.Raw(\"raw_resource4_getter_v1\",Raw4Json(j.raw4));\n",
+      "text_bytes": 3690,
+      "text_sha256": "cb56fca56455bb92741ddeee6838ab3d1f9a2b89aab02e747c86543439f01e94",
+      "native_source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+      "same_fragment_in_native_source": true
+    }
+  ],
+  "frozen_actor": {
+    "pin": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r214-month-executor-a01\\root_refill_month_boundary.py",
+      "bytes": 19221,
+      "sha256": "a22d0bcf10fdbe65cf813cbb22943776b6453485a0f3219c2b9bf21853e3aa90"
+    },
+    "fragments": [
+      {
+        "lines": [
+          76,
+          84
+        ],
+        "text": " s.sampling_attempted=True;s.sampling(True,'regular_core');on=s.sampling(None,'all')\n need(on['army_observer_research_sampling_v1']['regular_core']['capture_enabled'] is True and all(not v['capture_enabled'] for k,v in on['army_observer_research_sampling_v1'].items() if k!='regular_core'),'actual scoped-only core ON differs')\n result['sampling_ON']=on\n s.room_for_day();current=s.snap('month-one-day-before');s.check(current,PREP_END)\n end,day=s.io.exact_day({'frame':current});result.update(actual_days=1,clock=day);s.check(end,MONTH_END)\n after=s.full('month-one-day-after',end);s.check(after['frame'],MONTH_END)\n # This independent status must precede disable/clear. Cleanup counters are never substituted.\n post=s.sampling(None,'all');result['sampling_after_day_before_OFF']=post\n classified=classify_regular_core_capture_window_12004(after['army'],profile=PROFILE,before_sampling=on,after_sampling=post)\n",
+        "text_bytes": 911,
+        "text_sha256": "f764e6b5b714cf9623a73baf47f97c30d1091e1776e2a0ff5cc35b2b8a106350"
+      },
+      {
+        "lines": [
+          112,
+          120
+        ],
+        "text": " def sampling(self,enabled,family,cleanup=False):\n  from xar_autoplayer.bridge.army_observer_research_sampling_control import normalize_result\n  f=self.snap('sampling-'+family,cleanup);args=dict(observer_family=family,expected_revision=f['revision'])\n  if enabled is not None:args['enabled']=enabled\n  if enabled is True:args['regular_core_full_carmy_ids']=[0]\n  tool='ck3_query_army_observer_research_sampling_v1' if enabled is None else 'ck3_set_army_observer_research_sampling_v1'\n  body=self.io.call('sampling-'+family,tool,args,cleanup=cleanup);mode='query' if enabled is None else 'enable' if enabled else 'disable'\n  value=normalize_result({k:body[k] for k in ('step','accepted','status','army_observer_research_sampling_v1','backend_id')},expected_step=mode+'-army-observer-research-sampling-v1',observer_family=family,allow_scoped_enable_refusal=enabled is True)\n  if enabled is True:need(value['accepted'] is True,'actual regular-core enable refused')\n",
+        "text_bytes": 962,
+        "text_sha256": "20c6994c8431ee0f7876164a5a8cb045fa7f5cce83a62ad4722adb93f3d36325"
+      },
+      {
+        "lines": [
+          140,
+          149
+        ],
+        "text": "     self.io.call('cancel-original-clock','ck3_execute_step',dict(step='research-cancel-tactical-daily-sentinel-v1-generation-'+str(status['generation']),expected_revision=None),cleanup=True)\n  except BaseException as error:cleanup['errors'].append('clock/pause: '+repr(error))\n  try:\n   if self.sampling_attempted:self.sampling(False,'all',True)\n   off=self.sampling(None,'all',True);cleanup['OFF_readback']=off;cleanup['sampling_OFF_clear_verified']=all_clear(off);need(cleanup['sampling_OFF_clear_verified'],'OFF/clear incomplete')\n  except BaseException as error:cleanup['errors'].append('OFF: '+repr(error))\n  try:\n   before=self.snap('Save-before',True);saved=self.io.call('Save-once','ck3_save_checkpoint',dict(expected_revision=before['revision']),cleanup=True);after=self.snap('Save-independent-after',True)\n   cleanup.update(Save_result=saved,Save_after=after);cp=saved.get('checkpoint') or {};cleanup['normal_Save_verified']=saved.get('accepted') is True and cp.get('status')=='saved' and cp.get('date_raw')==before['date_raw']==after['date_raw'];need(cleanup['normal_Save_verified'],'independent normal Save not verified')\n  except BaseException as error:cleanup['errors'].append('Save: '+repr(error))\n",
+        "text_bytes": 1214,
+        "text_sha256": "aee6e05d9e8ad0ad7352a0f00bfdf6751eb002cfd7f0232a3f676d4a7d150026"
+      }
+    ]
+  },
+  "production_consumers": [
+    "xar_autoplayer.bridge.war_payment_observations_v1.normalize_payment_extras",
+    "xar_autoplayer.bridge.war_payment_observations_v1.normalize_journal",
+    "xar_autoplayer.bridge.war_payment_observations_v1.expected_debits"
+  ],
+  "conclusions": {
+    "enable_is_installed_native_sampling_toggle": true,
+    "enable_is_external_debugger": false,
+    "enable_changes_sampling_state": true,
+    "requires_natural_phase_ON": true,
+    "loaded_game_epoch_is_source_proved": false,
+    "Save_or_load_allowed_inside_window": false,
+    "existing_strict_qualification": "known boarding SUB chain only",
+    "maintenance_attribution": "unclosed",
+    "cadence": "unclosed",
+    "current_actor_unchanged_compatible": false
+  },
+  "storage": {
+    "policy_version": "1.0.0",
+    "source_only_parent_subgrant_bytes": 131072,
+    "shared_pool_new_bytes": 0,
+    "quota_review_at_utc": "2026-10-18T21:30:00Z",
+    "category": "record",
+    "retention_review": "180 days under repository policy; no permanent exception",
+    "free_bytes": {
+      "C:/": 26160705536,
+      "D:/": 28932374528
+    }
+  }
+}

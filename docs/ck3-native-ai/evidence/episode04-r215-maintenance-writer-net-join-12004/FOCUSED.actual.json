@@ -1,0 +1,24 @@
+{
+  "source_check": {
+    "status": "PASS_RETAINED_OPCODE_AND_REAL_A07_FRONTIER",
+    "bodies": 4,
+    "opcode_edges": 19,
+    "SDK_calls": 0,
+    "debugger_started": false,
+    "live_or_paid_credit": false
+  },
+  "production_guard_check": {
+    "status": "PASS_ACTUAL_PRODUCTION_NULL_EP_REJECTION",
+    "source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\build_card.py",
+      "bytes": 5684,
+      "sha256": "f646e20883ecfe844220df99dedcb2204fdae6b7075d86839bd4d8a823c1f11f"
+    },
+    "synthetic_identity": true,
+    "actual_future_identity": false,
+    "exception": "Independent Root identity missing: episode",
+    "observer_or_SDK_called": false,
+    "output_created": false,
+    "old_matrix_runs": 0
+  }
+}

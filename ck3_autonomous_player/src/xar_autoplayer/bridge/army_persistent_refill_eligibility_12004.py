@@ -30,8 +30,13 @@ def _bind(frame,packet):
     for query_key,frame_key in (('queried_snapshot_id','snapshot_id'),('queried_revision','revision'),
                                ('queried_native_revision','native_revision'),('queried_date_raw','date_raw'),
                                ('queried_episode_run_id','episode_run_id')):
-        _need(frame.get(frame_key) is not None and packet.get(query_key)==frame[frame_key],
-              'refill query differs from its actual frame: '+query_key)
+        if (frame_key == 'episode_run_id' and frame.get('episode_projection') == 'native_campaign'
+                and frame.get(frame_key) is None):
+            _need(query_key in packet and packet[query_key] is None,
+                  'ordinary native refill query must preserve absent/null game episode')
+        else:
+            _need(frame.get(frame_key) is not None and packet.get(query_key)==frame[frame_key],
+                  'refill query differs from its actual frame: '+query_key)
     _need(packet.get('queried_connection_generation')==diagnostic['connection_generation'],
           'refill query connection changed')
 

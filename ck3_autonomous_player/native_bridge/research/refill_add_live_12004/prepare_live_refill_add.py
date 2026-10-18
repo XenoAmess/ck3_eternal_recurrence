@@ -180,6 +180,10 @@ def main():
     gate,pg=read(a.live_build_admission);need(gate.get('schema')=='xar.ck3.refill_ADD_12004.live_owner_admission.v1','Root live admission schema')
     need(gate.get('machine_id')==machine and gate.get('exact_executable_sha256')==EXE_SHA,'current-machine exact4 live admission')
     need(gate.get('episode_run_id')==frame.get('episode_run_id'),'Root admission is for this future episode')
+    native_campaign_null = frame.get('episode_run_id') is None
+    if native_campaign_null:
+        need(frame.get('episode_projection') == gate.get('episode_projection') == 'native_campaign',
+             'null/absent game episode requires explicit ordinary native campaign admission')
     need(integer(gate.get('scene_sequence'),199) and type(gate.get('scene_run_id')) is str,'R198 explicitly has no observer; bind a later allocated scene')
     need(gate.get('new_live_build_and_SYSTEM_verified') is True and gate.get('next_scene_capacity_and_observer_admitted') is True,'Root actual build/SYSTEM/capacity/window admission required')
     source_dir=validate_source_dir(gate.get('source_dir'))
@@ -213,19 +217,20 @@ def main():
     occurrences=[r for r in classified['DATA_occurrences'] if (r['persistent_regiment_id']&0xFFFFFFFF)==a.regiment and r['chunk_index']==a.slot]
     need(occurrences and all(r['army_regiment_id']==arrg for r in occurrences),'selected complete DATA alias association')
     identity=os_identity(pid,tid)
-    binding={'schema':'xar.ck3.refill_ADD_12004.owner_binding.v2','machine_id':machine,'exact_executable_sha256':EXE_SHA,
+    binding={'schema':('xar.ck3.refill_ADD_12004.owner_binding.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.owner_binding.v2'),'machine_id':machine,'exact_executable_sha256':EXE_SHA,
       'pid':pid,'process_created_filetime':identity['process_created_filetime'],'thread_id':tid,
       'regi_full_id_u32':a.regiment,'physical_slot':a.slot,'arrg_full_id_i32':arrg,'army_full_id_i32':carmy,
-      'connection_generation':diag['connection_generation'],'episode_run_id':frame['episode_run_id'],
+      'connection_generation':diag['connection_generation'],'episode_run_id':frame.get('episode_run_id'),
       'carrier_module_path':module,'carrier_source_epoch':20261018,'source_dir':source_dir,
       'source_admission_receipt_sha256':gate['source_admission_receipt_sha256'],
       'observer_build_and_SYSTEM_gate_receipt_sha256':pg['sha256']}
+    if native_campaign_null:binding['episode_projection']='native_campaign'
     out=a.output_root.resolve();raw=out/'observer.raw.ndjson';ready=out/'observer.ready.json'
     argv=[str(exe),'--enable','--pid',str(pid),'--thread',str(tid),'--regiment',str(a.regiment),'--slot',str(a.slot),
       '--created',str(identity['process_created_filetime']),'--timeout-ms',str(a.timeout_ms),'--raw',str(raw),'--ready',str(ready),'--machine-id',machine]
     consume=[sys.executable,'-B','-X','utf8',str(a.repo/'ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py'),
       '--raw',str(raw),'--binding',str(out/'owner-binding.json'),'--output',str(out/'instruction-item.json')]
-    result={'schema':'xar.ck3.refill_ADD_12004.prepared_live_argv.v2','machine_id':machine,'observed_at':datetime.now(timezone.utc).isoformat(),
+    result={'schema':('xar.ck3.refill_ADD_12004.prepared_live_argv.v3' if native_campaign_null else 'xar.ck3.refill_ADD_12004.prepared_live_argv.v2'),'machine_id':machine,'observed_at':datetime.now(timezone.utc).isoformat(),
       'input_pins':[pf,pd,pp,pg],'source_dir':source_dir,'positive_prepare_target':positive,'identity':identity,'native_argv':argv,'consume_argv':consume,'DATA_occurrences':occurrences,
       'selected_eligibility':[r for r in classified['physical_chunks'] if (r['persistent_regiment_id']&0xFFFFFFFF)==a.regiment and r['chunk_index']==a.slot],
       'carrier_module_path':module,'carrier_source_epoch':20261018,
