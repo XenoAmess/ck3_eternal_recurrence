@@ -1,0 +1,55 @@
+{
+  "schema": "xar.e04.owned-window-take-input.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "repo_root": "D:\\workspace\\ck3_eternal_recurrence",
+  "scene_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01",
+  "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "keeper_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\keeper-a01",
+  "screen_task": "e04-common-12004-a211",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r211-public-a01\\R211-PUBLIC-R05-CAPACITY.actual-root-a01.json",
+    "bytes": 19203,
+    "sha256": "1cf7d0b0bfa129d3739ed947b6120ed242d6bc75b737221396f09a33b6c81caf"
+  },
+  "steam_offline_review": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\direct-review-a01\\ROOT-DIRECT-REVIEW.actual.json",
+    "bytes": 1648,
+    "sha256": "804cc8d32b12b78a48c2f62439d0d2ebb19d4c5f7ee587374ed640c2c8b11175"
+  },
+  "ffmpeg": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "runtime": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-owner-recheck-prep-a01\\actual-runtime-a02\\runtime.local.json",
+  "products": "D:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_mod_acceptance_r05_observe_products.json",
+  "product_key": "r05-mechanism-research",
+  "case_key": "initialize-and-observe-supply",
+  "context": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\R211-REVIEWED-CONTEXT.actual-a01.json",
+  "prepared": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\prepared-a01\\prepared-case.json",
+  "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\state-a01",
+  "raw_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\raw-r211",
+  "take_id": "take02",
+  "case_output": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-window-take02",
+  "ui_case_output": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-window-ui-take02",
+  "query_prefix": "r211-camera-take02",
+  "ui_query_prefix": "r211-camera-ui-take02",
+  "army_id": 0,
+  "content_kind": "army-supply",
+  "expected_client_size": [
+    1280,
+    720
+  ],
+  "recording_seconds": 1500,
+  "hard_terminal_seconds": 1505,
+  "minimum_recording_seconds": 30,
+  "raw_budget_bytes": 1073741824,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_reserve_seconds": 120,
+  "receipt_label": "R211-WINDOW-TAKE02",
+  "camera_output_name": "case-output-observe-only-a01",
+  "camera_awaiting": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\post-initializer-camera-awaiting.json",
+  "camera_signal": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\post-initializer-camera-started.actual.json",
+  "observer_result": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\r05-initialize-and-observe-result.json"
+}

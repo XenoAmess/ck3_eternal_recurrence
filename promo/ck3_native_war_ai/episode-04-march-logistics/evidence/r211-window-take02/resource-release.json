@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8"
+    },
+    "last_sequence": 6624,
+    "next_step": "",
+    "pid": 34552,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R211_R05_supply337_Save_OFFclear_OS0_host0_recorder0_STOP_allocator0_closed_original_failures_preserved",
+    "task_id": "e04-common-12004-a211",
+    "updated_at_utc": "2026-10-18T12:15:23.781845+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 6624,
+    "event_id": "e0dc5f30aca34f6f9430098a6877e782",
+    "timestamp_utc": "2026-10-18T12:15:23.783165+00:00",
+    "kind": "completed",
+    "task_id": "e04-common-12004-a211",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R211_R05_supply337_Save_OFFclear_OS0_host0_recorder0_STOP_allocator0_closed_original_failures_preserved",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8"
+    }
+  }
+}

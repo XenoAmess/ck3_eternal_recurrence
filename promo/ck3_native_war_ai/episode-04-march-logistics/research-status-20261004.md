@@ -392,3 +392,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 `machine_id: desktop-3fevhd2-1c74096080`；[R204专题](../../../docs/ck3-native-ai/episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
 
 原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。
+
+## 2026-10-18 R211 采纳补记
+
+`machine_id: desktop-3fevhd2-1c74096080`。Root 采纳 R05 受控库存 raw0 后的自然 callback 正例，16 精确日、callback93/thread2464/46严格连接、供给物理扣兵337；围城/劫掠67为另一来源。研究 **10/14=71.43%**，既有业务基本项 **7/11=63.64%**；动态 **0/11**、ABC **0/3**。证据入口为 `C:/ck3-e04-resume-20261015-a01/r211-r05-owner-recheck-prep-a01/R211-R05-MONITOR-RESULT.actual-a13.json`（machine-bound）及后续便携小包。受控预置库存归零不等于自然耗尽；未证明死亡、整周期、全军净损。原自动 camera Start 超时/exit2 的 RED 不追改。正常 Save、OFF/clear、CK3/host OS0 及屏幕/任务总线释放与媒体门槛分别审；影片只技术解码通过，clean/1×/人审待验。

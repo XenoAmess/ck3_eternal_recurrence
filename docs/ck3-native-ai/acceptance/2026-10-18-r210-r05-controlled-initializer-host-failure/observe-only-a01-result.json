@@ -1,0 +1,51 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "admission": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+    "actual_initializer": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output\\r05-controlled-initializer-outcome.json",
+      "bytes": 95485,
+      "sha256": "406075ba8c03e3dff348deac2ef3638f77dfe28212b5cae57c81a2979ab9f5b0"
+    },
+    "old_timeout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output\\case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "4ee9301b066916ea84546d3bb46396b7890c4c68c8c05ee924933af99646e6df"
+    },
+    "original_normal_quit_request": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output\\normal-quit-awaiting.json",
+      "bytes": 694,
+      "sha256": "52854dbfe0d672990e11052945f09f35da781bb943c119ab6be30a4382ef31cb"
+    },
+    "runtime": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r210-r05-long-prep-a01\\actual-runtime-a01\\runtime.local.json",
+      "bytes": 2724,
+      "sha256": "60c2a78fdea96ab9e5cdebe835a93a4f72f032e0139b92d621e271d796ddb97a"
+    },
+    "inputs": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r210-r05-long-prep-a01\\actual-runtime-a01\\r210-inputs.json",
+      "bytes": 3298,
+      "sha256": "c54a897d2e5f5344cc16e874e1ab53124143339688aad693da199fc0c9413ad7"
+    },
+    "new_output": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output-observe-only-a01",
+    "original_hold_deadline": 1792321531.9289653,
+    "purpose_deadline_utc": "2026-10-18T12:00:00Z",
+    "PID": 20312,
+    "create_time": 1792313785.9930599,
+    "entry_reserve_seconds": 1320,
+    "normal_close_reserve_seconds": 900,
+    "cleanup_save_reserve_seconds": 120,
+    "maximum_actual_days": 30,
+    "camera_wait_seconds": 180,
+    "camera_recording_duration_is_not_set_by_this_consumer": true,
+    "status": "ACTUAL_INITIALIZER_REUSED_NO_INITIALIZER_CALLS",
+    "SDK_calls_by_admission": 0
+  },
+  "initializer_called": false,
+  "original_automatic_case_PASS": false,
+  "status": "ROOT_OBSERVE_ONLY_RED_OR_UNKNOWN_NO_REPLAY",
+  "error": "ValueError: post-initializer camera Start signal wait timed out",
+  "normal_close_dispatched_by_this_actor": false
+}

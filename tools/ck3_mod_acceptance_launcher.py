@@ -245,14 +245,22 @@ def launch(args):
     write_new(root / "host-supervisor-started.json", {"at_utc": utc(), "pid": child.pid, "argv": argv,
                                                     "business_pass": False})
     deadline = time.monotonic() + 45
+    start_read_error = None
     while time.monotonic() < deadline:
         if (root / "host-started.json").exists():
-            print(json.dumps({"status": "ORIGINAL_SHARED_HOST_STARTED", "run_id": frozen["run_id"],
-                "host": read_json(root / "host-started.json"), "business_pass": False}), flush=True)
-            return 0
+            try:
+                host = read_json(root / "host-started.json")
+            except json.JSONDecodeError as error:
+                # The supervisor publishes this once-only ACK with open('x')
+                # before json.dump completes. Re-read it; never start again.
+                start_read_error = error
+            else:
+                print(json.dumps({"status": "ORIGINAL_SHARED_HOST_STARTED", "run_id": frozen["run_id"],
+                    "host": host, "business_pass": False}), flush=True)
+                return 0
         require(child.poll() is None, "Original host supervisor failed; inspect retained stderr and never replay")
         time.sleep(.05)
-    raise TimeoutError("Original host supervisor launch not proved in budget; never replay")
+    raise TimeoutError("Original host supervisor launch not proved in budget; never replay") from start_read_error
 
 
 def main(argv=None):

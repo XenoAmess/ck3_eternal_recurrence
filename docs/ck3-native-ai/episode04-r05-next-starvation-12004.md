@@ -67,3 +67,14 @@ portable 链接均指仓库内文件；外置大原件只由对应实机摘要�
 preferred-only正例已足以证明某个真实供给扣兵 primitive；完整军队饥饿总额还需覆盖所有供给 preferred/residual及其他同窗变化，不能因 consumer目前小计方便而忽略 residual。若另一个角色/场景先取得正例，可复用该机制证据；不能替代视频中指定角色、William故事或ABC基线所需的身份/情境证据。
 
 本页新增SDK/桌面/EXE读取、native build、游戏日、原片与R05正例均为 **0**。唯一新文件为小型portable执行卡，按统一策略复核，不设置永久保护；完成实机后应追加新场证据引用，保留本次离线计划的时间边界。
+
+## R211 已采纳的供给扣兵核心（2026-10-18 补注）
+
+`machine_id: desktop-3fevhd2-1c74096080`；runtime ec51712、公共 Run5。
+[R211 正例及正常闭场](episode04-r211-zero-stock-physical-12004.md)已经取得受控低库存初始化后的自然日16 callback93/thread2464：
+writer 当场 stock0、供给 preferred 完整 unique physical debit337；另67为合并 siege/raid 分量。
+日15独立 fences仍被目标单日完整保留，46 writer strict join、unknown[]，不是从净差404推断来源。
+Root 已采纳该 R05 基本 primitive，研究10/14、基本业务7/11；正常 Save/OS0/OFFclear 与源证据分层保存。
+本文旧的 pending/未运行段落保留各自历史时点；后继不必为重新证明同一337而重复本实验。
+自然从正库存耗尽到0、全部供给 residual、死亡、整周期、跨场普遍结论仍是独立问题；
+媒体的连续 clean/人工1×/正式镜头尚未签核，动态仍0/11。

@@ -359,3 +359,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ## 2026-10-18 R206：双 policy 修复与实际两天分列
 
 `machine_id: desktop-3fevhd2-1c74096080`；实际 source7a342/a36。[R206实证与后继入口](../../../docs/ck3-native-ai/episode04-r206-william-exactday-12004.md)保留原片8.3秒/唯一Start/Finish及 actor RED：片中 native exact day53147376→53147400、独立paused/map-ready、overshoot0均真实，旧共享合同误拒 noncombat policy。新合同只补该实证 policy，R203校验保留，原RED不追认、不重投日步。拍后另一天至53147424、正常Save/CK3-bootstrap0/OFF-clear/screen释放单列，未抵达目标，不授R06ADD、clean/1×/signoff。公共latest闭场INDEX已换R206；后继仍须按新场身份/最新history重新准入。研究9/14、业务6/11、动态0/11、ABC0/3不涨。
+
+## 2026-10-18 R211 新口播与镜头边界
+
+`machine_id: desktop-3fevhd2-1c74096080`。本场可如实讲「受控预置零库存后，在自然日观察到一次供给来源扣兵337」，并把另有围城/劫掠67单列；不能说自然耗尽补给、全军饿死或每周期必然扣兵。证据为本机 `r211-r05-owner-recheck-prep-a01/R211-R05-MONITOR-RESULT.actual-a13.json` 与 Root 后续正式研究决定。片子为窗口客户端技术全解码，尚无连续clean、整片1×或人工签核；**合格动态0/11、ABC0/3**。研究采纳 **10/14**、业务基本项 **7/11** 只属机制判断，不能倒推镜头合格。

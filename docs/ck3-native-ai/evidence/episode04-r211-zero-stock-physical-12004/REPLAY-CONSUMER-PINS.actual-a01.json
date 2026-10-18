@@ -1,0 +1,29 @@
+{
+  "schema": "xar.e04.r211-offline-production-consumer-pins.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T11:47:48.281445+00:00",
+  "source_commit": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "files": [
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_zero_stock_clock_12004.py",
+      "bytes": 28471,
+      "sha256": "65e450aa9be20cf08d89054c9c6a2c88e86a2726ba2084fd751f069aa2cd5722"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_actual_supply_parent_join_summary.py",
+      "bytes": 6464,
+      "sha256": "3e6917e6e2a1fa06d56b9184e5237d6e1c628a407fa269f30f138ea1bdd1ceb4"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_periodic_loss_component_12004.py",
+      "bytes": 3595,
+      "sha256": "84edc2574a782187a4916884f0f22cdb6b9be15145282f20207f731f49e81a58"
+    },
+    {
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/episode04_starvation_loss_12004.py",
+      "bytes": 12265,
+      "sha256": "d7dfd110c3022ad0325f0316a61fb3f3943c1c4dcf39946bae62f0d3fbd24a0f"
+    }
+  ],
+  "SDK_used": false
+}

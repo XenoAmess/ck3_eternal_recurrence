@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.owned-client-original-frame.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:25:41.761263+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "capacity": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-r211-public-a01\\R211-PUBLIC-R05-CAPACITY.actual-root-a01.json",
+    "bytes": 19203,
+    "sha256": "1cf7d0b0bfa129d3739ed947b6120ed242d6bc75b737221396f09a33b6c81caf"
+  },
+  "lease_sequence_observed": 6608,
+  "pid": 32524,
+  "source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 32524,
+    "owned_ck3_create_time": 1792320163.394934,
+    "hwnd": 43977346,
+    "foreground_hwnd": 43977346,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-18T11:25:40.052018+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "desktop_original": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\window-prep-take02\\desktop-original.png",
+    "bytes": 2061643,
+    "sha256": "e2f759decb238253acb401bfb8006d6850149649121d699ef77a0c5ec02e771b"
+  },
+  "client_original": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\window-prep-take02\\ck3-client-original.png",
+    "bytes": 1601010,
+    "sha256": "b74b00017c95669882bf2c121a47ee86721c394d82eab90ad5abba47b48c40b9"
+  },
+  "native_snapshot_at_capture": "not queried by screen-only prepare",
+  "recording_started": false,
+  "whole_desktop_recorded": false,
+  "video_approved": false
+}

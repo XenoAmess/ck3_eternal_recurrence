@@ -1,0 +1,77 @@
+{
+  "schema": "xar.e04.r211-take02-media-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:53:13Z",
+  "source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "technical_status": "FULL_DECODE_PASS_WINDOW_CLIENT_ONLY",
+  "raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/raw.mkv",
+    "bytes": 589432005,
+    "sha256": "2a738ecf3dbf29e64cd79526542f4fe939b2a5c590be67c0cac1c399a2febbee"
+  },
+  "film_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/R211-WINDOW-TAKE02-film-result.actual.json",
+    "bytes": 1893,
+    "sha256": "ff2f96a436d05e3d7c13e467135b2b39a59379a26852f8dba669863352e4a5e1"
+  },
+  "observer_result": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005/case-output-observe-only-a01/r05-initialize-and-observe-result.json",
+    "bytes": 225754,
+    "sha256": "b57adabca855016ae437096b1e1d78968a0c1831a2666e2ee7fe40eb6745f5dc"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 32524,
+    "hwnd": 43977346,
+    "client_screen_rect": [640, 360, 1920, 1080],
+    "output_size": [1280, 720],
+    "window_border_included": false,
+    "direct_hwnd_capture": false
+  },
+  "technical_probe": {
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "average_frame_rate": "30/1",
+    "duration_seconds": 967.9,
+    "decoded_frame_count": 29037,
+    "full_decode_command": "ffmpeg -hide_banner -v error -threads 1 -i raw.mkv -f null NUL",
+    "full_decode_exit_code": 0,
+    "ffprobe_count_frames_exit_code": 0,
+    "recorder_job_returncode": 0,
+    "recorder_job_state": "NORMAL_TREE_EMPTY",
+    "elapsed_wall_seconds_at_terminal": 971.2267486,
+    "raw_budget_bytes": 1073741824,
+    "raw_within_budget": true
+  },
+  "sampled_original_frames": [
+    {
+      "source_second": 5,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/sample-5.png",
+      "bytes": 1278045,
+      "sha256": "5aa6503eb58e33dc41d79cb3b0573bb90a97bbe6774f649f86bb2ac7bc8086ca",
+      "visible_army_strength": 6746,
+      "army_window_supply_display": "0/300"
+    },
+    {
+      "source_second": 480,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/sample-480.png",
+      "bytes": 1350619,
+      "sha256": "6aefabf85d6d3f89ddd6ae9fe66411de822c096c8a70e3b6544700fe10e725b7",
+      "army_window_supply_display": "0/300"
+    },
+    {
+      "source_second": 960,
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/sample-960.png",
+      "bytes": 1343945,
+      "sha256": "f200dbf4506520307e42361e3e13a32245f5196f269a462a4d760a90f4bbe751",
+      "visible_army_strength": 6342,
+      "army_window_supply_display": "0/300"
+    }
+  ],
+  "visual_sample_assessment": "Three source frames show the CK3 client region with ArmyWindow open and changing army strength; no desktop border or unrelated window is visible in these samples.",
+  "business_boundary": "Visible 6746-to-6342 change alone does not establish the 337-soldier R05 cause; use the pinned native observer result for that finding.",
+  "full_speed_editorial_review_complete": false,
+  "published_or_final_cut_approved": false
+}

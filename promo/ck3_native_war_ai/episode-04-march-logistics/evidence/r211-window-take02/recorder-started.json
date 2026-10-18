@@ -1,0 +1,44 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:27:35.558101+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "claim": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\R211-WINDOW-TAKE02-claim.actual.json",
+    "bytes": 101448,
+    "sha256": "f9f5ffe7eec6d769dde259b581bcac4a4aa94a982bf5ca394b55c4323461360e"
+  },
+  "canonical_process_ready": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\raw-r211\\take02\\process-ready.json",
+    "bytes": 2302,
+    "sha256": "b1bc395d942f55a987729387829008a9c89a9360bfc68d5fc3be8681dfd09317"
+  },
+  "capture_source": {
+    "kind": "gdigrab-desktop-client-region",
+    "owned_ck3_pid": 32524,
+    "owned_ck3_create_time": 1792320163.394934,
+    "hwnd": 43977346,
+    "foreground_hwnd": 43977346,
+    "desktop": [
+      2560,
+      1440
+    ],
+    "client_screen_rect": [
+      640,
+      360,
+      1920,
+      1080
+    ],
+    "occluding_windows": [],
+    "coordinates": "physical-primary-screen-pixels",
+    "direct_hwnd_capture": false,
+    "window_border_included": false,
+    "observed_at_utc": "2026-10-18T11:27:32.228978+00:00",
+    "output_size": [
+      1280,
+      720
+    ]
+  },
+  "one_ffmpeg_job": true,
+  "maximum_recording_seconds": 1500,
+  "video_or_business_approved": false
+}

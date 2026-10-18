@@ -1,0 +1,93 @@
+{
+  "schema": "xar.e04.r211-window-take02-portable-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T12:25:47Z",
+  "source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "portable_target_root_candidate": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r211-window-take02",
+  "exact_copy_total_bytes": 17702,
+  "exact_copy_count": 9,
+  "files_to_copy": [
+    {
+      "name": "take-config.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/R211-WINDOW-TAKE02.actual.json",
+      "bytes": 3737,
+      "sha256": "997e4b456dbc9d4f34557402bb2fea596e337bbdd9a203d35cf21adc7959ba3d"
+    },
+    {
+      "name": "recorder-started.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/R211-WINDOW-TAKE02-started.actual.json",
+      "bytes": 1386,
+      "sha256": "909be9ce3c0fbf16c0cfb9e3ad5d5f9c0869c0816d0d36933648e51461123606"
+    },
+    {
+      "name": "recorder-terminal.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/R211-WINDOW-TAKE02-film-result.actual.json",
+      "bytes": 1893,
+      "sha256": "ff2f96a436d05e3d7c13e467135b2b39a59379a26852f8dba669863352e4a5e1"
+    },
+    {
+      "name": "recorder-raw-result.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/result.json",
+      "bytes": 2034,
+      "sha256": "94204542ea3841a40beda8b07f34fb47aea29f527f78b3954884b46cedc723ca"
+    },
+    {
+      "name": "client-capture.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/window-prep-take02/capture.actual.json",
+      "bytes": 1864,
+      "sha256": "06020850d1467c5255ecf85ff658af4fa7a1e527116f74f3a8366dddfc8075cc"
+    },
+    {
+      "name": "root-source-frame-review.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/window-prep-take02/ROOT-REVIEW.actual.json",
+      "bytes": 958,
+      "sha256": "71ca2b7695ee42e0dd8532246dc427cfe4661718d0e495d85283d2e80191bc61"
+    },
+    {
+      "name": "media-review.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/media-review-take02-a01/MEDIA-REVIEW.actual.json",
+      "bytes": 3513,
+      "sha256": "3461cc6ca9b09ac3a7b705071da16dea37676276dad77c9ee6bdb86b8e1e598c"
+    },
+    {
+      "name": "camera-signal-accepted.json",
+      "source": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005/case-output-observe-only-a01/post-initializer-camera-signal-accepted.json",
+      "bytes": 1020,
+      "sha256": "d14c50efd5fda2d9c0af5fe06e7aee4dbc3322123146d74f225472db89eee392"
+    },
+    {
+      "name": "resource-release.json",
+      "source": "C:/ck3-e04-resume-20261015-a01/r211-r05-owner-recheck-prep-a01/R211-RELEASE.stdout-a01.json",
+      "bytes": 1297,
+      "sha256": "c23bf7d3c0e6009a1f339665d6ebd8ab5dfde72a22311fbf76330877dcef6504"
+    }
+  ],
+  "reference_only": [
+    {
+      "kind": "immutable_raw_movie_do_not_copy_into_git",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r211-r05-owner-recheck-a01/raw-r211/take02/raw.mkv",
+      "bytes": 589432005,
+      "sha256": "2a738ecf3dbf29e64cd79526542f4fe939b2a5c590be67c0cac1c399a2febbee"
+    },
+    {
+      "kind": "native_R05_result_owned_by_research_portable_package",
+      "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005/case-output-observe-only-a01/r05-initialize-and-observe-result.json",
+      "bytes": 225754,
+      "sha256": "b57adabca855016ae437096b1e1d78968a0c1831a2666e2ee7fe40eb6745f5dc"
+    },
+    {
+      "kind": "three_AI_viewed_source_frame_PNGs_pinned_in_media_review",
+      "count": 3,
+      "total_bytes": 3972609,
+      "copy_to_git": false
+    }
+  ],
+  "technical_result": "ONE_WINDOW_CLIENT_ONLY_FFMPEG_NORMAL_TREE_EMPTY_FULL_DECODE_PASS",
+  "business_result_source": "native_observer_result_only_337_qualified_soldiers_not_video_inference",
+  "AI_frame_samples_viewed": 3,
+  "complete_human_one_times_review": false,
+  "continuous_clean_span_certified": false,
+  "formal_dynamic_shot_qualified": false,
+  "publication_signoff": false
+}

@@ -1,0 +1,22 @@
+{
+  "schema": "xar.e04.owned-client-root-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "reviewed_at_utc": "2026-10-18T11:27:20.763295+00:00",
+  "reviewer": "/root",
+  "capture": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\window-prep-take02\\capture.actual.json",
+    "bytes": 1864,
+    "sha256": "06020850d1467c5255ecf85ff658af4fa7a1e527116f74f3a8366dddfc8075cc"
+  },
+  "client_original": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\window-prep-take02\\ck3-client-original.png",
+    "bytes": 1601010,
+    "sha256": "b74b00017c95669882bf2c121a47ee86721c394d82eab90ad5abba47b48c40b9"
+  },
+  "root_reviewed_window_only": true,
+  "root_reviewed_no_hover": true,
+  "content": "army-supply",
+  "visual_supply_value_claimed_by_code": false,
+  "human_final_video_approval": false
+}

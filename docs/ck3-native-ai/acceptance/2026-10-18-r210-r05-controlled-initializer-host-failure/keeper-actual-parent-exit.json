@@ -1,0 +1,18 @@
+{
+  "keeper_actual_exit_code": 0,
+  "keeper_report": {
+    "schema": "xar.promo.screen-lease-keeper/v1",
+    "task_id": "e04-common-12004-a210",
+    "last_sequence": 6586,
+    "failure": null,
+    "thread_exited": true,
+    "journal": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\keeper-a01\\journal.jsonl",
+    "at_utc": "2026-10-18T10:06:04.913403+00:00",
+    "entry_error": null,
+    "checkout_head": "7ae9ea91be0553348271d0f2bd1616b5064bbbb9",
+    "screen_released": false,
+    "game_actions": false
+  },
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "business_pass": false
+}

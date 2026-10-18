@@ -74,3 +74,14 @@ flowchart TD
 ## 2026-10-15后续：共同调用观测候选已实施
 
 上文“最小下一入口”是第一批包的真实状态。用户随后明确授权继续实施，现已在外置候选完成默认OFF的TLS parentjoin、writer当场库存捕获、optional strict合同及独立keyed消费，见[实现、原调用来源与新窄fixture](army-actual-supply-parent-join-observation-12004.md)。旧无共同键的日志及第一批谓词仍保持unknown；新候选已经有ON/OFF窄编译、SYSTEMverified后typed-local执行和wire消费资格，但尚未部署或取得新CK3实机样本。本补充不把静态fixture改写为自然饥饿正例。
+
+## R211 已采纳的供给扣兵核心（2026-10-18 补注）
+
+`machine_id: desktop-3fevhd2-1c74096080`；runtime ec51712、公共 Run5。
+[R211 正例及正常闭场](episode04-r211-zero-stock-physical-12004.md)已经取得受控低库存初始化后的自然日16 callback93/thread2464：
+writer 当场 stock0、供给 preferred 完整 unique physical debit337；另67为合并 siege/raid 分量。
+日15独立 fences仍被目标单日完整保留，46 writer strict join、unknown[]，不是从净差404推断来源。
+Root 已采纳该 R05 基本 primitive，研究10/14、基本业务7/11；正常 Save/OS0/OFFclear 与源证据分层保存。
+本文旧的 pending/未运行段落保留各自历史时点；后继不必为重新证明同一337而重复本实验。
+自然从正库存耗尽到0、全部供给 residual、死亡、整周期、跨场普遍结论仍是独立问题；
+媒体的连续 clean/人工1×/正式镜头尚未签核，动态仍0/11。

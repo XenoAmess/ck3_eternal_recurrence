@@ -1,0 +1,6 @@
+{
+  "error": "ValueError: post-initializer camera Start signal wait timed out",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "business_pass": false,
+  "submitted_steps_never_replayed": true
+}

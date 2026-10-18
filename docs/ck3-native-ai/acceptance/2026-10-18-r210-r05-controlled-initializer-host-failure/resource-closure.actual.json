@@ -1,0 +1,86 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T10:17:14.639237+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "status": "ACTUAL_FAILED_BUSINESS_WITH_CLOSED_NATIVE_RESOURCES",
+  "native_report": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\native-report.json",
+    "bytes": 12446976,
+    "sha256": "2960c03fed90402880341bdec8cc26a443869db0a4ad95156e00ba357f8352b6"
+  },
+  "native_cleanup_projection": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\native-cleanup-projection.actual.json",
+    "bytes": 3131,
+    "sha256": "0e8a559d67b855df678996591b5a8a4fad48b7121b6f303e97cbd7a04e15f284"
+  },
+  "native_status": "RED",
+  "native_error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner",
+  "native_finished_at": "2026-10-18T09:44:01.204468+00:00",
+  "native_shutdown_exit_code": 1,
+  "original_host_returncode": 1,
+  "public_run_returncode": 2,
+  "keeper_original_wait_returncode": 0,
+  "original_host_exit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\host-original-process-exit.json",
+    "bytes": 260,
+    "sha256": "7c71ed0cd3846064e252ce9112a9930e2263ad0e77ff1ee56fc3f60c3f46c6ef"
+  },
+  "keeper_original_exit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\keeper-actual-parent-exit.json",
+    "bytes": 633,
+    "sha256": "2fd190ca39f72b387c4605da9a858f9adb8eebbb17090c09ac79b4a892d0a861"
+  },
+  "actual_release": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r210-r05-long-prep-a01\\R210-RELEASE.stdout-a03.json",
+    "bytes": 1267,
+    "sha256": "0e25a8da695d76df6e937706bf0e9f1bbd975a16caf061296ff9149264249904"
+  },
+  "release_sequence": 6587,
+  "release_state": "done",
+  "resource_release_only": true,
+  "public_predecessor_function": {
+    "mode": "previous-shared-managed-session"
+  },
+  "normal_close_qualified": false,
+  "actual_retained_OS0": false,
+  "normal_Save_proven": false,
+  "business_pass": false,
+  "initializer": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output\\r05-controlled-initializer-outcome.json",
+    "bytes": 95485,
+    "sha256": "406075ba8c03e3dff348deac2ef3638f77dfe28212b5cae57c81a2979ab9f5b0"
+  },
+  "initializer_success": true,
+  "initializer_effect_count": 1,
+  "initializer_replayed": false,
+  "stock_before_raw": 11651751,
+  "stock_after_raw": 0,
+  "physical_soldiers_unchanged": true,
+  "verified_actual_days": 0,
+  "sampling_enable_dispatched": false,
+  "R05_positive": false,
+  "no_target_callback_conclusion_from_zero_days": true,
+  "film_Root_reported_FFmpeg_starts": 0,
+  "film_Root_reported_video_count": 0,
+  "film_producer_pin_pending": true,
+  "ui_raw_native_reply_not_complete_query_PASS": true,
+  "failed_attempts": {
+    "case-output/case-error-preserved.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output\\case-error-preserved.json",
+      "bytes": 222,
+      "sha256": "4ee9301b066916ea84546d3bb46396b7890c4c68c8c05ee924933af99646e6df"
+    },
+    "case-output-observe-only-a01/observe-only-result.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output-observe-only-a01\\observe-only-result.json",
+      "bytes": 2677,
+      "sha256": "02fc9453e3ef26ad6114decf6f46f9f37986c338034e0ae51488a12680189fad"
+    },
+    "case-output-observe-only-a02/observe-only-result.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output-observe-only-a02\\observe-only-result.json",
+      "bytes": 2685,
+      "sha256": "0bff1cf42f90032fd6552b12c50203a91697fd6b2ba0a4df9771358365692b38"
+    }
+  },
+  "a02_error_actual": "ValueError: Actual shared host failed; preserve error and do not replay",
+  "no_future_hot_continuation_after_native_finished": true
+}

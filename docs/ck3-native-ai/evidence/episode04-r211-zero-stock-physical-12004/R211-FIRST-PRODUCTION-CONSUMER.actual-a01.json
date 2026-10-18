@@ -1,0 +1,38 @@
+{
+  "schema": "xar.e04.r211-first-target-production-consumer.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T11:38:16.999137+00:00",
+  "first_extract": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r209-siege-army-window-route-a01\\r211-r05-cadence-target-a01\\R211-FIRST-TARGET-EXTRACT.actual-a01.json",
+    "bytes": 8532,
+    "sha256": "e1b060b3788dec17174e66b92392a1f629e6c90d4b5bc6680f9e8e9d17bb8723"
+  },
+  "production_zero_selector": {
+    "source": "keyed_daily_supply_preferred_exact_zero_writer_facts",
+    "positive_invocations": [],
+    "positive_physical_debit_observed": false,
+    "selected_invocation_debit_sum": null,
+    "unknown_reasons": [],
+    "complete_interval_loss_total_ready": false,
+    "complete_cycle_observed": false
+  },
+  "production_parent_join": {
+    "source": "copied_natural_callback_context_at_actual_writer_entry",
+    "status": "partial",
+    "events": [],
+    "joined_writer_count": 0,
+    "strict_below_ten_supply_physical_debit_soldiers": null,
+    "source_supply_writer_at_exact_ten_count": 0,
+    "physical_debit_sum_scope": "only_complete_keyed_source_supply_preferred_invocations",
+    "complete_selected_writer_history_joined": false,
+    "unknown_reasons": [],
+    "new_live_evidence": false,
+    "native_calls_executed": 0,
+    "callback_sequence_order_used": false,
+    "callback_entry_stock_used": false,
+    "callback_return_stock_used": false
+  },
+  "meaning": "Initial frame has no subject events; this is neither a starvation negative nor a future callback result",
+  "SDK_used": false,
+  "new_full_body_reads": 0
+}

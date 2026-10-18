@@ -1,0 +1,126 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T10:47:15.967693+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "sources": {
+    "launch-intent.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\launch-intent.json",
+      "bytes": 1715,
+      "mtime_utc": "2026-10-18T10:42:20.206641+00:00",
+      "sha256": "e2951e563eb566ac3d4f1d9533159cb6a5e771e2736d3a6e5dee8f3b1ffc938f",
+      "value": {
+        "at_utc": "2026-10-18T10:42:20.205184+00:00",
+        "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+        "ticket": "36e5aa71bcc4d7368581ce1787c176e51bce498fbf93c87426e06caae683bd09"
+      }
+    },
+    "host-started.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-started.json",
+      "bytes": 4109,
+      "mtime_utc": "2026-10-18T10:42:22.941589+00:00",
+      "sha256": "446763705900b39820c37352ed98876b84f407ad5adda8712e86e578e0df039c",
+      "value": {
+        "at_utc": "2026-10-18T10:42:22.941242+00:00",
+        "pid": 18592,
+        "create_time": 1792320142.9267492,
+        "supervisor_pid": 9796,
+        "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+        "actual_popen_retained": true,
+        "observed_nonce": {
+          "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\direct-review-a01\\challenge.json",
+          "bytes": 2442,
+          "sha256": "ce170a5b0b0dc5cd398d5cc3c0ad2ee8573ebd83208565334b47bb4d437a8d4a"
+        },
+        "admitted_lease": {
+          "checkout_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+          "cli_sha256": "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+          "event_id": "461ace9edc154c5e9915fae371ba65a6",
+          "expected_sequence": 6591,
+          "installed_cli": "D:\\workspace\\.codex-task-bus\\bin\\codex_task_bus.py",
+          "repo": "D:\\workspace\\ck3_eternal_recurrence",
+          "schema": "xar.promo.screen-lease-cas/v1",
+          "screen_resource": "ck3-screen:acquired",
+          "sequence": 6592,
+          "source_cli": "D:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+          "task_id": "e04-common-12004-a211",
+          "updated_at_utc": "2026-10-18T10:39:26.953209+00:00"
+        }
+      }
+    },
+    "host-supervisor-started.json": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-supervisor-started.json",
+      "bytes": 1070,
+      "mtime_utc": "2026-10-18T10:42:20.261609+00:00",
+      "sha256": "e6d4fa439067c53a35abe09bcec36c97ea4e9eea819deba6aae4a2a074cbcf6c",
+      "value": {
+        "at_utc": "2026-10-18T10:42:20.260620+00:00",
+        "pid": 26328
+      }
+    },
+    "host-original-process-exit.json": {
+      "present": false
+    },
+    "native-report.session.log": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\native-report.session.log",
+      "bytes": 943,
+      "mtime_utc": "2026-10-18T10:42:45.310435+00:00",
+      "sha256": "78c609d5f4ac5d43828d744c548f3c989026a818274f20410057b5cbf6cb5d24",
+      "text": "{\"type\": \"native_session_ready\", \"pid\": 32524, \"mode\": \"native-headless\", \"pipe\": \"\\\\\\\\.\\\\pipe\\\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\", \"lifecycle_queue\": {\"protocol_version\": 1, \"bridge_dir\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r211-r05-owner-recheck-a01\\\\state-a01\\\\native-session\\\\bridge\", \"inbox_dir\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r211-r05-owner-recheck-a01\\\\state-a01\\\\native-session\\\\bridge\\\\inbox\", \"outbox_dir\": \"D:\\\\workspace\\\\ck3_native_war_ai_promo_work\\\\e04-r211-r05-owner-recheck-a01\\\\state-a01\\\\native-session\\\\bridge\\\\outbox\", \"supported_commands\": [\"status\", \"stop\", \"restore-checkpoint\", \"start-next-episode\"], \"action_steps\": [\"restore-checkpoint\", \"start-next-episode\"], \"request_shape\": {\"request_id\": \"<filename stem>\", \"command\": \"status | stop | step | <development step>\", \"step\": \"required when command=step\"}}, \"cold_start_checkpoint\": null}\r\n"
+    },
+    "host-stderr.log": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-stderr.log",
+      "bytes": 0,
+      "mtime_utc": "2026-10-18T10:42:22.925297+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-supervisor-stderr.log": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-supervisor-stderr.log",
+      "bytes": 0,
+      "mtime_utc": "2026-10-18T10:42:20.246622+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "host-supervisor-stdout.log": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-supervisor-stdout.log",
+      "bytes": 0,
+      "mtime_utc": "2026-10-18T10:42:20.245619+00:00",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "known_processes": {
+    "host": {
+      "pid": 18592,
+      "name": "python.exe",
+      "create_time": 1792320142.9267492,
+      "matches_original_create_time": true,
+      "running": true
+    },
+    "supervisor": {
+      "pid": 26328,
+      "name": "python.exe",
+      "create_time": 1792320140.2476456,
+      "matches_original_create_time": null,
+      "running": true
+    }
+  },
+  "whole_native_report_read": false,
+  "SDK_used": false,
+  "CK3_metadata_inventory": [
+    {
+      "pid": 32524,
+      "name": "ck3.exe",
+      "create_time": 1792320163.394934
+    }
+  ],
+  "native_report_bounded_header": {
+    "source": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\native-report.json",
+    "source_bytes": 1954397,
+    "header_bytes": 8192,
+    "header_sha256": "e0e26cc9916a48bc11f659bf75476946a2b967f96cc879e4cf67b247841f0083",
+    "top_level_literals": {
+      "phase": "\"saved-campaign-single-command-line-restore\"",
+      "status": "\"RUNNING\"",
+      "started_at": "\"2026-10-18T10:42:27.313771+00:00\""
+    }
+  },
+  "recovery_boundary": "Do not re-run launcher or consume launch ticket again. Original host/supervisor receipts now parse; outer JSONDecodeError does not prove no host."
+}

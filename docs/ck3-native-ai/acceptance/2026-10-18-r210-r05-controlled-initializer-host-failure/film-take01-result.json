@@ -1,0 +1,12 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "status": "WINDOW_TAKE_RED_RETAINED_NO_REPLAY",
+  "new_game_process": false,
+  "game_actions_submitted": 0,
+  "business_or_video_approved": false,
+  "error": {
+    "type": "RuntimeError",
+    "message": "fresh Root original CK3 client visual review absent"
+  }
+}

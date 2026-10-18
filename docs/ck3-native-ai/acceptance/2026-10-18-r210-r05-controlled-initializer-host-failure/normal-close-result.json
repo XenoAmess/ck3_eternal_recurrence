@@ -1,0 +1,25 @@
+{
+  "root_normal_gui_review": null,
+  "operator_normal_gui_review": null,
+  "normal_quit_automation": null,
+  "normal_quit_automation_failure_preserved": null,
+  "retained_handle": {
+    "signaled": true,
+    "exit_code": 1,
+    "actual_retained_os0": false,
+    "pid": 20312,
+    "create_time": 1792313785.9930599,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_zero_proof": null,
+  "finish_hold_rows": null,
+  "host_finished_at": "2026-10-18T09:44:01.204468+00:00",
+  "managed_thread_finished": true,
+  "cleanup_ok": true,
+  "host_error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner",
+  "failure_shutdown_proof": null,
+  "failure_preserved": false,
+  "failure_lifecycle_completed": false,
+  "business_pass": false,
+  "normal_close_qualified": false
+}

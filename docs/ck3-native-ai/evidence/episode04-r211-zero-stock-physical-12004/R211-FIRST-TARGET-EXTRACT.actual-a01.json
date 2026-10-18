@@ -1,0 +1,337 @@
+{
+  "schema": "xar.e04.r211-first-frame-starvation-clock-extract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:35:12.201309+00:00",
+  "original": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\r211-observe-only-a01-r05obs-0009-day-01-before-full-history-derived-normalized-full.json",
+    "bytes": 15112791,
+    "sha256": "10313556cdfdf078323b960284373bbbce160a886342e84fe00b052a4483aa71",
+    "input_read_count_this_lane": 1
+  },
+  "query_frame": {
+    "query_sequence": 6,
+    "queried_snapshot_id": "native:2",
+    "queried_revision": 3,
+    "queried_native_revision": 2,
+    "queried_date_raw": 53147376,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005"
+  },
+  "army0": {
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "current_soldiers": 6746,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 0,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_change_monthly_raw": -877192,
+    "current_attrition_fraction_raw": 6000,
+    "army_update_clock_v1": {
+      "status": "available",
+      "ready": true,
+      "current_date_raw": 53147376,
+      "native_day_index": 389474,
+      "selected_bucket_phase": 14,
+      "observed_army_bucket_phase": 0,
+      "last_supply_update_date_storage_raw64": 300333821678253472,
+      "last_supply_update_date_raw": 53147040,
+      "grace_anchor_date_storage_raw64": 300061168564366016,
+      "grace_anchor_date_raw": 53144256,
+      "loaded_grace_days": 30,
+      "unavailable_reason": null
+    },
+    "monthly_loss_budget_inputs_v1": {
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "scale": 100000,
+      "unit_native_170_raw": 0,
+      "native_unit_in_combat": false,
+      "native_unit_gathering": false,
+      "army_gathering_count_raw": 0,
+      "loaded_supply_state_levels": [
+        60,
+        10,
+        0
+      ],
+      "loaded_supply_state_fractions_raw": [
+        0,
+        0,
+        5000
+      ],
+      "native_fleet_supply_loss_suppressed": false,
+      "commander_valid": true,
+      "commander_supply_modifier_id": 1625,
+      "commander_supply_modifier_raw": 0
+    },
+    "loss_application_inputs_v1": {
+      "status": "available",
+      "unavailable_reason": null,
+      "raid_association_id": -1,
+      "siege_active": true,
+      "raid_active": false,
+      "siege_rate_raw": 1000,
+      "raid_rate_raw": 1000,
+      "whole_soldiers": 6746,
+      "definition_le_zero_soldiers": 6677,
+      "supply_eligible_soldiers": 6746,
+      "definition_le_zero_supply_eligible_soldiers": 6677,
+      "current_supply_loss_budget": 337,
+      "siege_loss_budget": 67,
+      "raid_loss_budget": 0,
+      "fraction_scale": 100000,
+      "soldier_scale": 1
+    },
+    "source_derived_next_daily_supply_frame_inputs_v1": {
+      "schema_version": 1,
+      "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+      "stage": "source_derived_conditional_next_date_pair",
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "subject_army_id_u32": 0,
+      "subject_carmy_id_u32": 0,
+      "current_date_storage_raw64": 300333881807795952,
+      "current_date_raw_i32": 53147376,
+      "current_native_day_index_raw_i32": 389474,
+      "source_derived_next_date_raw_i32": 53147400,
+      "source_derived_next_native_day_index_raw_i32": 389475,
+      "source_derived_next_date_storage_raw64": 300333886102763272,
+      "source_derived_next_calendar_day_u8": 20,
+      "source_derived_next_calendar_month_u8": 0,
+      "source_derived_full_cdate64_ready": true,
+      "actual_future_date_stage_observed": false,
+      "actual_future_callback_observed": false,
+      "future_bucket_mutations_reconstructed": false,
+      "future_stock_or_strength_ready": false,
+      "full_daily_supply_transition_ready": false,
+      "full_monthly_ready": false
+    },
+    "actual_supply_callback_observations_v1": {
+      "status": "available",
+      "source": "native_natural_supply_callback_entry_return",
+      "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+      "observer_installed": true,
+      "oldest_available_sequence": 0,
+      "latest_sequence": 0,
+      "overwritten_events": 0,
+      "unattributed_capture_failures": 0,
+      "event_count": 0,
+      "events": []
+    },
+    "actual_loss_writer_observations_v1": {
+      "status": "available",
+      "source": "native_natural_writer_entry_return",
+      "membership_basis": "membership_at_query",
+      "observer_installed": true,
+      "oldest_available_sequence": 0,
+      "latest_sequence": 0,
+      "overwritten_events": 0,
+      "unattributed_capture_failures": 0,
+      "event_count": 0,
+      "events": []
+    }
+  },
+  "all30_memberships": [
+    {
+      "phase": 0,
+      "positions": [
+        0
+      ],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 1,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 2,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 3,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 4,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 5,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 6,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 7,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 8,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 9,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 10,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 11,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 12,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 13,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 14,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 15,
+      "positions": [],
+      "count": 4,
+      "ready": true
+    },
+    {
+      "phase": 16,
+      "positions": [],
+      "count": 7,
+      "ready": true
+    },
+    {
+      "phase": 17,
+      "positions": [],
+      "count": 7,
+      "ready": true
+    },
+    {
+      "phase": 18,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 19,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 20,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 21,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 22,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 23,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 24,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 25,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 26,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 27,
+      "positions": [],
+      "count": 5,
+      "ready": true
+    },
+    {
+      "phase": 28,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    },
+    {
+      "phase": 29,
+      "positions": [],
+      "count": 6,
+      "ready": true
+    }
+  ],
+  "source_conditional_future_matches": [
+    {
+      "day_after_this_frame": 16,
+      "date_raw": 53147760,
+      "nativeD": 389490,
+      "phase": 0,
+      "positions": [
+        0
+      ],
+      "elapsed_grace_days": 146,
+      "frozen_grace_gate_passes": true,
+      "actual_future_callback_or_loss_observed": false
+    }
+  ],
+  "R209_projection_imported": false,
+  "SDK_used": false,
+  "build_executed": false,
+  "actual_target_day_observed": false
+}

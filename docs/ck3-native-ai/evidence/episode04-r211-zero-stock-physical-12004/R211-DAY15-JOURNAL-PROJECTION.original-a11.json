@@ -1,0 +1,67 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:42:07.083599+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "SDK_used": false,
+  "projection": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\r05-observe-originals\\r05obs-0141-day-15-after-full-history.json.gz",
+    "source_stat": [
+      308920,
+      1792323713907768100
+    ],
+    "day_after_s0": 15,
+    "expected_after_date_raw": 53147736,
+    "decoded_prefix_bytes": 9437184,
+    "query_frame": {
+      "query_sequence": 35,
+      "queried_snapshot_id": "native:49",
+      "queried_revision": 50,
+      "queried_native_revision": 49,
+      "queried_date_raw": 53147736,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005"
+    },
+    "raw_prefix_frame_fields_not_promoted_to_queried_frame": {
+      "snapshot_id": "native:49",
+      "revision": 50,
+      "native_revision": 49,
+      "date_raw": 300333881807795952,
+      "connection_generation": 1,
+      "episode_run_id": null
+    },
+    "actual_query_arguments": {
+      "army_ids": [
+        0
+      ],
+      "expected_revision": 50,
+      "profile": "observed_history_full_v1"
+    },
+    "target_army_id": 0,
+    "target_native_carmy_id": 0,
+    "callback": {
+      "status": "available",
+      "source": "native_natural_supply_callback_entry_return",
+      "observer_installed": true,
+      "oldest_available_sequence": 1,
+      "latest_sequence": 92,
+      "overwritten_events": 0,
+      "unattributed_capture_failures": 0,
+      "event_count": 0
+    },
+    "writer_raw_metadata": {
+      "status": "available",
+      "source": "native_natural_writer_entry_return",
+      "observer_installed": true,
+      "oldest_available_sequence": 2104,
+      "latest_sequence": 2615,
+      "overwritten_events": 2103,
+      "unattributed_capture_failures": 0,
+      "event_count": 0
+    },
+    "callback_production_normalized": true,
+    "writer_membership_validation_performed": false,
+    "retained_complete_target_callbacks_since_initial_fence0": [],
+    "business_R05_positive": "not_assessed_by_light_monitor",
+    "typed_family_projection_sha256": "a5174c22e980fcdb2925a527718ade00f5914f4c5b52e885f9f136b5f509b68c"
+  }
+}

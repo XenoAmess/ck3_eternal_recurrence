@@ -1,0 +1,22 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "bridge_pid": 32524,
+  "date_raw": 53147376,
+  "stock_raw": 0,
+  "original_hold_unix_seconds": 1792327845.766184,
+  "original_deadline_unix_seconds": 1792333103.0,
+  "cleanup_normal_close_reserve_seconds": 1020,
+  "maximum_wait_seconds": 900,
+  "signal_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\post-initializer-camera-started.actual.json",
+  "coordination_only": true,
+  "video_or_R05_PASS_inferred": false,
+  "camera_started": true,
+  "start_receipt": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\R211-WINDOW-TAKE02-started.actual.json",
+    "bytes": 1386,
+    "sha256": "909be9ce3c0fbf16c0cfb9e3ad5d5f9c0869c0816d0d36933648e51461123606"
+  },
+  "elapsed_wait_seconds": 381.38142769993283,
+  "signal_only_accepted": true
+}

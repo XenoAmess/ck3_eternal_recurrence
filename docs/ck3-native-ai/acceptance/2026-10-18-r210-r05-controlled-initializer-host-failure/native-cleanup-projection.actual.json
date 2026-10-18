@@ -1,0 +1,64 @@
+{
+  "schema": "lyd.native-cleanup-field-projection.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "observed_at_utc": "2026-10-18T10:17:14.639237+00:00",
+  "original_native_report": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\native-report.json",
+    "bytes": 12446976,
+    "sha256": "2960c03fed90402880341bdec8cc26a443869db0a4ad95156e00ba357f8352b6"
+  },
+  "original_host_exit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\host-original-process-exit.json",
+    "bytes": 260,
+    "sha256": "7c71ed0cd3846064e252ce9112a9930e2263ad0e77ff1ee56fc3f60c3f46c6ef"
+  },
+  "projection": {
+    "finished_at": "2026-10-18T09:44:01.204468+00:00",
+    "status": "RED",
+    "error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner",
+    "managed_session_done": true,
+    "managed_session_thread_finished": true,
+    "cleanup_ok": true,
+    "state_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01",
+    "agent_source_root": "D:\\workspace\\ck3_eternal_recurrence",
+    "pipe": "\\\\.\\pipe\\ck3_mod_acceptance_desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+    "session": {
+      "error": null,
+      "report": {
+        "pid": 20312,
+        "finished_at": "2026-10-18T09:44:00.223368+00:00",
+        "shutdown": {
+          "nonce": "5efcb72afc0b468bb911c98fc0e5c1ba",
+          "ck3_pid": 20312,
+          "ck3_creation_date": "20261018085625.993059+000",
+          "ck3_exit_code": 1,
+          "job_active_processes_before_termination": 1,
+          "job_active_processes_final": 0,
+          "tree_gone": true,
+          "cleanup_proven": true,
+          "final_ck3_inventory": {
+            "tasklist_returncode": 0,
+            "tasklist_pids": [],
+            "wmi_pids": [],
+            "native_pids": [],
+            "inventory_backend": "tasklist+toolhelp32",
+            "processes": []
+          },
+          "watchdog_pid": 8720,
+          "watchdog_creation_date": "20261018085624.488388+000",
+          "watchdog_state_before": "running",
+          "watchdog_state_after": "absent",
+          "control_files_absent": {
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01\\control\\ck3.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01\\control\\watchdog-5efcb72afc0b468bb911c98fc0e5c1ba.ready.json": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01\\control\\ck3.watchdog_error": true,
+            "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01\\control\\unsafe-cleanup.json": true
+          },
+          "contract_errors": [],
+          "ok": true
+        }
+      }
+    }
+  }
+}

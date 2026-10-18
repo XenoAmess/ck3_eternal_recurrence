@@ -1,0 +1,70 @@
+{
+  "schema": "xar.e04.r210-ui-owner-postcheck-failure.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T09:58:10.627599+00:00",
+  "source_head": "7ae9ea91be0553348271d0f2bd1616b5064bbbb9",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "step_id": "r210-camera-take02-army-window-current",
+  "report": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\native-report.json",
+    "bytes_at_read": 12446976,
+    "status": "RED",
+    "finished_at": "2026-10-18T09:44:01.204468+00:00",
+    "managed_session_thread_finished": true,
+    "error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner"
+  },
+  "step": {
+    "ok": false,
+    "started_at": "2026-10-18T09:43:56.734265+00:00",
+    "finished_at": "2026-10-18T09:43:57.260435+00:00",
+    "error": "RuntimeError: MCP tool ck3_query_ingame_ui_window_v1 returned an error: Error executing tool ck3_query_ingame_ui_window_v1: title-map native campaign lacks its current verified application owner",
+    "plan": {
+      "id": "r210-camera-take02-army-window-current",
+      "tool": "ck3_query_ingame_ui_window_v1",
+      "args": {
+        "window_kind": "army",
+        "expected_revision": 3
+      },
+      "fresh_revision": false
+    }
+  },
+  "driver_state": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\state-a01\\native-session\\driver-state.json",
+    "bytes": 237242,
+    "sha256": "64f54ca4476dda88b7cd2886c72c3a89f731f5e63411fbd5fa49cde3644d6de6"
+  },
+  "driver_last_command": {
+    "index": 12,
+    "command": "query-ingame-ui-window-v1",
+    "ok": false,
+    "error": "ValueError: title-map native campaign lacks its current verified application owner"
+  },
+  "raw_native_ui_result_select_fields": {
+    "schema": "ck3-ingame-ui-window-v1",
+    "accepted": true,
+    "available": true,
+    "status": "observed",
+    "window_kind": "army",
+    "window_exists": true,
+    "effective_visible": true,
+    "subject_id_available": true,
+    "current_subject_id": 0,
+    "owner_character_id": 33388,
+    "date_raw": 53147376,
+    "paused": true,
+    "played_character_id": 33388,
+    "native_revision": 2,
+    "pump_epoch": 171507,
+    "thread_id": 36992,
+    "application_owner_thread_verified": true,
+    "gui_owner_binding_verified": true,
+    "dispatch_invoked": false,
+    "verification_pending": false
+  },
+  "native_read_only_primitive_returned": true,
+  "python_postcondition_passed": false,
+  "canonical_recorder_start_count": 0,
+  "same_public_host_continuation_qualified": false,
+  "old_step_replay_permitted": false,
+  "video_or_business_pass_inferred": false
+}

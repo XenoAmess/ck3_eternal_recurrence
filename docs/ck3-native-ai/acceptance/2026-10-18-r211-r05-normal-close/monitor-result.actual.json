@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.r211-r05-observe-monitor-result.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T12:08:04.419508+00:00",
+  "runtime_source_head": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "scope": "read-only fixed receipt and one-time typed journal progress projection; no SDK, input, game launch, source mutation or full packet hash",
+  "research_outcome": {
+    "actual_days": 16,
+    "start_date_raw": 53147376,
+    "last_date_raw": 53147760,
+    "controlled_initializer_stock_raw": 0,
+    "initializer_called_by_continuation": false,
+    "R05_positive": true,
+    "callback_sequence": 93,
+    "qualified_supply_physical_debit_soldiers": 337,
+    "last_window_start_date_raw": 53147736,
+    "last_window_end_date_raw": 53147760,
+    "history_continuity_verified": true,
+    "whole_army_net_loss_attributed": false,
+    "natural_stock_depletion_proven": false,
+    "updater_AL_witness_proven": false
+  },
+  "cleanup": {
+    "sampling_OFF_clear_verified": true,
+    "native_Save_verified": true,
+    "errors": []
+  },
+  "normal_game_close": {
+    "pid": 32524,
+    "create_time": 1792320163.394934,
+    "actual_retained_os0": true,
+    "normal_close_qualified": true,
+    "managed_thread_finished": true,
+    "cleanup_ok": true,
+    "host_error": null,
+    "host_finished_at": "2026-10-18T12:07:06.415794+00:00",
+    "original_host_returncode": 0
+  },
+  "historical_failures_preserved": {
+    "original_public_launcher_exit_code": 2,
+    "original_automatic_case_PASS": false,
+    "entry_case_error": "ValueError: post-initializer camera Start signal wait timed out",
+    "original_automatic_run_reclassified": false
+  },
+  "film": {
+    "state": "NORMAL_TREE_EMPTY",
+    "finish_reason": "actual_observer_result_after_minimum_duration",
+    "elapsed_wall_seconds_at_terminal": 971.2267486,
+    "technical_status": "FULL_DECODE_PASS_WINDOW_CLIENT_ONLY",
+    "full_speed_editorial_review_complete": false,
+    "business_result_inferred_from_video": false
+  },
+  "allocator_keeper_CAS_release": "not assessed by this monitor; Root owns STOP, original allocator wait and release",
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\r05-initialize-and-observe-result.json",
+      "bytes": 225754,
+      "sha256": "b57adabca855016ae437096b1e1d78968a0c1831a2666e2ee7fe40eb6745f5dc"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\observe-only-result.json",
+      "bytes": 238487,
+      "sha256": "24b1526084bc5473ef95e4abb309736d9df2071842821b8e928d47541e47428d"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 178,
+      "sha256": "d14533275edcd88ed0d79f23adce6e0a264cf72c3921d3c96eb0b8835d0d70d9"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output\\normal-close-result.json",
+      "bytes": 10241,
+      "sha256": "04abb5059b7efb31e80ac44f1cc933d47b93b05cfc66329995e927d631b91238"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\host-original-process-exit.json",
+      "bytes": 260,
+      "sha256": "67d1a03212de7909f8870177ffbb9ee3cb27f19977cdf09ad7d70b881e2d8267"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output\\entry-run-result.json",
+      "bytes": 13384,
+      "sha256": "a8f3c3abf10f4c38a6145ca1313bddc89ea6ada56c6a15faeb149ac6b76de3f6"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\R211-WINDOW-TAKE02-film-result.actual.json",
+      "bytes": 1893,
+      "sha256": "ff2f96a436d05e3d7c13e467135b2b39a59379a26852f8dba669863352e4a5e1"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r211-r05-owner-recheck-a01\\media-review-take02-a01\\MEDIA-REVIEW.actual.json",
+      "bytes": 3513,
+      "sha256": "3461cc6ca9b09ac3a7b705071da16dea37676276dad77c9ee6bdb86b8e1e598c"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-owner-recheck-prep-a01\\R211-DAY15-JOURNAL-PROJECTION.actual-a11.json",
+      "bytes": 2475,
+      "sha256": "4d113c536fa35356243419cf0c097d59048c7d70fd84a11d365f6fa5c4e80235"
+    },
+    {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-owner-recheck-prep-a01\\R211-DAY16-JOURNAL-PROJECTION.actual-a11.json",
+      "bytes": 2675,
+      "sha256": "e2b21b7181bc46194e21fc8b53b30162d9d3e11e564b4ca307544a3dbf2f4462"
+    }
+  ]
+}

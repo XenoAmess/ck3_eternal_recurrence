@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "7ae9ea91be0553348271d0f2bd1616b5064bbbb9"
+    },
+    "last_sequence": 6587,
+    "next_step": "",
+    "pid": 15836,
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "R210_failed_UI_postcheck_host_exit1_cleanup_proven_STOP_allocator0_resource_release_only",
+    "task_id": "e04-common-12004-a210",
+    "updated_at_utc": "2026-10-18T10:13:28.113107+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 6587,
+    "event_id": "ef0ebdb449e54901983160c9dad8cf2d",
+    "timestamp_utc": "2026-10-18T10:13:28.114400+00:00",
+    "kind": "completed",
+    "task_id": "e04-common-12004-a210",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "R210_failed_UI_postcheck_host_exit1_cleanup_proven_STOP_allocator0_resource_release_only",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "7ae9ea91be0553348271d0f2bd1616b5064bbbb9"
+    }
+  }
+}

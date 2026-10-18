@@ -1,0 +1,29 @@
+{
+  "schema": "xar.e04.r211-zero-stock-physical-replay.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "source_machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T11:47:50.684053+00:00",
+  "status": "PASS_PRESERVED_PRODUCTION_ZERO_STOCK_PHYSICAL_WITNESS",
+  "evidence_sha256": "69bfd6991396120dedb63ffe26442dfd2334184820901da890ed19d23d611d66",
+  "components": {
+    "supply/preferred": {
+      "writers": 23,
+      "positive_writers": 17,
+      "physical_debit": 337
+    },
+    "siege_or_raid/preferred": {
+      "writers": 23,
+      "positive_writers": 15,
+      "physical_debit": 67
+    }
+  },
+  "source_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "source_date_raw": 53147760,
+  "joined_writer_count": 46,
+  "unknown_reasons": [],
+  "initialized_low_stock_case": true,
+  "natural_depletion_claimed": false,
+  "complete16day_total_claimed": false,
+  "SDK_used": false,
+  "new_game_or_deployment_qualification_granted": false
+}

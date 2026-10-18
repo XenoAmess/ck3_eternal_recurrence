@@ -1,0 +1,46 @@
+{
+  "schema": "xar.e04.root-adoption-integration-record.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T12:35:07.904046+00:00",
+  "recorded_by": "e04_candidate_integration",
+  "authority": "Root /root R211 normal-close source-intake instruction; business primitive denominator confirmed against current adopted matrix",
+  "runtime_source": "ec51712ca18103a76a4153aeecaf0bd66dd0e5f8",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005",
+  "accepted_research_core": "R05 controlled low-stock initialization followed by natural zero-stock callback and attributed physical supply debit",
+  "accepted_basic_business_primitive": "One actual supply/preferred invocation with stock-at-writer0, strict keyed join and complete unique physical debit337",
+  "supply_physical_debit": 337,
+  "separate_siege_or_raid_physical_debit": 67,
+  "callback_sequence": 93,
+  "callback_thread_id": 2464,
+  "joined_writer_count": 46,
+  "unknown_reasons": [],
+  "research": [
+    10,
+    14
+  ],
+  "basic_business": [
+    7,
+    11
+  ],
+  "qualified_dynamic": [
+    0,
+    11
+  ],
+  "formal_ABC": [
+    0,
+    3
+  ],
+  "normal_close_source": "docs/ck3-native-ai/acceptance/2026-10-18-r211-r05-normal-close/monitor-result.actual.json",
+  "release_source": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r211-window-take02/resource-release.json",
+  "media_source": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r211-window-take02/media-review.json",
+  "not_claimed": [
+    "natural depletion from positive stock",
+    "death",
+    "whole periodic cycle",
+    "all404 soldiers attributed to supply",
+    "complete supply residual total",
+    "human1x or formal shot signoff"
+  ],
+  "old_R209_R210_and_R211_early_errors_preserved": true,
+  "new_current_machine_game_or_native_qualification_from_offline_replay": false
+}

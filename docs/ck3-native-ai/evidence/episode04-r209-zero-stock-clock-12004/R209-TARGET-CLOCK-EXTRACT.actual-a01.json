@@ -1,0 +1,1318 @@
+{
+  "schema": "xar.e04.r209-starvation-cadence-target-extract.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T09:05:19.403318+00:00",
+  "source_scope": "Four Root-explicit existing R209 normalized full-history originals, one target Army0; no SDK or new query",
+  "rows": [
+    {
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003\\case-output-observe-only-a01\\r209-observe-only-a01-r05obs-0009-day-01-before-full-history-derived-normalized-full.json",
+        "bytes": 15112792,
+        "sha256": "dde76ff75ce36dba05480e855fa38e0ed3485e5a07852a6a1b794851b6bfc7b1"
+      },
+      "query_frame": {
+        "query_sequence": 6,
+        "queried_snapshot_id": "native:2",
+        "queried_revision": 3,
+        "queried_native_revision": 2,
+        "queried_date_raw": 53147376,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003"
+      },
+      "target_army_extract": {
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "current_soldiers": 6746,
+        "maximum_soldiers": 6747,
+        "current_supply_raw": 0,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -877192,
+        "current_attrition_fraction_raw": 6000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147376,
+          "native_day_index": 389474,
+          "selected_bucket_phase": 14,
+          "observed_army_bucket_phase": 0,
+          "last_supply_update_date_storage_raw64": 300333821678253472,
+          "last_supply_update_date_raw": 53147040,
+          "grace_anchor_date_storage_raw64": 300061168564366016,
+          "grace_anchor_date_raw": 53144256,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "monthly_loss_budget_inputs_v1": {
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "scale": 100000,
+          "unit_native_170_raw": 0,
+          "native_unit_in_combat": false,
+          "native_unit_gathering": false,
+          "army_gathering_count_raw": 0,
+          "loaded_supply_state_levels": [
+            60,
+            10,
+            0
+          ],
+          "loaded_supply_state_fractions_raw": [
+            0,
+            0,
+            5000
+          ],
+          "native_fleet_supply_loss_suppressed": false,
+          "commander_valid": true,
+          "commander_supply_modifier_id": 1625,
+          "commander_supply_modifier_raw": 0
+        },
+        "loss_application_inputs_v1": {
+          "status": "available",
+          "unavailable_reason": null,
+          "raid_association_id": -1,
+          "siege_active": true,
+          "raid_active": false,
+          "siege_rate_raw": 1000,
+          "raid_rate_raw": 1000,
+          "whole_soldiers": 6746,
+          "definition_le_zero_soldiers": 6677,
+          "supply_eligible_soldiers": 6746,
+          "definition_le_zero_supply_eligible_soldiers": 6677,
+          "current_supply_loss_budget": 337,
+          "siege_loss_budget": 67,
+          "raid_loss_budget": 0,
+          "fraction_scale": 100000,
+          "soldier_scale": 1
+        },
+        "all30_observed_memberships": [
+          {
+            "phase": 0,
+            "ready": true,
+            "count": 6,
+            "positions": [
+              0
+            ]
+          },
+          {
+            "phase": 1,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 2,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 3,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 4,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 5,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 6,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 7,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 8,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 9,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 10,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 11,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 12,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 13,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 14,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 15,
+            "ready": true,
+            "count": 4,
+            "positions": []
+          },
+          {
+            "phase": 16,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 17,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 18,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 19,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 20,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 21,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 22,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 23,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 24,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 25,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 26,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 27,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 28,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 29,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          }
+        ],
+        "source_derived_next_daily_supply_frame_inputs_v1": {
+          "schema_version": 1,
+          "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+          "stage": "source_derived_conditional_next_date_pair",
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "subject_army_id_u32": 0,
+          "subject_carmy_id_u32": 0,
+          "current_date_storage_raw64": 300333881807795952,
+          "current_date_raw_i32": 53147376,
+          "current_native_day_index_raw_i32": 389474,
+          "source_derived_next_date_raw_i32": 53147400,
+          "source_derived_next_native_day_index_raw_i32": 389475,
+          "source_derived_next_date_storage_raw64": 300333886102763272,
+          "source_derived_next_calendar_day_u8": 20,
+          "source_derived_next_calendar_month_u8": 0,
+          "source_derived_full_cdate64_ready": true,
+          "actual_future_date_stage_observed": false,
+          "actual_future_callback_observed": false,
+          "future_bucket_mutations_reconstructed": false,
+          "future_stock_or_strength_ready": false,
+          "full_daily_supply_transition_ready": false,
+          "full_monthly_ready": false
+        },
+        "actual_supply_callback_observations_v1": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 0,
+          "latest_sequence": 0,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        },
+        "actual_loss_writer_observations_v1": {
+          "status": "available",
+          "source": "native_natural_writer_entry_return",
+          "membership_basis": "membership_at_query",
+          "observer_installed": true,
+          "oldest_available_sequence": 0,
+          "latest_sequence": 0,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        }
+      },
+      "frozen_current_schedule_candidates_within_30_days": [
+        {
+          "days_after_this_capture": 16,
+          "conditional_date_raw": 53147760,
+          "conditional_native_D": 389490,
+          "conditional_phase": 0,
+          "observed_matching_positions": [
+            0
+          ],
+          "conditional_elapsed_since_grace_anchor_days": 146,
+          "frozen_current_gate_values_admit": true,
+          "actual_future_callback_or_budget_or_debit_claimed": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003\\case-output-observe-only-a01\\r209-observe-only-a01-r05obs-0016-day-01-after-full-history-derived-normalized-full.json",
+        "bytes": 15456357,
+        "sha256": "ef233d35ed5efda88361161391b76093136f880cdee14950a587be8f32d044eb"
+      },
+      "query_frame": {
+        "query_sequence": 7,
+        "queried_snapshot_id": "native:5",
+        "queried_revision": 6,
+        "queried_native_revision": 5,
+        "queried_date_raw": 53147400,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003"
+      },
+      "target_army_extract": {
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "current_soldiers": 6746,
+        "maximum_soldiers": 6747,
+        "current_supply_raw": 0,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -877192,
+        "current_attrition_fraction_raw": 6000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147400,
+          "native_day_index": 389475,
+          "selected_bucket_phase": 15,
+          "observed_army_bucket_phase": 0,
+          "last_supply_update_date_storage_raw64": 300333821678253472,
+          "last_supply_update_date_raw": 53147040,
+          "grace_anchor_date_storage_raw64": 300061168564366016,
+          "grace_anchor_date_raw": 53144256,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "monthly_loss_budget_inputs_v1": {
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "scale": 100000,
+          "unit_native_170_raw": 0,
+          "native_unit_in_combat": false,
+          "native_unit_gathering": false,
+          "army_gathering_count_raw": 0,
+          "loaded_supply_state_levels": [
+            60,
+            10,
+            0
+          ],
+          "loaded_supply_state_fractions_raw": [
+            0,
+            0,
+            5000
+          ],
+          "native_fleet_supply_loss_suppressed": false,
+          "commander_valid": true,
+          "commander_supply_modifier_id": 1625,
+          "commander_supply_modifier_raw": 0
+        },
+        "loss_application_inputs_v1": {
+          "status": "available",
+          "unavailable_reason": null,
+          "raid_association_id": -1,
+          "siege_active": true,
+          "raid_active": false,
+          "siege_rate_raw": 1000,
+          "raid_rate_raw": 1000,
+          "whole_soldiers": 6746,
+          "definition_le_zero_soldiers": 6677,
+          "supply_eligible_soldiers": 6746,
+          "definition_le_zero_supply_eligible_soldiers": 6677,
+          "current_supply_loss_budget": 337,
+          "siege_loss_budget": 67,
+          "raid_loss_budget": 0,
+          "fraction_scale": 100000,
+          "soldier_scale": 1
+        },
+        "all30_observed_memberships": [
+          {
+            "phase": 0,
+            "ready": true,
+            "count": 6,
+            "positions": [
+              0
+            ]
+          },
+          {
+            "phase": 1,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 2,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 3,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 4,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 5,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 6,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 7,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 8,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 9,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 10,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 11,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 12,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 13,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 14,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 15,
+            "ready": true,
+            "count": 4,
+            "positions": []
+          },
+          {
+            "phase": 16,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 17,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 18,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 19,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 20,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 21,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 22,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 23,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 24,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 25,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 26,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 27,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 28,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 29,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          }
+        ],
+        "source_derived_next_daily_supply_frame_inputs_v1": {
+          "schema_version": 1,
+          "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+          "stage": "source_derived_conditional_next_date_pair",
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "subject_army_id_u32": 0,
+          "subject_carmy_id_u32": 0,
+          "current_date_storage_raw64": 300333886102763272,
+          "current_date_raw_i32": 53147400,
+          "current_native_day_index_raw_i32": 389475,
+          "source_derived_next_date_raw_i32": 53147424,
+          "source_derived_next_native_day_index_raw_i32": 389476,
+          "source_derived_next_date_storage_raw64": 300333890397730592,
+          "source_derived_next_calendar_day_u8": 21,
+          "source_derived_next_calendar_month_u8": 0,
+          "source_derived_full_cdate64_ready": true,
+          "actual_future_date_stage_observed": false,
+          "actual_future_callback_observed": false,
+          "future_bucket_mutations_reconstructed": false,
+          "future_stock_or_strength_ready": false,
+          "full_daily_supply_transition_ready": false,
+          "full_monthly_ready": false
+        },
+        "actual_supply_callback_observations_v1": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 4,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        },
+        "actual_loss_writer_observations_v1": {
+          "status": "available",
+          "source": "native_natural_writer_entry_return",
+          "membership_basis": "membership_at_query",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 188,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        }
+      },
+      "frozen_current_schedule_candidates_within_30_days": [
+        {
+          "days_after_this_capture": 15,
+          "conditional_date_raw": 53147760,
+          "conditional_native_D": 389490,
+          "conditional_phase": 0,
+          "observed_matching_positions": [
+            0
+          ],
+          "conditional_elapsed_since_grace_anchor_days": 146,
+          "frozen_current_gate_values_admit": true,
+          "actual_future_callback_or_budget_or_debit_claimed": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003\\case-output-observe-only-a01\\r209-observe-only-a01-r05obs-0020-day-02-before-full-history-derived-normalized-full.json",
+        "bytes": 15456358,
+        "sha256": "46fc03ee479a3f056422c3e02b94e9d7cc3bdaa1b70a4d9e29462a77729bb9b4"
+      },
+      "query_frame": {
+        "query_sequence": 8,
+        "queried_snapshot_id": "native:5",
+        "queried_revision": 6,
+        "queried_native_revision": 5,
+        "queried_date_raw": 53147400,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003"
+      },
+      "target_army_extract": {
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "current_soldiers": 6746,
+        "maximum_soldiers": 6747,
+        "current_supply_raw": 0,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -877192,
+        "current_attrition_fraction_raw": 6000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147400,
+          "native_day_index": 389475,
+          "selected_bucket_phase": 15,
+          "observed_army_bucket_phase": 0,
+          "last_supply_update_date_storage_raw64": 300333821678253472,
+          "last_supply_update_date_raw": 53147040,
+          "grace_anchor_date_storage_raw64": 300061168564366016,
+          "grace_anchor_date_raw": 53144256,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "monthly_loss_budget_inputs_v1": {
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "scale": 100000,
+          "unit_native_170_raw": 0,
+          "native_unit_in_combat": false,
+          "native_unit_gathering": false,
+          "army_gathering_count_raw": 0,
+          "loaded_supply_state_levels": [
+            60,
+            10,
+            0
+          ],
+          "loaded_supply_state_fractions_raw": [
+            0,
+            0,
+            5000
+          ],
+          "native_fleet_supply_loss_suppressed": false,
+          "commander_valid": true,
+          "commander_supply_modifier_id": 1625,
+          "commander_supply_modifier_raw": 0
+        },
+        "loss_application_inputs_v1": {
+          "status": "available",
+          "unavailable_reason": null,
+          "raid_association_id": -1,
+          "siege_active": true,
+          "raid_active": false,
+          "siege_rate_raw": 1000,
+          "raid_rate_raw": 1000,
+          "whole_soldiers": 6746,
+          "definition_le_zero_soldiers": 6677,
+          "supply_eligible_soldiers": 6746,
+          "definition_le_zero_supply_eligible_soldiers": 6677,
+          "current_supply_loss_budget": 337,
+          "siege_loss_budget": 67,
+          "raid_loss_budget": 0,
+          "fraction_scale": 100000,
+          "soldier_scale": 1
+        },
+        "all30_observed_memberships": [
+          {
+            "phase": 0,
+            "ready": true,
+            "count": 6,
+            "positions": [
+              0
+            ]
+          },
+          {
+            "phase": 1,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 2,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 3,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 4,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 5,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 6,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 7,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 8,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 9,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 10,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 11,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 12,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 13,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 14,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 15,
+            "ready": true,
+            "count": 4,
+            "positions": []
+          },
+          {
+            "phase": 16,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 17,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 18,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 19,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 20,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 21,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 22,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 23,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 24,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 25,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 26,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 27,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 28,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 29,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          }
+        ],
+        "source_derived_next_daily_supply_frame_inputs_v1": {
+          "schema_version": 1,
+          "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+          "stage": "source_derived_conditional_next_date_pair",
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "subject_army_id_u32": 0,
+          "subject_carmy_id_u32": 0,
+          "current_date_storage_raw64": 300333886102763272,
+          "current_date_raw_i32": 53147400,
+          "current_native_day_index_raw_i32": 389475,
+          "source_derived_next_date_raw_i32": 53147424,
+          "source_derived_next_native_day_index_raw_i32": 389476,
+          "source_derived_next_date_storage_raw64": 300333890397730592,
+          "source_derived_next_calendar_day_u8": 21,
+          "source_derived_next_calendar_month_u8": 0,
+          "source_derived_full_cdate64_ready": true,
+          "actual_future_date_stage_observed": false,
+          "actual_future_callback_observed": false,
+          "future_bucket_mutations_reconstructed": false,
+          "future_stock_or_strength_ready": false,
+          "full_daily_supply_transition_ready": false,
+          "full_monthly_ready": false
+        },
+        "actual_supply_callback_observations_v1": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 4,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        },
+        "actual_loss_writer_observations_v1": {
+          "status": "available",
+          "source": "native_natural_writer_entry_return",
+          "membership_basis": "membership_at_query",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 188,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        }
+      },
+      "frozen_current_schedule_candidates_within_30_days": [
+        {
+          "days_after_this_capture": 15,
+          "conditional_date_raw": 53147760,
+          "conditional_native_D": 389490,
+          "conditional_phase": 0,
+          "observed_matching_positions": [
+            0
+          ],
+          "conditional_elapsed_since_grace_anchor_days": 146,
+          "frozen_current_gate_values_admit": true,
+          "actual_future_callback_or_budget_or_debit_claimed": false
+        }
+      ]
+    },
+    {
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003\\case-output-observe-only-a01\\r209-observe-only-a01-r05obs-0025-day-02-after-full-history-derived-normalized-full.json",
+        "bytes": 15519832,
+        "sha256": "e60592da1d82ba6061bb9e394944ede0489443a91dac84cad10e028776509425"
+      },
+      "query_frame": {
+        "query_sequence": 9,
+        "queried_snapshot_id": "native:10",
+        "queried_revision": 11,
+        "queried_native_revision": 10,
+        "queried_date_raw": 53147424,
+        "queried_connection_generation": 1,
+        "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0003"
+      },
+      "target_army_extract": {
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "current_soldiers": 6746,
+        "maximum_soldiers": 6747,
+        "current_supply_raw": 0,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -877192,
+        "current_attrition_fraction_raw": 6000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147424,
+          "native_day_index": 389476,
+          "selected_bucket_phase": 16,
+          "observed_army_bucket_phase": 0,
+          "last_supply_update_date_storage_raw64": 300333821678253472,
+          "last_supply_update_date_raw": 53147040,
+          "grace_anchor_date_storage_raw64": 300061168564366016,
+          "grace_anchor_date_raw": 53144256,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "monthly_loss_budget_inputs_v1": {
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "scale": 100000,
+          "unit_native_170_raw": 0,
+          "native_unit_in_combat": false,
+          "native_unit_gathering": false,
+          "army_gathering_count_raw": 0,
+          "loaded_supply_state_levels": [
+            60,
+            10,
+            0
+          ],
+          "loaded_supply_state_fractions_raw": [
+            0,
+            0,
+            5000
+          ],
+          "native_fleet_supply_loss_suppressed": false,
+          "commander_valid": true,
+          "commander_supply_modifier_id": 1625,
+          "commander_supply_modifier_raw": 0
+        },
+        "loss_application_inputs_v1": {
+          "status": "available",
+          "unavailable_reason": null,
+          "raid_association_id": -1,
+          "siege_active": true,
+          "raid_active": false,
+          "siege_rate_raw": 1000,
+          "raid_rate_raw": 1000,
+          "whole_soldiers": 6746,
+          "definition_le_zero_soldiers": 6677,
+          "supply_eligible_soldiers": 6746,
+          "definition_le_zero_supply_eligible_soldiers": 6677,
+          "current_supply_loss_budget": 337,
+          "siege_loss_budget": 67,
+          "raid_loss_budget": 0,
+          "fraction_scale": 100000,
+          "soldier_scale": 1
+        },
+        "all30_observed_memberships": [
+          {
+            "phase": 0,
+            "ready": true,
+            "count": 6,
+            "positions": [
+              0
+            ]
+          },
+          {
+            "phase": 1,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 2,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 3,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 4,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 5,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 6,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 7,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 8,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 9,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 10,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 11,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 12,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 13,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 14,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 15,
+            "ready": true,
+            "count": 4,
+            "positions": []
+          },
+          {
+            "phase": 16,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 17,
+            "ready": true,
+            "count": 7,
+            "positions": []
+          },
+          {
+            "phase": 18,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 19,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 20,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 21,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 22,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 23,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 24,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 25,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 26,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 27,
+            "ready": true,
+            "count": 5,
+            "positions": []
+          },
+          {
+            "phase": 28,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          },
+          {
+            "phase": 29,
+            "ready": true,
+            "count": 6,
+            "positions": []
+          }
+        ],
+        "source_derived_next_daily_supply_frame_inputs_v1": {
+          "schema_version": 1,
+          "source": "native_source_derived_next_daily_supply_frame_inputs_12004",
+          "stage": "source_derived_conditional_next_date_pair",
+          "status": "available",
+          "ready": true,
+          "unavailable_reason": null,
+          "subject_army_id_u32": 0,
+          "subject_carmy_id_u32": 0,
+          "current_date_storage_raw64": 300333890397730592,
+          "current_date_raw_i32": 53147424,
+          "current_native_day_index_raw_i32": 389476,
+          "source_derived_next_date_raw_i32": 53147448,
+          "source_derived_next_native_day_index_raw_i32": 389477,
+          "source_derived_next_date_storage_raw64": 300333894692697912,
+          "source_derived_next_calendar_day_u8": 22,
+          "source_derived_next_calendar_month_u8": 0,
+          "source_derived_full_cdate64_ready": true,
+          "actual_future_date_stage_observed": false,
+          "actual_future_callback_observed": false,
+          "future_bucket_mutations_reconstructed": false,
+          "future_stock_or_strength_ready": false,
+          "full_daily_supply_transition_ready": false,
+          "full_monthly_ready": false
+        },
+        "actual_supply_callback_observations_v1": {
+          "status": "available",
+          "source": "native_natural_supply_callback_entry_return",
+          "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 11,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        },
+        "actual_loss_writer_observations_v1": {
+          "status": "available",
+          "source": "native_natural_writer_entry_return",
+          "membership_basis": "membership_at_query",
+          "observer_installed": true,
+          "oldest_available_sequence": 1,
+          "latest_sequence": 375,
+          "overwritten_events": 0,
+          "unattributed_capture_failures": 0,
+          "event_count": 0
+        }
+      },
+      "frozen_current_schedule_candidates_within_30_days": [
+        {
+          "days_after_this_capture": 14,
+          "conditional_date_raw": 53147760,
+          "conditional_native_D": 389490,
+          "conditional_phase": 0,
+          "observed_matching_positions": [
+            0
+          ],
+          "conditional_elapsed_since_grace_anchor_days": 146,
+          "frozen_current_gate_values_admit": true,
+          "actual_future_callback_or_budget_or_debit_claimed": false
+        }
+      ]
+    }
+  ],
+  "future_membership_mutations_reconstructed": false,
+  "actual_future_callback_or_loss_qualified": false
+}

@@ -1,0 +1,55 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T10:28:08.875275+00:00",
+  "run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004",
+  "status": "RECORDER_PRODUCER_PINS_NOW_COMPLETE",
+  "canonical_recorder_start_count": 0,
+  "video_count": 0,
+  "native_readonly_UI_reply_does_not_promote_complete_query": true,
+  "take01_failure": "fresh Root original CK3 client visual review absent",
+  "take02_failure": "Actual case step failed: r210-camera-take02-army-window-current",
+  "producer_sources": [
+    {
+      "portable_path": "docs/ck3-native-ai/acceptance/2026-10-18-r210-r05-controlled-initializer-host-failure/film-take01-result.json",
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output-window-take01\\window-take-actor-result.json",
+        "bytes": 386,
+        "sha256": "7dfba76e84ff164f380fb13e541af11af1cb676ccdd14813f07adf1d1677517a"
+      }
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/acceptance/2026-10-18-r210-r05-controlled-initializer-host-failure/film-take02-result.json",
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0004\\case-output-window-take02\\window-take-actor-result.json",
+        "bytes": 396,
+        "sha256": "25afbe5c07baf34ec6424917388ebaa9d7982903554a80058c3d0507fe4962e6"
+      }
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/acceptance/2026-10-18-r210-r05-controlled-initializer-host-failure/film-take01-stdout.log",
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r210-window-live-bind-a01\\FILM.stdout-a03.log",
+        "bytes": 398,
+        "sha256": "9b140581467738485f8087fde99dea3ac12af5f726a689e81eb00374cf8e2953"
+      }
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/acceptance/2026-10-18-r210-r05-controlled-initializer-host-failure/film-take02-stdout.log",
+      "original": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r210-r05-long-a01\\review-observe-film-take02-a01\\film.stdout.log",
+        "bytes": 408,
+        "sha256": "bf6886f9038580bab1c532284604c2200cc2754a495aea8bf28933072b8950b2"
+      }
+    },
+    {
+      "portable_path": "docs/ck3-native-ai/acceptance/2026-10-18-r210-r05-controlled-initializer-host-failure/ui-owner-postcheck-failure.actual.json",
+      "original": {
+        "path": "C:\\ck3-e04-resume-20261015-a01\\r210-window-live-bind-a01\\R210-UI-OWNER-POSTCHECK-FAILURE.actual-a01.json",
+        "bytes": 2861,
+        "sha256": "ca03a572bb09447cac719aa1e9d4586bd6805a81b9ebb2aa890103c3c32f6734"
+      }
+    }
+  ],
+  "supersedes_only_historical_film_producer_pin_pending": true,
+  "old_resource_facts_not_rewritten": true
+}

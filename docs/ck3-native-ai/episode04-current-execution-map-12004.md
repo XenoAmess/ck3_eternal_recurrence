@@ -1,5 +1,7 @@
 # Episode 04 当前缺口与执行入口（2026-10-17）
 
+> 最新采纳：R211 已取得受控初始化后自然供给扣兵337，研究10/14、基本业务7/11；动态0/11、ABC0/3。见文末 R211 补注与[严格证据](episode04-r211-zero-stock-physical-12004.md)，旧段落保留原时间边界。
+
 ## 2026-10-18 R200环境RED与R201异常移动前缀
 
 `machine_id: desktop-3fevhd2-1c74096080`；R201实际source26449/a34b。[专题、字面投影与续行决定](episode04-r200-r201-movement-abnormal-close-12004.md)保全R200缺screen_bus_lease导致游戏未启动；R201只闭23个actor循环，独立day24为53148792/paused、Army18@2633且剩余route尚非抵达。已注册pam_bull_events.0004空确认native0一次ACK/postcondition及独立消失均通过。后续Army查询超时未知，bootstrap1803.239秒timeout/CK3 exit1；outer0与CAS6234→6235 expired释放/done6236只算清理。初始身份Save不能顶替推进后正常闭场Save，R201不具新S0资格。
@@ -135,3 +137,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-18 R206：双 policy 修复与实际两天分列
 
 `machine_id: desktop-3fevhd2-1c74096080`；实际 source7a342/a36。[R206实证与后继入口](episode04-r206-william-exactday-12004.md)保留原片8.3秒/唯一Start/Finish及 actor RED：片中 native exact day53147376→53147400、独立paused/map-ready、overshoot0均真实，旧共享合同误拒 noncombat policy。新合同只补该实证 policy，R203校验保留，原RED不追认、不重投日步。拍后另一天至53147424、正常Save/CK3-bootstrap0/OFF-clear/screen释放单列，未抵达目标，不授R06ADD、clean/1×/signoff。公共latest闭场INDEX已换R206；后继仍须按新场身份/最新history重新准入。研究9/14、业务6/11、动态0/11、ABC0/3不涨。
+
+## 2026-10-18 R211：R05 受控低库存自然回调研究核心闭合
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际运行源 `ec51712ca18103a76a4153aeecaf0bd66dd0e5f8`，公共 R0005。Root 采纳受控初始化至库存 raw0 后的自然日研究正例：16 个精确日 `53147376→53147760`，callback93、thread2464/46严格连接，供给来源物理扣兵337；另有围城/劫掠合计67，须分列，不能并为补给扣兵。它不证明自然库存耗尽、死亡、全军净损或完整供给周期。原自动入口 camera Start 等待超时/exit2 的失败仍有效；后续既有进程 observe-only 的实际正例不改写它。[本机小监视原件](C:/ck3-e04-resume-20261015-a01/r211-r05-owner-recheck-prep-a01/R211-R05-MONITOR-RESULT.actual-a13.json)绑定正常 Save、OFF/clear、CK3和host实际0及 Root 单独任务总线释放。当前研究 **10/14（71.43%）**，按既有业务基本项口径 **7/11（63.64%）**；合格动态 **0/11**、正式ABC **0/3**。窗口片虽全解码通过，尚无完整clean/人工1×/签核，不能以技术媒体PASS补动态分子。R207/R208/R209的旧失败与旧分子保持原历史时点。

@@ -1,0 +1,5133 @@
+{
+  "schema": "xar.e04.r211-day16-target-production-consumption.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T11:44:19.253530+00:00",
+  "original": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005\\case-output-observe-only-a01\\r211-observe-only-a01-r05obs-0150-day-16-after-full-history-derived-normalized-full.json",
+    "bytes": 16353493,
+    "sha256": "9dcbc553337f32541479ee46ec181a7af1f06ab12452465a57da473bbeef8f52",
+    "input_read_count_this_lane": 1
+  },
+  "day15_fence_proof": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r211-r05-owner-recheck-prep-a01\\R211-DAY15-JOURNAL-PROJECTION.actual-a11.json",
+    "bytes": 2475,
+    "sha256": "4d113c536fa35356243419cf0c097d59048c7d70fd84a11d365f6fa5c4e80235"
+  },
+  "query_frame": {
+    "queried_snapshot_id": "native:53",
+    "queried_revision": 54,
+    "queried_native_revision": 53,
+    "queried_date_raw": 53147760,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "desktop-3fevhd2-1c74096080--r05-mechanism-research--R0005"
+  },
+  "actual_fences": {
+    "game_version": "1.20.0.4",
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "callback_after_sequence": 92,
+    "loss_after_sequence": 2615
+  },
+  "army0": {
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "current_soldiers": 6342,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 0,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_change_monthly_raw": -877192,
+    "army_update_clock_v1": {
+      "status": "available",
+      "ready": true,
+      "current_date_raw": 53147760,
+      "native_day_index": 389490,
+      "selected_bucket_phase": 0,
+      "observed_army_bucket_phase": 0,
+      "last_supply_update_date_storage_raw64": 300334916894914672,
+      "last_supply_update_date_raw": 53147760,
+      "grace_anchor_date_storage_raw64": 300061168564366016,
+      "grace_anchor_date_raw": 53144256,
+      "loaded_grace_days": 30,
+      "unavailable_reason": null
+    },
+    "monthly_loss_budget_inputs_v1": {
+      "status": "available",
+      "ready": true,
+      "unavailable_reason": null,
+      "scale": 100000,
+      "unit_native_170_raw": 0,
+      "native_unit_in_combat": false,
+      "native_unit_gathering": false,
+      "army_gathering_count_raw": 0,
+      "loaded_supply_state_levels": [
+        60,
+        10,
+        0
+      ],
+      "loaded_supply_state_fractions_raw": [
+        0,
+        0,
+        5000
+      ],
+      "native_fleet_supply_loss_suppressed": false,
+      "commander_valid": true,
+      "commander_supply_modifier_id": 1625,
+      "commander_supply_modifier_raw": 0
+    },
+    "loss_application_inputs_v1": {
+      "status": "available",
+      "unavailable_reason": null,
+      "raid_association_id": -1,
+      "siege_active": true,
+      "raid_active": false,
+      "siege_rate_raw": 1000,
+      "raid_rate_raw": 1000,
+      "whole_soldiers": 6342,
+      "definition_le_zero_soldiers": 6273,
+      "supply_eligible_soldiers": 6342,
+      "definition_le_zero_supply_eligible_soldiers": 6273,
+      "current_supply_loss_budget": 317,
+      "siege_loss_budget": 63,
+      "raid_loss_budget": 0,
+      "fraction_scale": 100000,
+      "soldier_scale": 1
+    },
+    "actual_supply_callback_observations_v1": {
+      "status": "available",
+      "source": "native_natural_supply_callback_entry_return",
+      "identity_basis": "public_unit_and_native_carmy_full_ids_at_invocation",
+      "observer_installed": true,
+      "oldest_available_sequence": 1,
+      "latest_sequence": 98,
+      "overwritten_events": 0,
+      "unattributed_capture_failures": 0,
+      "event_count": 1,
+      "events": [
+        {
+          "sequence": 93,
+          "army_id": 0,
+          "native_carmy_id": 0,
+          "passed_date_raw64": 300334916894914672,
+          "caller_return_rva": 44673867,
+          "before": {
+            "supply_raw": 0,
+            "last_supply_update_date_raw64": 300333821678253472,
+            "supply_updated_byte_raw": 0,
+            "province_id": 1506
+          },
+          "after": {
+            "supply_raw": 0,
+            "last_supply_update_date_raw64": 300334916894914672,
+            "supply_updated_byte_raw": 1,
+            "province_id": 1506
+          },
+          "same_instance_after": true,
+          "capture_failure_flags": 0,
+          "supply_parent_invocation_v1": {
+            "nesting_depth": 1,
+            "invocation_token": 93,
+            "callback_caller_return_rva": 44673867,
+            "native_thread_id": 2464,
+            "parent_invocation_token": null,
+            "callback_entry_rva": 38679568,
+            "receiver_basis": "actual_24E3410_rcx_carmy"
+          }
+        }
+      ]
+    },
+    "actual_loss_writer_observations_v1": {
+      "status": "available",
+      "source": "native_natural_writer_entry_return",
+      "membership_basis": "membership_at_query",
+      "observer_installed": true,
+      "oldest_available_sequence": 2328,
+      "latest_sequence": 2839,
+      "overwritten_events": 2327,
+      "unattributed_capture_failures": 0,
+      "event_count": 46,
+      "events": [
+        {
+          "sequence": 2756,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 0,
+          "request_raw": 5000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1000,
+          "before_maximum_soldiers": 1000,
+          "after_current_soldiers": 950,
+          "after_maximum_soldiers": 1000,
+          "native_data_record_count": 1,
+          "cached_current_delta": -50,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 50,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15158,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 1000,
+                "maximum_soldiers": 1000,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 950,
+                "maximum_soldiers": 1000,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2757,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 1,
+          "request_raw": 4000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 800,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 760,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -40,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 40,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15159,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 800,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2758,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 2,
+          "request_raw": 500000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 100,
+          "before_maximum_soldiers": 100,
+          "after_current_soldiers": 95,
+          "after_maximum_soldiers": 100,
+          "native_data_record_count": 1,
+          "cached_current_delta": -5,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 5,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15160,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 100,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 95,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2759,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 4,
+          "request_raw": 4000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 800,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 760,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -40,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 40,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15162,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 800,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2760,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 5,
+          "request_raw": 2000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 400,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 380,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -20,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 20,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15163,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 400,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2761,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 7,
+          "request_raw": 4000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 800,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 760,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -40,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 40,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15165,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 800,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2762,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 8,
+          "request_raw": 500000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 100,
+          "before_maximum_soldiers": 100,
+          "after_current_soldiers": 95,
+          "after_maximum_soldiers": 100,
+          "native_data_record_count": 1,
+          "cached_current_delta": -5,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 5,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15166,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 100,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 95,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2763,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 10,
+          "request_raw": 4000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 800,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 760,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -40,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 40,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15168,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 800,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2764,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 11,
+          "request_raw": 2000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 400,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 380,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -20,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 20,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15169,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 400,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2765,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 12,
+          "request_raw": 2000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 400,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 380,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -20,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 20,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15170,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 400,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2766,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 7,
+          "physical_slot_count": 7,
+          "army_regiment_id": 50,
+          "request_raw": 1400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 277,
+          "before_maximum_soldiers": 277,
+          "after_current_soldiers": 263,
+          "after_maximum_soldiers": 277,
+          "native_data_record_count": 7,
+          "cached_current_delta": -14,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 14,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2624,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2606,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2626,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            },
+            {
+              "data_record_index": 3,
+              "persistent_regiment_id": 2608,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 3
+            },
+            {
+              "data_record_index": 4,
+              "persistent_regiment_id": 2630,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 4
+            },
+            {
+              "data_record_index": 5,
+              "persistent_regiment_id": 2628,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 5
+            },
+            {
+              "data_record_index": 6,
+              "persistent_regiment_id": 2632,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 6
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 75,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 61,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 75,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 75,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 3,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 4,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 5,
+              "before": {
+                "current_soldiers": 123,
+                "maximum_soldiers": 123,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 123,
+                "maximum_soldiers": 123,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 6,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2767,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 3,
+          "physical_slot_count": 3,
+          "army_regiment_id": 51,
+          "request_raw": 200000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 38,
+          "before_maximum_soldiers": 38,
+          "after_current_soldiers": 36,
+          "after_maximum_soldiers": 38,
+          "native_data_record_count": 3,
+          "cached_current_delta": -2,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 2,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2638,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2634,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2636,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 17,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 15,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 17,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 17,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 4,
+                "maximum_soldiers": 4,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 4,
+                "maximum_soldiers": 4,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2768,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 52,
+          "request_raw": 1000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 200,
+          "before_maximum_soldiers": 200,
+          "after_current_soldiers": 190,
+          "after_maximum_soldiers": 200,
+          "native_data_record_count": 1,
+          "cached_current_delta": -10,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 10,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 17948,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 200,
+                "maximum_soldiers": 200,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 190,
+                "maximum_soldiers": 200,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2769,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 2,
+          "physical_slot_count": 2,
+          "army_regiment_id": 54,
+          "request_raw": 1700000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 321,
+          "before_maximum_soldiers": 321,
+          "after_current_soldiers": 304,
+          "after_maximum_soldiers": 321,
+          "native_data_record_count": 2,
+          "cached_current_delta": -17,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 17,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2610,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2612,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 1
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 302,
+                "maximum_soldiers": 302,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 285,
+                "maximum_soldiers": 302,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 19,
+                "maximum_soldiers": 19,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 19,
+                "maximum_soldiers": 19,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2770,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 55,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 6,
+          "before_maximum_soldiers": 6,
+          "after_current_soldiers": 6,
+          "after_maximum_soldiers": 6,
+          "native_data_record_count": 1,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2614,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 6,
+                "maximum_soldiers": 6,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 6,
+                "maximum_soldiers": 6,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2771,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 56,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2772,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 57,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2773,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 58,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2774,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 59,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2775,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 60,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2776,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 3,
+          "physical_slot_count": 3,
+          "army_regiment_id": 61,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 71,
+          "before_maximum_soldiers": 71,
+          "after_current_soldiers": 67,
+          "after_maximum_soldiers": 71,
+          "native_data_record_count": 3,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 10178,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2616,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2618,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 69,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 66,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2777,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 2,
+          "physical_slot_count": 2,
+          "army_regiment_id": 62,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 70,
+          "before_maximum_soldiers": 70,
+          "after_current_soldiers": 66,
+          "after_maximum_soldiers": 70,
+          "native_data_record_count": 2,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2620,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2622,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 1
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 69,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 65,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2778,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 4,
+          "physical_slot_count": 4,
+          "army_regiment_id": 82,
+          "request_raw": 600000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680063,
+          "caller_kind": "supply_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 89,
+          "before_maximum_soldiers": 89,
+          "after_current_soldiers": 83,
+          "after_maximum_soldiers": 89,
+          "native_data_record_count": 4,
+          "cached_current_delta": -6,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 6,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2604,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2602,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 9884,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            },
+            {
+              "data_record_index": 3,
+              "persistent_regiment_id": 9886,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 3
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 69,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 64,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 3,
+              "before": {
+                "current_soldiers": 18,
+                "maximum_soldiers": 18,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 18,
+                "maximum_soldiers": 18,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2779,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 0,
+          "request_raw": 1000000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 950,
+          "before_maximum_soldiers": 1000,
+          "after_current_soldiers": 940,
+          "after_maximum_soldiers": 1000,
+          "native_data_record_count": 1,
+          "cached_current_delta": -10,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 10,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15158,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 950,
+                "maximum_soldiers": 1000,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 940,
+                "maximum_soldiers": 1000,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2780,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 1,
+          "request_raw": 800000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 760,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 752,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -8,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 8,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15159,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 752,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2781,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 2,
+          "request_raw": 100000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 95,
+          "before_maximum_soldiers": 100,
+          "after_current_soldiers": 94,
+          "after_maximum_soldiers": 100,
+          "native_data_record_count": 1,
+          "cached_current_delta": -1,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 1,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15160,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 95,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 94,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2782,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 4,
+          "request_raw": 800000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 760,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 752,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -8,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 8,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15162,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 752,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2783,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 5,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 380,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 376,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15163,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 376,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2784,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 7,
+          "request_raw": 800000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 760,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 752,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -8,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 8,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15165,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 752,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2785,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 8,
+          "request_raw": 100000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 95,
+          "before_maximum_soldiers": 100,
+          "after_current_soldiers": 94,
+          "after_maximum_soldiers": 100,
+          "native_data_record_count": 1,
+          "cached_current_delta": -1,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 1,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15166,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 95,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 94,
+                "maximum_soldiers": 100,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2786,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 10,
+          "request_raw": 800000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 760,
+          "before_maximum_soldiers": 800,
+          "after_current_soldiers": 752,
+          "after_maximum_soldiers": 800,
+          "native_data_record_count": 1,
+          "cached_current_delta": -8,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 8,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15168,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 760,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 752,
+                "maximum_soldiers": 800,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2787,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 11,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 380,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 376,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15169,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 376,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2788,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 12,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 380,
+          "before_maximum_soldiers": 400,
+          "after_current_soldiers": 376,
+          "after_maximum_soldiers": 400,
+          "native_data_record_count": 1,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 15170,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 380,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "after": {
+                "current_soldiers": 376,
+                "maximum_soldiers": 400,
+                "state_raw": 1
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2789,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 7,
+          "physical_slot_count": 7,
+          "army_regiment_id": 50,
+          "request_raw": 200000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 263,
+          "before_maximum_soldiers": 277,
+          "after_current_soldiers": 261,
+          "after_maximum_soldiers": 277,
+          "native_data_record_count": 7,
+          "cached_current_delta": -2,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 2,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2624,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2606,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2626,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            },
+            {
+              "data_record_index": 3,
+              "persistent_regiment_id": 2608,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 3
+            },
+            {
+              "data_record_index": 4,
+              "persistent_regiment_id": 2630,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 4
+            },
+            {
+              "data_record_index": 5,
+              "persistent_regiment_id": 2628,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 5
+            },
+            {
+              "data_record_index": 6,
+              "persistent_regiment_id": 2632,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 6
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 61,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 59,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 75,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 75,
+                "maximum_soldiers": 75,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 3,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 4,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 5,
+              "before": {
+                "current_soldiers": 123,
+                "maximum_soldiers": 123,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 123,
+                "maximum_soldiers": 123,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 6,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2790,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 3,
+          "physical_slot_count": 3,
+          "army_regiment_id": 51,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 36,
+          "before_maximum_soldiers": 38,
+          "after_current_soldiers": 36,
+          "after_maximum_soldiers": 38,
+          "native_data_record_count": 3,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2638,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2634,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2636,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 15,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 15,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 17,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 17,
+                "maximum_soldiers": 17,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 4,
+                "maximum_soldiers": 4,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 4,
+                "maximum_soldiers": 4,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2791,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 52,
+          "request_raw": 200000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 190,
+          "before_maximum_soldiers": 200,
+          "after_current_soldiers": 188,
+          "after_maximum_soldiers": 200,
+          "native_data_record_count": 1,
+          "cached_current_delta": -2,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 2,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 17948,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 190,
+                "maximum_soldiers": 200,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 188,
+                "maximum_soldiers": 200,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2792,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 2,
+          "physical_slot_count": 2,
+          "army_regiment_id": 54,
+          "request_raw": 400000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 304,
+          "before_maximum_soldiers": 321,
+          "after_current_soldiers": 300,
+          "after_maximum_soldiers": 321,
+          "native_data_record_count": 2,
+          "cached_current_delta": -4,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 4,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2610,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2612,
+              "data_chunk_ordinal": 0,
+              "physical_slot_index": 1
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 285,
+                "maximum_soldiers": 302,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 281,
+                "maximum_soldiers": 302,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 19,
+                "maximum_soldiers": 19,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 19,
+                "maximum_soldiers": 19,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2793,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 1,
+          "physical_slot_count": 1,
+          "army_regiment_id": 55,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 6,
+          "before_maximum_soldiers": 6,
+          "after_current_soldiers": 6,
+          "after_maximum_soldiers": 6,
+          "native_data_record_count": 1,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2614,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 6,
+                "maximum_soldiers": 6,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 6,
+                "maximum_soldiers": 6,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2794,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 56,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2795,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 57,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2796,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 58,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2797,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 59,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2798,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 0,
+          "physical_slot_count": 0,
+          "army_regiment_id": 60,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 1,
+          "before_maximum_soldiers": 1,
+          "after_current_soldiers": 1,
+          "after_maximum_soldiers": 1,
+          "native_data_record_count": 0,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [],
+          "physical_slots": [],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2799,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 3,
+          "physical_slot_count": 3,
+          "army_regiment_id": 61,
+          "request_raw": 0,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 67,
+          "before_maximum_soldiers": 71,
+          "after_current_soldiers": 67,
+          "after_maximum_soldiers": 71,
+          "native_data_record_count": 3,
+          "cached_current_delta": 0,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 0,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 10178,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2616,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 2618,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 66,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 66,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2800,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 2,
+          "physical_slot_count": 2,
+          "army_regiment_id": 62,
+          "request_raw": 100000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 66,
+          "before_maximum_soldiers": 70,
+          "after_current_soldiers": 65,
+          "after_maximum_soldiers": 70,
+          "native_data_record_count": 2,
+          "cached_current_delta": -1,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 1,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2620,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2622,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 1
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 65,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 64,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        },
+        {
+          "sequence": 2801,
+          "capture_failure_flags": 0,
+          "captured_data_record_count": 4,
+          "physical_slot_count": 4,
+          "army_regiment_id": 82,
+          "request_raw": 200000,
+          "request_scale": 100000,
+          "caller_return_rva": 38680444,
+          "caller_kind": "siege_or_raid_preferred",
+          "observed_date_raw": 53147760,
+          "before_current_soldiers": 83,
+          "before_maximum_soldiers": 89,
+          "after_current_soldiers": 81,
+          "after_maximum_soldiers": 89,
+          "native_data_record_count": 4,
+          "cached_current_delta": -2,
+          "cached_maximum_delta": 0,
+          "actual_physical_soldier_debit": 2,
+          "same_instance_after": true,
+          "physical_capture_complete": true,
+          "physical_debit_observed": true,
+          "data_aliases": [
+            {
+              "data_record_index": 0,
+              "persistent_regiment_id": 2604,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 0
+            },
+            {
+              "data_record_index": 1,
+              "persistent_regiment_id": 2602,
+              "data_chunk_ordinal": 1,
+              "physical_slot_index": 1
+            },
+            {
+              "data_record_index": 2,
+              "persistent_regiment_id": 9884,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 2
+            },
+            {
+              "data_record_index": 3,
+              "persistent_regiment_id": 9886,
+              "data_chunk_ordinal": 2,
+              "physical_slot_index": 3
+            }
+          ],
+          "physical_slots": [
+            {
+              "physical_slot_index": 0,
+              "before": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 0,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 1,
+              "before": {
+                "current_soldiers": 64,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 62,
+                "maximum_soldiers": 69,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 2,
+              "before": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 1,
+                "maximum_soldiers": 1,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            },
+            {
+              "physical_slot_index": 3,
+              "before": {
+                "current_soldiers": 18,
+                "maximum_soldiers": 18,
+                "state_raw": 0
+              },
+              "after": {
+                "current_soldiers": 18,
+                "maximum_soldiers": 18,
+                "state_raw": 0
+              },
+              "same_instance_after": true
+            }
+          ],
+          "supply_parent_context_v1": {
+            "invocation": {
+              "nesting_depth": 1,
+              "invocation_token": 93,
+              "callback_caller_return_rva": 44673867,
+              "native_thread_id": 2464,
+              "parent_invocation_token": null,
+              "callback_entry_rva": 38679568,
+              "receiver_basis": "actual_24E3410_rcx_carmy"
+            },
+            "army_id": 0,
+            "native_carmy_id": 0,
+            "passed_date_raw64": 300334916894914672,
+            "stock_at_writer_entry_raw": 0,
+            "stock_scale": 100000,
+            "receiver_identity_matches": true,
+            "capture_failure_flags": 0
+          },
+          "siege_budget_at_writer_v1": {
+            "source_callback_entry_rva": 38679568,
+            "source_writer_return_rva": 38680444,
+            "return_slot_basis": "natural_writer_hook_incoming_return_address",
+            "original_supply_budget_soldiers": 337,
+            "original_siege_budget_soldiers": 67,
+            "combined_siege_raid_budget_soldiers": 67,
+            "derived_original_raid_budget_soldiers": 0,
+            "siege_raid_capture_complete": true,
+            "capture_failure_flags": 0
+          }
+        }
+      ]
+    }
+  },
+  "production_parent_join": {
+    "source": "copied_natural_callback_context_at_actual_writer_entry",
+    "status": "available",
+    "events": [
+      {
+        "writer_sequence": 2756,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 50,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2757,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2758,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 5,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2759,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2760,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2761,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2762,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 5,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2763,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2764,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2765,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2766,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 14,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2767,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 2,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2768,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 10,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2769,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 17,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2770,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2771,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2772,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2773,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2774,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2775,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2776,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2777,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2778,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 6,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2779,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 10,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2780,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 8,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2781,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 1,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2782,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 8,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2783,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2784,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 8,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2785,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 1,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2786,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 8,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2787,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2788,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2789,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 2,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2790,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2791,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 2,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2792,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2793,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2794,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2795,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2796,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2797,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2798,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2799,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 0,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2800,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 1,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2801,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 2,
+        "source_supply_preferred": false,
+        "source_siege_or_raid_preferred": true,
+        "strict_below_ten": true,
+        "exact_ten": false
+      }
+    ],
+    "joined_writer_count": 46,
+    "strict_below_ten_supply_physical_debit_soldiers": 337,
+    "source_supply_writer_at_exact_ten_count": 0,
+    "physical_debit_sum_scope": "only_complete_keyed_source_supply_preferred_invocations",
+    "complete_selected_writer_history_joined": true,
+    "unknown_reasons": [],
+    "new_live_evidence": false,
+    "native_calls_executed": 0,
+    "callback_sequence_order_used": false,
+    "callback_entry_stock_used": false,
+    "callback_return_stock_used": false
+  },
+  "production_zero_stock_selector": {
+    "source": "keyed_daily_supply_preferred_exact_zero_writer_facts",
+    "positive_invocations": [
+      {
+        "writer_sequence": 2756,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 50,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2757,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2758,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 5,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2759,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2760,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2761,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2762,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 5,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2763,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 40,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2764,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2765,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 20,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2766,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 14,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2767,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 2,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2768,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 10,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2769,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 17,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2776,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2777,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 4,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      },
+      {
+        "writer_sequence": 2778,
+        "status": "joined",
+        "reason": null,
+        "invocation_token": 93,
+        "callback_sequence": 93,
+        "stock_at_writer_entry_raw": 0,
+        "physical_debit_soldiers": 6,
+        "source_supply_preferred": true,
+        "source_siege_or_raid_preferred": false,
+        "strict_below_ten": true,
+        "exact_ten": false
+      }
+    ],
+    "positive_physical_debit_observed": true,
+    "selected_invocation_debit_sum": 337,
+    "unknown_reasons": [],
+    "complete_interval_loss_total_ready": false,
+    "complete_cycle_observed": false
+  },
+  "production_writer_components": [
+    {
+      "sequence": 2756,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2757,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2758,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2759,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2760,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2761,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2762,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2763,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2764,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2765,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2766,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2767,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2768,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2769,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2770,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2771,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2772,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2773,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2774,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2775,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2776,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2777,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2778,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "supply",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2779,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2780,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2781,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2782,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2783,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2784,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2785,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2786,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2787,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2788,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2789,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2790,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2791,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2792,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2793,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2794,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2795,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2796,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2797,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2798,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2799,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2800,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    },
+    {
+      "sequence": 2801,
+      "classification": {
+        "source": "exact_actual4_callback_and_allocator_callsites",
+        "component": "siege_or_raid",
+        "phase": "preferred",
+        "source_ready": true,
+        "reason": null,
+        "physical_loss_inferred": false
+      }
+    }
+  ],
+  "initialized_low_stock_case": true,
+  "natural_depletion_claimed": false,
+  "complete16day_total_claimed": false,
+  "SDK_used": false,
+  "build_executed": false
+}
