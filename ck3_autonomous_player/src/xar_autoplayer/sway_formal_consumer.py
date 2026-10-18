@@ -428,6 +428,24 @@ def consume_sway_following_turn(state_dir: Path,
     return resolved
 
 
+def _first_named_gain_for_episode(resolved: Mapping[str, object]):
+    """Share original-instance qualification with the no-extra-snapshot gate."""
+    record = resolved.get("first_named_gain_intervention")
+    if not isinstance(record, Mapping):
+        return None
+    instance = _resolved_instance_identity(resolved)
+    if not isinstance(instance, Mapping):
+        return None
+    identity = {key: resolved.get(key) for key in (
+        "action_id", "actor_character_id", "target_character_id")}
+    identity.update({key: instance.get(key) for key in (
+        "scheme_instance_id", "scheme_instance_generation")})
+    if (record.get("incremental_named_gain_observed") is True
+            and all(record.get(key) == value for key, value in identity.items())):
+        return record
+    return None
+
+
 def _consume_episode_following_turn(resolved: Mapping[str, object],
                                     snapshot: Mapping[str, object]):
     from .sway_material_consumer import consume_sway_material_following_turn
@@ -447,19 +465,10 @@ def _consume_episode_following_turn(resolved: Mapping[str, object],
         resolved.get("material_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
     )
-    gain_record = resolved.get("first_named_gain_intervention")
-    instance = _resolved_instance_identity(resolved)
-    gain_identity = {key: resolved.get(key) for key in (
-        "action_id", "actor_character_id", "target_character_id")}
-    if isinstance(instance, Mapping):
-        gain_identity.update({key: instance.get(key) for key in (
-            "scheme_instance_id", "scheme_instance_generation")})
-    gain = (consume_sway_material_following_turn(
-        gain_record, actor_character_id=actor_id,
+    gain = consume_sway_material_following_turn(
+        _first_named_gain_for_episode(resolved), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],
-    ) if isinstance(gain_record, Mapping) and isinstance(instance, Mapping)
-         and gain_record.get("incremental_named_gain_observed") is True
-         and all(gain_record.get(key) == value for key, value in gain_identity.items()) else None)
+    )
     terminal = consume_sway_material_following_turn(
         resolved.get("terminal_intervention"), actor_character_id=actor_id,
         native_revision=snapshot["native_revision"], date_raw=snapshot["date_raw"],

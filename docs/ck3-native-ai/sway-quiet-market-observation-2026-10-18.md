@@ -15,3 +15,5 @@
 同日 `11:06:57Z` 的第二个小修复保留每次原始 Start 的 `first_named_gain_intervention`。当前 material 在同值刷新时仍正确标为“没有新增量”；首个真实正增量另保留原日期/revision、此前基线日期/revision、命名值和原 action/actor/target/full SchemeID/代次。它只占一个记录，不随观察次数增长，不从已有旧 ledger 反推丢失的历史证据。原 following consumer 在以后的普通执行回合独立消费它，异 action/实例记录或同帧不能借此完成消费；原 current/previous interventions 机制继续保留这些信息。首个增量并不自动证明自然终态或有利的终态原因。
 
 这一修复以原 material compound 验证基线、总好感不能替代命名增量、同值刷新保留首个增量、同帧不消费、异 action 拒绝及之后独立消费（1 passed，3.57s）；并在新 consumer 字节下只重跑新增真实 Service 市场整链，明确断言首个增量保留原基线且由以后回合消费（最终 1 test，0.107s）。第一次 pytest 收集因缺少仓库 `src` 搜索路径而失败，没有执行测试；修正运行入口后通过，未为此修改生产源码或伪造运行资格。以上均为软件验证。
+
+`2026-10-18T11:26:52Z` 闭包复核补正：首轮实现漏将该见证接入 `has_pending_sway_following_turn` 快速检查。正常 gain/material 同时 pending 的整链会通过，但旧 consumer 已消费 material、仅见证待消费的合成冷存续形态可能漏调用。现由 fastgate 与 following 共用同一原 action/full-instance 身份谓词；有效见证可单独触发原 Service 消费，异 action 记录不能触发额外快照。仅新增一个真实 Service 单例验证，保留三次原只读市场执行、两次观察及合成30天，实际新游戏日仍为0；原 CI 文件已包含该 test，未再改 CI。

@@ -86,5 +86,23 @@
     "No current frozen SDK/Host06 adoption or owner qualification is claimed.",
     "Real ordinary Start, early named baseline, named gain, natural terminal and following ordinary consumption remain required for M6.",
     "M7 multi-seed/government and paired checkpoint new-Game cold restoration remain outside this change."
-  ]
+  ],
+  "gain_fastgate_correction": {
+    "recorded_at_utc": "2026-10-18T11:26:52Z",
+    "reason": "The initial implementation omitted the new witness from the no-extra-snapshot fastgate. A synthetic older-consumer/cold state can have only the witness pending.",
+    "change": "Fastgate and following consumer share original action/actor/target/full SchemeID/generation qualification; foreign action witness cannot request a snapshot.",
+    "working_raw_source_sha256": {
+      "ck3_autonomous_player/src/xar_autoplayer/sway_formal_consumer.py": "fa27a839036564f762d18969265c2baae33d5b8e517ee9d01d0ceb7393394dc8",
+      "ck3_autonomous_player/src/xar_autoplayer/sway_lifecycle_consumer.py": "64f77cbfa900168824b8f9f8d0aad98c40038de5822923d0eb98d10a2ba4b674",
+      "ck3_autonomous_player/tests/unit/test_ordinary_sway_quiet_observation_v1.py": "51c00e0176f315b4484b574e85bc1e2fef9f0fb6b635fb06fc57c0a8c4ab673f"
+    },
+    "qualification": {
+      "command": "tools\\.venv\\Scripts\\python.exe -B -X utf8 ck3_autonomous_player\\tests\\unit\\test_ordinary_sway_quiet_observation_v1.py QuietObservationTests.test_only_retained_gain_pending_reaches_real_service_fastgate",
+      "exit_code": 0,
+      "tests_passed": 1,
+      "boundary": "Real Service fastgate/executor/following consumer, synthetic endpoint and explicit older-consumer state; no new Game, Native, cold-load or business credit."
+    },
+    "ci_changed": false,
+    "g2_completed_items": 6
+  }
 }

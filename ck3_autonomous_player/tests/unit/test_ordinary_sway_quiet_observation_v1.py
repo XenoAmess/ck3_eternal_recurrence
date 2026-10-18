@@ -178,6 +178,39 @@ class MarketDriver(SourceDriver):
 
 
 class QuietObservationTests(unittest.TestCase):
+    def test_only_retained_gain_pending_reaches_real_service_fastgate(self):
+        from xar_autoplayer.sway_lifecycle_consumer import has_pending_sway_following_turn
+        with tempfile.TemporaryDirectory(prefix="sway-gain-only-") as temp:
+            path = Path(temp)
+            seed(path)
+            driver = MarketDriver(path)
+            with patch.object(GameplayBridgeService, "_plan_turn_internal", lambda _: market_plan(driver)):
+                service(driver).auto_turn()
+                driver.frame["date_raw"] += 30 * 24
+                driver.frame["revision"] += 1
+                driver.frame["native_revision"] += 1
+                driver.value = 25
+                service(driver).auto_turn()
+                ledger = read_sway_ledger(path)
+                # Explicit synthetic cold/older-consumer state: all original
+                # material is consumed, only the new retained witness remains.
+                ledger["resolved"]["material_intervention"]["next_turn_consumed"] = True
+                original = deepcopy(ledger)
+                ledger["resolved"]["first_named_gain_intervention"]["action_id"] = "foreign-start"
+                (path / LEDGER_FILE).write_text(json.dumps(ledger), encoding="utf-8")
+                self.assertFalse(has_pending_sway_following_turn(path))
+                (path / LEDGER_FILE).write_text(json.dumps(original), encoding="utf-8")
+                self.assertTrue(has_pending_sway_following_turn(path))
+                driver.frame["revision"] += 1
+                driver.frame["native_revision"] += 1
+                returned = service(driver).auto_turn()
+                witness = returned["sway_following_turn"]["first_named_gain_intervention"]
+                self.assertTrue(witness["next_turn_consumed"])
+                self.assertFalse(has_pending_sway_following_turn(path))
+                self.assertEqual(driver.calls.count("original-market-query"), 3)
+                self.assertEqual(driver.calls.count("completion"), 2)
+                self.assertEqual(driver.frame["date_raw"], DATE + 30 * 24)
+
     def test_market_full_auto_original_execution_then_named_gain_terminal_and_later_consumption(self):
         with tempfile.TemporaryDirectory(prefix="sway-market-") as temp:
             path = Path(temp)

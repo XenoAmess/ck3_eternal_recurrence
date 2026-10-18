@@ -9,7 +9,9 @@ from collections.abc import Mapping
 from copy import deepcopy
 from pathlib import Path
 
-from .sway_formal_consumer import LEDGER_FILE, _resolved_instance_identity, _write, read_sway_ledger
+from .sway_formal_consumer import (
+    LEDGER_FILE, _first_named_gain_for_episode, _resolved_instance_identity, _write, read_sway_ledger,
+)
 from .sway_material_consumer import _record_sway_material
 
 
@@ -285,6 +287,8 @@ def has_pending_sway_following_turn(state_dir: Path) -> bool:
         return False
     return any(
         episode.get("next_turn_consumed") is not True
+        or (isinstance(gain := _first_named_gain_for_episode(episode), Mapping)
+            and gain.get("next_turn_consumed") is not True)
         or any(isinstance(episode.get(key), Mapping)
                and episode[key].get("next_turn_consumed") is not True
                and (key != "stop_intervention"
