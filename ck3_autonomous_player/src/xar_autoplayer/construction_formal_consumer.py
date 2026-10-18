@@ -549,6 +549,17 @@ def plan_construction_private(
         if prewar:
             return prewar_unchanged(f"scope_{scope['status']}")
         return planned
+    if isinstance(plan.get("war_emergency_budget_recovery_v1"), Mapping):
+        from .strategy import _same_frame_campaign_root_context
+        from .war_emergency_budget_v1 import observe_emergency_recovery_v1
+        from .war_mercenary_consumer_v1 import _ledger as mercenary_ledger
+
+        recovery = observe_emergency_recovery_v1(snapshot, mercenary_ledger(state_dir),
+            _same_frame_campaign_root_context(history, dict(snapshot)))
+        if recovery is not None and recovery["defer_new_economic_construction"]:
+            return {**planned, "plan": {**plan, "war_emergency_budget_recovery_v1": recovery,
+                "construction_spending_deferred_v1": {"reason": "restore cash buffer after emergency military expenditure",
+                    "deferred_domain": "new_economic_construction", "original_selected_step": original_step}}}
     from .bridge.domain_construction_private_transport_v1 import query_construction_private
     from .bridge.driver import BridgeUnavailableError
 

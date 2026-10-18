@@ -126,6 +126,10 @@ def observe_war_spending_priority_v1(
                 "primary_title_targeted": primary_title in targets if type(primary_title) is int else None,
                 "directly_held_target_title_ids": sorted(held.intersection(targets)) if root else None,
                 "source": "same-native-frame root title identities; CB defeat transfer remains unverified"},
+            "major_direct_title_targeted": any(
+                isinstance(row.get("title"), Mapping) and row["title"].get("title_id") in targets
+                and type(row["title"].get("tier_raw")) is int and row["title"]["tier_raw"] >= 3
+                for row in _armies(root.get("held_title_partition"))),
             "defeat_title_transfer_verified": False,
             "active_war_observed": True, "war_resolution_verified": False,
             "new_procurement_suppressed_by_score_policy": type(score) is int and score <= -100,

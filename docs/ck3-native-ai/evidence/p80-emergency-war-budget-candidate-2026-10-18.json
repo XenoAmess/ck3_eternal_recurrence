@@ -1,0 +1,309 @@
+{
+  "schema": "xar.p80-emergency-war-budget-source-candidate.v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T02:14:58.352720+00:00",
+  "candidate_only": true,
+  "commit_push_authorized_now": false,
+  "current_R9_or_SDK04_changed": false,
+  "live_operations": 0,
+  "game_replies": "all synthetic",
+  "base_head_observed": "633e884a06ab6221d6b476deb527fd70f23befe9",
+  "sources": [
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_emergency_budget_v1.py",
+      "bytes": 12332,
+      "sha256": "00c22c3e7b23c111d9b7aa4bc7b0da9d26d11fbf26e09fe80c11b1b333b27580",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_emergency_budget_v1.py",
+      "modified_at_utc": "2026-10-18T02:12:16.790784+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_finance_v1.py",
+      "bytes": 4409,
+      "sha256": "8ab37b734192598c4b8698d14f2f26bd05c41bcc5e02285fc0aa6f8639f72971",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_finance_v1.py",
+      "modified_at_utc": "2026-10-18T02:09:05.265946+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_reinforcement_tradeoff_v1.py",
+      "bytes": 19156,
+      "sha256": "a9bc1cb0e14afc239a8a8ac60d3f2def851ce5177795d4659a10e54261f5686a",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_reinforcement_tradeoff_v1.py",
+      "modified_at_utc": "2026-10-18T02:01:49.153079+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_strategic_reserve_v1.py",
+      "bytes": 33219,
+      "sha256": "79a38518d87eabbf67962c21badfa9e26b57a1c99beffaa6843ff816f881f155",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_strategic_reserve_v1.py",
+      "modified_at_utc": "2026-10-18T02:09:05.268067+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\war_mercenary_consumer_v1.py",
+      "bytes": 20020,
+      "sha256": "07410bbf01df6906f08e71f6ebaea9e08f465e3dfba33ad0fd08b057a97aeccd",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/war_mercenary_consumer_v1.py",
+      "modified_at_utc": "2026-10-18T02:02:17.679369+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\src\\xar_autoplayer\\construction_formal_consumer.py",
+      "bytes": 35945,
+      "sha256": "621b0974db1c269822689e053332f6900594f1bcabe8b2c4a27d350effc5067b",
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/construction_formal_consumer.py",
+      "modified_at_utc": "2026-10-18T02:02:17.680346+00:00"
+    },
+    {
+      "path": "Z:\\ck3_mod_rewrite\\ck3_autonomous_player\\tests\\unit\\test_war_emergency_budget_v1.py",
+      "bytes": 15930,
+      "sha256": "2b90ba3f63643992aa533c50f825187d21841f12e0d626f85472330f82d0cced",
+      "relative_path": "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+      "modified_at_utc": "2026-10-18T02:12:48.514556+00:00"
+    }
+  ],
+  "review_diff": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\PUBLIC-EMERGENCY-CANDIDATE.diff",
+    "bytes": 47740,
+    "sha256": "9beb345841ec5399242b2bcb6f694a828eb11258c80cfe73f5a22495546013eb"
+  },
+  "final_qualification": {
+    "schema": "xar.p71-emergency-source-tests.v1",
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "started_utc": "2026-10-18T02:12:48.695602+00:00",
+    "ended_utc": "2026-10-18T02:12:59.812560+00:00",
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--basetemp",
+      "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\emergency-tmp-lmlai6sd",
+      "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+      "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py",
+      "ck3_autonomous_player/tests/unit/test_g2_wartime_construction_service_compound_v1.py"
+    ],
+    "exit_code": 0,
+    "all_game_replies_synthetic": true,
+    "live_operations": 0,
+    "bounded_root_before_bytes": 691504,
+    "root_observed_before_scratch_cleanup_bytes": 897467,
+    "log": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-FINAL.log",
+      "bytes": 102,
+      "sha256": "a0df3047653458b83c0968a760db99094b614c3be4c0bf38007ca9dcc524e177"
+    }
+  },
+  "test_receipts": [
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-01.json",
+      "bytes": 1077,
+      "sha256": "b3b84968ab74f0bae00e8086ca209b6d01e926e86b721adcf10b13dadcb30886"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-02.json",
+      "bytes": 1566,
+      "sha256": "2e3e3cc085ad85d3aea526462ef0d923045352d9b42af54101e1a3c738815345"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-03.json",
+      "bytes": 1477,
+      "sha256": "035e4aca1316db59ecac75102769dd59b21eb5db201e52ff016a14722e0f04b9"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-FINAL.json",
+      "bytes": 1480,
+      "sha256": "da044a6ffdea61ba445e9c8f67226629b25bf825e62c6783fc7f6aaa0590c110"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-BASE.json",
+      "bytes": 1216,
+      "sha256": "24b9b53c1d7728df39e333eeeb3a117d64c2239dc9404f6985c483016d906242"
+    },
+    {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\CLOSED-FIXTURE-TMP-RECLAMATION01.json",
+      "bytes": 9154,
+      "sha256": "be13261d0747ce7569539ad84b63a6780b9a92bad6c78cca6d2b5d4211157136"
+    }
+  ],
+  "baseline_comparison": {
+    "method": "original HEAD construction consumer loaded into child memory; no shared file replacement",
+    "baseline_head": "8ebe8fad0dc64f547825b78bbeb976467ef2e4dd",
+    "current_failures": [
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_due_completion_receipt_is_consumed_during_war_turn",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_lost_ack_stays_pending_across_cold_process_and_requires_material",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_active_tuple_and_exact_spend_apply_start_receipt_only",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_cold_restore_reads_active_and_spend_without_resubmitting",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_same_day_active_without_spend_keeps_pending",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unavailable_completed_observer_keeps_prewar_legality_and_start_source",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_wartime_construction_observes_native_choice_without_spend"
+    ],
+    "baseline_failures": [
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_due_completion_receipt_is_consumed_during_war_turn",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_lost_ack_stays_pending_across_cold_process_and_requires_material",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_active_tuple_and_exact_spend_apply_start_receipt_only",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_cold_restore_reads_active_and_spend_without_resubmitting",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_r0227_same_day_active_without_spend_keeps_pending",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_unavailable_completed_observer_keeps_prewar_legality_and_start_source",
+      "FAILED ck3_autonomous_player\\tests\\unit\\test_construction_formal_private_consumer.py::ConstructionFormalConsumerTests::test_wartime_construction_observes_native_choice_without_spend"
+    ],
+    "unchanged_failure_count": 7,
+    "unchanged_pass_count": 41
+  },
+  "policy": {
+    "ordinary_reserve_gold": 200,
+    "ordinary_military_months": 18,
+    "emergency_levels_military_months": {
+      "1": 6,
+      "2": 3
+    },
+    "emergency_fixed_floor_gold": 0,
+    "existing_commitments_added": true,
+    "requires_same_frame_major_primary_defence_and_deterioration": true,
+    "minimum_marginal_deficit_closure_fraction": "1/2",
+    "same_epoch_cumulative_quote_accounting": true,
+    "level_increase_requires_new_native_frame": true,
+    "same_level_income_or_focus_does_not_refresh_limit": true,
+    "absolute_total_limit": "original package treasury",
+    "unknown_pending_never_retried": true,
+    "ETA_or_win_forecast": null,
+    "recovery": "defer new optional construction until current ordinary buffer restored",
+    "thresholds_are_user_hard_limits": false,
+    "thresholds_are_native_rules": false
+  },
+  "capacity": {
+    "root": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01",
+    "limit_bytes": 1048576,
+    "historical_overrun_observed_bytes": 1078813,
+    "historical_excess_bytes": 30237,
+    "overrun_scratch_cleaned": true,
+    "reconstructible_closed_fixture_bytes_reclaimed": 235355,
+    "actual_assets_or_saves_deleted": 0,
+    "new_global_reservation_bytes": 0,
+    "capacity_expiry_not_extended": "2026-10-18T11:49:00.265518Z",
+    "review_at_utc": "2026-10-19T23:30:00Z",
+    "retain_reason": "Root reviewable uninstalled source candidate and exact qualification results"
+  },
+  "business_credit": {
+    "native_hire_verified": false,
+    "payment_verified": false,
+    "arrival_verified": false,
+    "relief_verified": false,
+    "victory_verified": false
+  },
+  "real_R8_missing_inputs": "no new fresh complete post-hire market or pre-hire company CUnit ETA; no real second-hire recommendation",
+  "excluded_scope": [
+    "strategy.py",
+    "MCP",
+    "Driver",
+    "Native",
+    "frozen runtime",
+    "current R9",
+    "SDK04",
+    "live game",
+    "media",
+    "saves",
+    "P62",
+    "daily reports"
+  ],
+  "root_review_appendix": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "root_review_acknowledged_at_utc": "2026-10-18T02:22:09.942871+00:00",
+    "time_semantics": "receipt observation time for Root review message; not an independently measured earlier review instant",
+    "appended_at_utc": "2026-10-18T02:23:27.306447+00:00",
+    "root_review_result": "seven-file budget and recovery candidate accepted for publication preparation",
+    "actual_commit_push_status": "pending Root actual commit and push",
+    "agent_commit_push_permitted": false,
+    "current_R9_or_SDK04_deployed": false,
+    "candidate_history_preserved": true,
+    "original_63_pass_and_7_baseline_fail_preserved": true,
+    "sealed_candidate_snapshots": [
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\PUBLIC-EMERGENCY-CANDIDATE-EVIDENCE-SEALED.json",
+        "bytes": 11904,
+        "sha256": "daaf7461b77293bd881b975d86fb938dcb7f87d365c928bcb2659bee29a3b62b"
+      },
+      {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\PUBLIC-EMERGENCY-CANDIDATE-DOC-SEALED.md",
+        "bytes": 6243,
+        "sha256": "366c9448e93e47d25abecda57679a72a3f89ec5f6a796402c077db1024259dbd"
+      }
+    ],
+    "workflow_change": {
+      "scope": "only add test_war_emergency_budget_v1.py to existing losing-war group",
+      "file": {
+        "path": "Z:\\ck3_mod_rewrite\\.github\\workflows\\static-ci.yml",
+        "bytes": 51687,
+        "sha256": "645941c4f82562a17c75da0b8ef0520eefce1fe7ba64e4a9e18d4ddee80b27b3"
+      },
+      "group_name": "Test losing-war cash allocation and ordinary mercenary decisions without CK3",
+      "test_files": [
+        "test_war_reinforcement_tradeoff_v1.py",
+        "test_war_strategic_reserve_v1.py",
+        "test_war_emergency_budget_v1.py",
+        "test_war_mercenary_package_followup_v1.py",
+        "test_mercenary_history_projection_v1.py",
+        "test_war_spending_epoch_v2.py",
+        "test_siege_research_hold_continuation_v1.py",
+        "test_combat_profile_research_v1.py",
+        "test_siege_research_continuation_v2.py",
+        "test_army_strengths_mcp_result_serialization_performance.py",
+        "test_war_safe_rendezvous_v1.py",
+        "test_war_forced_retreat_observation_v1.py"
+      ]
+    },
+    "ci_group_qualification": {
+      "schema": "xar.p71-emergency-source-tests.v1",
+      "machine_id": "xenoamess-full-tower-eb9d2c1186",
+      "started_utc": "2026-10-18T02:22:20.570820+00:00",
+      "ended_utc": "2026-10-18T02:22:33.851686+00:00",
+      "command": [
+        "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\emergency-tmp-q2z10msy",
+        "ck3_autonomous_player/tests/unit/test_war_reinforcement_tradeoff_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_strategic_reserve_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_emergency_budget_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_mercenary_package_followup_v1.py",
+        "ck3_autonomous_player/tests/unit/test_mercenary_history_projection_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_spending_epoch_v2.py",
+        "ck3_autonomous_player/tests/unit/test_siege_research_hold_continuation_v1.py",
+        "ck3_autonomous_player/tests/unit/test_combat_profile_research_v1.py",
+        "ck3_autonomous_player/tests/unit/test_siege_research_continuation_v2.py",
+        "ck3_autonomous_player/tests/unit/test_army_strengths_mcp_result_serialization_performance.py",
+        "ck3_autonomous_player/tests/unit/test_war_safe_rendezvous_v1.py",
+        "ck3_autonomous_player/tests/unit/test_war_forced_retreat_observation_v1.py"
+      ],
+      "exit_code": 0,
+      "all_game_replies_synthetic": true,
+      "live_operations": 0,
+      "bounded_root_before_bytes": 753272,
+      "root_observed_before_scratch_cleanup_bytes": 929534,
+      "log": {
+        "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p71-mercenary-combination-audit01\\EMERGENCY-TESTS-CIGROUP.log",
+        "bytes": 183,
+        "sha256": "ed712af6d103c48326dcd6c729496d18ee6f80f9662cd88885c95e9234c83d04"
+      }
+    },
+    "ci_group_result": "93 passed in 12.14s",
+    "ci_input_scope": "offline unit tests; synthetic Driver responses and existing fixture inputs; no live Game operations",
+    "public_github_ci_result": "not yet run for an actual published commit",
+    "capacity": {
+      "p71_before_ci_bytes": 751934,
+      "scratch_allowance_bytes": 262144,
+      "ci_pre_cleanup_observed_bytes": 929534,
+      "limit_bytes": 1048576,
+      "active_emergency_scratch_count": 0,
+      "expiry_not_extended": "2026-10-18T11:49:00.265518Z"
+    }
+  }
+}

@@ -183,7 +183,7 @@ def _plan_war_mercenary_turn_v1(
         return {**plan, "war_mercenary_status": "existing_spending_intent_or_frame_unavailable",
                 "war_mercenary_spending_observation": spending}
     decision = assess_mercenary_reinforcement_v1(snapshot, context, campaign_root=root, operational_plan=plan,
-                                               history=history, procurement_ledger=ledger)
+                                               history=history, procurement_ledger=ledger, spending_observation=spending)
     decision = project_mercenary_observer_v1(
         decision,
         assessment_source_sha256=getattr(driver, "war_mercenary_assessment_source_sha256", None),
@@ -235,6 +235,10 @@ def annotate_war_decision_reason_v1(plan: dict[str, object]) -> dict[str, object
                  f"余款{money(chosen.get('gold_after_hire_raw'))}金，"
                  f"军费预留{money(finance.get('required_gold_reserve_raw'))}金；"
                  "战略备兵；原生预计出生省已观测，抵达时间未知，不能保证救急。")
+        emergency = chosen.get("emergency_budget_revision_v1")
+        if isinstance(emergency, Mapping):
+            text += (f"防御危机资金等级{emergency.get('level')}，同包总上限"
+                     f"{money(emergency.get('total_package_limit_raw'))}金；缩减现金缓冲承担救援不及时的风险。")
     elif status == "strategic_model_has_no_current_evidenced_purpose_keep_war_action":
         text += "当前尚无足够战略采购用途，保留战争行动；未来增援与抵达仍未知。"
     elif plan.get("selected_step") == QUERY_STEP:
@@ -272,6 +276,13 @@ def plan_war_mercenary_turn_v1(
     directory = getattr(driver, "state_dir", None)
     if isinstance(directory, Path):
         ledger = _ledger(directory)
+        from .strategy import _same_frame_campaign_root_context
+        from .war_emergency_budget_v1 import observe_emergency_recovery_v1
+
+        recovery = observe_emergency_recovery_v1(snapshot, ledger,
+            _same_frame_campaign_root_context(history, dict(snapshot)))
+        if recovery is not None:
+            plan = {**plan, "war_emergency_budget_recovery_v1": recovery}
         pending = ledger["pending"]
         if pending is not None:
             first_inventory = observe_first_raised_inventory_v1(snapshot, pending)

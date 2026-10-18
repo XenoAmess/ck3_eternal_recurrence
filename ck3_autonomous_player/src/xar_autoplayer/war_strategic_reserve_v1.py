@@ -15,6 +15,10 @@ from .war_reinforcement_finance_v1 import observe_reinforcement_finance_v1
 from .war_reinforcement_tradeoff_v1 import (
     _armies, _count, _stationary_staging, observe_war_spending_priority_v1,
 )
+from .war_emergency_budget_v1 import (
+    emergency_quote_budget_v1, observe_emergency_policy_v1,
+    priority_emergency_level_v1, valid_saved_emergency_revision_v1,
+)
 
 
 def _recoverable_wars(priority):
@@ -23,7 +27,7 @@ def _recoverable_wars(priority):
     rows = [row for row in _armies(priority.get("wars"))
             if row.get("protect_cash_reasons") and type(row.get("war_id")) is int
             and type(row.get("player_relative_war_score")) is int
-            and row["player_relative_war_score"] > -100]
+            and (row["player_relative_war_score"] > -100 or priority_emergency_level_v1(row) > 0)]
     order = priority.get("cash_protection_priority_war_ids", [])
     return sorted(rows, key=lambda row: order.index(row["war_id"]) if row["war_id"] in order else len(order))
 
@@ -39,6 +43,11 @@ def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
         return {"status": "no_prior_package", "remaining_package_gold_raw": None}
     episode = snapshot.get("episode_run_id")
     actor = snapshot.get("played_character", {}).get("character_id")
+    pending = ledger.get("pending")
+    if isinstance(pending, Mapping):
+        return {"status": "unavailable", "reason": "unresolved_mercenary_commitment",
+                "reserved_pending_quote_gold_raw": pending.get("decision", {}).get("selected_candidate", {}).get("gold_cost_raw"),
+                "remaining_package_gold_raw": None}
     purposes = set(purpose_war_ids)
     records = []
     connected_wars = purposes | {row["war_id"] for row in _armies(snapshot.get("active_wars"))
@@ -88,13 +97,23 @@ def observe_procurement_package_budget_v1(snapshot, ledger, *, purpose_war_ids):
                 "remaining_package_gold_raw": None}
     envelope = max(0, min(cap, treasury - reserve))
     committed = sum(costs)
+    revisions = [valid_saved_emergency_revision_v1(selected, row.get("source_frame", {}), snapshot)
+                 for row, selected in receipts]
+    if any("emergency_budget_revision_v1" in selected and revision is None
+           for (_, selected), revision in zip(receipts, revisions)):
+        return {"status": "unavailable", "reason": "same_package_emergency_revision_binding_unavailable",
+                "remaining_package_gold_raw": None}
+    revisions = [row for row in revisions if row is not None]
+    epoch = max(revisions, key=lambda row: row["level"]) if revisions else None
+    effective = max(envelope, epoch["total_package_limit_raw"]) if epoch else envelope
     return {"status": "available", "anchor_action_request_id": first["action_request_id"],
             "anchor_source_frame": dict(first["source_frame"]), "purpose_war_ids": sorted(purposes),
             "shared_active_war_package_scope_ids": sorted(connected_wars),
             "original_treasury_raw": treasury, "original_required_reserve_raw": reserve,
             "original_treasury_share_cap_raw": cap, "original_package_gold_limit_raw": envelope,
             "committed_contract_quote_gold_raw": committed,
-            "remaining_package_gold_raw": max(0, envelope - committed),
+            "remaining_package_gold_raw": max(0, effective - committed),
+            **({"emergency_budget_epoch_v1": epoch, "effective_package_gold_limit_raw": effective} if epoch else {}),
             "committed_action_request_ids": [row["action_request_id"] for row, _ in receipts],
             "payment_attribution_verified": False, "future_income_credited_raw": 0,
             "current_cash_and_military_reserve_must_also_pass": True}
@@ -198,7 +217,8 @@ def _current_local_scope(snapshot, plan, history, focus):
 
 
 def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve_raw=RESERVE_RAW,
-                                     campaign_root=None, operational_plan=None, history=(), procurement_ledger=None):
+                                     campaign_root=None, operational_plan=None, history=(), procurement_ledger=None,
+                                     spending_observation=None):
     """Compare every company and select a legal cash-bounded reserve purchase.
 
     A current local count reversal is useful conditional arithmetic. Otherwise
@@ -208,7 +228,12 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
     if type(minimum_gold_reserve_raw) is not int or minimum_gold_reserve_raw < 0:
         raise ValueError("reinforcement reserve must be a nonnegative raw gold amount")
     priority = observe_war_spending_priority_v1(snapshot, campaign_root=campaign_root)
+    emergency_policy = observe_emergency_policy_v1(snapshot, priority, campaign_root, spending_observation)
     wars = _recoverable_wars(priority)
+    if emergency_policy["eligible"]:
+        wars.sort(key=lambda row: row["war_id"] != emergency_policy["war_id"])
+    else:
+        wars = [row for row in wars if row["player_relative_war_score"] > -100]
     focus = wars[0] if wars else None
     reserve_need = _strategic_need(focus)
     package = observe_procurement_package_budget_v1(snapshot, procurement_ledger,
@@ -238,6 +263,16 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
         finance = observe_reinforcement_finance_v1(snapshot, campaign_root,
             contract_gold_raw=price, contract_months=terms.get("hire_duration_months"),
             gold_floor_raw=minimum_gold_reserve_raw)
+        emergency = emergency_quote_budget_v1(snapshot, policy=emergency_policy, focus=focus,
+            local=local, troops=troops, price=price, contract_months=terms.get("hire_duration_months"),
+            root=campaign_root, normal_finance=finance, package=package)
+        candidate_package = package
+        if emergency["applied"]:
+            finance = emergency["finance"]
+            candidate_package = {**package, "status": "available",
+                "emergency_budget_epoch_v1": emergency["revision"],
+                "effective_package_gold_limit_raw": emergency["total_package_limit_raw"],
+                "remaining_package_gold_raw": emergency["remaining_package_gold_raw"]}
         reasons = []
         if not context_current:
             reasons.append("native_current_actor_date_company_collection_unavailable")
@@ -284,12 +319,15 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
             reasons.append("strategic_marginal_headcount_below_policy_quarter_or_unknown")
         cash_fraction_denominator = 2 if flip or reserve_need["critical_primary_title"] else 3
         cash_share_limit = treasury // cash_fraction_denominator if type(treasury) is int and treasury >= 0 else None
+        ordinary_cash_share_limit = cash_share_limit
+        if emergency["applied"]:
+            cash_share_limit = emergency["remaining_package_gold_raw"]
         if cash_share_limit is None or type(price) is not int or price > cash_share_limit:
             reasons.append("contract_exceeds_declared_cash_opportunity_cost_limit")
-        if package["status"] == "unavailable":
+        if candidate_package["status"] == "unavailable":
             reasons.append("same_purpose_original_procurement_package_budget_unavailable")
-        elif (package["status"] == "available"
-              and (type(price) is not int or price > package["remaining_package_gold_raw"])):
+        elif (candidate_package["status"] == "available"
+              and (type(price) is not int or price > candidate_package["remaining_package_gold_raw"])):
             reasons.append("contract_exceeds_remaining_same_purpose_package_budget")
         assessments.append({
             "company_id": company.get("company_id"), "gold_cost_raw": price,
@@ -306,8 +344,14 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
             "marginal_reference_observed_soldiers": reference,
             "strategic_minimum_marginal_soldiers": minimum_marginal,
             "cash_opportunity_cost_limit_raw": cash_share_limit,
-            "cash_opportunity_cost_fraction": f"1/{cash_fraction_denominator}",
-            "procurement_package_budget_v1": package,
+            "cash_opportunity_cost_fraction": "locked_emergency_epoch" if emergency["applied"] else f"1/{cash_fraction_denominator}",
+            "procurement_package_budget_v1": candidate_package,
+            **({"emergency_budget_revision_v1": emergency["revision"],
+                "emergency_marginal_value_v1": emergency["conditional_counts"],
+                "ordinary_cash_opportunity_cost_limit_raw": ordinary_cash_share_limit,
+                "emergency_arrival_risk_v1": {key: emergency[key] for key in
+                    ("arrival_eta_days", "arrival_estimate", "cannot_guarantee_arrival_before_loss", "battle_win_probability")}}
+               if emergency["applied"] else {}),
             "numerical_balance_reversed_war_ids": [focus["war_id"]] if flip else [],
             "conditional_local_player_soldiers_after_arrival": combined,
             "local_comparison": local,
@@ -321,8 +365,17 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
         })
     eligible = [row for row in assessments if not row["rejection_reasons"]]
     local_flips = [row for row in eligible if row["numerical_balance_reversed_war_ids"]]
+    emergency_rows = [row for row in eligible if "emergency_budget_revision_v1" in row]
+    emergency_flips = [row for row in emergency_rows if
+        row["emergency_marginal_value_v1"]["after_company_arrival"] > row["emergency_marginal_value_v1"]["enemy"]]
     if local_flips:
         chosen = min(local_flips, key=lambda row: (row["gold_cost_raw"], -row["company_current_soldiers"], row["company_id"]))
+    elif emergency_flips:
+        chosen = min(emergency_flips, key=lambda row: (row["gold_cost_raw"], -row["company_current_soldiers"], row["company_id"]))
+    elif emergency_rows:
+        chosen = min(emergency_rows, key=lambda row: (
+            -Fraction(row["emergency_marginal_value_v1"]["deficit_closed_soldiers"], max(1, row["gold_cost_raw"])),
+            row["gold_cost_raw"], row["company_id"]))
     else:
         chosen = min(eligible, key=lambda row: (
             row["gold_cost_raw"] != 0,
@@ -337,6 +390,7 @@ def assess_mercenary_reinforcement_v1(snapshot, context, *, minimum_gold_reserve
         # describes whether local or longer-term reinforcements were selected.
         "recommendation": "hire_local_reinforcement" if chosen else "continue_existing_war_action",
         "selection_comparison": "highest-stakes protected war; cheapest conditional local count flip, otherwise soldiers per quoted gold; lower cost then full CompanyID",
+        "emergency_selection_comparison": "qualified emergency conditional count reversal first, otherwise deficit closure per gold; no arrival or win probability",
         "policy_thresholds": {"strategic_defensive_exposure_score_at_most": -25,
                               "strategic_minimum_marginal_headcount_fraction": "1/4 of observed relevant current force",
                               "ordinary_strategic_treasury_spend_cap_fraction": "1/3",

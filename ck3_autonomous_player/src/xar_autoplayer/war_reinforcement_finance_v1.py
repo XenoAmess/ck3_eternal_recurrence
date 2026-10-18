@@ -8,6 +8,8 @@ from .activity_feast_stage5_budget_v1 import DISCRETIONARY_MAINTENANCE_RESERVATI
 def observe_reinforcement_finance_v1(
     snapshot: Mapping[str, object], campaign_root: Mapping[str, object] | None, *,
     contract_gold_raw: object, contract_months: object, gold_floor_raw: int,
+    maintenance_reservation_months: int = DISCRETIONARY_MAINTENANCE_RESERVATION_MONTHS,
+    other_reserved_gold_raw: int = 0,
 ) -> dict[str, object]:
     """Reserve current maximum maintenance with no speculative future income.
 
@@ -15,6 +17,10 @@ def observe_reinforcement_finance_v1(
     game's contract definition describes a one-time payment; we do not multiply
     it by months or add an invented recurring mercenary maintenance charge.
     """
+    if type(maintenance_reservation_months) is not int or not 1 <= maintenance_reservation_months <= 18:
+        raise ValueError("military allocation window must be a declared positive policy up to eighteen months")
+    if type(other_reserved_gold_raw) is not int or other_reserved_gold_raw < 0:
+        raise ValueError("other existing gold commitments must be a nonnegative raw amount")
     actor = snapshot.get("played_character")
     actor = actor.get("character_id") if isinstance(actor, Mapping) else None
     root = campaign_root if isinstance(campaign_root, Mapping) else {}
@@ -33,8 +39,8 @@ def observe_reinforcement_finance_v1(
     if not ready:
         return {"status": "unavailable", "reason": "same_frame_contract_treasury_income_or_maximum_maintenance_missing",
                 "retains_military_allocation": False}
-    months = min(contract_months, DISCRETIONARY_MAINTENANCE_RESERVATION_MONTHS)
-    reserve = max(gold_floor_raw, maximum["raw"] * months)
+    months = min(contract_months, maintenance_reservation_months)
+    reserve = max(gold_floor_raw, maximum["raw"] * months) + other_reserved_gold_raw
     after = money["raw"] - contract_gold_raw
     return {
         "status": "available", "scale": 100_000, "contract_gold_raw": contract_gold_raw,
@@ -50,6 +56,7 @@ def observe_reinforcement_finance_v1(
         "maintenance_allocation_months": months,
         "maintenance_allocation_raw": maximum["raw"] * months,
         "required_gold_reserve_raw": reserve, "reserve_floor_includes_military_allocation": True,
+        **({"other_reserved_gold_raw": other_reserved_gold_raw} if other_reserved_gold_raw else {}),
         "retains_military_allocation": after >= reserve,
         "cash_only_maximum_military_runway": {
             "numerator_gold_raw": max(0, after), "denominator_gold_per_month_raw": maximum["raw"],
