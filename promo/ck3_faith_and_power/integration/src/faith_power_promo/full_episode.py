@@ -137,8 +137,8 @@ def focus_filter(part, bound):
     if checked is None:return 'scale=2560:1440:flags=lanczos'
     x,y,width,height=checked['focus_rect']
     return (f'crop={width}:{height}:{x}:{y},'
-        'scale=2560:1440:force_original_aspect_ratio=decrease:flags=lanczos,'
-        'pad=2560:1440:(ow-iw)/2:(oh-ih)/2:color=0x211813')
+        'scale=2560:1120:force_original_aspect_ratio=decrease:flags=lanczos,'
+        'pad=2560:1440:(ow-iw)/2:0:color=0x211813')
 
 
 def now(): return datetime.now(timezone.utc).isoformat()

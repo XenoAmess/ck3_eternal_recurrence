@@ -61,8 +61,8 @@ class Episode01FocusTests(unittest.TestCase):
         with patch.object(common.Image,'open',return_value=self.header()):
             argv=common.visual_command('ffmpeg-not-executed',row,Path('not-created.mp4'),lambda r:Path(r['path']))
         graph=argv[argv.index('-filter_complex')+1]
-        self.assertIn('crop=50:30:10:20,scale=2560:1440:force_original_aspect_ratio=decrease',graph)
-        self.assertIn('pad=2560:1440:(ow-iw)/2:(oh-ih)/2',graph)
+        self.assertIn('crop=50:30:10:20,scale=2560:1120:force_original_aspect_ratio=decrease',graph)
+        self.assertIn('pad=2560:1440:(ow-iw)/2:0',graph)
         self.assertEqual(argv[argv.index('-t')+1],'3.000000000')
         self.assertEqual(row['duration_seconds'],3)
 
@@ -82,6 +82,13 @@ class Episode01FocusTests(unittest.TestCase):
             ass=common.subtitle(row,Path('unused.ttf'),'Unit Font')
         self.assertEqual(ass.count(label),1)
         self.assertIn('unit.source0',ass)
+
+    def test_focus_viewport_stays_above_subtitles(self):
+        with patch.object(common.Image,'open',return_value=self.header(size=(2560,1440))):
+            graph=common.focus_filter({**self.part(),'focus_rect':[0,607,670,328]},lambda _:Path('unused.png'))
+        self.assertIn('scale=2560:1120:',graph)
+        self.assertIn('pad=2560:1440:(ow-iw)/2:0:',graph)
+        self.assertLessEqual(328*min(2560/670,1120/328),1120)
 
 
 if __name__=='__main__':unittest.main()
