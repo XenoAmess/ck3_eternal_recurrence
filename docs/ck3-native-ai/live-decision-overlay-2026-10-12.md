@@ -1,5 +1,8 @@
 # 罗贝尔实机演示：实时决策悬浮窗（2026-10-12）
 
+> **2026-10-18 用户指令：旧蓝色面板已退役。** 本文保留为历史实现和当时实机记录；下面的启动命令不再用于任何新录制。`NativeOverlay` 构造及旧 CLI 已拒绝新启动，后续共享录制会拒绝残留的 `XARG2DecisionOverlay_<pid>` 窗口。决策数据发布、新版 decision UI 及原生决策功能不由此停用。迁移见[录制说明](../../promo/ck3_faith_and_power/integration/legacy-decision-panel-retirement.md)。
+
+
 用户要求在游戏窗口上展示自动游玩如何决定开战，而不是只展示地图变化。当前演示已启动真实 Windows 悬浮窗，使用本局 SDK 文件队列的请求、规划和返回结果，每 350 ms 更新。源代码是 [实时数据展示](../../tools/g2_saved_campaign/live_decision_overlay.py) 与 [原生窗口](../../tools/g2_saved_campaign/decision_overlay_window.py)。它不创建另一个 Driver、不查询游戏管道，也不执行游戏输入。
 
 显示内容包括当前计划、实际步骤结果、宣战决策及独立读回的战争身份、决策理由、最近三条记录、尚未解决的军力查询失败。计划与提交不会显示为战斗胜利；存档只有返回文件回执 `checkpoint.status=saved` 才显示已确认。宣战战争 ID 要同时关联对手、攻击方与目标头衔，并且只有唯一匹配且动作已接受才显示已读回。

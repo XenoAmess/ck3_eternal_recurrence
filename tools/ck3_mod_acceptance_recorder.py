@@ -34,6 +34,40 @@ def write(path, document):
         handle.write("\n")
 
 
+# Fingerprint of the retired renderer, not a title/OCR or generic decision-UI rule.
+# See tools/g2_saved_campaign/decision_overlay_window.py and the migration note.
+LEGACY_BLUE_OVERLAY_CLASS_PREFIX = "XARG2DecisionOverlay_"
+
+
+def legacy_blue_overlay_windows(window_api=None):
+    """Read only current-desktop window classes, including hidden legacy owners."""
+    if window_api is None:
+        import win32gui as window_api
+    found = []
+
+    def collect(hwnd, _):
+        class_name = window_api.GetClassName(hwnd)
+        suffix = class_name.removeprefix(LEGACY_BLUE_OVERLAY_CLASS_PREFIX)
+        if (class_name.startswith(LEGACY_BLUE_OVERLAY_CLASS_PREFIX)
+                and suffix.isascii() and suffix.isdecimal() and int(suffix) > 0):
+            found.append({"hwnd": int(hwnd), "class_name": class_name})
+        return True
+
+    window_api.EnumWindows(collect, None)
+    return found
+
+
+def require_no_legacy_blue_overlay():
+    legacy = legacy_blue_overlay_windows()
+    if legacy:
+        raise RuntimeError(
+            "Retired legacy blue decision panel is still present; its owner must "
+            "close it before a new take. New decision UIs are not disabled: " + repr(legacy))
+    return {"legacy_blue_overlay_retired": True,
+            "legacy_window_class_prefix": LEGACY_BLUE_OVERLAY_CLASS_PREFIX,
+            "legacy_window_count_at_start": 0, "starts_or_mounts_decision_overlay": False}
+
+
 class BoundedScreenRecorder:
     def __init__(self, *, root, output, keeper, ffmpeg, ffprobe, machine_id,
                  admission_receipt, seconds=120, peak_bytes=512 * 1024**2,
@@ -57,6 +91,7 @@ class BoundedScreenRecorder:
             actual_machine = subprocess.check_output([sys.executable, "-B", self.root / "tools/ck3_live_run_id.py", "machine"], text=True).strip()
             if actual_machine != self.machine_id:
                 raise RuntimeError("Recorder machine identity changed")
+            overlay_policy = require_no_legacy_blue_overlay()
             import ctypes
             import pyautogui
             native_size = (ctypes.windll.user32.GetSystemMetrics(0), ctypes.windll.user32.GetSystemMetrics(1))
@@ -79,6 +114,7 @@ class BoundedScreenRecorder:
                       "observed_at_utc": utc(), "evidence_source": "BoundedScreenRecorder.start; actual keeper process-create gate and source bindings",
                       "argv": argv, "max_seconds": self.seconds, "peak_bytes": self.peak_bytes,
                       "geometry": {"gdi": native_size, "pyautogui": automation_size},
+                      "decision_display_policy": overlay_policy,
                       "admission": file_identity(self.admission), "recorder_job_source": file_identity(source),
                       "project_source": file_identity(Path(__file__)), "ffmpeg": file_identity(self.ffmpeg),
                       "ffprobe": file_identity(self.ffprobe), "clean_spans_certified": False}
@@ -265,6 +301,8 @@ class ScreenCaptureService:
             return self.abort_for_lease()
         live, frozen = self._live(request["live_root"])
         if operation == "start":
+            # Reject before consuming a take name or creating a recorder object.
+            require_no_legacy_blue_overlay()
             if self.recorder is not None:
                 terminal = self.recorder.terminal
                 job = terminal.get('job', {}) if isinstance(terminal, dict) else {}
