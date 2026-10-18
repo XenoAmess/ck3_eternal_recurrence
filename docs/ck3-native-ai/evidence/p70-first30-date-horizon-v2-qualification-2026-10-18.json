@@ -1,0 +1,110 @@
+{
+  "schema": "xar.ck3.p70.date-horizon-v2.source-knowledge/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "documented_utc": "2026-10-18T00:01:54.413559+00:00",
+  "source_checkpoint_observed_utc": "2026-10-18T00:00:00.668420+00:00",
+  "status_at_source_checkpoint": "PREPARED_V2_DYNAMIC_EXISTING_OWNER_SOURCE_ONLY_NOT_INSTALLED",
+  "sources": {
+    "P70_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p70-first30-date-clip02\\DELIVERY.json",
+      "bytes": 6370,
+      "sha256": "91518b005c24fc30d3e0671e6099235c889ce0e776c3bfe7bc80fb30541de8c7"
+    },
+    "P70_final_qualification": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p70-first30-date-clip02\\QUALIFICATION-ACTUAL-COMPOSITION-V2-02.json",
+      "bytes": 21339,
+      "sha256": "71d60973bb7c300fc74c1694a5317baeea65da7be5200877ee4b7d6e8d21e5d4"
+    }
+  },
+  "candidate_helper": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p70-first30-date-clip02\\ordinary_date_horizon_v2.py",
+    "bytes": 15144,
+    "sha256": "78901a2ff8410ec93d12969c927fdcaeb5a8e914bd5e71c33d499ae8fedd81f2"
+  },
+  "test_source": {
+    "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p70-first30-date-clip02\\test_actual_source_date_horizon_v2.py",
+    "bytes": 14021,
+    "sha256": "9a7e7d04f2422b4784988c8c94b1109692617a5aa7b7ddc894de315266a9f801"
+  },
+  "actual_SDK_sources": {
+    "NativeDriver": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1574836,
+      "sha256": "1173808083bfef752ec1efd43b2555153b3fc9b5c1243e3985c7e1ee3dee48d8"
+    },
+    "Service": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\service.py",
+      "bytes": 854328,
+      "sha256": "50ae356b6f5aa77b624417cc3dbe3e8fb5d787fe98b15f2886c70b2f1998b93f"
+    },
+    "lifecycle_contract": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\bridge\\succession_transition_contract.py",
+      "bytes": 29702,
+      "sha256": "e99ab19e0a8e35a4587ae5228d02712476ac7cd2b8c237a899f666c0744e037a"
+    },
+    "campaign_goal": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\sdk-p48-candidate01\\src\\xar_autoplayer\\strategy.py",
+      "bytes": 1069539,
+      "sha256": "b83bdceb0fe3c4ff5177f60296f43c484510f1710a43c603fd0f6ccfd3ab5119"
+    },
+    "P66_V1_delivery": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p66-first30-date-clip01\\DELIVERY.json",
+      "bytes": 3500,
+      "sha256": "a853ddf5315ad407000d717595497d3ae9c3104b7d1adfbe2c6ffd0359ab32b4"
+    },
+    "P65_actual_startup": {
+      "path": "D:\\codex-ck3-demos\\2026-10-14-robert-30year\\continuation42-cold-prep\\p65-sdk-only-rotation01\\staged\\root_p50r7_policy_bootstrap.py",
+      "bytes": 9035,
+      "sha256": "9a9a4dfc602f7dc92e2bb86f28baa0ec1fb21a662668821bf09fd44261ec9723"
+    }
+  },
+  "entry": "ordinary_date_horizon_v2.install(service_module,native_driver_module,expected_source_pins=...,target_date_raw=...,campaign_id=...,game_pid=...,final_window_days=150)",
+  "required_config": [
+    "target_date_raw",
+    "campaign_id from already admitted stable campaign goal",
+    "same actual Game PID",
+    "final_window_days150",
+    "exact SDK source paths/SHA"
+  ],
+  "ownership_contract": "Read only existing active native lifecycle owner and normalized ordinary campaign goal. Dynamic episode/actor must match actual frame; this leaf does not grant or transition identity.",
+  "source_lines": {
+    "Native_dynamic_owner_projection": "native_driver.py:4797..4978",
+    "Native_primary_reconciled_successor_update": "native_driver.py:22880..22950",
+    "stable_campaign_goal_after_succession": "strategy.py:6237..6307",
+    "lifecycle_binding_normalizer": "succession_transition_contract.py:87..138"
+  },
+  "qualification": {
+    "observed_utc": "2026-10-17T23:59:20.343917+00:00",
+    "tests_run": 12,
+    "status": "PASS",
+    "all_existing_P65_R7_startup_hooks_combined": true,
+    "synthetic_strategy_frame_and_Driver_endpoint": true,
+    "actual_Native_success_or_production_strategy_replay_claimed": false,
+    "same_Game_reconciled_successor_new_episode_accepted": true,
+    "unknown_incomplete_foreign_campaign_or_unreconciled_owner_rejected": true,
+    "owner_or_goal_written_by_date_helper": false
+  },
+  "date_contract": {
+    "target_date_raw": 53407320,
+    "final_window_days": 150,
+    "life_final_window": "existing exact oneDay before presentation",
+    "objective_hold": "original parser/builder min(T, old), retain scope and speed",
+    "other_route_combat_steps": "maximum endpoint above T rejected before submit",
+    "Native_sentinel_caps_and_existing_postconditions_retained": true,
+    "risk_null_plan_promoted": false,
+    "before_submit_changes_callback_deepcopy": false,
+    "new_manual_transport": false,
+    "FIRST30_marker_written": false
+  },
+  "candidate_remains_external": true,
+  "P66_V1_changed": false,
+  "installed_by_this_package_or_documentation": false,
+  "future_entry_owner_queue_first30_consumer_qualification_required": true,
+  "first30_reached_or_permanent_manual_SAVE_full_video_claimed": false,
+  "current_work": {
+    "large_body_reads": 0,
+    "Driver_constructor_calls": 0,
+    "MCP_or_Native_calls": 0,
+    "tests_repeated": 0
+  }
+}
