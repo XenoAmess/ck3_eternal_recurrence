@@ -1,0 +1,148 @@
+{
+  "schema": "xar.r05-initializer-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "sealed_at_utc": "2026-10-18T02:16:15.664501+00:00",
+  "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "status": "READY_SOURCE_CANDIDATE_NOT_NATIVE_LIVE",
+  "copy_plan": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\COPYPLAN.actual-a01.json",
+    "bytes": 13523,
+    "sha256": "fb1ff5164ef7050bf765a921e53c14d602c7f6b51578de82967b625e5d02b1e1"
+  },
+  "relative_patch": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\relative.patch",
+    "bytes": 182843,
+    "sha256": "9325e0cb57166922a58f35c84c4bcf33925d203e77e1f85165599cb23a6d403d"
+  },
+  "archive": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\R05-INITIALIZER-CANDIDATE.actual-a01.zip",
+    "bytes": 121383,
+    "sha256": "91df6ff34343fb9b6b437f28be26ec53ae7a21f2da3306658f4e7856c9d21001"
+  },
+  "verifier": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\verify_candidate_a01.py",
+    "bytes": 3984,
+    "sha256": "8d1c3e7a559d84a945a35fc3234f0d6c92c8d4b5dedb1e98fec61854f5b65790"
+  },
+  "file_count": 22,
+  "new_paths": [
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stderr.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stdout.log",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/common/decisions/xar_r05_low_supply_fixture.txt",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/descriptor.mod",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/fixture-manifest.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/english/xar_r05_low_supply_fixture_l_english.yml",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/offline-checks.actual.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/PREFLIGHT.raw.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-documentation-source.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-preflight.actual.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/source-index.json",
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/VALIDATE.raw.json",
+    "docs/ck3-native-ai/episode04-r05-controlled-low-supply-fixture-12004.md",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply.json",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply_adapter.py",
+    "tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
+    "tools/ck3_mod_acceptance_r05_products.json",
+    "tools/prepare_r05_low_supply_fixture.py",
+    "tools/run_r05_low_supply_initializer_once.py",
+    "tools/test_r05_low_supply_fixture.py"
+  ],
+  "dependency_paths": [
+    "tools/ck3_mod_acceptance.py",
+    "tools/ck3_mod_acceptance_prepare.py",
+    "tools/ck3_mod_acceptance_client.py",
+    "tools/fixture_engine_prepare.py",
+    "tools/ck3_live_run_id.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_runtime_evidence.py",
+    "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_deadline.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_replenishment_records_contract.py",
+    "ck3_autonomous_player/src/xar_autoplayer/bridge/army_fixed_chunk0_preparation_contract.py"
+  ],
+  "canonical_topic": "docs/ck3-native-ai/episode04-r05-controlled-low-supply-fixture-12004.md",
+  "offline_checks": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\docs\\ck3-native-ai\\acceptance\\2026-10-18-r05-controlled-low-supply\\offline-checks.actual.json",
+    "bytes": 4428,
+    "sha256": "3df16bd81c081de98138b247e420497b1fe5a627459d9670146f9dec69192cce"
+  },
+  "copy_archive_verification": {
+    "command": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-O",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\verify_candidate_a01.py",
+      "--archive",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\R05-INITIALIZER-CANDIDATE.actual-a01.zip"
+    ],
+    "exit_code": 0,
+    "stdout": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\VERIFY.stdout.log",
+      "bytes": 393,
+      "sha256": "9a35e9b2f96314adff842d4b89dd34f882938236d072277f3b90ce9101d5280f"
+    }
+  },
+  "relative_patch_check": {
+    "command": [
+      "git",
+      "apply",
+      "--check",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\relative.patch"
+    ],
+    "exit_code": 0,
+    "stderr": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\PATCH-CHECK.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "one_canonical_smoke": {
+    "argv": [
+      "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+      "-B",
+      "-O",
+      "-X",
+      "utf8",
+      "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\verify_candidate_a01.py",
+      "--smoke-repo",
+      "<integration-checkout>",
+      "--temp-root",
+      "<new-external-smoke-root>"
+    ],
+    "test": "test_public_common_adapter_profile_and_actual_load_declaration",
+    "repeat_full13_required": false,
+    "boundary": "one actual common-source glue test with synthetic SDK/OS boundary; no live credit"
+  },
+  "native_flags": {
+    "a35_observed": "three decision flags OFF; two inspection dependency flags ON",
+    "future_required": "coherent shared native and actual advertised capabilities; ON alone not qualified"
+  },
+  "next_real_execution": "Root/common-runtime owner after actual capability qualification; controlled initialization only, typed unique current Army binding",
+  "remaining_R05_code_seam": "Add existing natural-day/full-history/parent writer collection after run_case checkpoint before return; not implemented in initializer-only case",
+  "R05_pass": false,
+  "native_effect_qualified": false,
+  "natural_days_advanced": 0,
+  "SDK_calls": 0,
+  "native_builds": 0,
+  "main_writes": 0,
+  "existing_project_or_game_deletions": 0,
+  "storage": {
+    "own_root_bytes_before_this_receipt": 537974,
+    "own_D_cap_bytes": 8388608,
+    "C_project_writes_bytes": 0,
+    "C_free_bytes": 25287864320,
+    "D_free_bytes": 44823740416,
+    "inherited_root_pool_bytes": 134217728,
+    "deadline_utc": "2026-10-18T05:30:00Z",
+    "capacity_credit_claimed": false,
+    "heavy_writes": false
+  },
+  "retention": {
+    "derived_review_after_hours": 48,
+    "small_record_review_after_days": 180,
+    "automatic_gc_claimed": false
+  }
+}

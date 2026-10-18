@@ -1,0 +1,20 @@
+{
+  "schema": "ck3-mod-acceptance-products-v1",
+  "product_inventory": "{repo_root}/workshop/products.json",
+  "products": {
+    "r05-mechanism-research": {
+      "name": "R05 controlled low supply research fixture; no Workshop product",
+      "cases": [{
+        "id": "initialize-ordinary-low-supply",
+        "status": "ready",
+        "case_scope": "controlled_initial_supply_only_not_R05_casualty",
+        "adapter": {"module": "tools.ck3_mod_acceptance_cases.r05_low_supply_adapter", "config": "tools/ck3_mod_acceptance_cases/r05_low_supply.json"},
+        "startup": {"mode": "saved_campaign", "state_dir": "{run_dir}/state", "saved_campaign": {"save": null,"bytes":null,"sha256":null,"player_id":null,"date_raw":null,"product_inventory":null}},
+        "initial_plan": "{repo_root}/tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
+        "required_mcp_tools": ["ck3_get_capabilities","ck3_take_snapshot","ck3_query_army_strengths","ck3_open_ingame_decisions_v1","ck3_select_ingame_decision_item_v1","ck3_confirm_ingame_decision_outcome_v1"],
+        "budgets": {"command_timeout":null,"readiness_timeout":null,"timeout":null,"poll_interval":null,"hold_seconds":null},
+        "normal_close": {"route":"shared_managed_normal_gui_quit","requirements":["Save/normal exit actual receipts","same process and keeper closure"]}
+      }]
+    }
+  }
+}

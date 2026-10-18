@@ -1,0 +1,18 @@
+test_actual_checkpoint_reader_import_is_library_only (__main__.Contracts.test_actual_checkpoint_reader_import_is_library_only) ... ok
+test_actual_parser_only_receipt_preserves_validator_red (__main__.Contracts.test_actual_parser_only_receipt_preserves_validator_red) ... ok
+test_controlled_package_and_drift (__main__.Contracts.test_controlled_package_and_drift) ... ok
+test_fraction_and_injection_rejected (__main__.Contracts.test_fraction_and_injection_rejected) ... ok
+test_mixed_physical_classes_are_preserved_not_misnamed (__main__.Contracts.test_mixed_physical_classes_are_preserved_not_misnamed) ... ok
+test_off_native_gate_precedes_navigation_and_unknown_never_replays (__main__.Contracts.test_off_native_gate_precedes_navigation_and_unknown_never_replays) ... ok
+test_physical_identity_not_net_strength (__main__.Contracts.test_physical_identity_not_net_strength) ... ok
+test_public_adapter_binds_current_ids_through_existing_common_relay (__main__.Contracts.test_public_adapter_binds_current_ids_through_existing_common_relay) ... ok
+test_public_common_adapter_missing_parser_gate_blocks_before_profile (__main__.Contracts.test_public_common_adapter_missing_parser_gate_blocks_before_profile) ... ok
+test_public_common_adapter_profile_and_actual_load_declaration (__main__.Contracts.test_public_common_adapter_profile_and_actual_load_declaration) ... ok
+test_real_public_selector_preserves_common_runtime_and_unbound_inputs (__main__.Contracts.test_real_public_selector_preserves_common_runtime_and_unbound_inputs) ... ok
+test_real_relay_flow_once_then_independent_post (__main__.Contracts.test_real_relay_flow_once_then_independent_post) ... ok
+test_unique_ordinary_target_and_revision_separation (__main__.Contracts.test_unique_ordinary_target_and_revision_separation) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 7.593s
+
+OK

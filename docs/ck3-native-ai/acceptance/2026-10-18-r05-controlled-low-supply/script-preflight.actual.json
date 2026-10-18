@@ -1,0 +1,88 @@
+{
+  "schema": "xar.r05-covered-script-preflight.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "compiled_at_utc": "2026-10-18T02:09:41.357831+00:00",
+  "observation_source": "Original preflight/validator packets retained; decision836B is byte-identical between a01/a02. a02 changes only two non-parser localization confirm entries. No claim that the old CLI validates localization semantics.",
+  "status": "PARSER_SYNTAX_PASSED_VALIDATOR_UNSUPPORTED",
+  "open_kaishek_commit": "721bc276c94ee46d1c54668564b88ce0e2e4d5e5",
+  "open_kaishek_jar_sha256": "6ac143ebf03f3e1a041dff01b2d808e60de8e289d18cebf9855682f0a80b6d82",
+  "profile_version": "ck3-1.19.0.6 / tool0.1.0-cli; syntax only; no1.20.0.4 validator profile",
+  "ck3_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "tool_profile_build_fingerprint": {
+    "game_id": "ck3",
+    "version": "1.19.0.6",
+    "exe_sha256": "2D00FF3101EF70B566F2FCBAE292F09263199C80E9DC8F139B82D7D96F83DB86"
+  },
+  "corpus_sha256": {
+    "descriptor.mod": "821698310b34bf898926f943b1f95a92871b9e053052a3c448519b7390496019",
+    "common/decisions/xar_r05_low_supply_fixture.txt": "e2454dfd4511602c75b51a30e1696ebbdd279b93e0b62177a27c80fdd28ea706",
+    "localization/english/xar_r05_low_supply_fixture_l_english.yml": "5df7450189170800f804cb3b74fd82a6cf939c5c3fe18871e29dee8e3424a40a",
+    "localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml": "d47aa1eec356288c1d7b4b4e7743e89fdc35e7b03f504e9dbd2ccc25870d802f"
+  },
+  "fixture_manifest": {
+    "path": "fixture/fixture-manifest.json",
+    "bytes": 1869,
+    "sha256": "1ae2c4020ecbde27d8a68df9d63d97d2f0f600524e05ddb1396f50497d6a0295"
+  },
+  "actual_command": [
+    "D:/graalvm-community-25.3.4.1+1.1/bin/java.exe",
+    "-jar",
+    "D:/workspace/open_kaishek/kaishek-cli/target/kaishek-cli-0.1.0-SNAPSHOT.jar",
+    "preflight",
+    "--root",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\generated-preview-a01",
+    "--profile",
+    "ck3-1.19.0.6",
+    "--fixture",
+    "synthetic-361-014"
+  ],
+  "actual_exit_code": 1,
+  "actual_preflight_report": {
+    "path": "PREFLIGHT.raw.json",
+    "bytes": 2642,
+    "sha256": "66d2012f5db6689b794e7d53113fb83cefb85757156be9903cadc7c20dd25dfa"
+  },
+  "actual_validate_report": {
+    "path": "VALIDATE.raw.json",
+    "bytes": 3712,
+    "sha256": "660a3b46b03457d9696bf02cb110c14481af1c079b29433c06cfc0dba85d5c7b"
+  },
+  "root_parser": {
+    "status": "GREEN",
+    "files": 1,
+    "bytes": 836,
+    "diagnostics": 0,
+    "sha256": "49f7e69d7cb386eb0086bce0699e003cc3e71643edba345a22a201e73465cf40",
+    "samples": []
+  },
+  "root_validator": {
+    "status": "RED",
+    "files": 1,
+    "bytes": 836,
+    "diagnostics": 15,
+    "sha256": "49f7e69d7cb386eb0086bce0699e003cc3e71643edba345a22a201e73465cf40",
+    "samples": [
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE",
+      "common/decisions/xar_r05_low_supply_fixture.txt:UNKNOWN_OPCODE"
+    ]
+  },
+  "unsupported_semantics": [
+    "15 UNKNOWN_OPCODE preserved in VALIDATE.raw.json; current tool profile has no decision scope/effect semantics",
+    "CK3 1.20.0.4 native province/Army scope binding and actual subtract_supply base/clamp",
+    "actual decision visibility/click outcome/once flag behavior and unchanged soldiers",
+    "natural supply update/admission/loaded levels/physical starvation debit",
+    "top-level IR/runtime GREEN belongs only to synthetic-361-014 demo, excluded from R05 credit",
+    "descriptor/localization bytes are corpus-bound; not covered by decision script root parser"
+  ],
+  "native_script_effect_qualified": false,
+  "R05_pass": false,
+  "CK3_started": false,
+  "SDK_calls": 0,
+  "source_decision_sha256": "e2454dfd4511602c75b51a30e1696ebbdd279b93e0b62177a27c80fdd28ea706"
+}

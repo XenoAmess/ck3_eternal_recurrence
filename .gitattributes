@@ -805,3 +805,23 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-de
 /ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py -text whitespace=cr-at-eol
 /ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py -text whitespace=cr-at-eol
 /ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py -text whitespace=cr-at-eol
+
+# R05 controlled initializer exact script/parser source evidence
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stderr.log -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stdout.log -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/common/decisions/xar_r05_low_supply_fixture.txt -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/descriptor.mod -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/fixture-manifest.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/english/xar_r05_low_supply_fixture_l_english.yml -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/offline-checks.actual.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/PREFLIGHT.raw.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-documentation-source.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-preflight.actual.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/source-index.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/VALIDATE.raw.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/candidate-source.exact.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/COPYPLAN.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/ROOT-DELIVERY.original.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/verify_candidate_a01.py -text whitespace=cr-at-eol
+/docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/INTEGRATION.md -text whitespace=cr-at-eol

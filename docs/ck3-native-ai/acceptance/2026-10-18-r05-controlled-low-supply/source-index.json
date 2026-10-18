@@ -1,0 +1,369 @@
+{
+  "schema": "xar.r05-source-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:05:25.032132+00:00",
+  "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "source_only": true,
+  "exact_game": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "identity_scope": "held exact-build pin; no current EXE rehash or runtime installation claim"
+  },
+  "game_path_provenance": "R204 prepared-a01/prepared.json, named prior analysis; installation fact not inferred across machines",
+  "a35_cmake_cache": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a35\\CMakeCache.txt",
+    "bytes": 43791,
+    "sha256": "85c71cc98f2eb4924d185bb0ef6b9209f1b941c577d8ee7a6e8c230376e7a941"
+  },
+  "a35_source_flags": {
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "OFF",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "OFF"
+  },
+  "a35_decision_capability_qualified": false,
+  "repo_source_spans": [
+    {
+      "relative_path": "AGENTS.md",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "1fd0399a8b6144b3175ecc571696ab2d14bd2f28",
+      "start_line": 551,
+      "end_line": 555,
+      "meaning": "one public common-runtime acceptance route",
+      "excerpt_sha256": "aa416a96dd32e2bc50ac54a61bde4f62739a074e67abe5bd25ba6515544ee931",
+      "text": "## 全部未来mod验收的公共入口（2026-10-08永久规则）\n\n- 所有未来mod acceptance只从`tools/ck3_mod_acceptance.py`的`plan / prepare / allocate / preflight / run / verify`公共入口选用一份全局common runtime manifest及其本机路径映射。产品仅提供fixture、business case data与adapter，不自行选用或复制host/source/native版本；共享问题在共享层修一次。既有产品builder及发布前源码业务合同保持，旧runner/frozen仅保留底层实现和历史证据，不能作为未来新run分叉版本的入口。\n- 旧冻结输入、失败attempt与原证据按通用存储策略到期复核和回收；当前必要基线、活跃输入及关键未解决问题原件须有用途明确且有期限的保护，不再默认永久保留。回收不改写历史GREEN/RED/UNKNOWN，引用须准确标明现有原件可用性。新run使用公共manifest绑定的版本；共同host/native对必要既有capability的实际qualification只做一次并复用，不按产品重复whole build/full matrix，也不因公共GREEN减少原产品业务要求。plan或adapter数据可消费不证明实际adapter可运行，pending能力如实保留。\n- 公共入口记录各phase实际elapsed，区分共享资格、产品业务、GUI-only真实业务及退出/cleanup；导航ACK、正常退出、host GREEN、静态/plan不得授业务PASS。原预算与case合同按真实绑定记录，未来参数不追认旧失败。缓存继续只验实际Steam已发布cache文件exact formal match及CK3实际mounted/loaded，不重复缓存业务。实施边界见[mod升级提速与公共验收](docs/ck3-mod-upgrade-fast-validation.md)。\n"
+    },
+    {
+      "relative_path": "AGENTS.md",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "1fd0399a8b6144b3175ecc571696ab2d14bd2f28",
+      "start_line": 480,
+      "end_line": 480,
+      "meaning": "covered deterministic subset first; not live credit",
+      "excerpt_sha256": "b5f1c23cf69a156bd6da5f9285881b0d62d55640df141ba5271f8ddd684c4bc2",
+      "text": "- **当前执行顺序与 `open_kaishek` 预验（2026-09-02 起）。** 天朝二期是当前最高优先级，直到正式发布闭环前不得被其他工作包抢占；G2 作为第二优先级持续并行推进；`Z:\\workspace\\open_kaishek` 作为两条主线的共同验收加速器持续演进。任何 CK3 验收步骤（静态/fixture、paused snapshot、启动、动作或后置检查）开始前，先判断该步骤是否存在可由 `open_kaishek` 的 parser、validator、IR、finite runtime 或 replay 覆盖的确定性子集；有则先运行离线预验，再进入 CK3。每次预验至少记录 `open_kaishek` commit、profile/version、CK3 exact build/EXE SHA-256、fixture/corpus ID 与 SHA-256、实际命令、结果和不支持项；没有可覆盖语义时记录 `not-applicable` 及原因，不为形式重复执行。预验只用于提前发现确定性问题，不能代替真实 CK3/MCP paused artifact、输入/动作或 GREEN；其 RED 必须与 CK3 capability RED 分开归类。\n"
+    },
+    {
+      "relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "1b9e3337dbd739ea4566023ba1263c5fd3e6f03b",
+      "start_line": 160,
+      "end_line": 177,
+      "meaning": "old bootstrap pure-vanilla gate remains exact empty mods",
+      "excerpt_sha256": "83178bbc33639ade362d353f5c40bee341a91855dc6ad3508de590b7e6079e55",
+      "text": "def load_prepared(path: Path) -> dict:\n    body = json.loads(path.read_text(encoding=\"utf-8\"))\n    require(body.get(\"schema\") == SCHEMA and body.get(\"launch_attempted\") is False,\n            \"not a prepared episode03 bootstrap manifest\")\n    for key in (\"game\", \"bridge_dll\", \"bridge_injector\", \"bridge_host\"):\n        require(identity(Path(body[key][\"path\"])) == body[key], f\"{key} bytes changed\")\n    target = prepared_game_target(body)\n    require_prepared_machine(body, target)\n    require(body[\"game\"][\"sha256\"] == target[\"exe_sha256\"], \"CK3 executable identity changed\")\n    if target[\"version\"] == \"1.20.0.4\":\n        validate_prepared_robert_intent(body)\n        # Return a current readback beside the unchanged on-disk prepared input.\n        body[\"runtime_installation_validation\"] = installed_target_observation(\n            Path(body[\"game_dir\"]), target)\n    for row in body[\"profile_files\"]:\n        require(identity(Path(row[\"path\"])) == row, \"prepared profile bytes changed\")\n    require(json.loads(Path(body[\"profile_dir\"], \"dlc_load.json\").read_text(encoding=\"utf-8\"))\n            == {\"enabled_mods\": [], \"disabled_dlcs\": []}, \"profile is not pure vanilla\")\n"
+    },
+    {
+      "relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "1b9e3337dbd739ea4566023ba1263c5fd3e6f03b",
+      "start_line": 186,
+      "end_line": 217,
+      "meaning": "reuse checkpoint_source reader only",
+      "excerpt_sha256": "5e5388d77eba4bf9fc80b1cabc7d20cce7374813b4bf1e4688581963440a084e",
+      "text": "def checkpoint_source(save, receipt_path, build_path, target=None, expected_actor=None):\n    target = target or game_target(\"1.20.0.3\")\n    require((save is None) == (receipt_path is None) == (build_path is None), \"Checkpoint save, actual MCP receipt and original prepared build receipt required together\")\n    if save is None:\n        return None\n    require(save.is_file() and save.suffix.lower() == \".ck3\", \"Existing .ck3 source required\")\n    packet = json.loads(receipt_path.read_text(encoding=\"utf-8-sig\"))\n    request = packet.get(\"request\") or {}\n    require(isinstance(request, dict), \"Checkpoint request must be an object\")\n    arguments = request.get(\"arguments\")\n    execute_save = (request.get(\"tool\") == \"ck3_execute_step\" and\n                    isinstance(arguments, dict) and arguments.get(\"step\") == \"save-checkpoint\")\n    require(packet.get(\"is_error\") is False and\n            (request.get(\"tool\") == \"ck3_save_checkpoint\" or execute_save),\n            \"Not a successful actual SDK save-checkpoint packet\")\n    body = packet.get(\"body\") or {}\n    saved = body.get(\"checkpoint\") or {}\n    require(body.get(\"step\") == \"save-checkpoint\" and body.get(\"accepted\") is True and saved.get(\"status\") == \"saved\", \"No saved native checkpoint\")\n    actual = identity(save)\n    require(actual[\"bytes\"] == saved.get(\"size\") and actual[\"sha256\"] == str(saved.get(\"sha256\")).lower(), \"Save differs from actual materialization receipt\")\n    lifecycle = saved.get(\"succession_lifecycle\") or {}\n    require(lifecycle.get(\"lifecycle\") == \"ordinary_campaign_succession\" and lifecycle.get(\"xar_enabled\") == \"xar_off\" and lifecycle.get(\"pact_contract\") == \"absent_by_fresh_campaign_xar_off_contract\" and lifecycle.get(\"source\") == \"pure-vanilla-enabled-mods-empty\", \"Checkpoint must belong to pure vanilla ordinary campaign\")\n    build = json.loads(build_path.read_text(encoding=\"utf-8-sig\"))\n    require((build.get(\"game\") or {}).get(\"sha256\", \"\").lower() == target[\"exe_sha256\"],\n            \"Source checkpoint build differs from the selected exact target\")\n    if target[\"version\"] == \"1.20.0.4\":\n        require(prepared_game_target(build) == target, \"Source .4 checkpoint lacks its exact build contract\")\n    require(Path(saved[\"path\"]).parent.resolve() == (Path(build[\"profile_dir\"]) / \"save games\").resolve(), \"Saved packet not from build receipt profile\")\n    actor, date = saved.get(\"episode_character_id\"), saved.get(\"date_raw\")\n    require(type(actor) is int and actor > 0 and type(date) is int and date > 0, \"Saved actor/date absent\")\n    require(expected_actor is None or actor == expected_actor, \"Checkpoint actor differs from capture intent\")\n    return {\"save\": actual, \"receipt\": identity(receipt_path), \"build_receipt\": identity(build_path), \"actor_id\": actor, \"date_raw\": date, \"source_lifecycle\": lifecycle, \"load_save_name\": \"episode04_frozen_start\", \"driver_history_copied\": False}\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2",
+      "start_line": 304,
+      "end_line": 322,
+      "meaning": "sole common host/native/source selection",
+      "excerpt_sha256": "ce9d718a6bb4f480734e8a9128322c97fd16de3cef394bc848ca90b1afb40172",
+      "text": "    def build_argv(self) -> list[str]:\n        host = self.shared_file(self.manifest[\"host\"], \"host\")\n        source = self.manifest_path_key(self.manifest[\"source_root\"])\n        for name in (\"source_index\", \"native_source_index\"):\n            self.shared_file(self.manifest[name], name)\n        for row in self.manifest.get(\"imports\", []):\n            self.shared_file(row[\"index\"])\n        native = self.manifest[\"native\"]\n        dll, injector = self.shared_file(native[\"dll\"]), self.shared_file(native[\"injector\"])\n        startup = self.case[\"startup\"]\n        state = self.case_path(startup[\"state_dir\"])\n        self.state_dir = state\n        pipe = \"\\\\\\\\.\\\\pipe\\\\ck3_mod_acceptance_\" + self.values[\"run_id\"]\n        argv = [str(self.locations[\"python\"]), \"-B\", \"-X\", \"utf8\", str(host),\n                \"--agent-source-root\", str(source), \"--game-dir\", str(self.locations[\"game_dir\"]),\n                \"--bridge-dll\", str(dll), \"--bridge-injector\", str(injector),\n                \"--bridge-pipe\", pipe, \"--output\", str(self.run_dir / \"native-report.json\"),\n                \"--state-dir\", str(state), \"--plan\", str(self.case_path(self.case[\"initial_plan\"])),\n                \"--control-plan-dir\", str(self.run_dir / \"controls\")]\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2",
+      "start_line": 356,
+      "end_line": 379,
+      "meaning": "saved_campaign route and exact save flags",
+      "excerpt_sha256": "2871be0e1665f4107c5b7db202c1aeabb6002df90df322c862f17b91dd51a4fe",
+      "text": "        elif startup[\"mode\"] == \"saved_campaign\":\n            argv += ['--fixture-profile']\n            if startup.get('saved_campaign_startup_case_contract'):\n                argv += ['--saved-campaign-startup-case-contract',\n                         str(self.case_path(startup['saved_campaign_startup_case_contract']))]\n            saved = dict(startup[\"saved_campaign\"])\n            for key, value in self.context.get(\"saved_campaign\", {}).items():\n                if key not in SAVED_FLAGS or saved.get(key) is not None:\n                    raise ValueError(f\"Saved latebinding can only fill a declared null field: {key}\")\n                saved[key] = value\n            for key, flag in SAVED_FLAGS.items():\n                value = saved.get(key)\n                if value is None:\n                    self.blockers.append(f\"Saved campaign input unbound: {key}\")\n                    continue\n                if key in (\"save\", \"product_inventory\"):\n                    value = str(self.case_path(value))\n                elif key in (\"bytes\", \"player_id\", \"date_raw\"):\n                    if type(value) is not int or value <= 0:\n                        raise ValueError(f\"Positive saved integer required: {key}\")\n                elif not SHA.fullmatch(str(value)):\n                    raise ValueError(\"Saved campaign exact SHA required\")\n                argv += [flag, str(value)]\n            self.saved = saved\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2",
+      "start_line": 588,
+      "end_line": 633,
+      "meaning": "public prepare invokes data adapter and emits prepared-case",
+      "excerpt_sha256": "edf5e14ecbe12e11269ccd3dbec578749a5988d3d693266086ab8e72f44c76a2",
+      "text": "    def prepare(self, inputs_path, output):\n        if self.context:\n            raise ValueError('Preparation precedes allocation; do not rewrite allocated input')\n        if self.case.get('status')!='ready':\n            raise ValueError('Explicitly blocked product adapter cannot prepare')\n        inputs=read_json(inputs_path)\n        from ck3_mod_acceptance_graphics_cache import profile_enabled, prepare_graphics_cache\n        if 'shader_cache_seed' in inputs and not profile_enabled(self.manifest):\n            raise ValueError('Shared shader cache reuse is default OFF')\n        if 'shader_cache_python_compatibility' in inputs and 'shader_cache_seed' not in inputs:\n            raise ValueError('Reviewed Python compatibility requires an explicit seed')\n        for key,value in inputs.get('case_inputs',{}).get('budgets',{}).items():\n            if key not in BUDGET_FLAGS or self.case['budgets'].get(key) is not None:\n                raise ValueError('Prepare budget latebinding can only fill declared null fields: '+key)\n            if type(value) not in (int,float) or value<0 or value==0 and key!='hold_seconds':\n                raise ValueError('Invalid explicit shared case budget: '+key)\n            self.case['budgets'][key]=value\n        if any(v is None for v in self.case['budgets'].values()):\n            raise ValueError('Preparation requires explicit binding of each declared null original budget')\n        output=output.resolve()\n        if output.exists():raise ValueError('New preparation output required; never replay')\n        state=path_at(inputs['state_dir'],inputs_path.parent)\n        if state.exists():raise ValueError('Unused prepared state required')\n        output.mkdir(parents=True)\n        context=self.adapter_context(output,inputs.get('case_inputs',{}))\n        context.update(run_dir=str(output),state_dir=str(state),run_id=None)\n        context['saved_campaign']=inputs.get('saved_campaign',{})\n        result=self.load_adapter().prepare_case(context)\n        graphics=None\n        if 'shader_cache_seed' in inputs:\n            from types import SimpleNamespace\n            graphics=prepare_graphics_cache(SimpleNamespace(manifest=self.manifest,runtime=self.runtime,state_dir=state),\n                inputs['shader_cache_seed'],result,output,\n                compatibility_pin=inputs.get('shader_cache_python_compatibility'))\n        from ck3_mod_acceptance_prepare import write_json\n        prepared={'schema':'ck3-mod-acceptance-prepared-case-v1','product':self.product_key,'case':self.case['id'],\n            'runtime_manifest':pin(self.manifest_path),'case_inputs':context['case_inputs'],\n            'startup':result['startup'],'initial_plan':result.get('initial_plan',self.case['initial_plan']),\n            'adapter':pin(self.adapter_path),'contract':pin(self.adapter_config),'preparation':result,\n            'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy,\n            'runtime_status':'NOT_RUN','business_acceptance':'NOT_ASSESSED'}\n        if graphics is not None:\n            prepared['graphics_cache']=graphics\n        path=output/'prepared-case.json';write_json(path,prepared)\n        return {'status':'CASE_PREPARED_NOT_ALLOCATED_NOT_RUN','prepared_case':pin(path),'preparation':result,\n                'effective_budgets':self.effective_budgets,'readiness_policy':self.readiness_policy}\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_prepare.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "9a7f3803150d1aa4b39e0b34772375f9ad402d23",
+      "start_line": 167,
+      "end_line": 205,
+      "meaning": "common generic single-content carrier and exact enabled mods",
+      "excerpt_sha256": "6f1916f0fa2709db721aa090af09d417d69bb71dbd9e30d6101743aa84f548ff",
+      "text": "def materialize_product_profile(context,product_dir,plain_configuration,*,workshop_cache_files=None):\n    state=Path(context['state_dir']).resolve();profile=state/'profile'\n    require(not profile.exists(),'New product-only profile required')\n    require(set(plain_configuration)==set(CONFIG_NAMES),'Exactly four plain configurations required')\n    profile.mkdir(parents=True)\n    for relative,row in plain_configuration.items():checked_copy(row,profile/relative)\n    if product_dir is None:\n        require(workshop_cache_files is None,'A vanilla saved campaign cannot declare Workshop product files')\n        write_json(profile/'dlc_load.json',{'enabled_mods':[],'disabled_dlcs':[]})\n        inventory={'schema':'ck3-saved-campaign-vanilla-profile-v1','profile_path':str(profile.resolve()),\n                   'enabled_mods':[],'product_files':[]}\n        path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)\n        rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}\n        return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,\n                'product_file_count':0,'runtime_status':'NOT_RUN','fixture_mounted':False,'vanilla_profile':True}\n    product_dir=Path(product_dir).resolve();target=profile/'mod-content/product'\n    require((product_dir/'descriptor.mod').is_file(),'Exact formal product descriptor required')\n    if workshop_cache_files is None:\n        shutil.copytree(product_dir,target)\n    else:\n        require(workshop_cache_files,'Exact external Workshop cache inventory required')\n        target=product_dir\n    outer=profile/'mod/product.mod';outer.parent.mkdir()\n    text=_outer_from_inner(target/'descriptor.mod',target)\n    if workshop_cache_files is not None:\n        item=context['workshop_cache_item_id']\n        require(re.fullmatch(r'[1-9][0-9]*',item),'Canonical cache item ID required')\n        text+='remote_file_id=\"'+item+'\"\\n'\n    with outer.open('x',encoding='utf-8',newline='\\n') as stream:stream.write(text)\n    write_json(profile/'dlc_load.json',{'enabled_mods':['mod/product.mod'],'disabled_dlcs':[]})\n    products=([pin(outer),*workshop_cache_files] if workshop_cache_files is not None else\n              [pin(p) for p in [outer,*sorted(p for p in target.rglob('*') if p.is_file())]])\n    inventory={'schema':('ck3-workshop-cache-product-only-profile-v1' if workshop_cache_files is not None else\n                         'ck3-saved-campaign-product-only-profile-v1'),'profile_path':str(profile.resolve()),\n               'enabled_mods':['mod/product.mod'],'product_files':products}\n    path=Path(context['output'])/'saved-product-inventory.json';write_json(path,inventory)\n    rows={p.relative_to(profile).as_posix():pin(p) for p in sorted(profile.rglob('*')) if p.is_file()}\n    return {'state_dir':str(state),'profile':str(profile),'product_inventory':pin(path),'files':rows,\n            'product_file_count':len(products),'runtime_status':'NOT_RUN','fixture_mounted':False}\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_prepare.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "9a7f3803150d1aa4b39e0b34772375f9ad402d23",
+      "start_line": 208,
+      "end_line": 234,
+      "meaning": "common profile provenance and startup preparation",
+      "excerpt_sha256": "af47868e57bf0b79fd58e746d4bd99668a10d4c1f46dbc9229ae6a9fd8001071",
+      "text": "def finish_product_profile(context,profile,*,provenance=None):\n    \"\"\"Bind an actual product-only profile to the selected engine and startup.\n\n    Call after materialize_product_profile and product-specific byte checks.\n    This emits no fixture policy, save, game process or launch authority.\n    \"\"\"\n    state=Path(context['state_dir']).resolve();userdir=state/'profile'\n    require(Path(profile['state_dir']).resolve()==state and\n            Path(profile['profile']).resolve()==userdir and profile.get('fixture_mounted') is False,\n            'Product preparation must identify the actual product-only profile')\n    _,identity=_engine(context)\n    rows={p.relative_to(userdir).as_posix():pin(p) for p in sorted(userdir.rglob('*')) if p.is_file()}\n    require(rows and rows==profile['files'],'Materialized product profile files changed before preparation')\n    inventory=profile['product_inventory'];actual_inventory=pin(inventory['path'])\n    require(all(actual_inventory[k]==inventory[k] for k in ('bytes','sha256')),\n            'Product inventory changed before preparation')\n    preparation=Path(context['output'])/'profile-preparation.json'\n    receipt={'schema':'ck3-mod-acceptance-prepared-product-v1','runtime_status':'NOT_RUN',\n             'state_dir':str(state),'profile_dir':str(userdir),**identity,\n             'files':rows,'product_inventory':actual_inventory,'fixture_mounted':False,\n             'provenance':provenance or {},'business_acceptance':'NOT_ASSESSED'}\n    write_json(preparation,receipt)\n    write_json(state/'preparation.json',{'schema':'ck3-mod-acceptance-profile-startup-evidence-v1',\n        'profile_dir':str(userdir),'profile_files':list(rows),\n        'profile_input_sha256':{relative:row['sha256'] for relative,row in rows.items()},\n        'preparation':pin(preparation),'runtime_status':'NOT_RUN'})\n    return {**profile,'preparation':pin(preparation)}\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f1944903ec20a7332ad7bf77c2ac069fc2614ed8",
+      "start_line": 471,
+      "end_line": 476,
+      "meaning": "actual public snapshot and validated frame",
+      "excerpt_sha256": "12bc34c0f7d3bf035f0035b07c932605f3b1e28b1c60122e6897c2e5edc1b1f2",
+      "text": "    def snapshot(self, allow_actor_change=False, require_event_free=True):\n        self._seq += 1\n        name = 'case-snapshot-' + str(self._seq).zfill(4)\n        row = self.execute_plan([{'id':name, 'tool':'ck3_take_snapshot',\n                                 'args':{'include_native_command_history':False}, 'fresh_revision':True}], name)[0]\n        return self.validate_frame(row['result'], allow_actor_change, require_event_free)\n"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f1944903ec20a7332ad7bf77c2ac069fc2614ed8",
+      "start_line": 668,
+      "end_line": 684,
+      "meaning": "actual held process identity",
+      "excerpt_sha256": "7c7c2f3c8d31977148ce785dc97b14b17dd44b9293907f03aec0be4505b04888",
+      "text": "        process = psutil.Process(pid)\n        require(process.name().lower() == 'ck3.exe', 'Managed PID is not CK3')\n        creation = process.create_time()\n        kernel = ctypes.WinDLL('kernel32', use_last_error=True)\n        kernel.OpenProcess.argtypes = [ctypes.c_uint32,ctypes.c_int,ctypes.c_uint32]\n        kernel.OpenProcess.restype = ctypes.c_void_p\n        kernel.WaitForSingleObject.argtypes = [ctypes.c_void_p,ctypes.c_uint32]\n        kernel.WaitForSingleObject.restype = ctypes.c_uint32\n        kernel.GetExitCodeProcess.argtypes = [ctypes.c_void_p,ctypes.POINTER(ctypes.c_uint32)]\n        kernel.GetExitCodeProcess.restype = ctypes.c_int\n        kernel.CloseHandle.argtypes = [ctypes.c_void_p]\n        handle = kernel.OpenProcess(0x100000|0x1000,False,pid)\n        require(handle and psutil.Process(pid).create_time() == creation and read_json(control) == record,\n                'Actual process/control changed during handle acquisition')\n        self._handle, self._kernel = handle, kernel\n        self._process = {'pid':pid,'create_time':creation,'retained_synchronize_query_handle_acquired':True}\n        self.checkpoint('retained-current-process-identity',self._process)\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2a8e4864d67357a35306219cd3983c9a1544508d",
+      "start_line": 12557,
+      "end_line": 12566,
+      "meaning": "dedicated .3/.4 private build and revision selector",
+      "excerpt_sha256": "5a8d9b0940d33bc65ae978523ce2272511cd3566c73a19b14f23878f922d6e80",
+      "text": "bool IsLydPrivateBuild(const xar::game::AdapterDescriptor &descriptor) noexcept {\n  return xar::game::IsCk3_12003Descriptor(descriptor) ||\n         xar::game::IsCk3_12004Descriptor(descriptor);\n}\n\nxar::ck3_11906::GuiAbiRevisionV1 LydPrivateGuiRevision(\n    const xar::game::AdapterDescriptor &descriptor) noexcept {\n  return xar::game::IsCk3_12004Descriptor(descriptor)\n      ? xar::ck3_11906::GuiAbiRevisionV1::crozier12004\n      : xar::ck3_11906::GuiAbiRevisionV1::crozier12003;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2a8e4864d67357a35306219cd3983c9a1544508d",
+      "start_line": 18952,
+      "end_line": 19001,
+      "meaning": "dedicated opener .4 version/frame/owner guard",
+      "excerpt_sha256": "5784a72b490ddb4bdbf7fec5d20c4270124515abba2d08fb24e1b1677191a148",
+      "text": "#if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)\n          } else if (step == xar::ck3_11906::kIngameDecisionsOpenV1Step) {\n            std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;\n            xar::game::Snapshot current{};\n            if (!xar::bridge::JsonUnsignedField(incoming.payload,\"expected_revision\",expected_revision) ||\n                !xar::bridge::JsonUnsignedField(incoming.payload,\"expected_player_character_id\",expected_actor) ||\n                !xar::bridge::JsonUnsignedField(incoming.payload,\"expected_game_pid\",expected_pid) ||\n                !xar::bridge::JsonUnsignedField(incoming.payload,\"expected_connection_generation\",expected_generation) ||\n                expected_revision==0 || expected_revision!=state_revision ||\n                expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||\n                !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||\n                !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||\n                current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||\n                !IsLydPrivateBuild(game.descriptor())) {\n              connected=write_frame(pipe,CommandResultFrame(request_id,step,false,\"exact_alive_paused_episode_binding_changed\"));\n            } else {\n              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};\n              query.mailbox=&g_main_thread_query_mailbox_v1;\n              query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::open_ingame_decisions;\n              query.ingame_decisions.game=&game;query.ingame_decisions.expected_snapshot=current;\n              query.ingame_decisions.native_revision=state_revision;query.ingame_decisions.connection_generation=connection_generation;\n              const auto base=reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));\n              query.environment=xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()), game.descriptor().executable_sha256);\n              query.dispatch_environment=xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base,true,LydPrivateGuiRevision(game.descriptor()));\n              const auto submitted=xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,\n                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1,&query,query.ticket);\n              std::string response;\n              if(submitted==xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {\n                auto waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,8'000);\n                // Keep the original stack context until this one ticket finishes. Never resubmit.\n                while(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)\n                  waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);\n                if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {\n                  xar::game::Snapshot completion{};\n                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision) {\n                    query.ingame_decisions.result.frame_verified=false;\n                    query.ingame_decisions.result.postcondition_verified=false;\n                    query.ingame_decisions.result.status=\"unavailable\";\n                    query.ingame_decisions.result.unavailable_reason=\"pipe_completion_binding_changed\";\n                  }\n                  response=\"{\\\"type\\\":\\\"command_result\\\",\\\"protocol_version\\\":1,\\\"request_id\\\":\\\"\";\n                  response+=request_id;response+=\"\\\",\\\"ok\\\":true,\\\"result\\\":\";\n                  response+=xar::ck3_11906::SerializeIngameDecisionsOpenV1(query.ingame_decisions.result);response+='}';\n                }\n                if(xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket)!=\n                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)response.clear();\n              }\n              if(response.empty())response=CommandResultFrame(request_id,step,false,\"decisions_owner_submission_or_completion_failed_no_retry\");\n              connected=write_frame(pipe,response);\n            }\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2a8e4864d67357a35306219cd3983c9a1544508d",
+      "start_line": 19025,
+      "end_line": 19045,
+      "meaning": "dedicated keyed actions .4 version/frame guard",
+      "excerpt_sha256": "17f0cfca5c9818655349c4514914effd79c25da1f412c2433f8e310059083092",
+      "text": "            const bool binding_admitted =\n                admitted(xar::bridge::JsonUnsignedField(incoming.payload,\"expected_revision\",expected_revision),\"expected_revision_field\") &&\n                admitted(xar::bridge::JsonUnsignedField(incoming.payload,\"expected_player_character_id\",expected_actor),\"expected_player_character_id_field\") &&\n                admitted(xar::bridge::JsonUnsignedField(incoming.payload,\"expected_game_pid\",expected_pid),\"expected_game_pid_field\") &&\n                admitted(xar::bridge::JsonUnsignedField(incoming.payload,\"expected_connection_generation\",expected_generation),\"expected_connection_generation_field\") &&\n                admitted(xar::bridge::JsonStringField(incoming.payload,\"decision_key\",decision_key,192),\"decision_key_field\") &&\n                admitted(select||outcome||(xar::bridge::JsonStringField(incoming.payload,\"expected_window_kind\",window_kind,32)&&window_kind==\"vivhite_courtier\"),\"expected_window_kind\") &&\n                admitted(!outcome||(xar::bridge::JsonStringField(incoming.payload,\"expected_outcome\",expected_outcome,32)&&\n                  (expected_outcome==\"decision_closed\"?xar::ck3_11906::IngameDecisionOutcomeEmptyEventKeyWireV1(incoming.payload):\n                    xar::bridge::JsonStringField(incoming.payload,\"expected_event_definition_key\",event_key,192))&&\n                  xar::ck3_11906::IngameDecisionOutcomeRequestValidV1(expected_outcome,event_key)),\"expected_outcome\") &&\n                admitted(expected_revision!=0,\"revision_positive\") && admitted(expected_revision==state_revision,\"revision_matches\") &&\n                admitted(expected_pid==GetCurrentProcessId(),\"pid_matches\") && admitted(expected_generation==connection_generation,\"generation_matches\") &&\n                admitted(previous_snapshot.has_value(),\"previous_snapshot_available\") && admitted(read_current(),\"snapshot_read_ok\") &&\n                admitted(current==*previous_snapshot,\"snapshot_equal\") && admitted(current.map_ready,\"map_ready\") &&\n                admitted(current.paused,\"paused\") && admitted(current.has_played_character,\"has_played_character\") &&\n                admitted(current.played_character_alive,\"played_character_alive\") && admitted(current.played_character_id>0,\"actor_positive\") &&\n                admitted(expected_actor==static_cast<std::uint64_t>(current.played_character_id),\"actor_matches\") &&\n                admitted(!outcome||(!current.has_active_event&&!current.has_pending_character_interaction),\"outcome_window_clear\") &&\n                admitted(game.descriptor().game_version==\"1.20.0.3\"||game.descriptor().game_version==\"1.20.0.4\",\"game_version_matches\") &&\n                admitted(IsLydPrivateBuild(game.descriptor()),\"executable_sha256_matches\");\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "101b456f0dc7dbb6a69c0097a69c25d2219c355b",
+      "start_line": 94,
+      "end_line": 104,
+      "meaning": "three nested capability advertisement switches",
+      "excerpt_sha256": "76dd9feb0be37aeb846305136fe8283d606dcfd33da3761be7e6eabc6cc68488",
+      "text": "#if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)\n      ck3_11906::kIngameDecisionsOpenV1Capability,\n      ck3_11906::kIngameDecisionItemQueryV1Capability,\n#if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)\n      ck3_11906::kIngameDecisionItemSelectV1Capability,\n      ck3_11906::kIngameDecisionItemConfirmV1Capability,\n#if defined(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)\n      ck3_11906::kIngameDecisionOutcomeConfirmV1Capability,\n#endif\n#endif\n#endif\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12004_adapter.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "101b456f0dc7dbb6a69c0097a69c25d2219c355b",
+      "start_line": 115,
+      "end_line": 120,
+      "meaning": "actual inspection capability dependencies",
+      "excerpt_sha256": "1af8139561b0e48e23ee63042a47eeebb90e9708db305dbdf70444e8ad73246a",
+      "text": "#if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1) && \\\n    defined(XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1)\n      ck3_11906::kFrontendGuiRouteV1Capability,\n      ck3_11906::kFrontendGuiTreeInspectionV1Capability,\n      ck3_11906::kGuiWindowTreeInspectionV1Capability,\n      ck3_11906::kFrontendGuiOpenNewGameV1Capability,\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_decisions_opener_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f61168999eb5ec015724e1eade08d4abae5f4b47",
+      "start_line": 25,
+      "end_line": 36,
+      "meaning": "version-specific GUI RVA selection and loaded code pins",
+      "excerpt_sha256": "5bab8c001afdc6f89556b7f2cbdcf3614cab7ded2fc7c01165a922962342318d",
+      "text": "bool PinsMatch(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {\n  if (!env.exact_build_admitted || env.offline_fixture_function_overrides ||\n      (env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003 && env.gui_abi_revision!=GuiAbiRevisionV1::crozier12004)) return false;\n  const std::array<std::uintptr_t,4> rvas{GuiFindTopLevelWidgetRvaV1(env.gui_abi_revision),\n      GuiShortcutManagerActivateRvaV1(env.gui_abi_revision),GuiStrictDescendantRvaV1(env.gui_abi_revision),\n      GuiButtonBaseSlot13RvaV1(env.gui_abi_revision)};\n  for (std::size_t i=0;i<std::size(kPins);++i) {\n    const auto &pin=kPins[i];\n    std::array<unsigned char,32> actual{};SIZE_T got=0;\n    if(!ReadProcessMemory(GetCurrentProcess(),reinterpret_cast<const void *>(env.module_base+rvas[i]),actual.data(),actual.size(),&got)||got!=actual.size()||actual!=pin.bytes)return false;\n  }\n  return true;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_decisions_opener_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "f61168999eb5ec015724e1eade08d4abae5f4b47",
+      "start_line": 94,
+      "end_line": 106,
+      "meaning": "exact .4 identity + owner + actual byte pin guards",
+      "excerpt_sha256": "3de310587ce9025d615bf63d38a72d2b28898935101b2550dcc853a6f7dab575",
+      "text": "  auto &out=query.result;out={};out.native_revision=query.native_revision;out.connection_generation=query.connection_generation;out.game_pid=GetCurrentProcessId();\n  try {\n    const auto reject=[&](const char *why){out.unavailable_reason=why;return true;};\n    if(!query.game||query.native_revision==0||query.connection_generation==0)return reject(\"exact_crozier_request_unavailable\");\n    const auto &descriptor=query.game->descriptor();\n    if(!IngamePrivateGuiIdentityAdmittedV1(descriptor.game_version,descriptor.executable_sha256,env.gui_abi_revision)||\n        dispatch.gui_abi_revision!=env.gui_abi_revision)return reject(\"exact_crozier_request_unavailable\");\n    out.game_version=descriptor.game_version;out.executable_sha256=descriptor.executable_sha256;\n    if(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()))return reject(\"paused_application_owner_unverified\");\n    out.owner_thread_verified=true;game::Snapshot before{};\n    if(!game::ReadSnapshot(*query.game,before)||before!=query.expected_snapshot||!before.paused||!before.map_ready||!before.has_played_character||!before.played_character_alive||before.played_character_id<=0||before.date_raw!=stamp.date_raw)return reject(\"fresh_alive_paused_frame_unverified\");\n    out.played_character_id=before.played_character_id;out.date_raw=before.date_raw;\n    if(!PinsMatch(env))return reject(\"loaded_crozier_gui_code_pins_changed\");out.source_abi_pins_verified=true;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ingame_private_gui_profile_v1.hpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "14847dac48f1fbff88dfad8f8f73fd7c48d691e8",
+      "start_line": 8,
+      "end_line": 16,
+      "meaning": "actual exact .4 identity branch",
+      "excerpt_sha256": "9504eb6a9e7a802560d5eee04cd82a32cf8d07530f204ec27ecabd326cb1c20c",
+      "text": "// Strict identity/profile join for the existing private decision and exit paths.\n// The actual .4 branch cannot select the retained .3 native coordinates.\nconstexpr bool IngamePrivateGuiIdentityAdmittedV1(std::string_view version,\n    std::string_view executable_sha256,GuiAbiRevisionV1 revision) noexcept {\n  if(revision==GuiAbiRevisionV1::crozier12004)\n    return version==ck3_12004::kGameVersion && executable_sha256==ck3_12004::kExecutableSha256;\n  if(revision==GuiAbiRevisionV1::crozier12003)\n    return version==\"1.20.0.3\" && executable_sha256==\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\";\n  return false;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_ingame_decision_v1.hpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "4e13d95008524b7fe875e6b10315b8edc3b70f20",
+      "start_line": 1,
+      "end_line": 33,
+      "meaning": "independent actual .4 decision RVA/type constants",
+      "excerpt_sha256": "a6e867c0d0881c6fd9800b873af781bfd3567b3257ea0052ddf5e13a285f5389",
+      "text": "#pragma once\n\n#include \"xar_bridge/ck3_12004.hpp\"\n\nnamespace xar::ck3_12004 {\n\n// Finite named primary-vtable/COL/type-name closure from the actual .4 image.\n// These are individually verified tables, not a table-shift rule.\nstruct IngameDecisionTypeIdentity12004V1 {\n  std::uintptr_t vtable_rva;\n  std::uint32_t type_descriptor_rva;\n};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionApplicationType12004V1{0x449BDB8,0x5667F58};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionLogicalType12004V1{0x44D6058,0x55072C0};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionGfxType12004V1{0x44BC418,0x5514460};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionHandlerType12004V1{0x44BA8A0,0x5694B20};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionListType12004V1{0x455CC90,0x5794D80};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionDetailType12004V1{0x455D4F8,0x5795050};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionDefinitionType12004V1{0x48BD150,0x5586B90};\ninline constexpr IngameDecisionTypeIdentity12004V1 kDecisionNullDefinitionType12004V1{0x48931A0,0x5AB0518};\n\n// Complete original getter/OnSelect/wrapper/SetDecision instruction spans.\ninline constexpr std::uintptr_t kDecisionGroupsGetterRva12004V1 = 0x1456090;\ninline constexpr std::uintptr_t kDecisionDefinitionGetterRva12004V1 = 0xA935B0;\ninline constexpr std::uintptr_t kDecisionRowOnSelectRva12004V1 = 0x14582B0;\ninline constexpr std::uintptr_t kDecisionRowOnSelectWrapperRva12004V1 = 0x1459510;\ninline constexpr std::uintptr_t kDecisionSetDecisionRva12004V1 = 0x1471630;\n// SetDecision's actual tail edge names this function; the existing guard pins\n// only its first 32 bytes and makes no complete-body claim for that prefix.\ninline constexpr std::uintptr_t kDecisionDetailDispatchRva12004V1 = 0x1471210;\ninline constexpr std::uintptr_t kDecisionActorReferenceSlotRva12004V1 = 0x54DBC00;\n\n} // namespace xar::ck3_12004\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_decision_item_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2ed2962ff84c216c70dc884ced6e093aaabf70b5",
+      "start_line": 18,
+      "end_line": 37,
+      "meaning": "independent .4 profile used instead of .3 displacement",
+      "excerpt_sha256": "acfd41e23a483e859075c5084866a49e26ae9021d353aa62efe42c59e57dad8e",
+      "text": "struct DecisionItemProfileV1 {\n  DecisionTypeIdentityV1 application,logical,gfx,handler,list,detail,definition,null_definition;\n  std::uintptr_t groups_getter,definition_getter,onselect,onselect_wrapper,set_decision,detail_dispatch;\n  std::uintptr_t actor_reference_slot,character_storage_slot,jomini_slot;\n};\nconstexpr DecisionItemProfileV1 kDecisionItem12003{\n  {0x449BDA8,0x5667F88},{0x44D6048,0x55072C0},{0x44BC408,0x5514460},{0x44BA890,0x5694B50},\n  {0x455CC80,0x5794DB0},{0x455D4E8,0x5795080},{0x48BD140,0x5586B90},{0x4893190,0x5AB0548},\n  0x14560B0,0xA935B0,0x14582D0,0x1459530,0x1471650,0x1471230,0x54DBC00,0x5C67568,0x5C6A520};\nconstexpr DecisionItemProfileV1 kDecisionItem12004{\n  ck3_12004::kDecisionApplicationType12004V1,ck3_12004::kDecisionLogicalType12004V1,\n  ck3_12004::kDecisionGfxType12004V1,ck3_12004::kDecisionHandlerType12004V1,\n  ck3_12004::kDecisionListType12004V1,ck3_12004::kDecisionDetailType12004V1,\n  ck3_12004::kDecisionDefinitionType12004V1,ck3_12004::kDecisionNullDefinitionType12004V1,\n  ck3_12004::kDecisionGroupsGetterRva12004V1,ck3_12004::kDecisionDefinitionGetterRva12004V1,\n  ck3_12004::kDecisionRowOnSelectRva12004V1,ck3_12004::kDecisionRowOnSelectWrapperRva12004V1,\n  ck3_12004::kDecisionSetDecisionRva12004V1,ck3_12004::kDecisionDetailDispatchRva12004V1,\n  ck3_12004::kDecisionActorReferenceSlotRva12004V1,ck3_12004::kCharacterStorageSlotRva,ck3_12004::kJominiStateSlotRva};\nconst DecisionItemProfileV1 &DecisionProfile(const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {\n  return env.gui_abi_revision==GuiAbiRevisionV1::crozier12004?kDecisionItem12004:kDecisionItem12003;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_decision_item_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2ed2962ff84c216c70dc884ced6e093aaabf70b5",
+      "start_line": 196,
+      "end_line": 208,
+      "meaning": "actual version-specific action pins",
+      "excerpt_sha256": "539630b851bbe48e18b689a29fff5f0cafd0572431313a17a8e2ae773c356b76",
+      "text": "  const auto &profile=DecisionProfile(env);const bool current4=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004;\n  constexpr std::array<unsigned char,189> expected0{0x48,0x89,0x5c,0x24,0x08,0x48,0x89,0x74,0x24,0x10,0x57,0x48,0x83,0xec,0x30,0x48,0x8b,0x41,0x18,0x48,0x8b,0xf9,0x48,0x8b,0x31,0x48,0x8b,0x90,0xa0,0x00,0x00,0x00,0x48,0x8b,0x9a,0xb8,0x01,0x00,0x00,0x48,0x85,0xdb,0x75,0x39,0xb9,0x6d,0x2e,0x00,0x00,0xe8,0xfa,0x75,0xaf,0x02,0x48,0x83,0x78,0x18,0x10,0x72,0x03,0x48,0x8b,0x00,0x48,0x89,0x44,0x24,0x28,0x4c,0x8d,0x0d,0xe8,0x59,0x8c,0x04,0x33,0xd2,0x48,0x8d,0x05,0x63,0x90,0x04,0x03,0x33,0xc9,0x48,0x89,0x44,0x24,0x20,0x44,0x8d,0x42,0x01,0xe8,0x5b,0x28,0xb2,0x02,0x48,0x8b,0xcb,0xe8,0x63,0x80,0xd0,0x00,0x84,0xc0,0x74,0x14,0x48,0x39,0xb3,0xd0,0x00,0x00,0x00,0x75,0x0b,0x48,0x8b,0x03,0x48,0x8b,0xcb,0xff,0x50,0x20,0xeb,0x13,0x48,0x8b,0xd6,0x48,0x8b,0xcb,0xe8,0xf0,0x92,0x01,0x00,0x48,0x8b,0xcb,0xe8,0x78,0x85,0x01,0x00,0x48,0x8b,0x47,0x18,0x48,0x8b,0x5c,0x24,0x40,0x48,0x8b,0x74,0x24,0x48,0xc7,0x80,0xd4,0x02,0x00,0x00,0x00,0x00,0x00,0x00,0xc6,0x80,0xd0,0x02,0x00,0x00,0x01,0x48,0x83,0xc4,0x30,0x5f,0xc3};\n  std::array<unsigned char,189> actual0{};\n  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.onselect),actual0.data(),actual0.size())||actual0!=(current4?kDecisionOnSelectPin12004V1:expected0))return false;\n  constexpr std::array<unsigned char,28> expected1{0x48,0x83,0xec,0x28,0x48,0x85,0xc9,0x74,0x0c,0xe8,0x92,0xed,0xff,0xff,0xb0,0x01,0x48,0x83,0xc4,0x28,0xc3,0x32,0xc0,0x48,0x83,0xc4,0x28,0xc3};\n  std::array<unsigned char,28> actual1{};\n  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.onselect_wrapper),actual1.data(),actual1.size())||actual1!=(current4?kDecisionOnSelectWrapperPin12004V1:expected1))return false;\n  constexpr std::array<unsigned char,205> expected2{0x48,0x89,0x5c,0x24,0x10,0x48,0x89,0x74,0x24,0x18,0x57,0x48,0x83,0xec,0x30,0x4c,0x8b,0x05,0x02,0x5f,0x7f,0x04,0x48,0x8b,0xf2,0xc7,0x81,0xdc,0x00,0x00,0x00,0xff,0xff,0xff,0xff,0x48,0x8b,0xf9,0x4d,0x85,0xc0,0x74,0x2c,0x8b,0x05,0x7f,0xa5,0x06,0x04,0x8b,0xc8,0x81,0xe1,0xff,0xff,0xff,0x00,0x41,0x3b,0x48,0x2c,0x73,0x18,0x8b,0xd1,0x49,0x8b,0x48,0x20,0x48,0x03,0xd2,0x48,0x8b,0x5c,0xd1,0x08,0x48,0x85,0xdb,0x74,0x05,0x39,0x43,0x18,0x74,0x07,0x48,0x8b,0x1d,0xc2,0x5e,0x7f,0x04,0x48,0x8b,0xd3,0x48,0x8b,0xce,0xe8,0x47,0x1d,0xc9,0x01,0x84,0xc0,0x75,0x42,0xe8,0xfe,0xc0,0x67,0x01,0x48,0x8b,0xd6,0x48,0x8b,0xc8,0xe8,0x73,0xff,0xd9,0x01,0x4c,0x8b,0xc0,0x48,0xc7,0x44,0x24,0x20,0x00,0x00,0x00,0x00,0x41,0xb1,0x01,0x48,0x8d,0x4c,0x24,0x40,0x48,0x8b,0xd3,0xe8,0x37,0x14,0x7d,0x01,0x44,0x8b,0x44,0x24,0x40,0x41,0x83,0xf8,0xff,0x74,0x0b,0x8b,0x43,0x18,0x89,0x87,0xdc,0x00,0x00,0x00,0xeb,0x04,0x44,0x8b,0x43,0x18,0x48,0x8b,0xd6,0x48,0x8b,0xcf,0x48,0x8b,0x5c,0x24,0x48,0x48,0x8b,0x74,0x24,0x50,0x48,0x83,0xc4,0x30,0x5f,0xe9,0x13,0xfb,0xff,0xff};\n  std::array<unsigned char,205> actual2{};\n  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.set_decision),actual2.data(),actual2.size())||actual2!=(current4?kDecisionSetDecisionPin12004V1:expected2))return false;\n  constexpr std::array<unsigned char,32> expected3{0x48,0x8b,0xc4,0x48,0x89,0x58,0x08,0x48,0x89,0x68,0x10,0x48,0x89,0x70,0x20,0x57,0x41,0x56,0x41,0x57,0x48,0x81,0xec,0x90,0x00,0x00,0x00,0x41,0x8b,0xd8,0x4c,0x8b};\n  std::array<unsigned char,32> actual3{};\n  if(!Bytes(reinterpret_cast<const void *>(env.module_base+profile.detail_dispatch),actual3.data(),actual3.size())||actual3!=(current4?kDecisionDetailDispatchPin12004V1:expected3))return false;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_decision_item_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "2ed2962ff84c216c70dc884ced6e093aaabf70b5",
+      "start_line": 453,
+      "end_line": 467,
+      "meaning": "keyed receiver validation + owner dispatch",
+      "excerpt_sha256": "0bd237a6ed2744347bfd532703a2c89b50d48351da844f8a8139e8b33c088ea6",
+      "text": "bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,\n    MainThreadQueryMailboxV1 &mailbox,const MainThreadExecutionStampV1 &stamp,\n    const ZhongguoScoreboardNativeEnvironmentV1 &env,ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch) noexcept {\n  auto &out=query.result;out={};out.action=query.action;\n  const bool outcome=query.action==IngameDecisionItemActionKindV1::confirm_outcome;\n  if(outcome){out.expected_outcome=query.expected_outcome;out.expected_event_definition_key=query.expected_event_definition_key;}\n  try {\n    const auto reject=[&](const char *why){out.unavailable_reason=why;return true;};\n    if(outcome&&(!IngameDecisionOutcomeRequestValidV1(query.expected_outcome,query.expected_event_definition_key)||\n        (query.observation.expected_snapshot.has_active_event||query.observation.expected_snapshot.has_pending_character_interaction)))return reject(\"typed_outcome_or_empty_event_before_unqualified\");\n    if(!ExecuteIngameDecisionItemQueryV1(query.observation,mailbox,stamp,env))return reject(\"keyed_before_execution_unavailable\");\n    out.before=query.observation.result;\n    if(!out.before.available)return reject(\"actual_keyed_before_unavailable\");\n    if(!ActionPins(env)||dispatch.gui_abi_revision!=env.gui_abi_revision||\n        dispatch.offline_fixture_function_overrides||!dispatch.exact_build_admitted)return reject(\"loaded_crozier_decision_action_pins_changed\");\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ingame_ui_mailbox_v1.cpp",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "39d42869b6690ca9841e173fe8ed7b3201fa8ec8",
+      "start_line": 24,
+      "end_line": 40,
+      "meaning": "generic Army-only route is separate from dedicated decisions",
+      "excerpt_sha256": "8bc26f6d12c4c4924ea947bd66e8853203252f1b53c69ee9003bf36cedea79ee",
+      "text": "  IngameUiRequestV1 request{};\n  if (!ParseIngameUiRequestV1(payload, step == kIngameUiWindowQueryV1Step, request))\n    return \"invalid_typed_ui_request\";\n  const auto &descriptor = game.descriptor();\n  const bool actual4 = descriptor.game_version == ck3_12004::kGameVersion &&\n      descriptor.executable_sha256 == ck3_12004::kExecutableSha256;\n  const bool actual3 = descriptor.game_version == ck3_12003::kGameVersion &&\n      descriptor.executable_sha256 == ck3_12003::kExecutableSha256;\n  const bool legacy = descriptor.game_version == \"1.19.0.6\" &&\n      descriptor.executable_sha256 == kExecutableSha256;\n  if (!actual4 && !actual3 && !legacy) return \"typed_ui_exact_build_not_available\";\n  const auto revision = actual4 ? GuiAbiRevisionV1::crozier12004 :\n      actual3 ? GuiAbiRevisionV1::crozier12003 : GuiAbiRevisionV1::legacy11906;\n  if (!IsIngameUiRequestSupportedV1(revision, request))\n    return \"typed_ui_operation_not_available_for_exact_build\";\n  query.mailbox = &mailbox;\n  query.operation = FrontendGuiRouteOperationV1::ingame_ui;\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "start_line": 7393,
+      "end_line": 7431,
+      "meaning": "generic decision_closed actual required capabilities",
+      "excerpt_sha256": "b32ff0e0969018e57cc9a081322b7a3e8099c5d88c86fc262a067d139a00930d",
+      "text": "    def confirm_ingame_decision_outcome_v1(\n        self, decision_key: str, expected_outcome: str, *,\n        expected_event_definition_key: str | None = None,\n        expected_revision: int,\n    ) -> dict[str, object]:\n        \"\"\"One selected-player Confirm; prove only the actual declared UI outcome.\"\"\"\n        from .ingame_decision_item_contract import validate_decision_key\n        from .ingame_decision_item_action_contract import actual_selected_detail\n        from .ingame_decisions_open_contract import opening_binding\n        from .ingame_decision_outcome_contract import (\n            STEP, CAPABILITY, validate_expected_outcome, normalize_outcome_ack,\n            outcome_frame_matches, actual_expected_event, actual_closed_decision_detail,\n            reject_unresolved_claims, preserve_verified_claim,\n        )\n        import hashlib\n        import os\n        validate_decision_key(decision_key)\n        event_key = validate_expected_outcome(expected_outcome, expected_event_definition_key)\n        _validate_revision(expected_revision, \"expected_revision\")\n        starting = self.take_snapshot()\n        try:\n            binding = opening_binding(starting)\n        except ValueError as error:\n            raise BridgeUnavailableError(str(error)) from error\n        revision = int(starting[\"revision\"])\n        if revision != expected_revision:\n            raise PreSubmissionRevisionMismatchError(\"decision Confirm public revision changed\")\n        if starting.get(\"active_event\") is not None or starting.get(\"pending_character_interaction\") is not None:\n            raise BridgeUnavailableError(\"generic Confirm requires no current event or pending interaction\")\n        required = {CAPABILITY, \"game.command.query-ingame-decision-item-v1\"}\n        required.add(\"game.command.query-current-event-window-context-v1\"\n                     if expected_outcome == \"event_window\" else \"game.command.inspect-gui-window-tree-v1\")\n        if expected_outcome == \"decision_closed\":\n            # The existing stock GUI census uses the frontend-family identity\n            # binder even in a running campaign. Require that advertised\n            # dependency before the one Confirm dispatch, not after consuming it.\n            required.add(\"game.command.query-frontend-gui-route-v1\")\n        if not required.issubset(set(_string_list(self.capabilities().get(\"bridge_capabilities\")))):\n            raise UnsupportedStepError(\"native DLL lacks the exact generic Confirm and outcome observation capabilities\")\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "start_line": 7440,
+      "end_line": 7465,
+      "meaning": "typed selected detail and one claim before dispatch",
+      "excerpt_sha256": "2a1021da0f5cbc4b3860952fed5363d2fc758aa868dc2a6c29591d6d5894786c",
+      "text": "        key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode(\"utf-8\")).hexdigest()\n        claim = claim_dir / f\"{key}.claim.json\"\n        if claim.exists():\n            raise BridgeUnavailableError(\"generic Confirm already claimed at this revision; no retry\")\n        before_model = self.query_ingame_decision_item_v1(decision_key, expected_revision=revision)\n        if not actual_selected_detail(before_model, binding, decision_key):\n            raise BridgeUnavailableError(\"generic Confirm lacks actual selected detail and current-player owner\")\n        current = self.take_snapshot()\n        if (opening_binding(current) != binding or not _same_paused_native_frame(starting, current)\n                or current.get(\"revision\") != revision or current.get(\"active_event\") is not None\n                or current.get(\"pending_character_interaction\") is not None):\n            raise BridgeUnavailableError(\"generic Confirm before-read crossed its frame\")\n        claim_dir.mkdir(parents=True, exist_ok=True)\n        request_id = f\"decision-outcome-{uuid.uuid4().hex}\"\n        try:\n            with claim.open(\"x\", encoding=\"utf-8\", newline=\"\\n\") as stream:\n                json.dump({\"schema\": \"ck3-ingame-decision-outcome-once-claim-v1\",\n                           \"request_id\": request_id, \"binding\": binding,\n                           \"action_identity\": identity, \"decision_key\": decision_key,\n                           \"action\": \"confirm_outcome\", \"expected_outcome\": expected_outcome,\n                           \"expected_event_definition_key\": event_key,\n                           \"status\": \"claimed_result_unknown_no_retry\"}, stream,\n                          ensure_ascii=False, indent=2)\n                stream.write(\"\\n\"); stream.flush(); os.fsync(stream.fileno())\n        except FileExistsError as error:\n            raise BridgeUnavailableError(\"generic Confirm already claimed; no retry\") from error\n"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+      "git_blob_sha1": "e6691ab134d42ce696484155f79e16dd992c0475",
+      "start_line": 7517,
+      "end_line": 7527,
+      "meaning": "actual UI outcome and business effects remain separate",
+      "excerpt_sha256": "90b6c8c7b4677f57648cd5e637f5707356418374e1d27de40aa73d59bad262c3",
+      "text": "            result.update({\"postcondition_verified\": True, \"verification_pending\": False,\n                           \"status\": \"observed_current_event_window\" if expected_outcome == \"event_window\"\n                                     else \"observed_decision_detail_closed\",\n                           \"later_actual_observation\": later, \"native_ack\": dict(raw),\n                           \"action_request_id\": request_id, \"action_claim_path\": str(claim),\n                           \"episode_run_id\": binding[\"episode_run_id\"], \"queried_revision\": revision,\n                           \"snapshot_after\": ending,\n                           \"verification_scope\": \"receiver_dispatch_and_declared_ui_outcome\",\n                           \"business_effects_verified\": False, \"full_product_acceptance_credit\": False,\n                           \"front_event_verified\": False, \"event_option_selection_authorized\": False,\n                           \"uses_mouse\": False, \"uses_keyboard\": False, \"uses_ocr\": False})\n"
+    }
+  ],
+  "game_source_spans": [
+    {
+      "game_relative_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+      "held_whole_source_sha256": "235656afe6b7ea7419ee2c0f35437896ceaf7788e663ad3250729db122dae0cd",
+      "whole_sha_scope": "prior bounded offline analysis; not recomputed by this span read",
+      "start_line": 550,
+      "end_line": 555,
+      "meaning": "province iterator has actual every_army_in_location",
+      "excerpt_sha256": "be0f187699cd671a27a001ab0a95b9ec28beceae7b738be4adab71f42bf4236c",
+      "text": "natural_disaster_death_damage_roll_effect = {\n\tsave_scope_as = situation\n\tevery_situation_county = {\n\t\tevery_county_province = {\n\t\t\tevery_character_in_location = { add_to_list = killable_characters }\n\t\t\tevery_army_in_location = { add_to_list = damageable_armies }\n"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+      "held_whole_source_sha256": "235656afe6b7ea7419ee2c0f35437896ceaf7788e663ad3250729db122dae0cd",
+      "whole_sha_scope": "prior bounded offline analysis; not recomputed by this span read",
+      "start_line": 705,
+      "end_line": 716,
+      "meaning": "actual Army army_owner scope",
+      "excerpt_sha256": "9c22ce6a280fbf84fe146a385704a9904968323aa039569f10287e05dcbbc2d5",
+      "text": "\t\tsave_scope_as = army\n\t\tarmy_owner = {\n\t\t\tif = {\n\t\t\t\tlimit = {\n\t\t\t\t\tNOT = { this = scope:army.army_commander }\n\t\t\t\t}\n\t\t\t\tsend_interface_message = {\n\t\t\t\t\ttype = msg_natural_disaster_army_damaged_bad\n\t\t\t\t\ttitle = natural_disaster_army_damaged_title\n\t\t\t\t\tright_icon = scope:army.army_commander\n\t\t\t\t\tshow_as_tooltip = {\n\t\t\t\t\t\tscope:army = { natural_disaster_army_damage_effect = yes }\n"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/10_dlc_tgp_natural_disaster_scripted_effects.txt",
+      "held_whole_source_sha256": "235656afe6b7ea7419ee2c0f35437896ceaf7788e663ad3250729db122dae0cd",
+      "whole_sha_scope": "prior bounded offline analysis; not recomputed by this span read",
+      "start_line": 839,
+      "end_line": 843,
+      "meaning": "actual subtract_supply exists; separate deplete statement is deliberately excluded",
+      "excerpt_sha256": "a36d169008813a7ffc2a63a5b2d2b3d58119a52ac5060a4860e318fd24d33322",
+      "text": "# Effect to damage an army\nnatural_disaster_army_damage_effect = {\n\tsubtract_supply = natural_disaster_army_supply_loss_value\n\tdeplete_army_by_percentage = natural_disaster_army_deplete_value\n}\n"
+    },
+    {
+      "game_relative_path": "common/script_values/tgp_natural_disaster_values.txt",
+      "held_whole_source_sha256": "290406efd9a69e61981355f03f31c2bd48dcbd487936d4c814e668e901f114cd",
+      "whole_sha_scope": "prior bounded offline analysis; not recomputed by this span read",
+      "start_line": 309,
+      "end_line": 326,
+      "meaning": "actual fractional supply-loss expression",
+      "excerpt_sha256": "2494060b1f37c16b37304744e7f43477aa209fcfb4f7e08bd5cf504e8201ec13",
+      "text": "natural_disaster_army_supply_loss_value = {\n\tvalue = 0\n\tscope:situation = {\n\t\tswitch = {\n\t\t\ttrigger = situation_type\n\t\t\tnatural_disaster_earthquake = { add = 0.25 }\n\t\t\tnatural_disaster_flood = { add = 0.50 }\n\t\t}\n\t\tmultiply = { # Average 1.0; 0.83 at Severity 1, 1.17 at Severity 2 1.5 at Severity 3 \n\t\t\tadd = 0.5\n\t\t\tmultiply = {\n\t\t\t\tadd = var:severity\n\t\t\t\tmultiply = 0.33\n\t\t\t}\n\t\t\tmin = 0.75\n\t\t}\n\t}\n}\n"
+    },
+    {
+      "game_relative_path": "localization/english/effects_l_english.yml",
+      "held_whole_source_sha256": "09cdc1360dab17dae3d6cb60e7b5b1bcef9e446bc1235fc733ef5c5fb8483c9c",
+      "whole_sha_scope": "prior bounded offline analysis; not recomputed by this span read",
+      "start_line": 3379,
+      "end_line": 3386,
+      "meaning": "percentage display semantics only",
+      "excerpt_sha256": "ee99e50b376ed83f72e13823a44f10853f6019822c3da7ea5a1dbd96899980e7",
+      "text": " ARMY_ADD_SUPPLY: \"[ARMY.GetName] gains $VALUE|-%0$ [supplies|e]\"\n ARMY_ADDED_SUPPLY: \"[ARMY.GetName] gained $VALUE|-%0$ [supplies|e]\"\n ARMY_SUBTRACT_SUPPLY: \"[ARMY.GetName] loses $VALUE|-%0$ [supplies|e]\"\n ARMY_SUBTRACTED_SUPPLY: \"[ARMY.GetName] lost $VALUE|-%0$ [supplies|e]\"\n ARMY_CLEAR_SUPPLY: \"[ARMY.GetName] loses all [supplies|e]\"\n ARMY_CLEARED_SUPPLY: \"[ARMY.GetName] lost all [supplies|e]\"\n ARMY_REFILL_SUPPLY: \"[ARMY.GetName] refills all [supplies|e]\"\n ARMY_REFILLED_SUPPLY: \"[ARMY.GetName] refilled all [supplies|e]\"\n"
+    },
+    {
+      "game_relative_path": "common/scripted_effects/00_wanderer_lifestyle_effects.txt",
+      "held_whole_source_sha256": null,
+      "whole_sha_scope": "not held; only excerpt SHA",
+      "start_line": 1,
+      "end_line": 11,
+      "meaning": "actual province:<id> static scope syntax",
+      "excerpt_sha256": "7aaf260d5729dfa27c35822c1b09844709402e48d6f4797ef8f36a7db35f723a",
+      "text": "# Effects used in the Wanderer Lifestyle\n\nvisiting_poi_effect = {\n\tif = { # Offa's Dyke\n\t\tlimit = {\n\t\t\tOR = {\n\t\t\t\tscope:province = province:1632\n\t\t\t\tscope:province = province:1633\n\t\t\t\tscope:province = province:1634\n\t\t\t\tscope:province = province:1648\n\t\t\t\tscope:province = province:1646\n"
+    }
+  ],
+  "not_done": [
+    "SDK/desktop/CK3 launch",
+    "EXE read/hash/execute",
+    "native build",
+    "main mutation",
+    "ordinary starvation physical debit"
+  ],
+  "portable_scope": "excerpts and Python/case data reusable; source-machine install/path/live facts are not target-machine proof"
+}

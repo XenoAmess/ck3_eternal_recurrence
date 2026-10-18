@@ -1537,3 +1537,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-18 R06 core carrier 与正 q 准备入口
 
 [Core carrier 来源与使用边界](episode04-refill-core-carrier-12004.md)提供固定 DATA 导出、同线程 invocation fence、external v4 consumer 及 position=true/完整 final shared-q>0 的准备门。原生产 C++ wire 被旧 normalizer 拒绝的 RED 与修后 synthetic 互通 PASS 均保留在[便携证据](evidence/episode04-refill-core-carrier-12004/README.md)。本次仅源码整合和一个 canonical consumer 单例；没有 SDK、生产 coherent build 或新 live ADD，现有 a35 现场不替换。不能把 same-token join 当作同次 NET 因果、全窗覆盖或 R06 整卡完成；9/14、6/11、0/11、ABC0/3不变。machine_id: desktop-3fevhd2-1c74096080。
+
+## 2026-10-18 R05 专用低补给初始化 source 入口
+
+[Controlled low-supply fixture](episode04-r05-controlled-low-supply-fixture-12004.md)复用公共 mod-acceptance 单一 runtime，新增独立 research case/catalog，不放宽 pure vanilla。只保留目标绑定的 subtract_supply 百分比操作，不调用原灾害整链或 deplete。原13 focused PASS与canonical一次公共 profile 胶水检查分列；OpenK决议 parser GREEN、validator15 UNKNOWN_OPCODE RED、native语义 NOT_QUALIFIED均保留。a35三decision flags仍OFF，公共case只初始化并正常close，自然day/full-history/parent-writer loop尚未连接；没有CK3/SDK或新R05样本。machine_id: desktop-3fevhd2-1c74096080；研究9/14、业务6/11、动态0/11、ABC0/3不变。

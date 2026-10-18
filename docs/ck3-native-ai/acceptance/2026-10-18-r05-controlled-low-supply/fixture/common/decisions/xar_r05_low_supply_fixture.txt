@@ -1,0 +1,21 @@
+﻿# CONTROLLED RESEARCH FIXTURE. Does not create soldiers or force an update.
+xar_r05_initialize_low_supply = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_realm.dds" }
+    decision_group_type = realm
+    ai_check_interval = 0
+    desc = xar_r05_initialize_low_supply_desc
+    selection_tooltip = xar_r05_initialize_low_supply_tooltip
+    is_shown = { is_ai = no NOT = { has_character_flag = xar_r05_supply_initializer_consumed } }
+    is_valid = { always = yes }
+    effect = {
+        add_character_flag = xar_r05_supply_initializer_consumed
+        province:2644 = {
+            every_army_in_location = {
+                limit = { army_owner = { this = root } }
+                subtract_supply = 0.999
+            }
+        }
+    }
+    ai_potential = { always = no }
+    ai_will_do = { base = 0 }
+}

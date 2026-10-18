@@ -1,0 +1,6 @@
+{
+  "schema": "xar.r05-common-case-contract.v1",
+  "scope": "controlled research fixture initialization only",
+  "source_checkpoint": "Root-bound normal Save at2644; R204 retreat source excluded",
+  "natural_update_or_casualty_credit": false
+}

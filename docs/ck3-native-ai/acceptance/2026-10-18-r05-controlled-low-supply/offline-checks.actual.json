@@ -1,0 +1,100 @@
+{
+  "schema": "xar.r05-offline-contract-checks.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "started_at_utc": "2026-10-18T02:10:40.175149+00:00",
+  "finished_at_utc": "2026-10-18T02:10:48.483840+00:00",
+  "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "actual_command": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-O",
+    "-X",
+    "utf8",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\tools\\test_r05_low_supply_fixture.py",
+    "--repo-root",
+    "D:\\workspace\\ck3_eternal_recurrence",
+    "--temp-root",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\final-checks-a01\\temp"
+  ],
+  "exit_code": 0,
+  "process_elapsed_seconds": 8.199294699821621,
+  "stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\final-checks-a01\\stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\final-checks-a01\\stderr.log",
+    "bytes": 1905,
+    "sha256": "7edcc755eb276512875eac9c9fa074788a0a3de3fd81352583ffe441f2811b79"
+  },
+  "source_pins": [
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\r05_low_supply_fixture.py",
+      "bytes": 20082,
+      "sha256": "4f13958893a56eacd2faee3a0227fd6a090cb8c6c816c5f95455ce5087003686"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\tools\\ck3_mod_acceptance_cases\\r05_low_supply_adapter.py",
+      "bytes": 12423,
+      "sha256": "c93c8dc85682212708f704b4da9c605e99a039b5d5d87a6ec93359a1ebeec094"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\tools\\prepare_r05_low_supply_fixture.py",
+      "bytes": 1460,
+      "sha256": "19fbc0d6b360e89dc5ba6c5d5041789c19ec38df23983c74339e9a83b3230919"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\tools\\run_r05_low_supply_initializer_once.py",
+      "bytes": 7976,
+      "sha256": "477efa88a23c241617a6e77cb0b0cfc8d4bb26563a3eba2689af8c686ea30505"
+    },
+    {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\r05-low-supply-initializer-candidate-a01\\patch-root\\tools\\test_r05_low_supply_fixture.py",
+      "bytes": 22798,
+      "sha256": "fb93aeac01c3723484996f27951050813f3a7a83fa54e807772233790b6044bb"
+    }
+  ],
+  "AST": {
+    "status": "PASS",
+    "paths": [
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py",
+      "tools/ck3_mod_acceptance_cases/r05_low_supply_adapter.py",
+      "tools/prepare_r05_low_supply_fixture.py",
+      "tools/run_r05_low_supply_initializer_once.py",
+      "tools/test_r05_low_supply_fixture.py"
+    ]
+  },
+  "scope": "new controlled initializer + common case wiring; frozen actual syntax parser receipt consumption",
+  "synthetic_boundaries": [
+    "SDK request relay and held OS process",
+    "normal checkpoint reader I/O result in common preparation unit",
+    "selected engine identity at common filesystem preparation boundary",
+    "full exact4 parser receipt only in synthetic branch test"
+  ],
+  "actual_non_synthetic_checks": [
+    "real generator CLI output retained",
+    "actual current checkpoint reader module import",
+    "real public Selection and profile materialization code",
+    "actual frozen OpenKaiShek old-profile parser GREEN and validator RED consumption"
+  ],
+  "not_done": [
+    "CK3/native SDK/desktop/process access",
+    "native build/cold qualification",
+    "actual fixture scope/effect/stock/clamp",
+    "natural update/casualty"
+  ],
+  "R05_pass": false,
+  "native_script_effect_qualified": false,
+  "business_game_days": 0,
+  "portable_stdout": {
+    "path": "contract-checks.stdout.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "portable_stderr": {
+    "path": "contract-checks.stderr.log",
+    "bytes": 1905,
+    "sha256": "7edcc755eb276512875eac9c9fa074788a0a3de3fd81352583ffe441f2811b79"
+  }
+}

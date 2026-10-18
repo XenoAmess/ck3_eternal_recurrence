@@ -1,0 +1,334 @@
+{
+  "schema": "xar.relative-add-only-copyplan.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:16:15.664501+00:00",
+  "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "mode": "add_only",
+  "source_root": "patch-root",
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/r05_low_supply_fixture.py",
+      "bytes": 20082,
+      "sha256": "4f13958893a56eacd2faee3a0227fd6a090cb8c6c816c5f95455ce5087003686",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stderr.log",
+      "bytes": 1905,
+      "sha256": "7edcc755eb276512875eac9c9fa074788a0a3de3fd81352583ffe441f2811b79",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/contract-checks.stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/common/decisions/xar_r05_low_supply_fixture.txt",
+      "bytes": 836,
+      "sha256": "e2454dfd4511602c75b51a30e1696ebbdd279b93e0b62177a27c80fdd28ea706",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/descriptor.mod",
+      "bytes": 93,
+      "sha256": "821698310b34bf898926f943b1f95a92871b9e053052a3c448519b7390496019",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/fixture-manifest.json",
+      "bytes": 1869,
+      "sha256": "1ae2c4020ecbde27d8a68df9d63d97d2f0f600524e05ddb1396f50497d6a0295",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/english/xar_r05_low_supply_fixture_l_english.yml",
+      "bytes": 406,
+      "sha256": "5df7450189170800f804cb3b74fd82a6cf939c5c3fe18871e29dee8e3424a40a",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/fixture/localization/simp_chinese/xar_r05_low_supply_fixture_l_simp_chinese.yml",
+      "bytes": 373,
+      "sha256": "d47aa1eec356288c1d7b4b4e7743e89fdc35e7b03f504e9dbd2ccc25870d802f",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/offline-checks.actual.json",
+      "bytes": 4428,
+      "sha256": "3df16bd81c081de98138b247e420497b1fe5a627459d9670146f9dec69192cce",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/PREFLIGHT.raw.json",
+      "bytes": 2642,
+      "sha256": "66d2012f5db6689b794e7d53113fb83cefb85757156be9903cadc7c20dd25dfa",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-documentation-source.json",
+      "bytes": 7041,
+      "sha256": "5a21932f18f41d5b32a71528c51ab378798a5020702cf047c8426e789d11d4c9",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/script-preflight.actual.json",
+      "bytes": 4245,
+      "sha256": "e8c874c3df01cca6447e1377d6d4a03e949412c78a8b884b85bec68078d28f90",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/source-index.json",
+      "bytes": 66195,
+      "sha256": "e379f226ce8ec2a5a00e7b9393f258f10a420d132264848fd5af10b33b31e26d",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/VALIDATE.raw.json",
+      "bytes": 3712,
+      "sha256": "660a3b46b03457d9696bf02cb110c14481af1c079b29433c06cfc0dba85d5c7b",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/episode04-r05-controlled-low-supply-fixture-12004.md",
+      "bytes": 12126,
+      "sha256": "3d90d9985383f707ca45d77d4e282f19feb63c3b66d30c574eb62ea6114405ff",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r05_low_supply.json",
+      "bytes": 244,
+      "sha256": "f4df5d8de217e07b08d587847d5c46dfb20a95f9cde969dd9226a800c5c9a118",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r05_low_supply_adapter.py",
+      "bytes": 12423,
+      "sha256": "c93c8dc85682212708f704b4da9c605e99a039b5d5d87a6ec93359a1ebeec094",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_cases/r05_low_supply_initial.plan.json",
+      "bytes": 13,
+      "sha256": "4dfdf4c2e8f3f3c86a3ca3c75648d3ce52c2f43b9cda2a72ff2fc563c3825886",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_r05_products.json",
+      "bytes": 1369,
+      "sha256": "e737d87b07b973ba8a9e0002f6c798e134078ee97e3c385c047d35a96e06ea2d",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/prepare_r05_low_supply_fixture.py",
+      "bytes": 1460,
+      "sha256": "19fbc0d6b360e89dc5ba6c5d5041789c19ec38df23983c74339e9a83b3230919",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/run_r05_low_supply_initializer_once.py",
+      "bytes": 7976,
+      "sha256": "477efa88a23c241617a6e77cb0b0cfc8d4bb26563a3eba2689af8c686ea30505",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    },
+    {
+      "relative_path": "tools/test_r05_low_supply_fixture.py",
+      "bytes": 22798,
+      "sha256": "fb93aeac01c3723484996f27951050813f3a7a83fa54e807772233790b6044bb",
+      "expected_original": {
+        "state": "absent",
+        "base_commit": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+        "git_ls_tree_stdout": "",
+        "working_tree_absent_observed": true
+      }
+    }
+  ],
+  "dependencies": [
+    {
+      "relative_path": "tools/ck3_mod_acceptance.py",
+      "bytes": 48735,
+      "sha256": "718ee71ab48641c1d689b017b832e1983f37fd1d555c5918a0bedf6c7232103a",
+      "git_blob_sha1": "ca463923dc3ef5d4d2ec7828f0ea411cd901d7d2"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_prepare.py",
+      "bytes": 14430,
+      "sha256": "37d74c8703c809575f9ecebe89475fb8ff05fe6cd4aecdd54e0ec65d57e6e55b",
+      "git_blob_sha1": "9a7f3803150d1aa4b39e0b34772375f9ad402d23"
+    },
+    {
+      "relative_path": "tools/ck3_mod_acceptance_client.py",
+      "bytes": 64343,
+      "sha256": "54fb060e0589e57d978010b53875b08c69b4ec2b1db53bac75f8a257b9830d4e",
+      "git_blob_sha1": "f1944903ec20a7332ad7bf77c2ac069fc2614ed8"
+    },
+    {
+      "relative_path": "tools/fixture_engine_prepare.py",
+      "bytes": 7469,
+      "sha256": "b1a815832f07c0788f2322ac0990957a4b7cbb17fdcf588bf3690cd5ff82fcd4",
+      "git_blob_sha1": "677cc6a3350919653a9d0692e1ff29c2eb78f9fd"
+    },
+    {
+      "relative_path": "tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f",
+      "git_blob_sha1": "a1967e829e4f2648066e52114668897983b38a25"
+    },
+    {
+      "relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_bootstrap.py",
+      "bytes": 38107,
+      "sha256": "c4ba0198d0c12464b47f66562f3494a499c5bc504fe2f59602ee48d7d56ffb3d",
+      "git_blob_sha1": "1b9e3337dbd739ea4566023ba1263c5fd3e6f03b"
+    },
+    {
+      "relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_runtime_evidence.py",
+      "bytes": 11418,
+      "sha256": "8337aeafbcd63dabe9611559dfde42a7199d8316389bba64c8f24e476be0bcde",
+      "git_blob_sha1": "8f2720a4681a06a22c2cbb74c58ad3ce887e25be"
+    },
+    {
+      "relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/tools/capture_deadline.py",
+      "bytes": 10850,
+      "sha256": "c09ee60106ec52215390828b4980ac7909e3f09e8cd768d01e1209bc68cacb71",
+      "git_blob_sha1": "8088fbf0312ffeae648c6825c72ee3dc44a78ac9"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_replenishment_records_contract.py",
+      "bytes": 6011,
+      "sha256": "45e7f6a8390eeceb4d2ccf7a1d17994f6f9f0db4f62b24d8362653f098c63fac",
+      "git_blob_sha1": "73d313591121f31199bd0716e2fd8b753fafae91"
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_fixed_chunk0_preparation_contract.py",
+      "bytes": 5080,
+      "sha256": "b0a4b83aa7c89a916392f692b3563574f23c2c164b5a5d00788b58e97f36a662",
+      "git_blob_sha1": "abbe188963f424f060b12d1a81aaff071d122c68"
+    }
+  ],
+  "existing_files_modified": [],
+  "shared_seams_changed": [],
+  "public_entry": "tools/ck3_mod_acceptance.py with new R05 case catalog; one common runtime",
+  "preserve_exact_attributes_required": [
+    "docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/** -text whitespace=cr-at-eol"
+  ],
+  "attribute_owner": "integration/entry owner; this candidate does not edit .gitattributes",
+  "qualification": {
+    "source_contract_tests": "13/13 PASS, actual receipt included",
+    "native_effect": "NOT_RUN",
+    "OpenK_parser": "GREEN for unchanged836B decision, raw original retained",
+    "OpenK_validator": "RED15 UNKNOWN_OPCODE / unsupported old1.19 profile; not exact4 semantics",
+    "R05_pass": false,
+    "natural_day_loop": "NOT_CONNECTED; actual extension point documented"
+  },
+  "retention": {
+    "derived_review_after_hours": 48,
+    "small_record_review_after_days": 180,
+    "automatic_gc_claimed": false
+  }
+}

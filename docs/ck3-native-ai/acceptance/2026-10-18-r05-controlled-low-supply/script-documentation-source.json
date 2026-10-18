@@ -1,0 +1,93 @@
+{
+  "schema": "xar.r05-original-decision-documentation.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T02:09:41.357831+00:00",
+  "source_game_version": "1.20.0.4",
+  "EXE_read_or_hashed": false,
+  "scope": "current original script documentation and realm group exist; not CK3 runtime fixture acceptance",
+  "source_rows": [
+    {
+      "game_relative_path": "common/decisions/_decisions.info",
+      "whole_bytes": 13932,
+      "whole_sha256": "d36f202f6f91a6e17f0accff86ba7604caeb82e6ff73fc8c24041f4052f43742",
+      "excerpts": [
+        {
+          "start_line": 17,
+          "end_line": 37,
+          "sha256": "450633c5996c8f6e1cf15c4fe8d0d4699600a14faa57c5ae5dc22e26e0ef42ec",
+          "text": "\ttitle = <localization key> | <dynamic description>\n\n\t### Picture\n\t# A picture to use for the decision.\n\t# In case that there are multiple the first one that fits the trigger will be the one selected.\n\tpicture = {\n\t\t### Picture requirements\n\t\t# Receives the character scope to check if it's valid.\n\t\t# Empty triggers always pass on default so do not type a trigger if you want it to always succeed.\n\t\ttrigger = <triggers>\n\n\t\t### Illustration to show\n\t\t#\n\t\t# Path to the texture\n\t\t#\n\t\treference = <file path>\n\n\t\t### Sound effect\n\t\t#\n\t\t# Name of the sound effect played when showing the decision details\n\t\t#\n"
+        },
+        {
+          "start_line": 49,
+          "end_line": 59,
+          "sha256": "cfef2f5e4465a21d6d9d04e024edb7e15961371b7c089fa25628a6d997e124b4",
+          "text": "\n\t### Decision group\n\t#\n\t# Foldable decision group type to put this decision in. Default or not specified will select 'decisions'\n\t#\n\tdecision_group_type = <key>\n\n\t### Visibility in decisions panel\n\t#\n\t# Can be used to hide decisions from the decisions view.\n\t# Mainly intended for decisions that show up somewhere else\n"
+        },
+        {
+          "start_line": 100,
+          "end_line": 110,
+          "sha256": "742bfe74b39607c25fee9b960a459399e521ac7c56a9409400fd33522349c09d",
+          "text": "\t\t\t### Relevant advice?\n\t\t\t#\n\t\t\t# Is this at all relevant advice for the provided title?\n\t\t\t# (Note: Renamed to is_valid_for_title in the advice database)\n\t\t\t#\n\t\t\tis_valid = <triggers>\n\n\t\t\t### Already doing it?\n\t\t\t#\n\t\t\t# Is the player currently doing what this advice recommends with the provided title?\n\t\t\t#\n"
+        },
+        {
+          "start_line": 151,
+          "end_line": 163,
+          "sha256": "f5e45b3aec1c902284da0de1b5be3091c7ca7307f8ab2be801c1e6000aaccc6c",
+          "text": "\n\t### AI reevaluation interval\n\t#\n\t# How many months to go between each check of this decision.\n\t# Has to be set (or 'ai_check_interval_by_tier'), except if ai_goal = yes is set.\n\t# An interval of 0 means the AI will never check this decision.\n\t#\n\tai_check_interval = <integer>\n\n\n\t### AI reevaluation by tier\n\t#\n\t# How often should the ai check this decision by tier of top title (in months).\n"
+        },
+        {
+          "start_line": 185,
+          "end_line": 195,
+          "sha256": "214948c2e7a8b63301cdae6dfc6e319d36ebcc3fec8017bbd1cc4585f484618f",
+          "text": "\t#\n\t# Override tooltip when selecting the decision from the decision list.,\n\t# \n\t# Default: \"<description key>_tooltip\"\n\t#\n\tselection_tooltip = <localization key> | <dynamic description>\n\n\t### Override description\n\t#\n\t# Default: \"<description key>_desc\"\n\t#\n"
+        },
+        {
+          "start_line": 199,
+          "end_line": 209,
+          "sha256": "7a9c4614a485476d61f959b3387989138eba4fc50858ebf85a3e3c801e39b193",
+          "text": "\t#\n\t# Override text on the button that confirms the decision.\n\t#\n\t# Default: \"<description key>_confirm\"\n\t#\n\tconfirm_text = <localization key> | <dynamic description>\n\n\t### Who *might* take this decision?\n\t#\n\t# Check if this decision should even be presented as an option for a character.\n\t#\n"
+        },
+        {
+          "start_line": 211,
+          "end_line": 221,
+          "sha256": "94f954943f1da4dbf3b764e0f17741ed1b48e89f4ab0ba3219b75c78dcd1ad59",
+          "text": "\t#  - root (Character) ruler to check this for\n\t#  - scope:puppeteer (Character) ruler that might be initiating the decision through root as puppet.\n\t#\n\t# Default: Yes\n\t#\n\tis_shown = <triggers>\n\n\t### Who *could* actually take this decision?\n\t#\n\t# Check if this a character can actual take this decision; all requirements are listed.\n\t# Decision taken is also limited by 'is_valid_showing_failures_only', and 'cost'.\n"
+        },
+        {
+          "start_line": 260,
+          "end_line": 273,
+          "sha256": "6d0d3aa760d0e0a94cdf42b90bb5044d8ec5480d190ea4263e290a367aa3d529",
+          "text": "\n\tshould_create_alert = {\t\t\t# Should this decision have an alert made for it, applied on top of the usual requirements that the decision will be alerted for\n\t\t...\n\t}\n\n\teffect = { ... }\t\t\t\t# effect to execute when decision is taken; scope: character\n\n\tai_potential = { ... }\t\t\t# trigger whether the AI should look at it or not\n\tai_will_do = { ... }\t\t\t# Returns the % chance of executing the decision. 0 will never execute it, 100 will always execute it. Will also determine the default option (if the decision has those) for players .\n\n\t# Specify up to one custom widget to embed in the decision. See section about Custom Widgets below.\n\twidget = {\n\t\t# Name of the widget to use. Must be at the path <decision_view_widgets>/<widget_name>.gui\n\t\tgui = \"<widget_name>\"\n"
+        }
+      ]
+    },
+    {
+      "game_relative_path": "common/decision_group_types/00_decision_group_types.txt",
+      "whole_bytes": 1571,
+      "whole_sha256": "9d4157732a8a354e7ab3dc3fdb08f6454435ecad9564896a8a745f998125f7c6",
+      "excerpts": [
+        {
+          "start_line": 47,
+          "end_line": 57,
+          "sha256": "9ab760386489723c9e78c55029764f6cd9f3d00626654ff7132357ee0574fc3e",
+          "text": "\n############################################\n# Decisions roughly in the middle\n# (101-200 )\n\nrealm = {\n\tsort_order = 100\n\tgui_tags = { big_button }\n}\n\nstruggle = {\n"
+        }
+      ]
+    },
+    {
+      "game_relative_path": "common/decisions/test_decision.txt",
+      "whole_bytes": 8336,
+      "whole_sha256": "21610208a193f4a67bede44bba076fd7152561f9c7ff89b5ddf29a1ba54474c6",
+      "excerpts": [
+        {
+          "start_line": 37,
+          "end_line": 47,
+          "sha256": "4e024aa7008b163daaea89978ea48958c881a6c9533c2f6b0af64bc635a5f52d",
+          "text": "\t\telse = {\n\t\t\tadd_trait = pilgrim\n\t\t}\n\t}\n\n\tai_check_interval = 0\n}\n\n\n# Have our own house become the leading house of the confederation\n### Become the Leading House ###\n"
+        }
+      ]
+    }
+  ],
+  "changes": "Added two localization _confirm entries after original documentation review; decision836B unchanged",
+  "controlled_native_effect_qualified": false
+}
