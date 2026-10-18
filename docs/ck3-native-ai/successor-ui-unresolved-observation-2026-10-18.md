@@ -80,3 +80,30 @@ Root最终独立跑新旧两模块12测试通过（chunk521b2c，body0.953秒／
 已有历史实机来源仅在此精确复用一条：[AUTO368 子链](evidence/p50r1-natural-successor-actual-2026-10-18.json)，同机器 `2026-10-17T19:27:31.655608Z`、Game51028/birth FILETIME134367033244212072，`31254/native-31254-8d3a8440eb30 → 40695/native-40695-9cf747ffe1ee`，titles2230/2231/2262 matched；一次 Close372、SAVE374、SEM375 保原 campaign/origin31254、current40695/progress1，随后 FULL376 十轮普通游玩。其前置 AUTO361 曾需要保留原回执的元数据恢复，不能用该成功子链宣传整场没有维修。永久存档中的 actor82925 不单独证明第二次继承完整闭环；本次第二次继承是软件代表，不补实机信用。
 
 本包只有小型源码、临时 JSON 和精简记录；无媒体读写、全盘扫描、大文件哈希或永久存档操作。仍须在后续用户允许的新运行中建立实际 source tuple/Game birth/preintent，并自然取得全后验和普通玩法。新 Game/SAVE lineage、更多 ruler/seed/government 与 M6 自然收益终态仍未由本补丁验收，**G2 继续 6/8**。
+
+### 2026-10-19 追加：原 driver 异常后的 direct Continue 防重修复
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`，实际软件验证 UTC 与完整新源码 epoch/pins 见 [独立修复回执](evidence/successor-ui-app-owner-once-repair-2026-10-19.json)。先前 36 tests 及 Root 独立复核仍是其当时真实结果，**没有覆盖原 driver 抛异常后再走 public `ck3_execute_step` 的分支**，不追认当时已经堵住此缺口。
+
+独立只读复查发现：旧 `before_continue` 写入的内存 ticket 同时被 generic driver gate 当作权限。原 driver 抛异常时未走到 `after_continue`，ticket 残留；AUTO 的持久 pending/load 门能阻止再发，但 public generic step 可能再次进入原 driver。软件负对照只用 HEAD 旧 `driver_step` AST 替换内存方法，两个模式真实重进 driver 到两次：原动作未应用模式为 `2 attempts / 1 applied`，已应用但结果未知模式为 `2 / 2`；原本要求分别为 `1 / 0` 与 `1 / 1`。该旧 guard 负对照实际外层 1、两项 async 包装断言 errors，保留真实分类，不当作正常成功。
+
+现将证据 ticket 与提交权限分开：只在当前 App AUTO 调用栈及原线程内、durable preintent 已读回后，建立一次 dispatch permit；进入原 driver **之前消费**，所有返回和异常均在 `finally` 撤销临时 scope/permit。ticket 残留不再授权 generic 请求。原异常继续返回，持久 `handoff_unverified` 与禁止重放标志均不清除；不依赖底层 driver 恰好已经清掉 reconciliation 才防住第二次调用。
+
+新增用例穿实际 registered MCP：原 driver 在应用前抛异常、或应用后返回未知异常，然后依次调用 generic Continue、AUTO、generic Continue，均确认原 driver 仍只被调用一次、应用计数分别为 0/1，原错误文本保留且 ledger 仍未验证。最终新源码 **37 tests / 28 subtests，20.17 秒，chunk `e76ccb`，实际子进程及外层均 0**。没有部署冻结 SDK、操作真实游戏或增加 G2 完成信用，仍为 **6/8**。
+
+## 下一次获准运行时的低开销采集清单
+
+`machine_id: xenoamess-full-tower-eb9d2c1186`；本轮仓库源码只读观察从 `2026-10-18T19:31:02Z` 开始，本文追加于 `2026-10-18T19:39:36Z` 之后。仅核仓库源码、权威 requirements 与小型软件回执；没有运行新测试、Git、Game、Native、MCP、桌面或媒体操作。
+
+新公共源码已经具备实际 App 采用点，不能继续描述为“只有 native-auto-run opt-in”：`create_server` 构造同进程 `SuccessorUIAppOwner`，在真实 driver 上登记 canonical ledger；仅原 `ordinary_campaign_succession` 与 private death-Continue 许可同时满足才启用，未准入配置若已有 pending 仍拒。Service 在原 callback 后保留 preintent，原执行结果后用真实 post、原 full 验证器及 SDK goal 函数 retain；Queue 独立保留 full/title/goal 门，再消费 App resume、typed Close/独立后验及 SAVE。上节已另记 direct Continue 异常后的 once 缺口与修复，不把原 36 项测试外推为该分支当时已安全。当前只能称公共源码和软件组合闭包；**冻结 Host06 / future1066 entry 尚未采用，真实运行仍未资格**。
+
+1. **启动只采一次身份与来源。** 在用户允许的新运行中，从实际既有启动回执及首个合格帧留存 machine/UTC、Game PID/真实 birth/image、EXE/Native 身份与广告、实际 SDK/App/Queue/source epoch、episode、campaign goal、government_key/family、初始 checkpoint/seed 来源。不要从统治者姓名推政府，不以新标题/PID/SDK认定独立 seed。新 Game 用新 state/ledger；只迁来源知识，不迁旧 UI 义务。此项不是当前启动许可，也不允许补填旧 birth。
+2. **自然边界复用原请求，不重复提交。** 批末只索引已经完成的原 AUTO 与独立 pre-terminal、SEM/CAP、小投影来源，按 machine+campaign+old/new episode 去重。留存原六帧/PID/conn、旧 expectation 的实际来源帧与距死亡年龄、逐 title reconciliation、原 goal 与 post goal；较早 first-heir 观察不能升级成死亡前 fresh 全 title。原 App preintent/obligation 和 Queue thin 都是来源，两个 owner 的同一转换不能算两次自然继承。未知、持久失败或原请求尚未结算时，只收集原回执，禁止再次 Continue。
+3. **UI 事实与动作分开。** 保留原 timeline 的 identity/open/blocked、当前事件 instance/definition/旧 root，以及 App 的 pending/clearance。none+open、事件消失或新 actor 均不等于清窗。原事件交完整普通 planner；必须由 fresh timeline 决定原 typed Close 是否需要且合法。Close 保留唯一意图、完整原结果和真实 ending date；随后原独立 SEM/MET、checkpoint 物化配对及后继普通 plan/结果各保来源。Close 内置时间推进单列，不造额外普通 cycle；ACK、submitted、婚配 pending 或移动命令不能升级为清窗、婚配成功、已到达或战争获胜。
+4. **cold 证据顺应实际维护。** 不为每个 batch 专门重启。若本来需要同 Game 的 SDK-only 维护，保旧 ledger SHA/源码 epoch、原 birth、正常旧 owner 关闭、实际新 conn、first paused SEM、内部 rebind 与 0 重放，之后观察原待办完成及普通执行。真正 SAVE→新 Game 的 birth 改变仍会被此 sameGame ledger 拒绝：另需旧进程真实退出、精确 checkpoint/配套状态、真实新 birth、同 episode/高层 goal、无旧动作重放及随后普通执行的 lineage 合同和实证。不能把 SDK 重连或永久存档中的 actor 字段当新 Game 冷恢复通过；现补丁没有授该资格。
+5. **M6 按原 action/full instance 收完整生命周期。** 正常 planner 自然 Start 后，留 action/actor/target/完整 SchemeID/generation、真实 applied receipt 与独立唯一实例。继续保较早 `scheme_sway_opinion` baseline、首次新增正增量的 `first_named_gain_intervention`、后来 `terminal_intervention`，以及后续普通消费的 `following_native_revision` / `following_date_raw` 与归档 `previous_interventions`。首次正增量来源不能被最终同值 material 刷新替代。总好感、Start ACK、phase success、行消失、手动 typed Stop 或 `terminated_unattributed` 各自不足以报有用自然终局/原因归因；保留原合同的未知，而非制造成功。
+6. **复用月门与已有返回体。** 优先采普通 AUTO 的 post-Start、quiet-query、合格 stationary-hold optional 回执及原 ledger 的状态变化；无 active、未到期、原 pending 和缺资格分开统计，不新增每 AUTO RPC、手动 Start/Stop 或抢战争行动。只保存首次具名增量、终态/后续消费及身份变化的来源。批末离线计数分清零机会、cooldown、pending、native unavailable、阶段收益、terminal 与 following，不从零 Start 推断缺 flags，也不以缺某项采集为当场新增 stop-gate。
+
+以上字段只从已结束的小回执/已有小投影抽取 path/bytes/SHA 和必要指针，不复制完整 history、Driver、SAVE 或媒体。单件过大且没有已有小投影时记 `oversized_source/not_observed`，不能为此在普通运行热点重扫大正文。下一局同为封建罗贝尔可增加新来源的自然连续性，但不会自动补另一 government family；独立 seed 仍须真实 initial-state 来源。合法分封/改宗主/独立变化如实记，不新增为 M7 必测死亡变体，尤其不能把主动授独立算自然继承。
+
+验收仍按 [原 requirements](../autonomous-agent-progress/g2-requirements-v1.json) 和 [M6/M7 覆盖合同](p55-g2-m6-m7-natural-coverage-2026-10-18.md)：M6 尚缺当前可采纳 source 下真实具名新增收益→自然有用终态→普通后续消费；M7 尚缺 multiple rulers/seeds/governments 及精确 checkpoint/继承后的高层意图恢复的更广实证。已有两次同场角色转换、公共 resident 采用和软件冷连接组合均不自动补齐。**G2 保持 6/8；本清单不增加实机、影片或业务完成信用。**

@@ -20,6 +20,7 @@ from test_verified_successor_ui_service_v1 import SourceDriver, goal
 from test_successor_ui_pending_ledger_v1 import verification
 from xar_autoplayer.bridge import mcp_server
 from xar_autoplayer.bridge.service import GameplayBridgeService
+from xar_autoplayer.bridge.driver import BridgeUnavailableError
 from xar_autoplayer.bridge import successor_ui_app_owner_v1 as app
 from xar_autoplayer import successor_ui_pending_ledger_v1 as journal
 from xar_autoplayer.strategy import continue_ordinary_campaign_goal_v1
@@ -44,6 +45,8 @@ class Driver(SourceDriver):
         self.frame["active_event"].update(option_count=1, options=[{"option_number": 1, "enabled": True}])
         self.post = deepcopy(self.frame)
         self.continues = self.saves = self.ordinary = self.snapshot_reads = self.cap_reads = 0
+        self.continue_dispatch_attempts = 0
+        self.continue_failure_mode = None
         self.order = []
         self.fail_persist = self.bad_goal = self.bad_post = False
         self.result = verification(self)["result"]
@@ -75,9 +78,14 @@ class Driver(SourceDriver):
             raise ValueError("synthetic stale revision")
         self.order.append("execute:" + step)
         if step == app.STEP:
+            self.continue_dispatch_attempts += 1
             self.assert_intent()
+            if self.continue_failure_mode == "before_apply":
+                raise BridgeUnavailableError("synthetic original Continue throw before apply")
             self.continues += 1
             self.frame = deepcopy(self.post)
+            if self.continue_failure_mode == "after_apply_unknown":
+                raise BridgeUnavailableError("synthetic original Continue unknown after apply")
             result = deepcopy(self.result)
             if self.bad_goal:
                 self.frame["campaign_goal"]["progress"]["reconciled_successions"] += 1
@@ -435,6 +443,27 @@ print('ISOLATED_PACKAGE_APP_BOOTSTRAP_OK_NO_GAME_NO_REPO_TOOLS')
         self.assertEqual(result["status"], "terminal")
         self.assertFalse((self.root / journal.FILE).exists())
         self.assertEqual((self.driver.continues, self.driver.closes, self.driver.saves), (0, 0, 0))
+
+    async def test_original_driver_exception_cannot_rearm_generic_or_AUTO_continue(self):
+        for mode, applied in (("before_apply", 0), ("after_apply_unknown", 1)):
+            with self.subTest(mode=mode), tempfile.TemporaryDirectory(prefix="successor-dispatch-once-") as temp:
+                self.driver = Driver(temp)
+                self.driver.continue_failure_mode = mode
+                async with Client(mcp_server.create_server(self.driver)) as client:
+                    first = await client.call_tool("ck3_auto_turn", {})
+                    self.assertTrue(first.is_error)
+                    self.assertIn("synthetic original Continue", str(first))
+                    self.assertEqual((self.driver.continue_dispatch_attempts, self.driver.continues), (1, applied))
+                    self.driver.continue_failure_mode = None
+                    for tool in ("ck3_execute_step", "ck3_auto_turn", "ck3_execute_step"):
+                        arguments = ({"step": app.STEP, "expected_revision": self.driver.frame["revision"]}
+                                     if tool == "ck3_execute_step" else {})
+                        response = await client.call_tool(tool, arguments)
+                        self.assertEqual((self.driver.continue_dispatch_attempts, self.driver.continues), (1, applied))
+                        self.assertTrue(response.is_error)
+                    retained = json.loads((Path(temp) / journal.FILE).read_text(encoding="utf-8"))
+                    self.assertEqual(retained["status"], "handoff_unverified")
+                    self.assertFalse(retained["action_replay_authorized"])
 
 if __name__ == "__main__":
     unittest.main()

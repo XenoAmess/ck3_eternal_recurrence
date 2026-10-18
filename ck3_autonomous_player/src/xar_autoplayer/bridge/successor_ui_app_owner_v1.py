@@ -67,7 +67,9 @@ class SuccessorUIAppOwner:
         self.ticket = None
         self.transition = None
         self.lock = threading.RLock()
-        self.executing_continue = False
+        self._auto_scope = None
+        self._auto_thread = None
+        self._continue_dispatch_permit = None
         self.executing_close = False
 
     def snapshot(self):
@@ -92,6 +94,8 @@ class SuccessorUIAppOwner:
     def before_continue(self, planned):
         if planned.get("plan", {}).get("selected_step") != STEP:
             return
+        if self._auto_scope is None or self._auto_thread != threading.get_ident():
+            raise ValueError("natural Continue requires the original active App AUTO scope")
         before = self.snapshot()
         source = self.service._observed_planning_source_frame(before)
         if (source.get("status") != "complete" or source != planned.get("planning_source_frame")
@@ -111,6 +115,7 @@ class SuccessorUIAppOwner:
             "snapshot_id": before["snapshot_id"], "revision": before["revision"]})
         # A durable intent exists even if execution/revision/readback later fails.
         self.ticket = {"before": binding, "goal": goal, "succession_lifecycle": deepcopy(lifecycle)}
+        self._continue_dispatch_permit = self._auto_scope
 
     def after_continue(self, planned, outcome):
         if planned.get("plan", {}).get("selected_step") != STEP or self.ticket is None:
@@ -215,7 +220,18 @@ class SuccessorUIAppOwner:
                     return {"status": "successor_ui_pending" if resumed["pending"] else "successor_ui_resumed",
                             "selected_step": None, "successor_ui_obligation_v1": resumed,
                             "result": resumed.get("transition", {}).get("timeline_blocker_continuation", {}).get("close_result")}
-            return self.service.auto_turn(before_submit=before_submit)
+            if self._auto_scope is not None:
+                raise ValueError("App AUTO is already active; no nested continuation scope")
+            self._auto_scope = object()
+            self._auto_thread = threading.get_ident()
+            try:
+                return self.service.auto_turn(before_submit=before_submit)
+            finally:
+                # The ticket preserves evidence, never submission authority.
+                # Driver exceptions must not leave a reusable public permit.
+                self._continue_dispatch_permit = None
+                self._auto_scope = None
+                self._auto_thread = None
 
     def require_save(self):
         if self.pending():
@@ -226,8 +242,14 @@ class SuccessorUIAppOwner:
         with self.lock:
             if step == "save-checkpoint":
                 self.require_save()
-            if step == STEP and self.ticket is None:
-                raise ValueError("natural Continue requires the App's retained original preintent")
+            if step == STEP:
+                if (self.ticket is None or self._auto_scope is None
+                        or self._auto_thread != threading.get_ident()
+                        or self._continue_dispatch_permit is not self._auto_scope):
+                    raise ValueError("natural Continue has no unconsumed original App AUTO dispatch permit")
+                # Consume before entering the original driver, including its
+                # throw-before-dispatch and unknown-after-apply outcomes.
+                self._continue_dispatch_permit = None
             return self.driver.execute_step(step, expected_revision=expected_revision)
 
     def public_close(self, arguments):

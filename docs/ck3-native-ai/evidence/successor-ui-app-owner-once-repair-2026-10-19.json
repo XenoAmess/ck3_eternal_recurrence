@@ -1,0 +1,279 @@
+{
+  "schema": "xar.ck3.successor-ui-App-owner-once-repair-software/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "machine_identity_evidence": "tools/ck3_live_run_id.py machine actual readback 2026-10-18T19:13:15Z; source/software only same session",
+  "started_at_utc": "2026-10-18T19:35:34.707583+00:00",
+  "finished_at_utc": "2026-10-18T19:35:56.238906+00:00",
+  "command": [
+    "Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+    "ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py",
+    "ck3_autonomous_player/tests/unit/test_verified_successor_ui_service_v1.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_owner.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_modal.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_adoption.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_persistence.py",
+    "tools/g2_saved_campaign/test_m7_async_successor_per_title.py",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_freezes_no_heir_as_observed_risk",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_reports_successor_and_title_mismatches_without_inventing_holders",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_mismatched_reconciliation_blocks_seed_replay_fallback",
+    "ck3_autonomous_player/tests/unit/test_succession_transition_contract.py::SuccessionTransitionContractTests::test_rogue_and_unknown_lifecycles_remain_fail_closed"
+  ],
+  "actual_child_exit_code": 0,
+  "stdout": ".....................................        [100%]\n37 passed, 28 subtests passed in 20.17s\n",
+  "stderr": "",
+  "priority": "BELOW_NORMAL_PRIORITY_CLASS",
+  "pyc_disabled": true,
+  "pytest_cache_disabled": true,
+  "baseline_receipt": {
+    "path": "docs\\ck3-native-ai\\evidence\\successor-ui-app-owner-source-2026-10-19.json",
+    "bytes": 12150,
+    "sha256": "61e5637c838744a9b09cb57dfaff706c6c158de43ec4fa25b0c8d3adf2a69ca7",
+    "not_rewritten": true,
+    "old_36_tests_did_not_cover_this_direct_reentry_branch": true
+  },
+  "specific_defect": "Original driver exception left an evidence ticket; old generic driver_step treated it as reusable dispatch permission. AUTO pending gate alone did not guard public ck3_execute_step.",
+  "repair": "AUTO scope/thread-bound permit armed only after retained preintent, consumed before original driver call, always revoked in finally. Evidence ticket never grants execution; durable handoff_unverified remains locked.",
+  "focused_actual": {
+    "chunk_id": "013f73",
+    "actual_outer_exit_code": 0,
+    "tests": 1,
+    "modes": 2,
+    "body_seconds": 0.727,
+    "modes_detail": [
+      {
+        "mode": "before_apply",
+        "expected_driver_dispatch_attempts": 1,
+        "expected_applied_continues": 0
+      },
+      {
+        "mode": "after_apply_unknown",
+        "expected_driver_dispatch_attempts": 1,
+        "expected_applied_continues": 1
+      }
+    ],
+    "later_registered_retries": [
+      "ck3_execute_step",
+      "ck3_auto_turn",
+      "ck3_execute_step"
+    ],
+    "second_driver_dispatches": 0
+  },
+  "legacy_guard_negative_control": {
+    "chunk_id": "9dacea",
+    "actual_outer_exit_code": 1,
+    "legacy_driver_step_ast_sha256": "281c5cb6f8fa6f1bf5c14fe945d5785d225f9afe4f8dc5211aa61080c4b6d7f0",
+    "monkeypatch_only_no_source_or_runtime_mutation": true,
+    "tests": 1,
+    "async_assertion_errors": 2,
+    "failures_count": 0,
+    "why_outer1": "Expected old guard failure; initial wrapper also expected failures rather than ExceptionGroup-wrapped errors. Both diagnostics explicitly show the second dispatch.",
+    "before_apply_observed_counts": [
+      2,
+      1
+    ],
+    "before_apply_required_counts": [
+      1,
+      0
+    ],
+    "after_apply_unknown_observed_counts": [
+      2,
+      2
+    ],
+    "after_apply_unknown_required_counts": [
+      1,
+      1
+    ]
+  },
+  "source_epoch": "61fb069d7f66ca50defb851aa17916c34b53ef1594404394c52acf3c4337d56b",
+  "source_epoch_inputs": {
+    "native_auto_run.py": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04",
+    "successor_ui_pending_ledger_v1.py": "b9b4296794d3666504104cdffe4722ee5d92f54abf4e9455e6dcaf4c71ad98fc",
+    "successor_ui_owner_continuation_v1.py": "7b8d49d16bee5d60d604c20d7aef3679ffeb697fe98bef9d0bb72e1400909cfd",
+    "bridge/service.py": "e9a6f46b2a9542c4f11f291da7a3f9880f912cec98a731fafc2fb79998a6da87",
+    "bridge/verified_successor_ui_service_v1.py": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3",
+    "bridge/succession_ui_observation_v1.py": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973",
+    "bridge/successor_ui_app_owner_v1.py": "695167ab424b937c2b3f728a6020d22dfee9b36dff049781daaad3efb77a7ff8",
+    "bridge/mcp_server.py": "62e3442676b45a31bd952b4b452e55e6ea26e8ea152dd57a9a9ae1028fad0e73",
+    "ck3_live_run_identity_v1.py": "b81c2a1f1e7c562981a1cc001ef65d454a52f4993b2783d3a5a468db84ced43b",
+    "bridge/native_driver.py": "4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e",
+    "strategy.py": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+  },
+  "source_pins": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/successor_ui_app_owner_v1.py",
+      "bytes": 16256,
+      "sha256": "695167ab424b937c2b3f728a6020d22dfee9b36dff049781daaad3efb77a7ff8"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 863707,
+      "sha256": "e9a6f46b2a9542c4f11f291da7a3f9880f912cec98a731fafc2fb79998a6da87"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "bytes": 258315,
+      "sha256": "62e3442676b45a31bd952b4b452e55e6ea26e8ea152dd57a9a9ae1028fad0e73"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_owner_continuation_v1.py",
+      "bytes": 8516,
+      "sha256": "7b8d49d16bee5d60d604c20d7aef3679ffeb697fe98bef9d0bb72e1400909cfd"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/successor_ui_pending_ledger_v1.py",
+      "bytes": 21392,
+      "sha256": "b9b4296794d3666504104cdffe4722ee5d92f54abf4e9455e6dcaf4c71ad98fc"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/ck3_live_run_identity_v1.py",
+      "bytes": 2248,
+      "sha256": "b81c2a1f1e7c562981a1cc001ef65d454a52f4993b2783d3a5a468db84ced43b"
+    },
+    {
+      "path": "tools/gen_ck3_live_run_identity_package.py",
+      "bytes": 1678,
+      "sha256": "93917c20d5f2f26a463d415f71c42737d64df756f6ac7b429914c8caeac9a2ae"
+    },
+    {
+      "path": "tools/g2_saved_campaign/m7_ordinary_successor_queue.py",
+      "bytes": 38801,
+      "sha256": "3edbbf47d34523758736917378149155e23bc4ff78469f75652c54ee3283f256"
+    },
+    {
+      "path": "tools/g2_saved_campaign/ordinary_loop_root_checkpoint_stop.py",
+      "bytes": 45585,
+      "sha256": "df15636c8fbc7c9a6e309231cc8e68dbba2135719c0fc38787952a062ff99d68"
+    },
+    {
+      "path": ".github/workflows/static-ci.yml",
+      "bytes": 53505,
+      "sha256": "faf0f9d6eb9e3b500c5c2f97f52516631be4a515d48e53d861f33c3730e1f53c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_app_owner_v1.py",
+      "bytes": 30029,
+      "sha256": "5eb60db1896cd6cf10abac309c358e7d13a112db0f21e784583b783055a732b2"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_successor_ui_pending_ledger_v1.py",
+      "bytes": 19773,
+      "sha256": "75efadb1d18fb170f2b4b8b2e3ecba099171f316bbd5a7153cc1bbc73d02d77c"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_verified_successor_ui_service_v1.py",
+      "bytes": 14719,
+      "sha256": "157b41adca88e83621b27ec7dc89001aaa9e30eaaf14d73d87cb456b0a047dc6"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_owner.py",
+      "bytes": 4204,
+      "sha256": "cfcc0b9b860fc57657258516544670a87dc29ddd7ec12287434b8895ad97aa14"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_modal.py",
+      "bytes": 6388,
+      "sha256": "2b496b8315de1de8335a6f378a62373942bd976f308c9d6fcc2dbd7e51e4669a"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_adoption.py",
+      "bytes": 5994,
+      "sha256": "8cf285562b27fdbc7f6a1adb1f9c218eb37a981d548ae096d71ab49cd6f34c8e"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_persistence.py",
+      "bytes": 8203,
+      "sha256": "7a41e678e0db5a56160104096a398b3a41e21d9a914a5bbb286036886afeb7af"
+    },
+    {
+      "path": "tools/g2_saved_campaign/test_m7_async_successor_per_title.py",
+      "bytes": 10120,
+      "sha256": "0479e477a99fd2e6974a51000b10779ecde3beb73f4ef8f4aac3629b747c4c3a"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/native_auto_run.py",
+      "bytes": 458599,
+      "sha256": "39c928ba26ee74c0b74d41b873d252cd6697a8995746e44816b54e96fec31a04"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/verified_successor_ui_service_v1.py",
+      "bytes": 6674,
+      "sha256": "8a5cee33bb36e08e3c0bed68b3a3228235637269a5c57ccc22cb47e161412dd3"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_ui_observation_v1.py",
+      "bytes": 5090,
+      "sha256": "05694356218da8dc50ce825dd34d41e2033bc75e2406eb292ddb36d038ef6973"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "bytes": 1596131,
+      "sha256": "4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/strategy.py",
+      "bytes": 1031722,
+      "sha256": "38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae"
+    },
+    {
+      "path": "tools/ck3_live_run_id.py",
+      "bytes": 18126,
+      "sha256": "35602d8dda91af287e746bb4b693128f872d2a05e228186b6f97743ddac1672f"
+    },
+    {
+      "path": "ck3_autonomous_player/pyproject.toml",
+      "bytes": 1622,
+      "sha256": "b8e3b6d68d8901ec35f2012bd9842c643f3be3b0fa039f9bef5ea761cdeec90e"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/succession_transition_contract.py",
+      "bytes": 29634,
+      "sha256": "e162678ea42e2ee89ae8c414eb35652d350e8e7398636ca47ff7b59971aaf33e"
+    }
+  ],
+  "qualification": {
+    "registered_MCP_Service_dispatcher_real": true,
+    "driver_frames_game_birth_and_planning_choice_synthetic": true,
+    "original_exception_retained": true,
+    "durable_pending_not_cleared": true,
+    "Native_Game_Steam_desktop_media_permanent_SAVE_operations": 0,
+    "frozen_Host06_deployed": false,
+    "G2_completed": 6,
+    "G2_total": 8
+  },
+  "actual_final_exit_chunk_id": "e76ccb",
+  "final_result": {
+    "tests": 37,
+    "subtests": 28,
+    "pytest_body_seconds": 20.17,
+    "actual_outer_exit_code": 0,
+    "actual_child_exit_code": 0
+  },
+  "documentation_pin": {
+    "path": "docs\\ck3-native-ai\\successor-ui-unresolved-observation-2026-10-18.md",
+    "bytes": 20830,
+    "sha256": "07bd7e4b3097cf497ec19fcf425c3bd600900aa8f74157162f6f6c8a41589819"
+  },
+  "Root_final_verification": {
+    "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "observed_at_utc": "2026-10-18T19:39:08.177753+00:00",
+    "source_review_chunk_id": "09c85a",
+    "retained_session_id": 42957,
+    "actual_completion_chunk_id": "b6b133",
+    "actual_outer_exit_code": 0,
+    "actual_child_exit_code": 0,
+    "same_command_as_recorded": true,
+    "tests": 37,
+    "subtests": 28,
+    "test_body_seconds": "20.42",
+    "deployment_or_Game_operations": 0
+  }
+}
