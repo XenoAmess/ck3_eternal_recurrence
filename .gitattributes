@@ -879,3 +879,8 @@ docs/ck3-native-ai/evidence/episode04-review02-three-cue-preview-12004/source-in
 docs/ck3-native-ai/evidence/episode04-review02-three-cue-preview-12004/verify_portable.py -text whitespace=cr-at-eol
 promo/ck3_native_war_ai/episode-04-march-logistics/review02/three-cue-preview-a01/composer-tail-hold-threads1-multiwindow.patch -text whitespace=-blank-at-eol,cr-at-eol
 docs/ck3-native-ai/evidence/episode04-review02-three-cue-preview-12004/MULTIWINDOW-HOLD0-CHECK.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-readonly-strength-rebound/CONTRACT.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-readonly-strength-rebound/focused-smoke.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/acceptance/2026-10-18-r05-readonly-strength-rebound/source-query-RED.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r206-william-exactday-12004/INDEX.actual-a01.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r206-william-exactday-12004/README.md -text whitespace=cr-at-eol

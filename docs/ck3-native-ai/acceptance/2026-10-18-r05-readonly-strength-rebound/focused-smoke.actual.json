@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "status": "PASS",
+  "test": "readonly_rebound_and_zero_full_id",
+  "synthetic_cases": {
+    "success": 2,
+    "second_drift": 3,
+    "changed_date": 1,
+    "unrelated": 1,
+    "unknown": 1
+  },
+  "actual_live_calls": 0,
+  "R05_pass": false
+}

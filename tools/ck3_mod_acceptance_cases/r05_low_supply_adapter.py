@@ -132,7 +132,7 @@ def run_case(context,client):
     rows=[row for row in strength.get('army_strengths',[]) if row.get('army_id')==army_id]
     m.require(len(rows)==1,'current selected Strength identity missing/ambiguous')
     carmy_id=rows[0].get('native_carmy_id')
-    m.integer(army_id,'current public Army ID',1);m.integer(carmy_id,'current CArmy ID',1)
+    m.integer(army_id,'current public Army ID',0);m.integer(carmy_id,'current CArmy ID',0)
     m.target_witness(f,strength,actor_id=actor,army_id=army_id,carmy_id=carmy_id,province_id=province)
     for key,actual in (('army_id',army_id),('carmy_id',carmy_id)):
         m.require(inputs.get(key) is None or inputs[key]==actual,'optional expected '+key+' differs from current typed identity')

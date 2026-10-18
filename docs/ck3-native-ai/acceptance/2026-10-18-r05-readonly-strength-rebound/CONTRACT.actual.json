@@ -1,0 +1,16 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T04:39:54.492059+00:00",
+  "source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\responses\\r206-r04-continuation-advance-04-day01-full.json",
+    "bytes": 1822,
+    "sha256": "2ff145931e240773ad8750023ce5510569abe6c3c7c80f4da36851f29dee39cf"
+  },
+  "source_scope": "R206 terminal explicit readonly strength error, Army0, expected public revision12; no full result available",
+  "new_behavior": "Only terminal exact snapshot-revision error permits one fresh paused same-date/owner/PID/generation/episode frame and one new readonly requestID. Second error or changed frame stops full queries; OFF/clear/normal Save remain separate cleanup.",
+  "existing_queue_seam": "continue_on_error=True on this owned observed_history_full_v1 query only; host and CaseClient already support it",
+  "unit_zero": "Current public Army0 and CArmy0 are valid nonnegative IDs; current .4 typed membership remains mandatory",
+  "actual_live_qualified": false,
+  "R05_pass": false,
+  "native_build_required": false
+}

@@ -1,0 +1,142 @@
+{
+  "schema": "xar.e04.r206-william-research-film-terminal-integration-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T04:33:16.730122+00:00",
+  "source_head": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0206",
+  "package_policy": "references_only_no_raw_or_save_copy",
+  "qualification": {
+    "production_a36": {
+      "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\ROOT-A36-PRODUCTION-BYTES.json",
+      "bytes": 18411,
+      "sha256": "62375edbf38e8449ecb264dabf4dc0f3d3d42deaab87b4156fdf0f4cc37088f9"
+    },
+    "schema": "xar.e04.a36-production-and-refill-core-bytes-qualification.v1",
+    "production_bytes_qualified": true,
+    "runtime_business_qualified_by_q_alone": false,
+    "runtime_native_tools": {
+      "bridge_dll": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\xar_ck3_bridge.dll",
+        "bytes": 13718016,
+        "sha256": "563afaff52265082b3f96bcf740313721d55bdc28f4cd40f7a85710254b63e7b"
+      },
+      "bridge_injector": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "9b02c425a0508f09faf7c4df1922b45aad83d1b32c83c1d31c50208fc60bb5b3"
+      },
+      "bridge_host": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\native_bridge\\build-e04-a36\\xar_ck3_bridge_host.exe",
+        "bytes": 71680,
+        "sha256": "6f9f7f99e6ca6545e5a73ede296433f5a95cd0410e14f3a7899ad025ecf42570"
+      }
+    }
+  },
+  "environment": {
+    "actual_scope": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\R206-IDENTITY-SCOPE.actual.json",
+      "bytes": 7813,
+      "sha256": "499fe3652ece98b4e4dd614ed96024f69afd71b0d499cb60a0dcecd12930f5aa"
+    },
+    "fresh_steam_offline_review": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\steam-offline-reviewed.actual-a01.json",
+      "bytes": 1189,
+      "sha256": "5a08bac7b6ed57906e59f7ee83d741ec5ee697b4b509df2d423de3f7a70f7068"
+    },
+    "steam_online_toggled": false,
+    "observer_configured_during_terminal_close": false
+  },
+  "initial_normal_source": {
+    "receipt": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\INITIAL-SAVE-PRESERVED.actual-a01.json",
+      "bytes": 731,
+      "sha256": "e7562e1d2fb1e990d807fde6a8f809b6bdc20806c0694a0c370e1ccf6f6e0dca"
+    },
+    "date_raw": 53147376,
+    "checkpoint": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\initial-normalized-s0-a01.ck3",
+      "bytes": 72572514,
+      "sha256": "aaf7cfc4fef4f22d28ae7d174ffc6642bc586449a3fae9d51b0ba6a45ddb65da"
+    },
+    "formal_ABC_S0_qualified": false,
+    "checkpoint_rehashed_by_this_index": false
+  },
+  "filming": {
+    "original_RED": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\R206-WINDOW-DYNAMIC-FILM-RESULT.actual-a02.json",
+      "bytes": 2492,
+      "sha256": "e47dc0fbce57dd4d1dcc81ebc249f759e6c81f4d7a82e46638782a48a64afbe4"
+    },
+    "actual_one_day_reconciliation": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r206-filming-prep-a01\\R206-ACTUAL-ONE-DAY-RECONCILIATION.actual-a04.json",
+      "bytes": 3625,
+      "sha256": "ab05c07631bff1753f05e1d488fd5b3f3f6927e9bd65f681b9c65166a8a96f34"
+    },
+    "raw_result": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\raw-r206-william-a01\\result.json",
+      "bytes": 4419,
+      "sha256": "d1a50e79db29e40c03c3abb1df72dec4fe8f3bcd9a555bd20205453af05ac91f"
+    },
+    "raw_mkv": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\raw-r206-william-a01\\raw.mkv",
+      "bytes": 3908295,
+      "sha256": "43eab4f8476997182110083e04fd4580919005f6dc6a8ec7e7455779106d1a6b"
+    },
+    "raw_rehashed_by_this_index": false,
+    "encoded_duration_seconds": 8.3,
+    "capture_client_size": [
+      1280,
+      720
+    ],
+    "one_native_day_proven_separately": true,
+    "film_or_business_signoff": false
+  },
+  "terminal": {
+    "normal_save": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-terminal-a02-close-a01\\NORMAL-SAVE.actual.json",
+      "bytes": 5190,
+      "sha256": "95567c2ffde6d9ed5028cff9db7ee678f0cd89fd81fa3d535f4105ac8502cd4f"
+    },
+    "date_raw": 53147424,
+    "checkpoint": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "bytes": 72708291,
+      "sha256": "0e2939864010b31d1fece183af3c0f058a248baf75ef16f33fba14eda438385d"
+    },
+    "checkpoint_rehashed_by_this_index": false,
+    "bootstrap_result": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\desktop-3fevhd2-1c74096080--vanilla--R0206\\bootstrap-result.json",
+      "bytes": 15209,
+      "sha256": "39d3020c2888d27028bd93e660d02da2103ca8ba9f0f3e8c41d04cf3194088b1"
+    },
+    "screen_release": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r206-william-a01\\r206-william-terminal-a02-close-a01\\SCREEN-RELEASE.actual.json",
+      "bytes": 4827,
+      "sha256": "73c0f87ddf14550b061a8fcaa27a3a8ae7caeb6c29a57ef83c806de526aeb581"
+    },
+    "game_exit_code": 0,
+    "screen_task_done_resources_empty": true,
+    "recording_state": "NORMAL_TREE_EMPTY"
+  },
+  "canonical_policy_fix": {
+    "isolated_source": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-exactday-integration-a01\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\exact_one_day_postcondition.py",
+      "bytes": 3545,
+      "sha256": "c1bff9b7f9183e202c58122b064da968ef72a1bf4c73b21bbb994222d91271c8"
+    },
+    "patch": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r207-exactday-integration-a01\\exact_one_day_postcondition.patch",
+      "bytes": 2137,
+      "sha256": "561c6abd32e7abe411433c1b53de8ccc49e8d0febc2428f821cdd27313d1dca6"
+    },
+    "actual_R203_R206_replay_and_negatives": "PASS",
+    "main_worktree_modified_by_this_worker": false
+  },
+  "limits": {
+    "R04_arrival_credited": false,
+    "a36_live_business_capability_credited_from_q": false,
+    "raw_video_human_approved": false,
+    "original_film_RED_relabelled": false,
+    "current_scene_second_Start": false
+  }
+}

@@ -35,6 +35,20 @@ SAMPLING_FIELDS = ('step','accepted','status','army_observer_research_sampling_v
 CALLBACK = 'actual_supply_callback_observations_v1'
 WRITER = 'actual_loss_writer_observations_v1'
 DISPATCH_RETURN = 0x2A9AB4B
+STRENGTH_REVISION_DRIFT = 'native army-strength query crossed a snapshot revision'
+
+def is_strength_revision_drift(row):
+    # Only a completed explicit error is recoverable. A lost result, another
+    # validation error or an action error never authorizes a second request.
+    error=row.get('error')
+    if row.get('ok') is True or not isinstance(error,str):return False
+    message=error.split(': ',1)[-1] if ': ' in error else error
+    return message in (STRENGTH_REVISION_DRIFT,
+        'Error executing tool ck3_query_army_strengths: '+STRENGTH_REVISION_DRIFT)
+
+class StrengthRevisionDrift(ValueError):
+    def __init__(self,proof):
+        super().__init__(STRENGTH_REVISION_DRIFT);self.proof=proof
 
 def require(ok, why):
     if not ok: raise ValueError(why)
@@ -146,6 +160,7 @@ class ObservationIO:
         self.province=initialization['independent_after']['province_id']
         self.clock,self.sleep=clock,sleep;self.serial=0;self.capture_bytes=0;self.refs=[];self.active_clock=None
         self.unknown_clock_claim=None
+        self.readonly_strength_recoveries=[];self.strength_recovery_failed=False
         self.root=Path(context['output'])/'r05-observe-originals';self.root.mkdir()
         self.modals=[];self.sampling_owned=False;self.sampling_enable_attempted=False
         require(type(getattr(client,'_hold',None)) in (int,float) and
@@ -175,13 +190,23 @@ class ObservationIO:
             'uncompressed_bytes':len(raw),'uncompressed_sha256':hashlib.sha256(raw).hexdigest(),
             'representation':'full structured common SDK control row; transport bytes are not fabricated'}
         self.refs.append(ref);return ref
-    def call(self,label,tool,args,*,cleanup=False):
+    def call(self,label,tool,args,*,cleanup=False,readonly_strength=False):
         self.room(cleanup=cleanup);self.serial+=1;name='r05obs-'+str(self.serial).zfill(4)+'-'+label
         reserve=self.settings['normal_close_reserve_seconds']+(0 if cleanup else self.settings['cleanup_save_reserve_seconds'])
         timeout=min(self.context['command_timeout'],self.client.remaining()-reserve)
-        rows=self.client.execute_plan([{'id':name,'tool':tool,'args':args,'fresh_revision':False}],name,timeout=timeout)
-        self.store(name,{'machine_id':self.context['machine_id'],'tool':tool,'arguments':args,'rows':rows},cleanup=cleanup)
-        require(len(rows)==1 and rows[0].get('id')==name and rows[0].get('ok') is True and not rows[0].get('error'),
+        step={'id':name,'tool':tool,'args':args,'fresh_revision':False}
+        if readonly_strength:
+            require(tool=='ck3_query_army_strengths' and args.get('profile')=='observed_history_full_v1'
+                and args.get('army_ids')==[self.army], 'readonly error continuation is scoped to this full strength query')
+            # Existing public queue and host both honor this flag. It keeps a
+            # terminal readonly RED from killing the owned host before cleanup.
+            step['continue_on_error']=True
+        rows=self.client.execute_plan([step],name,timeout=timeout)
+        ref=self.store(name,{'machine_id':self.context['machine_id'],'tool':tool,'arguments':args,'rows':rows},cleanup=cleanup)
+        require(len(rows)==1 and rows[0].get('id')==name,'actual common control returned an ambiguous request identity')
+        if readonly_strength and is_strength_revision_drift(rows[0]):
+            raise StrengthRevisionDrift({'request_id':name,'arguments':args,'original':ref,'terminal_row':rows[0]})
+        require(rows[0].get('ok') is True and not rows[0].get('error'),
             'actual common control failed; original request is never replayed')
         return rows[0]['result']
     def snapshot(self,label,*,paused=None,cleanup=False):
@@ -198,9 +223,42 @@ class ObservationIO:
         return frame
     def sample(self,label,*,frame=None):
         f=frame or self.snapshot(label+'-snapshot',paused=True)
-        q=self.call(label+'-full-history','ck3_query_army_strengths',{
-            'army_ids':[self.army],'expected_revision':f['revision'],'profile':'observed_history_full_v1'})
-        return normalized_army(f,q,actor_id=self.actor,army_id=self.army,carmy_id=self.carmy,province_id=self.province)
+        def query(current,suffix):
+            return self.call(label+suffix,'ck3_query_army_strengths',{
+                'army_ids':[self.army],'expected_revision':current['revision'],
+                'profile':'observed_history_full_v1'},readonly_strength=True)
+        try:
+            try:q=query(f,'-full-history')
+            except StrengthRevisionDrift as first:
+                proof={'first_RED':first.proof,'initial_frame':f,'retry_limit':1,
+                    'date_advance_replayed':False,'action_replayed':False,'status':'fresh_frame_pending'}
+                self.readonly_strength_recoveries.append(proof)
+                # First RED is already durable. Persist both actual frames even
+                # if the fresh one fails the same-date/identity admission.
+                fresh=self.snapshot(label+'-readonly-fresh-snapshot',paused=True)
+                proof['fresh_frame']=fresh
+                proof['frame_original']=self.store(label+'-readonly-rebound-frames',proof)
+                require(f.get('paused') is True and fresh.get('date_raw')==f.get('date_raw') and
+                    frame_identity(f)==frame_identity(fresh)==self.identity,
+                    'readonly strength rebound changed date/paused/owned identity')
+                require(all(x.get('active_event') is None and x.get('pending_character_interaction') is None
+                    for x in (f,fresh)), 'readonly strength rebound found an unresolved modal')
+                def target(current):
+                    rows=[a for a in current.get('player_armies',[]) if a.get('army_id')==self.army]
+                    require(len(rows)==1,'readonly strength rebound target missing/ambiguous')
+                    return {k:rows[0].get(k) for k in ('army_id','owner_character_id','current_province_id')}
+                require(target(f)==target(fresh)=={'army_id':self.army,'owner_character_id':self.actor,
+                    'current_province_id':self.province}, 'readonly strength rebound owner/location changed')
+                proof['status']='second_readonly_query_pending'
+                q=query(fresh,'-full-history-rebound-once');f=fresh
+                proof['status']='second_readonly_query_completed'
+            value=normalized_army(f,q,actor_id=self.actor,army_id=self.army,carmy_id=self.carmy,province_id=self.province)
+            return value
+        except BaseException:
+            # The outer unknown-day convergence must not create a third full
+            # request after a second drift, changed frame or lost query result.
+            self.strength_recovery_failed=True
+            raise
     def sampling(self,mode,*,cleanup=False):
         frame=self.snapshot('sampling-'+mode+'-frame',paused=True,cleanup=cleanup)
         args={'observer_family':FAMILY,'expected_revision':frame['revision']}
@@ -466,7 +524,7 @@ def observe_initialized_supply(client,settings,*,context,initialization,clock=ti
     except BaseException as error:
         result['status']='unknown_or_incomplete_observation_no_replay'
         result['error']={'type':type(error).__name__,'message':str(error)}
-        if before is not None:
+        if before is not None and not io.strength_recovery_failed:
             try:
                 f=io.snapshot('unresolved-day-readonly-after')
                 if f.get('paused') is True and f.get('active_event') is None and f.get('pending_character_interaction') is None:
@@ -476,6 +534,7 @@ def observe_initialized_supply(client,settings,*,context,initialization,clock=ti
                 result['readonly_recovery_error']={'type':type(recovery_error).__name__,'message':str(recovery_error)}
     finally:
         result['cleanup']=io.cleanup();result['originals']=io.refs;result['modals']=io.modals
+        result['readonly_strength_recoveries']=io.readonly_strength_recoveries
         result['capture_compressed_bytes']=io.capture_bytes;result['normal_close_pending']=True
         result['replay_permitted']=False
         client.checkpoint('r05-initialize-and-observe-result',result)

@@ -355,3 +355,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 ## 2026-10-18 Review02 三段局部预览已实际生成
 
 `machine_id: desktop-3fevhd2-1c74096080`，制作源 `7a342116d8aaa8a4c645941199c3ef1abd0a7c8f`。从既有69段 ProjectConfig 和配音、R204 战斗上下文 C01-01、R198 军事页 C02-09、R199 路线后地图 C03-08，已用原生 `xar-promo` 新 run 实际合成 **3/69 段、2512帧／83.733秒** 的 Review02 partial MP4，9,576,602 B／SHA-256 `5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811`。R204仅 `[15,600)` 585 实帧，显式保持末帧27帧／0.9秒匹配 C01-01 音频；Review01原C01-01两个实机窗口不被替换。字节绑定探针、全2512帧PTS栅格、完整音视频严格解码均通过；两张源帧和四张成片抽样只属有限 AI 视觉审阅。该片常驻 `PARTIAL PREVIEW / NO SIGNOFF`，原生 lifecycle 仅 build＋验证，独立机器 QA 不冒称原生 audit/review；完整1×、人审签核、正式69段仍待做，合格动态 **0/11**。来源、工具链、跨机器配置候选见[三cue专题](../../../docs/ck3-native-ai/episode04-review02-three-cue-preview-12004.md)与[可复用选择合同](review02/three-cue-preview-a01/README.md)。
+
+## 2026-10-18 R206：双 policy 修复与实际两天分列
+
+`machine_id: desktop-3fevhd2-1c74096080`；实际 source7a342/a36。[R206实证与后继入口](../../../docs/ck3-native-ai/episode04-r206-william-exactday-12004.md)保留原片8.3秒/唯一Start/Finish及 actor RED：片中 native exact day53147376→53147400、独立paused/map-ready、overshoot0均真实，旧共享合同误拒 noncombat policy。新合同只补该实证 policy，R203校验保留，原RED不追认、不重投日步。拍后另一天至53147424、正常Save/CK3-bootstrap0/OFF-clear/screen释放单列，未抵达目标，不授R06ADD、clean/1×/signoff。公共latest闭场INDEX已换R206；后继仍须按新场身份/最新history重新准入。研究9/14、业务6/11、动态0/11、ABC0/3不涨。
