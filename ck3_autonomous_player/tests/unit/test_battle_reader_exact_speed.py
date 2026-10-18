@@ -88,6 +88,7 @@ class FakeDriver(native.NativeHeadlessGameplayDriver):
             self._execute_life_advance = _baseline_life.__get__(self)
     def _h3937_date_hold_active(self, snapshot): return False
     def take_internal_semantic_snapshot(self): return copy.deepcopy(self.current)
+    def snapshot_supported(self): return True
     def capabilities(self):
         return {'snapshot': True, 'bridge_capabilities': list(self.bridge), 'action_steps': list(self.steps),
                 'current_event_window_context_v1_query_supported': True}
