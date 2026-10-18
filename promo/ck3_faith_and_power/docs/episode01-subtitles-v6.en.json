@@ -1,0 +1,599 @@
+{
+  "schema": "faith-v6-english-subtitle-candidate-v1",
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18 20:52:43 UTC",
+  "status": "AUTHOR_TRANSLATED_CANDIDATE_NOT_MEDIA_OR_ROOT_APPROVAL",
+  "source": {
+    "frozen_zh": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/editorial/narration-v6.continuous.zh.a04.md",
+      "bytes": 35824,
+      "sha256": "55927d87bd5501a6ed40f1e3ef59e8e3c18802504a5ce245febc865bcfbc38fb"
+    },
+    "Root_narration_freeze": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/root/NARRATION-FROZEN-a04.json",
+      "bytes": 1600,
+      "sha256": "ad2aa4138ac965559037ab344d224feb528ab5cb36861f1865772e6cbbd49303"
+    },
+    "measured_catalog": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v6-20261019/editorial/voice-timing-a01/voice-authoring-catalog.measured.a01.json",
+      "bytes": 263753,
+      "sha256": "5566a249e96d96de4adaa5747a70f4c316cc1814cc25b337009b90dffdbfe3b9"
+    },
+    "established_EN_reference": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/production-candidate/value-v5-production-a01/authoring/final-ready-a01/narration-final.en.md",
+      "bytes": 50147,
+      "sha256": "b75b0c5f43000eb06f79b8bdd73c9a936c8025b533353d03137c9ab872b06959"
+    },
+    "official_bilingual_Clerical_Region_stances": {
+      "path": "C:/workspace/ck3-faith-and-power-20261017/episode01/revision-v4-20261018/terminology/county-faith-child/official-clerical-region-stances-bilingual-a01.json",
+      "bytes": 12500,
+      "sha256": "c234a769f35e487d72abbbd3aefebf852bc36cec8089372ce3bb859329d6350b"
+    }
+  },
+  "contract": {
+    "cue_count": 135,
+    "cue_ID_and_order_match_frozen_measured_catalog": true,
+    "Chinese_and_audio_unchanged": true,
+    "measured_catalog_not_duplicated": true,
+    "no_new_mechanism_or_live_result_claim": true,
+    "no_media_provider_or_qualification_commands": true,
+    "subtitle_grouping_and_final_pixel_checks_pending": true
+  },
+  "terminology": {
+    "Religion": "religion",
+    "Faith": "faith",
+    "Rite": "rite",
+    "mainline_rite": "mainline rite",
+    "current_rite": "current rite",
+    "personal_tenets": "personal tenets",
+    "holy_site_major_status": "Eminent",
+    "holy_site_site_of_wisdom": "Site of Wisdom",
+    "faith_Sunni": "Sunni",
+    "rite_Hanafi": "Hanafi",
+    "rite_Maliki": "Maliki",
+    "custom_D1_faith": "Harmonist Christian",
+    "boundary": "Established spellings reused from existing source-bound English/localization evidence; no new game UI or live results inferred. Chinese label variants of Adoptionism are quoted only in the cue that names them."
+  },
+  "cues": [
+    {
+      "id": "V5-C01-01",
+      "en": "Can a Christian ruler adopt an Islamic holy site? And can a Muslim ruler adopt a Christian one? We will try both directions with Nadjaf and Canterbury, then see what adoption can actually offer."
+    },
+    {
+      "id": "V5-C01-02",
+      "en": "Once adopted, the location joins your faith's holy site list. The land does not change hands, and existing faiths are not driven out. Enshrined relics are shared, not copied for each faith. Special buildings still have their own requirements."
+    },
+    {
+      "id": "V5-C01-03",
+      "en": "Before adopting, ask three things: do you qualify, who receives the benefits you want, and who could later remove the relics you put there? Then decide whether to adopt an existing site or create your own."
+    },
+    {
+      "id": "V5-C01-04",
+      "en": "First we will adopt those two sites. Then we will compare how much ordinary status, Eminent status, and relics are worth investing in. Finally, we will see who keeps that investment after a swap or abandonment."
+    },
+    {
+      "id": "V5-C02-01",
+      "en": "Open the target holy site and check which faiths already use it. If one of them satisfies the required religious relationship and hostility, you may not need religious reform. A location already on your faith's list does not need adopting again."
+    },
+    {
+      "id": "V5-C02-02",
+      "en": "Next, find the holder of the County containing the site. That may be you or a vassal, but the land must be inside your realm, and the holder must follow the faith adopting it. This check does not require the entire local population to have converted."
+    },
+    {
+      "id": "V5-C02-03",
+      "en": "The adopting character must first be independent. Holding the target County yourself, and following the adopting faith, can satisfy both local control and the holder's faith. With a vassal, check what that vassal follows now; your own conversion is not enough."
+    },
+    {
+      "id": "V5-C03-02",
+      "en": "Separate the names first. Islam is a religion; Sunni is a faith within it; Hanafi and Maliki are different rites within that faith. Each faith has a mainline rite, but a character's current rite need not be that one. Sharing a faith does not necessarily mean sharing a rite."
+    },
+    {
+      "id": "V5-C03-01",
+      "en": "To adopt an Islamic holy site, the adopting faith can select Islamic Syncretism in its mainline rite. You can edit the existing mainline rite, or configure a new rite and found a new faith with that new rite as its mainline. A Christian character need not become Muslim first."
+    },
+    {
+      "id": "V5-C03-04",
+      "en": "Targeted syncretism makes your faith regard faiths of the corresponding religion as Astray. You generally do not need Pluralism as well for that requirement. The religious relationship and hostility no worse than Astray must both be satisfied by the same associated faith; you cannot borrow one condition from each of two faiths."
+    },
+    {
+      "id": "V5-XA-01",
+      "en": "Start with the Nadjaf route. In the creation window's Tenets section, we replace the first tenet with Islamic Syncretism and keep the other two. At this point, the window still proposes a new rite, not a new faith."
+    },
+    {
+      "id": "V5-XA-02",
+      "en": "This time we also change nine doctrines, raising Divergence to 109, above the 100-point threshold for creating a faith. The quote is 5,200 Piety. The nine choices are shown on screen. Design them for your own rule; adopting Nadjaf does not require copying every choice."
+    },
+    {
+      "id": "V5-XA-03",
+      "en": "After confirmation, the new Harmonist Christian faith is founded, still within Christianity. Its mainline rite now has Islamic Syncretism. Founding the faith costs 5,200 Piety, reducing the balance from 20,000 to 14,800."
+    },
+    {
+      "id": "V5-C02-11",
+      "en": "If your faith has no Head of Faith, you must either be a playable character with a Realm Priest puppet, or have a Theocratic government. Both routes require at least Level of Devotion four. When authority comes through a puppet, these qualifications concern the person controlling the puppet, not just the puppet."
+    },
+    {
+      "id": "V5-XA-04",
+      "en": "The new faith has no Head of Faith, so we use a Realm Priest puppet to obtain management authority. That relationship is established through this independent experiment's setup. In a normal campaign, you must still meet the character interaction's conditions and actually obtain the relationship."
+    },
+    {
+      "id": "V5-XA-05",
+      "en": "Nadjaf can use this new faith's free action. Adoption is quoted at zero, and confirmation deducts no further Piety. Keep the 5,200 spent founding the faith separate from this free adoption."
+    },
+    {
+      "id": "V5-XA-06",
+      "en": "Nadjaf now joins the Harmonist Christian list as an ordinary holy site. The faith already using it still regards it as Eminent, and the enshrined relic remains in place. We added our own association without removing the previous user."
+    },
+    {
+      "id": "V5-C03-03",
+      "en": "For the reverse direction, choose Christian Syncretism in your faith's mainline rite. In the next example, we edit the existing mainline rite directly, without founding another faith."
+    },
+    {
+      "id": "V5-XB-01",
+      "en": "Now Sunni adopts Canterbury, in Kent. This time we are the Head of Faith ourselves. Land, resources, and syncretism knowledge are prearranged for an independent experiment. We also surrender to end the starting war, losing territory and 345 Piety. Those are not fixed costs of adopting a holy site."
+    },
+    {
+      "id": "V5-XB-02",
+      "en": "Open the Hanafi rite editor. In the Tenets section, replace the first tenet with Christian Syncretism and keep the other two. We are editing Sunni's existing mainline rite, not founding a new faith."
+    },
+    {
+      "id": "V5-XB-03",
+      "en": "Confirming the edit costs 300 Piety. The character remains Sunni, and the current Hanafi rite remains the faith's mainline rite. Only this tenet has changed to Christian Syncretism."
+    },
+    {
+      "id": "V5-XB-04",
+      "en": "Open Canterbury again. Christian Syncretism satisfies the required religious relationship here. As Head of Faith, we also have management authority. The location must still be under our control, its holder must share our faith, capacity must remain, and the kingdom reservation restriction still applies."
+    },
+    {
+      "id": "V5-XB-05",
+      "en": "Adoption costs another 1,000 Piety here. Editing the rite costs 300 and adoption 1,000, totaling 1,300. After adoption, the balance is 18,355. The previous new faith's free action does not apply to this existing faith's quote."
+    },
+    {
+      "id": "V5-XB-06",
+      "en": "Canterbury joins Sunni's list as an ordinary holy site. The seven previous faiths still use it, and the relic in its inventory has not moved. Neither adoption drove out existing users. The difference was how we obtained management authority and changed the rite."
+    },
+    {
+      "id": "V5-C02-04",
+      "en": "Adoption acts on behalf of your faith. If it has a Head of Faith, that Head can act personally. Alternatively, a Realm Priest puppet or clerical ruler puppet you already control must be that very Head. An ordinary ruler of the same faith does not automatically have this authority."
+    },
+    {
+      "id": "V5-C02-12",
+      "en": "Our two examples used a new faith without a Head, and an operator who was the Head. If you are a Catholic king, your own Court Chaplain cannot replace the Pope in deciding which holy sites Catholicism adopts. To gain that authority through a puppet, the person you control must be the Pope himself."
+    },
+    {
+      "id": "V5-C02-13",
+      "en": "The Realm Priest puppet interaction is for your own Court Chaplain; the clerical ruler puppet interaction targets a ruling cleric of your faith. The latter requires By God Alone. The sender's current rite must also have Theocratic under Clerical Tradition, or accept or encourage monasticism. Using a hook to secure acceptance from a king-tier or higher target requires a Strong Hook. You must also pay the quote and actually establish control."
+    },
+    {
+      "id": "V5-C03-05",
+      "en": "Distinguish the two windows. Your character's Personal Beliefs contains Your Personal Tenets; the rite creation or editing window has a Tenets section. Selecting syncretism in Personal Beliefs does not change your faith's mainline rite or replace the permission needed to adopt a holy site."
+    },
+    {
+      "id": "V5-C03-06",
+      "en": "Before creating anything, distinguish a new faith from a new rite. Creating only a non-mainline rite within the old faith does not change that faith's mainline rite, so you cannot assume your faith has gained targeted syncretism's adoption permission. A new rite is also not a character's personal tenet."
+    },
+    {
+      "id": "V5-C03-10",
+      "en": "Adaptive offers another route. Selecting it in the operator's current rite's Tenets section bypasses the adoption checks for shared religion, targeted syncretism, and hostility. Personal Adaptive does not. Land, the holder's faith, capacity, and costs still apply. Neither Fundamentalist nor Righteous permits this tenet; you generally need Pluralism."
+    },
+    {
+      "id": "V5-C03-14",
+      "en": "Targeted syncretism therefore checks your faith's mainline rite; Adaptive checks the operator's current rite. If the current rite is not the mainline, follow the requirements of the route you chose. An identical tenet name does not make the mainline rite, current rite, and personal tenets the same choice."
+    },
+    {
+      "id": "V5-C03-11",
+      "en": "Christians can also consider Adoptionism. It requires By God Alone and cannot be selected alongside Miaphysitism or Monophysitism. Its Chinese name may also appear as \"继承说\" or \"义子论\". To obtain this adoption permission, choose it in the operator's current rite's Tenets section, not as a personal tenet. It still occupies one of that rite's tenet slots."
+    },
+    {
+      "id": "V5-C02-05",
+      "en": "Your faith can have at most nine holy sites, including at most three Eminent sites. Those three count toward the nine; they are not extra sites above nine ordinary ones. Leave total capacity before adopting, and an Eminent slot if you later want to elevate it."
+    },
+    {
+      "id": "V5-C02-06",
+      "en": "Demotion frees only an Eminent slot; the site remains on your faith's list. To free total capacity, abandon the association, and the target must first be ordinary. This stock version requires keeping at least one, so you need at least two before abandoning one is possible. Authority, quotes, and cooldowns still apply."
+    },
+    {
+      "id": "V5-C02-07",
+      "en": "This stock version offers no route in normal play to increase those limits. Saving an action's cost does not create capacity. Normal adoption, creation, and elevation still respect nine sites in total and three Eminent sites."
+    },
+    {
+      "id": "V5-C02-08",
+      "en": "Spare capacity does not make every location suitable. If the target's de jure Kingdom is already registered in your faith's holy site records, you cannot use that Kingdom again. That is your faith's record, not a worldwide one-site-per-Kingdom rule. At least one existing associated faith must also have County followers. That is separate from empty slots or an active site."
+    },
+    {
+      "id": "V5-C02-09",
+      "en": "A newly founded faith has three free actions shared by the entire faith. Using one reduces what other rulers of that faith can use; changing characters does not grant three more. Check whether this step consumes a free action before deciding what to save for later."
+    },
+    {
+      "id": "V5-C02-10",
+      "en": "Do not save only the adoption fee. Demoting an old Eminent site and then elevating a new location may each cost more, with their own cooldowns. Add the current quote for every step to find the budget you need."
+    },
+    {
+      "id": "V5-C03-13",
+      "en": "Once both routes are feasible, ask whether they are worthwhile. Count the cost of editing a rite or founding a faith as well as adoption, and what you lose when the new tenet replaces the old one. Are the new site's benefits worth those costs?"
+    },
+    {
+      "id": "V5-C04-01",
+      "en": "What is shared is one location, one set of relic slots, and one inventory. A relic someone else already enshrined is not copied when you adopt the site."
+    },
+    {
+      "id": "V5-C04-02",
+      "en": "Each faith separately decides whether to use the site and whether it is ordinary or Eminent. The same place can be Eminent for Faith A and ordinary for Faith B. Which slotted relics are recognized must also be checked individually for each faith."
+    },
+    {
+      "id": "V5-C04-03",
+      "en": "In the Baghdad example, five faiths use the same holy site. Sunni and one other recognize the same slotted item; the other three do not. The item has not changed. A different faith evaluates it, so the answer can differ."
+    },
+    {
+      "id": "V5-C04-04",
+      "en": "This site's Total Artifact Rarity Levels value is calculated using the County holder's current faith. First check the holder's faith and whether it still regards this location as a holy site. Then examine the three slots."
+    },
+    {
+      "id": "V5-C04-05",
+      "en": "Only slotted items count. Empty slots contribute zero. An occupied slot contributes the item's rarity level only if the holder's faith recognizes it. Inventory items that are not slotted do not enter this total."
+    },
+    {
+      "id": "V5-C04-06",
+      "en": "Suppose the three slots contain rarity 4, 3, and 2 items. The holder's faith uses this site but recognizes only the first and third. The contributions are 4, 0, and 2, for Total Artifact Rarity Levels of six."
+    },
+    {
+      "id": "V5-C04-07",
+      "en": "If a new holder's faith also uses the site but recognizes only the second and third items, those same relics contribute 0, 3, and 2, totaling five. Conversion or a new holder can change the result without moving a relic. Each faith does not calculate a separate total and collect the benefits together."
+    },
+    {
+      "id": "V5-C04-08",
+      "en": "Before swapping, check recognition, then rarity. Replacing an unrecognized rarity 4 item with a recognized rarity 3 item can raise that slot's contribution from zero to three. A four-for-three swap loses a point only if both items are recognized."
+    },
+    {
+      "id": "V5-C04-10",
+      "en": "Put that total of six into the specific benefit's calculation. It does not mean every character attribute gains six. Different holy sites use the total for different modifiers, and the recipients can differ too."
+    },
+    {
+      "id": "V5-C05-01",
+      "en": "Separate three kinds of benefit: those for a local character, those for this County, and those for characters across the faith. Then distinguish fixed values from values scaled by the relic total. Ordinary versus Eminent does not upgrade every effect together."
+    },
+    {
+      "id": "V5-C05-02",
+      "en": "For these sites' faith-wide character rewards, the site must be Eminent for the faith, and the County holder must follow it. If A and B both list it as Eminent but the holder follows A, B cannot gain the full benefits merely by recognizing the slotted items. Faith-wide also does not mean only followers of the mainline rite."
+    },
+    {
+      "id": "V5-C05-03",
+      "en": "Use the Site of Wisdom to distinguish local benefits. The +2 Learning is a character bonus for the County holder; construction costs and Development Growth affect this County. Before granting the land away, distinguish the character's benefits from the land's. Your vassal's character bonus is not yours."
+    },
+    {
+      "id": "V5-C05-04",
+      "en": "An inactive holy site does not mean every bonus disappears. Fixed faith-wide modifiers still check Eminent status and the holder's faith; being active is not an additional universal requirement. Fixed local modifiers separately require an active site, while relic-scaled effects also depend on the total."
+    },
+    {
+      "id": "V5-C05-05",
+      "en": "If your aim is local Learning, cheaper construction, and developing this land, an ordinary Site of Wisdom already provides the relevant benefits. You do not need to use an Eminent slot first."
+    },
+    {
+      "id": "V5-C05-06",
+      "en": "Each point of Total Artifact Rarity Levels reduces construction costs in Gold, Prestige, and Piety by one percent each, and adds 0.01 Development Growth. A total of four means each cost is reduced by 4%, and growth gains 0.04. That is added growth, not a 4% growth multiplier."
+    },
+    {
+      "id": "V5-C05-07",
+      "en": "Making the Site of Wisdom Eminent adds another set of faith-wide benefits: one Diplomacy per Level of Devotion, plus Learning and Diplomacy Lifestyle Experience multipliers scaled by the relic total. It does not grant the ordinary site's local +2 Learning a second time."
+    },
+    {
+      "id": "V5-C05-08",
+      "en": "At a total of four, the Learning and Diplomacy Lifestyle Experience multipliers each gain 4%. Diplomacy uses each recipient's own Level of Devotion; an emperor at level four does not make every believer collect at level four. Consider this investment for characters planning to study those lifestyles over time."
+    },
+    {
+      "id": "V5-C06-01",
+      "en": "Eminent Nadjaf offers one Diplomacy per Level of Devotion, +5 Clergy Opinion, and a Monthly Piety multiplier scaled by the relic total. Its existing local +3 Clergy Opinion, County development, and Popular Opinion are not all Eminent benefits removed by demotion."
+    },
+    {
+      "id": "V5-C06-02",
+      "en": "If you transfer an Eminent slot from Nadjaf to the Site of Wisdom, both offer the same one Diplomacy per Level of Devotion, given the same recipient conditions. The real choice is clergy support and Piety, or Learning and Diplomacy Lifestyle Experience."
+    },
+    {
+      "id": "V5-C06-03",
+      "en": "Calculate each site's relic total separately too. At four, Nadjaf gives a +4% Monthly Piety multiplier; the Site of Wisdom gives +4% to each of two experience multipliers. Needing Piety now and developing a character for the long term are different goals."
+    },
+    {
+      "id": "V5-C06-04",
+      "en": "Compare Mecca through knight-based warfare. Its Eminent benefits include Monthly Piety per knight, plus Knight Effectiveness and Level of Devotion Impact that rise with the relic total. If your army depends on knights, include those losses before demoting Mecca."
+    },
+    {
+      "id": "V5-C06-05",
+      "en": "This Piety multiplier uses each recipient's own number of knights. Ten knights at two percent each give twenty percent. Other characters use their own counts, not yours. The actual extra monthly income must also be combined with that character's other Piety income modifiers."
+    },
+    {
+      "id": "V5-C06-06",
+      "en": "Level of Devotion Impact amplifies modifiers already supplied by the current level; it does not raise the level itself. When replacing Mecca, compare that amplification alongside the knight benefits."
+    },
+    {
+      "id": "V5-C06-07",
+      "en": "For Piety and clergy support, consider Nadjaf. For long-term Learning and Diplomacy experience, consider the Site of Wisdom. For knight-based warfare, compare Mecca. Allocate Eminent slots for your current plans. An adoption fee already spent does not justify another elevation fee you do not need."
+    },
+    {
+      "id": "V5-C07-01",
+      "en": "Ordinary holy sites can have special abilities too. Check what the site actually provides, not just its status. Elevation cannot add an ability that the location never had."
+    },
+    {
+      "id": "V5-C07-02",
+      "en": "Iona can help conversion in Britannia without becoming Eminent first. The Court Chaplain's faith must use Iona, and a site with the conversion ability must be active and controlled by a County holder of that faith. The top liege owning it on the map is not enough to satisfy that control check."
+    },
+    {
+      "id": "V5-C07-15",
+      "en": "When the chaplain performs Convert Faith in County in Britannia, additional progress equal to 30% of the base conversion value is added. This does not directly reduce completion time by 30%. The regional bonus does not follow the chaplain to a target outside Britannia."
+    },
+    {
+      "id": "V5-C07-03",
+      "en": "Before a pilgrimage to Nadjaf, check whether it is ordinary or Eminent for your faith. If the destination County matches an ordinary holy site of your faith, the relevant pilgrimage Piety reward is halved. An Eminent site does not trigger that halving. This reward comes from pilgrimage, not from the act of elevation."
+    },
+    {
+      "id": "V5-C07-04",
+      "en": "Before adopting for a special building, identify that building's holder. This is generally the holding's holder, not necessarily the County holder. Check construction and activation separately: a completed building being usable does not mean you can construct a new one now."
+    },
+    {
+      "id": "V5-C07-05",
+      "en": "Activating the Great Mosque of Mecca or Hagia Sophia Cathedral checks whether the location is a holy site of the holding holder's faith. Neither adds a hard requirement to belong to Islam or Christianity. Adoption helps if that association is what you lack; other holding and construction requirements still apply."
+    },
+    {
+      "id": "V5-C07-06",
+      "en": "The Hagia Sophia Mosque has two activation routes. The holding's holder can belong to Islam, or gain Islamic Syncretism from a tenet of their current rite. Alternatively, the location can be a holy site of their faith. If the religion or rite route already qualifies, you need not adopt for that same activation requirement."
+    },
+    {
+      "id": "V5-C07-07",
+      "en": "This mosque checks the rite the holding's holder currently follows, not necessarily the faith's mainline rite. A matching personal tenet in Personal Beliefs cannot replace it. Targeted adoption earlier checked syncretism from the faith's mainline rite. Where the same name is actually selected matters."
+    },
+    {
+      "id": "V5-C07-08",
+      "en": "Activating the Dome of the Rock requires both conditions: the location is a holy site of the holding holder's faith, and the holder does not belong to Judaism and has no Jewish Syncretism in their current rite. Adopting the location does not bypass those exclusions."
+    },
+    {
+      "id": "V5-C07-09",
+      "en": "Constructing the Third Temple requires the location to be a holy site of the holder's faith, and the holder to belong to Judaism or have Jewish Syncretism in their current rite. Once built, activation needs only either the holy site association or that religious qualification. Whether you are checking construction or activation changes whether adoption is needed."
+    },
+    {
+      "id": "V5-C07-10",
+      "en": "Activation of the Brihadeeswarar Temple can use the Eastern religious family or Eastern Syncretism in the holder's current rite. It does not require adoption and is not limited to Hinduism. Construction also requires the Manorialism innovation in the holder's culture."
+    },
+    {
+      "id": "V5-C07-11",
+      "en": "Some restrictions cannot freely be replaced by adoption or syncretism. The Parthenon requires the holder to share the religion of the stock Hellenic faith, and activation also requires holy site association. Adding the location to your list is not enough."
+    },
+    {
+      "id": "V5-C07-12",
+      "en": "The Great Palace of Ctesiphon's construction requirements offer several alternatives for religion and faith: Zoroastrianism, Eastern Syncretism in the current rite, or the specified Manichean, Nestorian, and Hellenic faiths. Follow the construction conditions listed; no single name in that list is the sole qualification."
+    },
+    {
+      "id": "V5-C07-13",
+      "en": "Activating Vagharshapat Cathedral requires the holding's holder to follow the Armenian rite. To keep using it after conversion or a rite change, preserve that specifically required rite qualification. Construction still has its other requirements."
+    },
+    {
+      "id": "V5-C07-14",
+      "en": "Open the particular building first. Separate construction from activation, then check whether it accepts holy site association, religion or syncretism, or a specified rite. Pay for adoption only where it supplies a condition you need. Government, slots, resources, and all other construction requirements still apply."
+    },
+    {
+      "id": "V5-C08-01",
+      "en": "If the benefits depend on relics, decide what to put there next. Identify three people: the donor, whoever can operate on the relics now, and the County holder. They may be different characters."
+    },
+    {
+      "id": "V5-C08-02",
+      "en": "Three local roles can manage these relics: the holder of the site's County, that holder's top liege, and the holder of the local Clerical Region title. Being an intermediate liege alone does not give authority over every holy site in the realm. This is different from acting for the faith to adopt or abandon a site."
+    },
+    {
+      "id": "V5-C08-03",
+      "en": "A Head of Faith who also holds one of those local roles can manage relics through that role. The Head of Faith title alone does not automatically grant authority to move every associated relic."
+    },
+    {
+      "id": "V5-C08-04",
+      "en": "For enshrinement, the site must belong to the operator's faith, the new relic must be theirs, and the County holder's current faith must recognize it. It must also fit a compatible slot. Your recognition does not mean the local holder recognizes it too."
+    },
+    {
+      "id": "V5-C08-05",
+      "en": "Removing an old relic still requires that local management role. But it does not universally require the site to belong to the operator's faith or the operator to recognize the relic. A manager of a different faith may therefore be entitled to take it. Being the original donor does not secure ownership."
+    },
+    {
+      "id": "V5-C08-06",
+      "en": "Choose the slot yourself when possible. Automatic selection first seeks a compatible empty slot. If none exists, it selects the lowest-rarity compatible old item, breaking ties by existing order. It finds a place, not the best recognition, opinion consequences, or personal equipment value."
+    },
+    {
+      "id": "V5-C08-08",
+      "en": "In this Nadjaf enshrinement, the emperor starts with 2,250 Piety. The site is already Eminent, but all three slots are empty: the total is zero and the site inactive. Enshrining the Cloak of Muhammad raises the total to four, without deducting further Piety."
+    },
+    {
+      "id": "V5-C08-09",
+      "en": "Elevation determines access to that set of faith-wide rewards; enshrinement adds recognized rarity contributions. To know who benefits, still check the holder's faith and the reward's recipient. An active holy site does not make every benefit yours."
+    },
+    {
+      "id": "V5-C08-10",
+      "en": "We then enshrine another rarity 4 relic directly into the same slot. The new item goes in; the old cloak returns to the emperor performing this action, not to the local County holder. Those are different people here, showing that a direct swap gives the old item to the operator."
+    },
+    {
+      "id": "V5-C08-11",
+      "en": "Both rarity 4 items were recognized by the relevant faiths, so the total remains four and Piety does not fall. The cloak returns, but the new item leaves personal inventory. Even when the site's number stays the same, compare equipment, gifts, and other enshrinement uses."
+    },
+    {
+      "id": "V5-C08-12",
+      "en": "A direct swap puts in the new relic and gives you the old one in one operation. Manually removing it and then enshrining are two separate actions, whose conditions and costs may differ. Before confirming, check which old item will leave, not just the new item's name."
+    },
+    {
+      "id": "V5-C09-01",
+      "en": "The rarity-four-for-four swap cost no Piety, but the preview also had opinion changes. The affected characters change their opinion of whoever performs the enshrinement, swap, or removal. This is not a single adjustment between two entire faiths."
+    },
+    {
+      "id": "V5-C09-12",
+      "en": "For a downgrade, separate two costs. Suppose your faith recognizes both the rarity 4 old item and rarity 3 replacement. The enshrinement difference has a base cost of 250 Piety. Because the old item is not replaced by one of equal or higher rarity, removal also costs 500 Piety. The base total is 750 Piety, with a base Devotion loss of 500."
+    },
+    {
+      "id": "V5-C09-13",
+      "en": "The negative enshrinement difference reduces only Piety. The removal cost reduces both Piety and Devotion. Character resource modifiers affect the final amounts, so every four-for-three swap need not quote 750. Check affordability separately from damage to your Level of Devotion."
+    },
+    {
+      "id": "V5-C09-07",
+      "en": "If your faith recognizes the old relic and you remove it or replace it with a lower-rarity item, check these reactions. Your direct vassals of the same faith with Zealot or Minority stances lose 20 Opinion of you. If you have a direct liege, that liege's Zealot vassals of your faith also lose 20 Opinion of you; a Minority stance alone does not qualify that group."
+    },
+    {
+      "id": "V5-C09-08",
+      "en": "Under the same removal or downgrade conditions, lieges at every level also lose 20 Opinion of you if their faith recognizes the old item and they have at least one of these: hidden zeal of 50 or more, the Devoted trait, or the Zealous trait. They do not have to share your faith."
+    },
+    {
+      "id": "V5-C09-09",
+      "en": "Also check each faith associated with the site. If it still has County followers, its Head is not you, and that Head's own faith recognizes the old item, that Head loses 20 Opinion of you. This concerns whether the faith has County followers anywhere, not just the population around this holy site."
+    },
+    {
+      "id": "V5-C09-10",
+      "en": "If your faith recognizes the old relic, an equal- or higher-rarity replacement avoids that loss for taking your own faith's relic. However, your direct vassals, fellow vassals under your direct liege, and lieges at every level still lose 20 Opinion of you if they follow a different faith and their own faith recognizes the old relic. If your faith never recognized it, removal or a direct swap also uses those other-faith characters' recognition. This does not require any particular stance, Zealous trait, or zeal value."
+    },
+    {
+      "id": "V5-C09-04",
+      "en": "Enshrining an item does not always earn 15 Opinion. When an old item exists, your faith must recognize both items, and the new one must not be higher rarity than the old. Equal-rarity swaps and downgrades qualify; upgrades do not. You cannot apply this existing-item rule directly to the first item in an empty slot."
+    },
+    {
+      "id": "V5-C09-05",
+      "en": "When that reward qualifies, first check direct vassals. Those with a Zealot stance whose own faith recognizes the new item gain 15 Opinion of you; they need not share your faith. Lieges at every level must recognize it through their faith and have at least one of these: hidden zeal of 50 or more, the Devoted trait, or the Zealous trait. Those who qualify gain 15 Opinion of you too."
+    },
+    {
+      "id": "V5-C09-06",
+      "en": "Devoted may display as Monk or Nun for male and female characters. It is neither the Zealous trait nor a vassal's Zealot stance. Your faith's Head of Faith also gains 15 Opinion of you if that Head is not you and their own faith recognizes the new relic."
+    },
+    {
+      "id": "V5-C09-11",
+      "en": "These two opinion modifiers last ten years and gradually decay. Reapplying the same named modifier refreshes its duration; holding several qualifying roles does not stack several copies. But the positive 15 and negative 20 can affect the same character at once."
+    },
+    {
+      "id": "V5-C09-14",
+      "en": "Before swapping, check your faith's recognition of both items, then whether this is an equal swap, upgrade, downgrade, or removal alone. Find the vassals, lieges, and Heads who will react. Saving Piety may not justify upsetting someone crucial."
+    },
+    {
+      "id": "V5-C10-01",
+      "en": "AI characters can use these local permissions too. Start with their separate decision to clear relics. It is specifically for AI characters, not the player's manual removal button. Its restrictions do not apply to every removal action."
+    },
+    {
+      "id": "V5-C10-02",
+      "en": "The clearing character must be alive, at least sixteen, and currently available, with either the Zealous trait or hidden zeal of at least 25. They must share their top liege's faith, and that top liege must also be AI-controlled. Their Head of Faith must either not exist or also be AI-controlled."
+    },
+    {
+      "id": "V5-C10-03",
+      "en": "So if you are the top liege, this AI clearing decision cannot pass. Being the clearing character's own Head of Faith can also block it. Merely being the original donor, an intermediate liege, or another associated faith's Head does not provide the same protection."
+    },
+    {
+      "id": "V5-C10-04",
+      "en": "Available means not traveling, accompanying an army, imprisoned, or incapable, and having no disease with the deadly-contagious flag. The character cannot be attending or planning an activity. The realm being at war does not necessarily stop every character from clearing."
+    },
+    {
+      "id": "V5-C10-05",
+      "en": "Paying homage to a liege, secluded meditation, a sacrificial ritual process, petitioning a liege, waiting for petitioners as an AI Head of Faith, holding court, or traveling on an Adventure Inspiration also prevents clearing at the same time."
+    },
+    {
+      "id": "V5-C10-11",
+      "en": "A character hosting a tour visit must also wait until that business is over before clearing. Adulthood and zeal are only basic qualifications; being free to act at the time matters too."
+    },
+    {
+      "id": "V5-C10-06",
+      "en": "Locations come only from Counties the clearing character holds personally. Their own faith must first not recognize the item. Then either the location is their faith's holy site, or an associated hostile faith recognizes the item. For the latter route only, that other faith must have County followers and be regarded as at least Hostile, not merely Astray."
+    },
+    {
+      "id": "V5-C10-07",
+      "en": "Consider a shared site. If the clearing character's own faith recognizes the item, this clearing decision will not select it, even if a hostile faith also recognizes it. If their faith rejects it and the location is their own holy site, it may qualify. Every item must still pass normal removal permission."
+    },
+    {
+      "id": "V5-C10-09",
+      "en": "The human top liege and human Head of Faith protections apply only to that separate clearing decision. AI characters also have an enshrinement decision without the same protections. They can offer their own items at their faith's sites, potentially replacing an occupied slot directly. The old relic goes to that AI operator, not automatically back to its human donor."
+    },
+    {
+      "id": "V5-C10-10",
+      "en": "Enshrinement is therefore not permanent safekeeping. A new heir, a holder's conversion, or another available offering can change who can move the inventory. Protecting a key relic also means planning local control and succession."
+    },
+    {
+      "id": "V5-C11-01",
+      "en": "Taking a relic recognized by another faith but not your own can also invite war to recover it. We mean ordinary religious relics here. The preview warns of risk, but actual declaration still depends on the attacker, defender, and item."
+    },
+    {
+      "id": "V5-C11-02",
+      "en": "Attacker and defender must follow different faiths. The attacker's faith must recognize the relic, the defender's must not, and the item must be transferable. Different faiths alone are insufficient; both recognizing it does not meet this general rule. Other declaration requirements still apply."
+    },
+    {
+      "id": "V5-C11-03",
+      "en": "An AI attacker must have a highest title of at least Duke rank and hidden zeal of at least 100. The Zealous trait alone does not replace that number. It is also different from clearing's 25 and the opinion checks' 50."
+    },
+    {
+      "id": "V5-C11-04",
+      "en": "Landless adventurers cannot use this casus belli. AI attackers consider only neighboring targets and the defender's own inventory. A human attacker can also inspect inventories of the defender's vassals who follow a different faith from the attacker. Giving a relic to a vassal therefore does not necessarily avoid the risk."
+    },
+    {
+      "id": "V5-C11-06",
+      "en": "Before taking it, check who recognizes the relic, who will receive it, and which nearby rulers might qualify to recover it. Compare the relic's benefits with those enemies, opinion consequences, and Devotion losses."
+    },
+    {
+      "id": "V5-C12-01",
+      "en": "If you want one relic back, first consider normal removal. If you no longer want to use the place at all, consider abandoning the holy site. One moves an item; the other removes your faith. Costs and final recipients can differ."
+    },
+    {
+      "id": "V5-C12-02",
+      "en": "Back in the save where we enshrined the cloak, the emperor still has 2,250 Piety. Leaving shared Baghdad now costs 1,000, leaving 1,250. Our faith leaves, but the other four still use it. The relic stays in its slot instead of returning to the emperor."
+    },
+    {
+      "id": "V5-C12-03",
+      "en": "The holder is still Sunni, but Sunni has left. Recalculated under those conditions, the relic total should be zero and the site should no longer qualify as active. Yet the game's retained old state still says total two and active. That old state has not updated; it does not prove the old benefits can be kept indefinitely."
+    },
+    {
+      "id": "V5-C12-04",
+      "en": "Do not assume the opposite either: that every character's modifiers have already updated at the instant of abandonment. Benefits update through their own processes. Check the relevant character or County for the particular bonus you actually need."
+    },
+    {
+      "id": "V5-C12-05",
+      "en": "This departure changes the relationship between the holder's faith and the site, while the relic remains there. The remaining four faiths do not each immediately receive a full set of benefits. Check who holds it, who still uses it, and who receives each effect to understand what remains."
+    },
+    {
+      "id": "V5-C12-06",
+      "en": "As long as another faith still uses the site, abandonment does not return the inventory under the last-faith rule. What matters is whether any association remains, not its population, Eminent status, or recognition of the slotted relics. Simply leaving a shared site will not recover your donation."
+    },
+    {
+      "id": "V5-C13-01",
+      "en": "Now compare creating your own site. In another save, the emperor starts with 4,250 Piety and all six original holy sites. This time we create a Site of Wisdom directly in Samarra, without first abandoning Nadjaf."
+    },
+    {
+      "id": "V5-C13-02",
+      "en": "Creation costs 2,000 Piety, leaving 2,250. We simultaneously enshrine the rarity 4 cloak from personal inventory; the new site did not provide a free relic. The emperor personally holds its County. The site is ordinary, used only by our faith, active, and has Total Artifact Rarity Levels of four."
+    },
+    {
+      "id": "V5-C13-03",
+      "en": "Creation lets you choose a suitable type where permitted. But besides 2,000 Piety, you give up the cloak's personal uses. Adopting an existing location may save some setup, yet its type, holder, or inventory may not suit you. Compare the two routes by what you want to provide, and for whom."
+    },
+    {
+      "id": "V5-C13-04",
+      "en": "The last associated faith then leaves, costing another 1,000 and leaving 1,250. The location remains, but its associations and shared inventory are cleared. The cloak returns to the emperor's personal inventory, still unequipped."
+    },
+    {
+      "id": "V5-C13-05",
+      "en": "The last faith leaving means no other faith uses this location. It does not permit removing your faith's final holy site. If the County has a holder, the enshrined relics go to that holder. Here the emperor is both operator and holder, so they return to him."
+    },
+    {
+      "id": "V5-C13-06",
+      "en": "If a vassal holds the County, the relics go to that vassal when the last-faith departure conditions are met, not to the emperor or original donor. The recipient's faith and recognition do not change that choice. Granting away the site's County therefore also changes who receives the relics on final departure."
+    },
+    {
+      "id": "V5-C13-07",
+      "en": "If the County has no holder, this return rule does not find the operator, donor, or Head of Faith as a substitute recipient. To obtain the items yourself, arrange normal removal eligibility instead of treating abandonment as a replacement."
+    },
+    {
+      "id": "V5-C13-08",
+      "en": "Remember the recipients: normal removal gives the item to the operator, as does the old item in a direct swap. Only the last faith's departure sends relics to the County holder. That departure is not another manual removal, so do not add the manual removal fee again."
+    },
+    {
+      "id": "V5-C13-09",
+      "en": "Returning to personal inventory does not mean the equipment effects are already active. First identify who received the item. Then decide whether to equip it, give it away, or enshrine it elsewhere."
+    },
+    {
+      "id": "V5-C14-01",
+      "en": "Return to your goal. For a special building, first check whether religion or rite supplies an alternative route. For local development and Learning, an ordinary site may suffice. For faith-wide character benefits, compare which location most deserves an Eminent slot."
+    },
+    {
+      "id": "V5-C14-02",
+      "en": "If adoption is needed, settle management authority, local control, and the holder's faith first. For targeted syncretism, check the corresponding tenet in your faith's mainline rite. For Adaptive, check the operator's current rite. Personal tenets replace neither. Then check capacity, the actual quote, and the next step's budget."
+    },
+    {
+      "id": "V5-C14-03",
+      "en": "After adoption, still check which slotted items are recognized, who receives the benefits, and who can change the inventory. Swaps affect an item's uses and character relationships; abandonment may leave it with someone else."
+    },
+    {
+      "id": "V5-C14-04",
+      "en": "More holy sites are not always better, and not every one needs to be Eminent. Let a site solve a current problem, then include the old benefits you lose, the relic's alternative uses, and the political costs. Confirm only when the investment makes sense."
+    }
+  ]
+}

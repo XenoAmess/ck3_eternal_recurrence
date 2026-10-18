@@ -18,7 +18,7 @@ DISCLOSURE = '组合画面｜原版界面＋讲解'
 ZONE = [64, 96, 2432, 1024]
 SLOTS = {
     'A': {'primary_GUI': [64, 96, 2432, 1024],
-          'detail_inset': [1496, 180, 944, 780]},
+          'detail_inset': [960, 120, 1480, 984]},
     'B': {'left_GUI': [64, 120, 1184, 840], 'right_GUI': [1312, 120, 1184, 840]},
     'C': {'GUI_anchor': [64, 120, 1080, 984], 'logic_inset': [1192, 120, 1304, 984]},
 }
@@ -55,6 +55,11 @@ def _text(value, maximum=96):
     if not isinstance(value, str) or not value.strip() or len(value) > maximum or '\r' in value:
         raise ValueError('Composition text needs a short nonempty player-facing annotation')
     return value
+
+
+def display_title(part):
+    """A scene may name its topic while metadata keeps its derived identity."""
+    return _text(part.get('topic_title', DISCLOSURE), 80)
 
 
 def _pin(value):
@@ -111,6 +116,7 @@ def inspect(part, bound, machine_id, *, metadata_only=False):
         or part.get('machine_id') != machine_id or part.get('disclosure') != DISCLOSURE
         or not part.get('scene_id') or part.get('burned_in_disclosure') is not None):
         raise ValueError('Declare an exact same-machine derived GUI composition and persistent ASS disclosure')
+    topic_title = display_title(part)
     duration = part.get('duration_seconds')
     if not _number(duration) or duration <= 0 or abs(duration * 30 - round(duration * 30)) > 1e-4:
         raise ValueError('Composition uses the existing positive 30fps cue clock')
@@ -241,6 +247,7 @@ def inspect(part, bound, machine_id, *, metadata_only=False):
             _source_ref(source, bound)
     return {'scene_id': part['scene_id'], 'template': part['template'],
             'duration_seconds': duration, 'outer_source_class': 'derived-composition',
+            'display_topic_title': topic_title,
             'layers': checked, 'annotations': deepcopy(notes), 'gaps': gaps,
             'content_ready': not gaps, 'pixel_legibility_review_pending': True,
             'metadata_only': metadata_only, 'full_frame_raw_seconds': 0,
@@ -357,6 +364,7 @@ def coverage(rows):
                     layers.append(value)
                 records.append({'cue_id': row['id'], 'scene_id': part['scene_id'], 'template': part['template'],
                                 'outer_source_class': 'derived-composition',
+                                'display_topic_title': display_title(part),
                                 'authored_final_interval_seconds': [part_cursor, part_cursor + duration],
                                 'embedded_layers': layers, 'annotations': deepcopy(part.get('annotations', []))})
             part_cursor += duration

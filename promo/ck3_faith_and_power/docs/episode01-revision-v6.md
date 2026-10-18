@@ -71,3 +71,9 @@ R0023首批补拍使用1.20.0.4／原a12 DLL，真实恢复同机D1母态并独�
 V6是外置 `revision-v6-20261019`；新voice在 `production-candidate/value-v6-production-a01/voice`；R23在 `live/4-8e1c2f1861--faith-and-power--R0023`，均相对同一一期外置根。语音64MiB新预算已闭场，保守retained上界19,054,465B（不是AllocationSize实测），future为0。R23原进程正常退出、keeper退出且CAS11928释放；其场景／共享／两段原片保守占用651,214,848B，独立QA另外保留2MiB上界（实际逻辑261,456B，非分配量实测），原拍摄未来额度归零。闭场后项目上界44,460,819,825B；不复用旧批未来额度。回执`root/FIRST-GUI-CAPACITY-CLOSED-a01.json`2,509B，SHA-256 `22675e01872d73f9d832ac4c91982e523c4c823259d1493127e5ad9fa1c2c49e`，记录本机实际UTC与余量。
 
 [当前讲稿](episode01-narration-v6.zh.md)与[当前镜头单](episode01-current-shot-list-v6.md)已落入仓库。冷合后的Python实际验证：作用域／历史里程碑两个知识检查、18项展示MCP／建筑207单元检查和4项合成布局检查通过；其中MCP使用合成transport，布局未执行FFmpeg，均不证明新DLL或实际像素通过。下一步是编译新增原生入口、实际三种构图样板、剩余原版说明补拍和本轮重剪。
+
+2026-10-18T20:53Z起后继（同机）：三种组合已经实际输出2560×1440 PNG，三次FFmpeg及原会话均退出0；Root分别查看原图。礼仪对照的对象和栏名可读，名额图的中央留白和麦加图注的主体省略随后在A／C后继修正，未重绘未变B。主题标题进入实际ASS，来源与derived-composition身份继续保留在记录中。修改后的4项合成检查通过，A／C新图也已实际输出并由Root按原尺寸读回：两项条件紧凑放大，麦加图注明确逊尼派与当地伯爵领持有者前提，均未见遮字或字幕越界。新`composition-samples-correction-a01/ACTUAL-PREVIEWS.json`26,036B，SHA-256 `79dfa2d694636171587bca2d53ca412adf8ad4d54be59b592bcbc5d26a8cce9f`；原exec块`9ddf91`退出0。这是静音构图检查，仍不是新片或完整声画通过。详见[持续制作经验](production-experience.md)。
+
+逐135段的新来源映射纳入14张R23图、两段新录像及已有历史操作，44段尚无相应原版候选；其余候选也按实际局部使用，不认定已经覆盖整句。九建筑已有精确定位，原版候选、建造与启用条件仍须当场解析拍摄。外置`visual/R23-AND-LEGACY-SOURCE-DELTA-a05.json`159,443B，SHA-256 `ac921a9eb58bfa277316a71f33938db2c86891590735677c99702390e9d591d2`；`visual/NINE-BUILDING-CAPTURE-LOCATORS-a06.json`12,417B，SHA-256 `503c6cbafeb81cb0ab170b7187b307841f269c3de880129665bc89a8793fbf89`。旧原生数据卡仍不作原版像素。[135段英文字幕](episode01-subtitles-v6.en.json)已完成连续审读和ID核对，仍需正式分组与字体布局；同镜短图注并行整理，中文声轨保持冻结。
+
+本轮a13实际构建退出0：`runtime/religion-candidate-a13-presentation/build-original-exit.json`在2026-10-18T20:53:10.410509Z记录原PID5108的wait结果，编译耗时93.515秒。该结果不授予实际游戏加载或新界面通过；后继仍完成精确EXE登记、对应导航检查与新会话后读。

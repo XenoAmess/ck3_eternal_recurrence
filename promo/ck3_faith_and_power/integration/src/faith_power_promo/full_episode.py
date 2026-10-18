@@ -464,7 +464,8 @@ def subtitle(row,font_path,font_name):
         if (part['kind']!='mechanism-motion' and not
             (part['kind'] in {'diagram','native-readback'} and part.get('burned_in_disclosure') and 'focus_rect' not in part)):
             # Explicit graphic receipt validation happens before build; raw gameplay keeps its label.
-            cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],part['disclosure']))
+            heading=gui_composition.display_title(part) if part['kind']==gui_composition.KIND else part['disclosure']
+            cues.append(AssCue(row['id']+'.source'+str(number),'source',cursor,cursor+part['duration_seconds'],heading))
         if part['kind']==gui_composition.KIND:
             gui_composition.ass(part,cursor,font_path,font_name,tracks,cues,prefix=row['id']+'.composition'+str(number))
         cursor+=part['duration_seconds']
