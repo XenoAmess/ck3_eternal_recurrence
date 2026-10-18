@@ -1,0 +1,29 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T02:30:25.235759+00:00",
+  "argv": [
+    "C:/ck3-e04-resume-20261015-a01/r205-origin-adjacency-publisher-a01/read_route_source_root_only.py",
+    "--execute-authorized-read"
+  ],
+  "identity": "C:\\ck3-e04-resume-20261015-a01\\frozen-game-12004\\IDENTITY.actual.json",
+  "sectionmap": "C:\\ck3-e04-resume-20261015-a01\\capability-lane\\payment-source-a01\\SOURCE-READ-STATE.json",
+  "section": {
+    "name": ".text",
+    "rva": 4096,
+    "virtual_size": 71141448,
+    "raw_size": 71141888,
+    "raw_offset": 1024
+  },
+  "rva_begin": 38448512,
+  "rva_end": 38449216,
+  "offset": 38445440,
+  "bytes": 704,
+  "sha256": "ce60c96b74109f03453b2d077c8acd0e5d6a080aa3003b56179614960fabc090",
+  "stat": [
+    101040248,
+    1792052259095683000
+  ],
+  "read_calls": 1,
+  "metadata_reads": 0,
+  "whole_exe_hashes": 0
+}

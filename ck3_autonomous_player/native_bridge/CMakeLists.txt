@@ -9940,6 +9940,7 @@ include(cmake/faction_danger_priority_12004.cmake)
 include(cmake/war_declared_owner_tree_v1.cmake)
 
 include(cmake/root_adjacency_12004.cmake)
+include(cmake/origin_adjacency_preview_12004.cmake)
 
 include(cmake/realm_camera_presentation_v1.cmake)
 

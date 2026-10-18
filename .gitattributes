@@ -828,3 +828,10 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-de
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/ROOT-DELIVERY.original.json -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/verify_candidate_a01.py -text whitespace=cr-at-eol
 /docs/ck3-native-ai/acceptance/2026-10-18-r05-controlled-low-supply/INTEGRATION.md -text whitespace=cr-at-eol
+
+# R205 origin adjacency exact source witnesses
+/docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/root-read-receipt.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/route-24AAD80.actual.asm -text whitespace=-blank-at-eol,cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/route-24AAD80.actual.bin -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/source-contract.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-origin-adjacency-source-12004/verify_source.py -text whitespace=cr-at-eol

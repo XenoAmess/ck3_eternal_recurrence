@@ -1668,6 +1668,7 @@ game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
     return unavailable("preview_county_actor_army_or_province_unresolved");
   auto before = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
   if (!before.inputs_observation_ready) return before;
+  const auto adjacency_before = county::ReadOriginAdjacency(source, preview.origin_province_id);
   bool passes = false;
 #if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
   ck3_12004::CountyPredicateTraceScope12004 P_trace(
@@ -1686,6 +1687,11 @@ game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
   const bool returned = county::Invoke(bindings.county_entry_condition, actor, source,
                                target, *before.mode, passes);
   const auto after = county::Sample(context, army, unit, actor, source, target, *native_id, *actor_id);
+  const auto adjacency_after = county::ReadOriginAdjacency(source, preview.origin_province_id);
+  // Keep this independent readonly child out of the original predicate sample comparison.
+  const bool predicate_sample_stable = after.inputs_observation_ready && before == after;
+  before.origin_adjacency_v1 = ck3_12004::FinishOriginAdjacency12004(
+      adjacency_before, adjacency_after, predicate_sample_stable);
   before.native_condition_called = true;
   if (!returned) {
 #if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
@@ -1695,9 +1701,7 @@ game::ArmyCountyEntryPreviewConditionV1 ReadCountyEntryConditionForPreview12004(
     return before;
   }
   // Compare the same sample shape, before adding the native call result.
-  auto comparable_before = before;
-  comparable_before.native_condition_called = false;
-  if (!after.inputs_observation_ready || comparable_before != after) {
+  if (!predicate_sample_stable) {
 #if defined(XAR_ENABLE_COUNTY_PREVIEW_P_TRACE_12004)
     finish_P_trace(true, passes, false);
 #endif

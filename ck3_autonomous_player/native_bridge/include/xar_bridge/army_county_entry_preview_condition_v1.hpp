@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_county_predicate_trace_v1.hpp"
+#include "xar_bridge/army_origin_adjacency_v1.hpp"
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -26,6 +27,7 @@ struct ArmyCountyEntryPreviewConditionV1 {
   std::optional<bool> native_condition_passes;
   bool identity_before_after_match = false;
   std::optional<ArmyCountyPredicateTraceV1> predicate_trace_v1;
+  std::optional<ArmyOriginAdjacencyV1> origin_adjacency_v1;
   friend bool operator==(const ArmyCountyEntryPreviewConditionV1 &,
                          const ArmyCountyEntryPreviewConditionV1 &) = default;
 };

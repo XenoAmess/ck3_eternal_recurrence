@@ -1,6 +1,7 @@
 #pragma once
 #include "xar_bridge/army_county_predicate_trace_v1_serializer.hpp"
 #include "xar_bridge/army_county_entry_preview_condition_v1.hpp"
+#include "xar_bridge/army_origin_adjacency_v1_serializer.hpp"
 #include <string>
 
 namespace xar::game {
@@ -54,6 +55,10 @@ inline void AppendCountyEntryPreviewConditionV1(
         P_observed = P_observed || stage.call_count == 1;
   }
   output += ",\"internal_subpredicates_observed\":" + std::string(P_observed ? "true" : "false");
+  if (row.origin_adjacency_v1) {
+    output += ",\"origin_adjacency_v1\":";
+    AppendArmyOriginAdjacencyV1(output, *row.origin_adjacency_v1, number, append_json_string);
+  }
   output += ",\"actual_loss_observed\":false}";
 }
 } // namespace xar::game

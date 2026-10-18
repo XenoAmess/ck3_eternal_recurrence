@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from .army_county_predicate_trace_contract import normalize_county_predicate_trace_v1
+from .army_origin_adjacency_contract import normalize_origin_adjacency_v1
 
 _I32 = ("subject_army_id", "requested_target_province_id", "source_province_id",
         "target_province_id", "native_carmy_id", "actor_character_id", "mode")
@@ -20,7 +21,8 @@ _KEYS = {"schema_version", "source", "input_basis", "predicate_rva", "status",
 def normalize_county_entry_preview_condition_v1(value: object) -> dict[str, object] | None:
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) not in (_KEYS, _KEYS | {"predicate_trace_v1"}):
+    if (not isinstance(value, dict) or not _KEYS <= set(value)
+            or not set(value) <= _KEYS | {"predicate_trace_v1", "origin_adjacency_v1"}):
         raise ValueError("county preview condition schema is malformed")
     if (type(value["schema_version"]) is not int or value["schema_version"] != 1
             or value["source"] != "native_preview_first_edge_county_entry_condition"
@@ -84,6 +86,9 @@ def normalize_county_entry_preview_condition_v1(value: object) -> dict[str, obje
                 and value["target_county_magic_3e0_u32"] == 0x436F4461):
             raise ValueError("native true contradicts source-proven common gates")
     result = dict(value)
+    if "origin_adjacency_v1" in value:
+        result["origin_adjacency_v1"] = normalize_origin_adjacency_v1(
+            value["origin_adjacency_v1"], expected_source_province_id=value["source_province_id"])
     trace = None
     if "predicate_trace_v1" in value:
         trace = normalize_county_predicate_trace_v1(value["predicate_trace_v1"], parent=value)

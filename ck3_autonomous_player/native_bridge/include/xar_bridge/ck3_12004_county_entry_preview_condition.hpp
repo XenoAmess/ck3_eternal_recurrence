@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/army_county_entry_preview_condition_v1.hpp"
+#include "xar_bridge/ck3_12004_origin_adjacency.hpp"
 #include "xar_bridge/ck3_12003_current_stored_context.hpp"
 #include <cstddef>
 #include <cstdint>
@@ -67,6 +68,16 @@ inline game::ArmyCountyEntryPreviewConditionV1 Sample(
   out.inputs_observation_ready = true;
   out.unavailable_reason.clear();
   return out;
+}
+
+inline game::ArmyOriginAdjacencyV1 ReadOriginAdjacency(
+    const void *source, std::int32_t source_id) {
+  const auto safe_read = [](const void *base, std::size_t offset,
+                            void *out, std::size_t size) noexcept {
+    return base && ck3_12002::current_stored_context_12003::CopyBytes(
+        out, static_cast<const std::byte *>(base) + offset, size);
+  };
+  return ReadOriginAdjacency12004(source, source_id, safe_read);
 }
 
 // Separate SEH leaf: it has no C++ objects that need unwinding. The bound
