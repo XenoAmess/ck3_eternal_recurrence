@@ -12,9 +12,10 @@ from ..ordinary_sway_lifecycle_observation_v1 import READERS, observe_resolved_s
 from ..ordinary_sway_schedule_v1 import plan_ordinary_sway_schedule_v1
 from ..m5_observed_opportunity_selector import observed_frame
 from .driver import BridgeUnavailableError
-from .ordinary_sway_service_v1 import INPUT, _finish, _inputs, project_ordinary_sway_input_v1
+from .ordinary_sway_service_v1 import INPUT, STEP as START_STEP, _finish, _inputs, project_ordinary_sway_input_v1
 from .player_mercenary_context import STEP as MARKET_QUERY, normalize_player_mercenary_context_v1
 from .war_contract import QUERY_ARMY_STRENGTHS_STEP
+from ..sway_formal_consumer import _resolved_instance_identity
 
 SCHEMA = "ordinary-sway-quiet-observation-v1"
 
@@ -90,11 +91,9 @@ def _quiet_same_actor(snapshot, source):
     )
 
 
-def observe_sway_after_quiet_query_v1(service, planned, outcome):
-    """Best-effort post-query observation; retain the original action result on failure."""
-    window = _completed_query(planned, outcome)
-    if window is None:
-        return outcome
+def _observe_applied_after_turn(service, planned, outcome, *, window, receipt_key,
+                                expected_start_identity=None):
+    """Best-effort read after original following consumers; never replay the turn."""
     if not any(getattr(service.driver, permission, False) is True for _, permission, _ in READERS):
         return outcome
     try:
@@ -106,6 +105,8 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
         if (ledger.get("pending") is not None or not isinstance(resolved, Mapping)
                 or resolved.get("status") != "applied"
                 or resolved.get("postcondition_verified") is not True):
+            return outcome
+        if expected_start_identity is not None and _start_identity(resolved) != expected_start_identity:
             return outcome
         staged = planned.get(INPUT)
         frame = staged.get("snapshot") if isinstance(staged, Mapping) else None
@@ -134,8 +135,9 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
         result = observation or {"status": "unavailable", "reason": "existing_observer_unready"}
         receipt = _finish(state_dir, job, frame,
                           "observed" if result.get("status") == "observed" else "unavailable", result)
-        return {**outcome, "ordinary_sway_optional": {
-            "schema": SCHEMA, **receipt, "after_completed_query": outcome["selected_step"],
+        after_key = "after_completed_query" if receipt_key == "ordinary_sway_optional" else "after_completed_start"
+        return {**outcome, receipt_key: {
+            "schema": SCHEMA, **receipt, after_key: outcome["selected_step"],
             "schedule_window": window,
             "original_selected_step_preserved": True, "submit_attempted": False,
             "request_retried": False, "new_game_days": 0,
@@ -144,10 +146,62 @@ def observe_sway_after_quiet_query_v1(service, planned, outcome):
     except Exception as error:
         # The ordinary query already completed. Optional reads or state writes
         # must never hide that result and cause a caller to replay the turn.
-        return {**outcome, "ordinary_sway_optional": {
+        return {**outcome, receipt_key: {
             "schema": SCHEMA, "status": "unavailable",
             "schedule_window": window,
             "reason": f"{type(error).__name__}: {error}",
             "original_selected_step_preserved": True, "submit_attempted": False,
             "request_retried": False, "new_game_days": 0,
         }}
+
+
+def observe_sway_after_quiet_query_v1(service, planned, outcome):
+    """Retain the original army/market result, including on optional failure."""
+    window = _completed_query(planned, outcome)
+    if window is None:
+        return outcome
+    return _observe_applied_after_turn(service, planned, outcome, window=window,
+                                      receipt_key="ordinary_sway_optional")
+
+
+def _start_identity(value):
+    if (not isinstance(value, Mapping) or value.get("status") != "applied"
+            or value.get("postcondition_verified") is not True):
+        return None
+    try:
+        instance = _resolved_instance_identity(value)
+    except Exception:
+        return None
+    if not isinstance(instance, Mapping):
+        return None
+    identity = (value.get("action_id"), value.get("actor_character_id"), value.get("target_character_id"),
+                instance.get("scheme_instance_id"), instance.get("scheme_instance_generation"))
+    if (not isinstance(identity[0], str) or not identity[0]
+            or any(type(item) is not int or item <= 0 for item in identity[1:])):
+        return None
+    return identity
+
+
+def observe_sway_after_applied_start_v1(service, planned, outcome):
+    """Capture an early named baseline after the independently applied ordinary Start."""
+    plan, receipt = planned.get("plan"), outcome.get("ordinary_sway_optional")
+    source = planned.get("planning_source_frame")
+    result = outcome.get("result")
+    if (not isinstance(plan, Mapping) or plan.get("selected_step") != START_STEP
+            or outcome.get("selected_step") != START_STEP or outcome.get("status") != "executed"
+            or "ordinary_sway_post_start_observation" in outcome
+            or not isinstance(receipt, Mapping) or receipt.get("job") != "query_selected_target"
+            or receipt.get("outcome") != "applied"
+            or not isinstance(source, Mapping) or source.get("status") != "complete"
+            or getattr(service.driver, "allow_private_active_scheme_sway_completion_query", False) is not True
+            or getattr(service.driver, "allow_private_active_scheme_sway_outcome_opinion_query", False) is not True):
+        return outcome
+    identity = _start_identity(result)
+    job = plan.get("ordinary_sway_job_v1")
+    if (identity is None or _start_identity(receipt.get("result")) != identity
+            or not isinstance(job, Mapping) or job.get("job") != "query_selected_target"
+            or job.get("target_character_id") != identity[2]):
+        return outcome
+    return _observe_applied_after_turn(service, planned, outcome,
+        window="after_completed_ordinary_sway_start", receipt_key="ordinary_sway_post_start_observation",
+        expected_start_identity=identity)

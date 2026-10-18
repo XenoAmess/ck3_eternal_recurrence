@@ -235,7 +235,82 @@ def service(driver):
     # following, lifecycle, family/arbitration, or cooldown consumers.
     return result
 
+class NamedBaselineDriver(ClosedShapeDriver):
+    allow_private_active_scheme_sway_outcome_opinion_query=True
+    def __init__(self,path,*,fail=False):
+        super().__init__(path)
+        self.opinion_reads=0;self.fail_opinion=fail
+    def query_active_scheme_sway_receipt_private_v1(self,**arguments):
+        # Explicit synthetic endpoint upgrade to the complete .4 source pair;
+        # the older fixture receipt lacks build fields needed by common-end.
+        return {**super().query_active_scheme_sway_receipt_private_v1(**arguments),
+                "exact_ck3_build":"1.20.0.4","exe_sha256":EXE,
+                "post_capture_epoch":self.capture,"post_date_raw":self.date}
+    def query_active_scheme_sway_completion_private_v1(self,**arguments):
+        return {**super().query_active_scheme_sway_completion_private_v1(**arguments),
+                "native_status_key":"continue","owner_cleared":False,"terminal_cause":"unknown"}
+    def query_active_scheme_sway_outcome_opinion_private_v1(self,*,expected_revision,target_character_id):
+        assert expected_revision==self.revision and target_character_id==self.target
+        assert not self.in_planning
+        self.opinion_reads+=1
+        if self.fail_opinion:raise BridgeUnavailableError("synthetic early baseline read failed")
+        return {"schema":"xar.ck3.sway-outcome-opinion-v1","available":True,
+            "actor_character_id":ACTOR,"target_character_id":self.target,
+            "exact_ck3_build":"1.20.0.4","exe_sha256":EXE,
+            "snapshot_revision":self.native_revision,"date_raw":self.date,
+            "target_opinion_of_actor":self.opinion,
+            "scheme_sway_opinion":{"observed":True,"present":False,"value":None},
+            "sway_blocker_opinion":{"observed":True,"present":False,"value":None},
+            "instance_terminal_outcome_observed":False,"cancel_outcome_observed":False}
+
+
 class FullPlannerIntegration(unittest.TestCase):
+    def test_post_start_ack_or_foreign_action_cannot_observe(self):
+        from xar_autoplayer.bridge.ordinary_sway_quiet_observation_v1 import observe_sway_after_applied_start_v1
+        with tempfile.TemporaryDirectory(prefix="sway-early-guard-") as temp:
+            d=NamedBaselineDriver(Path(temp));d.allow_private_active_scheme_sway_outcome_opinion_query=False
+            s=service(d);planned=s.plan_turn();original=s.auto_turn()
+            d.allow_private_active_scheme_sway_outcome_opinion_query=True
+            before=d.snapshots
+            for change in ("pending","foreign"):
+                outcome=copy.deepcopy(original)
+                if change=="pending":outcome["result"]["status"]="receipt_pending"
+                else:
+                    outcome["result"]["action_id"]="foreign-start"
+                    outcome["ordinary_sway_optional"]["result"]["action_id"]="foreign-start"
+                self.assertIs(observe_sway_after_applied_start_v1(s,planned,outcome),outcome)
+            self.assertEqual((d.submits,d.opinion_reads,d.snapshots),(1,0,before))
+
+    def test_full_planner_early_baseline_after_start_and_read_failure_never_replays_start(self):
+        for fail in (False,True):
+            with self.subTest(fail=fail),tempfile.TemporaryDirectory(prefix="sway-early-") as temp:
+                d=NamedBaselineDriver(Path(temp),fail=fail);s=service(d)
+                date=d.date
+                first=s.auto_turn(before_submit=overlay_for(d))
+                self.assertEqual(first["selected_step"],STEP)
+                self.assertTrue(first["result"]["postcondition_verified"])
+                self.assertEqual(first["ordinary_sway_optional"]["outcome"],"applied")
+                observation=first["ordinary_sway_post_start_observation"]
+                self.assertEqual(observation["schedule_window"],"after_completed_ordinary_sway_start")
+                self.assertFalse(observation["submit_attempted"])
+                self.assertEqual(observation["new_game_days"],0)
+                self.assertEqual((d.submits,d.opinion_reads,d.advances,d.date),(1,1,0,date))
+                resolved=read_sway_ledger(d.state_dir)["resolved"]
+                if fail:
+                    self.assertNotIn("material_intervention",resolved)
+                    self.assertIn("synthetic early baseline read failed",str(observation))
+                else:
+                    baseline=resolved["material_intervention"]
+                    self.assertEqual(baseline["source_date_raw"],date)
+                    self.assertFalse(baseline["incremental_named_gain_observed"])
+                    self.assertFalse(baseline["next_turn_consumed"])
+                second=s.auto_turn(before_submit=overlay_for(d))
+                self.assertEqual(second["selected_step"],"life-advance")
+                self.assertEqual((d.submits,d.opinion_reads,d.advances),(1,1,1))
+                self.assertNotIn("ordinary_sway_post_start_observation",second)
+                if not fail:
+                    self.assertTrue(read_sway_ledger(d.state_dir)["resolved"]["material_intervention"]["next_turn_consumed"])
+
     def test_closed_root_war_priority_and_full_normal_once_only_following_lifecycle(self):
         with tempfile.TemporaryDirectory(prefix="sway-fixture-") as temp:
             d=ClosedShapeDriver(Path(temp),peace=False);s=service(d)

@@ -3,6 +3,7 @@
   "machine_id": "xenoamess-full-tower-eb9d2c1186",
   "recorded_at_utc": "2026-10-18T11:02:49Z",
   "status": "software_qualified_not_runtime_adopted",
+  "pin_set_scope": "Each block records its own historical raw source bytes. Do not combine old and new hashes into an installation manifest; qualify the actual future complete source closure.",
   "source_commit_before_change": "646972a219f74f91129dea7a1d9af91e67778003",
   "working_source_pins": {
     "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_quiet_observation_v1.py": "cbda2a14b7c4b6b888e34346cc9c19d1c75cf14afac7ad6d6914fd03c246f48c",
@@ -87,6 +88,27 @@
     "Real ordinary Start, early named baseline, named gain, natural terminal and following ordinary consumption remain required for M6.",
     "M7 multi-seed/government and paired checkpoint new-Game cold restoration remain outside this change."
   ],
+  "early_baseline_after_start": {
+    "recorded_at_utc": "2026-10-18T11:48:36Z",
+    "status": "full_service_software_qualified_owner_adoption_pending",
+    "working_raw_source_sha256": {
+      "bridge/ordinary_sway_quiet_observation_v1.py": "6fc6cdc3d6747b7db673a9d8fb9a19946cfb3b68ae67db9801dd1cbfcf297d5a",
+      "bridge/service.py": "a997c1dfa3c75f7811b30a04d9bed63770f2d0c90fd0b2b52dfcc6140b536a65",
+      "tests/unit/test_ordinary_sway_service_v1.py": "a785031119429a51999d826a17e7493b17df63dd34560549f095ed46b627bb58"
+    },
+    "source_roots": ["ck3_autonomous_player/src/xar_autoplayer", "ck3_autonomous_player"],
+    "guard": "Completion and named-opinion flags, applied/postcondition Start, exact original persisted identity, quiet same actor/date/process/connection; runs after original following consumers.",
+    "qualification": {
+      "directly_affected_full_planner_tests": 4, "full_planner_seconds": 0.832,
+      "directly_affected_quiet_tests": 9, "quiet_seconds": 0.485,
+      "new_pending_foreign_action_rejection_test": 1, "rejection_seconds": 0.125,
+      "exit_codes": [0, 0, 0],
+      "initial_fixture_rejections": "Missing exact build then missing receipt post_capture_epoch/post_date_raw; synthetic endpoint completed, production guards unchanged.",
+      "boundary": "Real full ordinary planner/formal consumer/Service execution/lifecycle/following; synthetic endpoint and timestamps, no Game/Native/MCP or actual benefit."
+    },
+    "same_auto_baseline_consumption": false, "start_replayed": false,
+    "ci_changed": false, "runtime_adopted": false, "g2_completed_items": 6
+  },
   "gain_fastgate_correction": {
     "recorded_at_utc": "2026-10-18T11:26:52Z",
     "reason": "The initial implementation omitted the new witness from the no-extra-snapshot fastgate. A synthetic older-consumer/cold state can have only the witness pending.",
