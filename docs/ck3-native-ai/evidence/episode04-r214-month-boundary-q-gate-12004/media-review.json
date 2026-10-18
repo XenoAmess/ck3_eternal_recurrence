@@ -1,0 +1,47 @@
+{
+  "schema": "xar.e04.r214-window-take01-readonly-media-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T19:23:41Z",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+  "source_probe": {
+    "path": "PROBE.actual.json",
+    "bytes": 5490,
+    "sha256": "ec68641dfa8ef60edc7a4573133d304e1bbf6375c31c6ef0710652de74758c75"
+  },
+  "film_result": {
+    "path": "../R214-WINDOW-TAKE01-film-result.actual.json",
+    "bytes": 1840,
+    "sha256": "fbc661d3e0394515d8800239c3243a3a17c04dd664656a6f88463fb81faad091"
+  },
+  "business_terminal": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0209/r06-month-core-a01/R06-CORE-TERMINAL.json",
+    "bytes": 1040,
+    "sha256": "ee9c7ce671075c59bd1d4e56caef7df20c1d014a0ffff85d9c98e6226fc77164"
+  },
+  "media": {
+    "raw_bytes": 43617360,
+    "raw_sha256": "82ba7bbe7650d7302b48e379f0f7159bc7912b29a1675237b2fc82584c13b379",
+    "duration_seconds": 73.3,
+    "video": "H.264 1280x720 30fps",
+    "capture": "verified CK3 window client only, screen rect [640,360,1920,1080]",
+    "full_decode_single_thread_exit_code": 0,
+    "sampled_original_pngs": [
+      {"path": "frame-early.png", "second": 1.0, "sha256": "3850c704d15d5bf6e0875a6e7106c0cd8119a2e01af44a515f42a7cffb1605e5"},
+      {"path": "frame-middle.png", "second": 36.65, "sha256": "d0a8dc68dc5a13c07b3258e0eb02a53f26fe7330144a60d2d9db584d60a48a97"},
+      {"path": "frame-late.png", "second": 72.3, "sha256": "f8d894997b83bab89e57ae930954cb3b83988fcf08011b4f3f428e7711b4a0c2"}
+    ],
+    "visible_in_all_samples": "paused 1067-03-31, ArmyWindow strength 6679, supply 103/300",
+    "visible_progression": false,
+    "technical_media_pass": true,
+    "human_full_speed_review": false,
+    "formal_dynamic_shot_qualified": false
+  },
+  "business": {
+    "status": "READONLY_MONTH_OR_Q_GATE_NOT_QUALIFIED",
+    "core_days_advanced": 0,
+    "month_boundary_observed_in_video": false,
+    "reinforcement_observed_in_video": false,
+    "claim_scope": "Paused March 31 army and supply window context only"
+  },
+  "method": "One canonical probe and one full single-thread decode; original sparse PNGs visually reviewed; no game, GUI, SDK, new recording, or raw re-hash."
+}

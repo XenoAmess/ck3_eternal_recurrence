@@ -1,0 +1,133 @@
+{
+  "schema": "xar.e04.r214-month-boundary-q-gate-portable-index.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "assembled_at_utc": "2026-10-18T19:25:53.151666+00:00",
+  "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+  "research_counts_unchanged": {
+    "research": [
+      10,
+      14
+    ],
+    "business_basic": [
+      7,
+      11
+    ],
+    "qualified_dynamic": [
+      0,
+      11
+    ],
+    "formal_ABC": [
+      0,
+      3
+    ]
+  },
+  "actual": {
+    "prep_days": 26,
+    "prep_end_date_raw": 53149056,
+    "core_days": 0,
+    "ADD_observed": false,
+    "observed_prepared_positive_writes": 0,
+    "fixed_chunk0_conditional_positive_q_slots": 6,
+    "normal_game_native_host_launcher_exit_zero": true,
+    "media_seconds": 73.3,
+    "media_raw_bytes": 43617360,
+    "media_raw_sha256": "82ba7bbe7650d7302b48e379f0f7159bc7912b29a1675237b2fc82584c13b379"
+  },
+  "members": [
+    {
+      "name": "monitor-terminal.json",
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-month-monitor-a01/R214-MONITOR-TERMINAL.actual-a01.json",
+        "bytes": 6466,
+        "sha256": "54aa0d1fde9185c48c1018ebb9cfdd368fc826b748e4194e81cd450449e74a56"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/monitor-terminal.json",
+        "bytes": 6466,
+        "sha256": "54aa0d1fde9185c48c1018ebb9cfdd368fc826b748e4194e81cd450449e74a56"
+      }
+    },
+    {
+      "name": "q-findings.json",
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-q-gate-audit-a01/FINDINGS.actual-a01.json",
+        "bytes": 1509,
+        "sha256": "38c826cbbcef3a0d93edfc5a87f855fa5d8ca96a40607828cfa17bf6e45449c7"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-findings.json",
+        "bytes": 1509,
+        "sha256": "38c826cbbcef3a0d93edfc5a87f855fa5d8ca96a40607828cfa17bf6e45449c7"
+      }
+    },
+    {
+      "name": "prep-terminal.json",
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0209/r06-month-prep-a01/R06-PREP-TERMINAL.json",
+        "bytes": 1031,
+        "sha256": "ba87629bc5083a0087547c6f70e6b8b4d4796b3695ef03b5ce1aa9492ee67f56"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/prep-terminal.json",
+        "bytes": 1031,
+        "sha256": "ba87629bc5083a0087547c6f70e6b8b4d4796b3695ef03b5ce1aa9492ee67f56"
+      }
+    },
+    {
+      "name": "core-terminal.json",
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/common-runtime-a36/runs/desktop-3fevhd2-1c74096080--vanilla--R0209/r06-month-core-a01/R06-CORE-TERMINAL.json",
+        "bytes": 1040,
+        "sha256": "ee9c7ce671075c59bd1d4e56caef7df20c1d014a0ffff85d9c98e6226fc77164"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/core-terminal.json",
+        "bytes": 1040,
+        "sha256": "ee9c7ce671075c59bd1d4e56caef7df20c1d014a0ffff85d9c98e6226fc77164"
+      }
+    },
+    {
+      "name": "checkpoint-preserved.json",
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r214-refill-month-boundary-a01/MAR31-CHECKPOINT-PRESERVED.actual-a01.json",
+        "bytes": 4937,
+        "sha256": "9613c61f9c27ac4cf08c87bc42db4de7881efe3a991c00a317e41ceebab6fba4"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/checkpoint-preserved.json",
+        "bytes": 4937,
+        "sha256": "9613c61f9c27ac4cf08c87bc42db4de7881efe3a991c00a317e41ceebab6fba4"
+      }
+    },
+    {
+      "name": "media-review.json",
+      "original": {
+        "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r214-refill-month-boundary-a01/media-probe-take01-a01/MEDIA-REVIEW.actual.json",
+        "bytes": 2283,
+        "sha256": "57201d00b482a151e630e4c1d3256b8865bbce7744c953e940ba0263b08f7cc3"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/media-review.json",
+        "bytes": 2283,
+        "sha256": "57201d00b482a151e630e4c1d3256b8865bbce7744c953e940ba0263b08f7cc3"
+      }
+    },
+    {
+      "name": "q-gate.actual.json.gz",
+      "original": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-q-gate-audit-a01/R214-Q-GATE.actual-a01.json",
+        "bytes": 53394,
+        "sha256": "db59b6999e3d07124b54da6d7e6cc10a92a0618facdba7e434440eff51273dff"
+      },
+      "canonical_candidate": {
+        "path": "C:/ck3-e04-resume-20261015-a01/r214-progress-intake-a01/payload/docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-gate.actual.json.gz",
+        "bytes": 3506,
+        "sha256": "ad12a21ea57d0a74ad1c27fc59ac7d51d579086cb621fb71219c5b470c16782b"
+      },
+      "representation": "lossless gzip; exact uncompressed original sha256 in original pin"
+    }
+  ],
+  "large_save_and_raw_not_copied": true,
+  "system_machine_state_not_portable": true
+}

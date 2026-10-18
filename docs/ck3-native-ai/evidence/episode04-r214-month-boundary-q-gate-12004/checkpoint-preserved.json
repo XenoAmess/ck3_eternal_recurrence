@@ -1,0 +1,95 @@
+{
+  "status": "BYTES_PRESERVED_NORMAL_EXIT_QUALIFICATION_PENDING",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+  "source": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "bytes": 74273410,
+    "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc"
+  },
+  "target": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+  "receipt": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\MAR31-CHECKPOINT-PRESERVED.actual-a01.json",
+  "actual_small_sources": {
+    "handoff": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\r214-r10-public-prepare-a01\\bound-a01\\PUBLIC-HANDOFF.candidate.json",
+      "bytes": 12058,
+      "sha256": "6059e8163507739ddb3b47090fd42c4d0a8218b41a576ad27d7169ebd5acd0c4"
+    },
+    "actual_READY_context": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\ready-context.json",
+      "bytes": 5046,
+      "sha256": "d03a3b3e6f1d4a1defd8cb8988f9001850e8280558a9f87842d3ab1e19486300"
+    },
+    "actual_frozen": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\frozen-argv.json",
+      "bytes": 31509,
+      "sha256": "aaf0af377472a5186642d6a87d2ac7a58d7807ad048213a4bd60178cc208fd53"
+    },
+    "prep_terminal": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-prep-a01\\R06-PREP-TERMINAL.json",
+      "bytes": 1031,
+      "sha256": "ba87629bc5083a0087547c6f70e6b8b4d4796b3695ef03b5ce1aa9492ee67f56"
+    },
+    "original_Save_row": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-prep-a01\\r214-refill-prep-a01-r05obs-0138-Save-once.actual-results.json",
+      "bytes": 55368,
+      "sha256": "516b395c8b636a33f2e77fe57c2755c55a2fd63191864eb216a70624071877fa",
+      "pointer": "/rows/0/result/checkpoint"
+    },
+    "original_independent_after": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-prep-a01\\r214-refill-prep-a01-r05obs-0139-Save-independent-after.actual-results.json",
+      "bytes": 102931,
+      "sha256": "b7709169ac553308d774a859e6a259ae80fefac8e2fe4eb0366527b1401a3f5c",
+      "pointer": "/rows/0/after_snapshot"
+    },
+    "prepared_profile": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\prepared-a01\\profile-preparation.json",
+      "bytes": 3680,
+      "sha256": "fb313e35699e3b7867eaccc8e116a5b285a078c5674a94bb2272f3d20e43bd7a"
+    }
+  },
+  "normal_source_qualified": false,
+  "normal_exit_qualification": "PENDING_FINAL_OS0_NATIVE0_HOST0_AND_CAS",
+  "schema": "xar.e04.midrun-checkpoint-bytes-preservation.v1",
+  "observed_at_utc": "2026-10-18T18:58:24.868173+00:00",
+  "checkpoint": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\mar31-checkpoint-preserved-a01.ck3",
+    "bytes": 74273410,
+    "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc"
+  },
+  "original_native_checkpoint": {
+    "status": "saved",
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 74273410,
+    "sha256": "42dfd2c0ceb1d004ac7b34d921dee174f86b0c854237d447b173ccbebbd1f0bc",
+    "date_raw": 53149056,
+    "overwrite_confirmed": false,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 85,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "actual_actor_id": 33388,
+  "date_raw": 53149056,
+  "actual_binding": {
+    "pid": 32168,
+    "create_time": 1792348548.0175104,
+    "hold": 1792356241.3826258,
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+    "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\retained-current-process-identity.json",
+    "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\control\\ck3.json"
+  },
+  "generation": 1,
+  "source_stream_read_once": true,
+  "digest_verified_while_copying": true,
+  "destination_rehashed": false,
+  "original_episode_fields_rewritten": false,
+  "normal_OS_native_host_exit_codes": null,
+  "CAS_release": null,
+  "SDK_calls": 0,
+  "game_launches": 0,
+  "business_pass": false
+}

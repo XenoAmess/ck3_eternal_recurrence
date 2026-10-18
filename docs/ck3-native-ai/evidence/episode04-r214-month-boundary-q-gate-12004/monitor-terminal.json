@@ -1,0 +1,142 @@
+{
+  "schema": "xar.e04.r214.readonly-monitor-terminal-facts.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T19:22:09.318290+00:00",
+  "source_head": "191568c281bbde92feeb9f96fe40736be1b63ca8",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+  "run_dir": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209",
+  "scene_root": "D:/workspace/ck3_native_war_ai_promo_work/e04-r214-refill-month-boundary-a01",
+  "original_hold_deadline": 1792356241.3826258,
+  "normal_close_reserve_seconds": 900,
+  "cleanup_reserve_seconds": 120,
+  "prep_actual_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+    "status": "PREP_CANDIDATE_BOUND_REACHED",
+    "actual_binding": {
+      "pid": 32168,
+      "create_time": 1792348548.0175104,
+      "hold": 1792356241.3826258,
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+      "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\retained-current-process-identity.json",
+      "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\control\\ck3.json"
+    },
+    "generation": 1,
+    "actual_days": 26,
+    "finaldate": 53149056,
+    "province_id": 2170,
+    "OFFclear": true,
+    "Save": true,
+    "errors": [],
+    "actual_ADD_observed": false,
+    "core_event_count": null,
+    "full_result_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-prep-a01\\R06-PREP-RESULT.json"
+  },
+  "core_actual_terminal": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+    "status": "READONLY_MONTH_OR_Q_GATE_NOT_QUALIFIED",
+    "actual_binding": {
+      "pid": 32168,
+      "create_time": 1792348548.0175104,
+      "hold": 1792356241.3826258,
+      "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0209",
+      "identity_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\retained-current-process-identity.json",
+      "control_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r214-refill-month-boundary-a01\\state-a01\\control\\ck3.json"
+    },
+    "generation": 1,
+    "actual_days": 0,
+    "finaldate": 53149056,
+    "province_id": 2170,
+    "OFFclear": true,
+    "Save": true,
+    "errors": [],
+    "actual_ADD_observed": false,
+    "core_event_count": null,
+    "full_result_path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-core-a01\\R06-CORE-RESULT.json"
+  },
+  "normal_close_actual": {
+    "normal_close_qualified": true,
+    "cleanup_ok": true,
+    "host_error": null,
+    "managed_thread_finished": true
+  },
+  "actual_retained_exit": {
+    "signaled": true,
+    "exit_code": 0,
+    "actual_retained_os0": true,
+    "pid": 32168,
+    "create_time": 1792348548.0175104,
+    "retained_synchronize_query_handle_acquired": true
+  },
+  "native_exit_code": 0,
+  "host_original_popen_returncode": 0,
+  "actual_original_popen_wait": true,
+  "public_launcher_exit_code": 0,
+  "source_pins": [
+    {
+      "key": "readiness",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\readiness-window-result.json",
+      "bytes": 1599,
+      "sha256": "c49f1e5bba3b64ee26ef9c7f20b5e62ec3b8290ddfe06da4a52791c4d494410c"
+    },
+    {
+      "key": "manual_awaiting",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\manual-quit-awaiting.json",
+      "bytes": 658,
+      "sha256": "f4ef6149cdca3ce6fe07b2614b556350e4a79d838bd1e765698d0a26866ba944"
+    },
+    {
+      "key": "prep",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-prep-a01\\R06-PREP-TERMINAL.json",
+      "bytes": 1031,
+      "sha256": "ba87629bc5083a0087547c6f70e6b8b4d4796b3695ef03b5ce1aa9492ee67f56"
+    },
+    {
+      "key": "core",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\r06-month-core-a01\\R06-CORE-TERMINAL.json",
+      "bytes": 1040,
+      "sha256": "ee9c7ce671075c59bd1d4e56caef7df20c1d014a0ffff85d9c98e6226fc77164"
+    },
+    {
+      "key": "retained_exit",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\actual-retained-handle-os-exit.json",
+      "bytes": 179,
+      "sha256": "6846f82680f25ebb92800753191acc08282555b1b816f91bcae162b8da581b75"
+    },
+    {
+      "key": "normal_close",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\normal-close-result.json",
+      "bytes": 10140,
+      "sha256": "e5dd22521047a513a90c334d7560db118a5935e6de4003cf4a572472591c6ec2"
+    },
+    {
+      "key": "host_exit",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\host-original-process-exit.json",
+      "bytes": 245,
+      "sha256": "cce1dcd80e7f86ce7c6a2e86a235656cec4cf84e8c40b2256f574fe8969eca46"
+    },
+    {
+      "key": "launcher",
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\common-runtime-a36\\runs\\desktop-3fevhd2-1c74096080--vanilla--R0209\\case-output\\entry-run-result.json",
+      "bytes": 24442,
+      "sha256": "46b4b6963674927e543acb435c14eb51c91d3d3ed133e8d16696789edb75a38a"
+    }
+  ],
+  "scope_limits": {
+    "monthly_refill_business_pass": false,
+    "same_core_positive_or_negative_proved": false,
+    "core_event_count": null,
+    "keeper_allocator_CAS_release_assessed_by_this_receipt": false,
+    "new_modal_packet_analysis_assessed": false,
+    "film_bytes_or_pixels_read_by_monitor": false,
+    "whole_native_report_read_or_hashed": false,
+    "SDK_queue_GUI_game_actions_by_monitor": false,
+    "daily_metadata_copies_written": false
+  },
+  "monitor_process": {
+    "session_id": 1725,
+    "exit_code": 0,
+    "continued_polling": false
+  }
+}

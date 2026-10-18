@@ -1073,3 +1073,11 @@ docs/ck3-native-ai/evidence/episode04-r214-inline-payment-control-12004/REQUESTS
 docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/SOURCE-FRONTIER.json -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/verify_frontier.py -text whitespace=cr-at-eol
 docs/ck3-native-ai/evidence/episode04-r215-maintenance-writer-net-join-12004/FOCUSED.actual.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/checkpoint-preserved.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/core-terminal.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/index.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/media-review.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/monitor-terminal.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/prep-terminal.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-findings.json -text whitespace=cr-at-eol
+docs/ck3-native-ai/evidence/episode04-r214-month-boundary-q-gate-12004/q-gate.actual.json.gz -text whitespace=cr-at-eol
