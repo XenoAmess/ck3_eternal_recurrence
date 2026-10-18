@@ -1,5 +1,8 @@
 // Purpose-specific direct/local receiver observation. No native getter/provider
 // is invoked; no temporary engine variable table is claimed to be observed.
+constexpr std::array<unsigned char,24>kPresentationConstructTooltipPin12004{
+  0x40,0x53,0x48,0x83,0xEC,0x30,0x48,0x8B,0xD9,0x48,0x85,0xC9,
+  0x74,0x38,0x4C,0x8B,0x41,0x08,0x8B,0x51,0x10,0x48,0x8B,0x09};
 struct PresentationBuildingReceiver12004 {
   void *callback=nullptr,*callback_vtable=nullptr,*context=nullptr,*declarations=nullptr,*indices=nullptr;
   void *definition=nullptr,*entries=nullptr,*entry=nullptr,*row=nullptr,*rows=nullptr;
@@ -26,11 +29,15 @@ bool PresentationBuildingDefinition12004(void*building,std::string&key) {
 }
 bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     const IngameUiGuiOwnerBindingV1&gui,const PresentationPanel12004&panel,void*root,
-    std::string_view path,bool potential,PresentationBuildingReceiver12004&v,std::string&why) {
+    std::string_view path,bool potential,PresentationBuildingReceiver12004&v,std::string&why,bool conditions=false) {
   v={};const auto fail=[&](const char*s){why=s;return false;};
   if(!PresentationReceiverSourcePins12004(env))return fail("presentation_building_receiver_source_pin_mismatch");
   const auto type_slot=potential?0x5D56864U:0x5D20B98U;
-  const auto wrapper=potential?0x12B3260U:0x12B2610U;
+  const auto wrapper=potential?(conditions?0x12B3390U:0x12B3260U):0x12B2610U;
+  if(conditions){std::array<unsigned char,24>pin{};
+    if(!potential||!Read(reinterpret_cast<void*>(env.module_base+0x12B3390),pin.data(),pin.size())||pin!=kPresentationConstructTooltipPin12004)
+      return fail("presentation_construct_tooltip_original_wrapper_pin_mismatch");
+  }
   if(!Slot(env.module_base+type_slot,v.type_id)||!v.type_id)return fail("presentation_building_receiver_type_unregistered");
   if(v.type_id>0x7FFFFFFFU||!Slot(env.module_base+0x5C6A9C0,v.registry)||!v.registry||
       !Value(v.registry,0x20,v.type_rows)||!v.type_rows||!Value(v.registry,0x2C,v.type_capacity)||
@@ -42,7 +49,7 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
     return fail("presentation_building_model_provider_path_not_supported");
   void*widget=nullptr,*data=nullptr,*entry_function=nullptr,*slot2=nullptr;std::int32_t count=0;
   if(!ArmyTooltipResolvePath(env,root,gui.context,path,widget,false)||
-      !Value(widget,0x404,count)||count!=1||!Value(widget,0x3F8,data)||!data||
+      !Value(widget,0x404,count)||count!=(conditions?2:1)||!Value(widget,0x3F8,data)||!data||
       !Value(data,0x40,v.callback)||!v.callback||!Value(v.callback,0,v.callback_vtable)||
       !Value(v.callback_vtable,0x10,slot2)||reinterpret_cast<std::uintptr_t>(slot2)!=env.module_base+0x3AA30E0||
       !Value(v.callback,8,entry_function)||reinterpret_cast<std::uintptr_t>(entry_function)!=env.module_base+0x3A9F960||
@@ -89,10 +96,10 @@ bool CapturePresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvi
 }
 bool ReadPresentationBuildingReceiver12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     const IngameUiGuiOwnerBindingV1&gui,const PresentationPanel12004&panel,void*root,
-    std::string_view path,bool potential,PresentationBuildingReceiver12004&out,std::string&why) {
+    std::string_view path,bool potential,PresentationBuildingReceiver12004&out,std::string&why,bool conditions=false) {
   PresentationBuildingReceiver12004 first{},last{};
-  if(!CapturePresentationBuildingReceiver12004(env,gui,panel,root,path,potential,first,why)||
-      !CapturePresentationBuildingReceiver12004(env,gui,panel,root,path,potential,last,why))return false;
+  if(!CapturePresentationBuildingReceiver12004(env,gui,panel,root,path,potential,first,why,conditions)||
+      !CapturePresentationBuildingReceiver12004(env,gui,panel,root,path,potential,last,why,conditions))return false;
   if(first!=last){why="presentation_building_receiver_model_or_definition_changed";return false;}
   out=std::move(first);return true;
 }

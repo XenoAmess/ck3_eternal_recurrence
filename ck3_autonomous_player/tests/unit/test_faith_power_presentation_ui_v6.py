@@ -211,6 +211,23 @@ class PresentationContracts(unittest.TestCase):
         value['presentation_ui']['receipt_id']=None
         with self.assertRaises(ValueError):normalize(value,operation='leave_presentation_tooltip',kind='personal_beliefs',subject=29829,**fields)
 
+    def test_construct_conditions_is_hover_only_and_preserves_disabled_census(self):
+        target='holding_construct_conditions'
+        fields={'presentation_target':target,'presentation_index':0}
+        self.assertEqual(request_fields('hover_presentation_tooltip','holding',1503,**fields),fields)
+        for operation in ('show_building_details','open_building_track'):
+            with self.assertRaises(ValueError):request_fields(operation,'holding',1503,**fields)
+        with self.assertRaises(ValueError):request_fields('hover_presentation_tooltip','faith',50,**fields)
+        value=raw('holding','query',1503)
+        value['presentation_ui']['targets']=[{'index':0,'kind':target,'runtime_name':'',
+            'definition_key':None,'label':None,'effective_visible':True,'enabled':False}]
+        observed=normalize(value,kind='holding',subject=1503,presentation_tab='')
+        self.assertFalse(observed['presentation_ui']['targets'][0]['enabled'])
+        ack=raw('holding','hover_presentation_tooltip',1503,target=target,index=0)
+        self.assertEqual(normalize(ack,operation='hover_presentation_tooltip',kind='holding',subject=1503,**fields)['presentation_ui']['target_kind'],target)
+        later=raw('holding','query',1503,target=target,index=0,receipt=RECEIPT)
+        self.assertFalse(normalize(later,kind='holding',subject=1503,presentation_receipt=RECEIPT,**fields)['presentation_ui']['rendered_pixels_observed'])
+
     def test_source_unavailable_preserves_consumed_attempt(self):
         value=raw('holding','show_building_details',1503,target='holding_building_preview',index=1)
         value.update(available=False,accepted=False,status='unavailable',verification_pending=False,

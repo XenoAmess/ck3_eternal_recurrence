@@ -193,15 +193,31 @@ bool PresentationCensus12004(const IngameUiRequestV1&r,const PresentationPanel12
   }
   if(r.window_kind==IngameUiWindowKindV1::holding&&p.tracks_visible&&p.tracks_enabled&&
       p.tracks_tree.callback_thunk_3aa30e0_pin_verified&&p.tracks_tree.expression_layout_3a9f960_pin_verified){
+    std::vector<std::string>condition_headers;
     for(const auto&x:p.tracks_tree.widgets){
       const auto&b=x.standard_click_binding_12004;
-      if(!x.effective_visible||!b.button_base_slot13||!b.primary_group||b.callbacks.size()!=1||
+      if(!x.effective_visible||!b.button_base_slot13||!b.primary_group||b.callbacks.empty()||
           !PresentationUnderName12004(p.tracks_tree,x.child_path,"tracks_grid")||
           !PresentationUnderName12004(p.tracks_tree,x.child_path,"header"))continue;
       const auto&callback=b.callbacks.front();
-      if(!callback.indirect_target_3aa30e0||!callback.expression_descriptor_3a9f960||
-          callback.expression_3a9f960.final_target_38_rva!=0x12B3260)continue;
-      sources.push_back({"holding_building_preview",x.child_path,&x,p.tracks_root});
+      if(!callback.indirect_target_3aa30e0||!callback.expression_descriptor_3a9f960)continue;
+      const auto method=callback.expression_3a9f960.final_target_38_rva;
+      if(method==0x12B3260&&b.callbacks.size()==1)
+        sources.push_back({"holding_building_preview",x.child_path,&x,p.tracks_root});
+      if(method==0x12B3390&&b.callbacks.size()==2){
+        // Original Construct+CloseSubwindows button, not ShowDetails. Reading
+        // this binding identifies its tooltip; neither callback is invoked.
+        const auto&close=b.callbacks[1];
+        if(!close.indirect_target_3aa30e0||!close.expression_descriptor_3a9f960||
+            !close.expression_3a9f960.final_target_38_rva||close.expression_3a9f960.final_target_38_rva==method)continue;
+        std::optional<std::string>header;
+        for(const auto&parent:p.tracks_tree.widgets)
+          if(parent.runtime_name=="header"&&PresentationDescendantPath12004(x.child_path,parent.child_path)&&
+              (!header||parent.child_path.size()>header->size()))header=parent.child_path;
+        if(!header||std::find(condition_headers.begin(),condition_headers.end(),*header)!=condition_headers.end())return false;
+        condition_headers.push_back(*header);
+        sources.push_back({"holding_construct_conditions",x.child_path,&x,p.tracks_root});
+      }
     }
   }
   if(sources.size()>128)return false;
@@ -226,10 +242,10 @@ bool ResolvePresentationTarget12004(const ZhongguoScoreboardNativeEnvironmentV1&
   value.active_tab=PresentationActiveTab12004(r,panel);value.tab_observed=value.active_tab.has_value();
   value.target_kind=r.presentation_target;value.target_index=r.presentation_index;
   if(r.operation==IngameUiOperationV1::query&&panel.tracks_observation.available)value.holding_tracks=panel.tracks_observation;
-  if(r.presentation_target=="holding_building_preview"||r.presentation_target=="holding_building"){
+  if(r.presentation_target=="holding_building_preview"||r.presentation_target=="holding_building"||r.presentation_target=="holding_construct_conditions"){
     PresentationBuildingReceiver12004 receiver{};
-    if(!ReadPresentationBuildingReceiver12004(env,gui,panel,match->root,match->path,r.presentation_target=="holding_building_preview",receiver,why)){value.unavailable_reason=why;return false;}
-    if(r.presentation_target=="holding_building_preview")for(auto&target:value.targets)if(target.kind==r.presentation_target&&target.index==r.presentation_index)target.definition_key=receiver.building_key;
+    if(!ReadPresentationBuildingReceiver12004(env,gui,panel,match->root,match->path,r.presentation_target!="holding_building",receiver,why,r.presentation_target=="holding_construct_conditions")){value.unavailable_reason=why;return false;}
+    if(r.presentation_target!="holding_building")for(auto&target:value.targets)if(target.kind==r.presentation_target&&target.index==r.presentation_index)target.definition_key=receiver.building_key;
   }
   return true;
 }
@@ -313,7 +329,7 @@ bool ExecutePresentationUi12004(const ZhongguoScoreboardNativeEnvironmentV1&env,
     if(r.window_kind==IngameUiWindowKindV1::personal_beliefs&&panel.subject_available&&panel.subject!=static_cast<std::uint32_t>(snapshot.played_character_id))return fail("presentation_personal_selected_character_differs_from_player");
     v.picker_observed=std::any_of(panel.tree.widgets.begin(),panel.tree.widgets.end(),[](const auto&x){return x.runtime_name=="tenet_selection"&&x.effective_visible;});
     v.preview_observed=panel.tracks_visible&&panel.tracks_observation.owner_bound&&panel.tracks_observation.selection_action_raw==std::optional<std::int32_t>(1)&&panel.tracks_observation.selected_building_key.has_value();
-    std::vector<PresentationSourceRow12004>sources;if(!PresentationCensus12004(r,panel,sources,v))return fail("presentation_target_census_limit_exceeded");
+    std::vector<PresentationSourceRow12004>sources;if(!PresentationCensus12004(r,panel,sources,v))return fail("presentation_target_census_ambiguous_or_over_budget");
     if(operation==0){
       if((r.subject_id!=0||!r.presentation_target.empty())&&(!panel.subject_available||panel.subject!=r.subject_id))return fail("presentation_query_requested_subject_differs_from_actual");
       if(!r.presentation_tab.empty()&&(!v.active_tab||*v.active_tab!=r.presentation_tab))return fail("presentation_query_requested_tab_not_observed");

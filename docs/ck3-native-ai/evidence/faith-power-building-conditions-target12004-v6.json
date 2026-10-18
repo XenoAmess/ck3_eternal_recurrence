@@ -1,0 +1,48 @@
+{
+  "machine_id": "4-8e1c2f1861",
+  "observed_at_utc": "2026-10-18T22:49:32.932122+00:00",
+  "question": "Expose original potential Construct GetTooltip as finite hover-only carrier; retain ShowDetails/installed meanings and current owner/row join. No construction action.",
+  "source_head": "64345e4d33a33bd34fca4917935513ffd889696a",
+  "allowed": "Root96KiB; static source/candidate only, no game or build",
+  "bounded_sources": [
+    "existing receiver/census/walker",
+    "stock window_county_view.gui2459..2469",
+    "existing exact Construct wrapper12B3390 evidence"
+  ],
+  "peak_candidate_allocated_cap": 98304,
+  "free_bytes": 116690333696,
+  "exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "stock": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_county_view.gui",
+    "sha256": "4e932366e397b06347d4296c05f3c4c5850e995b010eecda7d5a3b5a7c48675c",
+    "lines": {
+      "2215": "\tname = \"holding_tracks_view\"",
+      "2312": "\t\t\t\t\t\t\t\t\tdatamodel = \"[HoldingView.GetPotentialBuildings]\"",
+      "2335": "\t\t\t\t\t\t\t\t\t\t\t\tname = \"header\"",
+      "2369": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[GUIPotentialBuildingItem.ShowDetails]\"",
+      "2370": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttooltip = \"CONSTRUCT_BUILDINGS_DETAILS_TT\"",
+      "2459": "\t\t\t\t\t\t\t\t\t\t\t\t\t\tbutton_standard = {",
+      "2463": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tenabled = \"[GUIPotentialBuildingItem.CanConstruct]\"",
+      "2464": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttooltip = \"[GUIPotentialBuildingItem.GetTooltip]\"",
+      "2465": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[GUIPotentialBuildingItem.Construct]\"",
+      "2466": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tonclick = \"[HoldingView.CloseSubwindows]\"",
+      "2467": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttext = \"CONSTRUCT\"",
+      "2468": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tusing = tooltip_es",
+      "3026": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tname = \"cant_construct\"",
+      "3028": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\ttooltip = \"[GUITrackItem.GetSelectedBuildingBlockReasons]\"",
+      "3029": "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tvisible = \"[Not(GUITrackItem.CanConstructSelectedBuilding)]\""
+    }
+  },
+  "existing_construct_wrapper": {
+    "label": "Construct forbidden callback",
+    "rva": "0x12b3390",
+    "size": 78,
+    "sha256": "23e089f6d95563de8cb561efb341e920cc7812e3e87ab503357e4ce285c3643f",
+    "hex": "40534883ec30488bd94885c974384c8b41088b5110488b09e893d8ffff488b4308448b43104c8bc8488b0bc7442420010000008b90e8ff0600e822d0ffffb0014883c4305bc332c04883c4305bc3"
+  },
+  "interpretation": "Read original Construct button as tooltip carrier; disabled is observed, not permission bypass. No Construct/CloseSubwindows callback invocation. Existing full row resolver re-used with exact first callback and2callback shape. One carrier per actual header or fail ambiguity.",
+  "warning": "cant_construct is an icon whose reasons are another tooltip; not direct full condition text. No warning carrier added in this minimal complete Construct-tooltip candidate.",
+  "holding_root_correction": "Actual potential carriers use validated owned tracks root; installed carriers remain main root. Position lease now distinguishes those two actual owners.",
+  "compiled": false,
+  "live_qualified": false
+}

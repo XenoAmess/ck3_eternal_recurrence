@@ -70,7 +70,27 @@ void FaithPowerPresentationContractFixture12004() {
   assert(ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building","presentation_index":0})",false,r));
   assert(static_cast<std::uint32_t>(r.operation)==207);
   assert(!ParseIngameUiRequestV1(R"({"window_kind":"holding","subject_id":1,"operation":"open_building_track","presentation_target":"holding_building_preview"})",false,r));
-  // Anonymous personal carriers remain unknown; never reuse Faith's name.
+  // New condition target is hover-only; old ShowDetails/track actions stay finite.
+  for(const auto op:{"hover_presentation_tooltip","query"}){
+    const std::string json="{\"window_kind\":\"holding\",\"subject_id\":1503,\"operation\":\""+std::string(op)+"\",\"presentation_target\":\"holding_construct_conditions\",\"presentation_index\":0}";
+    assert(ParseIngameUiRequestV1(json,std::string_view(op)=="query",r));
+  }
+  for(const auto op:{"show_building_details","open_building_track"}){
+    const std::string json="{\"window_kind\":\"holding\",\"subject_id\":1503,\"operation\":\""+std::string(op)+"\",\"presentation_target\":\"holding_construct_conditions\",\"presentation_index\":0}";
+    assert(!ParseIngameUiRequestV1(json,false,r));
+  }
+  p={};r={};r.window_kind=IngameUiWindowKindV1::holding;r.presentation_requested=true;
+  p.tracks_visible=p.tracks_enabled=true;p.tracks_root=reinterpret_cast<void*>(0x10000);
+  p.tracks_tree.callback_thunk_3aa30e0_pin_verified=p.tracks_tree.expression_layout_3a9f960_pin_verified=true;
+  NamedGuiWidgetInspectionV1 grid{},header{},button{};grid.child_path="0";grid.runtime_name="tracks_grid";
+  header.child_path="0/0";header.runtime_name="header";button.child_path="0/0/0";button.effective_visible=true;button.enabled=false;
+  auto&b=button.standard_click_binding_12004;b.button_base_slot13=b.primary_group=true;b.callbacks.resize(2);
+  for(auto&cb:b.callbacks){cb.indirect_target_3aa30e0=cb.expression_descriptor_3a9f960=true;}
+  b.callbacks[0].expression_3a9f960.final_target_38_rva=0x12B3390;b.callbacks[1].expression_3a9f960.final_target_38_rva=0x12345;
+  p.tracks_tree.widgets={grid,header,button};assert(PresentationCensus12004(r,p,sources,v)&&v.targets.size()==1&&v.targets[0].kind=="holding_construct_conditions"&&!v.targets[0].enabled);
+  auto duplicate=button;duplicate.child_path="0/0/1";p.tracks_tree.widgets.push_back(duplicate);assert(!PresentationCensus12004(r,p,sources,v));
+  p.tracks_tree.widgets.pop_back();p.tracks_tree.widgets.back().effective_visible=false;assert(PresentationCensus12004(r,p,sources,v)&&v.targets.empty());
+    // Anonymous personal carriers remain unknown; never reuse Faith's name.
   std::cout<<"finite presentation parser/zero/legacy/earlyfailure/response-only core census/source-neighborhood policy PASS; no engine or pixels\n";
 }
 
@@ -141,7 +161,7 @@ void FaithPowerBuildingReceiverFixture12004(){
  std::array<unsigned char,0x20>jomini{};std::array<unsigned char,0x90>gfx{};
  std::array<unsigned char,0x48>handler{};std::array<unsigned char,0xA0>native_window{};
  void*jomini_owner=jomini.data(),*gfxp=gfx.data(),*handlerp=handler.data(),*nativep=native_window.data();
- put(image,ck3_12004::kUiIdlerRootSlotRva12004V1,jomini_owner);put(jomini_owner,0x10,gfxp);put(gfxp,0x88,handlerp);
+ put(image,xar::ck3_12004::kUiIdlerRootSlotRva12004V1,jomini_owner);put(jomini_owner,0x10,gfxp);put(gfxp,0x88,handlerp);
  put(handlerp,0x40,jomini_owner);put(nativep,0x98,jomini_owner);
  ZhongguoScoreboardNativeEnvironmentV1 owner_env{};owner_env.module_base=base;void*actual_owner=nullptr;
  assert(jomini_owner!=guip&&ReadPresentationOuterOwner12004(owner_env,handlerp,nativep,actual_owner)&&actual_owner==jomini_owner);
@@ -169,7 +189,13 @@ void FaithPowerBuildingReceiverFixture12004(){
  void*wrong=rootp;put(rowp,0,wrong);assert(!read(true));put(rowp,0,viewp);
  rows[0]=widgetp;assert(!read(true));rows[0]=rowp;
  void*converter=image+0x100;put(types.data()+0x130,0xE8,converter);assert(read(true));put(types.data()+0x130,0xF0,converter);assert(!read(true));void*nil=nullptr;put(types.data()+0x130,0xE8,nil);put(types.data()+0x130,0xF0,nil);
- // Installed-row ownership is array membership; row[0] is its group, not view.
+ // Original Construct receiver is observed only; never invoke its callback.
+ std::memcpy(image+0x12B3390,kPresentationConstructTooltipPin12004.data(),kPresentationConstructTooltipPin12004.size());
+ std::int32_t construct_callbacks=2;put(widgetp,0x404,construct_callbacks);fn=image+0x12B3390;put(cbp,0x48,fn);
+ assert(!read(true));assert(ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
+ construct_callbacks=1;put(widgetp,0x404,construct_callbacks);assert(!ReadPresentationBuildingReceiver12004(e,gui,panel,rootp,"0",true,observed,why,true));
+ fn=image+0x12B3260;put(cbp,0x48,fn);
+  // Installed-row ownership is array membership; row[0] is its group, not view.
  rowp=slot.data();void*owned=slot.data(),*groupowner=static_cast<unsigned char*>(viewp)+0x100;
  put(viewp,0x100,owned);put(viewp,0x108,one);put(viewp,0x10C,one);put(rowp,0,groupowner);put(rowp,8,building);put(entryp,0,rowp);
  declaration=2;put(entryp,0x48,declaration);put(cbp,0x58,declaration);fn=image+0x12B2610;put(cbp,0x48,fn);

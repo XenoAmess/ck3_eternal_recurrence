@@ -20,7 +20,7 @@ bool ValidatePresentationRequest12004(const IngameUiRequestV1&r) noexcept {
       r.appointment.breakdown_character_id||r.appointment.diagnostic_character_id)return false;
   const auto&t=r.presentation_target;const auto&tab=r.presentation_tab;
   const bool target=t.empty()||(k==7&&(t=="faith_core_tenet"||t=="faith_doctrine"))||
-      (k==9&&(t=="holding_building"||t=="holding_building_preview"))||
+      (k==9&&(t=="holding_building"||t=="holding_building_preview"||t=="holding_construct_conditions"))||
       (k==10&&t=="personal_tenet")||(k==11&&t=="rite_core_tenet_choice");
   const bool tab_ok=tab.empty()||(k==7&&(tab=="beliefs"||tab=="holy_sites"))||
       (k==10&&(tab=="tenets"||tab=="doctrines"));

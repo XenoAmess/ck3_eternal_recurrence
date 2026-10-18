@@ -65,6 +65,22 @@ bool ReadPresentationPositionSource12004(const PresentationPositionLease12004&le
    PresentationWindow12004 s{};std::string why;
    if(!ReadPresentationOwnedWindow12004(e,handler,kind,s,why)||!s.present||!s.subject_available)return false;
    out.window=s.window;out.root=s.root;out.subject=s.subject;
+   if(kind==IngameUiWindowKindV1::holding&&binding.root!=out.root){
+     // Preview/Construct carriers belong to the owned tracks root, while
+     // installed-building carriers remain under the main holding root.
+     void*tracks=nullptr,*owner=nullptr,*back=nullptr,*tracks_handler=nullptr,*root=nullptr;
+     std::uintptr_t primary=0,secondary=0;
+     if(!PresentationDetailSourcePins12004(e)||!Value(s.window,0xC8,tracks)||!tracks||
+         !Value(tracks,0,primary)||primary!=e.module_base+0x45435C0||
+         !Value(tracks,0x10,secondary)||secondary!=e.module_base+0x4543690||
+         !TypedObject(e.module_base,tracks,0x5769298,UiExactImageSizeV1(e.gui_abi_revision))||
+         !ReadPresentationOuterOwner12004(e,handler,tracks,owner)||
+         !Value(tracks,0xC8,back)||back!=s.window||!Value(tracks,0xA0,tracks_handler)||tracks_handler!=handler||
+         !Value(tracks,0x60,root)||root!=binding.root)return false;
+     ZhongguoScoreboardAccessV1 access{};void*named=nullptr,*widget=nullptr;
+     if(!ResolveNamedGuiWidgetV1(e,access,"holding_tracks_view","holding_tracks_view",named,widget)||named!=root||widget!=root)return false;
+     out.window=tracks;out.root=root;
+   }
  }else if(kind==IngameUiWindowKindV1::rite_creation){
    // The supplied epoch labels the original lease. No new mailbox observation
    // or Snapshot is fabricated here; only actual current typed fields are used.

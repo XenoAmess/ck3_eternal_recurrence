@@ -11,7 +11,7 @@ from typing import Literal
 
 PresentationWindowKind = Literal["faith", "holding", "personal_beliefs", "rite_creation"]
 PresentationTarget = Literal["faith_core_tenet", "faith_doctrine", "personal_tenet",
-    "rite_core_tenet_choice", "holding_building", "holding_building_preview"]
+    "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"]
 PresentationTab = Literal["", "beliefs", "holy_sites", "tenets", "doctrines"]
 PresentationOperation = Literal["query", "open_holding", "open_personal_beliefs",
     "select_presentation_tab", "open_rite_core_picker", "hover_presentation_tooltip",
@@ -21,7 +21,8 @@ WINDOW_ROOTS = {"faith": "faith_window", "holding": "holding_view",
     "personal_beliefs": "window_personal_beliefs", "rite_creation": "rite_creation_window"}
 TARGET_KIND = {"faith_core_tenet": "faith", "faith_doctrine": "faith",
     "personal_tenet": "personal_beliefs", "rite_core_tenet_choice": "rite_creation",
-    "holding_building": "holding", "holding_building_preview": "holding"}
+    "holding_building": "holding", "holding_building_preview": "holding",
+    "holding_construct_conditions": "holding"}
 RESPONSE_TARGET_KIND = {**TARGET_KIND, "rite_core_tenet_slot": "rite_creation"}
 TABS = {"faith": {"beliefs", "holy_sites"}, "personal_beliefs": {"tenets", "doctrines"}}
 NEW_OPERATIONS = {"open_holding", "open_personal_beliefs", "select_presentation_tab",

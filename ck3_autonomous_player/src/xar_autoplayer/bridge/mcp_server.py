@@ -3712,7 +3712,7 @@ def create_server(
         window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
         subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)],
         expected_revision: IngameUiRevisionV1,
-        presentation_target: Literal["", "faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview"] | None = None,
+        presentation_target: Literal["", "faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"] | None = None,
         presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)] | None = None,
         presentation_tab: Literal["", "beliefs", "holy_sites", "tenets", "doctrines"] | None = None,
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")] | None = None,
@@ -3753,7 +3753,7 @@ def create_server(
     def ck3_query_faith_power_tooltip_v1(
         window_kind: Literal["faith", "holding", "personal_beliefs", "rite_creation"],
         subject_id: Annotated[int, Field(strict=True, ge=0, lt=2**32 - 1)], expected_revision: IngameUiRevisionV1,
-        presentation_target: Literal["faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview"],
+        presentation_target: Literal["faith_core_tenet", "faith_doctrine", "personal_tenet", "rite_core_tenet_choice", "holding_building", "holding_building_preview", "holding_construct_conditions"],
         presentation_index: Annotated[int, Field(strict=True, ge=0, lt=128)],
         presentation_receipt: Annotated[str, Field(strict=True, pattern=r"^[0-9a-f]{32}$")],
     ) -> dict[str, object]:

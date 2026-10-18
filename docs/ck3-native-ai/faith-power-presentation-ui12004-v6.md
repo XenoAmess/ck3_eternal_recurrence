@@ -116,3 +116,18 @@ R24的原游戏、public、host和keeper均实际正常退出，CAS11953已释�
 默认 Army 合同仍拒绝 null source。仅本有限展示路由可观察原版合法的非目标 null 条目；目标成功仍须唯一完整 source、栈顶、未锁定 root、可见性和文本缓存双读一致。离开后的独立查询须证明目标关联已消失，且旧 root 已隐藏，或被同一稳定栈明确改作另一 source 的提示；后一种情况不能授予原目标的文本或像素信用。此前从未观察到目标 root 时，保留未知诊断，同时停止位置覆盖。信条网格中的图标也不再重复列为普通教义载体。
 
 候选增加现有 navigation fixture 内的生产 frame 读口检查、默认 Army/null 对照及同生产 emitter 的宿主 RX ABI 检查，不增加新测试目标。宿主检查只证明参数、真实时间差、寄存器、栈和返回路径的有限合同，不代表 CK3 原工厂、截图或所有异常路径已经验证。此补注封包时尚未编译、执行新 fixture 或通过新实机；原 R24 RED 保留。个人信念匿名 tooltip 载体的 definition join 等原有精确缺口也不由本次修复外推为完成。
+
+
+## 建筑条件提示的有限载体补注
+
+`machine_id: 4-8e1c2f1861`，2026-10-18 UTC 静态复核，exact1.20.0.4。安装栏 `holding_building`、预览行的 ShowDetails `holding_building_preview` 与新 `holding_construct_conditions` 分别保留原用途。新载体来自原 Construct 按钮的 `GUIPotentialBuildingItem.GetTooltip`，不是 ShowDetails 那句按钮说明；仅限普通观察、悬停、离开及带 receipt 的后读，不能用它执行 ShowDetails、打开 track 或建造。原按钮禁用时仍可观察其条件提示，禁用状态如实返回，不能据 tooltip ACK 宣称满足建造许可。
+
+新 census 以实际 owned tracks树、tracks_grid/header祖链和原2callback元数据定位匿名按钮，读取当前 owned potential row/definition 双读；每个header出现两个匹配载体即拒绝歧义，不按屏幕、名称文本或硬编码索引寻找。提示的位置生命周期区分main holding root与owned tracks root；两者仍用既有owner与回链读口校验。完整 source pins见[建筑条件载体证据](evidence/faith-power-building-conditions-target12004-v6.json)。
+
+详情 `cant_construct` 是警告图标，其阻因也在另一个原tooltip，不是已经直接读到的完整文本。本最小增量先提供 Construct完整提示，不扩大第二个图标载体。原3个MCP工具、opt-in、step、操作枚举与测试目标均复用；新字段只是有限target值。此封包尚无原生编译、夹具执行或新实机结果，后续必须独立query与截图。
+
+## a14 实际构建失败与最小后继
+
+`machine_id: 4-8e1c2f1861`；观察 `2026-10-18T23:00:52.443544+00:00`。a14原configure实际退出0；原build实际退出1，未执行新fixture、封新DLL资格或启动新游戏。原退出证据`C:\workspace\ck3-faith-and-power-20261017\episode01\runtime\religion-candidate-a14-tooltip\build-original-exit.json`，188B，SHA-256 `8eb746c20a4c33e39ef91c54ce58d8d7c3fbb81ff575ae8b500c5bee3e803b24`，原日志保留在同目录`evidence-build-a01/msvc-build.log`。
+
+失败是global fixture函数中的兄弟命名空间引用：`ck3_12004::kUiIdlerRootSlotRva12004V1`未限定`xar::`；所需header已由生产TU包含。后继只补全命名空间，并合入已审的有限Construct提示与tracks-root修正。当前仍是冷修源码，须沿同两目标做必要增量构建及现有navigation fixture，不能以Python投影检查代替C++或实机。
