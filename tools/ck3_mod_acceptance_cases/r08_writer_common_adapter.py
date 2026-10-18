@@ -88,7 +88,8 @@ class CommonPackets:
 
 
 def collect_current_context(context, client, *, machine, prefix, packet_root,
-                            _created_reader=retained_creation_filetime):
+                            _created_reader=retained_creation_filetime,
+                            owner_binding_mode="episode_bound_v1"):
     """Root-only readonly pair; no sampling enable or observer admission inferred."""
     client.guard()
     client.retain_process()
@@ -99,6 +100,21 @@ def collect_current_context(context, client, *, machine, prefix, packet_root,
     journal = cash.get("war_payment_observations_v1") or {}
     session, sampling = journal.get("current_session") or {}, journal.get("sampling") or {}
     actor = before["played_character"]["character_id"]
+    episode=before.get("episode_run_id")
+    need(owner_binding_mode in ("episode_bound_v1","native_campaign_owned_no_load_v2"),
+         "Explicit known writer owner mode required")
+    ordinary=owner_binding_mode=="native_campaign_owned_no_load_v2"
+    if ordinary:
+        need(episode is None and before.get("episode_projection")=="native_campaign",
+             "Ordinary owner must preserve the original null episode")
+        local_player=before.get("local_player_id")
+        mailbox=(before["diagnostics"].get("last_heartbeat") or {}).get("main_thread_query_mailbox_v1") or {}
+        game_state=mailbox.get("game_state")
+        need(type(local_player) is int and 0<local_player<(1<<32)
+             and type(game_state) is int and 0<game_state<=0x7ffffffff000,
+             "Actual ordinary snapshot local-player/GameState required")
+    else:
+        need(type(episode) is str and bool(episode.strip()),"Legacy real nonempty episode required")
     need(before["diagnostics"]["bridge_pid"] == client._process["pid"], "Common OS/native PID differs")
     result = {"status": "COMMON_INPUTS_COLLECTED_NOT_OBSERVER_ADMISSION",
               "before_response": before_pin, "cash_response": cash_pin,
@@ -108,11 +124,14 @@ def collect_current_context(context, client, *, machine, prefix, packet_root,
                            "window": session.get("controlled_window_id"), "epoch": sampling.get("epoch"),
                            "character_id": actor, "revision": before["revision"],
                            "native_revision": before["native_revision"], "date": before["date_raw"],
-                           "episode": before["episode_run_id"], "machine": machine},
+                           "episode": episode, "machine": machine},
               "current_raw_context_v1_present": "current_raw_context_v1" in cash,
               "actual_controlled_window_admitted": journal.get("controlled_window_admitted"),
               "actual_payment_capture_enabled": sampling.get("capture_enabled"),
               "sampling_actions": 0, "observer_started": False}
+    if ordinary:
+        result["owner_binding_mode"]=owner_binding_mode
+        result["expected"].update(game_state_identity_witness=game_state,local_player_id=local_player)
     result["receipt"] = write_new(Path(packet_root) / (prefix + "-INPUTS.actual.json"), result)
     return result
 

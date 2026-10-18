@@ -134,6 +134,36 @@ def move(st, aid, *, post=False):
                     native_accepted=row.get('body', {}).get('accepted') is True, move_reissued=False)
 
 
+def _continue_original_day_modals(st, frame, claim, armed):
+    """Existing common native modal policy, then at most one original-clock Resume."""
+    if frame.get('active_event') is None and frame.get('pending_character_interaction') is None:
+        return frame
+    clock = getattr(st.live, '_clock', None)
+    need(clock is not None, 'Original common clock/modal owner required; never replace Arm')
+    start, target = claim['start'], claim['target']; number = len(clock.modals) + 1
+    if frame.get('paused') is not True:
+        store(st, f'normal-day-{start}-modal-pause-{number}.once.claim.json',
+              {'generation': armed['generation'], 'date_raw': frame['date_raw'], 'new_Arm': False})
+        st.live.request('B-known-modal-pause-once', 'ck3_execute_step', {'step': 'pause-map', 'expected_revision': None})
+        frame, _ = st.live.snapshot('B-known-modal-paused')
+    need(frame.get('paused') is True and start <= frame['date_raw'] <= target, 'Modal pause crossed original day')
+    before = frame['date_raw']; old_count = len(clock.modals)
+    after = clock.handle_modals(frame)
+    need(after.get('paused') is True and after['date_raw'] == before and len(clock.modals) > old_count,
+         'Native modal did not independently clear at the same date')
+    if after['date_raw'] < target:
+        status = clock.clock_status()
+        need(status['generation'] == armed['generation'] and status['state'] == 'armed'
+             and status['starting_date_raw'] == start and status['target_date_raw'] == target,
+             'Early modal did not retain original armed clock; never rearm')
+        store(st, f'normal-day-{start}-modal-resume-{len(clock.modals)}.once.claim.json',
+              {'generation': armed['generation'], 'original_arm': claim['arm'], 'original_resume': claim['resume'],
+               'resolved_modals': len(clock.modals), 'date_raw': after['date_raw'], 'new_Arm': False})
+        row, _ = st.live.request('B-continue-original-clock', 'ck3_execute_step', {'step': 'resume-map', 'expected_revision': None})
+        need(row.get('body', {}).get('accepted') is True, 'Original-clock Resume result unknown/rejected; never replay')
+    return after
+
+
 def day(st, *, recovery=False):
     targets(st); need(not st.state.get('normal_move_pending'), 'observe original Move post-state before a normal day')
     nd = getattr(st, 'normal_clock_adapter', None)
@@ -187,9 +217,14 @@ def day(st, *, recovery=False):
         st.live.request('B-normal-resume', 'ck3_execute_step', claim['resume']['arguments'])
     for _ in range(60):
         time.sleep(.15)
-        value, _ = st.live.request('B-normal-wait', 'ck3_take_snapshot', {'include_native_command_history': False})
-        frame = value['body']; st.r.validate_frame(dict(frame, paused=True), st.live.binding)
+        if getattr(st.live, '_clock', None) is not None:
+            frame, _ = st.live.snapshot('B-normal-wait', paused=False)
+        else:
+            value, _ = st.live.request('B-normal-wait', 'ck3_take_snapshot', {'include_native_command_history': False})
+            frame = value['body']; st.r.validate_frame(dict(frame, paused=True), st.live.binding)
         need(type(frame.get('paused')) is bool and start <= frame['date_raw'] <= target, 'normal-day runtime/date fence failed')
+        frame = _continue_original_day_modals(st, frame, claim, armed)
+        st.r.validate_frame(dict(frame, paused=True), st.live.binding)
         if frame['paused'] and frame['date_raw'] > start: break
     need(frame['paused'] is True and frame['date_raw'] == target, 'exact normal day not independently paused; preserve original Arm/Resume')
     status, refs = st.live.request('B-normal-clock-status', 'ck3_execute_step', {'step': 'research-query-tactical-daily-sentinel-v1', 'expected_revision': None})

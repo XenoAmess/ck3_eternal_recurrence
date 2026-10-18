@@ -14,6 +14,7 @@
 #include <map>
 #include <set>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 namespace {
@@ -101,9 +102,25 @@ bool SuspendAndClearAll(const std::map<DWORD, HANDLE> &threads,
   return clean;
 }
 
-struct Config {bool fixture=true,cold_stale_tid_guard=false,capture_copy_caller=false;std::uint64_t window=0,epoch=0,generation=0,revision=0;std::int64_t admission_date=0;std::string episode,packet_sha;DWORD pid=0,initial_tid=0;std::uint64_t created=0;DWORD64 character=0,secondary=0,base=0,module_size=0;std::uint32_t full_id=0;std::uint64_t expected_hits=0;DWORD timeout=0;std::filesystem::path raw,ready;std::string machine;};
+struct Config {bool fixture=true,cold_stale_tid_guard=false,capture_copy_caller=false,ordinary_null=false,episode_key_present=false;std::uint64_t game_state=0,local_player=0,absolute_day=0;std::uint64_t window=0,epoch=0,generation=0,revision=0;std::int64_t admission_date=0;std::string episode,packet_sha;DWORD pid=0,initial_tid=0;std::uint64_t created=0;DWORD64 character=0,secondary=0,base=0,module_size=0;std::uint32_t full_id=0;std::uint64_t expected_hits=0;DWORD timeout=0;std::filesystem::path raw,ready;std::string machine;};
 constexpr std::array<DWORD64,4> kOffsets{0x2c0,0x2c8,0x28,0x30};
-bool Identity(HANDLE p,const Config&x){DWORD64 a=0,b=0,death=0;std::uint32_t id=0,magic=0;return Read(p,x.character+0x18,id)&&Read(p,x.character+0x1c,magic)&&id==x.full_id&&magic==0x43686172&&Read(p,x.character+0x1d0,death)&&death==0&&Read(p,x.character+0x1c0,a)&&Read(p,x.character+0x1c0,b)&&a==b&&a==x.secondary;}
+bool Identity(HANDLE p,const Config&x){
+  DWORD64 a=0,b=0,death=0;std::uint32_t id=0,magic=0;
+  if(!(Read(p,x.character+0x18,id)&&Read(p,x.character+0x1c,magic)&&id==x.full_id&&magic==0x43686172&&Read(p,x.character+0x1d0,death)&&death==0&&Read(p,x.character+0x1c0,a)&&Read(p,x.character+0x1c0,b)&&a==b&&a==x.secondary))return false;
+  if(!x.ordinary_null)return true;
+  DWORD64 state=0,recheck=0,date=0;std::uint32_t day=0;
+  return Created(p)==x.created&&x.base&&Read(p,x.base+0x5C68C50,state)&&state==x.game_state&&
+    Read(p,state+8,date)&&Read(p,state+0x9C,day)&&Read(p,x.base+0x5C68C50,recheck)&&state==recheck&&
+    static_cast<std::uint32_t>(date)>=static_cast<std::uint64_t>(x.admission_date)&&
+    static_cast<std::uint32_t>(date)<=static_cast<std::uint64_t>(x.admission_date)+24&&
+    day>=x.absolute_day&&day<=x.absolute_day+1;
+}
+std::string OwnerJson(const Config&x){
+  std::ostringstream o;o<<"{\"schema\":\"xar.maintenance.writer_pc.owner-binding.v2\",\"mode\":\"native_campaign_owned_no_load_v2\",\"episode_projection\":\"native_campaign\",\"episode_run_id\":null,\"original_episode_key_present\":"<<(x.episode_key_present?"true":"false")
+    <<",\"pid\":"<<x.pid<<",\"process_create_time_100ns\":"<<x.created<<",\"connection_generation\":"<<x.generation<<",\"player_character_full_id\":"<<x.full_id<<",\"local_player_id\":"<<x.local_player
+    <<",\"game_state_identity_witness\":"<<x.game_state<<",\"character\":"<<x.character<<",\"context\":"<<x.secondary<<",\"controlled_window_id\":"<<x.window<<",\"payment_epoch\":"<<x.epoch
+    <<",\"native_revision\":"<<x.revision<<",\"date_raw\":"<<x.admission_date<<",\"absolute_day_raw\":"<<x.absolute_day<<",\"callsite_anchor_rva\":42956864}";return o.str();
+}
 bool ExactActual4Anchor(HANDLE process,DWORD pid,DWORD64&base,DWORD64&size){
   HANDLE snapshot=CreateToolhelp32Snapshot(TH32CS_SNAPMODULE|TH32CS_SNAPMODULE32,pid);
   if(snapshot==INVALID_HANDLE_VALUE)return false;MODULEENTRY32W entry{};entry.dwSize=sizeof(entry);bool found=false;
@@ -176,7 +193,7 @@ int Probe(Config x){
   for(unsigned i=0;i<4;++i){sites[i]=x.secondary+kOffsets[i];if(sites[i]%8||!Read(process,sites[i],last[i])){CloseHandle(process);return 2;}}
   if(!Identity(process,x)||!PreflightDebugFree(x.pid)){CloseHandle(process);std::cerr<<"context changed or occupied debug state before attach\n";return 2;}
   std::ofstream output(x.raw,std::ios::binary);if(!output){CloseHandle(process);return 2;}
-  output<<"{\"kind\":\"start\",\"schema\":\"xar.maintenance.writer_pc.cold.v1\",\"synthetic\":"<<(x.fixture?"true":"false")<<",\"CK3_observed\":"<<(x.fixture?"false":"true")<<",\"maintenance_attribution\":\"unclosed\",\"machine_id\":\""<<x.machine<<"\",\"pid\":"<<x.pid<<",\"created\":"<<x.created<<",\"full_id\":"<<x.full_id<<",\"character\":"<<x.character<<",\"context\":"<<x.secondary<<",\"admission_window_id\":"<<x.window<<",\"admission_payment_epoch\":"<<x.epoch<<",\"admission_generation\":"<<x.generation<<",\"admission_native_revision\":"<<x.revision<<",\"admission_date_raw\":"<<x.admission_date<<",\"actual_writer_game_date\":null,\"admission_episode\":\""<<x.episode<<"\",\"admission_cash_packet_sha256\":\""<<x.packet_sha<<"\",\"module_base\":"<<x.base<<",\"module_size\":"<<x.module_size<<",\"DR7_write_len8_mask\":2576941141,\"field_offsets\":[704,712,40,48],\"initial_values\":["<<last[0]<<","<<last[1]<<","<<last[2]<<","<<last[3]<<"]}\n";output.flush();
+  output<<"{\"kind\":\"start\",\"schema\":\""<<(x.ordinary_null?"xar.maintenance.writer_pc.cold.v2":"xar.maintenance.writer_pc.cold.v1")<<"\",\"synthetic\":"<<(x.fixture?"true":"false")<<",\"CK3_observed\":"<<(x.fixture?"false":"true")<<",\"maintenance_attribution\":\"unclosed\",\"machine_id\":\""<<x.machine<<"\",\"pid\":"<<x.pid<<",\"created\":"<<x.created<<",\"full_id\":"<<x.full_id<<",\"character\":"<<x.character<<",\"context\":"<<x.secondary<<",\"admission_window_id\":"<<x.window<<",\"admission_payment_epoch\":"<<x.epoch<<",\"admission_generation\":"<<x.generation<<",\"admission_native_revision\":"<<x.revision<<",\"admission_date_raw\":"<<x.admission_date<<",\"actual_writer_game_date\":null,\"admission_episode\":"<<(x.ordinary_null?"null":"\""+x.episode+"\"")<<(x.ordinary_null?",\"owner_binding\":"+OwnerJson(x)+",\"native_owner_memory_verified\":true":"")<<",\"admission_cash_packet_sha256\":\""<<x.packet_sha<<"\",\"module_base\":"<<x.base<<",\"module_size\":"<<x.module_size<<",\"DR7_write_len8_mask\":2576941141,\"field_offsets\":[704,712,40,48],\"initial_values\":["<<last[0]<<","<<last[1]<<","<<last[2]<<","<<last[3]<<"]}\n";output.flush();
   bool attached=DebugActiveProcess(x.pid)!=FALSE,kill_off=false,cleared=false,detached=false,exited=false,pending=false,ready=false;
   DEBUG_EVENT event{};DWORD pending_disposition=DBG_CONTINUE;std::string reason=attached?"none":"attach_failed";
   std::map<DWORD,HANDLE> threads;std::set<DWORD> armed;std::uint64_t hits=0,data_events=0;std::set<DWORD> writer_tids;bool observation_admission_complete=true;unsigned created_threads=0,restored_threads=0;
@@ -253,8 +270,25 @@ int Probe(Config x){
 int wmain(int argc,wchar_t**argv){
   if(argc==2&&std::wstring(argv[1])==L"--qualify-cold-thread-ownership")return QualifyOwnershipUnit();
   // Default OFF. Runtime mode requires the separate strict freshcash admission adapter; no raw old callback pointer is an admission.
-  if((argc!=14&&argc!=15)||(argc==15&&std::wstring(argv[14])!=L"--capture-known-copy-caller")||(std::wstring(argv[1])!=L"--enable-cold-fixture"&&std::wstring(argv[1])!=L"--enable-ck3-12004-data-watch")||std::wstring(argv[2])!=L"--fixture-meta"||std::wstring(argv[4])!=L"--timeout-ms"||std::wstring(argv[6])!=L"--raw"||std::wstring(argv[8])!=L"--ready"||std::wstring(argv[10])!=L"--expected-hits"||std::wstring(argv[12])!=L"--machine-id")return 2;
-  try {std::ifstream input{std::filesystem::path(argv[3])};std::map<std::string,std::string> meta;std::string line;while(std::getline(input,line)){auto p=line.find('=');if(p!=std::string::npos)meta.emplace(line.substr(0,p),line.substr(p+1));}
-    auto v=[&](const char*k){return std::stoull(meta.at(k),nullptr,0);};Config x;x.capture_copy_caller=argc==15;x.fixture=std::wstring(argv[1])==L"--enable-cold-fixture";if(!x.fixture){if(meta.at("qualified_exe_sha256")!="98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"||meta.at("game_version")!="1.20.0.4"||v("steam_build_id")!=25734779||!v("controlled_window_id")||!v("payment_epoch")||!v("connection_generation")||meta.at("source_observation_kind")!="paused_current_raw_context")return 2;}if(!x.fixture){x.window=v("controlled_window_id");x.epoch=v("payment_epoch");x.generation=v("connection_generation");x.revision=v("native_revision");x.admission_date=std::stoll(meta.at("date_raw"));x.episode=meta.at("episode_id");x.packet_sha=meta.at("source_cash_sha256");if(x.packet_sha.size()!=64||x.packet_sha.find_first_not_of("0123456789abcdef")!=std::string::npos||x.episode.empty()||x.episode.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.")!=std::string::npos)return 2;}x.pid=DWORD(v("pid"));x.initial_tid=DWORD(v("tid"));if(x.fixture)x.cold_stale_tid_guard=v("cold_stale_tid_guard")!=0;x.created=v("created");x.character=v("character");x.secondary=v("context");x.full_id=std::uint32_t(v("full_id"));x.base=v("module_base");x.module_size=v("module_size");x.timeout=DWORD(std::stoul(argv[5]));x.raw=argv[7];x.ready=argv[9];x.expected_hits=std::stoull(argv[11]);const std::wstring machine=argv[13];if(machine.empty()||machine.find_first_not_of(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.")!=std::wstring::npos)return 2;x.machine.assign(machine.begin(),machine.end());return Probe(x);
+  if(argc<14||argc>16||(std::wstring(argv[1])!=L"--enable-cold-fixture"&&std::wstring(argv[1])!=L"--enable-ck3-12004-data-watch")||std::wstring(argv[2])!=L"--fixture-meta"||std::wstring(argv[4])!=L"--timeout-ms"||std::wstring(argv[6])!=L"--raw"||std::wstring(argv[8])!=L"--ready"||std::wstring(argv[10])!=L"--expected-hits"||std::wstring(argv[12])!=L"--machine-id")return 2;
+  bool ordinary=false,copy=false;
+  for(int i=14;i<argc;++i){const std::wstring flag=argv[i];if(flag==L"--ordinary-null-owner-binding"&&!ordinary)ordinary=true;else if(flag==L"--capture-known-copy-caller"&&!copy)copy=true;else return 2;}
+  try {std::ifstream input{std::filesystem::path(argv[3])};std::map<std::string,std::string> meta;std::string line;while(std::getline(input,line)){auto p=line.find('=');if(p!=std::string::npos&&!meta.emplace(line.substr(0,p),line.substr(p+1)).second)return 2;}
+    auto v=[&](const char*k){const auto &text=meta.at(k);if(text.empty()||text.front()=='-')throw std::invalid_argument("negative or empty unsigned metadata");std::size_t used=0;const auto value=std::stoull(text,&used,0);if(used!=text.size())throw std::invalid_argument("metadata suffix");return value;};
+    Config x;x.capture_copy_caller=copy;x.ordinary_null=ordinary;x.fixture=std::wstring(argv[1])==L"--enable-cold-fixture";
+    if(x.fixture&&ordinary)return 2;
+    if(!x.fixture){
+      if(meta.at("qualified_exe_sha256")!="98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518"||meta.at("game_version")!="1.20.0.4"||v("steam_build_id")!=25734779||!v("controlled_window_id")||!v("payment_epoch")||!v("connection_generation")||meta.at("source_observation_kind")!="paused_current_raw_context")return 2;
+      x.window=v("controlled_window_id");x.epoch=v("payment_epoch");x.generation=v("connection_generation");x.revision=v("native_revision");x.admission_date=std::stoll(meta.at("date_raw"));x.episode=meta.at("episode_id");x.packet_sha=meta.at("source_cash_sha256");
+      if(x.packet_sha.size()!=64||x.packet_sha.find_first_not_of("0123456789abcdef")!=std::string::npos)return 2;
+      if(ordinary){
+        if(meta.at("owner_binding_schema")!="xar.maintenance.writer_pc.owner-binding.v2"||meta.at("owner_binding_mode")!="native_campaign_owned_no_load_v2"||meta.at("episode_projection")!="native_campaign"||v("episode_is_null")!=1||!x.episode.empty()||v("callsite_anchor_rva")!=0x28F7840)return 2;
+        x.game_state=v("game_state_identity_witness");x.local_player=v("local_player_id");x.absolute_day=v("absolute_day_raw");const auto present=v("original_episode_key_present");
+        if(!x.game_state||x.game_state>0x7ffffffff000ULL||!x.local_player||x.local_player>0xffffffffULL||x.absolute_day>=0xffffffffULL||present>1||x.admission_date<0||static_cast<std::uint64_t>(x.admission_date)>=0xffffffffULL-24)return 2;x.episode_key_present=present!=0;
+      }else if(x.episode.empty()||x.episode.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.")!=std::string::npos||meta.contains("owner_binding_schema"))return 2;
+    }
+    const auto pid=v("pid"),full=v("full_id");if(pid>0xffffffffULL||full>=0xffffffffULL)return 2;x.pid=DWORD(pid);x.full_id=std::uint32_t(full);x.initial_tid=DWORD(v("tid"));
+    if(x.fixture)x.cold_stale_tid_guard=v("cold_stale_tid_guard")!=0;
+    x.created=v("created");x.character=v("character");x.secondary=v("context");x.base=v("module_base");x.module_size=v("module_size");x.timeout=DWORD(std::stoul(argv[5]));x.raw=argv[7];x.ready=argv[9];x.expected_hits=std::stoull(argv[11]);const std::wstring machine=argv[13];if(machine.empty()||machine.find_first_not_of(L"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.")!=std::wstring::npos)return 2;x.machine.assign(machine.begin(),machine.end());return Probe(x);
   }catch(const std::exception&e){std::cerr<<e.what()<<'\n';return 2;}
 }

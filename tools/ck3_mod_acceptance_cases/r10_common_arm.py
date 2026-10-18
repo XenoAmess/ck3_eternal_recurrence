@@ -47,6 +47,77 @@ def full_query_with_one_same_date_rebound(io, name, frame, refs, ids):
         return fresh, fresh_refs, row, query_refs
 
 
+def _common_origin_checkpoint(normal, source, machine, plan):
+    """Join original small common records; keep null native episode/lifecycle.
+
+    The exact profile preparation already validated the opaque save bytes via
+    checkpoint_source. Recheck its original metadata chain, never rehash Save.
+    """
+    need(normal.get('machine_id') == machine
+         and source.get('normal_source_kind') == 'original-common-native-campaign-with-normal-closure'
+         and source.get('original_episode_fields_preserved') is True
+         and source.get('source_run_id') == normal.get('source_run_id'), 'Actual common normal-source preparation absent')
+    need(normal['actual_save']['pointer'] == '/rows/0/result/checkpoint'
+         and normal['independent_after']['pointer'] == '/rows/0/after_snapshot', 'Original common normal pointers differ')
+    saved_rows = small_json(normal['actual_save']['reference'])['rows']
+    after_rows = small_json(normal['independent_after']['reference'])['rows']
+    need(len(saved_rows) == len(after_rows) == 1, 'Ambiguous common normal-source rows')
+    row, independent = saved_rows[0], after_rows[0]
+    action, body = row.get('plan') or {}, row.get('result') or {}
+    need(row.get('ok') is True and (action.get('tool') == 'ck3_save_checkpoint'
+         or (action.get('tool') == 'ck3_execute_step' and (action.get('args') or {}).get('step') == 'save-checkpoint'))
+         and body.get('accepted') is True and body.get('step') == 'save-checkpoint', 'Original common normal Save unavailable')
+    need(independent.get('ok') is True and (independent.get('plan') or {}).get('tool') == 'ck3_take_snapshot'
+         and row['id'] != independent['id'] and row['finished_at'] <= independent['started_at'], 'Independent normal Save after-frame absent')
+    saved = body.get('checkpoint') or {}; frame = row.get('after_snapshot') or {}
+    actor = (frame.get('played_character') or {}).get('character_id')
+    pid = (frame.get('diagnostics') or {}).get('bridge_pid'); gen = (frame.get('diagnostics') or {}).get('connection_generation')
+    run = normal['source_run_id']; date = saved.get('date_raw'); player = frame.get('local_player_id')
+    origin_ref = normal['normal_campaign_provenance']['profile']; origin = small_json(origin_ref)
+    need(origin_ref['sha256'] == source['build_receipt']['sha256']
+         and origin.get('fixture_mounted') is False and origin.get('game_version') == plan['build']['version']
+         and str(origin.get('steam_build_id')) == str(plan['build']['steam_build'])
+         and origin.get('exe_sha256') == plan['build']['exe_sha256']
+         and small_json(origin['files']['dlc_load.json']) == {'enabled_mods': [], 'disabled_dlcs': []}, 'Original normal profile/build differs')
+    need(type(actor) is int and actor > 0 and type(player) is int and player >= 0 and type(pid) is int and pid > 0
+         and gen is not None and type(date) is int and saved.get('status') == 'saved'
+         and saved.get('episode_projection') == 'native_campaign'
+         and Path(saved['path']).resolve().parent == Path(origin['profile_dir']).resolve() / 'save games', 'Original common native campaign source differs')
+    aid = normal['independent_after']['army']['army_id']
+    for current in (frame, independent.get('after_snapshot') or {}):
+        diag = current.get('diagnostics') or {}; binding = current.get('managed_campaign_run_binding') or {}
+        owners = [a for a in current.get('player_armies', []) if a.get('army_id') == aid]
+        need(current.get('episode_projection') == 'native_campaign' and current.get('date_raw') == date
+             and current.get('paused') is True and current.get('map_ready') is True
+             and (current.get('played_character') or {}).get('character_id') == actor and current.get('local_player_id') == player
+             and diag.get('bridge_pid') == pid and diag.get('connection_generation') == gen and binding.get('run_id') == run
+             and Path(binding.get('state_dir', '')).resolve() == Path(origin['state_dir']).resolve()
+             and len(owners) == 1 and owners[0].get('owner_character_id') == actor, 'Original common source frame/owner drift')
+    life = saved.get('succession_lifecycle')
+    need(saved.get('episode_character_id') in (None, actor) and saved.get('episode_run_id') in (None, run)
+         and life == source.get('source_lifecycle')
+         and (life is None or (isinstance(life, dict) and life.get('lifecycle') == 'ordinary_campaign_succession' and life.get('xar_enabled') == 'xar_off'
+         and life.get('source') == 'pure-vanilla-enabled-mods-empty' and life.get('pact_contract') == 'absent_by_fresh_campaign_xar_off_contract')),
+         'Original common lifecycle conflicts; never manufacture an episode')
+    need(saved['sha256'] == source['save']['sha256'] == normal['source']['sha256']
+         and saved['size'] == source['save']['bytes'] == normal['source']['bytes'], 'Prepared common opaque source identity differs')
+    closure = normal['closure']; cleanup = small_json(closure['cleanup']); close = small_json(closure['normal_close'])
+    host = small_json(closure['host_original_wait']); clean = cleanup.get('cleanup') or {}
+    retained = close.get('retained_handle') or {}; native = close.get('native_zero_proof') or {}; shut = native.get('shutdown') or {}
+    bound = cleanup.get('actual_binding') or {}
+    need(cleanup.get('machine_id') == machine and cleanup.get('run_id') == run and clean.get('errors') == []
+         and clean.get('normal_Save_verified') is True and clean.get('sampling_OFF_clear_verified') is True
+         and (clean.get('Save_result') or {}).get('checkpoint') == saved and bound.get('pid') == pid
+         and bound.get('run_id') == run and type(bound.get('create_time')) in (int, float)
+         and bound['create_time'] > 0 and bound['create_time'] == retained.get('create_time'), 'Original common cleanup/Save binding differs')
+    need(close.get('normal_close_qualified') is True and retained.get('actual_retained_os0') is True
+         and retained.get('pid') == pid and retained.get('exit_code') == 0 and native.get('pid') == pid
+         and native.get('process_exit_code') == 0 and shut.get('ck3_pid') == pid and shut.get('tree_gone') is True
+         and shut.get('cleanup_proven') is True and host.get('run_id') == run
+         and host.get('actual_original_popen_wait') is True and host.get('returncode') == 0, 'Original common normal closure unverified')
+    return saved, actor
+
+
 def validate_normal_common_source(context, prepared, frozen, profile, inventory, normal, *,
                                   machine, source_head, plan):
     """Pure join of exact common DTOs; never infer vanilla from product/run ID."""
@@ -69,17 +140,22 @@ def validate_normal_common_source(context, prepared, frozen, profile, inventory,
          'Normal vanilla must be proved by actual empty-mod profile, not mod_key')
     need(Path(inventory['profile_path']).resolve() == Path(profile['profile_dir']).resolve()
          == Path(startup['state_dir']).resolve() / 'profile', 'Actual normal profile paths differ')
-    saved = normal.get('body', {}).get('checkpoint', {})
-    life = saved.get('succession_lifecycle', {})
-    need(normal.get('is_error') is False and normal.get('body', {}).get('accepted') is True
-         and saved.get('status') == 'saved' and life.get('lifecycle') == 'ordinary_campaign_succession'
-         and life.get('xar_enabled') == 'xar_off' and life.get('source') == 'pure-vanilla-enabled-mods-empty'
-         and life.get('pact_contract') == 'absent_by_fresh_campaign_xar_off_contract',
-         'Actual normal-source Save/lifecycle unavailable')
+    if normal.get('schema') == 'xar.e04.normal-source-promotion-candidate.v1':
+        saved, actual_actor = _common_origin_checkpoint(normal,
+            profile.get('provenance', {}).get('normal_checkpoint', {}), machine, plan)
+    else:
+        saved = normal.get('body', {}).get('checkpoint', {})
+        life = saved.get('succession_lifecycle') or {}
+        need(normal.get('is_error') is False and normal.get('body', {}).get('accepted') is True
+             and saved.get('status') == 'saved' and life.get('lifecycle') == 'ordinary_campaign_succession'
+             and life.get('xar_enabled') == 'xar_off' and life.get('source') == 'pure-vanilla-enabled-mods-empty'
+             and life.get('pact_contract') == 'absent_by_fresh_campaign_xar_off_contract',
+             'Actual normal-source Save/lifecycle unavailable')
+        actual_actor = saved.get('episode_character_id')
     common = plan.get('normal_save', {})
     need(seed.get('sha256') == saved.get('sha256') == common.get('sha256')
          and seed.get('bytes') == saved.get('size') == common.get('bytes')
-         and seed.get('player_id') == saved.get('episode_character_id')
+         and seed.get('player_id') == actual_actor
          and seed.get('date_raw') == saved.get('date_raw') == plan.get('t0_raw'),
          'Normal source/prepared/frozen common S0 differs')
     source = profile.get('provenance', {}).get('normal_checkpoint', {})

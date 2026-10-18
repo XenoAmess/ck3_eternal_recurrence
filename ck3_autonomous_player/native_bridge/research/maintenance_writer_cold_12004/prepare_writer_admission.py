@@ -7,6 +7,11 @@ import json
 import subprocess
 import sys
 
+import importlib.util as _owner_import
+_owner_spec = _owner_import.spec_from_file_location('_writer_owner_binding_v2', Path(__file__).with_name('owner_binding.py'))
+owner = _owner_import.module_from_spec(_owner_spec)
+_owner_spec.loader.exec_module(owner)
+
 def require(ok,message):
     if not ok:raise RuntimeError(message)
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
@@ -17,6 +22,11 @@ def write_new(path,value):
 def require_int(value,name):
     require(type(value) is int and value>=0,name+' must be exact nonnegative integer')
     return value
+def require_ordinary_compiled_source(receipt):
+    expected=sha(Path(__file__).with_name('cold_observer.cpp'))
+    rows=[row for row in receipt['input_pins'] if Path(row['path']).name=='cold_observer.cpp']
+    require(len(rows)==1 and rows[0]['sha256']==expected,
+            'Ordinary-null requires a new observer build/SYSTEM source pin; a07 cannot gain this capability')
 def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--enable-ck3-12004-data-watch',action='store_true')
@@ -29,7 +39,10 @@ def main():
     parser.add_argument('--output-root',type=Path,required=True)
     for name in ['pid','created','generation','window','epoch','character-id','revision','native-revision','date']:
         parser.add_argument('--expected-'+name,type=int,required=True)
-    parser.add_argument('--expected-episode',required=True)
+    parser.add_argument('--expected-episode')
+    parser.add_argument('--owner-binding-mode',choices=(owner.EPISODE_BOUND,owner.ORDINARY),default=owner.EPISODE_BOUND)
+    parser.add_argument('--expected-game-state',type=int)
+    parser.add_argument('--expected-local-player-id',type=int)
     parser.add_argument('--expected-machine',required=True)
     parser.add_argument('--timeout-ms',type=int,default=10000)
     parser.add_argument('--max-slot-hits',type=int,default=64)
@@ -71,7 +84,7 @@ def main():
     require(journal['installed'] is True and journal['install_failure_flags']==0 and journal['read_complete'] is True,'Current journal install/read incomplete')
     require(sampling['available'] is True and sampling['capture_enabled'] is True and sampling['busy'] is False and sampling['active_captures']==0,'Current query observer journal unavailable/busy')
     require(journal['steam_build_id']==25734779,'Exact Steam build absent')
-    require(snapshot['revision']==args.expected_revision and snapshot['native_revision']==args.expected_native_revision and snapshot['date_raw']==args.expected_date and snapshot['episode_run_id']==args.expected_episode,'Independent Root frame/episode differs')
+    require(snapshot['revision']==args.expected_revision and snapshot['native_revision']==args.expected_native_revision and snapshot['date_raw']==args.expected_date and snapshot.get('episode_run_id')==args.expected_episode,'Independent Root frame/episode differs')
     require(snapshot['diagnostics']['bridge_pid']==args.expected_pid and snapshot['diagnostics']['connection_generation']==args.expected_generation,'Independent snapshot PID/generation differs')
     require(snapshot['played_character']['character_id']==args.expected_character_id and snapshot['played_character']['alive'] is True and snapshot['paused'] is True and snapshot['map_ready'] is True,'Paused living current-player frame absent')
     leaf=cash.get('current_raw_context_v1')
@@ -84,6 +97,7 @@ def main():
     require(type(character) is int and 0<character<=0x7ffffffff000 and type(context) is int and 0<context<=0x7ffffffff000 and context%8==0,'Fresh raw Character/context invalid, unaligned or overflow')
     require(values['context_identity_after']==context and values['capture_complete'] is True and values['context_stable'] is True and values['failed_reads']==0,'Fresh raw context double-pointer snapshot incomplete')
     for key in ['value_2c0','value_2c8','value_28','value_30']:require(type(values[key]) is int and -(1<<63)<=values[key]<(1<<63),'Fresh signed64 term unavailable')
+    owner_binding=owner.qualify(args.owner_binding_mode,args.expected_episode,snapshot,journal,leaf,expected_game_state=args.expected_game_state,expected_local_player_id=args.expected_local_player_id)
     # Exact SYSTEM registration is checked before any project observer execution.
     result=json.loads((build/'native-msvc-result.json').read_bytes());exclusion=result['defender_exclusions'];receipt_path=Path(exclusion['receipt']);manifest_path=Path(exclusion['manifest']);receipt=json.loads(receipt_path.read_bytes());manifest=json.loads(manifest_path.read_bytes())
     require(result['built'] is True and exclusion['status']=='verified' and sha(receipt_path)==exclusion['receipt_sha256'],'Standard producer not verified')
@@ -100,11 +114,17 @@ def main():
         p=Path(item['path']);require(p.parent==build and p.stat().st_size==item['size'] and sha(p)==item['sha256'] and str(p) in receipt['verified_requested_paths'],'Exact project EXE path/bytes/readback differ')
         require(any(x['path']==str(p) and x['sha256']==item['sha256'] for x in receipt['files']),'SYSTEM receipt source file pin missing')
     for pin in receipt['input_pins']:require(sha(Path(pin['path']))==pin['sha256'],'Producer input provenance pin differs')
+    if owner_binding is not None:require_ordinary_compiled_source(receipt)
     out.mkdir(parents=True)
     meta=dict(pid=args.expected_pid,tid=0,created=args.expected_created,character=character,context=context,full_id=args.expected_character_id,module_base=0,module_size=0,qualified_exe_sha256='98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518',game_version='1.20.0.4',steam_build_id=25734779,controlled_window_id=args.expected_window,payment_epoch=args.expected_epoch,connection_generation=args.expected_generation,source_observation_kind='paused_current_raw_context',native_revision=args.expected_native_revision,date_raw=args.expected_date,episode_id=args.expected_episode,source_cash_sha256=sha(args.cash_response))
+    if owner_binding is not None:meta.update(owner.metadata(owner_binding))
     meta_path=out/'CURRENT-RAW-ADMISSION.meta.txt';write_new(meta_path,''.join(k+'='+str(v)+'\n' for k,v in meta.items()))
     argv=[str(build/'maintenance_writer_cold_observer.exe'),'--enable-ck3-12004-data-watch','--fixture-meta',str(meta_path),'--timeout-ms',str(args.timeout_ms),'--raw',str(out/'writer.raw.ndjson'),'--ready',str(out/'writer.ready.json'),'--expected-hits',str(args.max_slot_hits),'--machine-id',args.expected_machine]
-    admission=dict(schema='xar.maintenance.writer_pc.future-admission.v1',machine_id=args.expected_machine,prepared_utc=dt.datetime.now(dt.timezone.utc).isoformat(),prepare_only=args.prepare_only,scope='Current raw query plus original same-frame journal/Root identity only; not a wallet callback or military attribution',expected_root_identity=expected,expected_payment_epoch=args.expected_epoch,expected_episode=args.expected_episode,raw_leaf=leaf,source_packet_pins=[dict(path=str(p),bytes=p.stat().st_size,sha256=sha(p)) for p in [args.cash_response,args.before_response]],SYSTEM_receipt_pin=dict(path=str(receipt_path),sha256=sha(receipt_path)),machine_execution_gate_pin=dict(path=str(args.machine_execution_gate),sha256=sha(args.machine_execution_gate)),argv=argv,native_revalidation_required=['Exact actual4 Root-qualified SHA/build plus process create/name, mapped image size and known16B parent anchor','Character ID/magic and context pointer stable twice before watch and after each read','All observed threads watch before continuing, reserved slots never stolen'],old_packet_freshness_not_inferred_from_mtime=True,Root_responsibility='These independently supplied current-window expectations must come from the fresh paused owned frame; this adapter never manufactures a new query, advances time, or grants observation permission from archived packet timestamps.',maintenance_attribution='unclosed',known_producer=False)
+    argv+=owner.native_argv_tail(owner_binding)
+    admission=dict(schema='xar.maintenance.writer_pc.future-admission.v2' if owner_binding is not None else 'xar.maintenance.writer_pc.future-admission.v1',machine_id=args.expected_machine,prepared_utc=dt.datetime.now(dt.timezone.utc).isoformat(),prepare_only=args.prepare_only,scope='Current raw query plus original same-frame journal/Root identity only; not a wallet callback or military attribution',expected_root_identity=expected,expected_payment_epoch=args.expected_epoch,expected_episode=args.expected_episode,raw_leaf=leaf,source_packet_pins=[dict(path=str(p),bytes=p.stat().st_size,sha256=sha(p)) for p in [args.cash_response,args.before_response]],SYSTEM_receipt_pin=dict(path=str(receipt_path),sha256=sha(receipt_path)),machine_execution_gate_pin=dict(path=str(args.machine_execution_gate),sha256=sha(args.machine_execution_gate)),argv=argv,native_revalidation_required=['Exact actual4 Root-qualified SHA/build plus process create/name, mapped image size and known16B parent anchor','Character ID/magic and context pointer stable twice before watch and after each read','All observed threads watch before continuing, reserved slots never stolen'],old_packet_freshness_not_inferred_from_mtime=True,Root_responsibility='These independently supplied current-window expectations must come from the fresh paused owned frame; this adapter never manufactures a new query, advances time, or grants observation permission from archived packet timestamps.',maintenance_attribution='unclosed',known_producer=False)
+    if owner_binding is not None:
+        admission['owner_binding']=owner_binding
+        admission['native_required_contract']='xar.maintenance.writer_pc.owner-binding.v2; a07 is incompatible'
     write_new(out/'ADMISSION.actual.json',admission)
     if args.prepare_only:
         print(json.dumps(dict(status='PREPARED_ONLY_NATIVE_NOT_RUN',output=str(out),maintenance_attribution='unclosed')));return 0

@@ -5,6 +5,11 @@ import json
 from pathlib import Path
 import subprocess
 
+import importlib.util as _owner_import
+_owner_spec = _owner_import.spec_from_file_location('_writer_owner_binding_v2', Path(__file__).with_name('owner_binding.py'))
+owner = _owner_import.module_from_spec(_owner_spec)
+_owner_spec.loader.exec_module(owner)
+
 RESEARCH = "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004"
 EXPECTED = ("pid", "created", "generation", "window", "epoch", "character_id",
             "revision", "native_revision", "date")
@@ -32,9 +37,12 @@ def make_card(config):
     for name in EXPECTED:
         need(type(identity.get(name)) is int and identity[name] > 0,
              "Independent positive Root identity missing: " + name)
-    for name in ("episode", "machine"):
-        need(type(identity.get(name)) is str and identity[name].strip(),
-             "Independent Root identity missing: " + name)
+    mode=config.get("owner_binding_mode",owner.EPISODE_BOUND)
+    episode_args=owner.episode_arguments(mode,identity.get("episode"))
+    need(type(identity.get("machine")) is str and identity["machine"].strip(),"Independent Root identity missing: machine")
+    if mode==owner.ORDINARY:
+        owner.positive(identity.get("game_state_identity_witness"),"independent GameState")
+        owner.positive(identity.get("local_player_id"),"independent local player",1<<32)
     need(type(config.get("timeout_ms")) is int and 500 <= config["timeout_ms"] <= 30000,
          "Finite timeout must be 500..30000 ms")
     need(type(config.get("max_slot_hits")) is int and 1 <= config["max_slot_hits"] <= 128,
@@ -55,8 +63,12 @@ def make_card(config):
     prepare += ["--output-root", str(output)]
     for name in EXPECTED:
         prepare += ["--expected-" + name.replace("_", "-"), str(identity[name])]
-    prepare += ["--expected-episode", identity["episode"], "--expected-machine", identity["machine"],
-                "--timeout-ms", str(config["timeout_ms"]), "--max-slot-hits", str(config["max_slot_hits"])]
+    prepare += episode_args
+    if mode==owner.ORDINARY:
+        prepare += ["--expected-game-state",str(identity["game_state_identity_witness"]),
+                    "--expected-local-player-id",str(identity["local_player_id"])]
+    prepare += ["--expected-machine", identity["machine"], "--timeout-ms", str(config["timeout_ms"]),
+                "--max-slot-hits", str(config["max_slot_hits"])]
     consume = [str(interpreter), "-B", "-O", str(repo / RESEARCH / "consume_writer_actual.py"),
                "--repo", str(repo), "--raw", str(output / "writer.raw.ndjson"),
                "--admission", str(output / "ADMISSION.actual.json"),

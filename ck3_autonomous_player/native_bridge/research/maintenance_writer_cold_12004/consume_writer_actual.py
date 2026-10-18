@@ -7,6 +7,11 @@ import importlib.util
 import json
 import sys
 
+import importlib.util as _owner_import
+_owner_spec = _owner_import.spec_from_file_location('_writer_owner_binding_v2', Path(__file__).with_name('owner_binding.py'))
+owner = _owner_import.module_from_spec(_owner_spec)
+_owner_spec.loader.exec_module(owner)
+
 OFFSETS = None
 integer = None
 require = None
@@ -97,7 +102,7 @@ def bind_inputs(admission, cash_bytes, before_bytes):
     from xar_autoplayer.bridge import war_payment_observations_v1 as payment
     from xar_autoplayer.bridge.nonwar_private_build import private_native_build_identity
     from xar_autoplayer.bridge.version_identity import CK3_12004
-    require(admission["schema"] == "xar.maintenance.writer_pc.future-admission.v1",
+    require(admission["schema"] in ("xar.maintenance.writer_pc.future-admission.v1","xar.maintenance.writer_pc.future-admission.v2"),
             "Existing Root admission schema required")
     require(admission["known_producer"] is False and admission["maintenance_attribution"] == "unclosed",
             "Admission business attribution elevated")
@@ -127,7 +132,7 @@ def bind_inputs(admission, cash_bytes, before_bytes):
         require(session[name] == value, "Root journal binding differs: "+name)
     require(snapshot["diagnostics"]["bridge_pid"] == expected["pid"]
             and snapshot["diagnostics"]["connection_generation"] == expected["connection_generation"]
-            and snapshot["episode_run_id"] == admission["expected_episode"],
+            and snapshot.get("episode_run_id") == admission["expected_episode"],
             "Root snapshot process/generation/episode differs")
     require(sampling["epoch"] == admission["expected_payment_epoch"]
             and journal["controlled_window_admitted"] is True
@@ -140,7 +145,17 @@ def bind_inputs(admission, cash_bytes, before_bytes):
     pins = {x["sha256"] for x in admission["source_packet_pins"]}
     require(digest(cash_bytes) in pins and digest(before_bytes) in pins,
             "Original packet bytes differ from Root admission")
-    return dict(machine_id=machine, pid=expected["pid"], created=expected["process_create_time_100ns"],
+    ordinary=admission["schema"] == "xar.maintenance.writer_pc.future-admission.v2"
+    bound=admission.get("owner_binding")
+    if ordinary:
+        owner.validate(bound)
+        require(bound == owner.qualify(owner.ORDINARY,admission["expected_episode"],snapshot,journal,leaf,
+                expected_game_state=bound["game_state_identity_witness"],expected_local_player_id=bound["local_player_id"]),
+                "Actual ordinary owner binding differs")
+    else:
+        owner.qualify(owner.EPISODE_BOUND,admission["expected_episode"],snapshot,journal,leaf)
+        require(bound is None,"Legacy admission cannot carry a v2 owner binding")
+    result=dict(machine_id=machine, pid=expected["pid"], created=expected["process_create_time_100ns"],
                 full_id=expected["player_character_full_id"], character=leaf["character"],
                 context=leaf["values"]["context_identity_before"],
                 admission_window_id=expected["controlled_window_id"],
@@ -149,11 +164,14 @@ def bind_inputs(admission, cash_bytes, before_bytes):
                 admission_native_revision=leaf["snapshot_revision"],admission_date_raw=leaf["date_raw"],
                 admission_episode=admission["expected_episode"],admission_cash_packet_sha256=digest(cash_bytes),
                 current_raw_cache=leaf)
+    if ordinary:result["admission_owner_binding"]=bound
+    return result
 
 def project(rows, binding):
     require(type(rows) is list and rows, "Raw rows absent")
     start = rows[0]
-    require(start["kind"] == "start" and start["schema"] == "xar.maintenance.writer_pc.cold.v1",
+    ordinary="admission_owner_binding" in binding
+    require(start["kind"] == "start" and start["schema"] == ("xar.maintenance.writer_pc.cold.v2" if ordinary else "xar.maintenance.writer_pc.cold.v1"),
             "Existing native raw format required")
     require(start["synthetic"] is False and start["CK3_observed"] is True,
             "Synthetic/cold fixture cannot receive actual CK3 credit")
@@ -163,6 +181,12 @@ def project(rows, binding):
                 "admission_date_raw","admission_episode","admission_cash_packet_sha256"]:
         require(type(start[key]) is type(binding[key]) and start[key] == binding[key],
                 "Raw/Root binding differs: "+key)
+    if ordinary:
+        require(start.get("owner_binding") == binding["admission_owner_binding"]
+                and start.get("native_owner_memory_verified") is True,
+                "Native ordinary owner readback or v2 source binding differs")
+    else:
+        require(start.get("owner_binding") is None,"Legacy raw cannot inject ordinary ownership")
     require(start["field_offsets"] == list(OFFSETS)
             and start["DR7_write_len8_mask"] == 0x99990055, "Actual four write/LEN8 declaration differs")
     context = integer(start["context"], "context", 1, 0x7ffffffff000)
@@ -335,7 +359,7 @@ def main(argv=None):
     result = project(rows,binding)
     result.update(recorded_utc=dt.datetime.now(dt.timezone.utc).isoformat(),read_only=True,
                   input_pins={k:dict(path=str(sources[k]),bytes=len(v),sha256=digest(v)) for k,v in data.items()},
-                  existing_format="xar.maintenance.writer_pc.cold.v1 actual mode",
+                  existing_format="xar.maintenance.writer_pc.cold.v2 ordinary mode" if "admission_owner_binding" in binding else "xar.maintenance.writer_pc.cold.v1 actual mode",
                   runtime_actions_performed=0)
     with args.output.open("x",encoding="utf-8",newline="\n") as f:
         json.dump(result,f,ensure_ascii=False,indent=2)
