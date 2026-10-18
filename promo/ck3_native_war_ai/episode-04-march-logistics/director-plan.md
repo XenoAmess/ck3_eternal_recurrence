@@ -351,3 +351,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](../../
 `machine_id: desktop-3fevhd2-1c74096080`；[R204专题](../../../docs/ck3-native-ai/episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
 
 原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。
+
+## 2026-10-18 Review02 三段局部预览已实际生成
+
+`machine_id: desktop-3fevhd2-1c74096080`，制作源 `7a342116d8aaa8a4c645941199c3ef1abd0a7c8f`。从既有69段 ProjectConfig 和配音、R204 战斗上下文 C01-01、R198 军事页 C02-09、R199 路线后地图 C03-08，已用原生 `xar-promo` 新 run 实际合成 **3/69 段、2512帧／83.733秒** 的 Review02 partial MP4，9,576,602 B／SHA-256 `5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811`。R204仅 `[15,600)` 585 实帧，显式保持末帧27帧／0.9秒匹配 C01-01 音频；Review01原C01-01两个实机窗口不被替换。字节绑定探针、全2512帧PTS栅格、完整音视频严格解码均通过；两张源帧和四张成片抽样只属有限 AI 视觉审阅。该片常驻 `PARTIAL PREVIEW / NO SIGNOFF`，原生 lifecycle 仅 build＋验证，独立机器 QA 不冒称原生 audit/review；完整1×、人审签核、正式69段仍待做，合格动态 **0/11**。来源、工具链、跨机器配置候选见[三cue专题](../../../docs/ck3-native-ai/episode04-review02-three-cue-preview-12004.md)与[可复用选择合同](review02/three-cue-preview-a01/README.md)。

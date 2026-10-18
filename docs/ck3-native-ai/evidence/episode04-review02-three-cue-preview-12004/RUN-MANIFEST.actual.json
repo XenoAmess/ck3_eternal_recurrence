@@ -1,0 +1,591 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "review02-r204-threecue-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/6C/6CDC1E349826D607A9C2FE1FA17E3B50D770A3A246BD207EA323002487D48140.json",
+    "bytes": 86060,
+    "sha256": "6CDC1E349826D607A9C2FE1FA17E3B50D770A3A246BD207EA323002487D48140"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [
+    {
+      "sequence": 1,
+      "id": "phase-000001",
+      "phase_id": "build.draft",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:28.795861Z",
+      "artifacts": [],
+      "detail": "3 segment(s)"
+    },
+    {
+      "sequence": 2,
+      "id": "phase-000002",
+      "phase_id": "build.visual",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:31.097894Z",
+      "artifacts": [
+        {
+          "artifact_id": "visual.C01-01",
+          "artifact_bytes": 15441657,
+          "artifact_sha256": "665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2"
+        },
+        {
+          "artifact_id": "visual.C02-09",
+          "artifact_bytes": 32908524,
+          "artifact_sha256": "73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472"
+        },
+        {
+          "artifact_id": "visual.C03-08",
+          "artifact_bytes": 110560976,
+          "artifact_sha256": "8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05"
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "id": "phase-000003",
+      "phase_id": "build.narration",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:33.476860Z",
+      "artifacts": [
+        {
+          "artifact_id": "narration.C01-01",
+          "artifact_bytes": 119088,
+          "artifact_sha256": "1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B"
+        },
+        {
+          "artifact_id": "narration.C02-09",
+          "artifact_bytes": 175536,
+          "artifact_sha256": "4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7"
+        },
+        {
+          "artifact_id": "narration.C03-08",
+          "artifact_bytes": 197568,
+          "artifact_sha256": "8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB"
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "id": "phase-000004",
+      "phase_id": "build.subtitle",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:35.779650Z",
+      "artifacts": [
+        {
+          "artifact_id": "subtitle.C01-01",
+          "artifact_bytes": 2042,
+          "artifact_sha256": "FA908CA77BD11C1B9A03FACDEB03C87A003CD20B161D8B6DC6E5200885193938"
+        },
+        {
+          "artifact_id": "subtitle.C02-09",
+          "artifact_bytes": 2693,
+          "artifact_sha256": "B3E753A83A1DD5C21C04F5D42FA2CCF07D5CECA5914FBDCB8D5244ECF9260AC9"
+        },
+        {
+          "artifact_id": "subtitle.C03-08",
+          "artifact_bytes": 2886,
+          "artifact_sha256": "617F489DE55DBE12A7139C0625842F54CEB78BE46B49D456E38B672FAC0CC9A1"
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "id": "phase-000005",
+      "phase_id": "build.segment-plan",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:38.043245Z",
+      "artifacts": [],
+      "detail": "3 immutable render plan(s)"
+    },
+    {
+      "sequence": 6,
+      "id": "phase-000006",
+      "phase_id": "build.segment-render",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:40.320252Z",
+      "artifacts": [
+        {
+          "artifact_id": "segment.C01-01",
+          "artifact_bytes": 2623220,
+          "artifact_sha256": "120A8F06C09E7BA046128E70257444E57095E58EBC9A64EC13D8A7AA854F5603"
+        },
+        {
+          "artifact_id": "segment.C02-09",
+          "artifact_bytes": 3097140,
+          "artifact_sha256": "3A359E727424E35BA46EC7956E5860BA6FBDFFFD672644838952A812CD1E25FB"
+        },
+        {
+          "artifact_id": "segment.C03-08",
+          "artifact_bytes": 3858502,
+          "artifact_sha256": "3F64950B36C9C5059B6D76642061973757D09EEE0A55944C3ABD8E6A5985C868"
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "id": "phase-000007",
+      "phase_id": "build.concat",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:42.801365Z",
+      "artifacts": [
+        {
+          "artifact_id": "concat.manifest",
+          "artifact_bytes": 105,
+          "artifact_sha256": "D7868EC5B99EE5FACE491E5F530BC151B8E0416748558EEBEEC56F69A648E634"
+        },
+        {
+          "artifact_id": "episode04-review02-partial-rough-preview-no-signoff",
+          "artifact_bytes": 9576602,
+          "artifact_sha256": "5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811"
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "id": "phase-000008",
+      "phase_id": "build.audit-record-ready",
+      "status": "succeeded",
+      "recorded_at": "2026-10-18T03:18:45.215393Z",
+      "artifacts": [
+        {
+          "artifact_id": "episode04-review02-partial-rough-preview-no-signoff",
+          "artifact_bytes": 9576602,
+          "artifact_sha256": "5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811"
+        }
+      ],
+      "detail": "pending project audit and explicit human sign-off"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "production-inputs-v1",
+      "collection": "raw",
+      "role": "production-input",
+      "path": "artifacts/raw/sha256/F3/F37DC80EBB825A89F075253B023E610423CA7B705B6D7114A8B200AE50704440.r204threecuecandidatea02.json",
+      "label": "ROUGH-INPUTS.r204-three-cue-candidate-a02.json",
+      "bytes": 9669,
+      "sha256": "F37DC80EBB825A89F075253B023E610423CA7B705B6D7114A8B200AE50704440",
+      "media_type": "application/json",
+      "source_name": "ROUGH-INPUTS.r204-three-cue-candidate-a02.json"
+    },
+    {
+      "id": "source-metadata.measured",
+      "collection": "raw",
+      "role": "metadata",
+      "path": "artifacts/raw/sha256/FE/FE7D7D291805859A9FFAC81BB48A25388B73004297F475DA20AEDD8404894E50.merged.json",
+      "label": "production-inputs69.merged.json",
+      "bytes": 164686,
+      "sha256": "FE7D7D291805859A9FFAC81BB48A25388B73004297F475DA20AEDD8404894E50",
+      "media_type": "application/json",
+      "source_name": "production-inputs69.merged.json"
+    },
+    {
+      "id": "reviewcut-input-config",
+      "collection": "raw",
+      "role": "metadata",
+      "path": "artifacts/raw/sha256/A7/A724E97B2EF701C514E1650A87CF989CFB7DA5455F98C7DCA7035895C9328C60.methodology.json",
+      "label": "input-config.methodology.json",
+      "bytes": 42093,
+      "sha256": "A724E97B2EF701C514E1650A87CF989CFB7DA5455F98C7DCA7035895C9328C60",
+      "media_type": "application/json",
+      "source_name": "input-config.methodology.json"
+    },
+    {
+      "id": "source-png-manifest",
+      "collection": "raw",
+      "role": "metadata",
+      "path": "artifacts/raw/sha256/7D/7D1E7AFBFB9D1E5944A35242E9B9D19D2B90A707CDED651A1E6E5F5B507922F0.actual.json",
+      "label": "raster-manifest.actual.json",
+      "bytes": 52756,
+      "sha256": "7D1E7AFBFB9D1E5944A35242E9B9D19D2B90A707CDED651A1E6E5F5B507922F0",
+      "media_type": "application/json",
+      "source_name": "raster-manifest.actual.json"
+    },
+    {
+      "id": "audio.C01-01",
+      "collection": "raw",
+      "role": "audio",
+      "path": "artifacts/raw/sha256/1C/1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3",
+      "label": "C01-01.mp3",
+      "bytes": 119088,
+      "sha256": "1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B",
+      "media_type": "audio/mpeg",
+      "source_name": "C01-01.mp3"
+    },
+    {
+      "id": "audio.C02-09",
+      "collection": "raw",
+      "role": "audio",
+      "path": "artifacts/raw/sha256/4D/4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7.mp3",
+      "label": "C02-09.mp3",
+      "bytes": 175536,
+      "sha256": "4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7",
+      "media_type": "audio/mpeg",
+      "source_name": "C02-09.mp3"
+    },
+    {
+      "id": "audio.C03-08",
+      "collection": "raw",
+      "role": "audio",
+      "path": "artifacts/raw/sha256/8D/8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB.mp3",
+      "label": "C03-08.mp3",
+      "bytes": 197568,
+      "sha256": "8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB",
+      "media_type": "audio/mpeg",
+      "source_name": "C03-08.mp3"
+    },
+    {
+      "id": "rough-raw.R204",
+      "collection": "raw",
+      "role": "capture",
+      "path": "artifacts/raw/sha256/66/665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2.mkv",
+      "label": "raw.mkv",
+      "bytes": 15441657,
+      "sha256": "665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2",
+      "media_type": "video/x-matroska",
+      "source_name": "raw.mkv"
+    },
+    {
+      "id": "rough-raw.R198",
+      "collection": "raw",
+      "role": "capture",
+      "path": "artifacts/raw/sha256/73/73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472.mkv",
+      "label": "raw.mkv",
+      "bytes": 32908524,
+      "sha256": "73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472",
+      "media_type": "video/x-matroska",
+      "source_name": "raw.mkv"
+    },
+    {
+      "id": "rough-raw.R199",
+      "collection": "raw",
+      "role": "capture",
+      "path": "artifacts/raw/sha256/83/8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05.mkv",
+      "label": "raw.mkv",
+      "bytes": 110560976,
+      "sha256": "8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05",
+      "media_type": "video/x-matroska",
+      "source_name": "raw.mkv"
+    },
+    {
+      "id": "source-subtitle.C01-01",
+      "collection": "raw",
+      "role": "subtitle",
+      "path": "artifacts/raw/sha256/74/742C70EDCA594812F9EEDE25B0994EFCF00CF11368C51BF4DC66342B041C9DAC.ass",
+      "label": "C01-01.ass",
+      "bytes": 1884,
+      "sha256": "742C70EDCA594812F9EEDE25B0994EFCF00CF11368C51BF4DC66342B041C9DAC",
+      "media_type": "text/x-ssa",
+      "source_name": "C01-01.ass"
+    },
+    {
+      "id": "source-subtitle.C02-09",
+      "collection": "raw",
+      "role": "subtitle",
+      "path": "artifacts/raw/sha256/DD/DD764734ADB360D130C493DB292FE74063F6E7ACFE9819690E7D329587585644.ass",
+      "label": "C02-09.ass",
+      "bytes": 2535,
+      "sha256": "DD764734ADB360D130C493DB292FE74063F6E7ACFE9819690E7D329587585644",
+      "media_type": "text/x-ssa",
+      "source_name": "C02-09.ass"
+    },
+    {
+      "id": "source-subtitle.C03-08",
+      "collection": "raw",
+      "role": "subtitle",
+      "path": "artifacts/raw/sha256/B0/B0D5DBAFEAC966CE424753915C8130FE4AB3AC724F3F5A8D8A8D67CCA461A039.ass",
+      "label": "C03-08.ass",
+      "bytes": 2728,
+      "sha256": "B0D5DBAFEAC966CE424753915C8130FE4AB3AC724F3F5A8D8A8D67CCA461A039",
+      "media_type": "text/x-ssa",
+      "source_name": "C03-08.ass"
+    },
+    {
+      "id": "source-config.original69",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/F0/F0B591E7DA04C39A4143C3721352845C64A6738FDE1A7DE75957709D59DC750B.json",
+      "label": "promo-project.json",
+      "bytes": 80035,
+      "sha256": "F0B591E7DA04C39A4143C3721352845C64A6738FDE1A7DE75957709D59DC750B",
+      "media_type": "application/json",
+      "source_name": "promo-project.json"
+    },
+    {
+      "id": "source-config.materialization-index",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/F7/F7ACDCB4DDE20A8604737A2996CD0D42E6F6068FBD6E55285302FAF2D05914EB.json",
+      "label": "bundle-index.json",
+      "bytes": 1824,
+      "sha256": "F7ACDCB4DDE20A8604737A2996CD0D42E6F6068FBD6E55285302FAF2D05914EB",
+      "media_type": "application/json",
+      "source_name": "bundle-index.json"
+    },
+    {
+      "id": "source-composer.r204-thread1",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/B2/B2EAC66B9F3A39C1BEC3A0F0871BEF8073EED5AF8FD8684EA54D1C0AFA483793.py",
+      "label": "episode04_review02_mixed_rough.py",
+      "bytes": 8957,
+      "sha256": "B2EAC66B9F3A39C1BEC3A0F0871BEF8073EED5AF8FD8684EA54D1C0AFA483793",
+      "media_type": "text/plain",
+      "source_name": "episode04_review02_mixed_rough.py"
+    },
+    {
+      "id": "source-composer.namespace",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/03/03C08167AE74AF0374B9E61FAC841DA894667D0EDEE67A6C1FCEFC4B7FA78E78.py",
+      "label": "__init__.py",
+      "bytes": 74,
+      "sha256": "03C08167AE74AF0374B9E61FAC841DA894667D0EDEE67A6C1FCEFC4B7FA78E78",
+      "media_type": "text/plain",
+      "source_name": "__init__.py"
+    },
+    {
+      "id": "source-input.r204-candidate-a01",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/BD/BD78D35CA22832CA55C69471C367316C57D966D5748C8A95F25677C5F14EEF5C.r204threecuecandidatea01.json",
+      "label": "ROUGH-INPUTS.r204-three-cue-candidate-a01.json",
+      "bytes": 7882,
+      "sha256": "BD78D35CA22832CA55C69471C367316C57D966D5748C8A95F25677C5F14EEF5C",
+      "media_type": "application/json",
+      "source_name": "ROUGH-INPUTS.r204-three-cue-candidate-a01.json"
+    },
+    {
+      "id": "source-promo-release.threecue",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/BD/BD54BDC8A6E939DC64276FF2EC4AFD679EA241E7B920F2FE77ADEA046BE64AFD.actuala01.json",
+      "label": "PROMO-RELEASE-THREECUE.actual-a01.json",
+      "bytes": 3694,
+      "sha256": "BD54BDC8A6E939DC64276FF2EC4AFD679EA241E7B920F2FE77ADEA046BE64AFD",
+      "media_type": "application/json",
+      "source_name": "PROMO-RELEASE-THREECUE.actual-a01.json"
+    },
+    {
+      "id": "source-capacity.threecue",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/1E/1EF2EBD0E50C6D0794E6260C62343AA4ADA6569B935D0AE49948CC21A2D0B71F.actualroota01.json",
+      "label": "REVIEW02-THREECUE-MEDIA-CAPACITY.actual-root-a01.json",
+      "bytes": 6506,
+      "sha256": "1EF2EBD0E50C6D0794E6260C62343AA4ADA6569B935D0AE49948CC21A2D0B71F",
+      "media_type": "application/json",
+      "source_name": "REVIEW02-THREECUE-MEDIA-CAPACITY.actual-root-a01.json"
+    },
+    {
+      "id": "source-r204-media-qa",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/9D/9D6A0DAAAD5DBE36C3C53A3A3D04AC78199EE3D823D6483C5336792D7F82BF04.actuala01.json",
+      "label": "MEDIA-QA.actual-a01.json",
+      "bytes": 6118,
+      "sha256": "9D6A0DAAAD5DBE36C3C53A3A3D04AC78199EE3D823D6483C5336792D7F82BF04",
+      "media_type": "application/json",
+      "source_name": "MEDIA-QA.actual-a01.json"
+    },
+    {
+      "id": "source-r204-visual-sample",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/8E/8E60B0DD70BFCD468B957D85123019737E533FF8B71C54A29F7E83F54A9E6F47.actuala01.json",
+      "label": "VISUAL-SAMPLE-REVIEW.actual-a01.json",
+      "bytes": 2189,
+      "sha256": "8E60B0DD70BFCD468B957D85123019737E533FF8B71C54A29F7E83F54A9E6F47",
+      "media_type": "application/json",
+      "source_name": "VISUAL-SAMPLE-REVIEW.actual-a01.json"
+    },
+    {
+      "id": "source-r204-film-result",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/48/486A13A44776EC5FEF700F94329D5A1231C13E8AB51BE1BBE3E2700DDCAE6938.actual.json",
+      "label": "R204-FILM-RESULT.actual.json",
+      "bytes": 4336,
+      "sha256": "486A13A44776EC5FEF700F94329D5A1231C13E8AB51BE1BBE3E2700DDCAE6938",
+      "media_type": "application/json",
+      "source_name": "R204-FILM-RESULT.actual.json"
+    },
+    {
+      "id": "source-r204-normal-finish",
+      "collection": "raw",
+      "role": "provenance",
+      "path": "artifacts/raw/sha256/03/035162D7EB1B53954EE39ADEDF8F09F41E2E86303E51D3FFD6906B64497C303C.actuala01.json",
+      "label": "FINISH.actual-a01.json",
+      "bytes": 1434,
+      "sha256": "035162D7EB1B53954EE39ADEDF8F09F41E2E86303E51D3FFD6906B64497C303C",
+      "media_type": "application/json",
+      "source_name": "FINISH.actual-a01.json"
+    },
+    {
+      "id": "visual.C01-01",
+      "collection": "derived",
+      "role": "visual-input",
+      "path": "artifacts/derived/sha256/66/665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2.mkv",
+      "label": "665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2.mkv",
+      "bytes": 15441657,
+      "sha256": "665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2",
+      "media_type": "video/mp4",
+      "source_name": "665FE47CDCD6600CC526460818A9AAEAE149857BB5505153510361E8C4000AB2.mkv"
+    },
+    {
+      "id": "visual.C02-09",
+      "collection": "derived",
+      "role": "visual-input",
+      "path": "artifacts/derived/sha256/73/73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472.mkv",
+      "label": "73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472.mkv",
+      "bytes": 32908524,
+      "sha256": "73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472",
+      "media_type": "video/mp4",
+      "source_name": "73BA63F6A249ADDF7CED95D54001F7B338E4BE091BD5BB90491CAB627EB62472.mkv"
+    },
+    {
+      "id": "visual.C03-08",
+      "collection": "derived",
+      "role": "visual-input",
+      "path": "artifacts/derived/sha256/83/8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05.mkv",
+      "label": "8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05.mkv",
+      "bytes": 110560976,
+      "sha256": "8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05",
+      "media_type": "video/mp4",
+      "source_name": "8394C5E177752D4493AB8E93507855EFC056C8353B7CC2E69345078DA23D6F05.mkv"
+    },
+    {
+      "id": "narration.C01-01",
+      "collection": "derived",
+      "role": "narration",
+      "path": "artifacts/derived/sha256/1C/1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3",
+      "label": "1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3",
+      "bytes": 119088,
+      "sha256": "1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B",
+      "media_type": "audio/mpeg",
+      "source_name": "1CCA8C798679E0B5AFFC0BD1590B873C6DCD8B939CC834E008617A71F06BEF9B.mp3"
+    },
+    {
+      "id": "narration.C02-09",
+      "collection": "derived",
+      "role": "narration",
+      "path": "artifacts/derived/sha256/4D/4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7.mp3",
+      "label": "4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7.mp3",
+      "bytes": 175536,
+      "sha256": "4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7",
+      "media_type": "audio/mpeg",
+      "source_name": "4D28268CE1C99576F59A2A8182DCAE35085D68FFE7B45AF9016682827D4EEBD7.mp3"
+    },
+    {
+      "id": "narration.C03-08",
+      "collection": "derived",
+      "role": "narration",
+      "path": "artifacts/derived/sha256/8D/8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB.mp3",
+      "label": "8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB.mp3",
+      "bytes": 197568,
+      "sha256": "8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB",
+      "media_type": "audio/mpeg",
+      "source_name": "8D83F662F51974604E67E511320D95A8D7C4A30EB7E9B7AA34D316B7716CDBDB.mp3"
+    },
+    {
+      "id": "subtitle.C01-01",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/FA/FA908CA77BD11C1B9A03FACDEB03C87A003CD20B161D8B6DC6E5200885193938.ass",
+      "label": "0001-C01-01.ass",
+      "bytes": 2042,
+      "sha256": "FA908CA77BD11C1B9A03FACDEB03C87A003CD20B161D8B6DC6E5200885193938",
+      "media_type": "text/x-ass",
+      "source_name": "0001-C01-01.ass"
+    },
+    {
+      "id": "subtitle.C02-09",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/B3/B3E753A83A1DD5C21C04F5D42FA2CCF07D5CECA5914FBDCB8D5244ECF9260AC9.ass",
+      "label": "0002-C02-09.ass",
+      "bytes": 2693,
+      "sha256": "B3E753A83A1DD5C21C04F5D42FA2CCF07D5CECA5914FBDCB8D5244ECF9260AC9",
+      "media_type": "text/x-ass",
+      "source_name": "0002-C02-09.ass"
+    },
+    {
+      "id": "subtitle.C03-08",
+      "collection": "derived",
+      "role": "subtitle",
+      "path": "artifacts/derived/sha256/61/617F489DE55DBE12A7139C0625842F54CEB78BE46B49D456E38B672FAC0CC9A1.ass",
+      "label": "0003-C03-08.ass",
+      "bytes": 2886,
+      "sha256": "617F489DE55DBE12A7139C0625842F54CEB78BE46B49D456E38B672FAC0CC9A1",
+      "media_type": "text/x-ass",
+      "source_name": "0003-C03-08.ass"
+    },
+    {
+      "id": "segment.C01-01",
+      "collection": "derived",
+      "role": "rendered-segment",
+      "path": "artifacts/derived/sha256/12/120A8F06C09E7BA046128E70257444E57095E58EBC9A64EC13D8A7AA854F5603.mp4",
+      "label": "0001-C01-01.mp4",
+      "bytes": 2623220,
+      "sha256": "120A8F06C09E7BA046128E70257444E57095E58EBC9A64EC13D8A7AA854F5603",
+      "media_type": "video/mp4",
+      "source_name": "0001-C01-01.mp4"
+    },
+    {
+      "id": "segment.C02-09",
+      "collection": "derived",
+      "role": "rendered-segment",
+      "path": "artifacts/derived/sha256/3A/3A359E727424E35BA46EC7956E5860BA6FBDFFFD672644838952A812CD1E25FB.mp4",
+      "label": "0002-C02-09.mp4",
+      "bytes": 3097140,
+      "sha256": "3A359E727424E35BA46EC7956E5860BA6FBDFFFD672644838952A812CD1E25FB",
+      "media_type": "video/mp4",
+      "source_name": "0002-C02-09.mp4"
+    },
+    {
+      "id": "segment.C03-08",
+      "collection": "derived",
+      "role": "rendered-segment",
+      "path": "artifacts/derived/sha256/3F/3F64950B36C9C5059B6D76642061973757D09EEE0A55944C3ABD8E6A5985C868.mp4",
+      "label": "0003-C03-08.mp4",
+      "bytes": 3858502,
+      "sha256": "3F64950B36C9C5059B6D76642061973757D09EEE0A55944C3ABD8E6A5985C868",
+      "media_type": "video/mp4",
+      "source_name": "0003-C03-08.mp4"
+    },
+    {
+      "id": "concat.manifest",
+      "collection": "derived",
+      "role": "concat-manifest",
+      "path": "artifacts/derived/sha256/D7/D7868EC5B99EE5FACE491E5F530BC151B8E0416748558EEBEEC56F69A648E634.txt",
+      "label": "segments.txt",
+      "bytes": 105,
+      "sha256": "D7868EC5B99EE5FACE491E5F530BC151B8E0416748558EEBEEC56F69A648E634",
+      "media_type": "text/plain",
+      "source_name": "segments.txt"
+    },
+    {
+      "id": "episode04-review02-partial-rough-preview-no-signoff",
+      "collection": "derived",
+      "role": "deliverable",
+      "path": "artifacts/derived/sha256/5D/5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+      "label": "episode04-review02-PARTIAL-ROUGH-PREVIEW-NO-SIGNOFF.mp4",
+      "bytes": 9576602,
+      "sha256": "5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811",
+      "media_type": "video/mp4",
+      "source_name": "episode04-review02-PARTIAL-ROUGH-PREVIEW-NO-SIGNOFF.mp4"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

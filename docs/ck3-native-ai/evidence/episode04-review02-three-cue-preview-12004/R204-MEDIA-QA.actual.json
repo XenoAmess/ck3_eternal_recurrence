@@ -1,0 +1,133 @@
+{
+  "schema": "xar.e04.r204-normal-raw-narrow-media-qa.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T20:13:09.509596+00:00",
+  "source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0204",
+  "status": "MEDIA_INTEGRITY_GREEN_PENDING_VISUAL_AND_HUMAN_REVIEW",
+  "shot_type": "root-reviewed-map-battle-native-context",
+  "film_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-FILM-RESULT.actual.json",
+    "bytes": 4336,
+    "sha256": "486a13a44776ec5fef700f94329d5a1231c13e8ab51be1bbe3e2700ddcae6938"
+  },
+  "canonical_finish": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\research-film-a01\\FINISH.actual-a01.json",
+    "bytes": 1434,
+    "sha256": "035162d7eb1b53954ee39adedf8f09f41e2e86303e51d3ffd6906b64497c303c"
+  },
+  "raw_result": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\raw-r204-battle-a01\\result.json",
+    "bytes": 4461,
+    "sha256": "50b720b6d855a94739dfd9497c765e9ef5570cd42bcdca1b65e580789d098145"
+  },
+  "raw": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\raw-r204-battle-a01\\raw.mkv",
+    "bytes": 15441657,
+    "sha256": "665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2"
+  },
+  "ffmpeg_scope": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\R204-IDENTITY-SCOPE.actual-a01.json",
+    "bytes": 8893,
+    "sha256": "d9dbc4bc597c81c1f74ede6017b1a400c7bf1f05e12186ede1e7edaee1ac26ad"
+  },
+  "ffmpeg_actual": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "ffprobe_actual": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "bytes": 222026240,
+    "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+  },
+  "ffprobe_command": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\01-ffprobe.command.json",
+    "bytes": 1008,
+    "sha256": "2d8a2e830d1e6f5acf6a552afa2fe765dc5488b70b2f1e6222e614d6bfe950d6"
+  },
+  "pts_command": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\02-pts.command.json",
+    "bytes": 1075,
+    "sha256": "dd14079e42c2d36e186669e9c835bffc7b41d864539d63dd9b1cfbd4ae7023c9"
+  },
+  "full_strict_decode_command": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\03-strict-decode.command.json",
+    "bytes": 1081,
+    "sha256": "662684e790c108aab8c3a49db30c8c106ac3a082630de7660d583a573ffbcf5f"
+  },
+  "video_codec": "h264",
+  "video_size": [
+    1280,
+    720
+  ],
+  "container_duration_seconds": "23.266000",
+  "video_frame_count": 698,
+  "first_pts_seconds": "0.000000",
+  "last_pts_seconds": "23.233000",
+  "max_frame_gap_seconds": "0.034000",
+  "sample_frames": [
+    {
+      "frame_index": 0,
+      "pts_seconds": "0.000000",
+      "png": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\frame-01-index-000000.png",
+        "bytes": 1065547,
+        "sha256": "8e8d37298096fd640b5c60887f462ffd24e2692363a71d0629c1fef4d2631327"
+      },
+      "command": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\04-frame-01.command.json",
+        "bytes": 1163,
+        "sha256": "d29bc69dfadf22c8b0aa252e912a859d1acbd2c61349a915966b621b76944b32"
+      }
+    },
+    {
+      "frame_index": 232,
+      "pts_seconds": "7.733000",
+      "png": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\frame-02-index-000232.png",
+        "bytes": 1228648,
+        "sha256": "6ace68218471265ae613da0573c1d2c4f92fe4adf81421b970ca88eb9b9f05c0"
+      },
+      "command": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\04-frame-02.command.json",
+        "bytes": 1165,
+        "sha256": "03f3b23f436537416a03ddf94a19237755798bc1d9519d20dc3b3843d650342b"
+      }
+    },
+    {
+      "frame_index": 465,
+      "pts_seconds": "15.500000",
+      "png": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\frame-03-index-000465.png",
+        "bytes": 1268910,
+        "sha256": "e533ae88d21abda46c20007b0f01be8e1b23e6ea3958a6a8bc0c55a79011f3b6"
+      },
+      "command": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\04-frame-03.command.json",
+        "bytes": 1165,
+        "sha256": "8fa30933bf6af4377d96774f32cca6f7a7f7d6c2d0949dfd1f849c98996333b9"
+      }
+    },
+    {
+      "frame_index": 697,
+      "pts_seconds": "23.233000",
+      "png": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\frame-04-index-000697.png",
+        "bytes": 1248319,
+        "sha256": "f8bdaaa589b6db4a163066d49417acb7700d2fc7b3fcc79f93f536ccda271696"
+      },
+      "command": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-r204-battle-natural-payments-a01\\media-review-a01\\04-frame-04.command.json",
+        "bytes": 1165,
+        "sha256": "cf81c3ad2fd04bbec5f1337b5b5271169c04003a34393063ccfa82c9dba3014a"
+      }
+    }
+  ],
+  "clean_span_certified": false,
+  "full_speed_one_to_one_review": false,
+  "formal_cue_coverage_added": 0,
+  "human_signoff": false,
+  "army_window_positive_claim": false,
+  "combat_window_positive_claim": false
+}

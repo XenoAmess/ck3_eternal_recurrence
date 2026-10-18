@@ -1,0 +1,24 @@
+{
+  "schema": "xar.e04.review02-threecue-root-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:21:10.393538+00:00",
+  "status": "PLAYABLE_PARTIAL_PREVIEW_AND_AUTOMATED_QA_READY_FOR_REVIEW",
+  "purpose_closed": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r204-review01-renderpatch-a01\\MEDIA-PURPOSE-CLOSED.actual-a01.json",
+    "bytes": 4134,
+    "sha256": "7ddc9ac8f81b28928029b41eff9f09bb421762904e90e80747c608c5065b0aea"
+  },
+  "playable_mp4": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\artifacts\\derived\\sha256\\5D\\5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+    "bytes": 9576602,
+    "sha256": "5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811"
+  },
+  "media_qa": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\AUTO-MEDIA-CHECK.actual-a01.json",
+    "bytes": 3282,
+    "sha256": "a972df7b893079beb26e97d93f229eaec04d07a8e91bddb5d7e22ddaffcb67bc"
+  },
+  "human_full_1x": false,
+  "signoff": false,
+  "formal_dynamic_credit": 0
+}

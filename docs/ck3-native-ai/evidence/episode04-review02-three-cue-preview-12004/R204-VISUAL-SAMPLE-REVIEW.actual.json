@@ -1,0 +1,42 @@
+{
+  "schema": "xar.e04.r204-four-frame-visual-sample-review.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-17T20:13:30Z",
+  "source_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "run_id": "desktop-3fevhd2-1c74096080--vanilla--R0204",
+  "shot_type": "root-reviewed-map-battle-native-context",
+  "raw": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r204-battle-natural-payments-a01/raw-r204-battle-a01/raw.mkv",
+    "bytes": 15441657,
+    "sha256": "665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2"
+  },
+  "media_qa": {
+    "path": "D:/workspace/ck3_native_war_ai_promo_work/e04-r204-battle-natural-payments-a01/media-review-a01/MEDIA-QA.actual-a01.json",
+    "bytes": 6118,
+    "sha256": "9d6a0daaad5dbe36c3c53a3a3d04ac78199ee3d823d6483c5336792d7f82bf04"
+  },
+  "review_method": "assistant direct view of four full extracted 1280x720 PNG frames only",
+  "reviewed_pts_seconds": ["0.000000", "7.733000", "15.500000", "23.233000"],
+  "observations": [
+    "All four sampled frames show the CK3 map battle marker and bottom battle display.",
+    "The 0.0 s sample shows the pause label; the 7.733 s and 15.5 s samples do not show it or an obstructing tooltip.",
+    "The 23.233 s sample shows the pause label and a right-side notification overlay.",
+    "The displayed game date advances from March 24 to March 29, and the battle display's troop figures change between the sampled endpoints."
+  ],
+  "candidate_span_seconds": {
+    "start": "0.500000",
+    "end_exclusive": "20.000000",
+    "status": "PROPOSED_FOR_LATER_FULL_VISUAL_REVIEW",
+    "basis": "two unobstructed interior samples at 7.733 s and 15.5 s; proposed trims avoid the sampled start/end pause and end notification",
+    "endpoints_and_interior_continuity_verified": false,
+    "clean_span_certified": false
+  },
+  "film_actor_status": "RECORDED_PENDING_MEDIA_REVIEW",
+  "media_integrity_status": "GREEN_ON_NORMALLY_CLOSED_RAW",
+  "army_window_positive_claim": false,
+  "combat_window_positive_claim": false,
+  "tooltip_positive_claim": false,
+  "formal_cue_coverage_added": 0,
+  "full_speed_one_to_one_review": false,
+  "human_final_signoff": false
+}

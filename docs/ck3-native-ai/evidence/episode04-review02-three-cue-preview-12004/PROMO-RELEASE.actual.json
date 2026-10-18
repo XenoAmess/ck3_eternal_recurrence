@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.review02-threecue-promo-release-preflight.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:15:36.306161+00:00",
+  "source_commit": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "scope": "Episode04 Review02 R204 three-cue native partial preview intent; new run not yet allocated",
+  "official_query_at_utc": "2026-10-18T03:15:34.084169+00:00",
+  "official_query_argv": [
+    "gh",
+    "api",
+    "repos/XenoAmess/xar_promo_toolchain/releases/latest"
+  ],
+  "official_response_sha256": "4169e216a655307a7c20f309dad5b9be8c44fd453344d7e558d901d0d44ab4fd",
+  "query_exit_code": 0,
+  "release_tag": "v0.3.0",
+  "release_url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/tag/v0.3.0",
+  "draft": false,
+  "prerelease": false,
+  "wheel": {
+    "name": "xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "size": 194037,
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl",
+    "digest": "sha256:f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+    "actual_downloaded_sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+    "prior_download_receipt": {
+      "path": "C:\\ck3-e04-resume-20261015-a01\\promo-toolchain-v030-upgrade-a01\\V030-R198-RUNTIME-COMPAT.actual-a01.json",
+      "bytes": 2822,
+      "sha256": "41f7b6212f5c54466b3119246fcca96528cb63251b0f335faf696ef397b5a9cb"
+    },
+    "downloaded_this_probe": false
+  },
+  "requirements": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\requirements-promo-toolchain.txt",
+    "bytes": 598,
+    "sha256": "73f18d03acc1699b00769a34a8fb64ce748b8c9dd1b2b7cc215177e1e356e1f7"
+  },
+  "requirements_exact_url_hash_match": true,
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "installed_package_version": "0.3.0",
+  "installed_direct_url": {
+    "archive_info": {
+      "hash": "sha256=f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c",
+      "hashes": {
+        "sha256": "f59c4b62b89297e2ff7bb7df4354fc88c6447fa6b1b7eade28de2bc1e6dc974c"
+      }
+    },
+    "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.3.0/xar_promo_toolchain-0.3.0-py3-none-any.whl"
+  },
+  "cli_top_actual": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 17,
+      "stdout_sha256": "fcfef3880cae5f8476b779ca70f6874e14c0a1576a6ab1f7a078db27b4300650",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 1660,
+      "stdout_sha256": "2dc84cf0d0a49b8e2a61b184ec0536a84cfaea1554d119a33308dd56cd2345bb",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "previous_related_help_receipt": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\promo-toolchain-v030-upgrade-a01\\V030-POSTINSTALL.actual-a01.json",
+    "bytes": 5727,
+    "sha256": "f2d68851e0d3a794dde38543444057098a32a943c87dc64063dc71db717f9d61"
+  },
+  "pip_check_status": "historical unrelated RMTM editable pin0.2.1 RED; whole venv not GREEN",
+  "install_or_help_matrix_rerun": false,
+  "run_created": false
+}

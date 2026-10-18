@@ -1,0 +1,45 @@
+{
+  "schema": "xar.e04.review02-multiwindow-hold0-focused-check.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:46:12.909674+00:00",
+  "status": "PASS_FOCUSED_NO_PROCESS_PLANNER_CHECK",
+  "candidate_composer": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-threecue-intake-a01\\overlay_threads1_multiwindow\\war_ai_promo\\episode04_review02_mixed_rough.py",
+    "bytes": 9150,
+    "sha256": "65caaef16a78e41959f7e45c55251b1784b4dae08af96052d3a0306c965a6735"
+  },
+  "original_actual_input": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r204-review01-renderpatch-a01\\ROUGH-INPUTS.r204-three-cue-candidate-a02.json",
+    "bytes": 9669,
+    "sha256": "f37dc80ebb825a89f075253b023e610423ca7b705b6d7114a8b200ae50704440"
+  },
+  "synthetic_fixture": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\review02-threecue-intake-a01\\MULTIWINDOW-HOLD0.fixture-a04.json",
+    "bytes": 9722,
+    "sha256": "e79d4fbe538740e192297ae4906f63fac0dc7730e330ff067f5eda1d0f33d21d"
+  },
+  "two_windows": [
+    {
+      "cue": "C02-09",
+      "start_seconds": 26.0,
+      "frames": 895,
+      "hold_frames": 0
+    },
+    {
+      "cue": "C03-08",
+      "start_seconds": 0.0,
+      "frames": 1005,
+      "hold_frames": 0
+    }
+  ],
+  "R204_control": {
+    "cue": "C01-01",
+    "hold_frames": 27
+  },
+  "same_raw_different_length_hold0_preserved": true,
+  "media_body_read": false,
+  "native_CLI_run": false,
+  "FFmpeg_executed": false,
+  "render_or_QA_executed": false,
+  "workdir_created": false
+}

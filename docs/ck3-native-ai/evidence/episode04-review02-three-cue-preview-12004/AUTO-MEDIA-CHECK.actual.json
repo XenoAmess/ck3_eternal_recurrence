@@ -1,0 +1,64 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:19:17.544782+00:00",
+  "source_commit": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "status": "GREEN_AUTOMATED_MEDIA_ONLY_PENDING_HUMAN_REVIEW",
+  "run_manifest_before_audit": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\run-manifest.json",
+    "bytes": 23185,
+    "sha256": "e3695bb38f044486522cc190c173a4bdf21303d0d15fdc4b10e007c1c8fffd1c"
+  },
+  "artifact_id": "episode04-review02-partial-rough-preview-no-signoff",
+  "native_deliverable": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\artifacts\\derived\\sha256\\5D\\5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+    "bytes": 9576602,
+    "sha256": "5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811"
+  },
+  "bound_probe": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\bound-media-probe.actual-a01.json",
+    "bytes": 4164,
+    "sha256": "8feabaf0c3b2199b934219b997359def793bcca6a9ec96814c2fdd24caf61cbc"
+  },
+  "bound_probe_kind": "xar-promo-bound-media-probe",
+  "frame_pts": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\video-frames-pts.actual-a01.json",
+    "bytes": 195932,
+    "sha256": "6c710f27d72df517c7e2b02aa1fb81857075dd349bbb327805f9080d35478a4d"
+  },
+  "frame_count": 2512,
+  "first_pts_seconds": "0.021354",
+  "last_pts_seconds": "83.721354",
+  "frame_grid": "2512 decoded video frames at 30fps; each best_effort PTS within 0.0001s of first PTS+i/30",
+  "strict_decode_ffmpeg_argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.EXE",
+    "-nostdin",
+    "-v",
+    "error",
+    "-xerror",
+    "-err_detect",
+    "explode",
+    "-i",
+    "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\artifacts\\derived\\sha256\\5D\\5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+    "-map",
+    "0",
+    "-f",
+    "null",
+    "NUL"
+  ],
+  "strict_decode_stdout": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\strict-decode.stdout",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "strict_decode_stderr": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\strict-decode.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "ffprobe": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.EXE",
+  "ffmpeg": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.EXE",
+  "root_used_bytes": 358602644,
+  "human_1x_review": false,
+  "signoff": false,
+  "formal_dynamic_credit": 0
+}

@@ -1,0 +1,73 @@
+{
+  "schema": "xar.e04.review02-threecue-media-purpose-close.v1",
+  "status": "MEDIA_BUILD_AND_AUTOMATED_QA_COMPLETE_PENDING_FULL_REVIEW",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:21:10.287587+00:00",
+  "source_commit": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "native_run_id": "review02-r204-threecue-a01",
+  "review_scope": "Review02 only: C01-01 R204 generic battle context; C02-09 R198; C03-08 R199. Partial 3/69 cue rough preview, no Review01 replacement assertion.",
+  "capacity_adoption": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\capacity-review02-threecue-a01\\REVIEW02-THREECUE-MEDIA-CAPACITY.actual-root-a01.json",
+    "bytes": 6506,
+    "sha256": "1ef2ebd0e50c6d0794e6260c62343aa4ada6569b935d0ae49948cc21a2d0b71f"
+  },
+  "official_toolchain_release_preflight": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r204-review01-renderpatch-a01\\PROMO-RELEASE-THREECUE.actual-a01.json",
+    "bytes": 3694,
+    "sha256": "bd54bdc8a6e939dc64276ff2ec4afd679ea241e7b920f2fe77adea046be64afd"
+  },
+  "candidate": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r204-review01-renderpatch-a01\\ROUGH-INPUTS.r204-three-cue-candidate-a02.json",
+    "bytes": 9669,
+    "sha256": "f37dc80ebb825a89f075253b023e610423ca7b705b6d7114a8b200ae50704440"
+  },
+  "run_manifest": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\run-manifest.json",
+    "bytes": 23185,
+    "sha256": "e3695bb38f044486522cc190c173a4bdf21303d0d15fdc4b10e007c1c8fffd1c"
+  },
+  "native_cas_mp4": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\artifacts\\derived\\sha256\\5D\\5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+    "bytes": 9576602,
+    "sha256": "5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811"
+  },
+  "work_mp4_identical_bytes": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\work\\build-a01\\episode04-review02-PARTIAL-ROUGH-PREVIEW-NO-SIGNOFF.mp4",
+    "bytes": 9576602,
+    "sha256": "5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811"
+  },
+  "automated_media_check": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\AUTO-MEDIA-CHECK.actual-a01.json",
+    "bytes": 3282,
+    "sha256": "a972df7b893079beb26e97d93f229eaec04d07a8e91bddb5d7e22ddaffcb67bc"
+  },
+  "narrow_visual_samples": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\NARROW-VISUAL-SAMPLES.actual-a01.json",
+    "bytes": 2645,
+    "sha256": "bbbdf1853d242f9175b53b66aa34538d5047171bc039248a153479efd695fd9d"
+  },
+  "actual_output": {
+    "video_frames": 2512,
+    "video_fps": 30,
+    "video_duration_seconds": 83.73333333333333,
+    "audio_codec": "aac",
+    "video_codec": "h264",
+    "container": "mp4"
+  },
+  "processes": "Native build and postbuild validation exited 0; FFprobe/PTS/strict FFmpeg decode exited 0; four boundary FFmpeg extraction calls exited 0; all owned child processes joined before this receipt.",
+  "media_root": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01",
+  "media_root_used_bytes_after_all_D_writes": 359300786,
+  "media_root_file_count": 248,
+  "media_root_ceiling_bytes": 536870912,
+  "media_root_unused_bytes": 177570126,
+  "C_metadata_lane_bytes_before_receipt": 190479,
+  "C_metadata_lane_file_count_before_receipt": 43,
+  "C_metadata_ceiling_within_shared_bytes": 2097152,
+  "fresh_D_free_bytes": 43945041920,
+  "fresh_C_free_bytes": 29902589952,
+  "future_media_writes_owned_by_this_agent_bytes": 0,
+  "formal_dynamic_credit": 0,
+  "human_full_1x": false,
+  "signoff": false,
+  "protection_and_review": "Keep actual preview, manifest, QA and cited inputs until full Review02 editorial review or 2026-11-17 UTC, whichever arrives first; reassess under shared storage policy; no permanent preservation claim."
+}

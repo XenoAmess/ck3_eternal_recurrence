@@ -1,0 +1,48 @@
+diff --git a/promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py b/promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py
+--- a/promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py
++++ b/promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py
+@@ -45,7 +45,7 @@
+   need(not(selected&pending),'pending cue cannot enter preview')
+   need(selected<=set(overrides),'preview requires actual rough inputs')
+  if not validate_only:need(not(pending&selected),'key footage is pending; no static fallback allowed')
+- cards={r['card_id']:r for r in raster['cards']};mapping={r['id']:r for r in method['cues']};segments=[];raw_sources={}
++ cards={r['card_id']:r for r in raster['cards']};mapping={r['id']:r for r in method['cues']};segments=[];raw_sources={};raw_render_windows={}
+  for row,cue in zip(rows,cues):
+   key=row['id'];start=0.0;need(row['zh']==cue.narration['zh-CN']and row['en']==cue.subtitles['en'],'frozen speech differs')
+   if key not in selected:continue
+@@ -54,11 +54,16 @@
+   elif key in overrides:
+    v=overrides[key];need(v['role']=='rough-context-only' and v['continuous_clean']is False and v['event_PTS']is None and v['approval']=='pending','rough limit absent')
+    first,stop=v['source_frames'];need(type(first)is int and type(stop)is int and 0<=first<stop<=v['source_frame_count'],'invalid actual frame interval')
+-   need(stop-first==round(row['duration_seconds']*30),'source interval must cover exact measured cue; no padding')
++   hold=v.get('tail_hold_frames',0);need(type(hold)is int and 0<=hold<=27,'invalid rough context hold')
++   need(stop-first+hold==round(row['duration_seconds']*30),'source interval plus labeled tail hold must cover exact measured cue')
++   need(hold==0 or (key=='C01-01' and v['source']['sha256'].lower()=='665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2' and first==15 and stop==600 and hold==27),'tail hold is only admitted for R204 C01-01')
+    media=select_path(v['source'],run,run_path);visual=VisualSource(key,VIDEO,media,'rough-context-pending-review',metadata={'actual_outcome_credit':False,'continuous_clean':False,'event_PTS':None})
+    source_key=str(media.resolve());pin=(v['source']['bytes'],v['source']['sha256'].lower(),v['source_frame_count'])
+    need(source_key not in raw_sources or raw_sources[source_key]==pin,'same raw path has conflicting source pins')
+-   raw_sources[source_key]=pin;start=first/30
++   raw_sources[source_key]=pin
++   cue_frames=round(row['duration_seconds']*30);window_key=(source_key,first,cue_frames);tail=(hold,stop-first,cue_frames)
++   need(window_key not in raw_render_windows or raw_render_windows[window_key]==tail,'same source window has conflicting tail hold')
++   raw_render_windows[window_key]=tail;start=first/30
+   else:
+    card=cards[mapping[key]['card_id']];ref={**card['png'],'path':str(Path(data['metadata']['raster']['path']).parent/card['png']['path']),'artifact_id':'source-card-still.'+card['card_id']}
+    visual=VisualSource(key,STILL,select_path(ref,run,run_path),'source-explanation-card',metadata={'actual_outcome_credit':False})
+@@ -83,7 +88,15 @@
+    argv=list(command.spec.argv);i=argv.index('-filter_complex')+1;old=argv[i]
+    a='scale=1920:1080:force_original_aspect_ratio=decrease:flags=lanczos';b='pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=black'
+    need(old.count(a)==old.count(b)==1,'upstream geometry seam changed')
+-   argv[i]=old.replace(a,'scale=1536:864:force_original_aspect_ratio=decrease:flags=lanczos').replace(b,'pad=1920:1080:192:0:color=black');commands.append(replace(command,spec=replace(command.spec,argv=tuple(argv))))
++   graph=old.replace(a,'scale=1536:864:force_original_aspect_ratio=decrease:flags=lanczos').replace(b,'pad=1920:1080:192:0:color=black')
++   window_key=(key,round(kwargs['start_seconds']*30),round(kwargs['options'].duration_seconds*30))
++   hold,source_count,cue_count=raw_render_windows[window_key]
++   if hold:
++    target=f'[0:v]trim=duration={cue_count/30:.6f},setpts=';source=f'[0:v]trim=duration={source_count/30:.6f},setpts='
++    seam='setsar=1,trim=duration='
++    need(graph.count(target)==graph.count(seam)==1,'R204 selected trim or tail seam changed')
++    graph=graph.replace(target,source,1).replace(seam,f'setsar=1,tpad=stop_mode=clone:stop={hold},trim=duration=',1)
++   argv[i]=graph;argv[-1:-1]=['-threads','1','-filter_complex_threads','1'];commands.append(replace(command,spec=replace(command.spec,argv=tuple(argv))))
+   return replace(plan,commands=tuple(commands))
+  def unresolved(*args,**kwargs):raise ValueError('pending key footage cannot render or become a still')
+  output=Path('episode04-review02-PARTIAL-ROUGH-PREVIEW-NO-SIGNOFF.mp4')if partial else Path('episode04-review02-MIXED-ROUGH-PENDING.mp4')

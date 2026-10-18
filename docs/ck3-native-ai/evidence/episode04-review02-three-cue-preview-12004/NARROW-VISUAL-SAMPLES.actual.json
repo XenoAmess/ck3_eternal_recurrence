@@ -1,0 +1,54 @@
+{
+  "schema": "xar.e04.review02-threecue-output-visual-samples.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T03:21:09.935725+00:00",
+  "source_commit": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "output": {
+    "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\runs\\review02-r204-threecue-a01\\artifacts\\derived\\sha256\\5D\\5D5F04F89AFE1619D90FBCC8AD0CC950FDE44AEE8A4D03129816F2DCA7C4D811.mp4",
+    "bytes": 9576602,
+    "sha256": "5d5f04f89afe1619d90fbcc8ad0cc950fde44aee8a4d03129816f2dca7c4d811"
+  },
+  "frames": [
+    {
+      "requested_time_seconds": "10",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\boundary-frames-a01\\sample-01-t10.jpg",
+        "bytes": 183240,
+        "sha256": "d78cc274dfb9c36218f90a3afd7e6029a580b7ff48d2b35b34ea35fefb6b29a0"
+      },
+      "observed": "R204 battle map/panel, draft watermark and dual-language subtitles visible"
+    },
+    {
+      "requested_time_seconds": "20.1",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\boundary-frames-a01\\sample-02-t20p1.jpg",
+        "bytes": 174219,
+        "sha256": "4add134945c307724d439be8eb2b2ea2d3ed3b2e013ba5e973521747fb2d43eb"
+      },
+      "observed": "R204 battle context near cue end, no desktop/tooltip in sampled frame"
+    },
+    {
+      "requested_time_seconds": "20.5",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\boundary-frames-a01\\sample-03-t20p5.jpg",
+        "bytes": 164479,
+        "sha256": "5d6ac1113d31fddd380885ca0566af5e02219b394f1967f722e7fd035e0e554c"
+      },
+      "observed": "C02-09 military replenishment screen after cue cut"
+    },
+    {
+      "requested_time_seconds": "50.5",
+      "file": {
+        "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\e04-review02-threecue-r204-a01\\audit\\threecue-a01\\boundary-frames-a01\\sample-04-t50p5.jpg",
+        "bytes": 170277,
+        "sha256": "d8fa7d1760b88558d34700894b456f3af37b80bf04f86738b1f5d9a509d355a4"
+      },
+      "observed": "C03-08 map/army context after next cut"
+    }
+  ],
+  "method": "Four encoded JPEG samples from actual 1920x1080 MP4, visually inspected by agent; not continuous 1x playback or final human signoff",
+  "visual_sample_status": "FOUR_SAMPLES_REVIEWED; FULL_CLEAN_PENDING",
+  "human_full_1x": false,
+  "signoff": false,
+  "formal_dynamic_credit": 0
+}

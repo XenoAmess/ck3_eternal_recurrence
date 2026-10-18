@@ -1,0 +1,74 @@
+{
+  "schema": "xar.e04.review02-three-cue-portable-selection.v1",
+  "purpose": "reusable editorial/source identity and exact-frame contract; not an executable native ProjectConfig or machine-local production-inputs-v1",
+  "source_commit_of_actual_preview": "7a342116d8aaa8a4c645941199c3ef1abd0a7c8f",
+  "base_project_config": {
+    "bundle_index_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/production-inputs-a03/bundle-index.json",
+    "archive_member": "project/promo-project.json",
+    "bytes": 86060,
+    "sha256": "6cdc1e349826d607a9c2fe1fa17e3b50d770a3a246bd207ea323002487d48140",
+    "cue_count": 69
+  },
+  "composer": {
+    "repo_relative": "promo/ck3_native_war_ai/integration/src/war_ai_promo/episode04_review02_mixed_rough.py",
+    "entry": "war_ai_promo.episode04_review02_mixed_rough:compose",
+    "required_patch_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/three-cue-preview-a01/composer-tail-hold-threads1-multiwindow.patch",
+    "actual_preview_patch_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/review02/three-cue-preview-a01/composer-tail-hold-threads1.patch",
+    "postbuild_candidate_only": true
+  },
+  "render": {
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "preview_cue_ids": ["C01-01", "C02-09", "C03-08"],
+    "frame_count": 2512,
+    "duration_seconds": 83.73333333333333,
+    "partial_preview": true,
+    "watermark": "PARTIAL PREVIEW / NO SIGNOFF / REVIEW / CLEAN PENDING / EVENT FRAME UNVERIFIED"
+  },
+  "visual_sources": [
+    {
+      "cue_id": "C01-01",
+      "scene_token": "R0204",
+      "logical_source_id": "rough-raw.R204",
+      "source_bytes": 15441657,
+      "source_sha256": "665fe47cdcd6600cc526460818a9aaeae149857bb5505153510361e8c4000ab2",
+      "source_total_frames": 698,
+      "source_frame_interval": [15, 600],
+      "source_frames_used": 585,
+      "explicit_tail_hold_frames": 27,
+      "cue_frames": 612,
+      "editorial_use": "generic battlefield context only; no exact event PTS"
+    },
+    {
+      "cue_id": "C02-09",
+      "scene_token": "R0198",
+      "logical_source_id": "rough-raw.R198",
+      "source_bytes": 32908524,
+      "source_sha256": "73ba63f6a249addf7ced95d54001f7b338e4be091bd5bb90491cab627eb62472",
+      "source_total_frames": 1718,
+      "source_frame_interval": [780, 1675],
+      "source_frames_used": 895,
+      "explicit_tail_hold_frames": 0,
+      "cue_frames": 895,
+      "editorial_use": "monthly replenishment toggle context only; no outcome claim"
+    },
+    {
+      "cue_id": "C03-08",
+      "scene_token": "R0199",
+      "logical_source_id": "rough-raw.R199",
+      "source_bytes": 110560976,
+      "source_sha256": "8394c5e177752d4493ab8e93507855efc056c8353b7cc2e69345078da23d6f05",
+      "source_total_frames": 5400,
+      "source_frame_interval": [1200, 2205],
+      "source_frames_used": 1005,
+      "explicit_tail_hold_frames": 0,
+      "cue_frames": 1005,
+      "editorial_use": "post-route map/army context only; no arrival or ADD claim"
+    }
+  ],
+  "runtime_binding_rule": "On each machine materialize the checked-in ProjectConfig; supply actual local production-inputs-v1 metadata, audio, subtitle and raw paths separately, and hash-check every selected source before native preserve. Do not resolve paths from scene tokens or another machine's drive letters.",
+  "formal_dynamic_credit": 0,
+  "human_full_1x": false,
+  "signoff": false
+}
