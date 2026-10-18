@@ -19,3 +19,16 @@
 2026-10-18 17:16 UTC追加（同一 `machine_id: xenoamess-full-tower-eb9d2c1186`）：在 `91c570484452a915dcc24024de5ce166e48e1c85` 上，start／stop-assault仍各额外复制一次末128条历史，仅用于同帧holding siege投影。现持原历史锁执行原投影，再只深拷贝投影状态，避免无关正文复制；原128条范围、成功restore隔断、最新失败查询阻止旧查询、同帧身份和资格条件保持，选中的active_siege仍独立于历史。复制成本由该尾部全部正文B降为投影状态S，128条扫描不变；没有取消起始公开snapshot的历史导出，也未改变独立后读或实际查询次数。源码读回 `native_driver.py` 1,596,131 B／SHA256 `4bf357b97b7339a1979a26ee23fdb28945cdd7e890f6b4e9695797ca0bc8a28e`（`5febb4`）。6项新增测试与原注册Client／Service／Driver的holding-only start-stop测试首轮7 PASS（`d1310f`，BELOW_NORMAL、禁字节码，总5.03s）；合成无关正文复制1→0、alias隔离、拒绝、ACK及独立后验均保持。每次start／stop一次是源码调用频率，实际长局频率和墙钟收益未测；未部署冻结SDK或触碰影片。
 
 Root 独立复核（同一机器，结果复核时钟 `2026-10-18T17:19:40Z`）：完整审阅新测试、原投影和restore隔断纯函数后，再跑相同7项，实际外层0（`c4b7c8`，测试体1.222秒／进程4.084739秒，单进程BELOW_NORMAL、禁字节码）。验证保持独立后读，Native primitive不在历史锁内；没有操作实际Game或当前编码会话。
+
+2026-10-18T18:38:40Z 源码候选补注（`machine_id: xenoamess-full-tower-eb9d2c1186`）：研究时实际HEAD为 `ae1a97e742c982ea381102e223fabe57b2ca6834`（`a41906`）。已核预测、会合和起点的按需展开专题：已实现的是不适用时跳过展开，各消费者仍使用独立列表。下列完整source pins于18:40:30.374998Z仅从仓库读回（`664c36`；path相对仓库根），没有读取冻结SDK或运行证据：
+
+- `ck3_autonomous_player/src/xar_autoplayer/strategy.py`，1,031,722 B，SHA256 `38b4d445646b4e501c8f9ce98649c25fdcb7469f20320ecc2bf11b55c429e7ae`。
+- `ck3_autonomous_player/src/xar_autoplayer/war_safe_rendezvous_v1.py`，17,001 B，SHA256 `6df6bc79cfcc902766e27f4fffa367d12fb241245c7569de4d75764a19c32281`。
+- `ck3_autonomous_player/src/xar_autoplayer/war_route_origin_exposure_v1.py`，19,945 B，SHA256 `119bba068a45cd81819f9264de9f641e20fbca2be3011c77d75ae6e34a248d60`。
+- `ck3_autonomous_player/src/xar_autoplayer/raiktor_formal_exit.py`，16,262 B，SHA256 `e83e8373c3fafd4b857ab4c1a6828af7197868474f859eadfb9f6f46cf2cadd8`。
+
+具体重复链为 `choose_one_life_turn:7869`→`_choose_one_life_turn_core:8399`先展开全部历史；同次choose的7928／7958又向围城／普通预测传入新的展开工厂，适用消费者在18092–18093／17592–17593再次调用。453–477的展开函数为每个有效行新建含index的外层dict，并不深拷贝其正文。核心加一个适用审查因此至少物化2N个行dict；非适用路径仍只需核心的一次。这是源码条件频率，不是实机采样，也不是重复Native查询的证明。
+
+最小候选是在单次choose内惰性物化一次，让核心的可选工厂及现有审查工厂消费该结果；直接调用核心仍保原默认行为，不跨轮缓存，不改变早退、调用顺序、原帧与Native守卫。可把k次O(N)展开降至一次。**尚未资格的阻点**是独立可变列表合同：AST只见核心对rows的初始赋值，尚未证明所有下游都不修改list、外层row或index；不能直接共享，更不能假称已有只读资格。
+
+必要资格应先有限追踪这些变更，再用真实核心到适用预测的生产路径比较完整plan、selected_step及拒绝，并计展开2→1；无关／terminal早退保持原0或1，混合AUTO-run／restore／错误行次序不变。同帧两轮间追加history必须重新展开；陈旧帧、参与者或风险变化仍选原查询／拒绝。另在首消费者主动尝试list／row修改，证明拒绝或隔离不会污染后续消费者。若隔离需要改写整条消费链则停止此候选。本补注没有实现、测试、现场操作或性能收益测量，也没有重复assault投影优化。
