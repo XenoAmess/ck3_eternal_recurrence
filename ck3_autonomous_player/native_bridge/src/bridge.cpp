@@ -30218,7 +30218,7 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
 #endif
     loss_environment.bindings.county_primary_phase_reader=+[]() noexcept {
       xar::ck3_12004::CountyPrimaryPhaseCapture12004 out{};
-      if(!xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004().capture_enabled)
+      if(!xar::ck3_12004::ReadArmyNaturalPhaseResearchSampling12004().enabled)
         return out;
       out.scope=xar::ck3_12004::CopyActiveArmyNaturalPhaseScope12004();
       out.writer_event=xar::ck3_12004::NextArmyNaturalPhaseEvent12004();
