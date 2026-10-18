@@ -1,6 +1,6 @@
 # CK3 原生 AI 决策树索引
 
-战役评价设计：[跨代战役发展评分 v1（待审阅）](campaign-development-scoring-v1-design-2026-10-19.md)。固定开局与三十年窗口，区分领地、财政、军事、治理、宗族和合法继承；尚未实现评分器或给当前战役评分。
+战役评价：[跨代评分规则 v1](campaign-development-scoring-v1-design-2026-10-19.md)、[只读存档评分器与本场证据](campaign-scoring-offline-implementation-2026-10-19.md)、[评分图片与讲解视频](campaign-score-presentation-v1.md)。固定开局家族与三十年窗口，保留缺项区间和历史不足，分别报告局面分与完整战役分。
 
 ## 2026-10-17：信仰与权力／圣地规划知识
 
