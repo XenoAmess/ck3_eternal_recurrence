@@ -158,6 +158,49 @@ class RiteCreationAdapterTests(unittest.TestCase):
             expected_outcome_kind="create_faith",
             observed_preview=synthetic_preview(native_revision, stage=stage, token=token))
 
+    def test_actual_managed_r0016_binding_uses_allocator_and_keeps_durable_once_scope(self):
+        import hashlib
+        fixture = Path(__file__).resolve().parents[1] / "fixtures/rite_creation_actions12004/r0016-managed-frame.json"
+        record = json.loads(fixture.read_text(encoding="utf-8"))
+        self.assertEqual(record["machine_id"], "4-8e1c2f1861")
+        actual = record["snapshot"]
+        original = deepcopy(actual)
+        bound = action._binding(actual, actual["revision"])
+        self.assertIsNone(bound["episode_run_id"])
+        self.assertEqual(actual, original)  # no fake episode or snapshot rewrite
+        self.assertEqual(bound["managed_campaign_run_binding"], actual["managed_campaign_run_binding"])
+        self.assertEqual(bound["intent_scope"]["kind"], "managed_campaign_state_v1")
+        source_rite = 0
+        identity = action._intent_identity_v1(bound, source_rite)
+        self.assertNotIn("episode_run_id", identity)
+        # Counterfactual local inputs test retry safety, not another live scene.
+        changed = deepcopy(bound)
+        changed["managed_campaign_run_binding"].update(run_id="later-allocated-run", frozen_argv_sha256="a" * 64)
+        changed.update(connection_generation=2, native_revision=99, date_raw=bound["date_raw"] + 1)
+        self.assertEqual(action._intent_identity_v1(changed, source_rite), identity)
+        digest = lambda value: hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+        claim = Path(self.temp.name) / (digest(identity) + ".claim.json")
+        with patch.object(action.os, "fsync", wraps=action.os.fsync) as fsync:
+            action._save_exclusive(claim, {"identity": identity, "status": "unknown_no_retry"})
+            self.assertEqual(fsync.call_count, 1)
+        with self.assertRaises(FileExistsError):
+            action._save_exclusive(Path(self.temp.name) / (digest(action._intent_identity_v1(changed, source_rite)) + ".claim.json"), {})
+        self.assertNotEqual(action._intent_identity_v1(bound, 1), identity)
+        legacy = {"episode_run_id": "actual-one-life", "played_character_id": 31254}
+        self.assertEqual(action._intent_identity_v1(legacy, 0),
+            {"episode_run_id": "actual-one-life", "played_character_id": 31254, "source_rite_id": 0})
+        for field in ("bridge_pipe", "frozen_argv_sha256"):
+            invalid = deepcopy(actual)
+            invalid["managed_campaign_run_binding"][field] = "invalid"
+            with self.subTest(field=field), self.assertRaises(BridgeUnavailableError):
+                action._binding(invalid, invalid["revision"])
+        invalid = deepcopy(actual)
+        invalid["episode_run_id"] = "invented"
+        with self.assertRaises(BridgeUnavailableError): action._binding(invalid, invalid["revision"])
+        invalid = deepcopy(actual)
+        del invalid["managed_campaign_run_binding"]
+        with self.assertRaises(BridgeUnavailableError): action._binding(invalid, invalid["revision"])
+
     def test_finite_request_fields_reject_pointers_overrides_and_personal_tenet_ambiguity(self):
         for operation, kwargs in (
             ("preview", {"actor_id": ACTOR}), ("preview", {"callback_rva": 0x14F51B0}),

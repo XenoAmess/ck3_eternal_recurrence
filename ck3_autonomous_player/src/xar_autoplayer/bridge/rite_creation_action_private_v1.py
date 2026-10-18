@@ -15,6 +15,7 @@ import json
 import os
 from pathlib import Path
 import re
+import ntpath
 import sys
 from threading import RLock
 import uuid
@@ -87,9 +88,32 @@ def _binding(snapshot: Mapping[str, object], expected_revision: int) -> dict[str
     hello = snapshot["diagnostics"]["hello"]
     if require_exact_native_build(hello["expected_ck3_version"], hello["expected_ck3_sha256"]) != CK3_12004:
         raise BridgeUnavailableError("Rite creation actions require exact .4")
-    if type(bound["episode_run_id"]) is not str or not bound["episode_run_id"]:
-        raise BridgeUnavailableError("Rite creation requires a durable actual episode")
+    if snapshot.get("episode_projection") == "native_campaign":
+        from .title_map_navigation_contract import managed_campaign_title_map_navigation_v1_binding
+        try:
+            managed_campaign_title_map_navigation_v1_binding(snapshot)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        managed = deepcopy(snapshot["managed_campaign_run_binding"])
+        # Use the allocator's real persistent state directory. Run ID, frozen
+        # argv, connection, date and preview changes cannot create a fresh
+        # confirmation scope after an unknown result. This is not a one-life
+        # episode and the snapshot/episode_run_id are never rewritten.
+        bound["managed_campaign_run_binding"] = managed
+        bound["intent_scope"] = {"kind": "managed_campaign_state_v1",
+            "state_dir": ntpath.normcase(ntpath.normpath(managed["state_dir"]))}
+    elif type(bound["episode_run_id"]) is not str or not bound["episode_run_id"]:
+        raise BridgeUnavailableError("Rite creation requires a durable actual episode or verified managed campaign")
     return bound
+
+
+def _intent_identity_v1(binding: Mapping[str, object], source_rite_id: int) -> dict[str, object]:
+    identity = {"played_character_id": binding["played_character_id"], "source_rite_id": source_rite_id}
+    if "intent_scope" in binding:
+        identity["managed_campaign_intent_scope"] = deepcopy(binding["intent_scope"])
+    else:
+        identity["episode_run_id"] = binding["episode_run_id"]
+    return identity
 
 
 def normalize_result(raw: object, *, binding: Mapping[str, object], fields: Mapping[str, object]) -> dict[str, object]:
@@ -246,8 +270,7 @@ def execute_private_v1(driver: object, *, operation: str, expected_revision: int
             raise BridgeUnavailableError("actual original confirmation/modal/full Can proof is unavailable")
         # Native revision, connection, quote, preview token and requested outcome
         # deliberately do not create a fresh retry scope after an unknown result.
-        identity = {"episode_run_id": bound["episode_run_id"], "played_character_id": bound["played_character_id"],
-            "source_rite_id": expected_source_rite_id}
+        identity = _intent_identity_v1(bound, expected_source_rite_id)
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
         evidence = root / (key + "." + request_id + ".native-result.json")
         claim = root / (key + ".claim.json")
@@ -293,7 +316,9 @@ def execute_private_v1(driver: object, *, operation: str, expected_revision: int
         and not result[BODY_KEY]["original_writer_may_have_been_queued"])
     if known_no_dispatch:
         _release_known_unsubmitted(claim, request_id, "matching_original_native_result_proves_no_dispatch_and_no_possible_queue")
-    return {**result, "episode_run_id": bound["episode_run_id"], "queried_revision": expected_revision,
+    managed_provenance = ({"managed_campaign_run_binding": deepcopy(bound["managed_campaign_run_binding"]),
+        "intent_scope": deepcopy(bound["intent_scope"])} if "intent_scope" in bound else {})
+    return {**result, **managed_provenance, "episode_run_id": bound["episode_run_id"], "queried_revision": expected_revision,
         "known_no_dispatch_intent_released": known_no_dispatch,
         "native_result_receipt": str(evidence), "action_request_id": request_id,
         "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False}
@@ -366,8 +391,9 @@ They do not prove selected doctrine parameters, or that adoption is now legal.
     if expected_outcome_kind not in KINDS:
         raise ValueError("unknown expected native outcome")
     bound = [_binding(snapshot, snapshot.get("revision")) for snapshot in (before_snapshot, after_snapshot)]
-    for key in ("connection_generation", "game_pid", "played_character_id", "date_raw", "episode_run_id"):
-        if bound[0][key] != bound[1][key]:
+    for key in ("connection_generation", "game_pid", "played_character_id", "date_raw", "episode_run_id",
+            "intent_scope", "managed_campaign_run_binding"):
+        if bound[0].get(key) != bound[1].get(key):
             raise ValueError("poststate crossed owner, actor, episode or paused date")
     contexts = []
     for value, snapshot in ((before_context, before_snapshot), (after_context, after_snapshot)):

@@ -16253,6 +16253,10 @@ void RunConnectedSession(
                     && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
                          xar::ck3_12004::IsPrewarDeclarationNodeIdentityStep12004(step))
 #endif
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+                    && !(game.enabled() && xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+                         step == xar::ck3_12004::religion::rite_creation_actions::step)
+#endif
         ) {
           if (active_command_entry_trace != nullptr)
             active_command_entry_trace->dispatch_route = "outer_unsupported";
