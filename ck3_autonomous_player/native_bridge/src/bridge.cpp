@@ -2266,6 +2266,12 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
       AppendJsonString(result, capability);
     }
   }
+#if defined(XAR_ENABLE_RITE_CREATION_ACTIONS12004) && XAR_ENABLE_RITE_CREATION_ACTIONS12004
+  if (game.enabled() && xar::game::IsCk3_12004Descriptor(descriptor)) {
+    result += ',';
+    AppendJsonString(result, xar::ck3_12004::religion::rite_creation_actions::domain_key);
+  }
+#endif
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
   // This capability describes only the closed typed partial source query.
   // It never advertises switch readiness or creates a stock-action admission.

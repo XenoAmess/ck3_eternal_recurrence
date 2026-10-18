@@ -216,6 +216,19 @@ class FormalInputs:
         if len(order) != len(set(order)) or set(order) != set(by_id):
             raise ValueError('Sequence must contain every selected voice once')
         rows = [by_id[key] for key in order]
+        semantic_checks=[]
+        storyboard_pin=doc.get('graphics_storyboard')
+        if storyboard_pin is not None:
+            storyboard=self.load(storyboard_pin)
+            if storyboard.get('machine_id')!=doc['machine_id']:
+                raise ValueError('Semantic storyboard crossed machine')
+            consumer=self.bound(doc['semantic_graphic_consumer'])
+            if consumer.resolve()!=Path(common.semantic_graphics.__file__).resolve():
+                raise ValueError('Selected semantic consumer is not the actual imported producer')
+            for cue in storyboard['cues']:
+                common.semantic_graphics.checked_cue(storyboard,cue['id'])
+                if cue['id'] not in by_id or abs(cue['duration_seconds']-by_id[cue['id']]['duration_seconds'])>1e-6:
+                    raise ValueError('Semantic cue differs from the measured selected voice clock')
         gaps, intervals, raw_seconds, graphic_seconds = [], {}, 0.0, 0.0
         focus_checks=[]
         max_graphic_run = graphic_run = 0.0
@@ -266,6 +279,10 @@ class FormalInputs:
                 raise ValueError('Visual parts must cover the exact measured cue')
             for part in parts:
                 common.validate_burned_in_disclosure(part,self.bound)
+                reveal=common.semantic_graphics.semantic_reveal_plan(part,self.bound,cue_id=row['id'],storyboard_pin=storyboard_pin)
+                if reveal is not None:
+                    if storyboard_pin is None:raise ValueError('Semantic part needs the selected storyboard')
+                    semantic_checks.append(reveal)
                 focus=common.focus_geometry(part,self.bound,metadata_only=self.metadata_only)
                 if focus is not None:focus_checks.append({'cue_id':row['id'],**focus})
                 duration = part['duration_seconds']
@@ -394,7 +411,7 @@ class FormalInputs:
         return {'rows': rows, 'seconds': total, 'gaps': gaps, 'ready_to_build': not gaps and not self.metadata_only,
             'content_ready':not gaps,'metadata_only':self.metadata_only,'fullrender_admitted':False,
             'media_bytes_revalidated':not self.metadata_only,'media_stat_observations':media_stats,
-            'focus_geometry_checks':focus_checks,
+            'focus_geometry_checks':focus_checks,'semantic_reveal_checks':semantic_checks,
             'metadata_SHA_checked_inputs':metadata_checked,
             'evidence_unknowns':getattr(self,'evidence_unknowns',[]),
             'source_claim_limits':getattr(self,'source_claim_limits',[]),
@@ -456,6 +473,8 @@ def main(argv=None):
         if inputs.bound(document['storage_reservation']).resolve()!=args.reservation.resolve():
             raise ValueError('Value-v3 normal plan/build must use its exact SHA-bound storage reservation')
     required_sources = {str(Path(__file__).resolve()), str(args.v3_helper.resolve())}
+    if document.get('graphics_storyboard') is not None:
+        required_sources.add(str(Path(common.semantic_graphics.__file__).resolve()))
     snapshots = document['producer_source_snapshots']
     if {str(Path(item['file']['path']).resolve()) for item in snapshots} != required_sources:
         raise ValueError('Preserved input must embed both actual adapter and v3 helper source')

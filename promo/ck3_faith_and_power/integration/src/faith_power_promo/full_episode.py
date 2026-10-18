@@ -31,6 +31,7 @@ from PIL import Image, ImageFont
 
 from .production import fresh_runtime, pin, read, write, project, cue_duration, package_bytes
 from .context_composer import font_render_planner
+from . import semantic_graphics
 
 SCHEMA = 'ck3-faith-power-full-edit-v1'
 MAX_SECONDS = 1860
@@ -39,6 +40,9 @@ VIDEO_RATE = 3_000_000
 BUFFER_BITS = 3_000_000
 AUDIO_RATE = 192_000
 SIDE_BYTES = (64 + 32 + 16 + 32 + 16) * 1024**2
+# V5 has up to144 terminal PNGs; focus states remain inputs to one prepare per cue.
+V5_TERMINAL_PNG_BYTES = 40 * 1024**2
+V5_SIDE_BYTES = (64 + 16 + 32 + 16) * 1024**2 + V5_TERMINAL_PNG_BYTES
 MUSIC_REPO_PATH = 'promo/ck3_native_war_ai/assets/music/quiet-courtly-tension.wav'
 MUSIC_BYTES = 30_726_160
 MUSIC_SHA256 = 'fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f'
@@ -135,9 +139,13 @@ def focus_geometry(part, bound, *, metadata_only=False):
 
 def focus_filter(part, bound):
     checked=focus_geometry(part,bound)
+    reveal=semantic_graphics.semantic_reveal_plan(part,bound)
+    if reveal is not None and (checked is None or checked['source_geometry']!=[2560,1440]):
+        raise ValueError('Semantic reveal requires the actual 2560x1440 reference PNG')
+    prefix=(reveal['prepare_prefix']+',') if reveal is not None and reveal['prepare_prefix'] else ''
     if checked is None:return 'scale=2560:1440:flags=lanczos'
     x,y,width,height=checked['focus_rect']
-    return (f'crop={width}:{height}:{x}:{y},'
+    return (prefix+f'crop={width}:{height}:{x}:{y},'
         'scale=2560:1120:force_original_aspect_ratio=decrease:flags=lanczos,'
         'pad=2560:1440:(ow-iw)/2:0:color=0x211813')
 
@@ -158,10 +166,11 @@ def peak_budget(seconds=None, segments=MAX_SEGMENTS, *, profile=DEFAULT_PROFILE)
     visual = math.ceil((VIDEO_RATE * seconds + BUFFER_BITS * segments) / 8 * 1.05)
     narrated = math.ceil(((VIDEO_RATE + AUDIO_RATE) * seconds + BUFFER_BITS * segments) / 8 * 1.05)
     overshoot = math.ceil(BUFFER_BITS / 8) * (2 * segments + 1)
-    total = visual + narrated * 2 + SIDE_BYTES + overshoot
+    side = V5_SIDE_BYTES if profile == V5_REORDER_PROFILE else SIDE_BYTES
+    total = visual + narrated * 2 + side + overshoot
     return {'max_seconds':seconds,'segments':segments,'render_profile':profile.to_mapping(),'prepared_visual_bytes':visual,
         'narrated_segment_bytes':narrated,'concat_deliverable_bytes':narrated,
-        'graphics_metadata_audio_audit_scratch_bytes':SIDE_BYTES,
+        'graphics_metadata_audio_audit_scratch_bytes':side,
         'conservative_packet_overshoot_bytes':overshoot,'peak_new_bytes':total,
         'video_maxrate_bps':VIDEO_RATE,'video_bufsize_bits':BUFFER_BITS,'audio_bitrate_bps':AUDIO_RATE,
         'geometry':[2560,1440,30],'crf':21,'preset':'veryfast','container_allowance_fraction':0.05,

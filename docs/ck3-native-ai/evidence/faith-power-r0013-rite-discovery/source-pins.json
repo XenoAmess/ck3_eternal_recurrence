@@ -1,0 +1,190 @@
+{
+  "schema": "faith-e01-r0013-rite-discovery-boundary-source-pins-v1",
+  "machine_id": "4-8e1c2f1861",
+  "assembled_at_utc": "2026-10-18T09:12:16.893120+00:00",
+  "source_head": "8d49d0e028ab79e53331e984555a266911426464",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0013",
+  "small_sources_read": {
+    "root_notes": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\NEXT-PRODUCTION-DOCS-DELTA-a03.md",
+      "bytes": 2964,
+      "sha256": "f93bf826f2b906d54afe6aed17af5902751f653628b2b38f52736ca427f7a53c"
+    },
+    "owner_delivery": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-live-red-a01\\DELIVERY-a01.json",
+      "bytes": 4035,
+      "sha256": "31dc3627e14a412bd848e91dd791bcc3d166952fca2c3732534b3e77b9d572dd"
+    },
+    "first_action_red": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\root-native-receipts\\d1-open-draft-a01.json",
+      "bytes": 611,
+      "sha256": "31fc13ef4158e76761c7591184f7bd6c1aa852f64955ca9f95d2beb3b5032333"
+    },
+    "readiness_hold": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\case-output\\readiness-window-result.json",
+      "bytes": 1531,
+      "sha256": "1c8d303df984da461751ceeb16897865adbfe2ee0a59ac00cb959c3a8640b53d"
+    },
+    "religion_before": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\root-native-receipts\\d1-religion-before-a01.json",
+      "bytes": 41365,
+      "sha256": "230f23296c982b97a7f704a5c3431ea5b1a799379f7829975e92fe8fc7a0aeb4"
+    },
+    "save_precore_result": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\root-native-receipts\\d1-save-precore-a01.json",
+      "bytes": 21347,
+      "sha256": "c7c486d1a017fc1e2e2c75173b0d52515098eefe486b2a9b00f3b8d3dc682a61"
+    },
+    "normal_close": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\case-output\\normal-close-result.json",
+      "bytes": 15490,
+      "sha256": "febc6d45ac31e44104ea0535714a2efd424312a9047ccea52160b811aca366d5"
+    },
+    "screen_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\root-screen-release-a01.json",
+      "bytes": 1433,
+      "sha256": "0e3cf1ad7eeea4f093f307e862dfc476b15e29702e5bc6afad4c06c09c938697"
+    },
+    "original_public_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-crossreligion-d1-retry-v5-a02\\operations\\d1-retry-run-a01\\original-exit.json",
+      "bytes": 166,
+      "sha256": "0b856abb5f9cce3c9da3232c29c01e12f8170ffdddfa28327b9c14cfb3667f35"
+    },
+    "original_host_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "fe38b8999a586109e8c22d4785d48ec7896d456a62393b38792e27b50a9a1919"
+    },
+    "original_keeper_wait": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\keeper-actual-parent-exit.json",
+      "bytes": 1209,
+      "sha256": "34f9b1709b1c3ce418b994cf1044317576ecfbe6d753796a733df37abaa3e3e1"
+    }
+  },
+  "actual_hello_reference_reused_from_owner": {
+    "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0013\\native-report.native-wire.jsonl",
+    "line": 1,
+    "line_sha256": "555f18bbad4f62959517f662228c59aa1a28e45240ebb5e061768031235704a9",
+    "observed_at_utc": "2026-10-18T08:32:52.572980+00:00",
+    "pid": 5464,
+    "rite_capability_present": false,
+    "whole_wire_read_or_hashed_by_this_task": false
+  },
+  "first_action_projection": {
+    "id": "d1-open-draft-a01",
+    "plan": {
+      "id": "d1-open-draft-a01",
+      "tool": "ck3_execute_player_rite_creation_action_v1",
+      "args": {
+        "operation": "open_create_draft",
+        "expected_source_rite_id": 0
+      },
+      "continue_on_error": true
+    },
+    "started_at": "2026-10-18T08:47:30.696009+00:00",
+    "ok": false,
+    "error": "RuntimeError: MCP tool ck3_execute_player_rite_creation_action_v1 returned an error: Error executing tool ck3_execute_player_rite_creation_action_v1: this DLL does not implement the exact .4 Rite action candidate",
+    "finished_at": "2026-10-18T08:47:30.888937+00:00"
+  },
+  "prepared_state_reported_in_root_notes_at_0858": {
+    "player_full_id": 31254,
+    "religion_id": 8,
+    "faith_id": 13,
+    "current_rite_id": 0,
+    "main_rite_id": 0,
+    "piety": 20000,
+    "startup_marker": 1,
+    "forbidden": 0,
+    "scope": "preparation only, not create-draft/core/adopt success"
+  },
+  "preparation_small_receipt_projection": {
+    "readiness_status": "READINESS_HOLD_OBSERVED",
+    "readiness_observed_at_utc": "2026-10-18T08:38:19.733406+00:00",
+    "religion_started_at_utc": "2026-10-18T08:43:53.965856+00:00",
+    "religion_finished_at_utc": "2026-10-18T08:43:54.295765+00:00",
+    "religion_fields": {
+      "played_character_id": 31254,
+      "religion_id": 8,
+      "faith_id": 13,
+      "rite_id": 0,
+      "faith_main_rite_id": 0,
+      "date_raw": 53144328
+    },
+    "marker_forbidden_and_wallet_source": "Root notes at 08:58Z; no fresh game query by this task"
+  },
+  "candidate_status_at_owner_observation": {
+    "native_patch": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-live-red-a01\\rite-private-hello-native-future-a01.patch",
+      "bytes": 696,
+      "sha256": "31905c1f566648f1a9000acb94bb72b787a52b1978f47f88106af151bfea02eb",
+      "applied_built_or_loaded": false
+    },
+    "python_exploration": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\rite-live-red-a01\\rite-private-route-python-a01.patch",
+      "bytes": 15136,
+      "sha256": "ec709627d849ffbf801656a7bf7990d3c14024a7ec5aa3ceff69e101b6a8ee2f",
+      "tests_passed": 2,
+      "test_boundary": "real recorded initial hello through production Driver primitive; endpoint result synthetic unavailable; no native or game calls",
+      "selected_for_main": false,
+      "current_child_hot_loaded": false
+    }
+  },
+  "save_reference_from_root_notes": {
+    "checkpoint_path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\v5-crossreligion-d1-retry-a02\\state\\profile\\save games\\xar_checkpoint.ck3",
+    "saved_receipt_started_at_utc": "2026-10-18T08:54:12.888423+00:00",
+    "saved_receipt_finished_at_utc": "2026-10-18T08:54:14.252668+00:00",
+    "physical_bytes": 68958787,
+    "physical_sha256": "62d18fe254d658356671269f194319a316729394da6f38b32da0d503bae1cd58",
+    "payload_read_or_hashed_by_this_task": false,
+    "driver_state_replace_receipt": "unconfirmed/save_binding_mismatch",
+    "public_restore_qualified": false
+  },
+  "closure": {
+    "normal_close_qualified": true,
+    "business_pass": false,
+    "host_finished_at_utc": "2026-10-18T09:05:20.650900+00:00",
+    "host_error_in_normal_close_receipt": null,
+    "retained_handle": {
+      "signaled": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "pid": 5464,
+      "create_time": 1792312371.453058,
+      "retained_synchronize_query_handle_acquired": true
+    },
+    "native_finished_at_utc": "2026-10-18T09:04:49.539218+00:00",
+    "native_process_exit_code": 0,
+    "release_event": {
+      "sequence": 11751,
+      "timestamp_utc": "2026-10-18T09:07:50.384400+00:00",
+      "summary": "R0013 preparation qualified; Rite open predispatch RED preserved; no Rite/core/adopt submission; original public0/host1 RED plus normal GUI retained OS0 and keeper0 proven",
+      "resources": []
+    },
+    "original_waits": {
+      "public": {
+        "machine_id": "4-8e1c2f1861",
+        "completed_at_utc": "2026-10-18T09:05:21.138462+00:00",
+        "pid": 22108,
+        "actual_original_popen_wait": true,
+        "returncode": 0
+      },
+      "host": {
+        "at_utc": "2026-10-18T09:05:21.359039+00:00",
+        "pid": 23368,
+        "returncode": 1,
+        "run_id": "4-8e1c2f1861--faith-and-power--R0013",
+        "actual_original_popen_wait": true,
+        "normal_ck3_exit_inferred": false,
+        "business_pass": false
+      },
+      "keeper": {
+        "returncode": 0,
+        "at_utc": "2026-10-18T09:07:40.460269+00:00",
+        "business_pass": false
+      }
+    },
+    "first_predispatch_red_preserved": true,
+    "does_not_qualify_draft_core_adopt_or_restore": true
+  },
+  "source_boundary": "Reuse existing small owner evidence and Root notes. No complete wire, save payload, native binary, process, desktop or media read. Loaded-module conclusion comes from the existing owner report, not a new memory audit."
+}

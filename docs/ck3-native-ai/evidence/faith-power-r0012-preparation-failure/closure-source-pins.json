@@ -1,0 +1,107 @@
+{
+  "schema": "faith-e01-r0012-failed-preparation-cleanup-source-pins-v1",
+  "machine_id": "4-8e1c2f1861",
+  "read_at_utc": "2026-10-18T08:41:56.260234+00:00",
+  "source_head_context": "8d49d0e028ab79e53331e984555a266911426464",
+  "run_id": "4-8e1c2f1861--faith-and-power--R0012",
+  "sources": {
+    "root_notes": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\NEXT-PRODUCTION-DOCS-DELTA-a01.md",
+      "bytes": 5386,
+      "sha256": "115dc3f7a2cacc60198da2fda69b80ed42af6eb3b63146307865fc5b7efac782"
+    },
+    "allocation": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\root\\LANES-REALLOCATION-a05.json",
+      "bytes": 1515,
+      "sha256": "0020c0c9527708f65cf684aeef0cf308f20c3a3f0b2b30471c6aba0ecf6f0365"
+    },
+    "graphics_delta": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\production-candidate\\value-v5-production-a01\\authoring\\GRAPHICS-SCOPE-DELTA-a02.json",
+      "bytes": 5935,
+      "sha256": "08a53051c9c9e1d0e8da955011eb4fd22551c52cd9d63cb291ad8f553263f5f7"
+    },
+    "history_fix": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\buildings\\cross-religion-robert-history-fix-a02\\HANDOVER.json",
+      "bytes": 4402,
+      "sha256": "b6d05bca2219f3b27672fabc39fca71fe7ba934d9d70b527bb452e72b5764c91"
+    },
+    "history_diagnosis": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\revision-v5-20261018\\buildings\\cross-religion-robert-history-fix-a02\\root-cause.json",
+      "bytes": 5427,
+      "sha256": "d8a0f191f6ec3f9a4291e5a7714572ec210460dc83e80a1a4930100b805ab963"
+    },
+    "prehold_audit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime-audit\\r0012-prehold-normal-exit-readonly\\PREHOLD-NORMAL-EXIT-AUDIT-a01.json",
+      "bytes": 6027,
+      "sha256": "0a38b8d7dcc7f9aa4c641a7d684296d34b314e8eefbd3bcd9cfd2d4a3145a453"
+    },
+    "public_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\runtime\\common-crossreligion-v5-a01\\operations\\d1-run-a01\\original-exit.json",
+      "bytes": 166,
+      "sha256": "ff0f605eebf32223d55324663a0559cd601b9d1607fbb8607cdef59b41e26fca"
+    },
+    "original_host_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\host-original-process-exit.json",
+      "bytes": 239,
+      "sha256": "5f1e0872d9e744d50e04cb2eb50b1aa89c9f8a860c47233adc0bc47eae7a4726"
+    },
+    "cleanup_client_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\cleanup-operator-original-process-a01\\original-exit.json",
+      "bytes": 161,
+      "sha256": "a5cd16f63b90f1763dd6b45412f0b3b6465678d76fcc6749a2903ab6c95f37ed"
+    },
+    "same_handle_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\cleanup-case-output-a01\\early-actual-retained-handle-exit.json",
+      "bytes": 489,
+      "sha256": "96cfccad575d3ef46597730103a58cb76a0123a67a3ba24e293e75e4c8778564"
+    },
+    "normal_close_result": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\cleanup-case-output-a01\\normal-close-result.json",
+      "bytes": 16277,
+      "sha256": "933aea63d4947b89077688186f714ddcf946781c72bdd8a8f6f9cca8bc634ccf"
+    },
+    "keeper_exit": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\keeper-actual-parent-exit.json",
+      "bytes": 1209,
+      "sha256": "11d37e01f3ed586fab8d48bd01f1ca5eb41ed71ba16cbccbca687e6a7e5b1275"
+    },
+    "screen_release": {
+      "path": "C:\\workspace\\ck3-faith-and-power-20261017\\episode01\\live\\4-8e1c2f1861--faith-and-power--R0012\\root-screen-release-a01.json",
+      "bytes": 1441,
+      "sha256": "dd83d81c72e88e4f439d69f68c1a91318e009e9a72600213916ec2ee0db7d7d5"
+    }
+  },
+  "closure_projection": {
+    "original_public_exit_code": 2,
+    "original_host_exit_code": 1,
+    "new_cleanup_client_exit_code": 0,
+    "keeper_exit_code": 0,
+    "retained_handle": {
+      "machine_id": "4-8e1c2f1861",
+      "run_id": "4-8e1c2f1861--faith-and-power--R0012",
+      "at_utc": "2026-10-18T08:28:27.957766+00:00",
+      "pid": 14416,
+      "create_time": 1792310025.2548645,
+      "retained_synchronize_query_handle_acquired": true,
+      "wait_result": 0,
+      "exit_code_available": true,
+      "exit_code": 0,
+      "actual_retained_os0": true,
+      "handle_is_the_actual_CaseClient_retained_handle": true,
+      "handle_reopened": false,
+      "game_action_performed": false,
+      "business_pass": false
+    },
+    "host_finished_at": "2026-10-18T08:28:55.839921+00:00",
+    "cleanup_ok": true,
+    "failure_preserved": true,
+    "failure_lifecycle_completed": true,
+    "business_pass": false,
+    "normal_close_qualified": false,
+    "host_error": "TimeoutError: actual qualified fixture government/tier/player did not stabilize before deadline",
+    "screen_release_sequence": 11733,
+    "screen_release_at_utc": "2026-10-18T08:29:13.254495+00:00"
+  },
+  "source_boundary": "Original JSON and Root handover reads only; no live process, game, screen or media access. Mutable error.log was not rehashed. Script-source hashes remain the diagnosis author original observations.",
+  "future_prehold_normal_exit_implemented": false
+}
