@@ -1,0 +1,34 @@
+{
+  "schema": "xar.e04.refill-core-carrier-delivery.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T02:07:53.384815+00:00",
+  "status": "IMPLEMENTED_FOCUSED_OFFLINE_PASS_PRODUCTION_LIVE_NOTRUN",
+  "source": {
+    "path": "SOURCE.final.json",
+    "bytes": 17748,
+    "sha256": "83b7c34ad6838f48a9557d63c49af96bd43b32d05bb434bc1b197a9c344f8133"
+  },
+  "copy_plan": {
+    "path": "COPYPLAN.final.json",
+    "bytes": 7784,
+    "sha256": "29683cf7bee02fddea6d33477f5e018b83d84696a9d827830831ce9b818d70fb"
+  },
+  "patch": {
+    "path": "candidate.patch",
+    "bytes": 151356,
+    "sha256": "4161b43377f912ae78dae940b6688cc45f76db3ee57971e88dcd3bc68dbf4461"
+  },
+  "portable_source": {
+    "path": "portable-source-a01.zip",
+    "bytes": 160776,
+    "sha256": "9039dc26cda8a6f280b28d84d7f97b9c569d097191af0bd398a4c6dfd7a712dd"
+  },
+  "verifier": {
+    "path": "verify_sources.py",
+    "bytes": 1737,
+    "sha256": "444fdb335c85d93219a3d1e399240894df4815a3a47eb209af8a683b0d671032"
+  },
+  "target_count": 17,
+  "candidate_bytes": 4031464,
+  "scope": "Read-only carrier and source code; no ADD detour, SDK, game, main/index or production native build"
+}

@@ -1,0 +1,14 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T02:08:14.376237+00:00",
+  "status": "PASS",
+  "scope": "Extract portable archive into new directory then stdlib manifest verification; no source-path reads, SDK, game, native build or tests",
+  "exit_code": 0,
+  "stdout": "{\"scope\": \"source integrity and optional exact target bytes\", \"checked_files\": 42, \"targets\": 17, \"repo_checked\": false, \"adopted\": false, \"SDK_or_game_or_build\": false, \"live_qualification\": false, \"status\": \"PASS\"}\n",
+  "stderr": "",
+  "main_preimage_verifier": "42 source files and 17 exact target preimages PASS",
+  "git_apply_check_exit_code": 0,
+  "portable_zip_sha256": "9039dc26cda8a6f280b28d84d7f97b9c569d097191af0bd398a4c6dfd7a712dd",
+  "storage_total_bytes": 4607222,
+  "review_at_utc": "2026-10-18T05:30:00Z"
+}

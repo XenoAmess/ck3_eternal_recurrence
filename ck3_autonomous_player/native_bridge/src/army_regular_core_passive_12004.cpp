@@ -1,10 +1,9 @@
 #ifndef XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
 #define XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004 0
 #endif
-#if XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
 // Shared allocator/TLS stack is supplied by the starvation/county integration.
 #include "xar_bridge/ck3_12004_native_invocation_context.hpp"
-#endif
+#include "xar_bridge/refill_core_carrier_12004.hpp"
 #include "xar_bridge/army_regular_core_passive_12004.hpp"
 #include "xar_bridge/ck3_12004.hpp"
 #include "xar_bridge/ck3_12004_regiment_refill_switch_readonly.hpp"
@@ -22,6 +21,11 @@
 #if defined(_MSC_VER)
 #include <intrin.h>
 #endif
+
+// One fixed DATA export, read externally without executing target code. Its
+// existence grants no live qualification; Root binds this exact DLL separately.
+extern "C" __declspec(dllexport)
+xar::ck3_12004::refill_carrier::Directory XarRefillCoreCarrier12004{};
 
 namespace xar::ck3_12004 {
 namespace {
@@ -671,18 +675,66 @@ ArmyRegularCoreObservation12004 InvokeArmyRegularCorePassive12004(
   if (!original) return event;
   // Exactly once, outside observer read/capture fault boundaries. Save the full opaque native RAX bits immediately.
   event.original_called = true;
+  const auto *enclosing_invocation = CurrentNativeInvocationContext12004();
+  if (permit.admitted() ||
+      (enclosing_invocation != nullptr &&
+       enclosing_invocation->parent_kind == NativeInvocationParentKind12004::regular_refill_core)) {
+    // Reuse the actual common allocator/TLS stack, and copy only scalars from
+    // the actual same-thread event. No query thread reads another thread's TLS.
+    NativeInvocationScope12004 core_instruction_parent(
+        NativeInvocationParentKind12004::regular_refill_core,
+        GetCurrentThreadId(), &event);
+    const auto &frame = core_instruction_parent.frame();
+    event.native_core_invocation_token = frame.invocation_token;
+    event.parent_invocation_token = frame.parent_invocation_token;
+    event.core_invocation_nesting_depth = frame.nesting_depth;
+    using namespace refill_carrier;
+    Words payload{};
+    const auto tid = GetCurrentThreadId();
+    const auto &parent = event.parent_scope;
+    if (permit.admitted() && event.entry_provenance_complete && frame.invocation_token != 0 &&
+        frame.native_thread_id == tid && frame.typed_payload == &event &&
+        frame.parent_kind == NativeInvocationParentKind12004::regular_refill_core &&
+        event.entry_date_raw && parent.date_raw &&
+        event.entry_date_raw == parent.date_raw &&
+        event.entry_event.thread_id == tid && parent.entry_event.thread_id == tid &&
+        parent.saved_mask02_admitted == true) {
+      payload[active] = 1;
+      payload[invocation_token] = frame.invocation_token;
+      payload[parent_invocation_token] = frame.parent_invocation_token.value_or(0);
+      payload[nesting_depth] = frame.nesting_depth;
+      payload[core_clock_identity] = event.entry_event.clock_identity;
+      payload[core_entry_sequence] = event.entry_event.sequence;
+      payload[core_thread_id] = event.entry_event.thread_id.value_or(0);
+      payload[natural_clock_identity] = parent.entry_event.clock_identity;
+      payload[natural_entry_sequence] = parent.entry_event.sequence;
+      payload[natural_thread_id] = parent.entry_event.thread_id.value_or(0);
+      payload[date_raw] = *event.entry_date_raw;
+      payload[manager_identity] = event.manager_identity;
+      payload[secondary_manager_identity] = parent.secondary_manager_identity;
+      payload[game_state_identity] = parent.game_state_identity;
+      payload[caller_return_rva] = event.caller_return_rva;
+      payload[natural_entry_rva] = parent.actual_entry_rva;
+      payload[entry_provenance_complete] = 1;
+      payload[saved_mask02_admitted] = 1;
+      payload[invocation_kind] = static_cast<std::uint64_t>(frame.parent_kind);
+    }
+    // Always push, including invalid nested entries: inactive hides any valid
+    // enclosing frame while this distinct original invocation is executing.
+    Publication carrier(XarRefillCoreCarrier12004, tid, payload);
+    event.core_carrier_published = carrier.published();
+    if (event.core_carrier_published) event.core_carrier_source_epoch = kSourceEpoch;
+    event.raw_return_bits = original(manager);
+  } else {
 #if XAR_ENABLE_REFILL_CORE_INVOCATION_PARENT_12004
-  {
-    // This payload lives only for the actual synchronous original call. An
-    // external debugger cannot call TLS or infer this token from QPC/return PC.
     NativeInvocationScope12004 core_instruction_parent(
         NativeInvocationParentKind12004::regular_refill_core,
         GetCurrentThreadId(), &event);
     event.raw_return_bits = original(manager);
-  }
 #else
-  event.raw_return_bits = original(manager);
+    event.raw_return_bits = original(manager);
 #endif
+  }
   event.original_returned = true;
   if(!permit.admitted())return event;
   try {

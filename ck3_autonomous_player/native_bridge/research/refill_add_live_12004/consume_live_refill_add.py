@@ -19,11 +19,25 @@ if __name__ == '__main__':
     p.add_argument('--raw', type=Path, required=True)
     p.add_argument('--binding', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
+    p.add_argument('--core-observation', type=Path,
+                   help='one actual serialized CoreEvent record; required for native v4')
     a = p.parse_args()
     if a.raw.stat().st_size > 131072 or a.binding.stat().st_size > 16384:
         p.error('bounded native raw and owner binding required')
-    item = normalize_instruction_local_refill_add_12004(a.raw.read_bytes(), json.loads(a.binding.read_text(encoding='utf-8')))
+    core = None
+    if a.core_observation is not None:
+        if not 0 < a.core_observation.stat().st_size <= 4 * 1024 * 1024:
+            p.error('bounded actual CoreEvent JSON record required (maximum 4 MiB)')
+        core = json.loads(a.core_observation.read_text(encoding='utf-8'),
+                          object_pairs_hook=contract._unique_json_object)
+    item = normalize_instruction_local_refill_add_12004(
+        a.raw.read_bytes(), json.loads(a.binding.read_text(encoding='utf-8'),
+                                     object_pairs_hook=contract._unique_json_object),
+        core_observation=core)
     with a.output.open('x', encoding='utf-8') as f:
         json.dump(item, f, indent=2); f.write('\n')
     print(json.dumps({'output':str(a.output),'raw_sha256':item['raw_sha256'],
-                      'instruction_pair_ready':True,'full_R06_qualified':False}))
+                      'instruction_pair_ready':True,
+                      'same_core_invocation_join_ready':item.get('same_core_invocation_join_ready', False),
+                      'natural_attribution_ready':item['natural_attribution_ready'],
+                      'full_R06_qualified':False}))

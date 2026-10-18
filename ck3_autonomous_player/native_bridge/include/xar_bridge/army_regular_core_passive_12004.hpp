@@ -119,6 +119,12 @@ struct ArmyRegularCoreObservation12004 {
   std::uintptr_t manager_identity = 0;
   std::uintptr_t caller_return_rva = 0;
   std::uintptr_t raw_return_bits = 0;
+  // Actual common TLS invocation identity. It is not the natural event clock.
+  std::uint64_t native_core_invocation_token = 0;
+  std::optional<std::uint64_t> parent_invocation_token;
+  std::uint32_t core_invocation_nesting_depth = 0;
+  bool core_carrier_published = false;
+  std::uint64_t core_carrier_source_epoch = 0;
   std::optional<std::uint64_t> entry_date_raw;
   std::optional<std::uint64_t> returned_date_raw;
   ArmyNaturalPhaseScope12004 parent_scope;

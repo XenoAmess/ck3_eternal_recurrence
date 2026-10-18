@@ -1533,3 +1533,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 ## 2026-10-18 R08 c/d可执行准备已入库，实际writer仍待采
 
 `machine_id: desktop-3fevhd2-1c74096080`。[Root执行卡](episode04-r08-cd-writer-next-window-12004.md)与research/maintenance_writer_cold_12004下build_card.py、select_cd_writers.py可复用：旧固定四槽已含c/d=28/30，128为全槽累计，不必发明新flag。新卡只生成现有prepare/native/consume argv，选择器只从被pin的原actualconsumer结果保留c/d及同值写；partial cleanup/foreign PC不授source-ready，不抹a/b原件。作者3新focused PASS、canonical两项selector smoke单列；没有attach/SDK/observer或新c/d PC，paid/sameNET/payer/cadence仍unknown，研究9/14、业务6/11、动态0/11、ABC0/3不涨。旧build/SYSTEM与模板本机路径不授新场或跨机资格。
+
+## 2026-10-18 R06 core carrier 与正 q 准备入口
+
+[Core carrier 来源与使用边界](episode04-refill-core-carrier-12004.md)提供固定 DATA 导出、同线程 invocation fence、external v4 consumer 及 position=true/完整 final shared-q>0 的准备门。原生产 C++ wire 被旧 normalizer 拒绝的 RED 与修后 synthetic 互通 PASS 均保留在[便携证据](evidence/episode04-refill-core-carrier-12004/README.md)。本次仅源码整合和一个 canonical consumer 单例；没有 SDK、生产 coherent build 或新 live ADD，现有 a35 现场不替换。不能把 same-token join 当作同次 NET 因果、全窗覆盖或 R06 整卡完成；9/14、6/11、0/11、ABC0/3不变。machine_id: desktop-3fevhd2-1c74096080。

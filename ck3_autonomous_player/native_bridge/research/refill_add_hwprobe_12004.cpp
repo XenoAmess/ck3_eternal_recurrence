@@ -26,6 +26,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+#include "refill_add_live_12004/refill_core_carrier_reader_12004.hpp"
+#endif
 
 #if defined(XAR_REFILL_V3_COLD_BUILD) && XAR_ENABLE_REFILL_ADD_HWPROBE_12004
 #error The cold adapter cannot enable the production CLI
@@ -55,8 +58,10 @@ constexpr const char *kBudgetKind="fixture_debug_budget";
 std::uint64_t DebugHitLimit12004(){return g_fixture_hit_limit;}
 DWORD64 HitSite12004(int site){return g_fixture_sites[site];}
 #else
-constexpr const char *kRawSchema="xar.ck3.refill_ADD_12004.hwprobe_raw.v3";
-constexpr const char *kReadySchema="xar.ck3.refill_ADD_12004.hwprobe_ready.v2";
+namespace carrier = xar::research::refill_core_carrier_12004;
+carrier::Binding g_core_carrier;
+constexpr const char *kRawSchema="xar.ck3.refill_ADD_12004.hwprobe_raw.v4";
+constexpr const char *kReadySchema="xar.ck3.refill_ADD_12004.hwprobe_ready.v3";
 constexpr const char *kSiteKey="site_rva";
 constexpr const char *kBudgetKind="debug_hit_budget";
 constexpr std::uint64_t DebugHitLimit12004(){return 100000;}
@@ -102,6 +107,60 @@ template<std::size_t N> std::string ByteHex(const std::array<std::uint8_t,N> &by
   constexpr char digits[]="0123456789abcdef"; std::string out; out.reserve(N*2);
   for (auto b:bytes) {out.push_back(digits[b>>4]);out.push_back(digits[b&15]);} return out;
 }
+
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+std::string JsonString(const std::string &value) {
+  constexpr char digits[]="0123456789abcdef";
+  std::string out="\"";
+  for(const unsigned char c:value) {
+    if(c=='"'||c=='\\'){out.push_back('\\');out.push_back(static_cast<char>(c));}
+    else if(c<0x20){out+="\\u00";out.push_back(digits[c>>4]);out.push_back(digits[c&15]);}
+    else out.push_back(static_cast<char>(c));
+  }
+  out.push_back('"');return out;
+}
+template<class T> std::string RawBytesHex(const T &value) {
+  constexpr char digits[]="0123456789abcdef";
+  const auto *bytes=reinterpret_cast<const unsigned char *>(&value);
+  std::string out;out.reserve(sizeof value*2);
+  for(std::size_t i=0;i<sizeof value;++i){out.push_back(digits[bytes[i]>>4]);out.push_back(digits[bytes[i]&15]);}
+  return out;
+}
+void LogCarrierMetadata(std::ostream &o,bool include_header) {
+  o<<",\"carrier_module_path\":"<<JsonString(g_core_carrier.module_path)
+   <<",\"carrier_module_base\":\""<<Hex(g_core_carrier.module_base)
+   <<"\",\"carrier_export_rva\":\""<<Hex(g_core_carrier.export_rva)
+   <<"\",\"carrier_address\":\""<<Hex(g_core_carrier.directory_address)
+   <<"\",\"carrier_source_epoch\":"<<carrier::abi::kSourceEpoch;
+  if(include_header)o<<",\"carrier_header_64_hex\":\""<<RawBytesHex(g_core_carrier.header)<<'"';
+}
+void LogCarrierCapture(std::ostream &o,const carrier::Capture &capture) {
+  if(!capture.attempted){o<<"null";return;}
+  o<<"{\"module_path\":"<<JsonString(g_core_carrier.module_path)
+   <<",\"module_base\":\""<<Hex(g_core_carrier.module_base)
+   <<"\",\"export_rva\":\""<<Hex(g_core_carrier.export_rva)
+   <<"\",\"directory_address\":\""<<Hex(g_core_carrier.directory_address)
+   <<"\",\"source_epoch\":"<<carrier::abi::kSourceEpoch<<",\"header_64_hex\":";
+  if(capture.header_complete)o<<JsonString(RawBytesHex(capture.header));else o<<"null";
+  o<<",\"slot_index\":"<<capture.slot_index<<",\"slot_address\":\""<<Hex(capture.slot_address)
+   <<"\",\"first_168_hex\":";
+  if(capture.first_complete)o<<JsonString(RawBytesHex(capture.first));else o<<"null";
+  o<<",\"second_168_hex\":";
+  if(capture.second_complete)o<<JsonString(RawBytesHex(capture.second));else o<<"null";
+  o<<",\"stable_active\":"<<(capture.stable_active?"true":"false")
+   <<",\"owners_complete\":"<<(capture.owners_complete?"true":"false")
+   <<",\"owner_matches\":"<<capture.owner_matches
+   <<",\"header_complete\":"<<(capture.header_complete?"true":"false")
+   <<",\"first_complete\":"<<(capture.first_complete?"true":"false")
+   <<",\"second_complete\":"<<(capture.second_complete?"true":"false")
+   <<",\"diagnostic\":"<<JsonString(capture.diagnostic)<<",\"frame\":";
+  if(capture.second_complete){
+    o<<'{';for(std::size_t i=0;i<carrier::abi::kWords;++i){if(i)o<<',';
+      o<<JsonString(carrier::abi::kWordNames[i])<<':'<<capture.second[i];}o<<'}';
+  }else o<<"null";
+  o<<'}';
+}
+#endif
 
 DWORD64 ModuleBase(DWORD pid) {
   HANDLE snapshot = CreateToolhelp32Snapshot(
@@ -228,6 +287,9 @@ struct Hit {
   bool physical_complete=false,data_complete=false;
   std::int32_t data_count=-1;
   std::vector<std::array<std::uint32_t,4>> data;
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+  carrier::Capture core_carrier;
+#endif
 };
 template<class T> bool Read(HANDLE p,DWORD64 a,T &v) {return ReadExact(p,a,&v,sizeof v);}
 DWORD64 Resolve(HANDLE p,DWORD64 base,DWORD64 registry_rva,DWORD64 fallback_rva,
@@ -276,6 +338,11 @@ Hit ReadHit(HANDLE process,DWORD64 base,int site,DWORD tid,const CONTEXT &c) {
       process,h.rsp,h.q_index,h.q_bits);
   h.stack_q_window=stack_q.bytes;
   h.stack_q_source_complete=stack_q.complete();
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+  // No carrier traffic for other manager callbacks or rejected physical hits.
+  if(h.tid==g_expected_tid && h.full_id==g_expected_regiment && h.slot==g_expected_slot)
+    h.core_carrier=carrier::ReadSelected(process,g_core_carrier,h.tid);
+#endif
   if(!Read(process,h.pointer,h.arrg_raw))return h;
   if(h.arrg_raw==-1){h.data_count=0;h.data_complete=true;return h;}
   h.arrg_pointer=Resolve(process,base,0x5D1F340,0x5D1F338,h.arrg_raw,h.arrg_resolved);
@@ -300,6 +367,9 @@ Hit ReadHit(HANDLE process,DWORD64 base,int site,DWORD tid,const CONTEXT &c) {
 bool PairIsUnique(const std::vector<Hit> &hits) {
   if(hits.size()!=2)return false;
   const auto &a=hits[0],&b=hits[1];
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+  if(!carrier::SameActivePair(a.core_carrier,b.core_carrier,a.tid))return false;
+#endif
   for(std::size_t i=0;i<a.seven.size();++i)
     if((i<a.slot*0x24+4||i>=a.slot*0x24+8)&&a.seven[i]!=b.seven[i])return false;
   return a.site==0&&b.site==1&&a.physical_complete&&b.physical_complete&&a.tid==b.tid&&
@@ -322,7 +392,15 @@ void LogHit(std::ofstream &o,const Hit &h,DWORD pid,std::uint64_t ordinal) {
    <<",\"stack_q_window_28_hex\":\"";
   constexpr char q_digits[]="0123456789abcdef";
   for(auto b:h.stack_q_window)o<<q_digits[b>>4]<<q_digits[b&15];
+#if defined(XAR_REFILL_V3_COLD_BUILD)
   o<<"\",\"native_core_token\":null,\"natural_parent_token\":null,\"natural_attribution_ready\":false"
+#else
+  o<<"\",\"native_core_token\":";
+  if(h.core_carrier.stable_active)o<<h.core_carrier.second[carrier::abi::invocation_token];else o<<"null";
+  o<<",\"natural_parent_token\":null,\"natural_attribution_ready\":false,\"core_carrier_v1\":";
+  LogCarrierCapture(o,h.core_carrier);
+  o
+#endif
    <<",\"arrg_raw\":"<<h.arrg_raw<<",\"arrg_resolved\":"<<h.arrg_resolved
    <<",\"arrg_pointer\":\""<<Hex(h.arrg_pointer)<<"\",\"army_raw\":"<<h.army_raw
    <<",\"army_resolved\":"<<h.army_resolved<<",\"data_count\":"<<h.data_count
@@ -344,7 +422,13 @@ bool WriteReady(const std::filesystem::path &path, DWORD pid, DWORD64 base) {
         << "\",\"site_1\":\"" << Hex(HitSite12004(1))
         << "\",\"machine_id\":\"" << g_machine << "\",\"process_created_filetime\":" << g_expected_created
         << ",\"thread_id\":" << g_expected_tid << ",\"regi_full_id_u32\":" << g_expected_regiment
+#if defined(XAR_REFILL_V3_COLD_BUILD)
         << ",\"physical_slot\":" << g_expected_slot << "}\n";
+#else
+        << ",\"physical_slot\":" << g_expected_slot;
+  LogCarrierMetadata(ready,false);
+  ready << "}\n";
+#endif
   ready.flush();
   return ready.good();
 }
@@ -406,7 +490,12 @@ bool AttachedIdentityMatches(HANDLE process,DWORD pid,DWORD64 base,bool fixture,
 #endif
   }
   DWORD64 actual_base=0;
+#if defined(XAR_REFILL_V3_COLD_BUILD)
   return HasExpectedImageAndAnchors(process,pid,actual_base)&&actual_base==base;
+#else
+  return HasExpectedImageAndAnchors(process,pid,actual_base)&&actual_base==base
+      && carrier::HeaderStillValid(process,g_core_carrier);
+#endif
 }
 
 int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
@@ -450,6 +539,14 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
     std::cerr << "process image or exact in-memory sites differ\n";
     return 2;
   }
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+  std::string carrier_error;
+  if(!carrier::Resolve(process,pid,g_core_carrier,carrier_error)) {
+    CloseHandle(process);
+    std::cerr << "fixed read-only core carrier unavailable: " << carrier_error << '\n';
+    return 2;
+  }
+#endif
   BOOL other_debugger=FALSE;
   if(!CheckRemoteDebuggerPresent(process,&other_debugger)||other_debugger){std::cerr<<"debugger-presence-check failed/occupied error="<<GetLastError()<<"\n";CloseHandle(process);return 2;}
   std::ofstream output(raw_path, std::ios::binary | std::ios::out);
@@ -466,7 +563,13 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
          << ",\"thread_id\":" << g_expected_tid << ",\"regi_full_id_u32\":" << g_expected_regiment
          << ",\"physical_slot\":" << g_expected_slot << ",\"timeout_ms\":" << timeout_ms
          << ",\"verified_site_0_hex\":\"" << ByteHex(g_verified_pre)
+#if defined(XAR_REFILL_V3_COLD_BUILD)
          << "\",\"verified_site_1_hex\":\"" << ByteHex(g_verified_post) << "\"}\n";
+#else
+         << "\",\"verified_site_1_hex\":\"" << ByteHex(g_verified_post) << '"';
+  LogCarrierMetadata(output,true);
+  output << "}\n";
+#endif
   output.flush();
 
   (void)SetConsoleCtrlHandler(OnConsoleControl, TRUE);
@@ -694,6 +797,10 @@ int Probe(DWORD pid, DWORD timeout_ms, const std::filesystem::path &raw_path,
       <<",\"after_current_u32\":"<<hits[1].current<<",\"DWORD_wrap_matches\":true"
       <<",\"associated_DATA_pair_complete\":"<<((hits[0].data_complete&&hits[1].data_complete&&
           hits[0].data==hits[1].data&&hits[0].arrg_pointer==hits[1].arrg_pointer&&hits[0].army_pointer==hits[1].army_pointer)?"true":"false")
+#if !defined(XAR_REFILL_V3_COLD_BUILD)
+      <<",\"native_core_token\":"<<hits[0].core_carrier.second[carrier::abi::invocation_token]
+      <<",\"carrier_pair_same_token\":true"
+#endif
       <<",\"natural_parent_token\":null,\"natural_attribution_ready\":false,\"full_window_coverage_ready\":false}\n";
     output.flush();
   }

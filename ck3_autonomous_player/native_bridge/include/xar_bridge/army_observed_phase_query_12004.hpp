@@ -58,6 +58,11 @@ template<class N, class S> void CoreEvent(std::string &out, const ck3_12004::Arm
   w.Integer("manager_identity",v.manager_identity);
   w.Integer("caller_return_rva",v.caller_return_rva);
   w.Integer("raw_return_bits",v.raw_return_bits);
+  w.Integer("native_core_invocation_token",v.native_core_invocation_token);
+  w.Integer("parent_invocation_token",v.parent_invocation_token);
+  w.Integer("core_invocation_nesting_depth",v.core_invocation_nesting_depth);
+  w.Boolean("core_carrier_published",v.core_carrier_published);
+  w.Integer("core_carrier_source_epoch",v.core_carrier_source_epoch);
   w.Integer("entry_date_raw",v.entry_date_raw);
   w.Integer("returned_date_raw",v.returned_date_raw);
   w.Boolean("observed",v.observed);

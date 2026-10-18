@@ -5,6 +5,13 @@ from .army_daily_assault_roster_admission_contract import _typed as _roster_type
 from .army_daily_assault_active_table_contract import normalize_current_daily_assault_table_v1
 
 _SHAPES = {}
+_CORE_CARRIER_FIELDS = {
+    'native_core_invocation_token': 'u64',
+    'parent_invocation_token': 'u64?',
+    'core_invocation_nesting_depth': 'u32',
+    'core_carrier_published': 'bool',
+    'core_carrier_source_epoch': 'u64',
+}
 def _shape(name, declaration):
     _SHAPES[name] = dict(field.split('=', 1) for field in declaration.split())
 
@@ -20,12 +27,18 @@ def _typed(value, kind, name):
     if kind in _SHAPES:
         fields = _SHAPES[kind]
         optional_subject = kind == 'CoreFrame' and type(value) is dict and 'subject_coverage_v1' in value
-        expected_fields = set(fields) | ({'subject_coverage_v1'} if optional_subject else set())
+        optional_carrier = (kind == 'CoreEvent' and type(value) is dict
+                            and bool(set(value) & set(_CORE_CARRIER_FIELDS)))
+        expected_fields = (set(fields) | ({'subject_coverage_v1'} if optional_subject else set())
+                           | (set(_CORE_CARRIER_FIELDS) if optional_carrier else set()))
         if type(value) is not dict or set(value) != expected_fields:
             raise ValueError(f'{name} exact owned shape is malformed')
         for key, child in fields.items(): _typed(value[key], child, f'{name}.{key}')
         if optional_subject:
             _typed(value['subject_coverage_v1'], 'CoreSubjectCoverage', name + '.subject_coverage_v1')
+        if optional_carrier:
+            for key, child in _CORE_CARRIER_FIELDS.items():
+                _typed(value[key], child, f'{name}.{key}')
         return
     if kind.startswith('roster:'):
         _roster_typed(value, kind[7:], name); return

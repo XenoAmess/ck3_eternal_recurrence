@@ -201,6 +201,33 @@ def _frame(frame: dict, path: str) -> None:
     # from completeness of the raw seven-slot copy.
 
 
+def _carrier_extension(event: dict, path: str) -> None:
+    """Validate literal shared-context metadata; never derive a token or readiness."""
+    if 'native_core_invocation_token' not in event:
+        return
+    token = event['native_core_invocation_token']
+    parent = event['parent_invocation_token']
+    depth = event['core_invocation_nesting_depth']
+    published = event['core_carrier_published']
+    epoch = event['core_carrier_source_epoch']
+    if parent is not None:
+        _require(parent > 0 and parent != token and depth > 1,
+                 path, 'carrier parent must retain a distinct nonzero enclosing invocation token')
+    if token > 0:
+        _require(depth > 0, path, 'allocated carrier invocation lacks its nesting depth')
+        _require((depth == 1 and parent is None) or (depth > 1 and parent is not None),
+                 path, 'allocated carrier invocation parent/depth disagree')
+    if published:
+        _require(token > 0 and depth > 0 and epoch == 20261018
+                 and event['entry_provenance_complete'] and event['observed']
+                 and event['original_called'],
+                 path, 'published carrier lacks its own invocation/source/natural entry proof')
+    else:
+        _require(epoch == 0, path, 'unpublished carrier must retain literal source epoch zero')
+    # Allocation exhaustion can leave token zero with a real positive depth.
+    # Preserve that negative observation, including an unavailable parent token.
+
+
 def validate_core_12004(value: dict, *, expected_carmy_id: int) -> None:
     """Validate the already typed owned leaf without filling or rewriting it."""
     path = "actual_army_regular_core_observations_v1"
@@ -223,6 +250,7 @@ def validate_core_12004(value: dict, *, expected_carmy_id: int) -> None:
                  path, "original return lacks its original call")
         _require(not event["entry_provenance_complete"] or event["observed"],
                  path, "complete entry provenance lacks its natural observation")
+        _carrier_extension(event, path)
         scope = event["parent_scope"]
         if event["observed"]:
             _require(scope["observed"] and scope["phase"] == "post_date"

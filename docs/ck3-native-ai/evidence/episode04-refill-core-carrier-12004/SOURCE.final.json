@@ -1,0 +1,438 @@
+{
+  "schema": "xar.e04.refill-core-carrier-source.v1",
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "at_utc": "2026-10-18T02:07:53.078687+00:00",
+  "base_head": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "exact_game_exe_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+  "production_build_and_live": "NOTRUN",
+  "main_or_index_written": false,
+  "review_at_utc": "2026-10-18T05:30:00Z",
+  "files": [
+    {
+      "path": "candidate/docs/ck3-native-ai/episode04-refill-core-carrier-12004.md",
+      "bytes": 4399,
+      "sha256": "88ce8223a0567202c59c45c6687274dd77aa11f042663f398223855f890aa345"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_carrier_launcher_ready_scope_12004.py",
+      "bytes": 5278,
+      "sha256": "bcc7455314a1ffb8c359a0cb2fdbc9ea6334e678425cf2a91e6d8faa4b4418e6"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py",
+      "bytes": 20275,
+      "sha256": "58b7131244409893bee52403a508d1205790267055288f99b1a788c1f2f977ec"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py",
+      "bytes": 8201,
+      "sha256": "50ef145afee99d4d08a7b06834f2a9912d0173ca9e0787428769011085dec1d6"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py",
+      "bytes": 12274,
+      "sha256": "50dc0176622402a6fa5a8a3bc3dfb87973307be79a6e31061bc71bbe9aa6c0b3"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+      "bytes": 44228,
+      "sha256": "0d2315a6f0e6c84837f4abb67b9f40d0af0f11d7ed8d4a969488bc9651dafbc2"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+      "bytes": 17662,
+      "sha256": "014e91c94af9e274c0b1b7a91a6f792fa2c229d08aebd2d9dfe2a8b66cc7d793"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+      "bytes": 25149,
+      "sha256": "1a08699adb77baa4db219200e31abf719f270cf8ccbb35c52c290d0387552a4a"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_hwprobe_12004.cpp",
+      "bytes": 40546,
+      "sha256": "77a46bbeb9d9856f2c979723ac49cfa7530eec6ad2b516ae816aca667f3f2305"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+      "bytes": 58611,
+      "sha256": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py",
+      "bytes": 2346,
+      "sha256": "10c10d3d2700462972530494fd5ed5cea36aabd675181a3cae61d05623393da9"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+      "bytes": 7056,
+      "sha256": "e62853f5ab41bc47a4bf9e0cbcfdac16fcea13c56205de14c4e3a4ecf40570b7"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+      "bytes": 20030,
+      "sha256": "3345621886f9a5cffabb5e45b62356ca20a872f72d54269941dff5aec89bdd37"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/refill_core_carrier_reader_12004.hpp",
+      "bytes": 12914,
+      "sha256": "e331d33a463b3154a87c375e7268ff98780cc2a6a9eae3e7930d3dbd822dc7ad"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/army_observed_phase_query_12004.hpp",
+      "bytes": 12842,
+      "sha256": "3f3c446fb2ed162de3c9997fa3a4f38ccac22328b30c06d1df025f5fe4b043b9"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/army_regular_core_passive_12004.hpp",
+      "bytes": 11498,
+      "sha256": "bf34a1a3b5ea56e9f2ae66c6de65f6d2eeefdd069aab01d28c5e03a1ba394ff1"
+    },
+    {
+      "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/refill_core_carrier_12004.hpp",
+      "bytes": 5570,
+      "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+    },
+    {
+      "path": "BASELINE.actual.json",
+      "bytes": 1751,
+      "sha256": "7384d31fa9d572b5e2ce216ddaed5aff141bfcfad6fff8666287291c49f78b3c"
+    },
+    {
+      "path": "CANONICAL-TEST-PATHS.actual.json",
+      "bytes": 1783,
+      "sha256": "3506f1e372cd04f08105c78df4042287a131767da5d293a4f61653dd98c76e71"
+    },
+    {
+      "path": "research-plan.json",
+      "bytes": 4011,
+      "sha256": "90f943869966c404dec1a4f55f2a5f86842e2ea698cd529688b3a3893365e113"
+    },
+    {
+      "path": "PLAN-CHECK.actual.json",
+      "bytes": 994,
+      "sha256": "690f55b045a185ca525897a2b9c2782a13ad016edfb04c4c4ace657157e6c16d"
+    },
+    {
+      "path": "RESEARCH-GRAPH.md",
+      "bytes": 3798,
+      "sha256": "edec1ec8e0ed15724828bd7ec474a5e68edf0086237792895264943cb13fabd6"
+    },
+    {
+      "path": "verify_sources.py",
+      "bytes": 1737,
+      "sha256": "444fdb335c85d93219a3d1e399240894df4815a3a47eb209af8a683b0d671032"
+    },
+    {
+      "path": "COPYPLAN.final.json",
+      "bytes": 7784,
+      "sha256": "29683cf7bee02fddea6d33477f5e018b83d84696a9d827830831ce9b818d70fb"
+    },
+    {
+      "path": "candidate.patch",
+      "bytes": 151356,
+      "sha256": "4161b43377f912ae78dae940b6688cc45f76db3ee57971e88dcd3bc68dbf4461"
+    },
+    {
+      "path": "tests/carrier_native_wire_synthetic.cpp",
+      "bytes": 7958,
+      "sha256": "24397c7de8623b2a6127d7108799157af2ea0f3fc27c3d6c194e354fae5faa83"
+    },
+    {
+      "path": "tests/reader_fixture_dll.cpp",
+      "bytes": 6872,
+      "sha256": "8487de9111c4630e9cf41b31b61d7deabedf0de9047bbf186156be3e96f22a74"
+    },
+    {
+      "path": "tests/refill_carrier_focused.cpp",
+      "bytes": 4488,
+      "sha256": "49dfac5524ca12e678cfd4a9da197797ec17d066002bdc6544115a01eff24f90"
+    },
+    {
+      "path": "tests/refill_carrier_serializer_syntax.cpp",
+      "bytes": 626,
+      "sha256": "efba10dca97407a16492e498e73be1496363f7a4643ee5064f2f91e813a7026d"
+    },
+    {
+      "path": "tests/refill_core_carrier_reader_fixture.cpp",
+      "bytes": 6575,
+      "sha256": "e660c0f3cee0416545e52200c7220b9cdad199c2cca742b1a5713bb66086d500"
+    },
+    {
+      "path": "syntax-a01/RESULT.actual.json",
+      "bytes": 8250,
+      "sha256": "4c323757b31d28b68256e0e6eac4f0fff6182ab32ad3a52b7e4c5ad13af90b16"
+    },
+    {
+      "path": "synthetic-a01/RESULT.actual.json",
+      "bytes": 3178,
+      "sha256": "977e609494d06df844dd9c71e96df5f13746b315c1d19528b3daa2e0857b9c9a"
+    },
+    {
+      "path": "probe-reader-check-a01/RESULT.actual.json",
+      "bytes": 3171,
+      "sha256": "63209664fbb0e02876bbe2e344d5cd88ad06a4905ae81c1646dc0b9494184f0f"
+    },
+    {
+      "path": "native-wire-join-a01/RESULT.actual.json",
+      "bytes": 1647,
+      "sha256": "cee2b1c4d61f2a1a6ca071b30b3ddac880ada118cf5d8c20cd9cda2acaa27840"
+    },
+    {
+      "path": "native-wire-join-a02/RESULT.actual.json",
+      "bytes": 2071,
+      "sha256": "46f5affa2f7e447ac81a6a6761259e37038e3e6c8e538ceb857f0255e9293a31"
+    },
+    {
+      "path": "native-wire-join-a02/join.stdout",
+      "bytes": 344,
+      "sha256": "cb5380b42405cdba0d4cc35ee7fb321043a35acb8cbffbea067b82a8f182cc3b"
+    },
+    {
+      "path": "native-wire-join-a02/join.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "native-wire-join-a02/hits.jsonl",
+      "bytes": 6552,
+      "sha256": "789a1da66a3224704a310c151af5ea77ffb23a70b7ed87fdb55ad6fd748c13c3"
+    },
+    {
+      "path": "native-wire-join-a02/core.json",
+      "bytes": 17358,
+      "sha256": "e4b82b261337dce03591ca9f68c2d750bcaa150a2920620c3cc8e838b6ee4547"
+    },
+    {
+      "path": "native-wire-join-a02/metadata.json",
+      "bytes": 369,
+      "sha256": "de79a1ec6bf34502f912b6351d5dcc5ee9e65427970b472e764ab314b5e99149"
+    },
+    {
+      "path": "native-wire-join-a01/compile.stdout",
+      "bytes": 1988,
+      "sha256": "12f7c0d1ec1ef6ef9bcee23754403461829f8c49d4e15053abce7e3df1135826"
+    },
+    {
+      "path": "syntax-a01/1.stdout",
+      "bytes": 3264,
+      "sha256": "89f183a09792a4609966572ddb04660ba2318cf69b9ae4cd40ee6b9ec491a279"
+    }
+  ],
+  "copy_plan": [
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/army_observed_phase_query_12004.hpp",
+        "bytes": 12842,
+        "sha256": "3f3c446fb2ed162de3c9997fa3a4f38ccac22328b30c06d1df025f5fe4b043b9"
+      },
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_observed_phase_query_12004.hpp",
+      "preimage": {
+        "bytes": 12488,
+        "sha256": "9bc1c740d226c97aea1320506255fff25c5123c542f8b732eefc0052ae1b17f7"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/army_regular_core_passive_12004.hpp",
+        "bytes": 11498,
+        "sha256": "bf34a1a3b5ea56e9f2ae66c6de65f6d2eeefdd069aab01d28c5e03a1ba394ff1"
+      },
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_regular_core_passive_12004.hpp",
+      "preimage": {
+        "bytes": 11176,
+        "sha256": "af02b9db54ed9da7ae27dcb8f8d60b506ff0080e4798f715625ecc61b5f8d4a3"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/include/xar_bridge/refill_core_carrier_12004.hpp",
+        "bytes": 5570,
+        "sha256": "ee0752d089154a7a342f05e54501da909ae27223d221e81009926b54cc8e9c60"
+      },
+      "target": "ck3_autonomous_player/native_bridge/include/xar_bridge/refill_core_carrier_12004.hpp",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_hwprobe_12004.cpp",
+        "bytes": 40546,
+        "sha256": "77a46bbeb9d9856f2c979723ac49cfa7530eec6ad2b516ae816aca667f3f2305"
+      },
+      "target": "ck3_autonomous_player/native_bridge/research/refill_add_hwprobe_12004.cpp",
+      "preimage": {
+        "bytes": 35636,
+        "sha256": "eb39a0d0dbb2d25c65e5506e1ee503f20a5f91c96b7c0390c074e8e9b3edd294"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py",
+        "bytes": 2346,
+        "sha256": "10c10d3d2700462972530494fd5ed5cea36aabd675181a3cae61d05623393da9"
+      },
+      "target": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/consume_live_refill_add.py",
+      "preimage": {
+        "bytes": 1502,
+        "sha256": "8abc4ebce8bdf1db110b570e8b9d9d47b859f27d50ef7b8d1e56a2b57dc0372c"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+        "bytes": 7056,
+        "sha256": "e62853f5ab41bc47a4bf9e0cbcfdac16fcea13c56205de14c4e3a4ecf40570b7"
+      },
+      "target": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/launch_live_refill_add.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+        "bytes": 20030,
+        "sha256": "3345621886f9a5cffabb5e45b62356ca20a872f72d54269941dff5aec89bdd37"
+      },
+      "target": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/prepare_live_refill_add.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/research/refill_add_live_12004/refill_core_carrier_reader_12004.hpp",
+        "bytes": 12914,
+        "sha256": "e331d33a463b3154a87c375e7268ff98780cc2a6a9eae3e7930d3dbd822dc7ad"
+      },
+      "target": "ck3_autonomous_player/native_bridge/research/refill_add_live_12004/refill_core_carrier_reader_12004.hpp",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+        "bytes": 58611,
+        "sha256": "b039f1576e1277cb869003a48e454a6023fbf342ae5b24a6c3f7f5934a972dc3"
+      },
+      "target": "ck3_autonomous_player/native_bridge/src/army_regular_core_passive_12004.cpp",
+      "preimage": {
+        "bytes": 55446,
+        "sha256": "9015cc179b56bd6b8d25a9b9bb81ec562a765b92b62893a4175752f443e69ec0"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+        "bytes": 44228,
+        "sha256": "0d2315a6f0e6c84837f4abb67b9f40d0af0f11d7ed8d4a969488bc9651dafbc2"
+      },
+      "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_instruction_local_refill_add_12004.py",
+      "preimage": {
+        "bytes": 16674,
+        "sha256": "d51d09cb895739a884566653a0c3b082e57d637e5763965933415e3ce3dd4ae3"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+        "bytes": 17662,
+        "sha256": "014e91c94af9e274c0b1b7a91a6f792fa2c229d08aebd2d9dfe2a8b66cc7d793"
+      },
+      "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_core_validation_12004.py",
+      "preimage": {
+        "bytes": 16140,
+        "sha256": "ac142fc3a2ae33d13c49f03bf62b1ded87d8dc8644c4ecc8a5abe74e488dec3a"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+        "bytes": 25149,
+        "sha256": "1a08699adb77baa4db219200e31abf719f270cf8ccbb35c52c290d0387552a4a"
+      },
+      "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_observed_phase_contract_12004.py",
+      "preimage": {
+        "bytes": 24530,
+        "sha256": "7920248f5f3d35ce422419a7da0c38c2f7112551bb377446f6205156568cc1e8"
+      }
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_carrier_launcher_ready_scope_12004.py",
+        "bytes": 5278,
+        "sha256": "bcc7455314a1ffb8c359a0cb2fdbc9ea6334e678425cf2a91e6d8faa4b4418e6"
+      },
+      "target": "ck3_autonomous_player/tests/unit/test_refill_carrier_launcher_ready_scope_12004.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py",
+        "bytes": 20275,
+        "sha256": "58b7131244409893bee52403a508d1205790267055288f99b1a788c1f2f977ec"
+      },
+      "target": "ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py",
+        "bytes": 8201,
+        "sha256": "50ef145afee99d4d08a7b06834f2a9912d0173ca9e0787428769011085dec1d6"
+      },
+      "target": "ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py",
+        "bytes": 12274,
+        "sha256": "50dc0176622402a6fa5a8a3bc3dfb87973307be79a6e31061bc71bbe9aa6c0b3"
+      },
+      "target": "ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py",
+      "preimage": null
+    },
+    {
+      "source": {
+        "path": "candidate/docs/ck3-native-ai/episode04-refill-core-carrier-12004.md",
+        "bytes": 4399,
+        "sha256": "88ce8223a0567202c59c45c6687274dd77aa11f042663f398223855f890aa345"
+      },
+      "target": "docs/ck3-native-ai/episode04-refill-core-carrier-12004.md",
+      "preimage": null
+    }
+  ],
+  "native_checks": {
+    "core_cpp_syntax": "PASS",
+    "production_probe_ON_syntax": "PASS",
+    "common_TLS_and_carrier_synthetic_execution": "PASS",
+    "fixed_export_reader_14_case_synthetic_execution": "PASS",
+    "actual_Cpp_serializer_old_normalizer_RED": "REPRODUCED",
+    "actual_Cpp_serializer_new_normalizer_and_v4_consumer": "PASS"
+  },
+  "owner_reported_focused_tests": {
+    "positive_prepare": 12,
+    "core_normalizer": 9,
+    "v4_consumer_methods": 8,
+    "launcher_scope": 3,
+    "scope": "Owner focused runs; source-only fixture/path changes subsequently checked by AST/fresh import, no old matrix replay"
+  },
+  "remaining": [
+    "new coherent production DLL and external probe build/SYSTEM",
+    "new Root-owned qualified scene",
+    "actual positive natural ADD and independent CoreEvent",
+    "full-window totals/toggle/full R06 remain unqualified"
+  ],
+  "canonical_smoke_after_composition": [
+    [
+      "<repo-python>",
+      "-B",
+      "-X",
+      "utf8",
+      "ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py",
+      "CarrierConsumerTests.test_actual_shaped_high_bit_ids_and_token_join_only"
+    ]
+  ],
+  "storage": {
+    "C_candidate_ceiling_bytes": 8388608,
+    "D_ceiling_bytes": 16777216,
+    "shared_pool_bytes": 134217728,
+    "new_heavy_build_budget": 0
+  }
+}

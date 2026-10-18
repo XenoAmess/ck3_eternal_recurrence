@@ -793,3 +793,15 @@ docs/ck3-native-ai/evidence/episode04-r202-movement-combat-12004/continuation-de
 /docs/ck3-native-ai/evidence/episode04-r08-cd-writer-next-window-12004/exact-originals.zip -text
 /docs/ck3-native-ai/evidence/episode04-r08-cd-writer-next-window-12004/source-index.json -text
 /docs/ck3-native-ai/evidence/episode04-r08-cd-writer-next-window-12004/README.md -text
+
+# R06 exact source and synthetic wire provenance
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/portable-source-a01.zip -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/SOURCE.final.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/DELIVERY.final.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/PORTABLE-VERIFY.final.json -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/verify_portable.py -text whitespace=cr-at-eol
+/docs/ck3-native-ai/evidence/episode04-refill-core-carrier-12004/README.md -text whitespace=cr-at-eol
+/ck3_autonomous_player/tests/unit/test_refill_carrier_launcher_ready_scope_12004.py -text whitespace=cr-at-eol
+/ck3_autonomous_player/tests/unit/test_refill_core_carrier_consumer_12004.py -text whitespace=cr-at-eol
+/ck3_autonomous_player/tests/unit/test_refill_core_carrier_normalizer_12004.py -text whitespace=cr-at-eol
+/ck3_autonomous_player/tests/unit/test_refill_positive_prepare_gate_12004.py -text whitespace=cr-at-eol
