@@ -109,6 +109,15 @@
     "same_auto_baseline_consumption": false, "start_replayed": false,
     "ci_changed": false, "runtime_adopted": false, "g2_completed_items": 6
   },
+  "post_start_following_compound": {
+    "at_utc": "2026-10-18T11:57:23Z", "machine_id": "xenoamess-full-tower-eb9d2c1186",
+    "production_commit": "1229c7f43f605d884120a17c2bcda71154d7d55d",
+    "test": "test_ordinary_sway_service_v1.py::test_early_baseline_named_gain_and_exact_terminal_reach_ordinary_following",
+    "test_raw_sha256": "9ad0799b285091f2376f39a91b73baf3e4041a7dc6b7df2267520a752cd95d51",
+    "initial_result": "KeyError: expected following on same-frame retarget; corrected test expectation only.",
+    "final_result": "1 passed, 0.264s; synthetic endpoints and explicit later Service reads, full ordinary planner.",
+    "actual_game_days": 0, "natural_terminal_credit": false, "runtime_adopted": false
+  },
   "gain_fastgate_correction": {
     "recorded_at_utc": "2026-10-18T11:26:52Z",
     "reason": "The initial implementation omitted the new witness from the no-extra-snapshot fastgate. A synthetic older-consumer/cold state can have only the witness pending.",

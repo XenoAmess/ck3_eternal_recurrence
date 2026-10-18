@@ -240,6 +240,7 @@ class NamedBaselineDriver(ClosedShapeDriver):
     def __init__(self,path,*,fail=False):
         super().__init__(path)
         self.opinion_reads=0;self.fail_opinion=fail
+        self.named_points=0;self.ended=False
     def query_active_scheme_sway_receipt_private_v1(self,**arguments):
         # Explicit synthetic endpoint upgrade to the complete .4 source pair;
         # the older fixture receipt lacks build fields needed by common-end.
@@ -247,8 +248,13 @@ class NamedBaselineDriver(ClosedShapeDriver):
                 "exact_ck3_build":"1.20.0.4","exe_sha256":EXE,
                 "post_capture_epoch":self.capture,"post_date_raw":self.date}
     def query_active_scheme_sway_completion_private_v1(self,**arguments):
-        return {**super().query_active_scheme_sway_completion_private_v1(**arguments),
+        result={**super().query_active_scheme_sway_completion_private_v1(**arguments),
                 "native_status_key":"continue","owner_cleared":False,"terminal_cause":"unknown"}
+        if self.ended:
+            result.update(native_status_key="terminated_unattributed",owner_cleared=True,
+                owner_matches_actor=False,native_owner_raw=0xFFFFFFFF,native_status_raw=1,
+                native_terminal_state_observed=True)
+        return result
     def query_active_scheme_sway_outcome_opinion_private_v1(self,*,expected_revision,target_character_id):
         assert expected_revision==self.revision and target_character_id==self.target
         assert not self.in_planning
@@ -259,12 +265,51 @@ class NamedBaselineDriver(ClosedShapeDriver):
             "exact_ck3_build":"1.20.0.4","exe_sha256":EXE,
             "snapshot_revision":self.native_revision,"date_raw":self.date,
             "target_opinion_of_actor":self.opinion,
-            "scheme_sway_opinion":{"observed":True,"present":False,"value":None},
+            "scheme_sway_opinion":{"observed":True,"present":bool(self.named_points),
+                "value":self.named_points or None},
             "sway_blocker_opinion":{"observed":True,"present":False,"value":None},
             "instance_terminal_outcome_observed":False,"cancel_outcome_observed":False}
 
 
 class FullPlannerIntegration(unittest.TestCase):
+    def test_early_baseline_named_gain_and_exact_terminal_reach_ordinary_following(self):
+        # Synthetic Native endpoints; later explicit reads do not qualify
+        # automatic cadence, retained common-end capture or a natural outcome.
+        with tempfile.TemporaryDirectory(prefix="sway-chain-") as temp:
+            d=NamedBaselineDriver(Path(temp));s=service(d)
+            first=s.auto_turn(before_submit=overlay_for(d))
+            action=first["result"]["action_id"]
+            s.auto_turn()
+            def read_pair():
+                args={"expected_revision":d.revision,"target_character_id":d.target}
+                s.query_active_scheme_sway_completion_private_v1(**args,scheme_instance_id=16777233)
+                s.query_active_scheme_sway_outcome_opinion_private_v1(**args)
+                return read_sway_ledger(d.state_dir)["resolved"]
+            d.named_points=25
+            gain=read_pair()["first_named_gain_intervention"]
+            self.assertFalse(gain["next_turn_consumed"])
+            gained=s.auto_turn()["sway_following_turn"]
+            self.assertTrue(gained["first_named_gain_intervention"]["next_turn_consumed"])
+            d.ended=True;d.active=False
+            terminal=read_pair()
+            self.assertFalse(terminal["material_intervention"]["incremental_named_gain_observed"])
+            self.assertFalse(terminal["terminal_intervention"]["next_turn_consumed"])
+            retarget=s.auto_turn()
+            self.assertEqual(retarget["selected_step"],STEP)
+            self.assertNotEqual(retarget["result"]["action_id"],action)
+            self.assertNotIn("sway_following_turn",retarget)
+            d.ended=False;d.named_points=0
+            following=s.auto_turn()["sway_following_turn"]
+            final=next(row for row in following["previous_interventions"] if row["action_id"]==action)
+            end=final["terminal_intervention"]
+            self.assertTrue(end["next_turn_consumed"])
+            self.assertTrue(end["instance_terminal_outcome_observed"])
+            self.assertFalse(end["terminal_cause_observed"])
+            self.assertEqual(end["terminal_cause"],"unknown")
+            self.assertEqual((end["action_id"],end["scheme_instance_id"]),(action,16777233))
+            self.assertEqual(final["first_named_gain_intervention"],gained["first_named_gain_intervention"])
+            self.assertEqual(d.submits,2)
+
     def test_post_start_ack_or_foreign_action_cannot_observe(self):
         from xar_autoplayer.bridge.ordinary_sway_quiet_observation_v1 import observe_sway_after_applied_start_v1
         with tempfile.TemporaryDirectory(prefix="sway-early-guard-") as temp:

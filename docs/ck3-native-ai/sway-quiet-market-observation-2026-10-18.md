@@ -21,3 +21,5 @@
 `2026-10-18T11:48:36Z`：新增成功 Start 后的早期命名基线窗口。只有 completion/opinion 双只读权限、真实 `query_selected_target` 的 applied/postcondition 回执，且与持久 ledger 同 action/actor/target/full SchemeID/代次才可进入；同 actor/date/Game/连接的 quiet 后态仍须通过。观察放在原 following 之后，以独立 `ordinary_sway_post_start_observation` 保存，原 Start 回执不覆盖，新基线不能在同一 AUTO 内消费。失败保留 Start，不重发；原月度节奏和战争优先级不变。
 
 实际完整普通规划器→正式 Start→基线→后续消费及读失败不重发两子例通过；ACK-only/异 action 不触发快照。受改动影响的4项 full-planner、9项 quiet 回归及新增1项拒绝测试均通过。新正例最初被原来源守卫拒绝，原因是旧合成 receipt 缺 build/post-capture/date；仅补齐明确的合成端点字段，未改生产守卫。全部为软件资格；新顶层观察元数据仍需未来完整 owner 采用资格，不称当前冻结 SDK 已部署或 M6 完成。
+
+One additional software compound connects the early baseline to named gain, exact terminal and later ordinary consumption. Its first expectation was wrong: the original planner retargets at the same frame, preserving the old intervention; consumption follows a later advancing turn. No production fix, automatic cadence or natural-outcome credit is claimed. Machine/time/source and the failed expectation are recorded in the linked evidence.
