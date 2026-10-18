@@ -92,7 +92,7 @@ def _quiet_same_actor(snapshot, source):
 
 
 def _observe_applied_after_turn(service, planned, outcome, *, window, receipt_key,
-                                expected_start_identity=None):
+                                expected_start_identity=None, verified_hold_snapshot=None):
     """Best-effort read after original following consumers; never replay the turn."""
     if not any(getattr(service.driver, permission, False) is True for _, permission, _ in READERS):
         return outcome
@@ -109,7 +109,9 @@ def _observe_applied_after_turn(service, planned, outcome, *, window, receipt_ke
         if expected_start_identity is not None and _start_identity(resolved) != expected_start_identity:
             return outcome
         staged = planned.get(INPUT)
-        frame = staged.get("snapshot") if isinstance(staged, Mapping) else None
+        frame = (project_ordinary_sway_input_v1(verified_hold_snapshot, None)["snapshot"]
+                 if verified_hold_snapshot is not None
+                 else staged.get("snapshot") if isinstance(staged, Mapping) else None)
         if not isinstance(frame, Mapping):
             return outcome
         job = plan_ordinary_sway_schedule_v1(
@@ -119,8 +121,9 @@ def _observe_applied_after_turn(service, planned, outcome, *, window, receipt_ke
         if job["job"] != "observe_applied":
             return outcome
         # No Native read is taken when there is no original applied instance.
-        snapshot = service.snapshot(include_native_command_history=False)
-        if not _quiet_same_actor(snapshot, planned["planning_source_frame"]):
+        snapshot = (verified_hold_snapshot if verified_hold_snapshot is not None
+                    else service.snapshot(include_native_command_history=False))
+        if verified_hold_snapshot is None and not _quiet_same_actor(snapshot, planned["planning_source_frame"]):
             return outcome
         if outcome["selected_step"] == MARKET_QUERY and not _market_query_matches(snapshot, outcome["result"]):
             return outcome
@@ -135,7 +138,8 @@ def _observe_applied_after_turn(service, planned, outcome, *, window, receipt_ke
         result = observation or {"status": "unavailable", "reason": "existing_observer_unready"}
         receipt = _finish(state_dir, job, frame,
                           "observed" if result.get("status") == "observed" else "unavailable", result)
-        after_key = "after_completed_query" if receipt_key == "ordinary_sway_optional" else "after_completed_start"
+        after_key = ("after_completed_query" if receipt_key == "ordinary_sway_optional"
+                     else "after_verified_hold" if verified_hold_snapshot is not None else "after_completed_start")
         return {**outcome, receipt_key: {
             "schema": SCHEMA, **receipt, after_key: outcome["selected_step"],
             "schedule_window": window,

@@ -4762,6 +4762,8 @@ class GameplayBridgeService:
         )
         outcome = observe_sway_after_quiet_query_v1(self, planned, outcome)
         outcome = observe_sway_after_applied_start_v1(self, planned, outcome)
+        from .ordinary_sway_hold_observation_v1 import observe_sway_after_stationary_hold_v1
+        outcome = observe_sway_after_stationary_hold_v1(self, planned, outcome)
         outcome = self._consume_initial_lifestyle_focus_after_turn_v1(
             outcome, planning_frame=planned)
         cooldown_receipt = self._observe_declaration_cooldown_after_turn_v1(

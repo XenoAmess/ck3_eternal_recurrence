@@ -1,0 +1,50 @@
+{
+  "schema": "xar.ck3.ordinary-sway-hold-software-review/v1",
+  "machine_id": "xenoamess-full-tower-eb9d2c1186",
+  "observed_at_utc": "2026-10-18T14:28:46.970981+00:00",
+  "source_parent": "0e073fad",
+  "scope": "Service software only; frozen current SDK not adopted",
+  "sources": [
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "bytes": 861744,
+      "sha256": "f0cd653002fa0936d6f1eb21ae077ede8298a50c49f6b2a925065cead56e2722"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_quiet_observation_v1.py",
+      "bytes": 11340,
+      "sha256": "471fee211cb6412e68ef392edc3e07c33eb8c0261af8eb58fddaf59d948eeb70"
+    },
+    {
+      "path": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_sway_hold_observation_v1.py",
+      "bytes": 7829,
+      "sha256": "ba98e1dbc08c71f1c3b0011a0c2f2f634ede8c6c101b6d03b5e42dd3a3720a19"
+    },
+    {
+      "path": "ck3_autonomous_player/tests/unit/test_ordinary_sway_hold_observation_v1.py",
+      "bytes": 10673,
+      "sha256": "88dbfc6c807cf00394409ea9484191eceb2ead110aa955028e3be0704d7b76b0"
+    }
+  ],
+  "qualification": {
+    "full_Service_positive": true,
+    "rejection_cases": 14,
+    "inactive_or_monthly_branches_with_zero_added_snapshot_reads": 5,
+    "optional_persist_failure_keeps_original_hold": true,
+    "original_four_methods_tool_seconds": 2.4574885,
+    "post_review_two_methods_tool_seconds": 2.0921804,
+    "post_review_test_chunk": "327399",
+    "all_Native_endpoints_synthetic": true
+  },
+  "root_review": "Read all four leaves and existing Native hold/boundary guards; require actual post snapshot one_life_terminal false in addition to reason and result. Original planned source is never rewritten. Only monthly-due existing active Sway may add a fresh matched post snapshot and original readonly observer.",
+  "text_budget": {
+    "initial_cap_bytes": 16384,
+    "initial_observed_overrun_bytes": 19650,
+    "explicit_root_revised_cap_bytes": 24576,
+    "final_CRLF_conservative_added_bytes": 19781,
+    "old_32KiB_and_65KiB_packages_not_reset": true
+  },
+  "actual_Game_or_Native_or_MCP_or_video_or_SAVE_operations": 0,
+  "runtime_qualification": false,
+  "G2_status": "6/8; real M6 named terminal gain and later ordinary benefit still pending; M7 cold/UI/government real variants pending"
+}
