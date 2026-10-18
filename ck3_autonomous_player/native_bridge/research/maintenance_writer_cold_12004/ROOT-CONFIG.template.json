@@ -1,0 +1,18 @@
+{
+  "note": "UNBOUND TEMPLATE. Root supplies fresh independent actual values; this is not admission.",
+  "repo": "D:/workspace/ck3_eternal_recurrence",
+  "python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+  "source_head": null,
+  "build_dir": "C:/ck3-war-episode04-research-20261004-a01/maintenance-writer-cold-a01/build-a07",
+  "machine_execution_gate": "C:/ck3-war-episode04-research-20261004-a01/maintenance-writer-cold-a01/runs-a06-final-narrow/EXECUTION-GATE.actual.json",
+  "cash_response": null,
+  "before_response": null,
+  "watch_output_root": null,
+  "timeout_ms": 30000,
+  "max_slot_hits": 128,
+  "expected": {
+    "pid": null, "created": null, "generation": null, "window": null, "epoch": null,
+    "character_id": null, "revision": null, "native_revision": null, "date": null,
+    "episode": null, "machine": "desktop-3fevhd2-1c74096080"
+  }
+}

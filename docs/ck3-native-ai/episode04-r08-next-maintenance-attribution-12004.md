@@ -71,3 +71,7 @@
 [resource4 wallet context](war-payment-resource4-wallet-context-12004.md)将已证缺口落实为可复用代码：旧 gateway 的 `personal_gold_bits` 来自个人 extension+100，不能作为 context+4A0。新增可选 child 仅在既有 kind1/resource4 原回调内读取实际 context 与4A0前后端点；同 record 的 source/caller、sequence、event、session 与 owner 保持原关系。没有主动 getter、新 hook、付款动作或假 settlement token。
 
 完整 producer-shaped wire 的生产 normalizer/consumer 焦点验证覆盖跨 owner、context变化、读取失败，以及个人金币不能替代4A0；源码已可复用，首次 coherent native build／正常冷载／实机仍 pending。物理端点不代表军事分类、正式币名、payer或cadence，paid继续null；下一实际c/d writer与同次付款连接仍按原计划取得，不把本次源码交付计入R08实付闭环。
+
+## 2026-10-18 R08 c/d可执行准备已入库，实际writer仍待采
+
+`machine_id: desktop-3fevhd2-1c74096080`。[Root执行卡](episode04-r08-cd-writer-next-window-12004.md)与research/maintenance_writer_cold_12004下build_card.py、select_cd_writers.py可复用：旧固定四槽已含c/d=28/30，128为全槽累计，不必发明新flag。新卡只生成现有prepare/native/consume argv，选择器只从被pin的原actualconsumer结果保留c/d及同值写；partial cleanup/foreign PC不授source-ready，不抹a/b原件。作者3新focused PASS、canonical两项selector smoke单列；没有attach/SDK/observer或新c/d PC，paid/sameNET/payer/cadence仍unknown，研究9/14、业务6/11、动态0/11、ABC0/3不涨。旧build/SYSTEM与模板本机路径不授新场或跨机资格。

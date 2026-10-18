@@ -1,0 +1,100 @@
+{
+  "machine_id": "desktop-3fevhd2-1c74096080",
+  "observed_at_utc": "2026-10-18T01:59:32.269787+00:00",
+  "author_base": "19024b4d79d818a88709c9932ca4eb364d81ef33",
+  "integration_base": "0dfaac30e0f5836f9b7e505f4724591773331fc4",
+  "status": "SOURCE_PREPARATION_ONLY_RUNTIME_NOT_RUN",
+  "source_delivery": {
+    "path": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\ROOT-DELIVERY.actual.json",
+    "bytes": 6269,
+    "sha256": "8d147b32bacc0f0e8d76f7dcc1073a570c2d3c83bb2b8023dbfbf3fab84ffad3"
+  },
+  "products": [
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\select_cd_writers.py",
+      "target": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/select_cd_writers.py",
+      "bytes": 6328,
+      "sha256": "5e6f7440ef1c5589f9659ace7c6e9e7521059241e2c21ba4328f9080a93842b1"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\test_select_cd.py",
+      "target": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/test_select_cd_writers.py",
+      "bytes": 3111,
+      "sha256": "360b757cdf3adb087590b5d1f657e1a5bfc23abca302745a0c551bb057775d24"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\build_card.py",
+      "target": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/build_card.py",
+      "bytes": 5684,
+      "sha256": "f646e20883ecfe844220df99dedcb2204fdae6b7075d86839bd4d8a823c1f11f"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\ROOT-CONFIG.template.json",
+      "target": "ck3_autonomous_player/native_bridge/research/maintenance_writer_cold_12004/ROOT-CONFIG.template.json",
+      "bytes": 886,
+      "sha256": "422e3693a1a81514a226dd85d40b68b7a1acd899e48d0f8bd87ef15f7331befa"
+    },
+    {
+      "source": "C:\\ck3-e04-resume-20261015-a01\\r08-cd-writer-watch-next-a01\\ROOT-ACTION-CARD.md",
+      "target": "docs/ck3-native-ai/episode04-r08-cd-writer-next-window-12004.md",
+      "bytes": 8339,
+      "sha256": "8613d0697bb973c92fba296ac4af59ae319054642bb4fb7780e398f9d17cf4c0"
+    }
+  ],
+  "additional_copy_ownership": "Author message explicitly approved build_card.py/template/action-card canonical paths; sealed original receipt has two selector targets and is retained unchanged.",
+  "archive": {
+    "path": "exact-originals.zip",
+    "bytes": 7494,
+    "sha256": "a53deb381a0396a2a571fc44c3b2a101b77ce2823413c6f2da5089c0a1360352",
+    "members": [
+      {
+        "member": "ROOT-DELIVERY.original.json",
+        "bytes": 6269,
+        "sha256": "8d147b32bacc0f0e8d76f7dcc1073a570c2d3c83bb2b8023dbfbf3fab84ffad3"
+      },
+      {
+        "member": "FOCUSED-TESTS.actual.json",
+        "bytes": 2097,
+        "sha256": "1f79f83b0ec14147b3a2ebe06da7fca2862c445195916bdcc173862b42a6f49b"
+      },
+      {
+        "member": "PATCH-CHECK.actual.json",
+        "bytes": 1069,
+        "sha256": "26e76e85bb6ac84a08e89029da5da1f07290f2957017adc1afaafecc75c2e5e8"
+      },
+      {
+        "member": "SOURCE-INVENTORY.actual.json",
+        "bytes": 4712,
+        "sha256": "34961ef2dd65645ade31cd4a2327e394d3392071144833f540007b8f28f5ee0a"
+      },
+      {
+        "member": "history-test-card.py",
+        "bytes": 3254,
+        "sha256": "bed1352170452dfe60e9c83de10df17a3e245192b4af0e377d4c5421f361504a"
+      },
+      {
+        "member": "historical-machine-execution-gate.json",
+        "bytes": 1508,
+        "sha256": "e23b4f2733d4031a49ababd507a5ed9fcbe732e55f45992c4dffcb77b7b9b23b"
+      }
+    ]
+  },
+  "tests": "Author3 new compound checks actualPASS; integration repeats only two selector tests once at canonical relative placement, no oldmatrix or adapteradmission.",
+  "historical_machine_gate": {
+    "machine_id": "desktop-3fevhd2-1c74096080",
+    "observed_at_utc": "2026-10-15T17:32:21.584913+00:00",
+    "qualification": "historicalexact EXE/SYSTEM setting only; no fresh watch or othermachine admission"
+  },
+  "runtime_actions": 0,
+  "native_builds": 0,
+  "new_c_d_writer_PC": false,
+  "known_producer": false,
+  "paid_maintenance_raw": null,
+  "same_NET_payer_cadence": "unclosed",
+  "counts_unchanged": {
+    "research": "9/14",
+    "business": "6/11",
+    "dynamic": "0/11",
+    "ABC": "0/3"
+  }
+}

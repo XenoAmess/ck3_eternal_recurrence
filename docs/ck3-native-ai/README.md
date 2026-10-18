@@ -1529,3 +1529,7 @@ R190闭场便携实证已入库：[107.333秒原片与暂停尾段边界](episod
 `machine_id: desktop-3fevhd2-1c74096080`；[R204专题](episode04-r204-battle-natural-payments-12004.md)绑定实际19024/a35、PID29068/gen1。32连续日53148888→53149656=片中5+a01已成功1+a02的26；原大小写suffix RED保留，已推进日步不重投、unknown[]、同token未再arm。6条kind0 Army transition+1条个人现金ADD206846（Char31254/28A6D7C），不是兵员ADD；自然64条/phase各32无overflow，resource4/raw4无样本≠军费0。
 
 原片23.266秒698帧decode/PTS通过，候选[0.5,20)待全审，无clean/1×/人审/cue信用；另外27日不在片中。手工OFF+独立clear完成，正常Save74,845,159B/SHA101f8fbf…32d7245/date53149656、CK3/bootstrap0与screen6346空资源；close NOT_CONFIGURED不抹手工cleanup。研究9/14、业务6/11、合格动态0/11、ABC0/3均不涨。
+
+## 2026-10-18 R08 c/d可执行准备已入库，实际writer仍待采
+
+`machine_id: desktop-3fevhd2-1c74096080`。[Root执行卡](episode04-r08-cd-writer-next-window-12004.md)与research/maintenance_writer_cold_12004下build_card.py、select_cd_writers.py可复用：旧固定四槽已含c/d=28/30，128为全槽累计，不必发明新flag。新卡只生成现有prepare/native/consume argv，选择器只从被pin的原actualconsumer结果保留c/d及同值写；partial cleanup/foreign PC不授source-ready，不抹a/b原件。作者3新focused PASS、canonical两项selector smoke单列；没有attach/SDK/observer或新c/d PC，paid/sameNET/payer/cadence仍unknown，研究9/14、业务6/11、动态0/11、ABC0/3不涨。旧build/SYSTEM与模板本机路径不授新场或跨机资格。
